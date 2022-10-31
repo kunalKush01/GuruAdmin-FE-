@@ -1,0 +1,16 @@
+export const hindiContent = {
+  dashboard: "डैशबोर्ड",
+  donation: "दान",
+  committment: "प्रतिबद्धता",
+  daan_peti_collections: "दान पेटी संग्रह",
+  financial_reports: "वित्तीय रिपोर्ट",
+  internal_expenses: "आंतरिक व्यय",
+  events: "आयोजन",
+  news: "समाचार",
+  notices: "नोटिस",
+  configuration: "विन्यास",
+  searchBarPlaceHolder: "खोज मंदिर, ट्रस्ट, कार्यक्रम, समाचार",
+  dashboard_donationReceived: "दान प्राप्त",
+  dashboard_donationPending: "दान लंबित",
+  dashboard_totalExpenses: "कुल खर्च",
+};

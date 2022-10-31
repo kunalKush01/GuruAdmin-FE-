@@ -1,0 +1,16 @@
+export const englishContent = {
+  dashboard: "Dashboard",
+  donation: "Donation",
+  committment:"Committment",
+daan_peti_collections:"Daan Peti Collections",
+financial_reports:"financial Reports",
+internal_expenses:"internal Expenses",
+events:"events",
+news:"News",
+notices:"Notices",
+configuration:"Configuration",
+searchBarPlaceHolder:"Search Temples, Trust, Events, News",
+dashboard_donationReceived:"Donation Received",
+dashboard_donationPending:"Donation Pending",
+dashboard_totalExpenses:"Total Expenses",
+};

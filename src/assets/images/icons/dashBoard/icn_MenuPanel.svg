@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50">
+  <g id="icn_MenuPanel" transform="translate(-22 -51)">
+    <g id="Rectangle_101" data-name="Rectangle 101" transform="translate(22 51)" fill="#583703" stroke="#583703" stroke-width="1" opacity="0">
+      <rect width="50" height="50" stroke="none"/>
+      <rect x="0.5" y="0.5" width="49" height="49" fill="none"/>
+    </g>
+    <path id="Icon_material-translate" data-name="Icon material-translate" d="M22.52,26.145l-4.5-4.445.053-.053a31.024,31.024,0,0,0,6.57-11.564h5.189V6.542h-12.4V3H13.9V6.542H1.5v3.524H21.28a27.825,27.825,0,0,1-5.614,9.492,27.705,27.705,0,0,1-4.091-5.932H8.034A31.1,31.1,0,0,0,13.312,21.7L4.3,30.59,6.813,33.1l8.854-8.854,5.507,5.507,1.346-3.613Zm9.97-8.978H28.948l-7.969,21.25h3.542L26.5,33.1h8.412l2,5.313h3.542Zm-4.64,12.4L30.719,21.9l2.869,7.668Z" transform="translate(26.021 55.291)" fill="#583703"/>
+  </g>
+</svg>
