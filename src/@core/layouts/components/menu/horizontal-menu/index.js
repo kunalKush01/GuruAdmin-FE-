@@ -14,12 +14,13 @@ const HorizontalMenu = ({ menuData, currentActiveItem, routerProps }) => {
   const SubHeaderWarraper = styled.div`
     font: normal normal bold 15px/20px noto sans;
     cursor: pointer;
+    
   `;
 
   return (
     <div
       className="navbar-container w-100 main-menu-content"
-      onClick={() => changeLanguage("hindi")}
+      
     >
       <ul
         className="nav navbar-nav justify-content-between  "

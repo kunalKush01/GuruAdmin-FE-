@@ -1,86 +1,48 @@
-import DataTable from "react-data-table-component";
+import { useTranslation,Trans } from "react-i18next";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import Condition from "yup/lib/Condition";
+import CustomDataTable from "../partials/CustomDataTable";
 
 export function RecentDonationTable() {
-  const DataTableWarraper = styled.div`
-    color: #583703 !important;
-    margin-right: 20px;
-     
-    .recentDonetionList {
-        cursor: all-scroll;
-      max-width: 70rem;
-      border: 2px solid #ff8744;
-      overflow: auto;
-      border-radius: 10px;
-      max-height: 38rem;
-      ::-webkit-scrollbar{
-        display: none;
-      }
-      
-     
-      .bqopOU {
-        color: #583703 !important;
-        font: normal normal normal 12px/23px Noto Sans;
-      }
-
-      .iYmPDL {
-        color: #583703 !important;
-        border: 0px !important;
-        font: normal normal bold 15px/23px Noto Sans;
-      }
-      .dTRIqN:not(:last-of-type) {
-        color: #583703 !important;
-        border: 0px !important;
-      }
-    }
-  `;
+  const { t } = useTranslation();
 
   const columns = [
     {
-      name: "Donor Name",
+      name: t("dashboard_Recent_DonorName"),
       selector: (row) => row.name,
     },
     {
-      name: "Mobile Number",
+      name: t("dashboard_Recent_DonorNumber"),
       selector: (row) => row.mobile,
     },
     {
-      name: "Type",
+      name: t("dashboard_Recent_DonorType"),
       selector: (row) => row.type,
     },
     {
-      name: "Date",
+      name: t("dashboard_Recent_DonorDate"),
       selector: (row) => row.date,
     },
     {
-      name: "Status",
+      name: t("dashboard_Recent_DonorStatus"),
       selector: (row) => row.status,
     },
     {
-      name: "Amount",
+      name: t("dashboard_Recent_DonorAmount"),
       selector: (row) => row.amount,
     },
     {
-      name: "Commitment Id",
+      name: t("dashboard_Recent_DonorCommitId"),
       selector: (row) => row.commitment,
     },
     {
-      name: "Receipt",
+      name: t("dashboard_Recent_DonorReceipt"),
       selector: (row) => row.receipt,
     },
     {
-      name: "Action",
       selector: (row) => row.action,
     },
   ];
-
-  const conditionStyle = {
-    when: (row) => row.id % 2 !== 0,
-    style: {
-      backgroundColor: "#FFF7E8",
-    },
-  };
 
   const data = [
     {
@@ -325,14 +287,25 @@ export function RecentDonationTable() {
       action: "",
     },
   ];
+
+  const RecentDonationTableWarper = styled.div`
+    color: #583703 !important;
+    margin-right: 20px;
+    font: normal normal bold 15px/23px Noto Sans;
+  `;
+
   return (
-    <DataTableWarraper>
-      <DataTable
-        conditionalRowStyles={[conditionStyle]}
-        className="recentDonetionList"
+    <RecentDonationTableWarper>
+      <div className="d-flex justify-content-between  ">
+        <p><Trans i18nKey={"dashboard_Recent_DonationCommitment"} /></p>
+        <Link><Trans i18nKey={"dashboard_viewAll"} /></Link>
+      </div>
+      <CustomDataTable
+        // minWidth="fit-content"
+        maxHieght={"470px"}
         columns={columns}
         data={data}
       />
-    </DataTableWarraper>
+    </RecentDonationTableWarper>
   );
 }

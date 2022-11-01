@@ -1,7 +1,10 @@
 import ReactApexChart from "react-apexcharts";
+import { useTranslation,Trans } from "react-i18next";
 import styled from "styled-components";
 
 export const RevenueChart = () => {
+  const {t}= useTranslation()
+
   const RevenueChartWarrper = styled.div`
     .apexcharts-toolbar{
       display: none;
@@ -14,28 +17,37 @@ export const RevenueChart = () => {
       color: #583703;
       font: normal normal bold 25px/50px Noto Sans
     }
+    .apexcharts-legend-text {
+      color: #583703 !important;
+    }
+    
     
   `;
 
   const series = [
     {
-      name: "Donation",
+      name: t("donation"),
       data: [44, 55, 57, 56, 61, 58, 63, 60, 66,100,55,99],
     },
     {
-      name: "Commitment",
+      name: t("committment"),
       data: [76, 85, 101, 98, 87, 105, 91, 114, 94,50,95,50],
     },
     {
-      name: "Total Expenses",
+      name: t("dashboard_totalExpenses"),
       data: [35, 41, 36, 26, 45, 48, 52, 53, 41,100,60,22],
     },
   ];
 
   const options = {
+    
+    
     chart: {
       type: "bar",
       height: 350,
+      fontFamily: " Noto Sans",
+      fontColors:"#583703",
+      
     },
     plotOptions: {
       bar: {
@@ -54,6 +66,7 @@ export const RevenueChart = () => {
       colors: ["transparent"],
     },
     xaxis: {
+      
       categories: [
         "January",
         "February",
@@ -88,8 +101,9 @@ export const RevenueChart = () => {
 
   return (
     <RevenueChartWarrper id="chart">
-      <p>Revenue Report</p>
-      <ReactApexChart            
+     <p> <Trans  i18nKey={"dashboard_RevenueReport"}  /></p>
+      <ReactApexChart  
+              
         options={options}
         series={series}
         type="bar"

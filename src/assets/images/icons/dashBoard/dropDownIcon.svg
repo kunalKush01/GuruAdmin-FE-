@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50">
+  <g id="icn_MenuPanel" transform="translate(0 50) rotate(-90)">
+    <g id="Rectangle_101" data-name="Rectangle 101" fill="#583703" stroke="#583703" stroke-width="1" opacity="0">
+      <rect width="50" height="50" stroke="none"/>
+      <rect x="0.5" y="0.5" width="49" height="49" fill="none"/>
+    </g>
+    <path id="Icon_ionic-ios-arrow-down" data-name="Icon ionic-ios-arrow-down" d="M12.288,9.812l9.289-9.3a1.748,1.748,0,0,1,2.48,0,1.77,1.77,0,0,1,0,2.487L13.532,13.535a1.752,1.752,0,0,1-2.421.051L.512,3.01A1.756,1.756,0,0,1,2.992.523Z" transform="translate(32.023 12.717) rotate(90)" fill="#ff8744"/>
+  </g>
+</svg>
