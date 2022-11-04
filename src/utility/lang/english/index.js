@@ -1,4 +1,5 @@
 export const englishContent = {
+  
   dashboard: "Dashboard",
   donation: "Donation",
   committment:"Committment",
@@ -32,6 +33,12 @@ dashboard_Recent_DonorAmount:"Amount",
 dashboard_Recent_DonorCommitId:"Commitment ID",
 dashboard_Recent_DonorReceipt:"Receipt",
 dashboard_viewAll:"View All",
-dashboard_top:"Top 5 Donors"
+dashboard_top:"Top 5 Donors",
 
+  // All static content of News
+news_AddNews:"Add News",
+news_InputIn:"Input In :",
+news_label_Title :"Title",
+news_label_Tags:"Tags",
+news_label_Description:"Add Description"
 };

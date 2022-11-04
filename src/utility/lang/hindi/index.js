@@ -1,4 +1,5 @@
 export const hindiContent = {
+  
   dashboard: "डैशबोर्ड",
   donation: "दान",
   committment: "प्रतिबद्धता",
@@ -33,7 +34,15 @@ export const hindiContent = {
   dashboard_Recent_DonorCommitId: "प्रतिबद्धता आईडी",
   dashboard_Recent_DonorReceipt: "रसीद",
   dashboard_viewAll:"सभी को देखें",
-  dashboard_top:"शीर्ष 5 दाता"
+  dashboard_top:"शीर्ष 5 दाता",
+
+
+   // All static content of News
+news_AddNews:"समाचार जोड़ें",
+news_InputIn:"इनपुट इन :",
+news_label_Title :"शीर्षक",
+news_label_Tags:"टैग",
+news_label_Description:"विवरण जोड़ें"
 
 
 

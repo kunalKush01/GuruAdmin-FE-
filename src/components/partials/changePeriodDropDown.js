@@ -18,7 +18,7 @@ export const ChagePeriodDropDown= ()=>{
     }
 ]
     return(
-        <CustomDropDown dropDownNameKey={dropDownNameKey} i18nKeyDropDownItemArray={i18nKeyDropDownItemArray} />
+        <CustomDropDown defaultDropDownName={dropDownNameKey} i18nKeyDropDownItemArray={i18nKeyDropDownItemArray} />
     )
 
 }

@@ -12,13 +12,13 @@ const Routes = [
     path: "/dashboard",
     component: lazy(() => import("../../views/dashboard")),
   },
-  // {
-  //   path: '/donation',
-  //   component: lazy(() => import('../../views/SecondPage'))
-  // },
+  {
+    path: '/news',
+    component: lazy(() => import('../../views/news'))
+  },
   // {
   //   path: '/committment',
-  //   component: lazy(() => import('../../views/SecondPage'))
+  //   component: lazy(() => import('../../views/committment'))
   // },
   // {
   //   path: '/daan_peti_collections',
