@@ -4,8 +4,14 @@ import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
 import moment from "moment";
 import styled from "styled-components";
-
+import { Trans } from "react-i18next";
+import CustomTimeInput from "./timeInput";
+import { useField } from "formik";
 const CustomDatePickerWarper = styled.div`
+  label {
+    color: #583703;
+    font: normal normal bold 15px/33px Noto Sans !important;
+  }
   .react-datepicker {
     border: none !important ;
     color: #583703;
@@ -27,14 +33,18 @@ const CustomDatePickerWarper = styled.div`
         border-radius: 10px;
         text-align: center;
         color: #ff8744 !important;
+        width: 150px;
         font: normal normal bold 15px/30px Noto Sans !important  ;
       }
     }
 
     .react-datepicker__navigation {
-      top: 9px;
+      top: 16px;
     }
-    .react-datepicker__month-year-read-view--down-arrow {
+    .react-datepicker__month-read-view--down-arrow {
+      top: 10px;
+    }
+    .react-datepicker__year-read-view--down-arrow {
       top: 10px;
     }
     .react-datepicker__day-name {
@@ -54,15 +64,34 @@ const CustomDatePickerWarper = styled.div`
         border-radius: 50%;
       }
     }
-    .react-datepicker__month-year-dropdown {
+    .react-datepicker__month-dropdown {
       border: none !important;
-      color: #ff8744;
-      background-color: #fff;
+      /* color: #ff8744; */
+      background-color: #FFF7E8;
       box-shadow: 2px 2px 10px 2px gray;
-      max-height: 200px;
+      max-height: 250px;
       overflow: auto;
       ::-webkit-scrollbar {
         display: none;
+      }
+      .react-datepicker__month-option:hover{
+        background-color: #ff8744;
+        color: #fff;        
+      }
+    }
+    .react-datepicker__year-dropdown {
+      border: none !important;
+      /* color: #ff8744; */
+      background-color: #FFF7E8;
+      box-shadow: 0px 0px 7px 0px gray;
+      max-height: 250px;
+      overflow: auto;
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      .react-datepicker__year-option:hover{
+        background-color: #ff8744;
+        color: #fff;        
       }
     }
 
@@ -74,36 +103,74 @@ const CustomDatePickerWarper = styled.div`
 
       .react-datepicker__current-month {
         color: #583703 !important ;
-        font: normal normal bold 13px/20px Noto Sans !important;
+        font: normal normal bold 15px/20px Noto Sans !important;
+        display: none;
       }
     }
+    .react-datepicker__header__dropdown{
+      .react-datepicker__month-dropdown-container{
+        margin-right:50px ;
+      }
+    }
+
+    .react-datepicker-time__header {
+      border: none !important ;
+      background: #fff7e8 !important;
+      color: #583703 !important ;
+      border-radius: 10px !important;
+      font: normal normal bold 15px/20px Noto Sans !important;
+    }
+    .react-datepicker__time-list {
+      background-color: #fff7e8;
+      font: normal normal bold 11px/20px Noto Sans !important;
+
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    }
+    .react-datepicker__time-list-item--selected {
+      color: #fff !important;
+      background-color: #ff8744 !important;
+    }
+    .react-datepicker__time-container {
+      border-left: 2px solid #583703;
+    }
+
+    input[type="time"]::-webkit-calendar-picker-indicator {
+      display: none;
+    }
+    
   }
 `;
-export default function CustomDatePicker() {
-  const [startDate, setStartDate] = useState(new Date());
 
-  const subMonths = (date, month) => {
-    date + month;
-    console.log("date", date + month);
-    return;
-  };
-  const date = new Date();
-  console.log("date=", date);
-  const minMonthsAgo = moment().subtract(1000, "years");
-  const maxMonthsAgo = moment().add(1000, "years");
+export default function CustomDatePicker({ ...props }) {
+
+  const [field, meta, helpers] = useField(props.name);
+
+  const date = new Date()
+  console.log("date=",date);
 
   return (
     <CustomDatePickerWarper>
-      <DatePicker      
-        selected={startDate}
-        onChange={(date) => setStartDate(date)}
-        //   dateFormatCalendar={"MMM yyyy"}
-        minDate={minMonthsAgo._d}
-        maxDate={maxMonthsAgo._d}
-        // showTimeInput
-        showMonthYearDropdown
-        inline        
-      timeFormat="p"
+      <label className="mb-1 ">
+        <Trans i18nKey={"news_label_Date"} />
+      </label>
+
+      <DatePicker 
+       
+        selected={field.value}
+        onChange={(date) => {          
+
+         helpers.setValue(date)
+        }}
+        yearDropdownItemNumber={50}        
+        showYearDropdown
+        showMonthDropdown
+        timeFormat="hh:mm aa"
+        timeCaption="Time"
+        
+        inline
+        {...props}
       />
     </CustomDatePickerWarper>
   );

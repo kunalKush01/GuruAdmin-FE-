@@ -19,6 +19,6 @@ authApiInstance.defaults.headers.common["environment"] = "local";
 authApiInstance.defaults.headers.common["locale-code"] = "en";
 authApiInstance.defaults.headers.common["tm"] = "";
 authApiInstance.defaults.headers.common["app-signature"] = "";
-// authApiInstance.defaults.headers.common["merchant"] = "623d6ab8cb6c0f2dab19d390";
+authApiInstance.defaults.headers.common["ip-address"] = "192.163.11.89";
 // authApiInstance.defaults.headers.common["location"] = "623d6ab8cb6c0f2dab19d391";
 authApiInstance.defaults.headers.common["app-signature"] = "";

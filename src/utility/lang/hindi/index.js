@@ -42,7 +42,19 @@ news_AddNews:"समाचार जोड़ें",
 news_InputIn:"इनपुट इन :",
 news_label_Title :"शीर्षक",
 news_label_Tags:"टैग",
-news_label_Description:"विवरण जोड़ें"
+news_label_Description:"विवरण जोड़ें",
+news_label_Date:"चयनित तिथि",
+news_label_Published:"द्वारा प्रकाशित",
+news_label_ImageVedio:"चित्र/वीडियो जोड़ें",
+news_button_Publish:"प्रकाशित करना",
+news_title_required:"समाचार शीर्षक आवश्यक है",
+news_tags_required:"समाचार टैग की आवश्यकता है",
+news_desc_required:"समाचार विवरण आवश्यक है",
+news_publish_required:"समाचार प्रकाशक की आवश्यकता है",
+news_latest_news:"ताज़ा खबर",
+
+
+
 
 
 

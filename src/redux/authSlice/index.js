@@ -3,6 +3,7 @@ import { authApiInstance } from "../../axiosApi/authApiInstans";
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import { toast } from "react-toastify";
+import { store } from "../store";
 export const login = createAsyncThunk("Auth", async (data, thunkApi) => {
   const res = await authApiInstance.post("auth/login", data);
   return res.data
@@ -67,6 +68,10 @@ const authSlice = createSlice({
 const persistConfig = {
     key: 'auth',
     storage,
-  }
+  }  
+
 export const {logOut,setTokens,setlang} = authSlice.actions
+export const selectAccessToken = (state)=>state.auth.tokens.accessToken 
+export const selectRefreshToken = (state)=>state.auth.tokens.refreshToken
+
 export default persistReducer(persistConfig,authSlice.reducer)

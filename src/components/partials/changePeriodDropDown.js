@@ -2,7 +2,7 @@ import { CustomDropDown } from "./customDropDown"
 
 
 
-export const ChagePeriodDropDown= ()=>{
+export const ChangePeriodDropDown= ()=>{
     const dropDownNameKey = "dashboard_monthly"
     const i18nKeyDropDownItemArray = [{
         id:1,

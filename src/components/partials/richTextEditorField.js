@@ -3,38 +3,43 @@ import { useField } from "formik";
 import SunEditor, { buttonList } from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css";
 import styled from "styled-components";
+import { Trans } from "react-i18next";
 
 const RichTextFieldWarper = styled.div`
-label{
-color: #583703;
-font: normal normal bold 15px/20px noto sans !important;
-margin: 15px;
-}
-.se-container {
-  display: flex !important ;
-  flex-direction: column-reverse;
-}
-.sun-editor{
-  border: none !important;
-  border-radius: 20px !important ;
-  .se-resizing-bar {
-    display: none !important;
+  font: normal normal bold 11px/20px noto sans;
+  .text-danger {
+    height: 20px;
   }
-  .sun-editor-editable{
-  background-color: #fdf7e8 !important;
-  border-radius: 20px 20px 0px 0px  !important ;
+  label {
+    color: #583703;
+    font: normal normal bold 15px/20px noto sans !important;
+    margin: 15px;
   }
-}
-.se-toolbar{
-  outline: none !important;
-  border-radius: 0px 0px 20px 20px ;
-background-color: #fbe6cf !important ;
-color: #583703 !important;
-}
-.se-btn{
+  .se-container {
+    display: flex !important ;
+    flex-direction: column-reverse;
+  }
+  .sun-editor {
+    border: none !important;
+    border-radius: 20px !important ;
+    .se-resizing-bar {
+      display: none !important;
+    }
+    .sun-editor-editable {
+      background-color: #fdf7e8 !important;
+      border-radius: 20px 20px 0px 0px !important ;
+    }
+  }
+  .se-toolbar {
+    outline: none !important;
+    border-radius: 0px 0px 20px 20px;
+    background-color: #fbe6cf !important ;
+    color: #583703 !important;
+  }
+  .se-btn {
     color: #583703 !important;
     font: normal normal bold 15px/20px noto sans;
-}
+  }
 `;
 export default function RichTextField({
   label,
@@ -47,18 +52,14 @@ export default function RichTextField({
   ...props
 }) {
   const [field, meta, helpers] = useField(props);
-  
-
-
 
   return (
     <RichTextFieldWarper key={field.name} className="mb-2">
-      <label style={{ marginBottom: "8px" }}>{label}</label>
+      <label style={{ marginBottom: "8px" }}>{`${label}*`}</label>
       <SunEditor
-      
+        onChange={(value) => helpers.setValue(value)}
+        setContents={field.value}
         autoFocus={autofocus}
-        // key={field.name}
-        {...field}
         {...props}
         setDefaultStyle={
           "font: normal normal normal 12px/20px Noto sans !important;color:#583703"
@@ -66,7 +67,7 @@ export default function RichTextField({
         setOptions={{
           buttonList: [
             [
-              "font", 
+              "font",
               "fontSize",
               "formatBlock",
               "bold",
@@ -102,6 +103,9 @@ export default function RichTextField({
           ],
         }}
       />
+      <div className="text-danger">
+        {meta.error && meta.touched && <Trans i18nKey={meta.error} />}
+      </div>
     </RichTextFieldWarper>
   );
 }

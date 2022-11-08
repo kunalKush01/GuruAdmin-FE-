@@ -32,6 +32,15 @@ export const CustomDropDown = ({
       text-align: left;
       padding: 5px 5px;
     }
+    .btn-secondary:focus {
+      background-color: white !important;
+      border: 1px solid #ff8744 !important ;
+      color: #ff8744 !important;
+      font: normal normal bold 15px/20px noto sans !important;
+      width: 150px;
+      text-align: left;
+      padding: 5px 5px;
+    }
     .dropdown-toggle::after {
       border: none !important;
       background-image: url("${dropDownIcon}");
@@ -62,7 +71,7 @@ export const CustomDropDown = ({
           isOpen={dropdownOpen}
           toggle={toggle}
           direction={"down"}
-          {...props}
+          {...props}          
         >
           <DropdownToggle caret>
             <Trans i18nKey={dropDownName} />
@@ -81,10 +90,11 @@ export const CustomDropDown = ({
       {
         ItemListArray&&
       <Dropdown
-        className="text-end py-2  "
+        className="text-end py-2   "
         isOpen={dropdownOpen}
         toggle={toggle}
         direction={"down"}
+        
         {...props}
       >
         <DropdownToggle caret>

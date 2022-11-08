@@ -2,8 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import DataTable from "react-data-table-component";
 
-
-
 const conditionStyle = {
   when: (row) => row.id % 2 !== 0,
   style: {
@@ -12,7 +10,7 @@ const conditionStyle = {
 };
 
 function CustomDataTable({ columns, data, minWidth, maxHieght }) {
-    const DataTableWarraper = styled.div`
+  const DataTableWarraper = `
   
 
   .DonetionList {

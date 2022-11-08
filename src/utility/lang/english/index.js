@@ -36,9 +36,19 @@ dashboard_viewAll:"View All",
 dashboard_top:"Top 5 Donors",
 
   // All static content of News
+
 news_AddNews:"Add News",
 news_InputIn:"Input In :",
 news_label_Title :"Title",
 news_label_Tags:"Tags",
-news_label_Description:"Add Description"
+news_label_Description:"Add Description",
+news_label_Date:"Selected Date",
+news_label_Published:"Published BY",
+news_label_ImageVedio:"Add Images/Videos",
+news_button_Publish:"Publish",
+news_title_required:"News title is required",
+news_tags_required:"News tags is required",
+news_desc_required:"News description is required",
+news_publish_required:"News publisher name is required",
+news_latest_news:"Latest News",
 };

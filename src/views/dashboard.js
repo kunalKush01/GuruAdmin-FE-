@@ -20,7 +20,7 @@ import { TopDonerList } from "../components/dashboard/topDonerList";
 import { useState } from "react";
 import styled from "styled-components";
 import { CustomDropDown } from "../components/partials/customDropDown";
-import { ChagePeriodDropDown } from "../components/partials/changePeriodDropDown";
+import { ChangePeriodDropDown } from "../components/partials/changePeriodDropDown";
 const Home = () => {
   
   const { t } = useTranslation();
@@ -29,7 +29,7 @@ const Home = () => {
  
   return (
     <div>
-      <ChagePeriodDropDown/>
+      <ChangePeriodDropDown/>
       <div className="d-flex justify-content-between ">
         <OrdersReceived
           statTitle={t("dashboard_donationReceived")}

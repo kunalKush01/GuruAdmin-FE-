@@ -2,11 +2,15 @@ import React from "react";
 import { useField, ErrorMessage } from "formik";
 import { FormGroup, InputGroup } from "reactstrap";
 import styled from "styled-components";
+import { Trans, useTranslation } from "react-i18next";
 
 const CustomTextFieldWarper = styled.div`
   color: #583703 !important;
-  .formGroup {    
+  font: normal normal bold 11px/33px Noto Sans;
+
+  .formGroup {
     width: ${(props) => props.width ?? "auto"};
+    margin:${(props) => props.margin ?? "auto"} !important;
   }
   label {
     margin-bottom: 10px;
@@ -31,22 +35,28 @@ export default function CustomTextField({
   ...props
 }) {
   const [field, meta, helpers] = useField(props);
-
+  
   return (
     <CustomTextFieldWarper width={width}>
       <FormGroup className="formGroup">
-        <label>{label}</label>
+        <label>{`${label}*`}</label>
         <InputGroup>
           <input
             type={type}
             className={"form-control  "}
             placeholder={placeholder}
+
             {...field}
             {...props}
           />
         </InputGroup>
-        <ErrorMessage name={field.name} />
-        
+        <div style={{ height: "20px" }}>
+          {meta.error && meta.touched && (
+            <div className="text-danger">
+              <Trans i18nKey={meta.error} />
+            </div>
+          )}
+        </div>
       </FormGroup>
     </CustomTextFieldWarper>
   );
