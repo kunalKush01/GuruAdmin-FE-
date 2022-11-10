@@ -10,7 +10,7 @@ const conditionStyle = {
 };
 
 function CustomDataTable({ columns, data, minWidth, maxHieght }) {
-  const DataTableWarraper = `
+  const DataTableWarraper = styled.div`
   
 
   .DonetionList {

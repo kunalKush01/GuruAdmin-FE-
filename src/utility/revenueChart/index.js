@@ -20,7 +20,14 @@ export const RevenueChart = () => {
     .apexcharts-legend-text {
       color: #583703 !important;
     }
-    
+    .apexcharts-xaxis-label  {
+      fill: #583703 !important;
+      font: normal normal bold 11px/24px Noto Sans;
+    }
+    .apexcharts-yaxis-label  {
+      fill: #583703 !important;
+      font: normal normal bold 11px/24px Noto Sans;
+    }
     
   `;
 
@@ -68,23 +75,23 @@ export const RevenueChart = () => {
     xaxis: {
       
       categories: [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
+        t("monthName_January"),
+        t("monthName_February"),
+        t("monthName_March"),
+        t("monthName_April"),
+        t("monthName_May"),
+        t("monthName_June"),
+        t("monthName_July"),
+        t("monthName_August"),
+        t("monthName_September"),
+        t("monthName_October"),
+        t("monthName_November"),
+        t("monthName_December"),
       ],
     },
     yaxis: {
       title: {
-        text: "$ (thousands)",
+        // text: "$ (thousands)",
       },
     },
     fill: {

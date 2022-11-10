@@ -11,6 +11,18 @@ news:"News",
 notices:"Notices",
 configuration:"Configuration",
 searchBarPlaceHolder:"Search Temples, Trust, Events, News",
+monthName_January :"January",
+monthName_February :"February",
+monthName_March :"March",
+monthName_April :"April",
+monthName_May :"May",
+monthName_June :"June",
+monthName_July :"July",
+monthName_August :"August",
+monthName_September :"September",
+monthName_October :"October",
+monthName_November :"November",
+monthName_December :"December",
 
 
   // All static content of Dashboard
@@ -51,4 +63,5 @@ news_tags_required:"News tags is required",
 news_desc_required:"News description is required",
 news_publish_required:"News publisher name is required",
 news_latest_news:"Latest News",
+news_btn_AddNews:"Add News"
 };

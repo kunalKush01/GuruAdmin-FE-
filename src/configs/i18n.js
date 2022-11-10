@@ -10,10 +10,10 @@ i18n
   .init({
     // we init with resources
     resources: {
-      english: {
+      en: {
         translations: englishContent,
       },
-      hindi: {
+      hi: {
         translations: hindiContent,
       },
     },

@@ -1,5 +1,4 @@
 export const hindiContent = {
-  
   dashboard: "डैशबोर्ड",
   donation: "दान",
   committment: "प्रतिबद्धता",
@@ -11,7 +10,18 @@ export const hindiContent = {
   notices: "नोटिस",
   configuration: "विन्यास",
   searchBarPlaceHolder: "खोज मंदिर, ट्रस्ट, कार्यक्रम, समाचार",
-
+  monthName_January: "जनवरी",
+  monthName_February: "फ़रवरी",
+  monthName_March: "मार्च",
+  monthName_April: "अप्रैल",
+  monthName_May: "मई",
+  monthName_June: "जून",
+  monthName_July: "जुलाई",
+  monthName_August: "अगस्त",
+  monthName_September: "सितंबर",
+  monthName_October: "अक्टूबर",
+  monthName_November: "नवंबर",
+  monthName_December: "दिसंबर",
 
   // All static content of Dashboard
   dashboard_donationReceived: "दान प्राप्त",
@@ -24,7 +34,7 @@ export const hindiContent = {
   dashboard_yearly: "सालाना",
   dashboard_daily: "रोज",
 
-  dashboard_Recent_DonationCommitment:"हाल के दान/प्रतिबद्धता",
+  dashboard_Recent_DonationCommitment: "हाल के दान/प्रतिबद्धता",
   dashboard_Recent_DonorName: "दाता का नाम",
   dashboard_Recent_DonorNumber: "मोबाइल नंबर",
   dashboard_Recent_DonorType: "टाइप",
@@ -33,30 +43,23 @@ export const hindiContent = {
   dashboard_Recent_DonorAmount: "राशि",
   dashboard_Recent_DonorCommitId: "प्रतिबद्धता आईडी",
   dashboard_Recent_DonorReceipt: "रसीद",
-  dashboard_viewAll:"सभी को देखें",
-  dashboard_top:"शीर्ष 5 दाता",
+  dashboard_viewAll: "सभी को देखें",
+  dashboard_top: "शीर्ष 5 दाता",
 
-
-   // All static content of News
-news_AddNews:"समाचार जोड़ें",
-news_InputIn:"इनपुट इन :",
-news_label_Title :"शीर्षक",
-news_label_Tags:"टैग",
-news_label_Description:"विवरण जोड़ें",
-news_label_Date:"चयनित तिथि",
-news_label_Published:"द्वारा प्रकाशित",
-news_label_ImageVedio:"चित्र/वीडियो जोड़ें",
-news_button_Publish:"प्रकाशित करना",
-news_title_required:"समाचार शीर्षक आवश्यक है",
-news_tags_required:"समाचार टैग की आवश्यकता है",
-news_desc_required:"समाचार विवरण आवश्यक है",
-news_publish_required:"समाचार प्रकाशक की आवश्यकता है",
-news_latest_news:"ताज़ा खबर",
-
-
-
-
-
-
-
+  // All static content of News
+  news_AddNews: "समाचार जोड़ें",
+  news_InputIn: "इनपुट इन :",
+  news_label_Title: "शीर्षक",
+  news_label_Tags: "टैग",
+  news_label_Description: "विवरण जोड़ें",
+  news_label_Date: "चयनित तिथि",
+  news_label_Published: "द्वारा प्रकाशित",
+  news_label_ImageVedio: "चित्र/वीडियो जोड़ें",
+  news_button_Publish: "प्रकाशित करना",
+  news_title_required: "समाचार शीर्षक आवश्यक है",
+  news_tags_required: "समाचार टैग की आवश्यकता है",
+  news_desc_required: "समाचार विवरण आवश्यक है",
+  news_publish_required: "समाचार प्रकाशक की आवश्यकता है",
+  news_latest_news: "ताज़ा खबर",
+  news_btn_AddNews: "समाचार जोड़ें",
 };

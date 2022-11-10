@@ -16,12 +16,13 @@ import {
 } from "reactstrap";
 import styled from "styled-components";
 import { setlang } from "../../../../redux/authSlice";
+import { ConverFirstLatterToCapital } from "../../../../utility/formater";
 import { langOption } from "./langCardContent";
 
 function LangModel({ setlangSelection, langSelection }) {
-  const selectedLanguage = useSelector(state=>state.auth.lang)
+  const selectedLanguage = useSelector(state=>state.auth.selectLangCode)
   const dispatch = useDispatch()
-
+  const langList= useSelector(state=>state.auth.availableLang)
   
 
   const handleSelectLang = (lang)=>{
@@ -79,24 +80,24 @@ function LangModel({ setlangSelection, langSelection }) {
 
         <ModalBody className="p-0">
           <Row className="justify-content-between  ">
-            {langOption.map((item, idx) => {
+            {langList.map((item) => {
               return (
                 <Col
                   xs={6}
                   className="py-1 "
-                  onClick={() => handleSelectLang(item.langKey)}
-                  key={idx}
+                  onClick={() => handleSelectLang(item.langCode)}
+                  key={item.id}
                 >
                   <div
                     className={` langButton ${
-                      selectedLanguage == item.langKey ? "changeBG" : ""
+                      selectedLanguage == item.langCode ? "changeBG" : ""
                     } `}
                   >
                     <Input
                       type="radio"
-                      checked={selectedLanguage == item.langKey ? true : false}
+                      checked={selectedLanguage == item.name ? true : false}
                     />
-                    <label check>{item.lang}</label>
+                    <label check>{ConverFirstLatterToCapital(item.name)}</label>
                   </div>
                 </Col>
               );

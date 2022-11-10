@@ -22,7 +22,8 @@ const authSlice = createSlice({
 
     isLogged: false,
     isLoading: false,
-    lang:"english"
+    selectLangCode:"en",
+    availableLang:[]
   },
   reducers: {
     logOut: (state, action) => {
@@ -30,7 +31,7 @@ const authSlice = createSlice({
       state.isLogged = false;
       (state.tokens.accessToken = ""), (state.tokens.refreshToken = "");
       state.isLoading = false;
-      state.lang="english"
+      state.selectLangCode="en"
     },
     setTokens: (state, action) => {
         const { accessToken, refreshToken } = action.payload;
@@ -38,7 +39,11 @@ const authSlice = createSlice({
         state.tokens.refreshToken = refreshToken;
       },
     setlang:(state,action)=>{
-      state.lang=action.payload
+      state.selectLangCode=action.payload
+    },
+    setAvailableLang:(state,action)=>{
+      
+      state.availableLang=action.payload
     }
   },
 
@@ -54,7 +59,7 @@ const authSlice = createSlice({
       state.tokens.refreshToken = action.payload.tokens.refresh.token;
 
       state.isLoading = false;
-      toast.success(action.payload.message)
+      // toast.success(action.payload.message)
       
     },
     [login.rejected]: (state, action) => {
@@ -70,7 +75,7 @@ const persistConfig = {
     storage,
   }  
 
-export const {logOut,setTokens,setlang} = authSlice.actions
+export const {logOut,setTokens,setlang,setAvailableLang} = authSlice.actions
 export const selectAccessToken = (state)=>state.auth.tokens.accessToken 
 export const selectRefreshToken = (state)=>state.auth.tokens.refreshToken
 

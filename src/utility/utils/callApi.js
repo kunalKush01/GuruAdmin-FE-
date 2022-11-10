@@ -1,9 +1,10 @@
 
 import axios from 'axios';
-import { logOut, selectAccessToken, selectRefreshToken, setTokens } from '../redux/authSlice/index';
-import { extractDataFromResponse, parseApiErrorResponse } from './api_utils';
-import { API_BASE_URL } from '../axiosApi/authApiInstans';
-import { store } from '../redux/store';
+import { logOut, selectAccessToken, selectRefreshToken, setTokens } from '../../redux/authSlice/index';
+import { extractDataFromResponse, parseApiErrorResponse } from './apiUtils';
+
+import { store } from '../../redux/store';
+import { API_BASE_URL } from '../../axiosApi/authApiInstans';
 
 
 /*

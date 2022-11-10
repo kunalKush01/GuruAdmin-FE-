@@ -10,11 +10,18 @@ const DefaultRoute = "/dashboard";
 const Routes = [
   {
     path: "/dashboard",
-    component: lazy(() => import("../../views/dashboard")),
+    component: lazy(() => import("../../views/dashboard/dashboard")),
+    
   },
   {
     path: '/news',
-    component: lazy(() => import('../../views/news'))
+    component: lazy(() => import('../../views/news/newsList')),
+    exact:true
+  },
+  {
+    path: '/news/add',
+    component: lazy(() => import('../../views/news/addNews')),
+    // exact:true
   },
   // {
   //   path: '/committment',
@@ -51,7 +58,7 @@ const Routes = [
 
   {
     path: "/login",
-    component: lazy(() => import("../../views/login.js")),
+    component: lazy(() => import("../../views/login/login.js")),
     layout: "BlankLayout",
     meta: {
       authRoute: true,
