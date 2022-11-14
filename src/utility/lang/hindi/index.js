@@ -22,6 +22,7 @@ export const hindiContent = {
   monthName_October: "अक्टूबर",
   monthName_November: "नवंबर",
   monthName_December: "दिसंबर",
+  last_login: "पिछला लॉग इन",
 
   // All static content of Dashboard
   dashboard_donationReceived: "दान प्राप्त",
@@ -62,4 +63,7 @@ export const hindiContent = {
   news_publish_required: "समाचार प्रकाशक की आवश्यकता है",
   news_latest_news: "ताज़ा खबर",
   news_btn_AddNews: "समाचार जोड़ें",
+  news_popOver_AddLang: "भाषा जोड़ें",
+  news_popOver_Edit: "संपादन करना",
+  news_popOver_Delete: "मिटाना",
 };

@@ -6,7 +6,8 @@ import { toast } from "react-toastify";
 import { store } from "../store";
 export const login = createAsyncThunk("Auth", async (data, thunkApi) => {
   const res = await authApiInstance.post("auth/login", data);
-  return res.data
+  console.log(res.data.data);
+  return res.data.data
 });
 
 
@@ -23,7 +24,8 @@ const authSlice = createSlice({
     isLogged: false,
     isLoading: false,
     selectLangCode:"en",
-    availableLang:[]
+    availableLang:[],
+    trustDetail:""
   },
   reducers: {
     logOut: (state, action) => {
@@ -57,7 +59,7 @@ const authSlice = createSlice({
       state.isLogged = action.payload.tokens.access.token&&action.payload.tokens.refresh.token&&true;
       state.tokens.accessToken = action.payload.tokens.access.token;
       state.tokens.refreshToken = action.payload.tokens.refresh.token;
-
+      state.trustDetail=action.payload.trust
       state.isLoading = false;
       // toast.success(action.payload.message)
       

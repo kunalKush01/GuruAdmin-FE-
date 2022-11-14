@@ -97,7 +97,7 @@ function LangModel({ setlangSelection, langSelection }) {
                       type="radio"
                       checked={selectedLanguage == item.name ? true : false}
                     />
-                    <label check>{ConverFirstLatterToCapital(item.name)}</label>
+                    <label check>{ConverFirstLatterToCapital(item?.name ??"")}</label>
                   </div>
                 </Col>
               );

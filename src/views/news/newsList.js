@@ -105,11 +105,13 @@ export default function News() {
       keepPreviousData: true,
     }
   );
+  
 
   const newsItems = useMemo(
-    () => newsQuery?.data?.result?.news ?? [],
+    () => newsQuery?.data?.results ?? [],
     [newsQuery]
   );
+  
 
   return (
     <NewsWarper>
@@ -192,7 +194,7 @@ export default function News() {
                 nextLabel=""
                 breakLabel="..."
                 previousLabel=""
-                pageCount={newsQuery?.data?.result?.totalPages || 0}
+                pageCount={newsQuery?.data?.totalPages || 0}
                 activeClassName="active"
                 breakClassName="page-item"
                 pageClassName={"page-item"}

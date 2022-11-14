@@ -27,7 +27,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { authApiInstance } from "../../../../axiosApi/authApiInstans";
 import { logOut } from "../../../../redux/authSlice";
 import { toast } from "react-toastify";
+import moment from "moment";
 const NavbarUser = (props) => {
+  const trustDetails = useSelector(state=>state.auth.trustDetail)
   const refreshToken = useSelector(state=>state.auth.tokens.refreshToken)
   const dispatch= useDispatch()
   const { t, i18n } = useTranslation();
@@ -110,9 +112,9 @@ const NavbarUser = (props) => {
           <ul className="nav navbar-nav align-items-center ">
             <div className="d-flex align-items-center">
               <div className="navepara">
-                <div className="templeName text-end">Ranakpur Jain Temple</div>
+                <div className="templeName text-end">{trustDetails.name}</div>
                 <div className="date">
-                  Last Logged In: 16 March 2022, 4:37 PM
+                  <Trans i18nKey={"last_login"} />: {moment().format("DD MMM YYYY,h:mm a")}
                 </div>
               </div>
               <UserDropdown />

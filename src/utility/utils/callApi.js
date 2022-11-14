@@ -89,6 +89,7 @@ export const callApi = async ({
     if (requestFunction) {
         try {
             const response = await requestFunction(axiosInstance);
+            console.log("response",response);
             return extractDataFromResponse({
                 response,
                 successCode,

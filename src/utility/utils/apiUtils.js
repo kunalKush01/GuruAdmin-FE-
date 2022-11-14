@@ -7,10 +7,12 @@ export const extractDataFromResponse = ({
     showSuccessToast = true,
     showErrorToast = true
 }) => {
-    const data = response?.data ?? {};
+    const data = response?.data?.data ?? {};
+    
+    console.log(response);
     
     
-    if (response.status === successCode && response.data.status === successStatus && response.data.code === successCode) {
+    if (response.data.status === successCode && response.data.status === successStatus && response.data.code === successCode) {
         if (showSuccessToast) {
             toast.success(response.data.message);
         }

@@ -1,5 +1,5 @@
 import moment from "moment";
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardBody,
@@ -8,12 +8,21 @@ import {
   CardText,
   Button,
   CardFooter,
+  Dropdown,
+  DropdownMenu,
+  DropdownItem,
+  DropdownToggle,
+  Row,
+  Col,
 } from "reactstrap";
 import he from "he";
 import styled from "styled-components";
 import cardClockIcon from "../../assets/images/icons/news/clockIcon.svg";
 import cardThreeDotIcon from "../../assets/images/icons/news/threeDotIcon.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
+import BtnPopover from "./btnPopover";
+import { CustomDropDown } from "../partials/customDropDown";
+import { Trans } from "react-i18next";
 
 const NewsCardWaraper = styled.div`
   .imgContainer {
@@ -62,13 +71,51 @@ const NewsCardWaraper = styled.div`
     font: normal normal bold 12px/30px noto sans;
   }
 `;
+function BtnContent(params) {
+  const BtnContentWraper = styled.div`
+    color: #583703;
+    font: normal normal normal 15px/20px noto sans;
+    .MainContainer{
+      
+    }
+    .col-item  {
+      
+      :hover{
+        background-color: #FF8744;
+        color: #FFF;
+      }
+    }
+  `;
+  return (
+    <BtnContentWraper>
+      <Row className="MainContainer" >
+        
+          <Col xs={12} className="col-item" >
+          <Trans i18nKey={"news_popOver_AddLang"} />
+          </Col>
+
+        
+        
+          <Col xs={12} className="col-item" >
+          <Trans i18nKey={"news_popOver_Edit"} />
+          </Col>
+        
+        
+          <Col xs={12} className="col-item" >
+          <Trans i18nKey={"news_popOver_Delete"} />
+          </Col>
+        
+      </Row>
+    </BtnContentWraper>
+  );
+}
+
 export default function NewsCard({ data }) {
   return (
     <NewsCardWaraper>
       <Card
         style={{
           width: "300px",
-          
         }}
       >
         <div className="position-relative imgContainer ">
@@ -114,11 +161,13 @@ export default function NewsCard({ data }) {
                 <img src={cardClockIcon} style={{ verticalAlign: "bottom" }} />
                 Posted on {`${moment(data.publishDate).format("D MMMM YYYY ")}`}
               </div>
-              <img src={cardThreeDotIcon} />
+
+              <img src={cardThreeDotIcon} id={`popover-${data.id}`} />
             </div>
           </CardFooter>
         </CardBody>
       </Card>
+      <BtnPopover target={`popover-${data.id}`} content={<BtnContent/>} />
     </NewsCardWaraper>
   );
 }
