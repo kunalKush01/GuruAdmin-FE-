@@ -30,19 +30,20 @@ Api Response data sample
 
 const defaultHeaders = {
     "Access-Control-Allow-Origin": "*",
-    "device-type": "WEB_APP",
+    "device-type": "android",
     "device-name":"1234567890",
     "device-token" : "1234567891",
     "is-debug" : "0",
     "device-id":"12345678912",
     "app-version" : "1.0",
     "device-os-version" : "10",
-    "environment" : "LOCAL",
+    "environment" : "development",
     "locale-code" : "en",
     "tm" : "",
     "app-signature" : "",
     "merchant" : "623d6ab8cb6c0f2dab19d390",
     "location" : "623d6ab8cb6c0f2dab19d391",
+    "os-version":"11.2"
 }  
 
 
@@ -51,7 +52,7 @@ export const refreshTokenRequest = async ({ refreshToken,axiosInstance }) => {
     
     
     try {
-        const response = await axiosInstance.post(`${API_BASE_URL}/auth/refresh-tokens`, { refreshToken });
+        const response = await axiosInstance.post(`${API_BASE_URL}auth/refresh-token`, { refreshToken });
         return extractDataFromResponse({
             response,
             showErrorToast: false,
@@ -89,7 +90,7 @@ export const callApi = async ({
     if (requestFunction) {
         try {
             const response = await requestFunction(axiosInstance);
-            console.log("response",response);
+            
             return extractDataFromResponse({
                 response,
                 successCode,

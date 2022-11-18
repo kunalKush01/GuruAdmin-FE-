@@ -23,39 +23,26 @@ const Routes = [
     component: lazy(() => import('../../views/news/addNews')),
     // exact:true
   },
-  // {
-  //   path: '/committment',
-  //   component: lazy(() => import('../../views/committment'))
-  // },
-  // {
-  //   path: '/daan_peti_collections',
-  //   component: lazy(() => import('../../views/SecondPage'))
-  // },
-  // {
-  //   path: '/financial_reports',
-  //   component: lazy(() => import('../../views/SecondPage'))
-  // },
-  // {
-  //   path: '/internal_expenses',
-  //   component: lazy(() => import('../../views/SecondPage'))
-  // },
-  // {
-  //   path: '/events',
-  //   component: lazy(() => import('../../views/SecondPage'))
-  // },
-  // {
-  //   path: '/news',
-  //   component: lazy(() => import('../../views/SecondPage'))
-  // },
-  // {
-  //   path: '/notices',
-  //   component: lazy(() => import('../../views/SecondPage'))
-  // },
-  // {
-  //   path: '/configuration',
-  //   component: lazy(() => import('../../views/SecondPage'))
-  // },
-
+  {
+    path: '/news/edit/:newsId',
+    component: lazy(() => import('../../views/news/editNews')),
+    // exact:true
+  },
+  {
+    path: '/news/add-language/:newsId',
+    component: lazy(() => import('../../views/news/addNewsLanguage')),
+    // exact:true
+  },
+  {
+    path: '/events',
+    component: lazy(() => import('../../views/events/eventList')),
+    exact:true
+  },
+  {
+    path: '/events/add',
+    component: lazy(() => import('../../views/events/addEvent')),
+    exact:true
+  },
   {
     path: "/login",
     component: lazy(() => import("../../views/login/login.js")),

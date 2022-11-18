@@ -22,6 +22,7 @@ const RichTextFieldWarper = styled.div`
   .sun-editor {
     border: none !important;
     border-radius: 20px !important ;
+    
     .se-resizing-bar {
       display: none !important;
     }
@@ -39,6 +40,9 @@ const RichTextFieldWarper = styled.div`
   .se-btn {
     color: #583703 !important;
     font: normal normal bold 15px/20px noto sans;
+  }
+  .se-wrapper{
+    z-index: 0 !important;
   }
 `;
 export default function RichTextField({

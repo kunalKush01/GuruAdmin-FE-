@@ -14,50 +14,47 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createNews } from "../../api/newsApi";
 import { useSelector } from "react-redux";
 import { authApiInstance } from "../../axiosApi/authApiInstans";
-import NewsForm from "../../components/news/newsForm";
+import { createEvent } from "../../api/eventApi.js";
+import EventForm from "../../components/events/eventForm";
 
-const NewsWarper = styled.div`
+const EventWraper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
     font: normal normal bold 15px/33px Noto Sans;
   }
-  .addNews {
+  .addEvent {
     color: #583703;
     display: flex;
     align-items: center;
   }
-
-  
 `;
 
-const handleCreateNews = async (payload) => {
- return createNews(payload);
+const handleCreateEvent = async (payload) => {
+  
+  return createEvent(payload);
 };
 const schema = yup.object().shape({
-  Title: yup.string().required("news_title_required"),
-  Tags: yup.string().required("news_tags_required"),
-  Body: yup.string().required("news_desc_required"),
-  PublishedBy: yup.string().required("news_publish_required"),
+  Title: yup.string().required("events_title_required"),  
+  Body: yup.string().required("events_desc_required"),  
   DateTime: yup.string(),
+  SelectedEvent:yup.mixed()
 });
 
-const initialValues={
-  Id:"",
+const initialValues = {
+  SelectedEvent: null,
+  Id: "",
   Title: "",
-  Tags: "",
-  Body: "",
-  PublishedBy: "",
+  Body: "",  
   DateTime: new Date(),
-}
+};
 
-export default function AddNews() {
+export default function AddEvent() {
   const history = useHistory();
-  const langArray = useSelector(state=>state.auth.availableLang)
+  const langArray = useSelector((state) => state.auth.availableLang);
 
-  
   return (
-    <NewsWarper>
+    <EventWraper>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -65,11 +62,11 @@ export default function AddNews() {
             className="me-2"
             onClick={() => history.push("/news")}
           />
-          <div className="addNews">
-            <Trans i18nKey={"news_AddNews"} />
+          <div className="addEvent">
+            <Trans i18nKey={"events_AddEvent"} />
           </div>
         </div>
-        <div className="addNews">
+        <div className="addEvent">
           <Trans i18nKey={"news_InputIn"} />
           <CustomDropDown
             ItemListArray={langArray}
@@ -80,7 +77,12 @@ export default function AddNews() {
         </div>
       </div>
 
-        <NewsForm handleSubmit={handleCreateNews} initialValues={initialValues} vailidationSchema={schema} showTimeInput />
-    </NewsWarper>
+      <EventForm
+        handleSubmit={handleCreateEvent}
+        initialValues={initialValues}
+        vailidationSchema={schema}
+        showTimeInput
+      />
+    </EventWraper>
   );
 }

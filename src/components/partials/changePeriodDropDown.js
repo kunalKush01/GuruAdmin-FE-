@@ -22,7 +22,7 @@ export const ChangePeriodDropDown = ({dropDownName,setdropDownName,...props}) =>
     <CustomDropDown
       defaultDropDownName={dropDownName}
       i18nKeyDropDownItemArray={i18nKeyDropDownItemArray}
-      setdropDownName={setdropDownName}
+      handleDropDownClick={(e)=>setdropDownName(e)}
       {...props}
     />
   );

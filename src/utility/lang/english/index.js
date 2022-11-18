@@ -49,6 +49,8 @@ export const englishContent = {
   // All static content of News
 
   news_AddNews: "Add News",
+  news_EditNews: "Edit News",
+  news_AddLangNews: "Add Language",
   news_InputIn: "Input In :",
   news_label_Title: "Title",
   news_label_Tags: "Tags",
@@ -66,4 +68,13 @@ export const englishContent = {
   news_popOver_AddLang: "Add Language",
   news_popOver_Edit: "Edit",
   news_popOver_Delete: "Delete",
+
+
+  // All static content of Events
+
+  events_AddEvent: "Add Event",
+  events_latest_event: "Events",
+  events_title_required:"Event title is required",
+  events_desc_required: "Event description is required",
+  events_select_dropDown:"Select Event"
 };

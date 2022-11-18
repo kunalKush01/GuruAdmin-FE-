@@ -20,33 +20,27 @@ import styled from "styled-components";
 import cardClockIcon from "../../assets/images/icons/news/clockIcon.svg";
 import cardThreeDotIcon from "../../assets/images/icons/news/threeDotIcon.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-import BtnPopover from "../partials/btnPopover";
+
 import { CustomDropDown } from "../partials/customDropDown";
 import { Trans } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import { deleteNewsDetail } from "../../api/newsApi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
-import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg"
-const NewsCardWaraper = styled.div`
-  .imgContainer {
-    border-radius: 10px 10px 0px 0px;
-    img {
-      border-radius: 10px 10px 0px 0px;
-    }
-  }
+import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
+import BtnPopover from "../partials/btnPopover";
+const EventCardWaraper = styled.div`
+  
   .card-title {
     font: normal normal bold 13px/16px Noto Sans;
-    margin-bottom: 10px !important;
   }
   .card-text {
     font: normal normal normal 12px/16px Noto Sans;
-    height: 50px;
+    color: #9C9C9C;
     overflow: hidden;
   }
   .card-body {
     background: #fff7e8;
-    padding: 10px;
   }
   .btn-outline-primary {
     border: 2px solid #ff8744 !important;
@@ -54,25 +48,6 @@ const NewsCardWaraper = styled.div`
     padding: 5px 10px;
     border-radius: 20px;
     margin-right: 10px;
-  }
-
-  .card-footer {
-    font: normal normal bold 10px/15px Noto sans;
-    border: none !important;
-    padding: 16px 0px 10px 0px;
-    div > div > img {
-      width: 15px;
-      margin-right: 5px;
-    }
-    img {
-      width: 30px;
-    }
-  }
-  .imgContent {
-    top: 80%;
-    color: #fff;
-    padding: 0px 5px;
-    font: normal normal bold 12px/30px noto sans;
   }
 `;
 function BtnContent({ newsId }) {
@@ -89,7 +64,6 @@ function BtnContent({ newsId }) {
         color: #fff;
       }
     }
-    
   `;
 
   const handleDeleteNews = async (payload) => {
@@ -121,7 +95,6 @@ function BtnContent({ newsId }) {
           xs={12}
           className="col-item"
           onClick={() => history.push(`/news/edit/${newsId}`, newsId)}
-          
         >
           <Trans i18nKey={"news_popOver_Edit"} />
         </Col>
@@ -148,11 +121,9 @@ function BtnContent({ newsId }) {
 
               confirmButtonText: "Confirm Delete",
               confirmButtonAriaLabel: "Confirm",
-              
-              
             }).then(async (result) => {
               if (result.isConfirmed) {
-                deleteMutation.mutate(newsId)
+                deleteMutation.mutate(newsId);
               }
             });
           }}
@@ -164,15 +135,17 @@ function BtnContent({ newsId }) {
   );
 }
 
-export default function NewsCard({ data }) {
+export default function EventCard({ data }) {
   return (
-    <NewsCardWaraper>
+    <EventCardWaraper>
       <Card
         style={{
-          width: "300px",
+          width: "100%",
+          borderRadius:"50px"
+          
         }}
       >
-        <div className="position-relative imgContainer ">
+        {/* <div className="position-relative imgContainer ">
           <img
             alt="Sample"
             style={{
@@ -187,18 +160,33 @@ export default function NewsCard({ data }) {
               {`${moment(data.publishDate).startOf("hour").fromNow()}`}
             </div>
           </div>
-        </div>
+        </div> */}
 
         <CardBody>
-          <CardTitle>{data.title}</CardTitle>
-
-          <CardText>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: he.decode(data.body),
-              }}
-            />
-          </CardText>
+          <Row>
+            <Col xs={3}>
+              <CardTitle>{data.title}</CardTitle>
+            </Col>
+            <Col xs={3}>
+              <div className="card-text">
+                Posted on {`${moment(data.publishDate).format("D MMMM YYYY ")}`}
+              </div>
+            </Col>
+            <Col xs={3}>
+              <CardText>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: he.decode(data.body),
+                  }}
+                />
+              </CardText>
+            </Col>
+            <Col xs={3}>
+              <div className="d-flex justify-content-between align-items-center">
+                <img src={cardThreeDotIcon} id={`popover-${data.id}`} />
+              </div>
+            </Col>
+          </Row>
 
           <div>
             {data.languages.map((item) => {
@@ -209,22 +197,12 @@ export default function NewsCard({ data }) {
               );
             })}
           </div>
-          <CardFooter>
-            <div className="d-flex justify-content-between align-items-center">
-              <div>
-                <img src={cardClockIcon} style={{ verticalAlign: "bottom" }} />
-                Posted on {`${moment(data.publishDate).format("D MMMM YYYY ")}`}
-              </div>
-
-              <img src={cardThreeDotIcon} id={`popover-${data.id}`} />
-            </div>
-          </CardFooter>
         </CardBody>
       </Card>
       <BtnPopover
         target={`popover-${data.id}`}
         content={<BtnContent newsId={data.id} />}
       />
-    </NewsCardWaraper>
+    </EventCardWaraper>
   );
 }

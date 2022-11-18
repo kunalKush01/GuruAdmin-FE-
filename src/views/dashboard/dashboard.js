@@ -32,7 +32,7 @@ const Home = () => {
     <div>
       <ChangePeriodDropDown
       dropDownName={dropDownName}
-      setdropDownName={setdropDownName}
+      setdropDownName={(e)=>setdropDownName(e.target.name)}
       />
       <div className="d-flex justify-content-between ">
         <OrdersReceived

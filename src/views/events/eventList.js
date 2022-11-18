@@ -19,15 +19,17 @@ import moment from "moment";
 import { current } from "@reduxjs/toolkit";
 import { useHistory } from "react-router-dom";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import NoNews from "../../components/news/noNews";
 import { If, Then, Else } from "react-if-else-switch";
-const NewsWarper = styled.div`
+import { getAllEvents } from "../../api/eventApi";
+import NoEvent from "../../components/events/noEvent";
+import EventCard from "../../components/events/eventCard";
+const EventWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
     font: normal normal bold 15px/33px Noto Sans;
   }
-  .addNews {
+  .addEvent {
     color: #583703;
     display: flex;
     align-items: center;
@@ -39,12 +41,12 @@ const NewsWarper = styled.div`
   .btn-Published {
     text-align: center;
   }
-  .addNews-btn {
+  .addEvent-btn {
     padding: 8px 20px;
     margin-left: 10px;
     font: normal normal bold 15px/20px noto sans;
   }
-  .newsContent {
+  .eventContent {
     height: 350px;
     overflow: auto;
     ::-webkit-scrollbar {
@@ -59,7 +61,7 @@ const NewsWarper = styled.div`
 
 const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-export default function News() {
+export default function EventList() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const periodDropDown = () => {
     switch (dropDownName) {
@@ -94,10 +96,10 @@ export default function News() {
   let startDate = moment(filterStartDate).format("D MMM YYYY");
   let endDate = moment(filterEndDate).utcOffset(0).format("D MMM YYYY");
 
-  const newsQuery = useQuery(
-    ["News", pagination.page, filterStartDate, filterEndDate],
+  const eventQuery = useQuery(
+    ["Events", pagination.page, filterStartDate, filterEndDate],
     () =>
-      getAllNews({
+      getAllEvents({
         ...pagination,
         startDate: filterStartDate,
         endDate: filterEndDate,
@@ -107,10 +109,10 @@ export default function News() {
     }
   );
 
-  const newsItems = useMemo(() => newsQuery?.data?.results ?? [], [newsQuery]);
+  const eventItems = useMemo(() => eventQuery?.data?.results ?? [], [eventQuery]);
 
   return (
-    <NewsWarper>
+    <EventWarper>
       <div className="window nav statusBar body "></div>
 
       <div>
@@ -121,10 +123,10 @@ export default function News() {
               className="me-2"
               onClick={() => history.push("/")}
             />
-            <div className="addNews">
+            <div className="addEvent">
               <div className="">
                 <div>
-                  <Trans i18nKey={"news_latest_news"} />
+                  <Trans i18nKey={"events_latest_event"} />
                 </div>
                 <div className="filterPeriod">
                   <span>
@@ -134,7 +136,7 @@ export default function News() {
               </div>
             </div>
           </div>
-          <div className="addNews">
+          <div className="addEvent">
             <ChangePeriodDropDown
               className={"me-1"}
               dropDownName={dropDownName}
@@ -142,20 +144,20 @@ export default function News() {
             />
             <Button
               color="primary"
-              className="addNews-btn"
-              onClick={() => history.push("/news/add")}
+              className="addEvent-btn"
+              onClick={() => history.push("/events/add")}
             >
               <span>
                 <Plus className="me-1" size={15} strokeWidth={4} />
               </span>
               <span>
-                <Trans i18nKey={"news_btn_AddNews"} />
+                <Trans i18nKey={"events_AddEvent"} />
               </span>
             </Button>
           </div>
         </div>
         <div style={{ height: "10px" }}>
-          <If condition={newsQuery.isFetching}>
+          <If condition={eventQuery.isFetching}>
             <Then>
               <Skeleton
                 baseColor="#ff8744"
@@ -165,9 +167,9 @@ export default function News() {
             </Then>
           </If>
         </div>
-        <div className="newsContent  ">
+        <div className="eventContent  ">
           <Row>
-            <If condition={newsQuery.isLoading}>
+            <If condition={eventQuery.isLoading}>
               <Then>
                 <SkeletonTheme
                   baseColor="#FFF7E8"
@@ -184,31 +186,31 @@ export default function News() {
                 </SkeletonTheme>
               </Then>
               <Else>
-                <If condition={newsItems.length != 0}>
+                <If condition={eventItems.length != 0}>
                   <Then>
-                    {newsItems.map((item) => {
+                    {eventItems.map((item) => {
                       return (
-                        <Col xs={3} key={item.id}>
-                          <NewsCard data={item} />
+                        <Col xs={12} key={item.id}>
+                          <EventCard data={item} />
                         </Col>
                       );
                     })}
                   </Then>
                   <Else>
-                    <NoNews />
+                    <NoEvent />
                   </Else>
                 </If>
               </Else>
             </If>
             
-            <If condition={newsQuery?.data?.totalPages > 1}>
+            <If condition={eventQuery?.data?.totalPages > 1}>
               <Then>
                 <Col xs={12} className="mb-2 d-flex justify-content-center">
                   <ReactPaginate
                     nextLabel=""
                     breakLabel="..."
                     previousLabel=""
-                    pageCount={newsQuery?.data?.totalPages || 0}
+                    pageCount={eventQuery?.data?.totalPages || 0}
                     activeClassName="active"
                     breakClassName="page-item"
                     pageClassName={"page-item"}
@@ -232,6 +234,6 @@ export default function News() {
           </Row>
         </div>
       </div>
-    </NewsWarper>
+    </EventWarper>
   );
 }

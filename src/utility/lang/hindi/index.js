@@ -49,6 +49,8 @@ export const hindiContent = {
 
   // All static content of News
   news_AddNews: "समाचार जोड़ें",
+  news_EditNews: "समाचार संपादित करें",
+  news_AddLangNews: "भाषा जोड़ें",
   news_InputIn: "इनपुट इन :",
   news_label_Title: "शीर्षक",
   news_label_Tags: "टैग",
@@ -66,4 +68,13 @@ export const hindiContent = {
   news_popOver_AddLang: "भाषा जोड़ें",
   news_popOver_Edit: "संपादन करना",
   news_popOver_Delete: "मिटाना",
+
+
+  // All static content of Events
+
+  events_AddEvent: "आयोजन जोड़ें",
+  events_latest_event: "आयोजन",
+  events_title_required:"आयोजन का शीर्षक ज़रूरी है",
+  events_desc_required: "आयोजन विवरण आवश्यक है",
+  events_select_dropDown:"आयोजन चुनें"
 };

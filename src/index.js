@@ -36,6 +36,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 import * as serviceWorker from './serviceWorker'
 import './configs/i18n'
 import { QueryClient,QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 // ** Lazy load app
 const LazyApp = lazy(() => import('./App'))
@@ -46,8 +47,9 @@ ReactDOM.render(
     <Suspense fallback={<Spinner />}>
       <ThemeContext>
         <QueryClientProvider client={queryClient} >
-
         <LazyApp />
+        <ReactQueryDevtools/>
+
         </QueryClientProvider>
         
         <ToastContainer newestOnTop />

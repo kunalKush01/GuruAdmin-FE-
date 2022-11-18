@@ -36,6 +36,8 @@ export default function CustomTextField({
 }) {
   const [field, meta, helpers] = useField(props);
   
+  
+
   return (
     <CustomTextFieldWarper width={width}>
       <FormGroup className="formGroup">
@@ -44,8 +46,7 @@ export default function CustomTextField({
           <input
             type={type}
             className={"form-control  "}
-            placeholder={placeholder}
-
+            placeholder={placeholder}            
             {...field}
             {...props}
           />

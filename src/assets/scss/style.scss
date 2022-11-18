@@ -9,3 +9,57 @@ NOTE:
 ------
 PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER STYLESHEETS.
 WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
+
+.swal2-actions{
+	flex-direction: row-reverse !important;
+	width: 100% !important;
+	justify-content: space-between !important;
+	align-items: center !important;	
+	button{
+		width: 150px !important;
+		font:normal normal bold 13px/20px noto sans !important ;
+	}
+	.swal2-confirm{
+		background-color: #FF8744 !important;		
+	}	
+	.swal2-cancel{
+		background-color: inherit !important;		
+		color: #FF8744 !important;
+	}	
+}
+
+.swal2-modal{
+	padding: 30px 55px;
+	
+	.swal2-title{
+		padding: 0px;
+		img{
+			width: 60px;
+		}
+	}
+	.swal2-html-container{
+	
+
+		.swal-heading{
+			
+			color: #FF8744 !important ;
+			font:normal normal bold 20px/20px noto sans !important ;
+		}
+		p{
+			color:#583703;
+		font:normal normal bold 11px/15px noto sans ;
+			
+		}
+	}
+}
+
+.swal2-backdrop-show{
+	backdrop-filter: blur(10px);
+	background: rgba(0,0,0,.2) !important;
+}
+
+
+.popover{
+	z-index: 1;
+	background: #fff7e8
+}

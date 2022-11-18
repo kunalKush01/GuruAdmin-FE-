@@ -15,21 +15,24 @@ import { useTranslation, Trans } from "react-i18next";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 export const CustomDropDown = ({
   i18nKeyDropDownItemArray,
   defaultDropDownName,
   ItemListArray,
-  setdropDownName,
+  handleDropDownClick,
+  width,
   ...props
 }) => {
   const DropDownWarper = styled.div`
+  
     .btn-secondary {
       background-color: white !important;
       border: 1px solid #ff8744 !important ;
       color: #ff8744 !important;
       font: normal normal bold 15px/20px noto sans !important;
-      width: 150px;
+      width: ${(prop)=>prop.width??"150px"};
       text-align: left;
       padding: 8px 10px;
       position: relative;
@@ -39,7 +42,7 @@ export const CustomDropDown = ({
       border: 1px solid #ff8744 !important ;
       color: #ff8744 !important;
       font: normal normal bold 15px/20px noto sans !important;
-      width: 150px;
+      
       text-align: left;
       padding: 8px 10px;
     }
@@ -76,17 +79,13 @@ export const CustomDropDown = ({
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const toggle = () => setDropdownOpen((prevState) => !prevState);
 
-  const handleDropDownClick = (e) => {
-    e.preventDefault();
-    i18nKeyDropDownItemArray && setdropDownName(e.target.name.toLowerCase());
-    ItemListArray && setdropDownName(e.target.name);
-  };
+  
 
   return (
-    <DropDownWarper>
+    <DropDownWarper width={width} >
       {i18nKeyDropDownItemArray && (
         <Dropdown
-          className="text-end py-2  "
+          className="text-end   "
           isOpen={dropdownOpen}
           toggle={toggle}
           direction={"down"}
@@ -99,7 +98,7 @@ export const CustomDropDown = ({
             {i18nKeyDropDownItemArray.map((item, idx) => {
               return (
                 <DropdownItem
-                  onClick={handleDropDownClick}
+                  onClick={(e)=>handleDropDownClick(e)}
                   key={idx}
                   name={item.key}
                 >
@@ -112,7 +111,7 @@ export const CustomDropDown = ({
       )}
       {ItemListArray && (
         <Dropdown
-          className="text-end py-2   "
+          className="text-end    "
           isOpen={dropdownOpen}
           toggle={toggle}
           direction={"down"}
@@ -124,10 +123,10 @@ export const CustomDropDown = ({
               return (
                 <DropdownItem
                   onClick={handleDropDownClick}
-                  key={idx}
-                  name={item}
+                  key={item.id}
+                  name={item.name}
                 >
-                  {item}
+                  {ConverFirstLatterToCapital(item.name)}
                 </DropdownItem>
               );
             })}

@@ -80,7 +80,7 @@ function LangModel({ setlangSelection, langSelection }) {
 
         <ModalBody className="p-0">
           <Row className="justify-content-between  ">
-            {langList.map((item) => {
+            {langList?.map((item) => {
               return (
                 <Col
                   xs={6}
