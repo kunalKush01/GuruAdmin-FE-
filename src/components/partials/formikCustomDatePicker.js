@@ -2,12 +2,10 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
-import moment from "moment";
 import styled from "styled-components";
 import { Trans } from "react-i18next";
-import CustomTimeInput from "./timeInput";
 import { useField } from "formik";
-const CustomDatePickerWarper = styled.div`
+const FormikCustomDatePickerWraper = styled.div`
   label {
     color: #583703;
     font: normal normal bold 15px/33px Noto Sans !important;
@@ -143,7 +141,7 @@ const CustomDatePickerWarper = styled.div`
   }
 `;
 
-export default function CustomDatePicker({ ...props }) {
+export default function FormikCustomDatePicker({ ...props }) {
 
   const [field, meta, helpers] = useField(props.name);
 
@@ -151,11 +149,11 @@ export default function CustomDatePicker({ ...props }) {
   console.log("date=",date);
 
   return (
-    <CustomDatePickerWarper>
+    <FormikCustomDatePickerWraper>
       <label className="mb-1 ">
         <Trans i18nKey={"news_label_Date"} />
       </label>
-
+      
       <DatePicker 
        
         selected={field.value}
@@ -167,11 +165,10 @@ export default function CustomDatePicker({ ...props }) {
         showYearDropdown
         showMonthDropdown
         timeFormat="hh:mm aa"
-        timeCaption="Time"
-        
+        timeCaption="Time"        
         inline
         {...props}
       />
-    </CustomDatePickerWarper>
+    </FormikCustomDatePickerWraper>
   );
 }

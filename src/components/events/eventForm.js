@@ -8,7 +8,7 @@ import { CustomDropDown } from "../partials/customDropDown";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { Trans, useTranslation } from "react-i18next";
 import { Button, Col, Row } from "reactstrap";
-import CustomDatePicker from "../partials/CustomDatePicker";
+import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import { useHistory } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createNews } from "../../api/newsApi";
@@ -133,7 +133,7 @@ export default function EventForm({
                       </Row> */}
               </Col>
               <Col>
-                <CustomDatePicker
+                <FormikCustomDatePicker
                   name="DateTime"
                   showTimeInput={showTimeInput}
                 />

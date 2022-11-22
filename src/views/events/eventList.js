@@ -1,28 +1,23 @@
 import { Form, Formik } from "formik";
 import React, { useMemo, useState } from "react";
-import CustomTextField from "../../components/partials/customTextField";
-import * as yup from "yup";
-import RichTextField from "../../components/partials/richTextEditorField";
 import styled from "styled-components";
-import { CustomDropDown } from "../../components/partials/customDropDown";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { Trans, useTranslation } from "react-i18next";
 import { Button, Col, Row } from "reactstrap";
-import CustomDatePicker from "../../components/partials/CustomDatePicker";
-import { createNews, getAllNews } from "../../api/newsApi";
+import FormikCustomDatePicker from "../../components/partials/formikCustomDatePicker";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
-import NewsCard from "../../components/news/newsCard";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import ReactPaginate from "react-paginate";
 import { Plus } from "react-feather";
 import moment from "moment";
-import { current } from "@reduxjs/toolkit";
 import { useHistory } from "react-router-dom";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { If, Then, Else } from "react-if-else-switch";
-import { getAllEvents } from "../../api/eventApi";
+import { getAllEvents, getEventDates } from "../../api/eventApi";
 import NoEvent from "../../components/events/noEvent";
 import EventCard from "../../components/events/eventCard";
+import CustomDatePicker from "../../components/partials/customDatePicker";
+import HinduCalenderDetailCard from "../../components/events/hinduCalenderDetailCard";
 const EventWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -97,7 +92,7 @@ export default function EventList() {
   let endDate = moment(filterEndDate).utcOffset(0).format("D MMM YYYY");
 
   const eventQuery = useQuery(
-    ["Events", pagination.page, filterStartDate, filterEndDate],
+    ["Events", pagination.page, startDate, endDate],
     () =>
       getAllEvents({
         ...pagination,
@@ -109,7 +104,22 @@ export default function EventList() {
     }
   );
 
-  const eventItems = useMemo(() => eventQuery?.data?.results ?? [], [eventQuery]);
+  const dateQuery = useQuery(["Dates"], () => getEventDates());
+  const eventDates = useMemo(() => {
+    return dateQuery?.data?.results.map((item) => moment(item).toDate()) ?? [];
+  }, [dateQuery]);
+  console.log("eventDates=", eventDates);
+
+  const eventItems = useMemo(
+    () => eventQuery?.data?.results ?? [],
+    [eventQuery]
+  );
+  const onDateSelect = (date) => {
+    const selectedDate = moment(date)
+      .startOf("day")
+      .utcOffset(0, true)
+      .toISOString();
+  };
 
   return (
     <EventWarper>
@@ -138,7 +148,7 @@ export default function EventList() {
           </div>
           <div className="addEvent">
             <ChangePeriodDropDown
-              className={"me-1"}
+              // className={"me-0"}
               dropDownName={dropDownName}
               setdropDownName={(e) => setdropDownName(e.target.name)}
             />
@@ -167,70 +177,99 @@ export default function EventList() {
             </Then>
           </If>
         </div>
-        <div className="eventContent  ">
-          <Row>
-            <If condition={eventQuery.isLoading}>
-              <Then>
-                <SkeletonTheme
-                  baseColor="#FFF7E8"
-                  highlightColor="#fff"
-                  borderRadius={"10px"}
-                >
-                  {randomArray.map((itm, idx) => {
-                    return (
-                      <Col xs={3} key={idx}>
-                        <Skeleton height={"335px"} width={"300px"} />
-                      </Col>
-                    );
-                  })}
-                </SkeletonTheme>
-              </Then>
-              <Else>
-                <If condition={eventItems.length != 0}>
-                  <Then>
-                    {eventItems.map((item) => {
+        <div>
+          <Row className="w-100 m-0"  >
+            <Col xs={9} className="eventContent">
+              <If condition={eventQuery.isLoading}>
+                <Then>
+                  <SkeletonTheme
+                    baseColor="#FFF7E8"
+                    highlightColor="#fff"
+                    borderRadius={"10px"}
+                  >
+                    {randomArray.map((itm, idx) => {
                       return (
-                        <Col xs={12} key={item.id}>
-                          <EventCard data={item} />
+                        <Col xs={12} key={idx}>
+                          <Skeleton height={"63px"} />
                         </Col>
                       );
                     })}
-                  </Then>
-                  <Else>
-                    <NoEvent />
-                  </Else>
-                </If>
-              </Else>
-            </If>
-            
-            <If condition={eventQuery?.data?.totalPages > 1}>
-              <Then>
-                <Col xs={12} className="mb-2 d-flex justify-content-center">
-                  <ReactPaginate
-                    nextLabel=""
-                    breakLabel="..."
-                    previousLabel=""
-                    pageCount={eventQuery?.data?.totalPages || 0}
-                    activeClassName="active"
-                    breakClassName="page-item"
-                    pageClassName={"page-item"}
-                    breakLinkClassName="page-link"
-                    nextLinkClassName={"page-link"}
-                    pageLinkClassName={"page-link"}
-                    nextClassName={"page-item next"}
-                    previousLinkClassName={"page-link"}
-                    previousClassName={"page-item prev"}
-                    onPageChange={(page) =>
-                      setPagination({ ...pagination, page: page.selected + 1 })
-                    }
-                    // forcePage={pagination.page !== 0 ? pagination.page - 1 : 0}
-                    containerClassName={
-                      "pagination react-paginate justify-content-end p-1"
-                    }
-                  />
+                  </SkeletonTheme>
+                </Then>
+                <Else>
+                  <If condition={eventItems.length != 0}>
+                    <Then>
+                      {eventItems.map((item) => {
+                        return (
+                          <Col xs={12} key={item.id} className={"p-0"} >
+                            <EventCard data={item} />
+                          </Col>
+                        );
+                      })}
+                    </Then>
+                    <Else>
+                      <NoEvent />
+                    </Else>
+                  </If>
+                </Else>
+              </If>
+
+              <If condition={eventQuery?.data?.totalPages > 1}>
+                <Then>
+                  <Col xs={12} className="mb-2 d-flex justify-content-center">
+                    <ReactPaginate
+                      nextLabel=""
+                      breakLabel="..."
+                      previousLabel=""
+                      pageCount={eventQuery?.data?.totalPages || 0}
+                      activeClassName="active"
+                      breakClassName="page-item"
+                      pageClassName={"page-item"}
+                      breakLinkClassName="page-link"
+                      nextLinkClassName={"page-link"}
+                      pageLinkClassName={"page-link"}
+                      nextClassName={"page-item next"}
+                      previousLinkClassName={"page-link"}
+                      previousClassName={"page-item prev"}
+                      onPageChange={(page) =>
+                        setPagination({
+                          ...pagination,
+                          page: page.selected + 1,
+                        })
+                      }
+                      // forcePage={pagination.page !== 0 ? pagination.page - 1 : 0}
+                      containerClassName={
+                        "pagination react-paginate justify-content-end p-1"
+                      }
+                    />
+                  </Col>
+                </Then>
+              </If>
+            </Col>
+            <Col xs={3} className="p-0 ps-1 ">
+              <Row>
+                <Col xs={12}>
+                  <If condition={dateQuery.isLoading}>
+                    <Then>
+                      <></>
+                    </Then>
+                    <Else>
+                      <CustomDatePicker
+                        selected={""}
+                        highlightDates={eventDates}
+                        
+                        
+                      />
+                    </Else>
+                  </If>
                 </Col>
-              </Then>
-            </If>
+              </Row>
+              <Row className="w-100 m-0" >
+                <Col xs={12}  >
+                  <HinduCalenderDetailCard />
+                </Col>
+              </Row>
+            </Col>
           </Row>
         </div>
       </div>

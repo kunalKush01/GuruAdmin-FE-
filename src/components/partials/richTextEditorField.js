@@ -59,7 +59,7 @@ export default function RichTextField({
 
   return (
     <RichTextFieldWarper key={field.name} className="mb-2">
-      <label style={{ marginBottom: "8px" }}>{`${label}*`}</label>
+      <label style={{ margin: "0px 0px 10px 0px " }}>{`${label}*`}</label>
       <SunEditor
         onChange={(value) => helpers.setValue(value)}
         setContents={field.value}

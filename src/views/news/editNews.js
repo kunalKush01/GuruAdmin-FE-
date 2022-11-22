@@ -8,7 +8,6 @@ import { CustomDropDown } from "../../components/partials/customDropDown";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { Trans, useTranslation } from "react-i18next";
 import { Button, Col, Row } from "reactstrap";
-import CustomDatePicker from "../../components/partials/CustomDatePicker";
 import { useHistory, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createNews, getNewsDetail, updateNewsDetail } from "../../api/newsApi";
@@ -65,6 +64,8 @@ export default function EditNews() {
       })
   );
 
+  
+
   const handleNewsUpdate = async (payload) => {
     return updateNewsDetail({
       ...payload,
@@ -98,6 +99,7 @@ export default function EditNews() {
         </div>
         <div className="editNews">
           <Trans i18nKey={"news_InputIn"} />
+          
           <CustomDropDown
             ItemListArray={newsDetailQuery?.data?.result?.languages}
             className={"ms-1"}
@@ -109,35 +111,40 @@ export default function EditNews() {
           />
         </div>
       </div>
-      <If condition={(newsDetailQuery.isLoading || newsDetailQuery.isFetching)}>
+      <If condition={newsDetailQuery.isLoading || newsDetailQuery.isFetching}>
         <Then>
-          <Row  >
-            <SkeletonTheme baseColor="#FFF7E8" highlightColor="#fff" borderRadius={"10px"}  >
-              <Col xs={7} className="me-1"  >
-                <Row className="my-1" >
+          <Row>
+            <SkeletonTheme
+              baseColor="#FFF7E8"
+              highlightColor="#fff"
+              borderRadius={"10px"}
+            >
+              <Col xs={7} className="me-1">
+                <Row className="my-1">
                   <Col xs={6}>
-                    <Skeleton height={"36px"}  />
+                    <Skeleton height={"36px"} />
                   </Col>
                   <Col xs={6}>
-                    <Skeleton height={"36px"}  />
+                    <Skeleton height={"36px"} />
                   </Col>
                 </Row>
-                <Row className="mt-4" >
+                <Row className="mt-4">
                   <Col>
-                    <Skeleton height={"150px"}  />
+                    <Skeleton height={"150px"} />
                   </Col>
                 </Row>
               </Col>
-              <Col className="mt-1" >
+              <Col className="mt-1">
                 <Skeleton height={"318px"} width={"270px"} />
               </Col>
             </SkeletonTheme>
           </Row>
         </Then>
         <Else>
+          
           <NewsForm
-            initialValues={initialValues}
             vailidationSchema={schema}
+            initialValues={initialValues}
             showTimeInput
             handleSubmit={handleNewsUpdate}
           />

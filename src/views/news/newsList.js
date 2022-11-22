@@ -8,7 +8,6 @@ import { CustomDropDown } from "../../components/partials/customDropDown";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { Trans, useTranslation } from "react-i18next";
 import { Button, Col, Row } from "reactstrap";
-import CustomDatePicker from "../../components/partials/CustomDatePicker";
 import { createNews, getAllNews } from "../../api/newsApi";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
 import NewsCard from "../../components/news/newsCard";

@@ -15,7 +15,12 @@ export const createEvent = (payload) =>
     showToastOnSuccess: false,
     showToastOnError: false,
   });
-
+  export const getEventDates = (payload) =>
+  callApi({
+    requestFunction: (axios) => axios.get(`${API_BASE_URL}event/get-dates`, payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
 
 export const getAllEvents = (payload) =>
   callApi({

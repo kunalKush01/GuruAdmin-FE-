@@ -9,7 +9,6 @@ import { CustomDropDown } from "../../components/partials/customDropDown";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { Trans, useTranslation } from "react-i18next";
 import { Button, Col, Row } from "reactstrap";
-import CustomDatePicker from "../../components/partials/CustomDatePicker";
 import { useHistory, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {

@@ -3,25 +3,14 @@ import React, { useState } from "react";
 import {
   Card,
   CardBody,
-  CardTitle,
-  CardSubtitle,
-  CardText,
   Button,
-  CardFooter,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
-  DropdownToggle,
   Row,
   Col,
 } from "reactstrap";
 import he from "he";
 import styled from "styled-components";
-import cardClockIcon from "../../assets/images/icons/news/clockIcon.svg";
 import cardThreeDotIcon from "../../assets/images/icons/news/threeDotIcon.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-
-import { CustomDropDown } from "../partials/customDropDown";
 import { Trans } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import { deleteNewsDetail } from "../../api/newsApi";
@@ -31,16 +20,26 @@ import comfromationIcon from "../../assets/images/icons/news/conformationIcon.sv
 import BtnPopover from "../partials/btnPopover";
 const EventCardWaraper = styled.div`
   
-  .card-title {
+  .card1 {
     font: normal normal bold 13px/16px Noto Sans;
+    margin-bottom: none !important;
   }
   .card-text {
     font: normal normal normal 12px/16px Noto Sans;
-    color: #9C9C9C;
+    color: #9c9c9c;
+    max-height: 18px;
     overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: start;
+    white-space: nowrap;
+    p {
+      margin: 0;
+    }
   }
   .card-body {
     background: #fff7e8;
+    border-radius: 20px;
+    padding: 10px 20px;
   }
   .btn-outline-primary {
     border: 2px solid #ff8744 !important;
@@ -141,62 +140,57 @@ export default function EventCard({ data }) {
       <Card
         style={{
           width: "100%",
-          borderRadius:"50px"
-          
+          borderRadius: "20px",
+          boxShadow:"none",
+          margin:"10px 10px   "
         }}
       >
-        {/* <div className="position-relative imgContainer ">
-          <img
-            alt="Sample"
-            style={{
-              height: "150px",
-              position: "relative",
-              width: "100%",
-            }}
-            src="https://picsum.photos/300/200"
-          />
-          <div className=" position-absolute imgContent  w-100 ">
-            <div className="text-end">
-              {`${moment(data.publishDate).startOf("hour").fromNow()}`}
-            </div>
-          </div>
-        </div> */}
-
+        
         <CardBody>
           <Row>
-            <Col xs={3}>
-              <CardTitle>{data.title}</CardTitle>
+            <Col xs={11}>
+              <Row>
+                <Col xs={4}>
+                  <div className="card1">{data.title}</div>
+                </Col>
+                <Col xs={4}>
+                  <div className="card-text">
+                    <p>
+                      Posted on{" "}
+                      {`${moment(data.publishDate).format("D MMMM YYYY ")}`}
+                    </p>
+                  </div>
+                </Col>
+                <Col xs={4}>
+                  <div
+                    className="card-text "
+                    dangerouslySetInnerHTML={{
+                      __html: he.decode(data.body),
+                    }}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <div>
+                    {data.languages.map((item) => {
+                      return (
+                        <Button outline key={item.id} color="primary">
+                          {ConverFirstLatterToCapital(item.name)}
+                        </Button>
+                      );
+                    })}
+                  </div>
+                </Col>
+              </Row>
             </Col>
-            <Col xs={3}>
-              <div className="card-text">
-                Posted on {`${moment(data.publishDate).format("D MMMM YYYY ")}`}
-              </div>
-            </Col>
-            <Col xs={3}>
-              <CardText>
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: he.decode(data.body),
-                  }}
-                />
-              </CardText>
-            </Col>
-            <Col xs={3}>
+
+            <Col xs={1}>
               <div className="d-flex justify-content-between align-items-center">
                 <img src={cardThreeDotIcon} id={`popover-${data.id}`} />
               </div>
             </Col>
           </Row>
-
-          <div>
-            {data.languages.map((item) => {
-              return (
-                <Button outline key={item.id} color="primary">
-                  {ConverFirstLatterToCapital(item.name)}
-                </Button>
-              );
-            })}
-          </div>
         </CardBody>
       </Card>
       <BtnPopover
