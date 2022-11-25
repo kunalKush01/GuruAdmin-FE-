@@ -1,12 +1,6 @@
 import moment from "moment";
 import React, { useState } from "react";
-import {
-  Card,
-  CardBody,
-  Button,
-  Row,
-  Col,
-} from "reactstrap";
+import { Card, CardBody, Button, Row, Col } from "reactstrap";
 import he from "he";
 import styled from "styled-components";
 import cardThreeDotIcon from "../../assets/images/icons/news/threeDotIcon.svg";
@@ -19,12 +13,11 @@ import Swal from "sweetalert2";
 import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
 import BtnPopover from "../partials/btnPopover";
 const EventCardWaraper = styled.div`
-  
   .card1 {
     font: normal normal bold 13px/16px Noto Sans;
     margin-bottom: none !important;
   }
-  .card-text{
+  .card-text {
     font: normal normal normal 12px/16px Noto Sans;
     max-height: 18px;
     max-width: 300px;
@@ -49,7 +42,6 @@ const EventCardWaraper = styled.div`
     background: #fff7e8;
     border-radius: 10px;
     padding: 0px;
-    
   }
   .btn-outline-primary {
     border: 2px solid #ff8744 !important;
@@ -59,7 +51,7 @@ const EventCardWaraper = styled.div`
     margin-right: 10px;
   }
 `;
-function BtnContent({ eventId }) {
+function BtnContent({ noticeId }) {
   const history = useHistory();
   const BtnContentWraper = styled.div`
     color: #583703;
@@ -95,7 +87,7 @@ function BtnContent({ eventId }) {
         <Col
           xs={12}
           className="col-item"
-          onClick={() => history.push(`/events/add-language/${eventId}`)}
+          onClick={() => history.push(`/notices/add-language/${noticeId}`)}
         >
           <Trans i18nKey={"news_popOver_AddLang"} />
         </Col>
@@ -103,7 +95,7 @@ function BtnContent({ eventId }) {
         <Col
           xs={12}
           className="col-item"
-          onClick={() => history.push(`/events/edit/${eventId}`)}
+          onClick={() => history.push(`/notices/edit/${noticeId}`)}
         >
           <Trans i18nKey={"news_popOver_Edit"} />
         </Col>
@@ -111,7 +103,7 @@ function BtnContent({ eventId }) {
         <Col
           xs={12}
           className="col-item  "
-          // onClick={() => deleteMutation.mutate(eventId)}
+          // onClick={() => deleteMutation.mutate(noticeId)}
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -132,7 +124,7 @@ function BtnContent({ eventId }) {
               confirmButtonAriaLabel: "Confirm",
             }).then(async (result) => {
               if (result.isConfirmed) {
-                deleteMutation.mutate(eventId);
+                deleteMutation.mutate(noticeId);
               }
             });
           }}
@@ -144,27 +136,27 @@ function BtnContent({ eventId }) {
   );
 }
 
-export default function EventCard({ data }) {
+export default function NoticeCard({ data }) {
   return (
-    <EventCardWaraper>
+    <EventCardWaraper key={data.id} >
       <Card
+      key={data.id}
         style={{
           width: "100%",
           borderRadius: "20px",
-          boxShadow:"none",
-          margin:"10px 10px   "
+          boxShadow: "none",
+          margin: "10px 10px   ",
         }}
       >
-        
         <CardBody>
-          <Row className="align-items-center" >
-            <Col xs={2}  >
-              
-            <img src="https://picsum.photos/300/200" style={{width:"100%",height:"100%",borderRadius:"10px"}} />
-
-              
+          <Row className="align-items-center">
+            <Col xs={2}>
+              <img
+                src="https://picsum.photos/300/200"
+                style={{ width: "100%", height: "100%", borderRadius: "10px" }}
+              />
             </Col>
-            <Col xs={9}  >
+            <Col xs={9}>
               <Row>
                 <Col xs={6}>
                   <div className="card1">{data.title}</div>
@@ -177,18 +169,17 @@ export default function EventCard({ data }) {
                     </p>
                   </div>
                 </Col>
-                
               </Row>
               <Row>
                 <Col>
-                <Col xs={12}>
-                  <div
-                    className="card-text "
-                    dangerouslySetInnerHTML={{
-                      __html: he.decode(data.body),
-                    }}
-                  />
-                </Col>
+                  <Col xs={12}>
+                    <div
+                      className="card-text "
+                      dangerouslySetInnerHTML={{
+                        __html: he.decode(data.body),
+                      }}
+                    />
+                  </Col>
                 </Col>
               </Row>
               <Row>
@@ -213,12 +204,11 @@ export default function EventCard({ data }) {
             </Col>
           </Row>
         </CardBody>
-
-        
       </Card>
+
       <BtnPopover
         target={`popover-${data.id}`}
-        content={<BtnContent eventId={data.id} />}
+        content={<BtnContent noticeId={data.id} />}
       />
     </EventCardWaraper>
   );

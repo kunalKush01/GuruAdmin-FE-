@@ -48,11 +48,12 @@ export default function AddLanguageNews() {
   const history = useHistory();
   const { newsId } = useParams();
   const langArray = useSelector((state) => state.auth.availableLang);
+  const selectedLang= useSelector(state=>state.auth.selectLang)
   const newsDetailQuery = useQuery(
-    ["NewsDetail", newsId],
-    async () => await getNewsDetail({ newsId })
+    ["NewsDetail", newsId,selectedLang.id],
+    async () => await getNewsDetail({ newsId,languageId:selectedLang.id })
   );
-  const [langSelection, setLangSelection] = useState();
+  const [langSelection, setLangSelection] = useState(ConverFirstLatterToCapital(selectedLang.name));
 
   const handleNewsLangUpdate = (payload) => {
     let languageId;
@@ -66,12 +67,19 @@ export default function AddLanguageNews() {
   };
 
   const getAvailLangOption = () => {
-    const option = _.differenceBy(
-      langArray,
-      newsDetailQuery?.data?.result?.languages,
-      "id"
-    );
-    return option;
+    if (eventDetailQuery?.data?.result?.languages && langArray) {
+      const option = _.differenceBy(
+        langArray,
+        eventDetailQuery?.data?.result?.languages,
+        "id"
+      );
+      if (_.isEqual(option, langArray)) {
+        return [];
+      }
+
+      return option;
+    }
+    return [];
   };
 
   const availableLangOptions = useMemo(getAvailLangOption, [
@@ -79,23 +87,23 @@ export default function AddLanguageNews() {
     newsDetailQuery?.data?.result?.languages,
   ]);
   useEffect(() => {
-    if (Array.isArray(availableLangOptions)) {
-      setLangSelection(
-        ConverFirstLatterToCapital(availableLangOptions[0].name)
-      );
+    if (availableLangOptions.length!=0) {
+      setLangSelection(availableLangOptions[0]?.name);
     }
   }, [availableLangOptions]);
 
-  const initialValues = {
-    Id: newsDetailQuery?.data?.result?.id,
-    Title: newsDetailQuery?.data?.result?.title,
-    Tags: newsDetailQuery?.data?.result?.tags,
-    Body: he.decode(newsDetailQuery?.data?.result?.body ?? ""),
-    PublishedBy: newsDetailQuery?.data?.result?.publishedBy,
-    DateTime: moment(newsDetailQuery?.data?.result?.publishDate)
-      .utcOffset("+0530")
-      .toDate(),
-  };
+  const initialValues = useMemo(()=>{
+    return  {
+      Id: newsDetailQuery?.data?.result?.id,
+      Title: newsDetailQuery?.data?.result?.title,
+      Tags: newsDetailQuery?.data?.result?.tags,
+      Body: he.decode(newsDetailQuery?.data?.result?.body ?? ""),
+      PublishedBy: newsDetailQuery?.data?.result?.publishedBy,
+      DateTime: moment(newsDetailQuery?.data?.result?.publishDate)
+        .utcOffset("+0530")
+        .toDate(),
+    };
+  },[newsDetailQuery])
 
   return (
     <NewsWarper>

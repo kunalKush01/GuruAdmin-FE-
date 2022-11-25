@@ -9,8 +9,6 @@ export const extractDataFromResponse = ({
 }) => {
   const data = response?.data?.data ?? {};
 
-  console.log(response);
-
   if (
     response.status === successCode &&
     response.data.status &&

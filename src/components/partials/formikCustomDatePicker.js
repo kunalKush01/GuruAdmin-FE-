@@ -150,7 +150,7 @@ export default function FormikCustomDatePicker({ ...props }) {
 
   return (
     <FormikCustomDatePickerWraper>
-      <label className="mb-1 ">
+      <label >
         <Trans i18nKey={"news_label_Date"} />
       </label>
       

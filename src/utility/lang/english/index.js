@@ -1,4 +1,5 @@
 export const englishContent = {
+  all:"All",
   dashboard: "Dashboard",
   donation: "Donation",
   committment: "Committment",
@@ -23,6 +24,9 @@ export const englishContent = {
   monthName_November: "November",
   monthName_December: "December",
   last_login: "Last Logged In",
+  category:"Category",
+  user:"User",
+  report_Dispute:"Report & Dispute",
 
   // All static content of Dashboard
   dashboard_donationReceived: "Donation Received",
@@ -73,8 +77,26 @@ export const englishContent = {
   // All static content of Events
 
   events_AddEvent: "Add Event",
-  events_latest_event: "Events",
+  events_latest_event: "Latest Events",
   events_title_required:"Event title is required",
   events_desc_required: "Event description is required",
-  events_select_dropDown:"Select Event"
+  events_select_dropDown:"Select Event",
+  events_EditEvent: "Edit Event",
+  
+  // All static content of Notices
+
+  notices_AddNotice: "Add Notice",
+  notices_latest_Notice: "Latest Notices",
+  notices_title_required:"Notice title is required",
+  notices_desc_required: "Notice description is required",
+  notices_select_dropDown:"Select Notice",
+  notices_EditNotice: "Edit Notice",
+
+
+  // All static content of Categories
+
+  categories_AddCategory: "Add Category",
+  categories_latest_Category: "Categories",
+  categories_title_required:"Category Name is required",
+  categories_EditCategory: "Edit Category",
 };

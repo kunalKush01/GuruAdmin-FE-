@@ -195,7 +195,7 @@ export default function NewsCard({ data }) {
           <CardText>
             <div
               dangerouslySetInnerHTML={{
-                __html: he.decode(data.body),
+                __html: he.decode(data?.body ?? ""),
               }}
             />
           </CardText>

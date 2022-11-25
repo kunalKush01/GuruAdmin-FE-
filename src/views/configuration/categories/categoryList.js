@@ -1,26 +1,30 @@
 import { Form, Formik } from "formik";
 import React, { useMemo, useState } from "react";
-import CustomTextField from "../../components/partials/customTextField";
-import * as yup from "yup";
-import RichTextField from "../../components/partials/richTextEditorField";
+
 import styled from "styled-components";
-import { CustomDropDown } from "../../components/partials/customDropDown";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import { CustomDropDown } from "../../../components/partials/customDropDown";
+import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
 import { Trans, useTranslation } from "react-i18next";
 import { Button, Col, Row } from "reactstrap";
-import { createNews, getAllNews } from "../../api/newsApi";
-import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
-import NewsCard from "../../components/news/newsCard";
+import { createNews, getAllNews } from "../../../api/newsApi";
+import NewsCard from "../../../components/news/newsCard";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import ReactPaginate from "react-paginate";
 import { Plus } from "react-feather";
 import moment from "moment";
-import { current } from "@reduxjs/toolkit";
 import { useHistory } from "react-router-dom";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import NoNews from "../../components/news/noNews";
+import NoNews from "../../../components/news/noNews";
 import { If, Then, Else } from "react-if-else-switch";
 import { useSelector } from "react-redux";
+import AsyncSelectField from "../../../components/partials/asyncSelectField";
+import {
+  getAllCategories,
+  getAllMasterCategories,
+} from "../../../api/categoryApi";
+import { CustomReactSelect } from "../../../components/partials/customReactSelect";
+import CategoryCard from "../../../components/categories/categoryCard";
+import { CategoryListTable } from "../../../components/categories/categoryListTable";
 const NewsWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -61,8 +65,7 @@ const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 export default function News() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
-  const selectedLang= useSelector(state=>state.auth.selectLang)
-  
+  const selectedLang = useSelector((state) => state.auth.selectLang);
   const periodDropDown = () => {
     switch (dropDownName) {
       case "dashboard_monthly":
@@ -78,11 +81,12 @@ export default function News() {
   };
   const { t } = useTranslation();
   const history = useHistory();
-  
+
   const [pagination, setPagination] = useState({
     page: 1,
-    limit: 12,
+    limit: 10,
   });
+  const [selectedMasterCate, setSelectedMasterCate] = useState("");
 
   let filterStartDate = moment()
     .startOf(periodDropDown())
@@ -96,21 +100,33 @@ export default function News() {
   let startDate = moment(filterStartDate).format("D MMM YYYY");
   let endDate = moment(filterEndDate).utcOffset(0).format("D MMM YYYY");
 
-  const newsQuery = useQuery(
-    ["News", pagination.page, filterStartDate, filterEndDate,selectedLang.id],
+  const categoryQuery = useQuery(
+    ["Categories", pagination.page, selectedLang.id, selectedMasterCate],
     () =>
-      getAllNews({
+      getAllCategories({
         ...pagination,
         startDate: filterStartDate,
         endDate: filterEndDate,
-        languageId:selectedLang.id
+        languageId: selectedLang.id,
+        masterId: selectedMasterCate,
       }),
     {
       keepPreviousData: true,
     }
   );
 
-  const newsItems = useMemo(() => newsQuery?.data?.results ?? [], [newsQuery]);
+  const categoryItems = useMemo(
+    () => categoryQuery?.data?.results ?? [],
+    [categoryQuery]
+  );
+
+  const masterloadOptionQuery = useQuery(
+    ["MasterCategory", selectedLang.id],
+    async () =>
+      await getAllMasterCategories({
+        languageId: selectedLang.id,
+      })
+  );
 
   return (
     <NewsWarper>
@@ -127,21 +143,26 @@ export default function News() {
             <div className="addNews">
               <div className="">
                 <div>
-                  <Trans i18nKey={"news_latest_news"} />
+                  <Trans i18nKey={"categories_latest_Category"} />
                 </div>
-                <div className="filterPeriod">
+                {/* <div className="filterPeriod">
                   <span>
                     {startDate}-{endDate}
                   </span>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
           <div className="addNews">
-            <ChangePeriodDropDown
-              className={"me-1"}
-              dropDownName={dropDownName}
-              setdropDownName={(e) => setdropDownName(e.target.name)}
+            <CustomReactSelect
+              name="SelectedCategory"
+              loadOptions={masterloadOptionQuery?.data?.results ?? []}
+              labelKey={"name"}
+              valueKey={"id"}
+              label={t("events_select_dropDown")}
+              placeholder={t("all")}
+              outlined
+              onChange={(data) => setSelectedMasterCate(data?.id ?? "")}
             />
             <Button
               color="primary"
@@ -158,7 +179,7 @@ export default function News() {
           </div>
         </div>
         <div style={{ height: "10px" }}>
-          <If condition={newsQuery.isFetching}>
+          <If condition={categoryQuery.isFetching}>
             <Then>
               <Skeleton
                 baseColor="#ff8744"
@@ -170,32 +191,22 @@ export default function News() {
         </div>
         <div className="newsContent  ">
           <Row>
-            <If condition={newsQuery.isLoading} disableMemo>
+            <If condition={categoryQuery.isLoading} disableMemo>
               <Then>
                 <SkeletonTheme
                   baseColor="#FFF7E8"
                   highlightColor="#fff"
                   borderRadius={"10px"}
                 >
-                  {randomArray.map((itm, idx) => {
-                    return (
-                      <Col xs={3} key={idx}>
-                        <Skeleton height={"335px"} width={"300px"} />
-                      </Col>
-                    );
-                  })}
+                  <Col>
+                    <Skeleton height={"335px"} width={"100%"} />
+                  </Col>
                 </SkeletonTheme>
               </Then>
               <Else>
-                <If condition={newsItems.length != 0} disableMemo >
+                <If condition={categoryItems.length != 0} disableMemo>
                   <Then>
-                    {newsItems.map((item) => {
-                      return (
-                        <Col xs={3} key={item.id}>
-                          <NewsCard data={item} />
-                        </Col>
-                      );
-                    })}
+                    <CategoryListTable data={categoryItems} />
                   </Then>
                   <Else>
                     <NoNews />
@@ -203,15 +214,15 @@ export default function News() {
                 </If>
               </Else>
             </If>
-            
-            <If condition={newsQuery?.data?.totalPages > 1}  >
+
+            <If condition={categoryQuery?.data?.totalPages > 1}>
               <Then>
                 <Col xs={12} className="mb-2 d-flex justify-content-center">
                   <ReactPaginate
                     nextLabel=""
                     breakLabel="..."
                     previousLabel=""
-                    pageCount={newsQuery?.data?.totalPages || 0}
+                    pageCount={categoryQuery?.data?.totalPages || 0}
                     activeClassName="active"
                     breakClassName="page-item"
                     pageClassName={"page-item"}

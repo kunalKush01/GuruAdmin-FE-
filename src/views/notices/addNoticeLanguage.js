@@ -15,16 +15,16 @@ import { useSelector } from "react-redux";
 import moment from "moment";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import he from "he";
-import EventForm from "../../components/events/eventForm";
-import { addLangEventDetail, getEventDetail } from "../../api/eventApi";
+import NoticeForm from "../../components/notices/noticeForm";
+import { addLangNoticeDetail, getNoticeDetail } from "../../api/noticeApi";
 
-const EventWarper = styled.div`
+const NoticeWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
     font: normal normal bold 15px/33px Noto Sans;
   }
-  .editEvent {
+  .editNotice {
     color: #583703;
     display: flex;
     align-items: center;
@@ -32,26 +32,25 @@ const EventWarper = styled.div`
 `;
 
 const schema = yup.object().shape({
-  Title: yup.string().required("events_title_required"),
-  Body: yup.string().required("events_desc_required"),
+  Title: yup.string().required("notices_title_required"),
+  Body: yup.string().required("notices_desc_required"),
   DateTime: yup.string(),
 });
 
-export default function AddLanguageEvent() {
+export default function AddLanguageNotice() {
   const history = useHistory();
-  const { eventId } = useParams();
+  const { noticeId } = useParams();
+
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang = useSelector((state) => state.auth.selectLang);
-  const [langSelection, setLangSelection] = useState(
-    ConverFirstLatterToCapital(selectedLang.name)
+  const [langSelection, setLangSelection] = useState(ConverFirstLatterToCapital(selectedLang.name));
+
+  const noticeDetailQuery = useQuery(
+    ["NoticeDetail", noticeId, langSelection, selectedLang.id],
+    async () => await getNoticeDetail({ noticeId, languageId: selectedLang.id })
   );
 
-  const eventDetailQuery = useQuery(
-    ["EventDetail", eventId, langSelection, selectedLang.id],
-    async () => await getEventDetail({ eventId, languageId: selectedLang.id })
-  );
-
-  const handleEventLangUpdate = (payload) => {
+  const handleNoticeLangUpdate = (payload) => {
     let languageId;
     langArray.map(async (Item) => {
       if (Item.name == langSelection.toLowerCase()) {
@@ -59,7 +58,7 @@ export default function AddLanguageEvent() {
       }
     });
 
-    return addLangEventDetail({ ...payload, languageId });
+    return addLangNoticeDetail({ ...payload, languageId });
   };
 
   const getAvailLangOption = () => {
@@ -78,9 +77,10 @@ export default function AddLanguageEvent() {
     return [];
   };
 
-  const availableLangOptions = getAvailLangOption();
-  console.log("availableLangOptions=", availableLangOptions);
-
+  const availableLangOptions = useMemo(getAvailLangOption, [
+    langArray,
+    noticeDetailQuery?.data?.result?.languages,
+  ]);
   useEffect(() => {
     if (availableLangOptions.length != 0) {
       setLangSelection(availableLangOptions[0]?.name);
@@ -89,31 +89,31 @@ export default function AddLanguageEvent() {
 
   const initialValues = useMemo(() => {
     return {
-      Id: eventDetailQuery?.data?.result?.id,
-      Title: eventDetailQuery?.data?.result?.title,
-      Tags: eventDetailQuery?.data?.result?.tags,
-      Body: he.decode(eventDetailQuery?.data?.result?.body ?? ""),
-      PublishedBy: eventDetailQuery?.data?.result?.publishedBy,
-      DateTime: moment(eventDetailQuery?.data?.result?.publishDate)
+      Id: noticeDetailQuery?.data?.result?.id,
+      Title: noticeDetailQuery?.data?.result?.title,
+      Tags: noticeDetailQuery?.data?.result?.tags,
+      Body: he.decode(noticeDetailQuery?.data?.result?.body ?? ""),
+      PublishedBy: noticeDetailQuery?.data?.result?.publishedBy,
+      DateTime: moment(noticeDetailQuery?.data?.result?.publishDate)
         .utcOffset("+0530")
         .toDate(),
     };
-  }, [eventDetailQuery]);
+  }, [noticeDetailQuery]);
 
   return (
-    <EventWarper>
+    <NoticeWarper>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
             src={arrowLeft}
             className="me-2"
-            onClick={() => history.push("/events")}
+            onClick={() => history.push("/Notices")}
           />
-          <div className="editEvent">
+          <div className="editNotice">
             <Trans i18nKey={"news_AddLangNews"} />
           </div>
         </div>
-        <div className="editEvent">
+        <div className="editNotice">
           <Trans i18nKey={"news_InputIn"} />
           <CustomDropDown
             ItemListArray={availableLangOptions}
@@ -127,16 +127,16 @@ export default function AddLanguageEvent() {
         </div>
       </div>
 
-      {!eventDetailQuery.isLoading ? (
-        <EventForm
+      {!noticeDetailQuery.isLoading ? (
+        <NoticeForm
           initialValues={initialValues}
           vailidationSchema={schema}
           showTimeInput
-          handleSubmit={handleEventLangUpdate}
+          handleSubmit={handleNoticeLangUpdate}
         />
       ) : (
         ""
       )}
-    </EventWarper>
+    </NoticeWarper>
   );
 }

@@ -16,8 +16,6 @@ import { Plus } from "react-feather";
 import AsyncSelectField from "../partials/asyncSelectField";
 import { getGlobalEvents } from "../../api/eventApi";
 
-
-
 const FormWaraper = styled.div`
   .existlabel {
     margin-bottom: 10px;
@@ -53,6 +51,7 @@ export default function EventForm({
   vailidationSchema,
   initialValues,
   showTimeInput,
+  selectEventDisabled,
 }) {
   const history = useHistory();
   const { t } = useTranslation();
@@ -63,33 +62,33 @@ export default function EventForm({
     onSuccess: (data) => {
       console.log("error=", data);
       if (!data.error) {
-        eventQuerClient.invalidateQueries(["Events"]);
+        eventQuerClient.invalidateQueries(["Events"])
+        eventQuerClient.invalidateQueries(["EventDetail"])
         history.push("/events");
       }
     },
   });
 
-  const loadOption = async()=>{
-    const getGlobalEventsRES= await getGlobalEvents(100)
-    return getGlobalEventsRES.results
-  }
-
+  const loadOption = async () => {
+    const getGlobalEventsRES = await getGlobalEvents(100);
+    return getGlobalEventsRES.results;
+  };
 
   return (
     <FormWaraper className="FormikWraper">
       <Formik
-        initialValues={{ ...initialValues }}
-        onSubmit={(e) =>
-          {
-            console.log("formSubmitDaqta=",e);
+        // enableReinitialize
+        initialValues={initialValues}
+        onSubmit={(e) => {
+          console.log("formSubmitDaqta=", e);
           eventMutation.mutate({
-            newsId: e.Id,
-            baseId: e?.SelectedEvent?.id??null,
+            eventId: e.Id,
+            baseId: e?.SelectedEvent?.id ?? null,
             title: e.Title,
             body: e.Body,
-            publishDate: e.DateTime,            
+            publishDate: e.DateTime,
             imageUrl: ["http://newsImage123.co"],
-          })
+          });
         }}
         validationSchema={vailidationSchema}
       >
@@ -109,10 +108,10 @@ export default function EventForm({
                       name="SelectedEvent"
                       loadOptions={loadOption}
                       labelKey={"title"}
-                      valueKey={"id"}                      
+                      valueKey={"id"}
                       label={t("events_select_dropDown")}
                       placeholder={t("events_select_dropDown")}
-
+                      disabled={selectEventDisabled}
                     />
                   </Col>
                 </Row>

@@ -20,7 +20,7 @@ import { ConverFirstLatterToCapital } from "../../../../utility/formater";
 import { langOption } from "./langCardContent";
 
 function LangModel({ setlangSelection, langSelection }) {
-  const selectedLanguage = useSelector(state=>state.auth.selectLangCode)
+  const selectedLanguage = useSelector(state=>state.auth.selectLang)
   const dispatch = useDispatch()
   const langList= useSelector(state=>state.auth.availableLang)
   
@@ -85,17 +85,17 @@ function LangModel({ setlangSelection, langSelection }) {
                 <Col
                   xs={6}
                   className="py-1 "
-                  onClick={() => handleSelectLang(item.langCode)}
+                  onClick={() => handleSelectLang(item)}
                   key={item.id}
                 >
                   <div
                     className={` langButton ${
-                      selectedLanguage == item.langCode ? "changeBG" : ""
+                      selectedLanguage.langCode == item.langCode ? "changeBG" : ""
                     } `}
                   >
                     <Input
                       type="radio"
-                      checked={selectedLanguage == item.name ? true : false}
+                      checked={selectedLanguage.name == item.name ? true : false}
                     />
                     <label check>{ConverFirstLatterToCapital(item?.name ??"")}</label>
                   </div>

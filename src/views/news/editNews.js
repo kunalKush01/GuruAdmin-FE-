@@ -54,9 +54,11 @@ export default function EditNews() {
   const history = useHistory();
   const { newsId } = useParams();
   const langArray = useSelector((state) => state.auth.availableLang);
-  const [langSelection, setLangSelection] = useState("English");
+  const selectedLang= useSelector(state=>state.auth.selectLang)
+  const [langSelection, setLangSelection] = useState(ConverFirstLatterToCapital(selectedLang.name));
+
   const newsDetailQuery = useQuery(
-    ["NewsDetail", newsId, langSelection],
+    ["NewsDetail", newsId, langSelection,selectedLang.id],
     async () =>
       await getNewsDetail({
         newsId,
@@ -73,16 +75,20 @@ export default function EditNews() {
     });
   };
 
-  const initialValues = {
-    Id: newsDetailQuery?.data?.result?.id,
-    Title: newsDetailQuery?.data?.result?.title,
-    Tags: newsDetailQuery?.data?.result?.tags,
-    Body: he.decode(newsDetailQuery?.data?.result?.body ?? ""),
-    PublishedBy: newsDetailQuery?.data?.result?.publishedBy,
-    DateTime: moment(newsDetailQuery?.data?.result?.publishDate)
-      .utcOffset("+0530")
-      .toDate(),
-  };
+  
+
+  const initialValues = useMemo(()=>{
+    return  {
+      Id: newsDetailQuery?.data?.result?.id,
+      Title: newsDetailQuery?.data?.result?.title,
+      Tags: newsDetailQuery?.data?.result?.tags,
+      Body: he.decode(newsDetailQuery?.data?.result?.body ?? ""),
+      PublishedBy: newsDetailQuery?.data?.result?.publishedBy,
+      DateTime: moment(newsDetailQuery?.data?.result?.publishDate)
+        .utcOffset("+0530")
+        .toDate(),
+    };
+  },[newsDetailQuery])
 
   return (
     <NewsWarper>
@@ -111,7 +117,7 @@ export default function EditNews() {
           />
         </div>
       </div>
-      <If condition={newsDetailQuery.isLoading || newsDetailQuery.isFetching}>
+      <If condition={newsDetailQuery.isLoading || newsDetailQuery.isFetching} diableMemo >
         <Then>
           <Row>
             <SkeletonTheme
@@ -142,12 +148,12 @@ export default function EditNews() {
         </Then>
         <Else>
           
-          <NewsForm
+          {!newsDetailQuery.isFetching&&<NewsForm
             vailidationSchema={schema}
             initialValues={initialValues}
             showTimeInput
             handleSubmit={handleNewsUpdate}
-          />
+          />}
         </Else>
       </If>
     </NewsWarper>

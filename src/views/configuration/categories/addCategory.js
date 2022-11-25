@@ -13,35 +13,35 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createNews } from "../../api/newsApi";
 import { useSelector } from "react-redux";
 import { authApiInstance } from "../../axiosApi/authApiInstans";
-import { createEvent } from "../../api/eventApi.js";
-import EventForm from "../../components/events/eventForm";
+import { createNotice } from "../../api/noticeApi.js";
+import NoticeForm from "../../components/notices/noticeForm";
 
-const EventWraper = styled.div`
+const NoticeWraper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
     font: normal normal bold 15px/33px Noto Sans;
   }
-  .addEvent {
+  .addNotice {
     color: #583703;
     display: flex;
     align-items: center;
   }
 `;
 
-const handleCreateEvent = async (payload) => {
+const handleCreateNotice = async (payload) => {
   
-  return createEvent(payload);
+  return createNotice(payload);
 };
 const schema = yup.object().shape({
-  Title: yup.string().required("events_title_required"),  
-  Body: yup.string().required("events_desc_required"),  
+  Title: yup.string().required("notices_title_required"),  
+  Body: yup.string().required("notices_desc_required"),  
   DateTime: yup.string(),
-  SelectedEvent:yup.mixed()
+  SelectedNotice:yup.mixed()
 });
 
 const initialValues = {
-  SelectedEvent: null,
+  SelectedNotice: null,
   Id: "",
   Title: "",
   Body: "",  
@@ -49,24 +49,26 @@ const initialValues = {
 };
  
 
-export default function AddEvent() {
+export default function AddCategory() {
   const history = useHistory();
   const langArray = useSelector((state) => state.auth.availableLang);
+  const selectedLang= useSelector(state=>state.auth.selectLang)
+  
 
   return (
-    <EventWraper>
+    <NoticeWraper>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
             src={arrowLeft}
             className="me-2"
-            onClick={() => history.push("/news")}
+            onClick={() => history.push("/notices")}
           />
-          <div className="addEvent">
-            <Trans i18nKey={"events_AddEvent"} />
+          <div className="addNotice">
+            <Trans i18nKey={"notices_AddNotice"} />
           </div>
         </div>
-        <div className="addEvent">
+        <div className="addNotice">
           <Trans i18nKey={"news_InputIn"} />
           <CustomDropDown
             ItemListArray={langArray}
@@ -77,12 +79,12 @@ export default function AddEvent() {
         </div>
       </div>
 
-      <EventForm
-        handleSubmit={handleCreateEvent}
+      <NoticeForm
+        handleSubmit={handleCreateNotice}
         initialValues={initialValues}
         vailidationSchema={schema}
         showTimeInput
       />
-    </EventWraper>
+    </NoticeWraper>
   );
 }

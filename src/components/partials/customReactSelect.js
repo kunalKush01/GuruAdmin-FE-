@@ -1,21 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { useField } from "formik";
+import React from "react";
+import ReactSelect from "react-select";
 
-import AsyncSelect from "react-select/async";
-// import { DARK_BLUE_MUTED, DARK_GREY } from "../../theme";
 
-export default function AsyncSelectField({
-  label,
+
+
+export const CustomReactSelect = ({label,
+  
   loadOptions,
   labelKey = "label",
   valueKey = "value",
   placeholder,
-  value,
+  value,  
   multiple = false,
   isClearable = true,
   ...props
-}) {
-  const [field, meta, helpers] = useField(props);
+}) => {
 
   const customStyles = {
     container: (provided, state) => ({
@@ -42,6 +41,7 @@ export default function AsyncSelectField({
       ...provided,
       backgroundColor: "#FFF7E8",
       color: "#583703",
+      // width: "fit-content"  ,
       font: "normal normal bold 15px/20px Noto Sans",
       "::-webkit-scrollbar":{
         display:"none"
@@ -58,11 +58,12 @@ export default function AsyncSelectField({
     control: (provided) => {
       return {
         ...provided,
-
+        width:"200px",
         color: "grey",
         border: "1px solid white",
-        backgroundColor: "#FFF7E8",
+        backgroundColor: `${props.outlined?"":"#FFF7E8"}`,
         boxShadow: "none",
+        border: `${props.outlined?"1px solid #FF8744":"none"}`,
         "&:hover": {
           border: "1px solid #FF8744",
         },
@@ -94,32 +95,27 @@ export default function AsyncSelectField({
     }),
   };
 
+
+
   return (
-    <div >
-      <label style={{ marginBottom: "0px",font: "normal normal bold 15px/33px Noto Sans" }}>{label}</label>
-      <AsyncSelect
+    <div>
+      <ReactSelect
         isDisabled={props.disabled}
         isMulti={multiple}
-        name={field.name}
+        name={props.name}
         debounceTimeout={300}
         cacheOptions
         defaultOptions
         placeholder={placeholder}
         isClearable={isClearable}
-        loadOptions={loadOptions}
+        options={loadOptions}
         getOptionValue={(option) => option[valueKey]}
         getOptionLabel={(option) => option[labelKey]}
-        value={field.value}
+        value={props.value}
         styles={customStyles}
-        onChange={(data) => {
-          helpers.setValue(data)
-
-        }}
+        
         {...props}
       />
-      {meta.touched && meta.error ? (
-        <div className="field-error text-danger">{meta.error}</div>
-      ) : null}
     </div>
   );
-}
+};

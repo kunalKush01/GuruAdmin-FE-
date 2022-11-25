@@ -17,17 +17,17 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import he from "he";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { If, Then, Else } from "react-if-else-switch";
-import NewsForm from "../../components/news/newsForm";
-import { getEventDetail, updateEventDetail } from "../../api/eventApi";
-import EventForm from "../../components/events/eventForm";
 
-const EventWarper = styled.div`
+import { getNoticeDetail, updateNoticeDetail } from "../../api/noticeApi";
+import NoticeForm from "../../components/notices/noticeForm";
+
+const NoticeWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
     font: normal normal bold 15px/33px Noto Sans;
   }
-  .editevent {
+  .editNotice {
     color: #583703;
     display: flex;
     align-items: center;
@@ -35,62 +35,59 @@ const EventWarper = styled.div`
 `;
 
 const schema = yup.object().shape({
-  Title: yup.string().required("news_title_required"),
-  Body: yup.string().required("news_desc_required"),
+  Title: yup.string().required("notices_title_required"),
+  Body: yup.string().required("notices_desc_required"),
   DateTime: yup.string(),
 });
 
 const getLangId = (langArray, langSelection) => {
   let languageId;
   langArray.map(async (Item) => {
-    if (Item.name == langSelection?.toLowerCase()) {
+    if (Item.name == langSelection.toLowerCase()) {
       languageId = Item.id;
     }
   });
   return languageId;
 };
 
-export default function Editevent() {
+export default function EditNotice() {
   const history = useHistory();
-  const { eventId } = useParams();
+  const { noticeId } = useParams();
+
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang= useSelector(state=>state.auth.selectLang)
-
-  const [langSelection, setLangSelection] = useState(ConverFirstLatterToCapital(selectedLang.name));
-  const eventDetailQuery = useQuery(
-    ["EventDetail", eventId, langSelection,selectedLang.id],
+  const [langSelection, setLangSelection] = useState(selectedLang.name);
+  const noticeDetailQuery = useQuery(
+    ["NoticeDetail", noticeId, langSelection],
     async () =>
-      getEventDetail({
-        eventId,
-        languageId: getLangId(langArray, langSelection),
+      getNoticeDetail({
+        noticeId,
+        languageId: getLangId(langArray, langSelection,selectedLang.id),
       })
   );
-  
 
-  const handleEventUpdate = async (payload) => {
-    return updateEventDetail({
+  const handleNoticeUpdate = async (payload) => {
+    return updateNoticeDetail({
       ...payload,
       languageId: getLangId(langArray, langSelection),
     });
   };
 
-  
-  
-  const initialValues = useMemo(()=>{
-    return  {
-      Id: eventDetailQuery?.data?.result?.id,
-      Title: eventDetailQuery?.data?.result?.title,
-      Tags: eventDetailQuery?.data?.result?.tags,
-      Body: he.decode(eventDetailQuery?.data?.result?.body ?? ""),
-      PublishedBy: eventDetailQuery?.data?.result?.publishedBy,
-      DateTime: moment(eventDetailQuery?.data?.result?.publishDate)
+  const initialValues = useMemo(() => {
+    return {
+      Id: noticeDetailQuery?.data?.result?.id,
+      Title: noticeDetailQuery?.data?.result?.title,
+      Tags: noticeDetailQuery?.data?.result?.tags,
+      Body: he.decode(noticeDetailQuery?.data?.result?.body ?? ""),
+      PublishedBy: noticeDetailQuery?.data?.result?.publishedBy,
+      DateTime: moment(noticeDetailQuery?.data?.result?.publishDate)
         .utcOffset("+0530")
         .toDate(),
     };
-  },[eventDetailQuery])
+  }, [noticeDetailQuery]);
 
   return (
-    <EventWarper>
+    <NoticeWarper>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -98,14 +95,14 @@ export default function Editevent() {
             className="me-2"
             onClick={() => history.push("/news")}
           />
-          <div className="editevent">
-            <Trans i18nKey={"events_EditEvent"} />
+          <div className="editNotice">
+            <Trans i18nKey={"notices_EditNotice"} />
           </div>
         </div>
-        <div className="editevent">
+        <div className="editNotice">
           <Trans i18nKey={"news_InputIn"} />
           <CustomDropDown
-            ItemListArray={eventDetailQuery?.data?.result?.languages}
+            ItemListArray={noticeDetailQuery?.data?.result?.languages}
             className={"ms-1"}
             defaultDropDownName={langSelection}
             handleDropDownClick={(e) =>
@@ -115,8 +112,11 @@ export default function Editevent() {
           />
         </div>
       </div>
-   
-      <If condition={eventDetailQuery.isLoading || eventDetailQuery.isFetching} disableMemo>
+      
+      <If
+        disableMemo
+        condition={noticeDetailQuery.isLoading || noticeDetailQuery.isFetching}
+      >
         <Then>
           <Row>
             <SkeletonTheme
@@ -146,15 +146,17 @@ export default function Editevent() {
           </Row>
         </Then>
         <Else>
-          {!eventDetailQuery.isFetching&&<EventForm
-            initialValues={initialValues}
-            vailidationSchema={schema}
-            showTimeInput
-            selectEventDisabled
-            handleSubmit={handleEventUpdate}
-          />}
+          {!!noticeDetailQuery?.data?.result && (
+            <NoticeForm
+              initialValues={initialValues}
+              vailidationSchema={schema}
+              showTimeInput
+              selectNoticeDisabled
+              handleSubmit={handleNoticeUpdate}
+            />
+          )}
         </Else>
       </If>
-    </EventWarper>
+    </NoticeWarper>
   );
 }

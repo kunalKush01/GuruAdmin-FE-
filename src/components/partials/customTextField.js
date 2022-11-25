@@ -13,7 +13,7 @@ const CustomTextFieldWarper = styled.div`
     margin:${(props) => props.margin ?? "auto"} !important;
   }
   label {
-    margin-bottom: 10px;
+    /* margin-bottom: 0px; */
     font: normal normal bold 15px/33px Noto Sans;
   }
   input {

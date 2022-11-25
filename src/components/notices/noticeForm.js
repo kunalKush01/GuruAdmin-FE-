@@ -12,20 +12,27 @@ import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import { useHistory } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createNews } from "../../api/newsApi";
+import { Plus } from "react-feather";
+import AsyncSelectField from "../partials/asyncSelectField";
+import { getGlobalNotice } from "../../api/eventApi";
 
 const FormWaraper = styled.div`
+  .existlabel {
+    margin-bottom: 10px;
+    font: normal normal bold 15px/33px Noto Sans;
+  }
   .FormikWraper {
     padding: 40px;
   }
   .btn-Published {
     text-align: center;
   }
-  .addNews-btn {
+  .addNotice-btn {
     padding: 8px 20px;
     margin-left: 10px;
     font: normal normal bold 15px/20px noto sans;
   }
-  .newsContent {
+  .noticeContent {
     height: 350px;
     overflow: auto;
     ::-webkit-scrollbar {
@@ -39,44 +46,44 @@ const FormWaraper = styled.div`
   }
 `;
 
-export default function NewsForm({
+export default function NoticeForm({
   handleSubmit,
   vailidationSchema,
   initialValues,
   showTimeInput,
+  selectEventDisabled,
 }) {
   const history = useHistory();
   const { t } = useTranslation();
-  const newsQuerClient = useQueryClient();
+  const noticeQuerClient = useQueryClient();
 
-  const newsMutation = useMutation({
+  const noticeMutation = useMutation({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
-      console.log("error=", data);
       if (!data.error) {
-        newsQuerClient.invalidateQueries(["News"])
-        newsQuerClient.invalidateQueries(["NewsDetail"])
-
-        history.push("/news");
+        noticeQuerClient.invalidateQueries(["Notices"])
+        noticeQuerClient.invalidateQueries(["NoticeDetail"])
+        history.push("/notices");
       }
     },
   });
+
   return (
     <FormWaraper className="FormikWraper">
       <Formik
-      // enableReinitialize
-        initialValues={{ ...initialValues }}
-        onSubmit={(e) =>
-          newsMutation.mutate({
-            newsId: e.Id,
+        // enableReinitialize
+        initialValues={initialValues}
+        onSubmit={(e) => {
+          console.log("formSubmitDaqta=", e);
+          noticeMutation.mutate({
+            noticeId: e.Id,
+            baseId: e?.SelectedNotice?.id ?? null,
             title: e.Title,
-            tags: e.Tags,
             body: e.Body,
             publishDate: e.DateTime,
-            publishedBy: e.PublishedBy,
-            imageUrl: "http://newsImage123.co",
-          })
-        }
+            imageUrl: ["http://newsImage123.co"],
+          });
+        }}
         validationSchema={vailidationSchema}
       >
         {(formik) => (
@@ -84,15 +91,23 @@ export default function NewsForm({
             <Row>
               <Col xs={7}>
                 <Row>
-                  <Col>
+                  <Col xs={12}>
                     <CustomTextField
                       label={t("news_label_Title")}
                       name="Title"
                     />
                   </Col>
-                  <Col>
-                    <CustomTextField label={t("news_label_Tags")} name="Tags" />
-                  </Col>
+                  {/* <Col xs={6}>
+                    <AsyncSelectField
+                      name="SelectedEvent"
+                      loadOptions={loadOption}
+                      labelKey={"title"}
+                      valueKey={"id"}
+                      label={t("Notice_select_dropDown")}
+                      placeholder={t("Notice_select_dropDown")}
+                      disabled={selectEventDisabled}
+                    />
+                  </Col> */}
                 </Row>
                 <Row>
                   <Col xs={12}>
@@ -109,14 +124,6 @@ export default function NewsForm({
                         </div>
                         <div></div>
                       </Row> */}
-                <Row>
-                  <Col xs={6}>
-                    <CustomTextField
-                      label={t("news_label_Published")}
-                      name="PublishedBy"
-                    />
-                  </Col>
-                </Row>
               </Col>
               <Col>
                 <FormikCustomDatePicker
@@ -126,8 +133,13 @@ export default function NewsForm({
               </Col>
             </Row>
             <div className="btn-Published ">
-              <Button color="primary" type="submit">
-                <Trans i18nKey={"news_button_Publish"} />
+              <Button color="primary" className="addNotice-btn " type="submit">
+                <span>
+                  <Plus className="me-1" size={15} strokeWidth={4} />
+                </span>
+                <span>
+                  <Trans i18nKey={"notices_AddNotice"} />
+                </span>
               </Button>
             </div>
           </Form>

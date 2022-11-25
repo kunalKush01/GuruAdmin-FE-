@@ -8,7 +8,7 @@ import { setAvailableLang } from "./redux/authSlice";
 import "react-loading-skeleton/dist/skeleton.css";
 
 const App = () => {
-  const selectedLanguage = useSelector((state) => state.auth.selectLangCode);
+  const selectedLanguage = useSelector((state) => state.auth.selectLang);
   const dispatch = useDispatch();
   const languageList = async () => {
     const languageListRes = await authApiInstance.get("/language");
@@ -20,8 +20,8 @@ const App = () => {
   };
   const { i18n } = useTranslation();
   useEffect(() => {
-    i18n.changeLanguage(selectedLanguage);
-  }, [selectedLanguage]);
+    i18n.changeLanguage(selectedLanguage.langCode);
+  }, [selectedLanguage.langCode]);
   useEffect(() => {
     languageList();
   }, []);

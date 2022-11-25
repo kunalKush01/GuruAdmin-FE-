@@ -13,19 +13,18 @@ import moment from "moment";
 import { useHistory } from "react-router-dom";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { If, Then, Else } from "react-if-else-switch";
-import { getAllEvents, getEventDates } from "../../api/eventApi";
-import NoEvent from "../../components/events/noEvent";
-import EventCard from "../../components/events/eventCard";
+import { getAllNotices, getNoticeDates } from "../../api/noticeApi.js";
+import NoNotice from "../../components/notices/noNotice";
+import NoticeCard from "../../components/notices/noticeCard";
 import CustomDatePicker from "../../components/partials/customDatePicker";
-import HinduCalenderDetailCard from "../../components/events/hinduCalenderDetailCard";
-import { useSelector } from "react-redux";
-const EventWarper = styled.div`
+import HinduCalenderDetailCard from "../../components/notices/hinduCalenderDetailCard";
+const NoticeWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
     font: normal normal bold 15px/33px Noto Sans;
   }
-  .addEvent {
+  .addNotice {
     color: #583703;
     display: flex;
     align-items: center;
@@ -37,12 +36,12 @@ const EventWarper = styled.div`
   .btn-Published {
     text-align: center;
   }
-  .addEvent-btn {
+  .addNotice-btn {
     padding: 8px 20px;
     margin-left: 10px;
     font: normal normal bold 15px/20px noto sans;
   }
-  .eventContent {
+  .noticeContent {
     height: 350px;
     overflow: auto;
     ::-webkit-scrollbar {
@@ -57,10 +56,8 @@ const EventWarper = styled.div`
 
 const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-export default function EventList() {
+export default function NoticeList() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
-  const selectedLang= useSelector(state=>state.auth.selectLang)
-
   const periodDropDown = () => {
     switch (dropDownName) {
       case "dashboard_monthly":
@@ -94,36 +91,33 @@ export default function EventList() {
   let startDate = moment(filterStartDate).format("D MMM YYYY");
   let endDate = moment(filterEndDate).utcOffset(0).format("D MMM YYYY");
 
-  const eventQuery = useQuery(
-    ["Events", pagination.page, startDate, endDate,selectedLang.id],
+  const noticeQuery = useQuery(
+    ["Notices", pagination.page, startDate, endDate],
     () =>
-      getAllEvents({
+      getAllNotices({
         ...pagination,
         startDate: filterStartDate,
         endDate: filterEndDate,
-        languageId:selectedLang.id
       }),
     {
       keepPreviousData: true,
     }
   );
 
-  const dateQuery = useQuery(["Dates"], () => getEventDates());
-  const eventDates = useMemo(() => {
+  const dateQuery = useQuery(["Dates"], () => getNoticeDates());
+  const NoticeDates = useMemo(() => {
     return dateQuery?.data?.results?.map((item) => moment(item).toDate()) ?? [];
   }, [dateQuery]);
-  console.log("eventDates=", eventDates);
+  console.log("NoticeDates=", NoticeDates);
 
-  const eventItems = useMemo(
-    () => eventQuery?.data?.results ?? [],
-    [eventQuery]
-  );
+  const NoticeItems = noticeQuery?.data?.results ?? []
+    
+  
   
 
   return (
-    <EventWarper>
+    <NoticeWarper>
       <div className="window nav statusBar body "></div>
-
       <div>
         <div className="d-flex justify-content-between align-items-center ">
           <div className="d-flex justify-content-between align-items-center ">
@@ -132,10 +126,10 @@ export default function EventList() {
               className="me-2"
               onClick={() => history.push("/")}
             />
-            <div className="addEvent">
+            <div className="addNotice">
               <div className="">
                 <div>
-                  <Trans i18nKey={"events_latest_event"} />
+                  <Trans i18nKey={"notices_latest_Notice"} />
                 </div>
                 <div className="filterPeriod">
                   <span>
@@ -145,7 +139,7 @@ export default function EventList() {
               </div>
             </div>
           </div>
-          <div className="addEvent">
+          <div className="addNotice">
             <ChangePeriodDropDown
               // className={"me-0"}
               dropDownName={dropDownName}
@@ -153,20 +147,20 @@ export default function EventList() {
             />
             <Button
               color="primary"
-              className="addEvent-btn"
-              onClick={() => history.push("/events/add")}
+              className="addNotice-btn"
+              onClick={() => history.push("/notices/add")}
             >
               <span>
                 <Plus className="me-1" size={15} strokeWidth={4} />
               </span>
               <span>
-                <Trans i18nKey={"events_AddEvent"} />
+                <Trans i18nKey={"notices_AddNotice"} />
               </span>
             </Button>
           </div>
         </div>
         <div style={{ height: "10px" }}>
-          <If condition={eventQuery.isFetching}>
+          <If condition={noticeQuery.isFetching}>
             <Then>
               <Skeleton
                 baseColor="#ff8744"
@@ -178,8 +172,8 @@ export default function EventList() {
         </div>
         <div>
           <Row className="w-100 m-0"  >
-            <Col xs={9} className="eventContent">
-              <If condition={eventQuery.isLoading} disableMemo >
+            <Col xs={9} className="noticeContent">
+              <If condition={noticeQuery.isLoading} disableMemo >
                 <Then>
                   <SkeletonTheme
                     baseColor="#FFF7E8"
@@ -196,31 +190,31 @@ export default function EventList() {
                   </SkeletonTheme>
                 </Then>
                 <Else>
-                  <If condition={eventItems.length != 0} disableMemo >
+                  <If condition={NoticeItems.length != 0} disableMemo >
                     <Then>
-                      {eventItems.map((item) => {
+                      {NoticeItems.map((item) => {
                         return (
                           <Col xs={12} key={item.id} className={"p-0"} >
-                            <EventCard data={item} />
+                            <NoticeCard data={item} />
                           </Col>
                         );
                       })}
                     </Then>
                     <Else>
-                      <NoEvent />
+                      <NoNotice />
                     </Else>
                   </If>
                 </Else>
               </If>
 
-              <If condition={eventQuery?.data?.totalPages > 1}>
+              <If condition={noticeQuery?.data?.totalPages > 1}>
                 <Then>
                   <Col xs={12} className="mb-2 d-flex justify-content-center">
                     <ReactPaginate
                       nextLabel=""
                       breakLabel="..."
                       previousLabel=""
-                      pageCount={eventQuery?.data?.totalPages || 0}
+                      pageCount={noticeQuery?.data?.totalPages || 0}
                       activeClassName="active"
                       breakClassName="page-item"
                       pageClassName={"page-item"}
@@ -255,7 +249,7 @@ export default function EventList() {
                     <Else>
                       <CustomDatePicker
                         selected={""}
-                        highlightDates={eventDates}
+                        highlightDates={NoticeDates}
                         
                         
                       />
@@ -272,6 +266,6 @@ export default function EventList() {
           </Row>
         </div>
       </div>
-    </EventWarper>
+    </NoticeWarper>
   );
 }

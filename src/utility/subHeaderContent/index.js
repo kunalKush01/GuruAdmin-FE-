@@ -45,6 +45,6 @@ export const subHeaderContent = [
 
   {
     name: "configuration",
-    url: "/Configuration",
+    url: "/configuration",
   },
 ];

@@ -1,4 +1,5 @@
 export const hindiContent = {
+  all:"सभी",
   dashboard: "डैशबोर्ड",
   donation: "दान",
   committment: "प्रतिबद्धता",
@@ -23,6 +24,9 @@ export const hindiContent = {
   monthName_November: "नवंबर",
   monthName_December: "दिसंबर",
   last_login: "पिछला लॉग इन",
+  category:"वर्ग",
+  user:"उपयोगकर्ता",
+  report_Dispute:"रिपोर्ट और विवाद",
 
   // All static content of Dashboard
   dashboard_donationReceived: "दान प्राप्त",
@@ -69,12 +73,28 @@ export const hindiContent = {
   news_popOver_Edit: "संपादन करना",
   news_popOver_Delete: "मिटाना",
 
-
   // All static content of Events
 
   events_AddEvent: "आयोजन जोड़ें",
-  events_latest_event: "आयोजन",
-  events_title_required:"आयोजन का शीर्षक ज़रूरी है",
+  events_latest_event: "ताज़ा आयोजन",
+  events_title_required: "आयोजन का शीर्षक ज़रूरी है",
   events_desc_required: "आयोजन विवरण आवश्यक है",
-  events_select_dropDown:"आयोजन चुनें"
+  events_select_dropDown: "आयोजन चुनें",
+  events_EditEvent: "आयोजन संपादित करें",
+
+  // All static content of Notices
+
+  notices_AddNotice: "सूचना जोड़ें",
+  notices_latest_Notice: "ताज़ा सूचना",
+  notices_title_required: "सूचना का शीर्षक आवश्यक है",
+  notices_desc_required: "सूचना विवरण आवश्यक है",
+  notices_select_dropDown: "सूचना का चयन करें",
+  notices_EditNotice: "सूचना संपादित करें",
+
+  // All static content of Categories
+
+  categories_AddCategory: "श्रेणि जोड़े",
+  categories_latest_Category: "श्रेणियाँ",
+  categories_title_required:"श्रेणी का नाम आवश्यक है",
+  categories_EditCategory: "श्रेणी संपादित करें",
 };
