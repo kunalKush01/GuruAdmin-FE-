@@ -1,25 +1,23 @@
-import { Form, Formik } from "formik";
-import React, { useEffect, useMemo, useState } from "react";
-import CustomTextField from "../../components/partials/customTextField";
-import * as yup from "yup";
-import RichTextField from "../../components/partials/richTextEditorField";
-import styled from "styled-components";
-import { CustomDropDown } from "../../components/partials/customDropDown";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { Trans, useTranslation } from "react-i18next";
-import { Button, Col, Row } from "reactstrap";
-import { useHistory, useParams } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createNews, getNewsDetail, updateNewsDetail } from "../../api/newsApi";
-import { useSelector } from "react-redux";
-import moment from "moment";
-import { ConverFirstLatterToCapital } from "../../utility/formater";
-import he from "he";
+import { useQuery } from "@tanstack/react-query";
+import React, { useState } from "react";
+import { Trans } from "react-i18next";
+import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import { If, Then, Else } from "react-if-else-switch";
+import { useSelector } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
+import { Col, Row } from "reactstrap";
+import styled from "styled-components";
+import * as yup from "yup";
+import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
+import { CustomDropDown } from "../../../components/partials/customDropDown";
+import { ConverFirstLatterToCapital } from "../../../utility/formater";
 
-import { getNoticeDetail, updateNoticeDetail } from "../../api/noticeApi";
-import NoticeForm from "../../components/notices/noticeForm";
+import {
+  getAllMasterCategories,
+  getSubCategoryDetail,
+  updateCategoryDetail
+} from "../../../api/categoryApi";
+import CategoryForm from "../../../components/categories/categoryForm";
 
 const NoticeWarper = styled.div`
   color: #583703;
@@ -35,10 +33,8 @@ const NoticeWarper = styled.div`
 `;
 
 const schema = yup.object().shape({
-  Title: yup.string().required("notices_title_required"),
-  Body: yup.string().required("notices_desc_required"),
-  DateTime: yup.string(),
-});
+  SubCategory: yup.string().required("notices_desc_required"),
+})
 
 const getLangId = (langArray, langSelection) => {
   let languageId;
@@ -52,39 +48,34 @@ const getLangId = (langArray, langSelection) => {
 
 export default function EditNotice() {
   const history = useHistory();
-  const { noticeId } = useParams();
+  const { subCategoryId } = useParams();
 
   const langArray = useSelector((state) => state.auth.availableLang);
-  const selectedLang= useSelector(state=>state.auth.selectLang)
-  const [langSelection, setLangSelection] = useState(selectedLang.name);
-  const noticeDetailQuery = useQuery(
-    ["NoticeDetail", noticeId, langSelection],
+  const selectedLang = useSelector((state) => state.auth.selectLang);
+  const [langSelection, setLangSelection] = useState(ConverFirstLatterToCapital(selectedLang.name));
+  const masterloadOptionQuery = useQuery(
+    ["MasterCategory", selectedLang.id],
     async () =>
-      getNoticeDetail({
-        noticeId,
-        languageId: getLangId(langArray, langSelection,selectedLang.id),
+      await getAllMasterCategories({
+        languageId: selectedLang.id,
       })
   );
-
-  const handleNoticeUpdate = async (payload) => {
-    return updateNoticeDetail({
+  const subCategoryDetailQuery = useQuery(
+    ["SubCategoryDetail", subCategoryId, langSelection],
+    async () =>
+      getSubCategoryDetail({
+        categoryId: subCategoryId,
+        languageId: getLangId(langArray, langSelection),
+      })
+  );
+  
+  const handleCategoryUpdate = async (payload) => {
+    return updateCategoryDetail({
       ...payload,
       languageId: getLangId(langArray, langSelection),
+      categoryId:subCategoryId
     });
   };
-
-  const initialValues = useMemo(() => {
-    return {
-      Id: noticeDetailQuery?.data?.result?.id,
-      Title: noticeDetailQuery?.data?.result?.title,
-      Tags: noticeDetailQuery?.data?.result?.tags,
-      Body: he.decode(noticeDetailQuery?.data?.result?.body ?? ""),
-      PublishedBy: noticeDetailQuery?.data?.result?.publishedBy,
-      DateTime: moment(noticeDetailQuery?.data?.result?.publishDate)
-        .utcOffset("+0530")
-        .toDate(),
-    };
-  }, [noticeDetailQuery]);
 
   return (
     <NoticeWarper>
@@ -93,16 +84,16 @@ export default function EditNotice() {
           <img
             src={arrowLeft}
             className="me-2"
-            onClick={() => history.push("/news")}
+            onClick={() => history.push("/configuration/categories")}
           />
           <div className="editNotice">
-            <Trans i18nKey={"notices_EditNotice"} />
+            <Trans i18nKey={"categories_EditCategory"} />
           </div>
         </div>
         <div className="editNotice">
           <Trans i18nKey={"news_InputIn"} />
           <CustomDropDown
-            ItemListArray={noticeDetailQuery?.data?.result?.languages}
+            ItemListArray={subCategoryDetailQuery?.data?.result?.languages ?? []}
             className={"ms-1"}
             defaultDropDownName={langSelection}
             handleDropDownClick={(e) =>
@@ -112,10 +103,12 @@ export default function EditNotice() {
           />
         </div>
       </div>
-      
+
       <If
         disableMemo
-        condition={noticeDetailQuery.isLoading || noticeDetailQuery.isFetching}
+        condition={
+          masterloadOptionQuery.isLoading || masterloadOptionQuery.isFetching
+        }
       >
         <Then>
           <Row>
@@ -146,15 +139,25 @@ export default function EditNotice() {
           </Row>
         </Then>
         <Else>
-          {!!noticeDetailQuery?.data?.result && (
-            <NoticeForm
-              initialValues={initialValues}
-              vailidationSchema={schema}
-              showTimeInput
-              selectNoticeDisabled
-              handleSubmit={handleNoticeUpdate}
-            />
-          )}
+          {!masterloadOptionQuery?.isLoading &&
+            !subCategoryDetailQuery.isLoading && (
+              <CategoryForm
+                loadOptions={masterloadOptionQuery?.data?.results}
+                placeholder={
+                  subCategoryDetailQuery?.data?.result?.masterCategory.name
+                }
+                CategoryFormName={"MasterCategory"}
+                handleSubmit={handleCategoryUpdate}
+                initialValues={{
+                  Id: subCategoryDetailQuery?.data?.id,
+                  MasterCategory:
+                    subCategoryDetailQuery?.data?.result?.masterCategory,
+                  SubCategory: subCategoryDetailQuery.data.result.name,
+                }}
+                buttonName={"categories_EditCategory"}
+                vailidationSchema={schema}
+              />
+            )}
         </Else>
       </If>
     </NoticeWarper>

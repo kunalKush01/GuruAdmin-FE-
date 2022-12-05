@@ -1,30 +1,24 @@
-import { Form, Formik } from "formik";
 import React, { useMemo, useState } from "react";
 
-import styled from "styled-components";
-import { CustomDropDown } from "../../../components/partials/customDropDown";
-import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
-import { Trans, useTranslation } from "react-i18next";
-import { Button, Col, Row } from "reactstrap";
-import { createNews, getAllNews } from "../../../api/newsApi";
-import NewsCard from "../../../components/news/newsCard";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import ReactPaginate from "react-paginate";
-import { Plus } from "react-feather";
+import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
-import { useHistory } from "react-router-dom";
+import { Plus } from "react-feather";
+import { Trans, useTranslation } from "react-i18next";
+import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import NoNews from "../../../components/news/noNews";
-import { If, Then, Else } from "react-if-else-switch";
+import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
-import AsyncSelectField from "../../../components/partials/asyncSelectField";
+import { useHistory } from "react-router-dom";
+import { Button, Col, Row } from "reactstrap";
+import styled from "styled-components";
 import {
   getAllCategories,
-  getAllMasterCategories,
+  getAllMasterCategories
 } from "../../../api/categoryApi";
-import { CustomReactSelect } from "../../../components/partials/customReactSelect";
-import CategoryCard from "../../../components/categories/categoryCard";
+import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
 import { CategoryListTable } from "../../../components/categories/categoryListTable";
+import { CustomReactSelect } from "../../../components/partials/customReactSelect";
+import NoContent from "../../../components/partials/noContent";
 const NewsWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -63,7 +57,7 @@ const NewsWarper = styled.div`
 
 const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-export default function News() {
+export default function Category() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const periodDropDown = () => {
@@ -167,13 +161,13 @@ export default function News() {
             <Button
               color="primary"
               className="addNews-btn"
-              onClick={() => history.push("/news/add")}
+              onClick={() => history.push("/configuration/categories/add")}
             >
               <span>
                 <Plus className="me-1" size={15} strokeWidth={4} />
               </span>
               <span>
-                <Trans i18nKey={"news_btn_AddNews"} />
+                <Trans i18nKey={"categories_AddCategory"} />
               </span>
             </Button>
           </div>
@@ -209,7 +203,7 @@ export default function News() {
                     <CategoryListTable data={categoryItems} />
                   </Then>
                   <Else>
-                    <NoNews />
+                    <NoContent content="category" />
                   </Else>
                 </If>
               </Else>

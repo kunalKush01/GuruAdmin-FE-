@@ -47,6 +47,8 @@ const FormWaraper = styled.div`
 `;
 
 export default function NoticeForm({
+  plusIconDisable=false,
+  buttonName="",
   handleSubmit,
   vailidationSchema,
   initialValues,
@@ -134,11 +136,11 @@ export default function NoticeForm({
             </Row>
             <div className="btn-Published ">
               <Button color="primary" className="addNotice-btn " type="submit">
-                <span>
+                {!plusIconDisable&&<span>
                   <Plus className="me-1" size={15} strokeWidth={4} />
-                </span>
+                </span>}
                 <span>
-                  <Trans i18nKey={"notices_AddNotice"} />
+                  <Trans i18nKey={`${buttonName}`} />
                 </span>
               </Button>
             </div>

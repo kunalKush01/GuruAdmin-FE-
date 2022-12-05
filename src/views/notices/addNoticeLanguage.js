@@ -52,7 +52,7 @@ export default function AddLanguageNotice() {
 
   const handleNoticeLangUpdate = (payload) => {
     let languageId;
-    langArray.map(async (Item) => {
+    langArray.map(async (Item) => { 
       if (Item.name == langSelection.toLowerCase()) {
         languageId = Item.id;
       }
@@ -62,10 +62,10 @@ export default function AddLanguageNotice() {
   };
 
   const getAvailLangOption = () => {
-    if (eventDetailQuery?.data?.result?.languages && langArray) {
+    if (noticeDetailQuery?.data?.result?.languages && langArray) {
       const option = _.differenceBy(
         langArray,
-        eventDetailQuery?.data?.result?.languages,
+        noticeDetailQuery?.data?.result?.languages,
         "id"
       );
       if (_.isEqual(option, langArray)) {
@@ -133,6 +133,7 @@ export default function AddLanguageNotice() {
           vailidationSchema={schema}
           showTimeInput
           handleSubmit={handleNoticeLangUpdate}
+          buttonName="news_AddLangNews"
         />
       ) : (
         ""

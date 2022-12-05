@@ -152,6 +152,7 @@ export default function EditNotice() {
               vailidationSchema={schema}
               showTimeInput
               selectNoticeDisabled
+              buttonName="notices_EditNotice"
               handleSubmit={handleNoticeUpdate}
             />
           )}

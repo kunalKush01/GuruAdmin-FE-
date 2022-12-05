@@ -3,7 +3,7 @@ export const englishContent = {
   dashboard: "Dashboard",
   donation: "Donation",
   committment: "Committment",
-  daan_peti_collections: "Daan Peti Collections",
+  donation_box: "Donation Box Collections",
   financial_reports: "financial Reports",
   internal_expenses: "internal Expenses",
   events: "events",
@@ -99,4 +99,33 @@ export const englishContent = {
   categories_latest_Category: "Categories",
   categories_title_required:"Category Name is required",
   categories_EditCategory: "Edit Category",
+
+
+  // All static content of Users
+
+  users_AddUser: "Add User",
+  users_latest_User: "Users",
+  users_title_required:"User Name is required",
+  users_mobile_required:"Mobile Number is Required",
+  users_email_required:"Email is Required",
+
+// All static content of Internal Expense
+
+expenses_AddExpenses: "Add Expense",
+expenses_latest_Expenses: "All Expenses",
+expenses_title_required:"Expenses Name is required",
+expenses_mobile_required:"Mobile Number is Required",
+expenses_email_required:"Email is Required",
+
+// All static content of Financial Report 
+report_AddReport: "Financial Report",
+
+// All static content of Donation 
+donation_Donation: "Donation",
+donation_Adddonation:"Add Donation",
+
+// All static content of Donation Box
+DonationBox_DonationBox: "Donation Box Collections",
+DonationBox_AddDonationBox:"Add Donation Box",
+
 };

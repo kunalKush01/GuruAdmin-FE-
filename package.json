@@ -31,6 +31,7 @@
     "cleave.js": "^1.6.0",
     "draft-js": "^0.11.7",
     "draftjs-to-html": "^0.9.1",
+    "env-cmd": "^10.1.0",
     "file-saver": "^2.0.2",
     "flatpickr": "^4.6.3",
     "formik": "^2.2.9",
@@ -101,6 +102,7 @@
   },
   "scripts": {
     "start": "craco start",
+    "start:dev": "env-cmd -f .env.dev craco start",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject",

@@ -3,7 +3,7 @@ export const hindiContent = {
   dashboard: "डैशबोर्ड",
   donation: "दान",
   committment: "प्रतिबद्धता",
-  daan_peti_collections: "दान पेटी संग्रह",
+  donation_box: "दान पेटी संग्रह",
   financial_reports: "वित्तीय रिपोर्ट",
   internal_expenses: "आंतरिक व्यय",
   events: "आयोजन",
@@ -97,4 +97,32 @@ export const hindiContent = {
   categories_latest_Category: "श्रेणियाँ",
   categories_title_required:"श्रेणी का नाम आवश्यक है",
   categories_EditCategory: "श्रेणी संपादित करें",
+
+  // All static content of Users
+
+  users_AddUser: "उपयोगकर्ता जोड़ें",
+  users_latest_User: "उपयोगकर्ता",
+  users_title_required:"उपयोगकर्ता का नाम आवश्यक है",
+  users_mobile_required:"मोबाइल नंबर आवश्यक है",
+  users_email_required:"ईमेल की जरूरत है",
+
+
+  // All static content of Internal Expense
+
+expenses_AddExpenses: "व्यय जोड़ें",
+expenses_latest_Expenses: "सभी व्यय",
+expenses_title_required:"Expenses Name is required",
+expenses_mobile_required:"Mobile Number is Required",
+expenses_email_required:"Email is Required",
+
+// All static content of Financial Report 
+report_AddReport: "वित्तीय रिपोर्ट",
+
+
+// All static content of Donation 
+donation_AddDonation: "दान",
+donation_Adddonation:"दान जोड़ें",
+
+// All static content of Donation Box
+DonationBox_DonationBox: "दान पेटी संग्रह",
 };

@@ -1,20 +1,16 @@
-import { Form, Formik } from "formik";
-import React, { useMemo, useState } from "react";
-import CustomTextField from "../../components/partials/customTextField";
-import * as yup from "yup";
-import RichTextField from "../../components/partials/richTextEditorField";
-import styled from "styled-components";
-import { CustomDropDown } from "../../components/partials/customDropDown";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { Trans, useTranslation } from "react-i18next";
-import { Button, Col, Row } from "reactstrap";
-import { useHistory } from "react-router-dom";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createNews } from "../../api/newsApi";
+import { useQuery } from "@tanstack/react-query";
+import React from "react";
+import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
-import { authApiInstance } from "../../axiosApi/authApiInstans";
-import { createNotice } from "../../api/noticeApi.js";
-import NoticeForm from "../../components/notices/noticeForm";
+import { useHistory } from "react-router-dom";
+import styled from "styled-components";
+import * as yup from "yup";
+import { createSubCategory, getAllMasterCategories } from "../../../api/categoryApi.js";
+import { createNotice } from "../../../api/noticeApi.js";
+import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
+import CategoryForm from "../../../components/categories/categoryForm";
+import { CustomDropDown } from "../../../components/partials/customDropDown";
+import FormikCustomReactSelect from "../../../components/partials/formikCustomReactSelect.js";
 
 const NoticeWraper = styled.div`
   color: #583703;
@@ -29,32 +25,27 @@ const NoticeWraper = styled.div`
   }
 `;
 
-const handleCreateNotice = async (payload) => {
+const handleCreateSubCategory = async (payload) => {
   
-  return createNotice(payload);
+  return createSubCategory(payload);
 };
 const schema = yup.object().shape({
-  Title: yup.string().required("notices_title_required"),  
-  Body: yup.string().required("notices_desc_required"),  
-  DateTime: yup.string(),
-  SelectedNotice:yup.mixed()
+  SubCategory: yup.string().required("notices_desc_required"),
 });
-
-const initialValues = {
-  SelectedNotice: null,
-  Id: "",
-  Title: "",
-  Body: "",  
-  DateTime: new Date(),
-};
- 
 
 export default function AddCategory() {
   const history = useHistory();
   const langArray = useSelector((state) => state.auth.availableLang);
-  const selectedLang= useSelector(state=>state.auth.selectLang)
-  
+  const selectedLang = useSelector((state) => state.auth.selectLang);
 
+  const masterloadOptionQuery = useQuery(
+    ["MasterCategory", selectedLang.id],
+    async () =>
+      await getAllMasterCategories({
+        languageId: selectedLang.id,
+      })
+  );
+console.log("masterloadOptionQuery=",masterloadOptionQuery);
   return (
     <NoticeWraper>
       <div className="d-flex justify-content-between align-items-center ">
@@ -62,10 +53,10 @@ export default function AddCategory() {
           <img
             src={arrowLeft}
             className="me-2"
-            onClick={() => history.push("/notices")}
+            onClick={() => history.push("/configuration/categories")}
           />
           <div className="addNotice">
-            <Trans i18nKey={"notices_AddNotice"} />
+            <Trans i18nKey={"categories_AddCategory"} />
           </div>
         </div>
         <div className="addNotice">
@@ -79,12 +70,23 @@ export default function AddCategory() {
         </div>
       </div>
 
-      <NoticeForm
-        handleSubmit={handleCreateNotice}
-        initialValues={initialValues}
-        vailidationSchema={schema}
-        showTimeInput
-      />
+      {!masterloadOptionQuery.isLoading && !masterloadOptionQuery.isFetching  ? (
+        <CategoryForm
+          loadOptions={masterloadOptionQuery?.data?.results}
+          placeholder={masterloadOptionQuery?.data?.results[0]?.name ?? "All"}
+          CategoryFormName={"MasterCategory"}
+          handleSubmit={handleCreateSubCategory}
+          initialValues={{
+            Id: "",
+            MasterCategory: masterloadOptionQuery?.data?.results[0],
+            SubCategory: "",
+          }}
+          vailidationSchema={schema}
+          buttonName={"categories_AddCategory"}
+        />
+      ) : (
+        ""
+      )}
     </NoticeWraper>
   );
 }

@@ -11,11 +11,11 @@ export const subHeaderContent = [
 
   {
     name: "committment",
-    url: "/committment",
+    url: "/commitment",
   },
   {
-    name: "daan_peti_collections",
-    url: "/daan_peti_collections",
+    name: "donation_box",
+    url: "/donation_box",
   },
 
   {

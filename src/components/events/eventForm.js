@@ -47,6 +47,8 @@ const FormWaraper = styled.div`
 `;
 
 export default function EventForm({
+  buttonName="",
+  plusIconDisable=false,
   handleSubmit,
   vailidationSchema,
   initialValues,
@@ -140,11 +142,11 @@ export default function EventForm({
             </Row>
             <div className="btn-Published ">
               <Button color="primary" className="addEvent-btn " type="submit">
-                <span>
+                {!plusIconDisable&&<span>
                   <Plus className="me-1" size={15} strokeWidth={4} />
-                </span>
+                </span>}
                 <span>
-                  <Trans i18nKey={"events_AddEvent"} />
+                  <Trans i18nKey={`${buttonName}`} />
                 </span>
               </Button>
             </div>

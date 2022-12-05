@@ -18,9 +18,10 @@ import moment from "moment";
 import { current } from "@reduxjs/toolkit";
 import { useHistory } from "react-router-dom";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import NoNews from "../../components/news/noNews";
+import NoNews from "../../components/partials/noContent";
 import { If, Then, Else } from "react-if-else-switch";
 import { useSelector } from "react-redux";
+import NoContent from "../../components/partials/noContent";
 const NewsWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -198,7 +199,7 @@ export default function News() {
                     })}
                   </Then>
                   <Else>
-                    <NoNews />
+                    <NoContent content="news" />
                   </Else>
                 </If>
               </Else>

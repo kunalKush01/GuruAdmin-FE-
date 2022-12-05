@@ -152,6 +152,7 @@ export default function Editevent() {
             showTimeInput
             selectEventDisabled
             handleSubmit={handleEventUpdate}
+            buttonName="events_EditEvent"
           />}
         </Else>
       </If>

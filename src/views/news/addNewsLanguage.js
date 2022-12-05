@@ -67,10 +67,10 @@ export default function AddLanguageNews() {
   };
 
   const getAvailLangOption = () => {
-    if (eventDetailQuery?.data?.result?.languages && langArray) {
+    if (newsDetailQuery?.data?.result?.languages && langArray) {
       const option = _.differenceBy(
         langArray,
-        eventDetailQuery?.data?.result?.languages,
+        newsDetailQuery?.data?.result?.languages,
         "id"
       );
       if (_.isEqual(option, langArray)) {

@@ -12,6 +12,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
 import BtnPopover from "../partials/btnPopover";
+import { deleteNoticeDetail } from "../../api/noticeApi";
 const EventCardWaraper = styled.div`
   .card1 {
     font: normal normal bold 13px/16px Noto Sans;
@@ -67,16 +68,16 @@ function BtnContent({ noticeId }) {
     }
   `;
 
-  const handleDeleteNews = async (payload) => {
-    return deleteNewsDetail(payload);
+  const handleDeleteNotice = async (payload) => {
+    return deleteNoticeDetail(payload);
   };
   const queryCient = useQueryClient();
   const deleteMutation = useMutation({
-    mutationFn: handleDeleteNews,
+    mutationFn: handleDeleteNotice,
     onSuccess: (data) => {
       if (!data.error) {
         console.log("invaldating");
-        queryCient.invalidateQueries(["News"]);
+        queryCient.invalidateQueries(["Notices"]);
       }
     },
   });
@@ -111,8 +112,8 @@ function BtnContent({ noticeId }) {
             Swal.fire({
               title: `<img src="${comfromationIcon}"/>`,
               html: `
-                                      <h3 class="swal-heading">Delete News</h3>
-                                      <p>Are you sure you want to permanently delete the selected news ?</p>
+                                      <h3 class="swal-heading">Delete Notice</h3>
+                                      <p>Are you sure you want to permanently delete the selected notice ?</p>
                                       `,
               showCloseButton: false,
               showCancelButton: true,

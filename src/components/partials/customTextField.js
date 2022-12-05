@@ -41,12 +41,13 @@ export default function CustomTextField({
   return (
     <CustomTextFieldWarper width={width}>
       <FormGroup className="formGroup">
-        <label>{`${label}*`}</label>
+        {label&&<label>{`${label}*`}</label>}
         <InputGroup>
           <input
             type={type}
             className={"form-control  "}
             placeholder={placeholder}            
+            value={field.value}
             {...field}
             {...props}
           />

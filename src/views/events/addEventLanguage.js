@@ -133,6 +133,7 @@ export default function AddLanguageEvent() {
           vailidationSchema={schema}
           showTimeInput
           handleSubmit={handleEventLangUpdate}
+          buttonName={"news_AddLangNews"}
         />
       ) : (
         ""

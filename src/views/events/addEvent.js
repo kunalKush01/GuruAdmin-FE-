@@ -82,6 +82,7 @@ export default function AddEvent() {
         initialValues={initialValues}
         vailidationSchema={schema}
         showTimeInput
+        buttonName="events_AddEvent"
       />
     </EventWraper>
   );

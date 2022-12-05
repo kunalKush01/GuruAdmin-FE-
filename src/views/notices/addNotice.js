@@ -84,6 +84,7 @@ export default function AddNotice() {
         initialValues={initialValues}
         vailidationSchema={schema}
         showTimeInput
+        buttonName="notices_AddNotice"
       />
     </NoticeWraper>
   );

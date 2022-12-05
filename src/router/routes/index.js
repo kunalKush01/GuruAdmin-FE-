@@ -9,6 +9,14 @@ const DefaultRoute = "/dashboard";
 // ** Merge Routes
 const Routes = [
   {
+    path: "/login",
+    component: lazy(() => import("../../views/login/login.js")),
+    layout: "BlankLayout",
+    meta: {
+      authRoute: true,
+    },
+  },
+  {
     path: "/dashboard",
     component: lazy(() => import("../../views/dashboard/dashboard")),
     
@@ -76,26 +84,74 @@ const Routes = [
   {
     path: '/configuration/categories',
     component: lazy(() => import('../../views/configuration/categories/categoryList')),
-    // exact:true
+    exact:true
   },
   
-  // {
-  //   path: '/configuration/categories/add',
-  //   component: lazy(() => import('../../views/configuration/categories/addCategory')),
-  //   // exact:true
-  // },
-  // {
-  //   path: '/configuration/categories/edit',
-  //   component: lazy(() => import('../../views/configuration/categories/editCategory')),
-  //   // exact:true
-  // },
   {
-    path: "/login",
-    component: lazy(() => import("../../views/login/login.js")),
-    layout: "BlankLayout",
-    meta: {
-      authRoute: true,
-    },
+    path: '/configuration/categories/add',
+    component: lazy(() => import('../../views/configuration/categories/addCategory')),
+    // exact:true
+  },
+  {
+    path: '/configuration/categories/edit/:subCategoryId',
+    component: lazy(() => import('../../views/configuration/categories/editCategory')),
+    // exact:true
+  },
+  {
+    path: '/configuration/categories/add-language/:subCategoryId',
+    component: lazy(() => import('../../views/configuration/categories/addCategoryLanguage')),
+    // exact:true
+  },
+  {
+    path: '/configuration/users',
+    component: lazy(() => import('../../views/configuration/users/userList')),
+    exact:true
+  },
+  
+  {
+    path: '/configuration/users/add',
+    component: lazy(() => import('../../views/configuration/users/addUser')),
+    // exact:true
+  },
+  {
+    path: '/internal_expenses',
+    component: lazy(() => import('../../views/internalExpenses/expensesList')),
+    exact:true
+  },
+  {
+    path: '/internal_expenses/add',
+    component: lazy(() => import('../../views/internalExpenses/addExpenses.js')),
+    // exact:true
+  },
+  {
+    path: '/internal_expenses/edit/:expensesId',
+    component: lazy(() => import('../../views/internalExpenses/editExpenses.js')),
+    // exact:true
+  },
+  {
+    path: '/financial_reports',
+    component: lazy(() => import('../../views/financialReport/reportList.js')),
+    exact:true
+  },
+  {
+    path: '/donation',
+    component: lazy(() => import('../../views/donation/donationList.js')),
+    exact:true
+  },
+  {
+    path: '/commitment',
+    component: lazy(() => import('../../views/commitments/commitmentList.js')),
+    exact:true
+  },
+  {
+    path: '/donation_box',
+    component: lazy(() => import('../../views/DonationBox/donationBoxList.js')),
+    exact:true
+  },
+  {
+    path: '/donation_box/add',
+    component: lazy(() => import('../../views/DonationBox/addDonationBox.js')),
+    // exact:true
   },
 ];
 

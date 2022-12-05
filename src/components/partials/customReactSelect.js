@@ -58,7 +58,7 @@ export const CustomReactSelect = ({label,
     control: (provided) => {
       return {
         ...provided,
-        width:"200px",
+        width:`${props.width??"200px"}`,
         color: "grey",
         border: "1px solid white",
         backgroundColor: `${props.outlined?"":"#FFF7E8"}`,
@@ -99,19 +99,18 @@ export const CustomReactSelect = ({label,
 
   return (
     <div>
-      <ReactSelect
+      {props.labelName&&<div style={{font: "normal normal bold 15px/33px Noto Sans"}} >{props.labelName}*</div>}
+      <ReactSelect      
         isDisabled={props.disabled}
         isMulti={multiple}
         name={props.name}
         debounceTimeout={300}
-        cacheOptions
-        defaultOptions
+        cacheOptions        
         placeholder={placeholder}
         isClearable={isClearable}
         options={loadOptions}
         getOptionValue={(option) => option[valueKey]}
-        getOptionLabel={(option) => option[labelKey]}
-        value={props.value}
+        getOptionLabel={(option) => option[labelKey]}        
         styles={customStyles}
         
         {...props}

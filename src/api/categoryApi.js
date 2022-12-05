@@ -1,10 +1,10 @@
 import { API_BASE_URL } from "../axiosApi/authApiInstans";
 import { callApi } from "../utility/utils/callApi";
 
-export const createEvent = (payload) =>
+export const createSubCategory = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}event/create`, payload),
+      axios.post(`${API_BASE_URL}donation-category/create`, payload),
     successCode: 200,
   });
 
@@ -30,31 +30,31 @@ export const getAllCategories = (payload) =>
     showToastOnError: false,
   });
 
-export const getEventDetail = (payload) =>
+export const getSubCategoryDetail = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}event/get-event`, payload),
+      axios.post(`${API_BASE_URL}donation-category/get`, payload),
     showToastOnSuccess: false,
     showToastOnError: false,
   });
 
-export const updateEventDetail = (payload) =>
+export const updateCategoryDetail = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}event/update`, payload),
+      axios.post(`${API_BASE_URL}donation-category/update`, payload),
   });
 
 
-  export const addLangEventDetail = (payload) =>
+  export const addLangCategoryDetail = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}event/add-language`, payload),
+      axios.post(`${API_BASE_URL}donation-category/add-language`, payload),
   });
 
 
 
-  export const deleteEventDetail = (payload) =>
+  export const deleteCategoryDetail = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.delete(`${API_BASE_URL}event/delete/${payload}`, ),
+      axios.delete(`${API_BASE_URL}donation-category/delete/${payload}`, ),
   });
