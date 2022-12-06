@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { store } from "../store";
 export const login = createAsyncThunk("Auth", async (data, thunkApi) => {
   const res = await authApiInstance.post("auth/login", data);
-  console.log(res.data.data);
+  
   return res.data.data;
 });
 

@@ -4,9 +4,10 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import * as yup from "yup";
+import { createBoxCollection } from "../../api/donationBoxCollectionApi";
 import { createExpense } from "../../api/expenseApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import ExpensesForm from "../../components/internalExpenses/expensesForm";
+import DonationBoxForm from "../../components/DonationBox/donationBoxForm";
 
 const NewsWarper = styled.div`
   color: #583703;
@@ -21,20 +22,19 @@ const NewsWarper = styled.div`
   }
 `;
 
-const handleCreateExpense = async (payload) => {
-  return createExpense(payload);
+const handleCollectionBox = async (payload) => {
+  return createBoxCollection(payload);
 };
 const schema = yup.object().shape({
-  Title: yup.string().required("news_title_required"),
-  AddedBy: yup.string().required("news_tags_required"),
+  CreatedBy: yup.string().required("news_tags_required"),
   Amount: yup.string().required("news_tags_required"),
   Body: yup.string().required("news_desc_required"),
   DateTime: yup.string(),
 });
 
 const initialValues = {
-  Title: "",
-  AddedBy: "admin",
+  Id:"",
+  CreatedBy: "admin",
   Body: "",
   Amount: "",
   DateTime: new Date(),
@@ -51,10 +51,10 @@ export default function AddNews() {
           <img
             src={arrowLeft}
             className="me-2"
-            onClick={() => history.push("/news")}
+            onClick={() => history.push("/donation_box")}
           />
           <div className="addNews">
-            <Trans i18nKey={"expenses_AddExpenses"} />
+            <Trans i18nKey={"Add Collection Box"} />
           </div>
         </div>
         {/* <div className="addNews">
@@ -68,12 +68,12 @@ export default function AddNews() {
         </div> */}
       </div>
 
-      <ExpensesForm
-        handleSubmit={handleCreateExpense}
+      <DonationBoxForm
+        handleSubmit={handleCollectionBox}
         initialValues={initialValues}
         vailidationSchema={schema}
         showTimeInput
-        buttonName="expenses_AddExpenses"
+        buttonName="Add Collection Box"
       />
     </NewsWarper>
   );
