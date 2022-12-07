@@ -72,7 +72,7 @@ export default function DonationBoxForm({
       console.log("error=", data);
       if (!data.error) {
         newsQuerClient.invalidateQueries(["Collections"]);
-        newsQuerClient.invalidateQueries(["CollectionDetail"]);
+        newsQuerClient.invalidateQueries(["BoxCollectionDetail"]);
 
         
 
@@ -109,14 +109,14 @@ export default function DonationBoxForm({
                     />
                   </Col> */}
                   <Col>
-                    <CustomTextField label={t("Created By")} name="AddedBy" disabled />
+                    <CustomTextField label={t("created_by")} name="CreatedBy" disabled />
                   </Col>
                 </Row>
                 <Row>
                   <Col xs={12}>
                     <RichTextField
                       height="100px"
-                      label={t("Add Remarks")}
+                      label={t("add_remarks")}
                       name="Body"
                     />
                   </Col>
@@ -126,7 +126,7 @@ export default function DonationBoxForm({
                   <Row>
                     <Col>
                     <div className="ImagesVideos">
-                      <Trans i18nKey={"Add Amount"} />
+                      <Trans i18nKey={"add_amount"} />
                     </div>
                     </Col>
                   </Row>
@@ -159,7 +159,7 @@ export default function DonationBoxForm({
 
                   <Col xs={6}  >
                     <CustomTextField
-                      placeholder={t("Enter Price Manually")}
+                      placeholder={t("enter_price_manually")}
                       name="Amount"
                     />
                   </Col>

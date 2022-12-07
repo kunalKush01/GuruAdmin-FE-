@@ -6,7 +6,10 @@ import editIcon from "../../assets/images/icons/donationBox/editIcon.svg";
 import donationBoxDesIcon from "../../assets/images/icons/donationBox/donationBoxDesIcon.png";
 import { Button } from "bootstrap";
 import moment from "moment";
-
+import { useHistory } from "react-router-dom";
+import lockIcon from "../../assets/images/icons/donationBox/Lock.svg"
+import he from "he"
+import { Item } from "react-contexify";
 
 const ReportListCardWraper = styled.div`
   
@@ -36,9 +39,13 @@ const ReportListCardWraper = styled.div`
     }
   }
   .time{
+    p{
+      margin: 0;
+    }
     font: normal normal 600 10px/20px Noto Sans;
     img{
       width: 15px ;
+      margin-right: 5px;
     }
     span{
       color: #FF8744;
@@ -47,7 +54,8 @@ const ReportListCardWraper = styled.div`
   }
 `;
 
-export default function ReportListCard({data=""}) {
+export default function BoxListCard({data="" }) {
+  const history = useHistory();
   return (
     <ReportListCardWraper >
       <Card>
@@ -55,7 +63,7 @@ export default function ReportListCard({data=""}) {
           <Row className=" d-flex justify-content-between w-100 m-0" >
           <Col xs={2} className="p-0 d-flex justify-content-center" >
               <div style={{ width: "30px" }} >
-          <img src={editIcon} className="w-100"  />
+          <img src={lockIcon} className="w-100"  />
 
               </div>
             </Col>
@@ -69,8 +77,9 @@ export default function ReportListCard({data=""}) {
           <div className="time">
             <span>Time :</span>  {moment(data.collectionDate).utcOffset(0).format("h:mm a")}
           </div>
-          <div className="time">
-            <img src={donationBoxDesIcon}  />  {data.remarks}
+          <div className="time d-flex align-items-center justify-content-between "  >
+            <img src={donationBoxDesIcon} width={10} /> 
+             <div dangerouslySetInnerHTML={{__html:he.decode(data.remarks)}} />
           </div>
         <CardFooter className="w-100" >
           <div>
@@ -81,7 +90,10 @@ export default function ReportListCard({data=""}) {
             </Col>
             <Col xs={2} className="p-0 d-flex justify-content-center" >
               <div style={{ width: "30px" }} >
-          <img src={editIcon} className="w-100"  />
+          <img src={editIcon} className="w-100 cursor-pointer"
+           onClick={() => history.push(`/donation_box/edit/${data.id}`)}
+           
+           />
 
               </div>
             </Col>

@@ -60,7 +60,7 @@ export default function AddEvent() {
           <img
             src={arrowLeft}
             className="me-2"
-            onClick={() => history.push("/news")}
+            onClick={() => history.push("/events")}
           />
           <div className="addEvent">
             <Trans i18nKey={"events_AddEvent"} />

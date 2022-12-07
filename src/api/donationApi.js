@@ -1,10 +1,10 @@
 import { API_BASE_URL } from "../axiosApi/authApiInstans";
 import { callApi } from "../utility/utils/callApi";
 
-export const createNews = (payload) =>
+export const createDonation = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}news/create`, payload),
+      axios.post(`${API_BASE_URL}donation/create`, payload),
     successCode: 200,
   });
 

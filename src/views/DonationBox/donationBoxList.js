@@ -11,19 +11,12 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
-import {
-  getAllMasterCategories
-} from "../../api/categoryApi";
-import { getAllExpense } from "../../api/expenseApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { CategoryListTable } from "../../components/categories/categoryListTable";
-import NoNews from "../../components/partials/noContent";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
-import { ExpensesListTable } from "../../components/internalExpenses/expensesListTable";
-import ReportListCard  from "../../components/DonationBox/ReportListCard.js";
 
-import NoContent from "../../components/partials/noContent";
 import { getAllBoxCollection } from "../../api/donationBoxCollectionApi";
+import BoxListCard from "../../components/DonationBox/BoxListCard.js";
+import NoContent from "../../components/partials/noContent";
 const NewsWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -161,7 +154,7 @@ export default function Expenses() {
                 <Plus className="me-1" size={15} strokeWidth={4} />
               </span>
               <span>
-                <Trans i18nKey={"DonationBox_AddDonationBox"} />
+                <Trans i18nKey={"DonationBox_AddCollectionBox"} />
               </span>
             </Button>
           </div>
@@ -199,7 +192,7 @@ export default function Expenses() {
                       
                       
                       return    <Col  xs={3} >
-                          <ReportListCard key={item.id} data={item} />
+                          <BoxListCard key={item.id} data={item} />
                           </Col>                     
                     })
                   }

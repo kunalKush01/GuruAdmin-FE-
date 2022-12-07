@@ -39,6 +39,7 @@ export const hindiContent = {
   dashboard_yearly: "सालाना",
   dashboard_daily: "रोज",
 
+  dashboard_card_title3:"सब्सक्राइब किए गए उपयोगकर्ता",
   dashboard_Recent_DonationCommitment: "हाल के दान/प्रतिबद्धता",
   dashboard_Recent_DonorName: "दाता का नाम",
   dashboard_Recent_DonorNumber: "मोबाइल नंबर",
@@ -94,10 +95,13 @@ export const hindiContent = {
   // All static content of Categories
 
   categories_AddCategory: "श्रेणि जोड़े",
+  categories_serial_number:"क्रम संख्या",
+  categories_master_category:"मास्टर श्रेणी",
+  categories_sub_category:"उप श्रेणी",
   categories_latest_Category: "श्रेणियाँ",
   categories_title_required:"श्रेणी का नाम आवश्यक है",
   categories_EditCategory: "श्रेणी संपादित करें",
-
+  categories_select_master_category:"मास्टर श्रेणी का चयन करें",
   // All static content of Users
 
   users_AddUser: "उपयोगकर्ता जोड़ें",
@@ -110,19 +114,37 @@ export const hindiContent = {
   // All static content of Internal Expense
 
 expenses_AddExpenses: "व्यय जोड़ें",
+expenses_EditExpenses:"व्यय संपादित करें",
+expence_description:"वर्णन",
 expenses_latest_Expenses: "सभी व्यय",
-expenses_title_required:"Expenses Name is required",
-expenses_mobile_required:"Mobile Number is Required",
-expenses_email_required:"Email is Required",
-
+expenses_title_required:"व्यय का नाम आवश्यक है",
+expenses_mobile_required:"मोबाइल नंबर आवश्यक है",
+expenses_email_required:"ई-मेल आवश्यक है",
+added_by:"द्वारा जोड़ा",
 // All static content of Financial Report 
 report_AddReport: "वित्तीय रिपोर्ट",
 
 
 // All static content of Donation 
-donation_AddDonation: "दान",
+donation_Donation: "दान",
 donation_Adddonation:"दान जोड़ें",
 
 // All static content of Donation Box
 DonationBox_DonationBox: "दान पेटी संग्रह",
+edit_collection:"संग्रह संपादित करें",
+DonationBox_AddCollectionBox:"संग्रह जोड़ें",
+DonationBox_AddDonationBox:"दान पेटी जोड़ें",
+created_by:"के द्वारा बनाई गई",
+enter_price_manually:"मूल्य मैन्युअल रूप से दर्ज करें",
+add_remarks:"टिप्पणी जोड़ें",
+DonationBox_EditCollectionBox:"संग्रह बॉक्स संपादित करें",
+add_amount:"राशि जोड़ें",
+
+// All static commitment data 
+add_commitment:"प्रतिबद्धता जोड़ें",
+edit_commitment:"प्रतिबद्धता संपादित करें",
+commitment_Username:"उपयोगकर्ता नाम",
+commitment_end_Date:"अंतिम तिथि ",
+commitment_Amount_Due:"देय राशि  ",
+
 };

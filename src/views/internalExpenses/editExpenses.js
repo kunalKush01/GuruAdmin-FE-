@@ -63,10 +63,10 @@ export default function AddNews() {
           <img
             src={arrowLeft}
             className="me-2"
-            onClick={() => history.push("/news")}
+            onClick={() => history.push("/internal_expenses")}
           />
           <div className="addNews">
-            <Trans i18nKey={"expenses_AddExpenses"} />
+            <Trans i18nKey={"expenses_EditExpenses"} />
           </div>
         </div>
         {/* <div className="addNews">

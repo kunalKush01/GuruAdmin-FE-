@@ -26,7 +26,7 @@ const handleCollectionBox = async (payload) => {
   return createBoxCollection(payload);
 };
 const schema = yup.object().shape({
-  CreatedBy: yup.string().required("news_tags_required"),
+  // CreatedBy: yup.string().required("news_tags_required"),
   Amount: yup.string().required("news_tags_required"),
   Body: yup.string().required("news_desc_required"),
   DateTime: yup.string(),
@@ -54,7 +54,7 @@ export default function AddNews() {
             onClick={() => history.push("/donation_box")}
           />
           <div className="addNews">
-            <Trans i18nKey={"Add Collection Box"} />
+            <Trans i18nKey={"DonationBox_AddDonationBox"} />
           </div>
         </div>
         {/* <div className="addNews">
@@ -73,7 +73,7 @@ export default function AddNews() {
         initialValues={initialValues}
         vailidationSchema={schema}
         showTimeInput
-        buttonName="Add Collection Box"
+        buttonName="DonationBox_AddCollectionBox"
       />
     </NewsWarper>
   );

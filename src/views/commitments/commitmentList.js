@@ -1,7 +1,6 @@
-import React, { useMemo, useState } from "react";
-
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
+import React, { useMemo, useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
@@ -11,18 +10,11 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
-import {
-  getAllMasterCategories
-} from "../../api/categoryApi";
-import { getAllExpense } from "../../api/expenseApi";
+import { getAllCommitments } from "../../api/commitmentApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { CategoryListTable } from "../../components/categories/categoryListTable";
-import NoContent from "../../components/partials/noContent";
-import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
-import { ExpensesListTable } from "../../components/internalExpenses/expensesListTable";
-import { getAllDonation } from "../../api/donationApi";
-import { DonationListTable } from "../../components/donation/donationListTable";
 import { CommitmentListTable } from "../../components/commitments/commitmentListTable";
+import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
+import NoContent from "../../components/partials/noContent";
 const NewsWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -58,8 +50,6 @@ const NewsWarper = styled.div`
     font: normal normal bold 13px/5px noto sans;
   }
 `;
-
-
 
 export default function Expenses() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
@@ -98,34 +88,37 @@ export default function Expenses() {
   let startDate = moment(filterStartDate).format("D MMM YYYY");
   let endDate = moment(filterEndDate).utcOffset(0).format("D MMM YYYY");
 
-  const expensesQuery = useQuery(
-    ["Donation", pagination.page, selectedLang.id,filterStartDate,filterEndDate],
+  const commitmentQuery = useQuery(
+    [
+      "Commitments",
+      pagination.page,
+      selectedLang.id,
+      filterEndDate,
+      filterStartDate,
+    ],
     () =>
-      getAllDonation({
+      getAllCommitments({
         ...pagination,
         startDate: filterStartDate,
         endDate: filterEndDate,
         languageId: selectedLang.id,
-        
       }),
     {
       keepPreviousData: true,
     }
   );
 
-  const categoryItems = useMemo(
-    () => expensesQuery?.data?.results ?? [],
-    [expensesQuery]
+  const commitmentItems = useMemo(
+    () => commitmentQuery?.data?.results ?? [],
+    [commitmentQuery]
   );
-
-  
 
   return (
     <NewsWarper>
       <div className="window nav statusBar body "></div>
 
       <div>
-      <div className="d-flex justify-content-between align-items-center ">
+        <div className="d-flex justify-content-between align-items-center ">
           <div className="d-flex justify-content-between align-items-center ">
             <img
               src={arrowLeft}
@@ -135,7 +128,7 @@ export default function Expenses() {
             <div className="addNews">
               <div className="">
                 <div>
-                  <Trans i18nKey={"donation_AddDonation"} />
+                  <Trans i18nKey={"committment"} />
                 </div>
                 <div className="filterPeriod">
                   <span>
@@ -154,19 +147,20 @@ export default function Expenses() {
             <Button
               color="primary"
               className="addNews-btn"
-              onClick={() => history.push("/donation/add")}
+              onClick={() => history.push("/commitment/add")}
             >
               <span>
                 <Plus className="me-1" size={15} strokeWidth={4} />
               </span>
               <span>
-                <Trans i18nKey={"donation_Adddonation"} />
+                <Trans i18nKey={"add_commitment"} />
               </span>
             </Button>
           </div>
         </div>
         <div style={{ height: "10px" }}>
-          <If condition={expensesQuery.isFetching}>
+
+          <If condition={commitmentQuery.isFetching}>
             <Then>
               <Skeleton
                 baseColor="#ff8744"
@@ -178,7 +172,7 @@ export default function Expenses() {
         </div>
         <div className="newsContent  ">
           <Row>
-            <If condition={expensesQuery.isLoading} disableMemo>
+            <If condition={commitmentQuery.isLoading} disableMemo>
               <Then>
                 <SkeletonTheme
                   baseColor="#FFF7E8"
@@ -191,25 +185,25 @@ export default function Expenses() {
                 </SkeletonTheme>
               </Then>
               <Else>
-                <If condition={categoryItems.length != 0} disableMemo>
+                <If condition={commitmentItems.length != 0} disableMemo>
                   <Then>
-                    <CommitmentListTable data={categoryItems} />
+                    <CommitmentListTable data={commitmentItems} />
                   </Then>
                   <Else>
-                    <NoContent content="commitment" />
+                    <NoContent content="expense" />
                   </Else>
                 </If>
               </Else>
             </If>
 
-            <If condition={expensesQuery?.data?.totalPages > 1}>
+            <If condition={commitmentQuery?.data?.totalPages > 1}>
               <Then>
                 <Col xs={12} className="mb-2 d-flex justify-content-center">
                   <ReactPaginate
                     nextLabel=""
                     breakLabel="..."
                     previousLabel=""
-                    pageCount={expensesQuery?.data?.totalPages || 0}
+                    pageCount={commitmentQuery?.data?.totalPages || 0}
                     activeClassName="active"
                     breakClassName="page-item"
                     pageClassName={"page-item"}

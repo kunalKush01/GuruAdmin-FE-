@@ -4,9 +4,9 @@ export const englishContent = {
   donation: "Donation",
   committment: "Committment",
   donation_box: "Donation Box Collections",
-  financial_reports: "financial Reports",
-  internal_expenses: "internal Expenses",
-  events: "events",
+  financial_reports: "Financial Reports",
+  internal_expenses: "Internal Expenses",
+  events: "Events",
   news: "News",
   notices: "Notices",
   configuration: "Configuration",
@@ -38,6 +38,7 @@ export const englishContent = {
   dashboard_yearly: "Yearly",
   dashboard_daily: "Daily",
 
+  dashboard_card_title3:"Subscribed User",
   dashboard_Recent_DonationCommitment: "Recent Donations/Commitment",
   dashboard_Recent_DonorName: "Donor Name",
   dashboard_Recent_DonorNumber: "Mobile Number",
@@ -96,11 +97,14 @@ export const englishContent = {
   // All static content of Categories
 
   categories_AddCategory: "Add Category",
+  categories_serial_number:"Serial Number",
+  categories_master_category:"Master Category",
+  categories_sub_category:"Sub Category",
   categories_latest_Category: "Categories",
   categories_title_required:"Category Name is required",
   categories_EditCategory: "Edit Category",
-
-
+  categories_select_master_category:"Select Master Category",
+  categories_sub_category:"Sub Category",
   // All static content of Users
 
   users_AddUser: "Add User",
@@ -112,11 +116,13 @@ export const englishContent = {
 // All static content of Internal Expense
 
 expenses_AddExpenses: "Add Expense",
+expenses_EditExpenses:"Edit Expense",
+expence_description:" Description",
 expenses_latest_Expenses: "All Expenses",
 expenses_title_required:"Expenses Name is required",
 expenses_mobile_required:"Mobile Number is Required",
 expenses_email_required:"Email is Required",
-
+added_by:"Added By",
 // All static content of Financial Report 
 report_AddReport: "Financial Report",
 
@@ -124,8 +130,22 @@ report_AddReport: "Financial Report",
 donation_Donation: "Donation",
 donation_Adddonation:"Add Donation",
 
+
 // All static content of Donation Box
 DonationBox_DonationBox: "Donation Box Collections",
-DonationBox_AddDonationBox:"Add Donation Box",
+DonationBox_AddCollectionBox:"Add Collection ",
+DonationBox_EditCollectionBox:"Edit Collection ",
+created_by:"Created By",
+edit_collection:"Edit Collection",
+enter_price_manually:"Enter Price Manually",
+add_remarks:"Add Remarks",
+add_amount:"Add Amount",
+DonationBox_AddDonationBox:"Add Donation Box ",
+
+// All Commitment Data 
+commitment_Username:"Username",
+add_commitment:"Add Commitment",
+commitment_end_Date:"End Date ",
+commitment_Amount_Due:"Amount Due",
 
 };

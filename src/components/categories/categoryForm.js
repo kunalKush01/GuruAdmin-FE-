@@ -104,7 +104,7 @@ export default function CategoryForm({
                 <Row>
                   <Col>
                     <FormikCustomReactSelect
-                      labelName={t("Select Master Category")}
+                      labelName={t("categories_select_master_category")}
                       name={CategoryFormName}
                       labelKey={"name"}
                       valueKey="id"
@@ -115,7 +115,7 @@ export default function CategoryForm({
                   </Col>
                   <Col>
                     <CustomTextField
-                      label={t("Sub Category")}
+                      label={t("categories_sub_category")}
                       name="SubCategory"
                     />
                   </Col>

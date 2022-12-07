@@ -139,10 +139,25 @@ const Routes = [
     exact:true
   },
   {
+    path: '/donation/add',
+    component: lazy(() => import('../../views/donation/addDonation')),
+    exact:true
+  },
+  // {
+  //   path: '/donation/add',
+  //   component: lazy(() => import('../../views/donation/')),
+  //   exact:true
+  // },
+  {
     path: '/commitment',
     component: lazy(() => import('../../views/commitments/commitmentList.js')),
     exact:true
   },
+  // {
+  //   path: '/commitment/add',
+  //   component: lazy(() => import('../../views/commitments/commitmentList.js')),
+  //   exact:true
+  // },
   {
     path: '/donation_box',
     component: lazy(() => import('../../views/DonationBox/donationBoxList.js')),
@@ -151,6 +166,11 @@ const Routes = [
   {
     path: '/donation_box/add',
     component: lazy(() => import('../../views/DonationBox/addDonationBox.js')),
+    // exact:true
+  },
+  {
+    path: '/donation_box/edit/:donationBoxId',
+    component: lazy(() => import('../../views/DonationBox/editDonationBox')),
     // exact:true
   },
 ];

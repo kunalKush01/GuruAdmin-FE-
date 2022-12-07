@@ -31,27 +31,27 @@ export function ExpensesListTable({ data }) {
 
   const columns = [
     {
-      name: t("Serial Number"),
+      name: t("categories_serial_number"),
       selector: (row) => row.id,
       style: {
         font: "normal normal bold 10px/20px noto sans !important ",
       },
     },
     {
-      name: t("Title"),
+      name: t("news_label_Title"),
       selector: (row) => row.title,
     },
     {
-      name: t("Description"),
+      name: t("expence_description"),
       selector: (row) => row.description,
     },
 
     {
-      name: t("Date & Time"),
+      name: t("dashboard_Recent_DonorDate"),
       selector: (row) => row.dateTime,
     },
     {
-      name: t("Amount"),
+      name: t("dashboard_Recent_DonorAmount"),
       selector: (row) => row.amount,
     },
     {
@@ -76,6 +76,7 @@ export function ExpensesListTable({ data }) {
         <img
           src={editIcon}
           width={35}
+          className="cursor-pointer"
           onClick={() =>
             history.push(`/internal_expenses/edit/${item.id}`)
           }
@@ -85,6 +86,7 @@ export function ExpensesListTable({ data }) {
         <img
           src={deleteIcon}
           width={35}
+          className="cursor-pointer"
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();

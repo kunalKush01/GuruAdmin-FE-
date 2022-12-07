@@ -110,7 +110,7 @@ export default function ExpensesForm({
                     />
                   </Col>
                   <Col>
-                    <CustomTextField label={t("Added By")} name="AddedBy" disabled />
+                    <CustomTextField label={t("added_by")} name="AddedBy" disabled />
                   </Col>
                 </Row>
                 <Row>

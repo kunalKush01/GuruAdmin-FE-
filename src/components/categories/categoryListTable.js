@@ -31,28 +31,33 @@ export function CategoryListTable({ data }) {
 
   const columns = [
     {
-      name: t("Serial Number"),
+      name: t("categories_serial_number"),
       selector: (row) => row.id,
+      width:"200px",
       style: {
         font: "normal normal bold 10px/20px noto sans !important ",
       },
     },
     {
-      name: t("Master Category"),
+      name: t("categories_master_category"),
       selector: (row) => row.masterCategory,
+      width:"220px",
     },
     {
-      name: t("Sub Category"),
+      name: t("categories_sub_category"),
       selector: (row) => row.subCategory,
+      width:"675px"
     },
 
     {
       name: "",
       selector: (row) => row.addLanguage,
+      width:"250px"
     },
     {
       name: "",
       selector: (row) => row.editCategory,
+      width:"120px"
     },
     {
       name: "",

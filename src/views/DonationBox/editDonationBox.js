@@ -17,17 +17,17 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import he from "he";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { If, Then, Else } from "react-if-else-switch";
+import NewsForm from "../../components/news/newsForm";
+import DonationBoxForm from "../../components/DonationBox/donationBoxForm";
+import { getCollectionBoxDetail, updateCollectionBoxDetail } from "../../api/donationBoxCollectionApi";
 
-import { getNoticeDetail, updateNoticeDetail } from "../../api/noticeApi";
-import NoticeForm from "../../components/notices/noticeForm";
-
-const NoticeWarper = styled.div`
+const NewsWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
     font: normal normal bold 15px/33px Noto Sans;
   }
-  .editNotice {
+  .editNews {
     color: #583703;
     display: flex;
     align-items: center;
@@ -35,8 +35,9 @@ const NoticeWarper = styled.div`
 `;
 
 const schema = yup.object().shape({
-  Title: yup.string().required("notices_title_required"),
-  Body: yup.string().required("notices_desc_required"),
+  // CreatedBy: yup.string().required("news_tags_required"),
+  Amount: yup.string().required("news_tags_required"),
+  Body: yup.string().required("news_desc_required"),
   DateTime: yup.string(),
 });
 
@@ -50,73 +51,64 @@ const getLangId = (langArray, langSelection) => {
   return languageId;
 };
 
-export default function EditNotice() {
+export default function EditDonationBox() {
   const history = useHistory();
-  const { noticeId } = useParams();
 
+  const { donationBoxId } = useParams();
+  
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang= useSelector(state=>state.auth.selectLang)
-  const [langSelection, setLangSelection] = useState(selectedLang.name);
-  const noticeDetailQuery = useQuery(
-    ["NoticeDetail", noticeId, langSelection],
+  const [langSelection, setLangSelection] = useState(ConverFirstLatterToCapital(selectedLang.name));
+
+  const collectionBoxDetailQuery = useQuery(
+    ["BoxCollectionDetail", donationBoxId, langSelection,selectedLang.id],
     async () =>
-      getNoticeDetail({
-        noticeId,
-        languageId: getLangId(langArray, langSelection,selectedLang.id),
+      await getCollectionBoxDetail({
+        donationBoxId,
+        languageId: getLangId(langArray, langSelection),
       })
   );
 
-  const handleNoticeUpdate = async (payload) => {
-    return updateNoticeDetail({
+  
+
+  const handleUpdate = async (payload) => {
+    return updateCollectionBoxDetail({
       ...payload,
       languageId: getLangId(langArray, langSelection),
     });
   };
 
-  const initialValues = useMemo(() => {
-    return {
-      Id: noticeDetailQuery?.data?.result?.id,
-      Title: noticeDetailQuery?.data?.result?.title,
-      Tags: noticeDetailQuery?.data?.result?.tags,
-      Body: he.decode(noticeDetailQuery?.data?.result?.body ?? ""),
-      PublishedBy: noticeDetailQuery?.data?.result?.publishedBy,
-      DateTime: moment(noticeDetailQuery?.data?.result?.publishDate)
+  
+
+  const initialValues = useMemo(()=>{
+    return  {
+       
+        Id:collectionBoxDetailQuery.data?.result?.id,
+        CreatedBy: collectionBoxDetailQuery.data?.result?.createdBy?.name,
+        Body: he.decode(collectionBoxDetailQuery.data?.result?.remarks),
+        Amount: collectionBoxDetailQuery.data?.result?.amount,
+        DateTime: moment(collectionBoxDetailQuery.data?.result?.publishDate)
         .utcOffset("+0530")
         .toDate(),
+      
     };
-  }, [noticeDetailQuery]);
+  },[collectionBoxDetailQuery])
 
   return (
-    <NoticeWarper>
+    <NewsWarper>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
             src={arrowLeft}
             className="me-2"
-            onClick={() => history.push("/notices ")}
+            onClick={() => history.push("/donation_box")}
           />
-          <div className="editNotice">
-            <Trans i18nKey={"notices_EditNotice"} />
+          <div className="editNews">
+            <Trans i18nKey={"DonationBox_EditCollectionBox"} />
           </div>
         </div>
-        <div className="editNotice">
-          <Trans i18nKey={"news_InputIn"} />
-          <CustomDropDown
-            ItemListArray={noticeDetailQuery?.data?.result?.languages}
-            className={"ms-1"}
-            defaultDropDownName={langSelection}
-            handleDropDownClick={(e) =>
-              setLangSelection(ConverFirstLatterToCapital(e.target.name))
-            }
-            // disabled
-          />
-        </div>
       </div>
-      
-      <If
-        disableMemo
-        condition={noticeDetailQuery.isLoading || noticeDetailQuery.isFetching}
-      >
+      <If condition={collectionBoxDetailQuery.isLoading || collectionBoxDetailQuery.isFetching} diableMemo >
         <Then>
           <Row>
             <SkeletonTheme
@@ -146,18 +138,17 @@ export default function EditNotice() {
           </Row>
         </Then>
         <Else>
-          {!!noticeDetailQuery?.data?.result && (
-            <NoticeForm
-              initialValues={initialValues}
-              vailidationSchema={schema}
-              showTimeInput
-              selectNoticeDisabled
-              buttonName="notices_EditNotice"
-              handleSubmit={handleNoticeUpdate}
-            />
-          )}
+          
+          {!collectionBoxDetailQuery.isFetching&&
+          <DonationBoxForm
+            buttonName={"edit_collection"}
+            vailidationSchema={schema}
+            initialValues={initialValues}
+            showTimeInput
+            handleSubmit={handleUpdate}
+          />}
         </Else>
       </If>
-    </NoticeWarper>
+    </NewsWarper>
   );
 }

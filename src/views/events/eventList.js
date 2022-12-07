@@ -135,7 +135,7 @@ export default function EventList() {
             <div className="addEvent">
               <div className="">
                 <div>
-                  <Trans i18nKey={"events_latest_event"} />
+                  <Trans i18nKey={"events"} />
                 </div>
                 <div className="filterPeriod">
                   <span>

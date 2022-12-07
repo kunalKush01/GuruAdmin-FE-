@@ -150,7 +150,7 @@ export default function Expenses() {
               dropDownName={dropDownName}
               setdropDownName={(e) => setdropDownName(e.target.name)}
             />
-            <Button
+            {/* <Button
               color="primary"
               className="addNews-btn"
               onClick={() => history.push("/internal_expenses/add")}
@@ -161,7 +161,7 @@ export default function Expenses() {
               <span>
                 <Trans i18nKey={"expenses_AddExpenses"} />
               </span>
-            </Button>
+            </Button> */}
           </div>
         </div>
         <div style={{ height: "10px" }}>

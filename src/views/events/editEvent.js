@@ -96,7 +96,7 @@ export default function Editevent() {
           <img
             src={arrowLeft}
             className="me-2"
-            onClick={() => history.push("/news")}
+            onClick={() => history.push("/events")}
           />
           <div className="editevent">
             <Trans i18nKey={"events_EditEvent"} />

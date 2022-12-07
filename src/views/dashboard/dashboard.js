@@ -21,11 +21,14 @@ import { useState } from "react";
 import styled from "styled-components";
 import { CustomDropDown } from "../../components/partials/customDropDown";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
+import CustomCard from "../../components/partials/customCard";
+import custcardImage3 from "../../assets/images/icons/dashBoard/Group 24887.svg";
+import { useHistory } from "react-router-dom";
 const Home = () => {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   
   const { t } = useTranslation();
-  
+  const history = useHistory();
 
  
   return (
@@ -34,7 +37,7 @@ const Home = () => {
       dropDownName={dropDownName}
       setdropDownName={(e)=>setdropDownName(e.target.name)}
       />
-      <div className="d-flex justify-content-between ">
+      <div className="d-flex justify-content-between mt-1 ">
         <OrdersReceived
           statTitle={t("dashboard_donationReceived")}
           stats={525000}
@@ -50,6 +53,16 @@ const Home = () => {
           stats={525000}
           warning={"primary"}
         />
+        <div 
+          className="cursor-pointer"
+          onClick={() => history.push("/subscribed-user")}
+        >
+        <CustomCard
+          cardTitle={t("dashboard_card_title3")}
+          cardNumber={558487}
+          cardImage={custcardImage3}
+        />
+        </div>
       </div>
 
       <RevenueChart />

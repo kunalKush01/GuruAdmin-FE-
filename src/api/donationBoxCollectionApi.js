@@ -15,18 +15,18 @@ export const getAllBoxCollection = (payload) =>
     showToastOnError: false,
   });
 
-export const getNewsDetail = (payload) =>
+export const getCollectionBoxDetail = ({donationBoxId}) =>
   callApi({
     requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}news/get-news`, payload),
+      axios.get(`${API_BASE_URL}donation-box/${donationBoxId}`),
     showToastOnSuccess: false,
     showToastOnError: false,
   });
 
-export const updateNewsDetail = (payload) =>
+export const updateCollectionBoxDetail = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}news/update`, payload),
+      axios.post(`${API_BASE_URL}donation-box/update`, payload),
   });
 
 

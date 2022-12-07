@@ -11,19 +11,13 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
-import {
-  getAllMasterCategories
-} from "../../api/categoryApi";
-import { getAllExpense } from "../../api/expenseApi";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { CategoryListTable } from "../../components/categories/categoryListTable";
-import NoNews from "../../components/partials/noContent";
-import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
-import { ExpensesListTable } from "../../components/internalExpenses/expensesListTable";
 import { getAllDonation } from "../../api/donationApi";
-import { DonationListTable } from "../../components/donation/donationListTable";
+import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import DonationListTable from "../../components/donation/donationListTable";
+import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
 import NoContent from "../../components/partials/noContent";
-const NewsWarper = styled.div`
+
+const DoationWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
@@ -98,8 +92,8 @@ export default function Expenses() {
   let startDate = moment(filterStartDate).format("D MMM YYYY");
   let endDate = moment(filterEndDate).utcOffset(0).format("D MMM YYYY");
 
-  const expensesQuery = useQuery(
-    ["Donation", pagination.page, selectedLang.id,filterStartDate,filterEndDate],
+  const donationQuery = useQuery(
+    ["donations", pagination.page, selectedLang.id,filterEndDate,filterStartDate],
     () =>
       getAllDonation({
         ...pagination,
@@ -113,15 +107,15 @@ export default function Expenses() {
     }
   );
 
-  const categoryItems = useMemo(
-    () => expensesQuery?.data?.results ?? [],
-    [expensesQuery]
+  const donationItems = useMemo(
+    () => donationQuery?.data?.results ?? [],
+    [donationQuery]
   );
 
   
 
   return (
-    <NewsWarper>
+    <DoationWarper>
       <div className="window nav statusBar body "></div>
 
       <div>
@@ -135,7 +129,7 @@ export default function Expenses() {
             <div className="addNews">
               <div className="">
                 <div>
-                  <Trans i18nKey={"donation_AddDonation"} />
+                  <Trans i18nKey={"donation_Donation"} />
                 </div>
                 <div className="filterPeriod">
                   <span>
@@ -166,7 +160,7 @@ export default function Expenses() {
           </div>
         </div>
         <div style={{ height: "10px" }}>
-          <If condition={expensesQuery.isFetching}>
+          <If condition={donationQuery.isFetching}>
             <Then>
               <Skeleton
                 baseColor="#ff8744"
@@ -178,7 +172,7 @@ export default function Expenses() {
         </div>
         <div className="newsContent  ">
           <Row>
-            <If condition={expensesQuery.isLoading} disableMemo>
+            <If condition={donationQuery.isLoading} disableMemo>
               <Then>
                 <SkeletonTheme
                   baseColor="#FFF7E8"
@@ -191,25 +185,25 @@ export default function Expenses() {
                 </SkeletonTheme>
               </Then>
               <Else>
-                <If condition={categoryItems.length != 0} disableMemo>
+                <If condition={donationItems.length != 0} disableMemo>
                   <Then>
-                    <DonationListTable data={categoryItems} />
+                    <DonationListTable data={donationItems} />
                   </Then>
                   <Else>
-                    <NoContent content="donation" />
+                    <NoContent content="expense" />
                   </Else>
                 </If>
               </Else>
             </If>
 
-            <If condition={expensesQuery?.data?.totalPages > 1}>
+            <If condition={donationQuery?.data?.totalPages > 1}>
               <Then>
                 <Col xs={12} className="mb-2 d-flex justify-content-center">
                   <ReactPaginate
                     nextLabel=""
                     breakLabel="..."
                     previousLabel=""
-                    pageCount={expensesQuery?.data?.totalPages || 0}
+                    pageCount={donationQuery?.data?.totalPages || 0}
                     activeClassName="active"
                     breakClassName="page-item"
                     pageClassName={"page-item"}
@@ -233,6 +227,6 @@ export default function Expenses() {
           </Row>
         </div>
       </div>
-    </NewsWarper>
+    </DoationWarper>
   );
 }
