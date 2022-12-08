@@ -34,11 +34,12 @@ const schema = yup.object().shape({
 });
 
 const initialValues = {
-  Id:"",
-  CreatedBy: "admin",
-  Body: "",
+  Mobile:"",
+  SelectedUser: "",
+  DonarName: "",
   Amount: "",
-  DateTime: new Date(),
+  SelectedMasterCategory:"",
+  SelectedSubCategory:""
 };
 
 export default function AddNews() {

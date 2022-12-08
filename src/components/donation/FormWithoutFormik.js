@@ -1,0 +1,191 @@
+import { Form, Formik } from "formik";
+import React, { useEffect, useMemo, useState } from "react";
+import CustomTextField from "../partials/customTextField";
+import * as yup from "yup";
+import RichTextField from "../partials/richTextEditorField";
+import styled from "styled-components";
+import { CustomDropDown } from "../partials/customDropDown";
+import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import { Trans, useTranslation } from "react-i18next";
+import { Button, ButtonGroup, Col, Row } from "reactstrap";
+import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
+import { useHistory } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { createNews } from "../../api/newsApi";
+import { Plus } from "react-feather";
+import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
+import AsyncSelectField from "../partials/asyncSelectField";
+import { findAllUsersByName, findAllUsersByNumber } from "../../api/findUser";
+import { useSelector } from "react-redux";
+import {
+  getAllMasterCategories,
+  getAllSubCategories,
+} from "../../api/expenseApi";
+import { CustomReactSelect } from "../partials/customReactSelect";
+import { useUpdateEffect } from "react-use";
+
+export default function FormWithoutFormik({
+  formik,
+  masterloadOptionQuery,
+  buttonName,
+  ...props
+}) {
+  const { t } = useTranslation();
+
+  const { SelectedMasterCategory, SelectedSubCategory } = formik.values;
+  const [subLoadOption, setsubLoadOption] = useState([]);
+console.log("subLoadOption",subLoadOption);
+  const loadOption = async (name) => {
+    const res = await findAllUsersByName({ name: name });
+    return res.results;
+  };
+  useEffect(() => {
+    const res = async () => {
+      const apiRes = await getAllSubCategories({ masterId: SelectedMasterCategory?.id });
+      console.log();
+      setsubLoadOption(apiRes?.results);
+    };
+    res();
+  }, [SelectedMasterCategory]);
+
+  // useUpdateEffect(()=>{
+  //   const results = async()=>{
+  //     cosnt res= await findAllUsersByNumber({ mobileNumber: mobileNumber });
+  //     return res.results;
+  //   }
+  // },[UserName])
+
+  useUpdateEffect(() => {
+    const user = formik?.values?.SelectedUser;
+    if (user) {
+      formik.setFieldValue("Mobile", user.mobileNumber);
+    }
+  }, [formik?.values?.SelectedUser]);
+
+  return (
+    <Form>
+      <Row>
+        <Col xs={12}>
+          <Row>
+            <Col xs={4}>
+              
+              <AsyncSelectField
+                name="SelectedUser"
+                loadOptions={loadOption}
+                labelKey={"name"}
+                valueKey={"id"}
+                label={t("UserName")}
+                placeholder={t("Select User Name")}
+                defaultOptions
+              />
+            </Col>
+            <Col xs={4}>
+            <CustomTextField
+                label={t("Mobile")}
+                name="Mobile"
+              />
+            </Col>
+            <Col xs={4}>
+              <CustomTextField label={t("news_label_Title")} name="Title" />
+            </Col>
+            <Col xs={4}>
+              <FormikCustomReactSelect
+                labelName={t("categories_select_master_category")}
+                name={"SelectedMasterCategory"}
+                labelKey={"name"}
+                valueKey="id"
+                loadOptions={masterloadOptionQuery?.data?.results}
+                width={"100"}
+              />
+            </Col>
+            <Col xs={4}>
+              <FormikCustomReactSelect
+                labelName={t("news_label_Title")}
+                loadOptions={subLoadOption}
+                name={"SelectedSubCategory"}
+                labelKey={"name"}
+                labelValue={"id"}
+                width
+              />
+            </Col>
+            <Col xs={4}>
+              <CustomTextField label={t("news_label_Title")} name="Title" />
+            </Col>
+          </Row>
+          <Row></Row>
+          <Row>
+            <Col>
+              <Row>
+                <Col>
+                  <div className="ImagesVideos">
+                    <Trans i18nKey={"add_amount"} />
+                  </div>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Button
+                    className="p-4 w-100 "
+                    onClick={() => formik.setFieldValue("Amount", "1000")}
+                  >
+                    1000
+                  </Button>
+                </Col>
+                <Col>
+                  <Button
+                    className="p-4 w-100 "
+                    onClick={() => formik.setFieldValue("Amount", "2000")}
+                  >
+                    2000
+                  </Button>
+                </Col>
+                <Col>
+                  <Button
+                    className="p-4 w-100 "
+                    onClick={() => formik.setFieldValue("Amount", "5000")}
+                  >
+                    5000
+                  </Button>
+                </Col>
+                <Col>
+                  <Button
+                    className="p-4 w-100 "
+                    onClick={() => formik.setFieldValue("Amount", "10000")}
+                  >
+                    10000
+                  </Button>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+
+          <Row className="mt-1">
+            <Row>
+              <Col className="text-center">or</Col>
+            </Row>
+            <Row className="justify-content-center">
+              <Col xs={6}>
+                <CustomTextField
+                  placeholder={t("enter_price_manually")}
+                  name="Amount"
+                />
+              </Col>
+            </Row>
+          </Row>
+        </Col>
+      </Row>
+      <div className="btn-Published ">
+        <Button color="primary" className="addNotice-btn " type="submit">
+          {!props.plusIconDisable && (
+            <span>
+              <Plus className="me-1" size={15} strokeWidth={4} />
+            </span>
+          )}
+          <span>
+            <Trans i18nKey={`${buttonName}`} />
+          </span>
+        </Button>
+      </div>
+    </Form>
+  );
+}

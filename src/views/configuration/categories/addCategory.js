@@ -45,7 +45,6 @@ export default function AddCategory() {
         languageId: selectedLang.id,
       })
   );
-console.log("masterloadOptionQuery=",masterloadOptionQuery);
   return (
     <NoticeWraper>
       <div className="d-flex justify-content-between align-items-center ">

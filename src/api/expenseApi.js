@@ -8,17 +8,25 @@ export const createExpense = (payload) =>
     successCode: 200,
   });
 
-
-  export const getAllMasterCategories = (payload) =>
-  
+export const getAllMasterCategories = (payload) =>
   callApi({
-    requestFunction: (axios) => axios.post(`${API_BASE_URL}donation-category/list-master`, payload),
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}donation-category/list-master`, payload),
     showToastOnSuccess: false,
     showToastOnError: false,
   });
-  export const getEventDates = (payload) =>
+
+  export const getAllSubCategories = (payload) =>
   callApi({
-    requestFunction: (axios) => axios.get(`${API_BASE_URL}event/get-dates`, payload),
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}donation-category`, payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+export const getEventDates = (payload) =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.get(`${API_BASE_URL}event/get-dates`, payload),
     showToastOnSuccess: false,
     showToastOnError: false,
   });
@@ -32,8 +40,7 @@ export const getAllExpense = (payload) =>
 
 export const getExpensesDetail = (payload) =>
   callApi({
-    requestFunction: (axios) =>
-      axios.get(`${API_BASE_URL}expense/${payload}`),
+    requestFunction: (axios) => axios.get(`${API_BASE_URL}expense/${payload}`),
     showToastOnSuccess: false,
     showToastOnError: false,
   });
@@ -44,17 +51,14 @@ export const updateExpensesDetail = (payload) =>
       axios.post(`${API_BASE_URL}expense/update`, payload),
   });
 
-
-  export const addLangCategoryDetail = (payload) =>
+export const addLangCategoryDetail = (payload) =>
   callApi({
     requestFunction: (axios) =>
       axios.post(`${API_BASE_URL}donation-category/add-language`, payload),
   });
 
-
-
-  export const deleteExpensesDetail = (payload) =>
+export const deleteExpensesDetail = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.delete(`${API_BASE_URL}expense/delete/${payload}`, ),
+      axios.delete(`${API_BASE_URL}expense/delete/${payload}`),
   });
