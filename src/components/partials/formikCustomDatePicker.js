@@ -141,7 +141,7 @@ const FormikCustomDatePickerWraper = styled.div`
   }
 `;
 
-export default function FormikCustomDatePicker({ ...props }) {
+export default function FormikCustomDatePicker({ label,...props }) {
 
   const [field, meta, helpers] = useField(props.name);
 
@@ -150,10 +150,11 @@ export default function FormikCustomDatePicker({ ...props }) {
 
   return (
     <FormikCustomDatePickerWraper>
-      <label >
+      {/* <label >
         <Trans i18nKey={"news_label_Date"} />
       </label>
-      
+       */}
+      {label&&<label>{`${label}*`}</label>}
       <DatePicker 
        
         selected={field.value}

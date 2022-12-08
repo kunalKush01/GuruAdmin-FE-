@@ -1,10 +1,10 @@
 import { API_BASE_URL } from "../axiosApi/authApiInstans";
 import { callApi } from "../utility/utils/callApi";
 
-export const createSubCategory = (payload) =>
+export const createCommitment = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}donation-category/create`, payload),
+      axios.post(`${API_BASE_URL}commitment/create`, payload),
     successCode: 200,
   });
 
@@ -30,18 +30,18 @@ export const getAllCommitments = (payload) =>
     showToastOnError: false,
   });
 
-export const getSubCategoryDetail = (payload) =>
+export const getCommitmentDetail = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}donation-category/get`, payload),
+      axios.post(`${API_BASE_URL}commitment/get-commitment`, payload),
     showToastOnSuccess: false,
     showToastOnError: false,
   });
 
-export const updateCategoryDetail = (payload) =>
+export const updateCommitmentDetail = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}donation-category/update`, payload),
+      axios.post(`${API_BASE_URL}commitment/update`, payload),
   });
 
 
@@ -53,8 +53,8 @@ export const updateCategoryDetail = (payload) =>
 
 
 
-  export const deleteCategoryDetail = (payload) =>
+  export const deleteCommitment = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.delete(`${API_BASE_URL}donation-category/delete/${payload}`, ),
+      axios.delete(`${API_BASE_URL}commitment/delete/${payload}`, ),
   });

@@ -22,7 +22,7 @@ import {
   getAllSubCategories,
 } from "../../api/expenseApi";
 import { CustomReactSelect } from "../partials/customReactSelect";
-import FormWithoutFormik from "./FormWithoutFormik";
+import FormWithoutFormikForDonation from "./FormWithoutFormikForDonation";
 
 const FormWaraper = styled.div`
   .FormikWraper {
@@ -92,8 +92,8 @@ export default function DonationForm({
     onSuccess: (data) => {
       console.log("error=", data);
       if (!data.error) {
-        newsQuerClient.invalidateQueries(["Collections"]);
-        newsQuerClient.invalidateQueries(["CollectionDetail"]);
+        newsQuerClient.invalidateQueries(["donations"]);
+        // newsQuerClient.invalidateQueries(["CollectionDetail"]);
 
         history.push("/donation_box");
       }
@@ -107,27 +107,29 @@ export default function DonationForm({
           // enableReinitialize
           initialValues={{
             ...initialValues,
-            MasterCategory: "",
-            SubCategory: "",
+            
           }}
           onSubmit={(e) =>
             newsMutation.mutate({
-              collectionId: e?.Id,
+              categoryId: e?.SelectedSubCategory?.id,
               amount: e?.Amount,
-              remarks: e?.Body,
-              collectionDate: e?.DateTime,
+              masterCategoryId: e?.SelectedMasterCategory?.id,
+              mobileNumber: e?.Mobile,
             })
           }
           validationSchema={vailidationSchema}
         >
           {(formik) => (
-            <FormWithoutFormik
+            <>
+            {JSON.stringify(formik.errors)}
+            <FormWithoutFormikForDonation
               formik={formik}
               masterloadOptionQuery={masterloadOptionQuery}
               plusIconDisable
               buttonName={buttonName}
               
             />
+            </>
           )}
         </Formik>
       )}

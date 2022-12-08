@@ -4,9 +4,9 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import * as yup from "yup";
-import { createDonation } from "../../api/donationApi";
+import { createCommitment } from "../../api/commitmentApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import DonationForm from "../../components/donation/donationForm";
+import CommitmentForm from "../../components/commitments/commitmentForm";
 
 const NewsWarper = styled.div`
   color: #583703;
@@ -21,9 +21,8 @@ const NewsWarper = styled.div`
   }
 `;
 
-const handleCreateDonation = async (payload) => {
-  
-  return createDonation(payload);
+const handleCreateCommitment = async (payload) => {
+  return createCommitment(payload);
 };
 const schema = yup.object().shape({
   Mobile: yup.string().required("expenses_mobile_required"),
@@ -32,6 +31,7 @@ const schema = yup.object().shape({
   SelectedMasterCategory: yup.object().required("masterCategory_required"),
   SelectedSubCategory: yup.object(),  
   Amount:yup.string().required("amount_required"),
+  
 });
 
 
@@ -48,6 +48,7 @@ export default function AddNews() {
     SelectedSubCategory:"",
     createdBy:loggedInUser,
     Amount:"",
+    DateTime:new Date()
   };
   return (
     <NewsWarper>
@@ -56,29 +57,19 @@ export default function AddNews() {
           <img
             src={arrowLeft}
             className="me-2"
-            onClick={() => history.push("/donation")}
+            onClick={() => history.push("/commitment")}
           />
           <div className="addNews">
-            <Trans i18nKey={"DonationBox_AddDonationBox"} />
+            <Trans i18nKey={"add_commitment"} />
           </div>
         </div>
-        {/* <div className="addNews">
-          <Trans i18nKey={"news_InputIn"} />
-          <CustomDropDown
-            ItemListArray={langArray}
-            className={"ms-1"}
-            defaultDropDownName={"English"}
-            disabled
-          />
-        </div> */}
       </div>
-
-      <DonationForm
-        handleSubmit={handleCreateDonation}
+      <CommitmentForm
+        handleSubmit={handleCreateCommitment}
         initialValues={initialValues}
         vailidationSchema={schema}
         showTimeInput
-        buttonName="DonationBox_AddCollectionBox"
+        buttonName="add_commitment"
       />
     </NewsWarper>
   );

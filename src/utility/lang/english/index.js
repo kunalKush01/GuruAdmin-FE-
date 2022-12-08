@@ -103,8 +103,19 @@ export const englishContent = {
   categories_latest_Category: "Categories",
   categories_title_required:"Category Name is required",
   categories_EditCategory: "Edit Category",
-  categories_select_master_category:"Select Master Category",
+  categories_select_category:"Select Category",
   categories_sub_category:"Sub Category",
+  categories_select_amount:"Select Amount",
+  category_select_sub_category:"Select Sub Category",
+  categories_select_user_name:"Select User Name",
+  category_select:"Select",
+
+  donar_name_required:"Donor name is Required",
+  created_by_required:"Created by is Required",
+  user_select_required:"Please Select a User",
+  masterCategory_required:"Please Select a Master Category",
+  created_by_required:"Created By is required",
+  amount_required:"Amount is required",
   // All static content of Users
 
   users_AddUser: "Add User",
@@ -129,8 +140,7 @@ report_AddReport: "Financial Report",
 // All static content of Donation 
 donation_Donation: "Donation",
 donation_Adddonation:"Add Donation",
-
-
+donation_select_date_time:"Select Date & Time",
 // All static content of Donation Box
 DonationBox_DonationBox: "Donation Box Collections",
 DonationBox_AddCollectionBox:"Add Collection ",
@@ -145,7 +155,8 @@ DonationBox_AddDonationBox:"Add Donation Box ",
 // All Commitment Data 
 commitment_Username:"Username",
 add_commitment:"Add Commitment",
+edit_commitment:"Edit Commitment",
 commitment_end_Date:"End Date ",
 commitment_Amount_Due:"Amount Due",
-
+commitment_select_end_date:"Select End Date",
 };

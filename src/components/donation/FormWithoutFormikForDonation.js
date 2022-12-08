@@ -24,7 +24,7 @@ import {
 import { CustomReactSelect } from "../partials/customReactSelect";
 import { useUpdateEffect } from "react-use";
 
-export default function FormWithoutFormik({
+export default function FormWithoutFormikForDonation({
   formik,
   masterloadOptionQuery,
   buttonName,
@@ -34,7 +34,7 @@ export default function FormWithoutFormik({
 
   const { SelectedMasterCategory, SelectedSubCategory } = formik.values;
   const [subLoadOption, setsubLoadOption] = useState([]);
-console.log("subLoadOption",subLoadOption);
+
   const loadOption = async (name) => {
     const res = await findAllUsersByName({ name: name });
     return res.results;
@@ -45,7 +45,8 @@ console.log("subLoadOption",subLoadOption);
       console.log();
       setsubLoadOption(apiRes?.results);
     };
-    res();
+    
+    SelectedMasterCategory&&res();
   }, [SelectedMasterCategory]);
 
   // useUpdateEffect(()=>{
@@ -67,30 +68,30 @@ console.log("subLoadOption",subLoadOption);
       <Row>
         <Col xs={12}>
           <Row>
-            <Col xs={4}>
-              
+          <Col xs={4}>
+            <CustomTextField
+                label={t("dashboard_Recent_DonorNumber")}
+                name="Mobile"
+                
+              />
+            </Col>
+            <Col xs={4}> 
               <AsyncSelectField
                 name="SelectedUser"
                 loadOptions={loadOption}
                 labelKey={"name"}
                 valueKey={"id"}
-                label={t("UserName")}
-                placeholder={t("Select User Name")}
+                label={t("commitment_Username")}
+                placeholder={t("categories_select_user_name")}
                 defaultOptions
               />
             </Col>
             <Col xs={4}>
-            <CustomTextField
-                label={t("Mobile")}
-                name="Mobile"
-              />
-            </Col>
-            <Col xs={4}>
-              <CustomTextField label={t("news_label_Title")} name="Title" />
+              <CustomTextField label={t("dashboard_Recent_DonorName")} name="donarName" />
             </Col>
             <Col xs={4}>
               <FormikCustomReactSelect
-                labelName={t("categories_select_master_category")}
+                labelName={t("categories_select_category")}
                 name={"SelectedMasterCategory"}
                 labelKey={"name"}
                 valueKey="id"
@@ -100,7 +101,7 @@ console.log("subLoadOption",subLoadOption);
             </Col>
             <Col xs={4}>
               <FormikCustomReactSelect
-                labelName={t("news_label_Title")}
+                labelName={t("category_select_sub_category")}
                 loadOptions={subLoadOption}
                 name={"SelectedSubCategory"}
                 labelKey={"name"}
@@ -109,7 +110,7 @@ console.log("subLoadOption",subLoadOption);
               />
             </Col>
             <Col xs={4}>
-              <CustomTextField label={t("news_label_Title")} name="Title" />
+              <CustomTextField label={t("created_by")} name="createdBy" disabled />
             </Col>
           </Row>
           <Row></Row>
@@ -118,7 +119,7 @@ console.log("subLoadOption",subLoadOption);
               <Row>
                 <Col>
                   <div className="ImagesVideos">
-                    <Trans i18nKey={"add_amount"} />
+                    <Trans i18nKey={"categories_select_amount"} />
                   </div>
                 </Col>
               </Row>

@@ -13,17 +13,18 @@ import { deleteExpensesDetail } from "../../api/expenseApi";
 import he from "he";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import moment from "moment";
+import { deleteCommitment } from "../../api/commitmentApi";
 
 export function CommitmentListTable({ data }) {
   const handleDeleteExpenses = async (payload) => {
-    return deleteExpensesDetail(payload);
+    return deleteCommitment(payload);
   };
   const queryCient = useQueryClient();
   const deleteMutation = useMutation({
     mutationFn: handleDeleteExpenses,
     onSuccess: (data) => {
       if (!data.error) {
-        queryCient.invalidateQueries(["Expenses"]);
+        queryCient.invalidateQueries(["Commitments"]);
       }
     },
   });
@@ -109,7 +110,7 @@ export function CommitmentListTable({ data }) {
         ),
         mobileNumber: `+91-${item?.user?.mobileNumber}`,
         donarName: item?.donarName??item.user?.name,
-        category: <div>{item?.masterCategory?.name}{item?.subCategory&&`(${item?.subCategory.name})`}</div>,
+        category: <div>{item?.masterCategory?.name} {item?.category&&`(${item?.category?.name})`}</div>,
         endDate: item?.commitmentEndDate,
         // .utcOffset("+0530")
         // .toDate(),
@@ -123,7 +124,7 @@ export function CommitmentListTable({ data }) {
             src={editIcon}
             width={35}
             className="cursor-pointer"
-            onClick={() => history.push(`/commitment`)}
+            onClick={() => history.push(`/commitment/edit/${item.id}`)}
           />
         ),
         delete: (
