@@ -26,10 +26,10 @@ const handleCreateExpense = async (payload) => {
   return createExpense(payload);
 };
 const schema = yup.object().shape({
-  Title: yup.string().required("news_title_required"),
-  AddedBy: yup.string().required("news_tags_required"),
-  Amount: yup.string().required("news_tags_required"),
-  Body: yup.string().required("news_desc_required"),
+  Title: yup.string().required("expenses_title_required"),
+  // AddedBy: yup.string().required("news_tags_required"),
+  Amount: yup.string().required("expence_amount_required"),
+  Body: yup.string().required("expenses_desc_required"),
   DateTime: yup.string(),
 });
 

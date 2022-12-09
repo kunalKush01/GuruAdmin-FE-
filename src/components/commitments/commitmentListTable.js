@@ -15,7 +15,7 @@ import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import moment from "moment";
 import { deleteCommitment } from "../../api/commitmentApi";
 
-export function CommitmentListTable({ data }) {
+export default function CommitmentListTable({ data }) {
   const handleDeleteCommitment = async (payload) => {
     return deleteCommitment(payload);
   };

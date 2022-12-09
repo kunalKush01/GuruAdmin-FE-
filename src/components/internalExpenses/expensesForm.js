@@ -160,7 +160,7 @@ export default function ExpensesForm({
 
                   <Col xs={6}  >
                     <CustomTextField
-                      placeholder={t("Enter Price Manually")}
+                      placeholder={t("enter_price_manually")}
                       name="Amount"
                     />
                   </Col>

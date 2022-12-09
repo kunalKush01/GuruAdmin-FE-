@@ -12,7 +12,7 @@ import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
 import { getAllCommitments } from "../../api/commitmentApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { CommitmentListTable } from "../../components/commitments/commitmentListTable";
+import  CommitmentListTable  from "../../components/commitments/commitmentListTable";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
 import NoContent from "../../components/partials/noContent";
 const NewsWarper = styled.div`
@@ -38,13 +38,12 @@ const NewsWarper = styled.div`
     margin-left: 10px;
     font: normal normal bold 15px/20px noto sans;
   }
-  .newsContent {
-    height: 350px;
-    overflow: auto;
+  /* .newsContent { */
+    /* height: 350px; */
+    /* overflow: auto; */
     ::-webkit-scrollbar {
       display: none;
     }
-  }
   .filterPeriod {
     color: #ff8744;
     font: normal normal bold 13px/5px noto sans;

@@ -25,7 +25,7 @@ export const englishContent = {
   monthName_December: "December",
   last_login: "Last Logged In",
   category:"Category",
-  user:"User",
+  user:"Admin User",
   report_Dispute:"Report & Dispute",
 
   // All static content of Dashboard
@@ -39,7 +39,7 @@ export const englishContent = {
   dashboard_daily: "Daily",
 
   dashboard_card_title3:"Subscribed User",
-  dashboard_Recent_DonationCommitment: "Recent Donations/Commitment",
+  dashboard_Recent_DonationCommitment: "Recent Donations",
   dashboard_Recent_DonorName: "Donor Name",
   dashboard_Recent_DonorNumber: "Mobile Number",
   dashboard_Recent_DonorType: "Type",
@@ -109,7 +109,7 @@ export const englishContent = {
   category_select_sub_category:"Select Sub Category",
   categories_select_user_name:"Select User Name",
   category_select:"Select",
-
+  categories_select_master_category:"Master Category",
   donar_name_required:"Donor name is Required",
   created_by_required:"Created by is Required",
   user_select_required:"Please Select a User",
@@ -118,24 +118,28 @@ export const englishContent = {
   amount_required:"Amount is required",
   // All static content of Users
 
-  users_AddUser: "Add User",
-  users_latest_User: "Users",
+  users_AddUser: "Add Admin User",
+  users_latest_User: "Admin Users",
   users_title_required:"User Name is required",
   users_mobile_required:"Mobile Number is Required",
   users_email_required:"Email is Required",
 
 // All static content of Internal Expense
-
 expenses_AddExpenses: "Add Expense",
 expenses_EditExpenses:"Edit Expense",
 expence_description:" Description",
 expenses_latest_Expenses: "All Expenses",
-expenses_title_required:"Expenses Name is required",
+expenses_title_required:"Expenses title is required",
 expenses_mobile_required:"Mobile Number is Required",
 expenses_email_required:"Email is Required",
 added_by:"Added By",
+expenses_desc_required:"Expenses Description is Required",
+expence_amount_required:"Expenses Amount is Required",
 // All static content of Financial Report 
 report_AddReport: "Financial Report",
+report_expences:"Expenses",
+report_commitment:"Commitment",
+report_donation_box:"Donation Box",
 
 // All static content of Donation 
 donation_Donation: "Donation",
@@ -151,6 +155,9 @@ enter_price_manually:"Enter Price Manually",
 add_remarks:"Add Remarks",
 add_amount:"Add Amount",
 DonationBox_AddDonationBox:"Add Donation Box ",
+donation_box_desc_required:"Donation Box Description is Required.",
+donation_box_amount_required:"Donation Box Amount is Required.",
+
 
 // All Commitment Data 
 commitment_Username:"Username",
@@ -159,4 +166,14 @@ edit_commitment:"Edit Commitment",
 commitment_end_Date:"End Date ",
 commitment_Amount_Due:"Amount Due",
 commitment_select_end_date:"Select End Date",
+
+// All subscribed user static data
+  subscribed_user_add_user:"Add Subscribed User",
+  subscribed_user_name:"Name",
+  subscribed_user_pan_cardDetail:"PAN card Details",
+  subscribed_user_date_birth:"Date of Birth ",
+  subscribed_user_email:"Email",
+  subscribed_user_address:"Address",
+  user_name:"User Name",
+  
 };

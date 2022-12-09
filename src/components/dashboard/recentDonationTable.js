@@ -35,10 +35,10 @@ export function RecentDonationTable() {
       name: t("dashboard_Recent_DonorCommitId"),
       selector: (row) => row.commitment,
     },
-    {
-      name: t("dashboard_Recent_DonorReceipt"),
-      selector: (row) => row.receipt,
-    },
+    // {
+    //   name: t("dashboard_Recent_DonorReceipt"),
+    //   selector: (row) => row.receipt,
+    // },
     {
       selector: (row) => row.action,
     },

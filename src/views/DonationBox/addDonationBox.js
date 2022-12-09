@@ -27,8 +27,8 @@ const handleCollectionBox = async (payload) => {
 };
 const schema = yup.object().shape({
   // CreatedBy: yup.string().required("news_tags_required"),
-  Amount: yup.string().required("news_tags_required"),
-  Body: yup.string().required("news_desc_required"),
+  Amount: yup.string().required("donation_box_amount_required"),
+  Body: yup.string().required("donation_box_desc_required"),
   DateTime: yup.string(),
 });
 

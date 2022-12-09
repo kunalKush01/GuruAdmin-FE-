@@ -22,6 +22,15 @@ const Routes = [
     
   },
   {
+    path:"/subscribed-user",
+    component:lazy(()=> import("../../views/subscribedUser/subscribedUserList")),
+    exact:true
+  },
+  {
+    path:"/subscribed-user/add",
+    component:lazy(()=> import("../../views/subscribedUser/addSubscribedUser"))
+  },
+  {
     path: '/news',
     component: lazy(() => import('../../views/news/newsList')),
     exact:true

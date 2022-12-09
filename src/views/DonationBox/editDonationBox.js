@@ -77,10 +77,7 @@ export default function EditDonationBox() {
       languageId: getLangId(langArray, langSelection),
     });
   };
-
-  
-
-  const initialValues = useMemo(()=>{
+    const initialValues = useMemo(()=>{
     return  {
        
         Id:collectionBoxDetailQuery?.data?.result?.id,

@@ -25,7 +25,7 @@ export const hindiContent = {
   monthName_December: "दिसंबर",
   last_login: "पिछला लॉग इन",
   category:"वर्ग",
-  user:"उपयोगकर्ता",
+  user:"व्यवस्थापक उपयोगकर्ता",
   report_Dispute:"रिपोर्ट और विवाद",
 
   // All static content of Dashboard
@@ -40,7 +40,7 @@ export const hindiContent = {
   dashboard_daily: "रोज",
 
   dashboard_card_title3:"सब्सक्राइब किए गए उपयोगकर्ता",
-  dashboard_Recent_DonationCommitment: "हाल के दान/प्रतिबद्धता",
+  dashboard_Recent_DonationCommitment: "हाल के दान",
   dashboard_Recent_DonorName: "दाता का नाम",
   dashboard_Recent_DonorNumber: "मोबाइल नंबर",
   dashboard_Recent_DonorType: "टाइप",
@@ -106,20 +106,21 @@ export const hindiContent = {
   category_select_sub_category:"उप श्रेणी का चयन करें",
   categories_select_user_name:"उपयोगकर्ता नाम का चयन करें",
   category_select:"चयन करें",
+  categories_select_master_category:"मास्टर श्रेणी",
 
   donar_name_required:"दाता का नाम आवश्यक है",
   created_by_required:"द्वारा बनाया गया आवश्यक है",
   user_select_required:"उपयोगकर्ता का चयन करना आवश्यक है",
   masterCategory_required:"मास्टर श्रेणि का चयन करना आवश्यक है",  
   created_by_required:"के द्वारा बनाया गया आवश्यक है",
-  amount_required:"राशि आवश्यकता है",
+  amount_required:"राशि आवश्यक है",
   // All static content of Users
 
-  users_AddUser: "उपयोगकर्ता जोड़ें",
-  users_latest_User: "उपयोगकर्ता",
+  users_AddUser: "व्यवस्थापक उपयोगकर्ता जोड़ें",
+  users_latest_User: "व्यवस्थापक उपयोगकर्ता",
   users_title_required:"उपयोगकर्ता का नाम आवश्यक है",
   users_mobile_required:"मोबाइल नंबर आवश्यक है",
-  users_email_required:"ईमेल की जरूरत है",
+  users_email_required:"ईमेल की आवश्यक है",
 
 
   // All static content of Internal Expense
@@ -132,8 +133,13 @@ expenses_title_required:"व्यय का नाम आवश्यक है
 expenses_mobile_required:"मोबाइल नंबर आवश्यक है",
 expenses_email_required:"ई-मेल आवश्यक है",
 added_by:"द्वारा जोड़ा",
+expenses_desc_required:"व्यय विवरण आवश्यक है",
+expence_amount_required:"व्यय राशि आवश्यक है",
 // All static content of Financial Report 
 report_AddReport: "वित्तीय रिपोर्ट",
+report_expences:"खर्च",
+report_commitment:"प्रतिबद्धता",
+report_donation_box:"दान पात्र",
 
 
 // All static content of Donation 
@@ -151,6 +157,8 @@ add_remarks:"टिप्पणी जोड़ें",
 DonationBox_EditCollectionBox:"संग्रह बॉक्स संपादित करें",
 add_amount:"राशि जोड़ें",
 donation_select_date_time:"दिनांक और समय चुनें",
+donation_box_desc_required:"दान पेटी का विवरण आवश्यक है",
+donation_box_amount_required:"दान पेटी राशि की आवश्यकता है",
 
 // All static commitment data 
 add_commitment:"प्रतिबद्धता जोड़ें",
@@ -159,4 +167,13 @@ commitment_Username:"उपयोगकर्ता नाम",
 commitment_end_Date:"अंतिम तिथि ",
 commitment_Amount_Due:"देय राशि  ",
 commitment_select_end_date:"समाप्ति तिथि का चयन करें",
+
+// All subscribed user static data
+subscribed_user_add_user:"सब्स्क्राइब्ड उपयोगकर्ता जोड़ें",
+subscribed_user_name:"नाम",
+subscribed_user_pan_cardDetail:"पैन काड की जानकारीयां",
+subscribed_user_date_birth:"जन्म की तारीख",
+subscribed_user_email:"ई-मेल",
+subscribed_user_address:"पता",
+user_name:"उपयोगकर्ता नाम"
 };

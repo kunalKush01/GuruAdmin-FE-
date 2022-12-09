@@ -36,7 +36,7 @@ const FormWaraper = styled.div`
   }
 `;
 
-export default function UserForm({
+export default function SubscribedUserForm({
   plusIconDisable=false,
   loadOptions,
   handleSubmit,
@@ -54,8 +54,8 @@ export default function UserForm({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
       if (!data.error) {
-        categoryQuerClient.invalidateQueries(["Users"]);        
-        history.push("/configuration/users");
+        categoryQuerClient.invalidateQueries(["subscribedUser"]);        
+        history.push("/subscribed-user");
       }
     },
   });

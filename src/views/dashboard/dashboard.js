@@ -17,7 +17,7 @@ import { useTranslation, Trans } from "react-i18next";
 import { RevenueChart } from "../../utility/revenueChart";
 import { RecentDonationTable } from "../../components/dashboard/recentDonationTable";
 import { TopDonerList } from "../../components/dashboard/topDonerList";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { CustomDropDown } from "../../components/partials/customDropDown";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
@@ -26,11 +26,15 @@ import custcardImage3 from "../../assets/images/icons/dashBoard/Group 24887.svg"
 import { useHistory } from "react-router-dom";
 const Home = () => {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
-  
+  const [dashboardData,setDashboardData] = useState()
   const { t } = useTranslation();
   const history = useHistory();
 
  
+useEffect(()=>{
+
+})
+
   return (
     <div>
       <ChangePeriodDropDown

@@ -4,9 +4,9 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import * as yup from "yup";
-import { createUser } from "../../../api/userApi.js";
-import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
-import UserForm from "../../../components/users/userForm.js";
+import { createSubscribedUser } from "../../api/subscribedUser.js";
+import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import SubscribedUserForm from "../../components/subscribedUser/subscribedUserForm.js";
 
 const NoticeWraper = styled.div`
   color: #583703;
@@ -22,7 +22,7 @@ const NoticeWraper = styled.div`
 `;
 
 const handleCreateUser = async (payload) => {
-  return createUser(payload);
+  return createSubscribedUser(payload);
 };
 const schema = yup.object().shape({
   name: yup.string().required("users_title_required"),
@@ -31,7 +31,7 @@ const schema = yup.object().shape({
 
 });
 
-export default function AddCategory() {
+export default function AddSubscribedUser() {
   const history = useHistory();
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -45,10 +45,10 @@ export default function AddCategory() {
           <img
             src={arrowLeft}
             className="me-2"
-            onClick={() => history.push("/configuration/users")}
+            onClick={() => history.push("/subscribed-user")}
           />
           <div className="addNotice">
-            <Trans i18nKey={"users_AddUser"} />
+            <Trans i18nKey={"subscribed_user_add_user"} />
           </div>
         </div>
         {/* <div className="addNotice">
@@ -63,7 +63,7 @@ export default function AddCategory() {
       </div>
 
      
-        <UserForm
+        <SubscribedUserForm
           // loadOptions={masterloadOptionQuery?.data?.results}
           // placeholder={masterloadOptionQuery?.data?.results[0].name ?? "All"}
           // CategoryFormName={"MasterCategory"}
