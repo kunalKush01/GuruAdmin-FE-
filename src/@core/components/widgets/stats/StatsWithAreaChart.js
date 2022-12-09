@@ -19,15 +19,14 @@ const StatsWithAreaChart = props => {
   const { icon, color, stats, statTitle, series, options, type, height, className, ...rest } = props
   const ChartCardWarraper = styled.div`
       
+      font: normal normal bold 25px/20px Noto Sans;
       .chartCard{
         background-color: #FFF7E8;
         width: auto;
         height: auto;
         color: #583703;
       }
-      .fw-bolder{
-        font: normal normal bold 25px/20px Noto Sans;
-      }
+      
       .card-text{
         font: normal normal normal 16px/20px Noto Sans
       }
@@ -37,7 +36,7 @@ const StatsWithAreaChart = props => {
   const sta=numberWithCommas(stats)
   return (
     <ChartCardWarraper>
-    <Card {...rest} className="chartCard" >
+    <Card {...rest} className="chartCard mb-0" >
       <CardBody
         className={classnames('pb-0', {
           [className]: className

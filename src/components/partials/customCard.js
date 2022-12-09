@@ -4,11 +4,13 @@ import styled from "styled-components";
 
 const CustomCard = ({ cardTitle, cardNumber, cardImage }) => {
   const CustomCardWaraper = styled.div`
+  width: 100%;
+  height: 100%;
     .customCard {
       background-color: #fff7e8;
-      padding: 32px;
-      width: auto;
-      height: auto;
+      padding: 1.5rem;
+      width: 100%;
+      height: 100%;
       
     }
     .cardtitle {
