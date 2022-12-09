@@ -21,8 +21,8 @@ const StatsWithAreaChart = props => {
       
       .chartCard{
         background-color: #FFF7E8;
-        width: 370px;
-        height: 205px;
+        width: auto;
+        height: auto;
         color: #583703;
       }
       .fw-bolder{

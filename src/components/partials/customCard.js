@@ -6,8 +6,10 @@ const CustomCard = ({ cardTitle, cardNumber, cardImage }) => {
   const CustomCardWaraper = styled.div`
     .customCard {
       background-color: #fff7e8;
-      padding: 40px 25px 43px 25px;
-      width: 25rem;
+      padding: 32px;
+      width: auto;
+      height: auto;
+      
     }
     .cardtitle {
       font-size: 22px;

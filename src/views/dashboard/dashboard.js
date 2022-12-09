@@ -42,6 +42,7 @@ const Home = () => {
           statTitle={t("dashboard_donationReceived")}
           stats={525000}
           warning={"primary"}
+          
         />
         <OrdersReceived
           statTitle={t("dashboard_donationPending")}

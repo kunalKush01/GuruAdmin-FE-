@@ -76,6 +76,7 @@ const OrdersReceived = ({ statTitle,stats }) => {
         data: [30, 40, 45, 50, 49, 60, 70, 91]
       }]}
       type='area'
+      
     />
   ) : null
 }
