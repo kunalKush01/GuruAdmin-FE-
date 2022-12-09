@@ -16,12 +16,12 @@ import moment from "moment";
 import { deleteCommitment } from "../../api/commitmentApi";
 
 export function CommitmentListTable({ data }) {
-  const handleDeleteExpenses = async (payload) => {
+  const handleDeleteCommitment = async (payload) => {
     return deleteCommitment(payload);
   };
   const queryCient = useQueryClient();
   const deleteMutation = useMutation({
-    mutationFn: handleDeleteExpenses,
+    mutationFn: handleDeleteCommitment,
     onSuccess: (data) => {
       if (!data.error) {
         queryCient.invalidateQueries(["Commitments"]);

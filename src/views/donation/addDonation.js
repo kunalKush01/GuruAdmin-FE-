@@ -59,7 +59,7 @@ export default function AddNews() {
             onClick={() => history.push("/donation")}
           />
           <div className="addNews">
-            <Trans i18nKey={"DonationBox_AddDonationBox"} />
+            <Trans i18nKey={"donation_Adddonation"} />
           </div>
         </div>
         {/* <div className="addNews">
@@ -78,7 +78,7 @@ export default function AddNews() {
         initialValues={initialValues}
         vailidationSchema={schema}
         showTimeInput
-        buttonName="DonationBox_AddCollectionBox"
+        buttonName="donation_Adddonation"
       />
     </NewsWarper>
   );

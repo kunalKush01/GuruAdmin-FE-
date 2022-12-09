@@ -298,7 +298,7 @@ export function RecentDonationTable() {
     <RecentDonationTableWarper>
       <div className="d-flex justify-content-between  ">
         <p><Trans i18nKey={"dashboard_Recent_DonationCommitment"} /></p>
-        <Link><Trans i18nKey={"dashboard_viewAll"} /></Link>
+        <Link to={"/donation"} ><Trans i18nKey={"dashboard_viewAll"} /></Link>
       </div>
       <CustomDataTable
         // minWidth="fit-content"

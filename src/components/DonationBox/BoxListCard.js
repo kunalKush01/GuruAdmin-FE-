@@ -63,7 +63,7 @@ export default function BoxListCard({data="" }) {
           <Row className=" d-flex justify-content-between w-100 m-0" >
           <Col xs={2} className="p-0 d-flex justify-content-center" >
               <div style={{ width: "30px" }} >
-          <img src={lockIcon} className="w-100"  />
+          {data.isLocked&&<img src={lockIcon} className="w-100"  />}
 
               </div>
             </Col>
@@ -90,10 +90,10 @@ export default function BoxListCard({data="" }) {
             </Col>
             <Col xs={2} className="p-0 d-flex justify-content-center" >
               <div style={{ width: "30px" }} >
-          <img src={editIcon} className="w-100 cursor-pointer"
+          {!data.isLocked&&<img src={editIcon} className="w-100 cursor-pointer"
            onClick={() => history.push(`/donation_box/edit/${data.id}`)}
            
-           />
+           />}
 
               </div>
             </Col>

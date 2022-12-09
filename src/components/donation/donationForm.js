@@ -120,8 +120,7 @@ export default function DonationForm({
           validationSchema={vailidationSchema}
         >
           {(formik) => (
-            <>
-            {JSON.stringify(formik.errors)}
+            
             <FormWithoutFormikForDonation
               formik={formik}
               masterloadOptionQuery={masterloadOptionQuery}
@@ -129,7 +128,7 @@ export default function DonationForm({
               buttonName={buttonName}
               
             />
-            </>
+            
           )}
         </Formik>
       )}

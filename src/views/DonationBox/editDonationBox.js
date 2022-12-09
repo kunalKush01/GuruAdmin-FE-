@@ -83,11 +83,11 @@ export default function EditDonationBox() {
   const initialValues = useMemo(()=>{
     return  {
        
-        Id:collectionBoxDetailQuery.data?.result?.id,
-        CreatedBy: collectionBoxDetailQuery.data?.result?.createdBy?.name,
-        Body: he.decode(collectionBoxDetailQuery.data?.result?.remarks),
-        Amount: collectionBoxDetailQuery.data?.result?.amount,
-        DateTime: moment(collectionBoxDetailQuery.data?.result?.publishDate)
+        Id:collectionBoxDetailQuery?.data?.result?.id,
+        CreatedBy: collectionBoxDetailQuery?.data?.result?.createdBy?.name,
+        Body: he.decode(collectionBoxDetailQuery?.data?.result?.remarks??""),
+        Amount: collectionBoxDetailQuery?.data?.result?.amount,
+        DateTime: moment(collectionBoxDetailQuery?.data?.result?.publishDate)
         .utcOffset("+0530")
         .toDate(),
       
