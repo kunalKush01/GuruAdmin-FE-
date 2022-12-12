@@ -2,22 +2,18 @@ import React, { useMemo, useState } from "react";
 
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
-import { Plus } from "react-feather";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { Button, Col, Row } from "reactstrap";
+import { Col, Row } from "reactstrap";
 import styled from "styled-components";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
-
 import { getAllBoxCollection } from "../../api/donationBoxCollectionApi";
-import BoxListCard from "../../components/DonationBox/BoxListCard.js";
+import DonationBoxListTable from "../../components/DonationBox/donationBoxListTable";
 import NoContent from "../../components/partials/noContent";
-const NewsWarper = styled.div`
+const DonationBoxListWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
@@ -93,7 +89,7 @@ export default function Expenses() {
   let endDate = moment(filterEndDate).utcOffset(0).format("D MMM YYYY");
 
   const boxCollectionQuery = useQuery(
-    ["Collections", pagination.page, selectedLang.id,filterStartDate,filterEndDate],
+    ["Collections", pagination.page, selectedLang.id,filterEndDate,filterStartDate],
     () =>
       getAllBoxCollection({
         ...pagination,
@@ -107,7 +103,7 @@ export default function Expenses() {
     }
   );
 
-  const collectionItems = useMemo(
+  const categoryItems = useMemo(
     () => boxCollectionQuery?.data?.results ?? [],
     [boxCollectionQuery]
   );
@@ -115,50 +111,10 @@ export default function Expenses() {
   
 
   return (
-    <NewsWarper>
+    <DonationBoxListWarper>
       <div className="window nav statusBar body "></div>
 
       <div>
-      <div className="d-flex justify-content-between align-items-center ">
-          <div className="d-flex justify-content-between align-items-center ">
-            <img
-              src={arrowLeft}
-              className="me-2"
-              onClick={() => history.push("/")}
-            />
-            <div className="addNews">
-              <div className="">
-                <div>
-                  <Trans i18nKey={"DonationBox_DonationBox"} />
-                </div>
-                <div className="filterPeriod">
-                  <span>
-                    {startDate}-{endDate}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="addNews">
-            <ChangePeriodDropDown
-              className={"me-1"}
-              dropDownName={dropDownName}
-              setdropDownName={(e) => setdropDownName(e.target.name)}
-            />
-            <Button
-              color="primary"
-              className="addNews-btn"
-              onClick={() => history.push("/donation_box/add")}
-            >
-              <span>
-                <Plus className="me-1" size={15} strokeWidth={4} />
-              </span>
-              <span>
-                <Trans i18nKey={"DonationBox_AddCollectionBox"} />
-              </span>
-            </Button>
-          </div>
-        </div>
         <div style={{ height: "10px" }}>
           <If condition={boxCollectionQuery.isFetching}>
             <Then>
@@ -185,24 +141,12 @@ export default function Expenses() {
                 </SkeletonTheme>
               </Then>
               <Else>
-                <If condition={collectionItems.length != 0} disableMemo>
+                <If condition={categoryItems.length != 0} disableMemo>
                   <Then>
-                    <Row   >
-                    {collectionItems.map((item)=>{
-                      
-                      
-                      return    <Col  xs={3} >
-                          <BoxListCard key={item.id} data={item} />
-                          </Col>                     
-                    })
-                  }
-                  </Row> 
+                    <DonationBoxListTable data={categoryItems} />
                   </Then>
                   <Else>
-                  <NoContent 
-                      headingNotfound={t("donation_box_not_found")}
-                      para={t("donation_box_not_click_add_donation_box")}
-                    />
+                    <NoContent content="expense" />
                   </Else>
                 </If>
               </Else>
@@ -239,6 +183,6 @@ export default function Expenses() {
           </Row>
         </div>
       </div>
-    </NewsWarper>
+    </DonationBoxListWarper>
   );
 }

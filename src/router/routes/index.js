@@ -22,6 +22,11 @@ const Routes = [
     
   },
   {
+    path: "/notification",
+    component: lazy(() => import("../../views/Notification/notificationList")),
+    
+  },
+  {
     path:"/subscribed-user",
     component:lazy(()=> import("../../views/subscribedUser/subscribedUserList")),
     exact:true
@@ -120,6 +125,11 @@ const Routes = [
   {
     path: '/configuration/users/add',
     component: lazy(() => import('../../views/configuration/users/addUser')),
+    // exact:true
+  },
+  {
+    path: '/configuration/reportDispute',
+    component: lazy(() => import('../../views/configuration/Report&Disput/reportDisputList')),
     // exact:true
   },
   {

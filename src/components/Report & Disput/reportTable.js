@@ -1,0 +1,88 @@
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
+import styled from "styled-components";
+import CustomDataTable from "../partials/CustomDataTable";
+import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
+
+const ReportWaraper = styled.div`
+  color: #583703 !important;
+  margin-right: 20px;
+  font: normal normal bold 15px/23px Noto Sans;
+`;
+const ReportTable = () => {
+  const { t } = useTranslation();
+  const history = useHistory();
+  // table colum and heading
+  const column = [
+    {
+      name: t("report_report_against"),
+      selector: (row) => row.name,
+      width: "250px",
+    },
+    {
+      name: t("dashboard_Recent_DonorNumber"),
+      selector: (row) => row.mobileNumber,
+      width: "250px",
+    },
+    {
+      name: t("subscribed_user_email"),
+      selector: (row) => row.email,
+      width: "200px",
+    },
+    {
+      name: t("report_Transaction_IDs"),
+      selector: (row) => row.transactionIds,
+      width: "220px",
+    },
+    {
+      name: t("dashboard_Recent_DonorStatus"),
+      selector: (row) => row.status,
+      width: "210px",
+    },
+  ];
+
+  // table static data
+  const reportData = [
+    {
+      id: 1,
+      name: (
+        <div className="d-flex align-items-center ">
+          <img src={avtarIcon} style={{ marginRight: "5px", width: "25px" }} />
+          {/* <div>{item?.user?.name??""}</div> */}
+          <div>Bhandasar Temple</div>
+        </div>
+      ),
+      mobileNumber: "+91-9545896859",
+      email:"ankit01jain@gmail.com",
+      transactionIds: "125468978",
+      status: "Pending",
+    },
+    {
+      id: 2,
+      name: (
+        <div className="d-flex align-items-center ">
+          <img src={avtarIcon} style={{ marginRight: "5px", width: "25px" }} />
+          {/* <div>{item?.user?.name??""}</div> */}
+          <div>Bhandasar Temple</div>
+        </div>
+      ),
+      mobileNumber: "+91-9545896859",
+      email:"ankit01jain@gmail.com",
+      transactionIds: "125468978",
+      status: "Re-Solved",
+    },
+  ];
+
+  return (
+    <ReportWaraper>
+      <CustomDataTable 
+          maxHieght={"470px"} 
+          columns={column} 
+          data={reportData} 
+        />
+    </ReportWaraper>
+  );
+};
+
+export default ReportTable;

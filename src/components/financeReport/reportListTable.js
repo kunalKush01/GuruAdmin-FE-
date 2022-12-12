@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react'
-import DonationListTable from '../donation/donationListTable'
-import { ExpensesListTable } from '../internalExpenses/expensesListTable'
-import CommitmentListTable from '../commitments/commitmentListTable'
-import { useUpdateEffect } from 'react-use'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
+import CommitmentListTable from '../commitments/commitmentListTable'
+import DonationListTable from '../donation/donationListTable'
+import DonationBoxListTable from '../DonationBox/donationBoxListTable'
+import { ExpensesListTable } from '../internalExpenses/expensesListTable'
 
 export default function ReportListTable({activeReportTab,data}) {
 
@@ -21,13 +21,14 @@ export default function ReportListTable({activeReportTab,data}) {
         case t("report_commitment"):
         
         return <CommitmentListTable data={data}/>;
+        case t("report_donation_box"):
+        
+        return <DonationBoxListTable data={data}/>;
       default:
         return [];
     }
     
   }
-
-
   return (
     <div>
           {getTable()}      

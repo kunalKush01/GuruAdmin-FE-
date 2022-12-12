@@ -190,7 +190,10 @@ export default function Expenses() {
                     <DonationListTable data={donationItems} />
                   </Then>
                   <Else>
-                    <NoContent content="expense" />
+                    <NoContent 
+                      headingNotfound={t("donation_not_found")}
+                      para={t("donation_not_click_add_donation")}
+                    />
                   </Else>
                 </If>
               </Else>

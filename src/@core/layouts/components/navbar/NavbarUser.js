@@ -28,7 +28,9 @@ import { authApiInstance } from "../../../../axiosApi/authApiInstans";
 import { logOut } from "../../../../redux/authSlice";
 import { toast } from "react-toastify";
 import moment from "moment";
+import { useHistory } from "react-router-dom";
 const NavbarUser = (props) => {
+  const history = useHistory();
   const trustDetails = useSelector(state=>state.auth.trustDetail)
   const refreshToken = useSelector(state=>state.auth.tokens.refreshToken)
   const dispatch= useDispatch()
@@ -107,7 +109,7 @@ const NavbarUser = (props) => {
         </InputGroup>
         <div className="d-flex justify-content-end align-items-center ">
           <img className="icon" onClick={()=>setlangSelection(true)} src={menuPanelIcon} />
-          <img className="icon" src={bellIcon} />
+          <img className="icon" src={bellIcon} onClick={() => history.push("/notification")} />
           <img className="icon" src={logOutIcon} onClick={handleLogOut} />
           <ul className="nav navbar-nav align-items-center ">
             <div className="d-flex align-items-center">
