@@ -35,12 +35,13 @@ export const RevenueChart = () => {
     {
       name: t("donation"),
       data: [44, 55, 57, 56, 61, 58, 63, 60, 66,100,55,99],
+      
     },
     {
       name: t("committment"),
       data: [76, 85, 101, 98, 87, 105, 91, 114, 94,50,95,50],
     },
-    {
+    { 
       name: t("dashboard_totalExpenses"),
       data: [35, 41, 36, 26, 45, 48, 52, 53, 41,100,60,22],
     },
@@ -91,7 +92,7 @@ export const RevenueChart = () => {
     },
     yaxis: {
       title: {
-        // text: "$ (thousands)",
+        // text: "₹(Thousands)",
       },
     },
     fill: {
@@ -100,7 +101,7 @@ export const RevenueChart = () => {
     tooltip: {
       y: {
         formatter: (val) => {
-          return "$ " + val + " thousands";
+          return "₹" + val + " thousands";
         },
       },
     },

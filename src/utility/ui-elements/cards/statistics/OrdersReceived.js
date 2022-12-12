@@ -7,10 +7,13 @@ import { Package } from 'react-feather'
 
 // ** Custom Components
 import StatsWithAreaChart from '@components/widgets/stats/StatsWithAreaChart'
+import { useTranslation } from 'react-i18next'
+import { ConverFirstLatterToCapital } from '../../../formater'
 
-const OrdersReceived = ({ statTitle,stats }) => {
+const OrdersReceived = ({ statTitle,stats,SeriesName="",data=[] }) => {
   // ** State
-  const [data, setData] = useState(null)
+  const {t}= useTranslation()
+  
 
   const options = {
     chart: {
@@ -45,16 +48,28 @@ const OrdersReceived = ({ statTitle,stats }) => {
     },
 
     xaxis: {
-      labels: {
-        show: false
-      },
+      // categories: [
+      //   t("monthName_January"),
+      //   t("monthName_February"),
+      //   t("monthName_March"),
+      //   t("monthName_April"),
+      //   t("monthName_May"),
+      //   t("monthName_June"),
+      //   t("monthName_July"),
+      //   t("monthName_August"),
+      //   t("monthName_September"),
+      //   t("monthName_October"),
+      //   t("monthName_November"),
+      //   t("monthName_December"),
+      // ],
+      type:"category",
       axisBorder: {
         show: false
       }
     },
     yaxis: {
       labels: {
-        show: false
+        show: true
       }
     },
     tooltip: {
@@ -62,6 +77,19 @@ const OrdersReceived = ({ statTitle,stats }) => {
     },
     
   }
+
+  const series = [
+    {
+      name:SeriesName,
+      data:data?.map((item)=>{
+        return {
+          x:ConverFirstLatterToCapital(item?.month),
+          y:parseInt(item?.amount)
+        }
+      })
+    }
+  ] 
+
 
 
   return data == null ? (
@@ -71,10 +99,7 @@ const OrdersReceived = ({ statTitle,stats }) => {
       stats={stats}
       statTitle={statTitle}
       options={options}
-      series={[{
-        name: "series-1",
-        data: [30, 40, 45, 50, 49, 60, 70, 91]
-      }]}
+      series={series}
       type='area'
       
     />

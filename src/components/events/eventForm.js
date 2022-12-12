@@ -138,6 +138,8 @@ export default function EventForm({
                   label={t("donation_select_date_time")}
                   name="DateTime"
                   showTimeInput={showTimeInput}
+                  selectsStart
+                  sle
                 />
               </Col>
             </Row>
