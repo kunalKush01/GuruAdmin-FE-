@@ -94,16 +94,16 @@ export function ExpensesListTable({ data }) {
             Swal.fire({
               title: `<img src="${comfromationIcon}"/>`,
               html: `
-                                  <h3 class="swal-heading">Delete Expense</h3>
-                                  <p>Are you sure you want to permanently delete the selected expense ?</p>
+                                  <h3 class="swal-heading">${t("expence_delete")}</h3>
+                                  <p>${t("expence_sure")}</p>
                                   `,
               showCloseButton: false,
               showCancelButton: true,
               focusConfirm: true,
-              cancelButtonText: "Cancel",
-              cancelButtonAriaLabel: "Cancel",
+              cancelButtonText: `${t("cancel")}`,
+              cancelButtonAriaLabel: `${t("cancel")}`,
 
-              confirmButtonText: "Confirm Delete",
+              confirmButtonText:`${t("confirm")}`,
               confirmButtonAriaLabel: "Confirm",
             }).then(async (result) => {
               if (result.isConfirmed) {

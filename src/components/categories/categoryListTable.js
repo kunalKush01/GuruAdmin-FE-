@@ -85,6 +85,7 @@ export function CategoryListTable({ data }) {
       ),
       editCategory: (
         <img
+          className="cursor-pointer"
           src={editIcon}
           width={35}
           onClick={() =>
@@ -94,6 +95,7 @@ export function CategoryListTable({ data }) {
       ),
       deleteCategory: (
         <img
+          className="cursor-pointer"
           src={deleteIcon}
           width={35}
           onClick={(e) => {
@@ -103,16 +105,16 @@ export function CategoryListTable({ data }) {
             Swal.fire({
               title: `<img src="${comfromationIcon}"/>`,
               html: `
-                                  <h3 class="swal-heading">Delete Category</h3>
-                                  <p>Are you sure you want to permanently delete the selected category ?</p>
+                                  <h3 class="swal-heading mt-1">${t("category_delete")}</h3>
+                                  <p>${t("category_sure")}</p>
                                   `,
               showCloseButton: false,
               showCancelButton: true,
               focusConfirm: true,
-              cancelButtonText: "Cancel",
-              cancelButtonAriaLabel: "Cancel",
+              cancelButtonText: `${t("cancel")}`,
+              cancelButtonAriaLabel: `${t("cancel")}`,
 
-              confirmButtonText: "Confirm Delete",
+              confirmButtonText: `${t("confirm")}`,
               confirmButtonAriaLabel: "Confirm",
             }).then(async (result) => {
               if (result.isConfirmed) {

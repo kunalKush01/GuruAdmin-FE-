@@ -92,8 +92,8 @@ export default function EditNotice() {
         <div className="d-flex justify-content-between align-items-center ">
           <img
             src={arrowLeft}
-            className="me-2"
-            onClick={() => history.push("/notices ")}
+            className="me-2  cursor-pointer"
+            onClick={() => history.push("/notices")}
           />
           <div className="editNotice">
             <Trans i18nKey={"notices_EditNotice"} />

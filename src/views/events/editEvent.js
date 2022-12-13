@@ -95,7 +95,7 @@ export default function Editevent() {
         <div className="d-flex justify-content-between align-items-center ">
           <img
             src={arrowLeft}
-            className="me-2"
+            className="me-2  cursor-pointer"
             onClick={() => history.push("/events")}
           />
           <div className="editevent">

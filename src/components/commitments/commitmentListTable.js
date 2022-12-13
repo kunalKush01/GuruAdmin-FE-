@@ -135,16 +135,16 @@ export default function CommitmentListTable({ data }) {
               Swal.fire({
                 title: `<img src="${comfromationIcon}"/>`,
                 html: `
-                                          <h3 class="swal-heading">Delete Commitment</h3>
-                                          <p>Are you sure you want to permanently delete the selected commitment ?</p>
+                                          <h3 class="swal-heading mt-1">${t("commitment_delete")}</h3>
+                                          <p>${t("commitment_sure")}</p>
                                           `,
                 showCloseButton: false,
                 showCancelButton: true,
                 focusConfirm: true,
-                cancelButtonText: "Cancel",
-                cancelButtonAriaLabel: "Cancel",
+                cancelButtonText:` ${t("cancel")}`,
+                cancelButtonAriaLabel: ` ${t("cancel")}`,
   
-                confirmButtonText: "Confirm Delete",
+                confirmButtonText: ` ${t("confirm")}`,
                 confirmButtonAriaLabel: "Confirm",
               }).then(async (result) => {
                 if (result.isConfirmed) {

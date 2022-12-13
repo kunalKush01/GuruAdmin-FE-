@@ -16,7 +16,7 @@ export const createSubscribedUser = (payload) =>
     showToastOnSuccess: false,
     showToastOnError: false,
   });
-  export const getEventDates = (payload) =>
+  export const getSubscribedUserDates = (payload) =>
   callApi({
     requestFunction: (axios) => axios.get(`${API_BASE_URL}event/get-dates`, payload),
     showToastOnSuccess: false,

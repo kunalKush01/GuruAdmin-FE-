@@ -26,6 +26,7 @@ const FinancialReportTabsWarapper = styled.div`
     z-index: 2;
     border-bottom: 5px solid;
     border-color: #ff8744;
+    border-radius: 5px;
     color: #583703 ;
     opacity: 100%;
     font-weight: bold;
@@ -34,7 +35,7 @@ const FinancialReportTabsWarapper = styled.div`
 const FinancialReportTabs = ({setActive,active}) => {
   const { t } = useTranslation();
   const FinancialTabs = [
-    { id: 1, name: t("report_expences") },
+    { id: 1, name: t("report_expences")         },
     { id: 2, name: t("donation_Donation") },
     { id: 3, name: t("report_commitment") },
     { id: 4, name: t("report_donation_box") },

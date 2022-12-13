@@ -11,7 +11,7 @@ import he from "he";
 import styled from "styled-components";
 import cardThreeDotIcon from "../../assets/images/icons/news/threeDotIcon.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import { deleteNewsDetail } from "../../api/newsApi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -89,7 +89,7 @@ function BtnContent({ eventId }) {
       }
     },
   });
-
+  const { t } = useTranslation();
   return (
     <BtnContentWraper>
       <Row className="MainContainer">
@@ -120,16 +120,16 @@ function BtnContent({ eventId }) {
             Swal.fire({
               title: `<img src="${comfromationIcon}"/>`,
               html: `
-                                      <h3 class="swal-heading">Delete Event</h3>
-                                      <p>Are you sure you want to permanently delete the selected event ?</p>
+                                      <h3 class="swal-heading">${t("events_delete")}</h3>
+                                      <p>${t("events_sure")}</p>
                                       `,
               showCloseButton: false,
               showCancelButton: true,
               focusConfirm: true,
-              cancelButtonText: "Cancel",
-              cancelButtonAriaLabel: "Cancel",
+              cancelButtonText:` ${t("cancel")}`,
+              cancelButtonAriaLabel:` ${t("cancel")}`,
 
-              confirmButtonText: "Confirm Delete",
+              confirmButtonText: ` ${t("confirm")}`,
               confirmButtonAriaLabel: "Confirm",
             }).then(async (result) => {
               if (result.isConfirmed) {

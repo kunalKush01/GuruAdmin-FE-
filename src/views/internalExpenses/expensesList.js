@@ -127,7 +127,7 @@ export default function Expenses() {
           <div className="d-flex justify-content-between align-items-center ">
             <img
               src={arrowLeft}
-              className="me-2"
+              className="me-2  cursor-pointer"
               onClick={() => history.push("/")}
             />
             <div className="addNews">
@@ -194,7 +194,10 @@ export default function Expenses() {
                     <ExpensesListTable data={categoryItems} />
                   </Then>
                   <Else>
-                    <NoContent content="expense" />
+                    <NoContent 
+                      headingNotfound={t("expence_not_found")}
+                      para={t("expence_not_click_add_expence")}
+                    />
                   </Else>
                 </If>
               </Else>

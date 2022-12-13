@@ -6,7 +6,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { Button, Col, Row } from "reactstrap";
 import FormikCustomDatePicker from "../../components/partials/formikCustomDatePicker";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {  useQuery} from "@tanstack/react-query";
 import ReactPaginate from "react-paginate";
 import { Plus } from "react-feather";
 import moment from "moment";
@@ -14,10 +14,10 @@ import { useHistory } from "react-router-dom";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { If, Then, Else } from "react-if-else-switch";
 import { getAllNotices, getNoticeDates } from "../../api/noticeApi.js";
-import NoNotice from "../../components/notices/noNotice";
 import NoticeCard from "../../components/notices/noticeCard";
 import CustomDatePicker from "../../components/partials/customDatePicker";
 import HinduCalenderDetailCard from "../../components/notices/hinduCalenderDetailCard";
+import NoContent from "../../components/partials/noContent";
 import { useSelector } from "react-redux";
 const NoticeWarper = styled.div`
   color: #583703;
@@ -127,7 +127,7 @@ export default function NoticeList() {
           <div className="d-flex justify-content-between align-items-center ">
             <img
               src={arrowLeft}
-              className="me-2"
+              className="me-2  cursor-pointer"
               onClick={() => history.push("/")}
             />
             <div className="addNotice">
@@ -205,7 +205,10 @@ export default function NoticeList() {
                       })}
                     </Then>
                     <Else>
-                      <NoNotice />
+                      <NoContent
+                       headingNotfound={t("notices_not_found")}
+                       para={t("notices_not_click_add_notices")}
+                      />
                     </Else>
                   </If>
                 </Else>

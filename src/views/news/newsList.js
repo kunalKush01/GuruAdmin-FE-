@@ -1,26 +1,19 @@
-import { Form, Formik } from "formik";
-import React, { useMemo, useState } from "react";
-import CustomTextField from "../../components/partials/customTextField";
-import * as yup from "yup";
-import RichTextField from "../../components/partials/richTextEditorField";
-import styled from "styled-components";
-import { CustomDropDown } from "../../components/partials/customDropDown";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { Trans, useTranslation } from "react-i18next";
-import { Button, Col, Row } from "reactstrap";
-import { createNews, getAllNews } from "../../api/newsApi";
-import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
-import NewsCard from "../../components/news/newsCard";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import ReactPaginate from "react-paginate";
-import { Plus } from "react-feather";
+import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
-import { current } from "@reduxjs/toolkit";
-import { useHistory } from "react-router-dom";
+import React, { useMemo, useState } from "react";
+import { Plus } from "react-feather";
+import { Trans, useTranslation } from "react-i18next";
+import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import NoNews from "../../components/partials/noContent";
-import { If, Then, Else } from "react-if-else-switch";
+import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { Button, Col, Row } from "reactstrap";
+import styled from "styled-components";
+import { getAllNews } from "../../api/newsApi";
+import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import NewsCard from "../../components/news/newsCard";
+import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
 import NoContent from "../../components/partials/noContent";
 const NewsWarper = styled.div`
   color: #583703;
@@ -122,7 +115,7 @@ export default function News() {
           <div className="d-flex justify-content-between align-items-center ">
             <img
               src={arrowLeft}
-              className="me-2"
+              className="me-2  cursor-pointer"
               onClick={() => history.push("/")}
             />
             <div className="addNews">
@@ -199,7 +192,10 @@ export default function News() {
                     })}
                   </Then>
                   <Else>
-                    <NoContent content="news" />
+                    <NoContent 
+                      headingNotfound={t("news_not_found")}
+                      para={t("news_not_click_add_news")}
+                    />
                   </Else>
                 </If>
               </Else>

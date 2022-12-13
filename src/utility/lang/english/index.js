@@ -27,7 +27,8 @@ export const englishContent = {
   category:"Category",
   user:"Sub Admin User",
   report_Dispute:"Report & Dispute",
-
+  cancel:"Cancel",
+  confirm:"Confirm Delete",
   // All static content of Dashboard
   dashboard_donationReceived: "Donation Received",
   dashboard_donationPending: "Donation Pending",
@@ -75,6 +76,11 @@ export const englishContent = {
   news_popOver_Delete: "Delete",
 
 
+  news_delete:"Delete News",
+  news_sure:"Are you sure you want to permanently delete the selected news ? ",
+  news_not_found:"No News Found",
+  news_not_click_add_news:'Click on "Add News" to add news on the screen',
+
   // All static content of Events
 
   events_AddEvent: "Add Event",
@@ -83,7 +89,12 @@ export const englishContent = {
   events_desc_required: "Event description is required",
   events_select_dropDown:"Select Event",
   events_EditEvent: "Edit Event",
-  
+
+  events_delete:"Delete Event",
+  events_sure:"Are you sure you want to permanently delete the selected event ? ",
+  events_not_found:"No Events Found",
+  events_not_click_add_events:'Click on "Add Event" to add event on the screen',
+
   // All static content of Notices
 
   notices_AddNotice: "Add Notice",
@@ -134,6 +145,9 @@ export const englishContent = {
   users_title_required:"User Name is required",
   users_mobile_required:"Mobile Number is Required",
   users_email_required:"Email is Required",
+  users_not_found:"No Sub Admin User Found",
+  users_not_click_add_users:'Click on "Add Sub Admin User" to add sub admin user on the screen',
+
 
 // All static content of Internal Expense
 expenses_AddExpenses: "Add Expense",
@@ -228,6 +242,6 @@ commitment_not_click_add_commitment:'Click on "Add Commitment" to add commitment
   notifications:"Notifications",
   notifications_Notify_Users:"Notify Users",
   notifications_not_found:"No Notification Found",
-  notifications_not_click_add:'Click on "Add Notify Users" to add notifications on the screen',
+  // notifications_not_click_add:'Click on "Add Notify Users" to add notifications on the screen',
 
 };

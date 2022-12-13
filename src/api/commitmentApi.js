@@ -16,7 +16,7 @@ export const createCommitment = (payload) =>
     showToastOnSuccess: false,
     showToastOnError: false,
   });
-  export const getEventDates = (payload) =>
+  export const getCommitmentDates = (payload) =>
   callApi({
     requestFunction: (axios) => axios.get(`${API_BASE_URL}event/get-dates`, payload),
     showToastOnSuccess: false,
@@ -45,7 +45,7 @@ export const updateCommitmentDetail = (payload) =>
   });
 
 
-  export const addLangCategoryDetail = (payload) =>
+  export const addLangCommitmentDetail = (payload) =>
   callApi({
     requestFunction: (axios) =>
       axios.post(`${API_BASE_URL}donation-category/add-language`, payload),

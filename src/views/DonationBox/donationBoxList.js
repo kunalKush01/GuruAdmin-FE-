@@ -123,7 +123,7 @@ export default function Expenses() {
           <div className="d-flex justify-content-between align-items-center ">
             <img
               src={arrowLeft}
-              className="me-2"
+              className="me-2  cursor-pointer"
               onClick={() => history.push("/")}
             />
             <div className="addNews">
@@ -200,8 +200,8 @@ export default function Expenses() {
                   </Then>
                   <Else>
                   <NoContent 
-                      headingNotfound={t("donation_box_not_found")}
-                      para={t("donation_box_not_click_add_donation_box")}
+                      headingNotfound={t("financial_not_found")}
+                      // para={t("donation_box_not_click_add_donation_box")}
                     />
                   </Else>
                 </If>

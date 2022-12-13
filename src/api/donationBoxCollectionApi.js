@@ -30,7 +30,7 @@ export const updateCollectionBoxDetail = (payload) =>
   });
 
 
-  export const addLangNewsDetail = (payload) =>
+  export const addLangCollectionBoxDetail = (payload) =>
   callApi({
     requestFunction: (axios) =>
       axios.post(`${API_BASE_URL}news/add-language`, payload),
@@ -38,7 +38,7 @@ export const updateCollectionBoxDetail = (payload) =>
 
 
 
-  export const deleteNewsDetail = (payload) =>
+  export const deleteCollectionBoxDetail = (payload) =>
   callApi({
     requestFunction: (axios) =>
       axios.delete(`${API_BASE_URL}news/delete/${payload}`, ),

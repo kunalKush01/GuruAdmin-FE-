@@ -28,6 +28,8 @@ export const hindiContent = {
   user:"उप व्यवस्थापक उपयोगकर्ता",
   report_Dispute:"रिपोर्ट और विवाद",
 
+  cancel:"रद्द करें",
+  confirm:"हटाने की पुष्टि करें",
   // All static content of Dashboard
   dashboard_donationReceived: "दान प्राप्त",
   dashboard_donationPending: "दान लंबित",
@@ -74,6 +76,12 @@ export const hindiContent = {
   news_popOver_Edit: "संपादन करना",
   news_popOver_Delete: "मिटाना",
 
+  news_delete:"समाचार हटाएं",
+  news_sure:"क्या आप वाकई चयनित समाचारों को स्थायी रूप से हटाना चाहते हैं? ",
+  news_not_found:"कोई समाचार नहीं मिला",
+  news_not_click_add_news:'स्क्रीन पर समाचार जोड़ने के लिए "समाचार जोड़ें" पर क्लिक करें',
+
+
   // All static content of Events
 
   events_AddEvent: "आयोजन जोड़ें",
@@ -83,6 +91,12 @@ export const hindiContent = {
   events_select_dropDown: "आयोजन चुनें",
   events_EditEvent: "आयोजन संपादित करें",
 
+  events_delete:"आयोजन हटाएं",
+  events_sure:"क्या आप वाकई चयनित आयोजन को स्थायी रूप से हटाना चाहते हैं? ",
+  events_not_found:"कोई आयोजन नहीं मिला",
+  events_not_click_add_events:'स्क्रीन पर आयोजन जोड़ने के लिए "आयोजन जोड़ें" पर क्लिक करें',
+
+
   // All static content of Notices
 
   notices_AddNotice: "सूचना जोड़ें",
@@ -91,6 +105,11 @@ export const hindiContent = {
   notices_desc_required: "सूचना विवरण आवश्यक है",
   notices_select_dropDown: "सूचना का चयन करें",
   notices_EditNotice: "सूचना संपादित करें",
+
+  notices_delete:"सूचना हटाएं",
+  notices_sure:"क्या आप वाकई चयनित सूचना को स्थायी रूप से हटाना चाहते हैं? ",
+  notices_not_found:"कोई सूचना नहीं मिली",
+  notices_not_click_add_notices:'स्क्रीन पर सूचना जोड़ने के लिए "सूचना जोड़ें" पर क्लिक करें',
 
   // All static content of Categories
 
@@ -114,6 +133,12 @@ export const hindiContent = {
   masterCategory_required:"मास्टर श्रेणि का चयन करना आवश्यक है",  
   created_by_required:"के द्वारा बनाया गया आवश्यक है",
   amount_required:"राशि आवश्यक है",
+
+  category_delete:"श्रेणी हटाएं",
+  category_sure:"क्या आप वाकई चयनित श्रेणी को स्थायी रूप से हटाना चाहते हैं? ",
+  category_not_found:"कोई श्रेणी नहीं मिली",
+  category_not_click_add_category:'स्क्रीन पर श्रेणी जोड़ने के लिए "श्रेणी जोड़ें" पर क्लिक करें',
+
   // All static content of Users
 
   users_AddUser: "उप व्यवस्थापक उपयोगकर्ता जोड़ें",
@@ -121,6 +146,9 @@ export const hindiContent = {
   users_title_required:"उपयोगकर्ता का नाम आवश्यक है",
   users_mobile_required:"मोबाइल नंबर आवश्यक है",
   users_email_required:"ईमेल की आवश्यक है",
+
+  users_not_found:"कोई उप व्यवस्थापक उपयोगकर्ता नहीं मिला",
+  users_not_click_add_users:'स्क्रीन पर उप व्यवस्थापक उपयोगकर्ता जोड़ने के लिए "उप व्यवस्थापक उपयोगकर्ता जोड़ें" पर क्लिक करें',
 
 
   // All static content of Internal Expense
@@ -135,12 +163,20 @@ expenses_email_required:"ई-मेल आवश्यक है",
 added_by:"द्वारा जोड़ा",
 expenses_desc_required:"व्यय विवरण आवश्यक है",
 expence_amount_required:"व्यय राशि आवश्यक है",
+
+expence_delete:"व्यय हटाएं",
+expence_sure:"क्या आप वाकई चयनित व्यय को स्थायी रूप से हटाना चाहते हैं? ",
+expence_not_found:"कोई व्यय नहीं मिला",
+expence_not_click_add_expence:'स्क्रीन पर व्यय जोड़ने के लिए "व्यय जोड़ें" पर क्लिक करें',
+
 // All static content of Financial Report 
 report_AddReport: "वित्तीय रिपोर्ट",
 report_expences:"खर्च",
 report_commitment:"प्रतिबद्धता",
 report_donation_box:"दान पात्र",
 remarks_financial_donationBox:"टिप्पणियां",
+
+financial_not_found:"कोई वित्तीय रिपोर्ट नहीं मिली",
 
 
 // All static content of Donation 
@@ -161,6 +197,10 @@ donation_select_date_time:"दिनांक और समय चुनें",
 donation_box_desc_required:"दान पेटी का विवरण आवश्यक है",
 donation_box_amount_required:"दान पेटी राशि की आवश्यकता है",
 
+donation_box_not_found:"कोई दान पेटी संग्रह नहीं मिला",
+donation_box_not_click_add_donation_box:'स्क्रीन पर दान पेटी संग्रह जोड़ने के लिए "संग्रह जोड़ें" पर क्लिक करें',
+
+
 // All static commitment data 
 add_commitment:"प्रतिबद्धता जोड़ें",
 edit_commitment:"प्रतिबद्धता संपादित करें",
@@ -168,6 +208,12 @@ commitment_Username:"उपयोगकर्ता नाम",
 commitment_end_Date:"अंतिम तिथि ",
 commitment_Amount_Due:"देय राशि  ",
 commitment_select_end_date:"समाप्ति तिथि का चयन करें",
+
+commitment_delete:"प्रतिबद्धता हटाएं",
+commitment_sure:"क्या आप वाकई चयनित प्रतिबद्धता को स्थायी रूप से हटाना चाहते हैं? ",
+commitment_not_found:"कोई प्रतिबद्धता नहीं मिली",
+commitment_not_click_add_commitment:'स्क्रीन पर प्रतिबद्धता जोड़ने के लिए "प्रतिबद्धता जोड़ें" पर क्लिक करें',
+
 
 // All subscribed user static data
 subscribed_user_add_user:"सब्स्क्राइब्ड उपयोगकर्ता जोड़ें",
@@ -178,16 +224,24 @@ subscribed_user_email:"ई-मेल",
 subscribed_user_address:"पता",
 user_name:"उपयोगकर्ता नाम",
 
+subscribed_not_found:"कोई सब्स्क्राइब्ड उपयोगकर्ता नहीं मिला",
+subscribed_not_click_add:'स्क्रीन पर सब्स्क्राइब्ड उपयोगकर्ता जोड़ने के लिए "सब्स्क्राइब्ड उपयोगकर्ता जोड़ें" पर क्लिक करें',
+
+
 // All Static report & dispute Data
 
 report_report_against:"नाम",
 report_Transaction_IDs:"लेन-देन आईडी",
 report_panding:"रूका हुआ",
-report_re_solved:"हल किया",
+report_re_solved:"हल किया ",
+
+report_dispute_not_found:"कोई रिपोर्ट और विवाद नहीं मिला",
 
  // All notification static data 
  notifications:"सूचनाएं",
  notifications_Notify_Users:"उपयोगकर्ताओं को सूचित करें",
  notifications_not_found:"कोई सूचना नहीं मिली",
  notifications_not_click_add:'स्क्रीन पर सूचनाएं जोड़ने के लिए "उपयोगकर्ताओं को सूचित करें जोड़ें" पर क्लिक करें',
+ notifications_not_found:"कोई सूचनाएं नहीं मिली",
+//  notifications_not_click_add:'Click on "Add Notify Users" to add notifications on the screen',
 };

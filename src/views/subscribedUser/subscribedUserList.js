@@ -123,7 +123,7 @@ export default function SubscribedUser () {
           <div className="d-flex justify-content-between align-items-center ">
             <img
               src={arrowLeft}
-              className="me-2"
+              className="me-2 cursor-pointer"
               onClick={() => history.push("/")}
             />
             <div className="addNews">
@@ -190,7 +190,10 @@ export default function SubscribedUser () {
                     <SubscribedUSerListTable data={subscribedUsers} />
                   </Then>
                   <Else>
-                    <NoContent content="expense" />
+                    <NoContent 
+                        headingNotfound={t("notifications_not_found")}
+                        para={t("notifications_not_click_add")}
+                    />
                   </Else>
                 </If>
               </Else>

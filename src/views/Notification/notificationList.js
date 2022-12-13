@@ -125,7 +125,7 @@ export default function Notification() {
           <div className="d-flex justify-content-between align-items-center ">
             <img
               src={arrowLeft}
-              className="me-2"
+              className="me-2  cursor-pointer"
               onClick={() => history.push("/")}
             />
             <div className="addNotification">
@@ -188,8 +188,8 @@ export default function Notification() {
                   </Then>
                   <Else>
                     <NoContent 
-                        headingNotfound={t("notifications_not_found")}
-                        para={t("notifications_not_click_add")}
+                        headingNotfound={t("subscribed_not_found")}
+                        para={t("subscribed_not_click_add")}
                     />
                   </Else>
                 </If>
