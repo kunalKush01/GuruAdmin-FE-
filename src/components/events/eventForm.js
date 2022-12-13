@@ -15,6 +15,7 @@ import { createNews } from "../../api/newsApi";
 import { Plus } from "react-feather";
 import AsyncSelectField from "../partials/asyncSelectField";
 import { getGlobalEvents } from "../../api/eventApi";
+import FormikRangeDatePicker from "../partials/FormikRangeDatePicker";
 
 const FormWaraper = styled.div`
   .existlabel {
@@ -52,7 +53,7 @@ export default function EventForm({
   handleSubmit,
   vailidationSchema,
   initialValues,
-  showTimeInput,
+  showTimeInput=false,
   selectEventDisabled,
 }) {
   const history = useHistory();
@@ -134,12 +135,11 @@ export default function EventForm({
                       </Row> */}
               </Col>
               <Col>
-                <FormikCustomDatePicker
+                <FormikRangeDatePicker
                   label={t("donation_select_date_time")}
                   name="DateTime"
-                  showTimeInput={showTimeInput}
-                  selectsStart
-                  sle
+                  // showTimeInput={showTimeInput}                  
+                  selectsRange
                 />
               </Col>
             </Row>

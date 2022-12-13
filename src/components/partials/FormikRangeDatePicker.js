@@ -54,6 +54,8 @@ const FormikCustomDatePickerWraper = styled.div`
       background: #ff8744 !important;
       /* border-radius: 50%; */
       color: #fff7e8 !important;
+      opacity: 1 !important;
+      
     }
     .react-datepicker__day {
       color: #583703;
@@ -65,31 +67,31 @@ const FormikCustomDatePickerWraper = styled.div`
     .react-datepicker__month-dropdown {
       border: none !important;
       /* color: #ff8744; */
-      background-color: #FFF7E8;
+      background-color: #fff7e8;
       box-shadow: 2px 2px 10px 2px gray;
       max-height: 250px;
       overflow: auto;
       ::-webkit-scrollbar {
         display: none;
       }
-      .react-datepicker__month-option:hover{
+      .react-datepicker__month-option:hover {
         background-color: #ff8744;
-        color: #fff;        
+        color: #fff;
       }
     }
     .react-datepicker__year-dropdown {
       border: none !important;
       /* color: #ff8744; */
-      background-color: #FFF7E8;
+      background-color: #fff7e8;
       box-shadow: 0px 0px 7px 0px gray;
       max-height: 250px;
       overflow: auto;
       ::-webkit-scrollbar {
         display: none;
       }
-      .react-datepicker__year-option:hover{
+      .react-datepicker__year-option:hover {
         background-color: #ff8744;
-        color: #fff;        
+        color: #fff;
       }
     }
 
@@ -105,9 +107,9 @@ const FormikCustomDatePickerWraper = styled.div`
         display: none;
       }
     }
-    .react-datepicker__header__dropdown{
-      .react-datepicker__month-dropdown-container{
-        margin-right:50px ;
+    .react-datepicker__header__dropdown {
+      .react-datepicker__month-dropdown-container {
+        margin-right: 50px;
       }
     }
 
@@ -137,12 +139,23 @@ const FormikCustomDatePickerWraper = styled.div`
     input[type="time"]::-webkit-calendar-picker-indicator {
       display: none;
     }
-    
   }
+  
+  .react-datepicker__day--in-range{
+    background-color: inherit   !important;
+    color: #ff8744 !important;
+    /* opacity: 0.5 !important;  */
+    }
+    .react-datepicker__day--range-start{
+    background: #ff8744 !important;
+      /* border-radius: 50% !important ; */
+      color: #fff7e8 !important;
+      opacity: 1 !important;
+  }
+  
 `;
 
-export default function FormikCustomDatePicker({ label,...props }) {
-
+export default function FormikRangeDatePicker({ label, ...props }) {
   const [field, meta, helpers] = useField(props.name);
 
   
@@ -153,20 +166,22 @@ export default function FormikCustomDatePicker({ label,...props }) {
         <Trans i18nKey={"news_label_Date"} />
       </label>
        */}
-      {label&&<label>{`${label}*`}</label>}
-      <DatePicker 
-       
-        selected={field.value}
-        onChange={(date) => {          
-
-         helpers.setValue(date)
+      {label && <label>{`${label}*`}</label>}
+      <DatePicker
+        // selected={field?.value}
+        onChange={(date) => {
+          const [start,end] = date
+          console.log("start=",start,"end=",end);
+          helpers.setValue({start,end})
         }}
-        yearDropdownItemNumber={50}        
+        yearDropdownItemNumber={50}
         showYearDropdown
         showMonthDropdown
         timeFormat="hh:mm aa"
-        timeCaption="Time"        
+        timeCaption="Time"
         inline
+        startDate={field?.value?.start}
+        endDate={field?.value?.end}
         {...props}
       />
     </FormikCustomDatePickerWraper>

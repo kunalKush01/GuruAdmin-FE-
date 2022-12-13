@@ -45,7 +45,7 @@ const initialValues = {
   Id: "",
   Title: "",
   Body: "",  
-  DateTime: new Date(),
+  DateTime: {start:new Date(),end:null},
 };
  
 
