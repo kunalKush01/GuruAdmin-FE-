@@ -189,7 +189,10 @@ export default function Expenses() {
                     <CommitmentListTable data={commitmentItems} />
                   </Then>
                   <Else>
-                    <NoContent content="expense" />
+                    <NoContent 
+                      headingNotfound={t("commitment_not_found")}
+                      para={t("commitment_not_click_add_commitment")}
+                    />
                   </Else>
                 </If>
               </Else>

@@ -25,7 +25,7 @@ export const englishContent = {
   monthName_December: "December",
   last_login: "Last Logged In",
   category:"Category",
-  user:"Admin User",
+  user:"Sub Admin User",
   report_Dispute:"Report & Dispute",
 
   // All static content of Dashboard
@@ -93,6 +93,11 @@ export const englishContent = {
   notices_select_dropDown:"Select Notice",
   notices_EditNotice: "Edit Notice",
 
+  notices_delete:"Delete Notice",
+  notices_sure:"Are you sure you want to permanently delete the selected notice ? ",
+  notices_not_found:"No Notices Found",
+  notices_not_click_add_notices:'Click on "Add Notice" to add notices on the screen',
+
 
   // All static content of Categories
 
@@ -116,10 +121,16 @@ export const englishContent = {
   masterCategory_required:"Please Select a Master Category",
   created_by_required:"Created By is required",
   amount_required:"Amount is required",
+
+  category_delete:"Delete Category",
+  category_sure:"Are you sure you want to permanently delete the selected category ? ",
+  category_not_found:"No Categories Found",
+  category_not_click_add_category:'Click on "Add Category" to add category on the screen',
+
   // All static content of Users
 
-  users_AddUser: "Add Admin User",
-  users_latest_User: "Admin Users",
+  users_AddUser: "Add Sub Admin User",
+  users_latest_User: "Sub Admin Users",
   users_title_required:"User Name is required",
   users_mobile_required:"Mobile Number is Required",
   users_email_required:"Email is Required",
@@ -135,16 +146,34 @@ expenses_email_required:"Email is Required",
 added_by:"Added By",
 expenses_desc_required:"Expenses Description is Required",
 expence_amount_required:"Expenses Amount is Required",
+
+expence_delete:"Delete Expense",
+expence_sure:"Are you sure you want to permanently delete the selected expense ? ",
+expence_not_found:"No Expenses Found",
+expence_not_click_add_expence:'Click on "Add Expenses" to add expenses on the screen',
+
+
 // All static content of Financial Report 
+
 report_AddReport: "Financial Report",
 report_expences:"Expenses",
+remarks_financial_donationBox:"Remarks",
 report_commitment:"Commitment",
 report_donation_box:"Donation Box",
+
+financial_not_found:"No Financial Found",
+
 
 // All static content of Donation 
 donation_Donation: "Donation",
 donation_Adddonation:"Add Donation",
 donation_select_date_time:"Select Date & Time",
+
+donation_delete:"Delete Donation",
+donation_sure:"Are you sure you want to permanently delete the selected donation ? ",
+donation_not_found:"No Donation Found",
+donation_not_click_add_donation:'Click on "Add Donation" to add donation on the screen',
+
 // All static content of Donation Box
 DonationBox_DonationBox: "Donation Box Collections",
 DonationBox_AddCollectionBox:"Add Collection ",
@@ -158,6 +187,8 @@ DonationBox_AddDonationBox:"Add Donation Box ",
 donation_box_desc_required:"Donation Box Description is Required.",
 donation_box_amount_required:"Donation Box Amount is Required.",
 
+donation_box_not_found:"No Donation Box Found",
+donation_box_not_click_add_donation_box:'Click on "Add Collection" to add donation box on the screen',
 
 // All Commitment Data 
 commitment_Username:"Username",
@@ -167,6 +198,11 @@ commitment_end_Date:"End Date ",
 commitment_Amount_Due:"Amount Due",
 commitment_select_end_date:"Select End Date",
 
+commitment_delete:"Delete Commitment",
+commitment_sure:"Are you sure you want to permanently delete the selected commitment ? ",
+commitment_not_found:"No Commitment Found",
+commitment_not_click_add_commitment:'Click on "Add Commitment" to add commitment on the screen',
+
 // All subscribed user static data
   subscribed_user_add_user:"Add Subscribed User",
   subscribed_user_name:"Name",
@@ -175,5 +211,23 @@ commitment_select_end_date:"Select End Date",
   subscribed_user_email:"Email",
   subscribed_user_address:"Address",
   user_name:"User Name",
-  
+  subscribed_not_found:"No Subscribed User Found",
+  subscribed_not_click_add:'Click on "Add Subscribed User" to add subscribed user on the screen',
+
+ 
+  // All report & dispute static data
+  report_report_against:"Name",
+  report_mobile:"Mobile Number",
+  report_Transaction_IDs:"Transaction IDs",
+  report_panding:"Pending",
+  report_re_solved:"Re-Solved",
+  report_dispute_not_found:"No Report & Dispute Found",
+
+
+  // All notification static data 
+  notifications:"Notifications",
+  notifications_Notify_Users:"Notify Users",
+  notifications_not_found:"No Notification Found",
+  notifications_not_click_add:'Click on "Add Notify Users" to add notifications on the screen',
+
 };

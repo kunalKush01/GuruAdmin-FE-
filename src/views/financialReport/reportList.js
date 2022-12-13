@@ -18,6 +18,7 @@ import ReportListTable from "../../components/financeReport/reportListTable";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
 import NoContent from "../../components/partials/noContent";
 import FinancialReportTabs from "./financialReportTabs";
+import { getAllBoxCollection } from "../../api/donationBoxCollectionApi";
 const NewsWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -110,8 +111,6 @@ export default function FinancialReport() {
       enabled:activeReportTab.name==t("report_expences")
     }
   );
-
-
   const donationQuery = useQuery(
     ["donations", pagination.page, selectedLang.id,filterEndDate,filterStartDate],
     () =>
@@ -127,7 +126,6 @@ export default function FinancialReport() {
       enabled:activeReportTab.name==t("donation_Donation")
     }
   );
-
   const commitmentQuery = useQuery(
     [
       "Commitments",
@@ -149,23 +147,43 @@ export default function FinancialReport() {
     }
   );
 
+  const boxCollectionQuery = useQuery(
+    ["Collections", pagination.page, selectedLang.id,filterStartDate,filterEndDate],
+    () =>
+      getAllBoxCollection({
+        ...pagination,
+        startDate: filterStartDate,
+        endDate: filterEndDate,
+        languageId: selectedLang.id,
+        
+      }),
+    {
+      keepPreviousData: true,
+      enabled:activeReportTab.name==t("report_donation_box")
+    }
+  );
+  
+
   const Items = useMemo(
     () =>{
       switch (activeReportTab.name) {
         case t("report_expences"):
-          
           return expensesQuery?.data ?? [];
+          
           case t("donation_Donation"):
-          
           return donationQuery?.data ?? [];
-          case t("report_commitment"):
           
+          case t("report_commitment"):
           return commitmentQuery?.data ?? [];
+          
+          case t("report_donation_box"):
+          
+          return boxCollectionQuery?.data ?? [];
         default:
           return [];
       }
     } ,
-    [expensesQuery,donationQuery,commitmentQuery]
+    [expensesQuery,donationQuery,commitmentQuery,boxCollectionQuery]
   );
 
   console.log("listItem-",Items);
@@ -235,7 +253,10 @@ export default function FinancialReport() {
                     <ReportListTable  activeReportTab={activeReportTab} data={Items?.results??[]} />
                   </Then>
                   <Else>
-                    <NoContent content="report" />
+                  <NoContent 
+                      headingNotfound={t("donation_box_not_found")}
+                      para={t("donation_box_not_click_add_donation_box")}
+                    />
                   </Else>
                 </If>
               </Else>

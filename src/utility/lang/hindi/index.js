@@ -25,7 +25,7 @@ export const hindiContent = {
   monthName_December: "दिसंबर",
   last_login: "पिछला लॉग इन",
   category:"वर्ग",
-  user:"व्यवस्थापक उपयोगकर्ता",
+  user:"उप व्यवस्थापक उपयोगकर्ता",
   report_Dispute:"रिपोर्ट और विवाद",
 
   // All static content of Dashboard
@@ -116,8 +116,8 @@ export const hindiContent = {
   amount_required:"राशि आवश्यक है",
   // All static content of Users
 
-  users_AddUser: "व्यवस्थापक उपयोगकर्ता जोड़ें",
-  users_latest_User: "व्यवस्थापक उपयोगकर्ता",
+  users_AddUser: "उप व्यवस्थापक उपयोगकर्ता जोड़ें",
+  users_latest_User: "उप व्यवस्थापक उपयोगकर्ता",
   users_title_required:"उपयोगकर्ता का नाम आवश्यक है",
   users_mobile_required:"मोबाइल नंबर आवश्यक है",
   users_email_required:"ईमेल की आवश्यक है",
@@ -140,6 +140,7 @@ report_AddReport: "वित्तीय रिपोर्ट",
 report_expences:"खर्च",
 report_commitment:"प्रतिबद्धता",
 report_donation_box:"दान पात्र",
+remarks_financial_donationBox:"टिप्पणियां",
 
 
 // All static content of Donation 
@@ -175,5 +176,18 @@ subscribed_user_pan_cardDetail:"पैन काड की जानकारी
 subscribed_user_date_birth:"जन्म की तारीख",
 subscribed_user_email:"ई-मेल",
 subscribed_user_address:"पता",
-user_name:"उपयोगकर्ता नाम"
+user_name:"उपयोगकर्ता नाम",
+
+// All Static report & dispute Data
+
+report_report_against:"नाम",
+report_Transaction_IDs:"लेन-देन आईडी",
+report_panding:"रूका हुआ",
+report_re_solved:"हल किया",
+
+ // All notification static data 
+ notifications:"सूचनाएं",
+ notifications_Notify_Users:"उपयोगकर्ताओं को सूचित करें",
+ notifications_not_found:"कोई सूचना नहीं मिली",
+ notifications_not_click_add:'स्क्रीन पर सूचनाएं जोड़ने के लिए "उपयोगकर्ताओं को सूचित करें जोड़ें" पर क्लिक करें',
 };

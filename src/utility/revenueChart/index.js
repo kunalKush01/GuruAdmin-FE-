@@ -2,7 +2,7 @@ import ReactApexChart from "react-apexcharts";
 import { useTranslation,Trans } from "react-i18next";
 import styled from "styled-components";
 
-export const RevenueChart = () => {
+export const RevenueChart = ({DonationData=[],TotalExpensesData=[],CommittmentData=[]}) => {
   const {t}= useTranslation()
 
   const RevenueChartWarrper = styled.div`
@@ -34,16 +34,31 @@ export const RevenueChart = () => {
   const series = [
     {
       name: t("donation"),
-      data: [44, 55, 57, 56, 61, 58, 63, 60, 66,100,55,99],
+      data:DonationData.map((item)=>{
+        return {
+          x:item.month,
+          y:item.amount
+        }
+      })
       
     },
     {
       name: t("committment"),
-      data: [76, 85, 101, 98, 87, 105, 91, 114, 94,50,95,50],
+      data:CommittmentData.map((item)=>{
+        return {
+          x:item.month,
+          y:item.amount
+        }
+      }),
     },
     { 
       name: t("dashboard_totalExpenses"),
-      data: [35, 41, 36, 26, 45, 48, 52, 53, 41,100,60,22],
+      data:TotalExpensesData.map((item)=>{
+        return {
+          x:item.month,
+          y:item.amount
+        }
+      }),
     },
   ];
 
@@ -74,21 +89,8 @@ export const RevenueChart = () => {
       colors: ["transparent"],
     },
     xaxis: {
+      tyoe:"category",
       
-      categories: [
-        t("monthName_January"),
-        t("monthName_February"),
-        t("monthName_March"),
-        t("monthName_April"),
-        t("monthName_May"),
-        t("monthName_June"),
-        t("monthName_July"),
-        t("monthName_August"),
-        t("monthName_September"),
-        t("monthName_October"),
-        t("monthName_November"),
-        t("monthName_December"),
-      ],
     },
     yaxis: {
       title: {

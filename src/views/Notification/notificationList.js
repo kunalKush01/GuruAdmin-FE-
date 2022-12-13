@@ -12,18 +12,16 @@ import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
-
-import { getAllBoxCollection } from "../../api/donationBoxCollectionApi";
-import BoxListCard from "../../components/DonationBox/BoxListCard.js";
 import NoContent from "../../components/partials/noContent";
-const NewsWarper = styled.div`
+import NotificationList from "../../components/Notification/notificationList";
+import { getAllNotification } from "../../api/notification";
+const NotificationWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
     font: normal normal bold 15px/33px Noto Sans;
   }
-  .addNews {
+  .addNotification {
     color: #583703;
     display: flex;
     align-items: center;
@@ -35,14 +33,12 @@ const NewsWarper = styled.div`
   .btn-Published {
     text-align: center;
   }
-  .addNews-btn {
+  .addNotification-btn {
     padding: 8px 20px;
     margin-left: 10px;
     font: normal normal bold 15px/20px noto sans;
   }
-  .newsContent {
-    height: 350px;
-    overflow: auto;
+  .notificationContent {
     ::-webkit-scrollbar {
       display: none;
     }
@@ -53,9 +49,9 @@ const NewsWarper = styled.div`
   }
 `;
 
+const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-
-export default function Expenses() {
+export default function Notification() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const periodDropDown = () => {
@@ -90,77 +86,78 @@ export default function Expenses() {
     .toISOString();
 
   let startDate = moment(filterStartDate).format("D MMM YYYY");
-  let endDate = moment(filterEndDate).utcOffset(0).format("D MMM YYYY");
+//   let endDate = moment(filterEndDate).utcOffset(0).format("D MMM YYYY");
 
-  const boxCollectionQuery = useQuery(
-    ["Collections", pagination.page, selectedLang.id,filterStartDate,filterEndDate],
+  const notificationQuery = useQuery(
+    ["Notifitions", pagination.page, selectedLang.id, selectedMasterCate],
     () =>
-      getAllBoxCollection({
+      getAllNotification({
         ...pagination,
         startDate: filterStartDate,
         endDate: filterEndDate,
         languageId: selectedLang.id,
-        
+        masterId: selectedMasterCate,
       }),
     {
       keepPreviousData: true,
     }
   );
 
-  const collectionItems = useMemo(
-    () => boxCollectionQuery?.data?.results ?? [],
-    [boxCollectionQuery]
+  const NotificationsItem = useMemo(
+    () => notificationQuery?.data?.results ?? [],
+    [notificationQuery]
   );
 
-  
+  const masterloadOptionQuery = useQuery(
+    ["MasterCategory", selectedLang.id],
+    async () =>
+      await getAllMasterCategories({
+        languageId: selectedLang.id,
+      })
+  );
 
   return (
-    <NewsWarper>
+    <NotificationWarper>
       <div className="window nav statusBar body "></div>
 
       <div>
-      <div className="d-flex justify-content-between align-items-center ">
+        <div className="d-flex justify-content-between align-items-center ">
           <div className="d-flex justify-content-between align-items-center ">
             <img
               src={arrowLeft}
               className="me-2"
               onClick={() => history.push("/")}
             />
-            <div className="addNews">
+            <div className="addNotification">
               <div className="">
                 <div>
-                  <Trans i18nKey={"DonationBox_DonationBox"} />
+                  <Trans i18nKey={"notifications"} />
                 </div>
                 <div className="filterPeriod">
                   <span>
-                    {startDate}-{endDate}
+                    {startDate}
                   </span>
                 </div>
               </div>
             </div>
           </div>
-          <div className="addNews">
-            <ChangePeriodDropDown
-              className={"me-1"}
-              dropDownName={dropDownName}
-              setdropDownName={(e) => setdropDownName(e.target.name)}
-            />
+          {/* <div className="addNotification">
             <Button
               color="primary"
-              className="addNews-btn"
-              onClick={() => history.push("/donation_box/add")}
+              className="addNotification-btn"
+              onClick={() => history.push("/notification/add")}
             >
               <span>
                 <Plus className="me-1" size={15} strokeWidth={4} />
               </span>
               <span>
-                <Trans i18nKey={"DonationBox_AddCollectionBox"} />
+                <Trans i18nKey={"notifications_Notify_Users"} />
               </span>
             </Button>
-          </div>
+          </div> */}
         </div>
         <div style={{ height: "10px" }}>
-          <If condition={boxCollectionQuery.isFetching}>
+          <If condition={notificationQuery.isFetching}>
             <Then>
               <Skeleton
                 baseColor="#ff8744"
@@ -170,9 +167,9 @@ export default function Expenses() {
             </Then>
           </If>
         </div>
-        <div className="newsContent  ">
+        <div className="notificationContent  ">
           <Row>
-            <If condition={boxCollectionQuery.isLoading} disableMemo>
+            <If condition={notificationQuery.isLoading} disableMemo>
               <Then>
                 <SkeletonTheme
                   baseColor="#FFF7E8"
@@ -185,37 +182,28 @@ export default function Expenses() {
                 </SkeletonTheme>
               </Then>
               <Else>
-                <If condition={collectionItems.length != 0} disableMemo>
+                <If condition={NotificationsItem.length != 0} disableMemo>
                   <Then>
-                    <Row   >
-                    {collectionItems.map((item)=>{
-                      
-                      
-                      return    <Col  xs={3} >
-                          <BoxListCard key={item.id} data={item} />
-                          </Col>                     
-                    })
-                  }
-                  </Row> 
+                    <NotificationList data={NotificationsItem} />
                   </Then>
                   <Else>
-                  <NoContent 
-                      headingNotfound={t("donation_box_not_found")}
-                      para={t("donation_box_not_click_add_donation_box")}
+                    <NoContent 
+                        headingNotfound={t("notifications_not_found")}
+                        para={t("notifications_not_click_add")}
                     />
                   </Else>
                 </If>
               </Else>
             </If>
 
-            <If condition={boxCollectionQuery?.data?.totalPages > 1}>
+            <If condition={notificationQuery?.data?.totalPages > 1}>
               <Then>
                 <Col xs={12} className="mb-2 d-flex justify-content-center">
                   <ReactPaginate
                     nextLabel=""
                     breakLabel="..."
                     previousLabel=""
-                    pageCount={boxCollectionQuery?.data?.totalPages || 0}
+                    pageCount={notificationQuery?.data?.totalPages || 0}
                     activeClassName="active"
                     breakClassName="page-item"
                     pageClassName={"page-item"}
@@ -239,6 +227,6 @@ export default function Expenses() {
           </Row>
         </div>
       </div>
-    </NewsWarper>
+    </NotificationWarper>
   );
 }

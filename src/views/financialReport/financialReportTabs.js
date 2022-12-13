@@ -45,7 +45,7 @@ const FinancialReportTabs = ({setActive,active}) => {
         {FinancialTabs.map((item) => {
         return  <div
             className={`tabName ${
-              active?.name == item.name ? " activeTab" : ""
+              active?.name == item.name ? "activeTab" : ""
             }`}
             onClick={() => setActive(item)}
           >

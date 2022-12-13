@@ -1,42 +1,33 @@
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardTitle,
-  CardText,
-  CardLink,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
-  DropdownToggle,
-} from "reactstrap";
-import { Doughnut } from "react-chartjs-2";
 import OrdersReceived from "../../utility/ui-elements/cards/statistics/OrdersReceived";
-// import dropDownIcon from "../assets/images/icons/dashBoard/dropDownIcon.svg";
-import { useTranslation, Trans } from "react-i18next";
-import { RevenueChart } from "../../utility/revenueChart";
-import { RecentDonationTable } from "../../components/dashboard/recentDonationTable";
-import { TopDonerList } from "../../components/dashboard/topDonerList";
 import { useEffect, useState } from "react";
-import styled from "styled-components";
-import { CustomDropDown } from "../../components/partials/customDropDown";
+import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
+import { getAllDashboardData } from "../../api/dashboard";
+import custcardImage3 from "../../assets/images/icons/dashBoard/Group 24887.svg";
+import RecentDonationTable from "../../components/dashboard/recentDonationTable";
+import { TopDonerList } from "../../components/dashboard/topDonerList";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
 import CustomCard from "../../components/partials/customCard";
-import custcardImage3 from "../../assets/images/icons/dashBoard/Group 24887.svg";
-import { useHistory } from "react-router-dom";
+import { RevenueChart } from "../../utility/revenueChart";
+import { Col, Row } from "reactstrap";
 const Home = () => {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const [dashboardData,setDashboardData] = useState()
   const { t } = useTranslation();
   const history = useHistory();
-
+  
  
 useEffect(()=>{
-
-})
+ const dashboardInfo= async()=>{
+   const res= await getAllDashboardData()
+    setDashboardData(res)
+  }
+  dashboardInfo()
+},[]);
 
   return (
-    <div>
+    <>
+    {dashboardData&&<div>
       <ChangePeriodDropDown
       dropDownName={dropDownName}
       setdropDownName={(e)=>setdropDownName(e.target.name)}
@@ -44,19 +35,25 @@ useEffect(()=>{
       <div className="d-flex justify-content-between mt-1 ">
         <OrdersReceived
           statTitle={t("dashboard_donationReceived")}
-          stats={525000}
+          stats={parseInt(dashboardData?.donationReceived)}
           warning={"primary"}
+          data={dashboardData?.donationReceivedArr}
+          SeriesName={"Donation Recieved"}
           
         />
         <OrdersReceived
           statTitle={t("dashboard_donationPending")}
-          stats={525000}
+          stats={parseInt(dashboardData?.donationPending)}
           warning={"primary"}
+          data={dashboardData?.donationPendingArr}
+          SeriesName={"Donation Pending"}
         />
         <OrdersReceived
           statTitle={t("dashboard_totalExpenses")}
-          stats={525000}
+          stats={parseInt(dashboardData?.totalExpenses)}
           warning={"primary"}
+          data={dashboardData?.totalExpensesArr}
+          SeriesName={"Total Expenses"}
         />
         <div 
           className="cursor-pointer"
@@ -64,18 +61,24 @@ useEffect(()=>{
         >
         <CustomCard
           cardTitle={t("dashboard_card_title3")}
-          cardNumber={558487}
+          cardNumber={parseInt(dashboardData?.subscribedUsers)}
           cardImage={custcardImage3}
         />
         </div>
       </div>
 
-      <RevenueChart />
-      <div className="d-flex mt-1">
-        <RecentDonationTable />
-        <TopDonerList />
-      </div>
+      <RevenueChart CommittmentData={dashboardData?.totalCommitmentArr} DonationData={dashboardData?.donationPendingArr} TotalExpensesData={dashboardData?.totalExpensesArr} />
+      <Row>
+        <Col xs={9}>
+        <RecentDonationTable data={dashboardData?.donations} />
+        </Col>
+        <Col xs={3} >
+        <TopDonerList data={dashboardData?.topDonars} />
+        </Col>
+      </Row>
+      
     </div>
+}    </>
   );
 };
 
