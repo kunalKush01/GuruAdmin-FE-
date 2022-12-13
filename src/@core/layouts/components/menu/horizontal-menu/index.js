@@ -62,14 +62,18 @@ function BtnContent({ setClosePopover }) {
         <Col
           xs={12}
           className="col-item"
-          onClick={() => history.push(`/configuration/users`)}
+          onClick={() => {
+            setClosePopover(false)
+            history.push(`/configuration/users`)}}
         >
           <Trans i18nKey={"user"} />
         </Col>
         <Col
           xs={12}
           className="col-item"
-          onClick={() => history.push(`/configuration/reportDispute`)}
+          onClick={() =>{ 
+            setClosePopover(false)
+            history.push(`/configuration/reportDispute`)}}
         >
           <Trans i18nKey={"report_Dispute"} />
         </Col>
