@@ -29,8 +29,8 @@ const NewsWarper = styled.div`
 `;
 const schema = yup.object().shape({
   // CreatedBy: yup.string().required("news_tags_required"),
-  Amount: yup.string().required("news_tags_required"),
-  Body: yup.string().required("news_desc_required"),
+  Amount: yup.string().required("donation_box_amount_required"),
+  Body: yup.string().required("donation_box_desc_required"),
   DateTime: yup.string(),
 });
 
@@ -75,7 +75,7 @@ export default function EditDonationBox() {
        
         Id:collectionBoxDetailQuery?.data?.result?.id,
         CreatedBy: collectionBoxDetailQuery?.data?.result?.createdBy?.name,
-        Body: he.decode(collectionBoxDetailQuery?.data?.result?.remarks??""),
+        Body: he.decode(collectionBoxDetailQuery?.data?.result?.remarks??null),
         Amount: collectionBoxDetailQuery?.data?.result?.amount,
         DateTime: moment(collectionBoxDetailQuery?.data?.result?.publishDate)
         .utcOffset("+0530")

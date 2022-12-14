@@ -35,8 +35,8 @@ const EventWarper = styled.div`
 `;
 
 const schema = yup.object().shape({
-  Title: yup.string().required("news_title_required"),
-  Body: yup.string().required("news_desc_required"),
+  Title: yup.string().required("events_title_required"),
+  Body: yup.string().required("events_desc_required"),
   DateTime: yup.string(),
 });
 

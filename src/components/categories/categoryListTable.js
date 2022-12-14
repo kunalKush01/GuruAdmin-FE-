@@ -10,6 +10,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
 import { deleteCategoryDetail } from "../../api/categoryApi";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 export function CategoryListTable({ data }) {
   const handleDeleteCategory = async (payload) => {
@@ -69,8 +70,8 @@ export function CategoryListTable({ data }) {
     return data.map((item, idx) => ({
       _Id: item.id,
       id: `${idx + 1}`,
-      masterCategory: item.masterCategory.name,
-      subCategory: item.name,
+      masterCategory: ConverFirstLatterToCapital(item.masterCategory.name),
+      subCategory: ConverFirstLatterToCapital(item.name),
       addLanguage: (
         <Button
           outline

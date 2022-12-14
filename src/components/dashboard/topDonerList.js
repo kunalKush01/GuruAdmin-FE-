@@ -62,11 +62,13 @@ export const TopDonerList = ({ data }) => {
         {data?.map((item, idx) => (
           <Card key={item.id} className="  rounded-3">
             <CardBody className="d-flex p-1 justify-content-between align-items-center   ">
+              <div className="d-flex align-items-center">
               <img src={palceHolderIcon} className=" pe-1 " width={"70px"} />
-              <div className="pe-1">
+              <div className="">
                 <div className="headName">
                   {ConverFirstLatterToCapital(item?.user?.name ?? "")}
                 </div>
+              </div>
               </div>
               <img src={getRank(idx)} width={"30px"} />
             </CardBody>

@@ -191,7 +191,7 @@ export default function NewsCard({ data }) {
         </div>
 
         <CardBody>
-          <CardTitle>{data.title}</CardTitle>
+          <CardTitle>{ConverFirstLatterToCapital (data.title)}</CardTitle>
 
           <CardText>
             <div

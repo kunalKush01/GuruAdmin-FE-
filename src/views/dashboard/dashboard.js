@@ -27,12 +27,12 @@ useEffect(()=>{
 
   return (
     <>
-    {dashboardData&&<div>
+    {dashboardData&&<div className="pb-4">
       <ChangePeriodDropDown
       dropDownName={dropDownName}
       setdropDownName={(e)=>setdropDownName(e.target.name)}
       />
-      <div className="d-flex justify-content-between mt-1 ">
+      <div className="d-flex justify-content-between mt-1">
         <OrdersReceived
           statTitle={t("dashboard_donationReceived")}
           stats={parseInt(dashboardData?.donationReceived)}

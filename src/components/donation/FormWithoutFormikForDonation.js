@@ -117,13 +117,19 @@ export default function FormWithoutFormikForDonation({
           <Row>
             <Col>
               <Row>
-                <Col>
+                <Col xs={12}>
                   <div className="ImagesVideos">
                     <Trans i18nKey={"categories_select_amount"} />
                   </div>
                 </Col>
+                <Col xs={6} className="mt-1">
+                <CustomTextField
+                  placeholder={t("enter_price_manually")}
+                  name="Amount"
+                />
+              </Col>
               </Row>
-              <Row>
+              {/* <Row>
                 <Col>
                   <Button
                     className="p-4 w-100 "
@@ -156,23 +162,18 @@ export default function FormWithoutFormikForDonation({
                     10000
                   </Button>
                 </Col>
-              </Row>
+              </Row> */}
             </Col>
           </Row>
 
-          <Row className="mt-1">
+          {/* <Row className="mt-1">
             <Row>
               <Col className="text-center">or</Col>
+            </Row> 
+            <Row className="">
+              
             </Row>
-            <Row className="justify-content-center">
-              <Col xs={6}>
-                <CustomTextField
-                  placeholder={t("enter_price_manually")}
-                  name="Amount"
-                />
-              </Col>
-            </Row>
-          </Row>
+          </Row> */}
         </Col>
       </Row>
       <div className="btn-Published ">

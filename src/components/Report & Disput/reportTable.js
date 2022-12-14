@@ -50,7 +50,7 @@ const ReportTable = () => {
         <div className="d-flex align-items-center ">
           <img src={avtarIcon} style={{ marginRight: "5px", width: "25px" }} />
           {/* <div>{item?.user?.name??""}</div> */}
-          <div>Bhandasar Temple</div>
+          <div> Bhandasar Temple</div>
         </div>
       ),
       mobileNumber: "+91-9545896859",

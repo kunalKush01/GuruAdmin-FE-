@@ -168,7 +168,7 @@ export default function EventCard({ data }) {
             <Col xs={9}  >
               <Row>
                 <Col xs={6}>
-                  <div className="card1">{data.title}</div>
+                  <div className="card1">{ConverFirstLatterToCapital(data.title)}</div>
                 </Col>
                 <Col xs={6}>
                   <div className="card-Date">

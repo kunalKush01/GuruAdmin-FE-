@@ -1,14 +1,14 @@
-import { useTranslation, Trans } from "react-i18next";
-import { Link, useHistory } from "react-router-dom";
-import { Button } from "reactstrap";
-import styled from "styled-components";
-import CustomDataTable from "../partials/CustomDataTable";
-import { useMemo } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
+import moment from "moment";
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
+import styled from "styled-components";
 import { deleteExpensesDetail } from "../../api/expenseApi";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
-import receiptIcon from "../../assets/images/icons/receiptIcon.svg"
+import receiptIcon from "../../assets/images/icons/receiptIcon.svg";
+import CustomDataTable from "../partials/CustomDataTable";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 export default function DonationListTable({ data }) {
   const handleDeleteExpenses = async (payload) => {
     return deleteExpensesDetail(payload);
@@ -76,13 +76,15 @@ export default function DonationListTable({ data }) {
         username: (
           <div className="d-flex align-items-center ">
             <img src={avtarIcon} style={{ marginRight: "5px", width: "25px" }} />
-            <div>{item?.user?.name??""}</div>
+            <div>
+              {ConverFirstLatterToCapital(item?.user?.name??"")}
+            </div>
           </div>
         ),
         mobileNumber: `+91-${item?.user?.mobileNumber}`,
-        donarName: item?.donarName??item.user?.name,
-        category: <div>{item?.masterCategory?.name}{item?.subCategory&&`(${item?.subCategory.name})`}</div>,
-        date_time:"03:02 PM, 21 Aug 2022",
+        donarName:ConverFirstLatterToCapital (item?.donarName??item.user?.name),
+        category: <div>{ConverFirstLatterToCapital(item?.masterCategory?.name)}{item?.subCategory&&`(${item?.subCategory.name})`}</div>,
+        date_time: moment(item?.createdAt).utcOffset(0).format("h:mm A, DD MMM YYYY"),
         amount:item?.amount,
         commitmentID:`${item?.commitmentId??"-"}`,
         receipt: (
