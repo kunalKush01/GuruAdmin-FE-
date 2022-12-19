@@ -244,4 +244,28 @@ commitment_not_click_add_commitment:'Click on "Add Commitment" to add commitment
   notifications_not_found:"No Notification Found",
   // notifications_not_click_add:'Click on "Add Notify Users" to add notifications on the screen',
 
-};
+  // All user Profile static Data 
+  userProfile:"Profile",
+  userProfile_phone_number:"Phone Number",
+  userProfile_name:"Name",
+  userProfile_email_id:"Email Id",
+  userProfile_temple:"Temple",
+  userProfile_trust_type:"Trust Type",
+  userProfile_doc_certificate:"Document/Certificate",
+  userProfile_facilities:"Facilities",
+  userProfile_punyarjak:"Punyarjak",
+  userProfile_temple_upload_doc:"Upload your temple document",
+  images:"Images",
+  browse:"Browse",
+  name_required:"Name is required.",
+  email_invalid:"Invalid Email.",
+  email_required:"Email is required.",
+  number_type:"That doesn't look like a phone number",
+  cant_start_minus:"A phone number can't start with a minus",
+  number_in_point:"A phone number can't include a decimal point",
+  number_required:"A phone number is required.",
+  address_required:"Address required.",
+  Temple_name_required:"Temple name is required.",
+  doc_required:"Temple document required.",
+
+};  

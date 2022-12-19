@@ -41,8 +41,6 @@ const NewsWarper = styled.div`
     font: normal normal bold 15px/20px noto sans;
   }
   .newsContent {
-    height: 350px;
-    overflow: auto;
     ::-webkit-scrollbar {
       display: none;
     }

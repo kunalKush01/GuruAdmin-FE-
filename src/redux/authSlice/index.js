@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { authApiInstance } from "../../axiosApi/authApiInstans";
 import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import storage from "redux-persist/lib/storage";  
 import { toast } from "react-toastify";
 import { store } from "../store";
 export const login = createAsyncThunk("Auth", async (data, thunkApi) => {

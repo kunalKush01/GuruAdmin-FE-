@@ -3,7 +3,6 @@ import ReactSelect from "react-select";
 
 export const CustomReactSelect = ({
   label,
-
   loadOptions,
   labelKey = "label",
   valueKey = "value",

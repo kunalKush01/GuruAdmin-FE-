@@ -48,9 +48,9 @@ export default function AddNews() {
   
   const initialValues = {
     Id:ExpensesDetailQuery?.data?.result?.id,
-    Title: ExpensesDetailQuery?.data?.result?.title ?? "",
+    Title: ExpensesDetailQuery?.data?.result?.title ??null,
     AddedBy: ExpensesDetailQuery?.data?.result?.createdBy?.name ?? "lalit",
-    Body: he.decode(ExpensesDetailQuery?.data?.result?.description ?? ""),
+    Body: he.decode(ExpensesDetailQuery?.data?.result?.description ??null),
     Amount: ExpensesDetailQuery?.data?.result?.amount ?? "",
     DateTime: moment(ExpensesDetailQuery?.data?.result?.expenseDate)
       .utcOffset("+0530")

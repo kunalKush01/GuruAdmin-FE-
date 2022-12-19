@@ -26,6 +26,7 @@ import * as yup from "yup";
 import { useEffect, useState } from "react";
 import { login } from "../../redux/authSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 const LoginCover = () => {
   const { isLogged } = useSelector((state) => state.auth);
   const history = useHistory();
@@ -36,8 +37,8 @@ const LoginCover = () => {
     dispatch(login(data));
   };
   const loginSchema = yup.object().shape({
-    email: yup.string().required().min(5),
-    password: yup.string().required(),
+    email: yup.string().email("Invalid Email.").required("Email is required.").min(5),
+    password: yup.string().required("Password is required."),
   });
   const forgetPasswordSchema = yup.object().shape({
     email: yup.string().required().min(5),
@@ -94,7 +95,7 @@ const LoginCover = () => {
   `;
 
   useEffect(() => {
-    isLogged ? history.push("/dashboard") : "";
+    isLogged ? history.push("/dashboard") :"";
   }, [isLogged]);
 
   const { skin } = useSkin();
@@ -177,7 +178,7 @@ const LoginCover = () => {
                     Password
                   </Label> */}
                         <InputPasswordToggle
-                          className="input-group-merge   "
+                          className="input-group-merge"
                           name="password"
                           inputClassName="signInputField  border-top-0 border-end-0 border-start-0"
                           id="login-password"
@@ -191,8 +192,8 @@ const LoginCover = () => {
                             />
                           }
                         />
-                        <div className="errorMassage text-primary ">
-                          <ErrorMessage name="password" />
+                        <div className="errorMassage text-primary">
+                          <ErrorMessage name="password" /> 
                         </div>
 
                         <div
@@ -222,7 +223,7 @@ const LoginCover = () => {
                   Don't Have an account ?{" "}
                 </span>
 
-                <span className="text-primary signUp ">Sign Up</span>
+                <span className="text-primary signUp">Sign Up</span>
               </p>
               {/* <div className="divider my-2">
               <div className="divider-text">or</div>
