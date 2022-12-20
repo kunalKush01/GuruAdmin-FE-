@@ -26,7 +26,6 @@ const ReportListCardWraper = styled.div`
       
     }
   }
-  
   .card-body, .card{
     border-radius:20px ;
   background-color: #FFF7E8;
@@ -50,7 +49,10 @@ const ReportListCardWraper = styled.div`
     span{
       color: #FF8744;
     }
-    
+  }
+  .remarks{
+    margin-top: .5rem;
+    margin-bottom: 1.5rem;
   }
 `;
 
@@ -77,7 +79,7 @@ export default function BoxListCard({data="" }) {
           <div className="time">
             <span>Time :</span>  {moment(data.collectionDate).utcOffset(0).format("h:mm a")}
           </div>
-          <div className="time d-flex align-items-center justify-content-between "  >
+          <div className="time d-flex align-items-center justify-content-between remarks"  >
             <img src={donationBoxDesIcon} width={10} /> 
              <div dangerouslySetInnerHTML={{__html:he.decode(data.remarks)}} />
           </div>

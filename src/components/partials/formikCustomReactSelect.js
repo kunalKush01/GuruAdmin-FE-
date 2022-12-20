@@ -10,6 +10,7 @@ export default function FormikCustomReactSelect({ loadOptions, ...props }) {
       <CustomReactSelect
         loadOptions={loadOptions}
         onChange={(data) => helpers.setValue(data)}
+        placeholder={props.placeholder}
         value={field.value}
         {...props}
       />

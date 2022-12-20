@@ -68,14 +68,15 @@ export default function AddNews() {
           />
         </div> */}
       </div>
-
-      <ExpensesForm
-        handleSubmit={handleCreateExpense}
-        initialValues={initialValues}
-        vailidationSchema={schema}
-        showTimeInput
-        buttonName="expenses_AddExpenses"
-      />
+      <div className="ms-3 mt-1">
+        <ExpensesForm
+          handleSubmit={handleCreateExpense}
+          initialValues={initialValues}
+          vailidationSchema={schema}
+          showTimeInput
+          buttonName="expenses_AddExpenses"
+        />
+      </div>
     </NewsWarper>
   );
 }

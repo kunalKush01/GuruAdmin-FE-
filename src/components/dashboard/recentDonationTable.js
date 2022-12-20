@@ -87,18 +87,22 @@ export default function RecentDonationTable({ data }) {
   const RecentDonationTableWarper = styled.div`
     color: #583703 !important;
     margin-right: 20px;
-    font: normal normal bold 15px/23px Noto Sans;
+    font: normal normal bold 16px/23px Noto Sans;
 
     .DonationViewAll{
       color: #FF8744;
+
       cursor: pointer;
+    }
+    .recentDonationHeading{
+      font:normal normal bold 20px/23px Noto Sans;
     }
   `;
 
   return (
     <RecentDonationTableWarper>
        <div className="d-flex listHeading justify-content-between" >
-            <p><Trans i18nKey={"dashboard_Recent_DonationCommitment"} /></p>
+            <p className="recentDonationHeading"><Trans i18nKey={"dashboard_Recent_DonationCommitment"} /></p>
             <p 
               onClick={()=>history.push("/donation")}
             className="DonationViewAll">
@@ -106,7 +110,7 @@ export default function RecentDonationTable({ data }) {
         </div>
       <CustomDataTable
         // minWidth="fit-content"
-        maxHieght={""}
+        maxHieght={100}
         columns={columns}
         data={recent_Donation}
       />

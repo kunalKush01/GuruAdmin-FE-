@@ -54,7 +54,7 @@ const FormWaraper = styled.div`
   }
 `;
 
-export default function DonationBoxForm({
+export default function  DonationBoxForm({
   plusIconDisable=false,
   buttonName="",
   handleSubmit,
@@ -122,48 +122,13 @@ export default function DonationBoxForm({
                   </Col>
                 </Row>
                 <Row>
-                  <Col>
-                  <Row>
-                    <Col>
-                    <div className="ImagesVideos">
-                      <Trans i18nKey={"add_amount"} />
-                    </div>
-                    </Col>
-                  </Row>
-                    <Row  >
-                      
-                      <Col>
-                      <Button className="p-4 w-100 " onClick={()=>formik.setFieldValue("Amount","1000")} >1000</Button>
-                      </Col>
-                      <Col>
-                      <Button className="p-4 w-100 " onClick={()=>formik.setFieldValue("Amount","2000")} >2000</Button>
-                      </Col>
-                      <Col>
-                      <Button className="p-4 w-100 " onClick={()=>formik.setFieldValue("Amount","5000")} >5000</Button>
-                      </Col>
-                      <Col>
-                      <Button className="p-4 w-100 " onClick={()=>formik.setFieldValue("Amount","10000")} >10000</Button>
-                      </Col>
-                    </Row>
-                    
-                  </Col>
-                </Row>
-                
-                <Row className="mt-1" >
-                  <Row>
-                    <Col className="text-center" >
-                    or
-                    </Col>
-                  </Row>
-                  <Row className="justify-content-center"  >
-
-                  <Col xs={6}  >
-                    <CustomTextField
-                      placeholder={t("enter_price_manually")}
-                      name="Amount"
-                    />
-                  </Col>
-                  </Row>
+                <Col xs={6} className="mt-1">
+                <CustomTextField
+                  label={t("categories_select_amount")}
+                  placeholder={t("enter_price_manually")}
+                  name="Amount"
+                />
+              </Col>
                 </Row>
               </Col>
               <Col>
@@ -176,7 +141,7 @@ export default function DonationBoxForm({
             </Row>
             <div className="btn-Published ">
             <Button color="primary" className="addNotice-btn " type="submit">
-                {!plusIconDisable&&<span>
+                {plusIconDisable&&<span>
                   <Plus className="me-1" size={15} strokeWidth={4} />
                 </span>}
                 <span>

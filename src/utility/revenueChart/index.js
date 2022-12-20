@@ -10,11 +10,11 @@ export const RevenueChart = ({DonationData=[],TotalExpensesData=[],CommittmentDa
       display: none;
     }
     .apexcharts-legend{
-      position: relative !important;
+      position:relative!important;
       justify-content: end !important;
     }
     p{
-      color: #583703;
+      color: #583703;;
       font: normal normal bold 25px/50px Noto Sans
     }
     .apexcharts-legend-text {
@@ -63,8 +63,6 @@ export const RevenueChart = ({DonationData=[],TotalExpensesData=[],CommittmentDa
   ];
 
   const options = {
-    
-    
     chart: {
       type: "bar",
       height: 350,
@@ -112,12 +110,11 @@ export const RevenueChart = ({DonationData=[],TotalExpensesData=[],CommittmentDa
   return (
     <RevenueChartWarrper id="chart">
      <p> <Trans  i18nKey={"dashboard_RevenueReport"}  /></p>
-      <ReactApexChart  
-              
+      <ReactApexChart
         options={options}
         series={series}
         type="bar"
-        height={"400"}
+        height={"450"}
       />
     </RevenueChartWarrper>
   );

@@ -55,8 +55,8 @@ const FormWaraper = styled.div`
 `;
 
 export default function ExpensesForm({
-  plusIconDisable=false,
-  buttonName="",
+  plusIconDisable = false,
+  buttonName = "",
   handleSubmit,
   vailidationSchema,
   initialValues,
@@ -74,8 +74,6 @@ export default function ExpensesForm({
         newsQuerClient.invalidateQueries(["Expenses"]);
         newsQuerClient.invalidateQueries(["ExpensesDetail"]);
 
-        
-
         history.push("/internal_expenses");
       }
     },
@@ -87,19 +85,17 @@ export default function ExpensesForm({
         initialValues={{ ...initialValues }}
         onSubmit={(e) =>
           newsMutation.mutate({
-            expenseId:e?.Id,            
+            expenseId: e?.Id,
             amount: e?.Amount,
             title: e?.Title,
-            description:e?.Body,
-            expenseDate:e?.DateTime
-            
+            description: e?.Body,
+            expenseDate: e?.DateTime,
           })
         }
         validationSchema={vailidationSchema}
       >
         {(formik) => (
-          <Form>   
-            
+          <Form>
             <Row>
               <Col xs={7}>
                 <Row>
@@ -110,7 +106,11 @@ export default function ExpensesForm({
                     />
                   </Col>
                   <Col>
-                    <CustomTextField label={t("added_by")} name="AddedBy" disabled />
+                    <CustomTextField
+                      label={t("added_by")}
+                      name="AddedBy"
+                      disabled
+                    />
                   </Col>
                 </Row>
                 <Row>
@@ -122,49 +122,14 @@ export default function ExpensesForm({
                     />
                   </Col>
                 </Row>
-                <Row>
-                  <Col>
-                  <Row>
-                    <Col>
-                    <div className="ImagesVideos">
-                      <Trans i18nKey={"news_label_ImageVedio"} />
-                    </div>
-                    </Col>
-                  </Row>
-                    <Row  >
-                      
-                      <Col>
-                      <Button className="p-4 w-100 " onClick={()=>formik.setFieldValue("Amount","1000")} >1000</Button>
-                      </Col>
-                      <Col>
-                      <Button className="p-4 w-100 " onClick={()=>formik.setFieldValue("Amount","2000")} >2000</Button>
-                      </Col>
-                      <Col>
-                      <Button className="p-4 w-100 " onClick={()=>formik.setFieldValue("Amount","5000")} >5000</Button>
-                      </Col>
-                      <Col>
-                      <Button className="p-4 w-100 " onClick={()=>formik.setFieldValue("Amount","10000")} >10000</Button>
-                      </Col>
-                    </Row>
-                    
-                  </Col>
-                </Row>
-                
-                <Row className="mt-1" >
-                  <Row>
-                    <Col className="text-center" >
-                    or
-                    </Col>
-                  </Row>
-                  <Row className="justify-content-center"  >
-
-                  <Col xs={6}  >
+                <Row className="mt-1">
+                  <Col xs={6}>
                     <CustomTextField
+                      label={t("categories_select_amount")}
                       placeholder={t("enter_price_manually")}
                       name="Amount"
                     />
                   </Col>
-                  </Row>
                 </Row>
               </Col>
               <Col>
@@ -176,10 +141,12 @@ export default function ExpensesForm({
               </Col>
             </Row>
             <div className="btn-Published ">
-            <Button color="primary" className="addNotice-btn " type="submit">
-                {!plusIconDisable&&<span>
-                  <Plus className="me-1" size={15} strokeWidth={4} />
-                </span>}
+              <Button color="primary" className="addNotice-btn " type="submit">
+                {plusIconDisable && (
+                  <span>
+                    <Plus className="me-1" size={15} strokeWidth={4} />
+                  </span>
+                )}
                 <span>
                   <Trans i18nKey={`${buttonName}`} />
                 </span>

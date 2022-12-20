@@ -4,11 +4,20 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import CustomDataTable from "../partials/CustomDataTable";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
+import { If } from "react-if-else-switch";
 
 const ReportWaraper = styled.div`
   color: #583703 !important;
-  margin-right: 20px;
+  /* margin-right: 20px; */
   font: normal normal bold 15px/23px Noto Sans;
+  .panding{
+    color: #F8450D;
+    font: normal normal bold 13px/23px Noto Sans;
+  }
+  .reSolved{
+    color: #24C444;
+    font: normal normal bold 13px/23px Noto Sans;
+  }
 `;
 const ReportTable = () => {
   const { t } = useTranslation();
@@ -56,7 +65,7 @@ const ReportTable = () => {
       mobileNumber: "+91-9545896859",
       email:"ankit01jain@gmail.com",
       transactionIds: "125468978",
-      status: "Pending",
+      status:<div className="panding">{"Panding"}</div>
     },
     {
       id: 2,
@@ -70,7 +79,7 @@ const ReportTable = () => {
       mobileNumber: "+91-9545896859",
       email:"ankit01jain@gmail.com",
       transactionIds: "125468978",
-      status: "Re-Solved",
+      status: <div className="reSolved">{"Re-Solved"}</div>,
     },
   ];
 

@@ -182,8 +182,8 @@ export default function CategoryForm({
               </Col>
             </Row>
             <div className="btn-Published ">
-              <Button color="primary" className="addNotice-btn " type="submit">
-                {!plusIconDisable && (
+              <Button color="primary mt-2" className="addNotice-btn " type="submit">
+                {plusIconDisable && (
                   <span>
                     <Plus className="me-1" size={15} strokeWidth={4} />
                   </span>

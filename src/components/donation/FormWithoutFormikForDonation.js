@@ -113,17 +113,24 @@ export default function FormWithoutFormikForDonation({
               <CustomTextField label={t("created_by")} name="createdBy" disabled />
             </Col>
           </Row>
-          <Row></Row>
           <Row>
             <Col>
               <Row>
-                <Col xs={12}>
-                  <div className="ImagesVideos">
-                    <Trans i18nKey={"categories_select_amount"} />
-                  </div>
-                </Col>
-                <Col xs={6} className="mt-1">
+              <Col xs={4} className="mt-1">
+              <FormikCustomReactSelect
+                labelName={t("dashboard_Recent_DonorCommitId")}
+                loadOptions={subLoadOption}
+                placeholder={t("commitment_select_commitment_id")}
+                name={"SelectedSubCategory"}
+                labelKey={"name"}
+                labelValue={"id"}
+                width
+              />
+              </Col>
+
+                <Col xs={4} className="mt-1">
                 <CustomTextField
+                  label={t("categories_select_amount")}
                   placeholder={t("enter_price_manually")}
                   name="Amount"
                 />
@@ -178,9 +185,9 @@ export default function FormWithoutFormikForDonation({
       </Row>
       <div className="btn-Published ">
         <Button color="primary" className="addNotice-btn " type="submit">
-          {!props.plusIconDisable && (
+          {props.plusIconDisable && (
             <span>
-              <Plus className="me-1" size={15} strokeWidth={4} />
+              <Plus className="" size={15} strokeWidth={4} />
             </span>
           )}
           <span>

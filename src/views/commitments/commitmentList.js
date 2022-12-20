@@ -38,14 +38,17 @@ const NewsWarper = styled.div`
     margin-left: 10px;
     font: normal normal bold 15px/20px noto sans;
   }
-  /* .newsContent { */
+  .newsContent {
+    margin-top: 1rem;
     /* height: 350px; */
     /* overflow: auto; */
     ::-webkit-scrollbar {
       display: none;
     }
+  }
   .filterPeriod {
     color: #ff8744;
+    margin-top: .5rem;
     font: normal normal bold 13px/5px noto sans;
   }
 `;
@@ -121,7 +124,7 @@ export default function Expenses() {
           <div className="d-flex justify-content-between align-items-center ">
             <img
               src={arrowLeft}
-              className="me-2  cursor-pointer"
+              className="me-2  cursor-pointer align-self-end"
               onClick={() => history.push("/")}
             />
             <div className="addNews">

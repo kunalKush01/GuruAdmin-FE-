@@ -49,8 +49,8 @@ export default function AddNews() {
   const initialValues = {
     Id:ExpensesDetailQuery?.data?.result?.id,
     Title: ExpensesDetailQuery?.data?.result?.title ??null,
-    AddedBy: ExpensesDetailQuery?.data?.result?.createdBy?.name ?? "lalit",
-    Body: he.decode(ExpensesDetailQuery?.data?.result?.description ??null),
+    AddedBy: ExpensesDetailQuery?.data?.result?.createdBy?.name ?? "",
+    Body: he.decode(ExpensesDetailQuery?.data?.result?.description ??""),
     Amount: ExpensesDetailQuery?.data?.result?.amount ?? "",
     DateTime: moment(ExpensesDetailQuery?.data?.result?.expenseDate)
       .utcOffset("+0530")
@@ -81,13 +81,15 @@ export default function AddNews() {
       </div>
 
       {!ExpensesDetailQuery.isLoading ? (
-        <ExpensesForm
-          handleSubmit={handleCreateExpense}
-          initialValues={initialValues}
-          vailidationSchema={schema}
-          showTimeInput
-          buttonName="expenses_AddExpenses"
-        />
+        <div className="ms-3 mt-1">
+          <ExpensesForm
+            handleSubmit={handleCreateExpense}
+            initialValues={initialValues}
+            vailidationSchema={schema}
+            showTimeInput
+            buttonName="save_changes"
+          />
+        </div>
       ) : (
         ""
       )}

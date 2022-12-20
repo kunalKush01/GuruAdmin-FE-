@@ -12,7 +12,8 @@ import comfromationIcon from "../../assets/images/icons/news/conformationIcon.sv
 import { deleteCategoryDetail } from "../../api/categoryApi";
 import placeHolderImg from "../../assets/images/icons/dashBoard/defaultAvatar.svg"
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-export function UserListTable({ data }) {
+
+export function SubAdminUserListTable({ data }) {
   const handleDeleteCategory = async (payload) => {
     return deleteCategoryDetail(payload);
   };
@@ -47,6 +48,10 @@ export function UserListTable({ data }) {
       name: t("Email"),
       selector: (row) => row.email,
     },
+    {
+      name: t("User Role"),
+      selector: (row) => row.userRole,
+    },
   ];
 
   const categoriesList = useMemo(() => {
@@ -61,6 +66,7 @@ export function UserListTable({ data }) {
       ),
       mobile:`+91 ${item.mobileNumber}`,
       email: item.email,
+      userRole:item.userRole,
       // addLanguage: (
       //   <Button
       //     outline

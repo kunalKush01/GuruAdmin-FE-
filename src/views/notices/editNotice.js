@@ -147,14 +147,17 @@ export default function EditNotice() {
         </Then>
         <Else>
           {!!noticeDetailQuery?.data?.result && (
-            <NoticeForm
-              initialValues={initialValues}
-              vailidationSchema={schema}
-              showTimeInput
-              selectNoticeDisabled
-              buttonName="notices_EditNotice"
-              handleSubmit={handleNoticeUpdate}
-            />
+            <div className="ms-3 mt-1">
+
+              <NoticeForm
+                initialValues={initialValues}
+                vailidationSchema={schema}
+                showTimeInput
+                selectNoticeDisabled
+                buttonName="save_changes"
+                handleSubmit={handleNoticeUpdate}
+              />
+            </div>
           )}
         </Else>
       </If>

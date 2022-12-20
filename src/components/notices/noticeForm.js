@@ -93,7 +93,7 @@ export default function NoticeForm({
             <Row>
               <Col xs={7}>
                 <Row>
-                  <Col xs={12}>
+                  <Col xs={6}>
                     <CustomTextField
                       label={t("news_label_Title")}
                       name="Title"
@@ -137,7 +137,7 @@ export default function NoticeForm({
             </Row>
             <div className="btn-Published ">
               <Button color="primary" className="addNotice-btn " type="submit">
-                {!plusIconDisable&&<span>
+                {plusIconDisable&&<span>
                   <Plus className="me-1" size={15} strokeWidth={4} />
                 </span>}
                 <span>

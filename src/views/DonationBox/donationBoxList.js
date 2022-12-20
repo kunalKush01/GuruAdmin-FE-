@@ -37,21 +37,28 @@ const NewsWarper = styled.div`
   }
   .addNews-btn {
     padding: 8px 20px;
-    margin-left: 10px;
+    /* margin-left: 10px; */
     font: normal normal bold 15px/20px noto sans;
   }
   .newsContent {
+    margin-top: 1rem;
     ::-webkit-scrollbar {
       display: none;
     }
   }
   .filterPeriod {
     color: #ff8744;
+    margin-top: .5rem;
     font: normal normal bold 13px/5px noto sans;
   }
+  .total_collection{
+    border: 1px solid #FF8744;
+    color: #FF8744;
+    font: normal normal bold 15px/20px noto sans;
+    padding: .5rem 2rem;
+    border-radius: 5px;
+  }
 `;
-
-
 
 export default function Expenses() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
@@ -91,14 +98,19 @@ export default function Expenses() {
   let endDate = moment(filterEndDate).utcOffset(0).format("D MMM YYYY");
 
   const boxCollectionQuery = useQuery(
-    ["Collections", pagination.page, selectedLang.id,filterStartDate,filterEndDate],
+    [
+      "Collections",
+      pagination.page,
+      selectedLang.id,
+      filterStartDate,
+      filterEndDate,
+    ],
     () =>
       getAllBoxCollection({
         ...pagination,
         startDate: filterStartDate,
         endDate: filterEndDate,
         languageId: selectedLang.id,
-        
       }),
     {
       keepPreviousData: true,
@@ -110,18 +122,16 @@ export default function Expenses() {
     [boxCollectionQuery]
   );
 
-  
-
   return (
     <NewsWarper>
       <div className="window nav statusBar body "></div>
 
       <div>
-      <div className="d-flex justify-content-between align-items-center ">
+        <div className="d-flex justify-content-between align-items-center ">
           <div className="d-flex justify-content-between align-items-center ">
             <img
               src={arrowLeft}
-              className="me-2  cursor-pointer"
+              className="me-2  cursor-pointer align-self-end"
               onClick={() => history.push("/")}
             />
             <div className="addNews">
@@ -138,14 +148,18 @@ export default function Expenses() {
             </div>
           </div>
           <div className="addNews">
+            <div className="total_collection me-2 d-flex">
+              <Trans i18nKey={"DonationBox_total_collection"} />&nbsp;
+              <div> <Trans i18nKey={"rupees"} /></div>
+            </div>
             <ChangePeriodDropDown
-              className={"me-1"}
+              className={"me-2"}
               dropDownName={dropDownName}
               setdropDownName={(e) => setdropDownName(e.target.name)}
             />
             <Button
               color="primary"
-              className="addNews-btn"
+              className="addNews-btn "
               onClick={() => history.push("/donation_box/add")}
             >
               <span>
@@ -185,19 +199,18 @@ export default function Expenses() {
               <Else>
                 <If condition={collectionItems.length != 0} disableMemo>
                   <Then>
-                    <Row   >
-                    {collectionItems.map((item)=>{
-                      
-                      
-                      return    <Col  xs={3} >
-                          <BoxListCard key={item.id} data={item} />
-                          </Col>                     
-                    })
-                  }
-                  </Row> 
+                    <Row className="pe-0">
+                      {collectionItems.map((item) => {
+                        return (
+                          <Col xs={3}>
+                            <BoxListCard key={item.id} data={item} />
+                          </Col>
+                        );
+                      })}
+                    </Row>
                   </Then>
                   <Else>
-                  <NoContent 
+                    <NoContent
                       headingNotfound={t("financial_not_found")}
                       // para={t("donation_box_not_click_add_donation_box")}
                     />

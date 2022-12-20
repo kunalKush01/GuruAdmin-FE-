@@ -9,7 +9,7 @@ import styled from "styled-components";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
-
+import defaultAvtar from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 const FormWaraper = styled.div`
   .FormikWraper {
     padding: 40px;
@@ -17,14 +17,14 @@ const FormWaraper = styled.div`
   .btn-Published {
     text-align: center;
   }
-  .addNews-btn {
+  .addNotice-btn {
     padding: 8px 20px;
     margin-left: 10px;
+    margin-top: 5rem;
     font: normal normal bold 15px/20px noto sans;
   }
   .newsContent {
-    height: 350px;
-    overflow: auto;
+    margin-top: 1rem;
     ::-webkit-scrollbar {
       display: none;
     }
@@ -37,13 +37,13 @@ const FormWaraper = styled.div`
 `;
 
 export default function UserForm({
-  plusIconDisable=false,
+  plusIconDisable = false,
   loadOptions,
   handleSubmit,
   vailidationSchema,
   initialValues,
   showTimeInput,
-  buttonName="",
+  buttonName = "",
   ...props
 }) {
   const history = useHistory();
@@ -54,7 +54,7 @@ export default function UserForm({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
       if (!data.error) {
-        categoryQuerClient.invalidateQueries(["Users"]);        
+        categoryQuerClient.invalidateQueries(["Users"]);
         history.push("/configuration/users");
       }
     },
@@ -77,33 +77,39 @@ export default function UserForm({
         {(formik) => (
           <Form>
             <Row>
-              <Col xs={12}>
-                <Row>
-                  <Col>
-                    {/* <FormikCustomReactSelect
+              <Col xs={12} className=" mt-2 ps-0 d-flex">
+                <div className=" me-3">
+                  <img src={defaultAvtar} width={150} className="" />
+                </div>
+                <Row className=" w-100 mt-3">
+                  <Col xs={12}>
+                    <Row>
+                      <Col xs={4}>
+                        <CustomTextField label={t("user_name")} name="name" />
+                      </Col>
+                      <Col xs={4}>
+                        <CustomTextField
+                          label={t("dashboard_Recent_DonorNumber")}
+                          name="mobile"
+                        />
+                      </Col>
+                      <Col xs={4}>
+                        <CustomTextField
+                          label={t("subscribed_user_email")}
+                          name="email"
+                        />
+                      </Col>
+                    </Row>
+                  </Col>
+                  <Col xs={4}>
+                    <FormikCustomReactSelect
                       width={"100%"}
                       name={props.CategoryFormName}
                       loadOptions={loadOptions}
                       labelKey={"name"}
                       valueKey={"id"}
-                      labelName={t("MasterCategory")}
+                      labelName={t("User Role")}
                       placeholder={props.placeholder ?? t("all")}
-                    /> */}
-                    <CustomTextField
-                      label={t("user_name")}
-                      name="name"
-                    />
-                  </Col>
-                  <Col>
-                    <CustomTextField
-                      label={t("dashboard_Recent_DonorNumber")}
-                      name="mobile"
-                    />
-                  </Col>
-                  <Col>
-                    <CustomTextField
-                      label={t("subscribed_user_email")}
-                      name="email"
                     />
                   </Col>
                 </Row>
@@ -139,10 +145,12 @@ export default function UserForm({
               </Col>
             </Row>
             <div className="btn-Published ">
-            <Button color="primary" className="addNotice-btn " type="submit">
-                {!plusIconDisable&&<span>
-                  <Plus className="me-1" size={15} strokeWidth={4} />
-                </span>}
+              <Button color="primary" className="addNotice-btn " type="submit">
+                {plusIconDisable && (
+                  <span>
+                    <Plus className="me-1" size={15} strokeWidth={4} />
+                  </span>
+                )}
                 <span>
                   <Trans i18nKey={`${buttonName}`} />
                 </span>

@@ -70,19 +70,22 @@ export default function AddCategory() {
       </div>
 
       {!masterloadOptionQuery.isLoading && !masterloadOptionQuery.isFetching  ? (
-        <CategoryForm
-          loadOptions={masterloadOptionQuery?.data?.results}
-          placeholder={masterloadOptionQuery?.data?.results[0]?.name ?? "All"}
-          CategoryFormName={"MasterCategory"}
-          handleSubmit={handleCreateSubCategory}
-          initialValues={{
-            Id: "",
-            MasterCategory: masterloadOptionQuery?.data?.results[0],
-            SubCategory: "",
-          }}
-          vailidationSchema={schema}
-          buttonName={"categories_AddCategory"}
-        />
+        <div className="ms-3 mt-1">
+
+          <CategoryForm
+            loadOptions={masterloadOptionQuery?.data?.results}
+            placeholder={masterloadOptionQuery?.data?.results[0]?.name ?? "All"}
+            CategoryFormName={"MasterCategory"}
+            handleSubmit={handleCreateSubCategory}
+            initialValues={{
+              Id: "",
+              MasterCategory: masterloadOptionQuery?.data?.results[0],
+              SubCategory: "",
+            }}
+            vailidationSchema={schema}
+            buttonName={"categories_AddCategory"}
+          />
+        </div>
       ) : (
         ""
       )}

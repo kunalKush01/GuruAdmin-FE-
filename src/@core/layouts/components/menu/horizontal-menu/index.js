@@ -25,6 +25,7 @@ function BtnContent({ setClosePopover }) {
     }
     .col-item {
       cursor: pointer;
+      margin-top: .3rem;
       :hover {
         background-color: #ff8744;
         color: #fff;
@@ -48,7 +49,7 @@ function BtnContent({ setClosePopover }) {
 
   return (
     <BtnContentWraper>
-      <Row className="MainContainer">
+      <Row className="MainContainer d-block px-1">
         <Col
           xs={12}
           className="col-item"
@@ -103,7 +104,7 @@ useEffect(()=>{
                   item.url != "/configuration" ? (history.push(item.url)) : "";
                 }}
                 key={idx}
-                className="text-light   "
+                className="text-light"
               >
                 <Trans i18nKey={item.name} />
               {item.name === "configuration" &&closePopover && (

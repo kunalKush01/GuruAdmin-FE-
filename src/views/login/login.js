@@ -55,18 +55,21 @@ const LoginCover = () => {
       font: normal normal normal 16px/25px noto sans;
       
     }
-
     .fw-bold {
       font-weight: 800 !important;
       font-size: 35px;
+      font-family: noto sans;
     }
     .signInEnterUserNAme {
       font: normal normal normal 18px/25px noto sans;
     }
     .forgetPassword {
-      font: normal normal bold 16px/20px noto sans;
-      cursor: pointer;
+      padding: 1rem 0rem;
+      text-align: end;
       margin-bottom: 20px;
+    }
+    .forgetPassword > span {
+      font: normal normal bold 16px/20px noto sans;
     }
     .signInIcons {
       width: 30px;
@@ -75,11 +78,12 @@ const LoginCover = () => {
       cursor: pointer;
     }
     .signInputField {
+      color: #583703;
+      font: normal normal bold 16px/33px noto sans  ;
       &::-webkit-input-placeholder {
-        padding-left: 1rem !important;
+        /* padding-left: 1rem !important; */
         opacity: 0.3;
         font: normal normal bold 16px/33px noto sans;
-
         color: #583703 !important;
       }
     }
@@ -191,16 +195,27 @@ const LoginCover = () => {
                               src={passwordEyeIcon}
                             />
                           }
+                          showIcon={
+                            <img
+                              className="signInIcons"
+                              src={passwordEyeIcon}
+                            />
+                          }
                         />
                         <div className="errorMassage text-primary">
                           <ErrorMessage name="password" /> 
                         </div>
 
                         <div
-                          onClick={() => setForgotPassWordActive(true)}
-                          className="text-end forgetPassword "
+                          className="forgetPassword"
                         >
-                          Forgot Password?
+                          <span
+                            onClick={() => setForgotPassWordActive(true)} 
+                            className="cursor-pointer" 
+                            >
+                            Forgot Password?
+                          </span>
+                             
                         </div>
                       </div>
                     </div>

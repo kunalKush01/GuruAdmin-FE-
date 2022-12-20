@@ -64,13 +64,15 @@ export default function AddNews() {
           </div>
         </div>
       </div>
-      <CommitmentForm
-        handleSubmit={handleCreateCommitment}
-        initialValues={initialValues}
-        vailidationSchema={schema}
-        showTimeInput
-        buttonName="add_commitment"
-      />
+      <div className="ms-3 mt-1 mb-3">
+        <CommitmentForm
+          handleSubmit={handleCreateCommitment}
+          initialValues={initialValues}
+          vailidationSchema={schema}
+          showTimeInput
+          buttonName="add_commitment"
+        />
+      </div>
     </NewsWarper>
   );
 }

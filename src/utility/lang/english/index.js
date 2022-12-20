@@ -25,10 +25,13 @@ export const englishContent = {
   monthName_December: "December",
   last_login: "Last Logged In",
   category:"Category",
-  user:"Sub Admin User",
+  user:"Sub Admin",
   report_Dispute:"Report & Dispute",
   cancel:"Cancel",
   confirm:"Confirm Delete",
+  save_changes:"Save Changes",
+  rupees:"Rs",
+
   // All static content of Dashboard
   dashboard_donationReceived: "Donation Received",
   dashboard_donationPending: "Donation Pending",
@@ -50,7 +53,7 @@ export const englishContent = {
   dashboard_Recent_DonorCommitId: "Commitment ID",
   dashboard_Recent_DonorReceipt: "Receipt",
   dashboard_viewAll: "View All",
-  dashboard_top: "Top 5 Donors",
+  dashboard_top: "Top 5 Donor's",
 
   // All static content of News
 
@@ -140,13 +143,13 @@ export const englishContent = {
 
   // All static content of Users
 
-  users_AddUser: "Add Sub Admin User",
-  users_latest_User: "Sub Admin Users",
+  users_AddUser: "Add Sub Admin ",
+  users_latest_User: "Sub Admin ",
   users_title_required:"User Name is required",
   users_mobile_required:"Mobile Number is Required",
   users_email_required:"Email is Required",
-  users_not_found:"No Sub Admin User Found",
-  users_not_click_add_users:'Click on "Add Sub Admin User" to add sub admin user on the screen',
+  users_not_found:"No Sub Admin Found",
+  users_not_click_add_users:'Click on "Add Sub Admin" to add sub admin user on the screen',
 
 
 // All static content of Internal Expense
@@ -183,12 +186,14 @@ donation_Donation: "Donation",
 donation_Adddonation:"Add Donation",
 donation_select_date_time:"Select Date & Time",
 
+
 donation_delete:"Delete Donation",
 donation_sure:"Are you sure you want to permanently delete the selected donation ? ",
 donation_not_found:"No Donation Found",
 donation_not_click_add_donation:'Click on "Add Donation" to add donation on the screen',
 
 // All static content of Donation Box
+DonationBox_total_collection:"Total Collection:",
 DonationBox_DonationBox: "Donation Box Collections",
 DonationBox_AddCollectionBox:"Add Collection ",
 DonationBox_EditCollectionBox:"Edit Collection ",
@@ -210,6 +215,7 @@ add_commitment:"Add Commitment",
 edit_commitment:"Edit Commitment",
 commitment_end_Date:"End Date ",
 commitment_Amount_Due:"Amount Due",
+commitment_select_commitment_id:"Select Commitment ID",
 commitment_select_end_date:"Select End Date",
 
 commitment_delete:"Delete Commitment",

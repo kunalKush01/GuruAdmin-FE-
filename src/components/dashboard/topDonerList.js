@@ -13,10 +13,10 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 export const TopDonerList = ({ data }) => {
   const { t } = useTranslation();
   const TopDonerWarpper = styled.div`
-  height: 100%;
+  height: 94%;
     .listHeading {
       color: #583703;
-      font: normal normal bold 15px/23px Noto Sans;
+      font: normal normal bold 20px/23px Noto Sans;
     }
 
     .listContainer {

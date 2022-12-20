@@ -39,14 +39,14 @@ const NewsWarper = styled.div`
     font: normal normal bold 15px/20px noto sans;
   }
   .newsContent {
-    height: 350px;
-    overflow: auto;
+    margin-top: 1rem;
     ::-webkit-scrollbar {
       display: none;
     }
   }
   .filterPeriod {
     color: #ff8744;
+    margin-top: .5rem;
     font: normal normal bold 13px/5px noto sans;
   }
 `;
@@ -115,7 +115,7 @@ export default function News() {
           <div className="d-flex justify-content-between align-items-center ">
             <img
               src={arrowLeft}
-              className="me-2  cursor-pointer"
+              className="me-2  cursor-pointer align-self-end"
               onClick={() => history.push("/")}
             />
             <div className="addNews">

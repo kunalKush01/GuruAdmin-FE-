@@ -43,14 +43,14 @@ const NoticeWarper = styled.div`
     font: normal normal bold 15px/20px noto sans;
   }
   .noticeContent {
-    height: 350px;
-    overflow: auto;
+    margin-top: 1rem;
     ::-webkit-scrollbar {
       display: none;
     }
   }
   .filterPeriod {
     color: #ff8744;
+    margin-top:.5rem;
     font: normal normal bold 13px/5px noto sans;
   }
 `;
@@ -91,7 +91,7 @@ export default function NoticeList() {
     .utcOffset(0, true)
     .toISOString();
 
-  let startDate = moment(filterStartDate).format("D MMM YYYY");
+  let startDate = moment(filterStartDate).format("D MMM ");
   let endDate = moment(filterEndDate).utcOffset(0).format("D MMM YYYY");
 
   const noticeQuery = useQuery(
@@ -127,7 +127,7 @@ export default function NoticeList() {
           <div className="d-flex justify-content-between align-items-center ">
             <img
               src={arrowLeft}
-              className="me-2  cursor-pointer"
+              className="me-2  cursor-pointer align-self-end" 
               onClick={() => history.push("/")}
             />
             <div className="addNotice">
@@ -137,7 +137,7 @@ export default function NoticeList() {
                 </div>
                 <div className="filterPeriod">
                   <span>
-                    {startDate}-{endDate}
+                    {startDate} - {endDate}
                   </span>
                 </div>
               </div>
@@ -176,7 +176,7 @@ export default function NoticeList() {
         </div>
         <div>
           <Row className="w-100 m-0"  >
-            <Col xs={9} className="noticeContent">
+            <Col xs={9} className="noticeContent ps-0">
               <If condition={noticeQuery.isLoading} disableMemo >
                 <Then>
                   <SkeletonTheme
@@ -246,7 +246,7 @@ export default function NoticeList() {
                 </Then>
               </If>
             </Col>
-            <Col xs={3} className="p-0 ps-1 ">
+            <Col xs={3} className="p-0 ps-1 "  style={{marginTop:"1.8rem"}}>
               <Row>
                 <Col xs={12}>
                   <If condition={dateQuery.isLoading}>

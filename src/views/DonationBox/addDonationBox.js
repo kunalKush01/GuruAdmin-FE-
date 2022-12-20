@@ -67,14 +67,15 @@ export default function AddNews() {
           />
         </div> */}
       </div>
-
-      <DonationBoxForm
-        handleSubmit={handleCollectionBox}
-        initialValues={initialValues}
-        vailidationSchema={schema}
-        showTimeInput
-        buttonName="DonationBox_AddCollectionBox"
-      />
+      <div className="ms-3 mt-1">
+        <DonationBoxForm
+          handleSubmit={handleCollectionBox}
+          initialValues={initialValues}
+          vailidationSchema={schema}
+          showTimeInput
+          buttonName="DonationBox_AddCollectionBox"
+        />
+      </div>
     </NewsWarper>
   );
 }

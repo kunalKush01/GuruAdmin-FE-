@@ -1,12 +1,6 @@
 import moment from "moment";
 import React, { useState } from "react";
-import {
-  Card,
-  CardBody,
-  Button,
-  Row,
-  Col,
-} from "reactstrap";
+import { Card, CardBody, Button, Row, Col } from "reactstrap";
 import he from "he";
 import styled from "styled-components";
 import cardThreeDotIcon from "../../assets/images/icons/news/threeDotIcon.svg";
@@ -20,12 +14,11 @@ import comfromationIcon from "../../assets/images/icons/news/conformationIcon.sv
 import BtnPopover from "../partials/btnPopover";
 import { deleteEventDetail } from "../../api/eventApi";
 const EventCardWaraper = styled.div`
-  
   .card1 {
     font: normal normal bold 13px/16px Noto Sans;
-    margin-bottom: none !important;
+    margin-bottom: .5rem !important;
   }
-  .card-text{
+  .card-text {
     font: normal normal normal 12px/16px Noto Sans;
     max-height: 18px;
     max-width: 300px;
@@ -33,6 +26,7 @@ const EventCardWaraper = styled.div`
     text-overflow: ellipsis;
     text-align: start;
     white-space: nowrap;
+    margin-bottom:.5rem !important;
   }
   .card-Date {
     font: normal normal normal 12px/16px Noto Sans;
@@ -50,7 +44,6 @@ const EventCardWaraper = styled.div`
     background: #fff7e8;
     border-radius: 10px;
     padding: 0px;
-    
   }
   .btn-outline-primary {
     border: 2px solid #ff8744 !important;
@@ -92,7 +85,7 @@ function BtnContent({ eventId }) {
   const { t } = useTranslation();
   return (
     <BtnContentWraper>
-      <Row className="MainContainer">
+      <Row className="MainContainer d-block">
         <Col
           xs={12}
           className="col-item"
@@ -120,14 +113,16 @@ function BtnContent({ eventId }) {
             Swal.fire({
               title: `<img src="${comfromationIcon}"/>`,
               html: `
-                                      <h3 class="swal-heading">${t("events_delete")}</h3>
+                                      <h3 class="swal-heading">${t(
+                                        "events_delete"
+                                      )}</h3>
                                       <p>${t("events_sure")}</p>
                                       `,
               showCloseButton: false,
               showCancelButton: true,
               focusConfirm: true,
-              cancelButtonText:` ${t("cancel")}`,
-              cancelButtonAriaLabel:` ${t("cancel")}`,
+              cancelButtonText: ` ${t("cancel")}`,
+              cancelButtonAriaLabel: ` ${t("cancel")}`,
 
               confirmButtonText: ` ${t("confirm")}`,
               confirmButtonAriaLabel: "Confirm",
@@ -152,23 +147,24 @@ export default function EventCard({ data }) {
         style={{
           width: "100%",
           borderRadius: "20px",
-          boxShadow:"none",
-          margin:"10px 10px   "
+          boxShadow: "none",
+          margin: "10px 10px   ",
         }}
       >
-        
         <CardBody>
-          <Row className="align-items-center" >
-            <Col xs={2}  >
-              
-            <img src="https://picsum.photos/300/200" style={{width:"100%",height:"100%",borderRadius:"10px"}} />
-
-              
+          <Row className="align-items-center">
+            <Col xs={2}>
+              <img
+                src="https://picsum.photos/300/200"
+                style={{ width: "100%", height: "100%", borderRadius: "10px" }}
+              />
             </Col>
-            <Col xs={9}  >
+            <Col xs={9}>
               <Row>
                 <Col xs={6}>
-                  <div className="card1">{ConverFirstLatterToCapital(data.title)}</div>
+                  <div className="card1">
+                    {ConverFirstLatterToCapital(data.title)}
+                  </div>
                 </Col>
                 <Col xs={6}>
                   <div className="card-Date">
@@ -178,18 +174,17 @@ export default function EventCard({ data }) {
                     </p>
                   </div>
                 </Col>
-                
               </Row>
               <Row>
                 <Col>
-                <Col xs={12}>
-                  <div
-                    className="card-text "
-                    dangerouslySetInnerHTML={{
-                      __html: he.decode(data.body),
-                    }}
-                  />
-                </Col>
+                  <Col xs={12}>
+                    <div
+                      className="card-text "
+                      dangerouslySetInnerHTML={{
+                        __html: he.decode(data.body),
+                      }}
+                    />
+                  </Col>
                 </Col>
               </Row>
               <Row>
@@ -209,13 +204,15 @@ export default function EventCard({ data }) {
 
             <Col xs={1}>
               <div className="d-flex justify-content-between align-items-center">
-                <img src={cardThreeDotIcon} id={`popover-${data.id}`} />
+                <img
+                  src={cardThreeDotIcon}
+                  className="cursor-pointer"
+                  id={`popover-${data.id}`}
+                />
               </div>
             </Col>
           </Row>
         </CardBody>
-
-        
       </Card>
       <BtnPopover
         target={`popover-${data.id}`}

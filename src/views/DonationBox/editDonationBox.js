@@ -75,7 +75,7 @@ export default function EditDonationBox() {
        
         Id:collectionBoxDetailQuery?.data?.result?.id,
         CreatedBy: collectionBoxDetailQuery?.data?.result?.createdBy?.name,
-        Body: he.decode(collectionBoxDetailQuery?.data?.result?.remarks??null),
+        Body: he.decode(collectionBoxDetailQuery?.data?.result?.remarks??""),
         Amount: collectionBoxDetailQuery?.data?.result?.amount,
         DateTime: moment(collectionBoxDetailQuery?.data?.result?.publishDate)
         .utcOffset("+0530")
@@ -130,13 +130,16 @@ export default function EditDonationBox() {
         <Else>
           
           {!collectionBoxDetailQuery.isFetching&&
-          <DonationBoxForm
-            buttonName={"edit_collection"}
-            vailidationSchema={schema}
-            initialValues={initialValues}
-            showTimeInput
-            handleSubmit={handleUpdate}
-          />}
+          <div className="ms-3 mt-1">  
+            <DonationBoxForm
+              buttonName={"save_changes"}
+              vailidationSchema={schema}
+              initialValues={initialValues}
+              showTimeInput
+              handleSubmit={handleUpdate}
+            />
+          </div>
+          }
         </Else>
       </If>
     </NewsWarper>

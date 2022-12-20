@@ -53,12 +53,12 @@ export function CategoryListTable({ data }) {
     {
       name: "",
       selector: (row) => row.addLanguage,
-      width:"250px"
+      width:"230px"
     },
     {
       name: "",
       selector: (row) => row.editCategory,
-      width:"120px"
+      // width:"120px"
     },
     {
       name: "",

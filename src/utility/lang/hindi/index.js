@@ -25,11 +25,13 @@ export const hindiContent = {
   monthName_December: "दिसंबर",
   last_login: "पिछला लॉग इन",
   category:"वर्ग",
-  user:"उप व्यवस्थापक उपयोगकर्ता",
+  user:"उप व्यवस्थापक",
   report_Dispute:"रिपोर्ट और विवाद",
 
   cancel:"रद्द करें",
   confirm:"हटाने की पुष्टि करें",
+  save_changes:"परिवर्तनों को सहेजें",
+  rupees:"₹",
   // All static content of Dashboard
   dashboard_donationReceived: "दान प्राप्त",
   dashboard_donationPending: "दान लंबित",
@@ -141,14 +143,14 @@ export const hindiContent = {
 
   // All static content of Users
 
-  users_AddUser: "उप व्यवस्थापक उपयोगकर्ता जोड़ें",
-  users_latest_User: "उप व्यवस्थापक उपयोगकर्ता",
+  users_AddUser: "उप व्यवस्थापक जोड़ें",
+  users_latest_User: "उप व्यवस्थापक ",
   users_title_required:"उपयोगकर्ता का नाम आवश्यक है",
   users_mobile_required:"मोबाइल नंबर आवश्यक है",
   users_email_required:"ईमेल की आवश्यक है",
 
-  users_not_found:"कोई उप व्यवस्थापक उपयोगकर्ता नहीं मिला",
-  users_not_click_add_users:'स्क्रीन पर उप व्यवस्थापक उपयोगकर्ता जोड़ने के लिए "उप व्यवस्थापक उपयोगकर्ता जोड़ें" पर क्लिक करें',
+  users_not_found:"कोई उप व्यवस्थापक नहीं मिला",
+  users_not_click_add_users:'स्क्रीन पर उप व्यवस्थापक जोड़ने के लिए "उप व्यवस्थापक जोड़ें" पर क्लिक करें',
 
 
   // All static content of Internal Expense
@@ -184,6 +186,7 @@ donation_Donation: "दान",
 donation_Adddonation:"दान जोड़ें",
 
 // All static content of Donation Box
+DonationBox_total_collection:"कुल संग्रह: ",
 DonationBox_DonationBox: "दान पेटी संग्रह",
 edit_collection:"संग्रह संपादित करें",
 DonationBox_AddCollectionBox:"संग्रह जोड़ें",
@@ -208,6 +211,7 @@ commitment_Username:"उपयोगकर्ता नाम",
 commitment_end_Date:"अंतिम तिथि ",
 commitment_Amount_Due:"देय राशि  ",
 commitment_select_end_date:"समाप्ति तिथि का चयन करें",
+commitment_select_commitment_id:"प्रतिबद्धता आईडी का चयन करें",
 
 commitment_delete:"प्रतिबद्धता हटाएं",
 commitment_sure:"क्या आप वाकई चयनित प्रतिबद्धता को स्थायी रूप से हटाना चाहते हैं? ",

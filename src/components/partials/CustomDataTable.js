@@ -11,7 +11,6 @@ const conditionStyle = {
 
 function CustomDataTable({ columns, data, minWidth, maxHieght }) {
   const DataTableWarraper = styled.div`
-  
 
   .DonetionList {
     cursor: all-scroll;
