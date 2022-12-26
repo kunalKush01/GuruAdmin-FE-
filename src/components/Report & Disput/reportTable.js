@@ -1,16 +1,18 @@
-import React from "react";
+import React, {useMemo} from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import CustomDataTable from "../partials/CustomDataTable";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import { If } from "react-if-else-switch";
+import {ConverFirstLatterToCapital} from "../../utility/formater";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
 
 const ReportWaraper = styled.div`
   color: #583703 !important;
   /* margin-right: 20px; */
   font: normal normal bold 15px/23px Noto Sans;
-  .panding{
+  .pending{
     color: #F8450D;
     font: normal normal bold 13px/23px Noto Sans;
   }
@@ -19,7 +21,16 @@ const ReportWaraper = styled.div`
     font: normal normal bold 13px/23px Noto Sans;
   }
 `;
-const ReportTable = () => {
+const ReportTable = ({data}) => {
+  const queryCient = useQueryClient();
+  const deleteMutation = useMutation({
+    // mutationFn: handleDeleteSubscribedUser,
+    onSuccess: (data) => {
+      if (!data.error) {
+        queryCient.invalidateQueries(["reportUser"]);
+      }
+    },
+  });
   const { t } = useTranslation();
   const history = useHistory();
   // table colum and heading
@@ -51,38 +62,23 @@ const ReportTable = () => {
     },
   ];
 
-  // table static data
-  const reportData = [
-    {
-      id: 1,
-      name: (
-        <div className="d-flex align-items-center ">
-          <img src={avtarIcon} style={{ marginRight: "5px", width: "25px" }} />
-          {/* <div>{item?.user?.name??""}</div> */}
-          <div> Bhandasar Temple</div>
-        </div>
-      ),
-      mobileNumber: "+91-9545896859",
-      email:"ankit01jain@gmail.com",
-      transactionIds: "125468978",
-      status:<div className="panding">{"Panding"}</div>
-    },
-    {
-      id: 2,
-      name: (
-        <div className="d-flex align-items-center ">
-          <img src={avtarIcon} style={{ marginRight: "5px", width: "25px" }} />
-          {/* <div>{item?.user?.name??""}</div> */}
-          <div>Bhandasar Temple</div>
-        </div>
-      ),
-      mobileNumber: "+91-9545896859",
-      email:"ankit01jain@gmail.com",
-      transactionIds: "125468978",
-      status: <div className="reSolved">{"Re-Solved"}</div>,
-    },
-  ];
-
+  const reportData = useMemo (()=>{
+    return data.map((item,idx)=>{
+      return{
+        id:idx+1,
+        name: (
+            <div className="d-flex align-items-center ">
+              <img src={avtarIcon} style={{ marginRight: "5px", width: "25px" }} />
+              <div>{ConverFirstLatterToCapital(item?.name??"-")}</div>
+            </div>
+        ),
+        mobileNumber:`+91-${item?.mobileNumber??"-"}`,
+        email:item?.email??"-",
+        transactionIds: item?.transactionId??"-",
+        status:<div className={`${item.disputeStatus == 'pending' ? "pending" : "reSolved"}`}>{ConverFirstLatterToCapital(item?.disputeStatus)}</div>
+      }
+    })
+  })
   return (
     <ReportWaraper>
       <CustomDataTable 

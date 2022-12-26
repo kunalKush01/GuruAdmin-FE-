@@ -215,7 +215,7 @@ export default function CommitmentListTable({ data }) {
 
   const RecentDonationTableWarper = styled.div`
     color: #583703 !important;
-    margin-right: 20px;
+    /* margin-right: 20px; */
     font: normal normal bold 15px/23px Noto Sans;
   `;
 

@@ -65,7 +65,7 @@ export default function BoxListCard({data="" }) {
           <Row className=" d-flex justify-content-between w-100 m-0" >
           <Col xs={2} className="p-0 d-flex justify-content-center" >
               <div style={{ width: "30px" }} >
-          {data.isLocked&&<img src={lockIcon} className="w-100"  />}
+            {data.isLocked&&<img src={lockIcon} className="w-100"  />}
 
               </div>
             </Col>
@@ -74,7 +74,7 @@ export default function BoxListCard({data="" }) {
 
           <img src={donationBoxIcon} style={{ width: "80px" }} />
           <div className="date">
-            <span>Date :</span> {moment(data.collectionDate).utcOffset(0).format("D MMMM YYYY")}
+            <span>Date :</span> {moment(data.collectionDate).utcOffset(0).format("dddd, DD MMMM, YYYY")}
           </div>
           <div className="time">
             <span>Time :</span>  {moment(data.collectionDate).utcOffset(0).format("h:mm a")}

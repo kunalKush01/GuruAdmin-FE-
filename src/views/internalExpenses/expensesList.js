@@ -88,8 +88,8 @@ export default function Expenses() {
     .utcOffset(0, true)
     .toISOString();
 
-  let startDate = moment(filterStartDate).format("D MMM YYYY");
-  let endDate = moment(filterEndDate).utcOffset(0).format("D MMM YYYY");
+  let startDate = moment(filterStartDate).format("D MMM");
+  let endDate = moment(filterEndDate).utcOffset(0).format("D MMM, YYYY");
 
   const expensesQuery = useQuery(
     ["Expenses", pagination.page, selectedLang.id,filterEndDate,filterStartDate],
@@ -132,7 +132,7 @@ export default function Expenses() {
                 </div>
                 <div className="filterPeriod">
                   <span>
-                    {startDate}-{endDate}
+                    {startDate} - {endDate}
                   </span>
                 </div>
               </div>
@@ -150,7 +150,7 @@ export default function Expenses() {
               onClick={() => history.push("/internal_expenses/add")}
             >
               <span>
-                <Plus className="me-1" size={15} strokeWidth={4} />
+                <Plus className="" size={15} strokeWidth={4} />
               </span>
               <span>
                 <Trans i18nKey={"expenses_AddExpenses"} />

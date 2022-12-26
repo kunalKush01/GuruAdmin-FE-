@@ -222,7 +222,6 @@ export default function NewsCard({ data }) {
         </CardBody>
       </Card>
       <BtnPopover
-       
         target={`popover-${data.id}`}
         content={<BtnContent newsId={data.id} />}
       />

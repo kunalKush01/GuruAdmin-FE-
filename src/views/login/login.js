@@ -37,7 +37,11 @@ const LoginCover = () => {
     dispatch(login(data));
   };
   const loginSchema = yup.object().shape({
-    email: yup.string().email("Invalid Email.").required("Email is required.").min(5),
+    email: yup
+      .string()
+      .email("Invalid Email.")
+      .required("Email is required.")
+      .min(5),
     password: yup.string().required("Password is required."),
   });
   const forgetPasswordSchema = yup.object().shape({
@@ -53,7 +57,6 @@ const LoginCover = () => {
     }
     .an_account {
       font: normal normal normal 16px/25px noto sans;
-      
     }
     .fw-bold {
       font-weight: 800 !important;
@@ -79,7 +82,7 @@ const LoginCover = () => {
     }
     .signInputField {
       color: #583703;
-      font: normal normal bold 16px/33px noto sans  ;
+      font: normal normal bold 16px/33px noto sans;
       &::-webkit-input-placeholder {
         /* padding-left: 1rem !important; */
         opacity: 0.3;
@@ -96,10 +99,14 @@ const LoginCover = () => {
     .signUp {
       font: normal normal bold 18px/25px noto sans;
     }
+    .brand-text {
+      color: #583703;
+      font: normal normal bold 30px/44px noto sans;
+    }
   `;
 
   useEffect(() => {
-    isLogged ? history.push("/dashboard") :"";
+    isLogged ? history.push("/dashboard") : "";
   }, [isLogged]);
 
   const { skin } = useSkin();
@@ -115,7 +122,7 @@ const LoginCover = () => {
           to="/"
           onClick={(e) => e.preventDefault()}
         >
-          <h1 className="brand-text  ms-1">Your Logo</h1>
+          <h1 className="brand-text  mt-2 ms-1">Your Logo</h1>
         </Link>
         <Col
           className="d-none  d-lg-flex pe-0 ps-0 align-items-center  h-100 "
@@ -158,7 +165,7 @@ const LoginCover = () => {
                       {/* <Label className="form-label" for="login-email">
                   Email
                 </Label> */}
-                      <InputGroup className="input-group-merge ">
+                      <InputGroup className="input-group-merge">
                         <InputGroupText className="border-top-0  p-0 border-end-0 border-start-0 ">
                           <img className="signInIcons" src={emailInputIcon} />
                         </InputGroupText>
@@ -184,7 +191,7 @@ const LoginCover = () => {
                         <InputPasswordToggle
                           className="input-group-merge"
                           name="password"
-                          inputClassName="signInputField  border-top-0 border-end-0 border-start-0"
+                          inputClassName="signInputField p-0 border-top-0 border-end-0 border-start-0"
                           id="login-password"
                           value={formik.values.password}
                           onChange={formik.handleChange}
@@ -203,19 +210,16 @@ const LoginCover = () => {
                           }
                         />
                         <div className="errorMassage text-primary">
-                          <ErrorMessage name="password" /> 
+                          <ErrorMessage name="password" />
                         </div>
 
-                        <div
-                          className="forgetPassword"
-                        >
+                        <div className="forgetPassword">
                           <span
-                            onClick={() => setForgotPassWordActive(true)} 
-                            className="cursor-pointer" 
-                            >
+                            onClick={() => setForgotPassWordActive(true)}
+                            className="cursor-pointer"
+                          >
                             Forgot Password?
                           </span>
-                             
                         </div>
                       </div>
                     </div>

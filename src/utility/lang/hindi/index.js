@@ -132,8 +132,9 @@ export const hindiContent = {
   donar_name_required:"दाता का नाम आवश्यक है",
   created_by_required:"द्वारा बनाया गया आवश्यक है",
   user_select_required:"उपयोगकर्ता का चयन करना आवश्यक है",
-  masterCategory_required:"मास्टर श्रेणि का चयन करना आवश्यक है",  
-  created_by_required:"के द्वारा बनाया गया आवश्यक है",
+  masterCategory_required:"मास्टर श्रेणि का चयन करना आवश्यक है",
+  subCategory_required:"कृपया एक उप श्रेणी का चयन करें",
+  commitmentID_required:"कृपया टिप्पणी आईडी चुनें।",
   amount_required:"राशि आवश्यक है",
 
   category_delete:"श्रेणी हटाएं",
@@ -246,7 +247,6 @@ report_dispute_not_found:"कोई रिपोर्ट और विवाद
  notifications_Notify_Users:"उपयोगकर्ताओं को सूचित करें",
  notifications_not_found:"कोई सूचना नहीं मिली",
  notifications_not_click_add:'स्क्रीन पर सूचनाएं जोड़ने के लिए "उपयोगकर्ताओं को सूचित करें जोड़ें" पर क्लिक करें',
- notifications_not_found:"कोई सूचनाएं नहीं मिली",
 //  notifications_not_click_add:'Click on "Add Notify Users" to add notifications on the screen',
 
   // All user Profile static Data 

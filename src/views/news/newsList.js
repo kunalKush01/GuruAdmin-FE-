@@ -87,8 +87,8 @@ export default function News() {
     .utcOffset(0, true)
     .toISOString();
 
-  let startDate = moment(filterStartDate).format("D MMM YYYY");
-  let endDate = moment(filterEndDate).utcOffset(0).format("D MMM YYYY");
+  let startDate = moment(filterStartDate).format("D MMM");
+  let endDate = moment(filterEndDate).utcOffset(0).format("D MMM, YYYY");
 
   const newsQuery = useQuery(
     ["News", pagination.page, filterStartDate, filterEndDate,selectedLang.id],
@@ -125,7 +125,7 @@ export default function News() {
                 </div>
                 <div className="filterPeriod">
                   <span>
-                    {startDate}-{endDate}
+                    {startDate} - {endDate}
                   </span>
                 </div>
               </div>
@@ -143,7 +143,7 @@ export default function News() {
               onClick={() => history.push("/news/add")}
             >
               <span>
-                <Plus className="me-1" size={15} strokeWidth={4} />
+                <Plus className="" size={15} strokeWidth={4} />
               </span>
               <span>
                 <Trans i18nKey={"news_btn_AddNews"} />

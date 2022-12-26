@@ -1,5 +1,7 @@
 import React from "react";
 import ReactSelect from "react-select";
+import {Trans} from "react-i18next";
+import {useField} from "formik";
 
 export const CustomReactSelect = ({
   label,
@@ -51,7 +53,6 @@ export const CustomReactSelect = ({
         ...provided,
         width: `${props.width ?? "200px"}`,
         color: "grey",
-        border: "1px solid white",
         backgroundColor: `${props.outlined ? "" : "#FFF7E8"}`,
         boxShadow: "none",
         border: `${props.outlined ? "1px solid #FF8744" : "none"}`,
@@ -75,6 +76,7 @@ export const CustomReactSelect = ({
     placeholder: (provided) => ({
       ...provided,
       margin: "0px",
+      opacity:"60%",
       // color: "#583703 ",
       color: `${props.color ?? "#583703"}`,
       font: "normal normal bold 15px/20px Noto Sans",
@@ -84,7 +86,7 @@ export const CustomReactSelect = ({
       padding: "0px 8px",
     }),
   };
-
+  const [field, meta, helpers] = useField(props);
   return (
     <div>
       {props.labelName && (

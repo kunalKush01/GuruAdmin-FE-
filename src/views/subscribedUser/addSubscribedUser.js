@@ -44,7 +44,7 @@ export default function AddSubscribedUser() {
         <div className="d-flex justify-content-between align-items-center ">
           <img
             src={arrowLeft}
-            className="me-2 cursor-pointer" 
+            className="me-2 cursor-pointer"
             onClick={() => history.push("/subscribed-user")}
           />
           <div className="addNotice">
@@ -62,7 +62,7 @@ export default function AddSubscribedUser() {
         </div> */}
       </div>
 
-     
+      <div className="ms-3 mt-1">
         <SubscribedUserForm
           // loadOptions={masterloadOptionQuery?.data?.results}
           // placeholder={masterloadOptionQuery?.data?.results[0].name ?? "All"}
@@ -74,9 +74,9 @@ export default function AddSubscribedUser() {
             email: "",
           }}
           vailidationSchema={schema}
-          buttonName={"users_AddUser"}
+          buttonName={"subscribed_user_add_user"}
         />
-      
+      </div>
     </NoticeWraper>
   );
 }

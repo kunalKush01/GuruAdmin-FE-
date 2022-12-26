@@ -1,6 +1,7 @@
 import { useField } from "formik";
 import React from "react";
 import { CustomReactSelect } from "./customReactSelect";
+import {Trans} from "react-i18next";
 
 export default function FormikCustomReactSelect({ loadOptions, ...props }) {
   const [field, meta, helpers] = useField(props);
@@ -14,6 +15,13 @@ export default function FormikCustomReactSelect({ loadOptions, ...props }) {
         value={field.value}
         {...props}
       />
+        <div style={{ height: "20px" ,fontSize:"11px"}}>
+            {meta.error && meta.touched && (
+                <div className="text-danger">
+                    <Trans i18nKey={meta.error} />
+                </div>
+            )}
+        </div>
     </div>
   );
 }

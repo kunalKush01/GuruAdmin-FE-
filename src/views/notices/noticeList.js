@@ -92,7 +92,7 @@ export default function NoticeList() {
     .toISOString();
 
   let startDate = moment(filterStartDate).format("D MMM ");
-  let endDate = moment(filterEndDate).utcOffset(0).format("D MMM YYYY");
+  let endDate = moment(filterEndDate).utcOffset(0).format("D MMM, YYYY");
 
   const noticeQuery = useQuery(
     ["Notices", pagination.page, startDate, endDate,selectedLang.id],
@@ -108,14 +108,17 @@ export default function NoticeList() {
     }
   );
 
-  const dateQuery = useQuery(["Dates"], () => getNoticeDates());
+  const dateQuery = useQuery(["NoticeDates"], () => getNoticeDates());
   const NoticeDates = useMemo(() => {
     return dateQuery?.data?.results?.map((item) => moment(item).toDate()) ?? [];
   }, [dateQuery]);
   console.log("NoticeDates=", NoticeDates);
 
-  const NoticeItems = noticeQuery?.data?.results ?? []
-    
+  // const NoticeItems = noticeQuery?.data?.results ?? []
+  const NoticeItems = useMemo(
+    () => noticeQuery?.data?.results ?? [],
+    [noticeQuery]
+  );
   
   
 
@@ -155,7 +158,7 @@ export default function NoticeList() {
               onClick={() => history.push("/notices/add")}
             >
               <span>
-                <Plus className="me-1" size={15} strokeWidth={4} />
+                <Plus className="" size={15} strokeWidth={4} />
               </span>
               <span>
                 <Trans i18nKey={"notices_AddNotice"} />
@@ -257,8 +260,6 @@ export default function NoticeList() {
                       <CustomDatePicker
                         selected={""}
                         highlightDates={NoticeDates}
-                        
-                        
                       />
                     </Else>
                   </If>
@@ -266,7 +267,7 @@ export default function NoticeList() {
               </Row>
               <Row className="w-100 m-0" >
                 <Col xs={12}  >
-                  <HinduCalenderDetailCard />
+                  {/* <HinduCalenderDetailCard /> */}
                 </Col>
               </Row>
             </Col>

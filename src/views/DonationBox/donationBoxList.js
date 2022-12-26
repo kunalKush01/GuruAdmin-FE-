@@ -81,7 +81,7 @@ export default function Expenses() {
 
   const [pagination, setPagination] = useState({
     page: 1,
-    limit: 10,
+    limit: 12,
   });
   const [selectedMasterCate, setSelectedMasterCate] = useState("");
 
@@ -94,8 +94,8 @@ export default function Expenses() {
     .utcOffset(0, true)
     .toISOString();
 
-  let startDate = moment(filterStartDate).format("D MMM YYYY");
-  let endDate = moment(filterEndDate).utcOffset(0).format("D MMM YYYY");
+  let startDate = moment(filterStartDate).format("D MMM");
+  let endDate = moment(filterEndDate).utcOffset(0).format("D MMM, YYYY");
 
   const boxCollectionQuery = useQuery(
     [
@@ -141,7 +141,7 @@ export default function Expenses() {
                 </div>
                 <div className="filterPeriod">
                   <span>
-                    {startDate}-{endDate}
+                    {startDate} - {endDate}
                   </span>
                 </div>
               </div>
@@ -163,7 +163,7 @@ export default function Expenses() {
               onClick={() => history.push("/donation_box/add")}
             >
               <span>
-                <Plus className="me-1" size={15} strokeWidth={4} />
+                <Plus className="" size={15} strokeWidth={4} />
               </span>
               <span>
                 <Trans i18nKey={"DonationBox_AddCollectionBox"} />
@@ -211,8 +211,8 @@ export default function Expenses() {
                   </Then>
                   <Else>
                     <NoContent
-                      headingNotfound={t("financial_not_found")}
-                      // para={t("donation_box_not_click_add_donation_box")}
+                      headingNotfound={t("donation_box_not_found")}
+                      para={t("donation_box_not_click_add_donation_box")}
                     />
                   </Else>
                 </If>

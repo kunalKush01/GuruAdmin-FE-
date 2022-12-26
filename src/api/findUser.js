@@ -14,3 +14,10 @@ export const findAllUsersByName = (payload) =>
     showToastOnSuccess: false,
     showToastOnError: false,
   });
+
+export const findAllComitmentByUser = (payload) =>
+    callApi({
+        requestFunction: (axios) => axios.post(`${API_BASE_URL}find-user/commitment`, payload),
+        showToastOnSuccess: false,
+        showToastOnError: false,
+    });

@@ -93,7 +93,7 @@ export default function EventList() {
     .toISOString();
 
   let startDate = moment(filterStartDate).format("D MMM ");
-  let endDate = moment(filterEndDate).utcOffset(0).format("D MMM YYYY");
+  let endDate = moment(filterEndDate).utcOffset(0).format("D MMM. YYYY");
 
   const eventQuery = useQuery(
     ["Events", pagination.page, startDate, endDate,selectedLang.id],
@@ -109,7 +109,7 @@ export default function EventList() {
     }
   );
 
-  const dateQuery = useQuery(["Dates"], () => getEventDates());
+  const dateQuery = useQuery(["EventDates"], () => getEventDates());
   const eventDates = useMemo(() => {
     return dateQuery?.data?.results?.map((item) => moment(item).toDate()) ?? [];
   }, [dateQuery]);
@@ -158,7 +158,7 @@ export default function EventList() {
               onClick={() => history.push("/events/add")}
             >
               <span>
-                <Plus className="me-1" size={15} strokeWidth={4} />
+                <Plus className="" size={15} strokeWidth={4} />
               </span>
               <span>
                 <Trans i18nKey={"events_AddEvent"} />
@@ -260,8 +260,6 @@ export default function EventList() {
                       <CustomDatePicker
                         selected={""}
                         highlightDates={eventDates}
-                        
-                        
                       />
                     </Else>
                   </If>
@@ -269,7 +267,7 @@ export default function EventList() {
               </Row>
               <Row className="w-100 m-0" >
                 <Col xs={12}  >
-                  <HinduCalenderDetailCard />
+                  {/* <HinduCalenderDetailCard /> */}
                 </Col>
               </Row>
             </Col>

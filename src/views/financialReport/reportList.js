@@ -1,24 +1,27 @@
-import React, { useMemo, useState } from "react";
-
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
+import React, { useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import ReactPaginate from "react-paginate";
+import FormikCustomDatePicker from "../../components/partials/formikCustomDatePicker";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import styled from "styled-components";
 import { getAllCommitments } from "../../api/commitmentApi";
 import { getAllDonation } from "../../api/donationApi";
+import { getAllBoxCollection } from "../../api/donationBoxCollectionApi";
 import { getAllExpense } from "../../api/expenseApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import ReportListTable from "../../components/financeReport/reportListTable";
-import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
+import BtnPopover from "../../components/partials/btnPopover";
+import CustomDatePicker from "../../components/partials/customDatePicker";
 import NoContent from "../../components/partials/noContent";
 import FinancialReportTabs from "./financialReportTabs";
-import { getAllBoxCollection } from "../../api/donationBoxCollectionApi";
+import FormikRangeDatePicker from "../../components/partials/FormikRangeDatePicker";
 const NewsWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -54,11 +57,20 @@ const NewsWarper = styled.div`
     margin-top: .5rem;
     font: normal normal bold 13px/5px noto sans;
   }
+  .dateChooserReport{
+    border: 1px solid #FF8744;
+    color: #FF8744;
+    font: normal normal bold 15px/20px noto sans;
+    padding: .4rem 1rem .4rem 2rem ;
+    border-radius: 7px;
+ }
 `;
 
-
+  
 
 export default function FinancialReport() {
+  const [reportStartDate, setReportStartDate] = useState(new Date());
+  const [reportEndDate, setReportEndDate] = useState(new Date());
 
   const { t } = useTranslation();
   const [activeReportTab, setActiveReportTab] = useState({ id: 1, name: t("report_expences") });
@@ -93,9 +105,13 @@ export default function FinancialReport() {
     .endOf(periodDropDown())
     .utcOffset(0, true)
     .toISOString();
+  
+  let startDate = moment(filterStartDate).format("D MMM");
 
-  let startDate = moment(filterStartDate).format("D MMM YYYY");
-  let endDate = moment(filterEndDate).utcOffset(0).format("D MMM YYYY");
+  let endDate = moment(filterEndDate).utcOffset(0).format("D MMM, YYYY");
+  
+  let reportStartDatePrint = moment(reportStartDate).format("DD-MM-YYYY");
+  let reportEndDatePrint= moment(reportEndDate).utcOffset(0).format("DD-MM-YYYY");
 
   const expensesQuery = useQuery(
     ["Expenses", pagination.page, selectedLang.id,filterStartDate,filterEndDate],
@@ -208,18 +224,21 @@ export default function FinancialReport() {
                 </div>
                 <div className="filterPeriod">
                   <span>
-                    {startDate}-{endDate}
+                    {startDate} - {endDate}
                   </span>
                 </div>
               </div>
             </div>
           </div>
           <div className="addNews">
-            <ChangePeriodDropDown
-              className={"me-1"}
-              dropDownName={dropDownName}
-              setdropDownName={(e) => setdropDownName(e.target.name)}
-            />
+            <div className="dateChooserReport d-flex justify-content-between align-item-center">
+              <div className="align-self-center">
+                {reportStartDatePrint}&nbsp;&nbsp; - &nbsp;&nbsp;{reportEndDatePrint}
+              </div>
+              <div>
+                <img src={editIcon} width={30} id={`popover`} className="ms-1 align-self-center cursor-pointer"/>
+              </div>
+            </div>
           </div>
         </div>
         <FinancialReportTabs setActive={setActiveReportTab} active={activeReportTab} />  
@@ -294,6 +313,31 @@ export default function FinancialReport() {
           </Row>
         </div>
       </div>
+      <BtnPopover
+        target={`popover`}
+        content={<Row>
+          <Col className="mb-1">
+            <label style={{ color:" #583703",fontWeight:" bold"}}>Start Date</label>
+              <CustomDatePicker
+                selected={reportStartDate}
+                onChange={date => setReportStartDate(date)}
+                dateFormat="DD-MM-YYYY"
+              />
+              {/* <FormikRangeDatePicker
+                    label={t("donation_select_date_time")}
+                    name="DateTime"              
+                    selectsRange
+                  /> */}
+          </Col>
+          <Col>
+          <label style={{ color:" #583703",fontWeight:" bold"}}>End Date</label>
+            <CustomDatePicker 
+              selected={reportEndDate}
+              onChange={date => setReportEndDate(date)}
+            />
+          </Col>
+        </Row> }
+      />
     </NewsWarper>
   );
 }

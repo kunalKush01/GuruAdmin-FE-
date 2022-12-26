@@ -1,13 +1,19 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { authApiInstance } from "../../axiosApi/authApiInstans";
-import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";  
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import { store } from "../store";
+import { persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import { authApiInstance } from "../../axiosApi/authApiInstans";
 export const login = createAsyncThunk("Auth", async (data, thunkApi) => {
-  const res = await authApiInstance.post("auth/login", data);
-  
-  return res.data.data;
+  try {
+    console.log("working");
+    const res = await authApiInstance.post("auth/login", data);
+    return res.data.data;
+  } catch (error) {
+    const message = error?.response?.data?.message ?? "Something went wrong";
+    toast.error(message);
+    // thunkApi.rejectWithValue(error?.response?.data);
+    throw error.response;
+  }
 });
 
 const authSlice = createSlice({
@@ -71,6 +77,7 @@ const authSlice = createSlice({
       // toast.success(action.payload.message)
     },
     [login.rejected]: (state, action) => {
+      // console.log("login failed", action.payload);
       state.userDetail = "";
       state.isLogged = false;
       (state.tokens.accessToken = ""), (state.tokens.refreshToken = "");
