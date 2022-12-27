@@ -13,10 +13,10 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 export const TopDonerList = ({ data }) => {
   const { t } = useTranslation();
   const TopDonerWarpper = styled.div`
-  height: 100%;
+  height: 94%;
     .listHeading {
       color: #583703;
-      font: normal normal bold 15px/23px Noto Sans;
+      font: normal normal bold 20px/23px Noto Sans;
     }
 
     .listContainer {
@@ -62,11 +62,13 @@ export const TopDonerList = ({ data }) => {
         {data?.map((item, idx) => (
           <Card key={item.id} className="  rounded-3">
             <CardBody className="d-flex p-1 justify-content-between align-items-center   ">
+              <div className="d-flex align-items-center">
               <img src={palceHolderIcon} className=" pe-1 " width={"70px"} />
-              <div className="pe-1">
+              <div className="">
                 <div className="headName">
                   {ConverFirstLatterToCapital(item?.user?.name ?? "")}
                 </div>
+              </div>
               </div>
               <img src={getRank(idx)} width={"30px"} />
             </CardBody>

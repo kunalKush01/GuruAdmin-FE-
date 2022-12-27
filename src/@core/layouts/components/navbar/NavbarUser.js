@@ -29,6 +29,7 @@ import { logOut } from "../../../../redux/authSlice";
 import { toast } from "react-toastify";
 import moment from "moment";
 import { useHistory } from "react-router-dom";
+import { ConverFirstLatterToCapital } from "../../../../utility/formater";
 const NavbarUser = (props) => {
   const history = useHistory();
   const trustDetails = useSelector(state=>state.auth.trustDetail)
@@ -114,12 +115,14 @@ const NavbarUser = (props) => {
           <ul className="nav navbar-nav align-items-center ">
             <div className="d-flex align-items-center">
               <div className="navepara">
-                <div className="templeName text-end">{trustDetails.name}</div>
+                <div className="templeName text-end">{ConverFirstLatterToCapital (trustDetails.name)}</div>
                 <div className="date">
                   <Trans i18nKey={"last_login"} />: {moment().format("DD MMM YYYY,h:mm a")}
                 </div>
               </div>
+              <div onClick={()=> history.push("/edit-profile")}>
               <UserDropdown />
+              </div>
             </div>
           </ul>
         </div>

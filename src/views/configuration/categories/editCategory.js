@@ -93,7 +93,9 @@ export default function EditNotice() {
         <div className="editNotice">
           <Trans i18nKey={"news_InputIn"} />
           <CustomDropDown
-            ItemListArray={subCategoryDetailQuery?.data?.result?.languages ?? []}
+            ItemListArray={
+              subCategoryDetailQuery?.data?.result?.languages ?? []
+            }
             className={"ms-1"}
             defaultDropDownName={langSelection}
             handleDropDownClick={(e) =>
@@ -141,22 +143,24 @@ export default function EditNotice() {
         <Else>
           {!masterloadOptionQuery?.isLoading &&
             !subCategoryDetailQuery.isLoading && (
-              <CategoryForm
-                loadOptions={masterloadOptionQuery?.data?.results}
-                placeholder={
-                  subCategoryDetailQuery?.data?.result?.masterCategory.name
-                }
-                CategoryFormName={"MasterCategory"}
-                handleSubmit={handleCategoryUpdate}
-                initialValues={{
-                  Id: subCategoryDetailQuery?.data?.id,
-                  MasterCategory:
-                    subCategoryDetailQuery?.data?.result?.masterCategory,
-                  SubCategory: subCategoryDetailQuery.data.result.name,
-                }}
-                buttonName={"categories_EditCategory"}
-                vailidationSchema={schema}
-              />
+              <div className="ms-3 mt-1">
+                <CategoryForm
+                  loadOptions={masterloadOptionQuery?.data?.results}
+                  placeholder={
+                    subCategoryDetailQuery?.data?.result?.masterCategory.name
+                  }
+                  CategoryFormName={"MasterCategory"}
+                  handleSubmit={handleCategoryUpdate}
+                  initialValues={{
+                    Id: subCategoryDetailQuery?.data?.id,
+                    MasterCategory:
+                      subCategoryDetailQuery?.data?.result?.masterCategory,
+                    SubCategory: subCategoryDetailQuery.data.result.name,
+                  }}
+                  buttonName={"save_changes"}
+                  vailidationSchema={schema}
+                />
+              </div>
             )}
         </Else>
       </If>

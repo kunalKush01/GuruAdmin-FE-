@@ -39,14 +39,14 @@ const NewsWarper = styled.div`
     font: normal normal bold 15px/20px noto sans;
   }
   .newsContent {
-    height: 350px;
-    overflow: auto;
+    margin-top: 1rem;
     ::-webkit-scrollbar {
       display: none;
     }
   }
   .filterPeriod {
     color: #ff8744;
+    margin-top: .5rem;
     font: normal normal bold 13px/5px noto sans;
   }
 `;
@@ -87,8 +87,8 @@ export default function News() {
     .utcOffset(0, true)
     .toISOString();
 
-  let startDate = moment(filterStartDate).format("D MMM YYYY");
-  let endDate = moment(filterEndDate).utcOffset(0).format("D MMM YYYY");
+  let startDate = moment(filterStartDate).format("D MMM");
+  let endDate = moment(filterEndDate).utcOffset(0).format("D MMM, YYYY");
 
   const newsQuery = useQuery(
     ["News", pagination.page, filterStartDate, filterEndDate,selectedLang.id],
@@ -115,7 +115,7 @@ export default function News() {
           <div className="d-flex justify-content-between align-items-center ">
             <img
               src={arrowLeft}
-              className="me-2  cursor-pointer"
+              className="me-2  cursor-pointer align-self-end"
               onClick={() => history.push("/")}
             />
             <div className="addNews">
@@ -125,7 +125,7 @@ export default function News() {
                 </div>
                 <div className="filterPeriod">
                   <span>
-                    {startDate}-{endDate}
+                    {startDate} - {endDate}
                   </span>
                 </div>
               </div>
@@ -143,7 +143,7 @@ export default function News() {
               onClick={() => history.push("/news/add")}
             >
               <span>
-                <Plus className="me-1" size={15} strokeWidth={4} />
+                <Plus className="" size={15} strokeWidth={4} />
               </span>
               <span>
                 <Trans i18nKey={"news_btn_AddNews"} />

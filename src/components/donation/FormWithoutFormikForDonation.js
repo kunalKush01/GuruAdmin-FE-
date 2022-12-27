@@ -15,7 +15,7 @@ import { createNews } from "../../api/newsApi";
 import { Plus } from "react-feather";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import AsyncSelectField from "../partials/asyncSelectField";
-import { findAllUsersByName, findAllUsersByNumber } from "../../api/findUser";
+import {findAllComitmentByUser, findAllUsersByName, findAllUsersByNumber} from "../../api/findUser";
 import { useSelector } from "react-redux";
 import {
   getAllMasterCategories,
@@ -23,6 +23,7 @@ import {
 } from "../../api/expenseApi";
 import { CustomReactSelect } from "../partials/customReactSelect";
 import { useUpdateEffect } from "react-use";
+import {getAllCommitments} from "../../api/commitmentApi";
 
 export default function FormWithoutFormikForDonation({
   formik,
@@ -32,8 +33,10 @@ export default function FormWithoutFormikForDonation({
 }) {
   const { t } = useTranslation();
 
-  const { SelectedMasterCategory, SelectedSubCategory } = formik.values;
+  const { SelectedMasterCategory, SelectedSubCategory,Amount } = formik.values;
   const [subLoadOption, setsubLoadOption] = useState([]);
+  const { SelectedUser, SelectedCommitmentId } = formik.values;
+  const [commitmentIdByUser, setCommitmentIdByUser] = useState([]);
 
   const loadOption = async (name) => {
     const res = await findAllUsersByName({ name: name });
@@ -41,13 +44,20 @@ export default function FormWithoutFormikForDonation({
   };
   useEffect(() => {
     const res = async () => {
-      const apiRes = await getAllSubCategories({ masterId: SelectedMasterCategory?.id });
-      console.log();
+      const apiRes = await getAllSubCategories({ masterId: SelectedMasterCategory?.id });      
       setsubLoadOption(apiRes?.results);
     };
-    
     SelectedMasterCategory&&res();
   }, [SelectedMasterCategory]);
+
+  useEffect(() => {
+    const res = async () => {
+      const apiRes = await findAllComitmentByUser({ userId: SelectedUser?.userId });
+      
+      setCommitmentIdByUser(apiRes?.results);
+    };
+    SelectedUser&&res();
+  }, [SelectedUser]);
 
   // useUpdateEffect(()=>{
   //   const results = async()=>{
@@ -62,17 +72,24 @@ export default function FormWithoutFormikForDonation({
       formik.setFieldValue("Mobile", user.mobileNumber);
     }
   }, [formik?.values?.SelectedUser]);
+  useUpdateEffect(() => {
+    
+    if (SelectedCommitmentId) {
+      formik.setFieldValue("Amount", SelectedCommitmentId?.amount-SelectedCommitmentId?.paidAmount);
+    }
+  }, [SelectedCommitmentId?.id]);
+
+  
 
   return (
     <Form>
-      <Row>
+      <Row>~
         <Col xs={12}>
           <Row>
           <Col xs={4}>
             <CustomTextField
                 label={t("dashboard_Recent_DonorNumber")}
                 name="Mobile"
-                
               />
             </Col>
             <Col xs={4}> 
@@ -105,7 +122,7 @@ export default function FormWithoutFormikForDonation({
                 loadOptions={subLoadOption}
                 name={"SelectedSubCategory"}
                 labelKey={"name"}
-                labelValue={"id"}
+                valueKey={"id"}
                 width
               />
             </Col>
@@ -113,17 +130,31 @@ export default function FormWithoutFormikForDonation({
               <CustomTextField label={t("created_by")} name="createdBy" disabled />
             </Col>
           </Row>
-          <Row></Row>
           <Row>
             <Col>
               <Row>
-                <Col>
-                  <div className="ImagesVideos">
-                    <Trans i18nKey={"categories_select_amount"} />
-                  </div>
-                </Col>
+              <Col xs={4} className="mt-1">
+              <FormikCustomReactSelect
+                labelName={t("dashboard_Recent_DonorCommitId")}
+                loadOptions={commitmentIdByUser}
+                placeholder={t("commitment_select_commitment_id")}
+                name={"SelectedCommitmentId"}
+                // labelKey={"commitmentId"}
+                valueKey={"id"}
+                getOptionLabel={(option)=>`${option.commitmentId}   (₹${option.paidAmount}/${option.amount})`}
+                width
+              />
+              </Col>
+
+                <Col xs={4} className="mt-1">
+                <CustomTextField
+                  label={t("categories_select_amount")}
+                  placeholder={t("enter_price_manually")}
+                  name="Amount"
+                />
+              </Col>
               </Row>
-              <Row>
+              {/* <Row>
                 <Col>
                   <Button
                     className="p-4 w-100 "
@@ -156,30 +187,25 @@ export default function FormWithoutFormikForDonation({
                     10000
                   </Button>
                 </Col>
-              </Row>
+              </Row> */}
             </Col>
           </Row>
 
-          <Row className="mt-1">
+          {/* <Row className="mt-1">
             <Row>
               <Col className="text-center">or</Col>
+            </Row> 
+            <Row className="">
+              
             </Row>
-            <Row className="justify-content-center">
-              <Col xs={6}>
-                <CustomTextField
-                  placeholder={t("enter_price_manually")}
-                  name="Amount"
-                />
-              </Col>
-            </Row>
-          </Row>
+          </Row> */}
         </Col>
       </Row>
-      <div className="btn-Published ">
+      <div className="btn-Published mt-3">
         <Button color="primary" className="addNotice-btn " type="submit">
           {!props.plusIconDisable && (
             <span>
-              <Plus className="me-1" size={15} strokeWidth={4} />
+              <Plus className="" size={15} strokeWidth={4} />
             </span>
           )}
           <span>

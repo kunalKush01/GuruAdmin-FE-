@@ -11,7 +11,9 @@ import Swal from "sweetalert2";
 import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
 import { deleteCategoryDetail } from "../../api/categoryApi";
 import placeHolderImg from "../../assets/images/icons/dashBoard/defaultAvatar.svg"
-export function UserListTable({ data }) {
+import { ConverFirstLatterToCapital } from "../../utility/formater";
+
+export function SubAdminUserListTable({ data }) {
   const handleDeleteCategory = async (payload) => {
     return deleteCategoryDetail(payload);
   };
@@ -46,6 +48,10 @@ export function UserListTable({ data }) {
       name: t("Email"),
       selector: (row) => row.email,
     },
+    {
+      name: t("User Role"),
+      selector: (row) => row.userRole,
+    },
   ];
 
   const categoriesList = useMemo(() => {
@@ -55,11 +61,12 @@ export function UserListTable({ data }) {
       userName: (
         <div className="d-flex align-items-center " >
           <img src={item.img??placeHolderImg} style={{marginRight:"5px",width:"25px"}}  />
-          <div>item.name</div>
+          <div>{ConverFirstLatterToCapital(item.name)}</div>
         </div>
       ),
-      mobile:`+91${item.mobileNumber}`,
+      mobile:`+91 ${item.mobileNumber}`,
       email: item.email,
+      userRole:item.userRole,
       // addLanguage: (
       //   <Button
       //     outline

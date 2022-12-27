@@ -25,11 +25,13 @@ export const hindiContent = {
   monthName_December: "दिसंबर",
   last_login: "पिछला लॉग इन",
   category:"वर्ग",
-  user:"उप व्यवस्थापक उपयोगकर्ता",
+  user:"उप व्यवस्थापक",
   report_Dispute:"रिपोर्ट और विवाद",
 
   cancel:"रद्द करें",
   confirm:"हटाने की पुष्टि करें",
+  save_changes:"परिवर्तनों को सहेजें",
+  rupees:"₹",
   // All static content of Dashboard
   dashboard_donationReceived: "दान प्राप्त",
   dashboard_donationPending: "दान लंबित",
@@ -120,7 +122,7 @@ export const hindiContent = {
   categories_latest_Category: "श्रेणियाँ",
   categories_title_required:"श्रेणी का नाम आवश्यक है",
   categories_EditCategory: "श्रेणी संपादित करें",
-  categories_select_amount:"राशि का चयन करें",
+  categories_select_amount:"राशि डालें",
   categories_select_category:"श्रेणी का चयन करें",
   category_select_sub_category:"उप श्रेणी का चयन करें",
   categories_select_user_name:"उपयोगकर्ता नाम का चयन करें",
@@ -130,8 +132,9 @@ export const hindiContent = {
   donar_name_required:"दाता का नाम आवश्यक है",
   created_by_required:"द्वारा बनाया गया आवश्यक है",
   user_select_required:"उपयोगकर्ता का चयन करना आवश्यक है",
-  masterCategory_required:"मास्टर श्रेणि का चयन करना आवश्यक है",  
-  created_by_required:"के द्वारा बनाया गया आवश्यक है",
+  masterCategory_required:"मास्टर श्रेणि का चयन करना आवश्यक है",
+  subCategory_required:"कृपया एक उप श्रेणी का चयन करें",
+  commitmentID_required:"कृपया टिप्पणी आईडी चुनें।",
   amount_required:"राशि आवश्यक है",
 
   category_delete:"श्रेणी हटाएं",
@@ -141,14 +144,14 @@ export const hindiContent = {
 
   // All static content of Users
 
-  users_AddUser: "उप व्यवस्थापक उपयोगकर्ता जोड़ें",
-  users_latest_User: "उप व्यवस्थापक उपयोगकर्ता",
+  users_AddUser: "उप व्यवस्थापक जोड़ें",
+  users_latest_User: "उप व्यवस्थापक ",
   users_title_required:"उपयोगकर्ता का नाम आवश्यक है",
   users_mobile_required:"मोबाइल नंबर आवश्यक है",
   users_email_required:"ईमेल की आवश्यक है",
 
-  users_not_found:"कोई उप व्यवस्थापक उपयोगकर्ता नहीं मिला",
-  users_not_click_add_users:'स्क्रीन पर उप व्यवस्थापक उपयोगकर्ता जोड़ने के लिए "उप व्यवस्थापक उपयोगकर्ता जोड़ें" पर क्लिक करें',
+  users_not_found:"कोई उप व्यवस्थापक नहीं मिला",
+  users_not_click_add_users:'स्क्रीन पर उप व्यवस्थापक जोड़ने के लिए "उप व्यवस्थापक जोड़ें" पर क्लिक करें',
 
 
   // All static content of Internal Expense
@@ -184,12 +187,13 @@ donation_Donation: "दान",
 donation_Adddonation:"दान जोड़ें",
 
 // All static content of Donation Box
+DonationBox_total_collection:"कुल संग्रह: ",
 DonationBox_DonationBox: "दान पेटी संग्रह",
 edit_collection:"संग्रह संपादित करें",
 DonationBox_AddCollectionBox:"संग्रह जोड़ें",
 DonationBox_AddDonationBox:"दान पेटी जोड़ें",
 created_by:"के द्वारा बनाई गई",
-enter_price_manually:"मूल्य मैन्युअल रूप से दर्ज करें",
+enter_price_manually:"राशि डालें",
 add_remarks:"टिप्पणी जोड़ें",
 DonationBox_EditCollectionBox:"संग्रह बॉक्स संपादित करें",
 add_amount:"राशि जोड़ें",
@@ -208,6 +212,7 @@ commitment_Username:"उपयोगकर्ता नाम",
 commitment_end_Date:"अंतिम तिथि ",
 commitment_Amount_Due:"देय राशि  ",
 commitment_select_end_date:"समाप्ति तिथि का चयन करें",
+commitment_select_commitment_id:"प्रतिबद्धता आईडी का चयन करें",
 
 commitment_delete:"प्रतिबद्धता हटाएं",
 commitment_sure:"क्या आप वाकई चयनित प्रतिबद्धता को स्थायी रूप से हटाना चाहते हैं? ",
@@ -242,6 +247,30 @@ report_dispute_not_found:"कोई रिपोर्ट और विवाद
  notifications_Notify_Users:"उपयोगकर्ताओं को सूचित करें",
  notifications_not_found:"कोई सूचना नहीं मिली",
  notifications_not_click_add:'स्क्रीन पर सूचनाएं जोड़ने के लिए "उपयोगकर्ताओं को सूचित करें जोड़ें" पर क्लिक करें',
- notifications_not_found:"कोई सूचनाएं नहीं मिली",
 //  notifications_not_click_add:'Click on "Add Notify Users" to add notifications on the screen',
+
+  // All user Profile static Data 
+  userProfile:"प्रोफ़ाइल",
+  userProfile_phone_number:"फ़ोन नंबर",
+  userProfile_name:"नाम",
+  userProfile_email_id:"ई-मेल आईडी",
+  userProfile_temple:"मंदिर",
+  userProfile_trust_type:"ट्रस्ट प्रकार",
+  userProfile_doc_certificate:"दस्तावेज़ / प्रमाण पत्र",
+  userProfile_facilities:"सुविधाएँ",
+  userProfile_punyarjak:"पुण्यर्जक",
+  userProfile_temple_upload_doc:"अपने के मंदिर दस्तावेज़ अपलोड करें",
+  images:"तस्वीरें",
+  browse:"ब्राउज़",
+  name_required:"नाम आवश्यक है",
+  email_invalid:"अवैध ईमेल",
+  email_required:"ईमेल आवश्यक है",
+  number_type:"यह फ़ोन नंबर जैसा नहीं लगता",
+  cant_start_minus:"फ़ोन नंबर ऋण से शुरू नहीं हो सकता",
+  number_in_point:"फ़ोन नंबर में दशमलव बिंदु शामिल नहीं हो सकता",
+  number_required:"एक फ़ोन नंबर आवश्यक है",
+  address_required:"पता आवश्यक है।",
+  Temple_name_required:"मंदिर का नाम आवश्यक है",
+  doc_required:"मंदिर के दस्तावेज आवश्यक है",
+
 };

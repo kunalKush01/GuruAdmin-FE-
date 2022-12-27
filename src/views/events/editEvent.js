@@ -35,8 +35,8 @@ const EventWarper = styled.div`
 `;
 
 const schema = yup.object().shape({
-  Title: yup.string().required("news_title_required"),
-  Body: yup.string().required("news_desc_required"),
+  Title: yup.string().required("events_title_required"),
+  Body: yup.string().required("events_desc_required"),
   DateTime: yup.string(),
 });
 
@@ -146,14 +146,18 @@ export default function Editevent() {
           </Row>
         </Then>
         <Else>
-          {!eventDetailQuery.isFetching&&<EventForm
-            initialValues={initialValues}
-            vailidationSchema={schema}
-            showTimeInput
-            selectEventDisabled
-            handleSubmit={handleEventUpdate}
-            buttonName="events_EditEvent"
-          />}
+          {!eventDetailQuery.isFetching&&
+            <div className="ms-3 mt-1">
+              <EventForm
+                initialValues={initialValues}
+                vailidationSchema={schema}
+                showTimeInput
+                selectEventDisabled
+                handleSubmit={handleEventUpdate}
+                buttonName="save_changes"
+              />
+            </div>
+              }
         </Else>
       </If>
     </EventWarper>

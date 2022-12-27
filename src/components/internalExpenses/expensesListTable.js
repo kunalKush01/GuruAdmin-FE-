@@ -12,6 +12,8 @@ import comfromationIcon from "../../assets/images/icons/news/conformationIcon.sv
 import { deleteCategoryDetail } from "../../api/categoryApi";
 import { deleteExpensesDetail } from "../../api/expenseApi";
 import he from "he"
+import moment from "moment";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 export function ExpensesListTable({ data }) {
   const handleDeleteExpenses = async (payload) => {
@@ -68,9 +70,9 @@ export function ExpensesListTable({ data }) {
     return data.map((item, idx) => ({
       _Id: item.id,
       id: `${idx + 1}`,
-      title: item.title,
+      title: ConverFirstLatterToCapital(item.title),
       description:<div dangerouslySetInnerHTML={{__html:he.decode(item.description)}} /> ,
-      dateTime:item.expenseDate,
+      dateTime: moment(item?.expenseDate).utcOffset(0).format("DD MMM YYYY"),
         amount:`₹${item.amount}`,
       edit: (
         <img
@@ -118,7 +120,7 @@ export function ExpensesListTable({ data }) {
 
   const RecentDonationTableWarper = styled.div`
     color: #583703 !important;
-    margin-right: 20px;
+    /* margin-right: 20px; */
     font: normal normal bold 15px/23px Noto Sans;
   `;
 

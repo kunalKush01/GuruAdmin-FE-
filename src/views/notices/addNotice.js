@@ -30,30 +30,27 @@ const NoticeWraper = styled.div`
 `;
 
 const handleCreateNotice = async (payload) => {
-  
   return createNotice(payload);
 };
 const schema = yup.object().shape({
-  Title: yup.string().required("notices_title_required"),  
-  Body: yup.string().required("notices_desc_required"),  
+  Title: yup.string().required("notices_title_required"),
+  Body: yup.string().required("notices_desc_required"),
   DateTime: yup.string(),
-  SelectedNotice:yup.mixed()
+  SelectedNotice: yup.mixed(),
 });
 
 const initialValues = {
   SelectedNotice: null,
   Id: "",
   Title: "",
-  Body: "",  
+  Body: "",
   DateTime: new Date(),
 };
- 
 
 export default function AddNotice() {
   const history = useHistory();
   const langArray = useSelector((state) => state.auth.availableLang);
-  const selectedLang= useSelector(state=>state.auth.selectLang)
-  
+  const selectedLang = useSelector((state) => state.auth.selectLang);
 
   return (
     <NoticeWraper>
@@ -78,14 +75,15 @@ export default function AddNotice() {
           />
         </div>
       </div>
-
-      <NoticeForm
-        handleSubmit={handleCreateNotice}
-        initialValues={initialValues}
-        vailidationSchema={schema}
-        showTimeInput
-        buttonName="notices_AddNotice"
-      />
+      <div className="ms-3 mt-1">
+        <NoticeForm
+          handleSubmit={handleCreateNotice}
+          initialValues={initialValues}
+          vailidationSchema={schema}
+          showTimeInput
+          buttonName="notices_AddNotice"
+        />
+      </div>
     </NoticeWraper>
   );
 }

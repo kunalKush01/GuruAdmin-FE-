@@ -148,12 +148,18 @@ export default function EditNews() {
         </Then>
         <Else>
           
-          {!newsDetailQuery.isFetching&&<NewsForm
-            vailidationSchema={schema}
-            initialValues={initialValues}
-            showTimeInput
-            handleSubmit={handleNewsUpdate}
-          />}
+          {!newsDetailQuery.isFetching&&
+          <div className="ms-3 mt-1">
+
+            <NewsForm
+              vailidationSchema={schema}
+              initialValues={initialValues}
+              showTimeInput
+              handleSubmit={handleNewsUpdate}
+              buttonName={"save_changes"}
+            />
+          </div>
+            }
         </Else>
       </If>
     </NewsWarper>

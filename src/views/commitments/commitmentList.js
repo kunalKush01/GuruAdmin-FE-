@@ -38,14 +38,17 @@ const NewsWarper = styled.div`
     margin-left: 10px;
     font: normal normal bold 15px/20px noto sans;
   }
-  /* .newsContent { */
+  .newsContent {
+    margin-top: 1rem;
     /* height: 350px; */
     /* overflow: auto; */
     ::-webkit-scrollbar {
       display: none;
     }
+  }
   .filterPeriod {
     color: #ff8744;
+    margin-top: .5rem;
     font: normal normal bold 13px/5px noto sans;
   }
 `;
@@ -84,8 +87,8 @@ export default function Expenses() {
     .utcOffset(0, true)
     .toISOString();
 
-  let startDate = moment(filterStartDate).format("D MMM YYYY");
-  let endDate = moment(filterEndDate).utcOffset(0).format("D MMM YYYY");
+  let startDate = moment(filterStartDate).format("D MMM");
+  let endDate = moment(filterEndDate).utcOffset(0).format("D MMM, YYYY");
 
   const commitmentQuery = useQuery(
     [
@@ -121,7 +124,7 @@ export default function Expenses() {
           <div className="d-flex justify-content-between align-items-center ">
             <img
               src={arrowLeft}
-              className="me-2  cursor-pointer"
+              className="me-2  cursor-pointer align-self-end"
               onClick={() => history.push("/")}
             />
             <div className="addNews">
@@ -131,7 +134,7 @@ export default function Expenses() {
                 </div>
                 <div className="filterPeriod">
                   <span>
-                    {startDate}-{endDate}
+                    {startDate} - {endDate}
                   </span>
                 </div>
               </div>
@@ -149,7 +152,7 @@ export default function Expenses() {
               onClick={() => history.push("/commitment/add")}
             >
               <span>
-                <Plus className="me-1" size={15} strokeWidth={4} />
+                <Plus className="" size={15} strokeWidth={4} />
               </span>
               <span>
                 <Trans i18nKey={"add_commitment"} />

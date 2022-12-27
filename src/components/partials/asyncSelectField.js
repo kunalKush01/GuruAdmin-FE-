@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useField } from "formik";
 
 import AsyncSelect from "react-select/async";
+import {Trans} from "react-i18next";
 // import { DARK_BLUE_MUTED, DARK_GREY } from "../../theme";
 
 export default function AsyncSelectField({
@@ -23,11 +24,12 @@ export default function AsyncSelectField({
       color: "#583703",
     }),
     option: (provided, { data, isDisabled, isFocused, isSelected }) => {
-      console.log("provided",provided);
+      
       return({
       ...provided,
       color:isSelected&&"#FF8744",
       backgroundColor: "#FFF7E8",
+        zIndex:2,
       "&:hover":{
         color:"#fff",
         backgroundColor:"#FF8744"
@@ -85,6 +87,7 @@ export default function AsyncSelectField({
       ...provided,
       margin: "0px",
       color: "#583703",
+      opacity:"60%",
       font: "normal normal bold 13px/20px Noto Sans",
       
     }),
@@ -117,9 +120,13 @@ export default function AsyncSelectField({
         }}
         {...props}
       />
-      {meta.touched && meta.error ? (
-        <div className="field-error text-danger">{meta.error}</div>
-      ) : null}
+      <div style={{ height: "20px",fontSize:"11px" }}>
+        {meta.error && meta.touched && (
+            <div className="text-danger">
+              <Trans i18nKey={meta.error} />
+            </div>
+        )}
+      </div>
     </div>
   );
 }

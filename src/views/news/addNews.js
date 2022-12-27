@@ -26,12 +26,10 @@ const NewsWarper = styled.div`
     display: flex;
     align-items: center;
   }
-
-  
 `;
 
 const handleCreateNews = async (payload) => {
- return createNews(payload);
+  return createNews(payload);
 };
 const schema = yup.object().shape({
   Title: yup.string().required("news_title_required"),
@@ -41,20 +39,19 @@ const schema = yup.object().shape({
   DateTime: yup.string(),
 });
 
-const initialValues={
-  Id:"",
+const initialValues = {
+  Id: "",
   Title: "",
   Tags: "",
   Body: "",
   PublishedBy: "",
   DateTime: new Date(),
-}
+};
 
 export default function AddNews() {
   const history = useHistory();
-  const langArray = useSelector(state=>state.auth.availableLang)
+  const langArray = useSelector((state) => state.auth.availableLang);
 
-  
   return (
     <NewsWarper>
       <div className="d-flex justify-content-between align-items-center ">
@@ -78,8 +75,15 @@ export default function AddNews() {
           />
         </div>
       </div>
-
-        <NewsForm handleSubmit={handleCreateNews} initialValues={initialValues} vailidationSchema={schema} showTimeInput />
+      <div className="ms-3 mt-1">
+        <NewsForm
+          handleSubmit={handleCreateNews}
+          initialValues={initialValues}
+          vailidationSchema={schema}
+          showTimeInput
+          buttonName={"news_button_Publish"}
+        />
+      </div>
     </NewsWarper>
   );
 }

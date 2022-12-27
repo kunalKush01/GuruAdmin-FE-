@@ -91,7 +91,7 @@ export default function AddLanguageEvent() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push("/events")}
+            onClick={() => history.push("/configuration/categories")}
           />
           <div className="editEvent">
             <Trans i18nKey={"news_AddLangNews"} />
@@ -112,22 +112,24 @@ export default function AddLanguageEvent() {
       </div>
 
       {!subCategoryDetailQuery.isLoading ? (
-        <CategoryForm
-        loadOptions={[subCategoryDetailQuery?.data?.result?.masterCategory]}
-        placeholder={
-          subCategoryDetailQuery?.data?.result?.masterCategory.name
-        }
-        CategoryFormName={"MasterCategory"}
-        handleSubmit={handleCategoryLangUpdate}
-        initialValues={{
-          Id: "",
-          MasterCategory:
-            subCategoryDetailQuery?.data?.result?.masterCategory,
-          SubCategory: subCategoryDetailQuery?.data?.result?.name,
-        }}
-        buttonName={"news_AddLangNews"}
-        vailidationSchema={schema}
-      />
+        <div className="ms-3 mt-1">
+          <CategoryForm
+          loadOptions={[subCategoryDetailQuery?.data?.result?.masterCategory]}
+          placeholder={
+            subCategoryDetailQuery?.data?.result?.masterCategory.name
+          }
+          CategoryFormName={"MasterCategory"}
+          handleSubmit={handleCategoryLangUpdate}
+          initialValues={{
+            Id: "",
+            MasterCategory:
+              subCategoryDetailQuery?.data?.result?.masterCategory,
+            SubCategory: subCategoryDetailQuery?.data?.result?.name,
+          }}
+          buttonName={"news_AddLangNews"}
+          vailidationSchema={schema}
+        />
+        </div>
       ) : (
         ""
       )}

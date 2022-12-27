@@ -41,6 +41,7 @@ function LangModel({ setlangSelection, langSelection }) {
       color: #583703;
       font: normal normal bold 14px/30px Noto Sans;
       .cancel {
+        cursor: pointer;
         color: #ff8744;
       }
     }
@@ -67,12 +68,15 @@ function LangModel({ setlangSelection, langSelection }) {
         border: 3px solid white;
       }
     }
+    .language_heading{
+      font-size: 18px;
+    }
   `;
   return (
     <Modal isOpen={langSelection}>
       <ModelWarraper>
         <ModalHeader className="bg-white w-100 p-0 py-1 ">
-          <div>Language Preference</div>
+          <div className="language_heading">Language Preference</div>
           <div onClick={() => setlangSelection(false)} className="cancel">
             Cancel
           </div>

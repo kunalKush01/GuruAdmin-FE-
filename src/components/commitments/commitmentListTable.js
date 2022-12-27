@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import moment from "moment/moment";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
@@ -9,6 +10,7 @@ import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomDataTable from "../partials/CustomDataTable";
 
 export default function CommitmentListTable({ data }) {
@@ -101,20 +103,22 @@ export default function CommitmentListTable({ data }) {
         username: (
           <div className="d-flex align-items-center ">
             <img src={avtarIcon} style={{ marginRight: "5px", width: "25px" }} />
-            <div>{item?.user?.name??""}</div>
+            <div>
+              {ConverFirstLatterToCapital(item?.user?.name??"")}
+            </div>
           </div>
         ),
         mobileNumber: `+91-${item?.user?.mobileNumber}`,
-        donarName: item?.donarName??item.user?.name,
-        category: <div>{item?.masterCategory?.name} {item?.category&&`(${item?.category?.name})`}</div>,
-        endDate: item?.commitmentEndDate,
+        donarName:ConverFirstLatterToCapital (item?.donarName??item.user?.name),
+        category: <div>{ConverFirstLatterToCapital(item?.masterCategory?.name)} {item?.category&&`(${item?.category?.name})`}</div>,
+        endDate:  moment(item?.commitmentEndDate).utcOffset(0).format("DD MMM YYYY"),
         // .utcOffset("+0530")
         // .toDate(),
-        status: item?.paidStatus,
+        status:ConverFirstLatterToCapital( item?.paidStatus),
         amount: item?.amount,
         amountDue: item?.amount-item.paidAmount,
         commitmentId:item?.commitmentId,
-        createdBy:item?.createdBy.name,
+        createdBy:ConverFirstLatterToCapital(item?.createdBy.name),
         edit: (
           <img
             src={editIcon}
@@ -211,7 +215,7 @@ export default function CommitmentListTable({ data }) {
 
   const RecentDonationTableWarper = styled.div`
     color: #583703 !important;
-    margin-right: 20px;
+    /* margin-right: 20px; */
     font: normal normal bold 15px/23px Noto Sans;
   `;
 

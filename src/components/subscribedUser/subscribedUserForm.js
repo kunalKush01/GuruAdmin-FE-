@@ -140,8 +140,8 @@ export default function SubscribedUserForm({
             </Row>
             <div className="btn-Published ">
             <Button color="primary" className="addNotice-btn " type="submit">
-                {!plusIconDisable&&<span>
-                  <Plus className="me-1" size={15} strokeWidth={4} />
+                {plusIconDisable&&<span>
+                  <Plus className="" size={15} strokeWidth={4} />
                 </span>}
                 <span>
                   <Trans i18nKey={`${buttonName}`} />

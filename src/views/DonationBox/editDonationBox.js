@@ -29,8 +29,8 @@ const NewsWarper = styled.div`
 `;
 const schema = yup.object().shape({
   // CreatedBy: yup.string().required("news_tags_required"),
-  Amount: yup.string().required("news_tags_required"),
-  Body: yup.string().required("news_desc_required"),
+  Amount: yup.string().required("donation_box_amount_required"),
+  Body: yup.string().required("donation_box_desc_required"),
   DateTime: yup.string(),
 });
 
@@ -130,13 +130,16 @@ export default function EditDonationBox() {
         <Else>
           
           {!collectionBoxDetailQuery.isFetching&&
-          <DonationBoxForm
-            buttonName={"edit_collection"}
-            vailidationSchema={schema}
-            initialValues={initialValues}
-            showTimeInput
-            handleSubmit={handleUpdate}
-          />}
+          <div className="ms-3 mt-1">  
+            <DonationBoxForm
+              buttonName={"save_changes"}
+              vailidationSchema={schema}
+              initialValues={initialValues}
+              showTimeInput
+              handleSubmit={handleUpdate}
+            />
+          </div>
+          }
         </Else>
       </If>
     </NewsWarper>

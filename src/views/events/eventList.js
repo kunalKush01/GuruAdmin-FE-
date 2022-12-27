@@ -19,6 +19,7 @@ import EventCard from "../../components/events/eventCard";
 import CustomDatePicker from "../../components/partials/customDatePicker";
 import HinduCalenderDetailCard from "../../components/events/hinduCalenderDetailCard";
 import { useSelector } from "react-redux";
+import NoContent from "../../components/partials/noContent";
 const EventWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -43,14 +44,14 @@ const EventWarper = styled.div`
     font: normal normal bold 15px/20px noto sans;
   }
   .eventContent {
-    height: 350px;
-    overflow: auto;
+    margin-top: 1rem;
     ::-webkit-scrollbar {
       display: none;
     }
   }
   .filterPeriod {
     color: #ff8744;
+    margin-top: .5rem;
     font: normal normal bold 13px/5px noto sans;
   }
 `;
@@ -91,8 +92,8 @@ export default function EventList() {
     .utcOffset(0, true)
     .toISOString();
 
-  let startDate = moment(filterStartDate).format("D MMM YYYY");
-  let endDate = moment(filterEndDate).utcOffset(0).format("D MMM YYYY");
+  let startDate = moment(filterStartDate).format("D MMM ");
+  let endDate = moment(filterEndDate).utcOffset(0).format("D MMM. YYYY");
 
   const eventQuery = useQuery(
     ["Events", pagination.page, startDate, endDate,selectedLang.id],
@@ -108,7 +109,7 @@ export default function EventList() {
     }
   );
 
-  const dateQuery = useQuery(["Dates"], () => getEventDates());
+  const dateQuery = useQuery(["EventDates"], () => getEventDates());
   const eventDates = useMemo(() => {
     return dateQuery?.data?.results?.map((item) => moment(item).toDate()) ?? [];
   }, [dateQuery]);
@@ -129,7 +130,7 @@ export default function EventList() {
           <div className="d-flex justify-content-between align-items-center ">
             <img
               src={arrowLeft}
-              className="me-2  cursor-pointer"
+              className="me-2  cursor-pointer align-self-end"
               onClick={() => history.push("/")}
             />
             <div className="addEvent">
@@ -139,7 +140,7 @@ export default function EventList() {
                 </div>
                 <div className="filterPeriod">
                   <span>
-                    {startDate}-{endDate}
+                    {startDate} - {endDate}
                   </span>
                 </div>
               </div>
@@ -157,7 +158,7 @@ export default function EventList() {
               onClick={() => history.push("/events/add")}
             >
               <span>
-                <Plus className="me-1" size={15} strokeWidth={4} />
+                <Plus className="" size={15} strokeWidth={4} />
               </span>
               <span>
                 <Trans i18nKey={"events_AddEvent"} />
@@ -178,7 +179,7 @@ export default function EventList() {
         </div>
         <div>
           <Row className="w-100 m-0"  >
-            <Col xs={9} className="eventContent">
+            <Col xs={9} className="eventContent ps-0">
               <If condition={eventQuery.isLoading} disableMemo >
                 <Then>
                   <SkeletonTheme
@@ -207,7 +208,10 @@ export default function EventList() {
                       })}
                     </Then>
                     <Else>
-                      <NoEvent />
+                      <NoContent
+                        headingNotfound={t("events_not_found")}
+                        para={t("events_not_click_add_events")}
+                      />
                     </Else>
                   </If>
                 </Else>
@@ -245,7 +249,7 @@ export default function EventList() {
                 </Then>
               </If>
             </Col>
-            <Col xs={3} className="p-0 ps-1 ">
+            <Col xs={3} className="p-0 ps-1" style={{marginTop:"1.8rem"}}>
               <Row>
                 <Col xs={12}>
                   <If condition={dateQuery.isLoading}>
@@ -256,8 +260,6 @@ export default function EventList() {
                       <CustomDatePicker
                         selected={""}
                         highlightDates={eventDates}
-                        
-                        
                       />
                     </Else>
                   </If>
@@ -265,7 +267,7 @@ export default function EventList() {
               </Row>
               <Row className="w-100 m-0" >
                 <Col xs={12}  >
-                  <HinduCalenderDetailCard />
+                  {/* <HinduCalenderDetailCard /> */}
                 </Col>
               </Row>
             </Col>

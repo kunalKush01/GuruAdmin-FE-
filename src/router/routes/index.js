@@ -27,6 +27,11 @@ const Routes = [
     
   },
   {
+    path: "/edit-profile",
+    component: lazy(() => import("../../views/Profile/userProfile")),
+    
+  },
+  {
     path:"/subscribed-user",
     component:lazy(()=> import("../../views/subscribedUser/subscribedUserList")),
     exact:true

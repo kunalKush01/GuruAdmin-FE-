@@ -110,7 +110,7 @@ function BtnContent({ newsId }) {
 
   return (
     <BtnContentWraper>
-      <Row className="MainContainer">
+      <Row className="MainContainer d-block">
         <Col
           xs={12}
           className="col-item"
@@ -192,7 +192,7 @@ export default function NewsCard({ data }) {
         </div>
 
         <CardBody>
-          <CardTitle>{data.title}</CardTitle>
+          <CardTitle>{ConverFirstLatterToCapital (data.title)}</CardTitle>
 
           <CardText>
             <div
@@ -217,8 +217,7 @@ export default function NewsCard({ data }) {
                 <img src={cardClockIcon} style={{ verticalAlign: "bottom" }} />
                 Posted on {`${moment(data.publishDate).format("D MMMM YYYY ")}`}
               </div>
-
-              <img src={cardThreeDotIcon} id={`popover-${data.id}`} />
+              <img src={cardThreeDotIcon} className="cursor-pointer" id={`popover-${data.id}`} />
             </div>
           </CardFooter>
         </CardBody>

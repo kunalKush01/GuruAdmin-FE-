@@ -156,7 +156,7 @@ const CustomDatePickerWraper = styled.div`
   }
 `;
 
-export default function CustomDatePicker({ ...props }) {
+export default function  CustomDatePicker({ ...props }) {
   return (
     <CustomDatePickerWraper>
       <DatePicker        
@@ -166,7 +166,6 @@ export default function CustomDatePicker({ ...props }) {
         timeFormat="hh:mm aa"
         timeCaption="Time"        
         inline        
-        
         {...props}
       />
     </CustomDatePickerWraper>

@@ -12,6 +12,7 @@ import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import { useHistory } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createNews } from "../../api/newsApi";
+import { Plus } from "react-feather";
 
 const FormWaraper = styled.div`
   .FormikWraper {
@@ -40,10 +41,12 @@ const FormWaraper = styled.div`
 `;
 
 export default function NewsForm({
+  plusIconDisable = false,
   handleSubmit,
   vailidationSchema,
   initialValues,
   showTimeInput,
+  buttonName,
 }) {
   const history = useHistory();
   const { t } = useTranslation();
@@ -128,8 +131,15 @@ export default function NewsForm({
               </Col>
             </Row>
             <div className="btn-Published ">
-              <Button color="primary" type="submit">
-                <Trans i18nKey={"news_button_Publish"} />
+              <Button color="primary" type="submit"> 
+              {plusIconDisable && (
+                  <span>
+                    <Plus className="me-1" size={15} strokeWidth={4} />
+                  </span>
+                )}
+                <span>
+                  <Trans i18nKey={`${buttonName}`} />
+                </span>
               </Button>
             </div>
           </Form>

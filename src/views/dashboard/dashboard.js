@@ -2,7 +2,7 @@ import OrdersReceived from "../../utility/ui-elements/cards/statistics/OrdersRec
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import { getAllDashboardData } from "../../api/dashboard";
+import { getAllDashboardData, getAllRecentDonationList, getAllTopDonor } from "../../api/dashboard";
 import custcardImage3 from "../../assets/images/icons/dashBoard/Group 24887.svg";
 import RecentDonationTable from "../../components/dashboard/recentDonationTable";
 import { TopDonerList } from "../../components/dashboard/topDonerList";
@@ -12,7 +12,11 @@ import { RevenueChart } from "../../utility/revenueChart";
 import { Col, Row } from "reactstrap";
 const Home = () => {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
-  const [dashboardData,setDashboardData] = useState()
+  const [dashboardData,setDashboardData] = useState();
+  const [topDonorData,setTopDonorData] = useState();
+  const [recentDonationData,setRecentDonationData] = useState();
+  const [chartData,setChart] = useState();
+
   const { t } = useTranslation();
   const history = useHistory();
   
@@ -25,14 +29,38 @@ useEffect(()=>{
   dashboardInfo()
 },[]);
 
-  return (
+useEffect(()=>{
+  const chartInfo= async()=>{
+    const chartRes= await getAllDashboardData()
+    setChart(chartRes)
+   }
+   chartInfo()
+ },[]);
+
+useEffect(()=>{
+  const topDonorInfo= async()=>{
+    const topDonorRes= await getAllTopDonor()
+    setTopDonorData(topDonorRes)
+   }
+   topDonorInfo()
+ },[]);
+ 
+ useEffect(()=>{
+  const recentDonationInfo= async()=>{
+    const recentDonationRes = await getAllRecentDonationList()
+    setRecentDonationData(recentDonationRes)
+   }
+   recentDonationInfo()
+ },[]);
+ 
+ return (
     <>
-    {dashboardData&&<div>
+    {dashboardData&&<div className="pb-4">
       <ChangePeriodDropDown
       dropDownName={dropDownName}
       setdropDownName={(e)=>setdropDownName(e.target.name)}
       />
-      <div className="d-flex justify-content-between mt-1 ">
+      <div className="d-flex justify-content-between mt-1">
         <OrdersReceived
           statTitle={t("dashboard_donationReceived")}
           stats={parseInt(dashboardData?.donationReceived)}
@@ -67,13 +95,18 @@ useEffect(()=>{
         </div>
       </div>
 
-      <RevenueChart CommittmentData={dashboardData?.totalCommitmentArr} DonationData={dashboardData?.donationReceivedArr} TotalExpensesData={dashboardData?.totalExpensesArr} />
+      <RevenueChart 
+          CommittmentData={chartData?.totalCommitmentArr} 
+          DonationData={chartData?.donationPendingArr} 
+          TotalExpensesData={chartData?.totalExpensesArr} 
+      />
+      
       <Row>
         <Col xs={9}>
-        <RecentDonationTable data={dashboardData?.donations} />
+        <RecentDonationTable data={recentDonationData?.results} />
         </Col>
         <Col xs={3} >
-        <TopDonerList data={dashboardData?.topDonars} />
+        <TopDonerList data={topDonorData?.results} />
         </Col>
       </Row>
       

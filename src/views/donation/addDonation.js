@@ -22,32 +22,32 @@ const NewsWarper = styled.div`
 `;
 
 const handleCreateDonation = async (payload) => {
-  
   return createDonation(payload);
 };
 const schema = yup.object().shape({
   Mobile: yup.string().required("expenses_mobile_required"),
-  // SelectedUser: yup.string().required("user_select_required"),
+  SelectedUser: yup.string().required("user_select_required"),
   // donarName: yup.string().required("donar_name_required"),
   SelectedMasterCategory: yup.object().required("masterCategory_required"),
-  SelectedSubCategory: yup.object(),  
-  Amount:yup.string().required("amount_required"),
+  SelectedSubCategory: yup.object().required("subCategory_required"),
+  SelectedCommitmentId:yup.object().required("commitmentID_required"),
+  Amount: yup.string().required("amount_required"),
+
 });
-
-
 
 export default function AddNews() {
   const history = useHistory();
   const langArray = useSelector((state) => state.auth.availableLang);
-  const loggedInUser = useSelector(state=>state.auth.userDetail.name)
+  const loggedInUser = useSelector((state) => state.auth.userDetail.name);
   const initialValues = {
-    Mobile:"",
+    Mobile: "",
     SelectedUser: "",
     donarName: "",
     SelectedMasterCategory: "",
-    SelectedSubCategory:"",
-    createdBy:loggedInUser,
-    Amount:"",
+    SelectedSubCategory: "",
+    createdBy: loggedInUser,
+    SelectedCommitmentId: "",
+    Amount: "",
   };
   return (
     <NewsWarper>
@@ -72,14 +72,15 @@ export default function AddNews() {
           />
         </div> */}
       </div>
-
-      <DonationForm
-        handleSubmit={handleCreateDonation}
-        initialValues={initialValues}
-        vailidationSchema={schema}
-        showTimeInput
-        buttonName="donation_Adddonation"
-      />
+      <div className="ms-3 mt-1">
+        <DonationForm
+          handleSubmit={handleCreateDonation}
+          initialValues={initialValues}
+          vailidationSchema={schema}
+          showTimeInput
+          buttonName="donation_Adddonation"
+        />
+      </div>
     </NewsWarper>
   );
 }

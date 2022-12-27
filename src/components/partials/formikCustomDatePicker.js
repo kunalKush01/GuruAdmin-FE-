@@ -155,10 +155,8 @@ export default function FormikCustomDatePicker({ label,...props }) {
        */}
       {label&&<label>{`${label}*`}</label>}
       <DatePicker 
-       
         selected={field.value}
         onChange={(date) => {          
-
          helpers.setValue(date)
         }}
         yearDropdownItemNumber={50}        

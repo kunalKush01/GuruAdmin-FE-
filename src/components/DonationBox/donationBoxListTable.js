@@ -1,6 +1,7 @@
 import { DateProfileGenerator } from "@fullcalendar/core";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import he from "he";
+import moment from "moment";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
@@ -54,7 +55,7 @@ export default function DonationBoxListTable({ data }) {
       id: `${idx + 1}`,
       amount:`₹${item.amount}`,
       remarks:<div dangerouslySetInnerHTML={{__html:he.decode(item.remarks)}} /> ,
-      dateTime:item.collectionDate,
+      dateTime:moment(item?.collectionDate).utcOffset(0).format("h:mm A, DD MMM YYYY"),
       edit: (
         <img
           src={editIcon}
@@ -70,7 +71,7 @@ export default function DonationBoxListTable({ data }) {
 
   const RecentDonationTableWarper = styled.div`
     color: #583703 !important;
-    margin-right: 20px;
+    /* margin-right: 20px; */
     font: normal normal bold 15px/23px Noto Sans;
   `;
 

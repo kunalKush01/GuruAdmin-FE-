@@ -16,7 +16,7 @@ import { deleteNoticeDetail } from "../../api/noticeApi";
 const EventCardWaraper = styled.div`
   .card1 {
     font: normal normal bold 13px/16px Noto Sans;
-    margin-bottom: none !important;
+    margin-bottom:.5rem !important;
   }
   .card-text {
     font: normal normal normal 12px/16px Noto Sans;
@@ -26,6 +26,7 @@ const EventCardWaraper = styled.div`
     text-overflow: ellipsis;
     text-align: start;
     white-space: nowrap;
+    margin-bottom:.5rem !important;
   }
   .card-Date {
     font: normal normal normal 12px/16px Noto Sans;
@@ -85,7 +86,7 @@ function BtnContent({ noticeId }) {
 
   return (
     <BtnContentWraper>
-      <Row className="MainContainer">
+      <Row className="MainContainer d-block">
         <Col
           xs={12}
           className="col-item"
@@ -161,7 +162,7 @@ export default function NoticeCard({ data }) {
             <Col xs={9}>
               <Row>
                 <Col xs={6}>
-                  <div className="card1">{data.title}</div>
+                  <div className="card1">{ConverFirstLatterToCapital(data.title)}</div>
                 </Col>
                 <Col xs={6}>
                   <div className="card-Date">
@@ -201,7 +202,7 @@ export default function NoticeCard({ data }) {
 
             <Col xs={1}>
               <div className="d-flex justify-content-between align-items-center">
-                <img src={cardThreeDotIcon} id={`popover-${data.id}`} />
+                <img src={cardThreeDotIcon} className="cursor-pointer" id={`popover-${data.id}`} />
               </div>
             </Col>
           </Row>

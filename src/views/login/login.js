@@ -26,6 +26,7 @@ import * as yup from "yup";
 import { useEffect, useState } from "react";
 import { login } from "../../redux/authSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 const LoginCover = () => {
   const { isLogged } = useSelector((state) => state.auth);
   const history = useHistory();
@@ -36,8 +37,12 @@ const LoginCover = () => {
     dispatch(login(data));
   };
   const loginSchema = yup.object().shape({
-    email: yup.string().required().min(5),
-    password: yup.string().required(),
+    email: yup
+      .string()
+      .email("Invalid Email.")
+      .required("Email is required.")
+      .min(5),
+    password: yup.string().required("Password is required."),
   });
   const forgetPasswordSchema = yup.object().shape({
     email: yup.string().required().min(5),
@@ -52,20 +57,22 @@ const LoginCover = () => {
     }
     .an_account {
       font: normal normal normal 16px/25px noto sans;
-      
     }
-
     .fw-bold {
       font-weight: 800 !important;
       font-size: 35px;
+      font-family: noto sans;
     }
     .signInEnterUserNAme {
       font: normal normal normal 18px/25px noto sans;
     }
     .forgetPassword {
-      font: normal normal bold 16px/20px noto sans;
-      cursor: pointer;
+      padding: 1rem 0rem;
+      text-align: end;
       margin-bottom: 20px;
+    }
+    .forgetPassword > span {
+      font: normal normal bold 16px/20px noto sans;
     }
     .signInIcons {
       width: 30px;
@@ -74,11 +81,12 @@ const LoginCover = () => {
       cursor: pointer;
     }
     .signInputField {
+      color: #583703;
+      font: normal normal bold 16px/33px noto sans;
       &::-webkit-input-placeholder {
-        padding-left: 1rem !important;
+        /* padding-left: 1rem !important; */
         opacity: 0.3;
         font: normal normal bold 16px/33px noto sans;
-
         color: #583703 !important;
       }
     }
@@ -90,6 +98,10 @@ const LoginCover = () => {
     }
     .signUp {
       font: normal normal bold 18px/25px noto sans;
+    }
+    .brand-text {
+      color: #583703;
+      font: normal normal bold 30px/44px noto sans;
     }
   `;
 
@@ -110,7 +122,7 @@ const LoginCover = () => {
           to="/"
           onClick={(e) => e.preventDefault()}
         >
-          <h1 className="brand-text  ms-1">Your Logo</h1>
+          <h1 className="brand-text  mt-2 ms-1">Your Logo</h1>
         </Link>
         <Col
           className="d-none  d-lg-flex pe-0 ps-0 align-items-center  h-100 "
@@ -153,7 +165,7 @@ const LoginCover = () => {
                       {/* <Label className="form-label" for="login-email">
                   Email
                 </Label> */}
-                      <InputGroup className="input-group-merge ">
+                      <InputGroup className="input-group-merge">
                         <InputGroupText className="border-top-0  p-0 border-end-0 border-start-0 ">
                           <img className="signInIcons" src={emailInputIcon} />
                         </InputGroupText>
@@ -177,9 +189,9 @@ const LoginCover = () => {
                     Password
                   </Label> */}
                         <InputPasswordToggle
-                          className="input-group-merge   "
+                          className="input-group-merge"
                           name="password"
-                          inputClassName="signInputField  border-top-0 border-end-0 border-start-0"
+                          inputClassName="signInputField p-0 border-top-0 border-end-0 border-start-0"
                           id="login-password"
                           value={formik.values.password}
                           onChange={formik.handleChange}
@@ -190,16 +202,24 @@ const LoginCover = () => {
                               src={passwordEyeIcon}
                             />
                           }
+                          showIcon={
+                            <img
+                              className="signInIcons"
+                              src={passwordEyeIcon}
+                            />
+                          }
                         />
-                        <div className="errorMassage text-primary ">
+                        <div className="errorMassage text-primary">
                           <ErrorMessage name="password" />
                         </div>
 
-                        <div
-                          onClick={() => setForgotPassWordActive(true)}
-                          className="text-end forgetPassword "
-                        >
-                          Forgot Password?
+                        <div className="forgetPassword">
+                          <span
+                            onClick={() => setForgotPassWordActive(true)}
+                            className="cursor-pointer"
+                          >
+                            Forgot Password?
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -222,7 +242,7 @@ const LoginCover = () => {
                   Don't Have an account ?{" "}
                 </span>
 
-                <span className="text-primary signUp ">Sign Up</span>
+                <span className="text-primary signUp">Sign Up</span>
               </p>
               {/* <div className="divider my-2">
               <div className="divider-text">or</div>

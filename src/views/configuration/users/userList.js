@@ -24,7 +24,7 @@ import {
 } from "../../../api/categoryApi";
 import { CustomReactSelect } from "../../../components/partials/customReactSelect";
 import CategoryCard from "../../../components/categories/categoryCard";
-import { UserListTable } from "../../../components/users/userListTable";
+import { SubAdminUserListTable, UserListTable } from "../../../components/users/userListTable";
 import { getAllUser } from "../../../api/userApi";
 import NoContent from "../../../components/partials/noContent";
 const NewsWarper = styled.div`
@@ -51,6 +51,7 @@ const NewsWarper = styled.div`
     font: normal normal bold 15px/20px noto sans;
   }
   .newsContent {
+    margin-top: 1rem;
     ::-webkit-scrollbar {
       display: none;
     }
@@ -206,7 +207,7 @@ export default function User() {
               <Else>
                 <If condition={userItems.length != 0} disableMemo>
                   <Then>
-                    <UserListTable data={userItems} />
+                    <SubAdminUserListTable data={userItems} />
                   </Then>
                   <Else>
                     <NoContent 

@@ -145,7 +145,7 @@ export default function EventForm({
             </Row>
             <div className="btn-Published ">
               <Button color="primary" className="addEvent-btn " type="submit">
-                {!plusIconDisable&&<span>
+                {plusIconDisable&&<span>
                   <Plus className="me-1" size={15} strokeWidth={4} />
                 </span>}
                 <span>

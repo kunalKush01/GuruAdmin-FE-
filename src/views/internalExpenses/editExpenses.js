@@ -28,10 +28,10 @@ const handleCreateExpense = async (payload) => {
   return updateExpensesDetail(payload);
 };
 const schema = yup.object().shape({
-  Title: yup.string().required("news_title_required"),
-  AddedBy: yup.string().required("news_tags_required"),
-  Amount: yup.string().required("news_tags_required"),
-  Body: yup.string().required("news_desc_required"),
+  Title: yup.string().required("expenses_title_required"),
+  // AddedBy: yup.string().required("news_tags_required"),
+  Amount: yup.string().required("expence_amount_required"),
+  Body: yup.string().required("expenses_desc_required"),
   DateTime: yup.string(),
 });
 
@@ -48,9 +48,9 @@ export default function AddNews() {
   
   const initialValues = {
     Id:ExpensesDetailQuery?.data?.result?.id,
-    Title: ExpensesDetailQuery?.data?.result?.title ?? "",
-    AddedBy: ExpensesDetailQuery?.data?.result?.createdBy?.name ?? "lalit",
-    Body: he.decode(ExpensesDetailQuery?.data?.result?.description ?? ""),
+    Title: ExpensesDetailQuery?.data?.result?.title ??null,
+    AddedBy: ExpensesDetailQuery?.data?.result?.createdBy?.name ?? "",
+    Body: he.decode(ExpensesDetailQuery?.data?.result?.description ??""),
     Amount: ExpensesDetailQuery?.data?.result?.amount ?? "",
     DateTime: moment(ExpensesDetailQuery?.data?.result?.expenseDate)
       .utcOffset("+0530")
@@ -81,13 +81,15 @@ export default function AddNews() {
       </div>
 
       {!ExpensesDetailQuery.isLoading ? (
-        <ExpensesForm
-          handleSubmit={handleCreateExpense}
-          initialValues={initialValues}
-          vailidationSchema={schema}
-          showTimeInput
-          buttonName="expenses_AddExpenses"
-        />
+        <div className="ms-3 mt-1">
+          <ExpensesForm
+            handleSubmit={handleCreateExpense}
+            initialValues={initialValues}
+            vailidationSchema={schema}
+            showTimeInput
+            buttonName="save_changes"
+          />
+        </div>
       ) : (
         ""
       )}

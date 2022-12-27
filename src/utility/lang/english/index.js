@@ -2,7 +2,7 @@ export const englishContent = {
   all:"All",
   dashboard: "Dashboard",
   donation: "Donation",
-  committment: "Committment",
+  committment: "Commitment",
   donation_box: "Donation Box Collections",
   financial_reports: "Financial Reports",
   internal_expenses: "Internal Expenses",
@@ -25,10 +25,13 @@ export const englishContent = {
   monthName_December: "December",
   last_login: "Last Logged In",
   category:"Category",
-  user:"Sub Admin User",
+  user:"Sub Admin",
   report_Dispute:"Report & Dispute",
   cancel:"Cancel",
   confirm:"Confirm Delete",
+  save_changes:"Save Changes",
+  rupees:"Rs",
+
   // All static content of Dashboard
   dashboard_donationReceived: "Donation Received",
   dashboard_donationPending: "Donation Pending",
@@ -50,7 +53,7 @@ export const englishContent = {
   dashboard_Recent_DonorCommitId: "Commitment ID",
   dashboard_Recent_DonorReceipt: "Receipt",
   dashboard_viewAll: "View All",
-  dashboard_top: "Top 5 Donors",
+  dashboard_top: "Top 5 Donor's",
 
   // All static content of News
 
@@ -120,17 +123,17 @@ export const englishContent = {
   categories_title_required:"Category Name is required",
   categories_EditCategory: "Edit Category",
   categories_select_category:"Select Category",
-  categories_sub_category:"Sub Category",
-  categories_select_amount:"Select Amount",
+  categories_select_amount:"Enter Amount",
   category_select_sub_category:"Select Sub Category",
   categories_select_user_name:"Select User Name",
   category_select:"Select",
   categories_select_master_category:"Master Category",
   donar_name_required:"Donor name is Required",
   created_by_required:"Created by is Required",
-  user_select_required:"Please Select a User",
+  user_select_required:"Please Select a User name",
   masterCategory_required:"Please Select a Master Category",
-  created_by_required:"Created By is required",
+  subCategory_required:"Please Select a Sub Category",
+  commitmentID_required:"Please Select Commiment Id. ",
   amount_required:"Amount is required",
 
   category_delete:"Delete Category",
@@ -140,13 +143,13 @@ export const englishContent = {
 
   // All static content of Users
 
-  users_AddUser: "Add Sub Admin User",
-  users_latest_User: "Sub Admin Users",
+  users_AddUser: "Add Sub Admin ",
+  users_latest_User: "Sub Admin ",
   users_title_required:"User Name is required",
   users_mobile_required:"Mobile Number is Required",
   users_email_required:"Email is Required",
-  users_not_found:"No Sub Admin User Found",
-  users_not_click_add_users:'Click on "Add Sub Admin User" to add sub admin user on the screen',
+  users_not_found:"No Sub Admin Found",
+  users_not_click_add_users:'Click on "Add Sub Admin" to add sub admin user on the screen',
 
 
 // All static content of Internal Expense
@@ -183,18 +186,20 @@ donation_Donation: "Donation",
 donation_Adddonation:"Add Donation",
 donation_select_date_time:"Select Date & Time",
 
+
 donation_delete:"Delete Donation",
 donation_sure:"Are you sure you want to permanently delete the selected donation ? ",
 donation_not_found:"No Donation Found",
 donation_not_click_add_donation:'Click on "Add Donation" to add donation on the screen',
 
 // All static content of Donation Box
+DonationBox_total_collection:"Total Collection:",
 DonationBox_DonationBox: "Donation Box Collections",
 DonationBox_AddCollectionBox:"Add Collection ",
 DonationBox_EditCollectionBox:"Edit Collection ",
 created_by:"Created By",
 edit_collection:"Edit Collection",
-enter_price_manually:"Enter Price Manually",
+enter_price_manually:"Enter Amount",
 add_remarks:"Add Remarks",
 add_amount:"Add Amount",
 DonationBox_AddDonationBox:"Add Donation Box ",
@@ -210,6 +215,7 @@ add_commitment:"Add Commitment",
 edit_commitment:"Edit Commitment",
 commitment_end_Date:"End Date ",
 commitment_Amount_Due:"Amount Due",
+commitment_select_commitment_id:"Select Commitment ID",
 commitment_select_end_date:"Select End Date",
 
 commitment_delete:"Delete Commitment",
@@ -244,4 +250,28 @@ commitment_not_click_add_commitment:'Click on "Add Commitment" to add commitment
   notifications_not_found:"No Notification Found",
   // notifications_not_click_add:'Click on "Add Notify Users" to add notifications on the screen',
 
-};
+  // All user Profile static Data 
+  userProfile:"Profile",
+  userProfile_phone_number:"Phone Number",
+  userProfile_name:"Name",
+  userProfile_email_id:"Email Id",
+  userProfile_temple:"Temple",
+  userProfile_trust_type:"Trust Type",
+  userProfile_doc_certificate:"Document/Certificate",
+  userProfile_facilities:"Facilities",
+  userProfile_punyarjak:"Punyarjak",
+  userProfile_temple_upload_doc:"Upload your temple document",
+  images:"Images",
+  browse:"Browse",
+  name_required:"Name is required.",
+  email_invalid:"Invalid Email.",
+  email_required:"Email is required.",
+  number_type:"That doesn't look like a phone number",
+  cant_start_minus:"A phone number can't start with a minus",
+  number_in_point:"A phone number can't include a decimal point",
+  number_required:"A phone number is required.",
+  address_required:"Address required.",
+  Temple_name_required:"Temple name is required.",
+  doc_required:"Temple document required.",
+
+};  

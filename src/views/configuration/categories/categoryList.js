@@ -43,8 +43,7 @@ const NewsWarper = styled.div`
     font: normal normal bold 15px/20px noto sans;
   }
   .newsContent {
-    height: 350px;
-    overflow: auto;
+    margin-top: 1rem;
     ::-webkit-scrollbar {
       display: none;
     }
@@ -149,9 +148,11 @@ export default function Category() {
           </div>
           <div className="addNews">
             <CustomReactSelect
+              className=""
               name="SelectedCategory"
               loadOptions={masterloadOptionQuery?.data?.results ?? []}
               labelKey={"name"}
+              color={"#FF8744"}
               valueKey={"id"}
               label={t("events_select_dropDown")}
               placeholder={t("all")}

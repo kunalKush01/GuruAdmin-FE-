@@ -26,7 +26,6 @@ const ReportListCardWraper = styled.div`
       
     }
   }
-  
   .card-body, .card{
     border-radius:20px ;
   background-color: #FFF7E8;
@@ -50,7 +49,10 @@ const ReportListCardWraper = styled.div`
     span{
       color: #FF8744;
     }
-    
+  }
+  .remarks{
+    margin-top: .5rem;
+    margin-bottom: 1.5rem;
   }
 `;
 
@@ -63,7 +65,7 @@ export default function BoxListCard({data="" }) {
           <Row className=" d-flex justify-content-between w-100 m-0" >
           <Col xs={2} className="p-0 d-flex justify-content-center" >
               <div style={{ width: "30px" }} >
-          {data.isLocked&&<img src={lockIcon} className="w-100"  />}
+            {data.isLocked&&<img src={lockIcon} className="w-100"  />}
 
               </div>
             </Col>
@@ -72,12 +74,12 @@ export default function BoxListCard({data="" }) {
 
           <img src={donationBoxIcon} style={{ width: "80px" }} />
           <div className="date">
-            <span>Date :</span> {moment(data.collectionDate).utcOffset(0).format("D MMMM YYYY")}
+            <span>Date :</span> {moment(data.collectionDate).utcOffset(0).format("dddd, DD MMMM, YYYY")}
           </div>
           <div className="time">
             <span>Time :</span>  {moment(data.collectionDate).utcOffset(0).format("h:mm a")}
           </div>
-          <div className="time d-flex align-items-center justify-content-between "  >
+          <div className="time d-flex align-items-center justify-content-between remarks"  >
             <img src={donationBoxDesIcon} width={10} /> 
              <div dangerouslySetInnerHTML={{__html:he.decode(data.remarks)}} />
           </div>

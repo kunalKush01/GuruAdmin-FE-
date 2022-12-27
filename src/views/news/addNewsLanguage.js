@@ -133,12 +133,15 @@ export default function AddLanguageNews() {
       </div>
 
       {!newsDetailQuery.isLoading ? (
-        <NewsForm
-          initialValues={initialValues}
-          vailidationSchema={schema}
-          showTimeInput
-          handleSubmit={handleNewsLangUpdate}
-        />
+        <div className="ms-3 mt-1">
+          
+          <NewsForm
+            initialValues={initialValues}
+            vailidationSchema={schema}
+            showTimeInput
+            handleSubmit={handleNewsLangUpdate}
+          />
+        </div>
       ) : (
         ""
       )}

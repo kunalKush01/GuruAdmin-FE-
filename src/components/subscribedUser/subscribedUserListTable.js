@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomDataTable from "../partials/CustomDataTable";
 export default function SubscribedUSerListTable({ data }) {
   const handleDeleteSubscribedUser = async (payload) => {
@@ -64,7 +65,7 @@ export default function SubscribedUSerListTable({ data }) {
         name: (
                 <div className="d-flex align-items-center ">
                   <img src={avtarIcon} style={{ marginRight: "5px", width: "25px" }} />
-                  <div>{item?.name??"-"}</div>
+                  <div>{ConverFirstLatterToCapital(item?.name??"-")}</div>
                 </div>
             ),
         mobileNumber:`+91-${item?.mobileNumber??"-"}`,

@@ -11,15 +11,10 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
-import {
-  getAllMasterCategories
-} from "../../api/categoryApi";
 import { getAllExpense } from "../../api/expenseApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { CategoryListTable } from "../../components/categories/categoryListTable";
-import NoNews from "../../components/partials/noContent";
-import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
 import { ExpensesListTable } from "../../components/internalExpenses/expensesListTable";
+import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
 import NoContent from "../../components/partials/noContent";
 const NewsWarper = styled.div`
   color: #583703;
@@ -45,14 +40,14 @@ const NewsWarper = styled.div`
     font: normal normal bold 15px/20px noto sans;
   }
   .newsContent {
-    height: 350px;
-    overflow: auto;
+   margin-top: 1rem;
     ::-webkit-scrollbar {
       display: none;
     }
   }
   .filterPeriod {
     color: #ff8744;
+    margin-top:.5rem;
     font: normal normal bold 13px/5px noto sans;
   }
 `;
@@ -93,8 +88,8 @@ export default function Expenses() {
     .utcOffset(0, true)
     .toISOString();
 
-  let startDate = moment(filterStartDate).format("D MMM YYYY");
-  let endDate = moment(filterEndDate).utcOffset(0).format("D MMM YYYY");
+  let startDate = moment(filterStartDate).format("D MMM");
+  let endDate = moment(filterEndDate).utcOffset(0).format("D MMM, YYYY");
 
   const expensesQuery = useQuery(
     ["Expenses", pagination.page, selectedLang.id,filterEndDate,filterStartDate],
@@ -127,7 +122,7 @@ export default function Expenses() {
           <div className="d-flex justify-content-between align-items-center ">
             <img
               src={arrowLeft}
-              className="me-2  cursor-pointer"
+              className="me-2  cursor-pointer align-self-end"
               onClick={() => history.push("/")}
             />
             <div className="addNews">
@@ -137,7 +132,7 @@ export default function Expenses() {
                 </div>
                 <div className="filterPeriod">
                   <span>
-                    {startDate}-{endDate}
+                    {startDate} - {endDate}
                   </span>
                 </div>
               </div>
@@ -155,7 +150,7 @@ export default function Expenses() {
               onClick={() => history.push("/internal_expenses/add")}
             >
               <span>
-                <Plus className="me-1" size={15} strokeWidth={4} />
+                <Plus className="" size={15} strokeWidth={4} />
               </span>
               <span>
                 <Trans i18nKey={"expenses_AddExpenses"} />

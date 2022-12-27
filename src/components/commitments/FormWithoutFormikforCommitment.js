@@ -109,64 +109,15 @@ export default function FormWithoutFormikForCommitment({
               />
             </Col>
           </Row>
-          <Row></Row>
           <Row>
-            <Col xs={8}>
-              <Row>
-                <Col>
-                  <div className="ImagesVideos">
-                    <Trans i18nKey={"categories_select_amount"} />
-                  </div>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Button
-                    className="p-4 w-100 "
-                    onClick={() => formik.setFieldValue("Amount", "1000")}
-                  >
-                    1000
-                  </Button>
-                </Col>
-                <Col>
-                  <Button
-                    className="p-4 w-100 "
-                    onClick={() => formik.setFieldValue("Amount", "2000")}
-                  >
-                    2000
-                  </Button>
-                </Col>
-                <Col>
-                  <Button
-                    className="p-4 w-100 "
-                    onClick={() => formik.setFieldValue("Amount", "5000")}
-                  >
-                    5000
-                  </Button>
-                </Col>
-                <Col>
-                  <Button
-                    className="p-4 w-100 "
-                    onClick={() => formik.setFieldValue("Amount", "10000")}
-                  >
-                    10000
-                  </Button>
-                </Col>
-              </Row>
-              <Row>
-                <Row>
-                  <Col className="text-center mt-1">or</Col>
-                </Row>
-                <Row className="justify-content-center">
-                  <Col xs={6}>
-                    <CustomTextField
-                      placeholder={t("enter_price_manually")}
-                      name="Amount"
-                    />
-                  </Col>
-                </Row>
-              </Row>
+            <Col xs={4}>
+                <CustomTextField
+                  label={t("categories_select_amount")}
+                  placeholder={t("enter_price_manually")}
+                  name="Amount"
+                />
             </Col>
+            <Col xs={4}></Col>
             <Col xs={4}>
               <FormikCustomDatePicker
                 label={t("commitment_select_end_date")}
@@ -182,7 +133,7 @@ export default function FormWithoutFormikForCommitment({
         <Button color="primary" className="addNotice-btn " type="submit">
           {!props.plusIconDisable && (
             <span>
-              <Plus className="me-1" size={15} strokeWidth={4} />
+              <Plus className="" size={15} strokeWidth={4} />
             </span>
           )}
           <span>

@@ -128,13 +128,15 @@ export default function AddLanguageNotice() {
       </div>
 
       {!noticeDetailQuery.isLoading ? (
-        <NoticeForm
-          initialValues={initialValues}
-          vailidationSchema={schema}
-          showTimeInput
-          handleSubmit={handleNoticeLangUpdate}
-          buttonName="news_AddLangNews"
-        />
+        <div className="ms-3 mt-1">
+          <NoticeForm
+            initialValues={initialValues}
+            vailidationSchema={schema}
+            showTimeInput
+            handleSubmit={handleNoticeLangUpdate}
+            buttonName="news_AddLangNews"
+          />
+        </div>
       ) : (
         ""
       )}
