@@ -67,7 +67,7 @@ useEffect(()=>{
         </div>
       </div>
 
-      <RevenueChart CommittmentData={dashboardData?.totalCommitmentArr} DonationData={dashboardData?.donationPendingArr} TotalExpensesData={dashboardData?.totalExpensesArr} />
+      <RevenueChart CommittmentData={dashboardData?.totalCommitmentArr} DonationData={dashboardData?.donationReceivedArr} TotalExpensesData={dashboardData?.totalExpensesArr} />
       <Row>
         <Col xs={9}>
         <RecentDonationTable data={dashboardData?.donations} />

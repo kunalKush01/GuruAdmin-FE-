@@ -38,9 +38,9 @@ function BtnContent({ setClosePopover }) {
   const queryCient = useQueryClient();
   const deleteMutation = useMutation({
     mutationFn: handleDeleteNews,
+    
     onSuccess: (data) => {
       if (!data.error) {
-        console.log("invaldating");
         queryCient.invalidateQueries(["News"]);
       }
     },

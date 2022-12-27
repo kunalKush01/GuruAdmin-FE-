@@ -51,6 +51,7 @@ export default function NewsForm({
 
   const newsMutation = useMutation({
     mutationFn: handleSubmit,
+
     onSuccess: (data) => {
       console.log("error=", data);
       if (!data.error) {
