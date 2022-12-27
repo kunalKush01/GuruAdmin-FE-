@@ -95,7 +95,7 @@ export default function DonationForm({
         newsQuerClient.invalidateQueries(["donations"]);
         // newsQuerClient.invalidateQueries(["CollectionDetail"]);
 
-        history.push("/donation_box");
+        history.push("/donation");
       }
     },
   });
@@ -115,6 +115,7 @@ export default function DonationForm({
               amount: e?.Amount,
               masterCategoryId: e?.SelectedMasterCategory?.id,
               mobileNumber: e?.Mobile,
+              commitmentId:e?.SelectedCommitmentId?.commitmentId,
             })
           }
           validationSchema={vailidationSchema}

@@ -57,7 +57,7 @@ export default function FormWithoutFormikForDonation({
       setCommitmentIdByUser(apiRes?.results);
     };
     SelectedUser&&res();
-  }, [SelectedUser]);
+  }, [SelectedUser?.userId]);
 
   // useUpdateEffect(()=>{
   //   const results = async()=>{
