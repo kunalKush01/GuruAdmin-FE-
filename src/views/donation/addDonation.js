@@ -26,7 +26,7 @@ const handleCreateDonation = async (payload) => {
 };
 const schema = yup.object().shape({
   Mobile: yup.string().required("expenses_mobile_required"),
-  SelectedUser: yup.object(),
+  // SelectedUser: yup.object(),
   // donarName: yup.string().required("donar_name_required"),
   SelectedMasterCategory: yup.object().required("masterCategory_required"),
   // SelectedSubCategory: yup.object().required("subCategory_required"),

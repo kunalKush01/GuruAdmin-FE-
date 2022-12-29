@@ -5,7 +5,7 @@ import DonationListTable from '../donation/donationListTable'
 import DonationBoxListTable from '../DonationBox/donationBoxListTable'
 import { ExpensesListTable } from '../internalExpenses/expensesListTable'
 
-export default function ReportListTable({activeReportTab,data}) {
+export default function ReportListTable({activeReportTab,data,page}) {
 
   const { t } = useTranslation();
 
@@ -14,7 +14,7 @@ export default function ReportListTable({activeReportTab,data}) {
     switch (activeReportTab.name) {
       case t("report_expences"):
         
-        return <ExpensesListTable data={data}/>;
+        return <ExpensesListTable data={data} page={page}/>;
         case t("donation_Donation"):
         
         return <DonationListTable data={data}/>;

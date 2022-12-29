@@ -72,7 +72,7 @@ export const englishContent = {
   news_tags_required: "News tags is required",
   news_desc_required: "News description is required",
   news_publish_required: "News publisher name is required",
-  news_latest_news: "Latest News",
+  news_latest_news: "News",
   news_btn_AddNews: "Add News",
   news_popOver_AddLang: "Add Language",
   news_popOver_Edit: "Edit",
@@ -101,7 +101,7 @@ export const englishContent = {
   // All static content of Notices
 
   notices_AddNotice: "Add Notice",
-  notices_latest_Notice: "Latest Notices",
+  notices_latest_Notice: "Notices",
   notices_title_required:"Notice title is required",
   notices_desc_required: "Notice description is required",
   notices_select_dropDown:"Select Notice",
@@ -127,7 +127,7 @@ export const englishContent = {
   category_select_sub_category:"Select Sub Category",
   categories_select_user_name:"Select User Name",
   category_select:"Select",
-  categories_select_master_category:"Master Category",
+  categories_select_master_category:"Select Master Category",
   donar_name_required:"Donor name is Required",
   created_by_required:"Created by is Required",
   user_select_required:"Please Select a User name",
@@ -155,6 +155,7 @@ export const englishContent = {
 // All static content of Internal Expense
 expenses_AddExpenses: "Add Expense",
 expenses_EditExpenses:"Edit Expense",
+expenses_Date:"Date",
 expence_description:" Description",
 expenses_latest_Expenses: "All Expenses",
 expenses_title_required:"Expenses title is required",

@@ -83,10 +83,6 @@ export default function DonationForm({
         languageId: selectedLang.id,
       })
   );
-  
-
-  
-
   const newsMutation = useMutation({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
@@ -107,7 +103,6 @@ export default function DonationForm({
           // enableReinitialize
           initialValues={{
             ...initialValues,
-            
           }}
           onSubmit={(e) =>
             newsMutation.mutate({
@@ -121,7 +116,6 @@ export default function DonationForm({
           validationSchema={vailidationSchema}
         >
           {(formik) => (
-            
             <FormWithoutFormikForDonation
               formik={formik}
               masterloadOptionQuery={masterloadOptionQuery}

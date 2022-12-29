@@ -86,7 +86,7 @@ export const CustomReactSelect = ({
       padding: "0px 8px",
     }),
   };
-  const [field, meta, helpers] = useField(props);
+  // const [field, meta, helpers] = useField(props);
   return (
     <div>
       {props.labelName && (

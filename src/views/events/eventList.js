@@ -260,6 +260,7 @@ export default function EventList() {
                       <CustomDatePicker
                         selected={""}
                         highlightDates={eventDates}
+                        disabled
                       />
                     </Else>
                   </If>

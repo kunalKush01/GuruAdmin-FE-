@@ -83,7 +83,7 @@ export default function FormWithoutFormikForDonation({
 
   return (
     <Form>
-      <Row>~
+      <Row>
         <Col xs={12}>
           <Row>
           <Col xs={4}>
