@@ -25,17 +25,16 @@ function CustomDataTable({ columns, data, minWidth, maxHieght }) {
 
     .rdt_TableCell {
       color: #583703 !important;
-      font: normal normal normal 10px/23px Noto Sans;
+      font: normal normal normal 14px/23px Noto Sans;
       /* justify-content: center; */
     }
 
     .rdt_TableHeadRow {
           border: 0px !important;
-
         .rdt_TableCol {
           color: #583703 !important;
           border: 0px !important;
-          font: normal normal bold 12px/23px Noto Sans;
+          font: normal normal bold 14px/23px Noto Sans;
           /* min-width: fit-content; */
           
         }

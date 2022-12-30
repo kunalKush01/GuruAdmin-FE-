@@ -29,39 +29,54 @@ export default function RecentDonationTable({ data }) {
       name: t("commitment_Username"),
       selector: (row) => row.username,
       style: {
-        font: "normal normal bold 10px/20px noto sans !important ",
+        font: "normal normal 700 13px/20px noto sans !important ",
       },
       // width:"150px",
     },
     {
       name: t("dashboard_Recent_DonorNumber"),
       selector: (row) => row.mobileNumber,
+      style: {
+        font: "normal normal normal 13px/20px noto sans !important ",
+      },
       // width:"150px",
     },
     {
       name: t("dashboard_Recent_DonorName"),
       selector: (row) => row.donarName,
+      style: {
+        font: "normal normal normal 13px/20px noto sans !important ",
+      },
       // width:"150px",
     },
 
     {
       name: t("category"),
       selector: (row) => row.category,
+      style: {
+        font: "normal normal normal 13px/20px noto sans !important ",
+      },
+
       // width:"150px",
     },
 
     {
       name: t("dashboard_Recent_DonorDate"),
+      style: {
+        font: "normal normal normal 13px/20px noto sans !important ",
+      },
       selector: (row) => row.date_time,
       width:"auto"
     },
     {
       name: t("dashboard_Recent_DonorAmount"),
+      font: "normal normal normal 13px/20px noto sans !important ",
       selector: (row) => row.amount,
     },
     {
         name: t("dashboard_Recent_DonorCommitId"),
-        selector: (row) => row.commitmentID,
+      font: "normal normal normal 13px/20px noto sans !important ",
+      selector: (row) => row.commitmentID,
       },
   ];
 
@@ -80,7 +95,7 @@ export default function RecentDonationTable({ data }) {
         category: <div>{item?.masterCategory?.name}{item?.subCategory&&`(${item?.subCategory.name})`}</div>,
         date_time: moment(item?.createdAt).utcOffset(0).format(" DD MMM YYYY,h:mm A"),
         amount:<div>₹&nbsp;{item?.amount}</div>,
-        commitmentID:`${item?.commitmentId??"-"}`,
+        commitmentID:item.commitmentId?item.commitmentId<8?`0${item.commitmentId}`:`${item.commitmentId}`:"_",
       }
     })
   },[data])
@@ -88,11 +103,9 @@ export default function RecentDonationTable({ data }) {
   const RecentDonationTableWarper = styled.div`
     color: #583703 !important;
     margin-right: 20px;
-    font: normal normal bold 16px/23px Noto Sans;
-
+    font: normal normal bold 20px/23px Noto Sans !important;
     .DonationViewAll{
       color: #FF8744;
-
       cursor: pointer;
     }
     .recentDonationHeading{

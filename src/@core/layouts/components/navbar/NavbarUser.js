@@ -115,7 +115,7 @@ const NavbarUser = (props) => {
           <ul className="nav navbar-nav align-items-center ">
             <div className="d-flex align-items-center">
               <div className="navepara">
-                <div className="templeName text-end">{ConverFirstLatterToCapital (trustDetails.name)}</div>
+                <div className="templeName text-end">{ConverFirstLatterToCapital (trustDetails?.name??"")}</div>
                 <div className="date">
                   <Trans i18nKey={"last_login"} />: {moment().format("DD MMM YYYY,h:mm a")}
                 </div>

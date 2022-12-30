@@ -24,7 +24,7 @@ export const englishContent = {
   monthName_November: "November",
   monthName_December: "December",
   last_login: "Last Logged In",
-  category:"Category",
+  category:"Sub-Category",
   user:"Sub Admin",
   report_Dispute:"Report & Dispute",
   cancel:"Cancel",
@@ -115,7 +115,7 @@ export const englishContent = {
 
   // All static content of Categories
 
-  categories_AddCategory: "Add Category",
+  categories_AddCategory: "Add Sub-Category",
   categories_serial_number:"Serial Number",
   categories_master_category:"Master Category",
   categories_sub_category:"Sub Category",

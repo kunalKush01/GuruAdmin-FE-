@@ -24,7 +24,7 @@ export const hindiContent = {
   monthName_November: "नवंबर",
   monthName_December: "दिसंबर",
   last_login: "पिछला लॉग इन",
-  category:"वर्ग",
+  category:"उप श्रेणी",
   user:"उप व्यवस्थापक",
   report_Dispute:"रिपोर्ट और विवाद",
 
@@ -115,7 +115,7 @@ export const hindiContent = {
 
   // All static content of Categories
 
-  categories_AddCategory: "श्रेणि जोड़े",
+  categories_AddCategory: "उप श्रेणि जोड़े",
   categories_serial_number:"क्रम संख्या",
   categories_master_category:"मास्टर श्रेणी",
   categories_sub_category:"उप श्रेणी",
