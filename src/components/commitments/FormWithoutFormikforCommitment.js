@@ -6,6 +6,7 @@ import { useUpdateEffect } from "react-use";
 import { Button, Col, Row } from "reactstrap";
 import { getAllSubCategories } from "../../api/expenseApi";
 import { findAllUsersByName } from "../../api/findUser";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 import AsyncSelectField from "../partials/asyncSelectField";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
@@ -87,14 +88,18 @@ export default function FormWithoutFormikForCommitment({
                 name={"SelectedMasterCategory"}
                 labelKey={"name"}
                 valueKey="id"
-                loadOptions={masterloadOptionQuery?.data?.results}
+                loadOptions={masterloadOptionQuery?.data?.results&&masterloadOptionQuery?.data?.results.map((item)=>{
+                  return {...item,name:ConverFirstLatterToCapital(item.name)}
+                })}
                 width={"100"}
               />
             </Col>
             <Col xs={4}>
               <FormikCustomReactSelect
                 labelName={t("category_select_sub_category")}
-                loadOptions={subLoadOption}
+                loadOptions={subLoadOption.map((cate)=>{
+                  return {...cate,name:ConverFirstLatterToCapital(cate.name)}
+                })}
                 name={"SelectedSubCategory"}
                 labelKey={"name"}
                 labelValue={"id"}

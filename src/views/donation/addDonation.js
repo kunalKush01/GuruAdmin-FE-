@@ -25,14 +25,13 @@ const handleCreateDonation = async (payload) => {
   return createDonation(payload);
 };
 const schema = yup.object().shape({
-  Mobile: yup.string().required("expenses_mobile_required"),
-  SelectedUser: yup.object(),
+  Mobile: yup.string().required("expenses_mobile_required").min(10).max(10),
+  SelectedUser: yup.object().required(),
   // donarName: yup.string().required("donar_name_required"),
   SelectedMasterCategory: yup.object().required("masterCategory_required"),
   // SelectedSubCategory: yup.object().required("subCategory_required"),
   // SelectedCommitmentId:yup.object().required("commitmentID_required"),
   Amount: yup.string().required("amount_required"),
-
 });
 
 export default function AddNews() {

@@ -203,7 +203,7 @@ export default function FinancialReport() {
     [expensesQuery,donationQuery,commitmentQuery,boxCollectionQuery]
   );
 
-  console.log("listItem-",Items);
+  
 
   return (
     <NewsWarper>

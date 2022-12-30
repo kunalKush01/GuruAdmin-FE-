@@ -258,7 +258,7 @@ export default function NoticeList() {
                     </Then>
                     <Else>
                       <CustomDatePicker
-                        selected={""}
+                        disabledKeyboardNavigation
                         highlightDates={NoticeDates}
                       />
                     </Else>

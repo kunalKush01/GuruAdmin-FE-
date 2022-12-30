@@ -148,7 +148,7 @@ export default function Category() {
           </div>
           <div className="addNews">
             <CustomReactSelect
-              className=""
+              
               name="SelectedCategory"
               loadOptions={masterloadOptionQuery?.data?.results ?? []}
               labelKey={"name"}
@@ -186,7 +186,7 @@ export default function Category() {
         </div>
         <div className="newsContent  ">
           <Row>
-            <If condition={categoryQuery.isLoading} disableMemo>
+            <If condition={categoryQuery?.isLoading} disableMemo>
               <Then>
                 <SkeletonTheme
                   baseColor="#FFF7E8"

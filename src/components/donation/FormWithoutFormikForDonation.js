@@ -15,7 +15,11 @@ import { createNews } from "../../api/newsApi";
 import { Plus } from "react-feather";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import AsyncSelectField from "../partials/asyncSelectField";
-import {findAllComitmentByUser, findAllUsersByName, findAllUsersByNumber} from "../../api/findUser";
+import {
+  findAllComitmentByUser,
+  findAllUsersByName,
+  findAllUsersByNumber,
+} from "../../api/findUser";
 import { useSelector } from "react-redux";
 import {
   getAllMasterCategories,
@@ -23,7 +27,8 @@ import {
 } from "../../api/expenseApi";
 import { CustomReactSelect } from "../partials/customReactSelect";
 import { useUpdateEffect } from "react-use";
-import {getAllCommitments} from "../../api/commitmentApi";
+import { getAllCommitments } from "../../api/commitmentApi";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 export default function FormWithoutFormikForDonation({
   formik,
@@ -33,7 +38,7 @@ export default function FormWithoutFormikForDonation({
 }) {
   const { t } = useTranslation();
 
-  const { SelectedMasterCategory, SelectedSubCategory,Amount } = formik.values;
+  const { SelectedMasterCategory, SelectedSubCategory, Amount } = formik.values;
   const [subLoadOption, setsubLoadOption] = useState([]);
   const { SelectedUser, SelectedCommitmentId } = formik.values;
   const [commitmentIdByUser, setCommitmentIdByUser] = useState([]);
@@ -44,27 +49,38 @@ export default function FormWithoutFormikForDonation({
   };
   useEffect(() => {
     const res = async () => {
-      const apiRes = await getAllSubCategories({ masterId: SelectedMasterCategory?.id });      
+      const apiRes = await getAllSubCategories({
+        masterId: SelectedMasterCategory?.id,
+      });
       setsubLoadOption(apiRes?.results);
     };
-    SelectedMasterCategory&&res();
+    SelectedMasterCategory && res();
   }, [SelectedMasterCategory]);
 
   useEffect(() => {
     const res = async () => {
-      const apiRes = await findAllComitmentByUser({ userId: SelectedUser?.userId });
-      
+      const apiRes = await findAllComitmentByUser({
+        userId: SelectedUser?.userId,
+      });
+
       setCommitmentIdByUser(apiRes?.results);
     };
-    SelectedUser&&res();
+    SelectedUser && res();
   }, [SelectedUser?.userId]);
 
-  // useUpdateEffect(()=>{
-  //   const results = async()=>{
-  //     cosnt res= await findAllUsersByNumber({ mobileNumber: mobileNumber });
-  //     return res.results;
-  //   }
-  // },[UserName])
+  useUpdateEffect(() => {
+    if (formik?.values?.Mobile?.length == 10) {
+      const results = async () => {
+        const res = await findAllUsersByNumber({
+          mobileNumber: formik?.values?.Mobile,
+        });
+        if (res.result) {
+          formik.setFieldValue("SelectedUser", res.result);
+        }
+      };
+      results();
+    }
+  }, [formik?.values?.Mobile]);
 
   useUpdateEffect(() => {
     const user = formik?.values?.SelectedUser;
@@ -72,27 +88,42 @@ export default function FormWithoutFormikForDonation({
       formik.setFieldValue("Mobile", user.mobileNumber);
     }
   }, [formik?.values?.SelectedUser]);
+
   useUpdateEffect(() => {
-    
     if (SelectedCommitmentId) {
-      formik.setFieldValue("Amount", SelectedCommitmentId?.amount-SelectedCommitmentId?.paidAmount);
+      formik.setFieldValue(
+        "Amount",
+        SelectedCommitmentId?.amount - SelectedCommitmentId?.paidAmount
+      );
+      formik.setFieldValue(
+        "SelectedMasterCategory",
+        SelectedCommitmentId?.masterCategoryId
+      );
+      formik.setFieldValue(
+        "SelectedSubCategory",
+        SelectedCommitmentId?.categoryId
+      );
+      formik.setFieldValue(
+        "donarName",
+        SelectedCommitmentId?.donarName
+      );
     }
   }, [SelectedCommitmentId?.id]);
 
-  
+  console.log("SelectedCommitmentId",SelectedCommitmentId);
 
   return (
     <Form>
-      <Row>~
+      <Row>
         <Col xs={12}>
           <Row>
-          <Col xs={4}>
-            <CustomTextField
+            <Col xs={4}>
+              <CustomTextField
                 label={t("dashboard_Recent_DonorNumber")}
                 name="Mobile"
               />
             </Col>
-            <Col xs={4}> 
+            <Col xs={4}>
               <AsyncSelectField
                 name="SelectedUser"
                 loadOptions={loadOption}
@@ -101,10 +132,14 @@ export default function FormWithoutFormikForDonation({
                 label={t("commitment_Username")}
                 placeholder={t("categories_select_user_name")}
                 defaultOptions
+                disabled={loadOption.length==0}
               />
             </Col>
             <Col xs={4}>
-              <CustomTextField label={t("dashboard_Recent_DonorName")} name="donarName" />
+              <CustomTextField
+                label={t("dashboard_Recent_DonorName")}
+                name="donarName"
+              />
             </Col>
             <Col xs={4}>
               <FormikCustomReactSelect
@@ -112,47 +147,61 @@ export default function FormWithoutFormikForDonation({
                 name={"SelectedMasterCategory"}
                 labelKey={"name"}
                 valueKey="id"
-                loadOptions={masterloadOptionQuery?.data?.results}
+                loadOptions={masterloadOptionQuery?.data?.results&&masterloadOptionQuery?.data?.results.map((item)=>{
+                  return {...item,name:ConverFirstLatterToCapital(item.name)}
+                })}
                 width={"100"}
+                disabled={masterloadOptionQuery?.data?.results==0}
+
               />
             </Col>
             <Col xs={4}>
               <FormikCustomReactSelect
                 labelName={t("category_select_sub_category")}
-                loadOptions={subLoadOption}
+                loadOptions={subLoadOption.map((cate)=>{
+                  return {...cate,name:ConverFirstLatterToCapital(cate.name)}
+                })}
                 name={"SelectedSubCategory"}
                 labelKey={"name"}
                 valueKey={"id"}
+                disabled={subLoadOption.length==0}
+
                 width
               />
             </Col>
             <Col xs={4}>
-              <CustomTextField label={t("created_by")} name="createdBy" disabled />
+              <CustomTextField
+                label={t("created_by")}
+                name="createdBy"
+                disabled
+              />
             </Col>
           </Row>
           <Row>
             <Col>
               <Row>
-              <Col xs={4} className="mt-1">
-              <FormikCustomReactSelect
-                labelName={t("dashboard_Recent_DonorCommitId")}
-                loadOptions={commitmentIdByUser}
-                placeholder={t("commitment_select_commitment_id")}
-                name={"SelectedCommitmentId"}
-                // labelKey={"commitmentId"}
-                valueKey={"id"}
-                getOptionLabel={(option)=>`${option.commitmentId}   (₹${option.paidAmount}/${option.amount})`}
-                width
-              />
-              </Col>
+                <Col xs={4} className="mt-1">
+                  <FormikCustomReactSelect
+                    labelName={t("dashboard_Recent_DonorCommitId")}
+                    loadOptions={commitmentIdByUser}
+                    placeholder={t("commitment_select_commitment_id")}
+                    name={"SelectedCommitmentId"}
+                    disabled={commitmentIdByUser.length==0}
+                    valueKey={"id"}
+                    getOptionLabel={(option) =>
+                      `${option.commitmentId}   (₹${option.paidAmount}/${option.amount})`
+                    }
+                    width
+                  />
+                </Col>
 
                 <Col xs={4} className="mt-1">
-                <CustomTextField
-                  label={t("categories_select_amount")}
-                  placeholder={t("enter_price_manually")}
-                  name="Amount"
-                />
-              </Col>
+                  <CustomTextField
+                    label={t("categories_select_amount")}
+                    placeholder={t("enter_price_manually")}
+                    name="Amount"
+                  />
+                </Col>
               </Row>
               {/* <Row>
                 <Col>

@@ -81,11 +81,11 @@ export default function DonationListTable({ data }) {
             </div>
           </div>
         ),
-        mobileNumber: `+91-${item?.user?.mobileNumber}`,
+        mobileNumber: item?.user?.mobileNumber,
         donarName:ConverFirstLatterToCapital (item?.donarName??item.user?.name),
         category: <div>{ConverFirstLatterToCapital(item?.masterCategory?.name)}{item?.subCategory&&`(${item?.subCategory.name})`}</div>,
-        date_time: moment(item?.createdAt).utcOffset(0).format("h:mm A, DD MMM YYYY"),
-        amount:item?.amount,
+        date_time: moment(item?.createdAt).utcOffset(0).format(" DD MMM YYYY,h:mm A"),
+        amount:<div>₹&nbsp;{item?.amount}</div>,
         commitmentID:`${item?.commitmentId??"-"}`,
         receipt: (
                 <img

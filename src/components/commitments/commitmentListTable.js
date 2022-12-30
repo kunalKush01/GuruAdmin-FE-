@@ -41,12 +41,12 @@ export default function CommitmentListTable({ data }) {
     {
       name: t("dashboard_Recent_DonorNumber"),
       selector: (row) => row.mobileNumber,
-      // width:"150px",
+      width: "auto",
     },
     {
       name: t("dashboard_Recent_DonorName"),
       selector: (row) => row.donarName,
-      // width:"150px",
+      width: "auto",
     },
 
     {
@@ -72,12 +72,12 @@ export default function CommitmentListTable({ data }) {
     {
       name: t("commitment_Amount_Due"),
       selector: (row) => row.amountDue,
-      // width:"150px",
+      width:"auto",
     },
     {
       name: t("dashboard_Recent_DonorCommitId"),
       selector: (row) => row.commitmentId,
-      // width:"150px",
+      width: "auto",
     },
     {
       name: t("created_by"),
@@ -95,30 +95,49 @@ export default function CommitmentListTable({ data }) {
       width: "80px",
     },
   ];
-  const commitment_Data = useMemo(()=>{
-    
-    return data.map((item,idx)=>{
+  const commitment_Data = useMemo(() => {
+    return data.map((item, idx) => {
       return {
-        id:idx+1 ,
+        id: idx + 1,
         username: (
           <div className="d-flex align-items-center ">
-            <img src={avtarIcon} style={{ marginRight: "5px", width: "25px" }} />
-            <div>
-              {ConverFirstLatterToCapital(item?.user?.name??"")}
-            </div>
+            <img
+              src={avtarIcon}
+              style={{ marginRight: "5px", width: "25px" }}
+            />
+            <div>{ConverFirstLatterToCapital(item?.user?.name ?? "")}</div>
           </div>
         ),
-        mobileNumber: `+91-${item?.user?.mobileNumber}`,
-        donarName:ConverFirstLatterToCapital (item?.donarName??item.user?.name),
-        category: <div>{ConverFirstLatterToCapital(item?.masterCategory?.name)} {item?.category&&`(${item?.category?.name})`}</div>,
-        endDate:  moment(item?.commitmentEndDate).utcOffset(0).format("DD MMM YYYY"),
+        mobileNumber: item?.user?.mobileNumber,
+        donarName: ConverFirstLatterToCapital(
+          item?.donarName ?? item.user?.name
+        ),
+        category: (
+          <div>
+            {ConverFirstLatterToCapital(item?.masterCategory?.name)}{" "}
+            {item?.category && `(${item?.category?.name})`}
+          </div>
+        ),
+        endDate: moment(item?.commitmentEndDate)
+          .utcOffset(0)
+          .format("DD MMM YYYY"),
         // .utcOffset("+0530")
         // .toDate(),
-        status:ConverFirstLatterToCapital( item?.paidStatus),
-        amount: item?.amount,
-        amountDue: item?.amount-item.paidAmount,
-        commitmentId:item?.commitmentId,
-        createdBy:ConverFirstLatterToCapital(item?.createdBy.name),
+        status: (
+          <div
+            style={{
+              color: item?.paidStatus == "completed" ? "#24C444" : "#FF0700",
+              font: "normal normal 600 11px/20px Noto Sans",
+            }}
+          >
+            <div>{ConverFirstLatterToCapital(item?.paidStatus)}</div>
+            <img src="" />
+          </div>
+        ),
+        amount: <div>₹&nbsp;{item?.amount}</div>,
+        amountDue:<div>₹&nbsp; {item?.amount - item.paidAmount}</div>,
+        commitmentId: item?.commitmentId,
+        createdBy: ConverFirstLatterToCapital(item?.createdBy.name),
         edit: (
           <img
             src={editIcon}
@@ -139,15 +158,17 @@ export default function CommitmentListTable({ data }) {
               Swal.fire({
                 title: `<img src="${comfromationIcon}"/>`,
                 html: `
-                                          <h3 class="swal-heading mt-1">${t("commitment_delete")}</h3>
+                                          <h3 class="swal-heading mt-1">${t(
+                                            "commitment_delete"
+                                          )}</h3>
                                           <p>${t("commitment_sure")}</p>
                                           `,
                 showCloseButton: false,
                 showCancelButton: true,
                 focusConfirm: true,
-                cancelButtonText:` ${t("cancel")}`,
+                cancelButtonText: ` ${t("cancel")}`,
                 cancelButtonAriaLabel: ` ${t("cancel")}`,
-  
+
                 confirmButtonText: ` ${t("confirm")}`,
                 confirmButtonAriaLabel: "Confirm",
               }).then(async (result) => {
@@ -158,11 +179,11 @@ export default function CommitmentListTable({ data }) {
             }}
           />
         ),
-      }
-    })
-  },[data])
-    
-  console.log("commitment_Data=",commitment_Data);
+      };
+    });
+  }, [data]);
+
+  console.log("commitment_Data=", commitment_Data);
   // const categoriesList = useMemo(() => {
   //   return data.map((item, idx) => ({
   //     _Id: item.id,

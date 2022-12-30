@@ -148,9 +148,10 @@ export default function Expenses() {
             </div>
           </div>
           <div className="addNews">
-            <div className="total_collection me-2 d-flex">
+            <div className="total_collection me-2 d-flex justify-content-center align-items-center ">
               <Trans i18nKey={"DonationBox_total_collection"} />&nbsp;
-              <div> <Trans i18nKey={"rupees"} /></div>
+              <div>{boxCollectionQuery?.data?.totalCollection??0}</div>&nbsp;
+              <div>₹</div>
             </div>
             <ChangePeriodDropDown
               className={"me-2"}

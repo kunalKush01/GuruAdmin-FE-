@@ -139,7 +139,7 @@ export default function EditCommitment() {
           </Row>
         </Then>
         <Else>
-          {!commitmentDetailQuery.isFetching && (
+          {!commitmentDetailQuery?.isLoading && (
             <div className="ms-3 mt-1 mb-3">
               <CommitmentForm
                 vailidationSchema={schema}

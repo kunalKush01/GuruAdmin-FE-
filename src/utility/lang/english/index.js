@@ -42,7 +42,7 @@ export const englishContent = {
   dashboard_yearly: "Yearly",
   dashboard_daily: "Daily",
 
-  dashboard_card_title3:"Subscribed User",
+  dashboard_card_title3:"Subscribed Users",
   dashboard_Recent_DonationCommitment: "Recent Donations",
   dashboard_Recent_DonorName: "Donor Name",
   dashboard_Recent_DonorNumber: "Mobile Number",
@@ -176,7 +176,7 @@ report_AddReport: "Financial Report",
 report_expences:"Expenses",
 remarks_financial_donationBox:"Remarks",
 report_commitment:"Commitment",
-report_donation_box:"Donation Box",
+report_donation_box:"Donation Box Collections",
 
 financial_not_found:"No Financial Found",
 

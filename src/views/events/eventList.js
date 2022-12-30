@@ -51,7 +51,7 @@ const EventWarper = styled.div`
   }
   .filterPeriod {
     color: #ff8744;
-    margin-top: .5rem;
+    margin-top: 0.5rem;
     font: normal normal bold 13px/5px noto sans;
   }
 `;
@@ -60,7 +60,7 @@ const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 export default function EventList() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
-  const selectedLang= useSelector(state=>state.auth.selectLang)
+  const selectedLang = useSelector((state) => state.auth.selectLang);
 
   const periodDropDown = () => {
     switch (dropDownName) {
@@ -96,13 +96,13 @@ export default function EventList() {
   let endDate = moment(filterEndDate).utcOffset(0).format("D MMM. YYYY");
 
   const eventQuery = useQuery(
-    ["Events", pagination.page, startDate, endDate,selectedLang.id],
+    ["Events", pagination.page, startDate, endDate, selectedLang.id],
     () =>
       getAllEvents({
         ...pagination,
         startDate: filterStartDate,
         endDate: filterEndDate,
-        languageId:selectedLang.id
+        languageId: selectedLang.id,
       }),
     {
       keepPreviousData: true,
@@ -119,7 +119,6 @@ export default function EventList() {
     () => eventQuery?.data?.results ?? [],
     [eventQuery]
   );
-  
 
   return (
     <EventWarper>
@@ -178,9 +177,9 @@ export default function EventList() {
           </If>
         </div>
         <div>
-          <Row className="w-100 m-0"  >
+          <Row className="w-100 m-0">
             <Col xs={9} className="eventContent ps-0">
-              <If condition={eventQuery.isLoading} disableMemo >
+              <If condition={eventQuery.isLoading} disableMemo>
                 <Then>
                   <SkeletonTheme
                     baseColor="#FFF7E8"
@@ -197,11 +196,11 @@ export default function EventList() {
                   </SkeletonTheme>
                 </Then>
                 <Else>
-                  <If condition={eventItems.length != 0} disableMemo >
+                  <If condition={eventItems.length != 0} disableMemo>
                     <Then>
                       {eventItems.map((item) => {
                         return (
-                          <Col xs={12} key={item.id} className={"p-0"} >
+                          <Col xs={12} key={item.id} className={"p-0"}>
                             <EventCard data={item} />
                           </Col>
                         );
@@ -249,7 +248,7 @@ export default function EventList() {
                 </Then>
               </If>
             </Col>
-            <Col xs={3} className="p-0 ps-1" style={{marginTop:"1.8rem"}}>
+            <Col xs={3} className="p-0 ps-1" style={{ marginTop: "1.8rem" }}>
               <Row>
                 <Col xs={12}>
                   <If condition={dateQuery.isLoading}>
@@ -258,17 +257,15 @@ export default function EventList() {
                     </Then>
                     <Else>
                       <CustomDatePicker
-                        selected={""}
+                        disabledKeyboardNavigation
                         highlightDates={eventDates}
                       />
                     </Else>
                   </If>
                 </Col>
               </Row>
-              <Row className="w-100 m-0" >
-                <Col xs={12}  >
-                  {/* <HinduCalenderDetailCard /> */}
-                </Col>
+              <Row className="w-100 m-0">
+                <Col xs={12}>{/* <HinduCalenderDetailCard /> */}</Col>
               </Row>
             </Col>
           </Row>
