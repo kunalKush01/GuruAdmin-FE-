@@ -270,7 +270,7 @@ export default function FinancialReport() {
               <Else>
                 <If condition={Items?.results?.length != 0} disableMemo>
                   <Then>
-                    <ReportListTable  activeReportTab={activeReportTab} data={Items?.results??[]} />
+                    <ReportListTable  activeReportTab={activeReportTab} data={Items?.results??[]} page={pagination}/>
                   </Then>
                   <Else>
                   <NoContent 

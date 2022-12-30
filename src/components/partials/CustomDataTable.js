@@ -13,7 +13,7 @@ function CustomDataTable({ columns, data, minWidth, maxHieght }) {
   const DataTableWarraper = styled.div`
 
   .DonetionList {
-    cursor: all-scroll;
+    //cursor: all-scroll;
     /* max-width: 70rem; */
     border: 2px solid #ff8744;
     /* overflow: auto; */
@@ -40,8 +40,6 @@ function CustomDataTable({ columns, data, minWidth, maxHieght }) {
           
         }
     }
-    
-    
     .rdt_TableRow {
       color: #583703 !important;
       border: 0px !important;

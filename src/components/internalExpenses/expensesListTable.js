@@ -15,7 +15,7 @@ import he from "he"
 import moment from "moment";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-export function ExpensesListTable({ data }) {
+export function ExpensesListTable({ data,page }) {
   const handleDeleteExpenses = async (payload) => {
     return deleteExpensesDetail(payload);
   };
@@ -49,8 +49,8 @@ export function ExpensesListTable({ data }) {
     },
 
     {
-      name: t("dashboard_Recent_DonorDate"),
-      selector: (row) => row.dateTime,
+      name: t("expenses_Date"),
+      selector: (row) => row.date,
     },
     {
       name: t("dashboard_Recent_DonorAmount"),
@@ -69,10 +69,11 @@ export function ExpensesListTable({ data }) {
   const categoriesList = useMemo(() => {
     return data.map((item, idx) => ({
       _Id: item.id,
-      id: `${idx + 1}`,
+      // id: `0${idx + 1}`,
+      id: idx>8||page.page!=1?`${((page.page-1)*page.limit)+idx + 1}`:`0${((page.page-1)*page.limit)+idx + 1}`,
       title: ConverFirstLatterToCapital(item.title),
       description:<div dangerouslySetInnerHTML={{__html:he.decode(item.description)}} /> ,
-      dateTime: moment(item?.expenseDate).utcOffset(0).format("DD MMM YYYY"),
+      date: moment(item?.expenseDate).utcOffset(0).format("DD MMM YYYY"),
         amount:`₹${item.amount}`,
       edit: (
         <img

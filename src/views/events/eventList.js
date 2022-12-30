@@ -259,6 +259,7 @@ export default function EventList() {
                       <CustomDatePicker
                         disabledKeyboardNavigation
                         highlightDates={eventDates}
+                        disabled
                       />
                     </Else>
                   </If>

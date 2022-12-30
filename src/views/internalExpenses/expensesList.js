@@ -169,7 +169,7 @@ export default function Expenses() {
             </Then>
           </If>
         </div>
-        <div className="newsContent  ">
+        <div className="newsContent mb-3">
           <Row>
             <If condition={expensesQuery.isLoading} disableMemo>
               <Then>
@@ -186,7 +186,7 @@ export default function Expenses() {
               <Else>
                 <If condition={categoryItems.length != 0} disableMemo>
                   <Then>
-                    <ExpensesListTable data={categoryItems} />
+                    <ExpensesListTable data={categoryItems} page={pagination} />
                   </Then>
                   <Else>
                     <NoContent 

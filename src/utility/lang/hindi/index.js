@@ -72,7 +72,7 @@ export const hindiContent = {
   news_tags_required: "समाचार टैग की आवश्यकता है",
   news_desc_required: "समाचार विवरण आवश्यक है",
   news_publish_required: "समाचार प्रकाशक की आवश्यकता है",
-  news_latest_news: "ताज़ा खबर",
+  news_latest_news: "खबर",
   news_btn_AddNews: "समाचार जोड़ें",
   news_popOver_AddLang: "भाषा जोड़ें",
   news_popOver_Edit: "संपादन करना",
@@ -102,7 +102,7 @@ export const hindiContent = {
   // All static content of Notices
 
   notices_AddNotice: "सूचना जोड़ें",
-  notices_latest_Notice: "ताज़ा सूचना",
+  notices_latest_Notice: "सूचना",
   notices_title_required: "सूचना का शीर्षक आवश्यक है",
   notices_desc_required: "सूचना विवरण आवश्यक है",
   notices_select_dropDown: "सूचना का चयन करें",
@@ -127,7 +127,7 @@ export const hindiContent = {
   category_select_sub_category:"उप श्रेणी का चयन करें",
   categories_select_user_name:"उपयोगकर्ता नाम का चयन करें",
   category_select:"चयन करें",
-  categories_select_master_category:"मास्टर श्रेणी",
+  categories_select_master_category:"मास्टर श्रेणी का चयन करें",
 
   donar_name_required:"दाता का नाम आवश्यक है",
   created_by_required:"द्वारा बनाया गया आवश्यक है",
@@ -159,6 +159,7 @@ export const hindiContent = {
 expenses_AddExpenses: "व्यय जोड़ें",
 expenses_EditExpenses:"व्यय संपादित करें",
 expence_description:"वर्णन",
+expenses_Date:"दिनांक",
 expenses_latest_Expenses: "सभी व्यय",
 expenses_title_required:"व्यय का नाम आवश्यक है",
 expenses_mobile_required:"मोबाइल नंबर आवश्यक है",

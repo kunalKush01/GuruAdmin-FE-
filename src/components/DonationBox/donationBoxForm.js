@@ -91,7 +91,6 @@ export default function  DonationBoxForm({
             amount: e?.Amount,            
             remarks:e?.Body,
             collectionDate:e?.DateTime
-            
           })
         }
         validationSchema={vailidationSchema}
