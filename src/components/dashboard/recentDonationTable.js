@@ -95,7 +95,7 @@ export default function RecentDonationTable({ data }) {
         category: <div>{item?.masterCategory?.name}{item?.subCategory&&`(${item?.subCategory.name})`}</div>,
         date_time: moment(item?.createdAt).utcOffset(0).format(" DD MMM YYYY,h:mm A"),
         amount:<div>₹&nbsp;{item?.amount}</div>,
-        commitmentID:item.commitmentId?item.commitmentId<8?`0${item.commitmentId}`:`${item.commitmentId}`:"_",
+        commitmentID:item.commitmentId?item.commitmentId<10?`0${item.commitmentId}`:`${item.commitmentId}`:"_",
       }
     })
   },[data])

@@ -25,7 +25,7 @@ function CustomDataTable({ columns, data, minWidth, maxHieght }) {
 
     .rdt_TableCell {
       color: #583703 !important;
-      font: normal normal normal 14px/23px Noto Sans;
+      font: normal normal normal 12px/23px Noto Sans;
       /* justify-content: center; */
     }
 

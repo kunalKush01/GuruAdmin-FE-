@@ -30,7 +30,8 @@ export default function DonationListTable({ data }) {
       name: t("commitment_Username"),
       selector: (row) => row.username,
       style: {
-        font: "normal normal bold 10px/20px noto sans !important ",
+        font: "normal normal bold 12px/23px Noto Sans !important",
+        // font: "normal normal bold 10px/20px noto sans !important ",
       },
       // width:"150px",
     },
@@ -86,7 +87,7 @@ export default function DonationListTable({ data }) {
         category: <div>{ConverFirstLatterToCapital(item?.masterCategory?.name)}{item?.subCategory&&`(${item?.subCategory.name})`}</div>,
         date_time: moment(item?.createdAt).utcOffset(0).format(" DD MMM YYYY,h:mm A"),
         amount:<div>₹&nbsp;{item?.amount}</div>,
-        commitmentID:`${item?.commitmentId??"-"}`,
+        commitmentID:item.commitmentId?item.commitmentId<10?`0${item.commitmentId}`:`${item.commitmentId}`:"_",
         receipt: (
                 <img
                   src={receiptIcon}

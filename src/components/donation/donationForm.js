@@ -109,6 +109,7 @@ export default function DonationForm({
               categoryId: e?.SelectedSubCategory?.id,
               amount: e?.Amount,
               masterCategoryId: e?.SelectedMasterCategory?.id,
+              donarName:e?.donarName,
               mobileNumber: e?.Mobile,
               commitmentId:e?.SelectedCommitmentId?.commitmentId,
             })
