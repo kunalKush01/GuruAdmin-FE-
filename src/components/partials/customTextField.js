@@ -26,6 +26,7 @@ const CustomTextFieldWarper = styled.div`
 `;
 
 export default function CustomTextField({
+  required=false,
   label,
   type = "text",
   icon,
@@ -41,7 +42,7 @@ export default function CustomTextField({
   return (
     <CustomTextFieldWarper width={width}>
       <FormGroup className="formGroup">
-        {label&&<label>{`${label}*`}</label>}
+        {label&&<label>{`${label}`}{required&&"*"}</label>}
         <InputGroup>
           <input
             type={type}

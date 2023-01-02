@@ -16,6 +16,9 @@ import { Plus } from "react-feather";
 import AsyncSelectField from "../partials/asyncSelectField";
 import { getGlobalEvents } from "../../api/eventApi";
 import FormikRangeDatePicker from "../partials/FormikRangeDatePicker";
+import { useUpdateEffect } from "react-use";
+import moment from "moment";
+import { isDate } from "lodash";
 
 const FormWaraper = styled.div`
   .existlabel {
@@ -48,12 +51,12 @@ const FormWaraper = styled.div`
 `;
 
 export default function EventForm({
-  buttonName="",
-  plusIconDisable=false,
+  buttonName = "",
+  plusIconDisable = false,
   handleSubmit,
   vailidationSchema,
   initialValues,
-  showTimeInput=false,
+  showTimeInput = false,
   selectEventDisabled,
 }) {
   const history = useHistory();
@@ -65,8 +68,8 @@ export default function EventForm({
     onSuccess: (data) => {
       console.log("error=", data);
       if (!data.error) {
-        eventQuerClient.invalidateQueries(["Events"])
-        eventQuerClient.invalidateQueries(["EventDetail"])
+        eventQuerClient.invalidateQueries(["Events"]);
+        eventQuerClient.invalidateQueries(["EventDetail"]);
         history.push("/events");
       }
     },
@@ -89,7 +92,8 @@ export default function EventForm({
             baseId: e?.SelectedEvent?.id ?? null,
             title: e.Title,
             body: e.Body,
-            publishDate: e.DateTime,
+            startDate: e.DateTime?.start,
+            endDate: e.DateTime?.end,
             imageUrl: ["http://newsImage123.co"],
           });
         }}
@@ -115,6 +119,26 @@ export default function EventForm({
                       label={t("events_select_dropDown")}
                       placeholder={t("events_select_dropDown")}
                       disabled={selectEventDisabled}
+                      onChange={(selectOption) => {
+                        
+                        formik.setFieldValue("SelectedEvent",selectOption);
+                        
+                        formik.setFieldValue("Title", selectOption?.title??"");
+                        formik.setFieldValue("Body", selectOption?.body??"");
+                        if(!isDate(selectOption?.startDate&&selectOption?.end)){
+                          return
+                        }
+
+                          formik.setFieldValue("DateTime", {
+                            start: moment(selectOption?.startDate)
+                              .utcOffset("+0530")
+                              .toDate(),
+                            end: moment(selectOption?.endDate)
+                              .utcOffset("+0530")
+                              .toDate(),
+                          });
+                        
+                      }}
                     />
                   </Col>
                 </Row>
@@ -135,19 +159,22 @@ export default function EventForm({
                       </Row> */}
               </Col>
               <Col>
+                {JSON.stringify(formik.errors)}
                 <FormikRangeDatePicker
                   label={t("donation_select_date_time")}
                   name="DateTime"
-                  // showTimeInput={showTimeInput}                  
+                  // showTimeInput={showTimeInput}
                   selectsRange
                 />
               </Col>
             </Row>
             <div className="btn-Published ">
               <Button color="primary" className="addEvent-btn " type="submit">
-                {plusIconDisable&&<span>
-                  <Plus className="me-1" size={15} strokeWidth={4} />
-                </span>}
+                {plusIconDisable && (
+                  <span>
+                    <Plus className="me-1" size={15} strokeWidth={4} />
+                  </span>
+                )}
                 <span>
                   <Trans i18nKey={`${buttonName}`} />
                 </span>

@@ -30,12 +30,13 @@ const EventWraper = styled.div`
 `;
 
 const handleCreateEvent = async (payload) => {
+  
   return createEvent(payload);
 };
 const schema = yup.object().shape({
   Title: yup.string().required("events_title_required"),
   Body: yup.string().required("events_desc_required"),
-  DateTime: yup.string(),
+  DateTime: yup.mixed(),
   SelectedEvent: yup.mixed(),
 });
 

@@ -124,6 +124,7 @@ export default function FormWithoutFormikForDonation({
                 type="number"
                 label={t("dashboard_Recent_DonorNumber")}
                 name="Mobile"
+                required
               />
             </Col>
             <Col xs={4}>
