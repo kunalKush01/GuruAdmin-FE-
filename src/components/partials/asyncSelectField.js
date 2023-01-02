@@ -7,6 +7,7 @@ import {Trans} from "react-i18next";
 
 export default function AsyncSelectField({
   label,
+  required=false,
   loadOptions,
   labelKey = "label",
   valueKey = "value",
@@ -99,7 +100,7 @@ export default function AsyncSelectField({
 
   return (
     <div >
-      <label style={{ marginBottom: "0px",font: "normal normal bold 15px/33px Noto Sans" }}>{label}</label>
+      <label style={{ marginBottom: "0px",font: "normal normal bold 15px/33px Noto Sans" }}>{label}{required&&"*"}</label>
       <AsyncSelect
         isDisabled={props.disabled}
         isMulti={multiple}

@@ -125,6 +125,7 @@ export default function  DonationBoxForm({
                 <CustomTextField
                   label={t("categories_select_amount")}
                   placeholder={t("enter_price_manually")}
+                  required
                   name="Amount"
                 />
               </Col>

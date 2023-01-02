@@ -130,6 +130,7 @@ export default function FormWithoutFormikForDonation({
             <Col xs={4}>
               <AsyncSelectField
                 name="SelectedUser"
+                required
                 loadOptions={loadOption}
                 labelKey={"name"}
                 valueKey={"id"}
@@ -205,6 +206,7 @@ export default function FormWithoutFormikForDonation({
                     label={t("categories_select_amount")}
                     placeholder={t("enter_price_manually")}
                     name="Amount"
+                      required
                   />
                 </Col>
               </Row>

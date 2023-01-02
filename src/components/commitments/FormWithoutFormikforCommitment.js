@@ -78,6 +78,7 @@ export default function FormWithoutFormikForCommitment({
                   type="number"
                 label={t("dashboard_Recent_DonorNumber")}
                 name="Mobile"
+                  required
               />
             </Col>
             <Col xs={4}>
@@ -89,6 +90,7 @@ export default function FormWithoutFormikForCommitment({
                 label={t("commitment_Username")}
                 placeholder={t("categories_select_user_name")}
                 defaultOptions
+                required
               />
             </Col>
             <Col xs={4}>
@@ -136,6 +138,7 @@ export default function FormWithoutFormikForCommitment({
                   label={t("categories_select_amount")}
                   placeholder={t("enter_price_manually")}
                   name="Amount"
+                    required
                 />
             </Col>
             <Col xs={4}></Col>

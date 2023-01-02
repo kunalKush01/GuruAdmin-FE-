@@ -103,6 +103,7 @@ export default function ExpensesForm({
                     <CustomTextField
                       label={t("news_label_Title")}
                       name="Title"
+                      required
                     />
                   </Col>
                   <Col>
@@ -128,6 +129,7 @@ export default function ExpensesForm({
                       label={t("categories_select_amount")}
                       placeholder={t("enter_price_manually")}
                       name="Amount"
+                      required
                     />
                   </Col>
                 </Row>

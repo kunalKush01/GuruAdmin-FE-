@@ -186,6 +186,7 @@ financial_not_found:"कोई वित्तीय रिपोर्ट न�
 // All static content of Donation 
 donation_Donation: "दान",
 donation_Adddonation:"दान जोड़ें",
+  donation_donar_name_only_letters:"दाता के नाम में केवल वर्ण अक्षर हो सकते हैं।",
 
 // All static content of Donation Box
 DonationBox_total_collection:"कुल संग्रह: ",

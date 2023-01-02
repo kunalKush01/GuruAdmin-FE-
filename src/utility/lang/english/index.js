@@ -130,7 +130,7 @@ export const englishContent = {
   categories_select_master_category:"Select Master Category",
   donar_name_required:"Donor name is Required",
   created_by_required:"Created by is Required",
-  user_select_required:"User is required.",
+  user_select_required:"User name is required.",
   masterCategory_required:"Category is required.",
   subCategory_required:"Please Select a Sub Category",
   commitmentID_required:"Please Select Commiment Id. ",
@@ -186,7 +186,7 @@ financial_not_found:"No Financial Found",
 donation_Donation: "Donation",
 donation_Adddonation:"Add Donation",
 donation_select_date_time:"Select Date & Time",
-donation_donar_name_only_letters:"Donar Name can only contain Latin letters.",
+donation_donar_name_only_letters:"Donor Name can only contain character letters.",
 
 donation_delete:"Delete Donation",
 donation_sure:"Are you sure you want to permanently delete the selected donation ? ",
@@ -274,5 +274,4 @@ commitment_not_click_add_commitment:'Click on "Add Commitment" to add commitment
   address_required:"Address required.",
   Temple_name_required:"Temple name is required.",
   doc_required:"Temple document required.",
-
-};  
+};
