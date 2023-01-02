@@ -25,7 +25,7 @@ const handleCreateCommitment = async (payload) => {
   return createCommitment(payload);
 };
 const schema = yup.object().shape({
-  Mobile: yup.number().required("expenses_mobile_required").min(10).max(10),
+  Mobile: yup.string().required("expenses_mobile_required").min(10).max(10),
   SelectedUser: yup.object().required("user_select_required"),
   donarName: yup.string().matches(
       /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,

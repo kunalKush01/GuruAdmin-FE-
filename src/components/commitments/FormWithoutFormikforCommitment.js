@@ -55,7 +55,7 @@ export default function FormWithoutFormikForCommitment({
   }, [formik?.values?.SelectedUser]);
 
   useUpdateEffect(() => {
-    if (formik?.values?.Mobile?.length == 10) {
+    if (formik?.values?.Mobile?.toString().length == 10) {
       const results = async () => {
         const res = await findAllUsersByNumber({
           mobileNumber: formik?.values?.Mobile,
