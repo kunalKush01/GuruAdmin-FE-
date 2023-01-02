@@ -86,7 +86,7 @@ export default function DonationForm({
   const newsMutation = useMutation({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
-      console.log("error=", data);
+      
       if (!data.error) {
         newsQuerClient.invalidateQueries(["donations"]);
         // newsQuerClient.invalidateQueries(["CollectionDetail"]);

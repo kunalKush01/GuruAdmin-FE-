@@ -166,7 +166,7 @@ export default function  CustomDatePicker({ ...props }) {
         timeFormat="hh:mm aa"
         timeCaption="Time"        
         inline 
-        showDisabledMonthNavigation  
+         
         {...props}
       />
     </CustomDatePickerWraper>

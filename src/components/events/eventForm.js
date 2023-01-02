@@ -104,6 +104,7 @@ export default function EventForm({
             <Row>
               <Col xs={7}>
                 <Row>
+                  
                   <Col xs={6}>
                     <CustomTextField
                       label={t("news_label_Title")}
@@ -125,9 +126,7 @@ export default function EventForm({
                         
                         formik.setFieldValue("Title", selectOption?.title??"");
                         formik.setFieldValue("Body", selectOption?.body??"");
-                        if(!isDate(selectOption?.startDate&&selectOption?.end)){
-                          return
-                        }
+                        
 
                           formik.setFieldValue("DateTime", {
                             start: moment(selectOption?.startDate)
@@ -159,11 +158,10 @@ export default function EventForm({
                       </Row> */}
               </Col>
               <Col>
-                {JSON.stringify(formik.errors)}
+                
                 <FormikRangeDatePicker
                   label={t("donation_select_date_time")}
                   name="DateTime"
-                  // showTimeInput={showTimeInput}
                   selectsRange
                 />
               </Col>

@@ -168,10 +168,10 @@ export default function FormikRangeDatePicker({ label, ...props }) {
        */}
       {label && <label>{`${label}*`}</label>}
       <DatePicker
-        // selected={field?.value}
+        sele
         onChange={(date) => {
           const [start,end] = date
-          console.log("start=",start,"end=",end);
+          
           helpers.setValue({start,end})
         }}
         yearDropdownItemNumber={50}
