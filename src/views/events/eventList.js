@@ -111,10 +111,10 @@ export default function EventList() {
 
   const dateQuery = useQuery(["EventDates"], () => getEventDates());
   const eventDates = useMemo(() => {
-    return dateQuery?.data?.results?.map((item) => moment(item).toDate()) ?? [];
+    return dateQuery?.data?.results?.map((item) => moment(item)?.toDate()) ?? [];
   }, [dateQuery]);
-  console.log("eventDates=", eventDates);
-
+  
+console.log("eventDates",eventDates);
   const eventItems = useMemo(
     () => eventQuery?.data?.results ?? [],
     [eventQuery]
@@ -256,11 +256,11 @@ export default function EventList() {
                       <></>
                     </Then>
                     <Else>
-                      <CustomDatePicker
+                      {/* <CustomDatePicker
                         disabledKeyboardNavigation
                         highlightDates={eventDates}
                         disabled
-                      />
+                      /> */}
                     </Else>
                   </If>
                 </Col>

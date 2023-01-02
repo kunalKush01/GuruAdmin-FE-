@@ -5,7 +5,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useUpdateEffect } from "react-use";
 import { Button, Col, Row } from "reactstrap";
 import { getAllSubCategories } from "../../api/expenseApi";
-import { findAllUsersByName } from "../../api/findUser";
+import { findAllUsersByName, findAllUsersByNumber } from "../../api/findUser";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import AsyncSelectField from "../partials/asyncSelectField";
 import CustomTextField from "../partials/customTextField";
@@ -53,6 +53,20 @@ export default function FormWithoutFormikForCommitment({
       formik.setFieldValue("Mobile", user.mobileNumber);
     }
   }, [formik?.values?.SelectedUser]);
+
+  useUpdateEffect(() => {
+    if (formik?.values?.Mobile?.length == 10) {
+      const results = async () => {
+        const res = await findAllUsersByNumber({
+          mobileNumber: formik?.values?.Mobile,
+        });
+        if (res.result) {
+          formik.setFieldValue("SelectedUser", res.result);
+        }
+      };
+      results();
+    }
+  }, [formik?.values?.Mobile]);
 
   return (
     <Form>
