@@ -72,7 +72,7 @@ export function ExpensesListTable({ data,page }) {
       // id: `0${idx + 1}`,
       id: idx>8||page.page!=1?`${((page.page-1)*page.limit)+idx + 1}`:`0${((page.page-1)*page.limit)+idx + 1}`,
       title: ConverFirstLatterToCapital(item.title),
-      description:<div dangerouslySetInnerHTML={{__html:he.decode(item.description)}} /> ,
+      description:<div className="mt-1" dangerouslySetInnerHTML={{__html:he.decode(item.description)}} />,
       date: moment(item?.expenseDate).utcOffset(0).format("DD MMM YYYY"),
         amount:`₹${item.amount}`,
       edit: (

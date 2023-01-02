@@ -61,6 +61,7 @@ export default function FormWithoutFormikForCommitment({
           <Row>
             <Col xs={4}>
               <CustomTextField
+                  type="number"
                 label={t("dashboard_Recent_DonorNumber")}
                 name="Mobile"
               />
@@ -117,6 +118,7 @@ export default function FormWithoutFormikForCommitment({
           <Row>
             <Col xs={4}>
                 <CustomTextField
+                    type="number"
                   label={t("categories_select_amount")}
                   placeholder={t("enter_price_manually")}
                   name="Amount"

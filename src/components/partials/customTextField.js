@@ -45,7 +45,7 @@ export default function CustomTextField({
         <InputGroup>
           <input
             type={type}
-            className={"form-control  "}
+            className={"form-control"}
             placeholder={placeholder}            
             value={field.value}
             {...field}
