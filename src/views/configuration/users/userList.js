@@ -171,7 +171,7 @@ export default function User() {
               onClick={() => history.push("/configuration/users/add")}
             >
               <span>
-                <Plus className="me-1" size={15} strokeWidth={4} />
+                <Plus className="" size={15} strokeWidth={4} />
               </span>
               <span>
                 <Trans i18nKey={"users_AddUser"} />

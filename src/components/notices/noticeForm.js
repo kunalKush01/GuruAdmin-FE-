@@ -97,6 +97,7 @@ export default function NoticeForm({
                     <CustomTextField
                       label={t("news_label_Title")}
                       name="Title"
+                      required
                     />
                   </Col>
                   {/* <Col xs={6}>
@@ -112,7 +113,7 @@ export default function NoticeForm({
                   </Col> */}
                 </Row>
                 <Row>
-                  <Col xs={12}>
+                  <Col xs={12} className="mt-0 mt-lg-1">
                     <RichTextField
                       height="100px"
                       label={t("news_label_Description")}

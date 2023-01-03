@@ -165,7 +165,7 @@ export default function Category() {
               onClick={() => history.push("/configuration/categories/add")}
             >
               <span>
-                <Plus className="me-1" size={15} strokeWidth={4} />
+                <Plus className="" size={15} strokeWidth={4} />
               </span>
               <span>
                 <Trans i18nKey={"categories_AddCategory"} />
@@ -201,7 +201,7 @@ export default function Category() {
               <Else>
                 <If condition={categoryItems.length != 0} disableMemo>
                   <Then>
-                    <CategoryListTable data={categoryItems} />
+                    <CategoryListTable data={categoryItems} page={pagination} />
                   </Then>
                   <Else>
                     <NoContent 

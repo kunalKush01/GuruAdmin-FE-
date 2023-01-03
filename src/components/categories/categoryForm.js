@@ -117,7 +117,7 @@ export default function CategoryForm({
                     <CustomTextField
                       label={t("categories_sub_category")}
                       name="SubCategory"
-                      
+                      required
                     />
                   </Col>
                 </Row>

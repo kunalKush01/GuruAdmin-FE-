@@ -257,7 +257,6 @@ export default function EventList() {
                     <Else>
                       <CustomDatePicker
                         disabledKeyboardNavigation
-                        
                         highlightDates={eventDates}
                         onChange={(date)=>console.log("date",date)}
                         // disabled

@@ -12,7 +12,7 @@ import comfromationIcon from "../../assets/images/icons/news/conformationIcon.sv
 import { deleteCategoryDetail } from "../../api/categoryApi";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-export function CategoryListTable({ data }) {
+export function CategoryListTable({ data,page }) {
   const handleDeleteCategory = async (payload) => {
     return deleteCategoryDetail(payload);
   };
@@ -69,7 +69,7 @@ export function CategoryListTable({ data }) {
   const categoriesList = useMemo(() => {
     return data.map((item, idx) => ({
       _Id: item.id,
-      id: `${idx + 1}`,
+      id: idx>8||page.page!=1?`${((page.page-1)*page.limit)+idx + 1}`:`0${((page.page-1)*page.limit)+idx + 1}`,
       masterCategory: ConverFirstLatterToCapital(item.masterCategory.name),
       subCategory: ConverFirstLatterToCapital(item.name),
       addLanguage: (

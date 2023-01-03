@@ -13,6 +13,7 @@ import { useHistory } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createNews } from "../../api/newsApi";
 import { Plus } from "react-feather";
+import {ConverFirstLatterToCapital} from "../../utility/formater";
 
 const FormWaraper = styled.div`
   .FormikWraper {
@@ -57,10 +58,9 @@ export default function NewsForm({
 
     onSuccess: (data) => {
       console.log("error=", data);
-      if (!data.error) {
+      if ( !data.error) {
         newsQuerClient.invalidateQueries(["News"])
         newsQuerClient.invalidateQueries(["NewsDetail"])
-
         history.push("/news");
       }
     },
@@ -99,7 +99,7 @@ export default function NewsForm({
                   </Col>
                 </Row>
                 <Row>
-                  <Col xs={12}>
+                  <Col xs={12} className="mt-lg-1">
                     <RichTextField
                       height="100px"
                       label={t("news_label_Description")}

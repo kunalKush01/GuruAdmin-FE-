@@ -84,7 +84,8 @@ export default function AddProfile() {
         <ProfileForm 
             handleSubmit={handleCreateNews} 
             initialValues={initialValues} 
-            vailidationSchema={schema} 
+            vailidationSchema={schema}
+            buttonLabel={"update_profile"}
         />
     </ProfileWarper>
   );

@@ -30,7 +30,7 @@ const handleCreateSubCategory = async (payload) => {
   return createSubCategory(payload);
 };
 const schema = yup.object().shape({
-  SubCategory: yup.string().required("notices_desc_required"),
+  SubCategory: yup.string().required("categories_sub_category_required"),
 });
 
 export default function AddCategory() {

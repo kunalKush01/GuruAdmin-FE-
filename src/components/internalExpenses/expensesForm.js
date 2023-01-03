@@ -115,7 +115,7 @@ export default function ExpensesForm({
                   </Col>
                 </Row>
                 <Row>
-                  <Col xs={12}>
+                  <Col xs={12} className="mt-1">
                     <RichTextField
                       height="100px"
                       label={t("news_label_Description")}

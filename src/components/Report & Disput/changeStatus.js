@@ -7,6 +7,10 @@ export const ChangeStatus = ({dropDownName,setdropDownName,...props}) => {
 
   const i18nKeyDropDownItemArray = [
     {
+      id: 3,
+      key: "All",
+    },
+    {
       id: 1,
       key: "report_panding",
     },

@@ -40,7 +40,7 @@ const ReportDisputWaraper = styled.div`
 
 const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 const ReportList = () => {
-  const [dropDownName, setdropDownName] = useState("report_panding");
+  const [dropDownName, setdropDownName] = useState("All");
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const { t } = useTranslation();
   const history = useHistory();
@@ -60,10 +60,11 @@ const ReportList = () => {
   let endDate = moment(filterEndDate).utcOffset(0).format("D MMM, YYYY");
 
   const reportDisputeQuery = useQuery(
-      ["reportUser", pagination.page, selectedLang.id,filterEndDate,filterStartDate],
+      ["reportUser", pagination.page, selectedLang.id,filterEndDate,filterStartDate,dropDownName],
       () =>
           getAllReporDisputeList({
             ...pagination,
+            status:t(dropDownName),
             startDate: filterStartDate,
             endDate: filterEndDate,
             languageId: selectedLang.id,

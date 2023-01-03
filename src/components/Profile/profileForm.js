@@ -9,6 +9,7 @@ import styled from "styled-components";
 import { CustomReactSelect } from "../partials/customReactSelect";
 import CustomTextField from "../partials/customTextField";
 import defalultAvtar from "../../assets/images/icons/dashBoard/defaultAvatar.svg"
+import thumbnailImage from "../../assets/images/icons/Thumbnail.svg"
 
 const ProfileFormWaraper = styled.div`
   .existlabel {
@@ -31,6 +32,10 @@ const ProfileFormWaraper = styled.div`
   .filterPeriod {
     color: #ff8744;
     font: normal normal bold 13px/5px noto sans;
+  }
+  .trust-facilities{
+    border: 1px solid ;
+    border-radius: 6px;
   }
 `;
 
@@ -167,7 +172,6 @@ export default function ProfileForm({
                             <Button
                               color="primary"
                               className="Upload-btn"
-                              type="submit"
                             >
                               <span>
                                 <Trans i18nKey={"browse"} />
@@ -217,6 +221,12 @@ export default function ProfileForm({
                       <div className="ImagesVideos">
                         <Trans i18nKey={"userProfile_facilities"} />
                       </div>
+                      <div>
+                        <div className="trust-facilities d-flex align-items-center">
+                          <img src={thumbnailImage} width={70} height={70} className="cursor-pointer"/>
+                          <div className="ms-2" style={{fontSize:"15px"}}>Add More Facilities</div>
+                        </div>
+                      </div>
                     </Col>
 
                     <Col xs={9} className="">
@@ -228,16 +238,16 @@ export default function ProfileForm({
                 </Row>
               </Col>
             </Row>
-            {/* <div className="btn-Published mt-3">
+            <div className="btn-Published d-flex justify-content-center mt-3">
               <Button color="primary" className="addEvent-btn" type="submit">
-                <span>
-                  <Plus className="me-1" size={15} strokeWidth={4} />
-                </span>
+                {/*<span>*/}
+                {/*  <Plus className="me-1" size={15} strokeWidth={4} />*/}
+                {/*</span>*/}
                 <span>
                   <Trans i18nKey={buttonLabel} />
                 </span>
               </Button>
-            </div> */}
+            </div>
           </Form>
         )}
       </Formik>

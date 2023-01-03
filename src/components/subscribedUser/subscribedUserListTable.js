@@ -68,7 +68,7 @@ export default function SubscribedUSerListTable({ data }) {
                   <div>{ConverFirstLatterToCapital(item?.name??"-")}</div>
                 </div>
             ),
-        mobileNumber:`+91-${item?.mobileNumber??"-"}`,
+        mobileNumber:item?.mobileNumber??"-",
         email:item?.email??"-",
         dateOfBirth:item?.dob??"-",
         address:item?.address??"-",
