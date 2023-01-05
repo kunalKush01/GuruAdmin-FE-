@@ -155,7 +155,7 @@ const FormikCustomDatePickerWraper = styled.div`
   
 `;
 
-export default function FormikRangeDatePicker({ label, ...props }) {
+export default function FormikRangeDatePicker({ label, inline=true,...props }) {
   const [field, meta, helpers] = useField(props.name);
 
   
@@ -179,7 +179,7 @@ export default function FormikRangeDatePicker({ label, ...props }) {
         showMonthDropdown
         timeFormat="hh:mm aa"
         timeCaption="Time"
-        inline
+        inline={inline}
         startDate={field?.value?.start}
         endDate={field?.value?.end}
         {...props}
