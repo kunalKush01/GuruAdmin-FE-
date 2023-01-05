@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
@@ -22,6 +22,8 @@ import CustomDatePicker from "../../components/partials/customDatePicker";
 import NoContent from "../../components/partials/noContent";
 import FinancialReportTabs from "./financialReportTabs";
 import FormikRangeDatePicker from "../../components/partials/FormikRangeDatePicker";
+import { Formik } from "formik";
+import { useUpdateEffect } from "react-use";
 const NewsWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -69,8 +71,8 @@ const NewsWarper = styled.div`
   
 
 export default function FinancialReport() {
-  const [reportStartDate, setReportStartDate] = useState(new Date());
-  const [reportEndDate, setReportEndDate] = useState(new Date());
+  const [reportDate, setreportDate] = useState({start:new Date,end:new Date(moment().startOf("year"))});
+  
 
   const { t } = useTranslation();
   const [activeReportTab, setActiveReportTab] = useState({ id: 1, name: t("report_expences") });
@@ -97,29 +99,20 @@ export default function FinancialReport() {
     limit: 10,
   });
 
-  let filterStartDate = moment()
-    .startOf(periodDropDown())
-    .utcOffset(0, true)
-    .toISOString();
-  let filterEndDate = moment()
-    .endOf(periodDropDown())
-    .utcOffset(0, true)
-    .toISOString();
   
-  let startDate = moment(filterStartDate).format("D MMM");
-
-  let endDate = moment(filterEndDate).utcOffset(0).format("D MMM, YYYY");
   
-  let reportStartDatePrint = moment(reportStartDate).format("DD-MM-YYYY");
-  let reportEndDatePrint= moment(reportEndDate).utcOffset(0).format("DD-MM-YYYY");
 
   const expensesQuery = useQuery(
-    ["Expenses", pagination.page, selectedLang.id,filterStartDate,filterEndDate],
+    ["Expenses", pagination.page, selectedLang.id,reportDate.start,reportDate.end],
     () =>
       getAllExpense({
         ...pagination,
-        startDate: filterStartDate,
-        endDate: filterEndDate,
+        startDate: moment(reportDate.start)        
+        .utcOffset(0, true)
+        .toISOString(),
+        endDate: moment(reportDate.end)        
+        .utcOffset(0, true)
+        .toISOString(),
         languageId: selectedLang.id,
         
       }),
@@ -129,12 +122,16 @@ export default function FinancialReport() {
     }
   );
   const donationQuery = useQuery(
-    ["donations", pagination.page, selectedLang.id,filterEndDate,filterStartDate],
+    ["donations", pagination.page, selectedLang.id,reportDate.end,reportDate.start],
     () =>
       getAllDonation({
         ...pagination,
-        startDate: filterStartDate,
-        endDate: filterEndDate,
+        startDate: moment(reportDate.start)        
+        .utcOffset(0, true)
+        .toISOString(),
+        endDate: moment(reportDate.end)        
+        .utcOffset(0, true)
+        .toISOString(),
         languageId: selectedLang.id,
         
       }),
@@ -148,14 +145,18 @@ export default function FinancialReport() {
       "Commitments",
       pagination.page,
       selectedLang.id,
-      filterEndDate,
-      filterStartDate,
+      reportDate.end,
+      reportDate.start,
     ],
     () =>
       getAllCommitments({
         ...pagination,
-        startDate: filterStartDate,
-        endDate: filterEndDate,
+        startDate: moment(reportDate.start)        
+        .utcOffset(0, true)
+        .toISOString(),
+        endDate: moment(reportDate.end)        
+        .utcOffset(0, true)
+        .toISOString(),
         languageId: selectedLang.id,
       }),
     {
@@ -165,12 +166,16 @@ export default function FinancialReport() {
   );
 
   const boxCollectionQuery = useQuery(
-    ["Collections", pagination.page, selectedLang.id,filterStartDate,filterEndDate],
+    ["Collections", pagination.page, selectedLang.id,reportDate.start,reportDate.end],
     () =>
       getAllBoxCollection({
         ...pagination,
-        startDate: filterStartDate,
-        endDate: filterEndDate,
+        startDate: moment(reportDate.start)        
+        .utcOffset(0, true)
+        .toISOString(),
+        endDate: moment(reportDate.end)        
+        .utcOffset(0, true)
+        .toISOString(),
         languageId: selectedLang.id,
         
       }),
@@ -178,35 +183,37 @@ export default function FinancialReport() {
       keepPreviousData: true,
       enabled:activeReportTab.name==t("report_donation_box")
     }
-  );
-  
-
-  const Items = useMemo(
-    () =>{
-      switch (activeReportTab.name) {
-        case t("report_expences"):
-          return expensesQuery?.data ?? [];
-          
-          case t("donation_Donation"):
-          return donationQuery?.data ?? [];
-          
-          case t("report_commitment"):
+    );
+    
+    
+    const Items = useMemo(
+      () =>{
+        switch (activeReportTab.name) {
+          case t("report_expences"):
+            return expensesQuery?.data ?? [];
+            
+            case t("donation_Donation"):
+              return donationQuery?.data ?? [];
+              
+              case t("report_commitment"):
           return commitmentQuery?.data ?? [];
           
           case t("report_donation_box"):
+            
+            return boxCollectionQuery?.data ?? [];
+            default:
+              return [];
+            }
+          } ,
+          [expensesQuery,donationQuery,commitmentQuery,boxCollectionQuery]
+          );
           
-          return boxCollectionQuery?.data ?? [];
-        default:
-          return [];
-      }
-    } ,
-    [expensesQuery,donationQuery,commitmentQuery,boxCollectionQuery]
-  );
-
-  
-
-  return (
-    <NewsWarper>
+          useEffect(()=>{
+            setPagination({ page: 1, limit: 10 });
+          },[activeReportTab.name])
+          console.log("pagination",pagination.page);
+          return (
+            <NewsWarper>
       <div className="window nav statusBar body "></div>
 
       <div>
@@ -216,32 +223,52 @@ export default function FinancialReport() {
               src={arrowLeft}
               className="me-2  cursor-pointer align-self-end"
               onClick={() => history.push("/")}
-            />
+              />
             <div className="addNews">
               <div className="">
                 <div>
                   <Trans i18nKey={"report_AddReport"} />
                 </div>
-                <div className="filterPeriod">
+                {/* <div className="filterPeriod">
                   <span>
-                    {startDate} - {endDate}
+                  {reportDate.start} - {reportDate.end}
                   </span>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
           <div className="addNews">
             <div className="dateChooserReport d-flex justify-content-between align-item-center">
-              <div className="align-self-center">
+              {/* <div className="align-self-center">
                 {reportStartDatePrint}&nbsp;&nbsp; - &nbsp;&nbsp;{reportEndDatePrint}
-              </div>
+              </div> */}
+              <Formik
+              initialValues={{DateTime:{start:new Date(moment().startOf("year")),end:new Date()}}}
+              
+              >
+                {(formik)=>
+                {
+                  useUpdateEffect(()=>{
+                    setreportDate(formik.values.DateTime)
+                  },[formik.values.DateTime])
+                  return(<FormikRangeDatePicker
+                    label={t("donation_select_date_time")}
+                    name="DateTime"
+                    inline={false}
+                    dateFormat=" dd/MM/yyyy"
+                    selectsRange
+                    />)}}
+
+              </Formik>
               <div>
                 <img src={editIcon} width={30} id={`popover`} className="ms-1 align-self-center cursor-pointer"/>
               </div>
             </div>
           </div>
         </div>
-        <FinancialReportTabs setActive={setActiveReportTab} active={activeReportTab} />  
+              
+            
+        <FinancialReportTabs setActive={setActiveReportTab} active={activeReportTab} setPagination={setPagination} />  
         <div style={{ height: "10px" }}>
           <If condition={expensesQuery.isFetching || donationQuery.isFetching ||commitmentQuery.isFetching}>
             <Then>
@@ -249,7 +276,7 @@ export default function FinancialReport() {
                 baseColor="#ff8744"
                 highlightColor="#fff"
                 height={"3px"}
-              />
+                />
             </Then>
           </If>
         </div>
@@ -282,14 +309,14 @@ export default function FinancialReport() {
               </Else>
             </If>
               
-            <If condition={Items.totalPages > 1} >
-              <Then>
-                <Col xs={12} className="mb-2 d-flex justify-content-center">
+            {/* <If condition={Items.totalPages > 1} > */}
+              {/* <Then  > */}
+                {Items.totalPages > 1&&<Col xs={12} className="mb-2 d-flex justify-content-center">
                   <ReactPaginate
                     nextLabel=""
                     breakLabel="..."
                     previousLabel=""
-                    pageCount={Items.totalPages ||  0}
+                    pageCount={Items.totalPages?? 0}
                     activeClassName="active"
                     breakClassName="page-item"
                     pageClassName={"page-item"}
@@ -302,42 +329,19 @@ export default function FinancialReport() {
                     onPageChange={(page) =>
                       setPagination({ ...pagination, page: page.selected + 1 })
                     }
-                    // forcePage={pagination.page !== 0 ? pagination.page - 1 : 0}
+                    forcePage={pagination.page-1}
                     containerClassName={
                       "pagination react-paginate justify-content-end p-1"
                     }
-                  />
-                </Col>
-              </Then>
-            </If>
+                    
+                    />
+                </Col>}
+              {/* </Then> */}
+            {/* </If> */}
           </Row>
         </div>
       </div>
-      <BtnPopover
-        target={`popover`}
-        content={<Row>
-          <Col className="mb-1">
-            <label style={{ color:" #583703",fontWeight:" bold"}}>Start Date</label>
-              <CustomDatePicker
-                selected={reportStartDate}
-                onChange={date => setReportStartDate(date)}
-                dateFormat="DD-MM-YYYY"
-              />
-              {/* <FormikRangeDatePicker
-                    label={t("donation_select_date_time")}
-                    name="DateTime"              
-                    selectsRange
-                  /> */}
-          </Col>
-          <Col>
-          <label style={{ color:" #583703",fontWeight:" bold"}}>End Date</label>
-            <CustomDatePicker 
-              selected={reportEndDate}
-              onChange={date => setReportEndDate(date)}
-            />
-          </Col>
-        </Row> }
-      />
+      
     </NewsWarper>
   );
 }

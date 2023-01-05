@@ -12,8 +12,8 @@ const FinancialReportTabsWarapper = styled.div`
     cursor: pointer;
     padding-bottom: 0.2rem;
   }
-  hr{
-    margin-top: -.25rem;
+  hr {
+    margin-top: -0.25rem;
     height: 1.5px;
     color: #583703;
     opacity: 25%;
@@ -27,15 +27,15 @@ const FinancialReportTabsWarapper = styled.div`
     border-bottom: 5px solid;
     border-color: #ff8744;
     border-radius: 5px;
-    color: #583703 ;
+    color: #583703;
     opacity: 100%;
     font-weight: bold;
   }
 `;
-const FinancialReportTabs = ({setActive,active}) => {
+const FinancialReportTabs = ({ setActive, active,setPagination }) => {
   const { t } = useTranslation();
   const FinancialTabs = [
-    { id: 1, name: t("report_expences")         },
+    { id: 1, name: t("report_expences") },
     { id: 2, name: t("donation_Donation") },
     { id: 3, name: t("report_commitment") },
     { id: 4, name: t("report_donation_box") },
@@ -44,17 +44,25 @@ const FinancialReportTabs = ({setActive,active}) => {
     <FinancialReportTabsWarapper>
       <div className="d-flex w-50 justify-content-between mt-2 allTabBox">
         {FinancialTabs.map((item) => {
-        return  <div
-            className={`tabName ${
-              active?.name == item.name ? "activeTab" : ""
-            }`}
-            onClick={() => setActive(item)}
-          >
-            {item.name}
-          </div>;
+          return (
+            <div
+              className={`tabName ${
+                active?.name == item.name ? "activeTab" : ""
+              }`}
+              onClick={() => {
+                
+                setActive(item);
+              }}
+            >
+              {item.name}
+            </div>
+          );
         })}
       </div>
-        <div> <hr/> </div>
+      <div>
+        {" "}
+        <hr />{" "}
+      </div>
     </FinancialReportTabsWarapper>
   );
 };

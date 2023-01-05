@@ -54,7 +54,7 @@ export default function DonationBoxListTable({ data }) {
       _Id: item.id,
       id: `${idx + 1}`,
       amount:`₹${item.amount}`,
-      remarks:<div dangerouslySetInnerHTML={{__html:he.decode(item.remarks)}} /> ,
+      remarks:<div dangerouslySetInnerHTML={{__html:he.decode(item?.remarks??"")}} /> ,
       dateTime:moment(item?.collectionDate).utcOffset(0).format("h:mm A, DD MMM YYYY"),
       edit: (
         <img
