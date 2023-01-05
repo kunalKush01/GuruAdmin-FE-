@@ -36,7 +36,7 @@ export function CategoryListTable({ data,page }) {
       selector: (row) => row.id,
       width:"200px",
       style: {
-        font: "normal normal bold 10px/20px noto sans !important ",
+        font: "normal normal 700 13px/20px noto sans !important ",
       },
     },
     {

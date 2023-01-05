@@ -31,7 +31,7 @@ export default function DonationBoxListTable({ data }) {
       name: t("dashboard_Recent_DonorAmount"),
       selector: (row) => row.amount,
       style: {
-        font: "normal normal bold 10px/20px noto sans !important ",
+        font: "normal normal 700 13px/20px noto sans !important ",
       },
     },
     {

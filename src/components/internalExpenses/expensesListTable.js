@@ -36,7 +36,7 @@ export function ExpensesListTable({ data,page }) {
       name: t("categories_serial_number"),
       selector: (row) => row.id,
       style: {
-        font: "normal normal bold 14px/20px noto sans !important ",
+        font: "normal normal 700 13px/20px noto sans !important ",
       },
     },
     {

@@ -36,7 +36,7 @@ export function SubAdminUserListTable({ data }) {
       name: t("Username"),
       selector: (row) => row.userName,
       style: {
-        font: "normal normal bold 10px/20px noto sans !important ",
+        font: "normal normal 700 13px/20px noto sans !important ",
         
       },
     },

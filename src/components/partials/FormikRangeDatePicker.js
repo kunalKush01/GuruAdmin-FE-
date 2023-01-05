@@ -152,7 +152,21 @@ const FormikCustomDatePickerWraper = styled.div`
       color: #fff7e8 !important;
       opacity: 1 !important;
   }
-  
+  .react-datepicker__input-container {
+    max-width:80%;
+  }
+  .react-datepicker__input-container > input{
+    border: none;
+    outline: none;
+    font-size: 16px;
+    margin-top: .4rem;
+    width: 100%;
+    color: #ff8744;
+    font-weight:bold;
+  }
+  .react-datepicker__input-container > input:focus{
+    outline: none;
+  }
 `;
 
 export default function FormikRangeDatePicker({ label, inline=true,...props }) {

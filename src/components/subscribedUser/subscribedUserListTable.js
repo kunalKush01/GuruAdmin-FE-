@@ -28,7 +28,7 @@ export default function SubscribedUSerListTable({ data }) {
       name: t("subscribed_user_name"),
       selector: (row) => row.name,
       style: {
-        font: "normal normal bold 10px/20px noto sans !important ",
+        font: "normal normal 700 13px/20px noto sans !important ",
       },
       // width:"150px",
     },

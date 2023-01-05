@@ -36,46 +36,32 @@ export default function RecentDonationTable({ data }) {
     {
       name: t("dashboard_Recent_DonorNumber"),
       selector: (row) => row.mobileNumber,
-      style: {
-        font: "normal normal normal 13px/20px noto sans !important ",
-      },
       // width:"150px",
     },
     {
       name: t("dashboard_Recent_DonorName"),
       selector: (row) => row.donarName,
-      style: {
-        font: "normal normal normal 13px/20px noto sans !important ",
-      },
       // width:"150px",
     },
 
     {
       name: t("category"),
       selector: (row) => row.category,
-      style: {
-        font: "normal normal normal 13px/20px noto sans !important ",
-      },
 
       // width:"150px",
     },
 
     {
       name: t("dashboard_Recent_DonorDate"),
-      style: {
-        font: "normal normal normal 13px/20px noto sans !important ",
-      },
       selector: (row) => row.date_time,
       width:"auto"
     },
     {
       name: t("dashboard_Recent_DonorAmount"),
-      font: "normal normal normal 13px/20px noto sans !important ",
       selector: (row) => row.amount,
     },
     {
         name: t("dashboard_Recent_DonorCommitId"),
-      font: "normal normal normal 13px/20px noto sans !important ",
       selector: (row) => row.commitmentID,
       },
   ];

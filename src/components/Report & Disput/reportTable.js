@@ -38,6 +38,10 @@ const ReportTable = ({data}) => {
     {
       name: t("report_report_against"),
       selector: (row) => row.name,
+      style: {
+        font: "normal normal 700 13px/20px Noto Sans !important",
+        // font: "normal normal bold 10px/20px noto sans !important ",
+      },
       width: "250px",
     },
     {

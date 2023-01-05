@@ -63,7 +63,8 @@ const NewsWarper = styled.div`
     border: 1px solid #FF8744;
     color: #FF8744;
     font: normal normal bold 15px/20px noto sans;
-    padding: .4rem 1rem .4rem 2rem ;
+    /* padding: .4rem 1rem .4rem 2rem ; */
+    padding: .5rem 1.5rem;
     border-radius: 7px;
  }
 `;
@@ -238,7 +239,7 @@ export default function FinancialReport() {
             </div>
           </div>
           <div className="addNews">
-            <div className="dateChooserReport d-flex justify-content-between align-item-center">
+            <div className="dateChooserReport d-flex position-relative justify-content-between align-item-center">
               {/* <div className="align-self-center">
                 {reportStartDatePrint}&nbsp;&nbsp; - &nbsp;&nbsp;{reportEndDatePrint}
               </div> */}
@@ -252,16 +253,16 @@ export default function FinancialReport() {
                     setreportDate(formik.values.DateTime)
                   },[formik.values.DateTime])
                   return(<FormikRangeDatePicker
-                    label={t("donation_select_date_time")}
+                    // label={t("donation_select_date_time")}
                     name="DateTime"
                     inline={false}
-                    dateFormat=" dd/MM/yyyy"
+                    dateFormat=" dd-MM-yyyy"
                     selectsRange
                     />)}}
 
               </Formik>
               <div>
-                <img src={editIcon} width={30} id={`popover`} className="ms-1 align-self-center cursor-pointer"/>
+                <img src={editIcon} width={30} id={`popover`} className="align-self-center position-absolute cursor-pointer" style={{right:"2rem"}}/>
               </div>
             </div>
           </div>

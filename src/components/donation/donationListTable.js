@@ -30,7 +30,7 @@ export default function DonationListTable({ data }) {
       name: t("commitment_Username"),
       selector: (row) => row.username,
       style: {
-        font: "normal normal bold 12px/23px Noto Sans !important",
+        font: "normal normal 700 13px/20px Noto Sans !important",
         // font: "normal normal bold 10px/20px noto sans !important ",
       },
       // width:"150px",
