@@ -65,7 +65,7 @@ export const englishContent = {
   news_label_Tags: "Tags",
   news_label_Description: "Add Description",
   news_label_Date: "Selected Date",
-  news_label_Published: "Published BY",
+  news_label_Published: "Published by",
   news_label_ImageVedio: "Add Images/Videos",
   news_button_Publish: "Publish",
   news_title_required: "Title is required",

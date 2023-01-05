@@ -215,7 +215,7 @@ export default function NewsCard({ data }) {
             <div className="d-flex justify-content-between align-items-center">
               <div>
                 <img src={cardClockIcon} style={{ verticalAlign: "bottom" }} />
-                Posted on {`${moment(data.publishDate).format("D MMMM YYYY ")}`}
+                {`Posted on ${moment(data.publishDate).format("D MMMM YYYY ")}`}
               </div>
               <img src={cardThreeDotIcon} className="cursor-pointer" id={`popover-${data.id}`} />
             </div>

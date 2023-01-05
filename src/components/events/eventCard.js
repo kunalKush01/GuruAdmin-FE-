@@ -169,8 +169,7 @@ export default function EventCard({ data }) {
                 <Col xs={6}>
                   <div className="card-Date">
                     <p>
-                      Posted on{" "}
-                      {`${moment(data.publishDate).format("D MMMM YYYY ")}`}
+                      {`From ${moment(data.startDate).format("D MMMM YYYY ")} to ${moment(data.endDate).format("D MMMM YYYY ")} `}
                     </p>
                   </div>
                 </Col>

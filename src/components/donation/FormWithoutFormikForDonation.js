@@ -119,15 +119,16 @@ export default function FormWithoutFormikForDonation({
       <Row>
         <Col xs={12}>
           <Row>
-            <Col xs={4}>
+            <Col xs={4} className=" pb-1" >
               <CustomTextField
+
                 type="number"
                 label={t("dashboard_Recent_DonorNumber")}
                 name="Mobile"
                 required
               />
             </Col>
-            <Col xs={4}>
+            <Col xs={4} className=" pb-1">
               <AsyncSelectField
                 name="SelectedUser"
                 required
@@ -140,13 +141,13 @@ export default function FormWithoutFormikForDonation({
                 disabled={loadOption.length==0}
               />
             </Col>
-            <Col xs={4}>
+            <Col xs={4} className=" pb-1">
               <CustomTextField
                 label={t("dashboard_Recent_DonorName")}
                 name="donarName"
               />
             </Col>
-            <Col xs={4}>
+            <Col xs={4} className=" pb-1">
               <FormikCustomReactSelect
                 labelName={t("categories_select_category")}
                 name={"SelectedMasterCategory"}
@@ -160,7 +161,7 @@ export default function FormWithoutFormikForDonation({
 
               />
             </Col>
-            <Col xs={4}>
+            <Col xs={4} className=" pb-1">
               <FormikCustomReactSelect
                 labelName={t("category_select_sub_category")}
                 loadOptions={subLoadOption.map((cate)=>{
@@ -174,7 +175,7 @@ export default function FormWithoutFormikForDonation({
                 width
               />
             </Col>
-            <Col xs={4}>
+            <Col xs={4} className=" pb-1">
               <CustomTextField
                 label={t("created_by")}
                 name="createdBy"

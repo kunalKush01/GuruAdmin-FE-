@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import moment from "moment";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
@@ -70,7 +71,7 @@ export default function SubscribedUSerListTable({ data }) {
             ),
         mobileNumber:item?.mobileNumber??"-",
         email:item?.email??"-",
-        dateOfBirth:item?.dob??"-",
+        dateOfBirth:moment(item?.dob).format("DD MMM YYYY "), 
         address:item?.address??"-",
         panCardDetails:item?.cardNumber??"-",
       }
