@@ -10,6 +10,7 @@ import { CustomReactSelect } from "../partials/customReactSelect";
 import CustomTextField from "../partials/customTextField";
 import defalultAvtar from "../../assets/images/icons/dashBoard/defaultAvatar.svg"
 import thumbnailImage from "../../assets/images/icons/Thumbnail.svg"
+import { useSelector } from "react-redux";
 
 const ProfileFormWaraper = styled.div`
   .existlabel {
@@ -48,7 +49,7 @@ export default function ProfileForm({
   selectEventDisabled,
 }) {
   const history = useHistory();
-  const { t } = useTranslation();
+  const { t } = useTranslation();  
   // const QueryClient = useQueryClient();
 
   // const Mutation = useMutation({
@@ -136,7 +137,7 @@ export default function ProfileForm({
                       <Col xs={6} className="">
                         <CustomTextField
                           label={t("subscribed_user_address")}
-                          name="address"
+                          name="Address"
                         />
                       </Col>
                     </Row>

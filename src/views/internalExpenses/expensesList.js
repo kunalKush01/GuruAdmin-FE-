@@ -88,8 +88,8 @@ export default function Expenses() {
     .utcOffset(0, true)
     .toISOString();
 
-  let startDate = moment(filterStartDate).format("D MMM");
-  let endDate = moment(filterEndDate).utcOffset(0).format("D MMM, YYYY");
+  let startDate = moment(filterStartDate).format("DD MMM");
+  let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
 
   const expensesQuery = useQuery(
     ["Expenses", pagination.page, selectedLang.id,filterEndDate,filterStartDate],

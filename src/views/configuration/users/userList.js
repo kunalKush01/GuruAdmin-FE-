@@ -98,8 +98,8 @@ export default function User() {
     .utcOffset(0, true)
     .toISOString();
 
-  let startDate = moment(filterStartDate).format("D MMM YYYY");
-  let endDate = moment(filterEndDate).utcOffset(0).format("D MMM YYYY");
+  let startDate = moment(filterStartDate).format("DD MMM");
+  let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
 
   const userQuery = useQuery(
     ["Users", pagination.page, selectedLang.id, selectedMasterCate],

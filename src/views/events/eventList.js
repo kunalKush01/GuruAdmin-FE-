@@ -92,8 +92,8 @@ export default function EventList() {
     .utcOffset(0, true)
     .toISOString();
 
-  let startDate = moment(filterStartDate).format("D MMM ");
-  let endDate = moment(filterEndDate).utcOffset(0).format("D MMM. YYYY");
+  let startDate = moment(filterStartDate).format("DD MMM ");
+  let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
 
   const eventQuery = useQuery(
     ["Events", pagination.page, startDate, endDate, selectedLang.id],

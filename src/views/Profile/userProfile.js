@@ -1,6 +1,7 @@
 import React from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
+
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import * as yup from "yup";
@@ -23,40 +24,41 @@ const ProfileWarper = styled.div`
 
   
 `;
-
 const handleCreateNews = async (payload) => {
- return createNews(payload);
+  return createNews(payload);
 };
 const schema = yup.object().shape({
   name: yup.string().required("name_required"),
   EmailId: yup.string().email('email_invalid').required('email_required'),
   Contact: yup.number()
-              .typeError("number_type")
-              .positive("cant_start_minus")
-              .integer("number_in_point")
-              .min(8)
-              .required('number_required'),
+  .typeError("number_type")
+  .positive("cant_start_minus")
+  .integer("number_in_point")
+  .min(8)
+  .required('number_required'),
   Address:  yup.string().required("address_required"),
   Temple:yup.string().required("Temple_name_required"),
   documents:yup.string().required("doc_required"),
 });
 
-const initialValues={
-  Id:"",
-  name: "",
-  EmailId: "",
-  Contact: "",
-  Address: "",
-  Temple:"",
-  Type: "",
-  documents:"",
-}
+
 
 export default function AddProfile() {
+  const trustDetail = useSelector((sate)=>sate.auth.trustDetail)
+  const userDetail = useSelector((state)=>state.auth.userDetail) 
   const history = useHistory();
   const langArray = useSelector(state=>state.auth.availableLang)
 
-  
+  const initialValues={
+    Id:userDetail?.id??"",
+    name: userDetail?.name??"",
+    EmailId: userDetail?.email??"",
+    Contact: userDetail?.mobileNumber??"",
+    Address:  trustDetail?.address??"",
+    Temple:trustDetail?.name??"",
+    Type: trustDetail?.type??"",
+    documents:trustDetail?.trustDocumnent??"",
+  }  
   return (
     <ProfileWarper>
       <div className="d-flex justify-content-between align-items-center mb-2">

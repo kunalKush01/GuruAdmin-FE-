@@ -90,8 +90,8 @@ export default function Category() {
     .utcOffset(0, true)
     .toISOString();
 
-  let startDate = moment(filterStartDate).format("D MMM YYYY");
-  let endDate = moment(filterEndDate).utcOffset(0).format("D MMM YYYY");
+  let startDate = moment(filterStartDate).format("DD MMM");
+  let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
 
   const categoryQuery = useQuery(
     ["Categories", pagination.page, selectedLang.id, selectedMasterCate],
@@ -140,7 +140,7 @@ export default function Category() {
                 </div>
                 {/* <div className="filterPeriod">
                   <span>
-                    {startDate}-{endDate}
+                    {startDate} - {endDate}
                   </span>
                 </div> */}
               </div>
