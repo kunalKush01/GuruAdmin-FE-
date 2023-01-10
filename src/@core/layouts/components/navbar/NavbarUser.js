@@ -1,5 +1,5 @@
 // ** React Imports
-import { Fragment, useState } from "react";
+import {Fragment, useEffect, useState} from "react";
 
 // ** Dropdowns Imports
 import UserDropdown from "./UserDropdown";
@@ -30,10 +30,12 @@ import { toast } from "react-toastify";
 import moment from "moment";
 import { useHistory } from "react-router-dom";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
+import {isSerchable} from "../../../../utility/localSerachBar";
 const NavbarUser = (props) => {
   const history = useHistory();
   const trustDetails = useSelector(state=>state.auth.trustDetail)
   const refreshToken = useSelector(state=>state.auth.tokens.refreshToken)
+  const [isSerchableNav,setIsSerchableNav] = useState(false)
   const dispatch= useDispatch()
   const { t, i18n } = useTranslation();
   const handleLogOut = async()=>{
@@ -87,7 +89,15 @@ const NavbarUser = (props) => {
       font: normal normal normal 10px/5px noto sans;
     }
   `;
-
+//   const pathName = useHistory().location.pathname
+//   const [pathname, setPathname] = useState(pathName);
+//   useEffect(()=>{
+//   const serchable= isSerchable(pathname)
+//   console.log("isSerchable(pathName)",serchable)
+// console.log("pathname",pathname)
+//   setIsSerchableNav(serchable)
+//     setPathname(pathName)
+// },[pathname])
   return (
     <Fragment>
       <NavbarUserWarraper className="d-flex justify-content-between w-100 align-items-center  ">
@@ -102,10 +112,10 @@ const NavbarUser = (props) => {
             </NavLink>
           </NavItem>
         </div>
-        <InputGroup className=" w-100 h-75 searchinput border-0 rounded-pill d-flex align-items-center ">
-          <Input className=" sInput searchinput border-0 h-75 rounded-pill " placeholder={t("searchBarPlaceHolder")} />
+          <InputGroup className=" w-100 h-75 searchinput border-0 rounded-pill d-flex align-items-center ">
+          <Input className=" sInput searchinput border-0 h-75 rounded-pill " placeholder={t("searchBarPlaceHolder")}/>
           <InputGroupText className="sIconsBox searchinput border-0  h-75  rounded-pill">
-            <img src={searchIcon} className="" />
+            <img src={searchIcon} className=""/>
           </InputGroupText>
         </InputGroup>
         <div className="d-flex justify-content-end align-items-center ">

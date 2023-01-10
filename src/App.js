@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { authApiInstance } from "./axiosApi/authApiInstans";
 import { setAvailableLang } from "./redux/authSlice";
 import "react-loading-skeleton/dist/skeleton.css";
+import {isSerchable} from "./utility/localSerachBar";
 
 const App = () => {
   const selectedLanguage = useSelector((state) => state.auth.selectLang);
@@ -22,9 +23,13 @@ const App = () => {
   useEffect(() => {
     i18n.changeLanguage(selectedLanguage.langCode);
   }, [selectedLanguage.langCode]);
+
+
   useEffect(() => {
     languageList();
   }, []);
+
+
 
   return <Router />;
 };

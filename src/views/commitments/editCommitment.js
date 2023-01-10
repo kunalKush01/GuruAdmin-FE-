@@ -38,8 +38,8 @@ const schema = yup.object().shape({
     Mobile: yup.string().required("expenses_mobile_required"),
     // SelectedUser: yup.string().required("user_select_required"),
     // donarName: yup.string().required("donar_name_required"),
-    SelectedMasterCategory: yup.object().required("masterCategory_required"),
-    SelectedSubCategory: yup.object(),  
+    SelectedMasterCategory: yup.mixed().required("masterCategory_required"),
+    SelectedSubCategory: yup.mixed(),
     Amount:yup.string().required("amount_required"),
     
   });

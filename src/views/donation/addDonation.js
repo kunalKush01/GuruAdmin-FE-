@@ -26,7 +26,7 @@ const handleCreateDonation = async (payload) => {
 };
 const schema = yup.object().shape({
   Mobile: yup.string().required("expenses_mobile_required").min(10).max(10),
-  SelectedUser: yup.object().required("user_select_required"),
+  SelectedUser: yup.mixed().required("user_select_required"),
   donarName: yup.string().matches(
       /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
       'donation_donar_name_only_letters'
@@ -47,9 +47,9 @@ export default function AddNews() {
     donarName: "",
     SelectedMasterCategory: "",
     SelectedSubCategory: "",
-    createdBy: loggedInUser,
     SelectedCommitmentId: "",
     Amount: "",
+    createdBy: loggedInUser,
   };
   return (
     <NewsWarper>

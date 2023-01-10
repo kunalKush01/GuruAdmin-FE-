@@ -79,16 +79,23 @@ export default function FormWithoutFormikForDonation({
           formik.setFieldValue("SelectedUser", res.result);
         }
       };
-      
       results();
     }
   }, [formik?.values?.Mobile]);
 
   useUpdateEffect(() => {
     const user = formik?.values?.SelectedUser;
-    if (user) {
+    if (user?.id) {
+      console.log("hey")
       formik.setFieldValue("Mobile", user.mobileNumber);
+      return
     }
+    formik.setFieldValue("Mobile", "");
+    formik.setFieldValue("donarName", "");
+    formik.setFieldValue("SelectedMasterCategory", "");
+    formik.setFieldValue("SelectedSubCategory", "");
+    formik.setFieldValue("SelectedCommitmentId", "");
+    formik.setFieldValue("Amount", "");
   }, [formik?.values?.SelectedUser]);
 
   useUpdateEffect(() => {
@@ -139,6 +146,7 @@ export default function FormWithoutFormikForDonation({
                 placeholder={t("categories_select_user_name")}
                 defaultOptions
                 disabled={loadOption.length==0}
+
               />
             </Col>
             <Col xs={4} className=" pb-1">
