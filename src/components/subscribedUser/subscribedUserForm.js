@@ -138,7 +138,7 @@ export default function SubscribedUserForm({
                 /> */}
               </Col>
             </Row>
-            <div className="btn-Published ">
+            <div className="btn-Published  mt-lg-3">
             <Button color="primary" className="addNotice-btn " type="submit">
                 {plusIconDisable&&<span>
                   <Plus className="" size={15} strokeWidth={4} />

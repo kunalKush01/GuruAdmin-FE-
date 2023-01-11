@@ -4,6 +4,7 @@ import {Trans} from "react-i18next";
 import {useField} from "formik";
 
 export const CustomReactSelect = ({
+                                    required=false,
   label,
   loadOptions,
   labelKey = "label",
@@ -89,11 +90,11 @@ export const CustomReactSelect = ({
   // const [field, meta, helpers] = useField(props);
   return (
     <div>
-      {props.labelName && (
-        <div style={{ font: "normal normal bold 15px/33px Noto Sans" }}>
-          {props.labelName}*
+      {props.labelName &&
+          <div style={{ font: "normal normal bold 15px/33px Noto Sans" }}>
+          {`${props.labelName}`}{required&&'*'}
         </div>
-      )}
+      }
       <ReactSelect
         isDisabled={props.disabled}
         isMulti={multiple}

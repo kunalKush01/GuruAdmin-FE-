@@ -153,13 +153,14 @@ const FormikCustomDatePickerWraper = styled.div`
       opacity: 1 !important;
   }
   .react-datepicker__input-container {
-    max-width:80%;
+    //max-width:80%;
   }
   .react-datepicker__input-container > input{
     border: none;
     outline: none;
     font-size: 16px;
     margin-top: .4rem;
+    text-align: center;
     width: 100%;
     color: #ff8744;
     font-weight:bold;

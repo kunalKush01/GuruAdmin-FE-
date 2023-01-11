@@ -24,7 +24,7 @@ export const englishContent = {
   monthName_November: "November",
   monthName_December: "December",
   last_login: "Last Logged In",
-  category:"Sub-Category",
+  category:"Category",
   user:"Sub Admin",
   report_Dispute:"Report & Dispute",
   cancel:"Cancel",

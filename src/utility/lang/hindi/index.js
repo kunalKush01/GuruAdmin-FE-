@@ -24,7 +24,7 @@ export const hindiContent = {
   monthName_November: "नवंबर",
   monthName_December: "दिसंबर",
   last_login: "पिछला लॉग इन",
-  category:"उप श्रेणी",
+  category:"श्रेणी",
   user:"उप व्यवस्थापक",
   report_Dispute:"रिपोर्ट और विवाद",
 

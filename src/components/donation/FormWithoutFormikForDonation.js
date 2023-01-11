@@ -164,6 +164,7 @@ export default function FormWithoutFormikForDonation({
                 loadOptions={masterloadOptionQuery?.data?.results&&masterloadOptionQuery?.data?.results.map((item)=>{
                   return {...item,name:ConverFirstLatterToCapital(item.name)}
                 })}
+                required
                 width={"100"}
                 disabled={masterloadOptionQuery?.data?.results==0}
 
@@ -179,7 +180,6 @@ export default function FormWithoutFormikForDonation({
                 labelKey={"name"}
                 valueKey={"id"}
                 disabled={subLoadOption.length==0}
-
                 width
               />
             </Col>

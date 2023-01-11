@@ -64,7 +64,7 @@ const NewsWarper = styled.div`
     color: #FF8744;
     font: normal normal bold 15px/20px noto sans;
     /* padding: .4rem 1rem .4rem 2rem ; */
-    padding: .5rem 1.5rem;
+    padding: .5rem ;
     border-radius: 7px;
  }
 `;
@@ -245,7 +245,6 @@ export default function FinancialReport() {
               </div> */}
               <Formik
               initialValues={{DateTime:{start:new Date(moment().startOf("year")),end:new Date()}}}
-              
               >
                 {(formik)=>
                 {
@@ -261,9 +260,9 @@ export default function FinancialReport() {
                     />)}}
 
               </Formik>
-              <div>
-                <img src={editIcon} width={30} id={`popover`} className="align-self-center position-absolute cursor-pointer" style={{right:"2rem"}}/>
-              </div>
+              {/*<div>*/}
+              {/*  <img src={editIcon} width={30} id={`popover`} className="align-self-center position-absolute cursor-pointer" style={{right:"2rem"}}/>*/}
+              {/*</div>*/}
             </div>
           </div>
         </div>

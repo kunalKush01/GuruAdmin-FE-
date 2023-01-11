@@ -115,7 +115,7 @@ export default function  DonationBoxForm({
                   <Col xs={12}>
                     <RichTextField
                       height="100px"
-                      label={t("add_remarks")}
+                      label={t("news_label_Description")}
                       name="Body"
                     />
                   </Col>

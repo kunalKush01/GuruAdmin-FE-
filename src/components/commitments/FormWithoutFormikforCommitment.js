@@ -49,9 +49,11 @@ export default function FormWithoutFormikForCommitment({
 
   useUpdateEffect(() => {
     const user = formik?.values?.SelectedUser;
-    if (user) {
+    if (user?.id) {
       formik.setFieldValue("Mobile", user.mobileNumber);
+      return
     }
+    formik.setFieldValue("Mobile", "");
   }, [formik?.values?.SelectedUser]);
 
   useUpdateEffect(() => {
@@ -109,6 +111,7 @@ export default function FormWithoutFormikForCommitment({
                   return {...item,name:ConverFirstLatterToCapital(item.name)}
                 })}
                 width={"100"}
+                required
               />
             </Col>
             <Col xs={4}>
