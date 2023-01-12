@@ -92,9 +92,10 @@ export default function Category() {
 
   let startDate = moment(filterStartDate).format("DD MMM");
   let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
+  const searchBarValue = useSelector((state) => state.search.LocalSearch  );
 
   const categoryQuery = useQuery(
-    ["Categories", pagination.page, selectedLang.id, selectedMasterCate],
+    ["Categories", pagination.page, selectedLang.id, selectedMasterCate,searchBarValue],
     () =>
       getAllCategories({
         ...pagination,
@@ -102,6 +103,7 @@ export default function Category() {
         endDate: filterEndDate,
         languageId: selectedLang.id,
         masterId: selectedMasterCate,
+        search:searchBarValue
       }),
     {
       keepPreviousData: true,

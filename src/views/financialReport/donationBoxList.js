@@ -54,6 +54,8 @@ const DonationBoxListWarper = styled.div`
 export default function Expenses() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const selectedLang = useSelector((state) => state.auth.selectLang);
+  const searchBarValue = useSelector((state) => state.search.LocalSearch  );
+
   const periodDropDown = () => {
     switch (dropDownName) {
       case "dashboard_monthly":
@@ -89,13 +91,14 @@ export default function Expenses() {
   let endDate = moment(filterEndDate).utcOffset(0).format("D MMM YYYY");
 
   const boxCollectionQuery = useQuery(
-    ["Collections", pagination.page, selectedLang.id,filterEndDate,filterStartDate],
+    ["Collections", pagination.page, selectedLang.id,filterEndDate,filterStartDate,searchBarValue],
     () =>
       getAllBoxCollection({
         ...pagination,
         startDate: filterStartDate,
         endDate: filterEndDate,
         languageId: selectedLang.id,
+        search:searchBarValue
         
       }),
     {

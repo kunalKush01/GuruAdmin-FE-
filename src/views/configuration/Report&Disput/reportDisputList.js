@@ -58,9 +58,10 @@ const ReportList = () => {
 
   let startDate = moment(filterStartDate).format("D MMM");
   let endDate = moment(filterEndDate).utcOffset(0).format("D MMM, YYYY");
+  const searchBarValue = useSelector((state) => state.search.LocalSearch  );
 
   const reportDisputeQuery = useQuery(
-      ["reportUser", pagination.page, selectedLang.id,filterEndDate,filterStartDate,dropDownName],
+      ["reportUser", pagination.page, selectedLang.id,filterEndDate,filterStartDate,dropDownName,searchBarValue],
       () =>
           getAllReporDisputeList({
             ...pagination,
@@ -68,6 +69,7 @@ const ReportList = () => {
             startDate: filterStartDate,
             endDate: filterEndDate,
             languageId: selectedLang.id,
+            search:searchBarValue
 
           }),
       {

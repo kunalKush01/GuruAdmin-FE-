@@ -102,11 +102,13 @@ export default function FinancialReport() {
 
   
   
+  const searchBarValue = useSelector((state) => state.search.LocalSearch  );
 
   const expensesQuery = useQuery(
-    ["Expenses", pagination.page, selectedLang.id,reportDate.start,reportDate.end],
+    ["Expenses", pagination.page, selectedLang.id,reportDate.start,reportDate.end,searchBarValue],
     () =>
       getAllExpense({
+        search:searchBarValue,
         ...pagination,
         startDate: moment(reportDate.start)        
         .utcOffset(0, true)
@@ -123,9 +125,10 @@ export default function FinancialReport() {
     }
   );
   const donationQuery = useQuery(
-    ["donations", pagination.page, selectedLang.id,reportDate.end,reportDate.start],
+    ["donations", pagination.page, selectedLang.id,reportDate.end,reportDate.start,searchBarValue],
     () =>
       getAllDonation({
+        search:searchBarValue,
         ...pagination,
         startDate: moment(reportDate.start)        
         .utcOffset(0, true)
@@ -148,9 +151,11 @@ export default function FinancialReport() {
       selectedLang.id,
       reportDate.end,
       reportDate.start,
+      searchBarValue
     ],
     () =>
       getAllCommitments({
+        search:searchBarValue,
         ...pagination,
         startDate: moment(reportDate.start)        
         .utcOffset(0, true)
@@ -167,9 +172,10 @@ export default function FinancialReport() {
   );
 
   const boxCollectionQuery = useQuery(
-    ["Collections", pagination.page, selectedLang.id,reportDate.start,reportDate.end],
+    ["Collections", pagination.page, selectedLang.id,reportDate.start,reportDate.end,searchBarValue],
     () =>
       getAllBoxCollection({
+        search:searchBarValue,
         ...pagination,
         startDate: moment(reportDate.start)        
         .utcOffset(0, true)

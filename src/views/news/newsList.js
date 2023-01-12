@@ -89,15 +89,17 @@ export default function News() {
 
   let startDate = moment(filterStartDate).format("DD MMM");
   let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
+  const searchBarValue = useSelector((state) => state.search.LocalSearch  );
 
   const newsQuery = useQuery(
-    ["News", pagination.page, filterStartDate, filterEndDate,selectedLang.id],
+    ["News", pagination.page, filterStartDate, filterEndDate,selectedLang.id,searchBarValue],
     () =>
       getAllNews({
         ...pagination,
         startDate: filterStartDate,
         endDate: filterEndDate,
-        languageId:selectedLang.id
+        languageId:selectedLang.id,
+        search:searchBarValue
       }),
     {
       keepPreviousData: true,

@@ -93,15 +93,17 @@ export default function SubscribedUser () {
 
   let startDate = moment(filterStartDate).format("DD MMM");
   let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
+  const searchBarValue = useSelector((state) => state.search.LocalSearch  );
 
   const subscribedUserQuery = useQuery(
-    ["subscribedUser", pagination.page, selectedLang.id,filterEndDate,filterStartDate],
+    ["subscribedUser", pagination.page, selectedLang.id,filterEndDate,filterStartDate,searchBarValue],
     () =>
       getAllSubscribedUser({
         ...pagination,
         startDate: filterStartDate,
         endDate: filterEndDate,
         languageId: selectedLang.id,
+        search:searchBarValue
         
       }),
     {

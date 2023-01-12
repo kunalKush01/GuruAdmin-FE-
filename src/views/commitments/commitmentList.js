@@ -89,7 +89,7 @@ export default function Expenses() {
 
   let startDate = moment(filterStartDate).format("DD MMM");
   let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
-
+  const searchBarValue = useSelector((state) => state.search.LocalSearch  );
   const commitmentQuery = useQuery(
     [
       "Commitments",
@@ -97,6 +97,7 @@ export default function Expenses() {
       selectedLang.id,
       filterEndDate,
       filterStartDate,
+      searchBarValue
     ],
     () =>
       getAllCommitments({
@@ -104,6 +105,7 @@ export default function Expenses() {
         startDate: filterStartDate,
         endDate: filterEndDate,
         languageId: selectedLang.id,
+        search:searchBarValue
       }),
     {
       keepPreviousData: true,

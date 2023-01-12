@@ -93,15 +93,17 @@ export default function NoticeList() {
 
   let startDate = moment(filterStartDate).format("DD MMM");
   let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
+  const searchBarValue = useSelector((state) => state.search.LocalSearch  );
 
   const noticeQuery = useQuery(
-    ["Notices", pagination.page, startDate, endDate,selectedLang.id],
+    ["Notices", pagination.page, startDate, endDate,selectedLang.id,searchBarValue],
     () =>
       getAllNotices({
         ...pagination,
         startDate: filterStartDate,
         endDate: filterEndDate,
-        languageId:selectedLang.id
+        languageId:selectedLang.id,
+        search:searchBarValue
       }),
     {
       keepPreviousData: true,

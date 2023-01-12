@@ -87,9 +87,10 @@ export default function Notification() {
 
   let startDate = moment(filterStartDate).format("DD MMM YYYY");
 //   let endDate = moment(filterEndDate).utcOffset(0).format("D MMM YYYY");
+const searchBarValue = useSelector((state) => state.search.LocalSearch  );
 
   const notificationQuery = useQuery(
-    ["Notifitions", pagination.page, selectedLang.id, selectedMasterCate],
+    ["Notifitions", pagination.page, selectedLang.id, selectedMasterCate,searchBarValue],
     () =>
       getAllNotification({
         ...pagination,
@@ -97,6 +98,7 @@ export default function Notification() {
         endDate: filterEndDate,
         languageId: selectedLang.id,
         masterId: selectedMasterCate,
+        search:searchBarValue
       }),
     {
       keepPreviousData: true,

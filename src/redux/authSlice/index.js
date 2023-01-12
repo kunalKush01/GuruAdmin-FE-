@@ -34,6 +34,7 @@ const authSlice = createSlice({
     },
     availableLang: [],
     trustDetail: "",
+    lacalSearch: "",
   },
   reducers: {
     logOut: (state, action) => {
@@ -57,6 +58,9 @@ const authSlice = createSlice({
     },
     setAvailableLang: (state, action) => {
       state.availableLang = action.payload;
+    },
+    setSearchbarValue: (state, action) => {
+      state.lacalSearch = action?.payload ?? "";
     },
   },
 
@@ -90,8 +94,13 @@ const persistConfig = {
   storage,
 };
 
-export const { logOut, setTokens, setlang, setAvailableLang } =
-  authSlice.actions;
+export const {
+  logOut,
+  setTokens,
+  setlang,
+  setAvailableLang,
+  setSearchbarValue,
+} = authSlice.actions;
 export const selectAccessToken = (state) => state.auth.tokens.accessToken;
 export const selectRefreshToken = (state) => state.auth.tokens.refreshToken;
 

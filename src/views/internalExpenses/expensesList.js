@@ -90,15 +90,17 @@ export default function Expenses() {
 
   let startDate = moment(filterStartDate).format("DD MMM");
   let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
+  const searchBarValue = useSelector((state) => state.search.LocalSearch  );
 
   const expensesQuery = useQuery(
-    ["Expenses", pagination.page, selectedLang.id,filterEndDate,filterStartDate],
+    ["Expenses", pagination.page, selectedLang.id,filterEndDate,filterStartDate,searchBarValue],
     () =>
       getAllExpense({
         ...pagination,
         startDate: filterStartDate,
         endDate: filterEndDate,
         languageId: selectedLang.id,
+        search:searchBarValue
         
       }),
     {

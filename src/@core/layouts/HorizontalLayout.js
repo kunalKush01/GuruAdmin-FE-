@@ -36,9 +36,10 @@ import { subHeaderContent } from "../../utility/subHeaderContent";
 const HorizontalLayout = (props) => {
   const history = useHistory() 
   const {isLogged} = useSelector(state=>state.auth)
+
   
   useEffect(()=>{
-    isLogged?"": history.push("/login")
+    !isLogged&& history.push("/login")
   },[isLogged])
   // ** Props
   const {

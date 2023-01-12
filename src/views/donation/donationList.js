@@ -93,11 +93,13 @@ export default function Expenses() {
 
   let startDate = moment(filterStartDate).format("DD MMM");
   let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
+  const searchBarValue = useSelector((state) => state.search.LocalSearch  );
 
   const donationQuery = useQuery(
-    ["donations", pagination.page, selectedLang.id,filterEndDate,filterStartDate],
+    ["donations", pagination.page, selectedLang.id,filterEndDate,filterStartDate,searchBarValue],
     () =>
       getAllDonation({
+        search:searchBarValue,
         ...pagination,
         startDate: filterStartDate,
         endDate: filterEndDate,

@@ -100,9 +100,10 @@ export default function User() {
 
   let startDate = moment(filterStartDate).format("DD MMM");
   let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
+  const searchBarValue = useSelector((state) => state.search.LocalSearch  );
 
   const userQuery = useQuery(
-    ["Users", pagination.page, selectedLang.id, selectedMasterCate],
+    ["Users", pagination.page, selectedLang.id, selectedMasterCate,searchBarValue],
     () =>
       getAllUser({
         ...pagination,
@@ -110,6 +111,7 @@ export default function User() {
         endDate: filterEndDate,
         languageId: selectedLang.id,
         masterId: selectedMasterCate,
+        search:searchBarValue
       }),
     {
       keepPreviousData: true,

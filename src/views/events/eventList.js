@@ -94,11 +94,13 @@ export default function EventList() {
 
   let startDate = moment(filterStartDate).format("DD MMM ");
   let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
+  const searchBarValue = useSelector((state) => state.search.LocalSearch  );
 
   const eventQuery = useQuery(
-    ["Events", pagination.page, startDate, endDate, selectedLang.id],
+    ["Events", pagination.page, startDate, endDate, selectedLang.id,searchBarValue],
     () =>
       getAllEvents({
+        search:searchBarValue,
         ...pagination,
         startDate: filterStartDate,
         endDate: filterEndDate,
