@@ -71,8 +71,8 @@ const NewsWarper = styled.div`
 
 export default function FinancialReport() {
   const [reportDate, setreportDate] = useState({
-    start: new Date(),
-    end: new Date(moment().startOf("year")),
+    start:new Date(moment().startOf("year")) ,
+    end: new Date(),
   });
 
   const { t } = useTranslation();
