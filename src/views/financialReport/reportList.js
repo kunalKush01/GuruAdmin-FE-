@@ -56,27 +56,30 @@ const NewsWarper = styled.div`
   }
   .filterPeriod {
     color: #ff8744;
-    margin-top: .5rem;
+    margin-top: 0.5rem;
     font: normal normal bold 13px/5px noto sans;
   }
-  .dateChooserReport{
-    border: 1px solid #FF8744;
-    color: #FF8744;
+  .dateChooserReport {
+    border: 1px solid #ff8744;
+    color: #ff8744;
     font: normal normal bold 15px/20px noto sans;
     /* padding: .4rem 1rem .4rem 2rem ; */
-    padding: .5rem ;
+    padding: 0.5rem;
     border-radius: 7px;
- }
+  }
 `;
 
-  
-
 export default function FinancialReport() {
-  const [reportDate, setreportDate] = useState({start:new Date,end:new Date(moment().startOf("year"))});
-  
+  const [reportDate, setreportDate] = useState({
+    start: new Date(),
+    end: new Date(moment().startOf("year")),
+  });
 
   const { t } = useTranslation();
-  const [activeReportTab, setActiveReportTab] = useState({ id: 1, name: t("report_expences") });
+  const [activeReportTab, setActiveReportTab] = useState({
+    id: 1,
+    name: t("report_expences"),
+  });
 
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -100,48 +103,50 @@ export default function FinancialReport() {
     limit: 10,
   });
 
-  
-  
-  const searchBarValue = useSelector((state) => state.search.LocalSearch  );
+  const searchBarValue = useSelector((state) => state.search.LocalSearch);
 
   const expensesQuery = useQuery(
-    ["Expenses", pagination.page, selectedLang.id,reportDate.start,reportDate.end,searchBarValue],
+    [
+      "Expenses",
+      pagination.page,
+      selectedLang.id,
+      reportDate.start,
+      reportDate.end,
+      searchBarValue,
+    ],
     () =>
       getAllExpense({
-        search:searchBarValue,
+        search: searchBarValue,
         ...pagination,
-        startDate: moment(reportDate.start)        
-        .utcOffset(0, true)
-        .toISOString(),
-        endDate: moment(reportDate.end)        
-        .utcOffset(0, true)
-        .toISOString(),
+        startDate: moment(reportDate.start).utcOffset(0, true).toISOString(),
+        endDate: moment(reportDate.end).utcOffset(0, true).toISOString(),
         languageId: selectedLang.id,
-        
       }),
     {
       keepPreviousData: true,
-      enabled:activeReportTab.name==t("report_expences")
+      enabled: activeReportTab.name == t("report_expences"),
     }
   );
   const donationQuery = useQuery(
-    ["donations", pagination.page, selectedLang.id,reportDate.end,reportDate.start,searchBarValue],
+    [
+      "donations",
+      pagination.page,
+      selectedLang.id,
+      reportDate.end,
+      reportDate.start,
+      searchBarValue,
+    ],
     () =>
       getAllDonation({
-        search:searchBarValue,
+        search: searchBarValue,
         ...pagination,
-        startDate: moment(reportDate.start)        
-        .utcOffset(0, true)
-        .toISOString(),
-        endDate: moment(reportDate.end)        
-        .utcOffset(0, true)
-        .toISOString(),
+        startDate: moment(reportDate.start).utcOffset(0, true).toISOString(),
+        endDate: moment(reportDate.end).utcOffset(0, true).toISOString(),
         languageId: selectedLang.id,
-        
       }),
     {
       keepPreviousData: true,
-      enabled:activeReportTab.name==t("donation_Donation")
+      enabled: activeReportTab.name == t("donation_Donation"),
     }
   );
   const commitmentQuery = useQuery(
@@ -151,86 +156,79 @@ export default function FinancialReport() {
       selectedLang.id,
       reportDate.end,
       reportDate.start,
-      searchBarValue
+      searchBarValue,
     ],
     () =>
       getAllCommitments({
-        search:searchBarValue,
+        search: searchBarValue,
         ...pagination,
-        startDate: moment(reportDate.start)        
-        .utcOffset(0, true)
-        .toISOString(),
-        endDate: moment(reportDate.end)        
-        .utcOffset(0, true)
-        .toISOString(),
+        startDate: moment(reportDate.start).utcOffset(0, true).toISOString(),
+        endDate: moment(reportDate.end).utcOffset(0, true).toISOString(),
         languageId: selectedLang.id,
       }),
     {
       keepPreviousData: true,
-      enabled:activeReportTab.name==t("report_commitment")
+      enabled: activeReportTab.name == t("report_commitment"),
     }
   );
 
   const boxCollectionQuery = useQuery(
-    ["Collections", pagination.page, selectedLang.id,reportDate.start,reportDate.end,searchBarValue],
+    [
+      "Collections",
+      pagination.page,
+      selectedLang.id,
+      reportDate.start,
+      reportDate.end,
+      searchBarValue,
+    ],
     () =>
       getAllBoxCollection({
-        search:searchBarValue,
+        search: searchBarValue,
         ...pagination,
-        startDate: moment(reportDate.start)        
-        .utcOffset(0, true)
-        .toISOString(),
-        endDate: moment(reportDate.end)        
-        .utcOffset(0, true)
-        .toISOString(),
+        startDate: moment(reportDate.start).utcOffset(0, true).toISOString(),
+        endDate: moment(reportDate.end).utcOffset(0, true).toISOString(),
         languageId: selectedLang.id,
-        
       }),
     {
       keepPreviousData: true,
-      enabled:activeReportTab.name==t("report_donation_box")
+      enabled: activeReportTab.name == t("report_donation_box"),
     }
-    );
-    
-    
-    const Items = useMemo(
-      () =>{
-        switch (activeReportTab.name) {
-          case t("report_expences"):
-            return expensesQuery?.data ?? [];
-            
-            case t("donation_Donation"):
-              return donationQuery?.data ?? [];
-              
-              case t("report_commitment"):
-          return commitmentQuery?.data ?? [];
-          
-          case t("report_donation_box"):
-            
-            return boxCollectionQuery?.data ?? [];
-            default:
-              return [];
-            }
-          } ,
-          [expensesQuery,donationQuery,commitmentQuery,boxCollectionQuery]
-          );
-          
-          useEffect(()=>{
-            setPagination({ page: 1, limit: 10 });
-          },[activeReportTab.name])
-          console.log("pagination",pagination.page);
-          return (
-            <NewsWarper>
+  );
+
+  const Items = useMemo(() => {
+    switch (activeReportTab.name) {
+      case t("report_expences"):
+        return expensesQuery?.data ?? [];
+
+      case t("donation_Donation"):
+        return donationQuery?.data ?? [];
+
+      case t("report_commitment"):
+        return commitmentQuery?.data ?? [];
+
+      case t("report_donation_box"):
+        return boxCollectionQuery?.data ?? [];
+      default:
+        return [];
+    }
+  }, [expensesQuery, donationQuery, commitmentQuery, boxCollectionQuery]);
+
+  useEffect(() => {
+    setPagination({ page: 1, limit: 10 });
+  }, [activeReportTab.name]);
+  console.log("pagination", pagination.page);
+  return (
+    <NewsWarper>
       <div className="window nav statusBar body "></div>
 
       <div>
-      <div className="d-flex justify-content-between align-items-center ">
+        <div className="d-flex justify-content-between align-items-center ">
           <div className="d-flex justify-content-between align-items-center ">
             <img
               src={arrowLeft}
               className="me-2  cursor-pointer align-self-end"
               onClick={() => history.push("/")}
-              />
+            />
             <div className="addNews">
               <div className="">
                 <div>
@@ -250,21 +248,27 @@ export default function FinancialReport() {
                 {reportStartDatePrint}&nbsp;&nbsp; - &nbsp;&nbsp;{reportEndDatePrint}
               </div> */}
               <Formik
-              initialValues={{DateTime:{start:new Date(moment().startOf("year")),end:new Date()}}}
+                initialValues={{
+                  DateTime: {
+                    start: new Date(moment().startOf("year")),
+                    end: new Date(),
+                  },
+                }}
               >
-                {(formik)=>
-                {
-                  useUpdateEffect(()=>{
-                    setreportDate(formik.values.DateTime)
-                  },[formik.values.DateTime])
-                  return(<FormikRangeDatePicker
-                    // label={t("donation_select_date_time")}
-                    name="DateTime"
-                    inline={false}
-                    dateFormat=" dd-MM-yyyy"
-                    selectsRange
-                    />)}}
-
+                {(formik) => {
+                  useUpdateEffect(() => {
+                    setreportDate(formik.values.DateTime);
+                  }, [formik.values.DateTime]);
+                  return (
+                    <FormikRangeDatePicker
+                      // label={t("donation_select_date_time")}
+                      name="DateTime"
+                      inline={false}
+                      dateFormat=" dd-MM-yyyy"
+                      selectsRange
+                    />
+                  );
+                }}
               </Formik>
               {/*<div>*/}
               {/*  <img src={editIcon} width={30} id={`popover`} className="align-self-center position-absolute cursor-pointer" style={{right:"2rem"}}/>*/}
@@ -272,23 +276,41 @@ export default function FinancialReport() {
             </div>
           </div>
         </div>
-              
-            
-        <FinancialReportTabs setActive={setActiveReportTab} active={activeReportTab} setPagination={setPagination} />  
+
+        <FinancialReportTabs
+          setActive={setActiveReportTab}
+          active={activeReportTab}
+          setPagination={setPagination}
+        />
         <div style={{ height: "10px" }}>
-          <If condition={expensesQuery.isFetching || donationQuery.isFetching ||commitmentQuery.isFetching}>
+          <If
+            condition={
+              expensesQuery.isFetching ||
+              donationQuery.isFetching ||
+              commitmentQuery.isFetching ||
+              boxCollectionQuery.isFetching
+            }
+          >
             <Then>
               <Skeleton
                 baseColor="#ff8744"
                 highlightColor="#fff"
                 height={"3px"}
-                />
+              />
             </Then>
           </If>
         </div>
         <div className="newsContent  ">
           <Row>
-            <If condition={expensesQuery.isFetching || donationQuery.isFetching ||commitmentQuery.isFetching} disableMemo>
+            <If
+              condition={
+                expensesQuery.isFetching ||
+                donationQuery.isFetching ||
+                commitmentQuery.isFetching ||
+                boxCollectionQuery.isFetching
+              }
+              disableMemo
+            >
               <Then>
                 <SkeletonTheme
                   baseColor="#FFF7E8"
@@ -303,10 +325,14 @@ export default function FinancialReport() {
               <Else>
                 <If condition={Items?.results?.length != 0} disableMemo>
                   <Then>
-                    <ReportListTable  activeReportTab={activeReportTab} data={Items?.results??[]} page={pagination}/>
+                    <ReportListTable
+                      activeReportTab={activeReportTab}
+                      data={Items?.results ?? []}
+                      page={pagination}
+                    />
                   </Then>
                   <Else>
-                  <NoContent 
+                    <NoContent
                       headingNotfound={t("donation_box_not_found")}
                       para={t("donation_box_not_click_add_donation_box")}
                     />
@@ -314,40 +340,40 @@ export default function FinancialReport() {
                 </If>
               </Else>
             </If>
-              
+
             {/* <If condition={Items.totalPages > 1} > */}
-              {/* <Then  > */}
-                {Items.totalPages > 1&&<Col xs={12} className="mb-2 d-flex justify-content-center">
-                  <ReactPaginate
-                    nextLabel=""
-                    breakLabel="..."
-                    previousLabel=""
-                    pageCount={Items.totalPages?? 0}
-                    activeClassName="active"
-                    breakClassName="page-item"
-                    pageClassName={"page-item"}
-                    breakLinkClassName="page-link"
-                    nextLinkClassName={"page-link"}
-                    pageLinkClassName={"page-link"}
-                    nextClassName={"page-item next"}
-                    previousLinkClassName={"page-link"}
-                    previousClassName={"page-item prev"}
-                    onPageChange={(page) =>
-                      setPagination({ ...pagination, page: page.selected + 1 })
-                    }
-                    forcePage={pagination.page-1}
-                    containerClassName={
-                      "pagination react-paginate justify-content-end p-1"
-                    }
-                    
-                    />
-                </Col>}
-              {/* </Then> */}
+            {/* <Then  > */}
+            {Items.totalPages > 1 && (
+              <Col xs={12} className="mb-2 d-flex justify-content-center">
+                <ReactPaginate
+                  nextLabel=""
+                  breakLabel="..."
+                  previousLabel=""
+                  pageCount={Items.totalPages ?? 0}
+                  activeClassName="active"
+                  breakClassName="page-item"
+                  pageClassName={"page-item"}
+                  breakLinkClassName="page-link"
+                  nextLinkClassName={"page-link"}
+                  pageLinkClassName={"page-link"}
+                  nextClassName={"page-item next"}
+                  previousLinkClassName={"page-link"}
+                  previousClassName={"page-item prev"}
+                  onPageChange={(page) =>
+                    setPagination({ ...pagination, page: page.selected + 1 })
+                  }
+                  forcePage={pagination.page - 1}
+                  containerClassName={
+                    "pagination react-paginate justify-content-end p-1"
+                  }
+                />
+              </Col>
+            )}
+            {/* </Then> */}
             {/* </If> */}
           </Row>
         </div>
       </div>
-      
     </NewsWarper>
   );
 }

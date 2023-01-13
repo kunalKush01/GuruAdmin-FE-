@@ -86,7 +86,7 @@ export default function EventForm({
         // enableReinitialize
         initialValues={initialValues}
         onSubmit={(e) => {
-          console.log("formSubmitDaqta=", e);
+          
           eventMutation.mutate({
             eventId: e.Id,
             baseId: e?.SelectedEvent?.id ?? null,
@@ -101,6 +101,8 @@ export default function EventForm({
       >
         {(formik) => (
           <Form>
+            {JSON.stringify(formik.values.DateTime)}
+            
             <Row>
               <Col xs={7}>
                 <Row>

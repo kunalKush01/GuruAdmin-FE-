@@ -37,7 +37,8 @@ const EventWarper = styled.div`
 const schema = yup.object().shape({
   Title: yup.string().required("events_title_required"),
   Body: yup.string().required("events_desc_required"),
-  DateTime: yup.string(),
+  DateTime: yup.mixed(),
+  SelectedEvent: yup.mixed(),
 });
 
 const getLangId = (langArray, langSelection) => {
@@ -54,18 +55,19 @@ export default function Editevent() {
   const history = useHistory();
   const { eventId } = useParams();
   const langArray = useSelector((state) => state.auth.availableLang);
-  const selectedLang= useSelector(state=>state.auth.selectLang)
+  const selectedLang = useSelector((state) => state.auth.selectLang);
 
-  const [langSelection, setLangSelection] = useState(ConverFirstLatterToCapital(selectedLang.name));
+  const [langSelection, setLangSelection] = useState(
+    ConverFirstLatterToCapital(selectedLang.name)
+  );
   const eventDetailQuery = useQuery(
-    ["EventDetail", eventId, langSelection,selectedLang.id],
+    ["EventDetail", eventId, langSelection, selectedLang.id],
     async () =>
       getEventDetail({
         eventId,
         languageId: getLangId(langArray, langSelection),
       })
   );
-  
 
   const handleEventUpdate = async (payload) => {
     return updateEventDetail({
@@ -74,20 +76,23 @@ export default function Editevent() {
     });
   };
 
-  
-  
-  const initialValues = useMemo(()=>{
-    return  {
+  const initialValues = useMemo(() => {
+    return {
       Id: eventDetailQuery?.data?.result?.id,
       Title: eventDetailQuery?.data?.result?.title,
       Tags: eventDetailQuery?.data?.result?.tags,
       Body: he.decode(eventDetailQuery?.data?.result?.body ?? ""),
       PublishedBy: eventDetailQuery?.data?.result?.publishedBy,
-      DateTime: moment(eventDetailQuery?.data?.result?.publishDate)
-        .utcOffset("+0530")
-        .toDate(),
+      DateTime: {
+        start: moment(eventDetailQuery?.data?.result?.startDate)
+          .utcOffset("+0530")
+          .toDate(),
+        end: moment(eventDetailQuery?.data?.result?.endDate)
+          .utcOffset("+0530")
+          .toDate(),
+      },
     };
-  },[eventDetailQuery])
+  }, [eventDetailQuery]);
 
   return (
     <EventWarper>
@@ -115,8 +120,11 @@ export default function Editevent() {
           />
         </div>
       </div>
-   
-      <If condition={eventDetailQuery.isLoading || eventDetailQuery.isFetching} disableMemo>
+
+      <If
+        condition={eventDetailQuery.isLoading || eventDetailQuery.isFetching}
+        disableMemo
+      >
         <Then>
           <Row>
             <SkeletonTheme
@@ -146,7 +154,7 @@ export default function Editevent() {
           </Row>
         </Then>
         <Else>
-          {!eventDetailQuery.isFetching&&
+          {!eventDetailQuery.isFetching && (
             <div className="ms-3 mt-1">
               <EventForm
                 initialValues={initialValues}
@@ -157,7 +165,7 @@ export default function Editevent() {
                 buttonName="save_changes"
               />
             </div>
-              }
+          )}
         </Else>
       </If>
     </EventWarper>
