@@ -86,7 +86,6 @@ export default function EventForm({
         // enableReinitialize
         initialValues={initialValues}
         onSubmit={(e) => {
-          
           eventMutation.mutate({
             eventId: e.Id,
             baseId: e?.SelectedEvent?.id ?? null,
@@ -101,12 +100,9 @@ export default function EventForm({
       >
         {(formik) => (
           <Form>
-            {JSON.stringify(formik.values.DateTime)}
-            
             <Row>
               <Col xs={7}>
                 <Row>
-                  
                   <Col xs={6}>
                     <CustomTextField
                       label={t("news_label_Title")}
@@ -124,22 +120,22 @@ export default function EventForm({
                       placeholder={t("events_select_dropDown")}
                       disabled={selectEventDisabled}
                       onChange={(selectOption) => {
-                        
-                        formik.setFieldValue("SelectedEvent",selectOption);
-                        
-                        formik.setFieldValue("Title", selectOption?.title??"");
-                        formik.setFieldValue("Body", selectOption?.body??"");
-                        
+                        formik.setFieldValue("SelectedEvent", selectOption);
 
-                          formik.setFieldValue("DateTime", {
-                            start: moment(selectOption?.startDate)
-                              .utcOffset("+0530")
-                              .toDate(),
-                            end: moment(selectOption?.endDate)
-                              .utcOffset("+0530")
-                              .toDate(),
-                          });
-                        
+                        formik.setFieldValue(
+                          "Title",
+                          selectOption?.title ?? ""
+                        );
+                        formik.setFieldValue("Body", selectOption?.body ?? "");
+
+                        formik.setFieldValue("DateTime", {
+                          start: moment(selectOption?.startDate)
+                            .utcOffset("+0530")
+                            .toDate(),
+                          end: moment(selectOption?.endDate)
+                            .utcOffset("+0530")
+                            .toDate(),
+                        });
                       }}
                     />
                   </Col>
@@ -161,7 +157,6 @@ export default function EventForm({
                       </Row> */}
               </Col>
               <Col>
-                
                 <FormikRangeDatePicker
                   label={t("donation_select_date_time")}
                   name="DateTime"
