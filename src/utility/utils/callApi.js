@@ -110,6 +110,7 @@ export const callApi = async ({
                         });
                         console.log('-> refreshTokenResponseData', refreshTokenResponseData);
                         if (refreshTokenResponseData.error) {
+                            store.dispatch(logOut())
                             return { error: true };
                         }
                         const newAccessToken = refreshTokenResponseData?.tokens?.access?.token;
@@ -129,7 +130,7 @@ export const callApi = async ({
                                 callRefreshTokenOnAuthError: false
                             });
                         }
-                        store.dispatch(logOut())
+                        
                         return { error: true };
                     }
                     return { error: true };

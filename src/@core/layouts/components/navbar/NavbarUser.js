@@ -97,9 +97,6 @@ const NavbarUser = (props) => {
   const [langSelection, setlangSelection] = useState(false);
   
 
-  useEffect(() => {
-    console.log("re-rendering");
-  }, []);
 
   return (
     <Fragment>
