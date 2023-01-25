@@ -34,6 +34,7 @@ const NoticeWarper = styled.div`
 
 const schema = yup.object().shape({
   SubCategory: yup.string().required("notices_desc_required"),
+  MasterCategory:yup.mixed().required("notices_desc_required")
 })
 
 const getLangId = (langArray, langSelection) => {
@@ -146,9 +147,9 @@ export default function EditNotice() {
               <div className="ms-3 mt-1">
                 <CategoryForm
                   loadOptions={masterloadOptionQuery?.data?.results}
-                  placeholder={
-                    subCategoryDetailQuery?.data?.result?.masterCategory.name
-                  }
+                  // placeholder={
+                  //   subCategoryDetailQuery?.data?.result?.masterCategory.name
+                  // }
                   CategoryFormName={"MasterCategory"}
                   handleSubmit={handleCategoryUpdate}
                   initialValues={{

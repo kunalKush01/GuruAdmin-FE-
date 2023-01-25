@@ -231,7 +231,7 @@ const LoginCover = () => {
               </div> */}
                     <div className="d-flex w-100 justify-content-center  ">
                       <Button type="submit" color="primary" className="px-5">
-                        Sign in
+                        Sign In
                       </Button>
                     </div>
                   </Form>
