@@ -38,30 +38,37 @@ export function ExpensesListTable({ data,page }) {
       style: {
         font: "normal normal 700 13px/20px noto sans !important ",
       },
+      width:"180px"
     },
     {
       name: t("news_label_Title"),
       selector: (row) => row.title,
+      width:"230px"
     },
     {
       name: t("expence_description"),
       selector: (row) => row.description,
+      width:"300px"
     },
 
     {
       name: t("expenses_Date"),
       selector: (row) => row.date,
+      width:"200px"
     },
     {
       name: t("dashboard_Recent_DonorAmount"),
       selector: (row) => row.amount,
+      width:"200px"
     },
     {
         name: t(""),
+     center:true,
         selector: (row) => row.edit,
       },
     {
       name: "",
+      center:true,  
       selector: (row) => row.delete,
     },
   ];
@@ -72,7 +79,8 @@ export function ExpensesListTable({ data,page }) {
       // id: `0${idx + 1}`,
       id: idx>8||page.page!=1?`${((page.page-1)*page.limit)+idx + 1}`:`0${((page.page-1)*page.limit)+idx + 1}`,
       title: ConverFirstLatterToCapital(item.title),
-      description:<div className="mt-1" dangerouslySetInnerHTML={{__html:he.decode(item.description)}} />,
+      description:<div className=" d-flex tableDes" dangerouslySetInnerHTML={{__html:he.decode(item.description)}} />,
+      // description:item?.description ?? "" ,
       date: moment(item?.expenseDate).utcOffset(0).format("DD MMM YYYY"),
         amount:`₹${item.amount}`,
       edit: (
@@ -123,7 +131,10 @@ export function ExpensesListTable({ data,page }) {
     color: #583703 !important;
     /* margin-right: 20px; */
     font: normal normal bold 15px/23px Noto Sans;
-  `;
+  .tableDes p{
+    margin-bottom: 0;
+  }
+`;
 
   return (
     <RecentDonationTableWarper>

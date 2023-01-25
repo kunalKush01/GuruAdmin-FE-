@@ -31,34 +31,35 @@ export default function RecentDonationTable({ data }) {
       style: {
         font: "normal normal 700 13px/20px noto sans !important ",
       },
-      // width:"150px",
+      width:"150px",
     },
     {
       name: t("dashboard_Recent_DonorNumber"),
       selector: (row) => row.mobileNumber,
-      // width:"150px",
+      width:"150px",
     },
     {
       name: t("dashboard_Recent_DonorName"),
       selector: (row) => row.donarName,
-      // width:"150px",
+      width:"150px",
     },
 
     {
       name: t("category"),
       selector: (row) => row.category,
-
-      // width:"150px",
+      width:"150px",
     },
 
     {
       name: t("dashboard_Recent_DonorDate"),
       selector: (row) => row.date_time,
-      width:"auto"
+      // width:"auto"
+      width:"200px"
     },
     {
       name: t("dashboard_Recent_DonorAmount"),
       selector: (row) => row.amount,
+      width:"150px"
     },
     {
         name: t("dashboard_Recent_DonorCommitId"),

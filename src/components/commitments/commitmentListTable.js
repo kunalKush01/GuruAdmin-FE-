@@ -36,53 +36,60 @@ export default function CommitmentListTable({ data }) {
       style: {
         font: "normal normal 700 13px/20px Noto Sans !important",
       },
-      // width:"150px",
+      width:"150px"
     },
     {
       name: t("dashboard_Recent_DonorNumber"),
       selector: (row) => row.mobileNumber,
-      width: "auto",
+      width:"150px"
     },
     {
       name: t("dashboard_Recent_DonorName"),
       selector: (row) => row.donarName,
-      width: "auto",
+      // width: "auto",
+      width:"150px"
     },
 
     {
       name: t("category"),
       selector: (row) => row.category,
       // width:"150px",
+      width:"150px"
     },
     {
       name: t("commitment_end_Date"),
       selector: (row) => row.endDate,
       // width:"150px",
+      width:"150px"
     },
     {
       name: t("dashboard_Recent_DonorStatus"),
       selector: (row) => row.status,
       // width:"150px",
+      width:"150px"
     },
     {
       name: t("dashboard_Recent_DonorAmount"),
       selector: (row) => row.amount,
       // width:"150px",
+      width:"150px"
     },
     {
       name: t("commitment_Amount_Due"),
       selector: (row) => row.amountDue,
-      width:"auto",
+      // width:"auto",
+      width:"150px"
     },
     {
       name: t("dashboard_Recent_DonorCommitId"),
       selector: (row) => row.commitmentId,
-      width: "auto",
+      // width: "auto",
+      width:"150px"
     },
     {
       name: t("created_by"),
       selector: (row) => row.createdBy,
-      // width:"150px",
+      width:"150px"
     },
     {
       name: t(""),
@@ -131,7 +138,7 @@ export default function CommitmentListTable({ data }) {
             }}
           >
             <div>{ConverFirstLatterToCapital(item?.paidStatus)}</div>
-            <img src="" />
+            {/* <img src="" /> */}
           </div>
         ),
         amount: <div>₹&nbsp;{item?.amount}</div>,

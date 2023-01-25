@@ -134,7 +134,6 @@ export default function AddLanguageNews() {
 
       {!newsDetailQuery.isLoading ? (
         <div className="ms-3 mt-1">
-          
           <NewsForm
             initialValues={initialValues}
             vailidationSchema={schema}
