@@ -105,7 +105,6 @@ export default function EditNews() {
         </div>
         <div className="editNews">
           <Trans i18nKey={"news_InputIn"} />
-          
           <CustomDropDown
             ItemListArray={newsDetailQuery?.data?.result?.languages}
             className={"ms-1"}
