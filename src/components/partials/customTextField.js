@@ -48,7 +48,7 @@ export default function CustomTextField({
             type={type}
             className={"form-control"}
             placeholder={placeholder}            
-            value={field.value}
+            
             {...field}
             {...props}
           />
