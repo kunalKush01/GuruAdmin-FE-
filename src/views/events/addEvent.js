@@ -44,8 +44,11 @@ const initialValues = {
   SelectedEvent: null,
   Id: "",
   Title: "",
+  Tags:"",
   Body: "",
   DateTime: { start: new Date(), end: null },
+  startTime:new Date(),
+  endTime:new Date(),
 };
 
 export default function AddEvent() {

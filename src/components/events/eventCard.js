@@ -16,17 +16,17 @@ import { deleteEventDetail } from "../../api/eventApi";
 const EventCardWaraper = styled.div`
   .card1 {
     font: normal normal bold 13px/16px Noto Sans;
-    margin-bottom: .5rem !important;
+    /* margin-bottom: .5rem !important; */
   }
   .card-text {
     font: normal normal normal 12px/16px Noto Sans;
-    max-height: 18px;
+    max-height: 50px;
     max-width: 300px;
     overflow: hidden;
-    text-overflow: ellipsis;
+    /* text-overflow: ellipsis; */
     text-align: start;
     white-space: nowrap;
-    margin-bottom:.5rem !important;
+    /* margin-bottom:.5rem !important; */
   }
   .card-Date {
     font: normal normal normal 12px/16px Noto Sans;
@@ -86,13 +86,7 @@ function BtnContent({ eventId }) {
   return (
     <BtnContentWraper>
       <Row className="MainContainer d-block">
-        <Col
-          xs={12}
-          className="col-item"
-          onClick={() => history.push(`/events/add-language/${eventId}`)}
-        >
-          <Trans i18nKey={"news_popOver_AddLang"} />
-        </Col>
+        
 
         <Col
           xs={12}
@@ -134,6 +128,13 @@ function BtnContent({ eventId }) {
           }}
         >
           <Trans i18nKey={"news_popOver_Delete"} />
+        </Col>
+        <Col
+          xs={12}
+          className="col-item"
+          onClick={() => history.push(`/events/add-language/${eventId}`)}
+        >
+          <Trans i18nKey={"news_popOver_AddLang"} />
         </Col>
       </Row>
     </BtnContentWraper>
@@ -178,7 +179,7 @@ export default function EventCard({ data }) {
                 <Col>
                   <Col xs={12}>
                     <div
-                      className="card-text "
+                      className="card-text"
                       dangerouslySetInnerHTML={{
                         __html: he.decode(data.body),
                       }}

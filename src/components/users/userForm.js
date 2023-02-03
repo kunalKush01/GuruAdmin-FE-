@@ -82,7 +82,7 @@ export default function UserForm({
                   <img src={defaultAvtar} width={150} className="" />
                 </div>
                 <Row className=" w-100 mt-3">
-                  <Col xs={12}>
+                  <Col xs={10}>
                     <Row>
                       <Col xs={4}>
                         <CustomTextField label={t("user_name")} name="name" />
@@ -91,6 +91,12 @@ export default function UserForm({
                         <CustomTextField
                           label={t("dashboard_Recent_DonorNumber")}
                           name="mobile"
+                          type="number"
+                          pattern="[6789][0-9]{9}"
+                      onInput={(e) =>
+                        (e.target.value = e.target.value.slice(0, 12))
+                      }
+                      required
                         />
                       </Col>
                       <Col xs={4}>
@@ -102,7 +108,7 @@ export default function UserForm({
                     </Row>
                   </Col>
                   <Col xs={4}>
-                    <FormikCustomReactSelect
+                    {/* <FormikCustomReactSelect
                       width={"100%"}
                       name={props.CategoryFormName}
                       loadOptions={loadOptions}
@@ -110,7 +116,7 @@ export default function UserForm({
                       valueKey={"id"}
                       labelName={t("User Role")}
                       placeholder={props.placeholder ?? t("all")}
-                    />
+                    /> */}
                   </Col>
                 </Row>
                 {/* <Row>

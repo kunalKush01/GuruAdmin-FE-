@@ -90,6 +90,9 @@ export default function EventForm({
             eventId: e.Id,
             baseId: e?.SelectedEvent?.id ?? null,
             title: e.Title,
+            tags:e?.Tags,
+            startTime:e?.startTime,
+            endTime:e?.endTime,
             body: e.Body,
             startDate: e.DateTime?.start,
             endDate: e.DateTime?.end,
@@ -112,6 +115,7 @@ export default function EventForm({
                   </Col>
                   <Col xs={6}>
                     <AsyncSelectField
+                      // minHeight={"50px"}
                       name="SelectedEvent"
                       loadOptions={loadOption}
                       labelKey={"title"}
@@ -156,12 +160,42 @@ export default function EventForm({
                         <div></div>
                       </Row> */}
               </Col>
-              <Col>
-                <FormikRangeDatePicker
-                  label={t("donation_select_date_time")}
-                  name="DateTime"
-                  selectsRange
-                />
+              <Col xs="3" className="">
+                <Row>
+                  <Col xs="12">
+                    <CustomTextField label={t("Tags")} name="Tags" />
+                  </Col>
+                  
+                  <Col>
+                    <FormikRangeDatePicker
+                      label={t("donation_select_date_time")}
+                      name="DateTime"
+                      selectsRange
+                    />
+                  </Col>
+                  <Col xs="12">
+                    <Row>
+                      <Col>
+                      <CustomTextField
+                          label={t("Start")}
+                          // value={latitude}
+                          type="time"
+                          name="startTime"
+                           required
+                        />
+                      </Col>
+                      <Col>
+                      <CustomTextField
+                          label={t("End")}
+                          // value={latitude}
+                          type="time"
+                          name="endTime"
+                           required
+                        />
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
               </Col>
             </Row>
             <div className="btn-Published ">

@@ -39,19 +39,23 @@ const schema = yup.object().shape({
   DateTime: yup.string(),
 });
 
-const initialValues = {
-  Id: "",
-  Title: "",
-  Tags: "",
-  Body: "",
-  PublishedBy: "",
-  DateTime: new Date(),
-};
+
 
 export default function AddNews() {
   const history = useHistory();
   const langArray = useSelector((state) => state.auth.availableLang);
+  const loggedInUser = useSelector((state)=>state.auth.userDetail?.name)
 
+  
+  
+  const initialValues = {
+    Id: "",
+    Title: "",
+    Tags: "",
+    Body: "",
+    PublishedBy: loggedInUser,
+    DateTime: new Date(),
+  };
   return (
     <NewsWarper>
       <div className="d-flex justify-content-between align-items-center ">

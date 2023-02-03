@@ -9,6 +9,7 @@ export default function AsyncSelectField({
   label,
   required=false,
   loadOptions,
+  minHeight,
   labelKey = "label",
   valueKey = "value",
   placeholder,
@@ -44,6 +45,7 @@ export default function AsyncSelectField({
       return({
       ...provided,
       backgroundColor: "#FFF7E8",
+      zIndex:999999,
       color: "#583703",
       font: "normal normal bold 15px/20px Noto Sans",
       "::-webkit-scrollbar":{
@@ -107,6 +109,7 @@ export default function AsyncSelectField({
         name={field.name}
         debounceTimeout={300}
         cacheOptions
+        minMenuHeight={minHeight}
         defaultOptions
         placeholder={placeholder}
         isClearable={isClearable}

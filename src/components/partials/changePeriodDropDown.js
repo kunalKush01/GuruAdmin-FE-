@@ -6,12 +6,12 @@ export const ChangePeriodDropDown = ({dropDownName,setdropDownName,...props}) =>
 
   const i18nKeyDropDownItemArray = [
     {
-      id: 1,
-      key: "dashboard_monthly",
-    },
-    {
       id: 2,
       key: "dashboard_weekly",
+    },
+    {
+      id: 1,
+      key: "dashboard_monthly",
     },
     {
       id: 3,

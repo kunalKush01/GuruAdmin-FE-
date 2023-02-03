@@ -5,6 +5,18 @@ import "react-datepicker/dist/react-datepicker-cssmodules.css";
 import styled from "styled-components";
 
 const CustomDatePickerWraper = styled.div`
+
+
+.react-datepicker__day--outside-month {
+    color: #9c9c9c !important;
+                /* color: #DFD3BE !important; */
+                pointer-events: none;
+              }
+              .react-datepicker__day--disabled{
+      color: #9c9c9c !important;
+    }
+
+
   label {
     color: #583703;
     font: normal normal bold 15px/33px Noto Sans !important;
@@ -164,6 +176,7 @@ export default function  CustomDatePicker({ ...props }) {
         showYearDropdown
         showMonthDropdown
         timeFormat="hh:mm aa"
+        minDate={new Date()}
         timeCaption="Time"        
         inline
         {...props}

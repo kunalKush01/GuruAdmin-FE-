@@ -6,6 +6,21 @@ import styled from "styled-components";
 import { Trans } from "react-i18next";
 import { useField } from "formik";
 const FormikCustomDatePickerWraper = styled.div`
+
+
+.react-datepicker__day--outside-month {
+    color: #9c9c9c !important;
+                /* color: #DFD3BE !important; */
+                pointer-events: none;
+              }
+
+
+              .react-datepicker__day--disabled{
+      color: #9c9c9c !important;
+    }
+
+
+
   label {
     color: #583703;
     font: normal normal bold 15px/33px Noto Sans !important;
@@ -161,6 +176,7 @@ export default function FormikCustomDatePicker({ label,...props }) {
         }}
         yearDropdownItemNumber={50}        
         showYearDropdown
+        minDate={new Date()}
         showMonthDropdown
         timeFormat="hh:mm aa"
         timeCaption="Time"        

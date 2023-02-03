@@ -91,6 +91,8 @@ export default function Editevent() {
           .utcOffset("+0530")
           .toDate(),
       },
+      startTime:eventDetailQuery?.data?.result?.startTime,
+      endTime:eventDetailQuery?.data?.result?.endTime,
     };
   }, [eventDetailQuery]);
 

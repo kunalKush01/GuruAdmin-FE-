@@ -75,6 +75,7 @@ export default function EditNews() {
     });
   };
 
+  const loggedInUser = useSelector((state)=>state.auth.userDetail?.name)
   
 
   const initialValues = useMemo(()=>{
@@ -83,7 +84,7 @@ export default function EditNews() {
       Title: newsDetailQuery?.data?.result?.title,
       Tags: newsDetailQuery?.data?.result?.tags,
       Body: he.decode(newsDetailQuery?.data?.result?.body ?? ""),
-      PublishedBy: newsDetailQuery?.data?.result?.publishedBy,
+      PublishedBy:loggedInUser,
       DateTime: moment(newsDetailQuery?.data?.result?.publishDate)
         .utcOffset("+0530")
         .toDate(),

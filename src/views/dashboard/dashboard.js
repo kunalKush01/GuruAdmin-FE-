@@ -2,7 +2,7 @@ import OrdersReceived from "../../utility/ui-elements/cards/statistics/OrdersRec
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import { getAllDashboardData, getAllRecentDonationList, getAllTopDonor } from "../../api/dashboard";
+import { getAllChartData, getAllDashboardData, getAllRecentDonationList, getAllTopDonor } from "../../api/dashboard";
 import custcardImage3 from "../../assets/images/icons/dashBoard/Group 24887.svg";
 import RecentDonationTable from "../../components/dashboard/recentDonationTable";
 import { TopDonerList } from "../../components/dashboard/topDonerList";
@@ -31,7 +31,7 @@ useEffect(()=>{
 
 useEffect(()=>{
   const chartInfo= async()=>{
-    const chartRes= await getAllDashboardData()
+    const chartRes= await getAllChartData()
     setChart(chartRes)
    }
    chartInfo()
@@ -97,8 +97,8 @@ useEffect(()=>{
 
       <RevenueChart 
           CommittmentData={chartData?.totalCommitmentArr} 
-          DonationData={chartData?.donationPendingArr} 
-          TotalExpensesData={chartData?.totalExpensesArr} 
+          DonationData={chartData?.donationAmountArr} 
+          TotalExpensesData={chartData?.expenseAmountArr} 
       />
       
       <Row>

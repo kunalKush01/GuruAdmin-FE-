@@ -118,6 +118,7 @@ export default function NewsForm({
                     <CustomTextField
                       label={t("news_label_Published")}
                       name="PublishedBy"
+                      disabled
                     />
                   </Col>
                 </Row>

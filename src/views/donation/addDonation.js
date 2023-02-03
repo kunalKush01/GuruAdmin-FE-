@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import Swal from "sweetalert2";
 import * as yup from "yup";
 import { createDonation } from "../../api/donationApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
@@ -39,6 +40,43 @@ const schema = yup.object().shape({
 
 export default function AddNews() {
   const history = useHistory();
+
+  // useEffect(() => {
+    
+  
+  //   return () => {
+      
+  //     console.log("rj moving to another page")
+  //     Swal.fire({
+  //       title: `<img src="${""}"/>`,
+  //       html: `
+  //                               <h3 class="swal-heading">news_delete</h3>
+  //                               <p></p>news_sure</p>
+  //                               `,
+  //       showCloseButton: false,
+  //       showCancelButton: true,
+  //       focusConfirm: true,
+  //       cancelButtonText: `cancel`,
+  //       cancelButtonAriaLabel:"cancel",
+
+  //       confirmButtonText: `Confirm`,
+  //       confirmButtonAriaLabel: "Confirm",
+        
+        
+  //     }).then(async (result) => {
+  //       if (result.isConfirmed) {
+  //        history.push("/")
+  //       }else if(result.isDismissed){
+  //         history.push("/donation/add")
+  //       }
+
+  //     });
+  //   }
+  // }, [])
+  // console.log("rj history",history.location.pathname );
+  
+
+
   const langArray = useSelector((state) => state.auth.availableLang);
   const loggedInUser = useSelector((state) => state.auth.userDetail.name);
   const initialValues = {

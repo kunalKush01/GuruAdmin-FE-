@@ -6,6 +6,20 @@ import styled from "styled-components";
 import { Trans } from "react-i18next";
 import { useField } from "formik";
 const FormikCustomDatePickerWraper = styled.div`
+
+
+.react-datepicker__day--outside-month {
+    color: #9c9c9c !important;
+                /* color: #DFD3BE !important; */
+                pointer-events: none;
+              }
+
+              .react-datepicker__day--disabled{
+      color: #9c9c9c !important;
+    }
+
+
+
   label {
     color: #583703;
     font: normal normal bold 15px/33px Noto Sans !important;
@@ -194,6 +208,7 @@ export default function FormikRangeDatePicker({ label, inline=true,...props }) {
         showMonthDropdown
         timeFormat="hh:mm aa"
         timeCaption="Time"
+        // minDate={new Date()}
         inline={inline}
         startDate={field?.value?.start}
         endDate={field?.value?.end}

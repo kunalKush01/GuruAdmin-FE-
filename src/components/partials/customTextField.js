@@ -22,7 +22,11 @@ const CustomTextFieldWarper = styled.div`
     background-color: #fff7e8 !important;
     font: normal normal normal 13px/20px Noto Sans;
     border-radius: 20px;
-  }
+  } 
+  input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        display: none;
+      }
 `;
 
 export default function CustomTextField({
@@ -48,7 +52,7 @@ export default function CustomTextField({
             type={type}
             className={"form-control"}
             placeholder={placeholder}            
-            
+            value={field.value}
             {...field}
             {...props}
           />

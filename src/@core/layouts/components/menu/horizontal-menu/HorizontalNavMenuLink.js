@@ -1,6 +1,6 @@
 // ** React Imports
 import { useEffect } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useHistory } from 'react-router-dom'
 
 // ** Third Party Components
 import classnames from 'classnames'

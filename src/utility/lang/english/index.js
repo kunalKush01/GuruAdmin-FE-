@@ -36,7 +36,7 @@ export const englishContent = {
   dashboard_donationReceived: "Donation Received",
   dashboard_donationPending: "Donation Pending",
   dashboard_totalExpenses: "Total Expenses",
-  dashboard_RevenueReport: "Revenue Report",
+  dashboard_RevenueReport: "Finance Report",
   dashboard_monthly: "Monthly",
   dashboard_weekly: "Weekly",
   dashboard_yearly: "Yearly",

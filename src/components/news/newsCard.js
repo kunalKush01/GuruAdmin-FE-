@@ -111,13 +111,7 @@ function BtnContent({ newsId }) {
   return (
     <BtnContentWraper>
       <Row className="MainContainer d-block">
-        <Col
-          xs={12}
-          className="col-item"
-          onClick={() => history.push(`/news/add-language/${newsId}`, newsId)}
-        >
-          <Trans i18nKey={"news_popOver_AddLang"} />
-        </Col>
+        
 
         <Col
           xs={12}
@@ -160,6 +154,13 @@ function BtnContent({ newsId }) {
           }}
         >
           <Trans i18nKey={"news_popOver_Delete"} />
+        </Col>
+        <Col
+          xs={12}
+          className="col-item"
+          onClick={() => history.push(`/news/add-language/${newsId}`, newsId)}
+        >
+          <Trans i18nKey={"news_popOver_AddLang"} />
         </Col>
       </Row>
     </BtnContentWraper>

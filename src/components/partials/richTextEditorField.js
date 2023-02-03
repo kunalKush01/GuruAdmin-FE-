@@ -19,6 +19,9 @@ const RichTextFieldWarper = styled.div`
     display: flex !important ;
     flex-direction: column-reverse;
   }
+  .sun-editor-common{
+    z-index: 0 !important;
+  }
   .sun-editor {
     border: none !important;
     border-radius: 20px !important ;

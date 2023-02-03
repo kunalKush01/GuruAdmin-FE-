@@ -85,7 +85,7 @@ export default function DonationListTable({ data }) {
         mobileNumber: item?.user?.mobileNumber,
         donarName:ConverFirstLatterToCapital (item?.donarName??item.user?.name),
         category: <div>{ConverFirstLatterToCapital(item?.masterCategory?.name)}{item?.subCategory&&`(${item?.subCategory.name})`}</div>,
-        date_time: moment(item?.createdAt).utcOffset(0).format(" DD MMM YYYY,h:mm A"),
+        date_time: moment(item.createdAt ?? item?.updatedAt).format(" DD MMM YYYY,hh:mm"),
         amount:<div>₹&nbsp;{item?.amount}</div>,
         commitmentID:item.commitmentId?item.commitmentId<10?`0${item.commitmentId}`:`${item.commitmentId}`:"_",
         receipt: (

@@ -26,8 +26,11 @@ const handleCreateUser = async (payload) => {
 };
 const schema = yup.object().shape({
   name: yup.string().required("users_title_required"),
-  mobile: yup.string().required("users_mobile_required"),
-  email: yup.string().required("users_email_required"),
+  // mobile: yup.string().required("users_mobile_required"),
+  mobile :yup.string()
+              .min(9,"Mobile Number must me 10 digits")
+              .required("users_mobile_required"),
+  email:yup.string().email('Invalid email').required("users_email_required"),
 
 });
 
