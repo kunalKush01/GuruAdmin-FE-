@@ -12,8 +12,17 @@ import Swal from "sweetalert2";
 import comfromationIcon from "../../../../../assets/images/icons/news/conformationIcon.svg";
 
 const SubHeaderWarraper = styled.div`
-  font: normal normal bold 15px/20px noto sans;
+  font: normal normal normal 15px/20px noto sans;
   cursor: pointer;
+
+  .navTabs{
+      color: white !important;
+    }
+
+    .activeTab {
+      font-weight: 900;
+    opacity: 100%;
+  }
 `;
 
 function BtnContent({ setClosePopover }) {
@@ -31,6 +40,7 @@ function BtnContent({ setClosePopover }) {
         color: #fff;
       }
     }
+   
   `;
 
   const handleDeleteNews = async (payload) => {
@@ -89,6 +99,7 @@ const [closePopover,setClosePopover] = useState(true)
 useEffect(()=>{
   setClosePopover(true)
 },[closePopover])
+const [active, setActive] = useState(null);
   return (
     <div className="navbar-container w-100 main-menu-content">
       <ul
@@ -99,14 +110,19 @@ useEffect(()=>{
           return (
             
               <SubHeaderWarraper
-                id={item.name}
-                onClick={() => {
-                  item.url != "/configuration" ? (history.push(item.url)) : "";
-                }}
-                key={idx}
-                className="text-light"
               >
-                <Trans i18nKey={item.name} />
+                <div
+                 id={item.name}
+                 onClick={() => {
+                   item.url != "/configuration" ? (history.push(item.url)) : "";
+                   setActive(item);
+                 }}
+                 key={idx}
+                className={`text-light ${active == item && "activeTab"}`} 
+                >
+                <Trans i18nKey={item.name}
+                 />
+                </div>
               {item.name === "configuration" &&closePopover && (
                 <BtnPopover target={item.name}  content={<BtnContent setClosePopover={setClosePopover} />} />
               )}

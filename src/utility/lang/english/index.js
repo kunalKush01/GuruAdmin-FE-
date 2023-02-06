@@ -227,7 +227,7 @@ commitment_not_click_add_commitment:'Click on "Add Commitment" to add commitment
 
 // All subscribed user static data
   subscribed_user_add_user:"Add Subscribed User",
-  subscribed_user_name:"Name",
+  subscribed_user_name:"Username",
   subscribed_user_pan_cardDetail:"PAN card Details",
   subscribed_user_date_birth:"Date of Birth ",
   subscribed_user_email:"Email",

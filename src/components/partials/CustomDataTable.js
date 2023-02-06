@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import DataTable from "react-data-table-component";
-
+import DataTableExtensions from 'react-data-table-component-extensions';
+import 'react-data-table-component-extensions/dist/index.css';
 const conditionStyle = {
   when: (row) => row.id % 2 !== 0,
   style: {
@@ -9,9 +10,17 @@ const conditionStyle = {
   },
 };
 
-function CustomDataTable({ columns, data, minWidth, maxHieght }) {
+function CustomDataTable({ columns, data, minWidth, maxHieght}) {
   const DataTableWarraper = styled.div`
 
+
+  .data-table-extensions-filter{
+      display: none !important;
+    }
+
+  .download{
+    color: red !important;
+  } 
   .DonetionList {
     //cursor: all-scroll;
     /* max-width: 70rem; */
@@ -22,6 +31,8 @@ function CustomDataTable({ columns, data, minWidth, maxHieght }) {
     ::-webkit-scrollbar {
       display: none;
     }
+
+    
 
     .rdt_TableCell {
       color: #583703 !important;
@@ -51,11 +62,16 @@ function CustomDataTable({ columns, data, minWidth, maxHieght }) {
         display: none;
       }
     }
-    
   }
 `;
+// const tableData = {
+//     columns,
+//     data
+//   }
+
   return (
     <DataTableWarraper minWidth={minWidth} maxHieght={maxHieght}>
+    
       <DataTable
         conditionalRowStyles={[conditionStyle]}
         className="DonetionList"
