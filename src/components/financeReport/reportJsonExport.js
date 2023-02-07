@@ -1,0 +1,56 @@
+import moment from 'moment'
+import React from 'react'
+import { ConverFirstLatterToCapital } from '../../utility/formater'
+import he from "he"
+
+const ConvertToString = (html)  => {
+  console.log("convert Rj",html);
+  return html.replace(/(&lt;([^>]+)>)/ig, '')
+}
+  
+  export const jsonDataExpences = ({data}) => {
+    return  data.map((item)=>({
+        title: ConverFirstLatterToCapital(item?.title),
+        // description:<div className=" d-flex tableDes" dangerouslySetInnerHTML={{__html:he.decode(item.description)}} />,
+        description:ConvertToString(item?.description ?? "") ,
+        date: moment(item?.expenseDate).format("DD MMM YYYY"),
+          amount:`₹${item.amount}`,
+      }))
+  }
+
+ export const jsonDataDonation = ({data}) => {
+    return data.map((item)=>({
+        username:ConverFirstLatterToCapital(item?.user?.name??""),
+        mobileNumber: item?.user?.mobileNumber,
+        donarName:ConverFirstLatterToCapital (item?.donarName??item.user?.name),
+        category:`${ConverFirstLatterToCapital(item?.masterCategory?.name)}${item?.subCategory?`(${item?.subCategory?.name})`:""}`,
+        dateTime: moment(item.createdAt ?? item?.updatedAt).format(" DD MMM YYYY,hh:mm"),
+        amount:`₹ ${item?.amount}`,
+        commitmentID:item.commitmentId?item.commitmentId<10?`0${item.commitmentId}`:`${item.commitmentId}`:"_",
+    })) 
+  } 
+
+  export  const jsonDataCommitment = ({data}) => {
+    return data.map((item)=>({
+      username:ConverFirstLatterToCapital(item?.user?.name??""),
+      mobileNumber: item?.user?.mobileNumber,
+      donarName: ConverFirstLatterToCapital(item?.donarName ?? item.user?.name),
+      category:`${ConverFirstLatterToCapital(item?.masterCategory?.name)}${item?.subCategory?`(${item?.subCategory?.name})`:""}`,
+      endDate: moment(item?.commitmentEndDate).format("DD MMM YYYY"),
+      status: ConverFirstLatterToCapital(item?.paidStatus),
+      amount:`₹ ${item?.amount}`,
+      amountDue:`₹ ${item?.amount - item.paidAmount}`,
+      commitmentID:item.commitmentId?item.commitmentId<10?`0${item.commitmentId}`:`${item.commitmentId}`:"_",
+      createdBy: ConverFirstLatterToCapital(item?.createdBy.name),
+    
+  }))
+  }
+
+ export const jsonDataDonationBox = ({data}) => {
+    return data.map((item)=>({
+        amount:`₹${item.amount}`,
+        remarks:<div className="d-flex tableDes" dangerouslySetInnerHTML={{__html:he.decode(item?.remarks??"")}} /> ,
+        dateTime:moment(item?.collectionDate).format("h:mm A, DD MMM YYYY"),
+    }))
+  } 
+ 

@@ -9,8 +9,6 @@ import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import receiptIcon from "../../assets/images/icons/receiptIcon.svg";
 import CustomDataTable from "../partials/CustomDataTable";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-import DataTableExtensions from 'react-data-table-component-extensions';
-import 'react-data-table-component-extensions/dist/index.css';
 import { utils, writeFile } from 'xlsx';
 export default function DonationListTable({ data }) {
   const handleDeleteExpenses = async (payload) => {
@@ -123,34 +121,34 @@ export default function DonationListTable({ data }) {
   //   { Header1: 'header 1 data', Header2: 'header 2 data' },
   // ];
 
-  const jsonData = data.map((item)=>{
-    return{
-      username:ConverFirstLatterToCapital(item?.user?.name??""),
-      mobileNumber: item?.user?.mobileNumber,
-      donarName:ConverFirstLatterToCapital (item?.donarName??item.user?.name),
-      category:`${ConverFirstLatterToCapital(item?.masterCategory?.name)}${item?.subCategory?`(${item?.subCategory?.name})`:""}`,
-      dateTime: moment(item.createdAt ?? item?.updatedAt).format(" DD MMM YYYY,hh:mm"),
-      amount:`₹ ${item?.amount}`,
-      commitmentID:item.commitmentId?item.commitmentId<10?`0${item.commitmentId}`:`${item.commitmentId}`:"_",
-    }
-  })
+  // const jsonData = data.map((item)=>{
+  //   return{
+  //     username:ConverFirstLatterToCapital(item?.user?.name??""),
+  //     mobileNumber: item?.user?.mobileNumber,
+  //     donarName:ConverFirstLatterToCapital (item?.donarName??item.user?.name),
+  //     category:`${ConverFirstLatterToCapital(item?.masterCategory?.name)}${item?.subCategory?`(${item?.subCategory?.name})`:""}`,
+  //     dateTime: moment(item.createdAt ?? item?.updatedAt).format(" DD MMM YYYY,hh:mm"),
+  //     amount:`₹ ${item?.amount}`,
+  //     commitmentID:item.commitmentId?item.commitmentId<10?`0${item.commitmentId}`:`${item.commitmentId}`:"_",
+  //   }
+  // })
 
-  console.log("jsonData",jsonData);
+  // console.log("jsonData",jsonData);
 
-  const handleExport = () => {
+  // const handleExport = () => {
   
 
-    const binaryWorksheet = utils.json_to_sheet(jsonData);
+  //   const binaryWorksheet = utils.json_to_sheet(jsonData);
 
-    // Create a new Workbook
-    const workbook = utils.book_new();
+  //   // Create a new Workbook
+  //   const workbook = utils.book_new();
 
-    // naming our sheet
-    utils.book_append_sheet(workbook, binaryWorksheet, 'Donation');
+  //   // naming our sheet
+  //   utils.book_append_sheet(workbook, binaryWorksheet, 'Donation');
 
-    // exporting our excel and naming it
-    writeFile(workbook, 'Donation Table.xlsx');
-  };
+  //   // exporting our excel and naming it
+  //   writeFile(workbook, 'Donation Table.xlsx');
+  // };
 
     
   
@@ -211,16 +209,16 @@ export default function DonationListTable({ data }) {
     /* margin-right: 20px; */
     font: normal normal bold 15px/23px Noto Sans;
   
-    button{
+    /* button{
       float: right;
       margin-bottom: 1rem;
       margin-right:.5rem;
-    }
+    } */
   `;
 
   return (
     <RecentDonationTableWarper>
-     <button onClick={handleExport}>Export</button>
+     {/* <button onClick={handleExport}>Export</button> */}
       <CustomDataTable
         maxHieght={""}
         // tableData={tableData}

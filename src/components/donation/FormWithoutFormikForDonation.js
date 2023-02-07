@@ -128,10 +128,13 @@ export default function FormWithoutFormikForDonation({
           <Row>
             <Col xs={4} className=" pb-1" >
               <CustomTextField
-
                 type="number"
                 label={t("dashboard_Recent_DonorNumber")}
                 name="Mobile"
+                pattern="[6789][0-9]{9}"
+                onInput={(e) =>
+                  (e.target.value = e.target.value.slice(0, 12))
+                }
                 required
               />
             </Col>

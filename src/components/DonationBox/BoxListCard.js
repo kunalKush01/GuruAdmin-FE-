@@ -10,6 +10,7 @@ import { useHistory } from "react-router-dom";
 import lockIcon from "../../assets/images/icons/donationBox/Lock.svg";
 import he from "he";
 import { Item } from "react-contexify";
+import Swal from "sweetalert2";
 
 const ReportListCardWraper = styled.div`
   .card-footer {
@@ -52,16 +53,20 @@ const ReportListCardWraper = styled.div`
     margin-bottom: 1.5rem;
   }
   .text-with-dots {
-    
-    max-height:20px ;
+    max-height: 20px;
     max-width: 100px;
     white-space: nowrap;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
-}
+  }
+
 `;
 
 export default function BoxListCard({ data = "" }) {
+  const ConvertToString = (html) => {
+    console.log("convert Rj", html);
+    return html.replace(/(&lt;([^>]+)>)/gi, "");
+  };
   const history = useHistory();
   return (
     <ReportListCardWraper>
@@ -73,8 +78,48 @@ export default function BoxListCard({ data = "" }) {
                 {/* {data.isLocked&&<img src={lockIcon} className="w-100"  />} */}
               </div>
             </Col>
-            <Col xs={8} className="p-0 ">
-              <div className="d-flex flex-column    align-items-center  ">
+            <Col xs={8} className="p-0">
+              <div
+                className="d-flex flex-column cursor-pointer align-items-center "
+                onClick={() => {
+                  Swal.fire({
+                    padding: "15px 20px",
+                    // title: `<img src="${donationBoxIcon}"/>`,
+                    html: `
+                                            <div class="text-start">
+                                                <div>Date : ${moment(
+                                                  data.collectionDate
+                                                ).format(
+                                                  "dddd, DD MMM, YYYY"
+                                                )}</div>
+                                                <div>
+                                                  Amount : ₹ ${data.amount} 
+                                                </div>
+
+                                                <div>
+                                                  Description:
+                                                </div>
+                                                <div
+                                                class="descriptionBoxSwal"
+                                                 style="
+                                                 
+                                                ">
+                                                  ${ConvertToString(data.remarks)}
+                                                </div>
+                                            </div>
+                                              `,
+                    showCloseButton: false,
+                    showConfirmButton: false,
+                    // showCancelButton: true,
+                    // focusConfirm: true,
+                    cancelButtonText: "cancel",
+                    cancelButtonAriaLabel: "cancel",
+
+                    // confirmButtonText:"confirm",
+                    // confirmButtonAriaLabel: "Confirm",
+                  });
+                }}
+              >
                 <img src={donationBoxIcon} style={{ width: "80px" }} />
                 <div className="date">
                   <span>Date :</span>{" "}
@@ -89,7 +134,7 @@ export default function BoxListCard({ data = "" }) {
                 <div className="time d-flex align-items-center justify-content-between remarks">
                   <img src={donationBoxDesIcon} width={10} />
                   <div
-                  className="text-with-dots"
+                    className="text-with-dots"
                     dangerouslySetInnerHTML={{
                       __html: he.decode(data.remarks),
                     }}

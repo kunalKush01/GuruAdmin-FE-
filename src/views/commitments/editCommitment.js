@@ -35,7 +35,8 @@ const NewsWarper = styled.div`
 `;
 
 const schema = yup.object().shape({
-    Mobile: yup.string().required("expenses_mobile_required"),
+    // Mobile: yup.string().required("expenses_mobile_required"),
+    Mobile: yup.string().min(9 ,"Mobile Number must me 10 digits").required("expenses_mobile_required"),
     // SelectedUser: yup.string().required("user_select_required"),
     // donarName: yup.string().required("donar_name_required"),
     SelectedMasterCategory: yup.mixed().required("masterCategory_required"),

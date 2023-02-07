@@ -1,6 +1,6 @@
 // ** React Imports
 import { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
 // ** Horizontal Menu Components
 import HorizontalNavMenuItems from "./HorizontalNavMenuItems";
@@ -10,6 +10,7 @@ import { Col, Row } from "reactstrap";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import comfromationIcon from "../../../../../assets/images/icons/news/conformationIcon.svg";
+import { useLayoutEffect } from "react";
 
 const SubHeaderWarraper = styled.div`
   font: normal normal normal 15px/20px noto sans;
@@ -99,7 +100,15 @@ const [closePopover,setClosePopover] = useState(true)
 useEffect(()=>{
   setClosePopover(true)
 },[closePopover])
-const [active, setActive] = useState(null);
+
+const location = useLocation();
+const [active, setActive] = useState();
+
+useLayoutEffect(()=>{
+  setActive(location.pathname)
+  console.log("url Rj" ,active);
+},[location.pathname])
+
   return (
     <div className="navbar-container w-100 main-menu-content">
       <ul
@@ -115,10 +124,10 @@ const [active, setActive] = useState(null);
                  id={item.name}
                  onClick={() => {
                    item.url != "/configuration" ? (history.push(item.url)) : "";
-                   setActive(item);
+                  //  setActive(item)
                  }}
                  key={idx}
-                className={`text-light ${active == item && "activeTab"}`} 
+                className={`text-light ${active == item.url ? "activeTab" : ""} `} 
                 >
                 <Trans i18nKey={item.name}
                  />

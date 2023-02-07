@@ -9,6 +9,11 @@ NOTE:
 ------
 PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER STYLESHEETS.
 WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
+body::-webkit-scrollbar{
+	display: none !important;
+}
+
+
 
 .swal2-actions{
 	flex-direction: row-reverse !important;
@@ -53,6 +58,19 @@ WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BET
 	}
 }
 
+.descriptionBoxSwal{
+	height:70px !important;
+	color:#583703;
+	margin-top: .5rem;
+	// scroll-behavior: smooth !important;
+	overflow-y:scroll !important;
+	font:normal normal normal 13px/20px noto sans !important ; ;
+	// background:red !important;
+}
+.descriptionBoxSwal::-webkit-scrollbar{
+	width: 10px !important;
+	behavior: smooth;
+}
 .swal2-backdrop-show{
 	backdrop-filter: blur(10px);
 	background: rgba(0,0,0,.2) !important;

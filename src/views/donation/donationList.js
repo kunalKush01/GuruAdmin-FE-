@@ -59,6 +59,7 @@ const DoationWarper = styled.div`
 
 export default function Expenses() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
+  const [categoryFilter, setCategoryFilter] = useState("dashboard_monthly");
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const periodDropDown = () => {
     switch (dropDownName) {
@@ -116,7 +117,11 @@ export default function Expenses() {
     [donationQuery]
   );
 
-  
+  // filter of category 
+
+    
+
+
 
   return (
     <DoationWarper>

@@ -123,6 +123,7 @@ export default function  DonationBoxForm({
                 <Row>
                 <Col xs={6} className="mt-1">
                 <CustomTextField
+                 type="number"
                   label={t("categories_select_amount")}
                   placeholder={t("enter_price_manually")}
                   required

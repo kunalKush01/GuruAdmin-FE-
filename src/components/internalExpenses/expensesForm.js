@@ -126,6 +126,7 @@ export default function ExpensesForm({
                 <Row className="mt-1">
                   <Col xs={6}>
                     <CustomTextField
+                    type="number"
                       label={t("categories_select_amount")}
                       placeholder={t("enter_price_manually")}
                       name="Amount"

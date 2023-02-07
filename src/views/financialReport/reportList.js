@@ -8,7 +8,7 @@ import ReactPaginate from "react-paginate";
 import FormikCustomDatePicker from "../../components/partials/formikCustomDatePicker";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { Col, Row } from "reactstrap";
+import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
 import { getAllCommitments } from "../../api/commitmentApi";
 import { getAllDonation } from "../../api/donationApi";
@@ -22,8 +22,16 @@ import CustomDatePicker from "../../components/partials/customDatePicker";
 import NoContent from "../../components/partials/noContent";
 import FinancialReportTabs from "./financialReportTabs";
 import FormikRangeDatePicker from "../../components/partials/FormikRangeDatePicker";
+import exportIcon from "../../assets/images/icons/exportIcon.svg";
 import { Formik } from "formik";
 import { useUpdateEffect } from "react-use";
+import { handleExport } from "../../utility/utils/exportTabele";
+import {
+  jsonDataCommitment,
+  jsonDataDonation,
+  jsonDataDonationBox,
+  jsonDataExpences,
+} from "../../components/financeReport/reportJsonExport";
 const NewsWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -42,9 +50,9 @@ const NewsWarper = styled.div`
   .btn-Published {
     text-align: center;
   }
-  .addNews-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
+  .exportBtn {
+    padding: 10px 20px;
+    /* margin-left: 10px; */
     font: normal normal bold 15px/20px noto sans;
   }
   .newsContent {
@@ -67,11 +75,18 @@ const NewsWarper = styled.div`
     padding: 0.5rem;
     border-radius: 7px;
   }
+  .total_collection{
+    border: 1px solid #FF8744;
+    color: #FF8744;
+    font: normal normal bold 15px/20px noto sans;
+    padding: 10px 20px;
+    border-radius: 5px;
+  }
 `;
 
 export default function FinancialReport() {
   const [reportDate, setreportDate] = useState({
-    start:new Date(moment().startOf("year")) ,
+    start: new Date(moment().startOf("year")),
     end: new Date(),
   });
 
@@ -217,6 +232,54 @@ export default function FinancialReport() {
     setPagination({ page: 1, limit: 10 });
   }, [activeReportTab.name]);
   console.log("pagination", pagination.page);
+
+  // exoprt table code
+
+  const handleClickExport = () => {
+    let tableData = [];
+    let fileName;
+    let sheetName;
+
+    switch (activeReportTab.name) {
+      case t("report_expences"):
+        fileName = "Expenses report";
+        sheetName = "Expenses";
+        tableData = jsonDataExpences({
+          data: expensesQuery?.data?.results ?? [],
+        });
+        break;
+      case t("donation_Donation"):
+        fileName = "Donation report";
+        sheetName = "Donation";
+        tableData = jsonDataDonation({
+          data: donationQuery?.data?.results ?? [],
+        });
+        break;
+      case t("report_commitment"):
+        fileName = "Commitment report";
+        sheetName = "Commitment";
+        tableData = jsonDataCommitment({
+          data: commitmentQuery?.data?.results ?? [],
+        });
+        break;
+      case t("report_donation_box"):
+        fileName = "Hundi report";
+        sheetName = "Hundi";
+        tableData = jsonDataDonationBox({
+          data: boxCollectionQuery?.data?.results ?? [],
+        });
+        break;
+
+      default:
+        break;
+    }
+    handleExport({
+      dataName: tableData,
+      fileName: fileName,
+      sheetName: sheetName,
+    });
+  };
+
   return (
     <NewsWarper>
       <div className="window nav statusBar body "></div>
@@ -243,10 +306,20 @@ export default function FinancialReport() {
             </div>
           </div>
           <div className="addNews">
-            <div className="dateChooserReport d-flex position-relative justify-content-between align-item-center">
+          <div className="total_collection me-2 d-flex justify-content-center align-items-center ">
+                {/* <Trans i18nKey={"DonationBox_total_collection"} /> */}
+                <div>
+                  {`Total ${activeReportTab.name} :`}
+                </div>
+                &nbsp;
+                <div>₹</div>&nbsp;
+                <div>{Items?.results?.totalCollection ?? 0}</div>
+              </div>
+            <div className="dateChooserReport d-flex me-2 position-relative justify-content-between align-item-center">
               {/* <div className="align-self-center">
                 {reportStartDatePrint}&nbsp;&nbsp; - &nbsp;&nbsp;{reportEndDatePrint}
               </div> */}
+              
               <Formik
                 initialValues={{
                   DateTime: {
@@ -270,13 +343,21 @@ export default function FinancialReport() {
                   );
                 }}
               </Formik>
-              {/*<div>*/}
-              {/*  <img src={editIcon} width={30} id={`popover`} className="align-self-center position-absolute cursor-pointer" style={{right:"2rem"}}/>*/}
-              {/*</div>*/}
+            </div>
+            <div>
+              <Button
+                color="primary"
+                className="exportBtn"
+                onClick={handleClickExport}
+              >
+                <span className="d-flex align-items-center">
+                  <Trans i18nKey={"export_report"} />
+                  <img src={exportIcon} width={15} className="ms-2" />
+                </span>
+              </Button>
             </div>
           </div>
         </div>
-
         <FinancialReportTabs
           setActive={setActiveReportTab}
           active={activeReportTab}

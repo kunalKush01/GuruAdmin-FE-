@@ -240,6 +240,7 @@ commitment_not_click_add_commitment:'Click on "Add Commitment" to add commitment
   // All report & dispute static data
   report_report_against:"Name",
   report_mobile:"Mobile Number",
+  export_report :"Export Report",
   report_Transaction_IDs:"Transaction IDs",
   report_panding:"Pending",
   report_re_solved:"Re-Solved",
