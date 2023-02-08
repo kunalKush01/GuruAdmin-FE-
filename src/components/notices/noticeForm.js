@@ -47,8 +47,8 @@ const FormWaraper = styled.div`
 `;
 
 export default function NoticeForm({
-  plusIconDisable=false,
-  buttonName="",
+  plusIconDisable = false,
+  buttonName = "",
   handleSubmit,
   vailidationSchema,
   initialValues,
@@ -63,8 +63,8 @@ export default function NoticeForm({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
       if (!data.error) {
-        noticeQuerClient.invalidateQueries(["Notices"])
-        noticeQuerClient.invalidateQueries(["NoticeDetail"])
+        noticeQuerClient.invalidateQueries(["Notices"]);
+        noticeQuerClient.invalidateQueries(["NoticeDetail"]);
         history.push("/notices");
       }
     },
@@ -98,19 +98,9 @@ export default function NoticeForm({
                       label={t("news_label_Title")}
                       name="Title"
                       required
+                      autoFocus
                     />
                   </Col>
-                  {/* <Col xs={6}>
-                    <AsyncSelectField
-                      name="SelectedEvent"
-                      loadOptions={loadOption}
-                      labelKey={"title"}
-                      valueKey={"id"}
-                      label={t("Notice_select_dropDown")}
-                      placeholder={t("Notice_select_dropDown")}
-                      disabled={selectEventDisabled}
-                    />
-                  </Col> */}
                 </Row>
                 <Row>
                   <Col xs={12} className="mt-0 mt-lg-1">
@@ -121,12 +111,6 @@ export default function NoticeForm({
                     />
                   </Col>
                 </Row>
-                {/* <Row>
-                        <div className="ImagesVideos">
-                          <Trans i18nKey={"news_label_ImageVedio"} />
-                        </div>
-                        <div></div>
-                      </Row> */}
               </Col>
               <Col>
                 <FormikCustomDatePicker
@@ -138,9 +122,11 @@ export default function NoticeForm({
             </Row>
             <div className="btn-Published ">
               <Button color="primary" className="addNotice-btn " type="submit">
-                {plusIconDisable&&<span>
-                  <Plus className="me-1" size={15} strokeWidth={4} />
-                </span>}
+                {plusIconDisable && (
+                  <span>
+                    <Plus className="me-1" size={15} strokeWidth={4} />
+                  </span>
+                )}
                 <span>
                   <Trans i18nKey={`${buttonName}`} />
                 </span>

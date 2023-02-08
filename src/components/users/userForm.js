@@ -85,7 +85,7 @@ export default function UserForm({
                   <Col xs={10}>
                     <Row>
                       <Col xs={4}>
-                        <CustomTextField label={t("user_name")} name="name" />
+                        <CustomTextField label={t("user_name")} name="name" autoFocus/>
                       </Col>
                       <Col xs={4}>
                         <CustomTextField

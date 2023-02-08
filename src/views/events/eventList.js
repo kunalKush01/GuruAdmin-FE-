@@ -113,7 +113,7 @@ export default function EventList() {
 
   const dateQuery = useQuery(["EventDates"], () => getEventDates());
   const eventDates = useMemo(() => {
-    return dateQuery?.data?.results?.map((item) => moment(item)?.toDate()) ?? [];
+    return dateQuery?.data?.results?.map((item) => moment(item).toDate()) ?? [];
   }, [dateQuery]);
   
   const eventItems = useMemo(

@@ -15,13 +15,13 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import  CommitmentListTable  from "../../components/commitments/commitmentListTable";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
 import NoContent from "../../components/partials/noContent";
-const NewsWarper = styled.div`
+const CommitmentWarapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
     font: normal normal bold 15px/33px Noto Sans;
   }
-  .addNews {
+  .addCommitment {
     color: #583703;
     display: flex;
     align-items: center;
@@ -33,15 +33,13 @@ const NewsWarper = styled.div`
   .btn-Published {
     text-align: center;
   }
-  .addNews-btn {
+  .addCommitment-btn {
     padding: 8px 20px;
     margin-left: 10px;
     font: normal normal bold 15px/20px noto sans;
   }
-  .newsContent {
+  .commitmentContent {
     margin-top: 1rem;
-    /* height: 350px; */
-    /* overflow: auto; */
     ::-webkit-scrollbar {
       display: none;
     }
@@ -53,7 +51,7 @@ const NewsWarper = styled.div`
   }
 `;
 
-export default function Expenses() {
+export default function Commitment() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const periodDropDown = () => {
@@ -76,7 +74,6 @@ export default function Expenses() {
     page: 1,
     limit: 10,
   });
-  const [selectedMasterCate, setSelectedMasterCate] = useState("");
 
   let filterStartDate = moment()
     .startOf(periodDropDown())
@@ -118,7 +115,7 @@ export default function Expenses() {
   );
 
   return (
-    <NewsWarper>
+    <CommitmentWarapper>
       <div className="window nav statusBar body "></div>
 
       <div>
@@ -129,7 +126,7 @@ export default function Expenses() {
               className="me-2  cursor-pointer align-self-end"
               onClick={() => history.push("/")}
             />
-            <div className="addNews">
+            <div className="addCommitment">
               <div className="">
                 <div>
                   <Trans i18nKey={"committment"} />
@@ -142,7 +139,7 @@ export default function Expenses() {
               </div>
             </div>
           </div>
-          <div className="addNews">
+          <div className="addCommitment">
             <ChangePeriodDropDown
               className={"me-1"}
               dropDownName={dropDownName}
@@ -150,7 +147,7 @@ export default function Expenses() {
             />
             <Button
               color="primary"
-              className="addNews-btn"
+              className="addCommitment-btn"
               onClick={() => history.push("/commitment/add")}
             >
               <span>
@@ -174,7 +171,7 @@ export default function Expenses() {
             </Then>
           </If>
         </div>
-        <div className="newsContent  ">
+        <div className="commitmentContent  ">
           <Row>
             <If condition={commitmentQuery.isLoading} disableMemo>
               <Then>
@@ -234,6 +231,6 @@ export default function Expenses() {
           </Row>
         </div>
       </div>
-    </NewsWarper>
+    </CommitmentWarapper>
   );
 }

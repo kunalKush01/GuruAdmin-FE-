@@ -8,13 +8,13 @@ import { createCommitment } from "../../api/commitmentApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import CommitmentForm from "../../components/commitments/commitmentForm";
 
-const NewsWarper = styled.div`
+const CommitmentWarapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
     font: normal normal bold 15px/33px Noto Sans;
   }
-  .addNews {
+  .addCommitment {
     color: #583703;
     display: flex;
     align-items: center;
@@ -25,22 +25,21 @@ const handleCreateCommitment = async (payload) => {
   return createCommitment(payload);
 };
 const schema = yup.object().shape({
-  // Mobile: yup.string().required("expenses_mobile_required").min(10).max(10),
   Mobile: yup.string().min(9 ,"Mobile Number must me 10 digits").required("expenses_mobile_required"),
   SelectedUser: yup.mixed().required("user_select_required"),
   donarName: yup.string().matches(
       /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
       'donation_donar_name_only_letters'
   ),
-  SelectedMasterCategory: yup.object().required("masterCategory_required"),
-  SelectedSubCategory: yup.object(),  
+  SelectedMasterCategory: yup.mixed().required("masterCategory_required"),
+  SelectedSubCategory: yup.mixed(),  
   Amount:yup.number().required("amount_required"),
   
 });
 
 
 
-export default function AddNews() {
+export default function AddCommitment() {
   const history = useHistory();
   const langArray = useSelector((state) => state.auth.availableLang);
   const loggedInUser = useSelector(state=>state.auth.userDetail.name)
@@ -55,7 +54,7 @@ export default function AddNews() {
     DateTime:new Date()
   };
   return (
-    <NewsWarper>
+    <CommitmentWarapper>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -63,7 +62,7 @@ export default function AddNews() {
             className="me-2  cursor-pointer"
             onClick={() => history.push("/commitment")}
           />
-          <div className="addNews">
+          <div className="addCommitment">
             <Trans i18nKey={"add_commitment"} />
           </div>
         </div>
@@ -77,6 +76,6 @@ export default function AddNews() {
           buttonName="add_commitment"
         />
       </div>
-    </NewsWarper>
+    </CommitmentWarapper>
   );
 }

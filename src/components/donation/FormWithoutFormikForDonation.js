@@ -1,34 +1,21 @@
-import { Form, Formik } from "formik";
-import React, { useEffect, useMemo, useState } from "react";
-import CustomTextField from "../partials/customTextField";
-import * as yup from "yup";
-import RichTextField from "../partials/richTextEditorField";
-import styled from "styled-components";
-import { CustomDropDown } from "../partials/customDropDown";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { Trans, useTranslation } from "react-i18next";
-import { Button, ButtonGroup, Col, Row } from "reactstrap";
-import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
-import { useHistory } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createNews } from "../../api/newsApi";
+import { Form } from "formik";
+import React, { useEffect, useState } from "react";
 import { Plus } from "react-feather";
-import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
-import AsyncSelectField from "../partials/asyncSelectField";
+import { Trans, useTranslation } from "react-i18next";
+import { useUpdateEffect } from "react-use";
+import { Button, Col, Row } from "reactstrap";
+import {
+  getAllSubCategories
+} from "../../api/expenseApi";
 import {
   findAllComitmentByUser,
   findAllUsersByName,
-  findAllUsersByNumber,
+  findAllUsersByNumber
 } from "../../api/findUser";
-import { useSelector } from "react-redux";
-import {
-  getAllMasterCategories,
-  getAllSubCategories,
-} from "../../api/expenseApi";
-import { CustomReactSelect } from "../partials/customReactSelect";
-import { useUpdateEffect } from "react-use";
-import { getAllCommitments } from "../../api/commitmentApi";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
+import AsyncSelectField from "../partials/asyncSelectField";
+import CustomTextField from "../partials/customTextField";
+import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 
 export default function FormWithoutFormikForDonation({
   formik,
@@ -136,6 +123,7 @@ export default function FormWithoutFormikForDonation({
                   (e.target.value = e.target.value.slice(0, 12))
                 }
                 required
+                autoFocus
               />
             </Col>
             <Col xs={4} className=" pb-1">
@@ -222,51 +210,8 @@ export default function FormWithoutFormikForDonation({
                   />
                 </Col>
               </Row>
-              {/* <Row>
-                <Col>
-                  <Button
-                    className="p-4 w-100 "
-                    onClick={() => formik.setFieldValue("Amount", "1000")}
-                  >
-                    1000
-                  </Button>
-                </Col>
-                <Col>
-                  <Button
-                    className="p-4 w-100 "
-                    onClick={() => formik.setFieldValue("Amount", "2000")}
-                  >
-                    2000
-                  </Button>
-                </Col>
-                <Col>
-                  <Button
-                    className="p-4 w-100 "
-                    onClick={() => formik.setFieldValue("Amount", "5000")}
-                  >
-                    5000
-                  </Button>
-                </Col>
-                <Col>
-                  <Button
-                    className="p-4 w-100 "
-                    onClick={() => formik.setFieldValue("Amount", "10000")}
-                  >
-                    10000
-                  </Button>
-                </Col>
-              </Row> */}
             </Col>
           </Row>
-
-          {/* <Row className="mt-1">
-            <Row>
-              <Col className="text-center">or</Col>
-            </Row> 
-            <Row className="">
-              
-            </Row>
-          </Row> */}
         </Col>
       </Row>
       <div className="btn-Published mt-3">

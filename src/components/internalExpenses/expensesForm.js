@@ -103,6 +103,7 @@ export default function ExpensesForm({
                     <CustomTextField
                       label={t("news_label_Title")}
                       name="Title"
+                      autoFocus
                       required
                     />
                   </Col>
@@ -143,7 +144,7 @@ export default function ExpensesForm({
                 />
               </Col>
             </Row>
-            <div className="btn-Published ">
+            <div className="btn-Published mb-2">
               <Button color="primary" className="addNotice-btn " type="submit">
                 {plusIconDisable && (
                   <span>

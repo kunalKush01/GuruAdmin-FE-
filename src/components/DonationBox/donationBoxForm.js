@@ -74,8 +74,6 @@ export default function  DonationBoxForm({
         newsQuerClient.invalidateQueries(["Collections"]);
         newsQuerClient.invalidateQueries(["BoxCollectionDetail"]);
 
-        
-
         history.push("/donation_box");
       }
     },
@@ -87,17 +85,16 @@ export default function  DonationBoxForm({
         initialValues={{ ...initialValues }}
         onSubmit={(e) =>
           newsMutation.mutate({
-            collectionId:e?.Id,            
-            amount: e?.Amount,            
-            remarks:e?.Body,
-            collectionDate:e?.DateTime
+            collectionId: e?.Id,
+            amount: e?.Amount,
+            remarks: e?.Body,
+            collectionDate: e?.DateTime,
           })
         }
         validationSchema={vailidationSchema}
       >
         {(formik) => (
-          <Form>   
-            
+          <Form>
             <Row>
               <Col xs={7}>
                 <Row>
@@ -108,7 +105,11 @@ export default function  DonationBoxForm({
                     />
                   </Col> */}
                   <Col>
-                    <CustomTextField label={t("created_by")} name="CreatedBy" disabled />
+                    <CustomTextField
+                      label={t("created_by")}
+                      name="CreatedBy"
+                      disabled
+                    />
                   </Col>
                 </Row>
                 <Row>
@@ -117,19 +118,20 @@ export default function  DonationBoxForm({
                       height="100px"
                       label={t("news_label_Description")}
                       name="Body"
+                      autoFocus
                     />
                   </Col>
                 </Row>
                 <Row>
-                <Col xs={6} className="mt-1">
-                <CustomTextField
-                 type="number"
-                  label={t("categories_select_amount")}
-                  placeholder={t("enter_price_manually")}
-                  required
-                  name="Amount"
-                />
-              </Col>
+                  <Col xs={6} className="mt-1">
+                    <CustomTextField
+                      type="number"
+                      label={t("categories_select_amount")}
+                      placeholder={t("enter_price_manually")}
+                      required
+                      name="Amount"
+                    />
+                  </Col>
                 </Row>
               </Col>
               <Col>
@@ -140,11 +142,13 @@ export default function  DonationBoxForm({
                 />
               </Col>
             </Row>
-            <div className="btn-Published ">
-            <Button color="primary" className="addNotice-btn " type="submit">
-                {plusIconDisable&&<span>
-                  <Plus className="me-1" size={15} strokeWidth={4} />
-                </span>}
+            <div className="btn-Published mb-2 ">
+              <Button color="primary" className="addNotice-btn " type="submit">
+                {plusIconDisable && (
+                  <span>
+                    <Plus className="me-1" size={15} strokeWidth={4} />
+                  </span>
+                )}
                 <span>
                   <Trans i18nKey={`${buttonName}`} />
                 </span>

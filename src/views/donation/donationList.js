@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from "react";
-
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import { Plus } from "react-feather";
@@ -23,7 +22,7 @@ const DoationWarper = styled.div`
   .ImagesVideos {
     font: normal normal bold 15px/33px Noto Sans;
   }
-  .addNews {
+  .addDonation {
     color: #583703;
     display: flex;
     align-items: center;
@@ -35,31 +34,26 @@ const DoationWarper = styled.div`
   .btn-Published {
     text-align: center;
   }
-  .addNews-btn {
+  .addDonation-btn {
     padding: 8px 20px;
     margin-left: 10px;
     font: normal normal bold 15px/20px noto sans;
   }
-  .newsContent {
+  .donationContent {
     margin-top: 1rem;
-    /* height: 350px;
-    overflow: auto; */
     ::-webkit-scrollbar {
       display: none;
     }
   }
   .filterPeriod {
     color: #ff8744;
-    margin-top: .5rem;
+    margin-top: 0.5rem;
     font: normal normal bold 13px/5px noto sans;
   }
 `;
 
-
-
-export default function Expenses() {
+export default function Donation() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
-  const [categoryFilter, setCategoryFilter] = useState("dashboard_monthly");
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const periodDropDown = () => {
     switch (dropDownName) {
@@ -81,8 +75,6 @@ export default function Expenses() {
     page: 1,
     limit: 10,
   });
-  const [selectedMasterCate, setSelectedMasterCate] = useState("");
-
   let filterStartDate = moment()
     .startOf(periodDropDown())
     .utcOffset(0, true)
@@ -94,18 +86,24 @@ export default function Expenses() {
 
   let startDate = moment(filterStartDate).format("DD MMM");
   let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
-  const searchBarValue = useSelector((state) => state.search.LocalSearch  );
+  const searchBarValue = useSelector((state) => state.search.LocalSearch);
 
   const donationQuery = useQuery(
-    ["donations", pagination.page, selectedLang.id,filterEndDate,filterStartDate,searchBarValue],
+    [
+      "donations",
+      pagination.page,
+      selectedLang.id,
+      filterEndDate,
+      filterStartDate,
+      searchBarValue,
+    ],
     () =>
       getAllDonation({
-        search:searchBarValue,
+        search: searchBarValue,
         ...pagination,
         startDate: filterStartDate,
         endDate: filterEndDate,
         languageId: selectedLang.id,
-        
       }),
     {
       keepPreviousData: true,
@@ -116,26 +114,19 @@ export default function Expenses() {
     () => donationQuery?.data?.results ?? [],
     [donationQuery]
   );
-
-  // filter of category 
-
-    
-
-
-
   return (
     <DoationWarper>
       <div className="window nav statusBar body "></div>
 
       <div>
-      <div className="d-flex justify-content-between align-items-center ">
+        <div className="d-flex justify-content-between align-items-center ">
           <div className="d-flex justify-content-between align-items-center ">
             <img
               src={arrowLeft}
               className="me-2 cursor-pointer align-self-end"
               onClick={() => history.push("/")}
             />
-            <div className="addNews">
+            <div className="addDonation">
               <div className="">
                 <div>
                   <Trans i18nKey={"donation_Donation"} />
@@ -148,7 +139,7 @@ export default function Expenses() {
               </div>
             </div>
           </div>
-          <div className="addNews">
+          <div className="addDonation">
             <ChangePeriodDropDown
               className={"me-1"}
               dropDownName={dropDownName}
@@ -156,9 +147,8 @@ export default function Expenses() {
             />
             <Button
               color="primary"
-              className="addNews-btn  "
+              className="addDonation-btn  "
               onClick={() => history.push("/donation/add")}
-
             >
               <span>
                 <Plus className="" size={15} strokeWidth={4} />
@@ -180,7 +170,7 @@ export default function Expenses() {
             </Then>
           </If>
         </div>
-        <div className="newsContent  ">
+        <div className="donationContent  ">
           <Row>
             <If condition={donationQuery.isLoading} disableMemo>
               <Then>
@@ -200,7 +190,7 @@ export default function Expenses() {
                     <DonationListTable data={donationItems} />
                   </Then>
                   <Else>
-                    <NoContent 
+                    <NoContent
                       headingNotfound={t("donation_not_found")}
                       para={t("donation_not_click_add_donation")}
                     />

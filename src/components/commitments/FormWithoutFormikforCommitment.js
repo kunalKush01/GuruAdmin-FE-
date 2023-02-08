@@ -40,18 +40,11 @@ export default function FormWithoutFormikForCommitment({
     SelectedMasterCategory && res();
   }, [SelectedMasterCategory]);
 
-  // useUpdateEffect(()=>{
-  //   const results = async()=>{
-  //     cosnt res= await findAllUsersByNumber({ mobileNumber: mobileNumber });
-  //     return res.results;
-  //   }
-  // },[UserName])
-
   useUpdateEffect(() => {
     const user = formik?.values?.SelectedUser;
     if (user?.id) {
       formik.setFieldValue("Mobile", user.mobileNumber);
-      return
+      return;
     }
     formik.setFieldValue("Mobile", "");
   }, [formik?.values?.SelectedUser]);
@@ -77,14 +70,13 @@ export default function FormWithoutFormikForCommitment({
           <Row>
             <Col xs={4}>
               <CustomTextField
-                  type="number"
+                type="number"
                 label={t("dashboard_Recent_DonorNumber")}
                 name="Mobile"
                 pattern="[6789][0-9]{9}"
-                onInput={(e) =>
-                  (e.target.value = e.target.value.slice(0, 12))
-                }
-                  required
+                onInput={(e) => (e.target.value = e.target.value.slice(0, 12))}
+                required
+                autoFocus
               />
             </Col>
             <Col xs={4}>
@@ -111,9 +103,15 @@ export default function FormWithoutFormikForCommitment({
                 name={"SelectedMasterCategory"}
                 labelKey={"name"}
                 valueKey="id"
-                loadOptions={masterloadOptionQuery?.data?.results&&masterloadOptionQuery?.data?.results.map((item)=>{
-                  return {...item,name:ConverFirstLatterToCapital(item.name)}
-                })}
+                loadOptions={
+                  masterloadOptionQuery?.data?.results &&
+                  masterloadOptionQuery?.data?.results.map((item) => {
+                    return {
+                      ...item,
+                      name: ConverFirstLatterToCapital(item.name),
+                    };
+                  })
+                }
                 width={"100"}
                 required
               />
@@ -121,8 +119,11 @@ export default function FormWithoutFormikForCommitment({
             <Col xs={4}>
               <FormikCustomReactSelect
                 labelName={t("category_select_sub_category")}
-                loadOptions={subLoadOption.map((cate)=>{
-                  return {...cate,name:ConverFirstLatterToCapital(cate.name)}
+                loadOptions={subLoadOption.map((cate) => {
+                  return {
+                    ...cate,
+                    name: ConverFirstLatterToCapital(cate.name),
+                  };
                 })}
                 name={"SelectedSubCategory"}
                 labelKey={"name"}
@@ -140,13 +141,13 @@ export default function FormWithoutFormikForCommitment({
           </Row>
           <Row>
             <Col xs={4}>
-                <CustomTextField
-                    type="number"
-                  label={t("categories_select_amount")}
-                  placeholder={t("enter_price_manually")}
-                  name="Amount"
-                    required
-                />
+              <CustomTextField
+                type="number"
+                label={t("categories_select_amount")}
+                placeholder={t("enter_price_manually")}
+                name="Amount"
+                required
+              />
             </Col>
             <Col xs={4}></Col>
             <Col xs={4}>

@@ -46,44 +46,37 @@ export default function CommitmentListTable({ data }) {
     {
       name: t("dashboard_Recent_DonorName"),
       selector: (row) => row.donarName,
-      // width: "auto",
       width:"150px"
     },
 
     {
       name: t("category"),
       selector: (row) => row.category,
-      // width:"150px",
       width:"150px"
     },
     {
       name: t("commitment_end_Date"),
       selector: (row) => row.endDate,
-      // width:"150px",
       width:"150px"
     },
     {
       name: t("dashboard_Recent_DonorStatus"),
       selector: (row) => row.status,
-      // width:"150px",
       width:"150px"
     },
     {
       name: t("dashboard_Recent_DonorAmount"),
       selector: (row) => row.amount,
-      // width:"150px",
       width:"150px"
     },
     {
       name: t("commitment_Amount_Due"),
       selector: (row) => row.amountDue,
-      // width:"auto",
       width:"150px"
     },
     {
       name: t("dashboard_Recent_DonorCommitId"),
       selector: (row) => row.commitmentId,
-      // width: "auto",
       width:"150px"
     },
     {
@@ -126,10 +119,7 @@ export default function CommitmentListTable({ data }) {
           </div>
         ),
         endDate: moment(item?.commitmentEndDate)
-          .utcOffset(0)
           .format("DD MMM YYYY"),
-        // .utcOffset("+0530")
-        // .toDate(),
         status: (
           <div
             style={{
@@ -138,7 +128,6 @@ export default function CommitmentListTable({ data }) {
             }}
           >
             <div>{ConverFirstLatterToCapital(item?.paidStatus)}</div>
-            {/* <img src="" /> */}
           </div>
         ),
         amount: <div>₹&nbsp;{item?.amount}</div>,
@@ -191,66 +180,16 @@ export default function CommitmentListTable({ data }) {
   }, [data]);
 
   console.log("commitment_Data=", commitment_Data);
-  // const categoriesList = useMemo(() => {
-  //   return data.map((item, idx) => ({
-  //     _Id: item.id,
-  //     id: `${idx + 1}`,
-  //     title: item.title,
-  //     description:<div dangerouslySetInnerHTML={{__html:he.decode(item.description)}} /> ,
-  //     dateTime:item.expenseDate,
-  //       amount:`₹${item.amount}`,
-  //     edit: (
-  //       <img
-  //         src={editIcon}
-  //         width={35}
-  //         onClick={() =>
-  //           history.push(`/internal_expenses/edit/${item.id}`)
-  //         }
-  //       />
-  //     ),
-  //     delete: (
-  //       <img
-  //         src={deleteIcon}
-  //         width={35}
-  //         onClick={(e) => {
-  //           e.preventDefault();
-  //           e.stopPropagation();
-  //           // Swal.fire("Oops...", "Something went wrong!", "error");
-  //           Swal.fire({
-  //             title: `<img src="${comfromationIcon}"/>`,
-  //             html: `
-  //                                 <h3 class="swal-heading">Delete Expense</h3>
-  //                                 <p>Are you sure you want to permanently delete the selected expense ?</p>
-  //                                 `,
-  //             showCloseButton: false,
-  //             showCancelButton: true,
-  //             focusConfirm: true,
-  //             cancelButtonText: "Cancel",
-  //             cancelButtonAriaLabel: "Cancel",
-
-  //             confirmButtonText: "Confirm Delete",
-  //             confirmButtonAriaLabel: "Confirm",
-  //           }).then(async (result) => {
-  //             if (result.isConfirmed) {
-  //               deleteMutation.mutate(item.id);
-  //             }
-  //           });
-  //         }}
-  //       />
-  //     ),
-  //   }));
-  // }, [data]);
+ 
 
   const RecentDonationTableWarper = styled.div`
     color: #583703 !important;
-    /* margin-right: 20px; */
     font: normal normal bold 15px/23px Noto Sans;
   `;
 
   return (
     <RecentDonationTableWarper>
       <CustomDataTable
-        // minWidth="fit-content"
         maxHieght={""}
         columns={columns}
         data={commitment_Data}

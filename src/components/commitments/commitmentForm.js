@@ -13,12 +13,12 @@ const FormWaraper = styled.div`
   .btn-Published {
     text-align: center;
   }
-  .addNews-btn {
+  .addCommitment-btn {
     padding: 8px 20px;
     margin-left: 10px;
     font: normal normal bold 15px/20px noto sans;
   }
-  .newsContent {
+  .commitmentContent {
     height: 350px;
     overflow: auto;
     ::-webkit-scrollbar {
@@ -27,7 +27,6 @@ const FormWaraper = styled.div`
   }
   .filterPeriod {
     color: #ff8744;
-
     font: normal normal bold 13px/5px noto sans;
   }
   .btn-secondary {
@@ -55,7 +54,7 @@ export default function CommitmentForm({
   showTimeInput,
 }) {
   const history = useHistory();
-  const newsQuerClient = useQueryClient();
+  const commitmentQueryClient = useQueryClient();
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
   const masterloadOptionQuery = useQuery(
@@ -66,14 +65,13 @@ export default function CommitmentForm({
       })
   );
 
-  const newsMutation = useMutation({
+  const commitmentMutation = useMutation({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
       console.log("error=", data);
       if (!data.error) {
-        newsQuerClient.invalidateQueries(["Commitments"]);
-        newsQuerClient.invalidateQueries(["CommitmentDetail"]);
-
+        commitmentQueryClient.invalidateQueries(["Commitments"]);
+        commitmentQueryClient.invalidateQueries(["CommitmentDetail"]);
         history.push("/commitment");
       }
     },
@@ -88,7 +86,7 @@ export default function CommitmentForm({
               ...initialValues,
             }}
             onSubmit={(e) =>
-              newsMutation.mutate({
+              commitmentMutation.mutate({
                 donarName:e?.donarName,
                 commitmentId:e.Id,
                 categoryId: e?.SelectedSubCategory?.id,

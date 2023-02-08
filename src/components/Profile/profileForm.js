@@ -118,7 +118,7 @@ export default function ProfileForm({
                   <Col xs={8} className="">
                     <Row>
                       <Col xs={6} className="">
-                        <CustomTextField label={t("userProfile_name")} name="name" />
+                        <CustomTextField label={t("userProfile_name")} name="name" autoFocus/>
                       </Col>
                       <Col xs={6} className="">
                         <CustomTextField

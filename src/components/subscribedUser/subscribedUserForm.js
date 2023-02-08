@@ -37,13 +37,13 @@ const FormWaraper = styled.div`
 `;
 
 export default function SubscribedUserForm({
-  plusIconDisable=false,
+  plusIconDisable = false,
   loadOptions,
   handleSubmit,
   vailidationSchema,
   initialValues,
   showTimeInput,
-  buttonName="",
+  buttonName = "",
   ...props
 }) {
   const history = useHistory();
@@ -54,7 +54,7 @@ export default function SubscribedUserForm({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
       if (!data.error) {
-        categoryQuerClient.invalidateQueries(["subscribedUser"]);        
+        categoryQuerClient.invalidateQueries(["subscribedUser"]);
         history.push("/subscribed-user");
       }
     },
@@ -80,24 +80,21 @@ export default function SubscribedUserForm({
               <Col xs={12}>
                 <Row>
                   <Col>
-                    {/* <FormikCustomReactSelect
-                      width={"100%"}
-                      name={props.CategoryFormName}
-                      loadOptions={loadOptions}
-                      labelKey={"name"}
-                      valueKey={"id"}
-                      labelName={t("MasterCategory")}
-                      placeholder={props.placeholder ?? t("all")}
-                    /> */}
                     <CustomTextField
                       label={t("user_name")}
                       name="name"
+                      autoFocus
                     />
                   </Col>
                   <Col>
                     <CustomTextField
                       label={t("dashboard_Recent_DonorNumber")}
                       name="mobile"
+                      type="number"
+                      pattern="[6789][0-9]{9}"
+                      onInput={(e) =>
+                        (e.target.value = e.target.value.slice(0, 12))
+                      }
                     />
                   </Col>
                   <Col>
@@ -107,42 +104,15 @@ export default function SubscribedUserForm({
                     />
                   </Col>
                 </Row>
-                {/* <Row>
-                  <Col xs={12}>
-                    <RichTextField
-                      height="100px"
-                      label={t("news_label_Description")}
-                      name="Body"
-                    />
-                  </Col>
-                </Row> */}
-                {/* <Row>
-                        <div className="ImagesVideos">
-                          <Trans i18nKey={"news_label_ImageVedio"} />
-                        </div>
-                        <div></div>
-                      </Row> */}
-                {/* <Row>
-                  <Col xs={6}>
-                    <CustomTextField
-                      label={t("news_label_Published")}
-                      name="PublishedBy"
-                    />
-                  </Col>
-                </Row> */}
-                {/* </Col>
-              <Col> */}
-                {/* <FormikCustomDatePicker
-                  name="DateTime"
-                  showTimeInput={showTimeInput}
-                /> */}
               </Col>
             </Row>
             <div className="btn-Published  mt-lg-3">
-            <Button color="primary" className="addNotice-btn " type="submit">
-                {plusIconDisable&&<span>
-                  <Plus className="" size={15} strokeWidth={4} />
-                </span>}
+              <Button color="primary" className="addNotice-btn " type="submit">
+                {plusIconDisable && (
+                  <span>
+                    <Plus className="" size={15} strokeWidth={4} />
+                  </span>
+                )}
                 <span>
                   <Trans i18nKey={`${buttonName}`} />
                 </span>

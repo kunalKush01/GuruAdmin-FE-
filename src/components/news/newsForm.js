@@ -92,6 +92,7 @@ export default function NewsForm({
                     <CustomTextField
                       label={t("news_label_Title")}
                       name="Title"
+                      autoFocus
                     />
                   </Col>
                   <Col>
@@ -131,7 +132,7 @@ export default function NewsForm({
                 />
               </Col>
             </Row>
-            <div className="btn-Published ">
+            <div className="btn-Published mb-2">
               <Button color="primary" type="submit"> 
               {plusIconDisable && (
                   <span>

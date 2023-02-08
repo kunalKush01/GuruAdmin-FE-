@@ -1,27 +1,12 @@
-import { Form, Formik } from "formik";
-import React, { useEffect, useMemo, useState } from "react";
-import CustomTextField from "../partials/customTextField";
-import * as yup from "yup";
-import RichTextField from "../partials/richTextEditorField";
-import styled from "styled-components";
-import { CustomDropDown } from "../partials/customDropDown";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { Trans, useTranslation } from "react-i18next";
-import { Button, ButtonGroup, Col, Row } from "reactstrap";
-import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
-import { useHistory } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createNews } from "../../api/newsApi";
-import { Plus } from "react-feather";
-import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
-import AsyncSelectField from "../partials/asyncSelectField";
-import { findAllUsersByName } from "../../api/findUser";
+import { Formik } from "formik";
+import React from "react";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import styled from "styled-components";
 import {
-  getAllMasterCategories,
-  getAllSubCategories,
+  getAllMasterCategories
 } from "../../api/expenseApi";
-import { CustomReactSelect } from "../partials/customReactSelect";
 import FormWithoutFormikForDonation from "./FormWithoutFormikForDonation";
 
 const FormWaraper = styled.div`
@@ -31,12 +16,12 @@ const FormWaraper = styled.div`
   .btn-Published {
     text-align: center;
   }
-  .addNews-btn {
+  .addDonation-btn {
     padding: 8px 20px;
     margin-left: 10px;
     font: normal normal bold 15px/20px noto sans;
   }
-  .newsContent {
+  .donationContent {
     height: 350px;
     overflow: auto;
     ::-webkit-scrollbar {
@@ -73,7 +58,7 @@ export default function DonationForm({
   showTimeInput,
 }) {
   const history = useHistory();
-  const newsQuerClient = useQueryClient();
+  const donationQuerClient = useQueryClient();
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
   const masterloadOptionQuery = useQuery(
@@ -83,14 +68,12 @@ export default function DonationForm({
         languageId: selectedLang.id,
       })
   );
-  const newsMutation = useMutation({
+  const donationMutation = useMutation({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
       
       if (!data.error) {
-        newsQuerClient.invalidateQueries(["donations"]);
-        // newsQuerClient.invalidateQueries(["CollectionDetail"]);
-
+        donationQuerClient.invalidateQueries(["donations"]);
         history.push("/donation");
       }
     },
@@ -105,7 +88,7 @@ export default function DonationForm({
             ...initialValues,
           }}
           onSubmit={(e) =>
-            newsMutation.mutate({
+            donationMutation.mutate({
               categoryId: e?.SelectedSubCategory?.id,
               amount: e?.Amount,
               masterCategoryId: e?.SelectedMasterCategory?.id,

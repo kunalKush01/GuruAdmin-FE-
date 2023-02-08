@@ -1,33 +1,26 @@
-import { Form, Formik } from "formik";
-import React, { useEffect, useMemo, useState } from "react";
-import CustomTextField from "../../components/partials/customTextField";
-import * as yup from "yup";
-import RichTextField from "../../components/partials/richTextEditorField";
-import styled from "styled-components";
-import { CustomDropDown } from "../../components/partials/customDropDown";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { Trans, useTranslation } from "react-i18next";
-import { Button, Col, Row } from "reactstrap";
-import { useHistory, useParams } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createNews, getNewsDetail, updateNewsDetail } from "../../api/newsApi";
-import { useSelector } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
-import { ConverFirstLatterToCapital } from "../../utility/formater";
-import he from "he";
+import React, { useMemo, useState } from "react";
+import { Trans } from "react-i18next";
+import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import { If, Then, Else } from "react-if-else-switch";
-import NewsForm from "../../components/news/newsForm";
-import CommitmentForm from "../../components/commitments/commitmentForm"
+import { useSelector } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
+import { Col, Row } from "reactstrap";
+import styled from "styled-components";
+import * as yup from "yup";
 import { getCommitmentDetail, updateCommitmentDetail } from "../../api/commitmentApi";
+import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import CommitmentForm from "../../components/commitments/commitmentForm";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-const NewsWarper = styled.div`
+const CommitmentWarapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
     font: normal normal bold 15px/33px Noto Sans;
   }
-  .editNews {
+  .editCommitment {
     color: #583703;
     display: flex;
     align-items: center;
@@ -35,10 +28,12 @@ const NewsWarper = styled.div`
 `;
 
 const schema = yup.object().shape({
-    // Mobile: yup.string().required("expenses_mobile_required"),
-    Mobile: yup.string().min(9 ,"Mobile Number must me 10 digits").required("expenses_mobile_required"),
-    // SelectedUser: yup.string().required("user_select_required"),
-    // donarName: yup.string().required("donar_name_required"),
+    Mobile: yup.string().min(9 ,"Mobile Number must be 10 digits").required("expenses_mobile_required"),
+    SelectedUser: yup.mixed().required("user_select_required"),
+    donarName: yup.string().matches(
+      /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+      'donation_donar_name_only_letters'
+  ),
     SelectedMasterCategory: yup.mixed().required("masterCategory_required"),
     SelectedSubCategory: yup.mixed(),
     Amount:yup.string().required("amount_required"),
@@ -94,7 +89,7 @@ export default function EditCommitment() {
   }, [commitmentDetailQuery]);
 
   return (
-    <NewsWarper>
+    <CommitmentWarapper>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -102,7 +97,7 @@ export default function EditCommitment() {
             className="me-2  cursor-pointer"
             onClick={() => history.push("/commitment")}
           />
-          <div className="editNews">
+          <div className="editCommitment">
             <Trans i18nKey={"edit_commitment"} />
           </div>
         </div>
@@ -153,6 +148,6 @@ export default function EditCommitment() {
           )}
         </Else>
       </If>
-    </NewsWarper>
+    </CommitmentWarapper>
   );
 }

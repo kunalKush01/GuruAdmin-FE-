@@ -111,6 +111,7 @@ export default function EventForm({
                       label={t("news_label_Title")}
                       name="Title"
                       required
+                      autoFocus
                     />
                   </Col>
                   <Col xs={6}>
@@ -198,7 +199,7 @@ export default function EventForm({
                 </Row>
               </Col>
             </Row>
-            <div className="btn-Published ">
+            <div className="btn-Published mb-2">
               <Button color="primary" className="addEvent-btn " type="submit">
                 {plusIconDisable && (
                   <span>
