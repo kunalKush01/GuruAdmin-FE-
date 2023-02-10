@@ -127,7 +127,7 @@ useLayoutEffect(()=>{
                   //  setActive(item)
                  }}
                  key={idx}
-                className={`text-light ${active == item.url ? "activeTab" : ""} `} 
+                className={`text-light ${active?.includes(item.url) ? "activeTab" : ""} `} 
                 >
                 <Trans i18nKey={item.name}
                  />

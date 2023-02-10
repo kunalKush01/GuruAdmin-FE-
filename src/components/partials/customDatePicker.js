@@ -12,11 +12,7 @@ const CustomDatePickerWraper = styled.div`
                 /* color: #DFD3BE !important; */
                 pointer-events: none;
               }
-              .react-datepicker__day--disabled{
-      color: #9c9c9c !important;
-    }
-
-
+            
   label {
     color: #583703;
     font: normal normal bold 15px/33px Noto Sans !important;

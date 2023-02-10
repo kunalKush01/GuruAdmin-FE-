@@ -14,9 +14,9 @@ const FormikCustomDatePickerWraper = styled.div`
                 pointer-events: none;
               }
 
-              .react-datepicker__day--disabled{
+              /* .react-datepicker__day--disabled{
       color: #9c9c9c !important;
-    }
+    } */
 
 
 

@@ -45,9 +45,112 @@ const FormWaraper = styled.div`
   }
   .filterPeriod {
     color: #ff8744;
-
     font: normal normal bold 13px/5px noto sans;
   }
+
+  label {
+    /* margin-bottom: 0px; */
+    font: normal normal bold 15px/33px Noto Sans;
+  }
+
+
+  /* input tags  css start */
+  .ReactTags__tagInput {
+    color: #583703 !important;
+    height: 36px;
+    border: none !important;
+    background-color: #fff7e8 !important;
+    font: normal normal normal 13px/20px Noto Sans;
+    border-radius: 5px;
+}
+.ReactTags__tagInput input.ReactTags__tagInputField{
+    color: #583703 !important;
+    border: none !important;
+    background-color: #fff7e8 !important;
+    font: normal normal normal 13px/20px Noto Sans;
+    border-radius: 5px;
+    outline: none;
+    width: 100%;
+    height: inherit;
+    padding-left: .5rem;
+    ::placeholder{
+        color:#fff7e8 ;
+    }
+}
+/* added tags  */
+.ReactTags__selected{
+  width: 413.88px;
+  display: flex;
+  overflow-x:scroll !important;
+    ::-webkit-scrollbar{
+      width:10px;
+       display: block;
+    }
+}
+
+/* Styles for suggestions */
+.ReactTags__suggestions {
+  position: absolute;
+}
+.ReactTags__suggestions ul {
+  list-style-type: none;
+  box-shadow: 0.05em 0.01em 0.5em rgba(0, 0, 0, 0.2);
+  background-color: #fff7e8 !important;
+  width: 200px;
+}
+.ReactTags__suggestions li {
+  border-bottom: 1px solid #ddd;
+  padding: 5px 10px;
+  margin: 0;
+}
+.ReactTags__suggestions li mark {
+  text-decoration: underline;
+  background: none;
+  font-weight: 600;
+}
+/* .ReactTags__suggestions ul li.ReactTags__activeSuggestion {
+  background: #b7cfe0;
+  cursor: pointer;
+} */
+  .ReactTags__selected span.ReactTags__tag {
+    padding: 4px 10px;
+    font: normal normal bold 13px/20px Noto Sans;
+    border-radius: 10px;
+    border: 2px solid #583703;
+    display: flex;
+    margin-left: 3px;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+.ReactTags__remove {
+    font-size: 20px;
+    font-weight: 900;
+    border: none;
+    vertical-align: middle;
+    line-height: 0px;
+    cursor: pointer;
+}
+/* input tags  css start */
+  //  media query
+  
+  @media only screen and (max-width: 1280px ) and (min-width: 886px) {
+    .ReactTags__selected {
+      width: 324.91px !important;
+    }
+  }
+  @media only screen and (max-width: 885px) and (min-width:769px) {
+    .ReactTags__selected{
+      width: 209.41px !important;
+    }
+  }
+  @media only screen and (max-width: 768px) and (min-width: 320px) {
+    .thumbnail_image {
+      width: 100px;
+      height: 100px;
+    }
+  }
+
+
 `;
 
 export default function EventForm({
@@ -69,6 +172,7 @@ export default function EventForm({
       console.log("error=", data);
       if (!data.error) {
         eventQuerClient.invalidateQueries(["Events"]);
+        eventQuerClient.invalidateQueries(["EventDates"]);
         eventQuerClient.invalidateQueries(["EventDetail"]);
         history.push("/events");
       }
@@ -161,9 +265,9 @@ export default function EventForm({
                         <div></div>
                       </Row> */}
               </Col>
-              <Col xs="3" className="">
+              <Col xs="4" className="">
                 <Row>
-                  <Col xs="12">
+                  <Col xs="10">
                     <CustomTextField label={t("Tags")} name="Tags" />
                   </Col>
                   
@@ -174,9 +278,9 @@ export default function EventForm({
                       selectsRange
                     />
                   </Col>
-                  <Col xs="12">
-                    <Row>
-                      <Col>
+                  <Col xs="10">
+                    <Row className="">
+                      <Col lg="6">
                       <CustomTextField
                           label={t("Start")}
                           // value={latitude}
@@ -185,7 +289,7 @@ export default function EventForm({
                            required
                         />
                       </Col>
-                      <Col>
+                      <Col lg="6">
                       <CustomTextField
                           label={t("End")}
                           // value={latitude}

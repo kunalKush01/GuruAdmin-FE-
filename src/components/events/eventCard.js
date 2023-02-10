@@ -170,7 +170,7 @@ export default function EventCard({ data }) {
                 <Col xs={6}>
                   <div className="card-Date">
                     <p>
-                      {`From ${moment(data.startDate).format("D MMMM YYYY ")} to ${moment(data.endDate).format("D MMMM YYYY ")} `}
+                    {`${moment(data.startDate).format("DD MMM YYYY")} to ${moment(data.endDate).format("DD MMM YYYY")} ,${data.startTime} to ${data.endTime}`}
                     </p>
                   </div>
                 </Col>

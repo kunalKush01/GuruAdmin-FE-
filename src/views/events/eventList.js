@@ -1,5 +1,5 @@
 import { Form, Formik } from "formik";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { Trans, useTranslation } from "react-i18next";
@@ -94,13 +94,20 @@ export default function EventList() {
 
   let startDate = moment(filterStartDate).format("DD MMM ");
   let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
-  const searchBarValue = useSelector((state) => state.search.LocalSearch  );
+  const searchBarValue = useSelector((state) => state.search.LocalSearch);
 
   const eventQuery = useQuery(
-    ["Events", pagination.page, startDate, endDate, selectedLang.id,searchBarValue],
+    [
+      "Events",
+      pagination.page,
+      startDate,
+      endDate,
+      selectedLang.id,
+      searchBarValue,
+    ],
     () =>
       getAllEvents({
-        search:searchBarValue,
+        search: searchBarValue,
         ...pagination,
         startDate: filterStartDate,
         endDate: filterEndDate,
@@ -112,10 +119,20 @@ export default function EventList() {
   );
 
   const dateQuery = useQuery(["EventDates"], () => getEventDates());
-  const eventDates = useMemo(() => {
-    return dateQuery?.data?.results?.map((item) => moment(item).toDate()) ?? [];
-  }, [dateQuery]);
-  
+
+  const [eventDates, setEventDates] = useState([]);
+  useEffect(() => {
+    const eventDates = () => {
+      return (
+        dateQuery?.data?.results?.map((item) => moment(item).toDate()) ?? []
+      );
+    };
+    if (!dateQuery?.data?.results) {
+      return;
+    }
+    setEventDates(eventDates());
+  }, [dateQuery.isLoading, dateQuery.isFetching]);
+
   const eventItems = useMemo(
     () => eventQuery?.data?.results ?? [],
     [eventQuery]
@@ -252,19 +269,14 @@ export default function EventList() {
             <Col xs={3} className="p-0 ps-1" style={{ marginTop: "1.8rem" }}>
               <Row>
                 <Col xs={12}>
-                  <If condition={dateQuery.isLoading}>
-                    <Then>
-                      <></>
-                    </Then>
-                    <Else>
-                      <CustomDatePicker
-                        disabledKeyboardNavigation
-                        highlightDates={eventDates}
-                        onChange={(date)=>console.log("date",date)}
-                        // disabled
-                      />
-                    </Else>
-                  </If>
+                  {eventDates.length != 0 && (
+                    <CustomDatePicker
+                      disabledKeyboardNavigation
+                      highlightDates={eventDates}
+                      onChange={(date) => console.log("date", date)}
+                      // disabled
+                    />
+                  )}
                 </Col>
               </Row>
               <Row className="w-100 m-0">
