@@ -94,9 +94,16 @@ export default function AddLanguageEvent() {
       Tags: eventDetailQuery?.data?.result?.tags,
       Body: he.decode(eventDetailQuery?.data?.result?.body ?? ""),
       PublishedBy: eventDetailQuery?.data?.result?.publishedBy,
-      DateTime: moment(eventDetailQuery?.data?.result?.publishDate)
-        .utcOffset("+0530")
-        .toDate(),
+      DaDateTime: {
+        start: moment(eventDetailQuery?.data?.result?.startDate)
+          .utcOffset("+0530")
+          .toDate(),
+        end: moment(eventDetailQuery?.data?.result?.endDate)
+          .utcOffset("+0530")
+          .toDate(),
+      },
+      startTime:eventDetailQuery?.data?.result?.startTime,
+      endTime:eventDetailQuery?.data?.result?.endTime,
     };
   }, [eventDetailQuery]);
 

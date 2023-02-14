@@ -183,17 +183,17 @@ const Routes = [
     exact:true
   },
   {
-    path: '/donation_box',
+    path: '/Hundi',
     component: lazy(() => import('../../views/DonationBox/donationBoxList.js')),
     exact:true
   },
   {
-    path: '/donation_box/add',
+    path: '/Hundi/add',
     component: lazy(() => import('../../views/DonationBox/addDonationBox.js')),
     // exact:true
   },
   {
-    path: '/donation_box/edit/:donationBoxId',
+    path: '/Hundi/edit/:donationBoxId',
     component: lazy(() => import('../../views/DonationBox/editDonationBox')),
     // exact:true
   },

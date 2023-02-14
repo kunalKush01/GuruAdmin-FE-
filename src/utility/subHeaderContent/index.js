@@ -15,7 +15,7 @@ export const subHeaderContent = [
   },
   {
     name: "donation_box",
-    url: "/donation_box",
+    url: "/Hundi",
   },
 
   {

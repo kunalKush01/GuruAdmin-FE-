@@ -164,7 +164,7 @@ export default function Expenses() {
             <Button
               color="primary"
               className="addNews-btn "
-              onClick={() => history.push("/donation_box/add")}
+              onClick={() => history.push("/Hundi/add")}
             >
               <span>
                 <Plus className="" size={15} strokeWidth={4} />

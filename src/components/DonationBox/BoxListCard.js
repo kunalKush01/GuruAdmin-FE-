@@ -147,14 +147,10 @@ export default function BoxListCard({ data = "" }) {
             </Col>
             <Col xs={2} className="p-0 d-flex justify-content-center">
               <div style={{ width: "30px" }}>
-                {/* {!data.isLocked&&<img src={editIcon} className="w-100 cursor-pointer"
-           onClick={() => history.push(`/donation_box/edit/${data.id}`)}
-           
-           />} */}
                 <img
                   src={editIcon}
                   className="w-100 cursor-pointer"
-                  onClick={() => history.push(`/donation_box/edit/${data.id}`)}
+                  onClick={() => history.push(`/Hundi/edit/${data.id}`)}
                 />
               </div>
             </Col>

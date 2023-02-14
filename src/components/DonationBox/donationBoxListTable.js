@@ -62,7 +62,7 @@ export default function DonationBoxListTable({ data }) {
           width={35}
           className="cursor-pointer"
           onClick={() =>
-            history.push(`/donation_box/edit/${item.id}`)
+            history.push(`/Hundi/edit/${item.id}`)
           }
         />
       ),

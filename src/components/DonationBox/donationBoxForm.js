@@ -74,7 +74,7 @@ export default function  DonationBoxForm({
         newsQuerClient.invalidateQueries(["Collections"]);
         newsQuerClient.invalidateQueries(["BoxCollectionDetail"]);
 
-        history.push("/donation_box");
+        history.push("/Hundi");
       }
     },
   });
