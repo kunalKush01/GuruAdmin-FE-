@@ -42,8 +42,6 @@ const SubscribedUserWarper = styled.div`
   }
   .newsContent {
     margin-top: 1rem;
-    /* height: 350px;
-    overflow: auto; */
     ::-webkit-scrollbar {
       display: none;
     }

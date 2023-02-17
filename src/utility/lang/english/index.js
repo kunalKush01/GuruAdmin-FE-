@@ -31,6 +31,7 @@ export const englishContent = {
   confirm:"Confirm Delete",
   save_changes:"Save Changes",
   rupees:"Rs",
+  downloadReceipt:"Download Receipt",
 
   // All static content of Dashboard
   dashboard_donationReceived: "Donation Received",

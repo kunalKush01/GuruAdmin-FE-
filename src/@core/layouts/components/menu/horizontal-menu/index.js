@@ -44,23 +44,11 @@ function BtnContent({ setClosePopover }) {
    
   `;
 
-  const handleDeleteNews = async (payload) => {
-    return deleteNewsDetail(payload);
-  };
-  const queryCient = useQueryClient();
-  const deleteMutation = useMutation({
-    mutationFn: handleDeleteNews,
-    
-    onSuccess: (data) => {
-      if (!data.error) {
-        queryCient.invalidateQueries(["News"]);
-      }
-    },
-  });
+  
 
   return (
     <BtnContentWraper>
-      <Row className="MainContainer d-block px-1">
+      <Row className="MainContainer d-block px-1 text-center">
         <Col
           xs={12}
           className="col-item"

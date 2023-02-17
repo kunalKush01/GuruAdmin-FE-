@@ -52,12 +52,9 @@ const NewsWarper = styled.div`
   }
   .exportBtn {
     padding: 10px 20px;
-    /* margin-left: 10px; */
     font: normal normal bold 15px/20px noto sans;
   }
   .newsContent {
-    /* height: 350px;
-    overflow: auto; */
     ::-webkit-scrollbar {
       display: none;
     }
@@ -297,11 +294,7 @@ export default function FinancialReport() {
                 <div>
                   <Trans i18nKey={"report_AddReport"} />
                 </div>
-                {/* <div className="filterPeriod">
-                  <span>
-                  {reportDate.start} - {reportDate.end}
-                  </span>
-                </div> */}
+              
               </div>
             </div>
           </div>
@@ -313,7 +306,7 @@ export default function FinancialReport() {
                 </div>
                 &nbsp;
                 <div>₹</div>&nbsp;
-                <div>{Items?.results?.totalCollection ?? 0}</div>
+                <div>{Items?.totalAmount ?? 0}</div>
               </div>
             <div className="dateChooserReport d-flex me-2 position-relative justify-content-between align-item-center">
               {/* <div className="align-self-center">

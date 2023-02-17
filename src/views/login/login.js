@@ -7,7 +7,6 @@ import {
   Col,
   CardTitle,
   CardText,
-  // Form,
   Label,
   Input,
   Button,
@@ -17,8 +16,6 @@ import {
 import "@styles/react/pages/page-authentication.scss";
 import { Formik, Form, ErrorMessage } from "formik";
 import styled from "styled-components";
-// import userInputIcon from "../assets/images/icons/signInIcon/icn_User.svg";
-
 import emailInputIcon from "../../assets/images/icons/signInIcon/email.svg";
 import passwordEyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
 import backIconIcon from "../../assets/images/icons/signInIcon/backIcon.svg";
