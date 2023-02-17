@@ -49,6 +49,9 @@ export default function AddLanguageNews() {
   const { newsId } = useParams();
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang= useSelector(state=>state.auth.selectLang)
+  const searchParams = new URLSearchParams(history.location.search);
+  const currentPage = searchParams.get('page')
+  const currentFilter = searchParams.get('filter')
   const newsDetailQuery = useQuery(
     ["NewsDetail", newsId,selectedLang.id],
     async () => await getNewsDetail({ newsId,languageId:selectedLang.id })
@@ -112,7 +115,7 @@ export default function AddLanguageNews() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push("/news")}
+            onClick={() => history.push(`/news?page=${currentPage}&filter=${currentFilter}`)}
           />
           <div className="editNews">
             <Trans i18nKey={"news_AddLangNews"} />

@@ -75,7 +75,7 @@ const NewsCardWaraper = styled.div`
     font: normal normal bold 12px/30px noto sans;
   }
 `;
-function BtnContent({ newsId }) {
+function BtnContent({ newsId , currentPage, currentFilter}) {
   const { t } = useTranslation();
   const history = useHistory();
   const BtnContentWraper = styled.div`
@@ -116,7 +116,7 @@ function BtnContent({ newsId }) {
         <Col
           xs={12}
           className="col-item"
-          onClick={() => history.push(`/news/edit/${newsId}`, newsId)}
+          onClick={() => history.push(`/news/edit/${newsId}?page=${currentPage}&filter=${currentFilter}`, newsId)}
           
         >
           <Trans i18nKey={"news_popOver_Edit"} />
@@ -158,7 +158,7 @@ function BtnContent({ newsId }) {
         <Col
           xs={12}
           className="col-item"
-          onClick={() => history.push(`/news/add-language/${newsId}`, newsId)}
+          onClick={() => history.push(`/news/add-language/${newsId}?page=${currentPage}&filter=${currentFilter}`, newsId)}
         >
           <Trans i18nKey={"news_popOver_AddLang"} />
         </Col>
@@ -167,7 +167,7 @@ function BtnContent({ newsId }) {
   );
 }
 
-export default function NewsCard({ data }) {
+export default function NewsCard({ data , currentPage, currentFilter }) {
   return (
     <NewsCardWaraper>
       <Card
@@ -225,7 +225,7 @@ export default function NewsCard({ data }) {
       </Card>
       <BtnPopover
         target={`popover-${data.id}`}
-        content={<BtnContent newsId={data.id} />}
+        content={<BtnContent newsId={data.id} currentPage={currentPage} currentFilter={currentFilter}/>}
       />
     </NewsCardWaraper>
   );

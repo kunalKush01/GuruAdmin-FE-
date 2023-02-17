@@ -12,7 +12,7 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { utils, writeFile } from 'xlsx';
 
 
-export default function DonationListTable({ data }) {
+export default function DonationListTable({ data  }) {
   const { t } = useTranslation();
   const history = useHistory();
 

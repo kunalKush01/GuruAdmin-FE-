@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
@@ -48,14 +48,14 @@ const NewsWarper = styled.div`
   }
   .filterPeriod {
     color: #ff8744;
-    margin-top: .5rem;
+    margin-top: 0.5rem;
     font: normal normal bold 13px/5px noto sans;
   }
-  .total_collection{
-    border: 1px solid #FF8744;
-    color: #FF8744;
+  .total_collection {
+    border: 1px solid #ff8744;
+    color: #ff8744;
     font: normal normal bold 15px/20px noto sans;
-    padding: .5rem 2rem;
+    padding: 0.5rem 2rem;
     border-radius: 5px;
   }
 `;
@@ -83,6 +83,22 @@ export default function Expenses() {
     page: 1,
     limit: 12,
   });
+
+  const searchParams = new URLSearchParams(history.location.search);
+
+  const currentPage = searchParams.get("page");
+  const currentFilter = searchParams.get("filter");
+
+  const routPagination = pagination.page;
+  const routFilter = dropDownName;
+
+  useEffect(() => {
+    if (currentPage || currentFilter) {
+      setdropDownName(currentFilter);
+      setPagination({ ...pagination, page: parseInt(currentPage) });
+    }
+  }, []);
+
   const [selectedMasterCate, setSelectedMasterCate] = useState("");
 
   let filterStartDate = moment()
@@ -96,7 +112,7 @@ export default function Expenses() {
 
   let startDate = moment(filterStartDate).format("DD MMM");
   let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
-  const searchBarValue = useSelector((state) => state.search.LocalSearch  );
+  const searchBarValue = useSelector((state) => state.search.LocalSearch);
 
   const boxCollectionQuery = useQuery(
     [
@@ -105,7 +121,7 @@ export default function Expenses() {
       selectedLang.id,
       filterStartDate,
       filterEndDate,
-      searchBarValue
+      searchBarValue,
     ],
     () =>
       getAllBoxCollection({
@@ -113,7 +129,7 @@ export default function Expenses() {
         startDate: filterStartDate,
         endDate: filterEndDate,
         languageId: selectedLang.id,
-        search:searchBarValue
+        search: searchBarValue,
       }),
     {
       keepPreviousData: true,
@@ -152,19 +168,28 @@ export default function Expenses() {
           </div>
           <div className="addNews">
             <div className="total_collection me-2 d-flex justify-content-center align-items-center ">
-              <Trans i18nKey={"DonationBox_total_collection"} />&nbsp;
+              <Trans i18nKey={"DonationBox_total_collection"} />
+              &nbsp;
               <div>₹</div>&nbsp;
-              <div>{boxCollectionQuery?.data?.totalCollection??0}</div>
+              <div>{boxCollectionQuery?.data?.totalCollection ?? 0}</div>
             </div>
             <ChangePeriodDropDown
               className={"me-2"}
               dropDownName={dropDownName}
-              setdropDownName={(e) => setdropDownName(e.target.name)}
+              setdropDownName={(e) => {
+                setdropDownName(e.target.name);
+                setPagination({ page: 1 });
+                history.push(`/Hundi?page=${1}&filter=${e.target.name}`);
+              }}
             />
             <Button
               color="primary"
               className="addNews-btn "
-              onClick={() => history.push("/Hundi/add")}
+              onClick={() =>
+                history.push(
+                  `/Hundi/add?page=${pagination.page}&filter=${dropDownName}`
+                )
+              }
             >
               <span>
                 <Plus className="" size={15} strokeWidth={4} />
@@ -207,7 +232,12 @@ export default function Expenses() {
                       {collectionItems.map((item) => {
                         return (
                           <Col xs={3}>
-                            <BoxListCard key={item.id} data={item} />
+                            <BoxListCard
+                              key={item.id}
+                              data={item}
+                              currentFilter={routFilter}
+                              currentPage={routPagination}
+                            />
                           </Col>
                         );
                       })}
@@ -228,10 +258,16 @@ export default function Expenses() {
                 <Col xs={12} className="mb-2 d-flex justify-content-center">
                   <ReactPaginate
                     nextLabel=""
+                    forcePage={pagination.page - 1}
                     breakLabel="..."
                     previousLabel=""
                     pageCount={boxCollectionQuery?.data?.totalPages || 0}
                     activeClassName="active"
+                    initialPage={
+                      (parseInt(searchParams.get("page"))
+                        ? parseInt(searchParams.get("page")) - 1
+                        : pagination.page - 1)
+                    }
                     breakClassName="page-item"
                     pageClassName={"page-item"}
                     breakLinkClassName="page-link"
@@ -240,9 +276,14 @@ export default function Expenses() {
                     nextClassName={"page-item next"}
                     previousLinkClassName={"page-link"}
                     previousClassName={"page-item prev"}
-                    onPageChange={(page) =>
+                    onPageChange={(page) =>{
                       setPagination({ ...pagination, page: page.selected + 1 })
-                    }
+                      history.push(
+                        `/Hundi?page=${
+                          page.selected + 1
+                        }&filter=${dropDownName}`
+                      );
+                    }}
                     // forcePage={pagination.page !== 0 ? pagination.page - 1 : 0}
                     containerClassName={
                       "pagination react-paginate justify-content-end p-1"

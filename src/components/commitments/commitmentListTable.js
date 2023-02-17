@@ -13,7 +13,15 @@ import comfromationIcon from "../../assets/images/icons/news/conformationIcon.sv
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomDataTable from "../partials/CustomDataTable";
 
-export default function CommitmentListTable({ data }) {
+export default function CommitmentListTable({
+  data,
+  currentPage,
+  currentFilter,
+  financeReport,
+  currentCategory,
+  currentStatus,
+  currentSubCategory,
+}) {
   const handleDeleteCommitment = async (payload) => {
     return deleteCommitment(payload);
   };
@@ -36,53 +44,53 @@ export default function CommitmentListTable({ data }) {
       style: {
         font: "normal normal 700 13px/20px Noto Sans !important",
       },
-      width:"150px"
+      width: "150px",
     },
     {
       name: t("dashboard_Recent_DonorNumber"),
       selector: (row) => row.mobileNumber,
-      width:"150px"
+      width: "150px",
     },
     {
       name: t("dashboard_Recent_DonorName"),
       selector: (row) => row.donarName,
-      width:"150px"
+      width: "150px",
     },
 
     {
       name: t("category"),
       selector: (row) => row.category,
-      width:"150px"
+      width: "150px",
     },
     {
       name: t("commitment_end_Date"),
       selector: (row) => row.endDate,
-      width:"150px"
+      width: "150px",
     },
     {
       name: t("dashboard_Recent_DonorStatus"),
       selector: (row) => row.status,
-      width:"150px"
+      width: "150px",
     },
     {
       name: t("dashboard_Recent_DonorAmount"),
       selector: (row) => row.amount,
-      width:"150px"
+      width: "150px",
     },
     {
       name: t("commitment_Amount_Due"),
       selector: (row) => row.amountDue,
-      width:"150px"
+      width: "150px",
     },
     {
       name: t("dashboard_Recent_DonorCommitId"),
       selector: (row) => row.commitmentId,
-      width:"150px"
+      width: "150px",
     },
     {
       name: t("created_by"),
       selector: (row) => row.createdBy,
-      width:"150px"
+      width: "150px",
     },
     {
       name: t(""),
@@ -118,8 +126,7 @@ export default function CommitmentListTable({ data }) {
             {item?.category && `(${item?.category?.name})`}
           </div>
         ),
-        endDate: moment(item?.commitmentEndDate)
-          .format("DD MMM YYYY"),
+        endDate: moment(item?.commitmentEndDate).format("DD MMM YYYY"),
         status: (
           <div
             style={{
@@ -131,27 +138,32 @@ export default function CommitmentListTable({ data }) {
           </div>
         ),
         amount: <div>₹&nbsp;{item?.amount}</div>,
-        amountDue:<div>₹&nbsp; {item?.amount - item.paidAmount}</div>,
+        amountDue: <div>₹&nbsp; {item?.amount - item.paidAmount}</div>,
         commitmentId: item?.commitmentId,
         createdBy: ConverFirstLatterToCapital(item?.createdBy.name),
         edit: (
           <img
             src={editIcon}
             width={35}
-            className="cursor-pointer"
-            onClick={() => history.push(`/commitment/edit/${item.id}`)}
+            className={financeReport?"cursor-disabled opacity-50" : "cursor-pointer "}
+            onClick={() => {
+              financeReport?"":history.push(
+                `/commitment/edit/${item.id}?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`
+              );
+              
+            }}
           />
         ),
         delete: (
           <img
             src={deleteIcon}
             width={35}
-            className="cursor-pointer"
+            className={financeReport?"cursor-disabled opacity-50" : "cursor-pointer "}
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
               // Swal.fire("Oops...", "Something went wrong!", "error");
-              Swal.fire({
+              financeReport?"":Swal.fire({
                 title: `<img src="${comfromationIcon}"/>`,
                 html: `
                                           <h3 class="swal-heading mt-1">${t(
@@ -180,7 +192,6 @@ export default function CommitmentListTable({ data }) {
   }, [data]);
 
   console.log("commitment_Data=", commitment_Data);
- 
 
   const RecentDonationTableWarper = styled.div`
     color: #583703 !important;

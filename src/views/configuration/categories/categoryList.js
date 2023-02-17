@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
@@ -13,12 +13,14 @@ import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
 import {
   getAllCategories,
-  getAllMasterCategories
+  getAllMasterCategories,
 } from "../../../api/categoryApi";
 import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
 import { CategoryListTable } from "../../../components/categories/categoryListTable";
 import { CustomReactSelect } from "../../../components/partials/customReactSelect";
 import NoContent from "../../../components/partials/noContent";
+import { ChangeCategoryType } from "../../../components/partials/categoryDropdown";
+import { ConverFirstLatterToCapital } from "../../../utility/formater";
 const NewsWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -57,7 +59,7 @@ const NewsWarper = styled.div`
 const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 export default function Category() {
-  const [dropDownName, setdropDownName] = useState("dashboard_monthly");
+  const [dropDownName, setdropDownName] = useState("All");
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const periodDropDown = () => {
     switch (dropDownName) {
@@ -79,6 +81,22 @@ export default function Category() {
     page: 1,
     limit: 10,
   });
+
+  const searchParams = new URLSearchParams(history.location.search);
+
+  const currentPage = searchParams.get("page");
+  const currentFilter = searchParams.get("filter");
+
+  const routPagination = pagination.page;
+  const routFilter = dropDownName;
+
+  useEffect(() => {
+    if (currentPage || currentFilter) {
+      setdropDownName(currentFilter);
+      setPagination({ ...pagination, page: parseInt(currentPage) });
+    }
+  }, []);
+
   const [selectedMasterCate, setSelectedMasterCate] = useState("");
 
   let filterStartDate = moment()
@@ -92,18 +110,44 @@ export default function Category() {
 
   let startDate = moment(filterStartDate).format("DD MMM");
   let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
-  const searchBarValue = useSelector((state) => state.search.LocalSearch  );
+  const searchBarValue = useSelector((state) => state.search.LocalSearch);
+
+  // master category
+  // master category
+  const categoryTypeQuery = useQuery(
+    ["categoryTypes"],
+    () =>
+      getAllMasterCategories({
+        languageId: selectedLang.id,
+      }),
+    {
+      keepPreviousData: true,
+    }
+  );
+  const categoryTypeItem = useMemo(
+    () => categoryTypeQuery?.data?.results ?? [],
+    [categoryTypeQuery]
+  );
+  const newTypes = [{ id: "", name: "All" }, ...categoryTypeItem];
+
+  let newId;
+  newTypes.forEach((masterCategoryObject) => {
+    if (masterCategoryObject.name == dropDownName) {
+      newId = masterCategoryObject.id;
+    }
+  });
+  const [categoryId, setCategoryId] = useState();
 
   const categoryQuery = useQuery(
-    ["Categories", pagination.page, selectedLang.id, selectedMasterCate,searchBarValue],
+    ["Categories", newId, pagination.page, selectedLang.id, searchBarValue],
     () =>
       getAllCategories({
         ...pagination,
         startDate: filterStartDate,
         endDate: filterEndDate,
         languageId: selectedLang.id,
-        masterId: selectedMasterCate,
-        search:searchBarValue
+        masterId: newId,
+        search: searchBarValue,
       }),
     {
       keepPreviousData: true,
@@ -140,31 +184,31 @@ export default function Category() {
                 <div>
                   <Trans i18nKey={"categories_latest_Category"} />
                 </div>
-                {/* <div className="filterPeriod">
-                  <span>
-                    {startDate} - {endDate}
-                  </span>
-                </div> */}
               </div>
             </div>
           </div>
           <div className="addNews">
-            <CustomReactSelect
-              
-              name="SelectedCategory"
-              loadOptions={masterloadOptionQuery?.data?.results ?? []}
-              labelKey={"name"}
-              color={"#FF8744"}
-              valueKey={"id"}
-              label={t("events_select_dropDown")}
-              placeholder={t("all")}
-              outlined
-              onChange={(data) => setSelectedMasterCate(data?.id ?? "")}
+            <ChangeCategoryType
+              className={"me-1"}
+              categoryTypeArray={newTypes}
+              typeName={ConverFirstLatterToCapital(dropDownName)}
+              setTypeName={(e) => {
+                setCategoryId(e.target.id);
+                setdropDownName(e.target.name);
+                setPagination({ page: 1 });
+                history.push(
+                  `/configuration/categories?page=${1}&filter=${e.target.name}`
+                );
+              }}
             />
             <Button
               color="primary"
               className="addNews-btn"
-              onClick={() => history.push("/configuration/categories/add")}
+              onClick={() =>
+                history.push(
+                  `/configuration/categories/add?page=${pagination.page}&filter=${dropDownName}`
+                )
+              }
             >
               <span>
                 <Plus className="" size={15} strokeWidth={4} />
@@ -203,10 +247,17 @@ export default function Category() {
               <Else>
                 <If condition={categoryItems.length != 0} disableMemo>
                   <Then>
-                    <CategoryListTable data={categoryItems} page={pagination} />
+                    <div className="mb-2">
+                      <CategoryListTable
+                        data={categoryItems}
+                        page={pagination}
+                        currentFilter={routFilter}
+                        currentPage={routPagination}
+                      />
+                    </div>
                   </Then>
                   <Else>
-                    <NoContent 
+                    <NoContent
                       headingNotfound={t("category_not_found")}
                       para={t("category_not_click_add_category")}
                     />
@@ -220,10 +271,16 @@ export default function Category() {
                 <Col xs={12} className="mb-2 d-flex justify-content-center">
                   <ReactPaginate
                     nextLabel=""
+                    forcePage={pagination.page - 1}
                     breakLabel="..."
                     previousLabel=""
                     pageCount={categoryQuery?.data?.totalPages || 0}
                     activeClassName="active"
+                    initialPage={
+                      parseInt(searchParams.get("page"))
+                        ? parseInt(searchParams.get("page")) - 1
+                        : pagination.page - 1
+                    }
                     breakClassName="page-item"
                     pageClassName={"page-item"}
                     breakLinkClassName="page-link"
@@ -232,9 +289,14 @@ export default function Category() {
                     nextClassName={"page-item next"}
                     previousLinkClassName={"page-link"}
                     previousClassName={"page-item prev"}
-                    onPageChange={(page) =>
-                      setPagination({ ...pagination, page: page.selected + 1 })
-                    }
+                    onPageChange={(page) => {
+                      setPagination({ ...pagination, page: page.selected + 1 });
+                      history.push(
+                        `/configuration/categories?page=${
+                          page.selected + 1
+                        }&filter=${dropDownName}`
+                      );
+                    }}
                     // forcePage={pagination.page !== 0 ? pagination.page - 1 : 0}
                     containerClassName={
                       "pagination react-paginate justify-content-end p-1"

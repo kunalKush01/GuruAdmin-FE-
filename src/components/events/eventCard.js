@@ -53,7 +53,7 @@ const EventCardWaraper = styled.div`
     margin-right: 10px;
   }
 `;
-function BtnContent({ eventId }) {
+function BtnContent({ eventId , currentPage, currentFilter }) {
   const history = useHistory();
   const BtnContentWraper = styled.div`
     color: #583703;
@@ -79,6 +79,8 @@ function BtnContent({ eventId }) {
       if (!data.error) {
         console.log("invaldating");
         queryCient.invalidateQueries(["Events"]);
+        queryCient.invalidateQueries(["EventDates"]);
+
       }
     },
   });
@@ -91,7 +93,7 @@ function BtnContent({ eventId }) {
         <Col
           xs={12}
           className="col-item"
-          onClick={() => history.push(`/events/edit/${eventId}`)}
+          onClick={() => history.push(`/events/edit/${eventId}?page=${currentPage}&filter=${currentFilter}`)}
         >
           <Trans i18nKey={"news_popOver_Edit"} />
         </Col>
@@ -132,7 +134,7 @@ function BtnContent({ eventId }) {
         <Col
           xs={12}
           className="col-item"
-          onClick={() => history.push(`/events/add-language/${eventId}`)}
+          onClick={() => history.push(`/events/add-language/${eventId}?page=${currentPage}&filter=${currentFilter}`)}
         >
           <Trans i18nKey={"news_popOver_AddLang"} />
         </Col>
@@ -141,7 +143,7 @@ function BtnContent({ eventId }) {
   );
 }
 
-export default function EventCard({ data }) {
+export default function EventCard({ data , currentPage, currentFilter }) {
   return (
     <EventCardWaraper>
       <Card
@@ -216,7 +218,7 @@ export default function EventCard({ data }) {
       </Card>
       <BtnPopover
         target={`popover-${data.id}`}
-        content={<BtnContent eventId={data.id} />}
+        content={<BtnContent eventId={data.id}  currentPage={currentPage} currentFilter={currentFilter} />}
       />
     </EventCardWaraper>
   );

@@ -14,16 +14,16 @@ export default function ReportListTable({activeReportTab,data,page}) {
     switch (activeReportTab.name) {
       case t("report_expences"):
         
-        return <ExpensesListTable data={data} page={page}/>;
+        return <ExpensesListTable data={data} page={page} financeReport/>;
         case t("donation_Donation"):
         
         return <DonationListTable data={data}/>;
         case t("report_commitment"):
         
-        return <CommitmentListTable data={data}/>;
+        return <CommitmentListTable data={data} financeReport/>;
         case t("report_donation_box"):
         
-        return <DonationBoxListTable data={data}/>;
+        return <DonationBoxListTable data={data} financeReport/>;
       default:
         return [];
     }

@@ -16,7 +16,7 @@ export const ChangeStatus = ({dropDownName,setdropDownName,...props}) => {
     },
     {
       id: 2,
-      key: "report_re_solved",
+      key: "commitment_complete",
     },
   ];
   return (

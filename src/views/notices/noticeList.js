@@ -1,12 +1,12 @@
 import { Form, Formik } from "formik";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { Trans, useTranslation } from "react-i18next";
 import { Button, Col, Row } from "reactstrap";
 import FormikCustomDatePicker from "../../components/partials/formikCustomDatePicker";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
-import {  useQuery} from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import ReactPaginate from "react-paginate";
 import { Plus } from "react-feather";
 import moment from "moment";
@@ -50,7 +50,7 @@ const NoticeWarper = styled.div`
   }
   .filterPeriod {
     color: #ff8744;
-    margin-top:.5rem;
+    margin-top: 0.5rem;
     font: normal normal bold 13px/5px noto sans;
   }
 `;
@@ -59,7 +59,7 @@ const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 export default function NoticeList() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
-  const selectedLang= useSelector(state=>state.auth.selectLang)
+  const selectedLang = useSelector((state) => state.auth.selectLang);
 
   const periodDropDown = () => {
     switch (dropDownName) {
@@ -82,6 +82,22 @@ export default function NoticeList() {
     limit: 12,
   });
 
+
+  const searchParams = new URLSearchParams(history.location.search);
+
+  const currentPage = searchParams.get("page");
+  const currentFilter = searchParams.get("filter");
+
+  const routPagination = pagination.page;
+  const routFilter = dropDownName;
+
+  useEffect(() => {
+    if (currentPage || currentFilter) {
+      setdropDownName(currentFilter);
+      setPagination({ ...pagination, page: parseInt(currentPage) });
+    }
+  }, []);
+
   let filterStartDate = moment()
     .startOf(periodDropDown())
     .utcOffset(0, true)
@@ -93,17 +109,24 @@ export default function NoticeList() {
 
   let startDate = moment(filterStartDate).format("DD MMM");
   let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
-  const searchBarValue = useSelector((state) => state.search.LocalSearch  );
+  const searchBarValue = useSelector((state) => state.search.LocalSearch);
 
   const noticeQuery = useQuery(
-    ["Notices", pagination.page, startDate, endDate,selectedLang.id,searchBarValue],
+    [
+      "Notices",
+      pagination.page,
+      startDate,
+      endDate,
+      selectedLang.id,
+      searchBarValue,
+    ],
     () =>
       getAllNotices({
         ...pagination,
         startDate: filterStartDate,
         endDate: filterEndDate,
-        languageId:selectedLang.id,
-        search:searchBarValue
+        languageId: selectedLang.id,
+        search: searchBarValue,
       }),
     {
       keepPreviousData: true,
@@ -116,13 +139,10 @@ export default function NoticeList() {
   }, [dateQuery]);
   console.log("NoticeDates=", NoticeDates);
 
-  
   const NoticeItems = useMemo(
     () => noticeQuery?.data?.results ?? [],
     [noticeQuery]
   );
-  
-  
 
   return (
     <NoticeWarper>
@@ -132,7 +152,7 @@ export default function NoticeList() {
           <div className="d-flex justify-content-between align-items-center ">
             <img
               src={arrowLeft}
-              className="me-2  cursor-pointer align-self-end" 
+              className="me-2  cursor-pointer align-self-end"
               onClick={() => history.push("/")}
             />
             <div className="addNotice">
@@ -150,14 +170,21 @@ export default function NoticeList() {
           </div>
           <div className="addNotice">
             <ChangePeriodDropDown
-              // className={"me-0"}
               dropDownName={dropDownName}
-              setdropDownName={(e) => setdropDownName(e.target.name)}
+              setdropDownName={(e) => {
+                setdropDownName(e.target.name);
+                setPagination({ page: 1 });
+                history.push(`/notices?page=${1}&filter=${e.target.name}`);
+              }}
             />
             <Button
               color="primary"
               className="addNotice-btn"
-              onClick={() => history.push("/notices/add")}
+              onClick={() =>
+                history.push(
+                  `/notices/add?page=${pagination.page}&filter=${dropDownName}`
+                )
+              }
             >
               <span>
                 <Plus className="" size={15} strokeWidth={4} />
@@ -180,9 +207,9 @@ export default function NoticeList() {
           </If>
         </div>
         <div>
-          <Row className="w-100 m-0"  >
+          <Row className="w-100 m-0">
             <Col xs={9} className="noticeContent ps-0">
-              <If condition={noticeQuery.isLoading} disableMemo >
+              <If condition={noticeQuery.isLoading} disableMemo>
                 <Then>
                   <SkeletonTheme
                     baseColor="#FFF7E8"
@@ -199,20 +226,24 @@ export default function NoticeList() {
                   </SkeletonTheme>
                 </Then>
                 <Else>
-                  <If condition={NoticeItems.length != 0} disableMemo >
+                  <If condition={NoticeItems.length != 0} disableMemo>
                     <Then>
                       {NoticeItems.map((item) => {
                         return (
-                          <Col xs={12} key={item.id} className={"p-0"} >
-                            <NoticeCard data={item} />
+                          <Col xs={12} key={item.id} className={"p-0"}>
+                            <NoticeCard
+                              data={item}
+                              currentFilter={routFilter}
+                              currentPage={routPagination}
+                            />
                           </Col>
                         );
                       })}
                     </Then>
                     <Else>
                       <NoContent
-                       headingNotfound={t("notices_not_found")}
-                       para={t("notices_not_click_add_notices")}
+                        headingNotfound={t("notices_not_found")}
+                        para={t("notices_not_click_add_notices")}
                       />
                     </Else>
                   </If>
@@ -224,10 +255,16 @@ export default function NoticeList() {
                   <Col xs={12} className="mb-2 d-flex justify-content-center">
                     <ReactPaginate
                       nextLabel=""
+                      forcePage={pagination.page - 1}
                       breakLabel="..."
                       previousLabel=""
                       pageCount={noticeQuery?.data?.totalPages || 0}
                       activeClassName="active"
+                      initialPage={
+                        parseInt(searchParams.get("page"))
+                          ? parseInt(searchParams.get("page")) - 1
+                          : pagination.page - 1
+                      }
                       breakClassName="page-item"
                       pageClassName={"page-item"}
                       breakLinkClassName="page-link"
@@ -236,12 +273,17 @@ export default function NoticeList() {
                       nextClassName={"page-item next"}
                       previousLinkClassName={"page-link"}
                       previousClassName={"page-item prev"}
-                      onPageChange={(page) =>
+                      onPageChange={(page) => {
                         setPagination({
                           ...pagination,
                           page: page.selected + 1,
-                        })
-                      }
+                        });
+                        history.push(
+                          `/events?page=${
+                            page.selected + 1
+                          }&filter=${dropDownName}`
+                        );
+                      }}
                       // forcePage={pagination.page !== 0 ? pagination.page - 1 : 0}
                       containerClassName={
                         "pagination react-paginate justify-content-end p-1"
@@ -251,7 +293,7 @@ export default function NoticeList() {
                 </Then>
               </If>
             </Col>
-            <Col xs={3} className="p-0 ps-1 "  style={{marginTop:"1.8rem"}}>
+            <Col xs={3} className="p-0 ps-1 " style={{ marginTop: "1.8rem" }}>
               <Row>
                 <Col xs={12}>
                   <If condition={dateQuery.isLoading}>
@@ -267,10 +309,8 @@ export default function NoticeList() {
                   </If>
                 </Col>
               </Row>
-              <Row className="w-100 m-0" >
-                <Col xs={12}  >
-                  {/* <HinduCalenderDetailCard /> */}
-                </Col>
+              <Row className="w-100 m-0">
+                <Col xs={12}>{/* <HinduCalenderDetailCard /> */}</Col>
               </Row>
             </Col>
           </Row>

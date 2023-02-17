@@ -83,6 +83,21 @@ export default function EventList() {
     limit: 12,
   });
 
+  const searchParams = new URLSearchParams(history.location.search);
+
+  const currentPage = searchParams.get("page");
+  const currentFilter = searchParams.get("filter");
+
+  const routPagination = pagination.page;
+  const routFilter = dropDownName;
+
+  useEffect(() => {
+    if (currentPage || currentFilter) {
+      setdropDownName(currentFilter);
+      setPagination({ ...pagination, page: parseInt(currentPage) });
+    }
+  }, []);
+
   let filterStartDate = moment()
     .startOf(periodDropDown())
     .utcOffset(0, true)
@@ -165,14 +180,17 @@ export default function EventList() {
           </div>
           <div className="addEvent">
             <ChangePeriodDropDown
-              // className={"me-0"}
               dropDownName={dropDownName}
-              setdropDownName={(e) => setdropDownName(e.target.name)}
+              setdropDownName={(e) => {
+                setdropDownName(e.target.name);
+                setPagination({ page: 1 });
+                history.push(`/events?page=${1}&filter=${e.target.name}`);
+              }}
             />
             <Button
               color="primary"
               className="addEvent-btn"
-              onClick={() => history.push("/events/add")}
+              onClick={() => history.push(`/events/add?page=${pagination.page}&filter=${dropDownName}`)}
             >
               <span>
                 <Plus className="" size={15} strokeWidth={4} />
@@ -219,7 +237,8 @@ export default function EventList() {
                       {eventItems.map((item) => {
                         return (
                           <Col xs={12} key={item.id} className={"p-0"}>
-                            <EventCard data={item} />
+                            <EventCard data={item} currentFilter={routFilter}
+                        currentPage={routPagination}/>
                           </Col>
                         );
                       })}
@@ -239,10 +258,16 @@ export default function EventList() {
                   <Col xs={12} className="mb-2 d-flex justify-content-center">
                     <ReactPaginate
                       nextLabel=""
+                      forcePage={pagination.page - 1}
                       breakLabel="..."
                       previousLabel=""
                       pageCount={eventQuery?.data?.totalPages || 0}
                       activeClassName="active"
+                      initialPage={
+                        parseInt(searchParams.get("page"))
+                          ? parseInt(searchParams.get("page")) - 1
+                          : pagination.page - 1
+                      }
                       breakClassName="page-item"
                       pageClassName={"page-item"}
                       breakLinkClassName="page-link"
@@ -251,12 +276,17 @@ export default function EventList() {
                       nextClassName={"page-item next"}
                       previousLinkClassName={"page-link"}
                       previousClassName={"page-item prev"}
-                      onPageChange={(page) =>
+                      onPageChange={(page) => {
                         setPagination({
                           ...pagination,
                           page: page.selected + 1,
-                        })
-                      }
+                        });
+                        history.push(
+                          `/events?page=${
+                            page.selected + 1
+                          }&filter=${dropDownName}`
+                        );
+                      }}
                       // forcePage={pagination.page !== 0 ? pagination.page - 1 : 0}
                       containerClassName={
                         "pagination react-paginate justify-content-end p-1"

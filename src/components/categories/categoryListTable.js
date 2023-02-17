@@ -12,7 +12,7 @@ import comfromationIcon from "../../assets/images/icons/news/conformationIcon.sv
 import { deleteCategoryDetail } from "../../api/categoryApi";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-export function CategoryListTable({ data,page }) {
+export function CategoryListTable({ data,page ,currentPage, currentFilter}) {
   const handleDeleteCategory = async (payload) => {
     return deleteCategoryDetail(payload);
   };
@@ -66,17 +66,18 @@ export function CategoryListTable({ data,page }) {
     },
   ];
 
+
   const categoriesList = useMemo(() => {
-    return data.map((item, idx) => ({
+    return data.map((item) => ({
       _Id: item.id,
-      id: idx>8||page.page!=1?`${((page.page-1)*page.limit)+idx + 1}`:`0${((page.page-1)*page.limit)+idx + 1}`,
+      id:item?.serialNumber > 9 ? item?.serialNumber : `0${item?.serialNumber}`  ,
       masterCategory: ConverFirstLatterToCapital(item.masterCategory.name),
       subCategory: ConverFirstLatterToCapital(item.name),
       addLanguage: (
         <Button
           outline
           onClick={() =>
-            history.push(`/configuration/categories/add-language/${item.id}`)
+            history.push(`/configuration/categories/add-language/${item.id}?page=${currentPage}&filter=${currentFilter}`)
           }
           color="primary"
           style={{ padding: "5px 20px" }}
@@ -90,7 +91,7 @@ export function CategoryListTable({ data,page }) {
           src={editIcon}
           width={35}
           onClick={() =>
-            history.push(`/configuration/categories/edit/${item.id}`)
+            history.push(`/configuration/categories/edit/${item.id}?page=${currentPage}&filter=${currentFilter}`)
           }
         />
       ),
@@ -130,7 +131,6 @@ export function CategoryListTable({ data,page }) {
 
   const RecentDonationTableWarper = styled.div`
     color: #583703 !important;
-    margin-right: 20px;
     font: normal normal bold 15px/23px Noto Sans;
   `;
 

@@ -198,8 +198,8 @@ export default function EventForm({
             startTime:e?.startTime,
             endTime:e?.endTime,
             body: e.Body,
-            startDate: e.DateTime?.start,
-            endDate: e.DateTime?.end,
+            startDate: moment(e?.DateTime?.start).format("YYYY-MM-DD"),
+            endDate: moment(e?.DateTime?.end).format("YYYY-MM-DD"),
             imageUrl: ["http://newsImage123.co"],
           });
         }}

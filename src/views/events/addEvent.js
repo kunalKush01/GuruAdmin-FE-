@@ -55,6 +55,9 @@ export default function AddEvent() {
   const history = useHistory();
   const langArray = useSelector((state) => state.auth.availableLang);
 
+  const searchParams = new URLSearchParams(history.location.search);
+  const currentPage = searchParams.get('page')
+  const currentFilter = searchParams.get('filter')
   return (
     <EventWraper>
       <div className="d-flex justify-content-between align-items-center ">
@@ -62,7 +65,7 @@ export default function AddEvent() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push("/events")}
+            onClick={() => history.push(`/events?page=${currentPage}&filter=${currentFilter}`)}
           />
           <div className="addEvent">
             <Trans i18nKey={"events_AddEvent"} />

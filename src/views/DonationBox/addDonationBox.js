@@ -44,6 +44,10 @@ export default function AddNews() {
   const history = useHistory();
   const langArray = useSelector((state) => state.auth.availableLang);
 
+  const searchParams = new URLSearchParams(history.location.search);
+  const currentPage = searchParams.get('page')
+  const currentFilter = searchParams.get('filter')
+
   return (
     <NewsWarper>
       <div className="d-flex justify-content-between align-items-center ">
@@ -51,7 +55,7 @@ export default function AddNews() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push("/Hundi")}
+            onClick={() => history.push(`/Hundi?page=${currentPage}&filter=${currentFilter}`)}
           />
           <div className="addNews">
             <Trans i18nKey={"DonationBox_AddDonationBox"} />

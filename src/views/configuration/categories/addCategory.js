@@ -30,13 +30,20 @@ const handleCreateSubCategory = async (payload) => {
   return createSubCategory(payload);
 };
 const schema = yup.object().shape({
-  SubCategory: yup.string().required("categories_sub_category_required"),
+  SubCategory: yup.string().matches(
+    /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+    'only_letters'
+).required("categories_sub_category_required"),
 });
 
 export default function AddCategory() {
   const history = useHistory();
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang = useSelector((state) => state.auth.selectLang);
+
+  const searchParams = new URLSearchParams(history.location.search);
+  const currentPage = searchParams.get('page')
+  const currentFilter = searchParams.get('filter')
 
   const masterloadOptionQuery = useQuery(
     ["MasterCategory", selectedLang.id],
@@ -52,7 +59,7 @@ export default function AddCategory() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push("/configuration/categories")}
+            onClick={() => history.push(`/configuration/categories?page=${currentPage}&filter=${currentFilter}`)}
           />
           <div className="addNotice">
             <Trans i18nKey={"categories_AddCategory"} />

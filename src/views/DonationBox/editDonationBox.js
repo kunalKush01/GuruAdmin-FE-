@@ -51,6 +51,11 @@ export default function EditDonationBox() {
   
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang= useSelector(state=>state.auth.selectLang)
+
+  const searchParams = new URLSearchParams(history.location.search);
+  const currentPage = searchParams.get('page')
+  const currentFilter = searchParams.get('filter')
+
   const [langSelection, setLangSelection] = useState(ConverFirstLatterToCapital(selectedLang.name));
 
   const collectionBoxDetailQuery = useQuery(
@@ -91,7 +96,7 @@ export default function EditDonationBox() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push("/Hundi")}
+            onClick={() => history.push(`/Hundi?page=${currentPage}&filter=${currentFilter}`)}
           />
           <div className="editNews">
             <Trans i18nKey={"DonationBox_EditCollectionBox"} />

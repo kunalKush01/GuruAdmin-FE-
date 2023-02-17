@@ -52,6 +52,11 @@ export default function AddNotice() {
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
+
+  const searchParams = new URLSearchParams(history.location.search);
+  const currentPage = searchParams.get('page')
+  const currentFilter = searchParams.get('filter')
+
   return (
     <NoticeWraper>
       <div className="d-flex justify-content-between align-items-center ">
@@ -59,7 +64,7 @@ export default function AddNotice() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push("/notices")}
+            onClick={() => history.push(`/notices?page=${currentPage}&filter=${currentFilter}`)}
           />
           <div className="addNotice">
             <Trans i18nKey={"notices_AddNotice"} />

@@ -48,6 +48,10 @@ export default function AddNews() {
 
   
   
+  const searchParams = new URLSearchParams(history.location.search);
+  const currentPage = searchParams.get('page')
+  const currentFilter = searchParams.get('filter')
+
   const initialValues = {
     Id: "",
     Title: "",
@@ -63,7 +67,7 @@ export default function AddNews() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push("/news")}
+            onClick={() => history.push(`/news?page=${currentPage}&filter=${currentFilter}`)}
           />
           <div className="addNews">
             <Trans i18nKey={"news_AddNews"} />

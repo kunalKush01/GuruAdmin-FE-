@@ -10,7 +10,7 @@ import { deleteExpensesDetail } from "../../api/expenseApi";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import CustomDataTable from "../partials/CustomDataTable";
 
-export default function DonationBoxListTable({ data }) {
+export default function DonationBoxListTable({ data , financeReport }) {
   const handleDeleteDonationBox = async (payload) => {
     return deleteExpensesDetail(payload);
   };
@@ -33,18 +33,22 @@ export default function DonationBoxListTable({ data }) {
       style: {
         font: "normal normal 700 13px/20px noto sans !important ",
       },
+      width:"350px"
     },
     {
       name: t("dashboard_Recent_DonorDate"),
       selector: (row) => row.dateTime,
+      width:"350px"
     },
     {
       name: t("remarks_financial_donationBox"),
       selector: (row) => row.remarks,
+      width:"350px"
     },
 
     {
       name: t(""),
+      center:true,
       selector: (row) => row.edit,
     },
   ];
@@ -60,9 +64,9 @@ export default function DonationBoxListTable({ data }) {
         <img
           src={editIcon}
           width={35}
-          className="cursor-pointer"
+          className={financeReport?"cursor-disabled opacity-50" : "cursor-pointer "}
           onClick={() =>
-            history.push(`/Hundi/edit/${item.id}`)
+            { financeReport?"":history.push(`/Hundi/edit/${item.id}`)}
           }
         />
       ),
@@ -82,7 +86,6 @@ export default function DonationBoxListTable({ data }) {
   return (
     <RecentDonationTableWarper>
       <CustomDataTable
-        // minWidth="fit-content"
         maxHieght={""}
         columns={columns}
         data={donatioBoxList}

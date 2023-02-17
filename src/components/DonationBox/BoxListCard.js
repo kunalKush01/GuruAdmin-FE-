@@ -62,7 +62,7 @@ const ReportListCardWraper = styled.div`
 
 `;
 
-export default function BoxListCard({ data = "" }) {
+export default function BoxListCard({ data = "" ,currentFilter,currentPage}) {
   const ConvertToString = (html) => {
     console.log("convert Rj", html);
     return html.replace(/(&lt;([^>]+)>)/gi, "");
@@ -150,7 +150,7 @@ export default function BoxListCard({ data = "" }) {
                 <img
                   src={editIcon}
                   className="w-100 cursor-pointer"
-                  onClick={() => history.push(`/Hundi/edit/${data.id}`)}
+                  onClick={() => history.push(`/Hundi/edit/${data.id}?page=${currentPage}&filter=${currentFilter}`)}
                 />
               </div>
             </Col>

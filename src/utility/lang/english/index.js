@@ -114,7 +114,7 @@ export const englishContent = {
 
 
   // All static content of Categories
-
+  only_letters:"Sub category can only contain character letters.",
   categories_AddCategory: "Add Sub-Category",
   categories_serial_number:"Serial Number",
   categories_master_category:"Master Category",
@@ -147,6 +147,7 @@ export const englishContent = {
   users_AddUser: "Add Sub Admin ",
   users_latest_User: "Sub Admin ",
   users_title_required:"Username is required",
+  user_only_letters:"Username can only contain character letters.",
   users_mobile_required:"Mobile Number is Required",
   users_email_required:"Email is Required",
   users_not_found:"No Sub Admin Found",
@@ -224,6 +225,7 @@ commitment_delete:"Delete Commitment",
 commitment_sure:"Are you sure you want to permanently delete the selected commitment ? ",
 commitment_not_found:"No Commitment Found",
 commitment_not_click_add_commitment:'Click on "Add Commitment" to add commitment on the screen',
+commitment_complete:"Completed",
 
 // All subscribed user static data
   subscribed_user_add_user:"Add Subscribed User",

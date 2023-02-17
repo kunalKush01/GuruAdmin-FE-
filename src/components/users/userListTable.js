@@ -13,7 +13,7 @@ import { deleteCategoryDetail } from "../../api/categoryApi";
 import placeHolderImg from "../../assets/images/icons/dashBoard/defaultAvatar.svg"
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-export function SubAdminUserListTable({ data }) {
+export function SubAdminUserListTable({ data ,currentFilter,currentPage}) {
   const handleDeleteCategory = async (payload) => {
     return deleteCategoryDetail(payload);
   };
@@ -52,6 +52,7 @@ export function SubAdminUserListTable({ data }) {
       name: t("User Role"),
       selector: (row) => row.userRole,
     },
+    
   ];
 
   const categoriesList = useMemo(() => {
@@ -61,17 +62,17 @@ export function SubAdminUserListTable({ data }) {
       userName: (
         <div className="d-flex align-items-center " >
           <img src={item.img??placeHolderImg} style={{marginRight:"5px",width:"25px"}}  />
-          <div>{ConverFirstLatterToCapital(item.name)}</div>
+          <div>{ConverFirstLatterToCapital(item.name ?? "-")}</div>
         </div>
       ),
-      mobile:item.mobileNumber,
-      email: item.email,
-      userRole:item.userRole,
+      mobile:item.mobileNumber ?? "-",
+      email: item.email ?? "-",
+      userRole:item.userRole?? "-",
       // addLanguage: (
       //   <Button
       //     outline
       //     onClick={() =>
-      //       history.push(`/configuration/categories/add-language/${item.id}`)
+      //       history.push(`/configuration/categories/add-language/${item.id}?page=${currentPage}&filter=${currentFilter}`)
       //     }
       //     color="primary"
       //     style={{ padding: "5px 20px" }}
@@ -79,16 +80,16 @@ export function SubAdminUserListTable({ data }) {
       //     {"Add Language"}
       //   </Button>
       // ),
-      // editCategory: (
+      // edit: (
       //   <img
       //     src={editIcon}
       //     width={35}
       //     onClick={() =>
-      //       history.push(`/configuration/categories/edit/${item.id}`)
+      //       history.push(`/configuration/user/edit/${item.id}?page=${currentPage}`)
       //     }
       //   />
       // ),
-      // deleteCategory: (
+      // delete: (
       //   <img
       //     src={deleteIcon}
       //     width={35}
@@ -99,8 +100,8 @@ export function SubAdminUserListTable({ data }) {
       //       Swal.fire({
       //         title: `<img src="${comfromationIcon}"/>`,
       //         html: `
-      //                             <h3 class="swal-heading">Delete Category</h3>
-      //                             <p>Are you sure you want to permanently delete the selected category ?</p>
+      //                             <h3 class="swal-heading">Delete Sub Admin</h3>
+      //                             <p>Are you sure you want to permanently delete the selected sub admin ?</p>
       //                             `,
       //         showCloseButton: false,
       //         showCancelButton: true,
@@ -130,7 +131,6 @@ export function SubAdminUserListTable({ data }) {
   return (
     <RecentDonationTableWarper>
       <CustomDataTable
-        // minWidth="fit-content"
         maxHieght={""}
         columns={columns}
         data={categoriesList}

@@ -38,6 +38,13 @@ const schema = yup.object().shape({
 export default function AddNews() {
   const history = useHistory();
   const langArray = useSelector((state) => state.auth.availableLang);
+
+
+  const searchParams = new URLSearchParams(history.location.search);
+  const currentPage = searchParams.get('page')
+  const currentFilter = searchParams.get('filter')
+
+
   const { expensesId } = useParams();
   console.log("expensesId=", expensesId);
 
@@ -63,21 +70,13 @@ export default function AddNews() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push("/internal_expenses")}
+            onClick={() => history.push(`/internal_expenses?page=${currentPage}&filter=${currentFilter}`)}
           />
           <div className="addNews">
             <Trans i18nKey={"expenses_EditExpenses"} />
           </div>
         </div>
-        {/* <div className="addNews">
-          <Trans i18nKey={"news_InputIn"} />
-          <CustomDropDown
-            ItemListArray={langArray}
-            className={"ms-1"}
-            defaultDropDownName={"English"}
-            disabled
-          />
-        </div> */}
+        
       </div>
 
       {!ExpensesDetailQuery.isLoading ? (

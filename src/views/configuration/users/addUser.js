@@ -25,7 +25,10 @@ const handleCreateUser = async (payload) => {
   return createUser(payload);
 };
 const schema = yup.object().shape({
-  name: yup.string().required("users_title_required"),
+  name: yup.string().matches(
+    /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+    'user_only_letters'
+).required("users_title_required"),
   // mobile: yup.string().required("users_mobile_required"),
   mobile :yup.string()
               .min(9,"Mobile Number must me 10 digits")
@@ -40,6 +43,8 @@ export default function AddCategory() {
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
   
+  const searchParams = new URLSearchParams(history.location.search);
+  const currentPage = searchParams.get('page')
 
   return (
     <NoticeWraper>
@@ -48,7 +53,7 @@ export default function AddCategory() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push("/configuration/users")}
+            onClick={() => history.push(`/configuration/users?page=${currentPage}`)}
           />
           <div className="addNotice">
             <Trans i18nKey={"users_AddUser"} />

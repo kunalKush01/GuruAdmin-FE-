@@ -57,6 +57,12 @@ export default function EditNotice() {
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang= useSelector(state=>state.auth.selectLang)
   const [langSelection, setLangSelection] = useState(selectedLang.name);
+
+
+  const searchParams = new URLSearchParams(history.location.search);
+  const currentPage = searchParams.get('page')
+  const currentFilter = searchParams.get('filter')
+
   const noticeDetailQuery = useQuery(
     ["NoticeDetail", noticeId, langSelection],
     async () =>
@@ -93,7 +99,7 @@ export default function EditNotice() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push("/notices")}
+            onClick={() => history.push(`/notices?page=${currentPage}&filter=${currentFilter}`)}
           />
           <div className="editNotice">
             <Trans i18nKey={"notices_EditNotice"} />

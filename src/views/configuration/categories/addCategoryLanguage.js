@@ -29,7 +29,10 @@ const EventWarper = styled.div`
 `;
 
 const schema = yup.object().shape({
-  SubCategory: yup.string().required("notices_desc_required"),
+  SubCategory: yup.string().matches(
+    /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+    'only_letters'
+).required("categories_sub_category_required"),
 })
 
 export default function AddLanguageEvent() {
@@ -37,6 +40,11 @@ export default function AddLanguageEvent() {
   const { subCategoryId } = useParams();
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang = useSelector((state) => state.auth.selectLang);
+
+  const searchParams = new URLSearchParams(history.location.search);
+  const currentPage = searchParams.get('page')
+  const currentFilter = searchParams.get('filter')
+
   const [langSelection, setLangSelection] = useState(
     ConverFirstLatterToCapital(selectedLang.name)
   );
@@ -91,7 +99,7 @@ export default function AddLanguageEvent() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push("/configuration/categories")}
+            onClick={() => history.push(`/configuration/categories?page=${currentPage}&filter=${currentFilter}`)}
           />
           <div className="editEvent">
             <Trans i18nKey={"news_AddLangNews"} />

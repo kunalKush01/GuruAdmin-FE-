@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import { Plus } from "react-feather";
@@ -15,6 +15,9 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import DonationListTable from "../../components/donation/donationListTable";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
 import NoContent from "../../components/partials/noContent";
+import { ChangeCategoryType } from "../../components/partials/categoryDropdown";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
+import { getAllMasterCategories } from "../../api/categoryApi";
 
 const DoationWarper = styled.div`
   color: #583703;
@@ -53,7 +56,9 @@ const DoationWarper = styled.div`
 `;
 
 export default function Donation() {
+  const [categoryTypeName, setCategoryTypeName] = useState("All");
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
+
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const periodDropDown = () => {
     switch (dropDownName) {
@@ -75,6 +80,24 @@ export default function Donation() {
     page: 1,
     limit: 10,
   });
+
+
+  const searchParams = new URLSearchParams(history.location.search);
+
+  const currentPage = searchParams.get("page");
+  const currentFilter = searchParams.get("filter");
+  const currentCategory = searchParams.get("category");
+
+
+  useEffect(() => {
+    if (currentPage || currentCategory ||currentFilter) {
+      setCategoryTypeName(currentCategory);
+      setdropDownName(currentFilter);
+      setPagination({ ...pagination, page: parseInt(currentPage) });
+    }
+  }, []);
+
+
   let filterStartDate = moment()
     .startOf(periodDropDown())
     .utcOffset(0, true)
@@ -86,6 +109,31 @@ export default function Donation() {
 
   let startDate = moment(filterStartDate).format("DD MMM");
   let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
+
+  const categoryTypeQuery = useQuery(
+    ["categoryTypes"],
+    () =>
+      getAllMasterCategories({
+        languageId: selectedLang.id,
+      }),
+    {
+      keepPreviousData: true,
+    }
+  );
+  const categoryTypeItem = useMemo(
+    () => categoryTypeQuery?.data?.results ?? [],
+    [categoryTypeQuery]
+  );
+  const newTypes = [{ id: "", name: "All" }, ...categoryTypeItem];
+
+  let newId;
+  newTypes.forEach((newObeject) => {
+    if (newObeject.name == categoryTypeName) {
+      newId = newObeject.id;
+    }
+  });
+  const [categoryId, setCategoryId] = useState();
+
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
 
   const donationQuery = useQuery(
@@ -93,6 +141,7 @@ export default function Donation() {
       "donations",
       pagination.page,
       selectedLang.id,
+      newId,
       filterEndDate,
       filterStartDate,
       searchBarValue,
@@ -102,6 +151,7 @@ export default function Donation() {
         search: searchBarValue,
         ...pagination,
         startDate: filterStartDate,
+        masterId: newId,
         endDate: filterEndDate,
         languageId: selectedLang.id,
       }),
@@ -140,15 +190,30 @@ export default function Donation() {
             </div>
           </div>
           <div className="addDonation">
+          <ChangeCategoryType
+              className={"me-1"}
+              categoryTypeArray={newTypes}
+              typeName={categoryTypeName}
+              setTypeName={(e) => {
+                setCategoryId(e.target.id);
+                setCategoryTypeName(e.target.name);
+                setPagination({ page: 1 });
+                history.push(`/donation?page=${1}&filter=${e.target.name}`);
+              }}
+            />
             <ChangePeriodDropDown
               className={"me-1"}
               dropDownName={dropDownName}
-              setdropDownName={(e) => setdropDownName(e.target.name)}
+              setdropDownName={(e) => {
+                setdropDownName(e.target.name)
+                setPagination({ page: 1 });
+                history.push(`/donation?page=${1}&filter=${e.target.name}`);
+              }}
             />
             <Button
               color="primary"
               className="addDonation-btn  "
-              onClick={() => history.push("/donation/add")}
+              onClick={() => history.push(`/donation/add?page=${pagination.page}&category=${categoryTypeName}&filter=${dropDownName}`)}
             >
               <span>
                 <Plus className="" size={15} strokeWidth={4} />
@@ -187,7 +252,7 @@ export default function Donation() {
               <Else>
                 <If condition={donationItems.length != 0} disableMemo>
                   <Then>
-                    <DonationListTable data={donationItems} />
+                    <DonationListTable data={donationItems}/>
                   </Then>
                   <Else>
                     <NoContent
@@ -204,10 +269,16 @@ export default function Donation() {
                 <Col xs={12} className="mb-2 d-flex justify-content-center">
                   <ReactPaginate
                     nextLabel=""
+                    forcePage={pagination.page - 1}
                     breakLabel="..."
                     previousLabel=""
                     pageCount={donationQuery?.data?.totalPages || 0}
                     activeClassName="active"
+                    initialPage={
+                      (parseInt(searchParams.get("page"))
+                        ? parseInt(searchParams.get("page")) - 1
+                        : pagination.page - 1)
+                    }
                     breakClassName="page-item"
                     pageClassName={"page-item"}
                     breakLinkClassName="page-link"
@@ -217,8 +288,14 @@ export default function Donation() {
                     previousLinkClassName={"page-link"}
                     previousClassName={"page-item prev"}
                     onPageChange={(page) =>
+                      {
                       setPagination({ ...pagination, page: page.selected + 1 })
-                    }
+                      history.push(
+                        `/donation?page=${
+                          page.selected + 1
+                        }&category=${categoryTypeName}&filter=${dropDownName}`
+                      );
+                    }}
                     // forcePage={pagination.page !== 0 ? pagination.page - 1 : 0}
                     containerClassName={
                       "pagination react-paginate justify-content-end p-1"

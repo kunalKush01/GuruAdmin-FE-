@@ -39,6 +39,13 @@ export default function AddDonation() {
   const history = useHistory();
   const langArray = useSelector((state) => state.auth.availableLang);
   const loggedInUser = useSelector((state) => state.auth.userDetail.name);
+
+
+  const searchParams = new URLSearchParams(history.location.search);
+  const currentPage = searchParams.get('page')
+  const currentCategory = searchParams.get("category");
+  const currentFilter = searchParams.get('filter')
+
   const initialValues = {
     Mobile: "",
     SelectedUser: "",
@@ -56,7 +63,7 @@ export default function AddDonation() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push("/donation")}
+            onClick={() => history.push(`/donation?page=${currentPage}&category=${currentCategory}&filter=${currentFilter}`)}
           />
           <div className="addDonation">
             <Trans i18nKey={"donation_Adddonation"} />

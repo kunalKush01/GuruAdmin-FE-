@@ -15,7 +15,7 @@ import { ConverFirstLatterToCapital } from "../../../utility/formater";
 import {
   getAllMasterCategories,
   getSubCategoryDetail,
-  updateCategoryDetail
+  updateCategoryDetail,
 } from "../../../api/categoryApi";
 import CategoryForm from "../../../components/categories/categoryForm";
 
@@ -33,9 +33,14 @@ const NoticeWarper = styled.div`
 `;
 
 const schema = yup.object().shape({
-  SubCategory: yup.string().required("notices_desc_required"),
-  MasterCategory:yup.mixed().required("notices_desc_required")
-})
+  SubCategory: yup
+    .string()
+    .matches(
+      /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+      "only_letters"
+    )
+    .required("categories_sub_category_required"),
+});
 
 const getLangId = (langArray, langSelection) => {
   let languageId;
@@ -53,7 +58,14 @@ export default function EditNotice() {
 
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang = useSelector((state) => state.auth.selectLang);
-  const [langSelection, setLangSelection] = useState(ConverFirstLatterToCapital(selectedLang.name));
+
+  const searchParams = new URLSearchParams(history.location.search);
+  const currentPage = searchParams.get('page')
+  const currentFilter = searchParams.get('filter')
+
+  const [langSelection, setLangSelection] = useState(
+    ConverFirstLatterToCapital(selectedLang.name)
+  );
   const masterloadOptionQuery = useQuery(
     ["MasterCategory", selectedLang.id],
     async () =>
@@ -69,12 +81,12 @@ export default function EditNotice() {
         languageId: getLangId(langArray, langSelection),
       })
   );
-  
+
   const handleCategoryUpdate = async (payload) => {
     return updateCategoryDetail({
       ...payload,
       languageId: getLangId(langArray, langSelection),
-      categoryId:subCategoryId
+      categoryId: subCategoryId,
     });
   };
 
@@ -85,7 +97,7 @@ export default function EditNotice() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push("/configuration/categories")}
+           onClick={() => history.push(`/configuration/categories?page=${currentPage}&filter=${currentFilter}`)}
           />
           <div className="editNotice">
             <Trans i18nKey={"categories_EditCategory"} />

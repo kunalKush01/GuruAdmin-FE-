@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
@@ -46,7 +46,7 @@ const NewsWarper = styled.div`
   }
   .filterPeriod {
     color: #ff8744;
-    margin-top: .5rem;
+    margin-top: 0.5rem;
     font: normal normal bold 13px/5px noto sans;
   }
 `;
@@ -55,8 +55,8 @@ const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 export default function News() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
-  const selectedLang= useSelector(state=>state.auth.selectLang)
-  
+  const selectedLang = useSelector((state) => state.auth.selectLang);
+
   const periodDropDown = () => {
     switch (dropDownName) {
       case "dashboard_monthly":
@@ -72,11 +72,26 @@ export default function News() {
   };
   const { t } = useTranslation();
   const history = useHistory();
-  
+
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 12,
   });
+
+  const searchParams = new URLSearchParams(history.location.search);
+
+  const currentPage = searchParams.get("page");
+  const currentFilter = searchParams.get("filter");
+
+  const routPagination = pagination.page;
+  const routFilter = dropDownName;
+
+  useEffect(() => {
+    if (currentPage || currentFilter) {
+      setdropDownName(currentFilter);
+      setPagination({ ...pagination, page: parseInt(currentPage) });
+    }
+  }, []);
 
   let filterStartDate = moment()
     .startOf(periodDropDown())
@@ -89,17 +104,24 @@ export default function News() {
 
   let startDate = moment(filterStartDate).format("DD MMM");
   let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
-  const searchBarValue = useSelector((state) => state.search.LocalSearch  );
+  const searchBarValue = useSelector((state) => state.search.LocalSearch);
 
   const newsQuery = useQuery(
-    ["News", pagination.page, filterStartDate, filterEndDate,selectedLang.id,searchBarValue],
+    [
+      "News",
+      pagination.page,
+      filterStartDate,
+      filterEndDate,
+      selectedLang.id,
+      searchBarValue,
+    ],
     () =>
       getAllNews({
         ...pagination,
         startDate: filterStartDate,
         endDate: filterEndDate,
-        languageId:selectedLang.id,
-        search:searchBarValue
+        languageId: selectedLang.id,
+        search: searchBarValue,
       }),
     {
       keepPreviousData: true,
@@ -137,12 +159,16 @@ export default function News() {
             <ChangePeriodDropDown
               className={"me-1"}
               dropDownName={dropDownName}
-              setdropDownName={(e) => setdropDownName(e.target.name)}
+              setdropDownName={(e) => {
+                setdropDownName(e.target.name);
+                setPagination({ page: 1 });
+                history.push(`/news?page=${1}&filter=${e.target.name}`);
+              }}
             />
             <Button
               color="primary"
               className="addNews-btn"
-              onClick={() => history.push("/news/add")}
+              onClick={() => history.push(`/news/add?page=${pagination.page}&filter=${dropDownName}`)}
             >
               <span>
                 <Plus className="" size={15} strokeWidth={4} />
@@ -183,18 +209,19 @@ export default function News() {
                 </SkeletonTheme>
               </Then>
               <Else>
-                <If condition={newsItems.length != 0} disableMemo >
+                <If condition={newsItems.length != 0} disableMemo>
                   <Then>
                     {newsItems.map((item) => {
                       return (
                         <Col xs={3} key={item.id}>
-                          <NewsCard data={item} />
+                          <NewsCard data={item}currentFilter={routFilter}
+                        currentPage={routPagination} />
                         </Col>
                       );
                     })}
                   </Then>
                   <Else>
-                    <NoContent 
+                    <NoContent
                       headingNotfound={t("news_not_found")}
                       para={t("news_not_click_add_news")}
                     />
@@ -202,16 +229,22 @@ export default function News() {
                 </If>
               </Else>
             </If>
-            
-            <If condition={newsQuery?.data?.totalPages > 1}  >
+
+            <If condition={newsQuery?.data?.totalPages > 1}>
               <Then>
                 <Col xs={12} className="mb-2 d-flex justify-content-center">
                   <ReactPaginate
                     nextLabel=""
+                    forcePage={pagination.page - 1}
                     breakLabel="..."
                     previousLabel=""
                     pageCount={newsQuery?.data?.totalPages || 0}
                     activeClassName="active"
+                    initialPage={
+                      parseInt(searchParams.get("page"))
+                        ? parseInt(searchParams.get("page")) - 1
+                        : pagination.page - 1
+                    }
                     breakClassName="page-item"
                     pageClassName={"page-item"}
                     breakLinkClassName="page-link"
@@ -220,9 +253,14 @@ export default function News() {
                     nextClassName={"page-item next"}
                     previousLinkClassName={"page-link"}
                     previousClassName={"page-item prev"}
-                    onPageChange={(page) =>
+                    onPageChange={(page) =>{
                       setPagination({ ...pagination, page: page.selected + 1 })
-                    }
+                      history.push(
+                        `/events?page=${
+                          page.selected + 1
+                        }&filter=${dropDownName}`
+                      );
+                    }}
                     // forcePage={pagination.page !== 0 ? pagination.page - 1 : 0}
                     containerClassName={
                       "pagination react-paginate justify-content-end p-1"

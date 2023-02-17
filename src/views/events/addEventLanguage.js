@@ -42,6 +42,12 @@ export default function AddLanguageEvent() {
   const { eventId } = useParams();
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang = useSelector((state) => state.auth.selectLang);
+
+
+  const searchParams = new URLSearchParams(history.location.search);
+  const currentPage = searchParams.get('page')
+  const currentFilter = searchParams.get('filter')
+  
   const [langSelection, setLangSelection] = useState(
     ConverFirstLatterToCapital(selectedLang.name)
   );
@@ -114,7 +120,7 @@ export default function AddLanguageEvent() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push("/events")}
+            onClick={() => history.push(`/events?page=${currentPage}&filter=${currentFilter}`)}
           />
           <div className="editEvent">
             <Trans i18nKey={"news_AddLangNews"} />

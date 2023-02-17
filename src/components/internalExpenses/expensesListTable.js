@@ -15,7 +15,7 @@ import he from "he"
 import moment from "moment";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-export function ExpensesListTable({ data,page }) {
+export function ExpensesListTable({ data,page ,currentFilter, currentPage ,financeReport}) {
   const handleDeleteExpenses = async (payload) => {
     return deleteExpensesDetail(payload);
   };
@@ -87,9 +87,9 @@ export function ExpensesListTable({ data,page }) {
         <img
           src={editIcon}
           width={35}
-          className="cursor-pointer"
+          className={financeReport?"cursor-disabled opacity-50" : "cursor-pointer "}
           onClick={() =>
-            history.push(`/internal_expenses/edit/${item.id}`)
+            {financeReport?"":history.push(`/internal_expenses/edit/${item.id}?page=${currentPage}&filter=${currentFilter}`)}
           }
         />
       ),
@@ -97,12 +97,12 @@ export function ExpensesListTable({ data,page }) {
         <img
           src={deleteIcon}
           width={35}
-          className="cursor-pointer"
+          className={financeReport?"cursor-disabled opacity-50" : "cursor-pointer "}
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
             // Swal.fire("Oops...", "Something went wrong!", "error");
-            Swal.fire({
+            financeReport?"": Swal.fire({
               title: `<img src="${comfromationIcon}"/>`,
               html: `
                                   <h3 class="swal-heading">${t("expence_delete")}</h3>

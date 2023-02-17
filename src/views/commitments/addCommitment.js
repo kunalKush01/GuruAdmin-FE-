@@ -43,6 +43,15 @@ export default function AddCommitment() {
   const history = useHistory();
   const langArray = useSelector((state) => state.auth.availableLang);
   const loggedInUser = useSelector(state=>state.auth.userDetail.name)
+
+
+  const searchParams = new URLSearchParams(history.location.search);
+  const currentPage = searchParams.get('page')
+  const currentFilter = searchParams.get('filter')
+  const currentCategory = searchParams.get("category");
+  const currentSubCategory = searchParams.get("subCategory");
+  const currentStatus = searchParams.get("status");
+
   const initialValues = {
     Mobile:"",
     SelectedUser: "",
@@ -60,7 +69,7 @@ export default function AddCommitment() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push("/commitment")}
+            onClick={() => history.push(`/commitment?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`)}
           />
           <div className="addCommitment">
             <Trans i18nKey={"add_commitment"} />

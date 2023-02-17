@@ -76,10 +76,6 @@ const NavbarUserWarraper = styled.div`
       font: normal normal normal 10px/5px noto sans;
     }
   `;
-
-
-
-
 const NavbarUser = (props) => {
   const history = useHistory();
   const trustDetails = useSelector((state) => state.auth.trustDetail);

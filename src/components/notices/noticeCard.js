@@ -53,7 +53,7 @@ const EventCardWaraper = styled.div`
     margin-right: 10px;
   }
 `;
-function BtnContent({ noticeId }) {
+function BtnContent({ noticeId , currentPage, currentFilter }) {
   const { t }= useTranslation();
   const history = useHistory();
   const BtnContentWraper = styled.div`
@@ -92,7 +92,7 @@ function BtnContent({ noticeId }) {
         <Col
           xs={12}
           className="col-item"
-          onClick={() => history.push(`/notices/edit/${noticeId}`)}
+          onClick={() => history.push(`/notices/edit/${noticeId}?page=${currentPage}&filter=${currentFilter}`)}
         >
           <Trans i18nKey={"news_popOver_Edit"} />
         </Col>
@@ -131,7 +131,7 @@ function BtnContent({ noticeId }) {
         <Col
           xs={12}
           className="col-item"
-          onClick={() => history.push(`/notices/add-language/${noticeId}`)}
+          onClick={() => history.push(`/notices/add-language/${noticeId}?page=${currentPage}&filter=${currentFilter}`)}
         >
           <Trans i18nKey={"news_popOver_AddLang"} />
         </Col>
@@ -140,7 +140,7 @@ function BtnContent({ noticeId }) {
   );
 }
 
-export default function NoticeCard({ data }) {
+export default function NoticeCard({ data , currentPage, currentFilter  }) {
   return (
     <EventCardWaraper key={data.id} >
       <Card
@@ -212,7 +212,7 @@ export default function NoticeCard({ data }) {
 
       <BtnPopover
         target={`popover-${data.id}`}
-        content={<BtnContent noticeId={data.id} />}
+        content={<BtnContent noticeId={data.id} currentPage={currentPage} currentFilter={currentFilter} />}
       />
     </EventCardWaraper>
   );

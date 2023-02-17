@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
@@ -40,19 +40,17 @@ const NewsWarper = styled.div`
     font: normal normal bold 15px/20px noto sans;
   }
   .newsContent {
-   margin-top: 1rem;
+    margin-top: 1rem;
     ::-webkit-scrollbar {
       display: none;
     }
   }
   .filterPeriod {
     color: #ff8744;
-    margin-top:.5rem;
+    margin-top: 0.5rem;
     font: normal normal bold 13px/5px noto sans;
   }
 `;
-
-
 
 export default function Expenses() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
@@ -77,6 +75,22 @@ export default function Expenses() {
     page: 1,
     limit: 10,
   });
+
+  const searchParams = new URLSearchParams(history.location.search);
+
+  const currentPage = searchParams.get("page");
+  const currentFilter = searchParams.get("filter");
+
+  const routPagination = pagination.page;
+  const routFilter = dropDownName;
+
+  useEffect(() => {
+    if (currentPage || currentFilter) {
+      setdropDownName(currentFilter);
+      setPagination({ ...pagination, page: parseInt(currentPage) });
+    }
+  }, []);
+
   const [selectedMasterCate, setSelectedMasterCate] = useState("");
 
   let filterStartDate = moment()
@@ -90,18 +104,24 @@ export default function Expenses() {
 
   let startDate = moment(filterStartDate).format("DD MMM");
   let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
-  const searchBarValue = useSelector((state) => state.search.LocalSearch  );
+  const searchBarValue = useSelector((state) => state.search.LocalSearch);
 
   const expensesQuery = useQuery(
-    ["Expenses", pagination.page, selectedLang.id,filterEndDate,filterStartDate,searchBarValue],
+    [
+      "Expenses",
+      pagination.page,
+      selectedLang.id,
+      filterEndDate,
+      filterStartDate,
+      searchBarValue,
+    ],
     () =>
       getAllExpense({
         ...pagination,
         startDate: filterStartDate,
         endDate: filterEndDate,
         languageId: selectedLang.id,
-        search:searchBarValue
-        
+        search: searchBarValue,
       }),
     {
       keepPreviousData: true,
@@ -113,14 +133,12 @@ export default function Expenses() {
     [expensesQuery]
   );
 
-  
-
   return (
     <NewsWarper>
       <div className="window nav statusBar body "></div>
 
       <div>
-      <div className="d-flex justify-content-between align-items-center ">
+        <div className="d-flex justify-content-between align-items-center ">
           <div className="d-flex justify-content-between align-items-center ">
             <img
               src={arrowLeft}
@@ -144,12 +162,22 @@ export default function Expenses() {
             <ChangePeriodDropDown
               className={"me-1"}
               dropDownName={dropDownName}
-              setdropDownName={(e) => setdropDownName(e.target.name)}
+              setdropDownName={(e) => {
+                setdropDownName(e.target.name);
+                setPagination({ page: 1 });
+                history.push(
+                  `/internal_expenses?page=${1}&filter=${e.target.name}`
+                );
+              }}
             />
             <Button
               color="primary"
               className="addNews-btn"
-              onClick={() => history.push("/internal_expenses/add")}
+              onClick={() =>
+                history.push(
+                  `/internal_expenses/add?page=${pagination.page}&filter=${dropDownName}`
+                )
+              }
             >
               <span>
                 <Plus className="" size={15} strokeWidth={4} />
@@ -188,10 +216,15 @@ export default function Expenses() {
               <Else>
                 <If condition={categoryItems.length != 0} disableMemo>
                   <Then>
-                    <ExpensesListTable data={categoryItems} page={pagination} />
+                    <ExpensesListTable
+                      data={categoryItems}
+                      currentFilter={routFilter}
+                      currentPage={routPagination}
+                      page={pagination}
+                    />
                   </Then>
                   <Else>
-                    <NoContent 
+                    <NoContent
                       headingNotfound={t("expence_not_found")}
                       para={t("expence_not_click_add_expence")}
                     />
@@ -205,10 +238,16 @@ export default function Expenses() {
                 <Col xs={12} className="mb-2 d-flex justify-content-center">
                   <ReactPaginate
                     nextLabel=""
+                    forcePage={pagination.page - 1}
                     breakLabel="..."
                     previousLabel=""
                     pageCount={expensesQuery?.data?.totalPages || 0}
                     activeClassName="active"
+                    initialPage={
+                      parseInt(searchParams.get("page"))
+                        ? parseInt(searchParams.get("page")) - 1
+                        : pagination.page - 1
+                    }
                     breakClassName="page-item"
                     pageClassName={"page-item"}
                     breakLinkClassName="page-link"
@@ -217,9 +256,14 @@ export default function Expenses() {
                     nextClassName={"page-item next"}
                     previousLinkClassName={"page-link"}
                     previousClassName={"page-item prev"}
-                    onPageChange={(page) =>
-                      setPagination({ ...pagination, page: page.selected + 1 })
-                    }
+                    onPageChange={(page) => {
+                      setPagination({ ...pagination, page: page.selected + 1 });
+                      history.push(
+                        `/internal_expenses?page=${
+                          page.selected + 1
+                        }&filter=${dropDownName}`
+                      );
+                    }}
                     // forcePage={pagination.page !== 0 ? pagination.page - 1 : 0}
                     containerClassName={
                       "pagination react-paginate justify-content-end p-1"

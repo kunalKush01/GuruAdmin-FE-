@@ -1,5 +1,5 @@
 import { Form, Formik } from "formik";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import styled from "styled-components";
 import { CustomDropDown } from "../../../components/partials/customDropDown";
@@ -24,7 +24,10 @@ import {
 } from "../../../api/categoryApi";
 import { CustomReactSelect } from "../../../components/partials/customReactSelect";
 import CategoryCard from "../../../components/categories/categoryCard";
-import { SubAdminUserListTable, UserListTable } from "../../../components/users/userListTable";
+import {
+  SubAdminUserListTable,
+  UserListTable,
+} from "../../../components/users/userListTable";
 import { getAllUser } from "../../../api/userApi";
 import NoContent from "../../../components/partials/noContent";
 const NewsWarper = styled.div`
@@ -87,6 +90,19 @@ export default function User() {
     page: 1,
     limit: 10,
   });
+
+  const searchParams = new URLSearchParams(history.location.search);
+
+  const currentPage = searchParams.get("page");
+  const currentFilter = searchParams.get("page");
+  const routPagination = pagination.page;
+  useEffect(() => {
+    if (currentPage || currentFilter) {
+      setdropDownName(currentFilter);
+      setPagination({ ...pagination, page: parseInt(currentPage) });
+    }
+  }, []);
+
   const [selectedMasterCate, setSelectedMasterCate] = useState("");
 
   let filterStartDate = moment()
@@ -100,10 +116,16 @@ export default function User() {
 
   let startDate = moment(filterStartDate).format("DD MMM");
   let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
-  const searchBarValue = useSelector((state) => state.search.LocalSearch  );
+  const searchBarValue = useSelector((state) => state.search.LocalSearch);
 
   const userQuery = useQuery(
-    ["Users", pagination.page, selectedLang.id, selectedMasterCate,searchBarValue],
+    [
+      "Users",
+      pagination.page,
+      selectedLang.id,
+      selectedMasterCate,
+      searchBarValue,
+    ],
     () =>
       getAllUser({
         ...pagination,
@@ -111,17 +133,14 @@ export default function User() {
         endDate: filterEndDate,
         languageId: selectedLang.id,
         masterId: selectedMasterCate,
-        search:searchBarValue
+        search: searchBarValue,
       }),
     {
       keepPreviousData: true,
     }
   );
 
-  const userItems = useMemo(
-    () => userQuery?.data?.results ?? [],
-    [userQuery]
-  );
+  const userItems = useMemo(() => userQuery?.data?.results ?? [], [userQuery]);
 
   const masterloadOptionQuery = useQuery(
     ["MasterCategory", selectedLang.id],
@@ -148,29 +167,16 @@ export default function User() {
                 <div>
                   <Trans i18nKey={"users_latest_User"} />
                 </div>
-                {/* <div className="filterPeriod">
-                  <span>
-                    {startDate}-{endDate}
-                  </span>
-                </div> */}
               </div>
             </div>
           </div>
           <div className="addNews">
-            {/* <CustomReactSelect
-              name="SelectedCategory"
-              loadOptions={masterloadOptionQuery?.data?.results ?? []}
-              labelKey={"name"}
-              valueKey={"id"}
-              label={t("events_select_dropDown")}
-              placeholder={t("all")}
-              outlined
-              onChange={(data) => setSelectedMasterCate(data?.id ?? "")}
-            /> */}
             <Button
               color="primary"
               className="addNews-btn"
-              onClick={() => history.push("/configuration/users/add")}
+              onClick={() =>
+                history.push(`/configuration/users/add?page=${pagination.page}`)
+              }
             >
               <span>
                 <Plus className="" size={15} strokeWidth={4} />
@@ -209,12 +215,16 @@ export default function User() {
               <Else>
                 <If condition={userItems.length != 0} disableMemo>
                   <Then>
-                    <SubAdminUserListTable data={userItems} />
+                    <SubAdminUserListTable
+                      data={userItems}
+                      currentPage={routPagination}
+                    />
                   </Then>
                   <Else>
-                    <NoContent 
+                    <NoContent
                       headingNotfound={t("users_not_found")}
-                      para={t("users_not_click_add_users")} />
+                      para={t("users_not_click_add_users")}
+                    />
                   </Else>
                 </If>
               </Else>
@@ -225,10 +235,16 @@ export default function User() {
                 <Col xs={12} className="mb-2 d-flex justify-content-center">
                   <ReactPaginate
                     nextLabel=""
+                    forcePage={pagination.page - 1}
                     breakLabel="..."
                     previousLabel=""
                     pageCount={userQuery?.data?.totalPages || 0}
                     activeClassName="active"
+                    initialPage={
+                      parseInt(searchParams.get("page"))
+                        ? parseInt(searchParams.get("page")) - 1
+                        : pagination.page - 1
+                    }
                     breakClassName="page-item"
                     pageClassName={"page-item"}
                     breakLinkClassName="page-link"
@@ -237,9 +253,12 @@ export default function User() {
                     nextClassName={"page-item next"}
                     previousLinkClassName={"page-link"}
                     previousClassName={"page-item prev"}
-                    onPageChange={(page) =>
-                      setPagination({ ...pagination, page: page.selected + 1 })
-                    }
+                    onPageChange={(page) => {
+                      setPagination({ ...pagination, page: page.selected + 1 });
+                      history.push(
+                        `/configuration/users?page=${page.selected + 1}`
+                      );
+                    }}
                     // forcePage={pagination.page !== 0 ? pagination.page - 1 : 0}
                     containerClassName={
                       "pagination react-paginate justify-content-end p-1"
