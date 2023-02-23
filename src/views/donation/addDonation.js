@@ -7,6 +7,7 @@ import * as yup from "yup";
 import { createDonation } from "../../api/donationApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import DonationForm from "../../components/donation/donationForm";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 const DonationWarapper = styled.div`
   color: #583703;
@@ -54,7 +55,7 @@ export default function AddDonation() {
     SelectedSubCategory: "",
     SelectedCommitmentId: "",
     Amount: "",
-    createdBy: loggedInUser,
+    createdBy: ConverFirstLatterToCapital(loggedInUser),
   };
   return (
     <DonationWarapper>

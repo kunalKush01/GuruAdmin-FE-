@@ -182,9 +182,11 @@ export default function Commitment() {
   // status
   let payloadStatus;
   if (commitmentStatus == "commitment_complete") {
-    payloadStatus = "Re-Solved";
+    payloadStatus = "completed";
   } else if (commitmentStatus == "report_panding") {
     payloadStatus = "Pending";
+  } else if (commitmentStatus == "commitment_partial") {
+    payloadStatus = "partial";
   } else {
     payloadStatus = "All";
   }
@@ -248,8 +250,8 @@ export default function Commitment() {
             </div>
           </div>
           <div className="addCommitment">
-            <Trans i18nKey={"category"} />
-            &nbsp;
+            {/* <Trans i18nKey={"category"} />
+            &nbsp; */}
             <ChangeCategoryType
               className={"me-1"}
               categoryTypeArray={newTypes}
@@ -261,8 +263,8 @@ export default function Commitment() {
                 history.push(`/commitment?page=${1}&filter=${e.target.name}`);
               }}
             />
-            <Trans i18nKey={"categories_sub_category"} />
-            &nbsp;
+            {/* <Trans i18nKey={"categories_sub_category"} />
+            &nbsp; */}
             <ChangeCategoryType
               className={"me-1"}
               categoryTypeArray={subCategoryTypes}
@@ -274,8 +276,8 @@ export default function Commitment() {
                 history.push(`/commitment?page=${1}&filter=${e.target.name}`);
               }}
             />
-            <Trans i18nKey={"dashboard_Recent_DonorStatus"} />
-            &nbsp;
+            {/* <Trans i18nKey={"dashboard_Recent_DonorStatus"} />
+            &nbsp; */}
             <ChangeStatus
               className={"me-1"}
               dropDownName={commitmentStatus}

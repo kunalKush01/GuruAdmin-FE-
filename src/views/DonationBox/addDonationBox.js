@@ -32,13 +32,6 @@ const schema = yup.object().shape({
   DateTime: yup.string(),
 });
 
-const initialValues = {
-  Id:"",
-  CreatedBy: "admin",
-  Body: "",
-  Amount: "",
-  DateTime: new Date(),
-};
 
 export default function AddNews() {
   const history = useHistory();
@@ -47,6 +40,16 @@ export default function AddNews() {
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get('page')
   const currentFilter = searchParams.get('filter')
+  const loggedInUser = useSelector((state) => state.auth.userDetail.name);
+
+
+const initialValues = {
+  Id:"",
+  CreatedBy: loggedInUser,
+  Body: "",
+  Amount: "",
+  DateTime: new Date(),
+};
 
   return (
     <NewsWarper>

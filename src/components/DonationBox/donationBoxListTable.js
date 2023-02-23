@@ -1,24 +1,23 @@
-import { DateProfileGenerator } from "@fullcalendar/core";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import he from "he";
 import moment from "moment";
 import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { deleteExpensesDetail } from "../../api/expenseApi";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import CustomDataTable from "../partials/CustomDataTable";
 
-export default function DonationBoxListTable({ data , financeReport }) {
+export default function DonationBoxListTable({ data, financeReport }) {
   const handleDeleteDonationBox = async (payload) => {
     return deleteExpensesDetail(payload);
   };
   const queryCient = useQueryClient();
   const deleteMutation = useMutation({
     mutationFn: handleDeleteDonationBox,
-    onSuccess: (data) => {      
-      if (!data.error) {        
+    onSuccess: (data) => {
+      if (!data.error) {
         queryCient.invalidateQueries(["Collections"]);
       }
     },
@@ -33,23 +32,28 @@ export default function DonationBoxListTable({ data , financeReport }) {
       style: {
         font: "normal normal 700 13px/20px noto sans !important ",
       },
-      width:"350px"
+      width: "350px",
     },
     {
       name: t("dashboard_Recent_DonorDate"),
       selector: (row) => row.dateTime,
-      width:"350px"
+      width: "350px",
     },
     {
       name: t("remarks_financial_donationBox"),
       selector: (row) => row.remarks,
-      width:"350px"
+      width: "350px",
     },
 
     {
       name: t(""),
-      center:true,
+      center: true,
       selector: (row) => row.edit,
+    },
+    {
+      name: t(""),
+      center: true,
+      selector: (row) => row.viewLogs,
     },
   ];
 
@@ -57,18 +61,37 @@ export default function DonationBoxListTable({ data , financeReport }) {
     return data.map((item, idx) => ({
       _Id: item.id,
       id: `${idx + 1}`,
-      amount:`₹${item.amount}`,
-      remarks:<div className="d-flex tableDes" dangerouslySetInnerHTML={{__html:he.decode(item?.remarks??"")}} /> ,
-      dateTime:moment(item?.collectionDate).utcOffset(0).format("h:mm A, DD MMM YYYY"),
+      amount: `₹${item.amount}`,
+      remarks: (
+        <div
+          className="d-flex tableDes"
+          dangerouslySetInnerHTML={{ __html: he.decode(item?.remarks ?? "") }}
+        />
+      ),
+      dateTime: moment(item?.collectionDate)
+        .utcOffset(0)
+        .format("h:mm A, DD MMM YYYY"),
       edit: (
         <img
           src={editIcon}
           width={35}
-          className={financeReport?"cursor-disabled opacity-50" : "cursor-pointer "}
-          onClick={() =>
-            { financeReport?"":history.push(`/Hundi/edit/${item.id}`)}
+          className={
+            financeReport ? "cursor-disabled opacity-50" : "cursor-pointer "
           }
+          onClick={() => {
+            financeReport ? "" : history.push(`/Hundi/edit/${item.id}`);
+          }}
         />
+      ),
+      viewLogs: (
+        <div
+          className="cursor-pointer viewLogs"
+          onClick={() =>
+            history.push(`/financial_reports/Logs/${item.id}`, item._id)
+          }
+        >
+          <Trans i18nKey={"viewLogs"} />
+        </div>
       ),
     }));
   }, [data]);
@@ -77,19 +100,18 @@ export default function DonationBoxListTable({ data , financeReport }) {
     color: #583703 !important;
     /* margin-right: 20px; */
     font: normal normal bold 15px/23px Noto Sans;
-
-    .tableDes p{
+    .tableDes p {
       margin-bottom: 0;
+    }
+    .viewLogs {
+      font: normal normal bold 15px/33px Noto Sans;
+      color: #ff8744;
     }
   `;
 
   return (
     <RecentDonationTableWarper>
-      <CustomDataTable
-        maxHieght={""}
-        columns={columns}
-        data={donatioBoxList}
-      />
+      <CustomDataTable maxHieght={""} columns={columns} data={donatioBoxList} />
     </RecentDonationTableWarper>
   );
 }

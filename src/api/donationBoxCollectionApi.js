@@ -15,6 +15,14 @@ export const getAllBoxCollection = (payload) =>
     showToastOnError: false,
   });
 
+
+export const getAllBoxCollectionLogs = (payload) =>
+callApi({
+  requestFunction: (axios) => axios.post(`${API_BASE_URL}donation-box/logs`, payload),
+  showToastOnSuccess: false,
+  showToastOnError: false,
+});
+
 export const getCollectionBoxDetail = ({donationBoxId}) =>
   callApi({
     requestFunction: (axios) =>

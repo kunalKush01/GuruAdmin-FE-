@@ -42,6 +42,7 @@ export default function UserForm({
   handleSubmit,
   vailidationSchema,
   initialValues,
+  userRole,
   showTimeInput,
   buttonName = "",
   ...props
@@ -69,6 +70,7 @@ export default function UserForm({
           categoryMutation.mutate({
             email: e.email,
             mobileNumber: e.mobile,
+            roleId: e?.role?.id,
             name: e.name,
           });
         }}
@@ -107,47 +109,18 @@ export default function UserForm({
                       </Col>
                     </Row>
                   </Col>
-                  <Col xs={4}>
-                    {/* <FormikCustomReactSelect
+                  <Col xs={4} className="mt-1">
+                    <FormikCustomReactSelect
                       width={"100%"}
-                      name={props.CategoryFormName}
+                      name={userRole}
                       loadOptions={loadOptions}
+                      defaultValue={formik?.values?.role}
                       labelKey={"name"}
                       valueKey={"id"}
                       labelName={t("User Role")}
-                      placeholder={props.placeholder ?? t("all")}
-                    /> */}
+                    />
                   </Col>
                 </Row>
-                {/* <Row>
-                  <Col xs={12}>
-                    <RichTextField
-                      height="100px"
-                      label={t("news_label_Description")}
-                      name="Body"
-                    />
-                  </Col>
-                </Row> */}
-                {/* <Row>
-                        <div className="ImagesVideos">
-                          <Trans i18nKey={"news_label_ImageVedio"} />
-                        </div>
-                        <div></div>
-                      </Row> */}
-                {/* <Row>
-                  <Col xs={6}>
-                    <CustomTextField
-                      label={t("news_label_Published")}
-                      name="PublishedBy"
-                    />
-                  </Col>
-                </Row> */}
-                {/* </Col>
-              <Col> */}
-                {/* <FormikCustomDatePicker
-                  name="DateTime"
-                  showTimeInput={showTimeInput}
-                /> */}
               </Col>
             </Row>
             <div className="btn-Published ">

@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -25,16 +26,19 @@ const handleCreateUser = async (payload) => {
   return createUser(payload);
 };
 const schema = yup.object().shape({
-  name: yup.string().matches(
-    /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
-    'user_only_letters'
-).required("users_title_required"),
+  name: yup
+    .string()
+    .matches(
+      /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+      "user_only_letters"
+    )
+    .required("users_title_required"),
   // mobile: yup.string().required("users_mobile_required"),
-  mobile :yup.string()
-              .min(9,"Mobile Number must me 10 digits")
-              .required("users_mobile_required"),
-  email:yup.string().email('Invalid email').required("users_email_required"),
-
+  mobile: yup
+    .string()
+    .min(9, "Mobile Number must me 10 digits")
+    .required("users_mobile_required"),
+  email: yup.string().email("Invalid email").required("users_email_required"),
 });
 
 export default function AddCategory() {
@@ -42,10 +46,15 @@ export default function AddCategory() {
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
-  
   const searchParams = new URLSearchParams(history.location.search);
-  const currentPage = searchParams.get('page')
-
+  const currentPage = searchParams.get("page");
+  const userRoleQuery = useQuery(
+    ["userRoles", selectedLang.id],
+    async () =>
+      await getAllTrustType({
+        languageId: selectedLang.id,
+      })
+  );
   return (
     <NoticeWraper>
       <div className="d-flex justify-content-between align-items-center ">
@@ -53,38 +62,32 @@ export default function AddCategory() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push(`/configuration/users?page=${currentPage}`)}
+            onClick={() =>
+              history.push(`/configuration/users?page=${currentPage}`)
+            }
           />
           <div className="addNotice">
             <Trans i18nKey={"users_AddUser"} />
           </div>
         </div>
-        {/* <div className="addNotice">
-          <Trans i18nKey={"news_InputIn"} />
-          <CustomDropDown
-            ItemListArray={langArray}
-            className={"ms-1"}
-            defaultDropDownName={"English"}
-            disabled
-          />
-        </div> */}
       </div>
-
-     
+      {/* {!userRoleQuery.isLoading && !userRoleQuery.isFetching ? ( */}
         <UserForm
-          // loadOptions={masterloadOptionQuery?.data?.results}
-          // placeholder={masterloadOptionQuery?.data?.results[0].name ?? "All"}
-          // CategoryFormName={"MasterCategory"}
+          loadOptions={userRoleQuery?.data?.results ?? [] }
+          userRole={"role"}
           handleSubmit={handleCreateUser}
           initialValues={{
             name: "",
             mobile: "",
             email: "",
+            role: "",
           }}
           vailidationSchema={schema}
           buttonName={"users_AddUser"}
         />
-      
+      {/* ) : ( */}
+        {/* "" */}
+      {/* )} */}
     </NoticeWraper>
   );
 }

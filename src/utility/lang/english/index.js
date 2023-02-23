@@ -204,11 +204,19 @@ DonationBox_EditCollectionBox:"Edit Collection ",
 created_by:"Created By",
 edit_collection:"Edit Collection",
 enter_price_manually:"Enter Amount",
+viewLogs:"View Logs",
+logs:"Logs",
 add_remarks:"Add Remarks",
 add_amount:"Add Amount",
 DonationBox_AddDonationBox:"Add Donation Box ",
 donation_box_desc_required:"Description is Required.",
 donation_box_amount_required:"Amount is Required.",
+
+logData_editedBy:"Edited By",
+logData_createdBy:"Created By",
+logData_timeDate:"Time & Date",
+logData_createdAmount:"Created Amount",
+logData_editedAmount:"Edited Amount",
 
 donation_box_not_found:"No Donation Box Found",
 donation_box_not_click_add_donation_box:'Click on "Add Collection" to add donation box on the screen',
@@ -227,6 +235,7 @@ commitment_sure:"Are you sure you want to permanently delete the selected commit
 commitment_not_found:"No Commitment Found",
 commitment_not_click_add_commitment:'Click on "Add Commitment" to add commitment on the screen',
 commitment_complete:"Completed",
+commitment_partial:"Partial",
 
 // All subscribed user static data
   subscribed_user_add_user:"Add Subscribed User",

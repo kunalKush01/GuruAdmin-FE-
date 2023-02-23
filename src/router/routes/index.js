@@ -197,6 +197,11 @@ const Routes = [
     component: lazy(() => import('../../views/DonationBox/editDonationBox')),
     // exact:true
   },
+  {
+    path: '/financial_reports/Logs/:collectionId',
+    component: lazy(() => import('../../views/financialReport/donationBoxLogsList')),
+    // exact:true
+  },
 ];
 
 export { DefaultRoute, TemplateTitle, Routes };

@@ -51,7 +51,7 @@ export default function EditDonationBox() {
   
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang= useSelector(state=>state.auth.selectLang)
-
+  const loggedInUser = useSelector((state) => state.auth.userDetail.name);
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get('page')
   const currentFilter = searchParams.get('filter')
@@ -79,7 +79,7 @@ export default function EditDonationBox() {
     return  {
        
         Id:collectionBoxDetailQuery?.data?.result?.id,
-        CreatedBy: collectionBoxDetailQuery?.data?.result?.createdBy?.name,
+        CreatedBy: loggedInUser,
         Body: he.decode(collectionBoxDetailQuery?.data?.result?.remarks??""),
         Amount: collectionBoxDetailQuery?.data?.result?.amount,
         DateTime: moment(collectionBoxDetailQuery?.data?.result?.publishDate)

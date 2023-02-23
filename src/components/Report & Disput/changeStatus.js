@@ -16,6 +16,10 @@ export const ChangeStatus = ({dropDownName,setdropDownName,...props}) => {
     },
     {
       id: 2,
+      key: "commitment_partial",
+    },
+    {
+      id: 3,
       key: "commitment_complete",
     },
   ];

@@ -52,11 +52,12 @@ export default function AddNews() {
     ["ExpensesDetail", expensesId],
     async () => await getExpensesDetail(expensesId)
   );
+  const loggedInUser = useSelector((state) => state.auth.userDetail.name);
   
   const initialValues = {
     Id:ExpensesDetailQuery?.data?.result?.id,
     Title: ExpensesDetailQuery?.data?.result?.title ??null,
-    AddedBy: ExpensesDetailQuery?.data?.result?.createdBy?.name ?? "",
+    AddedBy: loggedInUser,
     Body: he.decode(ExpensesDetailQuery?.data?.result?.description ??""),
     Amount: ExpensesDetailQuery?.data?.result?.amount ?? "",
     DateTime: moment(ExpensesDetailQuery?.data?.result?.expenseDate)

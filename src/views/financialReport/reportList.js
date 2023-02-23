@@ -309,10 +309,6 @@ export default function FinancialReport() {
                 <div>{Items?.totalAmount ?? 0}</div>
               </div>
             <div className="dateChooserReport d-flex me-2 position-relative justify-content-between align-item-center">
-              {/* <div className="align-self-center">
-                {reportStartDatePrint}&nbsp;&nbsp; - &nbsp;&nbsp;{reportEndDatePrint}
-              </div> */}
-              
               <Formik
                 initialValues={{
                   DateTime: {
