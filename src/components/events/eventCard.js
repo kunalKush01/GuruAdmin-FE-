@@ -53,7 +53,7 @@ const EventCardWaraper = styled.div`
     margin-right: 10px;
   }
 `;
-function BtnContent({ eventId , currentPage, currentFilter }) {
+function BtnContent({ eventId, currentPage, currentFilter }) {
   const history = useHistory();
   const BtnContentWraper = styled.div`
     color: #583703;
@@ -80,7 +80,6 @@ function BtnContent({ eventId , currentPage, currentFilter }) {
         console.log("invaldating");
         queryCient.invalidateQueries(["Events"]);
         queryCient.invalidateQueries(["EventDates"]);
-
       }
     },
   });
@@ -88,12 +87,14 @@ function BtnContent({ eventId , currentPage, currentFilter }) {
   return (
     <BtnContentWraper>
       <Row className="MainContainer d-block">
-        
-
         <Col
           xs={12}
           className="col-item"
-          onClick={() => history.push(`/events/edit/${eventId}?page=${currentPage}&filter=${currentFilter}`)}
+          onClick={() =>
+            history.push(
+              `/events/edit/${eventId}?page=${currentPage}&filter=${currentFilter}`
+            )
+          }
         >
           <Trans i18nKey={"news_popOver_Edit"} />
         </Col>
@@ -134,7 +135,11 @@ function BtnContent({ eventId , currentPage, currentFilter }) {
         <Col
           xs={12}
           className="col-item"
-          onClick={() => history.push(`/events/add-language/${eventId}?page=${currentPage}&filter=${currentFilter}`)}
+          onClick={() =>
+            history.push(
+              `/events/add-language/${eventId}?page=${currentPage}&filter=${currentFilter}`
+            )
+          }
         >
           <Trans i18nKey={"news_popOver_AddLang"} />
         </Col>
@@ -143,7 +148,8 @@ function BtnContent({ eventId , currentPage, currentFilter }) {
   );
 }
 
-export default function EventCard({ data , currentPage, currentFilter }) {
+export default function EventCard({ data, currentPage, currentFilter }) {
+  const history = useHistory();
   return (
     <EventCardWaraper>
       <Card
@@ -156,27 +162,42 @@ export default function EventCard({ data , currentPage, currentFilter }) {
       >
         <CardBody>
           <Row className="align-items-center">
-            <Col xs={2}>
+            <Col
+              xs={2}
+              onClick={() => history.push(`/events/about/${data.id}`, data.id)}
+              className="cursor-pointer"
+            >
               <img
                 src="https://picsum.photos/300/200"
                 style={{ width: "100%", height: "100%", borderRadius: "10px" }}
               />
             </Col>
             <Col xs={9}>
-              <Row>
-                <Col xs={6}>
-                  <div className="card1">
-                    {ConverFirstLatterToCapital(data.title)}
-                  </div>
-                </Col>
-                <Col xs={6}>
-                  <div className="card-Date">
-                    <p>
-                    {`${moment(data.startDate).format("DD MMM YYYY")} to ${moment(data.endDate).format("DD MMM YYYY")} ,${data.startTime} to ${data.endTime}`}
-                    </p>
-                  </div>
-                </Col>
-              </Row>
+              <div
+                onClick={() =>
+                  history.push(`/events/about/${data.id}`, data.id)
+                }
+                className="cursor-pointer"
+              >
+                <Row>
+                  <Col xs={6}>
+                    <div className="card1">
+                      {ConverFirstLatterToCapital(data.title)}
+                    </div>
+                  </Col>
+                  <Col xs={6}>
+                    <div className="card-Date">
+                      <p>
+                        {`${moment(data.startDate).format(
+                          "DD MMM YYYY"
+                        )} to ${moment(data.endDate).format("DD MMM YYYY")} ,${
+                          data.startTime
+                        } to ${data.endTime}`}
+                      </p>
+                    </div>
+                  </Col>
+                </Row>
+              </div>
               <Row>
                 <Col>
                   <Col xs={12}>
@@ -218,7 +239,13 @@ export default function EventCard({ data , currentPage, currentFilter }) {
       </Card>
       <BtnPopover
         target={`popover-${data.id}`}
-        content={<BtnContent eventId={data.id}  currentPage={currentPage} currentFilter={currentFilter} />}
+        content={
+          <BtnContent
+            eventId={data.id}
+            currentPage={currentPage}
+            currentFilter={currentFilter}
+          />
+        }
       />
     </EventCardWaraper>
   );

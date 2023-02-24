@@ -27,7 +27,7 @@ import { useHistory } from "react-router-dom";
 import { deleteNewsDetail } from "../../api/newsApi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
-import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg"
+import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
 const NewsCardWaraper = styled.div`
   .imgContainer {
     border-radius: 10px 10px 0px 0px;
@@ -75,7 +75,7 @@ const NewsCardWaraper = styled.div`
     font: normal normal bold 12px/30px noto sans;
   }
 `;
-function BtnContent({ newsId , currentPage, currentFilter}) {
+function BtnContent({ newsId, currentPage, currentFilter }) {
   const { t } = useTranslation();
   const history = useHistory();
   const BtnContentWraper = styled.div`
@@ -90,7 +90,6 @@ function BtnContent({ newsId , currentPage, currentFilter}) {
         color: #fff;
       }
     }
-    
   `;
 
   const handleDeleteNews = async (payload) => {
@@ -100,7 +99,7 @@ function BtnContent({ newsId , currentPage, currentFilter}) {
   const deleteMutation = useMutation({
     mutationFn: handleDeleteNews,
     onSuccess: (data) => {
-      console.log("deleteMutation=",data);
+      console.log("deleteMutation=", data);
       if (!data.error) {
         console.log("invaldating");
         queryCient.invalidateQueries(["News"]);
@@ -111,13 +110,15 @@ function BtnContent({ newsId , currentPage, currentFilter}) {
   return (
     <BtnContentWraper>
       <Row className="MainContainer d-block">
-        
-
         <Col
           xs={12}
           className="col-item"
-          onClick={() => history.push(`/news/edit/${newsId}?page=${currentPage}&filter=${currentFilter}`, newsId)}
-          
+          onClick={() =>
+            history.push(
+              `/news/edit/${newsId}?page=${currentPage}&filter=${currentFilter}`,
+              newsId
+            )
+          }
         >
           <Trans i18nKey={"news_popOver_Edit"} />
         </Col>
@@ -133,7 +134,9 @@ function BtnContent({ newsId , currentPage, currentFilter}) {
             Swal.fire({
               title: `<img src="${comfromationIcon}"/>`,
               html: `
-                                      <h3 class="swal-heading">${t("news_delete")}</h3>
+                                      <h3 class="swal-heading">${t(
+                                        "news_delete"
+                                      )}</h3>
                                       <p>${t("news_sure")}</p>
                                       `,
               showCloseButton: false,
@@ -144,11 +147,9 @@ function BtnContent({ newsId , currentPage, currentFilter}) {
 
               confirmButtonText: `${t("confirm")}`,
               confirmButtonAriaLabel: "Confirm",
-              
-              
             }).then(async (result) => {
               if (result.isConfirmed) {
-                deleteMutation.mutate(newsId)
+                deleteMutation.mutate(newsId);
               }
             });
           }}
@@ -158,7 +159,12 @@ function BtnContent({ newsId , currentPage, currentFilter}) {
         <Col
           xs={12}
           className="col-item"
-          onClick={() => history.push(`/news/add-language/${newsId}?page=${currentPage}&filter=${currentFilter}`, newsId)}
+          onClick={() =>
+            history.push(
+              `/news/add-language/${newsId}?page=${currentPage}&filter=${currentFilter}`,
+              newsId
+            )
+          }
         >
           <Trans i18nKey={"news_popOver_AddLang"} />
         </Col>
@@ -167,7 +173,9 @@ function BtnContent({ newsId , currentPage, currentFilter}) {
   );
 }
 
-export default function NewsCard({ data , currentPage, currentFilter }) {
+export default function NewsCard({ data, currentPage, currentFilter }) {
+  const history = useHistory();
+
   return (
     <NewsCardWaraper>
       <Card
@@ -175,7 +183,10 @@ export default function NewsCard({ data , currentPage, currentFilter }) {
           width: "300px",
         }}
       >
-        <div className="position-relative imgContainer ">
+        <div
+          className="position-relative cursor-pointer imgContainer "
+          onClick={() => history.push(`/news/about/${data.id}`, data.id)}
+        >
           <img
             alt="Sample"
             style={{
@@ -193,16 +204,20 @@ export default function NewsCard({ data , currentPage, currentFilter }) {
         </div>
 
         <CardBody>
-          <CardTitle>{ConverFirstLatterToCapital (data.title)}</CardTitle>
+          <div
+            className="cursor-pointer"
+            onClick={() => history.push(`/news/about/${data.id}`, data.id)}
+          >
+            <CardTitle>{ConverFirstLatterToCapital(data.title)}</CardTitle>
 
-          <CardText>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: he.decode(data?.body ?? ""),
-              }}
-            />
-          </CardText>
-
+            <CardText>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: he.decode(data?.body ?? ""),
+                }}
+              />
+            </CardText>
+          </div>
           <div>
             {data.languages.map((item) => {
               return (
@@ -218,14 +233,24 @@ export default function NewsCard({ data , currentPage, currentFilter }) {
                 <img src={cardClockIcon} style={{ verticalAlign: "bottom" }} />
                 {`Posted on ${moment(data.publishDate).format("D MMMM YYYY ")}`}
               </div>
-              <img src={cardThreeDotIcon} className="cursor-pointer" id={`popover-${data.id}`} />
+              <img
+                src={cardThreeDotIcon}
+                className="cursor-pointer"
+                id={`popover-${data.id}`}
+              />
             </div>
           </CardFooter>
         </CardBody>
       </Card>
       <BtnPopover
         target={`popover-${data.id}`}
-        content={<BtnContent newsId={data.id} currentPage={currentPage} currentFilter={currentFilter}/>}
+        content={
+          <BtnContent
+            newsId={data.id}
+            currentPage={currentPage}
+            currentFilter={currentFilter}
+          />
+        }
       />
     </NewsCardWaraper>
   );
