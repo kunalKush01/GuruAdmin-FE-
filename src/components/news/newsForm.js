@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { CustomDropDown } from "../partials/customDropDown";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { Trans, useTranslation } from "react-i18next";
-import { Button, Col, Row } from "reactstrap";
+import { Button, Col, Row, Spinner } from "reactstrap";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import { useHistory } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -52,16 +52,20 @@ export default function NewsForm({
   const history = useHistory();
   const { t } = useTranslation();
   const newsQuerClient = useQueryClient();
+  const [loading , setLoading] = useState(false)
 
   const newsMutation = useMutation({
     mutationFn: handleSubmit,
-
     onSuccess: (data) => {
       console.log("error=", data);
       if ( !data.error) {
         newsQuerClient.invalidateQueries(["News"])
         newsQuerClient.invalidateQueries(["NewsDetail"])
+        setLoading(false);
         history.push("/news");
+      }
+      else if(data.error){
+        setLoading(false)
       }
     },
   });
@@ -70,7 +74,8 @@ export default function NewsForm({
       <Formik
       // enableReinitialize
         initialValues={{ ...initialValues }}
-        onSubmit={(e) =>
+        onSubmit={(e) =>{
+            setLoading(true)
           newsMutation.mutate({
             newsId: e.Id,
             title: e.Title,
@@ -79,7 +84,7 @@ export default function NewsForm({
             publishDate: e.DateTime,
             publishedBy: e.PublishedBy,
             imageUrl: "http://newsImage123.co",
-          })
+          })}
         }
         validationSchema={vailidationSchema}
       >
@@ -133,16 +138,32 @@ export default function NewsForm({
               </Col>
             </Row>
             <div className="btn-Published mb-2">
-              <Button color="primary" type="submit"> 
-              {plusIconDisable && (
+            {loading ? (
+                <Button
+                  color="primary"
+                  className="add-trust-btn"
+                  style={{
+                    borderRadius: "10px",
+                    padding: "5px 40px",
+                    opacity: "100%",
+                  }}
+                  disabled
+                >
+                  <Spinner size="md" />
+                </Button>
+              ) : (
+                <Button color="primary" type="submit"> 
+                {plusIconDisable && (
+                    <span>
+                      <Plus className="me-1" size={15} strokeWidth={4} />
+                    </span>
+                  )}
                   <span>
-                    <Plus className="me-1" size={15} strokeWidth={4} />
+                    <Trans i18nKey={`${buttonName}`} />
                   </span>
-                )}
-                <span>
-                  <Trans i18nKey={`${buttonName}`} />
-                </span>
-              </Button>
+                </Button>
+              )}
+              
             </div>
           </Form>
         )}

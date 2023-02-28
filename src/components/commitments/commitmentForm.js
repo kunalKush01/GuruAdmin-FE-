@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Formik } from "formik";
-import React from "react";
+import { flatMap } from "lodash";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
@@ -56,7 +57,7 @@ export default function CommitmentForm({
   const history = useHistory();
   const commitmentQueryClient = useQueryClient();
   const selectedLang = useSelector((state) => state.auth.selectLang);
-
+  const [loading, setLoading] = useState(false);
   const masterloadOptionQuery = useQuery(
     ["MasterCategory", selectedLang.id],
     async () =>
@@ -72,7 +73,10 @@ export default function CommitmentForm({
       if (!data.error) {
         commitmentQueryClient.invalidateQueries(["Commitments"]);
         commitmentQueryClient.invalidateQueries(["CommitmentDetail"]);
+        setLoading(false);
         history.push("/commitment");
+      } else if (data?.error) {
+        setLoading(false);
       }
     },
   });
@@ -80,36 +84,38 @@ export default function CommitmentForm({
   return (
     <FormWaraper className="FormikWraper">
       {!masterloadOptionQuery.isLoading && (
-          <Formik
-            // enableReinitialize
-            initialValues={{
-              ...initialValues,
-            }}
-            onSubmit={(e) =>
-              commitmentMutation.mutate({
-                donarName:e?.donarName,
-                commitmentId:e.Id,
-                categoryId: e?.SelectedSubCategory?.id,
-                amount: e?.Amount,
-                masterCategoryId: e?.SelectedMasterCategory?.id,
-                mobileNumber: e?.Mobile,
-                commitmentEndDate: e.DateTime,
-              })
-            }
-            validationSchema={vailidationSchema}
-          >
-            {(formik) => (
-              <>
-                <FormWithoutFormikForCommitment
-                  formik={formik}
-                  masterloadOptionQuery={masterloadOptionQuery}
-                  plusIconDisable
-                  buttonName={buttonName}
-                />
-              </>
-            )}
-          </Formik>
-        )}
+        <Formik
+          // enableReinitialize
+          initialValues={{
+            ...initialValues,
+          }}
+          onSubmit={(e) => {
+            setLoading(true);
+            commitmentMutation.mutate({
+              donarName: e?.donarName,
+              commitmentId: e.Id,
+              categoryId: e?.SelectedSubCategory?.id,
+              amount: e?.Amount,
+              masterCategoryId: e?.SelectedMasterCategory?.id,
+              mobileNumber: e?.Mobile,
+              commitmentEndDate: e.DateTime,
+            });
+          }}
+          validationSchema={vailidationSchema}
+        >
+          {(formik) => (
+            <>
+              <FormWithoutFormikForCommitment
+                formik={formik}
+                masterloadOptionQuery={masterloadOptionQuery}
+                loading={loading}
+                plusIconDisable
+                buttonName={buttonName}
+              />
+            </>
+          )}
+        </Formik>
+      )}
     </FormWaraper>
   );
 }

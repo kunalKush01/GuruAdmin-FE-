@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { CustomDropDown } from "../partials/customDropDown";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { Trans, useTranslation } from "react-i18next";
-import { Button, Col, Row } from "reactstrap";
+import { Button, Col, Row, Spinner } from "reactstrap";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import { useHistory } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -18,7 +18,8 @@ import { getGlobalEvents } from "../../api/eventApi";
 import FormikRangeDatePicker from "../partials/FormikRangeDatePicker";
 import { useUpdateEffect } from "react-use";
 import moment from "moment";
-import { isDate } from "lodash";
+import { flatMap, isDate } from "lodash";
+import { setlang } from "../../redux/authSlice";
 
 const FormWaraper = styled.div`
   .existlabel {
@@ -164,8 +165,8 @@ export default function EventForm({
 }) {
   const history = useHistory();
   const { t } = useTranslation();
+  const [loading ,setLoading] = useState(false)
   const eventQuerClient = useQueryClient();
-
   const eventMutation = useMutation({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
@@ -174,7 +175,10 @@ export default function EventForm({
         eventQuerClient.invalidateQueries(["Events"]);
         eventQuerClient.invalidateQueries(["EventDates"]);
         eventQuerClient.invalidateQueries(["EventDetail"]);
+        setLoading(false)
         history.push("/events");
+      }else if(data.error){
+        setLoading(false)
       }
     },
   });
@@ -190,6 +194,7 @@ export default function EventForm({
         // enableReinitialize
         initialValues={initialValues}
         onSubmit={(e) => {
+        setLoading(true)
           eventMutation.mutate({
             eventId: e.Id,
             baseId: e?.SelectedEvent?.id ?? null,
@@ -304,7 +309,21 @@ export default function EventForm({
               </Col>
             </Row>
             <div className="btn-Published mb-2">
-              <Button color="primary" className="addEvent-btn " type="submit">
+            {loading ? (
+                <Button
+                  color="primary"
+                  className="add-trust-btn"
+                  style={{
+                    borderRadius: "10px",
+                    padding: "5px 40px",
+                    opacity: "100%",
+                  }}
+                  disabled
+                >
+                  <Spinner size="md" />
+                </Button>
+              ) : (
+                <Button color="primary" className="addEvent-btn " type="submit">
                 {plusIconDisable && (
                   <span>
                     <Plus className="me-1" size={15} strokeWidth={4} />
@@ -314,6 +333,8 @@ export default function EventForm({
                   <Trans i18nKey={`${buttonName}`} />
                 </span>
               </Button>
+              )}
+             
             </div>
           </Form>
         )}

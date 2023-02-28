@@ -16,6 +16,12 @@ export const getAllMasterCategories = (payload) =>
     showToastOnError: false,
   });
 
+  export const getAllExpensesLogs = (payload) =>
+  callApi({
+    requestFunction: (axios) => axios.post(`${API_BASE_URL}expense/logs`, payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
   export const getAllSubCategories = (payload) =>
   callApi({
     requestFunction: (axios) =>

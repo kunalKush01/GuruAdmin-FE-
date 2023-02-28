@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { CustomDropDown } from "../partials/customDropDown";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { Trans, useTranslation } from "react-i18next";
-import { Button, Col, Row } from "reactstrap";
+import { Button, Col, Row, Spinner } from "reactstrap";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import { useHistory } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -15,6 +15,7 @@ import { createNews } from "../../api/newsApi";
 import { Plus } from "react-feather";
 import AsyncSelectField from "../partials/asyncSelectField";
 import { getGlobalNotice } from "../../api/eventApi";
+import { flatMap } from "lodash";
 
 const FormWaraper = styled.div`
   .existlabel {
@@ -58,14 +59,17 @@ export default function NoticeForm({
   const history = useHistory();
   const { t } = useTranslation();
   const noticeQuerClient = useQueryClient();
-
+const [loading , setLoading] = useState(false)
   const noticeMutation = useMutation({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
       if (!data.error) {
         noticeQuerClient.invalidateQueries(["Notices"]);
         noticeQuerClient.invalidateQueries(["NoticeDetail"]);
+        setLoading(false)
         history.push("/notices");
+      }else if(data.error){
+        setLoading(false)
       }
     },
   });
@@ -76,6 +80,7 @@ export default function NoticeForm({
         // enableReinitialize
         initialValues={initialValues}
         onSubmit={(e) => {
+          setLoading(true);
           console.log("formSubmitDaqta=", e);
           noticeMutation.mutate({
             noticeId: e.Id,
@@ -121,7 +126,21 @@ export default function NoticeForm({
               </Col>
             </Row>
             <div className="btn-Published ">
-              <Button color="primary" className="addNotice-btn " type="submit">
+            {loading ? (
+                <Button
+                  color="primary"
+                  className="add-trust-btn"
+                  style={{
+                    borderRadius: "10px",
+                    padding: "5px 40px",
+                    opacity: "100%",
+                  }}
+                  disabled
+                >
+                  <Spinner size="md" />
+                </Button>
+              ) : (
+                <Button color="primary" className="addNotice-btn " type="submit">
                 {plusIconDisable && (
                   <span>
                     <Plus className="me-1" size={15} strokeWidth={4} />
@@ -131,6 +150,8 @@ export default function NoticeForm({
                   <Trans i18nKey={`${buttonName}`} />
                 </span>
               </Button>
+              )}
+              
             </div>
           </Form>
         )}

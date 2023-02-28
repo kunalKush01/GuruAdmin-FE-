@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { useUpdateEffect } from "react-use";
-import { Button, Col, Row } from "reactstrap";
+import { Button, Col, Row, Spinner } from "reactstrap";
 import { getAllSubCategories } from "../../api/expenseApi";
 import { findAllUsersByName, findAllUsersByNumber } from "../../api/findUser";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
@@ -17,6 +17,7 @@ export default function FormWithoutFormikForCommitment({
   masterloadOptionQuery,
   buttonName,
   showTimeInput,
+  loading,
   ...props
 }) {
   const { t } = useTranslation();
@@ -162,16 +163,26 @@ export default function FormWithoutFormikForCommitment({
         </Col>
       </Row>
       <div className="btn-Published ">
-        <Button color="primary" className="addNotice-btn " type="submit">
-          {!props.plusIconDisable && (
+        {loading ? (
+          <Button
+            color="primary"
+            className="add-trust-btn"
+            style={{
+              borderRadius: "10px",
+              padding: "5px 40px",
+              opacity: "100%",
+            }}
+            disabled
+          >
+            <Spinner size="md" />
+          </Button>
+        ) : (
+          <Button color="primary" type="submit">
             <span>
-              <Plus className="" size={15} strokeWidth={4} />
+              <Trans i18nKey={buttonName} />
             </span>
-          )}
-          <span>
-            <Trans i18nKey={`${buttonName}`} />
-          </span>
-        </Button>
+          </Button>
+        )}
       </div>
     </Form>
   );

@@ -87,7 +87,7 @@ export default function DonationBoxListTable({ data, financeReport }) {
         <div
           className="cursor-pointer viewLogs"
           onClick={() =>
-            history.push(`/financial_reports/Logs/${item.id}`, item._id)
+            history.push(`/financial_reports/Hundi/Logs/${item.id}`, item._id)
           }
         >
           <Trans i18nKey={"viewLogs"} />

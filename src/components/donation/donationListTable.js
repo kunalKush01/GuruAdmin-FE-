@@ -120,45 +120,6 @@ export default function DonationListTable({ data, topdf }, args) {
               toggle();
               setReceipt(item);
             }}
-            // onClick={() => {
-            //   Swal.fire({
-            //     width: 500,
-            //     padding: "2em",
-            //     title: `<img src="${donationReceiptIcon}" style="width:130px;"/>`,
-            //     html: ` <div class="d-flex align-items-center" style="background:#FFF7E8;height:80px;border-radius:8px">
-            //               <img src=${templeImage} style="width:80px;height:80px; border-radius:8px" />
-            //               <div style="padding: 25px">
-            //                 <div class="ms-2" style="font-size:17px;font-weight:bold;color:#583703">${
-            //                   loggedTemple?.name
-            //                 }</div>
-            //                 <div class="ms-2" style="font-size:13px;color:#583703;text-align:left;">${"Ranakpur, Rajasthan"}</div>
-            //               </div>
-            //             </div>
-            //             <div style=" font: normal normal bold 16px/27px Noto Sans;
-            //             letter-spacing: 0px;
-            //             padding-top: 27px;
-            //             padding-bottom:25px;
-            //             color: #583703;">With each donation we receive, we become all that much closer to our goal. Thank you for making a difference through your compassion and generosity</div>
-            //             <div style="text-align:left;margin-top:5px;color: #583703;"><span style=" font: normal normal bold 16px/27px Noto Sans; ">Amount :</span> ${
-            //               item?.amount
-            //             } Rs</div>
-            //             <div style="text-align:left;margin-top:5px;color: #583703;"><span style=" font: normal normal bold 16px/27px Noto Sans; ">Mode of Payment :</span> ${"In Cash"}</div>
-            //             <div style="text-align:left;margin-top:5px;color: #583703;"><span style=" font: normal normal bold 16px/27px Noto Sans; ">Donor Name :</span> ${ConverFirstLatterToCapital(
-            //               item?.donarName ?? item.user?.name
-            //             )}</div>
-            //             <div style="text-align:left;margin-top:5px;color: #583703;"><span style=" font: normal normal bold 16px/27px Noto Sans; ">Date & Time :</span> ${moment(
-            //               item.createdAt ?? item?.updatedAt
-            //             ).format(" DD MMM YYYY,hh:mm A")}</div>
-            //             `,
-            //     confirmButtonText: ` ${t("downloadReceipt")}`,
-            //     confirmButtonAriaLabel: "Confirm",
-            //   }).then(async (result) => {
-            //     if (result.isConfirmed) {
-            //       pdfRef.current.click();
-            //       setReceipt(item);
-            //     }
-            //   });
-            // }}
           />
         ),
       };

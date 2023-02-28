@@ -3,14 +3,12 @@ import React, { useEffect, useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { useUpdateEffect } from "react-use";
-import { Button, Col, Row } from "reactstrap";
-import {
-  getAllSubCategories
-} from "../../api/expenseApi";
+import { Button, Col, Row, Spinner } from "reactstrap";
+import { getAllSubCategories } from "../../api/expenseApi";
 import {
   findAllComitmentByUser,
   findAllUsersByName,
-  findAllUsersByNumber
+  findAllUsersByNumber,
 } from "../../api/findUser";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import AsyncSelectField from "../partials/asyncSelectField";
@@ -21,6 +19,7 @@ export default function FormWithoutFormikForDonation({
   formik,
   masterloadOptionQuery,
   buttonName,
+  loading,
   ...props
 }) {
   const { t } = useTranslation();
@@ -56,7 +55,6 @@ export default function FormWithoutFormikForDonation({
   }, [SelectedUser?.userId]);
 
   useUpdateEffect(() => {
-    
     if (formik?.values?.Mobile?.toString().length == 10) {
       const results = async () => {
         const res = await findAllUsersByNumber({
@@ -73,9 +71,9 @@ export default function FormWithoutFormikForDonation({
   useUpdateEffect(() => {
     const user = formik?.values?.SelectedUser;
     if (user?.id) {
-      console.log("hey")
+      console.log("hey");
       formik.setFieldValue("Mobile", user.mobileNumber);
-      return
+      return;
     }
     formik.setFieldValue("Mobile", "");
     formik.setFieldValue("donarName", "");
@@ -99,29 +97,22 @@ export default function FormWithoutFormikForDonation({
         "SelectedSubCategory",
         SelectedCommitmentId?.categoryId
       );
-      formik.setFieldValue(
-        "donarName",
-        SelectedCommitmentId?.donarName
-      );
+      formik.setFieldValue("donarName", SelectedCommitmentId?.donarName);
     }
   }, [SelectedCommitmentId?.id]);
-
-  
 
   return (
     <Form>
       <Row>
         <Col xs={12}>
           <Row>
-            <Col xs={4} className=" pb-1" >
+            <Col xs={4} className=" pb-1">
               <CustomTextField
                 type="number"
                 label={t("dashboard_Recent_DonorNumber")}
                 name="Mobile"
                 pattern="[6789][0-9]{9}"
-                onInput={(e) =>
-                  (e.target.value = e.target.value.slice(0, 12))
-                }
+                onInput={(e) => (e.target.value = e.target.value.slice(0, 12))}
                 required
                 autoFocus
               />
@@ -136,8 +127,7 @@ export default function FormWithoutFormikForDonation({
                 label={t("commitment_Username")}
                 placeholder={t("categories_select_user_name")}
                 defaultOptions
-                disabled={loadOption.length==0}
-
+                disabled={loadOption.length == 0}
               />
             </Col>
             <Col xs={4} className=" pb-1">
@@ -152,25 +142,33 @@ export default function FormWithoutFormikForDonation({
                 name={"SelectedMasterCategory"}
                 labelKey={"name"}
                 valueKey="id"
-                loadOptions={masterloadOptionQuery?.data?.results&&masterloadOptionQuery?.data?.results.map((item)=>{
-                  return {...item,name:ConverFirstLatterToCapital(item.name)}
-                })}
+                loadOptions={
+                  masterloadOptionQuery?.data?.results &&
+                  masterloadOptionQuery?.data?.results.map((item) => {
+                    return {
+                      ...item,
+                      name: ConverFirstLatterToCapital(item.name),
+                    };
+                  })
+                }
                 required
                 width={"100"}
-                disabled={masterloadOptionQuery?.data?.results==0}
-
+                disabled={masterloadOptionQuery?.data?.results == 0}
               />
             </Col>
             <Col xs={4} className=" pb-1">
               <FormikCustomReactSelect
                 labelName={t("category_select_sub_category")}
-                loadOptions={subLoadOption.map((cate)=>{
-                  return {...cate,name:ConverFirstLatterToCapital(cate.name)}
+                loadOptions={subLoadOption.map((cate) => {
+                  return {
+                    ...cate,
+                    name: ConverFirstLatterToCapital(cate.name),
+                  };
                 })}
                 name={"SelectedSubCategory"}
                 labelKey={"name"}
                 valueKey={"id"}
-                disabled={subLoadOption.length==0}
+                disabled={subLoadOption.length == 0}
                 width
               />
             </Col>
@@ -191,7 +189,7 @@ export default function FormWithoutFormikForDonation({
                     loadOptions={commitmentIdByUser}
                     placeholder={t("commitment_select_commitment_id")}
                     name={"SelectedCommitmentId"}
-                    disabled={commitmentIdByUser.length==0}
+                    disabled={commitmentIdByUser.length == 0}
                     valueKey={"id"}
                     getOptionLabel={(option) =>
                       `${option.commitmentId}   (₹${option.paidAmount}/${option.amount})`
@@ -202,11 +200,11 @@ export default function FormWithoutFormikForDonation({
 
                 <Col xs={4} className="mt-1">
                   <CustomTextField
-                      type="number"
+                    type="number"
                     label={t("categories_select_amount")}
                     placeholder={t("enter_price_manually")}
                     name="Amount"
-                      required
+                    required
                   />
                 </Col>
               </Row>
@@ -215,16 +213,31 @@ export default function FormWithoutFormikForDonation({
         </Col>
       </Row>
       <div className="btn-Published mt-3">
-        <Button color="primary" className="addNotice-btn " type="submit">
-          {!props.plusIconDisable && (
+        {loading ? (
+          <Button
+            color="primary"
+            className="add-trust-btn"
+            style={{
+              borderRadius: "10px",
+              padding: "5px 40px",
+              opacity: "100%",
+            }}
+            disabled
+          >
+            <Spinner size="md" />
+          </Button>
+        ) : (
+          <Button color="primary" className="addNotice-btn " type="submit">
+            {!props.plusIconDisable && (
+              <span>
+                <Plus className="" size={15} strokeWidth={4} />
+              </span>
+            )}
             <span>
-              <Plus className="" size={15} strokeWidth={4} />
+              <Trans i18nKey={`${buttonName}`} />
             </span>
-          )}
-          <span>
-            <Trans i18nKey={`${buttonName}`} />
-          </span>
-        </Button>
+          </Button>
+        )}
       </div>
     </Form>
   );

@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { CustomDropDown } from "../partials/customDropDown";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { Trans, useTranslation } from "react-i18next";
-import { Button, ButtonGroup, Col, Row } from "reactstrap";
+import { Button, ButtonGroup, Col, Row, Spinner } from "reactstrap";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import { useHistory } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -64,6 +64,7 @@ export default function ExpensesForm({
 }) {
   const history = useHistory();
   const { t } = useTranslation();
+  const [loading, setLoading] = useState(false);
   const newsQuerClient = useQueryClient();
 
   const newsMutation = useMutation({
@@ -73,8 +74,10 @@ export default function ExpensesForm({
       if (!data.error) {
         newsQuerClient.invalidateQueries(["Expenses"]);
         newsQuerClient.invalidateQueries(["ExpensesDetail"]);
-
+        setLoading(false);
         history.push("/internal_expenses");
+      } else if (data?.error) {
+        setLoading(false);
       }
     },
   });
@@ -83,15 +86,16 @@ export default function ExpensesForm({
       <Formik
         // enableReinitialize
         initialValues={{ ...initialValues }}
-        onSubmit={(e) =>
+        onSubmit={(e) => {
+          setLoading(true);
           newsMutation.mutate({
             expenseId: e?.Id,
             amount: e?.Amount,
             title: e?.Title,
             description: e?.Body,
             expenseDate: e?.DateTime,
-          })
-        }
+          });
+        }}
         validationSchema={vailidationSchema}
       >
         {(formik) => (
@@ -127,7 +131,7 @@ export default function ExpensesForm({
                 <Row className="mt-1">
                   <Col xs={6}>
                     <CustomTextField
-                    type="number"
+                      type="number"
                       label={t("categories_select_amount")}
                       placeholder={t("enter_price_manually")}
                       name="Amount"
@@ -145,16 +149,35 @@ export default function ExpensesForm({
               </Col>
             </Row>
             <div className="btn-Published mb-2">
-              <Button color="primary" className="addNotice-btn " type="submit">
-                {plusIconDisable && (
+              {loading ? (
+                <Button
+                  color="primary"
+                  className="add-trust-btn"
+                  style={{
+                    borderRadius: "10px",
+                    padding: "5px 40px",
+                    opacity: "100%",
+                  }}
+                  disabled
+                >
+                  <Spinner size="md" />
+                </Button>
+              ) : (
+                <Button
+                  color="primary"
+                  className="addNotice-btn "
+                  type="submit"
+                >
+                  {plusIconDisable && (
+                    <span>
+                      <Plus className="me-1" size={15} strokeWidth={4} />
+                    </span>
+                  )}
                   <span>
-                    <Plus className="me-1" size={15} strokeWidth={4} />
+                    <Trans i18nKey={`${buttonName}`} />
                   </span>
-                )}
-                <span>
-                  <Trans i18nKey={`${buttonName}`} />
-                </span>
-              </Button>
+                </Button>
+              )}
             </div>
           </Form>
         )}

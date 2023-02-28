@@ -208,8 +208,13 @@ const Routes = [
     // exact:true
   },
   {
-    path: '/financial_reports/Logs/:collectionId',
+    path: '/financial_reports/Hundi/Logs/:collectionId',
     component: lazy(() => import('../../views/financialReport/donationBoxLogsList')),
+    // exact:true
+  },
+  {
+    path: '/financial_reports/Expenses/Logs/:expensesId',
+    component: lazy(() => import('../../views/internalExpenses/expensesLogsList')),
     // exact:true
   },
 ];

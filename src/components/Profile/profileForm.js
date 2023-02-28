@@ -4,13 +4,14 @@ import React from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import { Button, Col, Row } from "reactstrap";
+import { Button, Col, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
 import { CustomReactSelect } from "../partials/customReactSelect";
 import CustomTextField from "../partials/customTextField";
-import defalultAvtar from "../../assets/images/icons/dashBoard/defaultAvatar.svg"
-import thumbnailImage from "../../assets/images/icons/Thumbnail.svg"
+import defalultAvtar from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
+import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
 import { useSelector } from "react-redux";
+import { useState } from "react";
 
 const ProfileFormWaraper = styled.div`
   .existlabel {
@@ -34,8 +35,8 @@ const ProfileFormWaraper = styled.div`
     color: #ff8744;
     font: normal normal bold 13px/5px noto sans;
   }
-  .trust-facilities{
-    border: 1px solid ;
+  .trust-facilities {
+    border: 1px solid;
     border-radius: 6px;
   }
 `;
@@ -49,7 +50,8 @@ export default function ProfileForm({
   selectEventDisabled,
 }) {
   const history = useHistory();
-  const { t } = useTranslation();  
+  const { t } = useTranslation();
+  const [loading, setLoading]= useState(false)
   // const QueryClient = useQueryClient();
 
   // const Mutation = useMutation({
@@ -65,8 +67,14 @@ export default function ProfileForm({
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: handleSubmit,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["Trust"]);
+    onSuccess: (data) => {
+      if(!data.error){
+        queryClient.invalidateQueries(["Trust"]);
+        setLoading(false);
+      }
+      else if (data?.error){
+        setLoading(false)
+      }
     },
   });
 
@@ -91,6 +99,7 @@ export default function ProfileForm({
         // enableReinitialize
         initialValues={initialValues}
         onSubmit={(e) => {
+          setLoading(true)
           console.log("Trust Add=", e);
           mutation.mutate({
             name: e?.name,
@@ -98,8 +107,8 @@ export default function ProfileForm({
             type: e?.Type,
             contact: e?.Contact,
             address: e?.Address,
-            temple:e?.Temple,
-            documents:e?.documents,
+            temple: e?.Temple,
+            documents: e?.documents,
             body: e?.Body,
           });
         }}
@@ -110,7 +119,7 @@ export default function ProfileForm({
             <Row>
               <Col xs={2} className="">
                 <div className="d-flex justify-content-center">
-                  <img src={defalultAvtar} width={120}/>
+                  <img src={defalultAvtar} width={120} />
                 </div>
               </Col>
               <Col xs={10} className="">
@@ -118,7 +127,11 @@ export default function ProfileForm({
                   <Col xs={8} className="">
                     <Row>
                       <Col xs={6} className="">
-                        <CustomTextField label={t("userProfile_name")} name="name" autoFocus/>
+                        <CustomTextField
+                          label={t("userProfile_name")}
+                          name="name"
+                          autoFocus
+                        />
                       </Col>
                       <Col xs={6} className="">
                         <CustomTextField
@@ -143,7 +156,10 @@ export default function ProfileForm({
                     </Row>
                     <Row>
                       <Col xs={6} className="">
-                        <CustomTextField label={t("userProfile_temple")} name="Temple" />
+                        <CustomTextField
+                          label={t("userProfile_temple")}
+                          name="Temple"
+                        />
                       </Col>
                       <Col xs={6} className="">
                         <CustomReactSelect
@@ -170,10 +186,7 @@ export default function ProfileForm({
                             />
                           </Col>
                           <Col xs={2} className="pt-1">
-                            <Button
-                              color="primary"
-                              className="Upload-btn"
-                            >
+                            <Button color="primary" className="Upload-btn">
                               <span>
                                 <Trans i18nKey={"browse"} />
                               </span>
@@ -224,8 +237,15 @@ export default function ProfileForm({
                       </div>
                       <div>
                         <div className="trust-facilities d-flex align-items-center">
-                          <img src={thumbnailImage} width={70} height={70} className="cursor-pointer"/>
-                          <div className="ms-2" style={{fontSize:"15px"}}>Add More Facilities</div>
+                          <img
+                            src={thumbnailImage}
+                            width={70}
+                            height={70}
+                            className="cursor-pointer"
+                          />
+                          <div className="ms-2" style={{ fontSize: "15px" }}>
+                            Add More Facilities
+                          </div>
                         </div>
                       </div>
                     </Col>
@@ -240,14 +260,26 @@ export default function ProfileForm({
               </Col>
             </Row>
             <div className="btn-Published d-flex justify-content-center mt-3">
-              <Button color="primary" className="addEvent-btn" type="submit">
-                {/*<span>*/}
-                {/*  <Plus className="me-1" size={15} strokeWidth={4} />*/}
-                {/*</span>*/}
-                <span>
-                  <Trans i18nKey={buttonLabel} />
-                </span>
-              </Button>
+              {loading ? (
+                <Button
+                  color="primary"
+                  className="add-trust-btn"
+                  style={{
+                    borderRadius: "10px",
+                    padding: "5px 40px",
+                    opacity: "100%",
+                  }}
+                  disabled
+                >
+                  <Spinner size="md" />
+                </Button>
+              ) : (
+                <Button color="primary" className="addEvent-btn" type="submit">
+                  <span>
+                    <Trans i18nKey={buttonLabel} />
+                  </span>
+                </Button>
+              )}
             </div>
           </Form>
         )}

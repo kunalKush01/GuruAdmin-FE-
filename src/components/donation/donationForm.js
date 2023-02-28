@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Formik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
@@ -60,7 +60,7 @@ export default function DonationForm({
   const history = useHistory();
   const donationQuerClient = useQueryClient();
   const selectedLang = useSelector((state) => state.auth.selectLang);
-
+const [loading, setLoading] = useState(false)
   const masterloadOptionQuery = useQuery(
     ["MasterCategory", selectedLang.id],
     async () =>
@@ -74,7 +74,10 @@ export default function DonationForm({
       
       if (!data.error) {
         donationQuerClient.invalidateQueries(["donations"]);
+        setLoading(false)
         history.push("/donation");
+      }else if(data?.error){
+        setLoading(false)
       }
     },
   });
@@ -87,7 +90,8 @@ export default function DonationForm({
           initialValues={{
             ...initialValues,
           }}
-          onSubmit={(e) =>
+          onSubmit={(e) =>{
+            setLoading(true)
             donationMutation.mutate({
               categoryId: e?.SelectedSubCategory?.id,
               amount: e?.Amount,
@@ -95,7 +99,7 @@ export default function DonationForm({
               donarName:e?.donarName,
               mobileNumber: e?.Mobile,
               commitmentId:e?.SelectedCommitmentId?.commitmentId,
-            })
+            })}
           }
           validationSchema={vailidationSchema}
         >
@@ -103,6 +107,7 @@ export default function DonationForm({
             <FormWithoutFormikForDonation
               formik={formik}
               masterloadOptionQuery={masterloadOptionQuery}
+              loading={loading}
               plusIconDisable
               buttonName={buttonName}
             />

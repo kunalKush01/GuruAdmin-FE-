@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import { Button, Col, Row } from "reactstrap";
+import { Button, Col, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
@@ -48,6 +48,7 @@ export default function SubscribedUserForm({
 }) {
   const history = useHistory();
   const { t } = useTranslation();
+  const [loading, setLoading] = useState(false);
   const categoryQuerClient = useQueryClient();
 
   const categoryMutation = useMutation({
@@ -55,7 +56,10 @@ export default function SubscribedUserForm({
     onSuccess: (data) => {
       if (!data.error) {
         categoryQuerClient.invalidateQueries(["subscribedUser"]);
+        setLoading(false);
         history.push("/subscribed-user");
+      } else if (data?.error) {
+        setLoading(false);
       }
     },
   });
@@ -65,6 +69,7 @@ export default function SubscribedUserForm({
         // enableReinitialize
         initialValues={{ ...initialValues }}
         onSubmit={(e) => {
+          setLoading(true);
           console.log("cateFormSubmit=", e);
           categoryMutation.mutate({
             email: e.email,
@@ -107,16 +112,35 @@ export default function SubscribedUserForm({
               </Col>
             </Row>
             <div className="btn-Published  mt-lg-3">
-              <Button color="primary" className="addNotice-btn " type="submit">
-                {plusIconDisable && (
+              {loading ? (
+                <Button
+                  color="primary"
+                  className="add-trust-btn"
+                  style={{
+                    borderRadius: "10px",
+                    padding: "5px 40px",
+                    opacity: "100%",
+                  }}
+                  disabled
+                >
+                  <Spinner size="md" />
+                </Button>
+              ) : (
+                <Button
+                  color="primary"
+                  className="addNotice-btn "
+                  type="submit"
+                >
+                  {plusIconDisable && (
+                    <span>
+                      <Plus className="" size={15} strokeWidth={4} />
+                    </span>
+                  )}
                   <span>
-                    <Plus className="" size={15} strokeWidth={4} />
+                    <Trans i18nKey={`${buttonName}`} />
                   </span>
-                )}
-                <span>
-                  <Trans i18nKey={`${buttonName}`} />
-                </span>
-              </Button>
+                </Button>
+              )}
             </div>
           </Form>
         )}
