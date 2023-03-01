@@ -78,12 +78,16 @@ export default function EditNotice() {
       languageId: getLangId(langArray, langSelection),
     });
   };
-
+  const tags = noticeDetailQuery?.data?.result?.tags?.map((item)=>({
+    id: item.id,
+    text: item.tag,
+    _id: item.id
+  }))
   const initialValues = useMemo(() => {
     return {
       Id: noticeDetailQuery?.data?.result?.id,
       Title: noticeDetailQuery?.data?.result?.title,
-      Tags: noticeDetailQuery?.data?.result?.tags,
+      tagsInit:tags,
       Body: he.decode(noticeDetailQuery?.data?.result?.body ?? ""),
       PublishedBy: noticeDetailQuery?.data?.result?.publishedBy,
       DateTime: moment(noticeDetailQuery?.data?.result?.publishDate)

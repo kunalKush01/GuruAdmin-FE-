@@ -239,7 +239,9 @@ const LoginCover = () => {
                   Don't Have an account ?{" "}
                 </span>
 
-                <span className="text-primary signUp">Sign Up</span>
+                <span className="text-primary signUp cursor-pointer"
+                >
+                  <a href="https://am-website-dev.paridhan.app/#home">Sign Up</a></span>
               </p>
               {/* <div className="divider my-2">
               <div className="divider-text">or</div>

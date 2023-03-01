@@ -44,7 +44,7 @@ const initialValues = {
   SelectedEvent: null,
   Id: "",
   Title: "",
-  Tags:"",
+  tagsInit:[],
   Body: "",
   DateTime: { start: new Date(), end: null },
   startTime:new Date(),

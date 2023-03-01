@@ -38,7 +38,7 @@ const NewsWarper = styled.div`
 
 const schema = yup.object().shape({
   Title: yup.string().required("news_title_required"),
-  Tags: yup.string().required("news_tags_required"),
+  // Tags: yup.string().required("news_tags_required"),
   Body: yup.string().required("news_desc_required"),
   PublishedBy: yup.string().required("news_publish_required"),
   DateTime: yup.string(),
@@ -94,12 +94,16 @@ export default function AddLanguageNews() {
       setLangSelection(availableLangOptions[0]?.name);
     }
   }, [availableLangOptions]);
-
+  const tags = newsDetailQuery?.data?.result?.tags?.map((item)=>({
+    id: item.id,
+    text: item.tag,
+    _id: item.id
+  }))
   const initialValues = useMemo(()=>{
     return  {
       Id: newsDetailQuery?.data?.result?.id,
       Title: newsDetailQuery?.data?.result?.title,
-      Tags: newsDetailQuery?.data?.result?.tags,
+      tagsInit:tags,
       Body: he.decode(newsDetailQuery?.data?.result?.body ?? ""),
       PublishedBy: newsDetailQuery?.data?.result?.publishedBy,
       DateTime: moment(newsDetailQuery?.data?.result?.publishDate)

@@ -82,11 +82,17 @@ export default function Editevent() {
     });
   };
 
+const tags = eventDetailQuery?.data?.result?.tags?.map((item)=>({
+  id: item.id,
+  text: item.tag,
+  _id: item.id
+}))
+
   const initialValues = useMemo(() => {
     return {
       Id: eventDetailQuery?.data?.result?.id,
       Title: eventDetailQuery?.data?.result?.title,
-      Tags: eventDetailQuery?.data?.result?.tags,
+      tagsInit:tags,
       Body: he.decode(eventDetailQuery?.data?.result?.body ?? ""),
       PublishedBy: eventDetailQuery?.data?.result?.publishedBy,
       DateTime: {

@@ -33,7 +33,7 @@ const handleCreateNews = async (payload) => {
 };
 const schema = yup.object().shape({
   Title: yup.string().required("news_title_required"),
-  Tags: yup.string().required("news_tags_required"),
+  // Tags: yup.string().required("news_tags_required"),
   Body: yup.string().required("news_desc_required"),
   PublishedBy: yup.string().required("news_publish_required"),
   DateTime: yup.string(),
@@ -55,7 +55,7 @@ export default function AddNews() {
   const initialValues = {
     Id: "",
     Title: "",
-    Tags: "",
+    tagsInit:[],
     Body: "",
     PublishedBy: loggedInUser,
     DateTime: new Date(),

@@ -10,7 +10,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import { useHistory } from "react-router-dom";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createNews } from "../../api/newsApi";
 import { Plus } from "react-feather";
 import AsyncSelectField from "../partials/asyncSelectField";
@@ -20,6 +20,10 @@ import { useUpdateEffect } from "react-use";
 import moment from "moment";
 import { flatMap, isDate } from "lodash";
 import { setlang } from "../../redux/authSlice";
+import { getAllTags } from "../../api/tagApi";
+import { WithContext as ReactTags} from "react-tag-input";
+import { useSelector } from "react-redux";
+
 
 const FormWaraper = styled.div`
   .existlabel {
@@ -188,10 +192,62 @@ export default function EventForm({
     return getGlobalEventsRES.results;
   };
 
+
+  // tags
+  const selectedLang = useSelector((state) => state.auth.selectLang);
+  const [langSelection, setLangSelection] = useState(selectedLang.name);
+  const tagsQuery = useQuery(
+    ["tags", selectedLang.id],
+    () =>
+      getAllTags({
+        languageId: selectedLang.id,
+      }),
+    {
+      keepPreviousData: true,
+    }
+  );
+
+  
+  // tags
+  const tags = useMemo(() => tagsQuery?.data?.results ?? [], [tagsQuery]);
+  const suggestions = tags.map((item) => {
+    return {
+      id: item?.tag,
+      text: item?.tag,
+    };
+  });
+  const [deletedTags, setDeletedTags] = useState([]);
+
+  const KeyCodes = {
+    comma: 188,
+    enter: 13,
+  };
+
+  const delimiters = [KeyCodes.comma, KeyCodes.enter];
+
+  const handleDelete = (formik, i) => {
+    const resetValues = formik.values.tagsInit.filter(
+      (_, index) => index !== i
+    );
+
+    const fgg = formik.values.tagsInit.filter((_, index) => index === i);
+
+    if (fgg[0]?._id) {
+      setDeletedTags((prev) => [...prev, fgg[0]?._id]);
+    }
+
+    formik.setFieldValue("tagsInit", resetValues);
+  };
+
+  const handleAddition = (formik, tag) => {
+    formik.setFieldValue("tagsInit", [...formik.values.tagsInit, tag]);
+  };
+
+
   return (
     <FormWaraper className="FormikWraper">
       <Formik
-        // enableReinitialize
+        enableReinitialize
         initialValues={initialValues}
         onSubmit={(e) => {
         setLoading(true)
@@ -199,7 +255,8 @@ export default function EventForm({
             eventId: e.Id,
             baseId: e?.SelectedEvent?.id ?? null,
             title: e.Title,
-            tags:e?.Tags,
+            tags: e?.tagsInit?.map((tag) => tag.text),
+            deletedTags,
             startTime:e?.startTime,
             endTime:e?.endTime,
             body: e.Body,
@@ -207,6 +264,7 @@ export default function EventForm({
             endDate: moment(e?.DateTime?.end).format("YYYY-MM-DD"),
             imageUrl: ["http://newsImage123.co"],
           });
+          setDeletedTags([]);
         }}
         validationSchema={vailidationSchema}
       >
@@ -273,7 +331,20 @@ export default function EventForm({
               <Col xs="4" className="">
                 <Row>
                   <Col xs="10">
-                    <CustomTextField label={t("Tags")} name="Tags" />
+                  <label>Tags</label>
+                    {/* {JSON.stringify(formik.values.tagsInit)} */}
+                    <ReactTags
+                      tags={formik.values.tagsInit}
+                      suggestions={suggestions}
+                      delimiters={delimiters}
+                      handleDelete={(index) => handleDelete(formik, index)}
+                      handleAddition={(tag) => handleAddition(formik, tag)}
+                      inputFieldPosition="top"
+                      allowDragDrop={false}
+                      autocomplete
+                      editable={false}
+                      autofocus={false}
+                    />
                   </Col>
                   
                   <Col>
