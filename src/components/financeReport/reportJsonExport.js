@@ -3,7 +3,7 @@ import React from 'react'
 import { ConverFirstLatterToCapital } from '../../utility/formater'
 import he from "he"
 
-const ConvertToString = (html)  => {
+export const ConvertToString = (html)  => {
   console.log("convert Rj",html);
   return html.replace(/(&lt;([^>]+)>)/ig, '')
 }

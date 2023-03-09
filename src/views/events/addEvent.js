@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 import { authApiInstance } from "../../axiosApi/authApiInstans";
 import { createEvent } from "../../api/eventApi.js";
 import EventForm from "../../components/events/eventForm";
+import he from "he"
 
 const EventWraper = styled.div`
   color: #583703;

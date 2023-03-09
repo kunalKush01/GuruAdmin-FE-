@@ -197,7 +197,7 @@ export default function FormikRangeDatePicker({ label, inline=true,...props }) {
        */}
       {label && <label>{`${label}*`}</label>}
       <DatePicker
-        sele
+        
         onChange={(date) => {
           const [start,end] = date
           helpers.setValue({start,end})

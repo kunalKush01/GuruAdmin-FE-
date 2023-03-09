@@ -67,7 +67,7 @@ export function SubAdminUserListTable({ data ,currentFilter,currentPage}) {
       ),
       mobile:item.mobileNumber ?? "-",
       email: item.email ?? "-",
-      userRole:item.userRole?? "-",
+      userRole:item?.roles?.join(",")?? "-",
       // addLanguage: (
       //   <Button
       //     outline

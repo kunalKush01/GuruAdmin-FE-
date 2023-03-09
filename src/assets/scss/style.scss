@@ -34,7 +34,10 @@ body::-webkit-scrollbar{
 		color: #FF8744 !important;
 	}	
 }
-
+.swal2-close:focus  {
+	outline: none;
+	box-shadow: none !important;
+  }
 .swal2-modal{
 	padding: 30px 55px;
 	

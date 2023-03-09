@@ -78,7 +78,7 @@ const FormWaraper = styled.div`
   }
   /* added tags  */
   .ReactTags__selected {
-    width: 413.88px;
+    width: 100%;
     display: flex;
     overflow-x: scroll !important;
     ::-webkit-scrollbar {
@@ -131,17 +131,6 @@ const FormWaraper = styled.div`
   }
   /* input tags  css start */
   //  media query
-
-  @media only screen and (max-width: 1280px) and (min-width: 886px) {
-    .ReactTags__selected {
-      width: 324.91px !important;
-    }
-  }
-  @media only screen and (max-width: 885px) and (min-width: 769px) {
-    .ReactTags__selected {
-      width: 209.41px !important;
-    }
-  }
   @media only screen and (max-width: 768px) and (min-width: 320px) {
     .thumbnail_image {
       width: 100px;

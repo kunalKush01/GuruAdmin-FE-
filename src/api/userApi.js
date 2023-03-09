@@ -25,7 +25,7 @@ export const createUser = (payload) =>
 
 export const getAllUser = (payload) =>
   callApi({
-    requestFunction: (axios) => axios.post(`${API_BASE_URL}user`, payload),
+    requestFunction: (axios) => axios.post(`${API_BASE_URL}sub-admin`, payload),
     showToastOnSuccess: false,
     showToastOnError: false,
   });

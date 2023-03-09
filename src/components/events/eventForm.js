@@ -23,6 +23,7 @@ import { setlang } from "../../redux/authSlice";
 import { getAllTags } from "../../api/tagApi";
 import { WithContext as ReactTags} from "react-tag-input";
 import { useSelector } from "react-redux";
+import { ConvertToString } from "../financeReport/reportJsonExport";
 
 
 const FormWaraper = styled.div`
@@ -84,7 +85,7 @@ const FormWaraper = styled.div`
 }
 /* added tags  */
 .ReactTags__selected{
-  width: 413.88px;
+  width: 100%;
   display: flex;
   overflow-x:scroll !important;
     ::-webkit-scrollbar{
@@ -138,16 +139,7 @@ const FormWaraper = styled.div`
 /* input tags  css start */
   //  media query
   
-  @media only screen and (max-width: 1280px ) and (min-width: 886px) {
-    .ReactTags__selected {
-      width: 324.91px !important;
-    }
-  }
-  @media only screen and (max-width: 885px) and (min-width:769px) {
-    .ReactTags__selected{
-      width: 209.41px !important;
-    }
-  }
+  
   @media only screen and (max-width: 768px) and (min-width: 320px) {
     .thumbnail_image {
       width: 100px;
@@ -298,11 +290,10 @@ export default function EventForm({
                           "Title",
                           selectOption?.title ?? ""
                         );
-                        formik.setFieldValue("Body", selectOption?.body ?? "");
+                        formik.setFieldValue("Body", ConvertToString (selectOption?.body ?? ""));
 
                         formik.setFieldValue("DateTime", {
                           start: moment(selectOption?.startDate)
-                            .utcOffset("+0530")
                             .toDate(),
                           end: moment(selectOption?.endDate)
                             .utcOffset("+0530")
