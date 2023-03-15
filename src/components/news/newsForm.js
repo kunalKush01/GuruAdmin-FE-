@@ -17,6 +17,9 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { useSelector } from "react-redux";
 import { WithContext as ReactTags } from "react-tag-input";
 import { getAllTags } from "../../api/tagApi";
+import ImageUpload from "../partials/imageUpload";
+import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
+
 const FormWaraper = styled.div`
   .FormikWraper {
     padding: 40px;
@@ -135,6 +138,8 @@ const FormWaraper = styled.div`
 export default function NewsForm({
   plusIconDisable = false,
   handleSubmit,
+  editImage,
+  defaultImages,
   vailidationSchema,
   initialValues,
   showTimeInput,
@@ -209,6 +214,9 @@ export default function NewsForm({
     formik.setFieldValue("tagsInit", [...formik.values.tagsInit, tag]);
   };
 
+  const randomNumber = Math.floor(100000000000 + Math.random() * 900000000000);
+
+  const [deletedImages, setDeletedImages] = useState([]);
   return (
     <FormWaraper className="FormikWraper">
       <Formik
@@ -224,9 +232,10 @@ export default function NewsForm({
             body: e.Body,
             publishDate: e.DateTime,
             publishedBy: e.PublishedBy,
-            imageUrl: "http://newsImage123.co",
+            images: e?.images,
+            removedImages: deletedImages,
           });
-          setDeletedTags([])
+          setDeletedTags([]);
         }}
         validationSchema={vailidationSchema}
       >
@@ -268,12 +277,39 @@ export default function NewsForm({
                     />
                   </Col>
                 </Row>
-                {/* <Row>
-                        <div className="ImagesVideos">
-                          <Trans i18nKey={"news_label_ImageVedio"} />
-                        </div>
-                        <div></div>
-                      </Row> */}
+                <Row>
+                  <div className="ImagesVideos">
+                    <Trans i18nKey={"news_label_ImageVedio"} />
+                  </div>
+                  <div>
+                    <ImageUpload
+                      multiple
+                      type={editImage}
+                      bg_plus={thumbnailImage}
+                      setDeletedImages={setDeletedImages}
+                      editedFileNameInitialValue={
+                        formik?.values?.images ? formik?.values?.images : null
+                      }
+                      defaultImages={defaultImages}
+                      randomNumber={randomNumber}
+                      fileName={(file, type) => {
+                        formik.setFieldValue("images", [
+                          ...formik.values.images,
+                          `${randomNumber}_${file}`,
+                        ]);
+                        formik.setFieldValue("type", type);
+                      }}
+                      removeFile={(fileName) => {
+                        const newFiles = [...formik?.values?.images];
+                        // newFiles.splice(index, 1);
+                        const updatedFiles = newFiles.filter(
+                          (img) => !img.includes(fileName)
+                        );
+                        formik.setFieldValue("images", updatedFiles);
+                      }}
+                    />
+                  </div>
+                </Row>
                 <Row>
                   <Col xs={6}>
                     <CustomTextField

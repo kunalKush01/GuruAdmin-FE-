@@ -28,6 +28,8 @@ import { deleteNewsDetail } from "../../api/newsApi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
+import placeHolder from "../../assets/images/placeholderImages/placeholder-news.webp"
+
 const NewsCardWaraper = styled.div`
   .imgContainer {
     border-radius: 10px 10px 0px 0px;
@@ -194,7 +196,7 @@ export default function NewsCard({ data, currentPage, currentFilter }) {
               position: "relative",
               width: "100%",
             }}
-            src="https://picsum.photos/300/200"
+            src={data?.images[0]?.presignedUrl ?? placeHolder}
           />
           <div className=" position-absolute imgContent  w-100 ">
             <div className="text-end">

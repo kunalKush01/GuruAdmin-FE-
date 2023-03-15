@@ -39,7 +39,11 @@ const Routes = [
   {
     path: "/edit-profile",
     component: lazy(() => import("../../views/Profile/userProfile")),
-    
+  },
+  {
+    path: "/facilities",
+    component: lazy(() => import("../../views/Profile/facilityForm")),
+    exact: true,
   },
   {
     path:"/subscribed-user",
@@ -140,6 +144,11 @@ const Routes = [
   {
     path: '/configuration/users/add',
     component: lazy(() => import('../../views/configuration/users/addUser')),
+    // exact:true
+  },
+  {
+    path: '/configuration/users/edit/:subAdminId',
+    component: lazy(() => import('../../views/configuration/users/editUser')),
     // exact:true
   },
   {

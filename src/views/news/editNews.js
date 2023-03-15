@@ -54,22 +54,22 @@ export default function EditNews() {
   const history = useHistory();
   const { newsId } = useParams();
   const langArray = useSelector((state) => state.auth.availableLang);
-  const selectedLang= useSelector(state=>state.auth.selectLang)
+  const selectedLang = useSelector((state) => state.auth.selectLang);
   const searchParams = new URLSearchParams(history.location.search);
-  const currentPage = searchParams.get('page')
-  const currentFilter = searchParams.get('filter')
-  const [langSelection, setLangSelection] = useState(ConverFirstLatterToCapital(selectedLang.name));
+  const currentPage = searchParams.get("page");
+  const currentFilter = searchParams.get("filter");
+  const [langSelection, setLangSelection] = useState(
+    ConverFirstLatterToCapital(selectedLang.name)
+  );
 
   const newsDetailQuery = useQuery(
-    ["NewsDetail", newsId, langSelection,selectedLang.id],
+    ["NewsDetail", newsId, langSelection, selectedLang.id],
     async () =>
       await getNewsDetail({
         newsId,
         languageId: getLangId(langArray, langSelection),
       })
   );
-
-  
 
   const handleNewsUpdate = async (payload) => {
     return updateNewsDetail({
@@ -78,26 +78,27 @@ export default function EditNews() {
     });
   };
 
-  const loggedInUser = useSelector((state)=>state.auth.userDetail?.name)
-  
-  const tags = newsDetailQuery?.data?.result?.tags?.map((item)=>({
+  const loggedInUser = useSelector((state) => state.auth.userDetail?.name);
+
+  const tags = newsDetailQuery?.data?.result?.tags?.map((item) => ({
     id: item.id,
     text: item.tag,
-    _id: item.id
-  }))
+    _id: item.id,
+  }));
 
-  const initialValues = useMemo(()=>{
-    return  {
+  const initialValues = useMemo(() => {
+    return {
       Id: newsDetailQuery?.data?.result?.id,
       Title: newsDetailQuery?.data?.result?.title,
-      tagsInit:tags,
+      tagsInit: tags,
+      images: [],
       Body: he.decode(newsDetailQuery?.data?.result?.body ?? ""),
-      PublishedBy:loggedInUser,
+      PublishedBy: loggedInUser,
       DateTime: moment(newsDetailQuery?.data?.result?.publishDate)
         .utcOffset("+0530")
         .toDate(),
     };
-  },[newsDetailQuery])
+  }, [newsDetailQuery]);
 
   return (
     <NewsWarper>
@@ -106,7 +107,9 @@ export default function EditNews() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push(`/news?page=${currentPage}&filter=${currentFilter}`)}
+            onClick={() =>
+              history.push(`/news?page=${currentPage}&filter=${currentFilter}`)
+            }
           />
           <div className="editNews">
             <Trans i18nKey={"news_EditNews"} />
@@ -125,7 +128,10 @@ export default function EditNews() {
           />
         </div>
       </div>
-      <If condition={newsDetailQuery.isLoading || newsDetailQuery.isFetching} diableMemo >
+      <If
+        condition={newsDetailQuery.isLoading || newsDetailQuery.isFetching}
+        diableMemo
+      >
         <Then>
           <Row>
             <SkeletonTheme
@@ -155,19 +161,19 @@ export default function EditNews() {
           </Row>
         </Then>
         <Else>
-          
-          {!newsDetailQuery.isFetching&&
-          <div className="ms-3 mt-1">
-
-            <NewsForm
-              vailidationSchema={schema}
-              initialValues={initialValues}
-              showTimeInput
-              handleSubmit={handleNewsUpdate}
-              buttonName={"save_changes"}
-            />
-          </div>
-            }
+          {!newsDetailQuery.isFetching && (
+            <div className="ms-3 mt-1">
+              <NewsForm
+                editImage="edit"
+                defaultImages={newsDetailQuery?.data?.result?.images}
+                vailidationSchema={schema}
+                initialValues={initialValues}
+                showTimeInput
+                handleSubmit={handleNewsUpdate}
+                buttonName={"save_changes"}
+              />
+            </div>
+          )}
         </Else>
       </If>
     </NewsWarper>

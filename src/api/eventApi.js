@@ -29,13 +29,13 @@ export const getAllEvents = (payload) =>
     showToastOnError: false,
   });
 
-export const getEventDetail = (payload) =>
-  callApi({
-    requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}event/get-event`, payload),
-    showToastOnSuccess: false,
-    showToastOnError: false,
-  });
+  export const getEventDetail = (payload) =>
+    callApi({
+      requestFunction: (axios) =>
+        axios.post(`${API_BASE_URL}event/get-event`, payload),
+      showToastOnSuccess: false,
+      showToastOnError: false,
+    });
 
 export const updateEventDetail = (payload) =>
   callApi({

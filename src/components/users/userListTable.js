@@ -12,19 +12,19 @@ import comfromationIcon from "../../assets/images/icons/news/conformationIcon.sv
 import { deleteCategoryDetail } from "../../api/categoryApi";
 import placeHolderImg from "../../assets/images/icons/dashBoard/defaultAvatar.svg"
 import { ConverFirstLatterToCapital } from "../../utility/formater";
+import { deleteSubAdmin } from "../../api/userApi";
 
 export function SubAdminUserListTable({ data ,currentFilter,currentPage}) {
-  const handleDeleteCategory = async (payload) => {
-    return deleteCategoryDetail(payload);
+  const handleDeleteSubAdmin = async (payload) => {
+    return deleteSubAdmin(payload);
   };
   const queryCient = useQueryClient();
   const deleteMutation = useMutation({
-    mutationFn: handleDeleteCategory,
+    mutationFn: handleDeleteSubAdmin,
     onSuccess: (data) => {
       console.log("dataError=", data.error);
       if (!data.error) {
-        console.log("invaldating");
-        queryCient.invalidateQueries(["Categories"]);
+        queryCient.invalidateQueries(["Users"]);
       }
     },
   });
@@ -52,6 +52,16 @@ export function SubAdminUserListTable({ data ,currentFilter,currentPage}) {
       name: t("User Role"),
       selector: (row) => row.userRole,
     },
+    {
+      name: t(""),
+      selector: (row) => row.edit,
+      center:true
+    },
+    {
+      name: t(""),
+      selector: (row) => row.delete,
+      center:true
+    },
     
   ];
 
@@ -61,7 +71,7 @@ export function SubAdminUserListTable({ data ,currentFilter,currentPage}) {
       id: `${idx + 1}`,
       userName: (
         <div className="d-flex align-items-center " >
-          <img src={item.img??placeHolderImg} style={{marginRight:"5px",width:"25px"}}  />
+          <img src={item.profilePhoto ?? placeHolderImg} className="cursor-pointer"  style={{marginRight:"5px",width:"30px", height:"30px", borderRadius:"50%"}}  />
           <div>{ConverFirstLatterToCapital(item.name ?? "-")}</div>
         </div>
       ),
@@ -80,45 +90,45 @@ export function SubAdminUserListTable({ data ,currentFilter,currentPage}) {
       //     {"Add Language"}
       //   </Button>
       // ),
-      // edit: (
-      //   <img
-      //     src={editIcon}
-      //     width={35}
-      //     onClick={() =>
-      //       history.push(`/configuration/user/edit/${item.id}?page=${currentPage}`)
-      //     }
-      //   />
-      // ),
-      // delete: (
-      //   <img
-      //     src={deleteIcon}
-      //     width={35}
-      //     onClick={(e) => {
-      //       e.preventDefault();
-      //       e.stopPropagation();
-      //       // Swal.fire("Oops...", "Something went wrong!", "error");
-      //       Swal.fire({
-      //         title: `<img src="${comfromationIcon}"/>`,
-      //         html: `
-      //                             <h3 class="swal-heading">Delete Sub Admin</h3>
-      //                             <p>Are you sure you want to permanently delete the selected sub admin ?</p>
-      //                             `,
-      //         showCloseButton: false,
-      //         showCancelButton: true,
-      //         focusConfirm: true,
-      //         cancelButtonText: "Cancel",
-      //         cancelButtonAriaLabel: "Cancel",
+      edit: (
+        <img
+          src={editIcon}
+          width={35}
+          onClick={() =>
+            history.push(`/configuration/users/edit/${item.id}?page=${currentPage}`)
+          }
+        />
+      ),
+      delete: (
+        <img
+          src={deleteIcon}
+          width={35}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            // Swal.fire("Oops...", "Something went wrong!", "error");
+            Swal.fire({
+              title: `<img src="${comfromationIcon}"/>`,
+              html: `
+                                  <h3 class="swal-heading">Delete Sub Admin</h3>
+                                  <p>Are you sure you want to permanently delete the selected sub admin ?</p>
+                                  `,
+              showCloseButton: false,
+              showCancelButton: true,
+              focusConfirm: true,
+              cancelButtonText: "Cancel",
+              cancelButtonAriaLabel: "Cancel",
 
-      //         confirmButtonText: "Confirm Delete",
-      //         confirmButtonAriaLabel: "Confirm",
-      //       }).then(async (result) => {
-      //         if (result.isConfirmed) {
-      //           deleteMutation.mutate(item.id);
-      //         }
-      //       });
-      //     }}
-      //   />
-      // ),
+              confirmButtonText: "Confirm Delete",
+              confirmButtonAriaLabel: "Confirm",
+            }).then(async (result) => {
+              if (result.isConfirmed) {
+                deleteMutation.mutate(item.id);
+              }
+            });
+          }}
+        />
+      ),
     }));
   }, [data]);
 

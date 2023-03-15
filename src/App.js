@@ -7,8 +7,11 @@ import { authApiInstance } from "./axiosApi/authApiInstans";
 import { setAvailableLang } from "./redux/authSlice";
 import "react-loading-skeleton/dist/skeleton.css";
 import {isSerchable} from "./utility/localSerachBar";
-
+import  configureAmplify from "./AWS/awsPool";
 const App = () => {
+
+  configureAmplify();
+
   const selectedLanguage = useSelector((state) => state.auth.selectLang);
   const dispatch = useDispatch();
   const languageList = async () => {

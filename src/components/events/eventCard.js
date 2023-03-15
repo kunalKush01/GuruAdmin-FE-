@@ -13,6 +13,8 @@ import Swal from "sweetalert2";
 import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
 import BtnPopover from "../partials/btnPopover";
 import { deleteEventDetail } from "../../api/eventApi";
+import placeHolder from "../../assets/images/placeholderImages/ad-place.png";
+
 const EventCardWaraper = styled.div`
   .card1 {
     font: normal normal bold 13px/16px Noto Sans;
@@ -150,6 +152,8 @@ function BtnContent({ eventId, currentPage, currentFilter }) {
 
 export default function EventCard({ data, currentPage, currentFilter }) {
   const history = useHistory();
+  console.log("data", data);
+  console.log();
   return (
     <EventCardWaraper>
       <Card
@@ -168,7 +172,7 @@ export default function EventCard({ data, currentPage, currentFilter }) {
               className="cursor-pointer"
             >
               <img
-                src="https://picsum.photos/300/200"
+                src={data?.images[0]?.presignedUrl || placeHolder}
                 style={{ width: "100%", height: "100%", borderRadius: "10px" }}
               />
             </Col>

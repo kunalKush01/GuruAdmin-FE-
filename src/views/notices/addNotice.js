@@ -43,6 +43,7 @@ const initialValues = {
   SelectedNotice: null,
   Id: "",
   Title: "",
+  image:"",
   tagsInit:[],
   Body: "",
   DateTime: new Date(),

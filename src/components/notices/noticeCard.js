@@ -13,10 +13,12 @@ import Swal from "sweetalert2";
 import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
 import BtnPopover from "../partials/btnPopover";
 import { deleteNoticeDetail } from "../../api/noticeApi";
+import placeHolder from "../../assets/images/placeholderImages/ad-place.png";
+
 const EventCardWaraper = styled.div`
   .card1 {
     font: normal normal bold 13px/16px Noto Sans;
-    margin-bottom:.5rem !important;
+    margin-bottom: 0.5rem !important;
   }
   .card-text {
     font: normal normal normal 12px/16px Noto Sans;
@@ -26,7 +28,7 @@ const EventCardWaraper = styled.div`
     text-overflow: ellipsis;
     text-align: start;
     white-space: nowrap;
-    margin-bottom:.5rem !important;
+    margin-bottom: 0.5rem !important;
   }
   .card-Date {
     font: normal normal normal 12px/16px Noto Sans;
@@ -53,8 +55,8 @@ const EventCardWaraper = styled.div`
     margin-right: 10px;
   }
 `;
-function BtnContent({ noticeId , currentPage, currentFilter }) {
-  const { t }= useTranslation();
+function BtnContent({ noticeId, currentPage, currentFilter }) {
+  const { t } = useTranslation();
   const history = useHistory();
   const BtnContentWraper = styled.div`
     color: #583703;
@@ -87,12 +89,14 @@ function BtnContent({ noticeId , currentPage, currentFilter }) {
   return (
     <BtnContentWraper>
       <Row className="MainContainer d-block">
-        
-
         <Col
           xs={12}
           className="col-item"
-          onClick={() => history.push(`/notices/edit/${noticeId}?page=${currentPage}&filter=${currentFilter}`)}
+          onClick={() =>
+            history.push(
+              `/notices/edit/${noticeId}?page=${currentPage}&filter=${currentFilter}`
+            )
+          }
         >
           <Trans i18nKey={"news_popOver_Edit"} />
         </Col>
@@ -108,7 +112,9 @@ function BtnContent({ noticeId , currentPage, currentFilter }) {
             Swal.fire({
               title: `<img src="${comfromationIcon}"/>`,
               html: `
-                                      <h3 class="swal-heading">${t("notices_delete")}</h3>
+                                      <h3 class="swal-heading">${t(
+                                        "notices_delete"
+                                      )}</h3>
                                       <p>${t("notices_sure")}</p>
                                       `,
               showCloseButton: false,
@@ -131,7 +137,11 @@ function BtnContent({ noticeId , currentPage, currentFilter }) {
         <Col
           xs={12}
           className="col-item"
-          onClick={() => history.push(`/notices/add-language/${noticeId}?page=${currentPage}&filter=${currentFilter}`)}
+          onClick={() =>
+            history.push(
+              `/notices/add-language/${noticeId}?page=${currentPage}&filter=${currentFilter}`
+            )
+          }
         >
           <Trans i18nKey={"news_popOver_AddLang"} />
         </Col>
@@ -140,11 +150,11 @@ function BtnContent({ noticeId , currentPage, currentFilter }) {
   );
 }
 
-export default function NoticeCard({ data , currentPage, currentFilter  }) {
+export default function NoticeCard({ data, currentPage, currentFilter }) {
   return (
-    <EventCardWaraper key={data.id} >
+    <EventCardWaraper key={data.id}>
       <Card
-      key={data.id}
+        key={data.id}
         style={{
           width: "100%",
           borderRadius: "20px",
@@ -156,14 +166,16 @@ export default function NoticeCard({ data , currentPage, currentFilter  }) {
           <Row className="align-items-center">
             <Col xs={2}>
               <img
-                src="https://picsum.photos/300/200"
+                src={data?.image || placeHolder}
                 style={{ width: "100%", height: "100%", borderRadius: "10px" }}
               />
             </Col>
             <Col xs={9}>
               <Row>
                 <Col xs={6}>
-                  <div className="card1">{ConverFirstLatterToCapital(data.title)}</div>
+                  <div className="card1">
+                    {ConverFirstLatterToCapital(data.title)}
+                  </div>
                 </Col>
                 <Col xs={6}>
                   <div className="card-Date">
@@ -203,7 +215,11 @@ export default function NoticeCard({ data , currentPage, currentFilter  }) {
 
             <Col xs={1}>
               <div className="d-flex justify-content-between align-items-center">
-                <img src={cardThreeDotIcon} className="cursor-pointer" id={`popover-${data.id}`} />
+                <img
+                  src={cardThreeDotIcon}
+                  className="cursor-pointer"
+                  id={`popover-${data.id}`}
+                />
               </div>
             </Col>
           </Row>
@@ -212,7 +228,13 @@ export default function NoticeCard({ data , currentPage, currentFilter  }) {
 
       <BtnPopover
         target={`popover-${data.id}`}
-        content={<BtnContent noticeId={data.id} currentPage={currentPage} currentFilter={currentFilter} />}
+        content={
+          <BtnContent
+            noticeId={data.id}
+            currentPage={currentPage}
+            currentFilter={currentFilter}
+          />
+        }
       />
     </EventCardWaraper>
   );

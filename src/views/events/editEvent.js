@@ -57,11 +57,9 @@ export default function Editevent() {
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
-
-
   const searchParams = new URLSearchParams(history.location.search);
-  const currentPage = searchParams.get('page')
-  const currentFilter = searchParams.get('filter')
+  const currentPage = searchParams.get("page");
+  const currentFilter = searchParams.get("filter");
 
   const [langSelection, setLangSelection] = useState(
     ConverFirstLatterToCapital(selectedLang.name)
@@ -75,25 +73,26 @@ export default function Editevent() {
       })
   );
 
-  const handleEventUpdate = async (payload) => {
-    return updateEventDetail({
-      ...payload,
-      languageId: getLangId(langArray, langSelection),
-    });
-  };
+    const handleEventUpdate = async (payload) => {
+      return updateEventDetail({
+        ...payload,
+        languageId: getLangId(langArray, langSelection),
+      });
+    };
 
-const tags = eventDetailQuery?.data?.result?.tags?.map((item)=>({
-  id: item.id,
-  text: item.tag,
-  _id: item.id
-}))
+  const tags = eventDetailQuery?.data?.result?.tags?.map((item) => ({
+    id: item.id,
+    text: item.tag,
+    _id: item.id,
+  }));
 
   const initialValues = useMemo(() => {
     return {
       Id: eventDetailQuery?.data?.result?.id,
       Title: eventDetailQuery?.data?.result?.title,
-      tagsInit:tags,
+      tagsInit: tags,
       Body: he.decode(eventDetailQuery?.data?.result?.body ?? ""),
+      images: [],
       PublishedBy: eventDetailQuery?.data?.result?.publishedBy,
       DateTime: {
         start: moment(eventDetailQuery?.data?.result?.startDate)
@@ -103,8 +102,8 @@ const tags = eventDetailQuery?.data?.result?.tags?.map((item)=>({
           .utcOffset("+0530")
           .toDate(),
       },
-      startTime:eventDetailQuery?.data?.result?.startTime,
-      endTime:eventDetailQuery?.data?.result?.endTime,
+      startTime: eventDetailQuery?.data?.result?.startTime,
+      endTime: eventDetailQuery?.data?.result?.endTime,
     };
   }, [eventDetailQuery]);
 
@@ -115,7 +114,11 @@ const tags = eventDetailQuery?.data?.result?.tags?.map((item)=>({
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push(`/events?page=${currentPage}&filter=${currentFilter}`)}
+            onClick={() =>
+              history.push(
+                `/events?page=${currentPage}&filter=${currentFilter}`
+              )
+            }
           />
           <div className="editevent">
             <Trans i18nKey={"events_EditEvent"} />
@@ -171,6 +174,8 @@ const tags = eventDetailQuery?.data?.result?.tags?.map((item)=>({
           {!eventDetailQuery.isFetching && (
             <div className="ms-3 mt-1">
               <EventForm
+                editImage="edit"
+                defaultImages={eventDetailQuery?.data?.result?.images}
                 initialValues={initialValues}
                 vailidationSchema={schema}
                 showTimeInput

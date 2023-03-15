@@ -1,26 +1,20 @@
 import { API_BASE_URL } from "../axiosApi/authApiInstans";
 import { callApi } from "../utility/utils/callApi";
-
+// subscribed user 
 export const createUser = (payload) =>
   callApi({
     requestFunction: (axios) =>
       axios.post(`${API_BASE_URL}user/register`, payload),
-    successCode: 200,
+    successCode: 201,
   });
 
 
-  export const getAllMasterCategories = (payload) =>
-  
+// configration sub admin 
+export const createSubAdmin = (payload) =>
   callApi({
-    requestFunction: (axios) => axios.post(`${API_BASE_URL}donation-category/list-master`, payload),
-    showToastOnSuccess: false,
-    showToastOnError: false,
-  });
-  export const getEventDates = (payload) =>
-  callApi({
-    requestFunction: (axios) => axios.get(`${API_BASE_URL}event/get-dates`, payload),
-    showToastOnSuccess: false,
-    showToastOnError: false,
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}sub-admin/create`, payload),
+    successCode: 201,
   });
 
 export const getAllUser = (payload) =>
@@ -29,32 +23,27 @@ export const getAllUser = (payload) =>
     showToastOnSuccess: false,
     showToastOnError: false,
   });
-
-export const getSubCategoryDetail = (payload) =>
+  export const getAllUserRoles = (payload) =>
   callApi({
-    requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}donation-category/get`, payload),
+    requestFunction: (axios) => axios.post(`${API_BASE_URL}sub-admin/role`, payload),
     showToastOnSuccess: false,
     showToastOnError: false,
   });
 
-export const updateCategoryDetail = (payload) =>
+  export const getSubAdminDetail = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}donation-category/update`, payload),
+      axios.get(`${API_BASE_URL}sub-admin/${payload}`, payload),
   });
 
-
-  export const addLangCategoryDetail = (payload) =>
+  export const updateSubAdminUser = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}donation-category/add-language`, payload),
+      axios.post(`${API_BASE_URL}sub-admin/update`, payload),
   });
-
-
-
-  export const deleteCategoryDetail = (payload) =>
+  
+  export const deleteSubAdmin = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.delete(`${API_BASE_URL}donation-category/delete/${payload}`, ),
+      axios.delete(`${API_BASE_URL}sub-admin/delete/${payload}`, payload),
   });

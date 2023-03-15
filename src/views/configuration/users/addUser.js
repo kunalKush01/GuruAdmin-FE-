@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useMemo } from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import * as yup from "yup";
-import { createUser } from "../../../api/userApi.js";
+import { createSubAdmin, getAllUserRoles } from "../../../api/userApi.js";
 import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
 import UserForm from "../../../components/users/userForm.js";
 
@@ -23,7 +23,7 @@ const NoticeWraper = styled.div`
 `;
 
 const handleCreateUser = async (payload) => {
-  return createUser(payload);
+  return createSubAdmin(payload);
 };
 const schema = yup.object().shape({
   name: yup
@@ -48,13 +48,7 @@ export default function AddCategory() {
 
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
-  const userRoleQuery = useQuery(
-    ["userRoles", selectedLang.id],
-    async () =>
-      await getAllTrustType({
-        languageId: selectedLang.id,
-      })
-  );
+  
   return (
     <NoticeWraper>
       <div className="d-flex justify-content-between align-items-center ">
@@ -73,14 +67,15 @@ export default function AddCategory() {
       </div>
       {/* {!userRoleQuery.isLoading && !userRoleQuery.isFetching ? ( */}
         <UserForm
-          loadOptions={userRoleQuery?.data?.results ?? [] }
           userRole={"role"}
           handleSubmit={handleCreateUser}
           initialValues={{
             name: "",
             mobile: "",
             email: "",
-            role: "",
+            password:"",
+            file:"",
+            userRoleChacked: [],
           }}
           vailidationSchema={schema}
           buttonName={"users_AddUser"}

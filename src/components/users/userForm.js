@@ -1,15 +1,21 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Form, Formik } from "formik";
-import React, { useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Field, Form, Formik } from "formik";
+import React, { useMemo, useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import { Button, Col, Row, Spinner } from "reactstrap";
+import { Button, Col, FormGroup, Input, Label, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import defaultAvtar from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
+import ImageUpload from "../partials/imageUpload";
+import InputPasswordToggle from "@components/input-password-toggle";
+import passwordEyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
+import { getAllUserRoles } from "../../api/userApi";
+import { useSelector } from "react-redux";
+
 const FormWaraper = styled.div`
   .FormikWraper {
     padding: 40px;
@@ -31,8 +37,47 @@ const FormWaraper = styled.div`
   }
   .filterPeriod {
     color: #ff8744;
-
     font: normal normal bold 13px/5px noto sans;
+  }
+  .signInIconsIserAdminPassword {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  label {
+    font: normal normal bold 15px/33px Noto Sans;
+  }
+  .input-group-merge {
+    background-color: #fff7e8 !important;
+  }
+  #login-password {
+    color: #583703 !important;
+    padding-left: 2px;
+    border: none !important;
+    background-color: #fff7e8 !important;
+    font: normal normal normal 13px/20px Noto Sans;
+    border-radius: 20px;
+    ::placeholder {
+      color: transparent;
+    }
+  }
+  .input-group-text {
+    background-color: #fff7e8 !important;
+    border-bottom: 0 !important;
+  }
+  .checkBoxBorderBox {
+    border: 2px solid #ff8744;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+  }
+  .labelCheckBox {
+    color: #ff8744 !important;
+    font: normal normal bold 13px/26px Noto Sans;
+  }
+  .checkBoxInput {
+    border-color: #ff8744;
+    cursor: pointer;
   }
 `;
 
@@ -42,7 +87,9 @@ export default function UserForm({
   handleSubmit,
   vailidationSchema,
   initialValues,
+  profileImageName,
   userRole,
+  editProfile,
   showTimeInput,
   buttonName = "",
   ...props
@@ -64,29 +111,68 @@ export default function UserForm({
       }
     },
   });
+  const selectedLang = useSelector((state) => state.auth.selectLang);
+
+  const userRoleQuery = useQuery(
+    ["userRoles", selectedLang.id],
+    async () =>
+      await getAllUserRoles({
+        languageId: selectedLang.id,
+      })
+  );
+  const userRolesItems = useMemo(
+    () => userRoleQuery?.data?.results ?? [],
+    [userRoleQuery]
+  );
+
+  const userRoleIds = userRolesItems?.map((item) => item._id);
+  const randomNumber = Math.floor(100000000000 + Math.random() * 900000000000);
+
   return (
     <FormWaraper className="FormikWraper">
       <Formik
-        // enableReinitialize
-        initialValues={{ ...initialValues }}
+        enableReinitialize
+        initialValues={initialValues}
         onSubmit={(e) => {
           setLoading(true);
           console.log("cateFormSubmit=", e);
           categoryMutation.mutate({
-            email: e.email,
+            subAdminId:e?.Id,
+            email: e?.email,
             mobileNumber: e.mobile,
-            roleId: e?.role?.id,
+            roles: e?.userRoleChacked,
             name: e.name,
+            password: e?.password,
+            profilePhoto:editProfile ? profileImageName : e?.file,
+            // profilePhoto: e?.file,
           });
         }}
         validationSchema={vailidationSchema}
       >
         {(formik) => (
           <Form>
+            {JSON.stringify(formik.errors)}
             <Row>
               <Col xs={12} className=" mt-2 ps-0 d-flex">
                 <div className=" me-3">
-                  <img src={defaultAvtar} width={150} className="" />
+                  <ImageUpload
+                    bg_plus={defaultAvtar}
+                    profileImage
+                    editTrue="edit"
+                    editedFileNameInitialValue={
+                      formik.values.file ? formik.values.file : null
+                    }
+                    randomNumber={randomNumber}
+                    fileName={(file, type) => {
+                      formik.setFieldValue("file", `${randomNumber}_${file}`);
+                      formik.setFieldValue("type", type);
+                      profileImageName = `${randomNumber}_${file}`;
+                    }}
+                    removeFile={(fileName) => {
+                      formik.setFieldValue("file", "");
+                      profileImageName = "";
+                    }}
+                  />
                 </div>
                 <Row className=" w-100 mt-3">
                   <Col xs={10}>
@@ -116,19 +202,113 @@ export default function UserForm({
                           name="email"
                         />
                       </Col>
+                      <Col xs={12} md={6} lg={4} className="ps-1">
+                        <label>
+                          <Trans i18nKey={"user_password"} />
+                          {`*`}
+                        </label>
+                        <InputPasswordToggle
+                          className="input-group-merge"
+                          name="password"
+                          inputClassName=""
+                          id="login-password"
+                          value={formik.values.password}
+                          onChange={formik.handleChange}
+                          iconClassName="d-none"
+                          hideIcon={
+                            <img
+                              className="signInIconsIserAdminPassword"
+                              src={passwordEyeIcon}
+                            />
+                          }
+                          showIcon={
+                            <img
+                              className="signInIconsIserAdminPassword"
+                              src={passwordEyeIcon}
+                            />
+                          }
+                        />
+                      </Col>
                     </Row>
                   </Col>
-                  <Col xs={4} className="mt-1">
-                    <FormikCustomReactSelect
-                      width={"100%"}
-                      name={userRole}
-                      loadOptions={loadOptions}
-                      defaultValue={formik?.values?.role}
-                      labelKey={"name"}
-                      valueKey={"id"}
-                      labelName={t("User Role")}
-                    />
-                  </Col>
+
+                  <Row>
+                    <Col xs={12}>
+                      <div className="mb-1 mt-1" style={{ fontSize: "15px" }}>
+                        <Trans i18nKey={"user_userRole"} />
+                      </div>
+                    </Col>
+                    <Col xs={12} className="">
+                      <Row className="row-cols-1 row-cols-sm-3 row-cols-md-4 row-cols-lg-5  ">
+                        <Col className="">
+                          <div className="checkBoxBorderBox mt-1">
+                            <FormGroup
+                              check
+                              className="align-items-center d-flex "
+                            >
+                              <Input
+                                id="exampleCheckbox"
+                                name="checked"
+                                type="checkbox"
+                                checked={
+                                  userRoleIds?.length ===
+                                  formik?.values?.userRoleChacked?.length
+                                }
+                                className="me-1 checkBoxInput"
+                                onChange={(e) =>
+                                  e.target.checked
+                                    ? formik.setFieldValue(
+                                        "userRoleChacked",
+                                        userRoleIds
+                                      )
+                                    : formik.setFieldValue(
+                                        "userRoleChacked",
+                                        []
+                                      )
+                                }
+                              />
+                              <Label
+                                check
+                                for="exampleCheckbox"
+                                className="labelCheckBox"
+                              >
+                                All
+                              </Label>
+                            </FormGroup>
+                          </div>
+                        </Col>
+                        {userRolesItems?.map((item) => {
+                          return (
+                            <Col key={item?.id}>
+                              <div className="checkBoxBorderBox mt-1">
+                                <FormGroup
+                                  check
+                                  className="align-items-center d-flex"
+                                >
+                                  {JSON.stringify()}
+                                  <Input
+                                    id={item._id}
+                                    name="userRoleChacked"
+                                    tag={Field}
+                                    type="checkbox"
+                                    className="me-1 checkBoxInput"
+                                    value={item._id}
+                                  />
+                                  <Label
+                                    check
+                                    for={item._id}
+                                    className="labelCheckBox"
+                                  >
+                                    {item?.name}
+                                  </Label>
+                                </FormGroup>
+                              </div>
+                            </Col>
+                          );
+                        })}
+                      </Row>
+                    </Col>
+                  </Row>
                 </Row>
               </Col>
             </Row>

@@ -19,6 +19,8 @@ import { flatMap } from "lodash";
 import { useSelector } from "react-redux";
 import { getAllTags } from "../../api/tagApi";
 import { WithContext as ReactTags } from "react-tag-input";
+import ImageUpload from "../partials/imageUpload";
+import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
 
 const FormWaraper = styled.div`
   .existlabel {
@@ -142,6 +144,10 @@ const FormWaraper = styled.div`
 export default function NoticeForm({
   plusIconDisable = false,
   buttonName = "",
+  editImage,
+  defaultImages,
+  editThumbnail,
+  thumbnailImageName,
   handleSubmit,
   vailidationSchema,
   initialValues,
@@ -151,17 +157,17 @@ export default function NoticeForm({
   const history = useHistory();
   const { t } = useTranslation();
   const noticeQuerClient = useQueryClient();
-const [loading , setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const noticeMutation = useMutation({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
       if (!data.error) {
         noticeQuerClient.invalidateQueries(["Notices"]);
         noticeQuerClient.invalidateQueries(["NoticeDetail"]);
-        setLoading(false)
+        setLoading(false);
         history.push("/notices");
-      }else if(data.error){
-        setLoading(false)
+      } else if (data.error) {
+        setLoading(false);
       }
     },
   });
@@ -215,6 +221,9 @@ const [loading , setLoading] = useState(false)
     formik.setFieldValue("tagsInit", [...formik.values.tagsInit, tag]);
   };
 
+  const randomNumber = Math.floor(100000000000 + Math.random() * 900000000000);
+
+  const [deletedImages, setDeletedImages] = useState([]);
   return (
     <FormWaraper className="FormikWraper">
       <Formik
@@ -231,9 +240,9 @@ const [loading , setLoading] = useState(false)
             deletedTags,
             body: e.Body,
             publishDate: e.DateTime,
-            imageUrl: ["http://newsImage123.co"],
+            image: editThumbnail ? thumbnailImageName : e?.image,
           });
-          setDeletedTags([])
+          setDeletedTags([]);
         }}
         validationSchema={vailidationSchema}
       >
@@ -251,7 +260,7 @@ const [loading , setLoading] = useState(false)
                     />
                   </Col>
                   <Col sm={6}>
-                  <label>Tags</label>
+                    <label>Tags</label>
                     {/* {JSON.stringify(formik.values.tagsInit)} */}
                     <ReactTags
                       tags={formik.values.tagsInit}
@@ -276,6 +285,29 @@ const [loading , setLoading] = useState(false)
                     />
                   </Col>
                 </Row>
+                <Row>
+                  <div className="ImagesVideos">
+                    <Trans i18nKey={"news_label_ImageVedio"} />
+                  </div>
+                  {JSON.stringify(formik.values.image)}
+                  <ImageUpload
+                    editTrue="edit"
+                    bg_plus={thumbnailImage}
+                    editedFileNameInitialValue={
+                      formik.values.image ? formik.values.image : null
+                    }
+                    randomNumber={randomNumber}
+                    fileName={(file, type) => {
+                      formik.setFieldValue("image", `${randomNumber}_${file}`);
+                      formik.setFieldValue("type", type);
+                      thumbnailImageName = `${randomNumber}_${file}`;
+                    }}
+                    removeFile={(fileName) => {
+                      formik.setFieldValue("image", "");
+                      thumbnailImageName= ""
+                    }}
+                  />
+                </Row>
               </Col>
               <Col>
                 <FormikCustomDatePicker
@@ -286,7 +318,7 @@ const [loading , setLoading] = useState(false)
               </Col>
             </Row>
             <div className="btn-Published ">
-            {loading ? (
+              {loading ? (
                 <Button
                   color="primary"
                   className="add-trust-btn"
@@ -300,18 +332,21 @@ const [loading , setLoading] = useState(false)
                   <Spinner size="md" />
                 </Button>
               ) : (
-                <Button color="primary" className="addNotice-btn " type="submit">
-                {plusIconDisable && (
+                <Button
+                  color="primary"
+                  className="addNotice-btn "
+                  type="submit"
+                >
+                  {plusIconDisable && (
+                    <span>
+                      <Plus className="me-1" size={15} strokeWidth={4} />
+                    </span>
+                  )}
                   <span>
-                    <Plus className="me-1" size={15} strokeWidth={4} />
+                    <Trans i18nKey={`${buttonName}`} />
                   </span>
-                )}
-                <span>
-                  <Trans i18nKey={`${buttonName}`} />
-                </span>
-              </Button>
+                </Button>
               )}
-              
             </div>
           </Form>
         )}

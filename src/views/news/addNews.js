@@ -55,6 +55,7 @@ export default function AddNews() {
   const initialValues = {
     Id: "",
     Title: "",
+    images:[],
     tagsInit:[],
     Body: "",
     PublishedBy: loggedInUser,

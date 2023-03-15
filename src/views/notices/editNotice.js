@@ -88,6 +88,7 @@ export default function EditNotice() {
       Id: noticeDetailQuery?.data?.result?.id,
       Title: noticeDetailQuery?.data?.result?.title,
       tagsInit:tags,
+      image:noticeDetailQuery?.data?.result?.image,
       Body: he.decode(noticeDetailQuery?.data?.result?.body ?? ""),
       PublishedBy: noticeDetailQuery?.data?.result?.publishedBy,
       DateTime: moment(noticeDetailQuery?.data?.result?.publishDate)
@@ -161,6 +162,8 @@ export default function EditNotice() {
 
               <NoticeForm
                 initialValues={initialValues}
+                editThumbnail
+                thumbnailImageName={noticeDetailQuery?.data?.result?.imageName}
                 vailidationSchema={schema}
                 showTimeInput
                 selectNoticeDisabled

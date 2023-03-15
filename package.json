@@ -3,6 +3,7 @@
   "version": "8.0.0",
   "private": true,
   "dependencies": {
+    "@aws-amplify/storage": "^5.1.9",
     "@casl/ability": "^5.2.2",
     "@casl/react": "^2.1.1",
     "@craco/craco": "^6.4.2",
@@ -21,6 +22,7 @@
     "animate.css": "^4.1.1",
     "apexcharts": "^3.29.0",
     "apexcharts-clevision": "^3.28.3",
+    "aws-amplify": "^5.0.19",
     "axios": "^0.24.0",
     "axios-mock-adapter": "^1.19.0",
     "bootstrap": "5.1.0",

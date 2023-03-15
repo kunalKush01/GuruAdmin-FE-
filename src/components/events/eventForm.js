@@ -21,9 +21,11 @@ import moment from "moment";
 import { flatMap, isDate } from "lodash";
 import { setlang } from "../../redux/authSlice";
 import { getAllTags } from "../../api/tagApi";
-import { WithContext as ReactTags} from "react-tag-input";
+import { WithContext as ReactTags } from "react-tag-input";
 import { useSelector } from "react-redux";
 import { ConvertToString } from "../financeReport/reportJsonExport";
+import ImageUpload from "../partials/imageUpload";
+import thumbnailImage from "../../assets/images/icons/Thumbnail.svg"
 
 
 const FormWaraper = styled.div`
@@ -59,7 +61,6 @@ const FormWaraper = styled.div`
     font: normal normal bold 15px/33px Noto Sans;
   }
 
-
   /* input tags  css start */
   .ReactTags__tagInput {
     color: #583703 !important;
@@ -68,8 +69,8 @@ const FormWaraper = styled.div`
     background-color: #fff7e8 !important;
     font: normal normal normal 13px/20px Noto Sans;
     border-radius: 5px;
-}
-.ReactTags__tagInput input.ReactTags__tagInputField{
+  }
+  .ReactTags__tagInput input.ReactTags__tagInputField {
     color: #583703 !important;
     border: none !important;
     background-color: #fff7e8 !important;
@@ -78,43 +79,43 @@ const FormWaraper = styled.div`
     outline: none;
     width: 100%;
     height: inherit;
-    padding-left: .5rem;
-    ::placeholder{
-        color:#fff7e8 ;
+    padding-left: 0.5rem;
+    ::placeholder {
+      color: #fff7e8;
     }
-}
-/* added tags  */
-.ReactTags__selected{
-  width: 100%;
-  display: flex;
-  overflow-x:scroll !important;
-    ::-webkit-scrollbar{
-      width:10px;
-       display: block;
+  }
+  /* added tags  */
+  .ReactTags__selected {
+    width: 100%;
+    display: flex;
+    overflow-x: scroll !important;
+    ::-webkit-scrollbar {
+      width: 10px;
+      display: block;
     }
-}
+  }
 
-/* Styles for suggestions */
-.ReactTags__suggestions {
-  position: absolute;
-}
-.ReactTags__suggestions ul {
-  list-style-type: none;
-  box-shadow: 0.05em 0.01em 0.5em rgba(0, 0, 0, 0.2);
-  background-color: #fff7e8 !important;
-  width: 200px;
-}
-.ReactTags__suggestions li {
-  border-bottom: 1px solid #ddd;
-  padding: 5px 10px;
-  margin: 0;
-}
-.ReactTags__suggestions li mark {
-  text-decoration: underline;
-  background: none;
-  font-weight: 600;
-}
-/* .ReactTags__suggestions ul li.ReactTags__activeSuggestion {
+  /* Styles for suggestions */
+  .ReactTags__suggestions {
+    position: absolute;
+  }
+  .ReactTags__suggestions ul {
+    list-style-type: none;
+    box-shadow: 0.05em 0.01em 0.5em rgba(0, 0, 0, 0.2);
+    background-color: #fff7e8 !important;
+    width: 200px;
+  }
+  .ReactTags__suggestions li {
+    border-bottom: 1px solid #ddd;
+    padding: 5px 10px;
+    margin: 0;
+  }
+  .ReactTags__suggestions li mark {
+    text-decoration: underline;
+    background: none;
+    font-weight: 600;
+  }
+  /* .ReactTags__suggestions ul li.ReactTags__activeSuggestion {
   background: #b7cfe0;
   cursor: pointer;
 } */
@@ -127,33 +128,32 @@ const FormWaraper = styled.div`
     margin-left: 3px;
     align-items: center;
     margin-top: 0.5rem;
-}
-.ReactTags__remove {
+  }
+  .ReactTags__remove {
     font-size: 20px;
     font-weight: 900;
     border: none;
     vertical-align: middle;
     line-height: 0px;
     cursor: pointer;
-}
-/* input tags  css start */
+  }
+  /* input tags  css start */
   //  media query
-  
-  
+
   @media only screen and (max-width: 768px) and (min-width: 320px) {
     .thumbnail_image {
       width: 100px;
       height: 100px;
     }
   }
-
-
 `;
 
 export default function EventForm({
   buttonName = "",
   plusIconDisable = false,
   handleSubmit,
+  editImage,
+  defaultImages,
   vailidationSchema,
   initialValues,
   showTimeInput = false,
@@ -161,7 +161,7 @@ export default function EventForm({
 }) {
   const history = useHistory();
   const { t } = useTranslation();
-  const [loading ,setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const eventQuerClient = useQueryClient();
   const eventMutation = useMutation({
     mutationFn: handleSubmit,
@@ -171,10 +171,10 @@ export default function EventForm({
         eventQuerClient.invalidateQueries(["Events"]);
         eventQuerClient.invalidateQueries(["EventDates"]);
         eventQuerClient.invalidateQueries(["EventDetail"]);
-        setLoading(false)
+        setLoading(false);
         history.push("/events");
-      }else if(data.error){
-        setLoading(false)
+      } else if (data.error) {
+        setLoading(false);
       }
     },
   });
@@ -183,7 +183,6 @@ export default function EventForm({
     const getGlobalEventsRES = await getGlobalEvents(100);
     return getGlobalEventsRES.results;
   };
-
 
   // tags
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -199,7 +198,6 @@ export default function EventForm({
     }
   );
 
-  
   // tags
   const tags = useMemo(() => tagsQuery?.data?.results ?? [], [tagsQuery]);
   const suggestions = tags.map((item) => {
@@ -235,6 +233,9 @@ export default function EventForm({
     formik.setFieldValue("tagsInit", [...formik.values.tagsInit, tag]);
   };
 
+  const randomNumber = Math.floor(100000000000 + Math.random() * 900000000000);
+
+  const [deletedImages, setDeletedImages] = useState([]);
 
   return (
     <FormWaraper className="FormikWraper">
@@ -242,19 +243,20 @@ export default function EventForm({
         enableReinitialize
         initialValues={initialValues}
         onSubmit={(e) => {
-        setLoading(true)
+          setLoading(true);
           eventMutation.mutate({
             eventId: e.Id,
             baseId: e?.SelectedEvent?.id ?? null,
             title: e.Title,
             tags: e?.tagsInit?.map((tag) => tag.text),
             deletedTags,
-            startTime:e?.startTime,
-            endTime:e?.endTime,
+            startTime: e?.startTime,
+            endTime: e?.endTime,
             body: e.Body,
             startDate: moment(e?.DateTime?.start).format("YYYY-MM-DD"),
             endDate: moment(e?.DateTime?.end).format("YYYY-MM-DD"),
-            imageUrl: ["http://newsImage123.co"],
+            images: e?.images,
+            removedImages: deletedImages,
           });
           setDeletedTags([]);
         }}
@@ -290,11 +292,13 @@ export default function EventForm({
                           "Title",
                           selectOption?.title ?? ""
                         );
-                        formik.setFieldValue("Body", ConvertToString (selectOption?.body ?? ""));
+                        formik.setFieldValue(
+                          "Body",
+                          ConvertToString(selectOption?.body ?? "")
+                        );
 
                         formik.setFieldValue("DateTime", {
-                          start: moment(selectOption?.startDate)
-                            .toDate(),
+                          start: moment(selectOption?.startDate).toDate(),
                           end: moment(selectOption?.endDate)
                             .utcOffset("+0530")
                             .toDate(),
@@ -312,17 +316,44 @@ export default function EventForm({
                     />
                   </Col>
                 </Row>
-                {/* <Row>
-                        <div className="ImagesVideos">
-                          <Trans i18nKey={"news_label_ImageVedio"} />
-                        </div>
-                        <div></div>
-                      </Row> */}
+                <Row>
+                  <div className="ImagesVideos">
+                    <Trans i18nKey={"news_label_ImageVedio"} />
+                  </div>
+                  <div>
+                    <ImageUpload
+                      multiple
+                      type={editImage}
+                      bg_plus={thumbnailImage}
+                      setDeletedImages={setDeletedImages}
+                      editedFileNameInitialValue={
+                        formik?.values?.images ? formik?.values?.images : null
+                      }
+                      defaultImages={defaultImages}
+                      randomNumber={randomNumber}
+                      fileName={(file, type) => {
+                        formik.setFieldValue("images", [
+                          ...formik?.values?.images,
+                          `${randomNumber}_${file}`,
+                        ]);
+                        formik.setFieldValue("type", type);
+                      }}
+                      removeFile={(fileName) => {
+                        const newFiles = [...formik.values.images];
+                        // newFiles.splice(index, 1);
+                        const updatedFiles = newFiles.filter(
+                          (img) => !img.includes(fileName)
+                        );
+                        formik.setFieldValue("images", updatedFiles);
+                      }}
+                    />
+                  </div>
+                </Row>
               </Col>
               <Col xs="4" className="">
                 <Row>
                   <Col xs="10">
-                  <label>Tags</label>
+                    <label>Tags</label>
                     {/* {JSON.stringify(formik.values.tagsInit)} */}
                     <ReactTags
                       tags={formik.values.tagsInit}
@@ -337,7 +368,7 @@ export default function EventForm({
                       autofocus={false}
                     />
                   </Col>
-                  
+
                   <Col>
                     <FormikRangeDatePicker
                       label={t("donation_select_date_time")}
@@ -348,21 +379,21 @@ export default function EventForm({
                   <Col xs="10">
                     <Row className="">
                       <Col lg="6">
-                      <CustomTextField
+                        <CustomTextField
                           label={t("Start")}
                           // value={latitude}
                           type="time"
                           name="startTime"
-                           required
+                          required
                         />
                       </Col>
                       <Col lg="6">
-                      <CustomTextField
+                        <CustomTextField
                           label={t("End")}
                           // value={latitude}
                           type="time"
                           name="endTime"
-                           required
+                          required
                         />
                       </Col>
                     </Row>
@@ -371,7 +402,7 @@ export default function EventForm({
               </Col>
             </Row>
             <div className="btn-Published mb-2">
-            {loading ? (
+              {loading ? (
                 <Button
                   color="primary"
                   className="add-trust-btn"
@@ -386,17 +417,16 @@ export default function EventForm({
                 </Button>
               ) : (
                 <Button color="primary" className="addEvent-btn " type="submit">
-                {plusIconDisable && (
+                  {plusIconDisable && (
+                    <span>
+                      <Plus className="me-1" size={15} strokeWidth={4} />
+                    </span>
+                  )}
                   <span>
-                    <Plus className="me-1" size={15} strokeWidth={4} />
+                    <Trans i18nKey={`${buttonName}`} />
                   </span>
-                )}
-                <span>
-                  <Trans i18nKey={`${buttonName}`} />
-                </span>
-              </Button>
+                </Button>
               )}
-             
             </div>
           </Form>
         )}

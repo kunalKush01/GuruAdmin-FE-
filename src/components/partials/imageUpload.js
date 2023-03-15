@@ -1,281 +1,368 @@
-import React, { useState, useEffect } from "react";
-import { useField } from "formik";
-import { Star, Upload, X } from "react-feather";
-import { useDrop } from "ahooks";
-import { v4 as uuidv4 } from "uuid";
-import swal from "sweetalert";
-import { PRIMARY_COLOR } from "../../theme";
-import Swiper from "react-id-swiper";
-import { uploadFileToS3 } from "../../utility/helpers";
-import "swiper/swiper.scss";
-import addImage from "../../assets/img/icons/add_image.svg";
-import { Spinner } from "reactstrap";
-//import "../../assets/scss/plugins/extensions/swiper.scss";
+import React, { useEffect, useRef, useState } from "react";
+import { useDropzone } from "react-dropzone";
+import styled from "styled-components";
+// import bg_plus from "../../../assets/img/ListItems/bg_plus.svg";
+import { Storage } from "@aws-amplify/storage";
+import bg_plus from "../../assets/images/icons/Thumbnail.svg";
+import { Button } from "reactstrap";
+const WraperImageField = styled.div`
+  .image_text {
+    font: normal normal medium 22px/30px Kanit;
+  }
+  .removeImageButton {
+    position: absolute;
+    background-color: #ffffff !important;
+    padding: 0.5rem;
+    display: none;
+    border: none;
+    color: red !important;
+    right: 15px;
+    top: 6px;
+    font-size: 17px;
+    font-weight: bold;
+  }
+  .dropZone_Box {
+    height: 328px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    //border: 3px solid #707070;
+  }
+  .image_text strong {
+    color: #ff8341;
+  }
+  .dropZone_Box svg {
+    width: 56px;
+    height: 56px;
+  }
+  .dropImageBx {
+    display: inline-flex;
+    border-radius: 5px;
+    width: 130px;
+    height: 130px;
+    //border: 3px solid #707070;
+    margin-bottom: 8px;
+    margin-right: 8px;
+    padding: 4px;
+    box-sizing: border-box;
+  }
+  /* .mainImageDiv:hover img {
+    opacity: 50%;
+    transition: opacity 1s;
+  }
+  .mainImageDiv:hover .removeImageButton{
+    display: block;
+  } */
+  @media screen and (max-width: 1199px) and (min-width: 992px) {
+    .preview_box li {
+      width: 80px;
+      height: 80px;
+    }
+  }
+  @media screen and (max-width: 991px) {
+    .preview_box li {
+      width: 60px;
+      height: 60px;
+      background-size: 35px;
+    }
+    .dropZone_Box {
+      height: 40vh;
+    }
+    .image_text {
+      font: normal normal 500 14px/16px Kanit;
+    }
+    .dropZone_Box svg {
+      width: 45px;
+      height: 45px;
+    }
+  }
+  @media screen and (max-width: 767px) {
+    .preview_box li {
+      width: 60px;
+      height: 60px;
+      background-size: 30px;
+    }
+    .dropZone_Box {
+      height: 30vh;
+    }
+    .image_text {
+      font: normal normal 500 14px/16px Kanit;
+    }
+    .dropZone_Box svg {
+      width: 45px;
+      height: 45px;
+    }
+  }
+`;
 
-export default function ImageUploadField({
-  label,
-  icon,
-  placeholder,
-  borderColor = PRIMARY_COLOR,
-  multiple = true,
-  postDelete,
-  ...props
-}) {
-  const params = {
-    slidesPerView: multiple ? 4 : 1,
-    spaceBetween: 30,
+const thumbStyles = {
+  display: "flex",
+  flexDirection: "row",
+  flexWrap: "wrap",
+  width: "140px",
+  height: "140px",
+  backgroundSize: "contain",
+};
+
+const thumb = {
+  display: "inline-flex",
+  //   borderRadius: 2,
+  //   border: "1px solid #707070",
+  marginBottom: 8,
+  marginRight: 8,
+  width: "100%",
+  height: "100%",
+  //   padding: 4,
+  boxSizing: "border-box",
+};
+
+const thumbInner = {
+  display: "flex",
+  minWidth: 0,
+  overflow: "hidden",
+};
+
+const thumbInnerBorderRadius = {
+  display: "flex",
+  minWidth: 0,
+  overflow: "hidden",
+  borderRadius: "50%",
+};
+const img = {
+  display: "block",
+  width: "100%",
+  height: "100%",
+};
+const imgBorderRadius = {
+  display: "block",
+  width: "100%",
+  height: "100%",
+  borderRadius: "50%",
+};
+
+const Thumbs = ({
+  file,
+  multiple,
+  editedFileNameInitialValue,
+  profileImage,
+}) => (
+  <div style={thumb} key={file?.name}>
+    <div
+      style={profileImage ? thumbInnerBorderRadius : thumbInner}
+      // className={profileImage ? "profileBlock" : "thumbBlock"}
+    >
+      <img
+        src={
+          file?.preview
+            ? file?.preview
+            : multiple
+            ? file?.presignedUrl
+            : editedFileNameInitialValue
+        }
+        style={img}
+        alt={file.name}
+      />
+    </div>
+  </div>
+);
+
+function ImageUpload(props) {
+  const [files, setFiles] = useState(
+    props.defaultImages?.length > 0 ? props.defaultImages : []
+    );
+    const thumbsContainer = {
+      backgroundImage: `url('${files?.length > 0 ? "" : props?.bg_plus}')`,
+      backgroundRepeat: "no-repeat",
+      backgroundPositionX: "center",
+      backgroundPositionY: "center",
+    };
+  const handleUpload = (acceptedFiles) => {
+    Storage.put(
+      `temp/${props.randomNumber}_${acceptedFiles.name}`,
+      acceptedFiles,
+      {
+        contentType: acceptedFiles.type,
+      }
+    )
+      .then((res) => {
+        props.fileName(acceptedFiles.name, acceptedFiles.type);
+
+        if (props.multiple) {
+          setFiles(
+            // acceptedFiles.map((file) =>
+            [
+              ...files,
+              Object.assign(acceptedFiles, {
+                preview: URL.createObjectURL(acceptedFiles),
+              }),
+            ]
+
+            // )
+          );
+        } else {
+          setFiles(
+            // acceptedFiles.map((file) =>
+            [
+              Object.assign(acceptedFiles, {
+                preview: URL.createObjectURL(acceptedFiles),
+              }),
+            ]
+            // )
+          );
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
-  const [field, meta, helpers] = useField(props);
-
-  const [dropProps, { isHovering }] = useDrop({
-    onFiles: (files, e) => {
-      if (multiple || images.length === 0) {
-        setFilesToState(files);
-      }
+  const { getRootProps, getInputProps, open } = useDropzone({
+    accept: "",
+    onDrop: (acceptedFiles) => {
+      handleUpload(acceptedFiles[0]);
     },
   });
-
-  const [images, setImages] = useState(field.value ? field.value : []);
-  const [dropMode, setDropMode] = useState(images.length > 0 ? false : true);
-
-  useEffect(() => {
-    if (isHovering) {
-      if (multiple || images.length === 0) {
-        setDropMode(true);
-      }
-    } else if (images.length > 0) {
-      setDropMode(false);
+  const removeFile = (file) => {
+    // props.removeFile(files.indexOf(file));
+    props.removeFile(file?.name);
+    if (props?.type) {
+      props?.setDeletedImages((prev) => [...prev, file?.name]);
     }
-    console.log("Hover status change", isHovering);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isHovering]);
-
-  useEffect(() => {
-    helpers.setValue(images);
-    if (images.length > 0) {
-      setDropMode(false);
-    } else {
-      setDropMode(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [images]);
-
-  const selectDefaultImage = (uuid) => {
-    setImages((prevImages) => {
-      const newImages = prevImages.map((prevImage) => {
-        if (prevImage.uuid === uuid) {
-          return { ...prevImage, is_default_image: true };
-        } else {
-          return { ...prevImage, is_default_image: false };
-        }
-      });
-      return [...newImages];
-    });
+    const newFiles = [...files];
+    newFiles.splice(newFiles.indexOf(file), 1);
+    setFiles(newFiles);
   };
-
-  const setFilesToState = (files) => {
-    if (files && files.length > 0) {
-      files.map(async (file) => {
-        let localUrl = URL.createObjectURL(file);
-        const uuid = uuidv4();
-
-        setImages((prevImages) => {
-          return [
-            ...prevImages,
-            {
-              uuid,
-              name: file.name,
-              uploaded: false,
-              file,
-              localUrl,
-              url: "",
-              is_default_image: prevImages.length === 0,
-            },
-          ];
-        });
-        const url = await uploadFileToS3(file);
-
-        setImages((prevImages) => {
-          const newImages = prevImages.map((image) => {
-            if (image.uuid === uuid) {
-              const newImage = Object.assign({}, image);
-              newImage.url = url;
-              newImage.uploaded = true;
-              return newImage;
-            }
-            return image;
-          });
-          return newImages;
-        });
-      });
-    }
-  };
-
-  const deleteImage = (img) => {
-    console.log(
-      "🚀 ~ file: ImageUploadField.js ~ line 116 ~ deleteImage ~ img",
-      img
-    );
-    swal({
-      title: "Are you sure you want to delete  this image?",
-      text: "",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then(async (willDelete) => {
-      if (willDelete) {
-        setImages((prevImages) => {
-          const newImages = prevImages.filter(
-            (image) => image.uuid !== img.uuid
-          );
-          return [...newImages];
-        });
-        if (postDelete) {
-          postDelete(img._id);
-        }
-      }
-    });
-  };
+  useEffect(
+    () => () => {
+      files?.forEach((file) => URL.revokeObjectURL(file.preview));
+    },
+    [files]
+  );
+  const ref = useRef();
   return (
-    <>
-      <label style={{ marginBottom: "8px" }}>{label}</label>
-      <div className=" p-2 mb-2" style={{ borderRadius: 10 }} {...dropProps}>
-        {dropMode && (
-          <div
-            className=" w-100 d-flex justify-content-center align-items-center flex-column  position-relative"
-            style={{
-              minHeight: "18.5rem",
-              border: `dashed 3px ${borderColor}`,
-              borderRadius: 10,
-            }}
-          >
-            <input
-              type="file"
-              placeholder={placeholder}
-              className="w-100"
-              multiple={true}
-              style={{
-                borderRadius: "10px",
-                minHeight: "18.5rem",
-                opacity: 0,
-                cursor: "pointer",
-                position: "absolute",
-                top: "0",
-                left: "0",
-              }}
-              onChange={(event) => {
-                const files = Array.from(event.target.files);
-                setFilesToState(files);
-              }}
-            />
-            <Upload size={70} className="text-primary mb-1" />
-            <span className="btn btn-primary">
-              {multiple ? "Add Images" : "Add Image"}{" "}
-            </span>
-            <h3 className="mt-1 text-center">or drop image to upload</h3>
-          </div>
-        )}
-        {dropMode || (
-          <Swiper {...params} shouldSwiperUpdate={true}>
-            {multiple ? (
-              <div
-                style={{
-                  background: "grey",
-                  backgroundImage: `url(${addImage})`,
-                  backgroundPosition: "center",
-                  backgroundSize: "cover",
-                  cursor: "pointer",
-                  height: "18rem",
-                  overflow: "hidden",
-                  borderRadius: 10,
-                  boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",
-                  margin: 10,
-                }}
-              >
-                <input
-                  type="file"
-                  placeholder={placeholder}
-                  className="w-100"
-                  style={{
-                    minHeight: "18rem",
-                    cursor: "pointer",
-                    opacity: 0,
-                  }}
-                  multiple={true}
-                  onChange={(event) => {
-                    const files = Array.from(event.target.files);
-                    setFilesToState(files);
-                  }}
-                />
-              </div>
-            ) : (
-              <></>
-            )}
-
-            {images.length > 0 &&
-              images.map((image) => (
-                <div
-                  style={{
-                    backgroundImage: `url(${
-                      image.localUrl ? image.localUrl : image.url
-                    })`,
-                    backgroundPosition: "center",
-                    backgroundSize: "cover",
-                    height: "18rem",
-                    // width: "18rem",
-                    overflow: "hidden",
-                    borderRadius: 10,
-                    boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",
-                    margin: 10,
-                  }}
-                  key={image.uuid}
-                >
-                  <div
-                    className="text-white text-right"
-                    style={{ cursor: "pointer", margin: 0, fontSize: "2rem" }}
+    <WraperImageField>
+      <div
+        {...getRootProps({ className: "dropzone" })}
+        onClick={(e) => e.stopPropagation}
+      >
+        <div onClick={open} className="d-none" ref={ref}>
+          <input
+            {...getInputProps()}
+            accept={props.acceptFile}
+            disabled={props?.disabled}
+          />
+          <div></div>
+          {/*<div>*/}
+          {/*    <UploadCloud />*/}
+          {/*    <div className="image_text">*/}
+          {/*        <strong>Browse</strong> photos or Capture the*/}
+          {/*        <br /> images from your camera*/}
+          {/*    </div>*/}
+          {/*</div>*/}
+        </div>
+      </div>
+      <aside>
+        {/* files.length > 0 && */}
+        <div className="d-flex align-items-center flex-wrap gap-2">
+          {props.multiple ? (
+            <>
+              {files?.map((file, idx) => (
+                <div key={idx} className="position-relative">
+                  <Button
+                    className="removeImageButton"
+                    onClick={(e) => {
+                      removeFile(file);
+                    }}
                   >
-                    <span
-                      className="p-1 "
-                      style={{
-                        borderBottomLeftRadius: 10,
-                        backgroundColor: "rgba(0,0,0,0.5)",
-                      }}
-                    >
-                      <Star
-                        size={25}
-                        fill={image.is_default_image ? "gold" : "grey"}
-                        onClick={(e) => {
-                          selectDefaultImage(image.uuid);
-                          e.stopPropagation();
-                        }}
-                      />
-                      <X
-                        size={25}
-                        className="text-danger"
-                        onClick={(e) => {
-                          deleteImage(image);
-                          e.stopPropagation();
-                        }}
-                      />
-                    </span>
-                  </div>
-                  {image.uploaded || (
-                    <div
-                      className="d-flex align-items-center justify-content-center"
-                      style={{ height: "13rem" }}
-                    >
-                      <Spinner size="lg" color="primary" />
+                    X
+                  </Button>
+                  <div
+                    style={{ ...thumbStyles }}
+                    className="dropImageBx cursor-pointer"
+                    onClick={() => ref.current.click()}
+                  >
+                    <div className="w-100 h-100">
+                      {files.length > 0 ? (
+                        <>
+                          <Thumbs
+                            file={file}
+                            multiple={props.multiple}
+                            editedFileNameInitialValue={
+                              props?.editedFileNameInitialValue
+                            }
+                          />
+                        </>
+                      ) : props.editTrue === "edit" ? (
+                        <>
+                          <img
+                            src={props?.editedFileNameInitialValue}
+                            style={img}
+                          />
+                        </>
+                      ) : null}
+                      {/* {thumbs.length ? (
+                    <Thumbs file={file} />
+                  ) : (
+                    <img src={props?.editedFileNameInitialValue} style={img} />
+                  )} */}
                     </div>
-                  )}
+                  </div>
                 </div>
               ))}
-          </Swiper>
-        )}
-        {meta.touched && meta.error ? (
-          <div className="field-error text-danger mt-1">{meta.error}</div>
-        ) : null}
-      </div>
-    </>
+
+              <div
+                style={{ ...thumbStyles, ...thumbsContainer ,  }}
+                className="dropImageBx cursor-pointer"
+                onClick={() => ref.current.click()}
+              />
+            </>
+          ) : (
+            <div className="position-relative mainImageDiv">
+              {/* {files?.length > 0 || props?.editedFileNameInitialValue ? (
+                
+              ) : (
+                ""
+              )} */}
+              <Button
+                  className="removeImageButton"
+                  onClick={(e) => {
+                    removeFile(files?.name);
+                  }}
+                >
+                  X
+                </Button>
+              <div
+                style={{ ...thumbStyles, ...thumbsContainer }}
+                className={`dropImageBx cursor-pointer ${files?.length > 0 ? "bg-none" : ""}`} 
+                onClick={() => ref.current.click()}
+              >
+                {files?.length > 0 || props?.editedFileNameInitialValue ? (
+                  <div className="w-100 h-100">
+                    {files.length > 0 ? (
+                      files?.map((file) => (
+                        <Thumbs
+                          file={file}
+                          profileImage={props?.profileImage}
+                          editedFileNameInitialValue={
+                            props?.editedFileNameInitialValue
+                          }
+                        />
+                      ))
+                    ) : props.editTrue === "edit" ? (
+                      <img
+                        src={props?.editedFileNameInitialValue}
+                        style={props?.profileImage ? imgBorderRadius : img}
+                      />
+                    ) : null}
+                  </div>
+                ) : (
+                  ""
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      </aside>
+    </WraperImageField>
   );
 }
+
+export default ImageUpload;
