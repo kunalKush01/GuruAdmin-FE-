@@ -26,6 +26,25 @@ const ProfileWarper = styled.div`
     align-items: center;
   }
 
+  label {
+    /* margin-bottom: 0px; */
+    font: normal normal bold 15px/33px Noto Sans;
+  }
+  input {
+    color: #583703 !important;
+    border: none !important;
+    height: 36px;
+    width: 100%;
+    padding-top: 9px;
+    padding-left: 5px;
+    /* text-align: center; */
+    background-color: #fff7e8 !important;
+    font: normal normal normal 13px/20px Noto Sans;
+    border-radius: 5px;
+  }
+  input[type="file"]::file-selector-button {
+    display: none;
+  }
 `;
 
 const schema = yup.object().shape({
@@ -72,24 +91,6 @@ export default function AddProfile() {
   };
 
 
-  const initialValues = {
-    Id: trustDetail?.id ?? "",
-    name: trustDetail?.name ?? "",
-    trustType: trustDetail?.trustType ?? "",
-    EmailId: userDetail?.email ?? "",
-    Contact: userDetail?.mobileNumber ?? "",
-    about: trustDetail?.about ?? "",
-    city: trustDetail?.city?.districts,
-    state: trustDetail?.state?.state,
-    location: trustDetail?.location,
-    longitude: trustDetail?.longitude,
-    latitude: trustDetail?.latitude,
-    trustFacilities: trustDetail?.trustFacilities,
-    images: [],
-    Temple: trustDetail?.name ?? "",
-    documents: [],
-  };
-    
   return (
     <ProfileWarper>
       <div className="d-flex justify-content-between align-items-center mb-2">
@@ -114,10 +115,6 @@ export default function AddProfile() {
         </div>
       </div>
       <ProfileForm
-        handleSubmit={handleUpdateProfile}
-        initialValues={initialValues}
-        vailidationSchema={schema}
-        buttonLabel={"update_profile"}
       />
     </ProfileWarper>
   );

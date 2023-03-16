@@ -13,7 +13,6 @@ const WraperImageField = styled.div`
     position: absolute;
     background-color: #ffffff !important;
     padding: 0.5rem;
-    display: none;
     border: none;
     color: red !important;
     right: 15px;
@@ -167,25 +166,25 @@ const Thumbs = ({
 );
 
 function ImageUpload(props) {
+  const thumbsContainer = {
+    backgroundImage: `url('${props?.bg_plus}')`,
+    backgroundRepeat: "no-repeat",
+    backgroundPositionX: "center",
+    backgroundPositionY: "center",
+  };
   const [files, setFiles] = useState(
     props.defaultImages?.length > 0 ? props.defaultImages : []
     );
-    const thumbsContainer = {
-      backgroundImage: `url('${files?.length > 0 ? "" : props?.bg_plus}')`,
-      backgroundRepeat: "no-repeat",
-      backgroundPositionX: "center",
-      backgroundPositionY: "center",
-    };
   const handleUpload = (acceptedFiles) => {
     Storage.put(
-      `temp/${props.randomNumber}_${acceptedFiles.name}`,
+      `temp/${props.randomNumber}_${acceptedFiles?.name}`,
       acceptedFiles,
       {
-        contentType: acceptedFiles.type,
+        contentType: acceptedFiles?.type,
       }
     )
       .then((res) => {
-        props.fileName(acceptedFiles.name, acceptedFiles.type);
+        props.fileName(acceptedFiles?.name, acceptedFiles?.type);
 
         if (props.multiple) {
           setFiles(
@@ -309,19 +308,15 @@ function ImageUpload(props) {
               ))}
 
               <div
-                style={{ ...thumbStyles, ...thumbsContainer ,  }}
+                style={{ ...thumbStyles, ...thumbsContainer }}
                 className="dropImageBx cursor-pointer"
                 onClick={() => ref.current.click()}
               />
             </>
           ) : (
             <div className="position-relative mainImageDiv">
-              {/* {files?.length > 0 || props?.editedFileNameInitialValue ? (
-                
-              ) : (
-                ""
-              )} */}
-              <Button
+              {files?.length > 0 || props?.editedFileNameInitialValue ? (
+                <Button
                   className="removeImageButton"
                   onClick={(e) => {
                     removeFile(files?.name);
@@ -329,9 +324,15 @@ function ImageUpload(props) {
                 >
                   X
                 </Button>
+              ) : (
+                ""
+              )}
+
               <div
                 style={{ ...thumbStyles, ...thumbsContainer }}
-                className={`dropImageBx cursor-pointer ${files?.length > 0 ? "bg-none" : ""}`} 
+                className={`dropImageBx cursor-pointer ${
+                  files?.length > 0 ? "bg-none" : ""
+                }`}
                 onClick={() => ref.current.click()}
               >
                 {files?.length > 0 || props?.editedFileNameInitialValue ? (

@@ -48,6 +48,31 @@ const authSlice = createSlice({
         id: "6332cbba8054b2cac94da3d1",
       };
     },
+    addFacility(state, action) {
+      state.trustDetail.trustFacilities = [...state.trustDetail.trustFacilities, action.payload];
+    },
+    clearFacilities(state) {
+      state.trustDetail.trustFacilities = [];
+    },
+    handleProfileUpdate(reduxState,action){
+      const {file,preview,name,trustType,EmailId,Contact,about,state,city,location,place_id,latitude,longitude,images,documents} = action.payload
+      reduxState.trustDetail.profilePhoto = file;
+      reduxState.trustDetail.profilePreview = preview;
+      reduxState.trustDetail.name = name;
+      reduxState.trustDetail.trustType = trustType;
+      reduxState.userDetail.email = EmailId;
+      reduxState.userDetail.mobileNumber = Contact;
+      reduxState.trustDetail.about = about;
+      reduxState.trustDetail.state = state;
+      reduxState.trustDetail.city = city;
+      reduxState.trustDetail.location = location;
+      reduxState.trustDetail.place_id = place_id 
+      reduxState.trustDetail.latitude = latitude;
+      reduxState.trustDetail.longitude = longitude;
+      reduxState.trustDetail.images = images;
+      reduxState.trustDetail.documents = documents;
+    },
+
     setTokens: (state, action) => {
       const { accessToken, refreshToken } = action.payload;
       state.tokens.accessToken = accessToken;
@@ -96,6 +121,9 @@ const persistConfig = {
 
 export const {
   logOut,
+  addFacility,
+  clearFacilities,
+  handleProfileUpdate,
   setTokens,
   setlang,
   setAvailableLang,

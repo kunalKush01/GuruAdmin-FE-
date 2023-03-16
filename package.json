@@ -69,6 +69,7 @@
     "react-dropzone": "^11.4.2",
     "react-feather": "~2.0.3",
     "react-flatpickr": "^3.9.1",
+    "react-google-places-autocomplete": "^3.4.0",
     "react-hook-form": "7.18.1",
     "react-i18next": "^11.13.0",
     "react-if-else-switch": "^0.1.3",
