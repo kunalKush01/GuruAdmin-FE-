@@ -11,14 +11,14 @@ const WraperImageField = styled.div`
   }
   .removeImageButton {
     position: absolute;
-    background-color: #ffffff !important;
     padding: 0.5rem;
     border: none;
-    color: red !important;
+    background-color: transparent !important;
+    font: normal normal bold 17px/20px Noto Sans;
+    border-color:none !important ;
+    color:  #FF8744 !important;
     right: 15px;
     top: 6px;
-    font-size: 17px;
-    font-weight: bold;
   }
   .dropZone_Box {
     height: 328px;
@@ -166,6 +166,7 @@ const Thumbs = ({
 );
 
 function ImageUpload(props) {
+  console.log("props.editedFileNameInitialValue",props.editedFileNameInitialValue);
   const thumbsContainer = {
     backgroundImage: `url('${props?.bg_plus}')`,
     backgroundRepeat: "no-repeat",
@@ -185,7 +186,8 @@ function ImageUpload(props) {
     )
       .then((res) => {
         props.fileName(acceptedFiles?.name, acceptedFiles?.type);
-
+        // props.filePreview(acceptedFiles)
+        console.log("acceptedFiles",acceptedFiles);
         if (props.multiple) {
           setFiles(
             // acceptedFiles.map((file) =>
@@ -338,8 +340,9 @@ function ImageUpload(props) {
                 {files?.length > 0 || props?.editedFileNameInitialValue ? (
                   <div className="w-100 h-100">
                     {files.length > 0 ? (
-                      files?.map((file) => (
+                      files?.map((file,idx) => (
                         <Thumbs
+                        key={idx}
                           file={file}
                           profileImage={props?.profileImage}
                           editedFileNameInitialValue={

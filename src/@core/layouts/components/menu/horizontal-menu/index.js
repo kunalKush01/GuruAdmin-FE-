@@ -16,12 +16,12 @@ const SubHeaderWarraper = styled.div`
   font: normal normal normal 15px/20px noto sans;
   cursor: pointer;
 
-  .navTabs{
-      color: white !important;
-    }
+  .navTabs {
+    color: white !important;
+  }
 
-    .activeTab {
-      font-weight: 900;
+  .activeTab {
+    font-weight: 900;
     opacity: 100%;
   }
 `;
@@ -35,16 +35,13 @@ function BtnContent({ setClosePopover }) {
     }
     .col-item {
       cursor: pointer;
-      margin-top: .3rem;
+      margin-top: 0.3rem;
       :hover {
         background-color: #ff8744;
         color: #fff;
       }
     }
-   
   `;
-
-  
 
   return (
     <BtnContentWraper>
@@ -53,8 +50,9 @@ function BtnContent({ setClosePopover }) {
           xs={12}
           className="col-item"
           onClick={() => {
-            setClosePopover(false)
-            history.push(`/configuration/categories`)}}
+            setClosePopover(false);
+            history.push(`/configuration/categories`);
+          }}
         >
           <Trans i18nKey={"category"} />
         </Col>
@@ -63,17 +61,19 @@ function BtnContent({ setClosePopover }) {
           xs={12}
           className="col-item"
           onClick={() => {
-            setClosePopover(false)
-            history.push(`/configuration/users`)}}
+            setClosePopover(false);
+            history.push(`/configuration/users`);
+          }}
         >
           <Trans i18nKey={"user"} />
         </Col>
         <Col
           xs={12}
           className="col-item"
-          onClick={() =>{ 
-            setClosePopover(false)
-            history.push(`/configuration/reportDispute`)}}
+          onClick={() => {
+            setClosePopover(false);
+            history.push(`/configuration/reportDispute`);
+          }}
         >
           <Trans i18nKey={"report_Dispute"} />
         </Col>
@@ -84,18 +84,18 @@ function BtnContent({ setClosePopover }) {
 
 const HorizontalMenu = ({ menuData, currentActiveItem, routerProps }) => {
   const history = useHistory();
-const [closePopover,setClosePopover] = useState(true) 
-useEffect(()=>{
-  setClosePopover(true)
-},[closePopover])
+  const [closePopover, setClosePopover] = useState(true);
+  useEffect(() => {
+    setClosePopover(true);
+  }, [closePopover]);
 
-const location = useLocation();
-const [active, setActive] = useState();
+  const location = useLocation();
+  const [active, setActive] = useState();
 
-useLayoutEffect(()=>{
-  setActive(location.pathname)
-  console.log("url Rj" ,active);
-},[location.pathname])
+  useLayoutEffect(() => {
+    setActive(location.pathname);
+    console.log("url Rj", active);
+  }, [location.pathname]);
 
   return (
     <div className="navbar-container w-100 main-menu-content">
@@ -105,26 +105,26 @@ useLayoutEffect(()=>{
       >
         {menuData.map((item, idx) => {
           return (
-            
-              <SubHeaderWarraper
-              >
-                <div
-                 id={item.name}
-                 onClick={() => {
-                   item.url != "/configuration" ? (history.push(item.url)) : "";
+            <SubHeaderWarraper key={idx}>
+              <div
+                id={item.name}
+                onClick={() => {
+                  item.url != "/configuration" ? history.push(item.url) : "";
                   //  setActive(item)
-                 }}
-                 key={idx}
-                className={`text-light ${active?.includes(item.url) ? "activeTab" : ""} `} 
-                >
-                <Trans i18nKey={item.name}
-                 />
-                </div>
-              {item.name === "configuration" &&closePopover && (
-                <BtnPopover target={item.name}  content={<BtnContent setClosePopover={setClosePopover} />} />
+                }}
+                className={`text-light ${
+                  active?.includes(item.url) ? "activeTab" : ""
+                } `}
+              >
+                <Trans i18nKey={item.name} />
+              </div>
+              {item.name === "configuration" && closePopover && (
+                <BtnPopover
+                  target={item.name}
+                  content={<BtnContent setClosePopover={setClosePopover} />}
+                />
               )}
-              </SubHeaderWarraper>
-            
+            </SubHeaderWarraper>
           );
         })}
       </ul>

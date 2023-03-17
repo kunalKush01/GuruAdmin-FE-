@@ -289,7 +289,6 @@ export default function NoticeForm({
                   <div className="ImagesVideos">
                     <Trans i18nKey={"news_label_ImageVedio"} />
                   </div>
-                  {JSON.stringify(formik.values.image)}
                   <ImageUpload
                     editTrue="edit"
                     bg_plus={thumbnailImage}

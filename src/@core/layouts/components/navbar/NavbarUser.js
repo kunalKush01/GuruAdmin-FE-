@@ -35,52 +35,53 @@ import {
   setPlaceholderSerchbar,
 } from "../../../../utility/localSerachBar";
 import CustomSearchBar from "../../../../components/partials/customSearchBar";
+import Swal from "sweetalert2";
 
 const NavbarUserWarraper = styled.div`
-    color: #583703 !important ;
-    .brand-logo div {
-      font: normal normal bold 25px/44px noto sans;
-      margin-right: 80px;
+  color: #583703 !important ;
+  .brand-logo div {
+    font: normal normal bold 25px/44px noto sans;
+    margin-right: 80px;
+    cursor: pointer;
+  }
+  .searchinput {
+    background: #f2f2f2 !important ;
+    &.sInput {
+      border-end-end-radius: 0% !important ;
+      border-start-end-radius: 0% !important ;
+      font: normal normal 400 16px/20px noto sans;
+    }
+    &.sIconsBox {
+      border-start-start-radius: 0% !important;
+      border-end-start-radius: 0% !important;
       cursor: pointer;
     }
-    .searchinput {
-      background: #f2f2f2 !important ;
-      &.sInput {
-        border-end-end-radius: 0% !important ;
-        border-start-end-radius: 0% !important ;
-        font: normal normal 400 16px/20px noto sans;
-      }
-      &.sIconsBox {
-        border-start-start-radius: 0% !important;
-        border-end-start-radius: 0% !important;
-        cursor: pointer;
-      }
-    }
-    img {
-      width: 35px;
-      /* margin: 10px; */
-    }
-    .icon {
-      margin-inline-start: 15px;
-      cursor: pointer;
-    }
-    .navepara {
-      width: max-content;
-      margin: 10px;
-      cursor: pointer;
-    }
-    .templeName {
-      font: normal normal bold 16px/30px noto sans;
-    }
-    .date {
-      font: normal normal normal 10px/5px noto sans;
-    }
-  `;
+  }
+  img {
+    width: 35px;
+    /* margin: 10px; */
+  }
+  .icon {
+    margin-inline-start: 15px;
+    cursor: pointer;
+  }
+  .navepara {
+    width: max-content;
+    margin: 10px;
+    cursor: pointer;
+  }
+  .templeName {
+    font: normal normal bold 16px/30px noto sans;
+  }
+  .date {
+    font: normal normal normal 10px/5px noto sans;
+  }
+`;
 const NavbarUser = (props) => {
   const history = useHistory();
   const trustDetails = useSelector((state) => state.auth.trustDetail);
   const refreshToken = useSelector((state) => state.auth.tokens.refreshToken);
-  const searchBarValue = useSelector((state) => state.auth.LocalSearch );
+  const searchBarValue = useSelector((state) => state.auth.LocalSearch);
   const dispatch = useDispatch();
   const { t, i18n } = useTranslation();
   const handleLogOut = async () => {
@@ -91,8 +92,6 @@ const NavbarUser = (props) => {
     } catch (error) {}
   };
   const [langSelection, setlangSelection] = useState(false);
-  
-
 
   return (
     <Fragment>
@@ -132,7 +131,18 @@ const NavbarUser = (props) => {
                   {moment().format("DD MMM YYYY,h:mm a")}
                 </div>
               </div>
-              <div onClick={() => history.push("/edit-profile")}>
+              <div
+                onClick={() =>
+                  history.push("/edit-profile")
+                  // Swal.fire({
+                  //   icon: "error",
+                  //   title: "Oops...",
+                  //   text: "Edit profile is Under Development!",
+                  //   showConfirmButton: false,
+                  //   showCloseButton: true,
+                  // })
+                }
+              >
                 <UserDropdown />
               </div>
             </div>

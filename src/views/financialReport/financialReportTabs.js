@@ -43,9 +43,10 @@ const FinancialReportTabs = ({ setActive, active,setPagination }) => {
   return (
     <FinancialReportTabsWarapper>
       <div className="d-flex w-50 justify-content-between mt-2 allTabBox">
-        {FinancialTabs.map((item) => {
+        {FinancialTabs.map((item,idx) => {
           return (
             <div
+            key={idx}
               className={`tabName ${
                 active?.name == item.name ? "activeTab" : ""
               }`}

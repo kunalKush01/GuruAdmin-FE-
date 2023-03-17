@@ -12,7 +12,15 @@ import GooglePlacesAutocomplete, {
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { Button, Col, Row, Spinner } from "reactstrap";
+import {
+  Button,
+  Col,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  Row,
+  Spinner,
+} from "reactstrap";
 import styled from "styled-components";
 import { getAllCityState, getAllTrustType } from "../../api/profileApi";
 import defaultAvtar from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
@@ -154,6 +162,23 @@ const ProfileFormWaraper = styled.div`
     text-align: center;
     font: normal normal bold 13px/20px Noto Sans;
   }
+  .css-1973rmx-singleValue {
+    padding: 5px;
+  }
+  .css-j4765i-control:hover {
+    border: none !important;
+  }
+  .removePDFButton {
+    position: absolute;
+    padding: 0.5rem;
+    border: none;
+    background-color: transparent !important;
+    font: normal normal bold 17px/20px Noto Sans;
+    border-color: none !important ;
+    color: #ff8744 !important;
+    right: 0px;
+    top: -15px;
+  }
 `;
 
 export default function ProfileForm({
@@ -161,6 +186,8 @@ export default function ProfileForm({
   vailidationSchema,
   buttonLabel,
   editImage,
+  loading,
+  setLoading,
   defaultImages,
   initialValues,
   editProfile,
@@ -168,23 +195,23 @@ export default function ProfileForm({
   showTimeInput,
   selectEventDisabled,
 }) {
+  console.log("Loading debug", loading);
   const history = useHistory();
   const { t } = useTranslation();
-  const [loading, setLoading] = useState(false);
-
+  console.log(" loading debug", loading);
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
       if (!data.error) {
-        queryClient.invalidateQueries(["Trust"]);
-        setLoading(false);
+        // setLoading(false);
       } else if (data?.error) {
-        setLoading(false);
+        // setLoading(false);
       }
     },
   });
+  console.log("mutation", mutation);
 
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
@@ -212,6 +239,26 @@ export default function ProfileForm({
   );
   const [cityLoadOption, setCityLoadOption] = useState([]);
 
+  // Facility image uploade
+  const uploadeFacility = useRef();
+  const [facilitiesFiles, setFacilitiesFiles] = useState([]);
+  const handleFacilityUpload = (acceptedFiles) => {
+    Storage.put(`temp/${randomNumber}_${acceptedFiles?.name}`, acceptedFiles, {
+      contentType: acceptedFiles?.type,
+    })
+      .then((res) => {
+        // props.fileName(acceptedFiles.name,acceptedFiles.type);
+        setFacilitiesFiles(
+          // acceptedFiles.map((file) =>
+          Object.assign(acceptedFiles, {
+            preview: URL.createObjectURL(acceptedFiles),
+          })
+          // )
+        );
+      })
+      .catch((err) => console.log(err));
+  };
+
   // doc upload
   const [files, setFiles] = useState([]);
   const [deletedDocuments, setDeletedDocuments] = useState([]);
@@ -228,7 +275,7 @@ export default function ProfileForm({
       .catch((err) => console.log(err));
   };
 
-  const removeFile = (file,formik) => {
+  const removeFile = (file, formik) => {
     setDeletedDocuments((prev) => [...prev, file]);
     const newFiles = [...files];
     newFiles.splice(newFiles.indexOf(file), 1);
@@ -243,6 +290,14 @@ export default function ProfileForm({
     },
   });
   const uploadDocuments = useRef();
+  console.log("deletedImages", deletedImages);
+
+  const [facilityFormData, setFacilityFormData] = useState([]);
+  console.log("facilityFormData", facilityFormData);
+
+  // model
+  const [modal, setModal] = useState(false);
+  const toggle = () => setModal(!modal);
   return (
     <ProfileFormWaraper className="FormikWraper">
       <Formik
@@ -256,15 +311,15 @@ export default function ProfileForm({
             name: e?.name,
             typeId: e?.trustType?.id,
             email: e?.EmailId,
-            contact: e?.Contact,
+            mobileNumber: e?.Contact,
             about: e?.about,
-            state: e?.State?.state,
-            city: e?.City?.districts,
+            state: e?.state?.state,
+            city: e?.city?.districts,
             place_id: e?.location.value.place_id,
             location: e?.location.label,
             longitude: e?.longitude.toString(),
             latitude: e?.latitude.toString(),
-            trustFacilities: facilityData,
+            trustFacilities: facilityFormData,
             images: e?.images,
             removedImages: deletedImages,
             removedDocuments: deletedDocuments,
@@ -273,6 +328,7 @@ export default function ProfileForm({
             newPassword: e?.newPassword,
             confirmPassword: e?.confirmPassword,
           });
+          // console.log("data debug");
         }}
         validationSchema={vailidationSchema}
       >
@@ -294,8 +350,8 @@ export default function ProfileForm({
                       profileImage
                       editTrue="edit"
                       editedFileNameInitialValue={
-                        formik.values.profileImage
-                          ? formik.values.profileImage
+                        formik.values?.profileImage
+                          ? formik.values?.profileImage
                           : null
                       }
                       randomNumber={randomNumber}
@@ -383,11 +439,7 @@ export default function ProfileForm({
                       };
                     })}
                     name={"state"}
-                    defaultValue={
-                      formik.values?.state
-                        ? { state: formik.values?.state }
-                        : ""
-                    }
+                    defaultValue={{ state: "Arunachal Pradesh" }}
                     labelKey={"state"}
                     valueKey={"state"}
                     width={"100"}
@@ -494,7 +546,7 @@ export default function ProfileForm({
                     <Trans i18nKey={"userProfile_facilities"} />
                   </div>
                 </Col>
-                {formik?.values?.trustFacilities?.map((item, idx) => {
+                {[...formik?.values?.trustFacilities, ...facilityFormData]?.map((item, idx) => {
                   return (
                     <Col lg={3} md={4} sm={6} key={idx}>
                       <div className="">
@@ -517,10 +569,18 @@ export default function ProfileForm({
                 <Col lg={3} md={4} sm={6}>
                   <div
                     className=""
-                    onClick={() => {
-                      history.push("/facilities");
-                      dispatch(handleProfileUpdate(formik.values));
-                    }}
+                    onClick={toggle}
+                    // onClick={() => {
+                    //   history.push("/facilities");
+                    //   dispatch(
+                    //     handleProfileUpdate({
+                    //       ...formik.values,
+                    //       city: formik?.values?.city?.districts,
+                    //       state: formik?.values?.state?.state,
+                    //       location: formik?.values?.location?.label,
+                    //     })
+                    //   );
+                    // }}
                   >
                     <div>
                       <div className="facility_button">
@@ -550,6 +610,7 @@ export default function ProfileForm({
                         <Trans i18nKey={"images"} />
                       </div>
                       <div>
+                        {JSON.stringify(formik.values.images)}
                         <ImageUpload
                           multiple
                           type={editImage}
@@ -570,9 +631,8 @@ export default function ProfileForm({
                             formik.setFieldValue("type", type);
                           }}
                           removeFile={(fileName) => {
-                            const newFiles = [...formik.values.images];
-                            // newFiles.splice(index, 1);
-                            const updatedFiles = newFiles.filter(
+                            const profileImageArray = [...formik.values.images];
+                            const updatedFiles = profileImageArray?.filter(
                               (img) => !img.includes(fileName)
                             );
                             formik.setFieldValue("images", updatedFiles);
@@ -623,16 +683,17 @@ export default function ProfileForm({
                   </Row>
 
                   <div className="d-flex flex-wrap gap-1 mt-2">
-                    {files?.map((item) => (
-                      <div className="pdfDiv">
-                        <div>
-                          <Button
-                            onClick={() => {
-                              removeFile(item,formik);
-                            }}
-                          >
-                            Remove
-                          </Button>
+                    {files?.map((item, idx) => (
+                      <div className="pdfDiv position-relative" key={idx}>
+                        <Button
+                          className="removePDFButton"
+                          onClick={() => {
+                            removeFile(item, formik);
+                          }}
+                        >
+                          X
+                        </Button>
+                        <div className="">
                           <img src={pdfIcon} width={50} />
                         </div>
                         <div className="docFileName">{item}</div>
@@ -763,6 +824,110 @@ export default function ProfileForm({
           </Form>
         )}
       </Formik>
+
+      <Modal isOpen={modal} toggle={toggle}>
+        {/* <ModalHeader toggle={toggle}>Modal title</ModalHeader> */}
+        <ModalBody>
+          <Formik
+            initialValues={{
+              name: "",
+              description: "",
+              facilityImage: "",
+              facilityImagePreview: "",
+              startTime: "",
+              endTime: "",
+            }}
+            onSubmit={(values) => setFacilitiesDate([...facilityFormData, values])}
+          >
+            {(formik) => {
+              return (
+                <Form>
+                  {/* <Row>
+                    <Col></Col>
+                  </Row> */}
+                  <Row>
+                    <Col md={12}>
+                      <CustomTextField
+                        label="Facility Name"
+                        placeholder="Enter name "
+                        name="name"
+                      />
+                    </Col>
+                    <Col md={12}>
+                      <label>Upload Image</label>
+                      <div className="d-flex justify-content-between">
+                        <input
+                          ref={uploadeFacility}
+                          type={"file"}
+                          // label={t("apna_mandir_upload_background")}
+                          name="facilityImage"
+                          // placeholder={t("apna_mandir_upload_background_here")}
+                          onChange={(e) => {
+                            handleFacilityUpload(e.target.files[0]);
+                            // handleUpload(e.target.files[0]).then((e)=>formik.setFieldValue('templeImage',e.target.files[0].name));
+                            formik.setFieldValue(
+                              "facilityImage",
+                              `${randomNumber}_${e.target.files[0].name}`
+                            );
+                            formik.setFieldValue(
+                              "facilityImagePreview",
+                              e.target.files[0]
+                            );
+                          }}
+                        />
+                        <Button
+                          className="upload_btn"
+                          color="primary"
+                          onClick={() => uploadeFacility.current.click()}
+                        >
+                          Browse
+                        </Button>
+                      </div>
+                    </Col>
+                    <Col xs={12}>
+                      <CustomTextField
+                        label="Facility Description"
+                        placeholder="Add Description Here"
+                        name="description"
+                      />
+                    </Col>
+                    <Col md={6}>
+                      <Row>
+                        <Col sm={6}>
+                          <CustomTextField
+                            label={"Start Time"}
+                            type="time"
+                            name="startTime"
+                            required
+                          />
+                        </Col>
+                        <Col sm={6}>
+                          <CustomTextField
+                            label={"End Time"}
+                            type="time"
+                            name="endTime"
+                            required
+                          />
+                        </Col>
+                      </Row>
+                    </Col>
+                    <div className="mt-5">
+                      <Button
+                        onClick={toggle}
+                        className="bg_submit"
+                        color="primary"
+                        type="submit"
+                      >
+                        Add Facility
+                      </Button>
+                    </div>
+                  </Row>
+                </Form>
+              );
+            }}
+          </Formik>
+        </ModalBody>
+      </Modal>
     </ProfileFormWaraper>
   );
 }

@@ -48,15 +48,17 @@ export default function AddLanguageNews() {
   const history = useHistory();
   const { newsId } = useParams();
   const langArray = useSelector((state) => state.auth.availableLang);
-  const selectedLang= useSelector(state=>state.auth.selectLang)
+  const selectedLang = useSelector((state) => state.auth.selectLang);
   const searchParams = new URLSearchParams(history.location.search);
-  const currentPage = searchParams.get('page')
-  const currentFilter = searchParams.get('filter')
+  const currentPage = searchParams.get("page");
+  const currentFilter = searchParams.get("filter");
   const newsDetailQuery = useQuery(
-    ["NewsDetail", newsId,selectedLang.id],
-    async () => await getNewsDetail({ newsId,languageId:selectedLang.id })
+    ["NewsDetail", newsId, selectedLang.id],
+    async () => await getNewsDetail({ newsId, languageId: selectedLang.id })
   );
-  const [langSelection, setLangSelection] = useState(ConverFirstLatterToCapital(selectedLang.name));
+  const [langSelection, setLangSelection] = useState(
+    ConverFirstLatterToCapital(selectedLang.name)
+  );
 
   const handleNewsLangUpdate = (payload) => {
     let languageId;
@@ -90,27 +92,28 @@ export default function AddLanguageNews() {
     newsDetailQuery?.data?.result?.languages,
   ]);
   useEffect(() => {
-    if (availableLangOptions.length!=0) {
+    if (availableLangOptions.length != 0) {
       setLangSelection(availableLangOptions[0]?.name);
     }
   }, [availableLangOptions]);
-  const tags = newsDetailQuery?.data?.result?.tags?.map((item)=>({
+  const tags = newsDetailQuery?.data?.result?.tags?.map((item) => ({
     id: item.id,
     text: item.tag,
-    _id: item.id
-  }))
-  const initialValues = useMemo(()=>{
-    return  {
+    _id: item.id,
+  }));
+  const initialValues = useMemo(() => {
+    return {
       Id: newsDetailQuery?.data?.result?.id,
       Title: newsDetailQuery?.data?.result?.title,
-      tagsInit:tags,
+      tagsInit: tags,
+      images: [],
       Body: he.decode(newsDetailQuery?.data?.result?.body ?? ""),
       PublishedBy: newsDetailQuery?.data?.result?.publishedBy,
       DateTime: moment(newsDetailQuery?.data?.result?.publishDate)
         .utcOffset("+0530")
         .toDate(),
     };
-  },[newsDetailQuery])
+  }, [newsDetailQuery]);
 
   return (
     <NewsWarper>
@@ -119,7 +122,9 @@ export default function AddLanguageNews() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push(`/news?page=${currentPage}&filter=${currentFilter}`)}
+            onClick={() =>
+              history.push(`/news?page=${currentPage}&filter=${currentFilter}`)
+            }
           />
           <div className="editNews">
             <Trans i18nKey={"news_AddLangNews"} />
@@ -142,9 +147,12 @@ export default function AddLanguageNews() {
       {!newsDetailQuery.isLoading ? (
         <div className="ms-3 mt-1">
           <NewsForm
+            editImage="edit"
+            defaultImages={newsDetailQuery?.data?.result?.images}
             initialValues={initialValues}
             vailidationSchema={schema}
             showTimeInput
+            buttonName={"news_AddLangNews"}
             handleSubmit={handleNewsLangUpdate}
           />
         </div>

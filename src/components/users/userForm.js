@@ -151,7 +151,6 @@ export default function UserForm({
       >
         {(formik) => (
           <Form>
-            {JSON.stringify(formik.errors)}
             <Row>
               <Col xs={12} className=" mt-2 ps-0 d-flex">
                 <div className=" me-3">

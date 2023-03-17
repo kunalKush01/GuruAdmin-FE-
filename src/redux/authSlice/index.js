@@ -49,24 +49,42 @@ const authSlice = createSlice({
       };
     },
     addFacility(state, action) {
-      state.trustDetail.trustFacilities = [...state.trustDetail.trustFacilities, action.payload];
+      state.trustDetail.trustFacilities = Array.isArray(action.payload)
+        ? action.payload
+        : [...state.trustDetail.trustFacilities, action.payload];
     },
     clearFacilities(state) {
       state.trustDetail.trustFacilities = [];
     },
-    handleProfileUpdate(reduxState,action){
-      const {file,preview,name,trustType,EmailId,Contact,about,state,city,location,place_id,latitude,longitude,images,documents} = action.payload
-      reduxState.trustDetail.profilePhoto = file;
-      reduxState.trustDetail.profilePreview = preview;
+    handleProfileUpdate(reduxState, action) {
+      const {
+        profileImage,
+        profilePhotoPreview,
+        name,
+        trustType,
+        EmailId,
+        Contact,
+        about,
+        state,
+        city,
+        location,
+        place_id,
+        latitude,
+        longitude,
+        images,
+        documents,
+      } = action.payload;
+      reduxState.trustDetail.profilePhoto = profileImage;
+      reduxState.trustDetail.profilePhotoPreview = profilePhotoPreview;
       reduxState.trustDetail.name = name;
-      reduxState.trustDetail.trustType = trustType;
+      reduxState.trustDetail.typeId = trustType;
       reduxState.userDetail.email = EmailId;
       reduxState.userDetail.mobileNumber = Contact;
       reduxState.trustDetail.about = about;
       reduxState.trustDetail.state = state;
       reduxState.trustDetail.city = city;
       reduxState.trustDetail.location = location;
-      reduxState.trustDetail.place_id = place_id 
+      reduxState.trustDetail.placeId = place_id;
       reduxState.trustDetail.latitude = latitude;
       reduxState.trustDetail.longitude = longitude;
       reduxState.trustDetail.images = images;

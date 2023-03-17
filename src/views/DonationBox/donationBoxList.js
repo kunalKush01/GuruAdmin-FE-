@@ -229,9 +229,9 @@ export default function Expenses() {
                 <If condition={collectionItems.length != 0} disableMemo>
                   <Then>
                     <Row className="pe-0">
-                      {collectionItems.map((item) => {
+                      {collectionItems.map((item,idx) => {
                         return (
-                          <Col xs={3}>
+                          <Col xs={3} key={idx}>
                             <BoxListCard
                               key={item.id}
                               data={item}

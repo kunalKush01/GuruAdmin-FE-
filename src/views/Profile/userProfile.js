@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { Trans } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
@@ -25,7 +25,6 @@ const ProfileWarper = styled.div`
     display: flex;
     align-items: center;
   }
-
 `;
 
 const schema = yup.object().shape({
@@ -58,30 +57,61 @@ export default function AddProfile() {
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
+  const dispatch = useDispatch();
+
   const [langSelection, setLangSelection] = useState(
     ConverFirstLatterToCapital(selectedLang.name)
   );
+  const [loading, setLoading] = useState(false);
   const handleUpdateProfile = async (payload) => {
     const res = await updateProfile({
       ...payload,
       languageId: getLangId(langArray, langSelection),
     });
-    dispatch(handleProfileUpdate(res));
-    dispatch(addFacility(res));
+    if (res.error === true) {
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+    const profileData = {
+      profileImage:res?.result?.profilePhoto,
+      profilePhotoPreview:"",
+      name:res?.result?.name,
+      trustType:res?.result?.typeId,
+      EmailId:res?.result?.email,
+      Contact:res?.result?.mobileNumber,
+      about:res?.result?.about,
+      state:res?.result?.state,
+      city:res?.result?.city,
+      location:res?.result?.location,
+      place_id:res?.result?.place_id,
+      latitude:res?.result?.latitude,
+      longitude:res?.result?.latitude,
+      images:res?.result?.images,
+      documents:res?.result?.documents
+    }
+    dispatch(handleProfileUpdate(profileData));
+    dispatch(addFacility(res?.result?.facilities));
+    
+
     return res;
   };
-
 
   const initialValues = {
     Id: trustDetail?.id ?? "",
     name: trustDetail?.name ?? "",
+    profileImage: trustDetail?.profilePhoto,
+    profilePhotoPreview: trustDetail?.profilePhotoPreview?.preview,
     trustType: trustDetail?.trustType ?? "",
     EmailId: userDetail?.email ?? "",
     Contact: userDetail?.mobileNumber ?? "",
     about: trustDetail?.about ?? "",
-    city: trustDetail?.city?.districts,
-    state: trustDetail?.state?.state,
-    location: trustDetail?.location,
+    city: { districts: trustDetail?.city },
+    state: { state: trustDetail?.state },
+    location: {
+      label: trustDetail?.location,
+      value: { place_id: trustDetail?.value },
+    },
     longitude: trustDetail?.longitude,
     latitude: trustDetail?.latitude,
     trustFacilities: trustDetail?.trustFacilities,
@@ -89,7 +119,7 @@ export default function AddProfile() {
     Temple: trustDetail?.name ?? "",
     documents: [],
   };
-    
+
   return (
     <ProfileWarper>
       <div className="d-flex justify-content-between align-items-center mb-2">
@@ -115,6 +145,10 @@ export default function AddProfile() {
       </div>
       <ProfileForm
         handleSubmit={handleUpdateProfile}
+        setLoading={setLoading}
+        loading={loading}
+        editImage
+        defaultImages={trustDetail?.images}
         initialValues={initialValues}
         vailidationSchema={schema}
         buttonLabel={"update_profile"}

@@ -102,6 +102,7 @@ export default function AddLanguageNotice() {
       Id: noticeDetailQuery?.data?.result?.id,
       Title: noticeDetailQuery?.data?.result?.title,
       tagsInit:tags,
+      image:noticeDetailQuery?.data?.result?.image,
       Body: he.decode(noticeDetailQuery?.data?.result?.body ?? ""),
       PublishedBy: noticeDetailQuery?.data?.result?.publishedBy,
       DateTime: moment(noticeDetailQuery?.data?.result?.publishDate)
@@ -140,6 +141,8 @@ export default function AddLanguageNotice() {
       {!noticeDetailQuery.isLoading ? (
         <div className="ms-3 mt-1">
           <NoticeForm
+          editThumbnail
+          thumbnailImageName={noticeDetailQuery?.data?.result?.imageName}
             initialValues={initialValues}
             vailidationSchema={schema}
             showTimeInput
