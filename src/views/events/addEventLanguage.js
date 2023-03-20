@@ -85,7 +85,6 @@ export default function AddLanguageEvent() {
   };
 
   const availableLangOptions = getAvailLangOption();
-  console.log("availableLangOptions=", availableLangOptions);
 
   useEffect(() => {
     if (availableLangOptions.length != 0) {

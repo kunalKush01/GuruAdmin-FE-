@@ -191,7 +191,6 @@ export default function CommitmentListTable({
     });
   }, [data]);
 
-  console.log("commitment_Data=", commitment_Data);
 
   const RecentDonationTableWarper = styled.div`
     color: #583703 !important;

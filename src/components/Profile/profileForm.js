@@ -195,10 +195,8 @@ export default function ProfileForm({
   showTimeInput,
   selectEventDisabled,
 }) {
-  console.log("Loading debug", loading);
   const history = useHistory();
   const { t } = useTranslation();
-  console.log(" loading debug", loading);
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   const mutation = useMutation({
@@ -211,7 +209,6 @@ export default function ProfileForm({
       }
     },
   });
-  console.log("mutation", mutation);
 
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
@@ -229,7 +226,6 @@ export default function ProfileForm({
   const facilityData = useSelector(
     (state) => state?.auth?.trustDetail?.trustFacilities
   );
-  console.log("facilityData", facilityData);
   // City State
   const loadStateQuery = useQuery(["state"], () => getAllCityState());
 
@@ -262,14 +258,12 @@ export default function ProfileForm({
   // doc upload
   const [files, setFiles] = useState([]);
   const [deletedDocuments, setDeletedDocuments] = useState([]);
-  console.log("deletedDocuments", deletedDocuments);
   const handleUpload = (acceptedFiles) => {
     Storage.put(`temp/${randomNumber}_${acceptedFiles?.name}`, acceptedFiles, {
       contentType: acceptedFiles?.type,
     })
       .then((res) => {
         const uploadedDocumentName = res.key.split("temp/")[1];
-        console.log("res");
         setFiles([...files, uploadedDocumentName]);
       })
       .catch((err) => console.log(err));
@@ -290,10 +284,8 @@ export default function ProfileForm({
     },
   });
   const uploadDocuments = useRef();
-  console.log("deletedImages", deletedImages);
 
   const [facilityFormData, setFacilityFormData] = useState([]);
-  console.log("facilityFormData", facilityFormData);
 
   // model
   const [modal, setModal] = useState(false);
@@ -305,7 +297,6 @@ export default function ProfileForm({
         initialValues={initialValues}
         onSubmit={(e) => {
           setLoading(true);
-          console.log("Trust Add=", e);
           mutation.mutate({
             profilePhoto: editProfile ? profileImageName : e?.profileImage,
             name: e?.name,
@@ -328,7 +319,6 @@ export default function ProfileForm({
             newPassword: e?.newPassword,
             confirmPassword: e?.confirmPassword,
           });
-          // console.log("data debug");
         }}
         validationSchema={vailidationSchema}
       >

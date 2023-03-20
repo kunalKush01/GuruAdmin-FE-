@@ -137,7 +137,6 @@ export default function NoticeList() {
   const NoticeDates = useMemo(() => {
     return dateQuery?.data?.results?.map((item) => moment(item).toDate()) ?? [];
   }, [dateQuery]);
-  console.log("NoticeDates=", NoticeDates);
 
   const NoticeItems = useMemo(
     () => noticeQuery?.data?.results ?? [],

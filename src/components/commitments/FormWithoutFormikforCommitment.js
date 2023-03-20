@@ -34,7 +34,6 @@ export default function FormWithoutFormikForCommitment({
       const apiRes = await getAllSubCategories({
         masterId: SelectedMasterCategory?.id,
       });
-      console.log();
       setsubLoadOption(apiRes?.results);
     };
 

@@ -20,9 +20,7 @@ export function CategoryListTable({ data,page ,currentPage, currentFilter}) {
   const deleteMutation = useMutation({
     mutationFn: handleDeleteCategory,
     onSuccess: (data) => {
-      console.log("dataError=", data.error);
       if (!data.error) {
-        console.log("invaldating");
         queryCient.invalidateQueries(["Categories"]);
       }
     },

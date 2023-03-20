@@ -22,7 +22,6 @@ export function SubAdminUserListTable({ data ,currentFilter,currentPage}) {
   const deleteMutation = useMutation({
     mutationFn: handleDeleteSubAdmin,
     onSuccess: (data) => {
-      console.log("dataError=", data.error);
       if (!data.error) {
         queryCient.invalidateQueries(["Users"]);
       }

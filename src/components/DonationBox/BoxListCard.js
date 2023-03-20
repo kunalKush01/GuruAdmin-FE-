@@ -64,7 +64,6 @@ const ReportListCardWraper = styled.div`
 
 export default function BoxListCard({ data = "" ,currentFilter,currentPage}) {
   const ConvertToString = (html) => {
-    console.log("convert Rj", html);
     return html.replace(/(&lt;([^>]+)>)/gi, "");
   };
   const history = useHistory();

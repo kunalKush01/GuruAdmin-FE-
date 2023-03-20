@@ -5,7 +5,6 @@ import storage from "redux-persist/lib/storage";
 import { authApiInstance } from "../../axiosApi/authApiInstans";
 export const login = createAsyncThunk("Auth", async (data, thunkApi) => {
   try {
-    console.log("working");
     const res = await authApiInstance.post("auth/login", data);
     return res.data.data;
   } catch (error) {
@@ -124,7 +123,6 @@ const authSlice = createSlice({
       // toast.success(action.payload.message)
     },
     [login.rejected]: (state, action) => {
-      // console.log("login failed", action.payload);
       state.userDetail = "";
       state.isLogged = false;
       (state.tokens.accessToken = ""), (state.tokens.refreshToken = "");

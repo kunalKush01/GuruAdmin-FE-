@@ -231,7 +231,6 @@ export default function NoticeForm({
         initialValues={initialValues}
         onSubmit={(e) => {
           setLoading(true);
-          console.log("formSubmitDaqta=", e);
           noticeMutation.mutate({
             noticeId: e.Id,
             baseId: e?.SelectedNotice?.id ?? null,

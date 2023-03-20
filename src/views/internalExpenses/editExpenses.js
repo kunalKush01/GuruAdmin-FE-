@@ -46,7 +46,6 @@ export default function AddNews() {
 
 
   const { expensesId } = useParams();
-  console.log("expensesId=", expensesId);
 
   const ExpensesDetailQuery = useQuery(
     ["ExpensesDetail", expensesId],

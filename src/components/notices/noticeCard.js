@@ -80,7 +80,6 @@ function BtnContent({ noticeId, currentPage, currentFilter }) {
     mutationFn: handleDeleteNotice,
     onSuccess: (data) => {
       if (!data.error) {
-        console.log("invaldating");
         queryCient.invalidateQueries(["Notices"]);
       }
     },

@@ -53,7 +53,6 @@ const getLangId = (langArray, langSelection) => {
 export default function EditSubAdmin() {
   const history = useHistory();
   const { subAdminId } = useParams();
-  console.log("subAdminId", subAdminId);
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const [langSelection, setLangSelection] = useState(selectedLang.name);

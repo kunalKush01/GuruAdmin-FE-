@@ -228,7 +228,6 @@ export default function FinancialReport() {
   useEffect(() => {
     setPagination({ page: 1, limit: 10 });
   }, [activeReportTab.name]);
-  console.log("pagination", pagination.page);
 
   // exoprt table code
 

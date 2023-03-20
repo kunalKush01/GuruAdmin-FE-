@@ -135,7 +135,6 @@ export default function UserForm({
         initialValues={initialValues}
         onSubmit={(e) => {
           setLoading(true);
-          console.log("cateFormSubmit=", e);
           categoryMutation.mutate({
             subAdminId:e?.Id,
             email: e?.email,

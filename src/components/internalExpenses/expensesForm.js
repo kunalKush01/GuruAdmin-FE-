@@ -70,7 +70,6 @@ export default function ExpensesForm({
   const newsMutation = useMutation({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
-      console.log("error=", data);
       if (!data.error) {
         newsQuerClient.invalidateQueries(["Expenses"]);
         newsQuerClient.invalidateQueries(["ExpensesDetail"]);

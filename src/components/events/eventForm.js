@@ -166,7 +166,6 @@ export default function EventForm({
   const eventMutation = useMutation({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
-      console.log("error=", data);
       if (!data.error) {
         eventQuerClient.invalidateQueries(["Events"]);
         eventQuerClient.invalidateQueries(["EventDates"]);

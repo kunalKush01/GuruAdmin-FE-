@@ -71,7 +71,6 @@ export default function FormWithoutFormikForDonation({
   useUpdateEffect(() => {
     const user = formik?.values?.SelectedUser;
     if (user?.id) {
-      console.log("hey");
       formik.setFieldValue("Mobile", user.mobileNumber);
       return;
     }

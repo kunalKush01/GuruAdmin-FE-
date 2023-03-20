@@ -74,7 +74,6 @@ export default function CategoryForm({
   const categoryMutation = useMutation({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
-      console.log("error=", data);
       if (!data.error) {
         categoryQuerClient.invalidateQueries(["Categories"]);
         categoryQuerClient.invalidateQueries(["SubCategoryDetail"]);

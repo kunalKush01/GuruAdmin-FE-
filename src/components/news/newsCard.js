@@ -101,9 +101,7 @@ function BtnContent({ newsId, currentPage, currentFilter }) {
   const deleteMutation = useMutation({
     mutationFn: handleDeleteNews,
     onSuccess: (data) => {
-      console.log("deleteMutation=", data);
       if (!data.error) {
-        console.log("invaldating");
         queryCient.invalidateQueries(["News"]);
       }
     },

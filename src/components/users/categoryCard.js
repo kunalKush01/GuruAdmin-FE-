@@ -100,7 +100,6 @@ function BtnContent({ newsId }) {
     mutationFn: handleDeleteNews,
     onSuccess: (data) => {
       if (!data.error) {
-        console.log("invaldating");
         queryCient.invalidateQueries(["Categories"]);
       }
     },

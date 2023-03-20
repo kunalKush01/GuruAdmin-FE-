@@ -70,7 +70,6 @@ const FacilityForm = () => {
       .catch((err) => console.log(err));
   };
 
-  console.log("file", files);
   return (
     <WrapFacility>
       <Formik
@@ -120,10 +119,6 @@ const FacilityForm = () => {
                       // placeholder={t("apna_mandir_upload_background_here")}
                       onChange={(e) => {
                         handleUpload(e.target.files[0]);
-                        console.log(
-                          "e.target.files[0].preview",
-                          e.target.files[0].name
-                        );
                         // handleUpload(e.target.files[0]).then((e)=>formik.setFieldValue('templeImage',e.target.files[0].name));
                         formik.setFieldValue(
                           "facilityImage",

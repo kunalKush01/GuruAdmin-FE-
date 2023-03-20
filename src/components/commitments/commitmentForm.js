@@ -69,7 +69,6 @@ export default function CommitmentForm({
   const commitmentMutation = useMutation({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
-      console.log("error=", data);
       if (!data.error) {
         commitmentQueryClient.invalidateQueries(["Commitments"]);
         commitmentQueryClient.invalidateQueries(["CommitmentDetail"]);

@@ -79,7 +79,6 @@ function BtnContent({ eventId, currentPage, currentFilter }) {
     mutationFn: handleDeleteEvent,
     onSuccess: (data) => {
       if (!data.error) {
-        console.log("invaldating");
         queryCient.invalidateQueries(["Events"]);
         queryCient.invalidateQueries(["EventDates"]);
       }
@@ -152,8 +151,6 @@ function BtnContent({ eventId, currentPage, currentFilter }) {
 
 export default function EventCard({ data, currentPage, currentFilter }) {
   const history = useHistory();
-  console.log("data", data);
-  console.log();
   return (
     <EventCardWaraper>
       <Card

@@ -166,7 +166,6 @@ const Thumbs = ({
 );
 
 function ImageUpload(props) {
-  console.log("props.editedFileNameInitialValue",props.editedFileNameInitialValue);
   const thumbsContainer = {
     backgroundImage: `url('${props?.bg_plus}')`,
     backgroundRepeat: "no-repeat",
@@ -187,7 +186,6 @@ function ImageUpload(props) {
       .then((res) => {
         props.fileName(acceptedFiles?.name, acceptedFiles?.type);
         // props.filePreview(acceptedFiles)
-        console.log("acceptedFiles",acceptedFiles);
         if (props.multiple) {
           setFiles(
             // acceptedFiles.map((file) =>

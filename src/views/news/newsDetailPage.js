@@ -28,10 +28,6 @@ const NewsDetailPage = () => {
         languageId: getLangId(langArray, langSelection),
       })
   );
-  console.log(
-    "🚀 ~ file: newsDetailPage.js:34 ~ NewsDetailPage ~ newsDetailQuery:",
-    newsDetailQuery
-  );
 
   // const tags = newsDetailQuery?.data?.result?.tags?.map((item) => item?.tag);
   return (

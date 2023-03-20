@@ -94,7 +94,6 @@ const HorizontalMenu = ({ menuData, currentActiveItem, routerProps }) => {
 
   useLayoutEffect(() => {
     setActive(location.pathname);
-    console.log("url Rj", active);
   }, [location.pathname]);
 
   return (

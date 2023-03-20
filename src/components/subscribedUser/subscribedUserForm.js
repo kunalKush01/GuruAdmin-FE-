@@ -70,7 +70,6 @@ export default function SubscribedUserForm({
         initialValues={{ ...initialValues }}
         onSubmit={(e) => {
           setLoading(true);
-          console.log("cateFormSubmit=", e);
           categoryMutation.mutate({
             email: e.email,
             mobileNumber: e.mobile,

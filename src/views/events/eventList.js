@@ -303,7 +303,6 @@ export default function EventList() {
                     <CustomDatePicker
                       disabledKeyboardNavigation
                       highlightDates={eventDates}
-                      onChange={(date) => console.log("date", date)}
                       // disabled
                     />
                   )}

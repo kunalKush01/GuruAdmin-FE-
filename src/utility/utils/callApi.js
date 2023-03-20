@@ -108,7 +108,6 @@ export const callApi = async ({
                         const refreshTokenResponseData = await refreshTokenRequest({axiosInstance,
                             refreshToken
                         });
-                        console.log('-> refreshTokenResponseData', refreshTokenResponseData);
                         if (refreshTokenResponseData.error) {
                             store.dispatch(logOut())
                             return { error: true };
