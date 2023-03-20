@@ -1,17 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Trans } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import * as yup from "yup";
-import { createNews } from "../../api/newsApi";
 import { getUpdatedTrustDetail, updateProfile } from "../../api/profileApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { CustomDropDown } from "../../components/partials/customDropDown";
 import ProfileForm from "../../components/Profile/profileForm";
-import { addFacility, handleProfileUpdate } from "../../redux/authSlice";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 const ProfileWarper = styled.div`
@@ -63,62 +61,47 @@ export default function AddProfile() {
     ConverFirstLatterToCapital(selectedLang.name)
   );
   const [loading, setLoading] = useState(false);
+
+  const profileDetail = useQuery(
+    ["", langSelection, selectedLang.id],
+    async () =>
+      getUpdatedTrustDetail({
+        languageId: getLangId(langArray, langSelection),
+      })
+  );
   const handleUpdateProfile = async (payload) => {
-    const res = await updateProfile({
+    return updateProfile({
       ...payload,
       languageId: getLangId(langArray, langSelection),
     });
-    if (res.error === true) {
-      setLoading(false);
-    } else {
-      setLoading(false);
-    }
-    const profileData = {
-      profileImage:res?.result?.profilePhoto,
-      profilePhotoPreview:"",
-      name:res?.result?.name,
-      trustType:res?.result?.typeId,
-      EmailId:res?.result?.email,
-      Contact:res?.result?.mobileNumber,
-      about:res?.result?.about,
-      state:res?.result?.state,
-      city:res?.result?.city,
-      location:res?.result?.location,
-      place_id:res?.result?.place_id,
-      latitude:res?.result?.latitude,
-      longitude:res?.result?.latitude,
-      images:res?.result?.images,
-      documents:res?.result?.documents
-    }
-    dispatch(handleProfileUpdate(profileData));
-    dispatch(addFacility(res?.result?.facilities));
-    
-
-    return res;
   };
 
-  const initialValues = {
-    Id: trustDetail?.id ?? "",
-    name: trustDetail?.name ?? "",
-    profileImage: trustDetail?.profilePhoto,
-    profilePhotoPreview: trustDetail?.profilePhotoPreview?.preview,
-    trustType: trustDetail?.trustType ?? "",
-    EmailId: userDetail?.email ?? "",
-    Contact: userDetail?.mobileNumber ?? "",
-    about: trustDetail?.about ?? "",
-    city: { districts: trustDetail?.city },
-    state: { state: trustDetail?.state },
-    location: {
-      label: trustDetail?.location,
-      value: { place_id: trustDetail?.value },
-    },
-    longitude: trustDetail?.longitude,
-    latitude: trustDetail?.latitude,
-    trustFacilities: trustDetail?.trustFacilities,
-    images: [],
-    Temple: trustDetail?.name ?? "",
-    documents: [],
-  };
+  const initialValues = useMemo(() => {
+    const documentName = profileDetail?.data?.result?.documents?.map(
+      (item) => item?.name
+    );
+
+    return {
+      // Id: trustDetail?.id ?? "",
+      name: profileDetail?.data?.result?.name ?? "",
+      profileImage: profileDetail?.data?.result?.profilePhoto,
+      trustType: profileDetail?.data?.result?.trustType ?? "",
+      EmailId: profileDetail?.data?.result?.email ?? "",
+      Contact: profileDetail?.data?.result?.mobileNumber ?? "",
+      about: profileDetail?.data?.result?.about ?? "",
+      city: { districts: profileDetail?.data?.result?.city },
+      state: { state: profileDetail?.data?.result?.state },
+      location: {
+        label: profileDetail?.data?.result?.location,
+        value: { place_id: profileDetail?.data?.result?.place_id },
+      },
+      longitude: profileDetail?.data?.result?.longitude,
+      latitude: profileDetail?.data?.result?.latitude,
+      trustFacilities: profileDetail?.data?.result?.facilities ?? "",
+      images: [],
+      documents: documentName ?? [],
+    };
+  }, [profileDetail]);
 
   return (
     <ProfileWarper>
@@ -147,8 +130,10 @@ export default function AddProfile() {
         handleSubmit={handleUpdateProfile}
         setLoading={setLoading}
         loading={loading}
-        editImage
-        defaultImages={trustDetail?.images}
+        editImage="edit"
+        defaultImages={profileDetail?.data?.result?.images}
+        profileImageName={profileDetail?.data?.result?.profileName}
+        defaultDocuments={profileDetail?.data?.result?.documents}
         initialValues={initialValues}
         vailidationSchema={schema}
         buttonLabel={"update_profile"}

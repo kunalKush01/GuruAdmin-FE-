@@ -15,8 +15,8 @@ const WraperImageField = styled.div`
     border: none;
     background-color: transparent !important;
     font: normal normal bold 17px/20px Noto Sans;
-    border-color:none !important ;
-    color:  #FF8744 !important;
+    border-color: none !important ;
+    color: #ff8744 !important;
     right: 15px;
     top: 6px;
   }
@@ -172,9 +172,14 @@ function ImageUpload(props) {
     backgroundPositionX: "center",
     backgroundPositionY: "center",
   };
-  const [files, setFiles] = useState(
-    props.defaultImages?.length > 0 ? props.defaultImages : []
-    );
+  const [files, setFiles] = useState([]);
+
+  useEffect(() => {
+    if (props.defaultImages?.length > 0) {
+      setFiles(props.defaultImages);
+    }
+  }, [props.defaultImages]);
+
   const handleUpload = (acceptedFiles) => {
     Storage.put(
       `temp/${props.randomNumber}_${acceptedFiles?.name}`,
@@ -338,9 +343,9 @@ function ImageUpload(props) {
                 {files?.length > 0 || props?.editedFileNameInitialValue ? (
                   <div className="w-100 h-100">
                     {files.length > 0 ? (
-                      files?.map((file,idx) => (
+                      files?.map((file, idx) => (
                         <Thumbs
-                        key={idx}
+                          key={idx}
                           file={file}
                           profileImage={props?.profileImage}
                           editedFileNameInitialValue={

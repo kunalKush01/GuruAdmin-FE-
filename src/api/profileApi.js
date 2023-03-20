@@ -21,7 +21,7 @@ export const getAllTrustType = (payload) =>
   });
   export const getUpdatedTrustDetail = (payload) =>
   callApi({
-    requestFunction: (axios) => axios.get(`${API_BASE_URL}trust/get-trust/${payload}`, payload),
-    showToastOnSuccess: true,
-    showToastOnError: true,
+    requestFunction: (axios) => axios.post(`${API_BASE_URL}trust/get-trust`, payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
   });
