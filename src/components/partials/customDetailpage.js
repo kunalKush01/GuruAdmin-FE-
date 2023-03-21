@@ -1,6 +1,6 @@
 import he from "he";
 import moment from "moment";
-import React from "react";
+import React, { useEffect } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
@@ -8,6 +8,8 @@ import styled from "styled-components";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import cardClockIcon from "../../assets/images/icons/news/clockIcon.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
+import placeHolder from "../../assets/images/placeholderImages/ad-place.png";
+
 const TrustWarapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -71,6 +73,10 @@ const TrustWarapper = styled.div`
     width: 100%;
     border-radius: 10px;
   }
+  .imageDiv{
+    width: 35%;
+    height: 150px;
+  }
   .tags {
     word-break: break-all;
     font: normal normal normal 14px/25px Noto Sans;
@@ -84,6 +90,7 @@ export default function DetailPage({
   tags,
   title,
   description,
+  images,
   image,
   startDate,
   longitude,
@@ -94,6 +101,7 @@ export default function DetailPage({
 }) {
   const history = useHistory();
   const { t } = useTranslation();
+  
   return (
     <TrustWarapper>
       <div className="window nav statusBar body "></div>
@@ -118,9 +126,25 @@ export default function DetailPage({
           </div>
           <div className="addTrust justify-content-between mt-2 mt-sm-0"></div>
         </div>
-        <Row className="mt-lg-3">
+        <Row className="my-lg-3">
           <Col xs={12} lg={4} className="">
-            <img src="https://picsum.photos/300/200" className="detailImage" />
+            {images ? (
+              <img
+                src={
+                  images === undefined
+                    ? placeHolder
+                    : images[0]?.presignedUrl
+                    ? images[0]?.presignedUrl
+                    : placeHolder
+                }
+                className="detailImage"
+              />
+            ) : (
+              <img
+                src={image === undefined ? placeHolder : image}
+                className="detailImage"
+              />
+            )}
             <div className="d-flex justify-content-between mt-1">
               <div className="about-temple-name">{templeName ?? ""}</div>
               <div className="d-flex justify-content-between long-let_tude">
@@ -145,6 +169,13 @@ export default function DetailPage({
                 />
                 {`Posted on ${moment(startDate).format("DD MMMM YYYY ")}`}
               </div>
+            </div>
+            <div className="d-flex align-items-center flex-wrap gap-2 mt-2">
+              {images?.map((item) => {
+                return (<div className="imageDiv">
+                  <img src={item?.presignedUrl} className="detailImage h-100 w-100" />
+                </div>)
+              })}
             </div>
           </Col>
           <Col xs={12} lg={8} className="">

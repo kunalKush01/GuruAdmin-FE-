@@ -39,6 +39,7 @@ const NewsDetailPage = () => {
         longitude={newsDetailQuery?.data?.result?.longitude}
         startDate={newsDetailQuery?.data?.result?.publishDate}
         description={newsDetailQuery?.data?.result?.body}
+        images={newsDetailQuery?.data?.result?.images}
         langButton={newsDetailQuery?.data?.result?.languages}
       />
     </>

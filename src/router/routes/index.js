@@ -27,6 +27,11 @@ const Routes = [
     exact: true,
   },
   {
+    path: "/notices/about/:noticeId",
+    component: lazy(() => import("../../views/notices/noticeDetailPage")),
+    exact: true,
+  },
+  {
     path: "/news/about/:newsId",
     component: lazy(() => import("../../views/news/newsDetailPage")),
     exact: true,

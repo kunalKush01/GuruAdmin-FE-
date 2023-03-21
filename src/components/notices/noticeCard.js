@@ -150,6 +150,8 @@ function BtnContent({ noticeId, currentPage, currentFilter }) {
 }
 
 export default function NoticeCard({ data, currentPage, currentFilter }) {
+  const history = useHistory();
+
   return (
     <EventCardWaraper key={data.id}>
       <Card
@@ -163,7 +165,11 @@ export default function NoticeCard({ data, currentPage, currentFilter }) {
       >
         <CardBody>
           <Row className="align-items-center">
-            <Col xs={2}>
+            <Col
+              xs={2}
+              className="cursor-pointer"
+              onClick={() => history.push(`/notices/about/${data.id}`, data.id)}
+            >
               <img
                 src={data?.image || placeHolder}
                 style={{ width: "100%", height: "100%", borderRadius: "10px" }}

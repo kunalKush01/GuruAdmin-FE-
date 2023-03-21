@@ -4,13 +4,14 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { getEventDetail } from "../../api/eventApi";
+import { getNoticeDetail } from "../../api/noticeApi";
 import DetailPage from "../../components/partials/customDetailpage";
 
-const EventDetailPage = () => {
+const NoticeDetailPage = () => {
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const { t } = useTranslation();
   const history = useHistory();
-  const { eventId } = useParams();
+  const { noticeId } = useParams();
   const getLangId = (langArray, langSelection) => {
     let languageId;
     langArray.map(async (Item) => {
@@ -23,29 +24,29 @@ const EventDetailPage = () => {
   const langArray = useSelector((state) => state.auth.availableLang);
 
   const [langSelection, setLangSelection] = useState(selectedLang.name);
-  const eventDetailQuery = useQuery(
-    ["EventDetail", eventId, selectedLang.id],
+  const noticeDetailQuery = useQuery(
+    ["NoticeDetail", noticeId, selectedLang.id],
     async () =>
-      getEventDetail({
-        eventId,
+    getNoticeDetail({
+        noticeId,
         languageId: getLangId(langArray, langSelection),
       })
   );
 
-  const tags = eventDetailQuery?.data?.result?.tags?.map((item) => item?.tag);
+  const tags = noticeDetailQuery?.data?.result?.tags?.map((item) => item?.tag);
   return (
     <>
       <DetailPage tags={tags}
-      title={eventDetailQuery?.data?.result?.title}
-      latitude={eventDetailQuery?.data?.result?.latitude}
-      longitude={eventDetailQuery?.data?.result?.longitude}
-      startDate={eventDetailQuery?.data?.result?.startDate}
-        description={eventDetailQuery?.data?.result?.body}
-        images={eventDetailQuery?.data?.result?.images}
-        langButton={eventDetailQuery?.data?.result?.languages}
+      title={noticeDetailQuery?.data?.result?.title}
+      latitude={noticeDetailQuery?.data?.result?.latitude}
+      longitude={noticeDetailQuery?.data?.result?.longitude}
+      startDate={noticeDetailQuery?.data?.result?.startDate}
+        description={noticeDetailQuery?.data?.result?.body}
+        image={noticeDetailQuery?.data?.result?.image}
+        langButton={noticeDetailQuery?.data?.result?.languages}
       />
     </>
   );
 };
 
-export default EventDetailPage;
+export default NoticeDetailPage;
