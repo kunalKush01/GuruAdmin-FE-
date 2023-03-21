@@ -3,7 +3,7 @@ import { useDropzone } from "react-dropzone";
 import styled from "styled-components";
 // import bg_plus from "../../../assets/img/ListItems/bg_plus.svg";
 import { Storage } from "@aws-amplify/storage";
-import bg_plus from "../../assets/images/icons/Thumbnail.svg";
+import { Trans } from "react-i18next";
 import { Button } from "reactstrap";
 const WraperImageField = styled.div`
   .image_text {
@@ -11,6 +11,7 @@ const WraperImageField = styled.div`
   }
   .removeImageButton {
     position: absolute;
+    display: none;
     padding: 0.5rem;
     border: none;
     background-color: transparent !important;
@@ -18,6 +19,7 @@ const WraperImageField = styled.div`
     border-color: none !important ;
     color: #ff8744 !important;
     right: 15px;
+    z-index: 10;
     top: 6px;
   }
   .dropZone_Box {
@@ -45,13 +47,35 @@ const WraperImageField = styled.div`
     padding: 4px;
     box-sizing: border-box;
   }
-  /* .mainImageDiv:hover img {
+  .mainImageDiv:hover .profileImageBackground{
+    border-radius: 50%;
+    background-color: #000000;
+  }
+  .mainImageDiv:hover .hoverImageBackground{
+    border-radius: 10px;
+    background-color: #000000;
+  }
+  .mainImageDiv:hover img {
     opacity: 50%;
+    /* background: rgba(0 , 0 , 0 , 0.5); */
     transition: opacity 1s;
+  }
+  .mainImageDiv:hover .editImageText{
+    display: block;
   }
   .mainImageDiv:hover .removeImageButton{
     display: block;
-  } */
+  }
+  
+  .editImageText {
+    display: none;
+    width: fit-content;
+    z-index: 10;
+    position: absolute;
+    top: 40%;
+    color: #ffffff;
+    left: 35%;
+  }
   @media screen and (max-width: 1199px) and (min-width: 992px) {
     .preview_box li {
       width: 80px;
@@ -131,6 +155,7 @@ const img = {
   display: "block",
   width: "100%",
   height: "100%",
+  borderRadius: "10px",
 };
 const imgBorderRadius = {
   display: "block",
@@ -147,6 +172,7 @@ const Thumbs = ({
 }) => (
   <div style={thumb} key={file?.name}>
     <div
+    className="hoverImageBackground"
       style={profileImage ? thumbInnerBorderRadius : thumbInner}
       // className={profileImage ? "profileBlock" : "thumbBlock"}
     >
@@ -269,7 +295,7 @@ function ImageUpload(props) {
           {props.multiple ? (
             <>
               {files?.map((file, idx) => (
-                <div key={idx} className="position-relative">
+                <div key={idx} className="position-relative mainImageDiv">
                   <Button
                     className="removeImageButton"
                     onClick={(e) => {
@@ -278,12 +304,15 @@ function ImageUpload(props) {
                   >
                     X
                   </Button>
+                  <div className="editImageText">
+                    <Trans i18nKey={"edit_image"} />
+                  </div>
                   <div
                     style={{ ...thumbStyles }}
                     className="dropImageBx cursor-pointer"
                     onClick={() => ref.current.click()}
                   >
-                    <div className="w-100 h-100">
+                    <div className="w-100 h-100 profileHoverBackground">
                       {files.length > 0 ? (
                         <>
                           <Thumbs
@@ -321,6 +350,7 @@ function ImageUpload(props) {
           ) : (
             <div className="position-relative mainImageDiv">
               {files?.length > 0 || props?.editedFileNameInitialValue ? (
+                <>
                 <Button
                   className="removeImageButton"
                   onClick={(e) => {
@@ -329,6 +359,10 @@ function ImageUpload(props) {
                 >
                   X
                 </Button>
+                <div className="editImageText">
+                <Trans i18nKey={"edit_image"} />
+              </div>
+              </>
               ) : (
                 ""
               )}
@@ -341,7 +375,7 @@ function ImageUpload(props) {
                 onClick={() => ref.current.click()}
               >
                 {files?.length > 0 || props?.editedFileNameInitialValue ? (
-                  <div className="w-100 h-100">
+                  <div className="w-100 h-100 profileImageBackground">
                     {files.length > 0 ? (
                       files?.map((file, idx) => (
                         <Thumbs

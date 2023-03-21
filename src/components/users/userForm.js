@@ -138,7 +138,7 @@ export default function UserForm({
           categoryMutation.mutate({
             subAdminId:e?.Id,
             email: e?.email,
-            mobileNumber: e.mobile,
+            mobileNumber: e.mobile.toString(),
             roles: e?.userRoleChacked,
             name: e.name,
             password: e?.password,

@@ -96,7 +96,7 @@ export default function CommitmentForm({
               categoryId: e?.SelectedSubCategory?.id,
               amount: e?.Amount,
               masterCategoryId: e?.SelectedMasterCategory?.id,
-              mobileNumber: e?.Mobile,
+              mobileNumber: e?.Mobile.toString(),
               commitmentEndDate: e.DateTime,
             });
           }}

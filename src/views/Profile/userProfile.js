@@ -80,7 +80,6 @@ export default function AddProfile() {
     const documentName = profileDetail?.data?.result?.documents?.map(
       (item) => item?.name
     );
-
     return {
       // Id: trustDetail?.id ?? "",
       name: profileDetail?.data?.result?.name ?? "",
@@ -127,6 +126,7 @@ export default function AddProfile() {
         </div>
       </div>
       <ProfileForm
+        editProfile
         handleSubmit={handleUpdateProfile}
         setLoading={setLoading}
         loading={loading}

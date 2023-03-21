@@ -24,6 +24,7 @@ import { TextArea } from "../partials/CustomTextArea";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import ImageUpload from "../partials/imageUpload";
+import * as yup from "yup";
 
 const ProfileFormWaraper = styled.div`
   .existlabel {
@@ -72,7 +73,43 @@ const ProfileFormWaraper = styled.div`
     margin: 0;
     border-radius: 10px;
   }
-
+  .facilityCol:hover .removeImageButton {
+    display: block;
+  }
+  .facilityCol:hover {
+    transition: background 1s;
+    background: #434343;
+    color: #ffffff;
+    border-radius: 10px;
+  }
+  .facilityCol:hover img {
+    opacity: 50%;
+  }
+  .facilityCol:hover .editFacilityImageText {
+    display: block;
+  }
+  .removeImageButton {
+    position: absolute;
+    padding: 0.5rem;
+    display: none;
+    border: none;
+    background-color: transparent !important;
+    font: normal normal bold 17px/20px Noto Sans;
+    border-color: none !important ;
+    color: #ff8744 !important;
+    right: 10px;
+    z-index: 10000000;
+    top: 10px;
+  }
+  .editFacilityImageText {
+    display: none;
+    width: fit-content;
+    z-index: 10;
+    position: absolute;
+    top: 45%;
+    color: #ffffff;
+    left: 45%;
+  }
   /* map css */
   .css-yk16xz-control {
     border: none;
@@ -150,9 +187,11 @@ const ProfileFormWaraper = styled.div`
     height: 100%;
   }
   .pdfDiv {
-    width: 18%;
     text-align: center;
     font: normal normal bold 13px/20px Noto Sans;
+  }
+  .pdfDiv:hover .removePDFButton {
+    display: block;
   }
   .css-1973rmx-singleValue {
     padding: 5px;
@@ -163,6 +202,7 @@ const ProfileFormWaraper = styled.div`
   .removePDFButton {
     position: absolute;
     padding: 0.5rem;
+    display: none;
     border: none;
     background-color: transparent !important;
     font: normal normal bold 17px/20px Noto Sans;
@@ -170,6 +210,11 @@ const ProfileFormWaraper = styled.div`
     color: #ff8744 !important;
     right: 0px;
     top: -15px;
+  }
+  .currentFile{
+    color: #583703;
+    word-break: break-word;
+    margin-top: .5rem;
   }
 `;
 
@@ -216,9 +261,6 @@ export default function ProfileForm({
   const randomNumber = Math.floor(100000000000 + Math.random() * 900000000000);
   const [deletedImages, setDeletedImages] = useState([]);
 
-  const facilityData = useSelector(
-    (state) => state?.auth?.trustDetail?.trustFacilities
-  );
   // City State
   const loadStateQuery = useQuery(["state"], () => getAllCityState());
 
@@ -232,13 +274,34 @@ export default function ProfileForm({
   const uploadeFacility = useRef();
   // doc upload
   const [files, setFiles] = useState([]);
+  console.log("fileDebug files state",files); 
   useEffect(() => {
     if (initialValues?.documents?.length > 0) {
       setFiles(initialValues?.documents);
     }
-  });
+  },[initialValues]);
   const [facilitiesFiles, setFacilitiesFiles] = useState([]);
+  const [facilityFormData, setFacilityFormData] = useState([]);
+
+  console.log("facilitiesFiles outer",facilitiesFiles);
+  useEffect(() => {
+    if (initialValues?.trustFacilities?.length > 0) {
+      setFacilityFormData(initialValues?.trustFacilities);
+    }
+  },[initialValues]);
+  const [deletedFacility, setDeletedFacility] = useState([]);
+  const removeFacility = (file, formik) => {
+    setDeletedFacility((prev) => [...prev, file]);
+  console.log("facilitiesFiles",facilitiesFiles);
+    const newFacilitiesFiles = [...facilityFormData];
+    newFacilitiesFiles.splice(newFacilitiesFiles.indexOf(file), 1);
+    setFacilitiesFiles(newFacilitiesFiles);
+    setFacilityFormData(newFacilitiesFiles);
+    formik.setFieldValue("trustFacilities", newFacilitiesFiles);
+  };
+
   const [deletedDocuments, setDeletedDocuments] = useState([]);
+  console.log("fileDebug deletedDocuments state",deletedDocuments);
   const handleUpload = (acceptedFiles, uploadType) => {
     Storage.put(
       `temp/${randomNumber}_${acceptedFiles?.name.split(" ").join("-")}`,
@@ -263,10 +326,13 @@ export default function ProfileForm({
       .catch((err) => console.log(err));
   };
 
-  const removeFile = (file, formik) => {
+  const removeDocumentFile = (file, formik) => {
+    console.log("fileDebug removed",file);
     setDeletedDocuments((prev) => [...prev, file]);
     const newFiles = [...files];
+    console.log("fileDebug newFiles",newFiles);
     newFiles.splice(newFiles.indexOf(file), 1);
+    console.log("fileDebug newFiles after splice",newFiles);
     setFiles(newFiles);
     formik.setFieldValue("documents", newFiles);
   };
@@ -279,25 +345,50 @@ export default function ProfileForm({
   });
   const uploadDocuments = useRef();
 
-  const [facilityFormData, setFacilityFormData] = useState([]);
-
   // model
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
 
   const [facilityEditData, setFacilityEditData] = useState(null);
+// facilities initial values 
   const facilityIntialValues = useMemo(() => {
     return {
-      id: facilityEditData?.id,
-      name: facilityEditData?.name,
-      description: facilityEditData?.description,
-      image: facilityEditData?.image,
-      preview: "",
-      startTime: facilityEditData?.startTime,
-      endTime: facilityEditData?.endTime,
+      id: facilityEditData?.data?.id ?? "",
+      name: facilityEditData?.data?.name ?? "",
+      description: facilityEditData?.data?.description ?? "",
+      image: facilityEditData?.data?.imageName ?? "",
+      preview: facilityEditData?.data?.image ?? "",
+      startTime: facilityEditData?.data?.startTime ?? "",
+      endTime: facilityEditData?.data?.endTime ?? "",
     };
-  });
+  }, [facilityEditData]);
 
+  // const facilityIntialValues = {
+  //       id:  "",
+  //       name:   "",
+  //       description: "",
+  //       image:  "",
+  //       preview:  "",
+  //       startTime:  "",
+  //       endTime:  "",    
+  //   }
+
+  useEffect(() => {
+    setFacilityFormData(initialValues?.trustFacilities ?? []);
+    return () => {
+      setFacilityFormData([]);
+    };
+  }, [initialValues]);
+
+  // facilities validation
+
+const facilitiesValidation = yup.object().shape({
+  name: yup.string().required("name_required"),
+  // image: yup.string().required("email_required"),
+  description:yup.string().required("news_desc_required"),
+  startTime: yup.string().required("start_time_required"),
+  endTime: yup.string().required("end_time_required")
+});
   return (
     <ProfileFormWaraper className="FormikWraper">
       <Formik
@@ -320,6 +411,7 @@ export default function ProfileForm({
             latitude: e?.latitude.toString(),
             trustFacilities: facilityFormData,
             images: e?.images,
+            removeFacility: deletedFacility,
             removedImages: deletedImages,
             removedDocuments: deletedDocuments,
             documents: e?.documents,
@@ -341,7 +433,7 @@ export default function ProfileForm({
                 </div>
               </Col>
               <Row className="">
-                <Col xs={1} className="me-4">
+                <Col xs={12} lg={1} className="me-4">
                   <div className="d-flex mt-1">
                     <ImageUpload
                       bg_plus={defaultAvtar}
@@ -368,16 +460,16 @@ export default function ProfileForm({
                     />
                   </div>
                 </Col>
-                <Col xs={10} className="">
+                <Col lg={10} xs={12} className="">
                   <Row>
-                    <Col xs={6} lg={4} className="">
+                    <Col xs={12} md={6} lg={4} className="">
                       <CustomTextField
                         label={t("userProfile_name")}
                         name="name"
                         autoFocus
                       />
                     </Col>
-                    <Col xs={6} lg={4} className="">
+                    <Col xs={12} md={6} lg={4} className="">
                       <FormikCustomReactSelect
                         labelName={t("trust_trustType")}
                         name={"trustType"}
@@ -390,13 +482,13 @@ export default function ProfileForm({
                     </Col>
                   </Row>
                   <Row>
-                    <Col xs={6} lg={4} className="">
+                    <Col xs={12} md={6} lg={4} className="">
                       <CustomTextField
                         label={t("userProfile_email_id")}
                         name="EmailId"
                       />
                     </Col>
-                    <Col xs={6} lg={4} className="">
+                    <Col xs={12} md={6} lg={4} className="">
                       <CustomTextField
                         label={t("userProfile_phone_number")}
                         name="Contact"
@@ -549,34 +641,56 @@ export default function ProfileForm({
                   </div>
                 </Col>
 
-                {[...formik?.values?.trustFacilities, ...facilityFormData]?.map(
-                  (item, idx) => {
-                    return (
-                      <Col lg={3} md={4} sm={6} key={idx}>
-                        <div
-                          className=""
-                          onClick={() => {
-                            setFacilityEditData(item);
-                            toggle();
-                          }}
-                        >
-                          <div className="trust_img">
-                            <img
-                              src={item?.preview ? item?.preview : item?.image}
-                              alt=""
-                            />
+                {/* {[...formik?.values?.trustFacilities, ...facilityFormData]?.map( */}
+                {[...facilityFormData]?.map((item, idx) => {
+                  return (
+                    <Col
+                      lg={3}
+                      md={4}
+                      sm={6}
+                      key={idx}
+                      className="position-relative p-0 facilityCol ms-1"
+                    >
+                      <Button
+                        className="removeImageButton"
+                        onClick={(e) => {
+                          removeFacility(item, formik);
+                        }}
+                      >
+                        X
+                      </Button>
+                      <div
+                        className="cursor-pointer"
+                        onClick={() => {
+                          setFacilityEditData({
+                            type: "edit",
+                            data: item,
+                            index: idx,
+                          });
+                          toggle();
+                        }}
+                      >
+                        <div className="trust_img position-relative">
+                          <div className="editFacilityImageText">
+                            <Trans i18nKey={"edit_image"} />
                           </div>
-                          <div className="py-1">
-                            <div className="temple_name">{item?.name}</div>
-                            <div className="temple_time">
-                              Timings : {item?.startTime} to {item?.endTime}
-                            </div>
+                          <img
+                            src={item?.preview ? item?.preview : item?.image}
+                            alt=""
+                          />
+                        </div>
+                        <div className="py-1">
+                          <div className="temple_name">
+                            {ConverFirstLatterToCapital(item?.name ?? "")}
+                          </div>
+                          <div className="temple_time">
+                            Timings : {item?.startTime} to {item?.endTime}
                           </div>
                         </div>
-                      </Col>
-                    );
-                  }
-                )}
+                      </div>
+                    </Col>
+                  );
+                })}
                 <Col lg={3} md={4} sm={6}>
                   <div
                     className=""
@@ -693,13 +807,16 @@ export default function ProfileForm({
                       </Row>
                     </Col>
                   </Row>
-                  <div className="d-flex flex-wrap gap-1 mt-2">
+                  <Row className=" row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5  gap-1 mt-2 text-break" >
                     {[...formik.values.documents]?.map((item, idx) => (
-                      <div className="pdfDiv position-relative" key={idx}>
+                      <Col
+                        className="pdfDiv position-relative cursor-pointer"
+                        key={idx}
+                      >
                         <Button
                           className="removePDFButton"
                           onClick={() => {
-                            removeFile(item, formik);
+                            removeDocumentFile(item, formik);
                           }}
                         >
                           X
@@ -708,9 +825,9 @@ export default function ProfileForm({
                           <img src={pdfIcon} width={50} />
                         </div>
                         <div className="docFileName">{item}</div>
-                      </div>
+                      </Col>
                     ))}
-                  </div>
+                  </Row>
                 </Col>
                 {/* Doc Col */}
               </Row>
@@ -842,16 +959,23 @@ export default function ProfileForm({
           <ProfileFormWaraper>
             <Formik
               initialValues={facilityIntialValues}
+             
               onSubmit={(values) => {
-                setFacilityFormData([...facilityFormData, values]);
+                if (facilityEditData?.type === "edit") {
+                  facilityFormData.splice(facilityEditData?.index, 1, values);
+                } else {
+                  setFacilityFormData([...facilityFormData, values]);
+                }
+                toggle();
+                setFacilityEditData(null);
               }}
+              validationSchema={facilitiesValidation}
             >
               {(formik) => {
                 return (
+                  
                   <Form>
-                    {/* <Row>
-                    <Col></Col>
-                  </Row> */}
+                    {JSON.stringify(formik.errors)}
                     <Row>
                       <Col md={12}>
                         <CustomTextField
@@ -891,6 +1015,11 @@ export default function ProfileForm({
                           </Button>
                         </div>
                       </Col>
+                      <Col xs={12} className={ facilityEditData?.type === "edit" ? "d-block" : "d-none"}>
+                        <div className="currentFile">
+                          Current File : {formik.values.image}
+                        </div>
+                      </Col>
                       <Col xs={12}>
                         <TextArea
                           label="Description"
@@ -904,7 +1033,7 @@ export default function ProfileForm({
                         <Row>
                           <Col sm={6}>
                             <CustomTextField
-                              label={"Start Time"}
+                              label={t("start_time")}
                               type="time"
                               name="startTime"
                               required
@@ -912,7 +1041,7 @@ export default function ProfileForm({
                           </Col>
                           <Col sm={6}>
                             <CustomTextField
-                              label={"End Time"}
+                              label={t("end_time")}
                               type="time"
                               name="endTime"
                               required
@@ -922,7 +1051,6 @@ export default function ProfileForm({
                       </Col>
                       <div className="mt-5">
                         <Button
-                          onClick={toggle}
                           className="bg_submit"
                           color="primary"
                           type="submit"

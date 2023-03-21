@@ -97,7 +97,7 @@ const [loading, setLoading] = useState(false)
               amount: e?.Amount,
               masterCategoryId: e?.SelectedMasterCategory?.id,
               donarName:e?.donarName,
-              mobileNumber: e?.Mobile,
+              mobileNumber: e?.Mobile.toString(),
               commitmentId:e?.SelectedCommitmentId?.commitmentId,
             })}
           }
