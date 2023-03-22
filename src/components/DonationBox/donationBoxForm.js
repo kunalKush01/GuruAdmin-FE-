@@ -136,7 +136,7 @@ export default function DonationBoxForm({
                 <FormikCustomDatePicker
                   label={t("donation_select_date_time")}
                   name="DateTime"
-                  showTimeInput={showTimeInput}
+                  // showTimeInput={showTimeInput}
                 />
               </Col>
             </Row>

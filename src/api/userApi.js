@@ -34,6 +34,8 @@ export const getAllUser = (payload) =>
   callApi({
     requestFunction: (axios) =>
       axios.get(`${API_BASE_URL}sub-admin/${payload}`, payload),
+      showToastOnSuccess: false,
+      showToastOnError: false,
   });
 
   export const updateSubAdminUser = (payload) =>

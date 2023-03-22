@@ -25,6 +25,10 @@ import CustomTextField from "../partials/customTextField";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import ImageUpload from "../partials/imageUpload";
 import * as yup from "yup";
+import sha256 from "sha256";
+import md5 from "md5";
+import RichTextField from "../partials/richTextEditorField";
+
 
 const ProfileFormWaraper = styled.div`
   .existlabel {
@@ -389,6 +393,8 @@ const facilitiesValidation = yup.object().shape({
   startTime: yup.string().required("start_time_required"),
   endTime: yup.string().required("end_time_required")
 });
+const encPassword = (password) => sha256(md5(password));
+
   return (
     <ProfileFormWaraper className="FormikWraper">
       <Formik
@@ -415,9 +421,9 @@ const facilitiesValidation = yup.object().shape({
             removedImages: deletedImages,
             removedDocuments: deletedDocuments,
             documents: e?.documents,
-            oldPassword: e?.oldPassword,
-            newPassword: e?.newPassword,
-            confirmPassword: e?.confirmPassword,
+            oldPassword:encPassword(e?.oldPassword),
+            newPassword: encPassword(e?.newPassword),
+            confirmPassword:encPassword(e?.confirmPassword),
           });
         }}
         validationSchema={vailidationSchema}
@@ -498,7 +504,7 @@ const facilitiesValidation = yup.object().shape({
                 </Col>
               </Row>
               <Row className="">
-                <Col>
+                {/* <Col>
                   <TextArea
                     label="About Trust"
                     name="about"
@@ -506,7 +512,14 @@ const facilitiesValidation = yup.object().shape({
                     placeholder="Enter about trust "
                     className="text-area form-control"
                   />
-                </Col>
+                </Col> */}
+                <Col xs={12}>
+                    <RichTextField
+                      height="100px"
+                      label={t("about_trusts")}
+                      name="about"
+                    />
+                  </Col>
               </Row>
             </Row>
             {/* About Trust Container */}
@@ -612,6 +625,7 @@ const facilitiesValidation = yup.object().shape({
                     label="Longitude"
                     name="longitude"
                     type="text"
+                    required
                     disabled
                   />
                 </Col>
@@ -621,6 +635,7 @@ const facilitiesValidation = yup.object().shape({
                     name="latitude"
                     type="text"
                     disabled
+                    required
                   />
                 </Col>
               </Row>

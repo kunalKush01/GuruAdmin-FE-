@@ -71,6 +71,7 @@ const TrustWarapper = styled.div`
   }
   .detailImage {
     width: 100%;
+    height: 350px;
     border-radius: 10px;
   }
   .imageDiv{
@@ -141,7 +142,7 @@ export default function DetailPage({
               />
             ) : (
               <img
-                src={image === undefined ? placeHolder : image}
+                src={image === undefined || image === "" ? placeHolder : image}
                 className="detailImage"
               />
             )}

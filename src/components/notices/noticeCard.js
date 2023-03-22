@@ -172,7 +172,11 @@ export default function NoticeCard({ data, currentPage, currentFilter }) {
             >
               <img
                 src={data?.image || placeHolder}
-                style={{ width: "100%", height: "100%", borderRadius: "10px" }}
+                style={{
+                  width: "130px",
+                  height: "100px",
+                  borderRadius: "10px",
+                }}
               />
             </Col>
             <Col xs={9}>

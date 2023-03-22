@@ -123,12 +123,11 @@ export default function BoxListCard({ data = "" ,currentFilter,currentPage}) {
                 <div className="date">
                   <span>Date :</span>{" "}
                   {moment(data.collectionDate)
-                    .utcOffset(0)
                     .format("dddd, DD MMM, YYYY")}
                 </div>
                 <div className="time">
                   <span>Time :</span>{" "}
-                  {moment(data.collectionDate).utcOffset(0).format("h:mm a")}
+                  {moment(data.collectionDate).format("h:mm a")}
                 </div>
                 <div className="time d-flex align-items-center justify-content-between remarks">
                   <img src={donationBoxDesIcon} width={10} />

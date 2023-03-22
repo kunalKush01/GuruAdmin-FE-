@@ -66,7 +66,7 @@ const Home = () => {
             dropDownName={dropDownName}
             setdropDownName={(e) => setdropDownName(e.target.name)}
           />
-          <div className="d-flex justify-content-between mt-1">
+          <div className="d-flex flex-wrap gap-1 justify-content-between mt-1">
             <OrdersReceived
               statTitle={t("dashboard_donationReceived")}
               stats={parseInt(dashboardData?.donationReceived)}

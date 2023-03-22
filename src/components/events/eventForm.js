@@ -25,8 +25,7 @@ import { WithContext as ReactTags } from "react-tag-input";
 import { useSelector } from "react-redux";
 import { ConvertToString } from "../financeReport/reportJsonExport";
 import ImageUpload from "../partials/imageUpload";
-import thumbnailImage from "../../assets/images/icons/Thumbnail.svg"
-
+import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
 
 const FormWaraper = styled.div`
   .existlabel {
@@ -267,14 +266,6 @@ export default function EventForm({
               <Col xs={7}>
                 <Row>
                   <Col xs={6}>
-                    <CustomTextField
-                      label={t("news_label_Title")}
-                      name="Title"
-                      required
-                      autoFocus
-                    />
-                  </Col>
-                  <Col xs={6}>
                     <AsyncSelectField
                       // minHeight={"50px"}
                       name="SelectedEvent"
@@ -282,7 +273,7 @@ export default function EventForm({
                       labelKey={"title"}
                       valueKey={"id"}
                       label={t("events_select_dropDown")}
-                      placeholder={t("events_select_dropDown")}
+                      placeholder={t("events_select_globle")}
                       disabled={selectEventDisabled}
                       onChange={(selectOption) => {
                         formik.setFieldValue("SelectedEvent", selectOption);
@@ -303,6 +294,14 @@ export default function EventForm({
                             .toDate(),
                         });
                       }}
+                    />
+                  </Col>
+                  <Col xs={6}>
+                    <CustomTextField
+                      label={t("news_label_Title")}
+                      name="Title"
+                      required
+                      autoFocus
                     />
                   </Col>
                 </Row>
