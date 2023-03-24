@@ -101,7 +101,7 @@ export function ExpensesListTable({
       title: ConverFirstLatterToCapital(item.title),
       description: (
         <div
-          className=" d-flex tableDes"
+          className="d-flex tableDes"
           dangerouslySetInnerHTML={{ __html: he.decode(item.description) }}
         />
       ),
@@ -180,8 +180,9 @@ export function ExpensesListTable({
     color: #583703 !important;
     /* margin-right: 20px; */
     font: normal normal bold 15px/23px Noto Sans;
-    .tableDes p {
+    .tableDes p{
       margin-bottom: 0;
+     
     }
     .viewLogs {
       font: normal normal bold 15px/33px Noto Sans;

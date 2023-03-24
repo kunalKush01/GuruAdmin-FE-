@@ -185,8 +185,6 @@ export default function Commitment() {
     payloadStatus = "completed";
   } else if (commitmentStatus == "report_panding") {
     payloadStatus = "Pending";
-  } else if (commitmentStatus == "commitment_partial") {
-    payloadStatus = "partial";
   } else {
     payloadStatus = "All";
   }
@@ -260,7 +258,11 @@ export default function Commitment() {
                 setCategoryId(e.target.id);
                 setCategoryTypeName(e.target.name);
                 setPagination({ page: 1 });
-                history.push(`/commitment?page=${1}&filter=${e.target.name}`);
+                history.push(
+                  `/commitment?page=${1}&category=${
+                    e.target.name
+                  }&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${dropDownName}`
+                );
               }}
             />
             {/* <Trans i18nKey={"categories_sub_category"} />
@@ -273,7 +275,11 @@ export default function Commitment() {
                 setSubCategoryTypeId(e.target.id);
                 setSubCategoryTypeName(e.target.name);
                 setPagination({ page: 1 });
-                history.push(`/commitment?page=${1}&filter=${e.target.name}`);
+                history.push(
+                  `/commitment?page=${1}&category=${categoryTypeName}&subCategory=${
+                    e.target.name
+                  }&status=${commitmentStatus}&filter=${dropDownName}`
+                );
               }}
             />
             {/* <Trans i18nKey={"dashboard_Recent_DonorStatus"} />
@@ -289,7 +295,11 @@ export default function Commitment() {
               setdropDownName={(e) => {
                 setdropDownName(e.target.name);
                 setPagination({ page: 1 });
-                history.push(`/commitment?page=${1}&filter=${e.target.name}`);
+                history.push(
+                  `/commitment?page=${1}&category=${categoryTypeName}&subCategory=${
+                    e.target.name
+                  }&status=${commitmentStatus}&filter=${e.target.name}`
+                );
               }}
             />
             <Button

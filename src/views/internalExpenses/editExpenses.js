@@ -83,7 +83,9 @@ export default function AddNews() {
         <div className="ms-3 mt-1">
           <ExpensesForm
             handleSubmit={handleCreateExpense}
+            editLogs
             initialValues={initialValues}
+            expensesId={expensesId}
             vailidationSchema={schema}
             showTimeInput
             buttonName="save_changes"

@@ -58,7 +58,7 @@ export default function FormWithoutFormikForDonation({
     if (formik?.values?.Mobile?.toString().length == 10) {
       const results = async () => {
         const res = await findAllUsersByNumber({
-          mobileNumber: formik?.values?.Mobile,
+          mobileNumber: formik?.values?.Mobile.toString(),
         });
         if (res.result) {
           formik.setFieldValue("SelectedUser", res.result);
@@ -72,6 +72,7 @@ export default function FormWithoutFormikForDonation({
     const user = formik?.values?.SelectedUser;
     if (user?.id) {
       formik.setFieldValue("Mobile", user.mobileNumber);
+      formik.setFieldValue("donarName", user?.name);
       return;
     }
     formik.setFieldValue("Mobile", "");

@@ -17,7 +17,7 @@ import { ChangePeriodDropDown } from "../../components/partials/changePeriodDrop
 import NoContent from "../../components/partials/noContent";
 import { ChangeCategoryType } from "../../components/partials/categoryDropdown";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-import { getAllMasterCategories } from "../../api/categoryApi";
+import { getAllCategories, getAllMasterCategories } from "../../api/categoryApi";
 
 const DoationWarper = styled.div`
   color: #583703;
@@ -57,6 +57,7 @@ const DoationWarper = styled.div`
 
 export default function Donation() {
   const [categoryTypeName, setCategoryTypeName] = useState("All");
+  const [subCategoryTypeName, setSubCategoryTypeName] = useState("All");
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
 
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -81,22 +82,22 @@ export default function Donation() {
     limit: 10,
   });
 
-
   const searchParams = new URLSearchParams(history.location.search);
 
   const currentPage = searchParams.get("page");
   const currentFilter = searchParams.get("filter");
   const currentCategory = searchParams.get("category");
+  const currentSubCategory = searchParams.get("subCategory");
 
 
   useEffect(() => {
-    if (currentPage || currentCategory ||currentFilter) {
+    if (currentPage || currentCategory || currentFilter || currentSubCategory) {
       setCategoryTypeName(currentCategory);
+      setSubCategoryTypeName(currentSubCategory);
       setdropDownName(currentFilter);
       setPagination({ ...pagination, page: parseInt(currentPage) });
     }
   }, []);
-
 
   let filterStartDate = moment()
     .startOf(periodDropDown())
@@ -134,6 +135,31 @@ export default function Donation() {
   });
   const [categoryId, setCategoryId] = useState();
 
+  // sub category
+  const subCategoryTypeQuery = useQuery(
+    ["subCategoryTypes"],
+    () =>
+      getAllCategories({
+        languageId: selectedLang.id,
+      }),
+    {
+      keepPreviousData: true,
+    }
+  );
+  const subCategoryTypeItem = useMemo(
+    () => subCategoryTypeQuery?.data?.results ?? [],
+    [subCategoryTypeQuery]
+  );
+  const subCategoryTypes = [{ id: "", name: "All" }, ...subCategoryTypeItem];
+
+  let subCategoryId;
+  subCategoryTypes.forEach((subCategoryObject) => {
+    if (subCategoryObject.name == subCategoryTypeName) {
+      subCategoryId = subCategoryObject.id;
+    }
+  });
+  const [subCategoryTypeId, setSubCategoryTypeId] = useState();
+
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
 
   const donationQuery = useQuery(
@@ -142,6 +168,7 @@ export default function Donation() {
       pagination.page,
       selectedLang.id,
       newId,
+      subCategoryId,
       filterEndDate,
       filterStartDate,
       searchBarValue,
@@ -152,6 +179,7 @@ export default function Donation() {
         search: searchBarValue,
         startDate: filterStartDate,
         masterId: newId,
+        categoryId: subCategoryId,
         endDate: filterEndDate,
         languageId: selectedLang.id,
       }),
@@ -190,7 +218,7 @@ export default function Donation() {
             </div>
           </div>
           <div className="addDonation">
-          <ChangeCategoryType
+            <ChangeCategoryType
               className={"me-1"}
               categoryTypeArray={newTypes}
               typeName={categoryTypeName}
@@ -198,22 +226,37 @@ export default function Donation() {
                 setCategoryId(e.target.id);
                 setCategoryTypeName(e.target.name);
                 setPagination({ page: 1 });
-                history.push(`/donation?page=${1}&filter=${e.target.name}`);
+                history.push(`/donation?page=${1}&category=${e.target.name}&subCategory=${subCategoryTypeName}&filter=${dropDownName}`);
+              }}
+            />
+            <ChangeCategoryType
+              className={"me-1"}
+              categoryTypeArray={subCategoryTypes}
+              typeName={ConverFirstLatterToCapital(subCategoryTypeName ?? "")}
+              setTypeName={(e) => {
+                setSubCategoryTypeId(e.target.id);
+                setSubCategoryTypeName(e.target.name);
+                setPagination({ page: 1 });
+                history.push(`/donation?page=${1}&category=${categoryTypeName}&subCategory=${e.target.name}&filter=${dropDownName}`);
               }}
             />
             <ChangePeriodDropDown
               className={"me-1"}
               dropDownName={dropDownName}
               setdropDownName={(e) => {
-                setdropDownName(e.target.name)
+                setdropDownName(e.target.name);
                 setPagination({ page: 1 });
-                history.push(`/donation?page=${1}&filter=${e.target.name}`);
+                history.push(`/donation?page=${1}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${e.target.name}`);
               }}
             />
             <Button
               color="primary"
               className="addDonation-btn  "
-              onClick={() => history.push(`/donation/add?page=${pagination.page}&category=${categoryTypeName}&filter=${dropDownName}`)}
+              onClick={() =>
+                history.push(
+                  `/donation/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}`
+                )
+              }
             >
               <span>
                 <Plus className="" size={15} strokeWidth={4} />
@@ -252,7 +295,7 @@ export default function Donation() {
               <Else>
                 <If condition={donationItems.length != 0} disableMemo>
                   <Then>
-                    <DonationListTable data={donationItems}/>
+                    <DonationListTable data={donationItems} />
                   </Then>
                   <Else>
                     <NoContent
@@ -275,9 +318,9 @@ export default function Donation() {
                     pageCount={donationQuery?.data?.totalPages || 0}
                     activeClassName="active"
                     initialPage={
-                      (parseInt(searchParams.get("page"))
+                      parseInt(searchParams.get("page"))
                         ? parseInt(searchParams.get("page")) - 1
-                        : pagination.page - 1)
+                        : pagination.page - 1
                     }
                     breakClassName="page-item"
                     pageClassName={"page-item"}
@@ -287,13 +330,12 @@ export default function Donation() {
                     nextClassName={"page-item next"}
                     previousLinkClassName={"page-link"}
                     previousClassName={"page-item prev"}
-                    onPageChange={(page) =>
-                      {
-                      setPagination({ ...pagination, page: page.selected + 1 })
+                    onPageChange={(page) => {
+                      setPagination({ ...pagination, page: page.selected + 1 });
                       history.push(
                         `/donation?page=${
                           page.selected + 1
-                        }&category=${categoryTypeName}&filter=${dropDownName}`
+                        }&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}`
                       );
                     }}
                     // forcePage={pagination.page !== 0 ? pagination.page - 1 : 0}

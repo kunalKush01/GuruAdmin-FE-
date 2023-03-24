@@ -45,6 +45,7 @@ export default function AddDonation() {
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get('page')
   const currentCategory = searchParams.get("category");
+  const currentSubCategory = searchParams.get("subCategory");
   const currentFilter = searchParams.get('filter')
 
   const initialValues = {
@@ -64,7 +65,7 @@ export default function AddDonation() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push(`/donation?page=${currentPage}&category=${currentCategory}&filter=${currentFilter}`)}
+            onClick={() => history.push(`/donation?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}`)}
           />
           <div className="addDonation">
             <Trans i18nKey={"donation_Adddonation"} />

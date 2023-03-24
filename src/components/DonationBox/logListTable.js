@@ -62,6 +62,7 @@ export default function LogListTable({ data }) {
     <LogListTableWarper>
       <CustomDataTable
         columns={columns}
+        maxHieght="350px"
         data={logData}
       />
     </LogListTableWarper>

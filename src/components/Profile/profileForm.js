@@ -244,6 +244,7 @@ export default function ProfileForm({
   const mutation = useMutation({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
+      console.log("data debug",data);
       if (!data.error) {
         setLoading(false);
       } else if (data?.error) {
@@ -278,7 +279,6 @@ export default function ProfileForm({
   const uploadeFacility = useRef();
   // doc upload
   const [files, setFiles] = useState([]);
-  console.log("fileDebug files state",files); 
   useEffect(() => {
     if (initialValues?.documents?.length > 0) {
       setFiles(initialValues?.documents);
@@ -287,7 +287,6 @@ export default function ProfileForm({
   const [facilitiesFiles, setFacilitiesFiles] = useState([]);
   const [facilityFormData, setFacilityFormData] = useState([]);
 
-  console.log("facilitiesFiles outer",facilitiesFiles);
   useEffect(() => {
     if (initialValues?.trustFacilities?.length > 0) {
       setFacilityFormData(initialValues?.trustFacilities);
@@ -296,7 +295,6 @@ export default function ProfileForm({
   const [deletedFacility, setDeletedFacility] = useState([]);
   const removeFacility = (file, formik) => {
     setDeletedFacility((prev) => [...prev, file]);
-  console.log("facilitiesFiles",facilitiesFiles);
     const newFacilitiesFiles = [...facilityFormData];
     newFacilitiesFiles.splice(newFacilitiesFiles.indexOf(file), 1);
     setFacilitiesFiles(newFacilitiesFiles);
@@ -305,7 +303,6 @@ export default function ProfileForm({
   };
 
   const [deletedDocuments, setDeletedDocuments] = useState([]);
-  console.log("fileDebug deletedDocuments state",deletedDocuments);
   const handleUpload = (acceptedFiles, uploadType) => {
     Storage.put(
       `temp/${randomNumber}_${acceptedFiles?.name.split(" ").join("-")}`,
@@ -331,12 +328,9 @@ export default function ProfileForm({
   };
 
   const removeDocumentFile = (file, formik) => {
-    console.log("fileDebug removed",file);
     setDeletedDocuments((prev) => [...prev, file]);
     const newFiles = [...files];
-    console.log("fileDebug newFiles",newFiles);
     newFiles.splice(newFiles.indexOf(file), 1);
-    console.log("fileDebug newFiles after splice",newFiles);
     setFiles(newFiles);
     formik.setFieldValue("documents", newFiles);
   };
@@ -366,17 +360,6 @@ export default function ProfileForm({
       endTime: facilityEditData?.data?.endTime ?? "",
     };
   }, [facilityEditData]);
-
-  // const facilityIntialValues = {
-  //       id:  "",
-  //       name:   "",
-  //       description: "",
-  //       image:  "",
-  //       preview:  "",
-  //       startTime:  "",
-  //       endTime:  "",    
-  //   }
-
   useEffect(() => {
     setFacilityFormData(initialValues?.trustFacilities ?? []);
     return () => {
@@ -393,7 +376,6 @@ const facilitiesValidation = yup.object().shape({
   startTime: yup.string().required("start_time_required"),
   endTime: yup.string().required("end_time_required")
 });
-const encPassword = (password) => sha256(md5(password));
 
   return (
     <ProfileFormWaraper className="FormikWraper">
@@ -421,9 +403,9 @@ const encPassword = (password) => sha256(md5(password));
             removedImages: deletedImages,
             removedDocuments: deletedDocuments,
             documents: e?.documents,
-            oldPassword:encPassword(e?.oldPassword),
-            newPassword: encPassword(e?.newPassword),
-            confirmPassword:encPassword(e?.confirmPassword),
+            oldPassword:e?.oldPassword,
+            newPassword:e?.newPassword,
+            confirmPassword:e?.confirmPassword,
           });
         }}
         validationSchema={vailidationSchema}
@@ -849,7 +831,7 @@ const encPassword = (password) => sha256(md5(password));
             </Row>
             {/* Trust Images */}
             {/* Trust Password Container */}
-            <Row className="mt-1">
+            {/* <Row className="mt-1">
               <Col xs={12}>
                 <div className="heading_div existlabel">
                   CHANGE PASSWORD
@@ -939,7 +921,7 @@ const encPassword = (password) => sha256(md5(password));
                   />
                 </Col>
               </Row>
-            </Row>
+            </Row> */}
             {/* Trust Password Container */}
 
             <div className="btn-Published d-flex justify-content-center mt-3 mb-3">

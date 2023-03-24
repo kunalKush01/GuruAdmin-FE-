@@ -138,7 +138,9 @@ export default function EditDonationBox() {
           <div className="ms-3 mt-1">  
             <DonationBoxForm
               buttonName={"save_changes"}
+              editLogs
               vailidationSchema={schema}
+              collectionId={donationBoxId}
               initialValues={initialValues}
               showTimeInput
               handleSubmit={handleUpdate}

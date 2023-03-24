@@ -10,11 +10,13 @@ import { Trans, useTranslation } from "react-i18next";
 import { Button, ButtonGroup, Col, Row, Spinner } from "reactstrap";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import { useHistory } from "react-router-dom";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createNews } from "../../api/newsApi";
 import { Plus } from "react-feather";
 import { flatMap } from "lodash";
 import { setlang } from "../../redux/authSlice";
+import LogListTable from "./logListTable";
+import { getAllBoxCollectionLogs } from "../../api/donationBoxCollectionApi";
 
 const FormWaraper = styled.div`
   .FormikWraper {
@@ -61,6 +63,8 @@ export default function DonationBoxForm({
   buttonName = "",
   handleSubmit,
   vailidationSchema,
+  collectionId,
+  editLogs,
   initialValues,
   showTimeInput,
 }) {
@@ -81,6 +85,27 @@ export default function DonationBoxForm({
       }
     },
   });
+
+  const hundiLogQuery = useQuery(
+    [
+      "hundiLogs",
+    ],
+    () =>
+      getAllBoxCollectionLogs({
+        // ...pagination,
+        collectionId: collectionId,
+        // search: searchBarValue,
+      }),
+    {
+      keepPreviousData: true,
+    }
+  );
+
+  const hundiLogs = useMemo(
+    () => hundiLogQuery?.data?.results ?? [],
+    [hundiLogQuery]
+  );
+
   return (
     <FormWaraper className="FormikWraper">
       <Formik
@@ -140,7 +165,17 @@ export default function DonationBoxForm({
                 />
               </Col>
             </Row>
-            <div className="btn-Published mb-2 ">
+            {editLogs && (
+              <Row>
+                <div>
+                  <Trans i18nKey={"Logs"} />
+                </div>
+                <Col lg={9} className='my-lg-2'>
+                <LogListTable data={hundiLogs} />
+                </Col>
+              </Row>
+            )}
+            <div className="btn-Published mb-2 mt-lg-2">
                 {loading ? (
                   <Button
                     color="primary"
