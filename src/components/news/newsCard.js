@@ -28,7 +28,7 @@ import { deleteNewsDetail } from "../../api/newsApi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
-import placeHolder from "../../assets/images/placeholderImages/placeholder-news.webp"
+import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg"
 
 const NewsCardWaraper = styled.div`
   .imgContainer {

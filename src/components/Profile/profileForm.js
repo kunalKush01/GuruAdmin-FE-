@@ -601,6 +601,10 @@ const facilitiesValidation = yup.object().shape({
                       },
                     }}
                   />
+                  {formik.errors.location && formik.touched.location ? (<div
+                    style={{fontSize:"11px" , color:"red"}}
+                  >
+                    <Trans i18nKey={formik.errors.location}/></div>) : null}
                 </Col>
                 <Col sm={4}>
                   <CustomTextField
@@ -779,7 +783,7 @@ const facilitiesValidation = yup.object().shape({
                             ref={uploadDocuments}
                             type={"file"}
                             name="documents"
-                            accept=".pdf"
+                            accept=""
                             onChange={(e) => {
                               if (e.target.files?.length) {
                                 handleUpload(e.target.files[0], "document");

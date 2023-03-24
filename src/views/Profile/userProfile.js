@@ -11,7 +11,7 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { CustomDropDown } from "../../components/partials/customDropDown";
 import ProfileForm from "../../components/Profile/profileForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-
+import he from "he"
 const ProfileWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -35,7 +35,13 @@ const schema = yup.object().shape({
     .integer("number_in_point")
     .min(8)
     .required("number_required"),
-  // documents: yup.string().required("doc_required"),
+    about:yup.string().required("trust_about_required"),
+    state: yup.mixed().required("events_state_required"),
+    city: yup.mixed().required("events_city_required"),
+    location: yup.mixed().required("events_location_required"),
+
+  
+    // documents: yup.string().required("doc_required"),
 });
 
 const getLangId = (langArray, langSelection) => {
@@ -87,13 +93,13 @@ export default function AddProfile() {
       trustType: profileDetail?.data?.result?.trustType ?? "",
       EmailId: profileDetail?.data?.result?.email ?? "",
       Contact: profileDetail?.data?.result?.mobileNumber ?? "",
-      about: profileDetail?.data?.result?.about ?? "",
-      city: { districts: profileDetail?.data?.result?.city },
-      state: { state: profileDetail?.data?.result?.state },
-      location: {
+      about: he.decode(profileDetail?.data?.result?.about ?? "" ) ,
+      city: profileDetail?.data?.result?.state ? { districts: profileDetail?.data?.result?.city } :null,
+      state:profileDetail?.data?.result?.state ? { state: profileDetail?.data?.result?.state} :null ,
+      location:profileDetail?.data?.result?.location? {
         label: profileDetail?.data?.result?.location,
         value: { place_id: profileDetail?.data?.result?.place_id },
-      },
+      } : null,
       longitude: profileDetail?.data?.result?.longitude,
       latitude: profileDetail?.data?.result?.latitude,
       trustFacilities: profileDetail?.data?.result?.facilities ?? "",

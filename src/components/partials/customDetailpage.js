@@ -8,7 +8,7 @@ import styled from "styled-components";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import cardClockIcon from "../../assets/images/icons/news/clockIcon.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-import placeHolder from "../../assets/images/placeholderImages/ad-place.png";
+import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
 
 const TrustWarapper = styled.div`
   color: #583703;

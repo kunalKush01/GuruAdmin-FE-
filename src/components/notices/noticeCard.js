@@ -13,7 +13,7 @@ import Swal from "sweetalert2";
 import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
 import BtnPopover from "../partials/btnPopover";
 import { deleteNoticeDetail } from "../../api/noticeApi";
-import placeHolder from "../../assets/images/placeholderImages/ad-place.png";
+import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
 
 const EventCardWaraper = styled.div`
   .card1 {

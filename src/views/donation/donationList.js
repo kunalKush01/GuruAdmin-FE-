@@ -137,9 +137,10 @@ export default function Donation() {
 
   // sub category
   const subCategoryTypeQuery = useQuery(
-    ["subCategoryTypes"],
+    ["subCategoryTypes",newId],
     () =>
       getAllCategories({
+        masterId:newId,
         languageId: selectedLang.id,
       }),
     {

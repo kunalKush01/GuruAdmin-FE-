@@ -46,6 +46,9 @@ export const CustomDropDown = ({
       text-align: left;
       padding: 8px 10px;
     }
+    .dropdown-toggle{
+      display: flex;  
+    }
     .dropdown-toggle::after {
       border: none !important;
       background-image: url("${dropDownIcon}");
@@ -73,6 +76,13 @@ export const CustomDropDown = ({
         }
       }
     }
+    .buttonText{
+      overflow: hidden;
+      width: 80%;
+    }
+    .textRight{
+      text-align: -webkit-right;
+    }
   `;
   const { t } = useTranslation();
   const selectedLang = useSelector((state) => state.auth.selectLangCode);
@@ -85,7 +95,7 @@ export const CustomDropDown = ({
     <DropDownWarper width={width} >
       {i18nKeyDropDownItemArray && (
         <Dropdown
-          className="text-end   "
+          className="textRight"
           isOpen={dropdownOpen}
           toggle={toggle}
           direction={"down"}
@@ -111,13 +121,13 @@ export const CustomDropDown = ({
       )}
       {ItemListArray && (
         <Dropdown
-          className="text-end    "
+          className="text-end"
           isOpen={dropdownOpen}
           toggle={toggle}
           direction={"down"}
           {...props}
         >
-          <DropdownToggle caret>{defaultDropDownName}</DropdownToggle>
+          <DropdownToggle caret><span className="buttonText">{defaultDropDownName}</span></DropdownToggle>
           <DropdownMenu>
             {ItemListArray.map((item, idx) => {
               return (

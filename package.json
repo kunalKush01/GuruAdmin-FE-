@@ -117,6 +117,7 @@
     "start": "craco start",
     "start:dev": "env-cmd -f .env.dev craco start",
     "build:dev": "env-cmd -f .env.dev craco build",
+    "build:staging": "env-cmd -f .env.staging craco build",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject",
