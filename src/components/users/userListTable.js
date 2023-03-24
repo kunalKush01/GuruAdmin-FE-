@@ -10,7 +10,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
 import { deleteCategoryDetail } from "../../api/categoryApi";
-import placeHolderImg from "../../assets/images/icons/dashBoard/defaultAvatar.svg"
+import placeHolderTable from "../../assets/images/placeholderImages/placeHolderTable.svg"
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { deleteSubAdmin } from "../../api/userApi";
 
@@ -70,7 +70,7 @@ export function SubAdminUserListTable({ data ,currentFilter,currentPage}) {
       id: `${idx + 1}`,
       userName: (
         <div className="d-flex align-items-center " >
-          <img src={item.profilePhoto ?? placeHolderImg} className="cursor-pointer"  style={{marginRight:"5px",width:"30px", height:"30px", borderRadius:"50%"}}  />
+          <img src={item?.profilePhoto !== "" ?item?.profilePhoto: placeHolderTable} className="cursor-pointer"  style={{marginRight:"5px",width:"30px", height:"30px", borderRadius:"50%"}}  />
           <div>{ConverFirstLatterToCapital(item.name ?? "-")}</div>
         </div>
       ),
@@ -92,6 +92,7 @@ export function SubAdminUserListTable({ data ,currentFilter,currentPage}) {
       edit: (
         <img
           src={editIcon}
+          className="cursor-pointer"
           width={35}
           onClick={() =>
             history.push(`/configuration/users/edit/${item.id}?page=${currentPage}`)

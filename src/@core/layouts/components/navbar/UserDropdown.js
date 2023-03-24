@@ -33,6 +33,7 @@ import defaultAvatar from "../../../../assets/images/icons/dashBoard/defaultAvat
 import editProfileIcon from "../../../../assets/images/icons/dashBoard/icon_awesome_edit.svg";
 
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
 const AvatarWarraper = styled.div`
     
@@ -63,7 +64,9 @@ const UserDropdown = () => {
   // }, [])
 
   //** Vars
-  const userAvatar = (userData && userData.avatar) || defaultAvatar;
+  const userProfile = useSelector((state)=> state?.auth?.trustDetail?.profilePhoto )
+  // const userAvatar = (userData && userData.avatar) || defaultAvatar;
+  const userAvatar = userProfile || defaultAvatar;
 
   return (
     <UncontrolledDropdown tag="li" className="dropdown-user nav-item">
