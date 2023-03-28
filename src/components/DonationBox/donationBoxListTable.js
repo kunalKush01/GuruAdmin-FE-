@@ -50,11 +50,11 @@ export default function DonationBoxListTable({ data, financeReport }) {
       center: true,
       selector: (row) => row.edit,
     },
-    {
-      name: t(""),
-      center: true,
-      selector: (row) => row.viewLogs,
-    },
+    // {
+    //   name: t(""),
+    //   center: true,
+    //   selector: (row) => row.viewLogs,
+    // },
   ];
 
   const donatioBoxList = useMemo(() => {
@@ -83,16 +83,16 @@ export default function DonationBoxListTable({ data, financeReport }) {
           }}
         />
       ),
-      viewLogs: (
-        <div
-          className="cursor-pointer viewLogs"
-          onClick={() =>
-            history.push(`/financial_reports/Hundi/Logs/${item.id}`, item._id)
-          }
-        >
-          <Trans i18nKey={"viewLogs"} />
-        </div>
-      ),
+      // viewLogs: (
+      //   <div
+      //     className="cursor-pointer viewLogs"
+      //     onClick={() =>
+      //       history.push(`/financial_reports/Hundi/Logs/${item.id}`, item._id)
+      //     }
+      //   >
+      //     <Trans i18nKey={"viewLogs"} />
+      //   </div>
+      // ),
     }));
   }, [data]);
 

@@ -67,6 +67,7 @@ export default function AddCategory() {
       </div>
       {/* {!userRoleQuery.isLoading && !userRoleQuery.isFetching ? ( */}
         <UserForm
+        adduser
           userRole={"role"}
           handleSubmit={handleCreateUser}
           initialValues={{

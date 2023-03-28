@@ -108,7 +108,14 @@ export default function CommitmentListTable({
       return {
         id: idx + 1,
         username: (
-          <div className="d-flex align-items-center ">
+          <div className="d-flex align-items-center cursor-pointer"
+          onClick={() => {
+            financeReport? "" :history.push(
+              `/donations/paid/${item.id}?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`
+            );
+            
+          }}
+          >
             <img
               src={avtarIcon}
               style={{ marginRight: "5px", width: "25px" }}
@@ -147,7 +154,7 @@ export default function CommitmentListTable({
             width={35}
             className={financeReport?"cursor-disabled opacity-50" : "cursor-pointer "}
             onClick={() => {
-              financeReport?"":history.push(
+              financeReport? "" :history.push(
                 `/commitment/edit/${item.id}?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`
               );
               

@@ -80,16 +80,16 @@ export function ExpensesListTable({
     },
   ];
 
-  if (financeReport) {
-    columns = [
-      ...columns,
-      {
-        name: "",
-        center: true,
-        selector: (row) => row.viewLogs,
-      },
-    ];
-  }
+  // if (financeReport) {
+  //   columns = [
+  //     ...columns,
+  //     {
+  //       name: "",
+  //       center: true,
+  //       selector: (row) => row.viewLogs,
+  //     },
+  //   ];
+  // }
   const categoriesList = useMemo(() => {
     return data.map((item, idx) => ({
       _Id: item.id,
@@ -161,18 +161,18 @@ export function ExpensesListTable({
           }}
         />
       ),
-      viewLogs: (
-        <div
-          className={`cursor-pointer viewLogs ${
-            financeReport ? "d-block" : "d-none"
-          }`}
-          onClick={() =>
-            history.push(`/financial_reports/Expenses/Logs/${item.id}`, item.id)
-          }
-        >
-          <Trans i18nKey={"viewLogs"} />
-        </div>
-      ),
+      // viewLogs: (
+      //   <div
+      //     className={`cursor-pointer viewLogs ${
+      //       financeReport ? "d-block" : "d-none"
+      //     }`}
+      //     onClick={() =>
+      //       history.push(`/financial_reports/Expenses/Logs/${item.id}`, item.id)
+      //     }
+      //   >
+      //     <Trans i18nKey={"viewLogs"} />
+      //   </div>
+      // ),
     }));
   }, [data]);
 

@@ -15,6 +15,14 @@ export const getAllDonation = (payload) =>
     showToastOnError: false,
   });
 
+export const getAllPaidDonations = (payload) =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.get(`${API_BASE_URL}commitment/donations/${payload}`),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+
 export const getDonationDetail = (payload) =>
   callApi({
     requestFunction: (axios) =>
@@ -29,17 +37,14 @@ export const updateDonationDetail = (payload) =>
       axios.post(`${API_BASE_URL}news/update`, payload),
   });
 
-
-  export const addLangDonationDetail = (payload) =>
+export const addLangDonationDetail = (payload) =>
   callApi({
     requestFunction: (axios) =>
       axios.post(`${API_BASE_URL}news/add-language`, payload),
   });
 
-
-
-  export const deleteDonationDetail = (payload) =>
+export const deleteDonationDetail = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.delete(`${API_BASE_URL}news/delete/${payload}`, ),
+      axios.delete(`${API_BASE_URL}news/delete/${payload}`),
   });

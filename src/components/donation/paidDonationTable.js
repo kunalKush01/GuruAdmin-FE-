@@ -14,7 +14,7 @@ import templeImage from "../../assets/images/pages/login-v2.png";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomDataTable from "../partials/CustomDataTable";
 
-export default function DonationListTable({ data, topdf }, args) {
+export default function PaidDonationTable({ data, topdf }, args) {
   const { t } = useTranslation();
   const history = useHistory();
   const ref = useRef();
@@ -87,18 +87,18 @@ export default function DonationListTable({ data, topdf }, args) {
           <div className="d-flex align-items-center">
             <img
               src={avtarIcon}
-              style={{ marginRight: "5px", width: "25px", }}
+              style={{ marginRight: "5px", width: "25px" }}
             />
             <div>{ConverFirstLatterToCapital(item?.user?.name ?? "")}</div>
           </div>
         ),
         mobileNumber: item?.user?.mobileNumber,
         donarName: ConverFirstLatterToCapital(
-          item?.donarName ?? item.user?.name
+          item?.donarName || item.user?.name || ""
         ),
         category: (
           <div>
-            {ConverFirstLatterToCapital(item?.masterCategory?.name)}
+            {ConverFirstLatterToCapital(item?.masterCategory?.name ?? "")}
             {item?.subCategory && `(${item?.subCategory?.name ?? ""})`}
           </div>
         ),
@@ -134,6 +134,7 @@ export default function DonationListTable({ data, topdf }, args) {
       margin-bottom: 0;
     }
   `;
+
   return (
     <RecentDonationTableWarper>
       <CustomDataTable maxHieght={""} columns={columns} data={Donatio_data} />
@@ -171,7 +172,7 @@ export default function DonationListTable({ data, topdf }, args) {
               }}
             >
               <img
-                src={loggedTemple?.profilePhoto}
+                src={templeImage}
                 style={{ width: "80px", height: "80px", borderRadius: "8px" }}
               />
               <div style={{ padding: "25px" }}>
@@ -193,7 +194,7 @@ export default function DonationListTable({ data, topdf }, args) {
                     textAlign: "left",
                   }}
                 >
-                  {`${loggedTemple?.city}, ${loggedTemple?.state}`}
+                  {"Ranakpur, Rajasthan"}
                 </div>
               </div>
             </div>

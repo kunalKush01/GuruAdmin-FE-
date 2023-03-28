@@ -272,7 +272,7 @@ export default function EventForm({
                       loadOptions={loadOption}
                       labelKey={"title"}
                       valueKey={"id"}
-                      label={t("events_select_dropDown")}
+                      label={t("events_select_globle")}
                       placeholder={t("events_select_globle")}
                       disabled={selectEventDisabled}
                       onChange={(selectOption) => {

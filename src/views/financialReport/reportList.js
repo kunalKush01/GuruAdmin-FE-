@@ -402,8 +402,8 @@ export default function FinancialReport() {
                   </Then>
                   <Else>
                     <NoContent
-                      headingNotfound={t("donation_box_not_found")}
-                      para={t("donation_box_not_click_add_donation_box")}
+                      headingNotfound={t("finance_report_no_found")}
+                      // para={t("donation_box_not_click_add_donation_box")}
                     />
                   </Else>
                 </If>

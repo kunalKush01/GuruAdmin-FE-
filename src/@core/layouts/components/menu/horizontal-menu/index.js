@@ -45,7 +45,7 @@ function BtnContent({ setClosePopover }) {
 
   return (
     <BtnContentWraper>
-      <Row className="MainContainer d-block px-1 text-center">
+      <Row className="MainContainer d-block px-1">
         <Col
           xs={12}
           className="col-item"

@@ -207,6 +207,12 @@ const Routes = [
     exact:true
   },
   {
+    path: '/donations/paid/:commitmentId',
+    component: lazy(() => import('../../views/donation/paidDonationList')),
+    exact:true
+  },
+  
+  {
     path: '/Hundi',
     component: lazy(() => import('../../views/DonationBox/donationBoxList.js')),
     exact:true

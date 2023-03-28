@@ -88,6 +88,7 @@ export default function UserForm({
   vailidationSchema,
   initialValues,
   profileImageName,
+  adduser,
   userRole,
   editProfile,
   showTimeInput,
@@ -136,13 +137,13 @@ export default function UserForm({
         onSubmit={(e) => {
           setLoading(true);
           categoryMutation.mutate({
-            subAdminId:e?.Id,
+            subAdminId: e?.Id,
             email: e?.email,
             mobileNumber: e.mobile.toString(),
             roles: e?.userRoleChacked,
             name: e.name,
             password: e?.password,
-            profilePhoto:editProfile ? profileImageName : e?.file,
+            profilePhoto: editProfile ? profileImageName : e?.file,
             // profilePhoto: e?.file,
           });
         }}
@@ -200,33 +201,35 @@ export default function UserForm({
                           name="email"
                         />
                       </Col>
-                      <Col xs={12} md={6} lg={4} className="ps-1">
-                        <label>
-                          <Trans i18nKey={"user_password"} />
-                          {`*`}
-                        </label>
-                        <InputPasswordToggle
-                          className="input-group-merge"
-                          name="password"
-                          inputClassName=""
-                          id="login-password"
-                          value={formik.values.password}
-                          onChange={formik.handleChange}
-                          iconClassName="d-none"
-                          hideIcon={
-                            <img
-                              className="signInIconsIserAdminPassword"
-                              src={passwordEyeIcon}
-                            />
-                          }
-                          showIcon={
-                            <img
-                              className="signInIconsIserAdminPassword"
-                              src={passwordEyeIcon}
-                            />
-                          }
-                        />
-                      </Col>
+                      {adduser && (
+                        <Col xs={12} md={6} lg={4} className="ps-1">
+                          <label>
+                            <Trans i18nKey={"user_password"} />
+                            {`*`}
+                          </label>
+                          <InputPasswordToggle
+                            className="input-group-merge"
+                            name="password"
+                            inputClassName=""
+                            id="login-password"
+                            value={formik.values.password}
+                            onChange={formik.handleChange}
+                            iconClassName="d-none"
+                            hideIcon={
+                              <img
+                                className="signInIconsIserAdminPassword"
+                                src={passwordEyeIcon}
+                              />
+                            }
+                            showIcon={
+                              <img
+                                className="signInIconsIserAdminPassword"
+                                src={passwordEyeIcon}
+                              />
+                            }
+                          />
+                        </Col>
+                      )}
                     </Row>
                   </Col>
 
@@ -319,7 +322,7 @@ export default function UserForm({
                     borderRadius: "10px",
                     padding: "5px 40px",
                     opacity: "100%",
-                    marginTop: "5rem"
+                    marginTop: "5rem",
                   }}
                   disabled
                 >

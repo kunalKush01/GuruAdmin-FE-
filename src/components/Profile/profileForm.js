@@ -220,6 +220,9 @@ const ProfileFormWaraper = styled.div`
     word-break: break-word;
     margin-top: .5rem;
   }
+  .css-1hwfws3{
+    height: 40px;
+  }
 `;
 
 export default function ProfileForm({
@@ -286,7 +289,7 @@ export default function ProfileForm({
   },[initialValues]);
   const [facilitiesFiles, setFacilitiesFiles] = useState([]);
   const [facilityFormData, setFacilityFormData] = useState([]);
-
+console.log("facilityFormData",facilityFormData);
   useEffect(() => {
     if (initialValues?.trustFacilities?.length > 0) {
       setFacilityFormData(initialValues?.trustFacilities);
@@ -354,7 +357,7 @@ export default function ProfileForm({
       id: facilityEditData?.data?.id ?? "",
       name: facilityEditData?.data?.name ?? "",
       description: facilityEditData?.data?.description ?? "",
-      image: facilityEditData?.data?.imageName ?? "",
+      imageName: facilityEditData?.data?.imageName ?? "",
       preview: facilityEditData?.data?.image ?? "",
       startTime: facilityEditData?.data?.startTime ?? "",
       endTime: facilityEditData?.data?.endTime ?? "",
@@ -976,7 +979,6 @@ const facilitiesValidation = yup.object().shape({
                 return (
                   
                   <Form>
-                    {JSON.stringify(formik.errors)}
                     <Row>
                       <Col md={12}>
                         <CustomTextField
@@ -992,13 +994,13 @@ const facilitiesValidation = yup.object().shape({
                             ref={uploadeFacility}
                             type={"file"}
                             // label={t("apna_mandir_upload_background")}
-                            name="image"
+                            name="imageName"
                             // placeholder={t("apna_mandir_upload_background_here")}
                             onChange={(e) => {
                               handleUpload(e.target.files[0], "facility");
                               // handleUpload(e.target.files[0]).then((e)=>formik.setFieldValue('templeImage',e.target.files[0].name));
                               formik.setFieldValue(
-                                "image",
+                                "imageName",
                                 `${randomNumber}_${e.target.files[0].name}`
                               );
                               formik.setFieldValue(
@@ -1018,7 +1020,7 @@ const facilitiesValidation = yup.object().shape({
                       </Col>
                       <Col xs={12} className={ facilityEditData?.type === "edit" ? "d-block" : "d-none"}>
                         <div className="currentFile">
-                          Current File : {formik.values.image}
+                          Current File : {formik.values.imageName}
                         </div>
                       </Col>
                       <Col xs={12}>

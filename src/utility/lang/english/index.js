@@ -92,7 +92,7 @@ export const englishContent = {
   events_title_required:"Title is required",
   events_desc_required: "Description is required",
   events_select_dropDown:"Select Event",
-  events_select_globle:"Select global event",
+  events_select_globle:"Select Global Event",
   events_EditEvent: "Edit Event",
 
   events_delete:"Delete Event",
@@ -182,7 +182,7 @@ report_expences:"Expenses",
 remarks_financial_donationBox:"Remarks",
 report_commitment:"Commitment",
 report_donation_box:"Donation Box Collections",
-
+finance_report_no_found:"No Financial Report Found.",
 financial_not_found:"No Financial Found",
 
 
@@ -195,6 +195,7 @@ donation_donar_name_only_letters:"Donor Name can only contain character letters.
 donation_delete:"Delete Donation",
 donation_sure:"Are you sure you want to permanently delete the selected donation ? ",
 donation_not_found:"No Donation Found",
+donation_paid_not_found:"No Paid Donations Found",
 donation_not_click_add_donation:'Click on "Add Donation" to add donation on the screen',
 
 // All static content of Donation Box

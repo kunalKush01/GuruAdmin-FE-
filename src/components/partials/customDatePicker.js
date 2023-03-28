@@ -5,14 +5,12 @@ import "react-datepicker/dist/react-datepicker-cssmodules.css";
 import styled from "styled-components";
 
 const CustomDatePickerWraper = styled.div`
-
-
-.react-datepicker__day--outside-month {
+  .react-datepicker__day--outside-month {
     color: #9c9c9c !important;
-                /* color: #DFD3BE !important; */
-                pointer-events: none;
-              }
-            
+    /* color: #DFD3BE !important; */
+    pointer-events: none;
+  }
+
   label {
     color: #583703;
     font: normal normal bold 15px/33px Noto Sans !important;
@@ -22,9 +20,12 @@ const CustomDatePickerWraper = styled.div`
     color: #583703;
     background: #fff7e8 !important;
     border-radius: 10px !important;
-    width: ${props=>props.width??"100%"};
+    font-size: 14px;
+    float: right;
+    height: 320px;
+    width: ${(props) => props.width ?? "80%"};
     .react-datepicker__month-container {
-      width: ${props=>props.width??"100%"};
+      width: ${(props) => props.width ?? "100%"};
       border-radius: 10px !important;
     }
     .react-datepicker__input-time-container {
@@ -47,7 +48,7 @@ const CustomDatePickerWraper = styled.div`
     .react-datepicker__navigation {
       top: 16px;
     }
-    .react-datepicker__month-read-view{
+    .react-datepicker__month-read-view {
       display: flex;
       justify-content: space-between;
     }
@@ -59,7 +60,7 @@ const CustomDatePickerWraper = styled.div`
     }
     .react-datepicker__day-name {
       color: #583703 !important;
-      font: normal normal bold 12px/20px Noto Sans;
+      font: normal normal bold 13px/20px Noto Sans;
     }
     .react-datepicker__day--keyboard-selected,
     .react-datepicker__day--selected {
@@ -69,24 +70,32 @@ const CustomDatePickerWraper = styled.div`
     }
     .react-datepicker__day--keyboard-highlighted,
     .react-datepicker__day--highlighted {
-      
       background: #ff8744 !important;
       border-radius: 5px;
-      color: #fff7e8 !  important;
-      :hover{
-      
-      background: #ff8744 !important;
-      border-radius: 5px !important;
-      color: #fff7e8 !  important;
+      color: #fff7e8 !important;
+      :hover {
+        background: #ff8744 !important;
+        border-radius: 5px !important;
+        color: #fff7e8 !important;
       }
+    }
+    .react-datepicker__week{
+      display: flex;
+      margin: 1.2rem 0rem;
+      justify-content: space-around;
     }
     .react-datepicker__day {
       color: #583703;
-      font: normal normal bold 10px/20px Noto Sans;
+      font: normal normal bold 12px/20px Noto Sans;
       &:hover {
         border-radius: 50%;
       }
     }
+      .react-datepicker__day-names{
+      display: flex;
+      justify-content: space-around;
+    }
+    
     .react-datepicker__month-dropdown {
       border: none !important;
       /* color: #ff8744; */
@@ -164,16 +173,16 @@ const CustomDatePickerWraper = styled.div`
   }
 `;
 
-export default function  CustomDatePicker({ ...props }) {
+export default function CustomDatePicker({ ...props }) {
   return (
     <CustomDatePickerWraper>
-      <DatePicker        
+      <DatePicker
         yearDropdownItemNumber={50}
         showYearDropdown
         showMonthDropdown
         timeFormat="hh:mm aa"
         minDate={new Date()}
-        timeCaption="Time"        
+        timeCaption="Time"
         inline
         {...props}
       />

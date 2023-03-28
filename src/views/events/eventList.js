@@ -54,6 +54,9 @@ const EventWarper = styled.div`
     margin-top: 0.5rem;
     font: normal normal bold 13px/5px noto sans;
   }
+  .noContent{
+    margin-left: 30rem;
+  }
 `;
 
 const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -244,10 +247,12 @@ export default function EventList() {
                       })}
                     </Then>
                     <Else>
+                      <div  className="noContent">
                       <NoContent
                         headingNotfound={t("events_not_found")}
                         para={t("events_not_click_add_events")}
                       />
+                      </div>
                     </Else>
                   </If>
                 </Else>

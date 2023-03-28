@@ -171,7 +171,7 @@ export default function DonationBoxForm({
                   <Trans i18nKey={"Logs"} />
                 </div>
                 <Col lg={9} className='my-lg-2'>
-                <LogListTable data={hundiLogs} />
+                  <LogListTable data={hundiLogs} />
                 </Col>
               </Row>
             )}

@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { Storage } from "@aws-amplify/storage";
 import { Trans } from "react-i18next";
 import { Button } from "reactstrap";
+import { X } from "react-feather";
 const WraperImageField = styled.div`
   .image_text {
     font: normal normal medium 22px/30px Kanit;
@@ -47,11 +48,11 @@ const WraperImageField = styled.div`
     padding: 4px;
     box-sizing: border-box;
   }
-  .mainImageDiv:hover .profileImageBackground{
+  .mainImageDiv:hover .profileImageBackground {
     border-radius: 50%;
     background-color: #000000;
   }
-  .mainImageDiv:hover .hoverImageBackground{
+  .mainImageDiv:hover .hoverImageBackground {
     border-radius: 10px;
     background-color: #000000;
   }
@@ -60,13 +61,13 @@ const WraperImageField = styled.div`
     /* background: rgba(0 , 0 , 0 , 0.5); */
     transition: opacity 1s;
   }
-  .mainImageDiv:hover .editImageText{
+  .mainImageDiv:hover .editImageText {
     display: block;
   }
-  .mainImageDiv:hover .removeImageButton{
+  .mainImageDiv:hover .removeImageButton {
     display: block;
   }
-  
+
   .editImageText {
     display: none;
     width: fit-content;
@@ -155,7 +156,7 @@ const img = {
   display: "block",
   width: "100%",
   height: "100%",
-  borderRadius: "10px",
+  borderRadius:"10px",
 };
 const imgBorderRadius = {
   display: "block",
@@ -172,7 +173,7 @@ const Thumbs = ({
 }) => (
   <div style={thumb} key={file?.name}>
     <div
-    className="hoverImageBackground"
+      className="hoverImageBackground"
       style={profileImage ? thumbInnerBorderRadius : thumbInner}
       // className={profileImage ? "profileBlock" : "thumbBlock"}
     >
@@ -193,20 +194,28 @@ const Thumbs = ({
 
 function ImageUpload(props) {
   const thumbsContainer = {
-    backgroundImage: `url('${props?.bg_plus}')`,
+    backgroundImage: `url('${
+      props.editedFileNameInitialValue === null ||
+      props.editedFileNameInitialValue?.length < 1 ||
+      props?.multiple
+        ? props?.bg_plus
+        : ""
+    }')`,
     backgroundRepeat: "no-repeat",
     backgroundPositionX: "center",
     backgroundPositionY: "center",
   };
   const [files, setFiles] = useState([]);
-
   useEffect(() => {
     if (props.defaultImages?.length > 0) {
       setFiles(props.defaultImages);
     }
   }, [props.defaultImages]);
+  const [indexValue, setIndexValue] = useState({ type: "", idx: "" });
 
   const handleUpload = (acceptedFiles) => {
+    const cloneFiles = [...files];
+
     Storage.put(
       `temp/${props.randomNumber}_${acceptedFiles?.name}`,
       acceptedFiles,
@@ -215,20 +224,25 @@ function ImageUpload(props) {
       }
     )
       .then((res) => {
+       
         props.fileName(acceptedFiles?.name, acceptedFiles?.type);
         // props.filePreview(acceptedFiles)
         if (props.multiple) {
-          setFiles(
-            // acceptedFiles.map((file) =>
-            [
+          if (indexValue.type === "edit") {
+            cloneFiles.splice(indexValue?.idx, 1, {
+              ...acceptedFiles,
+              presignedUrl: URL.createObjectURL(acceptedFiles),
+              name:res?.key.split("temp/")[1]
+            });
+            setFiles(cloneFiles);
+          } else {
+            setFiles([
               ...files,
               Object.assign(acceptedFiles, {
                 preview: URL.createObjectURL(acceptedFiles),
               }),
-            ]
-
-            // )
-          );
+            ]);
+          }
         } else {
           setFiles(
             // acceptedFiles.map((file) =>
@@ -302,15 +316,18 @@ function ImageUpload(props) {
                       removeFile(file);
                     }}
                   >
-                    X
+                    <X color="#ff8744" stroke-width="3"/>
                   </Button>
-                  <div className="editImageText">
+                  {/* <div className="editImageText">
                     <Trans i18nKey={"edit_image"} />
-                  </div>
+                  </div> */}
                   <div
                     style={{ ...thumbStyles }}
                     className="dropImageBx cursor-pointer"
-                    onClick={() => ref.current.click()}
+                    onClick={() => {
+                      setIndexValue({ idx, type: "edit" });
+                      ref.current.click();
+                    }}
                   >
                     <div className="w-100 h-100 profileHoverBackground">
                       {files.length > 0 ? (
@@ -351,18 +368,18 @@ function ImageUpload(props) {
             <div className="position-relative mainImageDiv">
               {files?.length > 0 || props?.editedFileNameInitialValue ? (
                 <>
-                <Button
-                  className="removeImageButton"
-                  onClick={(e) => {
-                    removeFile(files?.name);
-                  }}
-                >
-                  X
-                </Button>
-                <div className="editImageText">
-                <Trans i18nKey={"edit_image"} />
-              </div>
-              </>
+                  <Button
+                    className="removeImageButton"
+                    onClick={(e) => {
+                      removeFile(files?.name);
+                    }}
+                  >
+                    X
+                  </Button>
+                  <div className="editImageText">
+                    <Trans i18nKey={"edit_image"} />
+                  </div>
+                </>
               ) : (
                 ""
               )}
