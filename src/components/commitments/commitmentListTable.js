@@ -170,7 +170,7 @@ export default function CommitmentListTable({
             <div
               className="cursor-pointer payDonation"
               onClick={() =>
-                history.push(`/commitment/pay-donation/${item.id}`, item.id)
+                history.push(`/commitment/pay-donation/${item.id}?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`, item.id)
               }
             >
               <Trans i18nKey={"payment"} />

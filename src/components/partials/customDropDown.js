@@ -136,7 +136,7 @@ export const CustomDropDown = ({
                   key={item.id}
                   name={item.name}
                 >
-                  {ConverFirstLatterToCapital(item.name)}
+                  {ConverFirstLatterToCapital(item?.name ?? "")}
                 </DropdownItem>
               );
             })}

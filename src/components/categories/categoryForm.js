@@ -15,6 +15,7 @@ import { createNews } from "../../api/newsApi";
 import { Plus } from "react-feather";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import { flatMap } from "lodash";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 const FormWaraper = styled.div`
   .FormikWraper {
@@ -111,7 +112,16 @@ export default function CategoryForm({
                       name={CategoryFormName}
                       labelKey={"name"}
                       valueKey="id"
-                      loadOptions={loadOptions}
+                      loadOptions={
+                        loadOptions && 
+                        loadOptions?.map((item)=>
+                        {
+                          return {
+                            ...item,
+                            name: ConverFirstLatterToCapital(item?.name ?? ""),
+                          };
+                        })
+                      }
                       width={"100"}
                       {...props}
                     />

@@ -103,7 +103,7 @@ const handlePayDonation = async (payload) => {
             amount:commitmentDetailQuery?.data?.result?.amount,
         },
         createdBy:commitmentDetailQuery?.data?.result?.createdBy.name,
-        Amount:commitmentDetailQuery?.data?.result?.amount,
+        Amount:(commitmentDetailQuery?.data?.result?.amount - commitmentDetailQuery?.data?.result?.paidAmount),
         DateTime:moment(commitmentDetailQuery?.data?.result?.commitmentEndDate).toDate(),
     };
   }, [commitmentDetailQuery]);
