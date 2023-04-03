@@ -133,14 +133,14 @@ const NavbarUser = (props) => {
               </div>
               <div
                 onClick={() =>
-                  history.push("/edit-profile")
-                  // Swal.fire({
-                  //   icon: "error",
-                  //   title: "Oops...",
-                  //   text: "Edit profile is Under Development!",
-                  //   showConfirmButton: false,
-                  //   showCloseButton: true,
-                  // })
+                  // history.push("/edit-profile")
+                  Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Edit profile is Under Development!",
+                    showConfirmButton: false,
+                    showCloseButton: true,
+                  })
                 }
               >
                 <UserDropdown />

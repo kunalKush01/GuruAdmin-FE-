@@ -11,7 +11,7 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { CustomDropDown } from "../../components/partials/customDropDown";
 import ProfileForm from "../../components/Profile/profileForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-import he from "he"
+import he from "he";
 const ProfileWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -26,22 +26,28 @@ const ProfileWarper = styled.div`
 `;
 
 const schema = yup.object().shape({
-  name: yup.string().required("name_required"),
-  EmailId: yup.string().email("email_invalid").required("email_required"),
-  Contact: yup
+  trustName: yup.string().required("name_required"),
+  trustEmail: yup.string().email("email_invalid").required("email_required"),
+  trustNumber: yup
     .number()
     .typeError("number_type")
     .positive("cant_start_minus")
     .integer("number_in_point")
     .min(8)
     .required("number_required"),
-    about:yup.string().required("trust_about_required"),
-    state: yup.mixed().required("events_state_required"),
-    city: yup.mixed().required("events_city_required"),
-    location: yup.mixed().required("events_location_required"),
-
-  
-    // documents: yup.string().required("doc_required"),
+  about: yup.string().required("trust_about_required"),
+  name: yup.string().required("name_required"),
+  email: yup.string().email("email_invalid").required("email_required"),
+  mobileNumber: yup
+    .number()
+    .typeError("number_type")
+    .positive("cant_start_minus")
+    .integer("number_in_point")
+    .min(8)
+    .required("number_required"),
+  state: yup.mixed().required("events_state_required"),
+  city: yup.mixed().required("events_city_required"),
+  location: yup.mixed().required("events_location_required"),
 });
 
 const getLangId = (langArray, langSelection) => {
@@ -88,18 +94,27 @@ export default function AddProfile() {
     );
     return {
       // Id: trustDetail?.id ?? "",
-      name: profileDetail?.data?.result?.name ?? "",
+      trustName: profileDetail?.data?.result?.trustName ?? "",
       profileImage: profileDetail?.data?.result?.profilePhoto,
       trustType: profileDetail?.data?.result?.trustType ?? "",
-      EmailId: profileDetail?.data?.result?.email ?? "",
-      Contact: profileDetail?.data?.result?.mobileNumber ?? "",
-      about: he.decode(profileDetail?.data?.result?.about ?? "" ) ,
-      city: profileDetail?.data?.result?.state ? { districts: profileDetail?.data?.result?.city } :null,
-      state:profileDetail?.data?.result?.state ? { state: profileDetail?.data?.result?.state} :null ,
-      location:profileDetail?.data?.result?.location? {
-        label: profileDetail?.data?.result?.location,
-        value: { place_id: profileDetail?.data?.result?.place_id },
-      } : null,
+      trustEmail: profileDetail?.data?.result?.trustEmail ?? "",
+      trustNumber: profileDetail?.data?.result?.trustNumber ?? "",
+      about: he.decode(profileDetail?.data?.result?.about ?? ""),
+      name: profileDetail?.data?.result?.name ?? "",
+      email: profileDetail?.data?.result?.email ?? "",
+      mobileNumber: profileDetail?.data?.result?.mobileNumber ?? "",
+      city: profileDetail?.data?.result?.state
+        ? { districts: profileDetail?.data?.result?.city }
+        : null,
+      state: profileDetail?.data?.result?.state
+        ? { state: profileDetail?.data?.result?.state }
+        : null,
+      location: profileDetail?.data?.result?.location
+        ? {
+            label: profileDetail?.data?.result?.location,
+            value: { place_id: profileDetail?.data?.result?.place_id },
+          }
+        : null,
       longitude: profileDetail?.data?.result?.longitude,
       latitude: profileDetail?.data?.result?.latitude,
       trustFacilities: profileDetail?.data?.result?.facilities ?? "",

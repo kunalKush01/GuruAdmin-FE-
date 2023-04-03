@@ -57,7 +57,11 @@ export default function DonationListTable({ data, topdf }, args) {
       selector: (row) => row.category,
       cellExport: (row) => row.category,
     },
-
+    {
+      name: t("categories_sub_category"),
+      selector: (row) => row.subCategory,
+      cellExport: (row) => row.subCategory,
+    },
     {
       name: t("dashboard_Recent_DonorDate"),
       selector: (row) => row.dateTime,
@@ -72,6 +76,11 @@ export default function DonationListTable({ data, topdf }, args) {
       name: t("dashboard_Recent_DonorCommitId"),
       selector: (row) => row.commitmentID,
       cellExport: (row) => row.commitmentID,
+    },
+    {
+      name: t("created_by"),
+      selector: (row) => row.createdBy,
+      cellExport: (row) => row.createdBy,
     },
     {
       name: t("dashboard_Recent_DonorReceipt"),
@@ -99,9 +108,10 @@ export default function DonationListTable({ data, topdf }, args) {
         category: (
           <div>
             {ConverFirstLatterToCapital(item?.masterCategory?.name)}
-            {item?.subCategory && `(${item?.subCategory?.name ?? ""})`}
+            {/* {item?.subCategory && `(${item?.subCategory?.name ?? ""})`} */}
           </div>
         ),
+        subCategory:ConverFirstLatterToCapital (item?.category?.name ?? "-"),
         dateTime: moment(item.createdAt ?? item?.updatedAt).format(
           " DD MMM YYYY,hh:mm A"
         ),
@@ -111,6 +121,7 @@ export default function DonationListTable({ data, topdf }, args) {
             ? `0${item.commitmentId}`
             : `${item.commitmentId}`
           : "_",
+        createdBy:ConverFirstLatterToCapital(item?.createdBy?.name ?? ""),
         receipt: (
           <img
             src={receiptIcon}

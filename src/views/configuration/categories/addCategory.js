@@ -78,7 +78,6 @@ export default function AddCategory() {
 
       {!masterloadOptionQuery.isLoading && !masterloadOptionQuery.isFetching  ? (
         <div className="ms-3 mt-1">
-
           <CategoryForm
             loadOptions={masterloadOptionQuery?.data?.results}
             placeholder={masterloadOptionQuery?.data?.results[0]?.name ?? "All"}

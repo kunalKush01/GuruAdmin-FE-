@@ -2,6 +2,7 @@ import { Form } from "formik";
 import React, { useEffect, useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 import { useUpdateEffect } from "react-use";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import { getAllSubCategories } from "../../api/expenseApi";
@@ -19,16 +20,21 @@ export default function FormWithoutFormikForDonation({
   formik,
   masterloadOptionQuery,
   buttonName,
+  paidDonation,
   loading,
   ...props
 }) {
   const { t } = useTranslation();
+  const history = useHistory();
 
   const { SelectedMasterCategory, SelectedSubCategory, Amount } = formik.values;
   const [subLoadOption, setsubLoadOption] = useState([]);
   const { SelectedUser, SelectedCommitmentId } = formik.values;
   const [commitmentIdByUser, setCommitmentIdByUser] = useState([]);
+  const [noUserFound, setNoUserFound] = useState(false);
 
+  console.log("noUserFound", noUserFound);
+  console.log(formik?.values?.Mobile?.toString().length);
   const loadOption = async (name) => {
     const res = await findAllUsersByName({ name: name });
     return res.results;
@@ -46,7 +52,7 @@ export default function FormWithoutFormikForDonation({
   useEffect(() => {
     const res = async () => {
       const apiRes = await findAllComitmentByUser({
-        userId: SelectedUser?.userId,
+        userId: paidDonation ?? SelectedUser?.userId,
       });
 
       setCommitmentIdByUser(apiRes?.results);
@@ -62,9 +68,13 @@ export default function FormWithoutFormikForDonation({
         });
         if (res.result) {
           formik.setFieldValue("SelectedUser", res.result);
+        } else {
+          setNoUserFound(true);
         }
       };
       results();
+    } else {
+      setNoUserFound(false);
     }
   }, [formik?.values?.Mobile]);
 
@@ -101,6 +111,13 @@ export default function FormWithoutFormikForDonation({
     }
   }, [SelectedCommitmentId?.id]);
 
+
+  const searchParams = new URLSearchParams(history.location.search);
+  const currentPage = searchParams.get('page')
+  const currentCategory = searchParams.get("category");
+  const currentSubCategory = searchParams.get("subCategory");
+  const currentFilter = searchParams.get('filter')
+
   return (
     <Form>
       <Row>
@@ -129,6 +146,18 @@ export default function FormWithoutFormikForDonation({
                 defaultOptions
                 disabled={loadOption.length == 0}
               />
+              {noUserFound && (
+                <div className="addUser">
+                  {" "}
+                  <Trans i18nKey={"add_user_donation"} />{" "}
+                  <span
+                    className="cursor-pointer"
+                    onClick={() => history.push(`/Add-user?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}`)}
+                  >
+                    <Trans i18nKey={"add_user"} />
+                  </span>
+                </div>
+              )}
             </Col>
             <Col xs={4} className=" pb-1">
               <CustomTextField
@@ -189,7 +218,7 @@ export default function FormWithoutFormikForDonation({
                     loadOptions={commitmentIdByUser}
                     placeholder={t("commitment_select_commitment_id")}
                     name={"SelectedCommitmentId"}
-                    disabled={commitmentIdByUser.length == 0}
+                    disabled={commitmentIdByUser?.length == 0}
                     valueKey={"id"}
                     getOptionLabel={(option) =>
                       `${option.commitmentId}   (₹${option.paidAmount}/${option.amount})`

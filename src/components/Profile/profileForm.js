@@ -29,7 +29,6 @@ import sha256 from "sha256";
 import md5 from "md5";
 import RichTextField from "../partials/richTextEditorField";
 
-
 const ProfileFormWaraper = styled.div`
   .existlabel {
     margin-bottom: 10px;
@@ -215,12 +214,12 @@ const ProfileFormWaraper = styled.div`
     right: 0px;
     top: -15px;
   }
-  .currentFile{
+  .currentFile {
     color: #583703;
     word-break: break-word;
-    margin-top: .5rem;
+    margin-top: 0.5rem;
   }
-  .css-1hwfws3{
+  .css-1hwfws3 {
     height: 40px;
   }
 `;
@@ -247,7 +246,7 @@ export default function ProfileForm({
   const mutation = useMutation({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
-      console.log("data debug",data);
+      console.log("data debug", data);
       if (!data.error) {
         setLoading(false);
       } else if (data?.error) {
@@ -286,15 +285,15 @@ export default function ProfileForm({
     if (initialValues?.documents?.length > 0) {
       setFiles(initialValues?.documents);
     }
-  },[initialValues]);
+  }, [initialValues]);
   const [facilitiesFiles, setFacilitiesFiles] = useState([]);
   const [facilityFormData, setFacilityFormData] = useState([]);
-console.log("facilityFormData",facilityFormData);
+  console.log("facilityFormData", facilityFormData);
   useEffect(() => {
     if (initialValues?.trustFacilities?.length > 0) {
       setFacilityFormData(initialValues?.trustFacilities);
     }
-  },[initialValues]);
+  }, [initialValues]);
   const [deletedFacility, setDeletedFacility] = useState([]);
   const removeFacility = (file, formik) => {
     setDeletedFacility((prev) => [...prev, file]);
@@ -351,7 +350,7 @@ console.log("facilityFormData",facilityFormData);
   const toggle = () => setModal(!modal);
 
   const [facilityEditData, setFacilityEditData] = useState(null);
-// facilities initial values 
+  // facilities initial values
   const facilityIntialValues = useMemo(() => {
     return {
       id: facilityEditData?.data?.id ?? "",
@@ -372,13 +371,13 @@ console.log("facilityFormData",facilityFormData);
 
   // facilities validation
 
-const facilitiesValidation = yup.object().shape({
-  name: yup.string().required("name_required"),
-  // image: yup.string().required("email_required"),
-  description:yup.string().required("news_desc_required"),
-  startTime: yup.string().required("start_time_required"),
-  endTime: yup.string().required("end_time_required")
-});
+  const facilitiesValidation = yup.object().shape({
+    name: yup.string().required("name_required"),
+    // image: yup.string().required("email_required"),
+    description: yup.string().required("news_desc_required"),
+    startTime: yup.string().required("start_time_required"),
+    endTime: yup.string().required("end_time_required"),
+  });
 
   return (
     <ProfileFormWaraper className="FormikWraper">
@@ -389,11 +388,14 @@ const facilitiesValidation = yup.object().shape({
           setLoading(true);
           mutation.mutate({
             profilePhoto: editProfile ? profileImageName : e?.profileImage,
-            name: e?.name,
+            trustName: e?.trustName,
             typeId: e?.trustType?.id,
-            email: e?.EmailId,
-            mobileNumber: e?.Contact,
+            trustEmail: e?.trustEmail,
+            trustNumber: e?.trustNumber,
             about: e?.about,
+            name:e?.name,
+            email:e?.email,
+            mobileNumber:e?.mobileNumber,
             state: e?.state?.state,
             city: e?.city?.districts,
             place_id: e?.location.value.place_id,
@@ -406,9 +408,9 @@ const facilitiesValidation = yup.object().shape({
             removedImages: deletedImages,
             removedDocuments: deletedDocuments,
             documents: e?.documents,
-            oldPassword:e?.oldPassword,
-            newPassword:e?.newPassword,
-            confirmPassword:e?.confirmPassword,
+            oldPassword: e?.oldPassword,
+            newPassword: e?.newPassword,
+            confirmPassword: e?.confirmPassword,
           });
         }}
         validationSchema={vailidationSchema}
@@ -456,7 +458,7 @@ const facilitiesValidation = yup.object().shape({
                     <Col xs={12} md={6} lg={4} className="">
                       <CustomTextField
                         label={t("userProfile_name")}
-                        name="name"
+                        name="trustName"
                         autoFocus
                       />
                     </Col>
@@ -476,13 +478,13 @@ const facilitiesValidation = yup.object().shape({
                     <Col xs={12} md={6} lg={4} className="">
                       <CustomTextField
                         label={t("userProfile_email_id")}
-                        name="EmailId"
+                        name="trustEmail"
                       />
                     </Col>
                     <Col xs={12} md={6} lg={4} className="">
                       <CustomTextField
                         label={t("userProfile_phone_number")}
-                        name="Contact"
+                        name="trustNumber"
                       />
                     </Col>
                   </Row>
@@ -499,15 +501,50 @@ const facilitiesValidation = yup.object().shape({
                   />
                 </Col> */}
                 <Col xs={12}>
-                    <RichTextField
-                      height="100px"
-                      label={t("about_trusts")}
-                      name="about"
-                    />
-                  </Col>
+                  <RichTextField
+                    height="100px"
+                    label={t("about_trusts")}
+                    name="about"
+                  />
+                </Col>
               </Row>
             </Row>
             {/* About Trust Container */}
+            {/* About user Container */}
+            <Row className="mt-1">
+              <Col xs={12}>
+                <div className="heading_div existlabel">
+                  ABOUT TRUST USER
+                  <hr />
+                </div>
+              </Col>
+              <Row className="">
+                <Col xs={12} className="">
+                  <Row>
+                    <Col xs={12} md={6} lg={4} className="">
+                      <CustomTextField
+                        label={t("userProfile_name")}
+                        name="name"
+                        autoFocus
+                      />
+                    </Col>
+                    <Col xs={12} md={6} lg={4} className="">
+                      <CustomTextField
+                        label={t("userProfile_email_id")}
+                        name="email"
+                      />
+                    </Col>
+                    <Col xs={12} md={6} lg={4} className="">
+                      <CustomTextField
+                        label={t("userProfile_phone_number")}
+                        name="mobileNumber"
+                      />
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            </Row>
+            {/* About user Container */}
             {/* Trust Location Container  */}
             <Row className="mt-1">
               <Col xs={12}>
@@ -604,10 +641,11 @@ const facilitiesValidation = yup.object().shape({
                       },
                     }}
                   />
-                  {formik.errors.location && formik.touched.location ? (<div
-                    style={{fontSize:"11px" , color:"red"}}
-                  >
-                    <Trans i18nKey={formik.errors.location}/></div>) : null}
+                  {formik.errors.location && formik.touched.location ? (
+                    <div style={{ fontSize: "11px", color: "red" }}>
+                      <Trans i18nKey={formik.errors.location} />
+                    </div>
+                  ) : null}
                 </Col>
                 <Col sm={4}>
                   <CustomTextField
@@ -811,7 +849,7 @@ const facilitiesValidation = yup.object().shape({
                       </Row>
                     </Col>
                   </Row>
-                  <Row className=" row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5  gap-1 mt-2 text-break" >
+                  <Row className=" row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5  gap-1 mt-2 text-break">
                     {[...formik.values.documents]?.map((item, idx) => (
                       <Col
                         className="pdfDiv position-relative cursor-pointer"
@@ -963,7 +1001,6 @@ const facilitiesValidation = yup.object().shape({
           <ProfileFormWaraper>
             <Formik
               initialValues={facilityIntialValues}
-             
               onSubmit={(values) => {
                 if (facilityEditData?.type === "edit") {
                   facilityFormData.splice(facilityEditData?.index, 1, values);
@@ -977,7 +1014,6 @@ const facilitiesValidation = yup.object().shape({
             >
               {(formik) => {
                 return (
-                  
                   <Form>
                     <Row>
                       <Col md={12}>
@@ -1018,7 +1054,14 @@ const facilitiesValidation = yup.object().shape({
                           </Button>
                         </div>
                       </Col>
-                      <Col xs={12} className={ facilityEditData?.type === "edit" ? "d-block" : "d-none"}>
+                      <Col
+                        xs={12}
+                        className={
+                          facilityEditData?.type === "edit"
+                            ? "d-block"
+                            : "d-none"
+                        }
+                      >
                         <div className="currentFile">
                           Current File : {formik.values.imageName}
                         </div>

@@ -131,14 +131,14 @@ const ReportList = () => {
               </SkeletonTheme>
             </Then>
             <Else>
-              <If condition={reportDisputeQuery.length != 0} disableMemo>
+              <If condition={reportUser.length != 0} disableMemo>
                 <Then>
                   <ReportTable  data={reportUser} />
                 </Then>
                 <Else>
                   <NoContent
-                      headingNotfound={t("notifications_not_found")}
-                      para={t("notifications_not_click_add")}
+                      headingNotfound={t("reports_not_found")}
+                      // para={t("notifications_not_click_add")}
                   />
                 </Else>
               </If>

@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import moment from "moment/moment";
 import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Swal from "sweetalert2";
@@ -63,6 +63,11 @@ export default function CommitmentListTable({
       width: "150px",
     },
     {
+      name: t("categories_sub_category"),
+      selector: (row) => row.subCategory,
+      width: "150px",
+    },
+    {
       name: t("commitment_end_Date"),
       selector: (row) => row.endDate,
       width: "150px",
@@ -93,6 +98,11 @@ export default function CommitmentListTable({
       width: "150px",
     },
     {
+      name: t("pay_donation"),
+      selector: (row) => row.payDonation,
+      width: "150px",
+    },
+    {
       name: t(""),
       selector: (row) => row.edit,
       width: "100px",
@@ -108,14 +118,7 @@ export default function CommitmentListTable({
       return {
         id: idx + 1,
         username: (
-          <div className="d-flex align-items-center cursor-pointer"
-          onClick={() => {
-            financeReport? "" :history.push(
-              `/donations/paid/${item.id}?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`
-            );
-            
-          }}
-          >
+          <div className="d-flex align-items-center ">
             <img
               src={avtarIcon}
               style={{ marginRight: "5px", width: "25px" }}
@@ -130,9 +133,10 @@ export default function CommitmentListTable({
         category: (
           <div>
             {ConverFirstLatterToCapital(item?.masterCategory?.name)}{" "}
-            {item?.category && `(${item?.category?.name})`}
+            {/* {item?.category && `(${item?.category?.name})`} */}
           </div>
         ),
+        subCategory: ConverFirstLatterToCapital(item?.category?.name ?? "-"),
         endDate: moment(item?.commitmentEndDate).format("DD MMM YYYY"),
         status: (
           <div
@@ -146,18 +150,47 @@ export default function CommitmentListTable({
         ),
         amount: <div>₹&nbsp;{item?.amount}</div>,
         amountDue: <div>₹&nbsp; {item?.amount - item.paidAmount}</div>,
-        commitmentId: item?.commitmentId,
+        commitmentId: (
+          <div
+            className="cursor-pointer"
+            onClick={() => {
+              financeReport
+                ? ""
+                : history.push(
+                    `/donations/paid/${item.id}?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`
+                  );
+            }}
+          >
+            {item?.commitmentId}
+          </div>
+        ),
         createdBy: ConverFirstLatterToCapital(item?.createdBy.name),
+        payDonation:
+          item?.paidStatus !== "completed" ? (
+            <div
+              className="cursor-pointer payDonation"
+              onClick={() =>
+                history.push(`/commitment/pay-donation/${item.id}`, item.id)
+              }
+            >
+              <Trans i18nKey={"payment"} />
+            </div>
+          ) : (
+            "-"
+          ),
         edit: (
           <img
             src={editIcon}
             width={35}
-            className={financeReport?"cursor-disabled opacity-50" : "cursor-pointer "}
+            className={
+              financeReport ? "cursor-disabled opacity-50" : "cursor-pointer "
+            }
             onClick={() => {
-              financeReport? "" :history.push(
-                `/commitment/edit/${item.id}?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`
-              );
-              
+              financeReport
+                ? ""
+                : history.push(
+                    `/commitment/edit/${item.id}?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`
+                  );
             }}
           />
         ),
@@ -165,32 +198,36 @@ export default function CommitmentListTable({
           <img
             src={deleteIcon}
             width={35}
-            className={financeReport?"cursor-disabled opacity-50" : "cursor-pointer "}
+            className={
+              financeReport ? "cursor-disabled opacity-50" : "cursor-pointer "
+            }
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
               // Swal.fire("Oops...", "Something went wrong!", "error");
-              financeReport?"":Swal.fire({
-                title: `<img src="${comfromationIcon}"/>`,
-                html: `
+              financeReport
+                ? ""
+                : Swal.fire({
+                    title: `<img src="${comfromationIcon}"/>`,
+                    html: `
                                           <h3 class="swal-heading mt-1">${t(
                                             "commitment_delete"
                                           )}</h3>
                                           <p>${t("commitment_sure")}</p>
                                           `,
-                showCloseButton: false,
-                showCancelButton: true,
-                focusConfirm: true,
-                cancelButtonText: ` ${t("cancel")}`,
-                cancelButtonAriaLabel: ` ${t("cancel")}`,
+                    showCloseButton: false,
+                    showCancelButton: true,
+                    focusConfirm: true,
+                    cancelButtonText: ` ${t("cancel")}`,
+                    cancelButtonAriaLabel: ` ${t("cancel")}`,
 
-                confirmButtonText: ` ${t("confirm")}`,
-                confirmButtonAriaLabel: "Confirm",
-              }).then(async (result) => {
-                if (result.isConfirmed) {
-                  deleteMutation.mutate(item.id);
-                }
-              });
+                    confirmButtonText: ` ${t("confirm")}`,
+                    confirmButtonAriaLabel: "Confirm",
+                  }).then(async (result) => {
+                    if (result.isConfirmed) {
+                      deleteMutation.mutate(item.id);
+                    }
+                  });
             }}
           />
         ),
@@ -198,10 +235,13 @@ export default function CommitmentListTable({
     });
   }, [data]);
 
-
   const RecentDonationTableWarper = styled.div`
     color: #583703 !important;
     font: normal normal bold 15px/23px Noto Sans;
+    .payDonation {
+      font: normal normal bold 15px/33px Noto Sans;
+      color: #ff8744;
+    }
   `;
 
   return (

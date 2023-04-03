@@ -43,21 +43,33 @@ export default function SubscribedUserForm({
   vailidationSchema,
   initialValues,
   showTimeInput,
+  addDonationUser,
   buttonName = "",
   ...props
 }) {
   const history = useHistory();
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
+
+
+  const searchParams = new URLSearchParams(history.location.search);
+  const currentPage = searchParams.get('page')
+  const currentCategory = searchParams.get("category");
+  const currentSubCategory = searchParams.get("subCategory");
+  const currentFilter = searchParams.get('filter')
   const categoryQuerClient = useQueryClient();
 
   const categoryMutation = useMutation({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
       if (!data.error) {
-        categoryQuerClient.invalidateQueries(["subscribedUser"]);
+        addDonationUser
+          ? categoryQuerClient.invalidateQueries(["donations"])
+          : categoryQuerClient.invalidateQueries(["subscribedUser"]);
         setLoading(false);
-        history.push("/subscribed-user");
+        addDonationUser
+          ? history.push(`/donation/add?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}`)
+          : history.push("/subscribed-user");
       } else if (data?.error) {
         setLoading(false);
       }
@@ -72,7 +84,7 @@ export default function SubscribedUserForm({
           setLoading(true);
           categoryMutation.mutate({
             email: e.email,
-            mobileNumber: e.mobile,
+            mobileNumber: e.mobile.toString(),
             name: e.name,
           });
         }}

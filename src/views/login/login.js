@@ -12,6 +12,7 @@ import {
   Button,
   InputGroup,
   InputGroupText,
+  Spinner,
 } from "reactstrap";
 import "@styles/react/pages/page-authentication.scss";
 import { Formik, Form, ErrorMessage } from "formik";
@@ -24,6 +25,9 @@ import { useEffect, useState } from "react";
 import { login } from "../../redux/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { formatIsoTimeString } from "@fullcalendar/core";
+import { forgotPassword } from "../../api/forgotPassword";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 const LoginCover = () => {
   const { isLogged } = useSelector((state) => state.auth);
   const history = useHistory();
@@ -33,6 +37,22 @@ const LoginCover = () => {
   const handleLoginSubmit = (data) => {
     dispatch(login(data));
   };
+
+  const handleForgetPassword = (values) => {
+    return forgotPassword(values);
+  };
+
+  const forgetPasswordQueryClient = useQueryClient();
+  const resetPasswordMutation = useMutation({
+    mutationFn:handleForgetPassword,
+    onSuccess:(data)=> {
+      if(!data.error){
+        setLoading(false);
+      }else if (data.error) {
+        setLoading(false);
+      }
+    }
+  })
   const loginSchema = yup.object().shape({
     email: yup
       .string()
@@ -100,6 +120,9 @@ const LoginCover = () => {
       color: #583703;
       font: normal normal bold 30px/44px noto sans;
     }
+    .brand-logo {
+      width: fit-content;
+    }
   `;
 
   useEffect(() => {
@@ -110,7 +133,7 @@ const LoginCover = () => {
 
   const illustration = skin === "dark" ? "login-v2-dark.svg" : "login-v2.png",
     source = require(`@src/assets/images/pages/${illustration}`).default;
-
+  const [loading, setLoading] = useState(false)
   return (
     <LoginWarraper className="auth-wrapper auth-cover ">
       <Row className="auth-inner m-0 defaultFontColor">
@@ -239,9 +262,11 @@ const LoginCover = () => {
                   Don't Have an account ?{" "}
                 </span>
 
-                <span className="text-primary signUp cursor-pointer"
-                >
-                  <a href="https://am-website-dev.paridhan.app/#home">Sign Up</a></span>
+                <span className="text-primary signUp cursor-pointer">
+                  <a href="https://am-website-dev.paridhan.app/#home">
+                    Sign Up
+                  </a>
+                </span>
               </p>
               {/* <div className="divider my-2">
               <div className="divider-text">or</div>
@@ -277,18 +302,21 @@ const LoginCover = () => {
                 initialValues={{
                   email: "",
                 }}
+                onSubmit={(e) => {
+                  setLoading(true);
+                  return resetPasswordMutation.mutate({
+                    email:e?.email
+                  })
+                }}
                 validationSchema={forgetPasswordSchema}
-                // onSubmit={handleSubmit}
               >
                 {(formik) => (
-                  <Form
-                    className="auth-login-form mt-2"
-                    // onSubmit={(e) => e.preventDefault()}
-                  >
+                  <Form className="auth-login-form mt-2">
                     <div className="mb-1">
                       {/* <Label className="form-label" for="login-email">
                   Email
                 </Label> */}
+
                       <InputGroup className="input-group-merge ">
                         <InputGroupText className="border-top-0  p-0 border-end-0 border-start-0 ">
                           <img className="signInIcons" src={emailInputIcon} />
@@ -315,9 +343,19 @@ const LoginCover = () => {
                 </Label>
               </div> */}
                     <div className="d-flex w-100 justify-content-center py-4 ">
-                      <Button type="submit" color="primary" className="px-5">
-                        Next
-                      </Button>
+                      {loading ? (
+                        <Button type="submit" color="primary" className=""
+                        style={{
+                          padding:".5rem 4rem"
+                        }}
+                        >
+                          <Spinner style={{height:"2rem", width:"2rem"}} />
+                        </Button>
+                      ) : (
+                        <Button type="submit" color="primary" className="px-5">
+                          Next
+                        </Button>
+                      )}
                     </div>
                   </Form>
                 )}

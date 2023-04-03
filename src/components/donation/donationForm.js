@@ -47,6 +47,13 @@ const FormWaraper = styled.div`
       color: #fff !important;
     }
   }
+  .addUser{
+    font-size: 13px;
+  }
+  .addUser >span{
+    text-decoration: underline;
+    color: #ff8744;
+  }
 `;
 
 export default function DonationForm({
@@ -71,7 +78,6 @@ const [loading, setLoading] = useState(false)
   const donationMutation = useMutation({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
-      
       if (!data.error) {
         donationQuerClient.invalidateQueries(["donations"]);
         setLoading(false)
@@ -81,7 +87,6 @@ const [loading, setLoading] = useState(false)
       }
     },
   });
-
   return (
     <FormWaraper className="FormikWraper">
       {!masterloadOptionQuery.isLoading && (
@@ -104,10 +109,12 @@ const [loading, setLoading] = useState(false)
           validationSchema={vailidationSchema}
         >
           {(formik) => (
+            
             <FormWithoutFormikForDonation
               formik={formik}
               masterloadOptionQuery={masterloadOptionQuery}
               loading={loading}
+              paidDonation={initialValues?.SelectedUser?.id}
               plusIconDisable
               buttonName={buttonName}
             />

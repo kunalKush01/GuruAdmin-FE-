@@ -22,10 +22,12 @@ export const ConvertToString = (html)  => {
         username:ConverFirstLatterToCapital(item?.user?.name??""),
         mobileNumber: item?.user?.mobileNumber,
         donarName:ConverFirstLatterToCapital (item?.donarName??item.user?.name),
-        category:`${ConverFirstLatterToCapital(item?.masterCategory?.name)}${item?.subCategory?`(${item?.subCategory?.name})`:""}`,
+        category:`${ConverFirstLatterToCapital(item?.masterCategory?.name)}`,
+        subCategory:`${item?.category?.name ?? "-"}`,
         dateTime: moment(item.createdAt ?? item?.updatedAt).format(" DD MMM YYYY,hh:mm"),
         amount:`₹ ${item?.amount}`,
         commitmentID:item.commitmentId?item.commitmentId<10?`0${item.commitmentId}`:`${item.commitmentId}`:"_",
+        createdBy:ConverFirstLatterToCapital (item?.createdBy?.name),
     })) 
   } 
 
@@ -34,7 +36,8 @@ export const ConvertToString = (html)  => {
       username:ConverFirstLatterToCapital(item?.user?.name??""),
       mobileNumber: item?.user?.mobileNumber,
       donarName: ConverFirstLatterToCapital(item?.donarName ?? item.user?.name),
-      category:`${ConverFirstLatterToCapital(item?.masterCategory?.name)}${item?.subCategory?`(${item?.subCategory?.name})`:""}`,
+      category:`${ConverFirstLatterToCapital(item?.masterCategory?.name)}`,
+      subCategory:`${item?.category?.name ?? "-"}`,
       endDate: moment(item?.commitmentEndDate).format("DD MMM YYYY"),
       status: ConverFirstLatterToCapital(item?.paidStatus),
       amount:`₹ ${item?.amount}`,

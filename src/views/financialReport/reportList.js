@@ -312,7 +312,7 @@ export default function FinancialReport() {
                 initialValues={{
                   DateTime: {
                     start: new Date(moment().startOf("year")),
-                    end: new Date(),
+                    end: null,
                   },
                 }}
               >

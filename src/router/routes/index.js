@@ -60,6 +60,11 @@ const Routes = [
     component:lazy(()=> import("../../views/subscribedUser/addSubscribedUser"))
   },
   {
+    path:"/Add-user",
+    component:lazy(()=> import("../../views/subscribedUser/addUser"))
+  },
+  
+  {
     path: '/news',
     component: lazy(() => import('../../views/news/newsList')),
     exact:true
@@ -194,6 +199,11 @@ const Routes = [
   {
     path: '/commitment',
     component: lazy(() => import('../../views/commitments/commitmentList.js')),
+    exact:true
+  },
+  {
+    path: '/commitment/pay-donation/:commitmentId',
+    component: lazy(() => import('../../views/donation/payDonation')),
     exact:true
   },
   {
