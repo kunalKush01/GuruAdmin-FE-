@@ -11,6 +11,7 @@ import * as yup from "yup";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { getPunyarjakDetails, updatePunyarjak } from "../../api/punarjakApi";
 import PunyarjakForm from "../../components/Punyarjak/punyarjakUserForm";
+import he from 'he'
 const PunyarjakWarapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -67,7 +68,7 @@ export default function EditSubAdmin() {
     return {
       id: punyarjakDetailQuery?.data?.result?.id,
       name: punyarjakDetailQuery?.data?.result?.name,
-      description: punyarjakDetailQuery?.data?.result?.description,
+      description:he.decode(punyarjakDetailQuery?.data?.result?.description ?? ""),
       file: punyarjakDetailQuery?.data?.result?.profilePhoto,
     };
   }, [punyarjakDetailQuery]);
