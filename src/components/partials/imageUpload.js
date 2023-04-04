@@ -374,7 +374,7 @@ function ImageUpload(props) {
                       removeFile(files?.name);
                     }}
                   >
-                    X
+                    <X color="#ff8744" stroke-width="3"/>
                   </Button>
                   <div className="editImageText">
                     <Trans i18nKey={"edit_image"} />

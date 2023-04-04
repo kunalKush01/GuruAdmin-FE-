@@ -11,13 +11,15 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
+import { getAllSubscribedUser } from "../../api/subscribedUser";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
-
-import { getAllBoxCollection } from "../../api/donationBoxCollectionApi";
-import BoxListCard from "../../components/DonationBox/BoxListCard.js";
 import NoContent from "../../components/partials/noContent";
-const NewsWarper = styled.div`
+import SubscribedUSerListTable from "../../components/subscribedUser/subscribedUserListTable";
+import { getAllPunyarjak } from "../../api/punarjakApi";
+import PunyarjakTable from "../../components/Punyarjak/punyarjakUserListTable";
+
+const PunyarjakWarapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
@@ -37,7 +39,7 @@ const NewsWarper = styled.div`
   }
   .addNews-btn {
     padding: 8px 20px;
-    /* margin-left: 10px; */
+    margin-left: 10px;
     font: normal normal bold 15px/20px noto sans;
   }
   .newsContent {
@@ -48,19 +50,14 @@ const NewsWarper = styled.div`
   }
   .filterPeriod {
     color: #ff8744;
-    margin-top: 0.5rem;
+    margin-top:.5rem;
     font: normal normal bold 13px/5px noto sans;
-  }
-  .total_collection {
-    border: 1px solid #ff8744;
-    color: #ff8744;
-    font: normal normal bold 15px/20px noto sans;
-    padding: 0.5rem 2rem;
-    border-radius: 5px;
   }
 `;
 
-export default function Expenses() {
+
+
+export default function Punyarjak () {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const periodDropDown = () => {
@@ -81,17 +78,14 @@ export default function Expenses() {
 
   const [pagination, setPagination] = useState({
     page: 1,
-    limit: 12,
+    limit: 10,
   });
 
   const searchParams = new URLSearchParams(history.location.search);
 
   const currentPage = searchParams.get("page");
-  const currentFilter = searchParams.get("filter");
-
+  const currentFilter = searchParams.get("page");
   const routPagination = pagination.page;
-  const routFilter = dropDownName;
-
   useEffect(() => {
     if (currentPage || currentFilter) {
       setdropDownName(currentFilter);
@@ -112,96 +106,78 @@ export default function Expenses() {
 
   let startDate = moment(filterStartDate).format("DD MMM");
   let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
-  const searchBarValue = useSelector((state) => state.search.LocalSearch);
+  const searchBarValue = useSelector((state) => state.search.LocalSearch  );
 
-  const boxCollectionQuery = useQuery(
-    [
-      "Collections",
-      pagination.page,
-      selectedLang.id,
-      filterStartDate,
-      filterEndDate,
-      searchBarValue,
-    ],
+  const punyarjakUsersQuery = useQuery(
+    ["punyarjak", pagination.page, selectedLang.id,filterEndDate,filterStartDate,searchBarValue],
     () =>
-      getAllBoxCollection({
+      getAllPunyarjak({
         ...pagination,
         startDate: filterStartDate,
         endDate: filterEndDate,
         languageId: selectedLang.id,
-        search: searchBarValue,
+        search:searchBarValue
+        
       }),
     {
       keepPreviousData: true,
     }
   );
 
-  const collectionItems = useMemo(
-    () => boxCollectionQuery?.data?.results ?? [],
-    [boxCollectionQuery]
+  const punyarjakUsers = useMemo(
+    () => punyarjakUsersQuery?.data?.results ?? [],
+    [punyarjakUsersQuery]
   );
 
+  
+
   return (
-    <NewsWarper>
+    <PunyarjakWarapper>
       <div className="window nav statusBar body "></div>
 
       <div>
-        <div className="d-lg-flex justify-content-between align-items-center ">
-          <div className="d-flex align-items-center my-3 my-sm-2 my-md-0 mb-md-2">
+      <div className="d-flex justify-content-between align-items-center ">
+          <div className="d-flex justify-content-between align-items-center ">
             <img
               src={arrowLeft}
-              className="me-2  cursor-pointer align-self-end"
+              className="me-2 cursor-pointer align-self-center"
               onClick={() => history.push("/")}
             />
-            <div className="addNews d-flex">
+            <div className="addNews">
               <div className="">
                 <div>
-                  <Trans i18nKey={"DonationBox_DonationBox"} />
+                  <Trans i18nKey={"punyarjak"} />
                 </div>
-                <div className="filterPeriod">
+                {/* <div className="filterPeriod">
                   <span>
                     {startDate} - {endDate}
                   </span>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
-          <div className="addNews  d-flex flex-wrap gap-2 gap-md-0">
-            <div className="total_collection me-2 d-flex justify-content-center align-items-center ">
-              <Trans i18nKey={"DonationBox_total_collection"} />
-              &nbsp;
-              <div>₹</div>&nbsp;
-              <div>{boxCollectionQuery?.data?.totalAmount ?? 0}</div>
-            </div>
-            <ChangePeriodDropDown
-              className={"me-2"}
+          <div className="addNews">
+          {/* <ChangePeriodDropDown
+              className={"me-1"}
               dropDownName={dropDownName}
-              setdropDownName={(e) => {
-                setdropDownName(e.target.name);
-                setPagination({ page: 1 });
-                history.push(`/Hundi?page=${1}&filter=${e.target.name}`);
-              }}
-            />
+              setdropDownName={(e) => setdropDownName(e.target.name)}
+            /> */}
             <Button
               color="primary"
-              className="addNews-btn "
-              onClick={() =>
-                history.push(
-                  `/Hundi/add?page=${pagination.page}&filter=${dropDownName}`
-                )
-              }
+              className="addNews-btn"
+              onClick={() => history.push(`/punyarjak/add?page=${pagination.page}`)}
             >
               <span>
                 <Plus className="" size={15} strokeWidth={4} />
               </span>
               <span>
-                <Trans i18nKey={"DonationBox_AddCollectionBox"} />
+                <Trans i18nKey={"add_punyarjak"} />
               </span>
             </Button>
           </div>
         </div>
         <div style={{ height: "10px" }}>
-          <If condition={boxCollectionQuery.isFetching}>
+          <If condition={punyarjakUsersQuery.isFetching}>
             <Then>
               <Skeleton
                 baseColor="#ff8744"
@@ -213,7 +189,7 @@ export default function Expenses() {
         </div>
         <div className="newsContent  ">
           <Row>
-            <If condition={boxCollectionQuery.isLoading} disableMemo>
+            <If condition={punyarjakUsersQuery.isLoading} disableMemo>
               <Then>
                 <SkeletonTheme
                   baseColor="#FFF7E8"
@@ -226,48 +202,29 @@ export default function Expenses() {
                 </SkeletonTheme>
               </Then>
               <Else>
-                <If condition={collectionItems.length != 0} disableMemo>
+                <If condition={punyarjakUsers.length != 0} disableMemo>
                   <Then>
-                    <Row className="pe-0">
-                      {collectionItems.map((item,idx) => {
-                        return (
-                          <Col xs={3} key={idx}>
-                            <BoxListCard
-                              key={item.id}
-                              data={item}
-                              currentFilter={routFilter}
-                              currentPage={routPagination}
-                            />
-                          </Col>
-                        );
-                      })}
-                    </Row>
+                    <PunyarjakTable data={punyarjakUsers}  currentPage={routPagination} />
                   </Then>
                   <Else>
-                    <NoContent
-                      headingNotfound={t("donation_box_not_found")}
-                      para={t("donation_box_not_click_add_donation_box")}
+                    <NoContent 
+                        headingNotfound={t("punyarjak_not_found")}
+                        para={t("punyarjak_not_click_add")}
                     />
                   </Else>
                 </If>
               </Else>
             </If>
 
-            <If condition={boxCollectionQuery?.data?.totalPages > 1}>
+            <If condition={punyarjakUsersQuery?.data?.totalPages > 1}>
               <Then>
                 <Col xs={12} className="mb-2 d-flex justify-content-center">
                   <ReactPaginate
                     nextLabel=""
-                    forcePage={pagination.page - 1}
                     breakLabel="..."
                     previousLabel=""
-                    pageCount={boxCollectionQuery?.data?.totalPages || 0}
+                    pageCount={punyarjakUsersQuery?.data?.totalPages || 0}
                     activeClassName="active"
-                    initialPage={
-                      (parseInt(searchParams.get("page"))
-                        ? parseInt(searchParams.get("page")) - 1
-                        : pagination.page - 1)
-                    }
                     breakClassName="page-item"
                     pageClassName={"page-item"}
                     breakLinkClassName="page-link"
@@ -276,14 +233,9 @@ export default function Expenses() {
                     nextClassName={"page-item next"}
                     previousLinkClassName={"page-link"}
                     previousClassName={"page-item prev"}
-                    onPageChange={(page) =>{
+                    onPageChange={(page) =>
                       setPagination({ ...pagination, page: page.selected + 1 })
-                      history.push(
-                        `/Hundi?page=${
-                          page.selected + 1
-                        }&filter=${dropDownName}`
-                      );
-                    }}
+                    }
                     // forcePage={pagination.page !== 0 ? pagination.page - 1 : 0}
                     containerClassName={
                       "pagination react-paginate justify-content-end p-1"
@@ -295,6 +247,6 @@ export default function Expenses() {
           </Row>
         </div>
       </div>
-    </NewsWarper>
+    </PunyarjakWarapper>
   );
 }

@@ -137,7 +137,7 @@ const ReportList = () => {
                 </Then>
                 <Else>
                   <NoContent
-                      headingNotfound={t("reports_not_found")}
+                      headingNotfound={t("report_dispute_not_found")}
                       // para={t("notifications_not_click_add")}
                   />
                 </Else>

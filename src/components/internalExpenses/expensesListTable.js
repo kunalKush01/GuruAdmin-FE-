@@ -67,7 +67,11 @@ export function ExpensesListTable({
       selector: (row) => row.amount,
       width: "200px",
     },
-
+    {
+      name: t("created_by"),
+      center: true,
+      selector: (row) => row.createdBy,
+    },
     {
       name: t(""),
       center: true,
@@ -84,9 +88,9 @@ export function ExpensesListTable({
   //   columns = [
   //     ...columns,
   //     {
-  //       name: "",
+  //       name: t("created_by"),
   //       center: true,
-  //       selector: (row) => row.viewLogs,
+  //       selector: (row) => row.createdBy,
   //     },
   //   ];
   // }
@@ -108,6 +112,7 @@ export function ExpensesListTable({
       // description:item?.description ?? "" ,
       date: moment(item?.expenseDate).utcOffset(0).format("DD MMM YYYY"),
       amount: `₹${item.amount}`,
+      createdBy:ConverFirstLatterToCapital(item?.createdBy?.name ?? ""),
       edit: (
         <img
           src={editIcon}

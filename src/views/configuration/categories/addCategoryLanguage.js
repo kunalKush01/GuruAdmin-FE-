@@ -49,7 +49,7 @@ export default function AddLanguageEvent() {
     ConverFirstLatterToCapital(selectedLang.name)
   );
   const subCategoryDetailQuery = useQuery(
-    ["SubCategories", subCategoryId, langSelection, selectedLang.id],
+    ["SubCategories", subCategoryId, selectedLang.id],
     async () => await getSubCategoryDetail({ categoryId:subCategoryId, languageId: selectedLang.id })
     )
 
@@ -80,7 +80,10 @@ export default function AddLanguageEvent() {
     return [];
   };
 
-  const availableLangOptions = getAvailLangOption();
+  const availableLangOptions = useMemo(getAvailLangOption, [
+    langArray,
+    subCategoryDetailQuery?.data?.result?.languages,
+  ]);
   
   useEffect(() => {
     if (availableLangOptions.length != 0) {

@@ -52,7 +52,7 @@ export default function AddLanguageNotice() {
   const [langSelection, setLangSelection] = useState(ConverFirstLatterToCapital(selectedLang.name));
 
   const noticeDetailQuery = useQuery(
-    ["NoticeDetail", noticeId, langSelection, selectedLang.id],
+    ["NoticeDetail", noticeId, selectedLang.id],
     async () => await getNoticeDetail({ noticeId, languageId: selectedLang.id })
   );
 

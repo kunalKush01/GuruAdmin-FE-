@@ -42,7 +42,10 @@ export const subHeaderContent = [
     name: "notices",
     url: "/notices",
   },
-
+  {
+    name: "punyarjak",
+    url: "/punyarjak",
+  },
   {
     name: "configuration",
     url: "/configuration",

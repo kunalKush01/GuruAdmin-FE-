@@ -33,10 +33,11 @@ export const englishContent = {
   rupees:"Rs",
   downloadReceipt:"Download Receipt",
   pay_donation:"Pay Donation",
-  payment:"Payment",
+  payment:"Pay Now",
   // All static content of Dashboard
   dashboard_donationReceived: "Donation Received",
   dashboard_donationPending: "Donation Pending",
+  donation_hundi:"Donation + Hundi",
   dashboard_totalExpenses: "Total Expenses",
   dashboard_RevenueReport: "Finance Report",
   dashboard_monthly: "Monthly",
@@ -314,4 +315,18 @@ commitment_partial:"Partial",
   address_required:"Address required.",
   Temple_name_required:"Temple name is required.",
   doc_required:"Temple document required.",
+
+
+  // punyarjak
+
+  punyarjak:"Punyarjak",
+  add_punyarjak:"Add Punyarjak",
+  edit_punyarjak:"Edit Punyarjak",
+  name:"Name",
+  description:"Description",
+  punyarjak_desc_required:"Description is required.",
+  punyarjak_delete:"Delete Punyarjak",
+  punyarjak_sure:"Are you sure you want to permanently delete the selected punyarjak ? ",
+  punyarjak_not_found:"No Punyarjak User Found",
+  punyarjak_not_click_add:'Click on "Add punyarjak" to add punyarjak user on the screen',
 };

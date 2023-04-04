@@ -52,12 +52,15 @@ export default function AddLanguageNews() {
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
   const currentFilter = searchParams.get("filter");
+
+  const [langSelection, setLangSelection] = useState(
+    ConverFirstLatterToCapital(selectedLang.name)
+  );
+  console.log("langSelection",langSelection);
+
   const newsDetailQuery = useQuery(
     ["NewsDetail", newsId, selectedLang.id],
     async () => await getNewsDetail({ newsId, languageId: selectedLang.id })
-  );
-  const [langSelection, setLangSelection] = useState(
-    ConverFirstLatterToCapital(selectedLang.name)
   );
 
   const handleNewsLangUpdate = (payload) => {

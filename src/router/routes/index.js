@@ -247,6 +247,21 @@ const Routes = [
     component: lazy(() => import('../../views/internalExpenses/expensesLogsList')),
     // exact:true
   },
+  {
+    path: '/punyarjak',
+    component: lazy(() => import('../../views/Punyarjak/PunyarjakList')),
+    exact:true
+  },
+  {
+    path: '/punyarjak/add',
+    component: lazy(() => import('../../views/Punyarjak/AddPunyarjak')),
+    exact:true
+  },
+  {
+    path: '/punyarjak/edit/:punyarjakId',
+    component: lazy(() => import('../../views/Punyarjak/EditPunyarjak')),
+    exact:true
+  },
 ];
 
 export { DefaultRoute, TemplateTitle, Routes };

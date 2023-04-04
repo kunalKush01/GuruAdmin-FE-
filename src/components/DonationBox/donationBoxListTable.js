@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { deleteExpensesDetail } from "../../api/expenseApi";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomDataTable from "../partials/CustomDataTable";
 
 export default function DonationBoxListTable({ data, financeReport }) {
@@ -44,7 +45,11 @@ export default function DonationBoxListTable({ data, financeReport }) {
       selector: (row) => row.remarks,
       width: "350px",
     },
-
+    {
+      name: t("created_by"),
+      center: true,
+      selector: (row) => row.createdBy,
+    },
     {
       name: t(""),
       center: true,
@@ -68,6 +73,7 @@ export default function DonationBoxListTable({ data, financeReport }) {
           dangerouslySetInnerHTML={{ __html: he.decode(item?.remarks ?? "") }}
         />
       ),
+      createdBy:ConverFirstLatterToCapital(item?.createdBy?.name ?? ""),
       dateTime: moment(item?.collectionDate)
         .utcOffset(0)
         .format("h:mm A, DD MMM YYYY"),

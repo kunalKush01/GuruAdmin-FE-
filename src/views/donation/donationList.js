@@ -27,7 +27,7 @@ const DoationWarper = styled.div`
   }
   .addDonation {
     color: #583703;
-    display: flex;
+    /* display: flex; */
     align-items: center;
   }
 
@@ -39,7 +39,7 @@ const DoationWarper = styled.div`
   }
   .addDonation-btn {
     padding: 8px 20px;
-    margin-left: 10px;
+    /* margin-left: 10px; */
     font: normal normal bold 15px/20px noto sans;
   }
   .donationContent {
@@ -198,14 +198,14 @@ export default function Donation() {
       <div className="window nav statusBar body "></div>
 
       <div>
-        <div className="d-flex justify-content-between align-items-center ">
-          <div className="d-flex justify-content-between align-items-center ">
+        <div className="d-lg-flex justify-content-between align-items-center ">
+          <div className="d-flex align-items-center my-3 my-sm-2 my-md-0 mb-md-2">
             <img
               src={arrowLeft}
               className="me-2 cursor-pointer align-self-end"
               onClick={() => history.push("/")}
             />
-            <div className="addDonation">
+            <div className="addDonation d-flex">
               <div className="">
                 <div>
                   <Trans i18nKey={"donation_Donation"} />
@@ -218,11 +218,11 @@ export default function Donation() {
               </div>
             </div>
           </div>
-          <div className="addDonation">
+          <div className="addDonation d-flex flex-wrap gap-2 gap-md-0">
             <ChangeCategoryType
               className={"me-1"}
               categoryTypeArray={newTypes}
-              typeName={categoryTypeName}
+              typeName={ConverFirstLatterToCapital(categoryTypeName ?? "")}
               setTypeName={(e) => {
                 setCategoryId(e.target.id);
                 setCategoryTypeName(e.target.name);
@@ -252,7 +252,7 @@ export default function Donation() {
             />
             <Button
               color="primary"
-              className="addDonation-btn  "
+              className="addDonation-btn "
               onClick={() =>
                 history.push(
                   `/donation/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}`

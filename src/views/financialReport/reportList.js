@@ -72,9 +72,9 @@ const NewsWarper = styled.div`
     padding: 0.5rem;
     border-radius: 7px;
   }
-  .total_collection{
-    border: 1px solid #FF8744;
-    color: #FF8744;
+  .total_collection {
+    border: 1px solid #ff8744;
+    color: #ff8744;
     font: normal normal bold 15px/20px noto sans;
     padding: 10px 20px;
     border-radius: 5px;
@@ -281,32 +281,29 @@ export default function FinancialReport() {
       <div className="window nav statusBar body "></div>
 
       <div>
-        <div className="d-flex justify-content-between align-items-center ">
-          <div className="d-flex justify-content-between align-items-center ">
+        <div className="d-lg-flex justify-content-between align-items-center ">
+          <div className="d-flex align-items-center my-3 my-sm-2 my-md-0 mb-md-2">
             <img
               src={arrowLeft}
               className="me-2  cursor-pointer align-self-end"
               onClick={() => history.push("/")}
             />
-            <div className="addNews">
+            <div className="addNews d-flex">
               <div className="">
                 <div>
                   <Trans i18nKey={"report_AddReport"} />
                 </div>
-              
               </div>
             </div>
           </div>
-          <div className="addNews">
-          <div className="total_collection me-2 d-flex justify-content-center align-items-center ">
-                {/* <Trans i18nKey={"DonationBox_total_collection"} /> */}
-                <div>
-                  {`Total ${activeReportTab.name} :`}
-                </div>
-                &nbsp;
-                <div>₹</div>&nbsp;
-                <div>{Items?.totalAmount ?? 0}</div>
-              </div>
+          <div className="addNews d-flex flex-wrap gap-2 gap-md-0">
+            <div className="total_collection me-2 d-flex justify-content-center align-items-center ">
+              {/* <Trans i18nKey={"DonationBox_total_collection"} /> */}
+              <div>{`Total ${activeReportTab.name} :`}</div>
+              &nbsp;
+              <div>₹</div>&nbsp;
+              <div>{Items?.totalAmount ?? 0}</div>
+            </div>
             <div className="dateChooserReport d-flex me-2 position-relative justify-content-between align-item-center">
               <Formik
                 initialValues={{
@@ -346,11 +343,13 @@ export default function FinancialReport() {
             </div>
           </div>
         </div>
-        <FinancialReportTabs
-          setActive={setActiveReportTab}
-          active={activeReportTab}
-          setPagination={setPagination}
-        />
+        
+          <FinancialReportTabs
+            setActive={setActiveReportTab}
+            active={activeReportTab}
+            setPagination={setPagination}
+          />
+        
         <div style={{ height: "10px" }}>
           <If
             condition={

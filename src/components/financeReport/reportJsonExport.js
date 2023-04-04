@@ -12,6 +12,7 @@ export const ConvertToString = (html)  => {
         title: ConverFirstLatterToCapital(item?.title),
         // description:<div className=" d-flex tableDes" dangerouslySetInnerHTML={{__html:he.decode(item.description)}} />,
         description:ConvertToString(item?.description ?? "") ,
+        createdBy:ConverFirstLatterToCapital(item?.createdBy?.name),
         date: moment(item?.expenseDate).format("DD MMM YYYY"),
           amount:`₹${item.amount}`,
       }))
@@ -53,6 +54,7 @@ export const ConvertToString = (html)  => {
         amount:`₹${item.amount}`,
         remarks:<div className="d-flex tableDes" dangerouslySetInnerHTML={{__html:he.decode(item?.remarks??"")}} /> ,
         dateTime:moment(item?.collectionDate).format("h:mm A, DD MMM YYYY"),
+        createdBy:ConverFirstLatterToCapital (item?.createdBy?.name),
     }))
   } 
  

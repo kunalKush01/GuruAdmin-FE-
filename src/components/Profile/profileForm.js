@@ -574,6 +574,7 @@ export default function ProfileForm({
                     width={"100"}
                     onChange={(data) => {
                       formik.setFieldValue("state", data);
+                      formik.setFieldValue("city", []);
                       setCityLoadOption(data?.districts);
                     }}
                     disabled={loadStates === 0}

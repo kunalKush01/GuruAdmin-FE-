@@ -52,8 +52,10 @@ export default function AddLanguageEvent() {
     ConverFirstLatterToCapital(selectedLang.name)
   );
 
+  console.log("langSelection",langSelection);
+
   const eventDetailQuery = useQuery(
-    ["EventDetail", eventId, langSelection, selectedLang.id],
+    ["EventDetail", eventId, selectedLang.id],
     async () => await getEventDetail({ eventId, languageId: selectedLang.id })
   );
 
@@ -83,8 +85,11 @@ export default function AddLanguageEvent() {
     }
     return [];
   };
-
-  const availableLangOptions = getAvailLangOption();
+  
+  const availableLangOptions = useMemo(getAvailLangOption, [
+    langArray,
+    eventDetailQuery?.data?.result?.languages,
+  ]);
 
   useEffect(() => {
     if (availableLangOptions.length != 0) {
@@ -151,15 +156,17 @@ export default function AddLanguageEvent() {
       </div>
 
       {!eventDetailQuery.isLoading ? (
-        <EventForm
-          editImage="edit"
-          defaultImages={eventDetailQuery?.data?.result?.images}
-          initialValues={initialValues}
-          vailidationSchema={schema}
-          showTimeInput
-          handleSubmit={handleEventLangUpdate}
-          buttonName={"news_AddLangNews"}
-        />
+        <div className="ms-lg-3 mt-lg-1">
+          <EventForm
+            editImage="edit"
+            defaultImages={eventDetailQuery?.data?.result?.images}
+            initialValues={initialValues}
+            vailidationSchema={schema}
+            showTimeInput
+            handleSubmit={handleEventLangUpdate}
+            buttonName={"news_AddLangNews"}
+          />
+        </div>
       ) : (
         ""
       )}

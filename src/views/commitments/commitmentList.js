@@ -30,7 +30,7 @@ const CommitmentWarapper = styled.div`
   }
   .addCommitment {
     color: #583703;
-    display: flex;
+    /* display: flex; */
     align-items: center;
   }
 
@@ -42,7 +42,7 @@ const CommitmentWarapper = styled.div`
   }
   .addCommitment-btn {
     padding: 8px 20px;
-    margin-left: 10px;
+    /* margin-left: 10px; */
     font: normal normal bold 15px/20px noto sans;
   }
   .commitmentContent {
@@ -227,14 +227,14 @@ export default function Commitment() {
       <div className="window nav statusBar body "></div>
 
       <div>
-        <div className="d-flex justify-content-between align-items-center ">
-          <div className="d-flex justify-content-between align-items-center ">
+        <div className="d-lg-flex justify-content-between align-items-center">
+          <div className="d-flex align-items-center my-3 my-sm-2 my-md-0 mb-md-2">
             <img
               src={arrowLeft}
               className="me-2  cursor-pointer align-self-end"
               onClick={() => history.push("/")}
             />
-            <div className="addCommitment">
+            <div className="addCommitment d-flex">
               <div className="">
                 <div>
                   <Trans i18nKey={"committment"} />
@@ -247,13 +247,13 @@ export default function Commitment() {
               </div>
             </div>
           </div>
-          <div className="addCommitment">
+          <div className="addCommitment d-flex flex-wrap gap-2 gap-md-0">
             {/* <Trans i18nKey={"category"} />
             &nbsp; */}
             <ChangeCategoryType
               className={"me-1"}
               categoryTypeArray={newTypes}
-              typeName={categoryTypeName}
+              typeName={ConverFirstLatterToCapital(categoryTypeName ?? "")}
               setTypeName={(e) => {
                 setCategoryId(e.target.id);
                 setCategoryTypeName(e.target.name);
@@ -270,7 +270,7 @@ export default function Commitment() {
             <ChangeCategoryType
               className={"me-1"}
               categoryTypeArray={subCategoryTypes}
-              typeName={subCategoryTypeName}
+              typeName={ConverFirstLatterToCapital(subCategoryTypeName ?? "")}
               setTypeName={(e) => {
                 setSubCategoryTypeId(e.target.id);
                 setSubCategoryTypeName(e.target.name);
@@ -304,7 +304,7 @@ export default function Commitment() {
             />
             <Button
               color="primary"
-              className="addCommitment-btn"
+              className="addCommitment-btn mt-md-1 mt-lg-0"
               onClick={() =>
                 history.push(
                   `/commitment/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${dropDownName}`

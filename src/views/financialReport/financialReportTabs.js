@@ -9,11 +9,12 @@ const FinancialReportTabsWarapper = styled.div`
     color: #583703;
     opacity: 70%;
     padding-right: 1rem;
+    white-space: nowrap;
     cursor: pointer;
     padding-bottom: 0.2rem;
   }
   hr {
-    margin-top: -0.25rem;
+    margin-top: -0.52rem;
     height: 1.5px;
     color: #583703;
     opacity: 25%;
@@ -21,6 +22,15 @@ const FinancialReportTabsWarapper = styled.div`
   }
   .allTabBox {
     margin-left: 2.3rem;
+    overflow-x: scroll;
+    ::-webkit-scrollbar{
+      height: 5px;
+    }
+    ::-webkit-scrollbar-thumb{
+      background-color: gray;
+      border-radius: 25px;
+    }
+
   }
   .activeTab {
     z-index: 2;
@@ -42,7 +52,7 @@ const FinancialReportTabs = ({ setActive, active,setPagination }) => {
   ];
   return (
     <FinancialReportTabsWarapper>
-      <div className="d-flex w-50 justify-content-between mt-2 allTabBox">
+      <div className="d-flex flex-lg-wrap  gap-3 mt-2 allTabBox ">
         {FinancialTabs.map((item,idx) => {
           return (
             <div

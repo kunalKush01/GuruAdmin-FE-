@@ -33,7 +33,7 @@ export const RevenueChart = ({DonationData=[],TotalExpensesData=[],CommittmentDa
 
   const series = [
     {
-      name: t("donation"),
+      name: t("donation_hundi"),
       data:DonationData.map((item)=>{
         return {
           x:item.month,
