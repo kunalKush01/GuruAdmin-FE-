@@ -107,10 +107,10 @@ const Home = () => {
           />
 
           <Row>
-            <Col xs={9}>
+            <Col xs={12} md={7} lg={9}>
               <RecentDonationTable data={recentDonationData?.results} />
             </Col>
-            <Col xs={3}>
+            <Col xs={12} md={5} lg={3} className="mt-3 mt-md-0">
               <TopDonerList data={topDonorData?.results} />
             </Col>
           </Row>
