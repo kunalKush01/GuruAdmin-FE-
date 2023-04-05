@@ -53,6 +53,9 @@ const NoticeWarper = styled.div`
     margin-top: 0.5rem;
     font: normal normal bold 13px/5px noto sans;
   }
+  .noContent{
+    margin-left: 30rem;
+  }
 `;
 
 const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -81,7 +84,6 @@ export default function NoticeList() {
     page: 1,
     limit: 12,
   });
-
 
   const searchParams = new URLSearchParams(history.location.search);
 
@@ -240,10 +242,12 @@ export default function NoticeList() {
                       })}
                     </Then>
                     <Else>
-                      <NoContent
-                        headingNotfound={t("notices_not_found")}
-                        para={t("notices_not_click_add_notices")}
-                      />
+                      <div className="noContent">
+                        <NoContent
+                          headingNotfound={t("notices_not_found")}
+                          para={t("notices_not_click_add_notices")}
+                        />
+                      </div>
                     </Else>
                   </If>
                 </Else>

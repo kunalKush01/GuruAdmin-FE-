@@ -17,6 +17,22 @@ const Routes = [
     },
   },
   {
+    path: "/reset-password",
+    component: lazy(() => import("../../views/ResetPassword/index")),
+    layout: "BlankLayout",
+    meta: {
+      authRoute: true,
+    },
+  },
+  {
+    path: "/set-password",
+    component: lazy(() => import("../../views/SetPassword/index")),
+    layout: "BlankLayout",
+    meta: {
+      authRoute: true,
+    },
+  },
+  {
     path: "/dashboard",
     component: lazy(() => import("../../views/dashboard/dashboard")),
     
