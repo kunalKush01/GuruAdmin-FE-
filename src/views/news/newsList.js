@@ -15,6 +15,7 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import NewsCard from "../../components/news/newsCard";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
 import NoContent from "../../components/partials/noContent";
+import { WRITE } from "../../utility/permissionsVariable";
 const NewsWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -130,6 +131,21 @@ export default function News() {
 
   const newsItems = useMemo(() => newsQuery?.data?.results ?? [], [newsQuery]);
 
+  // PERMISSSIONS
+  const permissions = useSelector(
+    (state) => state.auth.userDetail?.permissions
+  );
+  const allPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "all"
+  );
+  const subPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "news"
+  );
+
+  const subPermission = subPermissions?.subpermissions?.map(
+    (item) => item.name
+  );
+
   return (
     <NewsWarper>
       <div className="window nav statusBar body "></div>
@@ -165,18 +181,27 @@ export default function News() {
                 history.push(`/news?page=${1}&filter=${e.target.name}`);
               }}
             />
-            <Button
-              color="primary"
-              className="addNews-btn"
-              onClick={() => history.push(`/news/add?page=${pagination.page}&filter=${dropDownName}`)}
-            >
-              <span>
-                <Plus className="" size={15} strokeWidth={4} />
-              </span>
-              <span>
-                <Trans i18nKey={"news_btn_AddNews"} />
-              </span>
-            </Button>
+            {allPermissions?.name === "all" ||
+            subPermission?.includes(WRITE) ? (
+              <Button
+                color="primary"
+                className="addNews-btn"
+                onClick={() =>
+                  history.push(
+                    `/news/add?page=${pagination.page}&filter=${dropDownName}`
+                  )
+                }
+              >
+                <span>
+                  <Plus className="" size={15} strokeWidth={4} />
+                </span>
+                <span>
+                  <Trans i18nKey={"news_btn_AddNews"} />
+                </span>
+              </Button>
+            ) : (
+              ""
+            )}
           </div>
         </div>
         <div style={{ height: "10px" }}>
@@ -214,8 +239,13 @@ export default function News() {
                     {newsItems.map((item) => {
                       return (
                         <Col xs={3} key={item.id}>
-                          <NewsCard data={item}currentFilter={routFilter}
-                        currentPage={routPagination} />
+                          <NewsCard
+                            data={item}
+                            currentFilter={routFilter}
+                            currentPage={routPagination}
+                            allPermissions={allPermissions}
+                            subPermission={subPermission}
+                          />
                         </Col>
                       );
                     })}
@@ -253,8 +283,8 @@ export default function News() {
                     nextClassName={"page-item next"}
                     previousLinkClassName={"page-link"}
                     previousClassName={"page-item prev"}
-                    onPageChange={(page) =>{
-                      setPagination({ ...pagination, page: page.selected + 1 })
+                    onPageChange={(page) => {
+                      setPagination({ ...pagination, page: page.selected + 1 });
                       history.push(
                         `/events?page=${
                           page.selected + 1

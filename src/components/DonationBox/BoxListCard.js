@@ -11,6 +11,7 @@ import lockIcon from "../../assets/images/icons/donationBox/Lock.svg";
 import he from "he";
 import { Item } from "react-contexify";
 import Swal from "sweetalert2";
+import { EDIT } from "../../utility/permissionsVariable";
 
 const ReportListCardWraper = styled.div`
   .card-footer {
@@ -59,10 +60,15 @@ const ReportListCardWraper = styled.div`
     overflow: hidden !important;
     text-overflow: ellipsis !important;
   }
-
 `;
 
-export default function BoxListCard({ data = "" ,currentFilter,currentPage}) {
+export default function BoxListCard({
+  data = "",
+  currentFilter,
+  currentPage,
+  subPermission,
+  allPermissions,
+}) {
   const ConvertToString = (html) => {
     return html.replace(/(&lt;([^>]+)>)/gi, "");
   };
@@ -103,7 +109,9 @@ export default function BoxListCard({ data = "" ,currentFilter,currentPage}) {
                                                  style="
                                                  
                                                 ">
-                                                  ${ConvertToString(data.remarks)}
+                                                  ${ConvertToString(
+                                                    data.remarks
+                                                  )}
                                                 </div>
                                             </div>
                                               `,
@@ -122,8 +130,7 @@ export default function BoxListCard({ data = "" ,currentFilter,currentPage}) {
                 <img src={donationBoxIcon} style={{ width: "80px" }} />
                 <div className="date">
                   <span>Date :</span>{" "}
-                  {moment(data.collectionDate)
-                    .format("dddd, DD MMM, YYYY")}
+                  {moment(data.collectionDate).format("dddd, DD MMM, YYYY")}
                 </div>
                 <div className="time">
                   <span>Time :</span>{" "}
@@ -144,13 +151,18 @@ export default function BoxListCard({ data = "" ,currentFilter,currentPage}) {
               </div>
             </Col>
             <Col xs={2} className="p-0 d-flex justify-content-center">
+            {allPermissions?.name === "all" || subPermission?.includes(EDIT) ? (
               <div style={{ width: "30px" }}>
                 <img
                   src={editIcon}
                   className="w-100 cursor-pointer"
-                  onClick={() => history.push(`/Hundi/edit/${data.id}?page=${currentPage}&filter=${currentFilter}`)}
+                  onClick={() =>
+                    history.push(
+                      `/Hundi/edit/${data.id}?page=${currentPage}&filter=${currentFilter}`
+                    )
+                  }
                 />
-              </div>
+              </div>):""}
             </Col>
           </Row>
         </CardBody>

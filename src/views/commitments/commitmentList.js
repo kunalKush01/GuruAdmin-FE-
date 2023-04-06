@@ -22,6 +22,7 @@ import { ChangePeriodDropDown } from "../../components/partials/changePeriodDrop
 import NoContent from "../../components/partials/noContent";
 import { ChangeStatus } from "../../components/Report & Disput/changeStatus";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
+import { WRITE } from "../../utility/permissionsVariable";
 const CommitmentWarapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -221,7 +222,20 @@ export default function Commitment() {
     () => commitmentQuery?.data?.results ?? [],
     [commitmentQuery]
   );
+  // PERMISSSIONS
+  const permissions = useSelector(
+    (state) => state.auth.userDetail?.permissions
+  );
+  const allPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "all"
+  );
+  const subPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "commitment"
+  );
 
+  const subPermission = subPermissions?.subpermissions?.map(
+    (item) => item.name
+  );
   return (
     <CommitmentWarapper>
       <div className="window nav statusBar body "></div>
@@ -302,6 +316,8 @@ export default function Commitment() {
                 );
               }}
             />
+              {allPermissions?.name === "all" ||
+            subPermission?.includes(WRITE) ? (
             <Button
               color="primary"
               className="addCommitment-btn mt-md-1 mt-lg-0"
@@ -317,7 +333,7 @@ export default function Commitment() {
               <span>
                 <Trans i18nKey={"add_commitment"} />
               </span>
-            </Button>
+            </Button>):""}
           </div>
         </div>
         <div style={{ height: "10px" }}>
@@ -355,6 +371,8 @@ export default function Commitment() {
                       currentCategory={routCategory}
                       currentStatus={routStatus}
                       currentSubCategory={routSubCategory}
+                      allPermissions={allPermissions}
+                      subPermission={subPermission}
                     />
                   </Then>
                   <Else>

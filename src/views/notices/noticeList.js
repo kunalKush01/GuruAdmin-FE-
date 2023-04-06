@@ -19,6 +19,7 @@ import CustomDatePicker from "../../components/partials/customDatePicker";
 import HinduCalenderDetailCard from "../../components/notices/hinduCalenderDetailCard";
 import NoContent from "../../components/partials/noContent";
 import { useSelector } from "react-redux";
+import { WRITE } from "../../utility/permissionsVariable";
 const NoticeWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -53,7 +54,7 @@ const NoticeWarper = styled.div`
     margin-top: 0.5rem;
     font: normal normal bold 13px/5px noto sans;
   }
-  .noContent{
+  .noContent {
     margin-left: 30rem;
   }
 `;
@@ -145,6 +146,21 @@ export default function NoticeList() {
     [noticeQuery]
   );
 
+  // PERMISSSIONS
+  const permissions = useSelector(
+    (state) => state.auth.userDetail?.permissions
+  );
+  const allPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "all"
+  );
+  const subPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "notices"
+  );
+
+  const subPermission = subPermissions?.subpermissions?.map(
+    (item) => item.name
+  );
+
   return (
     <NoticeWarper>
       <div className="window nav statusBar body "></div>
@@ -178,22 +194,27 @@ export default function NoticeList() {
                 history.push(`/notices?page=${1}&filter=${e.target.name}`);
               }}
             />
-            <Button
-              color="primary"
-              className="addNotice-btn"
-              onClick={() =>
-                history.push(
-                  `/notices/add?page=${pagination.page}&filter=${dropDownName}`
-                )
-              }
-            >
-              <span>
-                <Plus className="" size={15} strokeWidth={4} />
-              </span>
-              <span>
-                <Trans i18nKey={"notices_AddNotice"} />
-              </span>
-            </Button>
+            {allPermissions?.name === "all" ||
+            subPermission?.includes(WRITE) ? (
+              <Button
+                color="primary"
+                className="addNotice-btn"
+                onClick={() =>
+                  history.push(
+                    `/notices/add?page=${pagination.page}&filter=${dropDownName}`
+                  )
+                }
+              >
+                <span>
+                  <Plus className="" size={15} strokeWidth={4} />
+                </span>
+                <span>
+                  <Trans i18nKey={"notices_AddNotice"} />
+                </span>
+              </Button>
+            ) : (
+              ""
+            )}
           </div>
         </div>
         <div style={{ height: "10px" }}>
@@ -236,6 +257,8 @@ export default function NoticeList() {
                               data={item}
                               currentFilter={routFilter}
                               currentPage={routPagination}
+                              allPermissions={allPermissions}
+                              subPermission={subPermission}
                             />
                           </Col>
                         );

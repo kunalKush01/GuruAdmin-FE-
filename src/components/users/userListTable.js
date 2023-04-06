@@ -10,11 +10,18 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
 import { deleteCategoryDetail } from "../../api/categoryApi";
-import placeHolderTable from "../../assets/images/placeholderImages/placeHolderTable.svg"
+import placeHolderTable from "../../assets/images/placeholderImages/placeHolderTable.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { deleteSubAdmin } from "../../api/userApi";
+import { DELETE, EDIT } from "../../utility/permissionsVariable";
 
-export function SubAdminUserListTable({ data ,currentFilter,currentPage}) {
+export function SubAdminUserListTable({
+  data,
+  currentFilter,
+  currentPage,
+  subPermission,
+  allPermissions,
+}) {
   const handleDeleteSubAdmin = async (payload) => {
     return deleteSubAdmin(payload);
   };
@@ -36,7 +43,6 @@ export function SubAdminUserListTable({ data ,currentFilter,currentPage}) {
       selector: (row) => row.userName,
       style: {
         font: "normal normal 700 13px/20px noto sans !important ",
-        
       },
     },
     {
@@ -54,14 +60,13 @@ export function SubAdminUserListTable({ data ,currentFilter,currentPage}) {
     {
       name: t(""),
       selector: (row) => row.edit,
-      center:true
+      center: true,
     },
     {
       name: t(""),
       selector: (row) => row.delete,
-      center:true
+      center: true,
     },
-    
   ];
 
   const categoriesList = useMemo(() => {
@@ -69,14 +74,25 @@ export function SubAdminUserListTable({ data ,currentFilter,currentPage}) {
       _Id: item.id,
       id: `${idx + 1}`,
       userName: (
-        <div className="d-flex align-items-center " >
-          <img src={item?.profilePhoto !== "" ?item?.profilePhoto: placeHolderTable} className="cursor-pointer"  style={{marginRight:"5px",width:"30px", height:"30px", borderRadius:"50%"}}  />
+        <div className="d-flex align-items-center ">
+          <img
+            src={
+              item?.profilePhoto !== "" ? item?.profilePhoto : placeHolderTable
+            }
+            className="cursor-pointer"
+            style={{
+              marginRight: "5px",
+              width: "30px",
+              height: "30px",
+              borderRadius: "50%",
+            }}
+          />
           <div>{ConverFirstLatterToCapital(item.name ?? "-")}</div>
         </div>
       ),
-      mobile:item.mobileNumber ?? "-",
+      mobile: item.mobileNumber ?? "-",
       email: item.email ?? "-",
-      userRole:item?.roles?.join(",")?? "-",
+      userRole: item?.roles?.join(",") ?? "-",
       // addLanguage: (
       //   <Button
       //     outline
@@ -89,17 +105,19 @@ export function SubAdminUserListTable({ data ,currentFilter,currentPage}) {
       //     {"Add Language"}
       //   </Button>
       // ),
-      edit: (
+      edit: allPermissions?.name === "all" || subPermission?.includes(EDIT) ? (
         <img
           src={editIcon}
           className="cursor-pointer"
           width={35}
           onClick={() =>
-            history.push(`/configuration/users/edit/${item.id}?page=${currentPage}`)
+            history.push(
+              `/configuration/users/edit/${item.id}?page=${currentPage}`
+            )
           }
         />
-      ),
-      delete: (
+      ):"",
+      delete: allPermissions?.name === "all" || subPermission?.includes(DELETE) ? (
         <img
           src={deleteIcon}
           width={35}
@@ -128,7 +146,7 @@ export function SubAdminUserListTable({ data ,currentFilter,currentPage}) {
             });
           }}
         />
-      ),
+      ):"",
     }));
   }, [data]);
 
@@ -140,11 +158,7 @@ export function SubAdminUserListTable({ data ,currentFilter,currentPage}) {
 
   return (
     <RecentDonationTableWarper>
-      <CustomDataTable
-        maxHieght={""}
-        columns={columns}
-        data={categoriesList}
-      />
+      <CustomDataTable maxHieght={""} columns={columns} data={categoriesList} />
     </RecentDonationTableWarper>
   );
 }

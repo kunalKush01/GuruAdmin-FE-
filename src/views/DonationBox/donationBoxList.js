@@ -17,6 +17,7 @@ import { ChangePeriodDropDown } from "../../components/partials/changePeriodDrop
 import { getAllBoxCollection } from "../../api/donationBoxCollectionApi";
 import BoxListCard from "../../components/DonationBox/BoxListCard.js";
 import NoContent from "../../components/partials/noContent";
+import { WRITE } from "../../utility/permissionsVariable";
 const NewsWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -140,6 +141,20 @@ export default function Expenses() {
     () => boxCollectionQuery?.data?.results ?? [],
     [boxCollectionQuery]
   );
+  // PERMISSSIONS
+  const permissions = useSelector(
+    (state) => state.auth.userDetail?.permissions
+  );
+  const allPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "all"
+  );
+  const subPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "donation_box"
+  );
+
+  const subPermission = subPermissions?.subpermissions?.map(
+    (item) => item.name
+  );
 
   return (
     <NewsWarper>
@@ -182,6 +197,8 @@ export default function Expenses() {
                 history.push(`/Hundi?page=${1}&filter=${e.target.name}`);
               }}
             />
+            {allPermissions?.name === "all" ||
+            subPermission?.includes(WRITE) ? (
             <Button
               color="primary"
               className="addNews-btn "
@@ -197,7 +214,7 @@ export default function Expenses() {
               <span>
                 <Trans i18nKey={"DonationBox_AddCollectionBox"} />
               </span>
-            </Button>
+            </Button>):""}
           </div>
         </div>
         <div style={{ height: "10px" }}>
@@ -229,12 +246,14 @@ export default function Expenses() {
                 <If condition={collectionItems.length != 0} disableMemo>
                   <Then>
                     <Row className="pe-0">
-                      {collectionItems.map((item,idx) => {
+                      {collectionItems.map((item, idx) => {
                         return (
                           <Col xs={3} key={idx}>
                             <BoxListCard
                               key={item.id}
                               data={item}
+                              allPermissions={allPermissions}
+                              subPermission={subPermission}
                               currentFilter={routFilter}
                               currentPage={routPagination}
                             />
@@ -264,9 +283,9 @@ export default function Expenses() {
                     pageCount={boxCollectionQuery?.data?.totalPages || 0}
                     activeClassName="active"
                     initialPage={
-                      (parseInt(searchParams.get("page"))
+                      parseInt(searchParams.get("page"))
                         ? parseInt(searchParams.get("page")) - 1
-                        : pagination.page - 1)
+                        : pagination.page - 1
                     }
                     breakClassName="page-item"
                     pageClassName={"page-item"}
@@ -276,8 +295,8 @@ export default function Expenses() {
                     nextClassName={"page-item next"}
                     previousLinkClassName={"page-link"}
                     previousClassName={"page-item prev"}
-                    onPageChange={(page) =>{
-                      setPagination({ ...pagination, page: page.selected + 1 })
+                    onPageChange={(page) => {
+                      setPagination({ ...pagination, page: page.selected + 1 });
                       history.push(
                         `/Hundi?page=${
                           page.selected + 1

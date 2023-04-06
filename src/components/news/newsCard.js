@@ -28,7 +28,8 @@ import { deleteNewsDetail } from "../../api/newsApi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
-import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg"
+import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
+import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 
 const NewsCardWaraper = styled.div`
   .imgContainer {
@@ -77,7 +78,13 @@ const NewsCardWaraper = styled.div`
     font: normal normal bold 12px/30px noto sans;
   }
 `;
-function BtnContent({ newsId, currentPage, currentFilter }) {
+function BtnContent({
+  newsId,
+  currentPage,
+  currentFilter,
+  subPermission,
+  allPermissions,
+}) {
   const { t } = useTranslation();
   const history = useHistory();
   const BtnContentWraper = styled.div`
@@ -110,70 +117,87 @@ function BtnContent({ newsId, currentPage, currentFilter }) {
   return (
     <BtnContentWraper>
       <Row className="MainContainer d-block">
-        <Col
-          xs={12}
-          className="col-item"
-          onClick={() =>
-            history.push(
-              `/news/edit/${newsId}?page=${currentPage}&filter=${currentFilter}`,
-              newsId
-            )
-          }
-        >
-          <Trans i18nKey={"news_popOver_Edit"} />
-        </Col>
-
-        <Col
-          xs={12}
-          className="col-item  "
-          // onClick={() => deleteMutation.mutate(newsId)}
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            // Swal.fire("Oops...", "Something went wrong!", "error");
-            Swal.fire({
-              title: `<img src="${comfromationIcon}"/>`,
-              html: `
+        {allPermissions?.name === "all" || subPermission?.includes(EDIT) ? (
+          <Col
+            xs={12}
+            className="col-item"
+            onClick={() =>
+              history.push(
+                `/news/edit/${newsId}?page=${currentPage}&filter=${currentFilter}`,
+                newsId
+              )
+            }
+          >
+            <Trans i18nKey={"news_popOver_Edit"} />
+          </Col>
+        ) : (
+          ""
+        )}
+        {allPermissions?.name === "all" || subPermission?.includes(DELETE) ? (
+          <Col
+            xs={12}
+            className="col-item  "
+            // onClick={() => deleteMutation.mutate(newsId)}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              // Swal.fire("Oops...", "Something went wrong!", "error");
+              Swal.fire({
+                title: `<img src="${comfromationIcon}"/>`,
+                html: `
                                       <h3 class="swal-heading">${t(
                                         "news_delete"
                                       )}</h3>
                                       <p>${t("news_sure")}</p>
                                       `,
-              showCloseButton: false,
-              showCancelButton: true,
-              focusConfirm: true,
-              cancelButtonText: `${t("cancel")}`,
-              cancelButtonAriaLabel: `${t("cancel")}`,
+                showCloseButton: false,
+                showCancelButton: true,
+                focusConfirm: true,
+                cancelButtonText: `${t("cancel")}`,
+                cancelButtonAriaLabel: `${t("cancel")}`,
 
-              confirmButtonText: `${t("confirm")}`,
-              confirmButtonAriaLabel: "Confirm",
-            }).then(async (result) => {
-              if (result.isConfirmed) {
-                deleteMutation.mutate(newsId);
-              }
-            });
-          }}
-        >
-          <Trans i18nKey={"news_popOver_Delete"} />
-        </Col>
-        <Col
-          xs={12}
-          className="col-item"
-          onClick={() =>
-            history.push(
-              `/news/add-language/${newsId}?page=${currentPage}&filter=${currentFilter}`,
-              newsId
-            )
-          }
-        >
-          <Trans i18nKey={"news_popOver_AddLang"} />
-        </Col>
+                confirmButtonText: `${t("confirm")}`,
+                confirmButtonAriaLabel: "Confirm",
+              }).then(async (result) => {
+                if (result.isConfirmed) {
+                  deleteMutation.mutate(newsId);
+                }
+              });
+            }}
+          >
+            <Trans i18nKey={"news_popOver_Delete"} />
+          </Col>
+        ) : (
+          ""
+        )}
+        {allPermissions?.name === "all" || subPermission?.includes(WRITE) ? (
+          <Col
+            xs={12}
+            className="col-item"
+            onClick={() =>
+              history.push(
+                `/news/add-language/${newsId}?page=${currentPage}&filter=${currentFilter}`,
+                newsId
+              )
+            }
+          >
+            <Trans i18nKey={"news_popOver_AddLang"} />
+          </Col>
+        ) : (
+          ""
+        )}
       </Row>
     </BtnContentWraper>
   );
 }
 
-export default function NewsCard({ data, currentPage, currentFilter }) {
+export default function NewsCard({
+  data,
+  currentPage,
+  currentFilter,
+  subPermission,
+  allPermissions,
+}) {
   const history = useHistory();
 
   return (
@@ -249,6 +273,8 @@ export default function NewsCard({ data, currentPage, currentFilter }) {
             newsId={data.id}
             currentPage={currentPage}
             currentFilter={currentFilter}
+            subPermission={subPermission}
+            allPermissions={allPermissions}
           />
         }
       />

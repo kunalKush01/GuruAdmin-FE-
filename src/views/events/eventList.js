@@ -20,6 +20,7 @@ import CustomDatePicker from "../../components/partials/customDatePicker";
 import HinduCalenderDetailCard from "../../components/events/hinduCalenderDetailCard";
 import { useSelector } from "react-redux";
 import NoContent from "../../components/partials/noContent";
+import { WRITE } from "../../utility/permissionsVariable";
 const EventWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -54,7 +55,7 @@ const EventWarper = styled.div`
     margin-top: 0.5rem;
     font: normal normal bold 13px/5px noto sans;
   }
-  .noContent{
+  .noContent {
     margin-left: 30rem;
   }
 `;
@@ -156,6 +157,20 @@ export default function EventList() {
     [eventQuery]
   );
 
+  // PERMISSSIONS
+  const permissions = useSelector(
+    (state) => state.auth.userDetail?.permissions
+  );
+  const allPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "all"
+  );
+  const subPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "events"
+  );
+
+  const subPermission = subPermissions?.subpermissions?.map(
+    (item) => item.name
+  );
   return (
     <EventWarper>
       <div className="window nav statusBar body "></div>
@@ -190,18 +205,27 @@ export default function EventList() {
                 history.push(`/events?page=${1}&filter=${e.target.name}`);
               }}
             />
-            <Button
-              color="primary"
-              className="addEvent-btn"
-              onClick={() => history.push(`/events/add?page=${pagination.page}&filter=${dropDownName}`)}
-            >
-              <span>
-                <Plus className="" size={15} strokeWidth={4} />
-              </span>
-              <span>
-                <Trans i18nKey={"events_AddEvent"} />
-              </span>
-            </Button>
+            {allPermissions?.name === "all" ||
+            subPermission?.includes(WRITE) ? (
+              <Button
+                color="primary"
+                className="addEvent-btn"
+                onClick={() =>
+                  history.push(
+                    `/events/add?page=${pagination.page}&filter=${dropDownName}`
+                  )
+                }
+              >
+                <span>
+                  <Plus className="" size={15} strokeWidth={4} />
+                </span>
+                <span>
+                  <Trans i18nKey={"events_AddEvent"} />
+                </span>
+              </Button>
+            ) : (
+              ""
+            )}
           </div>
         </div>
         <div style={{ height: "10px" }}>
@@ -240,18 +264,23 @@ export default function EventList() {
                       {eventItems.map((item) => {
                         return (
                           <Col xs={12} key={item.id} className={"p-0"}>
-                            <EventCard data={item} currentFilter={routFilter}
-                        currentPage={routPagination}/>
+                            <EventCard
+                              data={item}
+                              currentFilter={routFilter}
+                              allPermissions={allPermissions}
+                              subPermission={subPermission}
+                              currentPage={routPagination}
+                            />
                           </Col>
                         );
                       })}
                     </Then>
                     <Else>
-                      <div  className="noContent">
-                      <NoContent
-                        headingNotfound={t("events_not_found")}
-                        para={t("events_not_click_add_events")}
-                      />
+                      <div className="noContent">
+                        <NoContent
+                          headingNotfound={t("events_not_found")}
+                          para={t("events_not_click_add_events")}
+                        />
                       </div>
                     </Else>
                   </If>

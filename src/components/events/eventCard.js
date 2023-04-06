@@ -14,6 +14,7 @@ import comfromationIcon from "../../assets/images/icons/news/conformationIcon.sv
 import BtnPopover from "../partials/btnPopover";
 import { deleteEventDetail } from "../../api/eventApi";
 import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
+import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 
 const EventCardWaraper = styled.div`
   .card1 {
@@ -55,7 +56,13 @@ const EventCardWaraper = styled.div`
     margin-right: 10px;
   }
 `;
-function BtnContent({ eventId, currentPage, currentFilter }) {
+function BtnContent({
+  eventId,
+  currentPage,
+  currentFilter,
+  subPermission,
+  allPermissions,
+}) {
   const history = useHistory();
   const BtnContentWraper = styled.div`
     color: #583703;
@@ -88,68 +95,85 @@ function BtnContent({ eventId, currentPage, currentFilter }) {
   return (
     <BtnContentWraper>
       <Row className="MainContainer d-block">
-        <Col
-          xs={12}
-          className="col-item"
-          onClick={() =>
-            history.push(
-              `/events/edit/${eventId}?page=${currentPage}&filter=${currentFilter}`
-            )
-          }
-        >
-          <Trans i18nKey={"news_popOver_Edit"} />
-        </Col>
-
-        <Col
-          xs={12}
-          className="col-item  "
-          // onClick={() => deleteMutation.mutate(eventId)}
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            // Swal.fire("Oops...", "Something went wrong!", "error");
-            Swal.fire({
-              title: `<img src="${comfromationIcon}"/>`,
-              html: `
+        {allPermissions?.name === "all" || subPermission?.includes(EDIT) ? (
+          <Col
+            xs={12}
+            className="col-item"
+            onClick={() =>
+              history.push(
+                `/events/edit/${eventId}?page=${currentPage}&filter=${currentFilter}`
+              )
+            }
+          >
+            <Trans i18nKey={"news_popOver_Edit"} />
+          </Col>
+        ) : (
+          ""
+        )}
+        {allPermissions?.name === "all" || subPermission?.includes(DELETE) ? (
+          <Col
+            xs={12}
+            className="col-item  "
+            // onClick={() => deleteMutation.mutate(eventId)}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              // Swal.fire("Oops...", "Something went wrong!", "error");
+              Swal.fire({
+                title: `<img src="${comfromationIcon}"/>`,
+                html: `
                                       <h3 class="swal-heading">${t(
                                         "events_delete"
                                       )}</h3>
                                       <p>${t("events_sure")}</p>
                                       `,
-              showCloseButton: false,
-              showCancelButton: true,
-              focusConfirm: true,
-              cancelButtonText: ` ${t("cancel")}`,
-              cancelButtonAriaLabel: ` ${t("cancel")}`,
+                showCloseButton: false,
+                showCancelButton: true,
+                focusConfirm: true,
+                cancelButtonText: ` ${t("cancel")}`,
+                cancelButtonAriaLabel: ` ${t("cancel")}`,
 
-              confirmButtonText: ` ${t("confirm")}`,
-              confirmButtonAriaLabel: "Confirm",
-            }).then(async (result) => {
-              if (result.isConfirmed) {
-                deleteMutation.mutate(eventId);
-              }
-            });
-          }}
-        >
-          <Trans i18nKey={"news_popOver_Delete"} />
-        </Col>
-        <Col
-          xs={12}
-          className="col-item"
-          onClick={() =>
-            history.push(
-              `/events/add-language/${eventId}?page=${currentPage}&filter=${currentFilter}`
-            )
-          }
-        >
-          <Trans i18nKey={"news_popOver_AddLang"} />
-        </Col>
+                confirmButtonText: ` ${t("confirm")}`,
+                confirmButtonAriaLabel: "Confirm",
+              }).then(async (result) => {
+                if (result.isConfirmed) {
+                  deleteMutation.mutate(eventId);
+                }
+              });
+            }}
+          >
+            <Trans i18nKey={"news_popOver_Delete"} />
+          </Col>
+        ) : (
+          ""
+        )}
+        {allPermissions?.name === "all" || subPermission?.includes(WRITE) ? (
+          <Col
+            xs={12}
+            className="col-item"
+            onClick={() =>
+              history.push(
+                `/events/add-language/${eventId}?page=${currentPage}&filter=${currentFilter}`
+              )
+            }
+          >
+            <Trans i18nKey={"news_popOver_AddLang"} />
+          </Col>
+        ) : (
+          ""
+        )}
       </Row>
     </BtnContentWraper>
   );
 }
 
-export default function EventCard({ data, currentPage, currentFilter }) {
+export default function EventCard({
+  data,
+  currentPage,
+  currentFilter,
+  subPermission,
+  allPermissions,
+}) {
   const history = useHistory();
   return (
     <EventCardWaraper>
@@ -249,6 +273,8 @@ export default function EventCard({ data, currentPage, currentFilter }) {
             eventId={data.id}
             currentPage={currentPage}
             currentFilter={currentFilter}
+            subPermission={subPermission}
+            allPermissions={allPermissions}
           />
         }
       />

@@ -11,8 +11,9 @@ import Swal from "sweetalert2";
 import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
 import { deleteCategoryDetail } from "../../api/categoryApi";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
+import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 
-export function CategoryListTable({ data,page ,currentPage, currentFilter}) {
+export function CategoryListTable({ data,page ,currentPage, currentFilter ,subPermission,allPermissions }) {
   const handleDeleteCategory = async (payload) => {
     return deleteCategoryDetail(payload);
   };
@@ -71,7 +72,7 @@ export function CategoryListTable({ data,page ,currentPage, currentFilter}) {
       id:item?.serialNumber > 9 ? item?.serialNumber : `0${item?.serialNumber}`  ,
       masterCategory: ConverFirstLatterToCapital(item.masterCategory.name),
       subCategory: ConverFirstLatterToCapital(item.name),
-      addLanguage: (
+      addLanguage:  allPermissions?.name === "all" || subPermission?.includes(WRITE) ? (        
         <Button
           outline
           onClick={() =>
@@ -82,8 +83,8 @@ export function CategoryListTable({ data,page ,currentPage, currentFilter}) {
         >
           {"Add Language"}
         </Button>
-      ),
-      editCategory: (
+      ):(""),
+      editCategory: allPermissions?.name === "all" || subPermission?.includes(EDIT) ? (
         <img
           className="cursor-pointer"
           src={editIcon}
@@ -92,8 +93,8 @@ export function CategoryListTable({ data,page ,currentPage, currentFilter}) {
             history.push(`/configuration/categories/edit/${item.id}?page=${currentPage}&filter=${currentFilter}`)
           }
         />
-      ),
-      deleteCategory: (
+      ):(""),
+      deleteCategory:  allPermissions?.name === "all" || subPermission?.includes(DELETE) ? (
         <img
           className="cursor-pointer"
           src={deleteIcon}
@@ -123,7 +124,7 @@ export function CategoryListTable({ data,page ,currentPage, currentFilter}) {
             });
           }}
         />
-      ),
+      ):(""),
     }));
   }, [data]);
 

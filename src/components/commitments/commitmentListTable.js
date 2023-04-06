@@ -11,6 +11,7 @@ import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
+import { DELETE, EDIT } from "../../utility/permissionsVariable";
 import CustomDataTable from "../partials/CustomDataTable";
 
 export default function CommitmentListTable({
@@ -21,6 +22,8 @@ export default function CommitmentListTable({
   currentCategory,
   currentStatus,
   currentSubCategory,
+  subPermission,
+  allPermissions 
 }) {
   const handleDeleteCommitment = async (payload) => {
     return deleteCommitment(payload);
@@ -178,7 +181,7 @@ export default function CommitmentListTable({
           ) : (
             "-"
           ),
-        edit: (
+        edit: allPermissions?.name === "all" || subPermission?.includes(EDIT) ? (
           <img
             src={editIcon}
             width={35}
@@ -193,8 +196,8 @@ export default function CommitmentListTable({
                   );
             }}
           />
-        ),
-        delete: (
+        ):"",
+        delete: allPermissions?.name === "all" || subPermission?.includes(DELETE) ? (
           <img
             src={deleteIcon}
             width={35}
@@ -230,7 +233,7 @@ export default function CommitmentListTable({
                   });
             }}
           />
-        ),
+        ):"",
       };
     });
   }, [data]);

@@ -30,6 +30,7 @@ import {
 } from "../../../components/users/userListTable";
 import { getAllUser } from "../../../api/userApi";
 import NoContent from "../../../components/partials/noContent";
+import { WRITE } from "../../../utility/permissionsVariable";
 const NewsWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -149,7 +150,20 @@ export default function User() {
         languageId: selectedLang.id,
       })
   );
+  // PERMISSSIONS
+  const permissions = useSelector(
+    (state) => state.auth.userDetail?.permissions
+  );
+  const allPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "all"
+  );
+  const subPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "configuration"
+  );
 
+  const subPermission = subPermissions?.subpermissions?.map(
+    (item) => item.name
+  );
   return (
     <NewsWarper>
       <div className="window nav statusBar body "></div>
@@ -171,20 +185,27 @@ export default function User() {
             </div>
           </div>
           <div className="addNews">
-            <Button
-              color="primary"
-              className="addNews-btn"
-              onClick={() =>
-                history.push(`/configuration/users/add?page=${pagination.page}`)
-              }
-            >
-              <span>
-                <Plus className="" size={15} strokeWidth={4} />
-              </span>
-              <span>
-                <Trans i18nKey={"users_AddUser"} />
-              </span>
-            </Button>
+            {allPermissions?.name === "all" ||
+            subPermission?.includes(WRITE) ? (
+              <Button
+                color="primary"
+                className="addNews-btn"
+                onClick={() =>
+                  history.push(
+                    `/configuration/users/add?page=${pagination.page}`
+                  )
+                }
+              >
+                <span>
+                  <Plus className="" size={15} strokeWidth={4} />
+                </span>
+                <span>
+                  <Trans i18nKey={"users_AddUser"} />
+                </span>
+              </Button>
+            ) : (
+              ""
+            )}
           </div>
         </div>
         <div style={{ height: "10px" }}>
@@ -218,6 +239,8 @@ export default function User() {
                     <SubAdminUserListTable
                       data={userItems}
                       currentPage={routPagination}
+                      allPermissions={allPermissions}
+                      subPermission={subPermission}
                     />
                   </Then>
                   <Else>

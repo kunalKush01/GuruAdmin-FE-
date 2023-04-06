@@ -18,6 +18,7 @@ import NoContent from "../../components/partials/noContent";
 import SubscribedUSerListTable from "../../components/subscribedUser/subscribedUserListTable";
 import { getAllPunyarjak } from "../../api/punarjakApi";
 import PunyarjakTable from "../../components/Punyarjak/punyarjakUserListTable";
+import { WRITE } from "../../utility/permissionsVariable";
 
 const PunyarjakWarapper = styled.div`
   color: #583703;
@@ -50,14 +51,12 @@ const PunyarjakWarapper = styled.div`
   }
   .filterPeriod {
     color: #ff8744;
-    margin-top:.5rem;
+    margin-top: 0.5rem;
     font: normal normal bold 13px/5px noto sans;
   }
 `;
 
-
-
-export default function Punyarjak () {
+export default function Punyarjak() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const periodDropDown = () => {
@@ -106,18 +105,24 @@ export default function Punyarjak () {
 
   let startDate = moment(filterStartDate).format("DD MMM");
   let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
-  const searchBarValue = useSelector((state) => state.search.LocalSearch  );
+  const searchBarValue = useSelector((state) => state.search.LocalSearch);
 
   const punyarjakUsersQuery = useQuery(
-    ["punyarjak", pagination.page, selectedLang.id,filterEndDate,filterStartDate,searchBarValue],
+    [
+      "punyarjak",
+      pagination.page,
+      selectedLang.id,
+      filterEndDate,
+      filterStartDate,
+      searchBarValue,
+    ],
     () =>
       getAllPunyarjak({
         ...pagination,
         startDate: filterStartDate,
         endDate: filterEndDate,
         languageId: selectedLang.id,
-        search:searchBarValue
-        
+        search: searchBarValue,
       }),
     {
       keepPreviousData: true,
@@ -129,14 +134,27 @@ export default function Punyarjak () {
     [punyarjakUsersQuery]
   );
 
-  
+  // PERMISSSIONS
+  const permissions = useSelector(
+    (state) => state.auth.userDetail?.permissions
+  );
+  const allPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "all"
+  );
+  const subPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "punyarjak"
+  );
+
+  const subPermission = subPermissions?.subpermissions?.map(
+    (item) => item.name
+  );
 
   return (
     <PunyarjakWarapper>
       <div className="window nav statusBar body "></div>
 
       <div>
-      <div className="d-flex justify-content-between align-items-center ">
+        <div className="d-flex justify-content-between align-items-center ">
           <div className="d-flex justify-content-between align-items-center ">
             <img
               src={arrowLeft}
@@ -157,23 +175,30 @@ export default function Punyarjak () {
             </div>
           </div>
           <div className="addNews">
-          {/* <ChangePeriodDropDown
+            {/* <ChangePeriodDropDown
               className={"me-1"}
               dropDownName={dropDownName}
               setdropDownName={(e) => setdropDownName(e.target.name)}
             /> */}
-            <Button
-              color="primary"
-              className="addNews-btn"
-              onClick={() => history.push(`/punyarjak/add?page=${pagination.page}`)}
-            >
-              <span>
-                <Plus className="" size={15} strokeWidth={4} />
-              </span>
-              <span>
-                <Trans i18nKey={"add_punyarjak"} />
-              </span>
-            </Button>
+            {allPermissions?.name === "all" ||
+            subPermission?.includes(WRITE) ? (
+              <Button
+                color="primary"
+                className="addNews-btn"
+                onClick={() =>
+                  history.push(`/punyarjak/add?page=${pagination.page}`)
+                }
+              >
+                <span>
+                  <Plus className="" size={15} strokeWidth={4} />
+                </span>
+                <span>
+                  <Trans i18nKey={"add_punyarjak"} />
+                </span>
+              </Button>
+            ) : (
+              ""
+            )}
           </div>
         </div>
         <div style={{ height: "10px" }}>
@@ -204,12 +229,17 @@ export default function Punyarjak () {
               <Else>
                 <If condition={punyarjakUsers.length != 0} disableMemo>
                   <Then>
-                    <PunyarjakTable data={punyarjakUsers}  currentPage={routPagination} />
+                    <PunyarjakTable
+                      data={punyarjakUsers}
+                      allPermissions={allPermissions}
+                      subPermission={subPermission}
+                      currentPage={routPagination}
+                    />
                   </Then>
                   <Else>
-                    <NoContent 
-                        headingNotfound={t("punyarjak_not_found")}
-                        para={t("punyarjak_not_click_add")}
+                    <NoContent
+                      headingNotfound={t("punyarjak_not_found")}
+                      para={t("punyarjak_not_click_add")}
                     />
                   </Else>
                 </If>

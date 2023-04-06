@@ -17,7 +17,11 @@ import { ChangePeriodDropDown } from "../../components/partials/changePeriodDrop
 import NoContent from "../../components/partials/noContent";
 import { ChangeCategoryType } from "../../components/partials/categoryDropdown";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-import { getAllCategories, getAllMasterCategories } from "../../api/categoryApi";
+import {
+  getAllCategories,
+  getAllMasterCategories,
+} from "../../api/categoryApi";
+import { WRITE } from "../../utility/permissionsVariable";
 
 const DoationWarper = styled.div`
   color: #583703;
@@ -89,7 +93,6 @@ export default function Donation() {
   const currentCategory = searchParams.get("category");
   const currentSubCategory = searchParams.get("subCategory");
 
-
   useEffect(() => {
     if (currentPage || currentCategory || currentFilter || currentSubCategory) {
       setCategoryTypeName(currentCategory);
@@ -137,10 +140,10 @@ export default function Donation() {
 
   // sub category
   const subCategoryTypeQuery = useQuery(
-    ["subCategoryTypes",newId],
+    ["subCategoryTypes", newId],
     () =>
       getAllCategories({
-        masterId:newId,
+        masterId: newId,
         languageId: selectedLang.id,
       }),
     {
@@ -193,6 +196,21 @@ export default function Donation() {
     () => donationQuery?.data?.results ?? [],
     [donationQuery]
   );
+
+  // PERMISSSIONS
+  const permissions = useSelector(
+    (state) => state.auth.userDetail?.permissions
+  );
+  const allPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "all"
+  );
+  const subPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "donation"
+  );
+
+  const subPermission = subPermissions?.subpermissions?.map(
+    (item) => item.name
+  );
   return (
     <DoationWarper>
       <div className="window nav statusBar body "></div>
@@ -227,7 +245,11 @@ export default function Donation() {
                 setCategoryId(e.target.id);
                 setCategoryTypeName(e.target.name);
                 setPagination({ page: 1 });
-                history.push(`/donation?page=${1}&category=${e.target.name}&subCategory=${subCategoryTypeName}&filter=${dropDownName}`);
+                history.push(
+                  `/donation?page=${1}&category=${
+                    e.target.name
+                  }&subCategory=${subCategoryTypeName}&filter=${dropDownName}`
+                );
               }}
             />
             <ChangeCategoryType
@@ -238,7 +260,11 @@ export default function Donation() {
                 setSubCategoryTypeId(e.target.id);
                 setSubCategoryTypeName(e.target.name);
                 setPagination({ page: 1 });
-                history.push(`/donation?page=${1}&category=${categoryTypeName}&subCategory=${e.target.name}&filter=${dropDownName}`);
+                history.push(
+                  `/donation?page=${1}&category=${categoryTypeName}&subCategory=${
+                    e.target.name
+                  }&filter=${dropDownName}`
+                );
               }}
             />
             <ChangePeriodDropDown
@@ -247,25 +273,34 @@ export default function Donation() {
               setdropDownName={(e) => {
                 setdropDownName(e.target.name);
                 setPagination({ page: 1 });
-                history.push(`/donation?page=${1}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${e.target.name}`);
+                history.push(
+                  `/donation?page=${1}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${
+                    e.target.name
+                  }`
+                );
               }}
             />
-            <Button
-              color="primary"
-              className="addDonation-btn "
-              onClick={() =>
-                history.push(
-                  `/donation/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}`
-                )
-              }
-            >
-              <span>
-                <Plus className="" size={15} strokeWidth={4} />
-              </span>
-              <span>
-                <Trans i18nKey={"donation_Adddonation"} />
-              </span>
-            </Button>
+            {allPermissions?.name === "all" ||
+            subPermission?.includes(WRITE) ? (
+              <Button
+                color="primary"
+                className="addDonation-btn "
+                onClick={() =>
+                  history.push(
+                    `/donation/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}`
+                  )
+                }
+              >
+                <span>
+                  <Plus className="" size={15} strokeWidth={4} />
+                </span>
+                <span>
+                  <Trans i18nKey={"donation_Adddonation"} />
+                </span>
+              </Button>
+            ) : (
+              ""
+            )}
           </div>
         </div>
         <div style={{ height: "10px" }}>
@@ -296,7 +331,11 @@ export default function Donation() {
               <Else>
                 <If condition={donationItems.length != 0} disableMemo>
                   <Then>
-                    <DonationListTable data={donationItems} />
+                    <DonationListTable
+                      data={donationItems}
+                      allPermissions={allPermissions}
+                      subPermission={subPermission}
+                    />
                   </Then>
                   <Else>
                     <NoContent

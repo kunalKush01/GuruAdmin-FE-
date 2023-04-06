@@ -16,6 +16,7 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { ExpensesListTable } from "../../components/internalExpenses/expensesListTable";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
 import NoContent from "../../components/partials/noContent";
+import { WRITE } from "../../utility/permissionsVariable";
 const NewsWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -133,6 +134,20 @@ export default function Expenses() {
     [expensesQuery]
   );
 
+  // PERMISSSIONS
+  const permissions = useSelector(
+    (state) => state.auth.userDetail?.permissions
+  );
+  const allPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "all"
+  );
+  const subPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "categories"
+  );
+
+  const subPermission = subPermissions?.subpermissions?.map(
+    (item) => item.name
+  );
   return (
     <NewsWarper>
       <div className="window nav statusBar body "></div>
@@ -170,6 +185,8 @@ export default function Expenses() {
                 );
               }}
             />
+              {allPermissions?.name === "all" ||
+            subPermission?.includes(WRITE) ? (
             <Button
               color="primary"
               className="addNews-btn"
@@ -185,7 +202,7 @@ export default function Expenses() {
               <span>
                 <Trans i18nKey={"expenses_AddExpenses"} />
               </span>
-            </Button>
+            </Button>):""}
           </div>
         </div>
         <div style={{ height: "10px" }}>
@@ -221,6 +238,8 @@ export default function Expenses() {
                       currentFilter={routFilter}
                       currentPage={routPagination}
                       page={pagination}
+                      allPermissions={allPermissions}
+                      subPermission={subPermission}
                     />
                   </Then>
                   <Else>

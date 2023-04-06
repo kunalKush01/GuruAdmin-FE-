@@ -14,6 +14,7 @@ import { deleteExpensesDetail } from "../../api/expenseApi";
 import he from "he";
 import moment from "moment";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
+import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 
 export function ExpensesListTable({
   data,
@@ -21,6 +22,8 @@ export function ExpensesListTable({
   currentFilter,
   currentPage,
   financeReport,
+  subPermission,
+  allPermissions 
 }) {
   const handleDeleteExpenses = async (payload) => {
     return deleteExpensesDetail(payload);
@@ -113,7 +116,7 @@ export function ExpensesListTable({
       date: moment(item?.expenseDate).utcOffset(0).format("DD MMM YYYY"),
       amount: `₹${item.amount}`,
       createdBy:ConverFirstLatterToCapital(item?.createdBy?.name ?? ""),
-      edit: (
+      edit:  allPermissions?.name === "all" || subPermission?.includes(EDIT) ? (
         <img
           src={editIcon}
           width={35}
@@ -128,8 +131,8 @@ export function ExpensesListTable({
                 );
           }}
         />
-      ),
-      delete: (
+      ):(""),
+      delete: allPermissions?.name === "all" || subPermission?.includes(DELETE) ? (
         <img
           src={deleteIcon}
           width={35}
@@ -165,7 +168,7 @@ export function ExpensesListTable({
                 });
           }}
         />
-      ),
+      ):"",
       // viewLogs: (
       //   <div
       //     className={`cursor-pointer viewLogs ${

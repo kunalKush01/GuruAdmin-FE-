@@ -21,6 +21,7 @@ import { CustomReactSelect } from "../../../components/partials/customReactSelec
 import NoContent from "../../../components/partials/noContent";
 import { ChangeCategoryType } from "../../../components/partials/categoryDropdown";
 import { ConverFirstLatterToCapital } from "../../../utility/formater";
+import { WRITE } from "../../../utility/permissionsVariable";
 const NewsWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -158,6 +159,20 @@ export default function Category() {
     () => categoryQuery?.data?.results ?? [],
     [categoryQuery]
   );
+  // PERMISSSIONS
+  const permissions = useSelector(
+    (state) => state.auth.userDetail?.permissions
+  );
+  const allPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "all"
+  );
+  const subPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "configuration"
+  );
+
+  const subPermission = subPermissions?.subpermissions?.map(
+    (item) => item.name
+  );
 
   const masterloadOptionQuery = useQuery(
     ["MasterCategory", selectedLang.id],
@@ -201,22 +216,27 @@ export default function Category() {
                 );
               }}
             />
-            <Button
-              color="primary"
-              className="addNews-btn"
-              onClick={() =>
-                history.push(
-                  `/configuration/categories/add?page=${pagination.page}&filter=${dropDownName}`
-                )
-              }
-            >
-              <span>
-                <Plus className="" size={15} strokeWidth={4} />
-              </span>
-              <span>
-                <Trans i18nKey={"categories_AddCategory"} />
-              </span>
-            </Button>
+            {allPermissions?.name === "all" ||
+            subPermission?.includes(WRITE) ? (
+              <Button
+                color="primary"
+                className="addNews-btn"
+                onClick={() =>
+                  history.push(
+                    `/configuration/categories/add?page=${pagination.page}&filter=${dropDownName}`
+                  )
+                }
+              >
+                <span>
+                  <Plus className="" size={15} strokeWidth={4} />
+                </span>
+                <span>
+                  <Trans i18nKey={"categories_AddCategory"} />
+                </span>
+              </Button>
+            ) : (
+              ""
+            )}
           </div>
         </div>
         <div style={{ height: "10px" }}>
@@ -251,6 +271,8 @@ export default function Category() {
                       <CategoryListTable
                         data={categoryItems}
                         page={pagination}
+                        allPermissions={allPermissions}
+                        subPermission={subPermission}
                         currentFilter={routFilter}
                         currentPage={routPagination}
                       />

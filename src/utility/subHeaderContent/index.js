@@ -10,7 +10,7 @@ export const subHeaderContent = [
   },
 
   {
-    name: "committment",
+    name: "commitment",
     url: "/commitment",
   },
   {

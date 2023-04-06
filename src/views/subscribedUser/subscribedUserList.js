@@ -16,6 +16,7 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
 import NoContent from "../../components/partials/noContent";
 import SubscribedUSerListTable from "../../components/subscribedUser/subscribedUserListTable";
+import { WRITE } from "../../utility/permissionsVariable";
 
 const SubscribedUserWarper = styled.div`
   color: #583703;
@@ -48,14 +49,12 @@ const SubscribedUserWarper = styled.div`
   }
   .filterPeriod {
     color: #ff8744;
-    margin-top:.5rem;
+    margin-top: 0.5rem;
     font: normal normal bold 13px/5px noto sans;
   }
 `;
 
-
-
-export default function SubscribedUser () {
+export default function SubscribedUser() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const periodDropDown = () => {
@@ -91,18 +90,24 @@ export default function SubscribedUser () {
 
   let startDate = moment(filterStartDate).format("DD MMM");
   let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
-  const searchBarValue = useSelector((state) => state.search.LocalSearch  );
+  const searchBarValue = useSelector((state) => state.search.LocalSearch);
 
   const subscribedUserQuery = useQuery(
-    ["subscribedUser", pagination.page, selectedLang.id,filterEndDate,filterStartDate,searchBarValue],
+    [
+      "subscribedUser",
+      pagination.page,
+      selectedLang.id,
+      filterEndDate,
+      filterStartDate,
+      searchBarValue,
+    ],
     () =>
       getAllSubscribedUser({
         ...pagination,
         startDate: filterStartDate,
         endDate: filterEndDate,
         languageId: selectedLang.id,
-        search:searchBarValue
-        
+        search: searchBarValue,
       }),
     {
       keepPreviousData: true,
@@ -114,14 +119,28 @@ export default function SubscribedUser () {
     [subscribedUserQuery]
   );
 
-  
+  // PERMISSSIONS
+  const permissions = useSelector(
+    (state) => state.auth.userDetail?.permissions
+  );
+  const allPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "all"
+  );
+  const subPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "dashboard"
+  );
+console.log(permissions);
+
+  const subPermission = subPermissions?.subpermissions?.map(
+    (item) => item.name
+  );
 
   return (
     <SubscribedUserWarper>
       <div className="window nav statusBar body "></div>
 
       <div>
-      <div className="d-flex justify-content-between align-items-center ">
+        <div className="d-flex justify-content-between align-items-center ">
           <div className="d-flex justify-content-between align-items-center ">
             <img
               src={arrowLeft}
@@ -142,11 +161,13 @@ export default function SubscribedUser () {
             </div>
           </div>
           <div className="addNews">
-          <ChangePeriodDropDown
+            <ChangePeriodDropDown
               className={"me-1"}
               dropDownName={dropDownName}
               setdropDownName={(e) => setdropDownName(e.target.name)}
             />
+             {allPermissions?.name === "all" ||
+            subPermission?.includes(WRITE) ? (
             <Button
               color="primary"
               className="addNews-btn"
@@ -158,7 +179,7 @@ export default function SubscribedUser () {
               <span>
                 <Trans i18nKey={"subscribed_user_add_user"} />
               </span>
-            </Button>
+            </Button>):""}
           </div>
         </div>
         <div style={{ height: "10px" }}>
@@ -189,12 +210,16 @@ export default function SubscribedUser () {
               <Else>
                 <If condition={subscribedUsers.length != 0} disableMemo>
                   <Then>
-                    <SubscribedUSerListTable data={subscribedUsers} />
+                    <SubscribedUSerListTable
+                      data={subscribedUsers}
+                      allPermissions={allPermissions}
+                      subPermission={subPermission}
+                    />
                   </Then>
                   <Else>
-                    <NoContent 
-                        headingNotfound={t("notifications_not_found")}
-                        para={t("notifications_not_click_add")}
+                    <NoContent
+                      headingNotfound={t("notifications_not_found")}
+                      para={t("notifications_not_click_add")}
                     />
                   </Else>
                 </If>

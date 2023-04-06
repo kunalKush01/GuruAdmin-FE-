@@ -11,6 +11,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import comfromationIcon from "../../../../../assets/images/icons/news/conformationIcon.svg";
 import { useLayoutEffect } from "react";
+import { useSelector } from "react-redux";
 
 const SubHeaderWarraper = styled.div`
   font: normal normal normal 15px/20px noto sans;
@@ -90,7 +91,12 @@ const HorizontalMenu = ({ menuData, currentActiveItem, routerProps }) => {
   }, [closePopover]);
 
   const location = useLocation();
+  const permissions = useSelector(
+    (state) => state.auth.userDetail?.permissions
+  );
   const [active, setActive] = useState();
+  const permissionsKey = permissions?.map((item) => item?.name);
+
 
   useLayoutEffect(() => {
     setActive(location.pathname);
@@ -99,10 +105,14 @@ const HorizontalMenu = ({ menuData, currentActiveItem, routerProps }) => {
   return (
     <div className="navbar-container w-100 main-menu-content">
       <ul
-        className="nav navbar-nav justify-content-between  "
+        className={`nav navbar-nav ${permissionsKey?.length >= 10 || permissionsKey?.length === 1 ? "justify-content-between" : "gap-5"}  `}
         id="main-menu-navigation"
       >
         {menuData.map((item, idx) => {
+          if (
+            permissionsKey?.includes("all") ||
+            permissionsKey?.includes(item?.name)
+          ) {
           return (
             <SubHeaderWarraper key={idx}>
               <div
@@ -111,6 +121,7 @@ const HorizontalMenu = ({ menuData, currentActiveItem, routerProps }) => {
                   item.url != "/configuration" ? history.push(item.url) : "";
                   //  setActive(item)
                 }}
+                key={idx}
                 className={`text-light ${
                   active?.includes(item.url) ? "activeTab" : ""
                 } `}
@@ -124,7 +135,9 @@ const HorizontalMenu = ({ menuData, currentActiveItem, routerProps }) => {
                 />
               )}
             </SubHeaderWarraper>
-          );
+          );} else {
+            return null;
+          }
         })}
       </ul>
     </div>
