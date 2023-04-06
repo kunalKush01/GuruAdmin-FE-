@@ -18,6 +18,7 @@ import { DefaultRoute, Routes } from './routes'
 import BlankLayout from '@layouts/BlankLayout'
 import VerticalLayout from '@src/layouts/VerticalLayout'
 import HorizontalLayout from '@src/layouts/HorizontalLayout'
+import Permission from '../components/Permissions/Permission'
 
 const Router = () => {
   // ** Hooks
@@ -141,41 +142,46 @@ const Router = () => {
                         <Fragment>
                           {/* Layout Wrapper to add classes based on route's layout, appLayout and className */}
 
-                          {route.layout === 'BlankLayout' ? (
+                          {route.layout === "BlankLayout" ? (
                             <Fragment>
                               <route.component {...props} />
                             </Fragment>
                           ) : (
-                            <LayoutWrapper
-                              layout={DefaultLayout}
-                              transition={transition}
-                              setTransition={setTransition}
-                              /* Conditional props */
-                              /*eslint-disable */
-                              {...(route.appLayout
-                                ? {
-                                    appLayout: route.appLayout
-                                  }
-                                : {})}
-                              {...(route.meta
-                                ? {
-                                    routeMeta: route.meta
-                                  }
-                                : {})}
-                              {...(route.className
-                                ? {
-                                    wrapperClass: route.className
-                                  }
-                                : {})}
-                              /*eslint-enable */
+                            <Permission
+                              type={route?.type}
+                              subPermission={route?.subPermission}
                             >
-                              <Suspense fallback={null}>
-                                <route.component {...props} />
-                              </Suspense>
-                            </LayoutWrapper>
+                              <LayoutWrapper
+                                layout={DefaultLayout}
+                                transition={transition}
+                                setTransition={setTransition}
+                                /* Conditional props */
+                                /*eslint-disable */
+                                {...(route.appLayout
+                                  ? {
+                                      appLayout: route.appLayout,
+                                    }
+                                  : {})}
+                                {...(route.meta
+                                  ? {
+                                      routeMeta: route.meta,
+                                    }
+                                  : {})}
+                                {...(route.className
+                                  ? {
+                                      wrapperClass: route.className,
+                                    }
+                                  : {})}
+                                /*eslint-enable */
+                              >
+                                <Suspense fallback={null}>
+                                  <route.component {...props} />
+                                </Suspense>
+                              </LayoutWrapper>
+                            </Permission>
                           )}
                         </Fragment>
-                      )
+                      );
                     }}
                   />
                 )

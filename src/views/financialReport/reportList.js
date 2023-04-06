@@ -285,7 +285,7 @@ export default function FinancialReport() {
           <div className="d-flex align-items-center my-3 my-sm-2 my-md-0 mb-md-2">
             <img
               src={arrowLeft}
-              className="me-2  cursor-pointer align-self-end"
+              className="me-2  cursor-pointer align-self-center"
               onClick={() => history.push("/")}
             />
             <div className="addNews d-flex">

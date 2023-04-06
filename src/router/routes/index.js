@@ -1,4 +1,5 @@
 import { lazy } from "react";
+import { EDIT, READ, WRITE } from "../../utility/permissionsVariable.js";
 
 // ** Document title
 const TemplateTitle = "%s - Vuexy React Admin Template";
@@ -35,248 +36,366 @@ const Routes = [
   {
     path: "/dashboard",
     component: lazy(() => import("../../views/dashboard/dashboard")),
-    
+    type: "dashboard",
+    subPermission: READ,
   },
   {
     path: "/events/about/:eventId",
     component: lazy(() => import("../../views/events/eventDetailPage")),
     exact: true,
+    type:"events",
+    subPermission:READ
   },
   {
     path: "/notices/about/:noticeId",
     component: lazy(() => import("../../views/notices/noticeDetailPage")),
     exact: true,
+    type:"notices",
+    subPermission:READ
   },
   {
     path: "/news/about/:newsId",
     component: lazy(() => import("../../views/news/newsDetailPage")),
     exact: true,
+    type:"news",
+    subPermission:READ
   },
   {
     path: "/notification",
     component: lazy(() => import("../../views/Notification/notificationList")),
-    
+    type:"notification"
   },
   {
     path: "/edit-profile",
     component: lazy(() => import("../../views/Profile/userProfile")),
+    type:"editProfile"
   },
+  // {
+  //   path: "/facilities",
+  //   component: lazy(() => import("../../views/Profile/facilityForm")),
+  //   exact: true,
+  // },
   {
-    path: "/facilities",
-    component: lazy(() => import("../../views/Profile/facilityForm")),
+    path: "/subscribed-user",
+    component: lazy(() =>
+      import("../../views/subscribedUser/subscribedUserList")
+    ),
     exact: true,
+    type:"dashboard",
+    subPermission:READ
   },
   {
-    path:"/subscribed-user",
-    component:lazy(()=> import("../../views/subscribedUser/subscribedUserList")),
-    exact:true
+    path: "/subscribed-user/add",
+    component: lazy(() =>
+      import("../../views/subscribedUser/addSubscribedUser")
+    ),
+    type:"dashboard",
+    subPermission:WRITE
   },
   {
-    path:"/subscribed-user/add",
-    component:lazy(()=> import("../../views/subscribedUser/addSubscribedUser"))
+    path: "/Add-user",
+    component: lazy(() => import("../../views/subscribedUser/addUser")),
+    type:"donation",
+    subPermission:WRITE
+  },
+
+  {
+    path: "/news",
+    component: lazy(() => import("../../views/news/newsList")),
+    exact: true,
+    type:"news",
+    subPermission:READ
   },
   {
-    path:"/Add-user",
-    component:lazy(()=> import("../../views/subscribedUser/addUser"))
+    path: "/news/add",
+    component: lazy(() => import("../../views/news/addNews")),
+    // exact:true
+    type:"news",
+    subPermission:WRITE
   },
+  {
+    path: "/news/edit/:newsId",
+    component: lazy(() => import("../../views/news/editNews")),
+    // exact:true
+    type:"news",
+    subPermission:EDIT
+  },
+  {
+    path: "/news/add-language/:newsId",
+    component: lazy(() => import("../../views/news/addNewsLanguage")),
+    // exact:true
+    type:"news",
+    subPermission:WRITE
+  },
+  {
+    path: "/events",
+    component: lazy(() => import("../../views/events/eventList")),
+    exact: true,
+    type:"events",
+    subPermission:READ
+  },
+  {
+    path: "/events/add",
+    component: lazy(() => import("../../views/events/addEvent")),
+    exact: true,
+    type:"events",
+    subPermission:WRITE
+  },
+  {
+    path: "/events/add-language/:eventId",
+    component: lazy(() => import("../../views/events/addEventLanguage")),
+    // exact:true
+    type:"events",
+    subPermission:WRITE
+  },
+  {
+    path: "/events/edit/:eventId",
+    component: lazy(() => import("../../views/events/editEvent")),
+    // exact:true
+    type:"events",
+    subPermission:EDIT
+  },
+  {
+    path: "/notices",
+    component: lazy(() => import("../../views/notices/noticeList")),
+    exact: true,
+    type:"notices",
+    subPermission:READ
+  },
+  {
+    path: "/notices/add",
+    component: lazy(() => import("../../views/notices/addNotice")),
+    exact: true,
+    type:"notices",
+    subPermission:WRITE
+  },
+  {
+    path: "/notices/add-language/:noticeId",
+    component: lazy(() => import("../../views/notices/addNoticeLanguage")),
+    // exact:true
+    type:"notices",
+    subPermission:WRITE
+  },
+  {
+    path: "/notices/edit/:noticeId",
+    component: lazy(() => import("../../views/notices/editNotice")),
+    // exact:true
+    type:"notices",
+    subPermission:EDIT
+  },
+  {
+    path: "/configuration/categories",
+    component: lazy(() =>
+      import("../../views/configuration/categories/categoryList")
+    ),
+    exact: true,
+    type:"configuration",
+    subPermission:READ
+  },
+
+  {
+    path: "/configuration/categories/add",
+    component: lazy(() =>
+      import("../../views/configuration/categories/addCategory")
+    ),
+    // exact:true  
+    type:"configuration",
+    subPermission:WRITE
+  },
+  {
+    path: "/configuration/categories/edit/:subCategoryId",
+    component: lazy(() =>
+      import("../../views/configuration/categories/editCategory")
+    ),
+    // exact:true
+    type:"configuration",
+    subPermission:EDIT
   
-  {
-    path: '/news',
-    component: lazy(() => import('../../views/news/newsList')),
-    exact:true
   },
   {
-    path: '/news/add',
-    component: lazy(() => import('../../views/news/addNews')),
+    path: "/configuration/categories/add-language/:subCategoryId",
+    component: lazy(() =>
+      import("../../views/configuration/categories/addCategoryLanguage")
+    ),
     // exact:true
-  },
-  {
-    path: '/news/edit/:newsId',
-    component: lazy(() => import('../../views/news/editNews')),
-    // exact:true
-  },
-  {
-    path: '/news/add-language/:newsId',
-    component: lazy(() => import('../../views/news/addNewsLanguage')),
-    // exact:true
-  },
-  {
-    path: '/events',
-    component: lazy(() => import('../../views/events/eventList')),
-    exact:true
-  },
-  {
-    path: '/events/add',
-    component: lazy(() => import('../../views/events/addEvent')),
-    exact:true
-  },
-  {
-    path: '/events/add-language/:eventId',
-    component: lazy(() => import('../../views/events/addEventLanguage')),
-    // exact:true
-  },
-  {
-    path: '/events/edit/:eventId',
-    component: lazy(() => import('../../views/events/editEvent')),
-    // exact:true
-  },
-  {
-    path: '/notices',
-    component: lazy(() => import('../../views/notices/noticeList')),
-    exact:true
-  },
-  {
-    path: '/notices/add',
-    component: lazy(() => import('../../views/notices/addNotice')),
-    exact:true
-  },
-  {
-    path: '/notices/add-language/:noticeId',
-    component: lazy(() => import('../../views/notices/addNoticeLanguage')),
-    // exact:true
-  },
-  {
-    path: '/notices/edit/:noticeId',
-    component: lazy(() => import('../../views/notices/editNotice')),
-    // exact:true
-  },
-  {
-    path: '/configuration/categories',
-    component: lazy(() => import('../../views/configuration/categories/categoryList')),
-    exact:true
-  },
+    type:"configuration",
+    subPermission:WRITE
   
-  {
-    path: '/configuration/categories/add',
-    component: lazy(() => import('../../views/configuration/categories/addCategory')),
-    // exact:true
   },
   {
-    path: '/configuration/categories/edit/:subCategoryId',
-    component: lazy(() => import('../../views/configuration/categories/editCategory')),
-    // exact:true
-  },
-  {
-    path: '/configuration/categories/add-language/:subCategoryId',
-    component: lazy(() => import('../../views/configuration/categories/addCategoryLanguage')),
-    // exact:true
-  },
-  {
-    path: '/configuration/users',
-    component: lazy(() => import('../../views/configuration/users/userList')),
-    exact:true
-  },
+    path: "/configuration/users",
+    component: lazy(() => import("../../views/configuration/users/userList")),
+    exact: true,
+    type:"configuration",
+    subPermission:READ
   
+  },
+
   {
-    path: '/configuration/users/add',
-    component: lazy(() => import('../../views/configuration/users/addUser')),
+    path: "/configuration/users/add",
+    component: lazy(() => import("../../views/configuration/users/addUser")),
     // exact:true
-  },
-  {
-    path: '/configuration/users/edit/:subAdminId',
-    component: lazy(() => import('../../views/configuration/users/editUser')),
-    // exact:true
-  },
-  {
-    path: '/configuration/reportDispute',
-    component: lazy(() => import('../../views/configuration/Report&Disput/reportDisputList')),
-    // exact:true
-  },
-  {
-    path: '/internal_expenses',
-    component: lazy(() => import('../../views/internalExpenses/expensesList')),
-    exact:true
-  },
-  {
-    path: '/internal_expenses/add',
-    component: lazy(() => import('../../views/internalExpenses/addExpenses.js')),
-    // exact:true
-  },
-  {
-    path: '/internal_expenses/edit/:expensesId',
-    component: lazy(() => import('../../views/internalExpenses/editExpenses.js')),
-    // exact:true
-  },
-  {
-    path: '/financial_reports',
-    component: lazy(() => import('../../views/financialReport/reportList.js')),
-    exact:true
-  },
-  {
-    path: '/donation',
-    component: lazy(() => import('../../views/donation/donationList.js')),
-    exact:true
-  },
-  {
-    path: '/donation/add',
-    component: lazy(() => import('../../views/donation/addDonation')),
-    exact:true
-  },
-  {
-    path: '/commitment',
-    component: lazy(() => import('../../views/commitments/commitmentList.js')),
-    exact:true
-  },
-  {
-    path: '/commitment/pay-donation/:commitmentId',
-    component: lazy(() => import('../../views/donation/payDonation')),
-    exact:true
-  },
-  {
-    path: '/commitment/add',
-    component: lazy(() => import('../../views/commitments/addCommitment')),
-    exact:true
-  },
-  {
-    path: '/commitment/edit/:commitmentId',
-    component: lazy(() => import('../../views/commitments/editCommitment')),
-    exact:true
-  },
-  {
-    path: '/donations/paid/:commitmentId',
-    component: lazy(() => import('../../views/donation/paidDonationList')),
-    exact:true
-  },
+    type:"configuration",
+    subPermission:WRITE
   
-  {
-    path: '/Hundi',
-    component: lazy(() => import('../../views/DonationBox/donationBoxList.js')),
-    exact:true
   },
   {
-    path: '/Hundi/add',
-    component: lazy(() => import('../../views/DonationBox/addDonationBox.js')),
+    path: "/configuration/users/edit/:subAdminId",
+    component: lazy(() => import("../../views/configuration/users/editUser")),
+    // exact:true
+    type:"configuration",
+    subPermission:EDIT
+  
+  },
+  {
+    path: "/configuration/reportDispute",
+    component: lazy(() =>
+      import("../../views/configuration/Report&Disput/reportDisputList")
+    ),
     // exact:true
   },
   {
-    path: '/Hundi/edit/:donationBoxId',
-    component: lazy(() => import('../../views/DonationBox/editDonationBox')),
+    path: "/internal_expenses",
+    component: lazy(() => import("../../views/internalExpenses/expensesList")),
+    exact: true,
+    type:"internal_expenses",
+    subPermission:READ
+  
+  },
+  {
+    path: "/internal_expenses/add",
+    component: lazy(() =>
+      import("../../views/internalExpenses/addExpenses.js")
+    ),
     // exact:true
+    type:"internal_expenses",
+    subPermission:WRITE
+    
   },
   {
-    path: '/financial_reports/Hundi/Logs/:collectionId',
-    component: lazy(() => import('../../views/financialReport/donationBoxLogsList')),
+    path: "/internal_expenses/edit/:expensesId",
+    component: lazy(() =>
+      import("../../views/internalExpenses/editExpenses.js")
+    ),
     // exact:true
+    type:"internal_expenses",
+    subPermission:EDIT
+  
   },
   {
-    path: '/financial_reports/Expenses/Logs/:expensesId',
-    component: lazy(() => import('../../views/internalExpenses/expensesLogsList')),
+    path: "/financial_reports",
+    component: lazy(() => import("../../views/financialReport/reportList.js")),
+    exact: true,
+    type:"financial_reports",
+    subPermission:READ
+  },
+  {
+    path: "/donation",
+    component: lazy(() => import("../../views/donation/donationList.js")),
+    exact: true,
+    type:"donation",
+    subPermission:READ
+  },
+  {
+    path: "/donation/add",
+    component: lazy(() => import("../../views/donation/addDonation")),
+    exact: true,
+    type:"donation",
+    subPermission:WRITE
+  },
+  {
+    path: "/commitment",
+    component: lazy(() => import("../../views/commitments/commitmentList.js")),
+    exact: true,
+    type:"commitment",
+    subPermission:READ
+  },
+  {
+    path: "/commitment/pay-donation/:commitmentId",
+    component: lazy(() => import("../../views/donation/payDonation")),
+    exact: true,
+    type:"commitment",
+    subPermission:READ
+    
+  },
+  {
+    path: "/commitment/add",
+    component: lazy(() => import("../../views/commitments/addCommitment")),
+    exact: true,
+    type:"commitment",
+    subPermission:WRITE
+  },
+  {
+    path: "/commitment/edit/:commitmentId",
+    component: lazy(() => import("../../views/commitments/editCommitment")),
+    exact: true,
+    type:"commitment",
+    subPermission:EDIT
+  },
+  {
+    path: "/donations/paid/:commitmentId",
+    component: lazy(() => import("../../views/donation/paidDonationList")),
+    exact: true,
+    type:"commitment",
+    subPermission:READ
+  },
+
+  {
+    path: "/Hundi",
+    component: lazy(() => import("../../views/DonationBox/donationBoxList.js")),
+    exact: true,
+    type:"donation_box",
+    subPermission:READ
+  },
+  {
+    path: "/Hundi/add",
+    component: lazy(() => import("../../views/DonationBox/addDonationBox.js")),
     // exact:true
+    type:"donation_box",
+    subPermission:WRITE
   },
   {
-    path: '/punyarjak',
-    component: lazy(() => import('../../views/Punyarjak/PunyarjakList')),
-    exact:true
+    path: "/Hundi/edit/:donationBoxId",
+    component: lazy(() => import("../../views/DonationBox/editDonationBox")),
+    // exact:true
+    
+    type:"donation_box",
+    subPermission:EDIT
+  },
+  // {
+  //   path: "/financial_reports/Hundi/Logs/:collectionId",
+  //   component: lazy(() =>
+  //     import("../../views/financialReport/donationBoxLogsList")
+  //   ),
+  //   // exact:true
+  // },
+  // {
+  //   path: "/financial_reports/Expenses/Logs/:expensesId",
+  //   component: lazy(() =>
+  //     import("../../views/internalExpenses/expensesLogsList")
+  //   ),
+  //   // exact:true
+  // },
+  {
+    path: "/punyarjak",
+    component: lazy(() => import("../../views/Punyarjak/PunyarjakList")),
+    exact: true,
+    type:"punyarjak",
+    subPermission:READ
   },
   {
-    path: '/punyarjak/add',
-    component: lazy(() => import('../../views/Punyarjak/AddPunyarjak')),
-    exact:true
+    path: "/punyarjak/add",
+    component: lazy(() => import("../../views/Punyarjak/AddPunyarjak")),
+    exact: true,
+    type:"punyarjak",
+    subPermission:WRITE
   },
   {
-    path: '/punyarjak/edit/:punyarjakId',
-    component: lazy(() => import('../../views/Punyarjak/EditPunyarjak')),
-    exact:true
+    path: "/punyarjak/edit/:punyarjakId",
+    component: lazy(() => import("../../views/Punyarjak/EditPunyarjak")),
+    exact: true,
+    type:"punyarjak",
+    subPermission:EDIT
   },
 ];
 
