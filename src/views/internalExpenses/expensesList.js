@@ -142,7 +142,7 @@ export default function Expenses() {
     (permissionName) => permissionName.name === "all"
   );
   const subPermissions = permissions?.find(
-    (permissionName) => permissionName.name === "categories"
+    (permissionName) => permissionName.name === "internal_expenses"
   );
 
   const subPermission = subPermissions?.subpermissions?.map(

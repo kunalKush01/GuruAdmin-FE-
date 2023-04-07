@@ -237,7 +237,6 @@ const Routes = [
     // exact:true
     type:"configuration",
     subPermission:WRITE
-  
   },
   {
     path: "/configuration/users/edit/:subAdminId",
@@ -253,6 +252,8 @@ const Routes = [
       import("../../views/configuration/Report&Disput/reportDisputList")
     ),
     // exact:true
+    type:"configuration",
+    subPermission:READ
   },
   {
     path: "/internal_expenses",

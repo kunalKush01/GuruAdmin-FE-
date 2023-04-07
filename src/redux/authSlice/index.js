@@ -32,7 +32,7 @@ const authSlice = createSlice({
       id: "6332cbba8054b2cac94da3d1",
     },
     availableLang: [],
-    trustDetail: "",
+    trustDetail: {},
     lacalSearch: "",
   },
   reducers: {
@@ -55,39 +55,8 @@ const authSlice = createSlice({
     clearFacilities(state) {
       state.trustDetail.trustFacilities = [];
     },
-    handleProfileUpdate(reduxState, action) {
-      const {
-        profileImage,
-        profilePhotoPreview,
-        name,
-        trustType,
-        EmailId,
-        Contact,
-        about,
-        state,
-        city,
-        location,
-        place_id,
-        latitude,
-        longitude,
-        images,
-        documents,
-      } = action.payload;
-      reduxState.trustDetail.profilePhoto = profileImage;
-      reduxState.trustDetail.profilePhotoPreview = profilePhotoPreview;
-      reduxState.trustDetail.name = name;
-      reduxState.trustDetail.typeId = trustType;
-      reduxState.userDetail.email = EmailId;
-      reduxState.userDetail.mobileNumber = Contact;
-      reduxState.trustDetail.about = about;
-      reduxState.trustDetail.state = state;
-      reduxState.trustDetail.city = city;
-      reduxState.trustDetail.location = location;
-      reduxState.trustDetail.placeId = place_id;
-      reduxState.trustDetail.latitude = latitude;
-      reduxState.trustDetail.longitude = longitude;
-      reduxState.trustDetail.images = images;
-      reduxState.trustDetail.documents = documents;
+    handleProfileUpdate(state, action) {
+      state.trustDetail = { ...state.trustDetail, ...action.payload };
     },
 
     setTokens: (state, action) => {

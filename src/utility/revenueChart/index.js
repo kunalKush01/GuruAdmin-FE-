@@ -43,7 +43,7 @@ export const RevenueChart = ({DonationData=[],TotalExpensesData=[],CommittmentDa
       
     },
     {
-      name: t("committment"),
+      name: t("commitment"),
       data:CommittmentData.map((item)=>{
         return {
           x:item.month,
@@ -101,7 +101,7 @@ export const RevenueChart = ({DonationData=[],TotalExpensesData=[],CommittmentDa
     tooltip: {
       y: {
         formatter: (val) => {
-          return "₹" + val + " thousands";
+          return "₹" + val;
         },
       },
     },

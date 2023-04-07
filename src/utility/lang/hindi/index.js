@@ -2,7 +2,7 @@ export const hindiContent = {
   all:"सभी",
   dashboard: "डैशबोर्ड",
   donation: "दान",
-  committment: "प्रतिबद्धता",
+  commitment: "प्रतिबद्धता",
   donation_box: "दान पेटी संग्रह",
   financial_reports: "वित्तीय रिपोर्ट",
   internal_expenses: "आंतरिक व्यय",

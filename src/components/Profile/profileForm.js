@@ -4,7 +4,7 @@ import { Storage } from "aws-amplify";
 import { Form, Formik } from "formik";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { Plus } from "react-feather";
+import { Plus, X } from "react-feather";
 import GooglePlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
@@ -28,6 +28,7 @@ import * as yup from "yup";
 import sha256 from "sha256";
 import md5 from "md5";
 import RichTextField from "../partials/richTextEditorField";
+import { handleProfileUpdate, login } from "../../redux/authSlice";
 
 const ProfileFormWaraper = styled.div`
   .existlabel {
@@ -249,6 +250,7 @@ export default function ProfileForm({
       console.log("data debug", data);
       if (!data.error) {
         setLoading(false);
+        dispatch(handleProfileUpdate({name:data?.result?.name,profilePhoto:data?.result?.profilePhoto}))
       } else if (data?.error) {
         setLoading(false);
       }
@@ -288,7 +290,6 @@ export default function ProfileForm({
   }, [initialValues]);
   const [facilitiesFiles, setFacilitiesFiles] = useState([]);
   const [facilityFormData, setFacilityFormData] = useState([]);
-  console.log("facilityFormData", facilityFormData);
   useEffect(() => {
     if (initialValues?.trustFacilities?.length > 0) {
       setFacilityFormData(initialValues?.trustFacilities);
@@ -393,9 +394,9 @@ export default function ProfileForm({
             trustEmail: e?.trustEmail,
             trustNumber: e?.trustNumber,
             about: e?.about,
-            name:e?.name,
-            email:e?.email,
-            mobileNumber:e?.mobileNumber,
+            name: e?.name,
+            email: e?.email,
+            mobileNumber: e?.mobileNumber,
             state: e?.state?.state,
             city: e?.city?.districts,
             place_id: e?.location.value.place_id,
@@ -862,7 +863,7 @@ export default function ProfileForm({
                             removeDocumentFile(item, formik);
                           }}
                         >
-                          X
+                          <X color="#ff8744" stroke-width="3" />
                         </Button>
                         <div className="">
                           <img src={pdfIcon} width={50} />

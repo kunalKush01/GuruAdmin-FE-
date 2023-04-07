@@ -251,7 +251,7 @@ export default function Commitment() {
             <div className="addCommitment d-flex">
               <div className="">
                 <div>
-                  <Trans i18nKey={"committment"} />
+                  <Trans i18nKey={"commitment"} />
                 </div>
                 <div className="filterPeriod">
                   <span>
