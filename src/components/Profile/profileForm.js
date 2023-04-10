@@ -460,6 +460,9 @@ export default function ProfileForm({
                       <CustomTextField
                         label={t("userProfile_name")}
                         name="trustName"
+                        onInput={(e) =>
+                          (e.target.value = e.target.value.slice(0, 30))
+                        }
                         autoFocus
                       />
                     </Col>
@@ -486,6 +489,11 @@ export default function ProfileForm({
                       <CustomTextField
                         label={t("userProfile_phone_number")}
                         name="trustNumber"
+                        type="number"
+                        pattern="[6789][0-9]{9}"
+                        onInput={(e) =>
+                          (e.target.value = e.target.value.slice(0, 12))
+                        }
                       />
                     </Col>
                   </Row>
@@ -526,6 +534,9 @@ export default function ProfileForm({
                       <CustomTextField
                         label={t("userProfile_name")}
                         name="name"
+                        onInput={(e) =>
+                          (e.target.value = e.target.value.slice(0, 30))
+                        }
                         autoFocus
                       />
                     </Col>
@@ -539,6 +550,11 @@ export default function ProfileForm({
                       <CustomTextField
                         label={t("userProfile_phone_number")}
                         name="mobileNumber"
+                        type="number"
+                        pattern="[6789][0-9]{9}"
+                        onInput={(e) =>
+                          (e.target.value = e.target.value.slice(0, 12))
+                        }
                       />
                     </Col>
                   </Row>

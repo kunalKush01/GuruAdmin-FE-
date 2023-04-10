@@ -301,6 +301,9 @@ export default function EventForm({
                       label={t("news_label_Title")}
                       name="Title"
                       required
+                      onInput={(e) =>
+                        (e.target.value = e.target.value.slice(0, 30))
+                      }
                       autoFocus
                     />
                   </Col>

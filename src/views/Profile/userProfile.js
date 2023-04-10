@@ -29,21 +29,15 @@ const schema = yup.object().shape({
   trustName: yup.string().required("name_required"),
   trustEmail: yup.string().email("email_invalid").required("email_required"),
   trustNumber: yup
-    .number()
-    .typeError("number_type")
-    .positive("cant_start_minus")
-    .integer("number_in_point")
-    .min(8)
+    .string()
+    .min(9, "Mobile Number must be 10 digits.")
     .required("number_required"),
   about: yup.string().required("trust_about_required"),
   name: yup.string().required("name_required"),
   email: yup.string().email("email_invalid").required("email_required"),
   mobileNumber: yup
-    .number()
-    .typeError("number_type")
-    .positive("cant_start_minus")
-    .integer("number_in_point")
-    .min(8)
+    .string()
+    .min(9, "Mobile Number must be 10 digits.")
     .required("number_required"),
   state: yup.mixed().required("events_state_required"),
   city: yup.mixed().required("events_city_required"),

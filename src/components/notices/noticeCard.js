@@ -24,12 +24,12 @@ const EventCardWaraper = styled.div`
   .card-text {
     font: normal normal normal 12px/16px Noto Sans;
     max-height: 18px;
-    max-width: 300px;
+    max-width: 400px;
     overflow: hidden;
-    text-overflow: ellipsis;
+    /* text-overflow: ellipsis; */
     text-align: start;
     white-space: nowrap;
-    margin-bottom: 0.5rem !important;
+    /* margin-bottom: 0.5rem !important; */
   }
   .card-Date {
     font: normal normal normal 12px/16px Noto Sans;
@@ -47,6 +47,18 @@ const EventCardWaraper = styled.div`
     background: #fff7e8;
     border-radius: 10px;
     padding: 0px;
+    height: 122px;
+  }
+  .cardLangScroll {
+    display: flex;
+    /* background-color: red; */
+    margin-top: 0.7rem;
+    min-width: 230px;
+    overflow-x: scroll !important;
+    ::-webkit-scrollbar {
+      width: 10px;
+      display: block;
+    }
   }
   .btn-outline-primary {
     border: 2px solid #ff8744 !important;
@@ -178,7 +190,104 @@ export default function NoticeCard({
 
   return (
     <EventCardWaraper key={data.id}>
-      <Card
+      <div>
+        <Card
+          style={{
+            width: "100%",
+            borderRadius: "20px",
+            boxShadow: "none",
+            margin: "10px 10px",
+
+          }}
+        >
+          <CardBody>
+            <Row>
+              <Col
+                xs={12}
+                md={2}
+                onClick={() =>
+                  history.push(`/notices/about/${data.id}`, data.id)
+                }
+                className="cursor-pointer  me-md-1 me-xl-0"
+              >
+                <img
+                  src={data?.image || placeHolder}
+                  alt="Event Image"
+                  style={{
+                    width: "130px",
+                    height: "122px",
+                    borderRadius: "10px",
+                  }}
+                />
+              </Col>
+              <Col className="py-1" xs={12} lg={8}>
+                <Row>
+                  <Col lg={7}>
+                    <div className="card1">
+                      {ConverFirstLatterToCapital(data?.title)}
+                    </div>
+                  </Col>
+                  <Col md={5}>
+                    <div className="card-Date">
+                      <p>
+                        Posted on{" "}
+                        {`${moment(data.publishDate).format("D MMMM YYYY ")}`}
+                      </p>
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={12}>
+                    <div
+                      className="card-text "
+                      dangerouslySetInnerHTML={{
+                        __html: he.decode(data.body),
+                      }}
+                    />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <div className="cardLangScroll">
+                      {data?.languages?.map((item) => {
+                        return (
+                          <Button outline key={item.id} color="primary">
+                            {ConverFirstLatterToCapital(item.name)}
+                          </Button>
+                        );
+                      })}
+                    </div>
+                  </Col>
+                </Row>
+              </Col>
+              <Col xs={12} md={2}>
+                <div className="align-items-center d-flex justify-content-end h-100">
+                  <img
+                    src={cardThreeDotIcon}
+                    className="cursor-pointer"
+                    width={50}
+                    height={40}
+                    id={`popover-${data.id}`}
+                  />
+                </div>
+              </Col>
+            </Row>
+          </CardBody>
+        </Card>
+      </div>
+      <BtnPopover
+        target={`popover-${data.id}`}
+        content={
+          <BtnContent
+            noticeId={data.id}
+            currentPage={currentPage}
+            currentFilter={currentFilter}
+            subPermission={subPermission}
+            allPermissions={allPermissions}
+          />
+        }
+      />
+      {/* <Card
         key={data.id}
         style={{
           width: "100%",
@@ -270,7 +379,7 @@ export default function NoticeCard({
             allPermissions={allPermissions}
           />
         }
-      />
+      /> */}
     </EventCardWaraper>
   );
 }

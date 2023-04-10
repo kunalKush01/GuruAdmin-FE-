@@ -247,6 +247,9 @@ export default function NewsForm({
                     <CustomTextField
                       label={t("news_label_Title")}
                       name="Title"
+                      onInput={(e) =>
+                        (e.target.value = e.target.value.slice(0, 30))
+                      }
                       autoFocus
                     />
                   </Col>

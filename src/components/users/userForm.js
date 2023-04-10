@@ -180,6 +180,9 @@ export default function UserForm({
                         <CustomTextField
                           label={t("user_name")}
                           name="name"
+                          onInput={(e) =>
+                            (e.target.value = e.target.value.slice(0, 30))
+                          }
                           autoFocus
                         />
                       </Col>

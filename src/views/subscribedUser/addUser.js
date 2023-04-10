@@ -26,13 +26,18 @@ const handleCreateUser = async (payload) => {
 };
 const schema = yup.object().shape({
   // name: yup.string().required("users_title_required"),
-  mobile: yup.string().required("users_mobile_required"),
+  mobile: yup
+    .string()
+    .min(9, "Mobile Number must be 10 digits.")
+    .required("users_mobile_required"),
   email: yup.string().required("users_email_required"),
-  name: yup.string().matches(
-    /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
-    'User name only contain alphabets .'
-).required("users_title_required"),
-
+  name: yup
+    .string()
+    .matches(
+      /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+      "User name only contain alphabets ."
+    )
+    .required("users_title_required"),
 });
 
 export default function AddSubscribedUser() {
@@ -40,12 +45,11 @@ export default function AddSubscribedUser() {
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
-
   const searchParams = new URLSearchParams(history.location.search);
-  const currentPage = searchParams.get('page')
+  const currentPage = searchParams.get("page");
   const currentCategory = searchParams.get("category");
   const currentSubCategory = searchParams.get("subCategory");
-  const currentFilter = searchParams.get('filter')
+  const currentFilter = searchParams.get("filter");
 
   return (
     <NoticeWraper>
@@ -54,7 +58,11 @@ export default function AddSubscribedUser() {
           <img
             src={arrowLeft}
             className="me-2 cursor-pointer"
-            onClick={() => history.push(`/donation/add?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}`)}
+            onClick={() =>
+              history.push(
+                `/donation/add?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}`
+              )
+            }
           />
           <div className="addNotice">
             <Trans i18nKey={"add_user"} />

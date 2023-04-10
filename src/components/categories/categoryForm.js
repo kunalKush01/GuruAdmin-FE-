@@ -130,6 +130,9 @@ export default function CategoryForm({
                     <CustomTextField
                       label={t("categories_sub_category")}
                       name="SubCategory"
+                      onInput={(e) =>
+                        (e.target.value = e.target.value.slice(0, 30))
+                      }
                       required
                     />
                   </Col>

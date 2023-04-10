@@ -153,6 +153,9 @@ export default function PunyarjakForm({
                     <CustomTextField
                       label={t("name")}
                       name="name"
+                      onInput={(e) =>
+                        (e.target.value = e.target.value.slice(0, 30))
+                      }
                       autoFocus
                     />
                   </Col>

@@ -163,6 +163,9 @@ export default function FormWithoutFormikForDonation({
               <CustomTextField
                 label={t("dashboard_Recent_DonorName")}
                 name="donarName"
+                onInput={(e) =>
+                  (e.target.value = e.target.value.slice(0, 30))
+                }
               />
             </Col>
             <Col xs={4} className=" pb-1">

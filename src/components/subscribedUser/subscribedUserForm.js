@@ -99,6 +99,9 @@ export default function SubscribedUserForm({
                     <CustomTextField
                       label={t("user_name")}
                       name="name"
+                      onInput={(e) =>
+                        (e.target.value = e.target.value.slice(0, 30))
+                      }
                       autoFocus
                     />
                   </Col>
