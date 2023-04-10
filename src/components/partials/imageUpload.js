@@ -48,10 +48,9 @@ const WraperImageField = styled.div`
     padding: 4px;
     box-sizing: border-box;
   }
-  .mainImageDiv:hover .profileImageBackground {
-    border-radius: 50%;
+  /* .mainImageDiv:hover .profileImageBackground {
     background-color: #000000;
-  }
+  } */
   .mainImageDiv:hover .hoverImageBackground {
     border-radius: 10px;
     background-color: #000000;
@@ -67,7 +66,7 @@ const WraperImageField = styled.div`
   .mainImageDiv:hover .removeImageButton {
     display: block;
   }
-
+/* 
   .editImageText {
     display: none;
     width: fit-content;
@@ -75,7 +74,7 @@ const WraperImageField = styled.div`
     position: absolute;
     top: 40%;
     color: #ffffff;
-    left: 35%;
+    left: 35%; */
   }
   @media screen and (max-width: 1199px) and (min-width: 992px) {
     .preview_box li {
@@ -170,7 +169,7 @@ const Thumbs = ({
   multiple,
   editedFileNameInitialValue,
   profileImage,
-}) => (
+}) =>  (
   <div style={thumb} key={file?.name}>
     <div
       className="hoverImageBackground"
@@ -193,6 +192,8 @@ const Thumbs = ({
 );
 
 function ImageUpload(props) {
+
+
   const thumbsContainer = {
     backgroundImage: `url('${
       props.editedFileNameInitialValue === null ||
@@ -376,9 +377,9 @@ function ImageUpload(props) {
                   >
                     <X color="#ff8744" stroke-width="3"/>
                   </Button>
-                  <div className="editImageText">
+                  {/* <div className="editImageText">
                     <Trans i18nKey={"edit_image"} />
-                  </div>
+                  </div> */}
                 </>
               ) : (
                 ""

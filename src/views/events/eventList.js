@@ -188,11 +188,11 @@ export default function EventList() {
                 <div>
                   <Trans i18nKey={"events"} />
                 </div>
-                <div className="filterPeriod">
+                {/* <div className="filterPeriod">
                   <span>
                     {startDate} - {endDate}
                   </span>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

@@ -74,7 +74,7 @@ const TrustWarapper = styled.div`
     height: 350px;
     border-radius: 10px;
   }
-  .imageDiv{
+  .imageDiv {
     width: 35%;
     height: 150px;
   }
@@ -92,6 +92,7 @@ export default function DetailPage({
   title,
   description,
   images,
+  subImages,
   image,
   startDate,
   longitude,
@@ -102,7 +103,7 @@ export default function DetailPage({
 }) {
   const history = useHistory();
   const { t } = useTranslation();
-  
+  let firstImage = image === "" ? (images?.length ? images[0]?.presignedUrl : placeHolder) : image ?? placeHolder ;
   return (
     <TrustWarapper>
       <div className="window nav statusBar body "></div>
@@ -129,23 +130,7 @@ export default function DetailPage({
         </div>
         <Row className="my-lg-3">
           <Col xs={12} lg={4} className="">
-            {images ? (
-              <img
-                src={
-                  images === undefined
-                    ? placeHolder
-                    : images[0]?.presignedUrl
-                    ? images[0]?.presignedUrl
-                    : placeHolder
-                }
-                className="detailImage"
-              />
-            ) : (
-              <img
-                src={image === undefined || image === "" ? placeHolder : image}
-                className="detailImage"
-              />
-            )}
+            <img src={firstImage} className="detailImage" />
             <div className="d-flex justify-content-between mt-1">
               <div className="about-temple-name">{templeName ?? ""}</div>
               <div className="d-flex justify-content-between long-let_tude">
@@ -160,7 +145,10 @@ export default function DetailPage({
                 </Button>
               ))}
             </div>
-            <div className="tags mt-1 d-block w-100">#{tags?.join("#")}</div>
+            <div className="tags mt-1 d-block w-100">
+              {" "}
+              {tags?.length ? `#${tags?.join("#")}` : ""}
+            </div>
             <div className="d-flex justify-content-between align-items-center mt-1">
               <div className="postDate">
                 <img
@@ -172,11 +160,16 @@ export default function DetailPage({
               </div>
             </div>
             <div className="d-flex align-items-center flex-wrap gap-2 mt-2">
-              {images?.map((item) => {
-                return (<div className="imageDiv">
-                  <img src={item?.presignedUrl} className="detailImage h-100 w-100" />
-                </div>)
-              })}
+            {subImages?.length ?subImages?.map((item) => {
+                return (
+                  <div className="imageDiv">
+                    <img
+                      src={item?.presignedUrl}
+                      className="detailImage h-100 w-100"
+                    />
+                  </div>
+                );
+              }):""}
             </div>
           </Col>
           <Col xs={12} lg={8} className="">

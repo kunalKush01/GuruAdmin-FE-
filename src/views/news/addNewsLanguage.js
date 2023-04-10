@@ -138,7 +138,7 @@ export default function AddLanguageNews() {
           <CustomDropDown
             ItemListArray={availableLangOptions}
             className={"ms-1"}
-            defaultDropDownName={langSelection}
+            defaultDropDownName={ConverFirstLatterToCapital(langSelection ?? "")}
             handleDropDownClick={(e) =>
               setLangSelection(ConverFirstLatterToCapital(e.target.name))
             }

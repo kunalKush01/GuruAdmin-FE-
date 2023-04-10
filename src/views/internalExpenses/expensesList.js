@@ -165,11 +165,11 @@ export default function Expenses() {
                 <div>
                   <Trans i18nKey={"expenses_latest_Expenses"} />
                 </div>
-                <div className="filterPeriod">
+                {/* <div className="filterPeriod">
                   <span>
                     {startDate} - {endDate}
                   </span>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

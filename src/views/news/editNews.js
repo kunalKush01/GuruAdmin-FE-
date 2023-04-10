@@ -120,7 +120,7 @@ export default function EditNews() {
           <CustomDropDown
             ItemListArray={newsDetailQuery?.data?.result?.languages}
             className={"ms-1"}
-            defaultDropDownName={langSelection}
+            defaultDropDownName={ConverFirstLatterToCapital(langSelection ?? "")}
             handleDropDownClick={(e) =>
               setLangSelection(ConverFirstLatterToCapital(e.target.name))
             }

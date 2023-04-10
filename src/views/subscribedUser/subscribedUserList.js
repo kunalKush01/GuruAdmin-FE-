@@ -152,11 +152,11 @@ console.log(permissions);
                 <div>
                   <Trans i18nKey={"dashboard_card_title3"} />
                 </div>
-                <div className="filterPeriod">
+                {/* <div className="filterPeriod">
                   <span>
                     {startDate} - {endDate}
                   </span>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

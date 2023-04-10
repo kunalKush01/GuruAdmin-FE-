@@ -84,10 +84,17 @@ const FormWaraper = styled.div`
     display: flex;
     overflow-x: scroll !important;
     ::-webkit-scrollbar {
-      width: 10px;
-      display: block;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #c9c6c5 !important;
+      border-radius: 25px;
+      width: 10px !important;
     }
   }
+.ReactTags__tag{
+  margin-bottom:.5rem
+}
 
   /* Styles for suggestions */
   .ReactTags__suggestions {
@@ -292,8 +299,8 @@ export default function NoticeForm({
                     <Trans i18nKey={"news_label_ImageVedio"} />
                   </div>
                   <ImageUpload
-                    editTrue="edit"
                     bg_plus={thumbnailImage}
+                    editTrue="edit"
                     editedFileNameInitialValue={
                       formik.values.image ? formik.values.image : null
                     }

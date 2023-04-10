@@ -177,11 +177,11 @@ export default function NoticeList() {
                 <div>
                   <Trans i18nKey={"notices_latest_Notice"} />
                 </div>
-                <div className="filterPeriod">
+                {/* <div className="filterPeriod">
                   <span>
                     {startDate} - {endDate}
                   </span>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

@@ -253,11 +253,11 @@ export default function Commitment() {
                 <div>
                   <Trans i18nKey={"commitment"} />
                 </div>
-                <div className="filterPeriod">
+                {/* <div className="filterPeriod">
                   <span>
                     {startDate} - {endDate}
                   </span>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

@@ -163,11 +163,11 @@ export default function News() {
                 <div>
                   <Trans i18nKey={"news_latest_news"} />
                 </div>
-                <div className="filterPeriod">
+                {/* <div className="filterPeriod">
                   <span>
                     {startDate} - {endDate}
                   </span>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

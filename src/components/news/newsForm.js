@@ -78,10 +78,17 @@ const FormWaraper = styled.div`
     display: flex;
     overflow-x: scroll !important;
     ::-webkit-scrollbar {
-      width: 10px;
-      display: block;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #c9c6c5 !important;
+      border-radius: 25px;
+      width: 10px !important;
     }
   }
+.ReactTags__tag{
+  margin-bottom:.5rem
+}
 
   /* Styles for suggestions */
   .ReactTags__suggestions {

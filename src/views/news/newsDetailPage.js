@@ -29,17 +29,27 @@ const NewsDetailPage = () => {
       })
   );
 
-  // const tags = newsDetailQuery?.data?.result?.tags?.map((item) => item?.tag);
+  const tags = newsDetailQuery?.data?.result?.tags?.map((item) => item?.tag);
+
+  let subImages = [];
+  newsDetailQuery?.data?.result?.images?.length > 1
+    ? (subImages = [
+        ...subImages,
+        ...newsDetailQuery?.data?.result?.images,
+      ])
+    : [];
+  subImages.splice(0, 1);
   return (
     <>
       <DetailPage
-        // tags={tags}
+        tags={tags}
         title={newsDetailQuery?.data?.result?.title}
         latitude={newsDetailQuery?.data?.result?.latitude}
         longitude={newsDetailQuery?.data?.result?.longitude}
         startDate={newsDetailQuery?.data?.result?.publishDate}
         description={newsDetailQuery?.data?.result?.body}
         images={newsDetailQuery?.data?.result?.images}
+        subImages={subImages}
         langButton={newsDetailQuery?.data?.result?.languages}
       />
     </>

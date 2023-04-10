@@ -27,20 +27,23 @@ const NoticeDetailPage = () => {
   const noticeDetailQuery = useQuery(
     ["NoticeDetail", noticeId, selectedLang.id],
     async () =>
-    getNoticeDetail({
+      getNoticeDetail({
         noticeId,
         languageId: getLangId(langArray, langSelection),
       })
   );
 
   const tags = noticeDetailQuery?.data?.result?.tags?.map((item) => item?.tag);
+
+
   return (
     <>
-      <DetailPage tags={tags}
-      title={noticeDetailQuery?.data?.result?.title}
-      latitude={noticeDetailQuery?.data?.result?.latitude}
-      longitude={noticeDetailQuery?.data?.result?.longitude}
-      startDate={noticeDetailQuery?.data?.result?.startDate}
+      <DetailPage
+        tags={tags}
+        title={noticeDetailQuery?.data?.result?.title}
+        latitude={noticeDetailQuery?.data?.result?.latitude}
+        longitude={noticeDetailQuery?.data?.result?.longitude}
+        startDate={noticeDetailQuery?.data?.result?.startDate}
         description={noticeDetailQuery?.data?.result?.body}
         image={noticeDetailQuery?.data?.result?.image}
         langButton={noticeDetailQuery?.data?.result?.languages}
