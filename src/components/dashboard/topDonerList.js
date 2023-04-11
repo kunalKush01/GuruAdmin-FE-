@@ -63,7 +63,7 @@ export const TopDonerList = ({ data }) => {
           <Card key={item.id} className="  rounded-3">
             <CardBody className="d-flex p-1 justify-content-between align-items-center   ">
               <div className="d-flex align-items-center">
-              <img src={palceHolderIcon} className=" pe-1 " width={"70px"} />
+              <img src={item?.user?.profilePhoto ?? palceHolderIcon} className=" pe-1 " width={"70px"} />
               <div className="">
                 <div className="headName">
                   {ConverFirstLatterToCapital(item?.user?.name ?? "")}

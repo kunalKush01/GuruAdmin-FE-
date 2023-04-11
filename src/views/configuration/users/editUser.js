@@ -38,6 +38,11 @@ const schema = yup.object().shape({
     .min(9, "Mobile Number must be 10 digits.")
     .required("users_mobile_required"),
   email: yup.string().email("Invalid email").required("users_email_required"),
+  password: yup.string().required("password_required"),
+  userRoleChacked: yup
+    .array()
+    .min(1, "minimum_one_role_required")
+    .required("user_userRoleRequired"),
 });
 
 const getLangId = (langArray, langSelection) => {
@@ -88,7 +93,9 @@ export default function EditSubAdmin() {
           <img
             src={arrowLeft}
             className="me-2 cursor-pointer"
-            onClick={() => history.push(`/configuration/users?page=${currentPage}`)}
+            onClick={() =>
+              history.push(`/configuration/users?page=${currentPage}`)
+            }
           />
           <div className="editNotice">
             <Trans i18nKey={"user_editUser"} />

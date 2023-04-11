@@ -97,9 +97,9 @@ const FormWaraper = styled.div`
       width: 10px !important;
     }
   }
-.ReactTags__tag{
-  margin-bottom:.5rem
-}
+  .ReactTags__tag {
+    margin-bottom: 0.5rem;
+  }
   /* Styles for suggestions */
   .ReactTags__suggestions {
     position: absolute;
@@ -382,6 +382,18 @@ export default function EventForm({
                       name="DateTime"
                       selectsRange
                     />
+                    <div
+                      style={{
+                        height: "20px",
+                        font: "normal normal bold 11px/33px Noto Sans",
+                      }}
+                    >
+                      {formik.errors.DateTime && formik.touched.DateTime && (
+                        <div className="text-danger">
+                          <Trans i18nKey={formik.errors.DateTime?.end} />
+                        </div>
+                      )}
+                    </div>
                   </Col>
                   <Col xs="10">
                     <Row className="">

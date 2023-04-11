@@ -24,7 +24,7 @@ const EventCardWaraper = styled.div`
   .card-text {
     font: normal normal normal 12px/16px Noto Sans;
     max-height: 18px;
-    max-width: 400px;
+    max-width: 350px;
     overflow: hidden;
     /* text-overflow: ellipsis; */
     text-align: start;
@@ -220,12 +220,12 @@ export default function EventCard({
               </Col>
               <Col className="py-1" xs={12} lg={8}>
                 <Row>
-                  <Col lg={7}>
+                  <Col lg={6}>
                     <div className="card1">
                       {ConverFirstLatterToCapital(data?.title)}
                     </div>
                   </Col>
-                  <Col md={5}>
+                  <Col md={6}>
                     <div className="card-Date">
                       <p>
                         {`${moment(data.startDate).format(
@@ -240,7 +240,7 @@ export default function EventCard({
                 <Row>
                   <Col xs={12}>
                     <div
-                      className="card-text "
+                      className="card-text"
                       dangerouslySetInnerHTML={{
                         __html: he.decode(data.body),
                       }}

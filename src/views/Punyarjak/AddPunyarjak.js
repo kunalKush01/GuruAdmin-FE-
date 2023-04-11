@@ -35,6 +35,7 @@ const schema = yup.object().shape({
       "User name only contain alphabets ."
     )
     .required("users_title_required"),
+    file:yup.string().required("img_required"),
 });
 
 export default function AddPunyarjak() {
@@ -48,7 +49,7 @@ export default function AddPunyarjak() {
   const initialValues = {
     name: "",
     description:"",
-    profilePhoto: "",
+    file: "",
   };
 
   return (

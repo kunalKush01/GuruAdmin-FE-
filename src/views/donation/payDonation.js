@@ -9,7 +9,10 @@ import { useHistory, useParams } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import styled from "styled-components";
 import * as yup from "yup";
-import { getCommitmentDetail, updateCommitmentDetail } from "../../api/commitmentApi";
+import {
+  getCommitmentDetail,
+  updateCommitmentDetail,
+} from "../../api/commitmentApi";
 import { createDonation } from "../../api/donationApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import CommitmentForm from "../../components/commitments/commitmentForm";
@@ -30,17 +33,21 @@ const PayDonationWarapper = styled.div`
 `;
 
 const schema = yup.object().shape({
-    Mobile: yup.string().min(9 ,"Mobile Number must be 10 digits").required("expenses_mobile_required"),
-    SelectedUser: yup.mixed().required("user_select_required"),
-    donarName: yup.string().matches(
+  Mobile: yup
+    .string()
+    .min(9, "Mobile Number must be 10 digits")
+    .required("expenses_mobile_required"),
+  SelectedUser: yup.mixed().required("user_select_required"),
+  donarName: yup
+    .string()
+    .matches(
       /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
-      'donation_donar_name_only_letters'
-  ),
-    SelectedMasterCategory: yup.mixed().required("masterCategory_required"),
-    SelectedSubCategory: yup.mixed(),
-    Amount:yup.string().required("amount_required"),
-    
-  });
+      "donation_donar_name_only_letters"
+    ),
+  SelectedMasterCategory: yup.mixed().required("masterCategory_required"),
+  SelectedSubCategory: yup.mixed(),
+  Amount: yup.string().required("amount_required"),
+});
 const getLangId = (langArray, langSelection) => {
   let languageId;
   langArray.map(async (Item) => {
@@ -58,8 +65,10 @@ export default function PayDonation() {
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
   const searchParams = new URLSearchParams(history.location.search);
-  const currentPage = searchParams.get('page')
-  const currentFilter = searchParams.get('filter')
+
+  const currentPage = searchParams.get("page");
+  const currentFilter = searchParams.get("filter");
+  console.log("currentFilter", currentFilter);
   const currentCategory = searchParams.get("category");
   const currentSubCategory = searchParams.get("subCategory");
   const currentStatus = searchParams.get("status");
@@ -77,34 +86,38 @@ export default function PayDonation() {
       })
   );
 
-//   const handlePayDonation = async (payload) => {
-    // return updateCommitmentDetail({
-    //   ...payload,
-    //   languageId: getLangId(langArray, langSelection),
-    // });
-//     return createDonation(payload);
-//   };
+  //   const handlePayDonation = async (payload) => {
+  // return updateCommitmentDetail({
+  //   ...payload,
+  //   languageId: getLangId(langArray, langSelection),
+  // });
+  //     return createDonation(payload);
+  //   };
 
-
-const handlePayDonation = async (payload) => {
+  const handlePayDonation = async (payload) => {
     return createDonation(payload);
   };
   const initialValues = useMemo(() => {
     return {
-        Id:commitmentDetailQuery?.data?.result?.id,
-        Mobile:commitmentDetailQuery?.data?.result?.user?.mobileNumber,
-        SelectedUser: commitmentDetailQuery?.data?.result?.user,
-        donarName: commitmentDetailQuery?.data?.result?.donarName,
-        SelectedMasterCategory: commitmentDetailQuery?.data?.result?.masterCategory,
-        SelectedSubCategory:commitmentDetailQuery?.data?.result?.category,
-        SelectedCommitmentId:{
-            commitmentId:commitmentDetailQuery?.data?.result?.commitmentId,
-            paidAmount:commitmentDetailQuery?.data?.result?.paidAmount,
-            amount:commitmentDetailQuery?.data?.result?.amount,
-        },
-        createdBy:commitmentDetailQuery?.data?.result?.createdBy.name,
-        Amount:(commitmentDetailQuery?.data?.result?.amount - commitmentDetailQuery?.data?.result?.paidAmount),
-        DateTime:moment(commitmentDetailQuery?.data?.result?.commitmentEndDate).toDate(),
+      Id: commitmentDetailQuery?.data?.result?.id,
+      Mobile: commitmentDetailQuery?.data?.result?.user?.mobileNumber,
+      SelectedUser: commitmentDetailQuery?.data?.result?.user,
+      donarName: commitmentDetailQuery?.data?.result?.donarName,
+      SelectedMasterCategory:
+        commitmentDetailQuery?.data?.result?.masterCategory,
+      SelectedSubCategory: commitmentDetailQuery?.data?.result?.category,
+      SelectedCommitmentId: {
+        commitmentId: commitmentDetailQuery?.data?.result?.commitmentId,
+        paidAmount: commitmentDetailQuery?.data?.result?.paidAmount,
+        amount: commitmentDetailQuery?.data?.result?.amount,
+      },
+      createdBy: commitmentDetailQuery?.data?.result?.createdBy.name,
+      Amount:
+        commitmentDetailQuery?.data?.result?.amount -
+        commitmentDetailQuery?.data?.result?.paidAmount,
+      DateTime: moment(
+        commitmentDetailQuery?.data?.result?.commitmentEndDate
+      ).toDate(),
     };
   }, [commitmentDetailQuery]);
 
@@ -115,17 +128,20 @@ const handlePayDonation = async (payload) => {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push(`/commitment?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`)}
+            onClick={() =>
+              currentCategory === null
+                ? history.push("/commitment")
+                : history.push(
+                    `/commitment?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`
+                  )
+            }
           />
           <div className="editCommitment">
             <Trans i18nKey={"pay_donation"} />
           </div>
         </div>
       </div>
-      <If
-        condition={commitmentDetailQuery.isLoading }
-        diableMemo
-      >
+      <If condition={commitmentDetailQuery.isLoading} diableMemo>
         <Then>
           <Row>
             <SkeletonTheme

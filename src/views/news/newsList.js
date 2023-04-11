@@ -238,7 +238,13 @@ export default function News() {
                   <Then>
                     {newsItems.map((item) => {
                       return (
-                        <Col xs={3} key={item.id}>
+                        <Col
+                          xs={12}
+                          md={6}
+                          lg={3}
+                          className="pe-sm-3 pe-0"
+                          key={item.id}
+                        >
                           <NewsCard
                             data={item}
                             currentFilter={routFilter}

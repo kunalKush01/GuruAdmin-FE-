@@ -103,7 +103,7 @@ export default function DetailPage({
 }) {
   const history = useHistory();
   const { t } = useTranslation();
-  let firstImage = image === "" ? (images?.length ? images[0]?.presignedUrl : placeHolder) : image ?? placeHolder ;
+  let firstImage = image ? image ?? placeHolder : (images?.length ? images[0]?.presignedUrl : placeHolder);  ;
   return (
     <TrustWarapper>
       <div className="window nav statusBar body "></div>

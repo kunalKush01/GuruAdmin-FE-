@@ -14,6 +14,7 @@ import { createNews } from "../../api/newsApi";
 import { useSelector } from "react-redux";
 import { authApiInstance } from "../../axiosApi/authApiInstans";
 import NewsForm from "../../components/news/newsForm";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 const NewsWarper = styled.div`
   color: #583703;
@@ -58,7 +59,7 @@ export default function AddNews() {
     images:[],
     tagsInit:[],
     Body: "",
-    PublishedBy: loggedInUser,
+    PublishedBy:ConverFirstLatterToCapital(loggedInUser ?? ""),
     DateTime: new Date(),
   };
   return (

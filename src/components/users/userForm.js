@@ -231,6 +231,21 @@ export default function UserForm({
                               />
                             }
                           />
+                          <div
+                            style={{
+                              height: "20px",
+                              font: "normal normal bold 11px/15px Noto Sans",
+                            }}
+                          >
+                            {formik.errors.password &&
+                              formik.touched.password && (
+                                <div className="text-danger">
+                                  <Trans
+                                    i18nKey={formik.errors.password}
+                                  />
+                                </div>
+                              )}
+                          </div>
                         </Col>
                       )}
                     </Row>
@@ -240,6 +255,19 @@ export default function UserForm({
                     <Col xs={12}>
                       <div className="mb-1 mt-1" style={{ fontSize: "15px" }}>
                         <Trans i18nKey={"user_userRole"} />
+                      </div>
+                      <div
+                        style={{
+                          height: "20px",
+                          font: "normal normal bold 11px/15px Noto Sans",
+                        }}
+                      >
+                        {formik.errors.userRoleChacked &&
+                          formik.touched.userRoleChacked && (
+                            <div className="text-danger">
+                              <Trans i18nKey={formik.errors.userRoleChacked} />
+                            </div>
+                          )}
                       </div>
                     </Col>
                     <Col xs={12} className="">

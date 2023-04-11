@@ -33,12 +33,16 @@ const schema = yup.object().shape({
       "user_only_letters"
     )
     .required("users_title_required"),
-  // mobile: yup.string().required("users_mobile_required"),
   mobile: yup
     .string()
     .min(9, "Mobile Number must be 10 digits.")
     .required("users_mobile_required"),
   email: yup.string().email("Invalid email").required("users_email_required"),
+  password: yup.string().required("password_required"),
+  userRoleChacked: yup
+    .array()
+    .min(1, "minimum_one_role_required")
+    .required("user_userRoleRequired"),
 });
 
 export default function AddCategory() {
@@ -48,7 +52,7 @@ export default function AddCategory() {
 
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
-  
+
   return (
     <NoticeWraper>
       <div className="d-flex justify-content-between align-items-center ">
@@ -66,23 +70,23 @@ export default function AddCategory() {
         </div>
       </div>
       {/* {!userRoleQuery.isLoading && !userRoleQuery.isFetching ? ( */}
-        <UserForm
+      <UserForm
         adduser
-          userRole={"role"}
-          handleSubmit={handleCreateUser}
-          initialValues={{
-            name: "",
-            mobile: "",
-            email: "",
-            password:"",
-            file:"",
-            userRoleChacked: [],
-          }}
-          vailidationSchema={schema}
-          buttonName={"users_AddUser"}
-        />
+        userRole={"role"}
+        handleSubmit={handleCreateUser}
+        initialValues={{
+          name: "",
+          mobile: "",
+          email: "",
+          password: "",
+          file: "",
+          userRoleChacked: [],
+        }}
+        vailidationSchema={schema}
+        buttonName={"users_AddUser"}
+      />
       {/* ) : ( */}
-        {/* "" */}
+      {/* "" */}
       {/* )} */}
     </NoticeWraper>
   );

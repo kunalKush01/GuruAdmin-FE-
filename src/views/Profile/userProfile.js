@@ -27,6 +27,7 @@ const ProfileWarper = styled.div`
 
 const schema = yup.object().shape({
   trustName: yup.string().required("name_required"),
+  trustType:yup.mixed().required("trust_type_required"),
   trustEmail: yup.string().email("email_invalid").required("email_required"),
   trustNumber: yup
     .string()
@@ -42,6 +43,8 @@ const schema = yup.object().shape({
   state: yup.mixed().required("events_state_required"),
   city: yup.mixed().required("events_city_required"),
   location: yup.mixed().required("events_location_required"),
+  latitude:yup.string().required("latitude_required"),
+  longitude:yup.string().required("longitude_required"),
 });
 
 const getLangId = (langArray, langSelection) => {

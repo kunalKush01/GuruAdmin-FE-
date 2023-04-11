@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import he from "he";
 import { deletePunyarjak } from "../../api/punarjakApi";
-import placeHolderTable from "../../assets/images/placeholderImages/placeHolderTable.svg";
+import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomDataTable from "../partials/CustomDataTable";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
@@ -72,7 +72,7 @@ export default function PunyarjakTable({
               src={
                 item?.profilePhoto !== ""
                   ? item?.profilePhoto
-                  : placeHolderTable
+                  : avtarIcon
               }
               className="cursor-pointer"
               style={{

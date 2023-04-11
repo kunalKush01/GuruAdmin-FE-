@@ -109,6 +109,7 @@ export default function CategoryForm({
                   <Col>
                     <FormikCustomReactSelect
                       labelName={t("categories_select_master_category")}
+                      required
                       name={CategoryFormName}
                       labelKey={"name"}
                       valueKey="id"
@@ -125,6 +126,7 @@ export default function CategoryForm({
                       width={"100"}
                       {...props}
                     />
+
                   </Col>
                   <Col>
                     <CustomTextField

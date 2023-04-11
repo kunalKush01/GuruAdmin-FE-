@@ -85,10 +85,10 @@ export default function PunyarjakForm({
         onSubmit={(e) => {
           setLoading(true);
           punyarjakMutation.mutate({
-            punyarjakId:e?.id,
+            punyarjakId: e?.id,
             profilePhoto: editProfile ? profileImageName : e?.file,
             name: e?.name,
-            description:e?.description
+            description: e?.description,
           });
         }}
         validationSchema={vailidationSchema}
@@ -128,7 +128,7 @@ export default function PunyarjakForm({
 
             <Row>
               <Col xs={12} className=" mt-2 ps-0 d-flex">
-                <div className=" me-3">
+                <div className="me-3">
                   <ImageUpload
                     bg_plus={defaultAvtar}
                     profileImage
@@ -147,6 +147,19 @@ export default function PunyarjakForm({
                       profileImageName = "";
                     }}
                   />
+                  <div
+                    style={{
+                      height: "20px",
+                      font: "normal normal bold 11px/15px Noto Sans",
+                    }}
+                  >
+                    {formik.errors.file &&
+                      formik.touched.file && (
+                        <div className="text-danger text-center">
+                          <Trans i18nKey={formik.errors.file} />
+                        </div>
+                      )}
+                  </div>
                 </div>
                 <Row>
                   <Col xs={12}>

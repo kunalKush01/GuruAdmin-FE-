@@ -95,7 +95,7 @@ export default function DonationListTable({ data, topdf }, args) {
         username: (
           <div className="d-flex align-items-center">
             <img
-              src={avtarIcon}
+              src={item?.user?.profilePhoto ?? avtarIcon}
               style={{ marginRight: "5px", width: "25px", }}
             />
             <div>{ConverFirstLatterToCapital(item?.user?.name ?? "")}</div>

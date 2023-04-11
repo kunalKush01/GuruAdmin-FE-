@@ -392,11 +392,11 @@ export default function ProfileForm({
             trustName: e?.trustName,
             typeId: e?.trustType?.id,
             trustEmail: e?.trustEmail,
-            trustNumber: e?.trustNumber,
+            trustNumber: e?.trustNumber.toString(),
             about: e?.about,
             name: e?.name,
             email: e?.email,
-            mobileNumber: e?.mobileNumber,
+            mobileNumber: e?.mobileNumber.toString(),
             state: e?.state?.state,
             city: e?.city?.districts,
             place_id: e?.location.value.place_id,
@@ -460,6 +460,7 @@ export default function ProfileForm({
                       <CustomTextField
                         label={t("userProfile_name")}
                         name="trustName"
+                        required
                         onInput={(e) =>
                           (e.target.value = e.target.value.slice(0, 30))
                         }
@@ -469,7 +470,8 @@ export default function ProfileForm({
                     <Col xs={12} md={6} lg={4} className="">
                       <FormikCustomReactSelect
                         labelName={t("trust_trustType")}
-                        name={"trustType"}
+                        name="trustType"
+                        required
                         labelKey={"name"}
                         valueKey="id"
                         loadOptions={allTrustTypes?.data?.results}
@@ -483,6 +485,7 @@ export default function ProfileForm({
                       <CustomTextField
                         label={t("userProfile_email_id")}
                         name="trustEmail"
+                        required
                       />
                     </Col>
                     <Col xs={12} md={6} lg={4} className="">
@@ -490,6 +493,7 @@ export default function ProfileForm({
                         label={t("userProfile_phone_number")}
                         name="trustNumber"
                         type="number"
+                        required
                         pattern="[6789][0-9]{9}"
                         onInput={(e) =>
                           (e.target.value = e.target.value.slice(0, 12))
@@ -532,6 +536,7 @@ export default function ProfileForm({
                   <Row>
                     <Col xs={12} md={6} lg={4} className="">
                       <CustomTextField
+                      required
                         label={t("userProfile_name")}
                         name="name"
                         onInput={(e) =>
@@ -544,6 +549,7 @@ export default function ProfileForm({
                       <CustomTextField
                         label={t("userProfile_email_id")}
                         name="email"
+                        required
                       />
                     </Col>
                     <Col xs={12} md={6} lg={4} className="">
@@ -551,6 +557,7 @@ export default function ProfileForm({
                         label={t("userProfile_phone_number")}
                         name="mobileNumber"
                         type="number"
+                        required
                         pattern="[6789][0-9]{9}"
                         onInput={(e) =>
                           (e.target.value = e.target.value.slice(0, 12))
@@ -573,7 +580,8 @@ export default function ProfileForm({
               <Row>
                 <Col md={4}>
                   <FormikCustomReactSelect
-                    labelName={"State"}
+                    labelName={t("State")}
+                    required
                     loadOptions={loadStates?.map((item) => {
                       return {
                         ...item,
@@ -591,7 +599,7 @@ export default function ProfileForm({
                     width={"100"}
                     onChange={(data) => {
                       formik.setFieldValue("state", data);
-                      formik.setFieldValue("city", []);
+                      formik.setFieldValue("city", null);
                       setCityLoadOption(data?.districts);
                     }}
                     disabled={loadStates === 0}
@@ -599,7 +607,8 @@ export default function ProfileForm({
                 </Col>
                 <Col md={4}>
                   <FormikCustomReactSelect
-                    labelName={"City"}
+                    labelName={t("City")}
+                    required
                     loadOptions={cityLoadOption?.map((item) => {
                       return {
                         ...item,
@@ -619,7 +628,7 @@ export default function ProfileForm({
                   />
                 </Col>
                 <Col md={4}>
-                  <label>Location</label>
+                  <label>Location*</label>
                   <GooglePlacesAutocomplete
                     apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
                     selectProps={{
@@ -667,7 +676,7 @@ export default function ProfileForm({
                 </Col>
                 <Col sm={4}>
                   <CustomTextField
-                    label="Longitude"
+                     label={t("longitude")}
                     name="longitude"
                     type="text"
                     required
@@ -676,7 +685,7 @@ export default function ProfileForm({
                 </Col>
                 <Col sm={4}>
                   <CustomTextField
-                    label="Latitude"
+                    label={t("latitude")}
                     name="latitude"
                     type="text"
                     disabled

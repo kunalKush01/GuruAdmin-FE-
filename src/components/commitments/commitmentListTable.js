@@ -23,7 +23,7 @@ export default function CommitmentListTable({
   currentStatus,
   currentSubCategory,
   subPermission,
-  allPermissions 
+  allPermissions,
 }) {
   const handleDeleteCommitment = async (payload) => {
     return deleteCommitment(payload);
@@ -123,7 +123,7 @@ export default function CommitmentListTable({
         username: (
           <div className="d-flex align-items-center ">
             <img
-              src={avtarIcon}
+              src={item?.user?.profilePhoto ?? avtarIcon}
               style={{ marginRight: "5px", width: "25px" }}
             />
             <div>{ConverFirstLatterToCapital(item?.user?.name ?? "")}</div>
@@ -173,7 +173,12 @@ export default function CommitmentListTable({
             <div
               className="cursor-pointer payDonation"
               onClick={() =>
-                history.push(`/commitment/pay-donation/${item.id}?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`, item.id)
+                financeReport
+                  ? history.push(`/commitment/pay-donation/${item.id}`, item.id)
+                  : history.push(
+                      `/commitment/pay-donation/${item.id}?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`,
+                      item.id
+                    )
               }
             >
               <Trans i18nKey={"payment"} />
@@ -181,59 +186,65 @@ export default function CommitmentListTable({
           ) : (
             "-"
           ),
-        edit: allPermissions?.name === "all" || subPermission?.includes(EDIT) ? (
-          <img
-            src={editIcon}
-            width={35}
-            className={
-              financeReport ? "cursor-disabled opacity-50" : "cursor-pointer "
-            }
-            onClick={() => {
-              financeReport
-                ? ""
-                : history.push(
-                    `/commitment/edit/${item.id}?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`
-                  );
-            }}
-          />
-        ):"",
-        delete: allPermissions?.name === "all" || subPermission?.includes(DELETE) ? (
-          <img
-            src={deleteIcon}
-            width={35}
-            className={
-              financeReport ? "cursor-disabled opacity-50" : "cursor-pointer "
-            }
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              // Swal.fire("Oops...", "Something went wrong!", "error");
-              financeReport
-                ? ""
-                : Swal.fire({
-                    title: `<img src="${comfromationIcon}"/>`,
-                    html: `
+        edit:
+          allPermissions?.name === "all" || subPermission?.includes(EDIT) ? (
+            <img
+              src={editIcon}
+              width={35}
+              className={
+                financeReport ? "cursor-disabled opacity-50" : "cursor-pointer "
+              }
+              onClick={() => {
+                financeReport
+                  ? ""
+                  : history.push(
+                      `/commitment/edit/${item.id}?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`
+                    );
+              }}
+            />
+          ) : (
+            ""
+          ),
+        delete:
+          allPermissions?.name === "all" || subPermission?.includes(DELETE) ? (
+            <img
+              src={deleteIcon}
+              width={35}
+              className={
+                financeReport ? "cursor-disabled opacity-50" : "cursor-pointer "
+              }
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                // Swal.fire("Oops...", "Something went wrong!", "error");
+                financeReport
+                  ? ""
+                  : Swal.fire({
+                      title: `<img src="${comfromationIcon}"/>`,
+                      html: `
                                           <h3 class="swal-heading mt-1">${t(
                                             "commitment_delete"
                                           )}</h3>
                                           <p>${t("commitment_sure")}</p>
                                           `,
-                    showCloseButton: false,
-                    showCancelButton: true,
-                    focusConfirm: true,
-                    cancelButtonText: ` ${t("cancel")}`,
-                    cancelButtonAriaLabel: ` ${t("cancel")}`,
+                      showCloseButton: false,
+                      showCancelButton: true,
+                      focusConfirm: true,
+                      cancelButtonText: ` ${t("cancel")}`,
+                      cancelButtonAriaLabel: ` ${t("cancel")}`,
 
-                    confirmButtonText: ` ${t("confirm")}`,
-                    confirmButtonAriaLabel: "Confirm",
-                  }).then(async (result) => {
-                    if (result.isConfirmed) {
-                      deleteMutation.mutate(item.id);
-                    }
-                  });
-            }}
-          />
-        ):"",
+                      confirmButtonText: ` ${t("confirm")}`,
+                      confirmButtonAriaLabel: "Confirm",
+                    }).then(async (result) => {
+                      if (result.isConfirmed) {
+                        deleteMutation.mutate(item.id);
+                      }
+                    });
+              }}
+            />
+          ) : (
+            ""
+          ),
       };
     });
   }, [data]);

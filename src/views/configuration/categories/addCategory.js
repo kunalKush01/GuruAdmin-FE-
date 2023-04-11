@@ -30,6 +30,7 @@ const handleCreateSubCategory = async (payload) => {
   return createSubCategory(payload);
 };
 const schema = yup.object().shape({
+  MasterCategory:yup.mixed().required("categories_category_required"),
   SubCategory: yup.string().matches(
     /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
     'only_letters'
@@ -80,7 +81,7 @@ export default function AddCategory() {
         <div className="ms-3 mt-1">
           <CategoryForm
             loadOptions={masterloadOptionQuery?.data?.results}
-            placeholder={masterloadOptionQuery?.data?.results[0]?.name ?? "All"}
+            // placeholder={masterloadOptionQuery?.data?.results[0]?.name ?? "All"}
             CategoryFormName={"MasterCategory"}
             handleSubmit={handleCreateSubCategory}
             initialValues={{

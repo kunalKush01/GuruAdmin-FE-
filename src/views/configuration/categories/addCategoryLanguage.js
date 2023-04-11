@@ -29,11 +29,12 @@ const EventWarper = styled.div`
 `;
 
 const schema = yup.object().shape({
+  MasterCategory:yup.mixed().required("categories_category_required"),
   SubCategory: yup.string().matches(
     /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
     'only_letters'
 ).required("categories_sub_category_required"),
-})
+});
 
 export default function AddLanguageEvent() {
   const history = useHistory();
@@ -125,9 +126,9 @@ export default function AddLanguageEvent() {
         <div className="ms-3 mt-1">
           <CategoryForm
           loadOptions={[subCategoryDetailQuery?.data?.result?.masterCategory]}
-          placeholder={
-            subCategoryDetailQuery?.data?.result?.masterCategory.name
-          }
+          // placeholder={
+          //   subCategoryDetailQuery?.data?.result?.masterCategory.name
+          // }
           CategoryFormName={"MasterCategory"}
           handleSubmit={handleCategoryLangUpdate}
           initialValues={{

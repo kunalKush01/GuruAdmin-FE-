@@ -15,7 +15,7 @@ import { useSelector } from "react-redux";
 import { authApiInstance } from "../../axiosApi/authApiInstans";
 import { createEvent } from "../../api/eventApi.js";
 import EventForm from "../../components/events/eventForm";
-import he from "he"
+import he from "he";
 
 const EventWraper = styled.div`
   color: #583703;
@@ -31,13 +31,17 @@ const EventWraper = styled.div`
 `;
 
 const handleCreateEvent = async (payload) => {
-  
   return createEvent(payload);
 };
 const schema = yup.object().shape({
   Title: yup.string().required("events_title_required"),
   Body: yup.string().required("events_desc_required"),
-  DateTime: yup.mixed(),
+  DateTime: yup.object().shape({
+    start: yup.string().required("events_startDate_required"),
+    end: yup.string().required("events_endDate_required"),
+  }),
+  startTime: yup.string().required("events_startTime_required"),
+  endTime: yup.string().required("events_endTime_required"),
   SelectedEvent: yup.mixed(),
 });
 
@@ -45,12 +49,12 @@ const initialValues = {
   SelectedEvent: null,
   Id: "",
   Title: "",
-  images:[],
-  tagsInit:[],
+  images: [],
+  tagsInit: [],
   Body: "",
-  DateTime: { start: new Date(), end: null },
-  startTime:new Date(),
-  endTime:new Date(),
+  DateTime: { start: new Date(), end: "" },
+  startTime: "",
+  endTime: "",
 };
 
 export default function AddEvent() {
@@ -58,8 +62,8 @@ export default function AddEvent() {
   const langArray = useSelector((state) => state.auth.availableLang);
 
   const searchParams = new URLSearchParams(history.location.search);
-  const currentPage = searchParams.get('page')
-  const currentFilter = searchParams.get('filter')
+  const currentPage = searchParams.get("page");
+  const currentFilter = searchParams.get("filter");
   return (
     <EventWraper>
       <div className="d-flex justify-content-between align-items-center ">
@@ -67,7 +71,11 @@ export default function AddEvent() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push(`/events?page=${currentPage}&filter=${currentFilter}`)}
+            onClick={() =>
+              history.push(
+                `/events?page=${currentPage}&filter=${currentFilter}`
+              )
+            }
           />
           <div className="addEvent">
             <Trans i18nKey={"events_AddEvent"} />

@@ -33,7 +33,7 @@ import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 
 const NewsCardWaraper = styled.div`
   .imgContainer {
-    border-radius: 10px 10px 0px 0px;
+    background-color:#fff7e8;
     img {
       border-radius: 10px 10px 0px 0px;
     }
@@ -204,7 +204,10 @@ export default function NewsCard({
     <NewsCardWaraper>
       <Card
         style={{
-          width: "300px",
+          width: "100%",
+          height:"337px",
+          borderRadiuis:"10px",
+          overflow:"hidden"
         }}
       >
         <div
@@ -212,7 +215,7 @@ export default function NewsCard({
           onClick={() => history.push(`/news/about/${data.id}`, data.id)}
         >
           <img
-            alt="Sample"
+            alt="News Image"
             style={{
               height: "150px",
               position: "relative",
@@ -220,11 +223,11 @@ export default function NewsCard({
             }}
             src={data?.images[0]?.presignedUrl ?? placeHolder}
           />
-          <div className=" position-absolute imgContent  w-100 ">
+          {/* <div className=" position-absolute imgContent  w-100 ">
             <div className="text-end">
               {`${moment(data.publishDate).startOf("hour").fromNow()}`}
             </div>
-          </div>
+          </div> */}
         </div>
 
         <CardBody>

@@ -37,7 +37,12 @@ const EventWarper = styled.div`
 const schema = yup.object().shape({
   Title: yup.string().required("events_title_required"),
   Body: yup.string().required("events_desc_required"),
-  DateTime: yup.mixed(),
+  DateTime: yup.object().shape({
+    start: yup.string().required("events_startDate_required"),
+    end: yup.string().required("events_endDate_required"),
+  }),
+  startTime: yup.string().required("events_startTime_required"),
+  endTime: yup.string().required("events_endTime_required"),
   SelectedEvent: yup.mixed(),
 });
 
