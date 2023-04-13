@@ -73,7 +73,7 @@ export default function RecentDonationTable({ data }) {
         id:idx+1 ,
         username: (
           <div className="d-flex align-items-center ">
-            <img src={item?.user?.profilePhoto ?? avtarIcon} style={{ marginRight: "5px", width: "25px" }} />
+            <img src={item?.user?.profilePhoto !== ""  && item?.user?.profilePhoto  ? item?.user?.profilePhoto : avtarIcon} style={{ marginRight: "5px", width: "25px" }} />
             <div>{ConverFirstLatterToCapital(item?.user?.name??"")}</div>
           </div>
         ),
