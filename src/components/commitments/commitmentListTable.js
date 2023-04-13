@@ -384,10 +384,10 @@ export default function CommitmentListTable(
         content={() => ref.current}
         documentTitle={`Donation-Receipt.pdf`}
       />
-      <div className="bg-danger " style={{ display: "none" }}>
+      <div className="" style={{ display: "none" }}>
         <div
           ref={ref}
-          className="bg-danger"
+          className=""
           // style={{
           //   width: "700px",
           //   height: "auto",
@@ -401,6 +401,7 @@ export default function CommitmentListTable(
                 style={{
                   width: "100%",
                   // border:"1px solid black",
+                  // background:"yellow",
                   height: "1100px",
                   display: "flex",
                   justifyContent: "center",

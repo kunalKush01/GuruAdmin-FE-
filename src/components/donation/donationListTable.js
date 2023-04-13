@@ -1,9 +1,11 @@
+import { useMutation } from "@tanstack/react-query";
 import moment from "moment";
 import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import ReactToPdf from "react-to-pdf";
+import ReactToPrint from "react-to-print";
 import { Button, Modal, ModalBody, ModalFooter } from "reactstrap";
 import styled from "styled-components";
 import Swal from "sweetalert2";
@@ -56,6 +58,7 @@ export default function DonationListTable({ data, topdf }, args) {
       name: t("category"),
       selector: (row) => row.category,
       cellExport: (row) => row.category,
+      width: "120px",
     },
     {
       name: t("categories_sub_category"),
@@ -95,7 +98,11 @@ export default function DonationListTable({ data, topdf }, args) {
         username: (
           <div className="d-flex align-items-center">
             <img
-              src={item?.user?.profilePhoto !== "" && item?.user?.profilePhoto? item?.user?.profilePhoto : avtarIcon}
+              src={
+                item?.user?.profilePhoto !== "" && item?.user?.profilePhoto
+                  ? item?.user?.profilePhoto
+                  : avtarIcon
+              }
               style={{ marginRight: "5px", width: "25px" }}
             />
             <div>{ConverFirstLatterToCapital(item?.user?.name ?? "")}</div>
@@ -128,8 +135,10 @@ export default function DonationListTable({ data, topdf }, args) {
             width={25}
             className="cursor-pointer"
             onClick={() => {
-              toggle();
               setReceipt(item);
+              setTimeout(() => {
+                pdfRef.current.click();
+              }, 500);
             }}
           />
         ),
@@ -151,27 +160,40 @@ export default function DonationListTable({ data, topdf }, args) {
   return (
     <RecentDonationTableWarper>
       <CustomDataTable maxHieght={""} columns={columns} data={Donatio_data} />
-      <ReactToPdf
-        targetRef={ref}
-        filename="Donation-Receipt.pdf"
-        options={options}
-      >
-        {({ toPdf }) => (
-          <button onClick={toPdf} ref={pdfRef} className="d-none">
-            Generate pdf
-          </button>
+      <ReactToPrint
+        trigger={() => (
+          <span
+            id="printAllRedeemedVoucher"
+            ref={pdfRef}
+            style={{ display: "none" }}
+          >
+            Print!
+          </span>
         )}
-      </ReactToPdf>
+        content={() => ref.current}
+        documentTitle={`Donation-Receipt.pdf`}
+      />
 
-      <Modal isOpen={modal} toggle={toggle} {...args}>
-        <ModalBody>
+      <div className="d-none">
+        <div
+          ref={ref}
+          style={{
+            width: "100%",
+            // border:"1px solid black",
+            // background:"yellow",
+            height: "1100px",
+            display: "flex",
+            justifyContent: "center",
+            // background:"yellow",
+            alignItems: "center",
+          }}
+        >
           <div
-            ref={ref}
             style={{
               width: "479px",
-              height: "100%",
+              height: "auto",
               textAlign: "center",
-              padding: "3rem 2rem",
+              padding: "2rem 2rem",
             }}
           >
             <img src={donationReceiptIcon} style={{ width: "130px" }} />
@@ -197,7 +219,7 @@ export default function DonationListTable({ data, topdf }, args) {
                     color: "#583703",
                   }}
                 >
-                  {loggedTemple?.name}
+                  {ConverFirstLatterToCapital(loggedTemple?.name ?? "")}
                 </div>
                 <div
                   class="ms-2"
@@ -262,6 +284,12 @@ export default function DonationListTable({ data, topdf }, args) {
               )}
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* <Modal isOpen={modal} toggle={toggle} {...args}>
+        <ModalBody>
+         
         </ModalBody>
         <ModalFooter>
           <Button
@@ -285,7 +313,7 @@ export default function DonationListTable({ data, topdf }, args) {
             Cancel
           </Button>
         </ModalFooter>
-      </Modal>
+      </Modal> */}
     </RecentDonationTableWarper>
   );
 }
