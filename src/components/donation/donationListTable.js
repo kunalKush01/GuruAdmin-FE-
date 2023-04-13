@@ -138,7 +138,7 @@ export default function DonationListTable({ data, topdf }, args) {
               setReceipt(item);
               setTimeout(() => {
                 pdfRef.current.click();
-              }, 500);
+              }, 100);
             }}
           />
         ),

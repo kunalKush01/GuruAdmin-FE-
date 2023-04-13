@@ -88,7 +88,6 @@ export default function CommitmentListTable(
       }
     },
   });
-
   // const [commitmentId, setCommitmentId] = useState("");
   // console.log(commitmentId);
   // const allPaidDonationsReceipt = useQuery(
@@ -243,27 +242,23 @@ export default function CommitmentListTable(
             {item?.commitmentId}
           </div>
         ),
-        receipt: loading ? (
-          <Spinner size="sm" color="primary" />
-        ) : (
-          <>
-            <img
-              src={receiptIcon}
-              width={25}
-              className={`cursor-pointer ${
-                item?.amount != item?.amount - item?.paidAmount
-                  ? "cursor-pointer"
-                  : " opacity-50 cursor-not-allowed"
-              }`}
-              onClick={() => {
+        receipt: (
+          <img
+            src={receiptIcon}
+            width={25}
+            className={`cursor-pointer ${
+              item?.amount != item?.amount - item?.paidAmount
+                ? "cursor-pointer"
+                : " opacity-50 cursor-not-allowed"
+            }`}
+            onClick={() => {
+              item?.amount != item?.amount - item?.paidAmount &&
                 receiptMutation.mutate(item?.id);
-                setLoading(true);
-                // setCommitmentId(item?.id);
-                // pdfRef.current.click();
-                // toggle();
-              }}
-            />
-          </>
+              // setCommitmentId(item?.id);
+              // pdfRef.current.click();
+              // toggle();
+            }}
+          />
         ),
         createdBy: ConverFirstLatterToCapital(item?.createdBy.name),
         payDonation:
