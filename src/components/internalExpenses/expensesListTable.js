@@ -116,7 +116,7 @@ export function ExpensesListTable({
       date: moment(item?.expenseDate).utcOffset(0).format("DD MMM YYYY"),
       amount: `₹${item.amount}`,
       createdBy:ConverFirstLatterToCapital(item?.createdBy?.name ?? ""),
-      edit:  allPermissions?.name === "all" || subPermission?.includes(EDIT) ? (
+      edit:  allPermissions?.name === "all" || subPermission?.includes(EDIT)  || financeReport ? (
         <img
           src={editIcon}
           width={35}
@@ -132,7 +132,7 @@ export function ExpensesListTable({
           }}
         />
       ):(""),
-      delete: allPermissions?.name === "all" || subPermission?.includes(DELETE) ? (
+      delete: allPermissions?.name === "all" || subPermission?.includes(DELETE) || financeReport? (
         <img
           src={deleteIcon}
           width={35}

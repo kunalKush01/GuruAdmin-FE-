@@ -147,10 +147,10 @@ const Router = () => {
                               <route.component {...props} />
                             </Fragment>
                           ) : (
-                            // <Permission
-                            //   type={route?.type}
-                            //   subPermission={route?.subPermission}
-                            // >
+                            <Permission
+                              type={route?.type}
+                              subPermission={route?.subPermission}
+                            >
                               <LayoutWrapper
                                 layout={DefaultLayout}
                                 transition={transition}
@@ -178,7 +178,7 @@ const Router = () => {
                                   <route.component {...props} />
                                 </Suspense>
                               </LayoutWrapper>
-                            // </Permission>
+                            </Permission>
                           )}
                         </Fragment>
                       );

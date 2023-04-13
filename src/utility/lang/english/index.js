@@ -201,6 +201,7 @@ export const englishContent = {
   donation_Donation: "Donation",
   donation_Adddonation: "Add Donation",
   donation_select_date_time: "Select Date & Time",
+  donation_select_date:"Select Date",
   donation_donar_name_only_letters:
     "Donor Name can only contain character letters.",
   add_user_donation: "No user found click here to",

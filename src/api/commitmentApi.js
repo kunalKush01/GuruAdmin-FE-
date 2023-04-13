@@ -9,6 +9,16 @@ export const createCommitment = (payload) =>
   });
 
 
+export const getAllPaidDonationsReceipts = (payload) =>
+callApi({
+  requestFunction: (axios) =>
+    axios.get(`${API_BASE_URL}commitment/all-donations/${payload}`),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+});
+
+
+
   export const getAllMasterCategories = (payload) =>
   
   callApi({

@@ -95,8 +95,8 @@ export default function DonationListTable({ data, topdf }, args) {
         username: (
           <div className="d-flex align-items-center">
             <img
-              src={item?.user?.profilePhoto ?? avtarIcon}
-              style={{ marginRight: "5px", width: "25px", }}
+              src={item?.user?.profilePhoto !== "" && item?.user?.profilePhoto? item?.user?.profilePhoto : avtarIcon}
+              style={{ marginRight: "5px", width: "25px" }}
             />
             <div>{ConverFirstLatterToCapital(item?.user?.name ?? "")}</div>
           </div>
@@ -111,7 +111,7 @@ export default function DonationListTable({ data, topdf }, args) {
             {/* {item?.subCategory && `(${item?.subCategory?.name ?? ""})`} */}
           </div>
         ),
-        subCategory:ConverFirstLatterToCapital (item?.category?.name ?? "-"),
+        subCategory: ConverFirstLatterToCapital(item?.category?.name ?? "-"),
         dateTime: moment(item.createdAt ?? item?.updatedAt).format(
           " DD MMM YYYY,hh:mm A"
         ),
@@ -121,7 +121,7 @@ export default function DonationListTable({ data, topdf }, args) {
             ? `0${item.commitmentId}`
             : `${item.commitmentId}`
           : "_",
-        createdBy:ConverFirstLatterToCapital(item?.createdBy?.name ?? ""),
+        createdBy: ConverFirstLatterToCapital(item?.createdBy?.name ?? ""),
         receipt: (
           <img
             src={receiptIcon}
@@ -140,7 +140,10 @@ export default function DonationListTable({ data, topdf }, args) {
   const RecentDonationTableWarper = styled.div`
     color: #583703 !important;
     font: normal normal bold 15px/23px Noto Sans;
-
+    .modal-body {
+      max-height: 600px !important;
+      overflow: auto !important;
+    }
     .tableDes p {
       margin-bottom: 0;
     }
@@ -261,19 +264,22 @@ export default function DonationListTable({ data, topdf }, args) {
           </div>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={()=>{
-            pdfRef.current.click();
-            setTimeout(()=>{
-                  toggle()
-                  Swal.fire({
-                    icon: 'success',
-                    title: 'Receipt Download Successfully.',
-                    showConfirmButton: false,
-                    timer: 1500
-                  })
-            },300)
-            }}>
-          Download
+          <Button
+            color="primary"
+            onClick={() => {
+              pdfRef.current.click();
+              setTimeout(() => {
+                toggle();
+                Swal.fire({
+                  icon: "success",
+                  title: "Receipt Download Successfully.",
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
+              }, 300);
+            }}
+          >
+            Download
           </Button>{" "}
           <Button color="secondary" onClick={toggle}>
             Cancel

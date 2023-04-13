@@ -180,7 +180,7 @@ export default function EventList() {
           <div className="d-flex justify-content-between align-items-center ">
             <img
               src={arrowLeft}
-              className="me-2  cursor-pointer align-self-end"
+              className="me-2  cursor-pointer align-self-center"
               onClick={() => history.push("/")}
             />
             <div className="addEvent">

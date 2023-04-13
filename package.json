@@ -90,6 +90,7 @@
     "react-tag-input": "^6.8.1",
     "react-time-input": "^1.0.1",
     "react-to-pdf": "0.0.14",
+    "react-to-print": "^2.14.12",
     "react-toastify": "^8.0.3",
     "react-use": "^17.4.0",
     "reactstrap": "9.0.1",

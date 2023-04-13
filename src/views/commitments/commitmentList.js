@@ -14,7 +14,10 @@ import {
   getAllCategories,
   getAllMasterCategories,
 } from "../../api/categoryApi";
-import { getAllCommitments } from "../../api/commitmentApi";
+import {
+  getAllCommitments,
+  getAllPaidDonationsReceipts,
+} from "../../api/commitmentApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import CommitmentListTable from "../../components/commitments/commitmentListTable";
 import { ChangeCategoryType } from "../../components/partials/categoryDropdown";
@@ -236,6 +239,9 @@ export default function Commitment() {
   const subPermission = subPermissions?.subpermissions?.map(
     (item) => item.name
   );
+
+
+
   return (
     <CommitmentWarapper>
       <div className="window nav statusBar body "></div>
@@ -245,7 +251,7 @@ export default function Commitment() {
           <div className="d-flex align-items-center my-3 my-sm-2 my-md-0 mb-md-2">
             <img
               src={arrowLeft}
-              className="me-2  cursor-pointer align-self-end"
+              className="me-2  cursor-pointer align-self-center"
               onClick={() => history.push("/")}
             />
             <div className="addCommitment d-flex">
@@ -316,24 +322,27 @@ export default function Commitment() {
                 );
               }}
             />
-              {allPermissions?.name === "all" ||
+            {allPermissions?.name === "all" ||
             subPermission?.includes(WRITE) ? (
-            <Button
-              color="primary"
-              className="addCommitment-btn mt-md-1 mt-lg-0"
-              onClick={() =>
-                history.push(
-                  `/commitment/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${dropDownName}`
-                )
-              }
-            >
-              <span>
-                <Plus className="" size={15} strokeWidth={4} />
-              </span>
-              <span>
-                <Trans i18nKey={"add_commitment"} />
-              </span>
-            </Button>):""}
+              <Button
+                color="primary"
+                className="addCommitment-btn mt-md-1 mt-lg-0"
+                onClick={() =>
+                  history.push(
+                    `/commitment/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${dropDownName}`
+                  )
+                }
+              >
+                <span>
+                  <Plus className="" size={15} strokeWidth={4} />
+                </span>
+                <span>
+                  <Trans i18nKey={"add_commitment"} />
+                </span>
+              </Button>
+            ) : (
+              ""
+            )}
           </div>
         </div>
         <div style={{ height: "10px" }}>

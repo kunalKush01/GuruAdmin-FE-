@@ -80,7 +80,24 @@ body::-webkit-scrollbar{
 	backdrop-filter: blur(10px);
 	background: rgba(0,0,0,.2) !important;
 }
-
+.allPaidDonationsModel{
+	max-width: 37.8rem;
+}
+.my::-webkit-scrollbar{
+	width: 8px;
+}
+.my::-webkit-scrollbar-thumb{
+	background: #FF8744;
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	-ms-border-radius: 10px;
+	-o-border-radius: 10px;
+}
+.my{
+	max-height:600px;
+	overflow: auto;
+  }
 
 .popover{
 	z-index: 1;
