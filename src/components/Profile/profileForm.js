@@ -726,7 +726,7 @@ export default function ProfileForm({
                           removeFacility(item, formik);
                         }}
                       >
-                        X
+                        <X color="#ff8744" stroke-width="3" />
                       </Button>
                       <div
                         className="cursor-pointer"
