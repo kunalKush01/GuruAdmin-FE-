@@ -1,34 +1,36 @@
-import { useSkin } from "@hooks/useSkin";
-import { Link, useHistory } from "react-router-dom";
-import { Facebook, Twitter, Mail, GitHub, User, Lock } from "react-feather";
 import InputPasswordToggle from "@components/input-password-toggle";
+import { useSkin } from "@hooks/useSkin";
+import "@styles/react/pages/page-authentication.scss";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import { ErrorMessage, Form, Formik } from "formik";
+import { useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
 import {
-  Row,
-  Col,
-  CardTitle,
-  CardText,
-  Label,
-  Input,
   Button,
+  CardText,
+  CardTitle,
+  Col,
+  Input,
   InputGroup,
   InputGroupText,
+  Row,
   Spinner,
 } from "reactstrap";
-import "@styles/react/pages/page-authentication.scss";
-import { Formik, Form, ErrorMessage } from "formik";
 import styled from "styled-components";
-import emailInputIcon from "../../assets/images/icons/signInIcon/email.svg";
-import passwordEyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
-import hidePassIcon from "../../assets/images/icons/signInIcon/hidePassIcon.svg";
-import backIconIcon from "../../assets/images/icons/signInIcon/backIcon.svg";
 import * as yup from "yup";
-import { useEffect, useState } from "react";
-import { login } from "../../redux/authSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import { formatIsoTimeString } from "@fullcalendar/core";
 import { forgotPassword } from "../../api/forgotPassword";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { loginPage } from "../../api/loginPageApi";
+import backIconIcon from "../../assets/images/icons/signInIcon/backIcon.svg";
+import emailInputIcon from "../../assets/images/icons/signInIcon/email.svg";
+import hidePassIcon from "../../assets/images/icons/signInIcon/hidePassIcon.svg";
+import passwordEyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
+import { handleTokenLogin, login } from "../../redux/authSlice";
+import {
+  defaultHeaders,
+  refreshTokenRequest,
+} from "../../utility/utils/callApi";
 const LoginCover = () => {
   const { isLogged } = useSelector((state) => state.auth);
   const history = useHistory();
@@ -43,17 +45,19 @@ const LoginCover = () => {
     return forgotPassword(values);
   };
 
+  console.log("searchParams--------->", location.hostname);
+
   const forgetPasswordQueryClient = useQueryClient();
   const resetPasswordMutation = useMutation({
-    mutationFn:handleForgetPassword,
-    onSuccess:(data)=> {
-      if(!data.error){
+    mutationFn: handleForgetPassword,
+    onSuccess: (data) => {
+      if (!data.error) {
         setLoading(false);
-      }else if (data.error) {
+      } else if (data.error) {
         setLoading(false);
       }
-    }
-  })
+    },
+  });
   const loginSchema = yup.object().shape({
     email: yup
       .string()
@@ -124,7 +128,36 @@ const LoginCover = () => {
     .brand-logo {
       width: fit-content;
     }
+    .templeName{
+      font: normal normal 600 23px/43px Noto Sans;
+    }
   `;
+  // const permissions = useSelector(
+  //   (state) => state.auth?.userDetail?.permissions
+  // );
+  // const loginPath = permissions?.map((item) => item?.name);
+  // console.log("withoutAll", loginPath);
+  // useEffect(() => {
+  //   if (isLogged && loginPath?.includes("all")) {
+  //     history.push("/dashboard");
+  //   } else if (isLogged || loginPath?.length) {
+  //     console.log("withoutAll true");
+  //     history.push(`/${loginPath[0]}`);
+  //   }
+  // }, [isLogged, loginPath]);
+
+  const subDomainName = location.hostname;
+
+  const loginPageQuery = useQuery([subDomainName], 
+  () =>loginPage(subDomainName)
+  );
+
+  const loginPageData = useMemo(
+    () => loginPageQuery?.data?.result ?? {},
+    [loginPageQuery]
+  );
+
+  console.log("loginPageData-------------->", loginPageData);
 
   useEffect(() => {
     isLogged ? history.push("/dashboard") : "";
@@ -132,9 +165,39 @@ const LoginCover = () => {
 
   const { skin } = useSkin();
 
-  const illustration = skin === "dark" ? "login-v2-dark.svg" : "login-v2.png",
+  const illustration = skin === "dark" ? "login-v2-dark.svg" : "login.svg",
     source = require(`@src/assets/images/pages/${illustration}`).default;
-  const [loading, setLoading] = useState(false)
+
+  const refreshToken = new URLSearchParams(history.location.search)?.get(
+    "rtoken"
+  );
+  const accessToken = new URLSearchParams(history.location.search)?.get(
+    "atoken"
+  );
+
+  console.log("refreshToken----->", refreshToken);
+
+  const headers = {
+    ...defaultHeaders,
+    // 'Content-Type': 'application/json',
+    Authorization: `Bearer ${accessToken}`,
+  };
+  const axiosInstance = axios.create({
+    headers,
+    responseType: "json",
+  });
+
+  useEffect(async () => {
+    if (refreshToken) {
+      const res = await refreshTokenRequest({ refreshToken, axiosInstance });
+      if (!res.error) {
+        dispatch(handleTokenLogin(res));
+        console.log("res--------->", res);
+      }
+    }
+  }, [refreshToken]);
+
+  const [loading, setLoading] = useState(false);
   return (
     <LoginWarraper className="auth-wrapper auth-cover ">
       <Row className="auth-inner m-0 defaultFontColor">
@@ -153,7 +216,7 @@ const LoginCover = () => {
           <div className="w-100 h-100 d-lg-flex align-items-center justify-content-center ">
             <img
               className="img-fluid w-100 h-100"
-              src={source}
+              src={loginPageData?.image !== "" || loginPageData?.image ? loginPageData?.image : source}
               alt="Login Cover"
             />
           </div>
@@ -165,8 +228,12 @@ const LoginCover = () => {
         >
           {!forgotPassWordActive ? (
             <Col className="px-xl-2 mx-auto" sm="8" md="6" lg="12">
-              {<CardTitle className="fw-bold mb-0 ">Sign In</CardTitle>}
-              <CardText className="signInEnterUserNAme   ">
+              {<CardTitle className="fw-bold mb-2 ">Sign In</CardTitle>}
+              <div className="templeName"> 
+                Admin: <span>{loginPageData?.name}</span>
+              </div>
+
+              <CardText className="signInEnterUserNAme">
                 Enter Username and Password in order to sign in to your account
               </CardText>
               <Formik
@@ -225,10 +292,7 @@ const LoginCover = () => {
                             />
                           }
                           showIcon={
-                            <img
-                              className="signInIcons"
-                              src={hidePassIcon}
-                            />
+                            <img className="signInIcons" src={hidePassIcon} />
                           }
                         />
                         <div className="errorMassage text-primary">
@@ -307,8 +371,8 @@ const LoginCover = () => {
                 onSubmit={(e) => {
                   setLoading(true);
                   return resetPasswordMutation.mutate({
-                    email:e?.email
-                  })
+                    email: e?.email,
+                  });
                 }}
                 validationSchema={forgetPasswordSchema}
               >
@@ -346,12 +410,15 @@ const LoginCover = () => {
               </div> */}
                     <div className="d-flex w-100 justify-content-center py-4 ">
                       {loading ? (
-                        <Button type="submit" color="primary" className=""
-                        style={{
-                          padding:".5rem 4rem"
-                        }}
+                        <Button
+                          type="submit"
+                          color="primary"
+                          className=""
+                          style={{
+                            padding: ".5rem 4rem",
+                          }}
                         >
-                          <Spinner style={{height:"2rem", width:"2rem"}} />
+                          <Spinner style={{ height: "2rem", width: "2rem" }} />
                         </Button>
                       ) : (
                         <Button type="submit" color="primary" className="px-5">

@@ -1,9 +1,11 @@
+import { useMutation } from "@tanstack/react-query";
 import moment from "moment";
 import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import ReactToPdf from "react-to-pdf";
+import ReactToPrint from "react-to-print";
 import { Button, Modal, ModalBody, ModalFooter } from "reactstrap";
 import styled from "styled-components";
 import Swal from "sweetalert2";
@@ -14,7 +16,7 @@ import templeImage from "../../assets/images/pages/login-v2.png";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomDataTable from "../partials/CustomDataTable";
 
-export default function PaidDonationTable({ data, topdf }, args) {
+export default function DonationListTable({ data, topdf }, args) {
   const { t } = useTranslation();
   const history = useHistory();
   const ref = useRef();
@@ -56,8 +58,13 @@ export default function PaidDonationTable({ data, topdf }, args) {
       name: t("category"),
       selector: (row) => row.category,
       cellExport: (row) => row.category,
+      width: "120px",
     },
-
+    {
+      name: t("categories_sub_category"),
+      selector: (row) => row.subCategory,
+      cellExport: (row) => row.subCategory,
+    },
     {
       name: t("dashboard_Recent_DonorDate"),
       selector: (row) => row.dateTime,
@@ -74,6 +81,11 @@ export default function PaidDonationTable({ data, topdf }, args) {
       cellExport: (row) => row.commitmentID,
     },
     {
+      name: t("created_by"),
+      selector: (row) => row.createdBy,
+      cellExport: (row) => row.createdBy,
+    },
+    {
       name: t("dashboard_Recent_DonorReceipt"),
       selector: (row) => row.receipt,
     },
@@ -86,7 +98,11 @@ export default function PaidDonationTable({ data, topdf }, args) {
         username: (
           <div className="d-flex align-items-center">
             <img
-              src={avtarIcon}
+              src={
+                item?.user?.profilePhoto !== "" && item?.user?.profilePhoto
+                  ? item?.user?.profilePhoto
+                  : avtarIcon
+              }
               style={{ marginRight: "5px", width: "25px" }}
             />
             <div>{ConverFirstLatterToCapital(item?.user?.name ?? "")}</div>
@@ -94,14 +110,15 @@ export default function PaidDonationTable({ data, topdf }, args) {
         ),
         mobileNumber: item?.user?.mobileNumber,
         donarName: ConverFirstLatterToCapital(
-          item?.donarName || item.user?.name || ""
+          item?.donarName ? item?.donarName : (item.user?.name ?item.user?.name : "" )
         ),
         category: (
           <div>
             {ConverFirstLatterToCapital(item?.masterCategory?.name ?? "")}
-            {item?.subCategory && `(${item?.subCategory?.name ?? ""})`}
+            {/* {item?.subCategory && `(${item?.subCategory?.name ?? ""})`} */}
           </div>
         ),
+        subCategory: ConverFirstLatterToCapital(item?.category?.name ?? "-"),
         dateTime: moment(item.createdAt ?? item?.updatedAt).format(
           " DD MMM YYYY,hh:mm A"
         ),
@@ -111,14 +128,17 @@ export default function PaidDonationTable({ data, topdf }, args) {
             ? `0${item.commitmentId}`
             : `${item.commitmentId}`
           : "_",
+        createdBy: ConverFirstLatterToCapital(item?.createdBy?.name ?? ""),
         receipt: (
           <img
             src={receiptIcon}
             width={25}
             className="cursor-pointer"
             onClick={() => {
-              toggle();
               setReceipt(item);
+              setTimeout(() => {
+                pdfRef.current.click();
+              }, 100);
             }}
           />
         ),
@@ -129,36 +149,51 @@ export default function PaidDonationTable({ data, topdf }, args) {
   const RecentDonationTableWarper = styled.div`
     color: #583703 !important;
     font: normal normal bold 15px/23px Noto Sans;
-
+    .modal-body {
+      max-height: 600px !important;
+      overflow: auto !important;
+    }
     .tableDes p {
       margin-bottom: 0;
     }
   `;
-
   return (
     <RecentDonationTableWarper>
       <CustomDataTable maxHieght={""} columns={columns} data={Donatio_data} />
-      <ReactToPdf
-        targetRef={ref}
-        filename="Donation-Receipt.pdf"
-        options={options}
-      >
-        {({ toPdf }) => (
-          <button onClick={toPdf} ref={pdfRef} className="d-none">
-            Generate pdf
-          </button>
+      <ReactToPrint
+        trigger={() => (
+          <span
+            id="printAllRedeemedVoucher"
+            ref={pdfRef}
+            style={{ display: "none" }}
+          >
+            Print!
+          </span>
         )}
-      </ReactToPdf>
+        content={() => ref.current}
+        documentTitle={`Donation-Receipt.pdf`}
+      />
 
-      <Modal isOpen={modal} toggle={toggle} {...args}>
-        <ModalBody>
+      <div className="d-none">
+        <div
+          ref={ref}
+          style={{
+            width: "100%",
+            // border:"1px solid black",
+            // background:"yellow",
+            height: "1100px",
+            display: "flex",
+            justifyContent: "center",
+            // background:"yellow",
+            alignItems: "center",
+          }}
+        >
           <div
-            ref={ref}
             style={{
               width: "479px",
-              height: "100%",
+              height: "auto",
               textAlign: "center",
-              padding: "3rem 2rem",
+              padding: "2rem 2rem",
             }}
           >
             <img src={donationReceiptIcon} style={{ width: "130px" }} />
@@ -172,7 +207,7 @@ export default function PaidDonationTable({ data, topdf }, args) {
               }}
             >
               <img
-                src={templeImage}
+                src={loggedTemple?.profilePhoto}
                 style={{ width: "80px", height: "80px", borderRadius: "8px" }}
               />
               <div style={{ padding: "25px" }}>
@@ -184,7 +219,7 @@ export default function PaidDonationTable({ data, topdf }, args) {
                     color: "#583703",
                   }}
                 >
-                  {loggedTemple?.name}
+                  {ConverFirstLatterToCapital(loggedTemple?.name ?? "")}
                 </div>
                 <div
                   class="ms-2"
@@ -194,7 +229,7 @@ export default function PaidDonationTable({ data, topdf }, args) {
                     textAlign: "left",
                   }}
                 >
-                  {"Ranakpur, Rajasthan"}
+                  {`${loggedTemple?.city}, ${loggedTemple?.state}`}
                 </div>
               </div>
             </div>
@@ -249,27 +284,36 @@ export default function PaidDonationTable({ data, topdf }, args) {
               )}
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* <Modal isOpen={modal} toggle={toggle} {...args}>
+        <ModalBody>
+         
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={()=>{
-            pdfRef.current.click();
-            setTimeout(()=>{
-                  toggle()
-                  Swal.fire({
-                    icon: 'success',
-                    title: 'Receipt Download Successfully.',
-                    showConfirmButton: false,
-                    timer: 1500
-                  })
-            },300)
-            }}>
-          Download
+          <Button
+            color="primary"
+            onClick={() => {
+              pdfRef.current.click();
+              setTimeout(() => {
+                toggle();
+                Swal.fire({
+                  icon: "success",
+                  title: "Receipt Download Successfully.",
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
+              }, 300);
+            }}
+          >
+            Download
           </Button>{" "}
           <Button color="secondary" onClick={toggle}>
             Cancel
           </Button>
         </ModalFooter>
-      </Modal>
+      </Modal> */}
     </RecentDonationTableWarper>
   );
 }

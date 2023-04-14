@@ -174,7 +174,7 @@ export default function DetailPage({
           </Col>
           <Col xs={12} lg={8} className="">
             <Row>
-              <Col xs={12} lg={11} className=" px-0 ps-lg-2 pe-lg-2">
+              <Col xs={12} lg={11} className=" px-0 ps-2 pe-2">
                 <div className="detail-title">
                   {ConverFirstLatterToCapital(title ?? "")}
                 </div>

@@ -28,7 +28,7 @@ Api Response data sample
 
 
 
-const defaultHeaders = {
+export const defaultHeaders = {
     "Access-Control-Allow-Origin": "*",
     "device-type": "android",
     "device-name":"1234567890",

@@ -59,6 +59,18 @@ const authSlice = createSlice({
       state.trustDetail = { ...state.trustDetail, ...action.payload };
     },
 
+    handleTokenLogin(state,action){
+      state.userDetail = action.payload.result;
+      state.isLogged =
+        action.payload.tokens.access.token &&
+        action.payload.tokens.refresh.token &&
+        true;
+      state.tokens.accessToken = action.payload.tokens.access.token;
+      state.tokens.refreshToken = action.payload.tokens.refresh.token;
+      state.trustDetail = action.payload.trust;
+      state.isLoading = false;
+    },
+
     setTokens: (state, action) => {
       const { accessToken, refreshToken } = action.payload;
       state.tokens.accessToken = accessToken;
@@ -111,6 +123,7 @@ export const {
   handleProfileUpdate,
   setTokens,
   setlang,
+  handleTokenLogin,
   setAvailableLang,
   setSearchbarValue,
 } = authSlice.actions;

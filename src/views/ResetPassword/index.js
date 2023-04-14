@@ -121,7 +121,7 @@ const ResetPassWord = () => {
 
   const { skin } = useSkin();
 
-  const illustration = skin === "dark" ? "login-v2-dark.svg" : "login-v2.png",
+  const illustration = skin === "dark" ? "login-v2-dark.svg" : "login.svg",
     source = require(`@src/assets/images/pages/${illustration}`).default;
   const [loading, setLoading] = useState(false);
 
