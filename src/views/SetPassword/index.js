@@ -1,9 +1,9 @@
 import InputPasswordToggle from "@components/input-password-toggle";
 import { useSkin } from "@hooks/useSkin";
 import "@styles/react/pages/page-authentication.scss";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { ErrorMessage, Form, Formik } from "formik";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { Button, CardText, CardTitle, Col, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
@@ -12,6 +12,7 @@ import { setPassword } from "../../api/forgotPassword";
 import backIconIcon from "../../assets/images/icons/signInIcon/backIcon.svg";
 import hidePassIcon from "../../assets/images/icons/signInIcon/hidePassIcon.svg";
 import passwordEyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
+import { loginPage } from "../../api/loginPageApi";
 
 const SetPassword = () => {
   const history = useHistory();
@@ -25,6 +26,7 @@ const SetPassword = () => {
     onSuccess: (data) => {
       if (!data.error) {
         setLoading(false);
+        history.push("/login")
       } else if (data.error) {
         setLoading(false);
       }
@@ -101,6 +103,9 @@ const SetPassword = () => {
     .loginBackground {
       background: #fff7e8;
     }
+    .templeName{
+      font: normal normal 600 23px/43px Noto Sans;
+    }
   `;
 
   const { skin } = useSkin();
@@ -114,6 +119,14 @@ const SetPassword = () => {
 
   const hostname = location.hostname;
   const subDomainName = hostname.split(".", [1]);
+  const loginPageQuery = useQuery([subDomainName], () =>
+    loginPage(subDomainName)
+  );
+
+  const loginPageData = useMemo(
+    () => loginPageQuery?.data?.result ?? {},
+    [loginPageQuery]
+  );
   return (
     <SetPasswordWarapper className="auth-wrapper auth-cover ">
       <Row className="auth-inner m-0 defaultFontColor">
@@ -132,7 +145,11 @@ const SetPassword = () => {
           <div className="w-100 h-100 d-lg-flex align-items-center justify-content-center loginBackground">
             <img
               className="img-fluid w-100 h-100"
-              src={source}
+              src={
+                loginPageData?.image !== "" || loginPageData?.image
+                  ? loginPageData?.image
+                  : source
+              }
               alt="Login Cover"
             />
           </div>
@@ -149,6 +166,11 @@ const SetPassword = () => {
               className="my-1 signInIcons"
             />
             {<CardTitle className="fw-bold mb-0 ">Set Password</CardTitle>}
+            {loginPageData?.name !== "" && (
+              <div className="templeName">
+                Admin: <span>{loginPageData?.name}</span>
+              </div>
+            )}
             <CardText className="signInEnterUserNAme   ">
               Enter the New and confirm password to set the password.
             </CardText>

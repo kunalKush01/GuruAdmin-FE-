@@ -53,6 +53,7 @@ const LoginCover = () => {
     onSuccess: (data) => {
       if (!data.error) {
         setLoading(false);
+        setForgotPassWordActive(false)
       } else if (data.error) {
         setLoading(false);
       }
@@ -128,11 +129,11 @@ const LoginCover = () => {
     .brand-logo {
       width: fit-content;
     }
-    .templeName{
+    .templeName {
       font: normal normal 600 23px/43px Noto Sans;
     }
-    .loginBackground{
-      background:#fff7e8;
+    .loginBackground {
+      background: #fff7e8;
     }
   `;
   const permissions = useSelector(
@@ -143,16 +144,17 @@ const LoginCover = () => {
   useEffect(() => {
     if (isLogged && loginPath?.includes("all")) {
       history.push("/dashboard");
+    } else if (isLogged || (loginPath?.length && loginPath[0] === "configuration")) {
+      history.push(`/configuration/categories`);
     } else if (isLogged || loginPath?.length) {
-      console.log("withoutAll true");
       history.push(`/${loginPath[0]}`);
     }
   }, [isLogged, loginPath]);
 
   const hostname = location.hostname;
-    const subDomainName = hostname.split(".",[1])
-  const loginPageQuery = useQuery([subDomainName], 
-  () =>loginPage(subDomainName)
+  const subDomainName = hostname.split(".", [1]);
+  const loginPageQuery = useQuery([subDomainName], () =>
+    loginPage(subDomainName)
   );
 
   const loginPageData = useMemo(

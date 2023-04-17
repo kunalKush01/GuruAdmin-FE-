@@ -22,13 +22,14 @@ import passwordEyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-e
 import hidePassIcon from "../../assets/images/icons/signInIcon/hidePassIcon.svg";
 import backIconIcon from "../../assets/images/icons/signInIcon/backIcon.svg";
 import * as yup from "yup";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { login } from "../../redux/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { formatIsoTimeString } from "@fullcalendar/core";
 import { forgotPassword, resetPassword } from "../../api/forgotPassword";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { loginPage } from "../../api/loginPageApi";
 const ResetPassWord = () => {
   const history = useHistory();
 
@@ -41,6 +42,7 @@ const ResetPassWord = () => {
     onSuccess: (data) => {
       if (!data.error) {
         setLoading(false);
+        history.push("/login")
       } else if (data.error) {
         setLoading(false);
       }
@@ -120,6 +122,9 @@ const ResetPassWord = () => {
     .loginBackground {
       background: #fff7e8;
     }
+    .templeName {
+      font: normal normal 600 23px/43px Noto Sans;
+    }
   `;
 
   const { skin } = useSkin();
@@ -133,6 +138,14 @@ const ResetPassWord = () => {
 
   const hostname = location.hostname;
   const subDomainName = hostname.split(".", [1]);
+  const loginPageQuery = useQuery([subDomainName], () =>
+    loginPage(subDomainName)
+  );
+
+  const loginPageData = useMemo(
+    () => loginPageQuery?.data?.result ?? {},
+    [loginPageQuery]
+  );
 
   return (
     <LoginWarraper className="auth-wrapper auth-cover ">
@@ -152,7 +165,11 @@ const ResetPassWord = () => {
           <div className="w-100 h-100 d-lg-flex align-items-center justify-content-center loginBackground">
             <img
               className="img-fluid w-100 h-100"
-              src={source}
+              src={
+                loginPageData?.image !== "" || loginPageData?.image
+                  ? loginPageData?.image
+                  : source
+              }
               alt="Login Cover"
             />
           </div>
@@ -169,6 +186,12 @@ const ResetPassWord = () => {
               className="my-1 signInIcons"
             />
             {<CardTitle className="fw-bold mb-0 ">Reset Password</CardTitle>}
+
+            {loginPageData?.name !== "" && (
+              <div className="templeName">
+                Admin: <span>{loginPageData?.name}</span>
+              </div>
+            )}
             <CardText className="signInEnterUserNAme   ">
               Enter the New and confirm password to reset the password.
             </CardText>
