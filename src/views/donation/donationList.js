@@ -22,6 +22,7 @@ import {
   getAllMasterCategories,
 } from "../../api/categoryApi";
 import { WRITE } from "../../utility/permissionsVariable";
+import { Helmet } from "react-helmet";
 
 const DoationWarper = styled.div`
   color: #583703;
@@ -213,6 +214,10 @@ export default function Donation() {
   );
   return (
     <DoationWarper>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Apna Mandir Admin | Donations</title>
+      </Helmet>
       <div className="window nav statusBar body "></div>
 
       <div>

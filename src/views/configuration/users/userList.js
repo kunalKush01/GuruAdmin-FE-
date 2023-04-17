@@ -31,6 +31,7 @@ import {
 import { getAllUser } from "../../../api/userApi";
 import NoContent from "../../../components/partials/noContent";
 import { WRITE } from "../../../utility/permissionsVariable";
+import { Helmet } from "react-helmet";
 const NewsWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -166,6 +167,10 @@ export default function User() {
   );
   return (
     <NewsWarper>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Apna Mandir Admin | Users</title>
+      </Helmet>
       <div className="window nav statusBar body "></div>
 
       <div>

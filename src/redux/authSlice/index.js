@@ -3,13 +3,19 @@ import { toast } from "react-toastify";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { authApiInstance } from "../../axiosApi/authApiInstans";
+
+
+const TOASTSLIDE = {
+  toastId: "apnaMandirSuperAdminError",
+};
+
 export const login = createAsyncThunk("Auth", async (data, thunkApi) => {
   try {
     const res = await authApiInstance.post("auth/login", data);
     return res.data.data;
   } catch (error) {
     const message = error?.response?.data?.message ?? "Something went wrong";
-    toast.error(message);
+    toast.error(message,{ ...TOASTSLIDE });
     // thunkApi.rejectWithValue(error?.response?.data);
     throw error.response;
   }

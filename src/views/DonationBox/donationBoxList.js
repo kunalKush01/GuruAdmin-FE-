@@ -18,6 +18,7 @@ import { getAllBoxCollection } from "../../api/donationBoxCollectionApi";
 import BoxListCard from "../../components/DonationBox/BoxListCard.js";
 import NoContent from "../../components/partials/noContent";
 import { WRITE } from "../../utility/permissionsVariable";
+import { Helmet } from "react-helmet";
 const NewsWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -158,6 +159,10 @@ export default function Expenses() {
 
   return (
     <NewsWarper>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Apna Mandir Admin | Donation Box</title>
+      </Helmet>
       <div className="window nav statusBar body "></div>
 
       <div>
@@ -199,22 +204,25 @@ export default function Expenses() {
             />
             {allPermissions?.name === "all" ||
             subPermission?.includes(WRITE) ? (
-            <Button
-              color="primary"
-              className="addNews-btn "
-              onClick={() =>
-                history.push(
-                  `/Hundi/add?page=${pagination.page}&filter=${dropDownName}`
-                )
-              }
-            >
-              <span>
-                <Plus className="" size={15} strokeWidth={4} />
-              </span>
-              <span>
-                <Trans i18nKey={"DonationBox_AddCollectionBox"} />
-              </span>
-            </Button>):""}
+              <Button
+                color="primary"
+                className="addNews-btn "
+                onClick={() =>
+                  history.push(
+                    `/Hundi/add?page=${pagination.page}&filter=${dropDownName}`
+                  )
+                }
+              >
+                <span>
+                  <Plus className="" size={15} strokeWidth={4} />
+                </span>
+                <span>
+                  <Trans i18nKey={"DonationBox_AddCollectionBox"} />
+                </span>
+              </Button>
+            ) : (
+              ""
+            )}
           </div>
         </div>
         <div style={{ height: "10px" }}>

@@ -98,6 +98,9 @@ const SetPassword = () => {
     .brand-logo {
       width: fit-content;
     }
+    .loginBackground {
+      background: #fff7e8;
+    }
   `;
 
   const { skin } = useSkin();
@@ -109,7 +112,8 @@ const SetPassword = () => {
   const searchParams = new URLSearchParams(history.location.search);
   const currentToken = searchParams.get("token");
 
-  
+  const hostname = location.hostname;
+  const subDomainName = hostname.split(".", [1]);
   return (
     <SetPasswordWarapper className="auth-wrapper auth-cover ">
       <Row className="auth-inner m-0 defaultFontColor">
@@ -125,7 +129,7 @@ const SetPassword = () => {
           lg="7"
           sm="12"
         >
-          <div className="w-100 h-100 d-lg-flex align-items-center justify-content-center ">
+          <div className="w-100 h-100 d-lg-flex align-items-center justify-content-center loginBackground">
             <img
               className="img-fluid w-100 h-100"
               src={source}

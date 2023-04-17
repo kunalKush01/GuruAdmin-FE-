@@ -19,6 +19,7 @@ import SubscribedUSerListTable from "../../components/subscribedUser/subscribedU
 import { getAllPunyarjak } from "../../api/punarjakApi";
 import PunyarjakTable from "../../components/Punyarjak/punyarjakUserListTable";
 import { WRITE } from "../../utility/permissionsVariable";
+import { Helmet } from "react-helmet";
 
 const PunyarjakWarapper = styled.div`
   color: #583703;
@@ -151,6 +152,10 @@ export default function Punyarjak() {
 
   return (
     <PunyarjakWarapper>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Apna Mandir Admin | Punyarjak</title>
+      </Helmet>
       <div className="window nav statusBar body "></div>
 
       <div>

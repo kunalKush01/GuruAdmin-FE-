@@ -17,6 +17,7 @@ import { ChangePeriodDropDown } from "../../components/partials/changePeriodDrop
 import NoContent from "../../components/partials/noContent";
 import SubscribedUSerListTable from "../../components/subscribedUser/subscribedUserListTable";
 import { WRITE } from "../../utility/permissionsVariable";
+import { Helmet } from "react-helmet";
 
 const SubscribedUserWarper = styled.div`
   color: #583703;
@@ -129,7 +130,7 @@ export default function SubscribedUser() {
   const subPermissions = permissions?.find(
     (permissionName) => permissionName.name === "dashboard"
   );
-console.log(permissions);
+  console.log(permissions);
 
   const subPermission = subPermissions?.subpermissions?.map(
     (item) => item.name
@@ -137,6 +138,10 @@ console.log(permissions);
 
   return (
     <SubscribedUserWarper>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Apna Mandir Admin | Subscribed User</title>
+      </Helmet>
       <div className="window nav statusBar body "></div>
 
       <div>
@@ -166,20 +171,23 @@ console.log(permissions);
               dropDownName={dropDownName}
               setdropDownName={(e) => setdropDownName(e.target.name)}
             />
-             {allPermissions?.name === "all" ||
+            {allPermissions?.name === "all" ||
             subPermission?.includes(WRITE) ? (
-            <Button
-              color="primary"
-              className="addNews-btn"
-              onClick={() => history.push("/subscribed-user/add")}
-            >
-              <span>
-                <Plus className="" size={15} strokeWidth={4} />
-              </span>
-              <span>
-                <Trans i18nKey={"subscribed_user_add_user"} />
-              </span>
-            </Button>):""}
+              <Button
+                color="primary"
+                className="addNews-btn"
+                onClick={() => history.push("/subscribed-user/add")}
+              >
+                <span>
+                  <Plus className="" size={15} strokeWidth={4} />
+                </span>
+                <span>
+                  <Trans i18nKey={"subscribed_user_add_user"} />
+                </span>
+              </Button>
+            ) : (
+              ""
+            )}
           </div>
         </div>
         <div style={{ height: "10px" }}>

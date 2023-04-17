@@ -20,6 +20,7 @@ import HinduCalenderDetailCard from "../../components/notices/hinduCalenderDetai
 import NoContent from "../../components/partials/noContent";
 import { useSelector } from "react-redux";
 import { WRITE } from "../../utility/permissionsVariable";
+import { Helmet } from "react-helmet";
 const NoticeWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -163,6 +164,10 @@ export default function NoticeList() {
 
   return (
     <NoticeWarper>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Apna Mandir Admin | Notices</title>
+      </Helmet>
       <div className="window nav statusBar body "></div>
       <div>
         <div className="d-flex justify-content-between align-items-center ">

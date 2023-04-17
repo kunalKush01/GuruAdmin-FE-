@@ -16,6 +16,7 @@ import NewsCard from "../../components/news/newsCard";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
 import NoContent from "../../components/partials/noContent";
 import { WRITE } from "../../utility/permissionsVariable";
+import { Helmet } from "react-helmet";
 const NewsWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -148,6 +149,10 @@ export default function News() {
 
   return (
     <NewsWarper>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Apna Mandir Admin | News</title>
+      </Helmet>
       <div className="window nav statusBar body "></div>
 
       <div>

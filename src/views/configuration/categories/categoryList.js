@@ -22,6 +22,7 @@ import NoContent from "../../../components/partials/noContent";
 import { ChangeCategoryType } from "../../../components/partials/categoryDropdown";
 import { ConverFirstLatterToCapital } from "../../../utility/formater";
 import { WRITE } from "../../../utility/permissionsVariable";
+import { Helmet } from "react-helmet";
 const NewsWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -184,6 +185,10 @@ export default function Category() {
 
   return (
     <NewsWarper>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Apna Mandir Admin | Category</title>
+      </Helmet>
       <div className="window nav statusBar body "></div>
 
       <div>

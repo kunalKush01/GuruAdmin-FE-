@@ -16,6 +16,7 @@ import CustomCard from "../../components/partials/customCard";
 import { RevenueChart } from "../../utility/revenueChart";
 import { Col, Row } from "reactstrap";
 import SpinnerComponent from "../../@core/components/spinner/Fallback-spinner";
+import { Helmet } from "react-helmet";
 const Home = () => {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const [dashboardData, setDashboardData] = useState();
@@ -60,6 +61,10 @@ const Home = () => {
 
   return (
     <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Apna Mandir Admin | Dashboard</title>
+      </Helmet>
       {dashboardData && chartData && topDonorData && recentDonationData ? (
         <div className="pb-4">
           <ChangePeriodDropDown
@@ -116,7 +121,7 @@ const Home = () => {
           </Row>
         </div>
       ) : (
-        <SpinnerComponent/>
+        <SpinnerComponent />
       )}
     </>
   );

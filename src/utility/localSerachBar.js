@@ -13,6 +13,7 @@ const serchablepath = [
   "/configuration/reportDispute",
   "/internal_expenses",
   "/financial_reports",
+  "/punyarjak",
   "/donation",
   "/commitment",
   "/Hundi",
@@ -49,6 +50,8 @@ export const setPlaceholderSerchbar = () => {
       return "Search All Financial Reports";
     case "/donation":
       return "Search All Donation";
+      case "/punyarjak":
+      return "Search All Punyarjak";
     case "/Hundi":
       return "Search All Donation Collection Box";
     case "/commitment":

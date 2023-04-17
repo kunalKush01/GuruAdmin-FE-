@@ -12,6 +12,7 @@ import { CustomDropDown } from "../../components/partials/customDropDown";
 import ProfileForm from "../../components/Profile/profileForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import he from "he";
+import { Helmet } from "react-helmet";
 const ProfileWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -27,7 +28,7 @@ const ProfileWarper = styled.div`
 
 const schema = yup.object().shape({
   trustName: yup.string().required("name_required"),
-  trustType:yup.mixed().required("trust_type_required"),
+  trustType: yup.mixed().required("trust_type_required"),
   trustEmail: yup.string().email("email_invalid").required("email_required"),
   trustNumber: yup
     .string()
@@ -43,8 +44,8 @@ const schema = yup.object().shape({
   state: yup.mixed().required("events_state_required"),
   city: yup.mixed().required("events_city_required"),
   location: yup.mixed().required("events_location_required"),
-  latitude:yup.string().required("latitude_required"),
-  longitude:yup.string().required("longitude_required"),
+  latitude: yup.string().required("latitude_required"),
+  longitude: yup.string().required("longitude_required"),
 });
 
 const getLangId = (langArray, langSelection) => {
@@ -122,6 +123,10 @@ export default function AddProfile() {
 
   return (
     <ProfileWarper>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Apna Mandir Admin | Profile</title>
+      </Helmet>
       <div className="d-flex justify-content-between align-items-center mb-2">
         <div className="d-flex justify-content-between align-items-center ">
           <img

@@ -73,9 +73,9 @@ const Error = () => {
         <div className='w-100 text-center'>
           <h2 className='mb-1'>Page Not Found 🕵🏻‍♀️</h2>
           <p className='mb-2'>Oops! 😖 The requested URL was not found on this server.</p>
-          <Button tag={Link} to='/' color='primary' className='btn-sm-block mb-2'>
+          {/* <Button tag={Link} to='/' color='primary' className='btn-sm-block mb-2'>
             Back to home
-          </Button>
+          </Button> */}
           <img className='img-fluid' src={source} alt='Not authorized page' />
         </div>
       </div>

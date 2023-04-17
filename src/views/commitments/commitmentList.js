@@ -26,6 +26,7 @@ import NoContent from "../../components/partials/noContent";
 import { ChangeStatus } from "../../components/Report & Disput/changeStatus";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { WRITE } from "../../utility/permissionsVariable";
+import { Helmet } from "react-helmet";
 const CommitmentWarapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -240,10 +241,12 @@ export default function Commitment() {
     (item) => item.name
   );
 
-
-
   return (
     <CommitmentWarapper>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Apna Mandir Admin | Commitment</title>
+      </Helmet>
       <div className="window nav statusBar body "></div>
 
       <div>

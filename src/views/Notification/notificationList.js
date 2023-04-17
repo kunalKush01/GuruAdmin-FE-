@@ -15,6 +15,7 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import NoContent from "../../components/partials/noContent";
 import NotificationList from "../../components/Notification/notificationList";
 import { getAllNotification } from "../../api/notification";
+import { Helmet } from "react-helmet";
 const NotificationWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -86,11 +87,17 @@ export default function Notification() {
     .toISOString();
 
   let startDate = moment(filterStartDate).format("DD MMM YYYY");
-//   let endDate = moment(filterEndDate).utcOffset(0).format("D MMM YYYY");
-const searchBarValue = useSelector((state) => state.search.LocalSearch  );
+  //   let endDate = moment(filterEndDate).utcOffset(0).format("D MMM YYYY");
+  const searchBarValue = useSelector((state) => state.search.LocalSearch);
 
   const notificationQuery = useQuery(
-    ["Notifitions", pagination.page, selectedLang.id, selectedMasterCate,searchBarValue],
+    [
+      "Notifitions",
+      pagination.page,
+      selectedLang.id,
+      selectedMasterCate,
+      searchBarValue,
+    ],
     () =>
       getAllNotification({
         ...pagination,
@@ -98,7 +105,7 @@ const searchBarValue = useSelector((state) => state.search.LocalSearch  );
         endDate: filterEndDate,
         languageId: selectedLang.id,
         masterId: selectedMasterCate,
-        search:searchBarValue
+        search: searchBarValue,
       }),
     {
       keepPreviousData: true,
@@ -120,6 +127,10 @@ const searchBarValue = useSelector((state) => state.search.LocalSearch  );
 
   return (
     <NotificationWarper>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Apna Mandir Admin | Notifications</title>
+      </Helmet>
       <div className="window nav statusBar body "></div>
 
       <div>
@@ -136,9 +147,7 @@ const searchBarValue = useSelector((state) => state.search.LocalSearch  );
                   <Trans i18nKey={"notifications"} />
                 </div>
                 <div className="filterPeriod">
-                  <span>
-                    {startDate}
-                  </span>
+                  <span>{startDate}</span>
                 </div>
               </div>
             </div>
@@ -189,9 +198,9 @@ const searchBarValue = useSelector((state) => state.search.LocalSearch  );
                     <NotificationList data={NotificationsItem} />
                   </Then>
                   <Else>
-                    <NoContent 
-                        headingNotfound={t("subscribed_not_found")}
-                        para={t("subscribed_not_click_add")}
+                    <NoContent
+                      headingNotfound={t("subscribed_not_found")}
+                      para={t("subscribed_not_click_add")}
                     />
                   </Else>
                 </If>

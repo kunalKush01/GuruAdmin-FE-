@@ -131,23 +131,26 @@ const LoginCover = () => {
     .templeName{
       font: normal normal 600 23px/43px Noto Sans;
     }
+    .loginBackground{
+      background:#fff7e8;
+    }
   `;
-  // const permissions = useSelector(
-  //   (state) => state.auth?.userDetail?.permissions
-  // );
-  // const loginPath = permissions?.map((item) => item?.name);
-  // console.log("withoutAll", loginPath);
-  // useEffect(() => {
-  //   if (isLogged && loginPath?.includes("all")) {
-  //     history.push("/dashboard");
-  //   } else if (isLogged || loginPath?.length) {
-  //     console.log("withoutAll true");
-  //     history.push(`/${loginPath[0]}`);
-  //   }
-  // }, [isLogged, loginPath]);
+  const permissions = useSelector(
+    (state) => state.auth?.userDetail?.permissions
+  );
+  const loginPath = permissions?.map((item) => item?.name);
+  console.log("withoutAll", loginPath);
+  useEffect(() => {
+    if (isLogged && loginPath?.includes("all")) {
+      history.push("/dashboard");
+    } else if (isLogged || loginPath?.length) {
+      console.log("withoutAll true");
+      history.push(`/${loginPath[0]}`);
+    }
+  }, [isLogged, loginPath]);
 
-  const subDomainName = location.hostname;
-
+  const hostname = location.hostname;
+    const subDomainName = hostname.split(".",[1])
   const loginPageQuery = useQuery([subDomainName], 
   () =>loginPage(subDomainName)
   );
@@ -159,9 +162,9 @@ const LoginCover = () => {
 
   console.log("loginPageData-------------->", loginPageData);
 
-  useEffect(() => {
-    isLogged ? history.push("/dashboard") : "";
-  }, [isLogged]);
+  // useEffect(() => {
+  //   isLogged ? history.push("/dashboard") : "";
+  // }, [isLogged]);
 
   const { skin } = useSkin();
 
@@ -213,10 +216,14 @@ const LoginCover = () => {
           lg="7"
           sm="12"
         >
-          <div className="w-100 h-100 d-lg-flex align-items-center justify-content-center ">
+          <div className="w-100 h-100 d-lg-flex align-items-center justify-content-center loginBackground">
             <img
               className="img-fluid w-100 h-100"
-              src={loginPageData?.image !== "" || loginPageData?.image ? loginPageData?.image : source}
+              src={
+                loginPageData?.image !== "" || loginPageData?.image
+                  ? loginPageData?.image
+                  : source
+              }
               alt="Login Cover"
             />
           </div>
@@ -229,12 +236,15 @@ const LoginCover = () => {
           {!forgotPassWordActive ? (
             <Col className="px-xl-2 mx-auto" sm="8" md="6" lg="12">
               {<CardTitle className="fw-bold mb-2 ">Sign In</CardTitle>}
-              <div className="templeName"> 
-                Admin: <span>{loginPageData?.name}</span>
-              </div>
+
+              {loginPageData?.name !== "" && (
+                <div className="templeName">
+                  Admin: <span>{loginPageData?.name}</span>
+                </div>
+              )}
 
               <CardText className="signInEnterUserNAme">
-                Enter Username and Password in order to sign in to your account
+                Enter Email and Password in order to sign in to your account
               </CardText>
               <Formik
                 initialValues={{

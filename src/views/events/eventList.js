@@ -21,6 +21,7 @@ import HinduCalenderDetailCard from "../../components/events/hinduCalenderDetail
 import { useSelector } from "react-redux";
 import NoContent from "../../components/partials/noContent";
 import { WRITE } from "../../utility/permissionsVariable";
+import { Helmet } from "react-helmet";
 const EventWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -173,6 +174,10 @@ export default function EventList() {
   );
   return (
     <EventWarper>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Apna Mandir Admin | Events</title>
+      </Helmet>
       <div className="window nav statusBar body "></div>
 
       <div>

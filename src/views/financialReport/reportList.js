@@ -32,6 +32,7 @@ import {
   jsonDataDonationBox,
   jsonDataExpences,
 } from "../../components/financeReport/reportJsonExport";
+import { Helmet } from "react-helmet";
 const NewsWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -278,6 +279,10 @@ export default function FinancialReport() {
 
   return (
     <NewsWarper>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Apna Mandir Admin | Financial Report</title>
+      </Helmet>
       <div className="window nav statusBar body "></div>
 
       <div>
@@ -343,13 +348,13 @@ export default function FinancialReport() {
             </div>
           </div>
         </div>
-        
-          <FinancialReportTabs
-            setActive={setActiveReportTab}
-            active={activeReportTab}
-            setPagination={setPagination}
-          />
-        
+
+        <FinancialReportTabs
+          setActive={setActiveReportTab}
+          active={activeReportTab}
+          setPagination={setPagination}
+        />
+
         <div style={{ height: "10px" }}>
           <If
             condition={
