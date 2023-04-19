@@ -273,7 +273,7 @@ export default function EventCard({
                   </Col>
                 </Row>
               </Col>
-              <Col xs={12} md={2}>
+              <Col xs={12} lg={2}>
                 <div className="align-items-center d-flex justify-content-end h-100">
                   <img
                     src={cardThreeDotIcon}
