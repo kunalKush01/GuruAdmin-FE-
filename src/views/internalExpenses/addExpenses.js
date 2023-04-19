@@ -66,7 +66,7 @@ export default function AddNews() {
           </div>
         </div>
       </div>
-      <div className="ms-3 mt-1">
+      <div className="ms-md-3 mt-1">
         <ExpensesForm
           handleSubmit={handleCreateExpense}
           initialValues={initialValues}

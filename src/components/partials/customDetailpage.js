@@ -109,7 +109,7 @@ export default function DetailPage({
       <div className="window nav statusBar body "></div>
       <div>
         <div className="d-sm-flex justify-content-between align-items-center ">
-          <div className="d-flex align-items-center mt-2 mt-sm-0">
+          <div className="d-flex align-items-center">
             <img
               src={arrowLeft}
               className="me-2 cursor-pointer"
@@ -126,9 +126,9 @@ export default function DetailPage({
               </div>
             </div>
           </div>
-          <div className="addTrust justify-content-between mt-2 mt-sm-0"></div>
+          <div className="addTrust justify-content-between mt-sm-0"></div>
         </div>
-        <Row className="my-lg-3">
+        <Row className="my-lg-3 mt-2">
           <Col xs={12} lg={4} className="">
             <img src={firstImage} className="detailImage" />
             <div className="d-flex justify-content-between mt-1">
@@ -179,7 +179,7 @@ export default function DetailPage({
                   {ConverFirstLatterToCapital(title ?? "")}
                 </div>
                 <div
-                  className="detail-content mt-1"
+                  className="detail-content mt-1 text-break"
                   dangerouslySetInnerHTML={{
                     __html: he.decode(description ?? ""),
                   }}

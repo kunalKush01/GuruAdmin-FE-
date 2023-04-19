@@ -88,7 +88,7 @@ export default function EditSubAdmin() {
 
   return (
     <SubAdminUserWarapper>
-      <div className="d-flex mt-sm-0 mt-2 justify-content-between align-items-center ">
+      <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
             src={arrowLeft}
@@ -140,17 +140,19 @@ export default function EditSubAdmin() {
         </Then>
         <Else>
           {!!subAdminUserDetailQuery?.data?.result && (
-            <UserForm
-              editProfile
-              editTrue="edit"
-              profileImageName={
-                subAdminUserDetailQuery?.data?.result?.profileName
-              }
-              buttonName={"user_editUser"}
-              initialValues={initialValues}
-              vailidationSchema={schema}
-              handleSubmit={handleSubAdminUpdate}
-            />
+            <div className="px-1">
+              <UserForm
+                editProfile
+                editTrue="edit"
+                profileImageName={
+                  subAdminUserDetailQuery?.data?.result?.profileName
+                }
+                buttonName={"user_editUser"}
+                initialValues={initialValues}
+                vailidationSchema={schema}
+                handleSubmit={handleSubAdminUpdate}
+              />
+            </div>
           )}
         </Else>
       </If>

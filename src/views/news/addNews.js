@@ -40,43 +40,43 @@ const schema = yup.object().shape({
   DateTime: yup.string(),
 });
 
-
-
 export default function AddNews() {
   const history = useHistory();
   const langArray = useSelector((state) => state.auth.availableLang);
-  const loggedInUser = useSelector((state)=>state.auth.userDetail?.name)
+  const loggedInUser = useSelector((state) => state.auth.userDetail?.name);
 
-  
-  
   const searchParams = new URLSearchParams(history.location.search);
-  const currentPage = searchParams.get('page')
-  const currentFilter = searchParams.get('filter')
+  const currentPage = searchParams.get("page");
+  const currentFilter = searchParams.get("filter");
 
   const initialValues = {
     Id: "",
     Title: "",
-    images:[],
-    tagsInit:[],
+    images: [],
+    tagsInit: [],
     Body: "",
-    PublishedBy:ConverFirstLatterToCapital(loggedInUser ?? ""),
+    PublishedBy: ConverFirstLatterToCapital(loggedInUser ?? ""),
     DateTime: new Date(),
   };
   return (
     <NewsWarper>
       <div className="d-flex justify-content-between align-items-center ">
-        <div className="d-flex justify-content-between align-items-center ">
+        <div className="d-flex align-items-center ">
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push(`/news?page=${currentPage}&filter=${currentFilter}`)}
+            onClick={() =>
+              history.push(`/news?page=${currentPage}&filter=${currentFilter}`)
+            }
           />
           <div className="addNews">
             <Trans i18nKey={"news_AddNews"} />
           </div>
         </div>
         <div className="addNews">
-          <Trans i18nKey={"news_InputIn"} />
+          <div className="d-none d-sm-block">
+            <Trans i18nKey={"news_InputIn"} />
+          </div>
           <CustomDropDown
             ItemListArray={langArray}
             className={"ms-1"}
@@ -85,7 +85,7 @@ export default function AddNews() {
           />
         </div>
       </div>
-      <div className="ms-3 mt-1">
+      <div className="mt-1 ms-sm-3 ms-1">
         <NewsForm
           handleSubmit={handleCreateNews}
           initialValues={initialValues}

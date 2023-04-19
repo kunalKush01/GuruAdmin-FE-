@@ -13,6 +13,7 @@ import VerticalNavMenuItems from './VerticalNavMenuItems'
 
 // ** Utils
 import { hasActiveChild, removeChildren } from '@layouts/utils'
+import { Trans } from 'react-i18next'
 
 const VerticalNavMenuGroup = ({
   item,
@@ -146,7 +147,7 @@ const VerticalNavMenuGroup = ({
         onClick={e => onCollapseClick(e, item)}
       >
         {item.icon}
-        <span className='menu-title text-truncate'>{item.title}</span>
+        <span className='menu-title text-truncate'><Trans i18nKey={item?.name}/></span>
 
         {item.badge && item.badgeText ? (
           <Badge className='ms-auto me-1' color={item.badge} pill>

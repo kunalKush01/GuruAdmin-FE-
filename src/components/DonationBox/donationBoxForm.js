@@ -125,9 +125,9 @@ export default function DonationBoxForm({
         {(formik) => (
           <Form>
             <Row>
-              <Col xs={7}>
+              <Col xs={12} md={7} >
                 <Row>
-                  <Col>
+                  <Col xs={12}>
                     <CustomTextField
                       label={t("created_by")}
                       name="CreatedBy"
@@ -146,7 +146,7 @@ export default function DonationBoxForm({
                   </Col>
                 </Row>
                 <Row>
-                  <Col xs={6} className="mt-1">
+                  <Col xs={12} md={6} className="mt-1">
                     <CustomTextField
                       type="number"
                       label={t("categories_select_amount")}

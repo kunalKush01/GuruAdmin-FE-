@@ -70,7 +70,7 @@ export default function FormWithoutFormikForCommitment({
       <Row>
         <Col xs={12}>
           <Row>
-            <Col xs={4}>
+            <Col xs={12} sm={6} lg={4}>
               <CustomTextField
                 type="number"
                 label={t("dashboard_Recent_DonorNumber")}
@@ -81,7 +81,7 @@ export default function FormWithoutFormikForCommitment({
                 autoFocus
               />
             </Col>
-            <Col xs={4}>
+            <Col xs={12} sm={6} lg={4}>
               <AsyncSelectField
                 name="SelectedUser"
                 loadOptions={loadOption}
@@ -93,13 +93,13 @@ export default function FormWithoutFormikForCommitment({
                 required
               />
             </Col>
-            <Col xs={4}>
+            <Col xs={12} sm={6} lg={4}>
               <CustomTextField
                 label={t("dashboard_Recent_DonorName")}
                 name="donarName"
               />
             </Col>
-            <Col xs={4}>
+            <Col xs={12} sm={6} lg={4}>
               <FormikCustomReactSelect
                 labelName={t("categories_select_category")}
                 name={"SelectedMasterCategory"}
@@ -118,7 +118,7 @@ export default function FormWithoutFormikForCommitment({
                 required
               />
             </Col>
-            <Col xs={4}>
+            <Col xs={12} sm={6} lg={4}>
               <FormikCustomReactSelect
                 labelName={t("category_select_sub_category")}
                 loadOptions={subLoadOption.map((cate) => {
@@ -133,7 +133,7 @@ export default function FormWithoutFormikForCommitment({
                 width
               />
             </Col>
-            <Col xs={4}>
+            <Col xs={12} sm={6} lg={4}>
               <CustomTextField
                 label={t("created_by")}
                 name="createdBy"
@@ -142,7 +142,7 @@ export default function FormWithoutFormikForCommitment({
             </Col>
           </Row>
           <Row>
-            <Col xs={4}>
+            <Col xs={12} sm={6} lg={4}>
               <CustomTextField
                 type="number"
                 label={t("categories_select_amount")}
@@ -151,8 +151,8 @@ export default function FormWithoutFormikForCommitment({
                 required
               />
             </Col>
-            <Col xs={4}></Col>
-            <Col xs={4}>
+            <Col xs={12} sm={6} lg={4}></Col>
+            <Col xs={12} sm={6} lg={4}>
               <FormikCustomDatePicker
                 label={t("commitment_select_end_date")}
                 name="DateTime"

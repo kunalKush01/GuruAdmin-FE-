@@ -73,7 +73,9 @@ export default function AddNotice() {
           </div>
         </div>
         <div className="addNotice">
-          <Trans i18nKey={"news_InputIn"} />
+        <div className="d-none d-sm-block">
+            <Trans i18nKey={"news_InputIn"} />
+          </div>
           <CustomDropDown
             ItemListArray={langArray}
             className={"ms-1"}
@@ -82,7 +84,7 @@ export default function AddNotice() {
           />
         </div>
       </div>
-      <div className="ms-3 mt-1">
+      <div className="ms-sm-3 mt-1">
         <NoticeForm
           handleSubmit={handleCreateNotice}
           initialValues={initialValues}

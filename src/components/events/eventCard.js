@@ -47,7 +47,7 @@ const EventCardWaraper = styled.div`
     background: #fff7e8;
     border-radius: 10px;
     padding: 0px;
-    height: 122px;
+    max-height: 122px;
   }
   .cardLangScroll {
     display: flex;
@@ -67,6 +67,18 @@ const EventCardWaraper = styled.div`
     border-radius: 20px;
     margin-right: 10px;
   }
+  @media only screen and (max-width: 1200px) {
+    .card-body{
+      max-height: 100%;
+      padding: 1rem;
+    }
+  }
+  @media only screen and (max-width: 600px) {
+    .card-body{
+      max-height: 100%;
+      padding: 1rem;
+    }
+}
 `;
 function BtnContent({
   eventId,

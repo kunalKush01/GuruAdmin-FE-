@@ -144,7 +144,7 @@ export default function EditCommitment() {
         </Then>
         <Else>
           {!commitmentDetailQuery?.isLoading && (
-            <div className="ms-3 mt-1 mb-3">
+            <div className="ms-md-3 mt-1 mb-3">
               <CommitmentForm
                 vailidationSchema={schema}
                 initialValues={initialValues}

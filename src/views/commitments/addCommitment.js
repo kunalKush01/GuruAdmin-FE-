@@ -76,7 +76,7 @@ export default function AddCommitment() {
           </div>
         </div>
       </div>
-      <div className="ms-3 mt-1 mb-3">
+      <div className="ms-md-3 mt-1 mb-3">
         <CommitmentForm
           handleSubmit={handleCreateCommitment}
           initialValues={initialValues}

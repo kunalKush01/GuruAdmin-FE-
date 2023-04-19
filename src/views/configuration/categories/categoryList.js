@@ -192,8 +192,8 @@ export default function Category() {
       <div className="window nav statusBar body "></div>
 
       <div>
-        <div className="d-flex justify-content-between align-items-center ">
-          <div className="d-flex justify-content-between align-items-center ">
+        <div className="d-sm-flex justify-content-between align-items-center ">
+          <div className="d-flex align-items-center mb-2 mb-sm-0">
             <img
               src={arrowLeft}
               className="me-2  cursor-pointer"
@@ -207,7 +207,7 @@ export default function Category() {
               </div>
             </div>
           </div>
-          <div className="addNews">
+          <div className="addNews justify-content-between">
             <ChangeCategoryType
               className={"me-1"}
               categoryTypeArray={newTypes}

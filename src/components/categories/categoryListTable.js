@@ -46,7 +46,16 @@ export function CategoryListTable({ data,page ,currentPage, currentFilter ,subPe
     {
       name: t("categories_sub_category"),
       selector: (row) => row.subCategory,
-      width:"675px"
+      width:
+        window.screen.width < "700"
+          ? "250px"
+          : window.screen.width > "700" && window.screen.width < "900"
+          ? "350px"
+          : window.screen.width > "900" && window.screen.width < "1200"
+          ? "675px"
+          : window.screen.width > "1200" && window.screen.width < "1450"
+          ? "675px"
+          : "675px",
     },
 
     {

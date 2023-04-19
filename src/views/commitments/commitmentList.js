@@ -251,7 +251,7 @@ export default function Commitment() {
 
       <div>
         <div className="d-lg-flex justify-content-between align-items-center">
-          <div className="d-flex align-items-center my-3 my-sm-2 my-md-0 mb-md-2">
+          <div className="d-flex align-items-center mb-2">
             <img
               src={arrowLeft}
               className="me-2  cursor-pointer align-self-center"

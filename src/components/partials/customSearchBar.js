@@ -9,6 +9,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTransition } from "react";
 import { useTranslation } from "react-i18next";
 import { setSearchbarValue } from "../../redux/searchBar";
+import styled from "styled-components";
+
+
+const SearchBarWarapper = styled.div`
+  .searbarSize {
+    height: 40px;
+  }
+
+  @media only screen and (max-width: 500px) {
+    .searbarSize {
+      height: 35px;
+    }
+    /* width: 300px !important; */
+  }
+`;
 
 export default function CustomSearchBar() {
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
@@ -16,16 +31,18 @@ export default function CustomSearchBar() {
   const { t, i18n } = useTranslation();
 
   return (
-    <InputGroup className=" w-100 h-75 searchinput border-0 rounded-pill d-flex align-items-center ">
-      <Input
-        className=" sInput searchinput border-0 h-75 rounded-pill "
-        value={searchBarValue}
-        onChange={(e) => dispatch(setSearchbarValue(e.target.value))}
-        placeholder={t(setPlaceholderSerchbar())}
-      />
-      <InputGroupText className="sIconsBox searchinput border-0  h-75  rounded-pill">
-        <img src={searchIcon} className="" />
-      </InputGroupText>
-    </InputGroup>
+    <SearchBarWarapper className="w-100">
+      <InputGroup className=" searbarSize searchinput border-0 rounded-pill d-flex align-items-center ">
+        <Input
+          className=" sInput searchinput border-0 h-100 rounded-pill "
+          value={searchBarValue}
+          onChange={(e) => dispatch(setSearchbarValue(e.target.value))}
+          placeholder={t(setPlaceholderSerchbar())}
+        />
+        <InputGroupText className="sIconsBox searchinput border-0  h-100  rounded-pill">
+          <img src={searchIcon} className="" />
+        </InputGroupText>
+      </InputGroup>
+    </SearchBarWarapper>
   );
 }

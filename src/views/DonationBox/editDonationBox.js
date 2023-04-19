@@ -135,7 +135,7 @@ export default function EditDonationBox() {
         <Else>
           
           {!collectionBoxDetailQuery.isFetching&&
-          <div className="ms-3 mt-1">  
+          <div className="ms-md-3 mt-1">  
             <DonationBoxForm
               buttonName={"save_changes"}
               editLogs

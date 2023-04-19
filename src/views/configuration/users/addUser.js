@@ -70,21 +70,23 @@ export default function AddCategory() {
         </div>
       </div>
       {/* {!userRoleQuery.isLoading && !userRoleQuery.isFetching ? ( */}
-      <UserForm
-        adduser
-        userRole={"role"}
-        handleSubmit={handleCreateUser}
-        initialValues={{
-          name: "",
-          mobile: "",
-          email: "",
-          password: "",
-          file: "",
-          userRoleChacked: [],
-        }}
-        vailidationSchema={schema}
-        buttonName={"users_AddUser"}
-      />
+      <div className="px-1">
+        <UserForm
+          adduser
+          userRole={"role"}
+          handleSubmit={handleCreateUser}
+          initialValues={{
+            name: "",
+            mobile: "",
+            email: "",
+            password: "",
+            file: "",
+            userRoleChacked: [],
+          }}
+          vailidationSchema={schema}
+          buttonName={"users_AddUser"}
+        />
+      </div>
       {/* ) : ( */}
       {/* "" */}
       {/* )} */}

@@ -127,7 +127,7 @@ export default function PunyarjakForm({
             </Row> */}
 
             <Row>
-              <Col xs={12} className=" mt-2 ps-0 d-flex">
+              <Col xs={12} className=" mt-2 ps-0 d-flex flex-wrap">
                 <div className="me-3">
                   <ImageUpload
                     bg_plus={defaultAvtar}

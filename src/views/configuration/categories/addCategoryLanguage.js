@@ -109,7 +109,9 @@ export default function AddLanguageEvent() {
           </div>
         </div>
         <div className="editEvent">
-          <Trans i18nKey={"news_InputIn"} />
+        <div className="d-none d-sm-block">
+            <Trans i18nKey={"news_InputIn"} />
+          </div>
           <CustomDropDown
             ItemListArray={availableLangOptions}
             className={"ms-1"}
@@ -123,7 +125,7 @@ export default function AddLanguageEvent() {
       </div>
 
       {!subCategoryDetailQuery.isLoading ? (
-        <div className="ms-3 mt-1">
+        <div className="ms-sm-3 mt-1">
           <CategoryForm
           loadOptions={[subCategoryDetailQuery?.data?.result?.masterCategory]}
           // placeholder={

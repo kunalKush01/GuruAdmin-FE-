@@ -248,9 +248,9 @@ export default function NewsForm({
         {(formik) => (
           <Form>
             <Row>
-              <Col xs={7}>
+              <Col xs={12} md={7}>
                 <Row>
-                  <Col>
+                  <Col xs={12} md={6}>
                     <CustomTextField
                       label={t("news_label_Title")}
                       name="Title"
@@ -260,7 +260,7 @@ export default function NewsForm({
                       autoFocus
                     />
                   </Col>
-                  <Col>
+                  <Col xs={12} md={6}>
                     <label>Tags</label>
                     {/* {JSON.stringify(formik.values.tagsInit)} */}
                     <ReactTags

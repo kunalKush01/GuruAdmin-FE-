@@ -5,7 +5,10 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import * as yup from "yup";
-import { createSubCategory, getAllMasterCategories } from "../../../api/categoryApi.js";
+import {
+  createSubCategory,
+  getAllMasterCategories,
+} from "../../../api/categoryApi.js";
 import { createNotice } from "../../../api/noticeApi.js";
 import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
 import CategoryForm from "../../../components/categories/categoryForm";
@@ -26,15 +29,17 @@ const NoticeWraper = styled.div`
 `;
 
 const handleCreateSubCategory = async (payload) => {
-  
   return createSubCategory(payload);
 };
 const schema = yup.object().shape({
-  MasterCategory:yup.mixed().required("categories_category_required"),
-  SubCategory: yup.string().matches(
-    /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
-    'only_letters'
-).required("categories_sub_category_required"),
+  MasterCategory: yup.mixed().required("categories_category_required"),
+  SubCategory: yup
+    .string()
+    .matches(
+      /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+      "only_letters"
+    )
+    .required("categories_sub_category_required"),
 });
 
 export default function AddCategory() {
@@ -43,8 +48,8 @@ export default function AddCategory() {
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
   const searchParams = new URLSearchParams(history.location.search);
-  const currentPage = searchParams.get('page')
-  const currentFilter = searchParams.get('filter')
+  const currentPage = searchParams.get("page");
+  const currentFilter = searchParams.get("filter");
 
   const masterloadOptionQuery = useQuery(
     ["MasterCategory", selectedLang.id],
@@ -60,14 +65,20 @@ export default function AddCategory() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push(`/configuration/categories?page=${currentPage}&filter=${currentFilter}`)}
+            onClick={() =>
+              history.push(
+                `/configuration/categories?page=${currentPage}&filter=${currentFilter}`
+              )
+            }
           />
           <div className="addNotice">
             <Trans i18nKey={"categories_AddCategory"} />
           </div>
         </div>
         <div className="addNotice">
-          <Trans i18nKey={"news_InputIn"} />
+          <div className="d-none d-sm-block">
+            <Trans i18nKey={"news_InputIn"} />
+          </div>
           <CustomDropDown
             ItemListArray={langArray}
             className={"ms-1"}
@@ -77,8 +88,8 @@ export default function AddCategory() {
         </div>
       </div>
 
-      {!masterloadOptionQuery.isLoading && !masterloadOptionQuery.isFetching  ? (
-        <div className="ms-3 mt-1">
+      {!masterloadOptionQuery.isLoading && !masterloadOptionQuery.isFetching ? (
+        <div className="ms-sm-3 mt-1">
           <CategoryForm
             loadOptions={masterloadOptionQuery?.data?.results}
             // placeholder={masterloadOptionQuery?.data?.results[0]?.name ?? "All"}

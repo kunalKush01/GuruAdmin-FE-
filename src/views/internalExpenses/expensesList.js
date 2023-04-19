@@ -27,6 +27,7 @@ const NewsWarper = styled.div`
   .addNews {
     color: #583703;
     display: flex;
+    justify-content: space-between;
     align-items: center;
   }
 
@@ -158,8 +159,8 @@ export default function Expenses() {
       <div className="window nav statusBar body "></div>
 
       <div>
-        <div className="d-flex justify-content-between align-items-center ">
-          <div className="d-flex justify-content-between align-items-center ">
+        <div className="d-sm-flex justify-content-between align-items-center ">
+          <div className="d-flex align-items-center mb-2">
             <img
               src={arrowLeft}
               className="me-2  cursor-pointer align-self-center"

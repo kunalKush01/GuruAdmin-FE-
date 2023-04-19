@@ -33,11 +33,14 @@ const NoticeWarper = styled.div`
 `;
 
 const schema = yup.object().shape({
-  MasterCategory:yup.mixed().required("categories_category_required"),
-  SubCategory: yup.string().matches(
-    /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
-    'only_letters'
-).required("categories_sub_category_required"),
+  MasterCategory: yup.mixed().required("categories_category_required"),
+  SubCategory: yup
+    .string()
+    .matches(
+      /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+      "only_letters"
+    )
+    .required("categories_sub_category_required"),
 });
 
 const getLangId = (langArray, langSelection) => {
@@ -58,8 +61,8 @@ export default function EditNotice() {
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
   const searchParams = new URLSearchParams(history.location.search);
-  const currentPage = searchParams.get('page')
-  const currentFilter = searchParams.get('filter')
+  const currentPage = searchParams.get("page");
+  const currentFilter = searchParams.get("filter");
 
   const [langSelection, setLangSelection] = useState(
     ConverFirstLatterToCapital(selectedLang.name)
@@ -95,20 +98,28 @@ export default function EditNotice() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-           onClick={() => history.push(`/configuration/categories?page=${currentPage}&filter=${currentFilter}`)}
+            onClick={() =>
+              history.push(
+                `/configuration/categories?page=${currentPage}&filter=${currentFilter}`
+              )
+            }
           />
           <div className="editNotice">
             <Trans i18nKey={"categories_EditCategory"} />
           </div>
         </div>
         <div className="editNotice">
-          <Trans i18nKey={"news_InputIn"} />
+          <div className="d-none d-sm-block">
+            <Trans i18nKey={"news_InputIn"} />
+          </div>
           <CustomDropDown
             ItemListArray={
               subCategoryDetailQuery?.data?.result?.languages ?? []
             }
             className={"ms-1"}
-            defaultDropDownName={ConverFirstLatterToCapital(langSelection ?? "")}
+            defaultDropDownName={ConverFirstLatterToCapital(
+              langSelection ?? ""
+            )}
             handleDropDownClick={(e) =>
               setLangSelection(ConverFirstLatterToCapital(e.target.name))
             }
@@ -154,7 +165,7 @@ export default function EditNotice() {
         <Else>
           {!masterloadOptionQuery?.isLoading &&
             !subCategoryDetailQuery.isLoading && (
-              <div className="ms-3 mt-1">
+              <div className="ms-sm-3 mt-1">
                 <CategoryForm
                   loadOptions={masterloadOptionQuery?.data?.results}
                   // placeholder={

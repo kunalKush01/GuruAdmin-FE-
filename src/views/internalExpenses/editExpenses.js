@@ -80,7 +80,7 @@ export default function AddNews() {
       </div>
 
       {!ExpensesDetailQuery.isLoading ? (
-        <div className="ms-3 mt-1">
+        <div className="ms-md-3 mt-1">
           <ExpensesForm
             handleSubmit={handleCreateExpense}
             editLogs

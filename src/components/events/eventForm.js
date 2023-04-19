@@ -269,9 +269,9 @@ export default function EventForm({
         {(formik) => (
           <Form>
             <Row>
-              <Col xs={7}>
+              <Col xs={12} md={7}>
                 <Row>
-                  <Col xs={6}>
+                  <Col xs={12} md={6}>
                     <AsyncSelectField
                       // minHeight={"50px"}
                       name="SelectedEvent"
@@ -302,7 +302,7 @@ export default function EventForm({
                       }}
                     />
                   </Col>
-                  <Col xs={6}>
+                  <Col xs={12} md={6} >
                     <CustomTextField
                       label={t("news_label_Title")}
                       name="Title"

@@ -40,6 +40,7 @@ export const englishContent = {
   donation_hundi: "Donation + Hundi",
   dashboard_totalExpenses: "Total Expenses",
   dashboard_RevenueReport: "Finance Report",
+  notification_not_found: "No Notification Found",
   dashboard_monthly: "Monthly",
   dashboard_weekly: "Weekly",
   dashboard_yearly: "Yearly",

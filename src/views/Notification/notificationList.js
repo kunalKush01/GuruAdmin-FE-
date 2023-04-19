@@ -146,9 +146,9 @@ export default function Notification() {
                 <div>
                   <Trans i18nKey={"notifications"} />
                 </div>
-                <div className="filterPeriod">
+                {/* <div className="filterPeriod">
                   <span>{startDate}</span>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -193,14 +193,14 @@ export default function Notification() {
                 </SkeletonTheme>
               </Then>
               <Else>
-                <If condition={NotificationsItem.length != 0} disableMemo>
+                <If condition={NotificationsItem?.length != 0} disableMemo>
                   <Then>
                     <NotificationList data={NotificationsItem} />
                   </Then>
                   <Else>
                     <NoContent
-                      headingNotfound={t("subscribed_not_found")}
-                      para={t("subscribed_not_click_add")}
+                      headingNotfound={t("notification_not_found")}
+                      // para={t("subscribed_not_click_add")}
                     />
                   </Else>
                 </If>

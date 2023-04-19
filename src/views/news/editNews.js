@@ -103,7 +103,7 @@ export default function EditNews() {
   return (
     <NewsWarper>
       <div className="d-flex justify-content-between align-items-center ">
-        <div className="d-flex justify-content-between align-items-center ">
+        <div className="d-flex align-items-center ">
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
@@ -116,7 +116,10 @@ export default function EditNews() {
           </div>
         </div>
         <div className="editNews">
-          <Trans i18nKey={"news_InputIn"} />
+        <div className="d-none d-sm-block">
+            <Trans i18nKey={"news_InputIn"} />
+          </div>
+
           <CustomDropDown
             ItemListArray={newsDetailQuery?.data?.result?.languages}
             className={"ms-1"}
@@ -162,7 +165,7 @@ export default function EditNews() {
         </Then>
         <Else>
           {!newsDetailQuery.isFetching && (
-            <div className="ms-3 mt-1">
+            <div className="ps-md-3 ps-1">
               <NewsForm
                 editImage="edit"
                 defaultImages={newsDetailQuery?.data?.result?.images}

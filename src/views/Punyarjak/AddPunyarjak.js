@@ -76,7 +76,7 @@ export default function AddPunyarjak() {
         </div> */}
       </div>
 
-      <div className="ms-3 mt-1">
+      <div className="ms-sm-3 mt-1 ms-1">
         <PunyarjakForm
           handleSubmit={handleCreatePunyarjak}
           initialValues={initialValues}

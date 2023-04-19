@@ -170,8 +170,8 @@ export default function NoticeList() {
       </Helmet>
       <div className="window nav statusBar body "></div>
       <div>
-        <div className="d-flex justify-content-between align-items-center ">
-          <div className="d-flex justify-content-between align-items-center ">
+        <div className="d-sm-flex justify-content-between align-items-center">
+          <div className="d-flex align-items-center mb-2 mb-md-0 ">
             <img
               src={arrowLeft}
               className="me-2  cursor-pointer align-self-center"
@@ -190,7 +190,7 @@ export default function NoticeList() {
               </div>
             </div>
           </div>
-          <div className="addNotice">
+          <div className="addNotice justify-content-between">
             <ChangePeriodDropDown
               dropDownName={dropDownName}
               setdropDownName={(e) => {
@@ -324,7 +324,7 @@ export default function NoticeList() {
                 </Then>
               </If>
             </Col>
-            <Col xs={3} className="p-0 ps-1 " style={{ marginTop: "1.8rem" }}>
+            <Col xs={10} sm={6} md={5} lg={3} className="p-0 ps-1 d-none d-lg-block" style={{ marginTop: "1.8rem" }}>
               <Row>
                 <Col xs={12}>
                   <If condition={dateQuery.isLoading}>

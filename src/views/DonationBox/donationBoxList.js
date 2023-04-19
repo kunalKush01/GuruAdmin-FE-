@@ -167,7 +167,7 @@ export default function Expenses() {
 
       <div>
         <div className="d-lg-flex justify-content-between align-items-center ">
-          <div className="d-flex align-items-center my-3 my-sm-2 my-md-0 mb-md-2">
+          <div className="d-flex align-items-center mb-2 mb-lg-0">
             <img
               src={arrowLeft}
               className="me-2  cursor-pointer align-self-center"
@@ -256,7 +256,7 @@ export default function Expenses() {
                     <Row className="pe-0">
                       {collectionItems.map((item, idx) => {
                         return (
-                          <Col xs={3} key={idx}>
+                          <Col xs={12} sm={6} md={4} lg={3} key={idx}>
                             <BoxListCard
                               key={item.id}
                               data={item}

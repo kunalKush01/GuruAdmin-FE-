@@ -146,7 +146,9 @@ export default function AddLanguageEvent() {
           </div>
         </div>
         <div className="editEvent">
-          <Trans i18nKey={"news_InputIn"} />
+        <div className="d-none d-sm-block">
+            <Trans i18nKey={"news_InputIn"} />
+          </div>
           <CustomDropDown
             ItemListArray={availableLangOptions}
             className={"ms-1"}
@@ -160,7 +162,7 @@ export default function AddLanguageEvent() {
       </div>
 
       {!eventDetailQuery.isLoading ? (
-        <div className="ms-lg-3 mt-lg-1">
+        <div className="ms-sm-3 mt-1">
           <EventForm
             editImage="edit"
             defaultImages={eventDetailQuery?.data?.result?.images}

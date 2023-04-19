@@ -109,31 +109,33 @@ const NavbarUser = (props) => {
         </div>
         {isSerchable() && <CustomSearchBar />}
         <div className="d-flex justify-content-end align-items-center ">
-          <img
-            className="icon"
-            onClick={() => setlangSelection(true)}
-            src={menuPanelIcon}
-          />
-          <img
-            className="icon"
-            src={bellIcon}
-            onClick={() => history.push("/notification")}
-          />
-          <img className="icon" src={logOutIcon} onClick={handleLogOut} />
+          <div className="d-flex">
+            <img
+              className="icon"
+              onClick={() => setlangSelection(true)}
+              src={menuPanelIcon}
+            />
+            <img
+              className="icon "
+              src={bellIcon}
+              onClick={() => history.push("/notification")}
+            />
+            <img className="icon d-none d-xl-block" src={logOutIcon} onClick={handleLogOut} />
+          </div>
           <ul className="nav navbar-nav align-items-center ">
             <div className="d-flex align-items-center">
               <div className="navepara">
-                <div className="templeName text-end">
+                <div className="templeName text-end d-none d-xl-block">
                   {ConverFirstLatterToCapital(trustDetails?.name ?? "")}
                 </div>
-                <div className="date">
+                <div className="date d-none d-xl-block">
                   <Trans i18nKey={"last_login"} />:{" "}
                   {moment().format("DD MMM YYYY,h:mm a")}
                 </div>
               </div>
               <div
-                onClick={() =>
-                  history.push("/edit-profile")
+                onClick={
+                  () => history.push("/edit-profile")
                   // Swal.fire({
                   //   icon: "error",
                   //   title: "Oops...",

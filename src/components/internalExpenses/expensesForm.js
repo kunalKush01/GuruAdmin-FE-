@@ -121,9 +121,9 @@ export default function ExpensesForm({
         {(formik) => (
           <Form>
             <Row>
-              <Col xs={7}>
+              <Col xs={12} md={7}>
                 <Row>
-                  <Col>
+                  <Col xs="12" md="6">
                     <CustomTextField
                       label={t("news_label_Title")}
                       name="Title"
@@ -152,7 +152,7 @@ export default function ExpensesForm({
                   </Col>
                 </Row>
                 <Row className="mt-1">
-                  <Col xs={6}>
+                  <Col xs={12} md={6}>
                     <CustomTextField
                       type="number"
                       label={t("categories_select_amount")}

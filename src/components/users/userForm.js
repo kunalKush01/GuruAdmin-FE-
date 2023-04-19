@@ -152,8 +152,8 @@ export default function UserForm({
         {(formik) => (
           <Form>
             <Row>
-              <Col xs={12} className=" mt-2 ps-0 d-flex">
-                <div className=" me-3">
+              <Col xs={12} className=" mt-2 ps-0 d-md-flex">
+                <div className="me-3">
                   <ImageUpload
                     bg_plus={defaultAvtar}
                     profileImage
@@ -174,9 +174,9 @@ export default function UserForm({
                   />
                 </div>
                 <Row className=" w-100 mt-3">
-                  <Col xs={10}>
+                  <Col xs={12} md={10}>
                     <Row>
-                      <Col xs={4}>
+                      <Col xs={12} sm={6} lg={4}>
                         <CustomTextField
                           label={t("user_name")}
                           name="name"
@@ -186,7 +186,7 @@ export default function UserForm({
                           autoFocus
                         />
                       </Col>
-                      <Col xs={4}>
+                      <Col xs={12} sm={6} lg={4}>
                         <CustomTextField
                           label={t("dashboard_Recent_DonorNumber")}
                           name="mobile"
@@ -198,14 +198,14 @@ export default function UserForm({
                           required
                         />
                       </Col>
-                      <Col xs={4}>
+                      <Col xs={12} sm={6} lg={4}>
                         <CustomTextField
                           label={t("subscribed_user_email")}
                           name="email"
                         />
                       </Col>
                       {adduser && (
-                        <Col xs={12} md={6} lg={4} className="ps-1">
+                        <Col xs={12} sm={6} lg={4} className="ps-1">
                           <label>
                             <Trans i18nKey={"user_password"} />
                             {`*`}
@@ -271,7 +271,7 @@ export default function UserForm({
                       </div>
                     </Col>
                     <Col xs={12} className="">
-                      <Row className="row-cols-1 row-cols-sm-3 row-cols-md-4 row-cols-lg-5  ">
+                      <Row className="row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 ">
                         <Col className="">
                           <div className="checkBoxBorderBox mt-1">
                             <FormGroup

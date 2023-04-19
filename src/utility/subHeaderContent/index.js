@@ -51,3 +51,71 @@ export const subHeaderContent = [
     url: "/configuration",
   },
 ];
+
+export const subHeaderContentResponsive = [
+  {
+    name: "dashboard",
+    url: "/dashboard",
+  },
+
+  {
+    name: "donation",
+    url: "/donation",
+  },
+
+  {
+    name: "commitment",
+    url: "/commitment",
+  },
+  {
+    name: "donation_box",
+    url: "/Hundi",
+  },
+
+  {
+    name: "financial_reports",
+    url: "/financial_reports",
+  },
+
+  {
+    name: "internal_expenses",
+    url: "/internal_expenses",
+  },
+
+  {
+    name: "events",
+    url: "/events",
+  },
+
+  {
+    name: "news",
+    url: "/news",
+  },
+
+  {
+    name: "notices",
+    url: "/notices",
+  },
+  {
+    name: "punyarjak",
+    url: "/punyarjak",
+  },
+  {
+    name: "configuration",
+    children: [
+      {
+        name: "categories",
+        url: "/configuration/categories",
+      },
+      {
+        name: "user",
+        url: "/configuration/users",
+      },
+      {
+        name: "report_Dispute",
+        url: "/configuration/reportDispute",
+      },
+    ],
+    // url: "/configuration",
+  },
+];

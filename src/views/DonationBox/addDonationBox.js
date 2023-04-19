@@ -74,7 +74,7 @@ const initialValues = {
           />
         </div> */}
       </div>
-      <div className="ms-3 mt-1">
+      <div className="ms-md-3 mt-1">
         <DonationBoxForm
           handleSubmit={handleCollectionBox}
           initialValues={initialValues}

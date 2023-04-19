@@ -43,12 +43,15 @@ export default function PunyarjakTable({
       style: {
         font: "normal normal 700 13px/20px noto sans !important ",
       },
-      // width:"150px",
+      maxWidth: "350px",
+      minWidth: "150px",
     },
     {
       name: t("description"),
       selector: (row) => row.description,
       center: true,
+      maxWidth: "350px",
+      minWidth: "150px",
     },
     {
       name: t(""),

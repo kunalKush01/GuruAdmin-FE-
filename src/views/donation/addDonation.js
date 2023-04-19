@@ -72,7 +72,7 @@ export default function AddDonation() {
           </div>
         </div>
       </div>
-      <div className="ms-3 mt-1">
+      <div className="ms-md-3 mt-1">
         <DonationForm
           handleSubmit={handleCreateDonation}
           initialValues={initialValues}

@@ -171,6 +171,11 @@ const CustomDatePickerWraper = styled.div`
       display: none;
     }
   }
+  @media only screen and (max-width: 1200px) {
+    .react-datepicker {
+      width: ${(props) => props.width ?? "100%"};
+    }
+  }
 `;
 
 export default function CustomDatePicker({ ...props }) {

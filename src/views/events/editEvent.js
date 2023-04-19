@@ -78,12 +78,12 @@ export default function Editevent() {
       })
   );
 
-    const handleEventUpdate = async (payload) => {
-      return updateEventDetail({
-        ...payload,
-        languageId: getLangId(langArray, langSelection),
-      });
-    };
+  const handleEventUpdate = async (payload) => {
+    return updateEventDetail({
+      ...payload,
+      languageId: getLangId(langArray, langSelection),
+    });
+  };
 
   const tags = eventDetailQuery?.data?.result?.tags?.map((item) => ({
     id: item.id,
@@ -130,11 +130,15 @@ export default function Editevent() {
           </div>
         </div>
         <div className="editevent">
-          <Trans i18nKey={"news_InputIn"} />
+          <div className="d-none d-sm-block">
+            <Trans i18nKey={"news_InputIn"} />
+          </div>
           <CustomDropDown
             ItemListArray={eventDetailQuery?.data?.result?.languages}
             className={"ms-1"}
-            defaultDropDownName={ConverFirstLatterToCapital(langSelection ?? "")}
+            defaultDropDownName={ConverFirstLatterToCapital(
+              langSelection ?? ""
+            )}
             handleDropDownClick={(e) =>
               setLangSelection(ConverFirstLatterToCapital(e.target.name))
             }
@@ -177,7 +181,7 @@ export default function Editevent() {
         </Then>
         <Else>
           {!eventDetailQuery.isFetching && (
-            <div className="ms-3 mt-1">
+            <div className="ms-sm-3 mt-1">
               <EventForm
                 editImage="edit"
                 defaultImages={eventDetailQuery?.data?.result?.images}

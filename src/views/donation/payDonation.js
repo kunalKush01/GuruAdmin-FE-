@@ -172,7 +172,7 @@ export default function PayDonation() {
         </Then>
         <Else>
           {!commitmentDetailQuery?.isLoading && (
-            <div className="ms-3 mt-1 mb-3">
+            <div className="ms-md-3 mt-1 mb-3">
               <DonationForm
                 vailidationSchema={schema}
                 initialValues={initialValues}

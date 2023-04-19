@@ -134,7 +134,9 @@ export default function AddLanguageNews() {
           </div>
         </div>
         <div className="editNews">
-          <Trans i18nKey={"news_InputIn"} />
+        <div className="d-none d-sm-block">
+            <Trans i18nKey={"news_InputIn"} />
+          </div>
           <CustomDropDown
             ItemListArray={availableLangOptions}
             className={"ms-1"}
@@ -148,7 +150,7 @@ export default function AddLanguageNews() {
       </div>
 
       {!newsDetailQuery.isLoading ? (
-        <div className="ms-3 mt-1">
+        <div className="mt-1 ms-md-3">
           <NewsForm
             editImage="edit"
             defaultImages={newsDetailQuery?.data?.result?.images}

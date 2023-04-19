@@ -7,6 +7,7 @@ import classnames from 'classnames'
 
 // ** Reactstrap Imports
 import { Badge } from 'reactstrap'
+import { Trans } from 'react-i18next'
 
 const VerticalNavMenuLink = ({
   item,
@@ -31,19 +32,19 @@ const VerticalNavMenuLink = ({
       className={classnames({
         'nav-item': !item.children,
         disabled: item.disabled,
-        active: item.navLink === activeItem
+        active: item.url === activeItem
       })}
     >
       <LinkTag
         className='d-flex align-items-center'
-        target={item.newTab ? '_blank' : undefined}
+        // target={item.newTab ? '_blank' : undefined}
         /*eslint-disable */
-        {...(item.externalLink === true
+        {...(item.url === true
           ? {
-              href: item.navLink || '/'
+              href: item.url 
             }
           : {
-              to: item.navLink || '/',
+              to: item.url || '/',
               isActive: match => {
                 if (!match) {
                   return false
@@ -52,15 +53,15 @@ const VerticalNavMenuLink = ({
                 if (
                   match.url &&
                   match.url !== '' &&
-                  match.url === item.navLink
+                  match.url === item.url
                 ) {
-                  currentActiveItem = item.navLink
+                  currentActiveItem = item.url
                 }
               }
             })}
       >
-        {item.icon}
-        <span className='menu-item text-truncate'>{item.title}</span>
+        {/* {item.icon} */}
+        <span className='menu-item text-truncate'><Trans i18nKey={item?.name}/></span>
 
         {item.badge && item.badgeText ? (
           <Badge className='ms-auto me-1' color={item.badge} pill>

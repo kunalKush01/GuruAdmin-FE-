@@ -75,8 +75,8 @@ export default function EditSubAdmin() {
 
   return (
     <PunyarjakWarapper>
-      <div className="d-flex mt-sm-0 mt-2 justify-content-between align-items-center ">
-        <div className="d-flex justify-content-between align-items-center ">
+      <div className="d-flex justify-content-between align-items-center ">
+        <div className="d-flex align-items-center ">
           <img
             src={arrowLeft}
             className="me-2 cursor-pointer"
@@ -124,15 +124,19 @@ export default function EditSubAdmin() {
         </Then>
         <Else>
           {!!punyarjakDetailQuery?.data?.result && (
-            <PunyarjakForm
-              editProfile
-              editTrue="edit"
-              profileImageName={punyarjakDetailQuery?.data?.result?.profileName}
-              buttonName={"edit_punyarjak"}
-              initialValues={initialValues}
-              vailidationSchema={schema}
-              handleSubmit={handlePunyarjakUpdate}
-            />
+            <div className = "ms-sm-3 mt-1 ms-1">
+              <PunyarjakForm
+                editProfile
+                editTrue="edit"
+                profileImageName={
+                  punyarjakDetailQuery?.data?.result?.profileName
+                }
+                buttonName={"edit_punyarjak"}
+                initialValues={initialValues}
+                vailidationSchema={schema}
+                handleSubmit={handlePunyarjakUpdate}
+              />
+            </div>
           )}
         </Else>
       </If>

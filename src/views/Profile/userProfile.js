@@ -139,7 +139,9 @@ export default function AddProfile() {
           </div>
         </div>
         <div className="addProfile">
-          <Trans i18nKey={"news_InputIn"} />
+          <div className="d-none d-sm-block">
+            <Trans i18nKey={"news_InputIn"} />
+          </div>
           <CustomDropDown
             ItemListArray={langArray}
             className={"ms-1"}

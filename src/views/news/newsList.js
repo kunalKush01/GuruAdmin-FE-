@@ -156,8 +156,8 @@ export default function News() {
       <div className="window nav statusBar body "></div>
 
       <div>
-        <div className="d-flex justify-content-between align-items-center ">
-          <div className="d-flex justify-content-between align-items-center ">
+        <div className="d-sm-flex mb-1 justify-content-between align-items-center ">
+          <div className="d-flex align-items-center ">
             <img
               src={arrowLeft}
               className="me-2  cursor-pointer align-self-center"
@@ -176,7 +176,7 @@ export default function News() {
               </div>
             </div>
           </div>
-          <div className="addNews">
+          <div className="addNews mt-1 justify-content-between">
             <ChangePeriodDropDown
               className={"me-1"}
               dropDownName={dropDownName}

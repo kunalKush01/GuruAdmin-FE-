@@ -123,7 +123,7 @@ export default function FormWithoutFormikForDonation({
       <Row>
         <Col xs={12}>
           <Row>
-            <Col xs={4} className=" pb-1">
+            <Col xs={12} sm={6} lg={4} className=" pb-1">
               <CustomTextField
                 type="number"
                 label={t("dashboard_Recent_DonorNumber")}
@@ -134,7 +134,7 @@ export default function FormWithoutFormikForDonation({
                 autoFocus
               />
             </Col>
-            <Col xs={4} className=" pb-1">
+            <Col  xs={12} sm={6} lg={4} className=" pb-1">
               <AsyncSelectField
                 name="SelectedUser"
                 required
@@ -159,7 +159,7 @@ export default function FormWithoutFormikForDonation({
                 </div>
               )}
             </Col>
-            <Col xs={4} className=" pb-1">
+            <Col xs={12} sm={6} lg={4} className=" pb-1">
               <CustomTextField
                 label={t("dashboard_Recent_DonorName")}
                 name="donarName"
@@ -168,7 +168,7 @@ export default function FormWithoutFormikForDonation({
                 }
               />
             </Col>
-            <Col xs={4} className=" pb-1">
+            <Col  xs={12} sm={6} lg={4} className=" pb-1">
               <FormikCustomReactSelect
                 labelName={t("categories_select_category")}
                 name={"SelectedMasterCategory"}
@@ -188,7 +188,7 @@ export default function FormWithoutFormikForDonation({
                 disabled={masterloadOptionQuery?.data?.results == 0}
               />
             </Col>
-            <Col xs={4} className=" pb-1">
+            <Col  xs={12} sm={6} lg={4} className=" pb-1">
               <FormikCustomReactSelect
                 labelName={t("category_select_sub_category")}
                 loadOptions={subLoadOption.map((cate) => {
@@ -204,7 +204,7 @@ export default function FormWithoutFormikForDonation({
                 width
               />
             </Col>
-            <Col xs={4} className=" pb-1">
+            <Col  xs={12} sm={6} lg={4} className=" pb-1">
               <CustomTextField
                 label={t("created_by")}
                 name="createdBy"
@@ -215,7 +215,7 @@ export default function FormWithoutFormikForDonation({
           <Row>
             <Col>
               <Row>
-                <Col xs={4} className="mt-1">
+                <Col  xs={12} sm={6} lg={4} className="mt-1">
                   <FormikCustomReactSelect
                     labelName={t("dashboard_Recent_DonorCommitId")}
                     loadOptions={commitmentIdByUser}
@@ -230,7 +230,7 @@ export default function FormWithoutFormikForDonation({
                   />
                 </Col>
 
-                <Col xs={4} className="mt-1">
+                <Col  xs={12} sm={6} lg={4} className="mt-1">
                   <CustomTextField
                     type="number"
                     label={t("categories_select_amount")}
