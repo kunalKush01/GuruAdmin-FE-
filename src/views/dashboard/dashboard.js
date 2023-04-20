@@ -116,7 +116,9 @@ const Home = () => {
               <RecentDonationTable data={recentDonationData?.results} />
             </Col>
             <Col xs={12} md={5} lg={3} className="mt-3 mt-md-0">
-              <TopDonerList data={topDonorData?.results} />
+              {topDonorData?.results?.length > 0 ? (
+                <TopDonerList data={topDonorData?.results} />
+              ):""}
             </Col>
           </Row>
         </div>

@@ -95,7 +95,7 @@ export default function SubscribedUserForm({
             <Row>
               <Col xs={12}>
                 <Row>
-                  <Col>
+                  <Col xs={12} sm={6} md={4}>
                     <CustomTextField
                       label={t("user_name")}
                       name="name"
@@ -105,7 +105,7 @@ export default function SubscribedUserForm({
                       autoFocus
                     />
                   </Col>
-                  <Col>
+                  <Col xs={12} sm={6} md={4}>
                     <CustomTextField
                       label={t("dashboard_Recent_DonorNumber")}
                       name="mobile"
@@ -116,7 +116,7 @@ export default function SubscribedUserForm({
                       }
                     />
                   </Col>
-                  <Col>
+                  <Col xs={12} sm={6} md={4}>
                     <CustomTextField
                       label={t("subscribed_user_email")}
                       name="email"

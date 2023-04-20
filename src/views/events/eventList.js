@@ -59,6 +59,12 @@ const EventWarper = styled.div`
   .noContent {
     margin-left: 30rem;
   }
+
+  @media only screen and (max-width: 1150px) {
+    .noContent {
+      margin-left: 0;
+    }
+  }
 `;
 
 const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -185,7 +191,7 @@ export default function EventList() {
           <div className="d-flex align-items-center mb-2 mb-md-0">
             <img
               src={arrowLeft}
-              className="me-2  cursor-pointer align-self-center"
+              className="me-1 me-sm-2  cursor-pointer align-self-center"
               onClick={() => history.push("/")}
             />
             <div className="addEvent">
@@ -246,7 +252,7 @@ export default function EventList() {
         </div>
         <div>
           <Row className="w-100 m-0">
-            <Col xs={9} className="eventContent ps-0">
+            <Col xs={12} md={9} className="eventContent ps-0">
               <If condition={eventQuery.isLoading} disableMemo>
                 <Then>
                   <SkeletonTheme
@@ -335,7 +341,14 @@ export default function EventList() {
                 </Then>
               </If>
             </Col>
-            <Col xs={10} sm={6} md={5} lg={3} className="p-0 ps-1 d-none d-lg-block" style={{ marginTop: "1.8rem" }}>
+            <Col
+              xs={10}
+              sm={6}
+              md={5}
+              lg={3}
+              className="p-0 ps-1 d-none d-lg-block"
+              style={{ marginTop: "1.8rem" }}
+            >
               <Row>
                 <Col xs={12}>
                   {eventDates.length != 0 && (

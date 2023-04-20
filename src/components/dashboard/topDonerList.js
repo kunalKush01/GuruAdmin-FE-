@@ -13,7 +13,7 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 export const TopDonerList = ({ data }) => {
   const { t } = useTranslation();
   const TopDonerWarpper = styled.div`
-  height: auto;
+    height: auto;
     .listHeading {
       color: #583703;
       font: normal normal bold 20px/23px Noto Sans;
@@ -32,7 +32,7 @@ export const TopDonerList = ({ data }) => {
     }
     .card {
       background-color: #fff7e8;
-      margin:5px 10px ; 
+      margin: 5px 10px;
     }
   `;
   const getRank = (idx) => {
@@ -63,12 +63,16 @@ export const TopDonerList = ({ data }) => {
           <Card key={item.id} className="  rounded-3">
             <CardBody className="d-flex p-1 justify-content-between align-items-center   ">
               <div className="d-flex align-items-center">
-              <img src={item?.user?.profilePhoto ?? palceHolderIcon} className=" pe-1 " width={"70px"} />
-              <div className="">
-                <div className="headName">
-                  {ConverFirstLatterToCapital(item?.user?.name ?? "")}
+                <img
+                  src={item?.user?.profilePhoto ?? palceHolderIcon}
+                  className=" pe-1 "
+                  width={"70px"}
+                />
+                <div className="">
+                  <div className="headName">
+                    {ConverFirstLatterToCapital(item?.user?.name ?? "")}
+                  </div>
                 </div>
-              </div>
               </div>
               <img src={getRank(idx)} width={"30px"} />
             </CardBody>

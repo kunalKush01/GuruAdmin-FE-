@@ -39,6 +39,7 @@ export const englishContent = {
   dashboard_donationPending: "Donation Pending",
   donation_hundi: "Donation + Hundi",
   dashboard_totalExpenses: "Total Expenses",
+  noTopDonar:"There are no ",
   dashboard_RevenueReport: "Finance Report",
   notification_not_found: "No Notification Found",
   dashboard_monthly: "Monthly",

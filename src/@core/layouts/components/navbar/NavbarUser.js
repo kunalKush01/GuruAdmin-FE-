@@ -76,6 +76,14 @@ const NavbarUserWarraper = styled.div`
   .date {
     font: normal normal normal 10px/5px noto sans;
   }
+  @media only screen and (max-width: 576px) {
+    .displayBlock{
+      display: block !important;
+    }
+    .displayNone{
+      display: none !important;
+    }
+  }
 `;
 const NavbarUser = (props) => {
   const history = useHistory();
@@ -93,6 +101,8 @@ const NavbarUser = (props) => {
   };
   const [langSelection, setlangSelection] = useState(false);
 
+  const [searchBarState,setSearchBarState] = useState(false)
+
   return (
     <Fragment>
       <NavbarUserWarraper className="d-flex justify-content-between w-100 align-items-center  ">
@@ -107,8 +117,8 @@ const NavbarUser = (props) => {
             </NavLink>
           </NavItem>
         </div>
-        {isSerchable() && <CustomSearchBar />}
-        <div className="d-flex justify-content-end align-items-center ">
+        {isSerchable() && <CustomSearchBar setSearchBarState={setSearchBarState} searchBarState={searchBarState} />}
+        <div className={`d-flex justify-content-end align-items-center ${searchBarState ? "displayNone" : ""}`}>
           <div className="d-flex">
             <img
               className="icon"

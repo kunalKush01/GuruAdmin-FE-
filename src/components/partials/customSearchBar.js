@@ -10,14 +10,18 @@ import { useTransition } from "react";
 import { useTranslation } from "react-i18next";
 import { setSearchbarValue } from "../../redux/searchBar";
 import styled from "styled-components";
-
+import { X } from "react-feather";
 
 const SearchBarWarapper = styled.div`
   .searbarSize {
     height: 40px;
   }
 
-  @media only screen and (max-width: 500px) {
+  .bgNone {
+    background-color: transparent;
+  }
+
+  @media only screen and (max-width: 576px) {
     .searbarSize {
       height: 35px;
     }
@@ -25,24 +29,55 @@ const SearchBarWarapper = styled.div`
   }
 `;
 
-export default function CustomSearchBar() {
-  const searchBarValue = useSelector((state) => state.search.LocalSearch);
+export default function CustomSearchBar({ searchBarState, setSearchBarState }) {
+  const searchBarValue = useSelector((state) => state?.search?.LocalSearch);
   const dispatch = useDispatch();
   const { t, i18n } = useTranslation();
 
   return (
     <SearchBarWarapper className="w-100">
-      <InputGroup className=" searbarSize searchinput border-0 rounded-pill d-flex align-items-center ">
-        <Input
-          className=" sInput searchinput border-0 h-100 rounded-pill "
-          value={searchBarValue}
-          onChange={(e) => dispatch(setSearchbarValue(e.target.value))}
-          placeholder={t(setPlaceholderSerchbar())}
-        />
-        <InputGroupText className="sIconsBox searchinput border-0  h-100  rounded-pill">
-          <img src={searchIcon} className="" />
-        </InputGroupText>
-      </InputGroup>
+      <div className="d-flex align-items-center">
+        <InputGroup
+          className={`searbarSize ${
+            !searchBarState && window.screen.width < 576
+              ? "bgNone"
+              : "searchinput"
+          } border-0 rounded-pill d-flex align-items-center justify-content-end`}
+        >
+          <Input
+            className={`${
+              !searchBarState && window.screen.width < 576 ? "d-none" : ""
+            } sInput searchinput border-0 h-100 rounded-pill `}
+            value={searchBarValue}
+            onChange={(e) => dispatch(setSearchbarValue(e.target.value))}
+            placeholder={t(setPlaceholderSerchbar())}
+          />
+          <InputGroupText
+            className={`sIconsBox ${
+              !searchBarState && window.screen.width < 576
+                ? "bgNone"
+                : "searchinput"
+            } border-0 h-100  rounded-pill`}
+          >
+            <img
+              src={searchIcon}
+              className=""
+              onClick={() => {
+                window.screen.width < 576 ? setSearchBarState(true) : "";
+              }}
+            />
+          </InputGroupText>
+        </InputGroup>
+        {searchBarState && (
+          <div
+            onClick={() => {
+              window.screen.width < 576 ? setSearchBarState(false) : "";
+            }}
+          >
+            <X color="#000000" stroke-width="3" />
+          </div>
+        )}
+      </div>
     </SearchBarWarapper>
   );
 }

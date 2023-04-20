@@ -58,6 +58,11 @@ const NoticeWarper = styled.div`
   .noContent {
     margin-left: 30rem;
   }
+  @media only screen and (max-width: 1150px) {
+    .noContent {
+      margin-left: 0;
+    }
+  }
 `;
 
 const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -324,7 +329,14 @@ export default function NoticeList() {
                 </Then>
               </If>
             </Col>
-            <Col xs={10} sm={6} md={5} lg={3} className="p-0 ps-1 d-none d-lg-block" style={{ marginTop: "1.8rem" }}>
+            <Col
+              xs={10}
+              sm={6}
+              md={5}
+              lg={3}
+              className="p-0 ps-1 d-none d-lg-block"
+              style={{ marginTop: "1.8rem" }}
+            >
               <Row>
                 <Col xs={12}>
                   <If condition={dateQuery.isLoading}>

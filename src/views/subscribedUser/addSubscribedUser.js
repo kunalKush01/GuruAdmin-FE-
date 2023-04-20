@@ -66,7 +66,7 @@ export default function AddSubscribedUser() {
         </div> */}
       </div>
 
-      <div className="ms-3 mt-1">
+      <div className="ms-md-3 mt-1">
         <SubscribedUserForm
           // loadOptions={masterloadOptionQuery?.data?.results}
           // placeholder={masterloadOptionQuery?.data?.results[0].name ?? "All"}
