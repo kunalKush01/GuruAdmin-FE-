@@ -15,6 +15,7 @@ import { createNews } from "../../api/newsApi";
 import { Plus } from "react-feather";
 import LogListTable from "../DonationBox/logListTable";
 import { getAllExpensesLogs } from "../../api/expenseApi";
+import { Prompt } from "react-router-dom";
 
 const FormWaraper = styled.div`
   .FormikWraper {
@@ -101,12 +102,15 @@ export default function ExpensesForm({
     () => expenseLogQuery?.data?.results ?? [],
     [expenseLogQuery]
   );
+  const [showPrompt, setShowPrompt] = useState(true);
+
   return (
     <FormWaraper className="FormikWraper">
       <Formik
         // enableReinitialize
         initialValues={{ ...initialValues }}
         onSubmit={(e) => {
+          setShowPrompt(false)
           setLoading(true);
           newsMutation.mutate({
             expenseId: e?.Id,
@@ -120,6 +124,17 @@ export default function ExpensesForm({
       >
         {(formik) => (
           <Form>
+            {showPrompt && (
+              <Prompt
+                when={!!Object.values(formik?.values).find((val) => !!val)}
+                message={(location) =>
+                  `Are you sure you want to leave this page & visit ${location.pathname.replace(
+                    "/",
+                    ""
+                  )}`
+                }
+              />
+            )}
             <Row>
               <Col xs={12} md={7}>
                 <Row>

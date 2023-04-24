@@ -21,6 +21,7 @@ import { getAllTags } from "../../api/tagApi";
 import { WithContext as ReactTags } from "react-tag-input";
 import ImageUpload from "../partials/imageUpload";
 import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
+import { Prompt } from "react-router-dom";
 
 const FormWaraper = styled.div`
   .existlabel {
@@ -231,12 +232,15 @@ export default function NoticeForm({
   const randomNumber = Math.floor(100000000000 + Math.random() * 900000000000);
 
   const [deletedImages, setDeletedImages] = useState([]);
+  const [showPrompt, setShowPrompt] = useState(true);
+
   return (
     <FormWaraper className="FormikWraper">
       <Formik
         // enableReinitialize
         initialValues={initialValues}
         onSubmit={(e) => {
+          setShowPrompt(false)
           setLoading(true);
           noticeMutation.mutate({
             noticeId: e.Id,
@@ -254,6 +258,17 @@ export default function NoticeForm({
       >
         {(formik) => (
           <Form>
+           {showPrompt && (
+              <Prompt
+                when={!!Object.values(formik?.values).find((val) => !!val)}
+                message={(location) =>
+                  `Are you sure you want to leave this page & visit ${location.pathname.replace(
+                    "/",
+                    ""
+                  )}`
+                }
+              />
+            )}
             <Row>
               <Col xs={12} md={7}>
                 <Row>

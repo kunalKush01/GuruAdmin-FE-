@@ -15,6 +15,7 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import AsyncSelectField from "../partials/asyncSelectField";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
+import { Prompt } from "react-router-dom";
 
 export default function FormWithoutFormikForDonation({
   formik,
@@ -22,6 +23,7 @@ export default function FormWithoutFormikForDonation({
   buttonName,
   paidDonation,
   loading,
+  showPrompt,
   ...props
 }) {
   const { t } = useTranslation();
@@ -111,15 +113,25 @@ export default function FormWithoutFormikForDonation({
     }
   }, [SelectedCommitmentId?.id]);
 
-
   const searchParams = new URLSearchParams(history.location.search);
-  const currentPage = searchParams.get('page')
+  const currentPage = searchParams.get("page");
   const currentCategory = searchParams.get("category");
   const currentSubCategory = searchParams.get("subCategory");
-  const currentFilter = searchParams.get('filter')
+  const currentFilter = searchParams.get("filter");
 
   return (
     <Form>
+       {showPrompt && (
+              <Prompt
+                when={!!Object.values(formik?.values).find((val) => !!val)}
+                message={(location) =>
+                  `Are you sure you want to leave this page & visit ${location.pathname.replace(
+                    "/",
+                    ""
+                  )}`
+                }
+              />
+            )}
       <Row>
         <Col xs={12}>
           <Row>
@@ -134,7 +146,7 @@ export default function FormWithoutFormikForDonation({
                 autoFocus
               />
             </Col>
-            <Col  xs={12} sm={6} lg={4} className=" pb-1">
+            <Col xs={12} sm={6} lg={4} className=" pb-1">
               <AsyncSelectField
                 name="SelectedUser"
                 required
@@ -152,7 +164,11 @@ export default function FormWithoutFormikForDonation({
                   <Trans i18nKey={"add_user_donation"} />{" "}
                   <span
                     className="cursor-pointer"
-                    onClick={() => history.push(`/Add-user?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}`)}
+                    onClick={() =>
+                      history.push(
+                        `/Add-user?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}`
+                      )
+                    }
                   >
                     <Trans i18nKey={"add_user"} />
                   </span>
@@ -163,12 +179,10 @@ export default function FormWithoutFormikForDonation({
               <CustomTextField
                 label={t("dashboard_Recent_DonorName")}
                 name="donarName"
-                onInput={(e) =>
-                  (e.target.value = e.target.value.slice(0, 30))
-                }
+                onInput={(e) => (e.target.value = e.target.value.slice(0, 30))}
               />
             </Col>
-            <Col  xs={12} sm={6} lg={4} className=" pb-1">
+            <Col xs={12} sm={6} lg={4} className=" pb-1">
               <FormikCustomReactSelect
                 labelName={t("categories_select_category")}
                 name={"SelectedMasterCategory"}
@@ -188,7 +202,7 @@ export default function FormWithoutFormikForDonation({
                 disabled={masterloadOptionQuery?.data?.results == 0}
               />
             </Col>
-            <Col  xs={12} sm={6} lg={4} className=" pb-1">
+            <Col xs={12} sm={6} lg={4} className=" pb-1">
               <FormikCustomReactSelect
                 labelName={t("category_select_sub_category")}
                 loadOptions={subLoadOption.map((cate) => {
@@ -204,7 +218,7 @@ export default function FormWithoutFormikForDonation({
                 width
               />
             </Col>
-            <Col  xs={12} sm={6} lg={4} className=" pb-1">
+            <Col xs={12} sm={6} lg={4} className=" pb-1">
               <CustomTextField
                 label={t("created_by")}
                 name="createdBy"
@@ -215,7 +229,7 @@ export default function FormWithoutFormikForDonation({
           <Row>
             <Col>
               <Row>
-                <Col  xs={12} sm={6} lg={4} className="mt-1">
+                <Col xs={12} sm={6} lg={4} className="mt-1">
                   <FormikCustomReactSelect
                     labelName={t("dashboard_Recent_DonorCommitId")}
                     loadOptions={commitmentIdByUser}
@@ -230,7 +244,7 @@ export default function FormWithoutFormikForDonation({
                   />
                 </Col>
 
-                <Col  xs={12} sm={6} lg={4} className="mt-1">
+                <Col xs={12} sm={6} lg={4} className="mt-1">
                   <CustomTextField
                     type="number"
                     label={t("categories_select_amount")}

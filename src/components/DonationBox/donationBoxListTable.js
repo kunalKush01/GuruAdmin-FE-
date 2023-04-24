@@ -75,8 +75,7 @@ export default function DonationBoxListTable({ data, financeReport }) {
       ),
       createdBy:ConverFirstLatterToCapital(item?.createdBy?.name ?? ""),
       dateTime: moment(item?.collectionDate)
-        .utcOffset(0)
-        .format("h:mm A, DD MMM YYYY"),
+        .format("DD MMM YYYY, h:mm A "),
       edit: (
         <img
           src={editIcon}

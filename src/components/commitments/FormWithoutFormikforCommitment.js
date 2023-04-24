@@ -11,6 +11,7 @@ import AsyncSelectField from "../partials/asyncSelectField";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
+import { Prompt } from "react-router-dom";
 
 export default function FormWithoutFormikForCommitment({
   formik,
@@ -18,6 +19,7 @@ export default function FormWithoutFormikForCommitment({
   buttonName,
   showTimeInput,
   loading,
+  showPrompt,
   ...props
 }) {
   const { t } = useTranslation();
@@ -64,9 +66,22 @@ export default function FormWithoutFormikForCommitment({
       results();
     }
   }, [formik?.values?.Mobile]);
+  
 
   return (
     <Form>
+        {showPrompt && (
+              <Prompt
+                when={!!Object.values(formik?.values).find((val) => !!val)}
+                message={(location) =>
+                  `Are you sure you want to leave this page & visit ${location.pathname.replace(
+                    "/",
+                    ""
+                  )}`
+                }
+              />
+            )}
+
       <Row>
         <Col xs={12}>
           <Row>

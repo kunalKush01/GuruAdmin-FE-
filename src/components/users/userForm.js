@@ -15,6 +15,7 @@ import InputPasswordToggle from "@components/input-password-toggle";
 import passwordEyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
 import { getAllUserRoles } from "../../api/userApi";
 import { useSelector } from "react-redux";
+import { Prompt } from "react-router-dom";
 
 const FormWaraper = styled.div`
   .FormikWraper {
@@ -128,6 +129,7 @@ export default function UserForm({
 
   const userRoleIds = userRolesItems?.map((item) => item._id);
   const randomNumber = Math.floor(100000000000 + Math.random() * 900000000000);
+  const [showPrompt, setShowPrompt] = useState(true);
 
   return (
     <FormWaraper className="FormikWraper">
@@ -135,6 +137,7 @@ export default function UserForm({
         enableReinitialize
         initialValues={initialValues}
         onSubmit={(e) => {
+          setShowPrompt(false);
           setLoading(true);
           categoryMutation.mutate({
             subAdminId: e?.Id,
@@ -151,6 +154,17 @@ export default function UserForm({
       >
         {(formik) => (
           <Form>
+            {showPrompt && (
+              <Prompt
+                when={!!Object.values(formik?.values).find((val) => !!val)}
+                message={(location) =>
+                  `Are you sure you want to leave this page & visit ${location.pathname.replace(
+                    "/",
+                    ""
+                  )}`
+                }
+              />
+            )}
             <Row>
               <Col xs={12} className=" mt-2 ps-0 d-md-flex">
                 <div className="me-3">
@@ -240,9 +254,7 @@ export default function UserForm({
                             {formik.errors.password &&
                               formik.touched.password && (
                                 <div className="text-danger">
-                                  <Trans
-                                    i18nKey={formik.errors.password}
-                                  />
+                                  <Trans i18nKey={formik.errors.password} />
                                 </div>
                               )}
                           </div>

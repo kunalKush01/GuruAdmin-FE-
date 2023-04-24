@@ -17,6 +17,7 @@ import { flatMap } from "lodash";
 import { setlang } from "../../redux/authSlice";
 import LogListTable from "./logListTable";
 import { getAllBoxCollectionLogs } from "../../api/donationBoxCollectionApi";
+import { Prompt } from "react-router-dom";
 
 const FormWaraper = styled.div`
   .FormikWraper {
@@ -105,6 +106,7 @@ export default function DonationBoxForm({
     () => hundiLogQuery?.data?.results ?? [],
     [hundiLogQuery]
   );
+  const [showPrompt, setShowPrompt] = useState(true);
 
   return (
     <FormWaraper className="FormikWraper">
@@ -112,6 +114,7 @@ export default function DonationBoxForm({
         // enableReinitialize
         initialValues={{ ...initialValues }}
         onSubmit={(e) => {
+          setShowPrompt(false)
           setLoading(true);
           newsMutation.mutate({
             collectionId: e?.Id,
@@ -124,6 +127,17 @@ export default function DonationBoxForm({
       >
         {(formik) => (
           <Form>
+            {showPrompt && (
+              <Prompt
+                when={!!Object.values(formik?.values).find((val) => !!val)}
+                message={(location) =>
+                  `Are you sure you want to leave this page & visit ${location.pathname.replace(
+                    "/",
+                    ""
+                  )}`
+                }
+              />
+            )}
             <Row>
               <Col xs={12} md={7} >
                 <Row>

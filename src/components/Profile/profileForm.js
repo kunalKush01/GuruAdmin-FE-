@@ -29,6 +29,8 @@ import sha256 from "sha256";
 import md5 from "md5";
 import RichTextField from "../partials/richTextEditorField";
 import { handleProfileUpdate, login } from "../../redux/authSlice";
+import { Prompt } from "react-router-dom";
+
 
 const ProfileFormWaraper = styled.div`
   .existlabel {
@@ -418,6 +420,15 @@ export default function ProfileForm({
       >
         {(formik) => (
           <Form>
+            {/* <Prompt
+              when={!!Object.values(formik?.values).find((val) => !!val)}
+              message={(location) =>
+                `Are you sure you want to leave this page & visit ${location.pathname.replace(
+                  "/",
+                  ""
+                )}`
+              }
+            /> */}
             {/* About Trust Container */}
             <Row className="mt-1">
               <Col xs={12}>

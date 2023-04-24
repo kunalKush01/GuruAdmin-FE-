@@ -26,6 +26,7 @@ import { useSelector } from "react-redux";
 import { ConvertToString } from "../financeReport/reportJsonExport";
 import ImageUpload from "../partials/imageUpload";
 import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
+import { Prompt } from "react-router-dom";
 
 const FormWaraper = styled.div`
   .existlabel {
@@ -240,6 +241,7 @@ export default function EventForm({
   const randomNumber = Math.floor(100000000000 + Math.random() * 900000000000);
 
   const [deletedImages, setDeletedImages] = useState([]);
+  const [showPrompt, setShowPrompt] = useState(true);
 
   return (
     <FormWaraper className="FormikWraper">
@@ -247,6 +249,7 @@ export default function EventForm({
         enableReinitialize
         initialValues={initialValues}
         onSubmit={(e) => {
+          setShowPrompt(false)
           setLoading(true);
           eventMutation.mutate({
             eventId: e.Id,
@@ -268,6 +271,17 @@ export default function EventForm({
       >
         {(formik) => (
           <Form>
+             {showPrompt && (
+              <Prompt
+                when={!!Object.values(formik?.values).find((val) => !!val)}
+                message={(location) =>
+                  `Are you sure you want to leave this page & visit ${location.pathname.replace(
+                    "/",
+                    ""
+                  )}`
+                }
+              />
+            )}
             <Row>
               <Col xs={12} md={7}>
                 <Row>

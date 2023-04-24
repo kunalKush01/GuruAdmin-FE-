@@ -87,6 +87,7 @@ const [loading, setLoading] = useState(false)
       }
     },
   });
+  const [showPrompt, setShowPrompt] = useState(true);
   return (
     <FormWaraper className="FormikWraper">
       {!masterloadOptionQuery.isLoading && (
@@ -96,6 +97,7 @@ const [loading, setLoading] = useState(false)
             ...initialValues,
           }}
           onSubmit={(e) =>{
+            setShowPrompt(false)
             setLoading(true)
             donationMutation.mutate({
               categoryId: e?.SelectedSubCategory?.id,
@@ -116,6 +118,7 @@ const [loading, setLoading] = useState(false)
               loading={loading}
               paidDonation={initialValues?.SelectedUser?.id}
               plusIconDisable
+              showPrompt={showPrompt}
               buttonName={buttonName}
             />
           )}

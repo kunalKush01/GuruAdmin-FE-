@@ -16,6 +16,7 @@ import { Plus } from "react-feather";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import { flatMap } from "lodash";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
+import { Prompt } from "react-router-dom";
 
 const FormWaraper = styled.div`
   .FormikWraper {
@@ -85,13 +86,14 @@ export default function CategoryForm({
       }
     },
   });
-
+  const [showPrompt, setShowPrompt] = useState(true);
   return (
     <FormWaraper className="FormikWraper">
       <Formik
         // enableReinitialize
         initialValues={{ ...initialValues }}
         onSubmit={(e) => {
+          setShowPrompt(false)
           setLoading(true);
           return categoryMutation.mutate({
             name: e?.SubCategory,
@@ -103,6 +105,18 @@ export default function CategoryForm({
       >
         {(formik) => (
           <Form>
+            {showPrompt && (
+              <Prompt
+                when={!!Object.values(formik?.values).find((val) => !!val)}
+                message={(location) =>
+                  `Are you sure you want to leave this page & visit ${location.pathname.replace(
+                    "/",
+                    ""
+                  )}`
+                }
+              />
+            )}
+
             <Row>
               <Col xs={12} md={10} lg={7}>
                 <Row>
@@ -114,9 +128,8 @@ export default function CategoryForm({
                       labelKey={"name"}
                       valueKey="id"
                       loadOptions={
-                        loadOptions && 
-                        loadOptions?.map((item)=>
-                        {
+                        loadOptions &&
+                        loadOptions?.map((item) => {
                           return {
                             ...item,
                             name: ConverFirstLatterToCapital(item?.name ?? ""),
@@ -126,7 +139,6 @@ export default function CategoryForm({
                       width={"100"}
                       {...props}
                     />
-
                   </Col>
                   <Col xs={12} sm={6}>
                     <CustomTextField

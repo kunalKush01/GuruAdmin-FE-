@@ -79,6 +79,7 @@ export default function CommitmentForm({
       }
     },
   });
+  const [showPrompt, setShowPrompt] = useState(true);
 
   return (
     <FormWaraper className="FormikWraper">
@@ -89,6 +90,7 @@ export default function CommitmentForm({
             ...initialValues,
           }}
           onSubmit={(e) => {
+            setShowPrompt(false)
             setLoading(true);
             commitmentMutation.mutate({
               donarName: e?.donarName,
@@ -109,6 +111,7 @@ export default function CommitmentForm({
                 masterloadOptionQuery={masterloadOptionQuery}
                 loading={loading}
                 plusIconDisable
+                showPrompt={showPrompt}
                 buttonName={buttonName}
               />
             </>

@@ -12,6 +12,7 @@ import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import ImageUpload from "../partials/imageUpload";
 import defaultAvtar from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import RichTextField from "../partials/richTextEditorField";
+import { Prompt } from "react-router-dom";
 
 const FormWaraper = styled.div`
   .FormikWraper {
@@ -76,6 +77,7 @@ export default function PunyarjakForm({
     },
   });
   const randomNumber = Math.floor(100000000000 + Math.random() * 900000000000);
+  const [showPrompt, setShowPrompt] = useState(true);
 
   return (
     <FormWaraper className="FormikWraper">
@@ -83,6 +85,7 @@ export default function PunyarjakForm({
         // enableReinitialize
         initialValues={initialValues}
         onSubmit={(e) => {
+          setShowPrompt(false)
           setLoading(true);
           punyarjakMutation.mutate({
             punyarjakId: e?.id,
@@ -95,6 +98,17 @@ export default function PunyarjakForm({
       >
         {(formik) => (
           <Form>
+            {showPrompt && (
+              <Prompt
+                when={!!Object.values(formik?.values).find((val) => !!val)}
+                message={(location) =>
+                  `Are you sure you want to leave this page & visit ${location.pathname.replace(
+                    "/",
+                    ""
+                  )}`
+                }
+              />
+            )}
             {/* <Row>
               <Col xs={12}>
                 <Row>

@@ -9,6 +9,7 @@ import styled from "styled-components";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
+import { Prompt } from "react-router-dom";
 
 const FormWaraper = styled.div`
   .FormikWraper {
@@ -75,12 +76,15 @@ export default function SubscribedUserForm({
       }
     },
   });
+  const [showPrompt, setShowPrompt] = useState(true);
+
   return (
     <FormWaraper className="FormikWraper">
       <Formik
         // enableReinitialize
         initialValues={{ ...initialValues }}
         onSubmit={(e) => {
+          setShowPrompt(false)
           setLoading(true);
           categoryMutation.mutate({
             email: e.email,
@@ -92,6 +96,17 @@ export default function SubscribedUserForm({
       >
         {(formik) => (
           <Form>
+            {showPrompt && (
+              <Prompt
+                when={!!Object.values(formik?.values).find((val) => !!val)}
+                message={(location) =>
+                  `Are you sure you want to leave this page & visit ${location.pathname.replace(
+                    "/",
+                    ""
+                  )}`
+                }
+              />
+            )}
             <Row>
               <Col xs={12}>
                 <Row>

@@ -121,6 +121,7 @@ export function SubAdminUserListTable({
         <img
           src={deleteIcon}
           width={35}
+          className="cursor-pointer"
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();

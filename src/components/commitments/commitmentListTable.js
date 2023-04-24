@@ -230,7 +230,7 @@ export default function CommitmentListTable(
         amountDue: <div>₹&nbsp; {item?.amount - item.paidAmount}</div>,
         commitmentId: (
           <div
-            className="cursor-pointer"
+            className="cursor-pointer text-decoration-underline"
             onClick={() => {
               financeReport
                 ? ""
