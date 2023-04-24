@@ -103,7 +103,12 @@ export default function DonationListTable({ data, topdf }, args) {
                   ? item?.user?.profilePhoto
                   : avtarIcon
               }
-              style={{ marginRight: "5px", width: "25px" }}
+              style={{
+                marginRight: "5px",
+                width: "30px",
+                height: "30px",
+              }}
+              className="rounded-circle"
             />
             <div>{ConverFirstLatterToCapital(item?.user?.name ?? "")}</div>
           </div>

@@ -67,7 +67,11 @@ export default function SubscribedUSerListTable({ data }) {
           <div className="d-flex align-items-center ">
             <img
               src={item?.profileImage !== "" && item?.profileImage ? item?.profileImage :  avtarIcon}
-              style={{ marginRight: "5px", width: "25px" }}
+              style={{
+                marginRight: "5px",
+                width: "30px",
+                height: "30px",
+              }}
               className="rounded-circle"
             />
             <div>{ConverFirstLatterToCapital(item?.name ?? "-")}</div>

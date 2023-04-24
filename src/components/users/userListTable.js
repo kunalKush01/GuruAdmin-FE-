@@ -14,6 +14,8 @@ import placeHolderTable from "../../assets/images/placeholderImages/placeHolderT
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { deleteSubAdmin } from "../../api/userApi";
 import { DELETE, EDIT } from "../../utility/permissionsVariable";
+import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
+
 
 export function SubAdminUserListTable({
   data,
@@ -77,7 +79,7 @@ export function SubAdminUserListTable({
         <div className="d-flex align-items-center ">
           <img
             src={
-              item?.profilePhoto !== "" ? item?.profilePhoto : placeHolderTable
+              item?.profilePhoto !== "" ? item?.profilePhoto : avtarIcon
             }
             className="cursor-pointer"
             style={{
