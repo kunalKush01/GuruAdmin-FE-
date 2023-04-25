@@ -104,7 +104,7 @@ export const subHeaderContentResponsive = [
     name: "configuration",
     children: [
       {
-        name: "categories",
+        name: "category",
         url: "/configuration/categories",
       },
       {
