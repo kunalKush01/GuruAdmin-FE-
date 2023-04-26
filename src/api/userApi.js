@@ -41,7 +41,7 @@ export const getAllUser = (payload) =>
   export const updateSubAdminUser = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}sub-admin/update`, payload),
+      axios.put(`${API_BASE_URL}sub-admin/update`, payload),
   });
   
   export const deleteSubAdmin = (payload) =>

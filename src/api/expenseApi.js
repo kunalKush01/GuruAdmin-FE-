@@ -54,7 +54,7 @@ export const getExpensesDetail = (payload) =>
 export const updateExpensesDetail = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}expense/update`, payload),
+      axios.put(`${API_BASE_URL}expense/update`, payload),
   });
 
 export const addLangCategoryDetail = (payload) =>

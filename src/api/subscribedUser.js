@@ -41,7 +41,7 @@ export const getSubCategoryDetail = (payload) =>
 export const updateCategoryDetail = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}donation-category/update`, payload),
+      axios.put(`${API_BASE_URL}donation-category/update`, payload),
   });
 
 

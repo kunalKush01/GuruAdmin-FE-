@@ -34,7 +34,7 @@ export const getCollectionBoxDetail = ({donationBoxId}) =>
 export const updateCollectionBoxDetail = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}donation-box/update`, payload),
+      axios.put(`${API_BASE_URL}donation-box/update`, payload),
   });
 
 

@@ -40,7 +40,7 @@ export const getAllEvents = (payload) =>
 export const updateEventDetail = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}event/update`, payload),
+      axios.put(`${API_BASE_URL}event/update`, payload),
   });
 
 

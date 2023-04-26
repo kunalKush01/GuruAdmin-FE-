@@ -28,7 +28,7 @@ export const getAllPunyarjak = (payload) =>
   export const updatePunyarjak = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}punyarjak/update`, payload),
+      axios.put(`${API_BASE_URL}punyarjak/update`, payload),
   });
   
   

@@ -40,7 +40,7 @@ export const getNoticeDetail = (payload) =>
 export const updateNoticeDetail = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}notice/update`, payload),
+      axios.put(`${API_BASE_URL}notice/update`, payload),
   });
 
 

@@ -26,7 +26,7 @@ export const getNewsDetail = (payload) =>
 export const updateNewsDetail = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}news/update`, payload),
+      axios.put(`${API_BASE_URL}news/update`, payload),
   });
 
 

@@ -34,7 +34,7 @@ export const getDonationDetail = (payload) =>
 export const updateDonationDetail = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}news/update`, payload),
+      axios.put(`${API_BASE_URL}news/update`, payload),
   });
 
 export const addLangDonationDetail = (payload) =>

@@ -70,7 +70,7 @@ export default function PunyarjakForm({
       if (!data.error) {
         punyarjakQueryClient.invalidateQueries(["punyarjak"]);
         setLoading(false);
-        history.push("/Punyarjak");
+        history.push("/punyarjak");
       } else if (data?.error) {
         setLoading(false);
       }

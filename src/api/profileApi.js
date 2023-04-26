@@ -17,7 +17,7 @@ export const getAllTrustType = (payload) =>
   });
   export const updateProfile = (payload) =>
   callApi({
-    requestFunction: (axios) => axios.post(`${API_BASE_URL}trust/update`, payload),
+    requestFunction: (axios) => axios.put(`${API_BASE_URL}trust/update`, payload),
   });
   export const getUpdatedTrustDetail = (payload) =>
   callApi({

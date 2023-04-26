@@ -38,7 +38,7 @@ const schema = yup.object().shape({
     .min(9, "Mobile Number must be 10 digits.")
     .required("users_mobile_required"),
   email: yup.string().email("Invalid email").required("users_email_required"),
-  password: yup.string().required("password_required"),
+  // password: yup.string().required("password_required"),
   userRoleChacked: yup
     .array()
     .min(1, "minimum_one_role_required")

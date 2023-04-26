@@ -51,7 +51,7 @@ export const getCommitmentDetail = (payload) =>
 export const updateCommitmentDetail = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}commitment/update`, payload),
+      axios.put(`${API_BASE_URL}commitment/update`, payload),
   });
 
 
