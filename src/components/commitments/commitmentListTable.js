@@ -159,7 +159,7 @@ export default function CommitmentListTable(
     {
       name: t("dashboard_Recent_DonorCommitId"),
       selector: (row) => row.commitmentId,
-      width: "150px",
+      width: "180px",
     },
     {
       name: t("dashboard_Recent_DonorReceipt"),
@@ -292,7 +292,7 @@ export default function CommitmentListTable(
               src={editIcon}
               width={35}
               className={
-                financeReport ? "cursor-disabled opacity-50" : "cursor-pointer "
+                financeReport ? "d-none" : "cursor-pointer "
               }
               onClick={() => {
                 financeReport
@@ -313,7 +313,7 @@ export default function CommitmentListTable(
               src={deleteIcon}
               width={35}
               className={
-                financeReport ? "cursor-disabled opacity-50" : "cursor-pointer "
+                financeReport ? "d-none" : "cursor-pointer "
               }
               onClick={(e) => {
                 e.preventDefault();

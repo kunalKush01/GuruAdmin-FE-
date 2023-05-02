@@ -35,7 +35,7 @@ const PayDonationWarapper = styled.div`
 const schema = yup.object().shape({
   Mobile: yup
     .string()
-    .min(9, "Mobile Number must be 10 digits")
+    .min(10, "Mobile Number must be 10 digits")
     .required("expenses_mobile_required"),
   SelectedUser: yup.mixed().required("user_select_required"),
   donarName: yup
@@ -176,6 +176,7 @@ export default function PayDonation() {
               <DonationForm
                 vailidationSchema={schema}
                 initialValues={initialValues}
+                payDonation
                 showTimeInput
                 handleSubmit={handlePayDonation}
                 buttonName={"payment"}

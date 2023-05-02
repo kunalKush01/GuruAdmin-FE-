@@ -156,6 +156,7 @@ const FormWaraper = styled.div`
 
 export default function EventForm({
   buttonName = "",
+  AddLanguage,
   plusIconDisable = false,
   handleSubmit,
   editImage,
@@ -345,6 +346,7 @@ export default function EventForm({
                     <ImageUpload
                       multiple
                       type={editImage}
+                      disabledAddLanguage={AddLanguage}
                       bg_plus={thumbnailImage}
                       setDeletedImages={setDeletedImages}
                       editedFileNameInitialValue={

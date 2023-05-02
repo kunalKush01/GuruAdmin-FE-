@@ -96,7 +96,7 @@ export default function EditDonationBox() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push(`/Hundi?page=${currentPage}&filter=${currentFilter}`)}
+            onClick={() => history.push(`/donation_box?page=${currentPage}&filter=${currentFilter}`)}
           />
           <div className="editNews">
             <Trans i18nKey={"DonationBox_EditCollectionBox"} />

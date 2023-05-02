@@ -153,6 +153,7 @@ export default function AddLanguageNews() {
         <div className="mt-1 ms-md-3">
           <NewsForm
             editImage="edit"
+            AddLanguage
             defaultImages={newsDetailQuery?.data?.result?.images}
             initialValues={initialValues}
             vailidationSchema={schema}

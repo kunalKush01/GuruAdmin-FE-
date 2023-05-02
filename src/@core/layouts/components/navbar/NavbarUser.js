@@ -30,6 +30,8 @@ import { toast } from "react-toastify";
 import moment from "moment";
 import { useHistory } from "react-router-dom";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
+import comfromationIcon from "../../../../assets/images/icons/news/conformationIcon.svg";
+
 import {
   isSerchable,
   setPlaceholderSerchbar,
@@ -77,10 +79,10 @@ const NavbarUserWarraper = styled.div`
     font: normal normal normal 10px/5px noto sans;
   }
   @media only screen and (max-width: 576px) {
-    .displayBlock{
+    .displayBlock {
       display: block !important;
     }
-    .displayNone{
+    .displayNone {
       display: none !important;
     }
   }
@@ -101,7 +103,7 @@ const NavbarUser = (props) => {
   };
   const [langSelection, setlangSelection] = useState(false);
 
-  const [searchBarState,setSearchBarState] = useState(false)
+  const [searchBarState, setSearchBarState] = useState(false);
 
   return (
     <Fragment>
@@ -117,8 +119,17 @@ const NavbarUser = (props) => {
             </NavLink>
           </NavItem>
         </div>
-        {isSerchable() && <CustomSearchBar setSearchBarState={setSearchBarState} searchBarState={searchBarState} />}
-        <div className={`d-flex justify-content-end align-items-center ${searchBarState ? "displayNone" : ""}`}>
+        {isSerchable() && (
+          <CustomSearchBar
+            setSearchBarState={setSearchBarState}
+            searchBarState={searchBarState}
+          />
+        )}
+        <div
+          className={`d-flex justify-content-end align-items-center ${
+            searchBarState ? "displayNone" : ""
+          }`}
+        >
           <div className="d-flex">
             <img
               className="icon"
@@ -130,7 +141,34 @@ const NavbarUser = (props) => {
               src={bellIcon}
               onClick={() => history.push("/notification")}
             />
-            <img className="icon d-none d-xl-block" src={logOutIcon} onClick={handleLogOut} />
+            {/* <img className="icon d-none d-xl-block" src={logOutIcon} onClick={handleLogOut} /> */}
+            <img
+              className="icon d-none d-xl-block"
+              src={logOutIcon}
+              onClick={() => {
+                Swal.fire({
+                  title: `<img src="${comfromationIcon}"/>`,
+                  html: `
+                                    
+                  <h3 class="swal-heading mt-1">${t(
+                    "logout_msg"
+                  )}</h3>
+                                    `,
+                  showCloseButton: false,
+                  showCancelButton: true,
+                  focusConfirm: true,
+                  cancelButtonText: ` ${t("no")}`,
+                  cancelButtonAriaLabel: ` ${t("cencel")}`,
+
+                  confirmButtonText: ` ${t("yes")}`,
+                  confirmButtonAriaLabel: "Confirm",
+                }).then(async (result) => {
+                  if (result.isConfirmed) {
+                    handleLogOut();
+                  }
+                });
+              }}
+            />
           </div>
           <ul className="nav navbar-nav align-items-center ">
             <div className="d-flex align-items-center">

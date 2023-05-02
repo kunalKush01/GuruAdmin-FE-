@@ -32,14 +32,14 @@ const schema = yup.object().shape({
   trustEmail: yup.string().email("email_invalid").required("email_required"),
   trustNumber: yup
     .string()
-    .min(9, "Mobile Number must be 10 digits.")
+    .min(10, "Mobile Number must be 10 digits.")
     .required("number_required"),
   about: yup.string().required("trust_about_required"),
   name: yup.string().required("name_required"),
   email: yup.string().email("email_invalid").required("email_required"),
   mobileNumber: yup
     .string()
-    .min(9, "Mobile Number must be 10 digits.")
+    .min(10, "Mobile Number must be 10 digits.")
     .required("number_required"),
   state: yup.mixed().required("events_state_required"),
   city: yup.mixed().required("events_city_required"),
@@ -85,11 +85,11 @@ export default function AddProfile() {
       languageId: getLangId(langArray, langSelection),
     });
   };
-
+// console.log("files Api -----> ",profileDetail?.data?.result?.documents);
   const initialValues = useMemo(() => {
-    const documentName = profileDetail?.data?.result?.documents?.map(
-      (item) => item?.name
-    );
+    // const documentName = profileDetail?.data?.result?.documents?.map(
+    //   (item) => item?.name
+    // );
     return {
       // Id: trustDetail?.id ?? "",
       trustName: profileDetail?.data?.result?.trustName ?? "",
@@ -117,7 +117,7 @@ export default function AddProfile() {
       latitude: profileDetail?.data?.result?.latitude,
       trustFacilities: profileDetail?.data?.result?.facilities ?? "",
       images: [],
-      documents: documentName ?? [],
+      documents: profileDetail?.data?.result?.documents ?? [],
     };
   }, [profileDetail]);
 

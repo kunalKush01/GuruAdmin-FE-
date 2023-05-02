@@ -81,10 +81,10 @@ export default function DonationBoxListTable({ data, financeReport }) {
           src={editIcon}
           width={35}
           className={
-            financeReport ? "cursor-disabled opacity-50" : "cursor-pointer "
+            financeReport ? "d-none" : "cursor-pointer "
           }
           onClick={() => {
-            financeReport ? "" : history.push(`/Hundi/edit/${item.id}`);
+            financeReport ? "" : history.push(`/donation_box/edit/${item.id}`);
           }}
         />
       ),

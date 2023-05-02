@@ -31,7 +31,6 @@ import RichTextField from "../partials/richTextEditorField";
 import { handleProfileUpdate, login } from "../../redux/authSlice";
 import { Prompt } from "react-router-dom";
 
-
 const ProfileFormWaraper = styled.div`
   .existlabel {
     margin-bottom: 10px;
@@ -252,7 +251,12 @@ export default function ProfileForm({
       console.log("data debug", data);
       if (!data.error) {
         setLoading(false);
-        dispatch(handleProfileUpdate({name:data?.result?.name,profilePhoto:data?.result?.profilePhoto}))
+        dispatch(
+          handleProfileUpdate({
+            name: data?.result?.name,
+            profilePhoto: data?.result?.profilePhoto,
+          })
+        );
       } else if (data?.error) {
         setLoading(false);
       }
@@ -285,6 +289,7 @@ export default function ProfileForm({
   const uploadeFacility = useRef();
   // doc upload
   const [files, setFiles] = useState([]);
+  console.log("files state--->", files);
   useEffect(() => {
     if (initialValues?.documents?.length > 0) {
       setFiles(initialValues?.documents);
@@ -317,9 +322,12 @@ export default function ProfileForm({
       }
     )
       .then((res) => {
+  console.log("files res--->",res);
         if (uploadType === "document") {
           const uploadedDocumentName = res.key.split("temp/")[1];
-          setFiles([...files, uploadedDocumentName]);
+          console.log("files uploade --->", uploadedDocumentName);
+
+          setFiles([...files, {name:uploadedDocumentName}]);
         } else if (uploadType === "facility") {
           setFacilitiesFiles(
             Object.assign(acceptedFiles, {
@@ -547,7 +555,7 @@ export default function ProfileForm({
                   <Row>
                     <Col xs={12} md={6} lg={4} className="">
                       <CustomTextField
-                      required
+                        required
                         label={t("userProfile_name")}
                         name="name"
                         onInput={(e) =>
@@ -687,7 +695,7 @@ export default function ProfileForm({
                 </Col>
                 <Col sm={4}>
                   <CustomTextField
-                     label={t("longitude")}
+                    label={t("longitude")}
                     name="longitude"
                     type="text"
                     required
@@ -869,7 +877,7 @@ export default function ProfileForm({
                                 // handleUpload(e.target.files[0]).then((e)=>formik.setFieldValue('documents',e.target.files[0].name));
                                 formik.setFieldValue("documents", [
                                   ...formik.values.documents,
-                                  `${randomNumber}_${e.target?.files[0]?.name}`,
+                                  {name:`${randomNumber}_${e.target?.files[0]?.name}`},
                                 ]);
                               }
                             }}
@@ -888,25 +896,36 @@ export default function ProfileForm({
                     </Col>
                   </Row>
                   <Row className=" row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5  gap-1 mt-2 text-break">
-                    {[...formik.values.documents]?.map((item, idx) => (
-                      <Col
-                        className="pdfDiv position-relative cursor-pointer"
-                        key={idx}
-                      >
-                        <Button
-                          className="removePDFButton"
-                          onClick={() => {
-                            removeDocumentFile(item, formik);
-                          }}
+                    {[...formik.values.documents]?.map((item, idx) => {
+                      return (
+                        <Col
+                          className="pdfDiv position-relative cursor-pointer"
+                          key={idx}
                         >
-                          <X color="#ff8744" stroke-width="3" />
-                        </Button>
-                        <div className="">
-                          <img src={pdfIcon} width={50} />
-                        </div>
-                        <div className="docFileName">{item}</div>
-                      </Col>
-                    ))}
+                          <Button
+                            className="removePDFButton"
+                            onClick={() => {
+                              removeDocumentFile(item, formik);
+                            }}
+                          >
+                            <X color="#ff8744" stroke-width="3" />
+                          </Button>
+                          {item?.presignedUrl !== "" && item?.presignedUrl ? (
+                            <a href={item?.presignedUrl} target="_blank">
+                              <div className="">
+                                <img src={pdfIcon} width={50} />
+                              </div>
+                            </a>
+                          ) : (
+                            <div className="">
+                              <img src={pdfIcon} width={50} />
+                            </div>
+                          )}
+
+                          <div className="docFileName">{item?.name}</div>
+                        </Col>
+                      );
+                    })}
                   </Row>
                 </Col>
                 {/* Doc Col */}

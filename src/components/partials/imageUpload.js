@@ -6,6 +6,7 @@ import { Storage } from "@aws-amplify/storage";
 import { Trans } from "react-i18next";
 import { Button } from "reactstrap";
 import { X } from "react-feather";
+
 const WraperImageField = styled.div`
   .image_text {
     font: normal normal medium 22px/30px Kanit;
@@ -75,7 +76,7 @@ const WraperImageField = styled.div`
     top: 40%;
     color: #ffffff;
     left: 35%; */
-  }
+  
   @media screen and (max-width: 1199px) and (min-width: 992px) {
     .preview_box li {
       width: 80px;
@@ -288,7 +289,7 @@ function ImageUpload(props) {
         {...getRootProps({ className: "dropzone" })}
         onClick={(e) => e.stopPropagation}
       >
-        <div onClick={open} className="d-none" ref={ref}>
+        <div onClick={() => (!props.disabledAddLanguage ? open() : null)} className="d-none" ref={ref}>
           <input
             {...getInputProps()}
             accept={props.acceptFile}
@@ -311,14 +312,16 @@ function ImageUpload(props) {
             <>
               {files?.map((file, idx) => (
                 <div key={idx} className="position-relative mainImageDiv">
-                  <Button
-                    className="removeImageButton"
-                    onClick={(e) => {
-                      removeFile(file);
-                    }}
-                  >
-                    <X color="#ff8744" stroke-width="3"/>
-                  </Button>
+                  {!props.disabledAddLanguage ?? (
+                    <Button
+                      className="removeImageButton"
+                      onClick={(e) => {
+                        removeFile(file);
+                      }}
+                    >
+                      <X color="#ff8744" stroke-width="3" />
+                    </Button>
+                  )}
                   {/* <div className="editImageText">
                     <Trans i18nKey={"edit_image"} />
                   </div> */}
@@ -367,7 +370,7 @@ function ImageUpload(props) {
             </>
           ) : (
             <div className="position-relative mainImageDiv">
-              {files?.length > 0 || props?.editedFileNameInitialValue ? (
+              {(files?.length > 0 || props?.editedFileNameInitialValue) && !props.disabledAddLanguage ? (
                 <>
                   <Button
                     className="removeImageButton"

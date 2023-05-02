@@ -15,6 +15,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { authApiInstance } from "../../../../../axiosApi/authApiInstans";
 import { toast } from "react-toastify";
 import { logOut } from "../../../../../redux/authSlice";
+import Swal from "sweetalert2";
+import comfromationIcon from "../../../../../assets/images/icons/news/conformationIcon.svg";
+import { useTranslation } from "react-i18next";
+
 
 const Sidebar = (props) => {
   // ** Props
@@ -69,6 +73,8 @@ const Sidebar = (props) => {
       history.push("/login")
     } catch (error) {}
   };
+  const { t, i18n } = useTranslation();
+
 
   return (
     <Fragment>
@@ -125,7 +131,27 @@ const Sidebar = (props) => {
                     style={{ paddingLeft: "30px" }}
                   >
                     <img src={logOutIcon} width={25} height={25} />
-                    <a onClick={handleLogOut}>Logout</a>
+                    <a onClick={() => {
+                        Swal.fire({
+                          title: `<img src="${comfromationIcon}"/>`,
+                          html: `
+                                    
+                  <h3 class="swal-heading mt-1">${t("logout_msg")}</h3>
+                                    `,
+                          showCloseButton: false,
+                          showCancelButton: true,
+                          focusConfirm: true,
+                          cancelButtonText: ` ${t("no")}`,
+                          cancelButtonAriaLabel: ` ${t("cencel")}`,
+
+                          confirmButtonText: ` ${t("yes")}`,
+                          confirmButtonAriaLabel: "Confirm",
+                        }).then(async (result) => {
+                          if (result.isConfirmed) {
+                            handleLogOut();
+                          }
+                        });
+                      }}>Logout</a>
                   </div>
                 </li>
               </ul>

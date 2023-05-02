@@ -155,6 +155,7 @@ export default function NoticeForm({
   editImage,
   defaultImages,
   editThumbnail,
+  AddLanguage,
   thumbnailImageName,
   handleSubmit,
   vailidationSchema,
@@ -226,7 +227,7 @@ export default function NoticeForm({
   };
 
   const handleAddition = (formik, tag) => {
-    formik.setFieldValue("tagsInit", [...formik.values.tagsInit, tag]);
+    formik.setFieldValue("tagsInit", [...formik?.values?.tagsInit, tag]);
   };
 
   const randomNumber = Math.floor(100000000000 + Math.random() * 900000000000);
@@ -283,11 +284,10 @@ export default function NoticeForm({
                       autoFocus
                     />
                   </Col>
-                  <Col xs={12} md={6}>
+                  {/* <Col xs={12} md={6}>
                     <label>Tags</label>
-                    {/* {JSON.stringify(formik.values.tagsInit)} */}
                     <ReactTags
-                      tags={formik.values.tagsInit}
+                      tags={formik?.values?.tagsInit}
                       suggestions={suggestions}
                       delimiters={delimiters}
                       handleDelete={(index) => handleDelete(formik, index)}
@@ -298,7 +298,7 @@ export default function NoticeForm({
                       editable={false}
                       autofocus={false}
                     />
-                  </Col>
+                  </Col> */}
                 </Row>
                 <Row>
                   <Col xs={12} className="mt-0 mt-lg-1">
@@ -311,13 +311,14 @@ export default function NoticeForm({
                 </Row>
                 <Row>
                   <div className="ImagesVideos">
-                    <Trans i18nKey={"news_label_ImageVedio"} />
+                    <Trans i18nKey={"add_image"} />
                   </div>
                   <ImageUpload
                     bg_plus={thumbnailImage}
                     editTrue="edit"
+                    disabledAddLanguage={AddLanguage}
                     editedFileNameInitialValue={
-                      formik.values.image ? formik.values.image : null
+                      formik?.values?.image ? formik?.values?.image : null
                     }
                     randomNumber={randomNumber}
                     fileName={(file, type) => {

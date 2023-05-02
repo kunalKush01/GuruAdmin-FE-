@@ -21,6 +21,7 @@ import HorizontalLayout from '@src/layouts/HorizontalLayout'
 import Permission from '../components/Permissions/Permission'
 
 const Router = () => {
+
   // ** Hooks
   const { layout, setLayout, setLastLayout } = useLayout()
   const { transition, setTransition } = useRouterTransition()

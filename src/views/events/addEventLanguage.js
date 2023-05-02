@@ -56,7 +56,7 @@ export default function AddLanguageEvent() {
     ConverFirstLatterToCapital(selectedLang.name)
   );
 
-  console.log("langSelection",langSelection);
+  console.log("langSelection", langSelection);
 
   const eventDetailQuery = useQuery(
     ["EventDetail", eventId, selectedLang.id],
@@ -89,7 +89,7 @@ export default function AddLanguageEvent() {
     }
     return [];
   };
-  
+
   const availableLangOptions = useMemo(getAvailLangOption, [
     langArray,
     eventDetailQuery?.data?.result?.languages,
@@ -146,7 +146,7 @@ export default function AddLanguageEvent() {
           </div>
         </div>
         <div className="editEvent">
-        <div className="d-none d-sm-block">
+          <div className="d-none d-sm-block">
             <Trans i18nKey={"news_InputIn"} />
           </div>
           <CustomDropDown
@@ -164,6 +164,7 @@ export default function AddLanguageEvent() {
       {!eventDetailQuery.isLoading ? (
         <div className="ms-sm-3 mt-1">
           <EventForm
+            AddLanguage
             editImage="edit"
             defaultImages={eventDetailQuery?.data?.result?.images}
             initialValues={initialValues}

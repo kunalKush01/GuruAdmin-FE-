@@ -80,7 +80,7 @@ export default function DonationBoxForm({
         newsQuerClient.invalidateQueries(["Collections"]);
         newsQuerClient.invalidateQueries(["BoxCollectionDetail"]);
         setLoading(false);
-        history.push("/Hundi");
+        history.push("/donation_box");
       } else if (data?.error) {
         setLoading(false);
       }

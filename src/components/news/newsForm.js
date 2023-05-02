@@ -148,6 +148,7 @@ export default function NewsForm({
   handleSubmit,
   editImage,
   defaultImages,
+  AddLanguage,
   vailidationSchema,
   initialValues,
   showTimeInput,
@@ -310,6 +311,7 @@ export default function NewsForm({
                       multiple
                       type={editImage}
                       bg_plus={thumbnailImage}
+                      disabledAddLanguage={AddLanguage}
                       setDeletedImages={setDeletedImages}
                       editedFileNameInitialValue={
                         formik?.values?.images ? formik?.values?.images : null

@@ -144,7 +144,7 @@ const LoginCover = () => {
   useEffect(() => {
     if (isLogged && loginPath?.includes("all")) {
       history.push("/dashboard");
-    } else if (isLogged || (loginPath?.length && loginPath[0] === "configuration")) {
+    } else if (isLogged && (loginPath?.length && loginPath[0] === "configuration")) {
       history.push(`/configuration/categories`);
     } else if (isLogged || loginPath?.length) {
       history.push(`/${loginPath[0]}`);

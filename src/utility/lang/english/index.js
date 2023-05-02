@@ -34,6 +34,9 @@ export const englishContent = {
   downloadReceipt: "Download Receipt",
   pay_donation: "Pay Donation",
   payment: "Pay Now",
+  logout_msg:"Are you sure you want to logout ?",
+  no:"No",
+  yes:"Yes",
   // All static content of Dashboard
   dashboard_donationReceived: "Donation Received",
   dashboard_donationPending: "Donation Pending",
@@ -71,7 +74,7 @@ export const englishContent = {
   news_label_Description: "Add Description",
   news_label_Date: "Selected Date",
   news_label_Published: "Published by",
-  news_label_ImageVedio: "Add Images/Videos",
+  news_label_ImageVedio: "Add Images",
   news_button_Publish: "Publish",
   news_title_required: "Title is required",
   news_tags_required: "Tags are required",
@@ -112,6 +115,7 @@ export const englishContent = {
 
   notices_AddNotice: "Add Notice",
   notices_latest_Notice: "Notices",
+  add_image:"Add Image",
   notices_title_required: "Title is required",
   notices_desc_required: "Description is required",
   notices_select_dropDown: "Select Notice",
@@ -351,6 +355,7 @@ export const englishContent = {
   description: "Description",
   punyarjak_desc_required: "Description is required.",
   punyarjak_delete: "Delete Punyarjak",
+  username:"The username must only consist of letters of the alphabet.",
   punyarjak_sure:
     "Are you sure you want to permanently delete the selected punyarjak ? ",
   punyarjak_not_found: "No Punyarjak User Found",

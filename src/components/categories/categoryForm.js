@@ -61,6 +61,7 @@ const FormWaraper = styled.div`
 export default function CategoryForm({
   loadOptions = [],
   CategoryFormName = "",
+  AddLanguage,
   plusIconDisable = false,
   buttonName = "",
   handleSubmit,

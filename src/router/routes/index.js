@@ -342,21 +342,21 @@ const Routes = [
   },
 
   {
-    path: "/Hundi",
+    path: "/donation_box",
     component: lazy(() => import("../../views/DonationBox/donationBoxList.js")),
     exact: true,
     type:"donation_box",
     subPermission:READ
   },
   {
-    path: "/Hundi/add",
+    path: "/donation_box/add",
     component: lazy(() => import("../../views/DonationBox/addDonationBox.js")),
     // exact:true
     type:"donation_box",
     subPermission:WRITE
   },
   {
-    path: "/Hundi/edit/:donationBoxId",
+    path: "/donation_box/edit/:donationBoxId",
     component: lazy(() => import("../../views/DonationBox/editDonationBox")),
     // exact:true
     

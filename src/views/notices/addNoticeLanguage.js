@@ -44,12 +44,13 @@ export default function AddLanguageNotice() {
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
-
   const searchParams = new URLSearchParams(history.location.search);
-  const currentPage = searchParams.get('page')
-  const currentFilter = searchParams.get('filter')
+  const currentPage = searchParams.get("page");
+  const currentFilter = searchParams.get("filter");
 
-  const [langSelection, setLangSelection] = useState(ConverFirstLatterToCapital(selectedLang.name));
+  const [langSelection, setLangSelection] = useState(
+    ConverFirstLatterToCapital(selectedLang.name)
+  );
 
   const noticeDetailQuery = useQuery(
     ["NoticeDetail", noticeId, selectedLang.id],
@@ -58,7 +59,7 @@ export default function AddLanguageNotice() {
 
   const handleNoticeLangUpdate = (payload) => {
     let languageId;
-    langArray.map(async (Item) => { 
+    langArray.map(async (Item) => {
       if (Item.name == langSelection.toLowerCase()) {
         languageId = Item.id;
       }
@@ -92,17 +93,17 @@ export default function AddLanguageNotice() {
       setLangSelection(availableLangOptions[0]?.name);
     }
   }, [availableLangOptions]);
-  const tags = noticeDetailQuery?.data?.result?.tags?.map((item)=>({
+  const tags = noticeDetailQuery?.data?.result?.tags?.map((item) => ({
     id: item.id,
     text: item.tag,
-    _id: item.id
-  }))
+    _id: item.id,
+  }));
   const initialValues = useMemo(() => {
     return {
       Id: noticeDetailQuery?.data?.result?.id,
       Title: noticeDetailQuery?.data?.result?.title,
-      tagsInit:tags,
-      image:noticeDetailQuery?.data?.result?.image,
+      tagsInit: tags,
+      image: noticeDetailQuery?.data?.result?.image,
       Body: he.decode(noticeDetailQuery?.data?.result?.body ?? ""),
       PublishedBy: noticeDetailQuery?.data?.result?.publishedBy,
       DateTime: moment(noticeDetailQuery?.data?.result?.publishDate)
@@ -118,20 +119,26 @@ export default function AddLanguageNotice() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push(`/notices?page=${currentPage}&filter=${currentFilter}`)}
+            onClick={() =>
+              history.push(
+                `/notices?page=${currentPage}&filter=${currentFilter}`
+              )
+            }
           />
           <div className="editNotice">
             <Trans i18nKey={"news_AddLangNews"} />
           </div>
         </div>
         <div className="editNotice">
-        <div className="d-none d-sm-block">
+          <div className="d-none d-sm-block">
             <Trans i18nKey={"news_InputIn"} />
           </div>
           <CustomDropDown
             ItemListArray={availableLangOptions}
             className={"ms-1"}
-            defaultDropDownName={ConverFirstLatterToCapital(langSelection ?? "")}
+            defaultDropDownName={ConverFirstLatterToCapital(
+              langSelection ?? ""
+            )}
             handleDropDownClick={(e) =>
               setLangSelection(ConverFirstLatterToCapital(e.target.name))
             }
@@ -143,9 +150,10 @@ export default function AddLanguageNotice() {
       {!noticeDetailQuery.isLoading ? (
         <div className="ms-sm-3 mt-1">
           <NoticeForm
-          editThumbnail
-          thumbnailImageName={noticeDetailQuery?.data?.result?.imageName}
+            editThumbnail
+            thumbnailImageName={noticeDetailQuery?.data?.result?.imageName}
             initialValues={initialValues}
+            AddLanguage
             vailidationSchema={schema}
             showTimeInput
             handleSubmit={handleNoticeLangUpdate}

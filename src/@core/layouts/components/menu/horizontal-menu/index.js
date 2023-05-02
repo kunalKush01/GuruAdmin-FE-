@@ -84,6 +84,8 @@ function BtnContent({ setClosePopover }) {
 }
 
 const HorizontalMenu = ({ menuData, currentActiveItem, routerProps }) => {
+
+  
   const history = useHistory();
   const [closePopover, setClosePopover] = useState(true);
   useEffect(() => {

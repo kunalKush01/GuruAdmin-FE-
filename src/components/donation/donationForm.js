@@ -60,6 +60,7 @@ export default function DonationForm({
   plusIconDisable = false,
   buttonName = "",
   handleSubmit,
+  payDonation,
   vailidationSchema,
   initialValues,
   showTimeInput,
@@ -117,6 +118,7 @@ const [loading, setLoading] = useState(false)
               masterloadOptionQuery={masterloadOptionQuery}
               loading={loading}
               paidDonation={initialValues?.SelectedUser?.id}
+              payDonation={payDonation}
               plusIconDisable
               showPrompt={showPrompt}
               buttonName={buttonName}

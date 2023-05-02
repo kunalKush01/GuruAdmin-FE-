@@ -22,6 +22,7 @@ export default function FormWithoutFormikForDonation({
   masterloadOptionQuery,
   buttonName,
   paidDonation,
+  payDonation,
   loading,
   showPrompt,
   ...props
@@ -94,6 +95,12 @@ export default function FormWithoutFormikForDonation({
     formik.setFieldValue("SelectedCommitmentId", "");
     formik.setFieldValue("Amount", "");
   }, [formik?.values?.SelectedUser]);
+
+
+
+
+
+
 
   useUpdateEffect(() => {
     if (SelectedCommitmentId) {
@@ -235,10 +242,12 @@ export default function FormWithoutFormikForDonation({
                     loadOptions={commitmentIdByUser}
                     placeholder={t("commitment_select_commitment_id")}
                     name={"SelectedCommitmentId"}
-                    disabled={commitmentIdByUser?.length == 0}
+                    disabled={payDonation || commitmentIdByUser?.length == 0 }
                     valueKey={"id"}
                     getOptionLabel={(option) =>
-                      `${option.commitmentId}   (₹${option.paidAmount}/${option.amount})`
+                      // `${option.commitmentId}   (₹${option.paidAmount}/${option.amount})`
+                      `${option.commitmentId}`
+
                     }
                     width
                   />

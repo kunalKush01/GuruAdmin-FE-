@@ -274,6 +274,8 @@ export default function UserForm({
                           font: "normal normal bold 11px/15px Noto Sans",
                         }}
                       >
+                        {JSON.stringify(formik.values.userRoleChacked)}
+
                         {formik.errors.userRoleChacked &&
                           formik.touched.userRoleChacked && (
                             <div className="text-danger">
@@ -329,18 +331,17 @@ export default function UserForm({
                                   check
                                   className="align-items-center d-flex"
                                 >
-                                  {JSON.stringify()}
                                   <Input
-                                    id={item._id}
+                                    id={item?._id}
                                     name="userRoleChacked"
                                     tag={Field}
                                     type="checkbox"
                                     className="me-1 checkBoxInput"
-                                    value={item._id}
+                                    value={item?._id}
                                   />
                                   <Label
                                     check
-                                    for={item._id}
+                                    for={item?._id}
                                     className="labelCheckBox"
                                   >
                                     {item?.name}

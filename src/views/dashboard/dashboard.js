@@ -26,7 +26,7 @@ const Home = () => {
 
   const { t } = useTranslation();
   const history = useHistory();
-
+  
   useEffect(() => {
     const dashboardInfo = async () => {
       const res = await getAllDashboardData();
@@ -71,7 +71,7 @@ const Home = () => {
             dropDownName={dropDownName}
             setdropDownName={(e) => setdropDownName(e.target.name)}
           />
-          <div className="d-flex flex-wrap gap-1 justify-content-between mt-1">
+          <div className="d-flex flex-wrap gap-1 justify-content-between mt-1 mb-lg-3">
             <OrdersReceived
               statTitle={t("dashboard_donationReceived")}
               stats={parseInt(dashboardData?.donationReceived)}
@@ -118,7 +118,9 @@ const Home = () => {
             <Col xs={12} md={5} lg={3} className="mt-3 mt-md-0">
               {topDonorData?.results?.length > 0 ? (
                 <TopDonerList data={topDonorData?.results} />
-              ):""}
+              ) : (
+                ""
+              )}
             </Col>
           </Row>
         </div>
