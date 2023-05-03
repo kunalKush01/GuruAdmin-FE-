@@ -312,7 +312,7 @@ function ImageUpload(props) {
             <>
               {files?.map((file, idx) => (
                 <div key={idx} className="position-relative mainImageDiv">
-                  {!props.disabledAddLanguage ?? (
+                  {!props.disabledAddLanguage && (
                     <Button
                       className="removeImageButton"
                       onClick={(e) => {

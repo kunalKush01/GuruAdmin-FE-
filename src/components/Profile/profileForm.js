@@ -313,6 +313,7 @@ export default function ProfileForm({
   };
 
   const [deletedDocuments, setDeletedDocuments] = useState([]);
+  console.log("file deletedDocuments---->",deletedDocuments);
   const handleUpload = (acceptedFiles, uploadType) => {
     Storage.put(
       `temp/${randomNumber}_${acceptedFiles?.name.split(" ").join("-")}`,
@@ -322,7 +323,7 @@ export default function ProfileForm({
       }
     )
       .then((res) => {
-  console.log("files res--->",res);
+        console.log("files res--->", res);
         if (uploadType === "document") {
           const uploadedDocumentName = res.key.split("temp/")[1];
           console.log("files uploade --->", uploadedDocumentName);
@@ -341,9 +342,11 @@ export default function ProfileForm({
   };
 
   const removeDocumentFile = (file, formik) => {
-    setDeletedDocuments((prev) => [...prev, file]);
+    console.log("file--->",file);
+    setDeletedDocuments((prev) => [...prev, file?.name]);
     const newFiles = [...files];
     newFiles.splice(newFiles.indexOf(file), 1);
+    console.log("file newFiles--->",newFiles);
     setFiles(newFiles);
     formik.setFieldValue("documents", newFiles);
   };
@@ -418,7 +421,8 @@ export default function ProfileForm({
             removeFacility: deletedFacility,
             removedImages: deletedImages,
             removedDocuments: deletedDocuments,
-            documents: e?.documents,
+            // documents: e?.documents?.map((item) => item?.name),
+            documents: e?.documents?.map((item)=> item?.name),
             oldPassword: e?.oldPassword,
             newPassword: e?.newPassword,
             confirmPassword: e?.confirmPassword,
@@ -877,7 +881,7 @@ export default function ProfileForm({
                                 // handleUpload(e.target.files[0]).then((e)=>formik.setFieldValue('documents',e.target.files[0].name));
                                 formik.setFieldValue("documents", [
                                   ...formik.values.documents,
-                                  {name:`${randomNumber}_${e.target?.files[0]?.name}`},
+                                  {name:`${randomNumber}_${e.target?.files[0]?.name}`,}
                                 ]);
                               }
                             }}

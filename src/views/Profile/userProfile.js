@@ -87,9 +87,9 @@ export default function AddProfile() {
   };
 // console.log("files Api -----> ",profileDetail?.data?.result?.documents);
   const initialValues = useMemo(() => {
-    // const documentName = profileDetail?.data?.result?.documents?.map(
-    //   (item) => item?.name
-    // );
+    const documentName = profileDetail?.data?.result?.documents?.map(
+      (item) => item?.name
+    );
     return {
       // Id: trustDetail?.id ?? "",
       trustName: profileDetail?.data?.result?.trustName ?? "",

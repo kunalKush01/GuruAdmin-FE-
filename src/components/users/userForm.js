@@ -194,6 +194,7 @@ export default function UserForm({
                         <CustomTextField
                           label={t("user_name")}
                           name="name"
+                          required
                           onInput={(e) =>
                             (e.target.value = e.target.value.slice(0, 30))
                           }
@@ -210,19 +211,19 @@ export default function UserForm({
                             (e.target.value = e.target.value.slice(0, 12))
                           }
                           required
-                        />
+                          />
                       </Col>
                       <Col xs={12} sm={6} lg={4}>
                         <CustomTextField
                           label={t("subscribed_user_email")}
                           name="email"
+                          required
                         />
                       </Col>
                       {adduser && (
                         <Col xs={12} sm={6} lg={4} className="ps-1">
                           <label>
-                            <Trans i18nKey={"user_password"} />
-                            {`*`}
+                            <Trans i18nKey={"user_password"}/>{`*`}
                           </label>
                           <InputPasswordToggle
                             className="input-group-merge"
@@ -266,7 +267,7 @@ export default function UserForm({
                   <Row>
                     <Col xs={12}>
                       <div className="mb-1 mt-1" style={{ fontSize: "15px" }}>
-                        <Trans i18nKey={"user_userRole"} />
+                        <Trans i18nKey={"user_userRole"} />*
                       </div>
                       <div
                         style={{
@@ -274,7 +275,6 @@ export default function UserForm({
                           font: "normal normal bold 11px/15px Noto Sans",
                         }}
                       >
-                        {JSON.stringify(formik.values.userRoleChacked)}
 
                         {formik.errors.userRoleChacked &&
                           formik.touched.userRoleChacked && (
@@ -336,6 +336,7 @@ export default function UserForm({
                                     name="userRoleChacked"
                                     tag={Field}
                                     type="checkbox"
+                                    
                                     className="me-1 checkBoxInput"
                                     value={item?._id}
                                   />

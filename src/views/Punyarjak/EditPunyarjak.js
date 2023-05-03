@@ -33,6 +33,7 @@ const schema = yup.object().shape({
       "username"
     )
     .required("users_title_required"),
+    file:yup.string().required("img_required"),
 });
 
 const getLangId = (langArray, langSelection) => {
