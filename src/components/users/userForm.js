@@ -13,6 +13,7 @@ import defaultAvtar from "../../assets/images/icons/dashBoard/defaultAvatar.svg"
 import ImageUpload from "../partials/imageUpload";
 import InputPasswordToggle from "@components/input-password-toggle";
 import passwordEyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
+import hidePassIcon from "../../assets/images/icons/signInIcon/hidePassIcon.svg"
 import { getAllUserRoles } from "../../api/userApi";
 import { useSelector } from "react-redux";
 import { Prompt } from "react-router-dom";
@@ -236,7 +237,7 @@ export default function UserForm({
                             hideIcon={
                               <img
                                 className="signInIconsIserAdminPassword"
-                                src={passwordEyeIcon}
+                                src={hidePassIcon}
                               />
                             }
                             showIcon={

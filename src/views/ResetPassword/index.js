@@ -229,10 +229,10 @@ const ResetPassWord = () => {
                       placeholder={"Enter Password"}
                       iconClassName="signInIcons"
                       hideIcon={
-                        <img className="signInIcons" src={passwordEyeIcon} />
+                        <img className="signInIcons" src={hidePassIcon} />
                       }
                       showIcon={
-                        <img className="signInIcons" src={hidePassIcon} />
+                        <img className="signInIcons" src={passwordEyeIcon} />
                       }
                     />
                     <div className="errorMassage text-primary">
@@ -254,10 +254,10 @@ const ResetPassWord = () => {
                         onChange={formik.handleChange}
                         iconClassName="signInIcons"
                         hideIcon={
-                          <img className="signInIcons" src={passwordEyeIcon} />
+                          <img className="signInIcons" src={hidePassIcon} />
                         }
                         showIcon={
-                          <img className="signInIcons" src={hidePassIcon} />
+                          <img className="signInIcons" src={passwordEyeIcon} />
                         }
                       />
                       <div className="errorMassage text-primary">

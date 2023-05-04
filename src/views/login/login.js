@@ -300,11 +300,11 @@ const LoginCover = () => {
                           hideIcon={
                             <img
                               className="signInIcons"
-                              src={passwordEyeIcon}
+                              src={hidePassIcon}
                             />
                           }
                           showIcon={
-                            <img className="signInIcons" src={hidePassIcon} />
+                            <img className="signInIcons" src={passwordEyeIcon} />
                           }
                         />
                         <div className="errorMassage text-primary">
