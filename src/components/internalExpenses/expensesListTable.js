@@ -23,7 +23,7 @@ export function ExpensesListTable({
   currentPage,
   financeReport,
   subPermission,
-  allPermissions 
+  allPermissions,
 }) {
   const handleDeleteExpenses = async (payload) => {
     return deleteExpensesDetail(payload);
@@ -99,12 +99,10 @@ export function ExpensesListTable({
   // }
   const categoriesList = useMemo(() => {
     return data.map((item, idx) => ({
-      _Id: item.id,
+      _Id: item?.id,
       // id: `0${idx + 1}`,
       id:
-        idx > 8 || page.page != 1
-          ? `${(page.page - 1) * page.limit + idx + 1}`
-          : `0${(page.page - 1) * page.limit + idx + 1}`,
+        item?.serialNumber > 9 ? item?.serialNumber : `0${item?.serialNumber}`,
       title: ConverFirstLatterToCapital(item.title),
       description: (
         <div
@@ -115,60 +113,66 @@ export function ExpensesListTable({
       // description:item?.description ?? "" ,
       date: moment(item?.expenseDate).utcOffset(0).format("DD MMM YYYY"),
       amount: `₹${item.amount}`,
-      createdBy:ConverFirstLatterToCapital(item?.createdBy?.name ?? ""),
-      edit:  allPermissions?.name === "all" || subPermission?.includes(EDIT)  || financeReport ? (
-        <img
-          src={editIcon}
-          width={35}
-          className={
-            financeReport ? "d-none" : "cursor-pointer "
-          }
-          onClick={() => {
-            financeReport
-              ? ""
-              : history.push(
-                  `/internal_expenses/edit/${item.id}?page=${currentPage}&filter=${currentFilter}`
-                );
-          }}
-        />
-      ):(""),
-      delete: allPermissions?.name === "all" || subPermission?.includes(DELETE) || financeReport? (
-        <img
-          src={deleteIcon}
-          width={35}
-          className={
-            financeReport ? "d-none" : "cursor-pointer "
-          }
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            // Swal.fire("Oops...", "Something went wrong!", "error");
-            financeReport
-              ? ""
-              : Swal.fire({
-                  title: `<img src="${comfromationIcon}"/>`,
-                  html: `
+      createdBy: ConverFirstLatterToCapital(item?.createdBy?.name ?? ""),
+      edit:
+        allPermissions?.name === "all" ||
+        subPermission?.includes(EDIT) ||
+        financeReport ? (
+          <img
+            src={editIcon}
+            width={35}
+            className={financeReport ? "d-none" : "cursor-pointer "}
+            onClick={() => {
+              financeReport
+                ? ""
+                : history.push(
+                    `/internal_expenses/edit/${item.id}?page=${currentPage}&filter=${currentFilter}`
+                  );
+            }}
+          />
+        ) : (
+          ""
+        ),
+      delete:
+        allPermissions?.name === "all" ||
+        subPermission?.includes(DELETE) ||
+        financeReport ? (
+          <img
+            src={deleteIcon}
+            width={35}
+            className={financeReport ? "d-none" : "cursor-pointer "}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              // Swal.fire("Oops...", "Something went wrong!", "error");
+              financeReport
+                ? ""
+                : Swal.fire({
+                    title: `<img src="${comfromationIcon}"/>`,
+                    html: `
                                   <h3 class="swal-heading">${t(
                                     "expence_delete"
                                   )}</h3>
                                   <p>${t("expence_sure")}</p>
                                   `,
-                  showCloseButton: false,
-                  showCancelButton: true,
-                  focusConfirm: true,
-                  cancelButtonText: `${t("cancel")}`,
-                  cancelButtonAriaLabel: `${t("cancel")}`,
+                    showCloseButton: false,
+                    showCancelButton: true,
+                    focusConfirm: true,
+                    cancelButtonText: `${t("cancel")}`,
+                    cancelButtonAriaLabel: `${t("cancel")}`,
 
-                  confirmButtonText: `${t("confirm")}`,
-                  confirmButtonAriaLabel: "Confirm",
-                }).then(async (result) => {
-                  if (result.isConfirmed) {
-                    deleteMutation.mutate(item.id);
-                  }
-                });
-          }}
-        />
-      ):"",
+                    confirmButtonText: `${t("confirm")}`,
+                    confirmButtonAriaLabel: "Confirm",
+                  }).then(async (result) => {
+                    if (result.isConfirmed) {
+                      deleteMutation.mutate(item.id);
+                    }
+                  });
+            }}
+          />
+        ) : (
+          ""
+        ),
       // viewLogs: (
       //   <div
       //     className={`cursor-pointer viewLogs ${
@@ -188,9 +192,8 @@ export function ExpensesListTable({
     color: #583703 !important;
     /* margin-right: 20px; */
     font: normal normal bold 15px/23px Noto Sans;
-    .tableDes p{
+    .tableDes p {
       margin-bottom: 0;
-     
     }
     .viewLogs {
       font: normal normal bold 15px/33px Noto Sans;

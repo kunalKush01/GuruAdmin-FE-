@@ -214,7 +214,7 @@ export default function DonationListTable({ data, topdf }, args) {
               }}
             >
               <img
-                src={loggedTemple?.profilePhoto}
+                src={loggedTemple?.profilePhoto ?? ""}
                 style={{ width: "80px", height: "80px", borderRadius: "8px" }}
               />
               <div style={{ padding: "25px" }}>
@@ -236,7 +236,7 @@ export default function DonationListTable({ data, topdf }, args) {
                     textAlign: "left",
                   }}
                 >
-                  {`${loggedTemple?.city}, ${loggedTemple?.state}`}
+                  {`${loggedTemple?.city ?? ""}, ${loggedTemple?.state ?? ""}`}
                 </div>
               </div>
             </div>

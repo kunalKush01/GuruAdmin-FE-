@@ -206,8 +206,11 @@ export const englishContent = {
 
   // All static content of Donation
   donation_Donation: "Donation",
+  start_Time:"Start Time",
+  end_Time:"End Time",
+
   donation_Adddonation: "Add Donation",
-  donation_select_date_time: "Select Date & Time",
+  donation_select_date_time: "Select Date",
   donation_select_date:"Select Date",
   donation_donar_name_only_letters:
     "Donor Name can only contain character letters",

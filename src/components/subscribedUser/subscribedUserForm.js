@@ -114,6 +114,7 @@ export default function SubscribedUserForm({
                     <CustomTextField
                       label={t("user_name")}
                       name="name"
+                      required
                       onInput={(e) =>
                         (e.target.value = e.target.value.slice(0, 30))
                       }
@@ -124,6 +125,7 @@ export default function SubscribedUserForm({
                     <CustomTextField
                       label={t("dashboard_Recent_DonorNumber")}
                       name="mobile"
+                      required
                       type="number"
                       pattern="[6789][0-9]{9}"
                       onInput={(e) =>
@@ -135,6 +137,7 @@ export default function SubscribedUserForm({
                     <CustomTextField
                       label={t("subscribed_user_email")}
                       name="email"
+                      required
                     />
                   </Col>
                 </Row>

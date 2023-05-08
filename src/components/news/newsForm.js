@@ -226,6 +226,7 @@ export default function NewsForm({
 
   const [deletedImages, setDeletedImages] = useState([]);
   const [showPrompt, setShowPrompt] = useState(true);
+  const [imageSpinner, setImageSpinner] = useState(false);
 
   return (
     <FormWaraper className="FormikWraper">
@@ -311,6 +312,8 @@ export default function NewsForm({
                     <ImageUpload
                       multiple
                       type={editImage}
+                      imageSpinner={imageSpinner}
+                          setImageSpinner={setImageSpinner}
                       bg_plus={thumbnailImage}
                       disabledAddLanguage={AddLanguage}
                       setDeletedImages={setDeletedImages}
@@ -370,7 +373,7 @@ export default function NewsForm({
                   <Spinner size="md" />
                 </Button>
               ) : (
-                <Button color="primary" type="submit">
+                <Button color="primary" type="submit"  disabled={imageSpinner}>
                   {plusIconDisable && (
                     <span>
                       <Plus className="me-1" size={15} strokeWidth={4} />

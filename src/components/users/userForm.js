@@ -131,6 +131,7 @@ export default function UserForm({
   const userRoleIds = userRolesItems?.map((item) => item._id);
   const randomNumber = Math.floor(100000000000 + Math.random() * 900000000000);
   const [showPrompt, setShowPrompt] = useState(true);
+  const [imageSpinner, setImageSpinner] = useState(false);
 
   return (
     <FormWaraper className="FormikWraper">
@@ -171,6 +172,8 @@ export default function UserForm({
                 <div className="me-3">
                   <ImageUpload
                     bg_plus={defaultAvtar}
+                    imageSpinner={imageSpinner}
+                    setImageSpinner={setImageSpinner}
                     profileImage
                     editTrue="edit"
                     editedFileNameInitialValue={
@@ -379,6 +382,7 @@ export default function UserForm({
                   color="primary"
                   className="addNotice-btn "
                   type="submit"
+                  disabled={imageSpinner}
                 >
                   {plusIconDisable && (
                     <span>

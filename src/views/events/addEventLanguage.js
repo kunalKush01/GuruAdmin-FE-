@@ -36,7 +36,7 @@ const schema = yup.object().shape({
   Body: yup.string().required("events_desc_required"),
   DateTime: yup.object().shape({
     start: yup.string().required("events_startDate_required"),
-    end: yup.string().required("events_endDate_required"),
+    end: yup.mixed().required("events_endDate_required"),
   }),
   startTime: yup.string().required("events_startTime_required"),
   endTime: yup.string().required("events_endTime_required"),

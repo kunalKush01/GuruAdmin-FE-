@@ -76,6 +76,8 @@ export default function FormWithoutFormikForDonation({
         }
       };
       results();
+    } else if (formik?.values?.Mobile?.toString().length !== 10) {
+      formik.setFieldValue("SelectedUser", "");
     } else {
       setNoUserFound(false);
     }
@@ -95,12 +97,6 @@ export default function FormWithoutFormikForDonation({
     formik.setFieldValue("SelectedCommitmentId", "");
     formik.setFieldValue("Amount", "");
   }, [formik?.values?.SelectedUser]);
-
-
-
-
-
-
 
   useUpdateEffect(() => {
     if (SelectedCommitmentId) {
@@ -128,17 +124,17 @@ export default function FormWithoutFormikForDonation({
 
   return (
     <Form>
-       {showPrompt && (
-              <Prompt
-                when={!!Object.values(formik?.values).find((val) => !!val)}
-                message={(location) =>
-                  `Are you sure you want to leave this page & visit ${location.pathname.replace(
-                    "/",
-                    ""
-                  )}`
-                }
-              />
-            )}
+      {showPrompt && (
+        <Prompt
+          when={!!Object.values(formik?.values).find((val) => !!val)}
+          message={(location) =>
+            `Are you sure you want to leave this page & visit ${location.pathname.replace(
+              "/",
+              ""
+            )}`
+          }
+        />
+      )}
       <Row>
         <Col xs={12}>
           <Row>
@@ -242,12 +238,11 @@ export default function FormWithoutFormikForDonation({
                     loadOptions={commitmentIdByUser}
                     placeholder={t("commitment_select_commitment_id")}
                     name={"SelectedCommitmentId"}
-                    disabled={payDonation || commitmentIdByUser?.length == 0 }
+                    disabled={payDonation || commitmentIdByUser?.length == 0}
                     valueKey={"id"}
                     getOptionLabel={(option) =>
                       // `${option.commitmentId}   (₹${option.paidAmount}/${option.amount})`
                       `${option.commitmentId}`
-
                     }
                     width
                   />

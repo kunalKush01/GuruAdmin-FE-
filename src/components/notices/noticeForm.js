@@ -234,6 +234,7 @@ export default function NoticeForm({
 
   const [deletedImages, setDeletedImages] = useState([]);
   const [showPrompt, setShowPrompt] = useState(true);
+  const [imageSpinner, setImageSpinner] = useState(false);
 
   return (
     <FormWaraper className="FormikWraper">
@@ -315,6 +316,8 @@ export default function NoticeForm({
                   </div>
                   <ImageUpload
                     bg_plus={thumbnailImage}
+                    imageSpinner={imageSpinner}
+                          setImageSpinner={setImageSpinner}
                     editTrue="edit"
                     disabledAddLanguage={AddLanguage}
                     editedFileNameInitialValue={
@@ -360,6 +363,7 @@ export default function NoticeForm({
                   color="primary"
                   className="addNotice-btn "
                   type="submit"
+                  disabled={imageSpinner}
                 >
                   {plusIconDisable && (
                     <span>

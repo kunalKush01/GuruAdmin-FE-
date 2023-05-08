@@ -78,6 +78,7 @@ export default function PunyarjakForm({
   });
   const randomNumber = Math.floor(100000000000 + Math.random() * 900000000000);
   const [showPrompt, setShowPrompt] = useState(true);
+  const [imageSpinner, setImageSpinner] = useState(false);
 
   return (
     <FormWaraper className="FormikWraper">
@@ -146,6 +147,8 @@ export default function PunyarjakForm({
                   <ImageUpload
                     bg_plus={defaultAvtar}
                     profileImage
+                    imageSpinner={imageSpinner}
+                    setImageSpinner={setImageSpinner}
                     editTrue="edit"
                     editedFileNameInitialValue={
                       formik.values.file ? formik.values.file : null
@@ -216,6 +219,7 @@ export default function PunyarjakForm({
                   color="primary"
                   className="addNotice-btn "
                   type="submit"
+                  disabled={imageSpinner}
                 >
                   {plusIconDisable && (
                     <span>

@@ -13,25 +13,26 @@ const RichTextFieldWarper = styled.div`
   label {
     color: #583703;
     font: normal normal bold 15px/20px noto sans !important;
-    margin: 15px;
+    margin: 15px 0px;
   }
   .se-container {
     display: flex !important ;
     flex-direction: column-reverse;
   }
-  .sun-editor-common{
-    z-index: 0 !important;
-  }
+
   .sun-editor {
     border: none !important;
     border-radius: 20px !important ;
-    
+
     .se-resizing-bar {
       display: none !important;
     }
     .sun-editor-editable {
       background-color: #fdf7e8 !important;
       border-radius: 20px 20px 0px 0px !important ;
+    }
+    .se-dialog-content {
+      top: 30% !important;
     }
   }
   .se-toolbar {
@@ -44,8 +45,13 @@ const RichTextFieldWarper = styled.div`
     color: #583703 !important;
     font: normal normal bold 15px/20px noto sans;
   }
-  .se-wrapper{
+  .se-wrapper {
     z-index: 0 !important;
+  }
+  @media only screen and (max-width: 576px) {
+    label {
+      font: normal normal bold 13px/20px noto sans !important;
+    }
   }
 `;
 export default function RichTextField({

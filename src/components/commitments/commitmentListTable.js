@@ -430,7 +430,7 @@ export default function CommitmentListTable(
                     }}
                   >
                     <img
-                      src={loggedTemple?.profilePhoto}
+                      src={loggedTemple?.profilePhoto ?? ""}
                       // src="https://apnamandir.s3.ap-south-1.amazonaws.com/trust_profile/979242110891_ranakpur.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQ5TSNJ6QOEXRBCNH%2F20230411%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20230411T132833Z&X-Amz-Expires=604800&X-Amz-Signature=83d929ffa3f78302c4a83b11883c677ad36d6c2d8059226f26fec9f4308cbd9b&X-Amz-SignedHeaders=host"
                       style={{
                         width: "80px",
@@ -457,7 +457,7 @@ export default function CommitmentListTable(
                           textAlign: "left",
                         }}
                       >
-                        {`${loggedTemple?.city}, ${loggedTemple?.state}`}
+                        {`${loggedTemple?.city ?? ""}, ${loggedTemple?.state ?? ""}`}
                       </div>
                     </div>
                   </div>

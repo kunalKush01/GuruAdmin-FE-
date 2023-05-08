@@ -243,6 +243,7 @@ export default function EventForm({
 
   const [deletedImages, setDeletedImages] = useState([]);
   const [showPrompt, setShowPrompt] = useState(true);
+  const [imageSpinner, setImageSpinner] = useState(false);
 
   return (
     <FormWaraper className="FormikWraper">
@@ -347,6 +348,8 @@ export default function EventForm({
                       multiple
                       type={editImage}
                       disabledAddLanguage={AddLanguage}
+                      imageSpinner={imageSpinner}
+                          setImageSpinner={setImageSpinner}
                       bg_plus={thumbnailImage}
                       setDeletedImages={setDeletedImages}
                       editedFileNameInitialValue={
@@ -415,7 +418,7 @@ export default function EventForm({
                     <Row className="">
                       <Col lg="6">
                         <CustomTextField
-                          label={t("Start")}
+                          label={t("start_Time")}
                           // value={latitude}
                           type="time"
                           name="startTime"
@@ -424,7 +427,7 @@ export default function EventForm({
                       </Col>
                       <Col lg="6">
                         <CustomTextField
-                          label={t("End")}
+                          label={t("end_Time")}
                           // value={latitude}
                           type="time"
                           name="endTime"
@@ -451,7 +454,7 @@ export default function EventForm({
                   <Spinner size="md" />
                 </Button>
               ) : (
-                <Button color="primary" className="addEvent-btn " type="submit">
+                <Button color="primary" className="addEvent-btn " type="submit"   disabled={imageSpinner}>
                   {plusIconDisable && (
                     <span>
                       <Plus className="me-1" size={15} strokeWidth={4} />

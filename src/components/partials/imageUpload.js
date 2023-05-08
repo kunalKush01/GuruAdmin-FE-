@@ -4,7 +4,7 @@ import styled from "styled-components";
 // import bg_plus from "../../../assets/img/ListItems/bg_plus.svg";
 import { Storage } from "@aws-amplify/storage";
 import { Trans } from "react-i18next";
-import { Button } from "reactstrap";
+import { Button, Spinner } from "reactstrap";
 import { X } from "react-feather";
 
 const WraperImageField = styled.div`
@@ -67,7 +67,7 @@ const WraperImageField = styled.div`
   .mainImageDiv:hover .removeImageButton {
     display: block;
   }
-/* 
+  /* 
   .editImageText {
     display: none;
     width: fit-content;
@@ -76,7 +76,7 @@ const WraperImageField = styled.div`
     top: 40%;
     color: #ffffff;
     left: 35%; */
-  
+
   @media screen and (max-width: 1199px) and (min-width: 992px) {
     .preview_box li {
       width: 80px;
@@ -156,7 +156,7 @@ const img = {
   display: "block",
   width: "100%",
   height: "100%",
-  borderRadius:"10px",
+  borderRadius: "10px",
 };
 const imgBorderRadius = {
   display: "block",
@@ -170,7 +170,7 @@ const Thumbs = ({
   multiple,
   editedFileNameInitialValue,
   profileImage,
-}) =>  (
+}) => (
   <div style={thumb} key={file?.name}>
     <div
       className="hoverImageBackground"
@@ -193,8 +193,6 @@ const Thumbs = ({
 );
 
 function ImageUpload(props) {
-
-
   const thumbsContainer = {
     backgroundImage: `url('${
       props.editedFileNameInitialValue === null ||
@@ -216,6 +214,8 @@ function ImageUpload(props) {
   const [indexValue, setIndexValue] = useState({ type: "", idx: "" });
 
   const handleUpload = (acceptedFiles) => {
+    props.setImageSpinner(true);
+
     const cloneFiles = [...files];
 
     Storage.put(
@@ -226,7 +226,7 @@ function ImageUpload(props) {
       }
     )
       .then((res) => {
-       
+        props.setImageSpinner(false);
         props.fileName(acceptedFiles?.name, acceptedFiles?.type);
         // props.filePreview(acceptedFiles)
         if (props.multiple) {
@@ -234,7 +234,7 @@ function ImageUpload(props) {
             cloneFiles.splice(indexValue?.idx, 1, {
               ...acceptedFiles,
               presignedUrl: URL.createObjectURL(acceptedFiles),
-              name:res?.key.split("temp/")[1]
+              name: res?.key.split("temp/")[1],
             });
             setFiles(cloneFiles);
           } else {
@@ -289,7 +289,11 @@ function ImageUpload(props) {
         {...getRootProps({ className: "dropzone" })}
         onClick={(e) => e.stopPropagation}
       >
-        <div onClick={() => (!props.disabledAddLanguage ? open() : null)} className="d-none" ref={ref}>
+        <div
+          onClick={() => (!props.disabledAddLanguage ? open() : null)}
+          className="d-none"
+          ref={ref}
+        >
           <input
             {...getInputProps()}
             accept={props.acceptFile}
@@ -361,16 +365,26 @@ function ImageUpload(props) {
                   </div>
                 </div>
               ))}
-
-              <div
-                style={{ ...thumbStyles, ...thumbsContainer }}
-                className="dropImageBx cursor-pointer"
-                onClick={() => ref.current.click()}
-              />
+              {props.imageSpinner ? (
+                <Spinner
+                  style={{
+                    height: "3rem",
+                    width: "3rem",
+                  }}
+                  color="primary"
+                />
+              ) : (
+                <div
+                  style={{ ...thumbStyles, ...thumbsContainer }}
+                  className="dropImageBx cursor-pointer"
+                  onClick={() => ref.current.click()}
+                />
+              )}
             </>
           ) : (
             <div className="position-relative mainImageDiv">
-              {(files?.length > 0 || props?.editedFileNameInitialValue) && !props.disabledAddLanguage ? (
+              {(files?.length > 0 || props?.editedFileNameInitialValue) &&
+              !props.disabledAddLanguage ? (
                 <>
                   <Button
                     className="removeImageButton"
@@ -378,7 +392,7 @@ function ImageUpload(props) {
                       removeFile(files?.name);
                     }}
                   >
-                    <X color="#ff8744" stroke-width="3"/>
+                    <X color="#ff8744" stroke-width="3" />
                   </Button>
                   {/* <div className="editImageText">
                     <Trans i18nKey={"edit_image"} />
@@ -387,38 +401,47 @@ function ImageUpload(props) {
               ) : (
                 ""
               )}
-
-              <div
-                style={{ ...thumbStyles, ...thumbsContainer }}
-                className={`dropImageBx cursor-pointer ${
-                  files?.length > 0 ? "bg-none" : ""
-                }`}
-                onClick={() => ref.current.click()}
-              >
-                {files?.length > 0 || props?.editedFileNameInitialValue ? (
-                  <div className="w-100 h-100 profileImageBackground">
-                    {files.length > 0 ? (
-                      files?.map((file, idx) => (
-                        <Thumbs
-                          key={idx}
-                          file={file}
-                          profileImage={props?.profileImage}
-                          editedFileNameInitialValue={
-                            props?.editedFileNameInitialValue
-                          }
+              {props.imageSpinner ? (
+                <Spinner
+                  style={{
+                    height: "3rem",
+                    width: "3rem",
+                  }}
+                  color="primary"
+                />
+              ) : (
+                <div
+                  style={{ ...thumbStyles, ...thumbsContainer }}
+                  className={`dropImageBx cursor-pointer ${
+                    files?.length > 0 ? "bg-none" : ""
+                  }`}
+                  onClick={() => ref.current.click()}
+                >
+                  {files?.length > 0 || props?.editedFileNameInitialValue ? (
+                    <div className="w-100 h-100 profileImageBackground">
+                      {files.length > 0 ? (
+                        files?.map((file, idx) => (
+                          <Thumbs
+                            key={idx}
+                            file={file}
+                            profileImage={props?.profileImage}
+                            editedFileNameInitialValue={
+                              props?.editedFileNameInitialValue
+                            }
+                          />
+                        ))
+                      ) : props.editTrue === "edit" ? (
+                        <img
+                          src={props?.editedFileNameInitialValue}
+                          style={props?.profileImage ? imgBorderRadius : img}
                         />
-                      ))
-                    ) : props.editTrue === "edit" ? (
-                      <img
-                        src={props?.editedFileNameInitialValue}
-                        style={props?.profileImage ? imgBorderRadius : img}
-                      />
-                    ) : null}
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>
+                      ) : null}
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </div>
+              )}
             </div>
           )}
         </div>

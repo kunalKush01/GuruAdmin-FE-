@@ -65,6 +65,9 @@ export default function FormWithoutFormikForCommitment({
       };
       results();
     }
+    else if(formik?.values?.Mobile?.toString().length !== 10){
+      formik.setFieldValue("SelectedUser", "");
+    }
   }, [formik?.values?.Mobile]);
   
 
