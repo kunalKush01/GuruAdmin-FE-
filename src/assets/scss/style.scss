@@ -103,3 +103,9 @@ body::-webkit-scrollbar{
 	z-index: 1;
 	background: #fff7e8
 }
+.btn-Published {
+	z-index: 5000000000000000;
+	position: fixed;
+	bottom: .5rem;
+	left: 50%;
+  }

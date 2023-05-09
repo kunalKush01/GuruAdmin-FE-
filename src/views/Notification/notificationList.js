@@ -14,7 +14,7 @@ import styled from "styled-components";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import NoContent from "../../components/partials/noContent";
 import NotificationList from "../../components/Notification/notificationList";
-import { getAllNotification } from "../../api/notification";
+import { getAllNotification, readNotification } from "../../api/notification";
 import { Helmet } from "react-helmet";
 const NotificationWarper = styled.div`
   color: #583703;
@@ -117,12 +117,47 @@ export default function Notification() {
     [notificationQuery]
   );
 
-  const masterloadOptionQuery = useQuery(
-    ["MasterCategory", selectedLang.id],
-    async () =>
-      await getAllMasterCategories({
-        languageId: selectedLang.id,
-      })
+  // const NotificationsItem = [
+  //   {
+  //     id: 1,
+  //     notifyTitle: "hello hello hello hello hello",
+  //     notifyMessage: "asdsadas dasdad",
+  //     createdAt: new Date(),
+  //     isSeen: true,
+  //   },
+  //   {
+  //     id: 2,
+  //     notifyTitle: "hello",
+  //     notifyMessage: "asdsadas dasdad",
+  //     createdAt: new Date(),
+  //     isSeen: false,
+  //   },
+  //   {
+  //     id: 3,
+  //     notifyTitle: "hello",
+  //     notifyMessage: "asdsadas dasdad",
+  //     createdAt: new Date(),
+  //     isSeen: false,
+  //   },
+  //   {
+  //     id: 4,
+  //     notifyTitle: "hello",
+  //     notifyMessage: "asdsadas dasdad",
+  //     createdAt: new Date(),
+  //     isSeen: true,
+  //   },
+  // ];
+  let unseenIds = [];
+  const notificationIds = NotificationsItem?.map((item) => {
+    if (!item?.isSeen) {
+      unseenIds.push(item?._id);
+    }
+  });
+  console.log("unseenIds", unseenIds);
+
+  const notificationSeen = useQuery(
+    [unseenIds],
+    async () => await readNotification({notificationIds:unseenIds})
   );
 
   return (

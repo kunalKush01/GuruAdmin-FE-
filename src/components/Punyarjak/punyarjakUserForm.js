@@ -79,6 +79,7 @@ export default function PunyarjakForm({
   const randomNumber = Math.floor(100000000000 + Math.random() * 900000000000);
   const [showPrompt, setShowPrompt] = useState(true);
   const [imageSpinner, setImageSpinner] = useState(false);
+  const [imageName, setImageName] = useState(profileImageName);
 
   return (
     <FormWaraper className="FormikWraper">
@@ -86,11 +87,11 @@ export default function PunyarjakForm({
         // enableReinitialize
         initialValues={initialValues}
         onSubmit={(e) => {
-          setShowPrompt(false)
+          setShowPrompt(false);
           setLoading(true);
           punyarjakMutation.mutate({
             punyarjakId: e?.id,
-            profilePhoto: editProfile ? profileImageName : e?.file,
+            profilePhoto: editProfile ? imageName : e?.file,
             name: e?.name,
             description: e?.description,
           });
@@ -157,11 +158,11 @@ export default function PunyarjakForm({
                     fileName={(file, type) => {
                       formik.setFieldValue("file", `${randomNumber}_${file}`);
                       formik.setFieldValue("type", type);
-                      profileImageName = `${randomNumber}_${file}`;
+                      setImageName(`${randomNumber}_${file}`);
                     }}
                     removeFile={(fileName) => {
                       formik.setFieldValue("file", "");
-                      profileImageName = "";
+                      setImageName("");
                     }}
                   />
                   <div
@@ -170,12 +171,11 @@ export default function PunyarjakForm({
                       font: "normal normal bold 11px/15px Noto Sans",
                     }}
                   >
-                    {formik.errors.file &&
-                      formik.touched.file && (
-                        <div className="text-danger text-center">
-                          <Trans i18nKey={formik.errors.file} />
-                        </div>
-                      )}
+                    {formik.errors.file && formik.touched.file && (
+                      <div className="text-danger text-center">
+                        <Trans i18nKey={formik.errors.file} />
+                      </div>
+                    )}
                   </div>
                 </div>
                 <Row>

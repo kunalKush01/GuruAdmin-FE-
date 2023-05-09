@@ -313,8 +313,10 @@ export default function ProfileForm({
   };
 
   const [deletedDocuments, setDeletedDocuments] = useState([]);
-  console.log("file deletedDocuments---->",deletedDocuments);
+  const [documentSpinner, setDocumentSpinner] = useState(false);
+
   const handleUpload = (acceptedFiles, uploadType) => {
+    setDocumentSpinner(true);
     Storage.put(
       `temp/${randomNumber}_${acceptedFiles?.name.split(" ").join("-")}`,
       acceptedFiles,
@@ -323,12 +325,13 @@ export default function ProfileForm({
       }
     )
       .then((res) => {
+        setDocumentSpinner(false);
         console.log("files res--->", res);
         if (uploadType === "document") {
           const uploadedDocumentName = res.key.split("temp/")[1];
           console.log("files uploade --->", uploadedDocumentName);
 
-          setFiles([...files, {name:uploadedDocumentName}]);
+          setFiles([...files, { name: uploadedDocumentName }]);
         } else if (uploadType === "facility") {
           setFacilitiesFiles(
             Object.assign(acceptedFiles, {
@@ -342,11 +345,11 @@ export default function ProfileForm({
   };
 
   const removeDocumentFile = (file, formik) => {
-    console.log("file--->",file);
+    console.log("file--->", file);
     setDeletedDocuments((prev) => [...prev, file?.name]);
     const newFiles = [...files];
     newFiles.splice(newFiles.indexOf(file), 1);
-    console.log("file newFiles--->",newFiles);
+    console.log("file newFiles--->", newFiles);
     setFiles(newFiles);
     formik.setFieldValue("documents", newFiles);
   };
@@ -392,7 +395,8 @@ export default function ProfileForm({
     startTime: yup.string().required("start_time_required"),
     endTime: yup.string().required("end_time_required"),
   });
-
+  const [imageSpinner, setImageSpinner] = useState(false);
+  const [profileName, setProfileName] = useState(profileImageName);
   return (
     <ProfileFormWaraper className="FormikWraper">
       <Formik
@@ -401,7 +405,7 @@ export default function ProfileForm({
         onSubmit={(e) => {
           setLoading(true);
           mutation.mutate({
-            profilePhoto: editProfile ? profileImageName : e?.profileImage,
+            profilePhoto: editProfile ? profileName : e?.profileImage,
             trustName: e?.trustName,
             typeId: e?.trustType?.id,
             trustEmail: e?.trustEmail,
@@ -422,7 +426,7 @@ export default function ProfileForm({
             removedImages: deletedImages,
             removedDocuments: deletedDocuments,
             // documents: e?.documents?.map((item) => item?.name),
-            documents: e?.documents?.map((item)=> item?.name),
+            documents: e?.documents?.map((item) => item?.name),
             oldPassword: e?.oldPassword,
             newPassword: e?.newPassword,
             confirmPassword: e?.confirmPassword,
@@ -456,6 +460,8 @@ export default function ProfileForm({
                       bg_plus={defaultAvtar}
                       profileImage
                       editTrue="edit"
+                      imageSpinner={imageSpinner}
+                      setImageSpinner={setImageSpinner}
                       editedFileNameInitialValue={
                         formik.values?.profileImage
                           ? formik.values?.profileImage
@@ -468,11 +474,11 @@ export default function ProfileForm({
                           `${randomNumber}_${file}`
                         );
                         formik.setFieldValue("type", type);
-                        profileImageName = `${randomNumber}_${file}`;
+                        setProfileName(`${randomNumber}_${file}`);
                       }}
                       removeFile={(fileName) => {
                         formik.setFieldValue("profileImage", "");
-                        profileImageName = "";
+                        setProfileName ("");
                       }}
                     />
                   </div>
@@ -830,6 +836,8 @@ export default function ProfileForm({
                         <ImageUpload
                           multiple
                           type={editImage}
+                          imageSpinner={imageSpinner}
+                          setImageSpinner={setImageSpinner}
                           bg_plus={thumbnailImage}
                           setDeletedImages={setDeletedImages}
                           editedFileNameInitialValue={
@@ -881,20 +889,26 @@ export default function ProfileForm({
                                 // handleUpload(e.target.files[0]).then((e)=>formik.setFieldValue('documents',e.target.files[0].name));
                                 formik.setFieldValue("documents", [
                                   ...formik.values.documents,
-                                  {name:`${randomNumber}_${e.target?.files[0]?.name}`,}
+                                  {
+                                    name: `${randomNumber}_${e.target?.files[0]?.name}`,
+                                  },
                                 ]);
                               }
                             }}
                           />
                         </Col>
                         <Col xs={2} className="pt-1">
-                          <Button
-                            color="primary"
-                            className="addEvent-btn"
-                            onClick={() => uploadDocuments.current.click()}
-                          >
-                            <Trans i18nKey={"browse"} />
-                          </Button>
+                          {documentSpinner ? (
+                            <Spinner color="primary" />
+                          ) : (
+                            <Button
+                              color="primary"
+                              className="addEvent-btn"
+                              onClick={() => uploadDocuments.current.click()}
+                            >
+                              <Trans i18nKey={"browse"} />
+                            </Button>
+                          )}
                         </Col>
                       </Row>
                     </Col>
@@ -909,6 +923,7 @@ export default function ProfileForm({
                           <Button
                             className="removePDFButton"
                             onClick={() => {
+                              uploadDocuments.current.value = "";
                               removeDocumentFile(item, formik);
                             }}
                           >
@@ -1045,7 +1060,12 @@ export default function ProfileForm({
                   <Spinner size="md" />
                 </Button>
               ) : (
-                <Button color="primary" className="addEvent-btn" type="submit">
+                <Button
+                  disabled={imageSpinner}
+                  color="primary"
+                  className="addEvent-btn"
+                  type="submit"
+                >
                   <span>
                     <Trans i18nKey={buttonLabel} />
                   </span>
@@ -1106,25 +1126,43 @@ export default function ProfileForm({
                               );
                             }}
                           />
-                          <Button
-                            className="upload_btn"
-                            color="primary"
-                            onClick={() => uploadeFacility.current.click()}
-                          >
-                            Browse
-                          </Button>
+                          {documentSpinner ? (
+                            <Spinner color="primary" />
+                          ) : (
+                            <Button
+                              className="upload_btn"
+                              color="primary"
+                              onClick={() => uploadeFacility.current.click()}
+                            >
+                              Browse
+                            </Button>
+                          )}
                         </div>
                       </Col>
                       <Col
                         xs={12}
                         className={
-                          facilityEditData?.type === "edit"
+                          facilityEditData?.type === "edit" &&
+                          formik.values.imageName !== ""
                             ? "d-block"
                             : "d-none"
                         }
                       >
-                        <div className="currentFile">
-                          Current File : {formik.values.imageName}
+                        <div className="d-flex align-items-center ">
+                          <div className="currentFile me-1">
+                            Current File : {formik.values.imageName}
+                          </div>
+                          {facilityEditData?.type === "edit" && (
+                            <div
+                              onClick={() => {
+                                formik.setFieldValue("imageName", "");
+                                uploadeFacility.current.value = "";
+                              }}
+                              className="cursor-pointer mt-1"
+                            >
+                              <X color="#ff8744" stroke-width="3" />
+                            </div>
+                          )}
                         </div>
                       </Col>
                       <Col xs={12}>
@@ -1161,6 +1199,7 @@ export default function ProfileForm({
                           className="bg_submit"
                           color="primary"
                           type="submit"
+                          disabled={documentSpinner}
                         >
                           Add Facility
                         </Button>

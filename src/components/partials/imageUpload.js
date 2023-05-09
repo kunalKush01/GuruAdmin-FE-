@@ -366,13 +366,15 @@ function ImageUpload(props) {
                 </div>
               ))}
               {props.imageSpinner ? (
-                <Spinner
-                  style={{
-                    height: "3rem",
-                    width: "3rem",
-                  }}
-                  color="primary"
-                />
+                <div className="d-flex align-items-center p-4">
+                  <Spinner
+                    style={{
+                      height: "3rem",
+                      width: "3rem",
+                    }}
+                    color="primary"
+                  />
+                </div>
               ) : (
                 <div
                   style={{ ...thumbStyles, ...thumbsContainer }}
@@ -402,13 +404,15 @@ function ImageUpload(props) {
                 ""
               )}
               {props.imageSpinner ? (
-                <Spinner
-                  style={{
-                    height: "3rem",
-                    width: "3rem",
-                  }}
-                  color="primary"
-                />
+                <div className="d-flex align-items-center p-4">
+                  <Spinner
+                    style={{
+                      height: "3rem",
+                      width: "3rem",
+                    }}
+                    color="primary"
+                  />
+                </div>
               ) : (
                 <div
                   style={{ ...thumbStyles, ...thumbsContainer }}

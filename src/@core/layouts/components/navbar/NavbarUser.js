@@ -38,6 +38,11 @@ import {
 } from "../../../../utility/localSerachBar";
 import CustomSearchBar from "../../../../components/partials/customSearchBar";
 import Swal from "sweetalert2";
+import { useQuery } from "@tanstack/react-query";
+import {
+  getAllNotification,
+  readNotification,
+} from "../../../../api/notification";
 
 const NavbarUserWarraper = styled.div`
   color: #583703 !important ;
@@ -78,6 +83,22 @@ const NavbarUserWarraper = styled.div`
   .date {
     font: normal normal normal 10px/5px noto sans;
   }
+  /* .notificationNumber {
+    background: red;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 900;
+    position: absolute;
+    right: 0;
+    bottom: 20px;
+    left: 35px;
+  } */
   @media only screen and (max-width: 576px) {
     .displayBlock {
       display: block !important;
@@ -104,6 +125,21 @@ const NavbarUser = (props) => {
   const [langSelection, setlangSelection] = useState(false);
 
   const [searchBarState, setSearchBarState] = useState(false);
+  // const [pagination, setPagination] = useState({
+  //   page: 1,
+  //   limit: 10,
+  // });
+  // const notificationQuery = useQuery(
+  //   ["notification", pagination.page],
+  //   async () =>
+  //     await getAllNotification({
+  //       ...pagination,
+  //     })
+  // );
+  // const allUnReadMessage = useMemo(
+  //   () => notificationQuery?.data ?? [],
+  //   [notificationQuery]
+  // );
 
   return (
     <Fragment>
@@ -136,11 +172,20 @@ const NavbarUser = (props) => {
               onClick={() => setlangSelection(true)}
               src={menuPanelIcon}
             />
-            <img
-              className="icon "
-              src={bellIcon}
-              onClick={() => history.push("/notification")}
-            />
+            <div className="position-relative">
+              {/* {allUnReadMessage?.unSeenCount > 0 && (
+                <div className="notificationNumber">
+                  {allUnReadMessage?.unSeenCount < 9
+                    ? `0${allUnReadMessage?.unSeenCount}`
+                    : allUnReadMessage?.unSeenCount}
+                </div>
+              )} */}
+              <img
+                className="icon "
+                src={bellIcon}
+                onClick={() => history.push("/notification")}
+              />
+            </div>
             {/* <img className="icon d-none d-xl-block" src={logOutIcon} onClick={handleLogOut} /> */}
             <img
               className="icon d-none d-xl-block"
@@ -150,9 +195,7 @@ const NavbarUser = (props) => {
                   title: `<img src="${comfromationIcon}"/>`,
                   html: `
                                     
-                  <h3 class="swal-heading mt-1">${t(
-                    "logout_msg"
-                  )}</h3>
+                  <h3 class="swal-heading mt-1">${t("logout_msg")}</h3>
                                     `,
                   showCloseButton: false,
                   showCancelButton: true,

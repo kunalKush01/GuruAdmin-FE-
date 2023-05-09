@@ -13,7 +13,7 @@ import defaultAvtar from "../../assets/images/icons/dashBoard/defaultAvatar.svg"
 import ImageUpload from "../partials/imageUpload";
 import InputPasswordToggle from "@components/input-password-toggle";
 import passwordEyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
-import hidePassIcon from "../../assets/images/icons/signInIcon/hidePassIcon.svg"
+import hidePassIcon from "../../assets/images/icons/signInIcon/hidePassIcon.svg";
 import { getAllUserRoles } from "../../api/userApi";
 import { useSelector } from "react-redux";
 import { Prompt } from "react-router-dom";
@@ -132,6 +132,7 @@ export default function UserForm({
   const randomNumber = Math.floor(100000000000 + Math.random() * 900000000000);
   const [showPrompt, setShowPrompt] = useState(true);
   const [imageSpinner, setImageSpinner] = useState(false);
+  const [imageName, setImageName] = useState(profileImageName);
 
   return (
     <FormWaraper className="FormikWraper">
@@ -148,7 +149,7 @@ export default function UserForm({
             roles: e?.userRoleChacked,
             name: e.name,
             password: e?.password,
-            profilePhoto: editProfile ? profileImageName : e?.file,
+            profilePhoto: editProfile ? imageName : e?.file,
             // profilePhoto: e?.file,
           });
         }}
@@ -183,11 +184,11 @@ export default function UserForm({
                     fileName={(file, type) => {
                       formik.setFieldValue("file", `${randomNumber}_${file}`);
                       formik.setFieldValue("type", type);
-                      profileImageName = `${randomNumber}_${file}`;
+                      setImageName(`${randomNumber}_${file}`);
                     }}
                     removeFile={(fileName) => {
                       formik.setFieldValue("file", "");
-                      profileImageName = "";
+                      setImageName("");
                     }}
                   />
                 </div>
@@ -215,7 +216,7 @@ export default function UserForm({
                             (e.target.value = e.target.value.slice(0, 12))
                           }
                           required
-                          />
+                        />
                       </Col>
                       <Col xs={12} sm={6} lg={4}>
                         <CustomTextField
@@ -227,7 +228,8 @@ export default function UserForm({
                       {adduser && (
                         <Col xs={12} sm={6} lg={4} className="ps-1">
                           <label>
-                            <Trans i18nKey={"user_password"}/>{`*`}
+                            <Trans i18nKey={"user_password"} />
+                            {`*`}
                           </label>
                           <InputPasswordToggle
                             className="input-group-merge"
@@ -268,7 +270,7 @@ export default function UserForm({
                     </Row>
                   </Col>
 
-                  <Row>
+                  <Row className="mb-5 pb-2">
                     <Col xs={12}>
                       <div className="mb-1 mt-1" style={{ fontSize: "15px" }}>
                         <Trans i18nKey={"user_userRole"} />*
@@ -279,7 +281,6 @@ export default function UserForm({
                           font: "normal normal bold 11px/15px Noto Sans",
                         }}
                       >
-
                         {formik.errors.userRoleChacked &&
                           formik.touched.userRoleChacked && (
                             <div className="text-danger">
@@ -340,7 +341,6 @@ export default function UserForm({
                                     name="userRoleChacked"
                                     tag={Field}
                                     type="checkbox"
-                                    
                                     className="me-1 checkBoxInput"
                                     value={item?._id}
                                   />

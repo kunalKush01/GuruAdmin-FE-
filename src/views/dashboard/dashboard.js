@@ -74,21 +74,21 @@ const Home = () => {
           <div className="d-flex flex-wrap gap-1 justify-content-between mt-1 mb-lg-3">
             <OrdersReceived
               statTitle={t("dashboard_donationReceived")}
-              stats={parseInt(dashboardData?.donationReceived)}
+              stats={parseInt(dashboardData?.donationReceived === undefined ? 0 : dashboardData?.donationReceived)}
               warning={"primary"}
               data={dashboardData?.donationReceivedArr}
               SeriesName={"Donation Recieved"}
             />
             <OrdersReceived
               statTitle={t("dashboard_donationPending")}
-              stats={parseInt(dashboardData?.donationPending)}
+              stats={parseInt(dashboardData?.donationPending === undefined ? 0 :dashboardData?.donationPending )}
               warning={"primary"}
               data={dashboardData?.donationPendingArr}
               SeriesName={"Donation Pending"}
             />
             <OrdersReceived
               statTitle={t("dashboard_totalExpenses")}
-              stats={parseInt(dashboardData?.totalExpenses)}
+              stats={parseInt(dashboardData?.totalExpenses === undefined ? 0 :dashboardData?.totalExpenses)}
               warning={"primary"}
               data={dashboardData?.totalExpensesArr}
               SeriesName={"Total Expenses"}
@@ -99,7 +99,7 @@ const Home = () => {
             >
               <CustomCard
                 cardTitle={t("dashboard_card_title3")}
-                cardNumber={parseInt(dashboardData?.subscribedUsers)}
+                cardNumber={parseInt(dashboardData?.subscribedUsers === undefined ? 0 :dashboardData?.subscribedUsers )}
                 cardImage={custcardImage3}
               />
             </div>

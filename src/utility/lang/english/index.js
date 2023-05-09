@@ -195,7 +195,7 @@ export const englishContent = {
 
   // All static content of Financial Report
 
-  report_AddReport: "Financial Report",
+  report_AddReport: "Financial Reports",
   report_expences: "Expenses",
   remarks_financial_donationBox: "Remarks",
   report_commitment: "Commitment",

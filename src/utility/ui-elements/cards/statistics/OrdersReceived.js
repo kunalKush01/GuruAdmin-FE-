@@ -65,7 +65,7 @@ const OrdersReceived = ({ statTitle,stats,SeriesName="",data=[] }) => {
   
   const  series = [{
     name:SeriesName,
-    data:data.map((item)=>{
+    data:data?.map((item)=>{
       return {
         x:item.month,
         y:item.amount

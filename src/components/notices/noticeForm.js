@@ -93,9 +93,9 @@ const FormWaraper = styled.div`
       width: 10px !important;
     }
   }
-.ReactTags__tag{
-  margin-bottom:.5rem
-}
+  .ReactTags__tag {
+    margin-bottom: 0.5rem;
+  }
 
   /* Styles for suggestions */
   .ReactTags__suggestions {
@@ -235,6 +235,7 @@ export default function NoticeForm({
   const [deletedImages, setDeletedImages] = useState([]);
   const [showPrompt, setShowPrompt] = useState(true);
   const [imageSpinner, setImageSpinner] = useState(false);
+  const [imageName, setImageName] = useState(thumbnailImageName);
 
   return (
     <FormWaraper className="FormikWraper">
@@ -242,7 +243,7 @@ export default function NoticeForm({
         // enableReinitialize
         initialValues={initialValues}
         onSubmit={(e) => {
-          setShowPrompt(false)
+          setShowPrompt(false);
           setLoading(true);
           noticeMutation.mutate({
             noticeId: e.Id,
@@ -252,7 +253,7 @@ export default function NoticeForm({
             deletedTags,
             body: e.Body,
             publishDate: e.DateTime,
-            image: editThumbnail ? thumbnailImageName : e?.image,
+            image: editThumbnail ? imageName : e?.image,
           });
           setDeletedTags([]);
         }}
@@ -260,7 +261,7 @@ export default function NoticeForm({
       >
         {(formik) => (
           <Form>
-           {showPrompt && (
+            {showPrompt && (
               <Prompt
                 when={!!Object.values(formik?.values).find((val) => !!val)}
                 message={(location) =>
@@ -317,7 +318,7 @@ export default function NoticeForm({
                   <ImageUpload
                     bg_plus={thumbnailImage}
                     imageSpinner={imageSpinner}
-                          setImageSpinner={setImageSpinner}
+                    setImageSpinner={setImageSpinner}
                     editTrue="edit"
                     disabledAddLanguage={AddLanguage}
                     editedFileNameInitialValue={
@@ -327,11 +328,11 @@ export default function NoticeForm({
                     fileName={(file, type) => {
                       formik.setFieldValue("image", `${randomNumber}_${file}`);
                       formik.setFieldValue("type", type);
-                      thumbnailImageName = `${randomNumber}_${file}`;
+                      setImageName(`${randomNumber}_${file}`);
                     }}
                     removeFile={(fileName) => {
                       formik.setFieldValue("image", "");
-                      thumbnailImageName= ""
+                      setImageName("");
                     }}
                   />
                 </Row>
