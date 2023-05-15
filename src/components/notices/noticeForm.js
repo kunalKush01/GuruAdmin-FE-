@@ -272,7 +272,7 @@ export default function NoticeForm({
                 }
               />
             )}
-            <Row>
+            <Row className="mb-lg-5 pb-lg-5">
               <Col xs={12} md={7}>
                 <Row>
                   <Col xs={12} md={6}>
@@ -341,6 +341,7 @@ export default function NoticeForm({
                 <FormikCustomDatePicker
                   label={t("donation_select_date")}
                   name="DateTime"
+                  pastDateNotAllowed
                   // showTimeInput={showTimeInput}
                 />
               </Col>

@@ -18,6 +18,7 @@ export default function FormWithoutFormikForCommitment({
   masterloadOptionQuery,
   buttonName,
   showTimeInput,
+  editCommitment,
   loading,
   showPrompt,
   ...props
@@ -121,6 +122,7 @@ export default function FormWithoutFormikForCommitment({
               <FormikCustomReactSelect
                 labelName={t("categories_select_category")}
                 name={"SelectedMasterCategory"}
+                disabled={editCommitment}
                 labelKey={"name"}
                 valueKey="id"
                 loadOptions={
@@ -147,6 +149,7 @@ export default function FormWithoutFormikForCommitment({
                 })}
                 name={"SelectedSubCategory"}
                 labelKey={"name"}
+                disabled={editCommitment}
                 labelValue={"id"}
                 width
               />
@@ -174,6 +177,7 @@ export default function FormWithoutFormikForCommitment({
               <FormikCustomDatePicker
                 label={t("commitment_select_end_date")}
                 name="DateTime"
+                pastDateNotAllowed
               />
             </Col>
           </Row>

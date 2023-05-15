@@ -156,7 +156,7 @@ const FormikCustomDatePickerWraper = styled.div`
   }
 `;
 
-export default function FormikCustomDatePicker({ label,...props }) {
+export default function FormikCustomDatePicker({ label,futureDateNotAllowed,pastDateNotAllowed,...props }) {
 
   const [field, meta, helpers] = useField(props.name);
 
@@ -176,7 +176,8 @@ export default function FormikCustomDatePicker({ label,...props }) {
         }}
         yearDropdownItemNumber={50}        
         showYearDropdown
-        minDate={new Date()}
+        minDate={pastDateNotAllowed && new Date()}
+        maxDate={futureDateNotAllowed && new Date()}
         showMonthDropdown
         timeFormat="hh:mm aa"
         timeCaption="Time"        

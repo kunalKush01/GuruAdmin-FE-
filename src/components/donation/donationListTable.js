@@ -42,6 +42,7 @@ export default function DonationListTable({ data, topdf }, args) {
       style: {
         font: "normal normal 700 13px/20px Noto Sans !important",
       },
+      width: "150px",
     },
     {
       name: t("dashboard_Recent_DonorNumber"),

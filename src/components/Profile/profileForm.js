@@ -817,7 +817,7 @@ export default function ProfileForm({
             </Row>
             {/* Trust Facilities */}
             {/* Trust  Images */}
-            <Row className="mt-1">
+            <Row className="mt-1 mb-lg-5 pb-lg-5">
               <Col xs={12}>
                 <div className="heading_div existlabel">
                   TRUST IMAGES AND CERTIFICATES

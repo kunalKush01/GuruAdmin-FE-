@@ -150,7 +150,7 @@ export default function Expenses() {
     (permissionName) => permissionName.name === "all"
   );
   const subPermissions = permissions?.find(
-    (permissionName) => permissionName?.name === "donation_box"
+    (permissionName) => permissionName?.name === "hundi"
   );
 
   const subPermission = subPermissions?.subpermissions?.map(
@@ -199,7 +199,7 @@ export default function Expenses() {
               setdropDownName={(e) => {
                 setdropDownName(e.target.name);
                 setPagination({ page: 1 });
-                history.push(`/donation_box?page=${1}&filter=${e.target.name}`);
+                history.push(`/hundi?page=${1}&filter=${e.target.name}`);
               }}
             />
             {allPermissions?.name === "all" ||
@@ -209,7 +209,7 @@ export default function Expenses() {
                 className="addNews-btn "
                 onClick={() =>
                   history.push(
-                    `/donation_box/add?page=${pagination.page}&filter=${dropDownName}`
+                    `/hundi/add?page=${pagination.page}&filter=${dropDownName}`
                   )
                 }
               >
@@ -306,7 +306,7 @@ export default function Expenses() {
                     onPageChange={(page) => {
                       setPagination({ ...pagination, page: page.selected + 1 });
                       history.push(
-                        `/donation_box?page=${
+                        `/hundi?page=${
                           page.selected + 1
                         }&filter=${dropDownName}`
                       );

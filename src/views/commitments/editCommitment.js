@@ -147,6 +147,7 @@ export default function EditCommitment() {
             <div className="ms-md-3 mt-1 mb-3">
               <CommitmentForm
                 vailidationSchema={schema}
+                disbleCategoryOnEdit
                 initialValues={initialValues}
                 showTimeInput
                 handleSubmit={handleCommitmentUpdate}

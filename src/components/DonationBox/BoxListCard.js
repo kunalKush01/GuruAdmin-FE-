@@ -158,7 +158,7 @@ export default function BoxListCard({
                   className="w-100 cursor-pointer"
                   onClick={() =>
                     history.push(
-                      `/donation_box/edit/${data.id}?page=${currentPage}&filter=${currentFilter}`
+                      `/hundi/edit/${data.id}?page=${currentPage}&filter=${currentFilter}`
                     )
                   }
                 />

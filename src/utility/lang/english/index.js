@@ -3,7 +3,7 @@ export const englishContent = {
   dashboard: "Dashboard",
   donation: "Donation",
   commitment: "Commitment",
-  donation_box: "Donation Box Collections",
+  hundi: "Donation Box Collections",
   financial_reports: "Financial Reports",
   internal_expenses: "Expenses",
   events: "Events",

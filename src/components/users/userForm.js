@@ -28,7 +28,7 @@ const FormWaraper = styled.div`
   .addNotice-btn {
     padding: 8px 20px;
     margin-left: 10px;
-    margin-top: 5rem;
+    /* margin-top: 5rem; */
     font: normal normal bold 15px/20px noto sans;
   }
   .newsContent {
@@ -168,7 +168,7 @@ export default function UserForm({
                 }
               />
             )}
-            <Row>
+            <Row className="mb-lg-5 pb-lg-5">
               <Col xs={12} className=" mt-2 ps-0 d-md-flex">
                 <div className="me-3">
                   <ImageUpload
@@ -380,7 +380,7 @@ export default function UserForm({
               ) : (
                 <Button
                   color="primary"
-                  className="addNotice-btn "
+                  className="addNotice-btn"
                   type="submit"
                   disabled={imageSpinner}
                 >

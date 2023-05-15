@@ -50,6 +50,7 @@ export default function CommitmentForm({
   plusIconDisable = false,
   buttonName = "",
   handleSubmit,
+  disbleCategoryOnEdit,
   vailidationSchema,
   initialValues,
   showTimeInput,
@@ -110,6 +111,7 @@ export default function CommitmentForm({
                 formik={formik}
                 masterloadOptionQuery={masterloadOptionQuery}
                 loading={loading}
+                editCommitment={disbleCategoryOnEdit}
                 plusIconDisable
                 showPrompt={showPrompt}
                 buttonName={buttonName}

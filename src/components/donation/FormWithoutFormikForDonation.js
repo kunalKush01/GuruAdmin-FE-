@@ -202,7 +202,7 @@ export default function FormWithoutFormikForDonation({
                 }
                 required
                 width={"100"}
-                disabled={masterloadOptionQuery?.data?.results == 0}
+                disabled={masterloadOptionQuery?.data?.results == 0 || formik.values.SelectedCommitmentId !== ""}
               />
             </Col>
             <Col xs={12} sm={6} lg={4} className=" pb-1">
@@ -217,7 +217,7 @@ export default function FormWithoutFormikForDonation({
                 name={"SelectedSubCategory"}
                 labelKey={"name"}
                 valueKey={"id"}
-                disabled={subLoadOption.length == 0}
+                disabled={subLoadOption.length == 0 || formik.values.SelectedCommitmentId !== ""}
                 width
               />
             </Col>

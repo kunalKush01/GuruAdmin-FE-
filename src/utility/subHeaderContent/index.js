@@ -14,8 +14,8 @@ export const subHeaderContent = [
     url: "/commitment",
   },
   {
-    name: "donation_box",
-    url: "/donation_box",
+    name: "hundi",
+    url: "/hundi",
   },
 
   {
@@ -69,7 +69,7 @@ export const subHeaderContentResponsive = [
   },
   {
     name: "donation_box",
-    url: "/donation_box",
+    url: "/hundi",
   },
 
   {

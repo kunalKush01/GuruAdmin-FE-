@@ -342,25 +342,25 @@ const Routes = [
   },
 
   {
-    path: "/donation_box",
+    path: "/hundi",
     component: lazy(() => import("../../views/DonationBox/donationBoxList.js")),
     exact: true,
-    type:"donation_box",
+    type:"hundi",
     subPermission:READ
   },
   {
-    path: "/donation_box/add",
+    path: "/hundi/add",
     component: lazy(() => import("../../views/DonationBox/addDonationBox.js")),
     // exact:true
-    type:"donation_box",
+    type:"hundi",
     subPermission:WRITE
   },
   {
-    path: "/donation_box/edit/:donationBoxId",
+    path: "/hundi/edit/:donationBoxId",
     component: lazy(() => import("../../views/DonationBox/editDonationBox")),
     // exact:true
     
-    type:"donation_box",
+    type:"hundi",
     subPermission:EDIT
   },
   // {

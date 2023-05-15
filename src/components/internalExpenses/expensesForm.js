@@ -182,6 +182,7 @@ export default function ExpensesForm({
                 <FormikCustomDatePicker
                   label={t("donation_select_date")}
                   name="DateTime"
+                  pastDateNotAllowed
                   // showTimeInput={showTimeInput}
                 />
               </Col>

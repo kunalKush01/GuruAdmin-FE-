@@ -67,6 +67,7 @@ export default function CategoryForm({
   handleSubmit,
   vailidationSchema,
   initialValues,
+  editDisableCategory,
   showTimeInput,
   ...props
 }) {
@@ -128,6 +129,7 @@ export default function CategoryForm({
                       name={CategoryFormName}
                       labelKey={"name"}
                       valueKey="id"
+                      disabled={editDisableCategory || AddLanguage}
                       loadOptions={
                         loadOptions &&
                         loadOptions?.map((item) => {
