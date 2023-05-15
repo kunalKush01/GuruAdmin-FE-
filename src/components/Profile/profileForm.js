@@ -817,7 +817,7 @@ export default function ProfileForm({
             </Row>
             {/* Trust Facilities */}
             {/* Trust  Images */}
-            <Row className="mt-1 mb-lg-5 pb-lg-5">
+            <Row className="mt-1 paddingForm">
               <Col xs={12}>
                 <div className="heading_div existlabel">
                   TRUST IMAGES AND CERTIFICATES
@@ -897,7 +897,7 @@ export default function ProfileForm({
                             }}
                           />
                         </Col>
-                        <Col xs={2} className="pt-1">
+                        <Col xs={2} className="align-self-end">
                           {documentSpinner ? (
                             <Spinner color="primary" />
                           ) : (

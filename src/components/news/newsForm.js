@@ -87,9 +87,9 @@ const FormWaraper = styled.div`
       width: 10px !important;
     }
   }
-.ReactTags__tag{
-  margin-bottom:.5rem
-}
+  .ReactTags__tag {
+    margin-bottom: 0.5rem;
+  }
 
   /* Styles for suggestions */
   .ReactTags__suggestions {
@@ -234,7 +234,7 @@ export default function NewsForm({
         // enableReinitialize
         initialValues={{ ...initialValues }}
         onSubmit={(e) => {
-          setShowPrompt(false)
+          setShowPrompt(false);
           setLoading(true);
           newsMutation.mutate({
             newsId: e.Id,
@@ -264,7 +264,7 @@ export default function NewsForm({
                 }
               />
             )}
-            <Row className="mb-lg-5 pb-lg-5">
+            <Row className="paddingForm">
               <Col xs={12} md={7}>
                 <Row>
                   <Col xs={12} md={6}>
@@ -313,7 +313,7 @@ export default function NewsForm({
                       multiple
                       type={editImage}
                       imageSpinner={imageSpinner}
-                          setImageSpinner={setImageSpinner}
+                      setImageSpinner={setImageSpinner}
                       bg_plus={thumbnailImage}
                       disabledAddLanguage={AddLanguage}
                       setDeletedImages={setDeletedImages}
@@ -340,23 +340,27 @@ export default function NewsForm({
                     />
                   </div>
                 </Row>
-                <Row>
-                  <Col xs={6}>
-                    <CustomTextField
-                      label={t("news_label_Published")}
-                      name="PublishedBy"
-                      disabled
-                    />
-                  </Col>
-                </Row>
               </Col>
               <Col>
-                <FormikCustomDatePicker
-                  label={t("donation_select_date")}
-                  name="DateTime"
-                  pastDateNotAllowed
-                  // showTimeInput={showTimeInput}
-                />
+                <Row>
+                  <Col xs={12}>
+                    <FormikCustomDatePicker
+                      label={t("donation_select_date")}
+                      name="DateTime"
+                      pastDateNotAllowed
+                      // showTimeInput={showTimeInput}
+                    />
+                  </Col>
+                  <Row>
+                    <Col xs={7}>
+                      <CustomTextField
+                        label={t("news_label_Published")}
+                        name="PublishedBy"
+                        disabled
+                      />
+                    </Col>
+                  </Row>
+                </Row>
               </Col>
             </Row>
             <div className="btn-Published mb-2">
@@ -374,7 +378,7 @@ export default function NewsForm({
                   <Spinner size="md" />
                 </Button>
               ) : (
-                <Button color="primary" type="submit"  disabled={imageSpinner}>
+                <Button color="primary" type="submit" disabled={imageSpinner}>
                   {plusIconDisable && (
                     <span>
                       <Plus className="me-1" size={15} strokeWidth={4} />

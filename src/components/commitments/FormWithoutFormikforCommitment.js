@@ -86,7 +86,7 @@ export default function FormWithoutFormikForCommitment({
               />
             )}
 
-      <Row>
+      <Row className="paddingForm">
         <Col xs={12}>
           <Row>
             <Col xs={12} sm={6} lg={4}>

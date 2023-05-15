@@ -114,7 +114,7 @@ export default function DonationBoxForm({
         // enableReinitialize
         initialValues={{ ...initialValues }}
         onSubmit={(e) => {
-          setShowPrompt(false)
+          setShowPrompt(false);
           setLoading(true);
           newsMutation.mutate({
             collectionId: e?.Id,
@@ -138,88 +138,90 @@ export default function DonationBoxForm({
                 }
               />
             )}
-            <Row>
-              <Col xs={12} md={7} >
-                <Row>
-                  <Col xs={12}>
-                    <CustomTextField
-                      label={t("created_by")}
-                      name="CreatedBy"
-                      disabled
-                    />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs={12}>
-                    <RichTextField
-                      height="100px"
-                      label={t("news_label_Description")}
-                      name="Body"
-                      autoFocus
-                    />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs={12} md={6} className="mt-1">
-                    <CustomTextField
-                      type="number"
-                      label={t("categories_select_amount")}
-                      placeholder={t("enter_price_manually")}
-                      required
-                      name="Amount"
-                    />
-                  </Col>
-                </Row>
-              </Col>
-              <Col>
-                <FormikCustomDatePicker
-                  label={t("donation_select_date")}
-                  futureDateNotAllowed
-                  name="DateTime"
-                  // showTimeInput={showTimeInput}
-                />
-              </Col>
-            </Row>
-            {editLogs && (
+            <div className="paddingForm">
               <Row>
-                <div>
-                  <Trans i18nKey={"Logs"} />
-                </div>
-                <Col lg={9} className='my-lg-2'>
-                  <LogListTable data={hundiLogs} />
+                <Col xs={12} md={7}>
+                  <Row>
+                    <Col xs={12}>
+                      <CustomTextField
+                        label={t("created_by")}
+                        name="CreatedBy"
+                        disabled
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col xs={12}>
+                      <RichTextField
+                        height="100px"
+                        label={t("news_label_Description")}
+                        name="Body"
+                        autoFocus
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col xs={12} md={6} className="mt-1">
+                      <CustomTextField
+                        type="number"
+                        label={t("categories_select_amount")}
+                        placeholder={t("enter_price_manually")}
+                        required
+                        name="Amount"
+                      />
+                    </Col>
+                  </Row>
+                </Col>
+                <Col>
+                  <FormikCustomDatePicker
+                    label={t("donation_select_date")}
+                    futureDateNotAllowed
+                    name="DateTime"
+                    // showTimeInput={showTimeInput}
+                  />
                 </Col>
               </Row>
-            )}
+              {editLogs && (
+                <Row>
+                  <div>
+                    <Trans i18nKey={"Logs"} />
+                  </div>
+                  <Col lg={9} className="my-lg-2">
+                    <LogListTable data={hundiLogs} />
+                  </Col>
+                </Row>
+              )}
+            </div>
             <div className="btn-Published mb-2 mt-lg-2">
-                {loading ? (
-                  <Button
-                    color="primary"
-                    className="add-trust-btn"
-                    style={{
-                      borderRadius: "10px",
-                      padding: "5px 40px",
-                      opacity: "100%",
-                    }}
-                    disabled
-                  >
-                    <Spinner size="md" />
-                  </Button>
-                ) : (
-                  <Button
-                    color="primary"
-                    className="addNotice-btn "
-                    type="submit"
-                  >
-                    {plusIconDisable && (
-                      <span>
-                        <Plus className="me-1" size={15} strokeWidth={4} />
-                      </span>
-                    )}
+              {loading ? (
+                <Button
+                  color="primary"
+                  className="add-trust-btn"
+                  style={{
+                    borderRadius: "10px",
+                    padding: "5px 40px",
+                    opacity: "100%",
+                  }}
+                  disabled
+                >
+                  <Spinner size="md" />
+                </Button>
+              ) : (
+                <Button
+                  color="primary"
+                  className="addNotice-btn "
+                  type="submit"
+                >
+                  {plusIconDisable && (
                     <span>
-                      <Trans i18nKey={`${buttonName}`} />
+                      <Plus className="me-1" size={15} strokeWidth={4} />
                     </span>
-                  </Button>
-                )}
+                  )}
+                  <span>
+                    <Trans i18nKey={`${buttonName}`} />
+                  </span>
+                </Button>
+              )}
             </div>
           </Form>
         )}

@@ -135,6 +135,8 @@ export default function ExpensesForm({
                 }
               />
             )}
+            <div className="paddingForm">
+
             <Row>
               <Col xs={12} md={7}>
                 <Row>
@@ -197,6 +199,7 @@ export default function ExpensesForm({
                 </Col>
               </Row>
             )}
+            </div>
 
             <div className="btn-Published mb-2 mt-lg-2">
               {loading ? (

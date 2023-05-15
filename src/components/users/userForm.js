@@ -168,7 +168,7 @@ export default function UserForm({
                 }
               />
             )}
-            <Row className="mb-lg-5 pb-lg-5">
+            <Row className="paddingForm">
               <Col xs={12} className=" mt-2 ps-0 d-md-flex">
                 <div className="me-3">
                   <ImageUpload

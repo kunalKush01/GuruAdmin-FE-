@@ -107,7 +107,7 @@ export default function SubscribedUserForm({
                 }
               />
             )}
-            <Row>
+            <Row className="paddingForm">
               <Col xs={12}>
                 <Row>
                   <Col xs={12} sm={6} md={4}>

@@ -119,7 +119,7 @@ export default function CategoryForm({
               />
             )}
 
-            <Row>
+            <Row className="paddingForm">
               <Col xs={12} md={10} lg={7}>
                 <Row>
                   <Col xs={12} sm={6}>

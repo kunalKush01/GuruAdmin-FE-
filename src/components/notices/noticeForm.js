@@ -272,7 +272,7 @@ export default function NoticeForm({
                 }
               />
             )}
-            <Row className="mb-lg-5 pb-lg-5">
+            <Row className="paddingForm">
               <Col xs={12} md={7}>
                 <Row>
                   <Col xs={12} md={6}>

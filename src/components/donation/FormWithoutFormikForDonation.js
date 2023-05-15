@@ -135,7 +135,7 @@ export default function FormWithoutFormikForDonation({
           }
         />
       )}
-      <Row>
+      <Row className="paddingForm">
         <Col xs={12}>
           <Row>
             <Col xs={12} sm={6} lg={4} className=" pb-1">

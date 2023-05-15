@@ -142,7 +142,7 @@ export default function PunyarjakForm({
               </Col>
             </Row> */}
 
-            <Row>
+            <Row className="paddingForm"> 
               <Col xs={12} className=" mt-2 ps-0 d-flex flex-wrap">
                 <div className="me-3">
                   <ImageUpload
