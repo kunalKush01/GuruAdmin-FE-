@@ -20,6 +20,7 @@ import { getAllTags } from "../../api/tagApi";
 import ImageUpload from "../partials/imageUpload";
 import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
 import { Prompt } from "react-router-dom";
+import { add } from "lodash";
 
 const FormWaraper = styled.div`
   .FormikWraper {
@@ -304,53 +305,57 @@ export default function NewsForm({
                     />
                   </Col>
                 </Row>
-                <Row>
-                  <div className="ImagesVideos">
-                    <Trans i18nKey={"news_label_ImageVedio"} />
-                  </div>
-                  <div>
-                    <ImageUpload
-                      multiple
-                      type={editImage}
-                      imageSpinner={imageSpinner}
-                      setImageSpinner={setImageSpinner}
-                      bg_plus={thumbnailImage}
-                      disabledAddLanguage={AddLanguage}
-                      setDeletedImages={setDeletedImages}
-                      editedFileNameInitialValue={
-                        formik?.values?.images ? formik?.values?.images : null
-                      }
-                      defaultImages={defaultImages}
-                      randomNumber={randomNumber}
-                      fileName={(file, type) => {
-                        formik.setFieldValue("images", [
-                          ...formik.values.images,
-                          `${randomNumber}_${file}`,
-                        ]);
-                        formik.setFieldValue("type", type);
-                      }}
-                      removeFile={(fileName) => {
-                        const newFiles = [...formik?.values?.images];
-                        // newFiles.splice(index, 1);
-                        const updatedFiles = newFiles.filter(
-                          (img) => !img.includes(fileName)
-                        );
-                        formik.setFieldValue("images", updatedFiles);
-                      }}
-                    />
-                  </div>
-                </Row>
+                {!AddLanguage && (
+                  <Row>
+                    <div className="ImagesVideos">
+                      <Trans i18nKey={"news_label_ImageVedio"} />
+                    </div>
+                    <div>
+                      <ImageUpload
+                        multiple
+                        type={editImage}
+                        imageSpinner={imageSpinner}
+                        setImageSpinner={setImageSpinner}
+                        bg_plus={thumbnailImage}
+                        disabledAddLanguage={AddLanguage}
+                        setDeletedImages={setDeletedImages}
+                        editedFileNameInitialValue={
+                          formik?.values?.images ? formik?.values?.images : null
+                        }
+                        defaultImages={defaultImages}
+                        randomNumber={randomNumber}
+                        fileName={(file, type) => {
+                          formik.setFieldValue("images", [
+                            ...formik.values.images,
+                            `${randomNumber}_${file}`,
+                          ]);
+                          formik.setFieldValue("type", type);
+                        }}
+                        removeFile={(fileName) => {
+                          const newFiles = [...formik?.values?.images];
+                          // newFiles.splice(index, 1);
+                          const updatedFiles = newFiles.filter(
+                            (img) => !img.includes(fileName)
+                          );
+                          formik.setFieldValue("images", updatedFiles);
+                        }}
+                      />
+                    </div>
+                  </Row>
+                )}
               </Col>
               <Col>
                 <Row>
-                  <Col xs={12}>
-                    <FormikCustomDatePicker
-                      label={t("donation_select_date")}
-                      name="DateTime"
-                      pastDateNotAllowed
-                      // showTimeInput={showTimeInput}
-                    />
-                  </Col>
+                  {!AddLanguage && (
+                    <Col xs={12}>
+                      <FormikCustomDatePicker
+                        label={t("donation_select_date")}
+                        name="DateTime"
+                        pastDateNotAllowed
+                        // showTimeInput={showTimeInput}
+                      />
+                    </Col>
+                  )}
                   <Row>
                     <Col xs={7}>
                       <CustomTextField

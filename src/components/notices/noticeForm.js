@@ -311,40 +311,47 @@ export default function NoticeForm({
                     />
                   </Col>
                 </Row>
-                <Row>
-                  <div className="ImagesVideos">
-                    <Trans i18nKey={"add_image"} />
-                  </div>
-                  <ImageUpload
-                    bg_plus={thumbnailImage}
-                    imageSpinner={imageSpinner}
-                    setImageSpinner={setImageSpinner}
-                    editTrue="edit"
-                    disabledAddLanguage={AddLanguage}
-                    editedFileNameInitialValue={
-                      formik?.values?.image ? formik?.values?.image : null
-                    }
-                    randomNumber={randomNumber}
-                    fileName={(file, type) => {
-                      formik.setFieldValue("image", `${randomNumber}_${file}`);
-                      formik.setFieldValue("type", type);
-                      setImageName(`${randomNumber}_${file}`);
-                    }}
-                    removeFile={(fileName) => {
-                      formik.setFieldValue("image", "");
-                      setImageName("");
-                    }}
+                {!AddLanguage && (
+                  <Row>
+                    <div className="ImagesVideos">
+                      <Trans i18nKey={"add_image"} />
+                    </div>
+                    <ImageUpload
+                      bg_plus={thumbnailImage}
+                      imageSpinner={imageSpinner}
+                      setImageSpinner={setImageSpinner}
+                      editTrue="edit"
+                      disabledAddLanguage={AddLanguage}
+                      editedFileNameInitialValue={
+                        formik?.values?.image ? formik?.values?.image : null
+                      }
+                      randomNumber={randomNumber}
+                      fileName={(file, type) => {
+                        formik.setFieldValue(
+                          "image",
+                          `${randomNumber}_${file}`
+                        );
+                        formik.setFieldValue("type", type);
+                        setImageName(`${randomNumber}_${file}`);
+                      }}
+                      removeFile={(fileName) => {
+                        formik.setFieldValue("image", "");
+                        setImageName("");
+                      }}
+                    />
+                  </Row>
+                )}
+              </Col>
+              {!AddLanguage && (
+                <Col>
+                  <FormikCustomDatePicker
+                    label={t("donation_select_date")}
+                    name="DateTime"
+                    pastDateNotAllowed
+                    // showTimeInput={showTimeInput}
                   />
-                </Row>
-              </Col>
-              <Col>
-                <FormikCustomDatePicker
-                  label={t("donation_select_date")}
-                  name="DateTime"
-                  pastDateNotAllowed
-                  // showTimeInput={showTimeInput}
-                />
-              </Col>
+                </Col>
+              )}
             </Row>
             <div className="btn-Published ">
               {loading ? (

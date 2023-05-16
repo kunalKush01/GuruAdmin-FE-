@@ -15,6 +15,7 @@ import BtnPopover from "../partials/btnPopover";
 import { deleteEventDetail } from "../../api/eventApi";
 import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
 import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
+import { useSelector } from "react-redux";
 
 const EventCardWaraper = styled.div`
  .card1 {
@@ -85,6 +86,7 @@ function BtnContent({
   currentPage,
   currentFilter,
   subPermission,
+  totalAvailableLanguage,
   allPermissions,
 }) {
   const history = useHistory();
@@ -98,6 +100,10 @@ function BtnContent({
       :hover {
         background-color: #ff8744;
         color: #fff;
+      }
+      .col-item-disabled{
+        cursor: not-allowed;
+        opacity:0.5;
       }
     }
   `;
@@ -116,6 +122,7 @@ function BtnContent({
     },
   });
   const { t } = useTranslation();
+  const langList = useSelector((state) => state.auth.availableLang);
   return (
     <BtnContentWraper>
       <Row className="MainContainer d-block">
@@ -174,8 +181,9 @@ function BtnContent({
         {allPermissions?.name === "all" || subPermission?.includes(WRITE) ? (
           <Col
             xs={12}
-            className="col-item"
+            className={` ${langList?.length === totalAvailableLanguage ? "col-item-disabled opacity-50" : "col-item"}`}
             onClick={() =>
+              langList?.length === totalAvailableLanguage ? "" :
               history.push(
                 `/events/add-language/${eventId}?page=${currentPage}&filter=${currentFilter}`
               )
@@ -293,6 +301,7 @@ export default function EventCard({
         content={
           <BtnContent
             eventId={data.id}
+            totalAvailableLanguage={data?.languages?.length}
             currentPage={currentPage}
             subPermission={subPermission}
             allPermissions={allPermissions}

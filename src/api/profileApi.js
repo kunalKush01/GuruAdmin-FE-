@@ -25,3 +25,9 @@ export const getAllTrustType = (payload) =>
     showToastOnSuccess: false,
     showToastOnError: false,
   });
+
+  export const addLangProfileDetail = (payload) =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}trust/add-language`, payload),
+  });

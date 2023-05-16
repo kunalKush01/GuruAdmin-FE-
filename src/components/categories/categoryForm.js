@@ -95,7 +95,7 @@ export default function CategoryForm({
         // enableReinitialize
         initialValues={{ ...initialValues }}
         onSubmit={(e) => {
-          setShowPrompt(false)
+          setShowPrompt(false);
           setLoading(true);
           return categoryMutation.mutate({
             name: e?.SubCategory,
@@ -122,27 +122,31 @@ export default function CategoryForm({
             <Row className="paddingForm">
               <Col xs={12} md={10} lg={7}>
                 <Row>
-                  <Col xs={12} sm={6}>
-                    <FormikCustomReactSelect
-                      labelName={t("categories_select_master_category")}
-                      required
-                      name={CategoryFormName}
-                      labelKey={"name"}
-                      valueKey="id"
-                      disabled={editDisableCategory || AddLanguage}
-                      loadOptions={
-                        loadOptions &&
-                        loadOptions?.map((item) => {
-                          return {
-                            ...item,
-                            name: ConverFirstLatterToCapital(item?.name ?? ""),
-                          };
-                        })
-                      }
-                      width={"100"}
-                      {...props}
-                    />
-                  </Col>
+                  {!AddLanguage && (
+                    <Col xs={12} sm={6}>
+                      <FormikCustomReactSelect
+                        labelName={t("categories_select_master_category")}
+                        required
+                        name={CategoryFormName}
+                        labelKey={"name"}
+                        valueKey="id"
+                        disabled={editDisableCategory}
+                        loadOptions={
+                          loadOptions &&
+                          loadOptions?.map((item) => {
+                            return {
+                              ...item,
+                              name: ConverFirstLatterToCapital(
+                                item?.name ?? ""
+                              ),
+                            };
+                          })
+                        }
+                        width={"100"}
+                        {...props}
+                      />
+                    </Col>
+                  )}
                   <Col xs={12} sm={6}>
                     <CustomTextField
                       label={t("categories_sub_category")}

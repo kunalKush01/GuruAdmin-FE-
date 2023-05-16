@@ -251,7 +251,7 @@ export default function EventForm({
         enableReinitialize
         initialValues={initialValues}
         onSubmit={(e) => {
-          setShowPrompt(false)
+          setShowPrompt(false);
           setLoading(true);
           eventMutation.mutate({
             eventId: e.Id,
@@ -273,7 +273,7 @@ export default function EventForm({
       >
         {(formik) => (
           <Form>
-             {showPrompt && (
+            {showPrompt && (
               <Prompt
                 when={!!Object.values(formik?.values).find((val) => !!val)}
                 message={(location) =>
@@ -287,38 +287,40 @@ export default function EventForm({
             <Row className="paddingForm">
               <Col xs={12} md={7}>
                 <Row>
+                  {!AddLanguage && (
+                    <Col xs={12} md={6}>
+                      <AsyncSelectField
+                        // minHeight={"50px"}
+                        name="SelectedEvent"
+                        loadOptions={loadOption}
+                        labelKey={"title"}
+                        valueKey={"id"}
+                        label={t("events_select_globle")}
+                        placeholder={t("events_select_globle")}
+                        disabled={selectEventDisabled}
+                        onChange={(selectOption) => {
+                          formik.setFieldValue("SelectedEvent", selectOption);
+
+                          formik.setFieldValue(
+                            "Title",
+                            selectOption?.title ?? ""
+                          );
+                          formik.setFieldValue(
+                            "Body",
+                            ConvertToString(selectOption?.body ?? "")
+                          );
+
+                          formik.setFieldValue("DateTime", {
+                            start: moment(selectOption?.startDate).toDate(),
+                            end: moment(selectOption?.endDate)
+                              .utcOffset("+0530")
+                              .toDate(),
+                          });
+                        }}
+                      />
+                    </Col>
+                  )}
                   <Col xs={12} md={6}>
-                    <AsyncSelectField
-                      // minHeight={"50px"}
-                      name="SelectedEvent"
-                      loadOptions={loadOption}
-                      labelKey={"title"}
-                      valueKey={"id"}
-                      label={t("events_select_globle")}
-                      placeholder={t("events_select_globle")}
-                      disabled={selectEventDisabled}
-                      onChange={(selectOption) => {
-                        formik.setFieldValue("SelectedEvent", selectOption);
-
-                        formik.setFieldValue(
-                          "Title",
-                          selectOption?.title ?? ""
-                        );
-                        formik.setFieldValue(
-                          "Body",
-                          ConvertToString(selectOption?.body ?? "")
-                        );
-
-                        formik.setFieldValue("DateTime", {
-                          start: moment(selectOption?.startDate).toDate(),
-                          end: moment(selectOption?.endDate)
-                            .utcOffset("+0530")
-                            .toDate(),
-                        });
-                      }}
-                    />
-                  </Col>
-                  <Col xs={12} md={6} >
                     <CustomTextField
                       label={t("news_label_Title")}
                       name="Title"
@@ -329,6 +331,24 @@ export default function EventForm({
                       autoFocus
                     />
                   </Col>
+                  {AddLanguage && (
+                    <Col xs={12} md={6}>
+                      <label>Tags</label>
+                      {/* {JSON.stringify(formik.values.tagsInit)} */}
+                      <ReactTags
+                        tags={formik.values.tagsInit}
+                        suggestions={suggestions}
+                        delimiters={delimiters}
+                        handleDelete={(index) => handleDelete(formik, index)}
+                        handleAddition={(tag) => handleAddition(formik, tag)}
+                        inputFieldPosition="top"
+                        allowDragDrop={false}
+                        autocomplete
+                        editable={false}
+                        autofocus={false}
+                      />
+                    </Col>
+                  )}
                 </Row>
                 <Row>
                   <Col xs={12} className="mt-lg-1">
@@ -339,105 +359,109 @@ export default function EventForm({
                     />
                   </Col>
                 </Row>
-                <Row>
-                  <div className="ImagesVideos">
-                    <Trans i18nKey={"news_label_ImageVedio"} />
-                  </div>
-                  <div>
-                    <ImageUpload
-                      multiple
-                      type={editImage}
-                      disabledAddLanguage={AddLanguage}
-                      imageSpinner={imageSpinner}
-                          setImageSpinner={setImageSpinner}
-                      bg_plus={thumbnailImage}
-                      setDeletedImages={setDeletedImages}
-                      editedFileNameInitialValue={
-                        formik?.values?.images ? formik?.values?.images : null
-                      }
-                      defaultImages={defaultImages}
-                      randomNumber={randomNumber}
-                      fileName={(file, type) => {
-                        formik.setFieldValue("images", [
-                          ...formik?.values?.images,
-                          `${randomNumber}_${file}`,
-                        ]);
-                        formik.setFieldValue("type", type);
-                      }}
-                      removeFile={(fileName) => {
-                        const newFiles = [...formik.values.images];
-                        // newFiles.splice(index, 1);
-                        const updatedFiles = newFiles.filter(
-                          (img) => !img.includes(fileName)
-                        );
-                        formik.setFieldValue("images", updatedFiles);
-                      }}
-                    />
-                  </div>
-                </Row>
-              </Col>
-              <Col xs="4" className="">
-                <Row>
-                  <Col xs="10">
-                    <label>Tags</label>
-                    {/* {JSON.stringify(formik.values.tagsInit)} */}
-                    <ReactTags
-                      tags={formik.values.tagsInit}
-                      suggestions={suggestions}
-                      delimiters={delimiters}
-                      handleDelete={(index) => handleDelete(formik, index)}
-                      handleAddition={(tag) => handleAddition(formik, tag)}
-                      inputFieldPosition="top"
-                      allowDragDrop={false}
-                      autocomplete
-                      editable={false}
-                      autofocus={false}
-                    />
-                  </Col>
-
-                  <Col>
-                    <FormikRangeDatePicker
-                      label={t("donation_select_date_time")}
-                      name="DateTime"
-                      selectsRange
-                    />
-                    <div
-                      style={{
-                        height: "20px",
-                        font: "normal normal bold 11px/33px Noto Sans",
-                      }}
-                    >
-                      {formik.errors.DateTime && formik.touched.DateTime && (
-                        <div className="text-danger">
-                          <Trans i18nKey={formik.errors.DateTime?.end} />
-                        </div>
-                      )}
+                {!AddLanguage && (
+                  <Row>
+                    <div className="ImagesVideos">
+                      <Trans i18nKey={"news_label_ImageVedio"} />
                     </div>
-                  </Col>
-                  <Col xs="10">
-                    <Row className="">
-                      <Col lg="6">
-                        <CustomTextField
-                          label={t("start_Time")}
-                          // value={latitude}
-                          type="time"
-                          name="startTime"
-                          required
-                        />
-                      </Col>
-                      <Col lg="6">
-                        <CustomTextField
-                          label={t("end_Time")}
-                          // value={latitude}
-                          type="time"
-                          name="endTime"
-                          required
-                        />
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
+                    <div>
+                      <ImageUpload
+                        multiple
+                        type={editImage}
+                        disabledAddLanguage={AddLanguage}
+                        imageSpinner={imageSpinner}
+                        setImageSpinner={setImageSpinner}
+                        bg_plus={thumbnailImage}
+                        setDeletedImages={setDeletedImages}
+                        editedFileNameInitialValue={
+                          formik?.values?.images ? formik?.values?.images : null
+                        }
+                        defaultImages={defaultImages}
+                        randomNumber={randomNumber}
+                        fileName={(file, type) => {
+                          formik.setFieldValue("images", [
+                            ...formik?.values?.images,
+                            `${randomNumber}_${file}`,
+                          ]);
+                          formik.setFieldValue("type", type);
+                        }}
+                        removeFile={(fileName) => {
+                          const newFiles = [...formik.values.images];
+                          // newFiles.splice(index, 1);
+                          const updatedFiles = newFiles.filter(
+                            (img) => !img.includes(fileName)
+                          );
+                          formik.setFieldValue("images", updatedFiles);
+                        }}
+                      />
+                    </div>
+                  </Row>
+                )}
               </Col>
+              {!AddLanguage && (
+                <Col xs="4" className="">
+                  <Row>
+                    <Col xs="10">
+                      <label>Tags</label>
+                      {/* {JSON.stringify(formik.values.tagsInit)} */}
+                      <ReactTags
+                        tags={formik.values.tagsInit}
+                        suggestions={suggestions}
+                        delimiters={delimiters}
+                        handleDelete={(index) => handleDelete(formik, index)}
+                        handleAddition={(tag) => handleAddition(formik, tag)}
+                        inputFieldPosition="top"
+                        allowDragDrop={false}
+                        autocomplete
+                        editable={false}
+                        autofocus={false}
+                      />
+                    </Col>
+
+                    <Col>
+                      <FormikRangeDatePicker
+                        label={t("donation_select_date_time")}
+                        name="DateTime"
+                        selectsRange
+                      />
+                      <div
+                        style={{
+                          height: "20px",
+                          font: "normal normal bold 11px/33px Noto Sans",
+                        }}
+                      >
+                        {formik.errors.DateTime && formik.touched.DateTime && (
+                          <div className="text-danger">
+                            <Trans i18nKey={formik.errors.DateTime?.end} />
+                          </div>
+                        )}
+                      </div>
+                    </Col>
+                    <Col xs="10">
+                      <Row className="">
+                        <Col lg="6">
+                          <CustomTextField
+                            label={t("start_Time")}
+                            // value={latitude}
+                            type="time"
+                            name="startTime"
+                            required
+                          />
+                        </Col>
+                        <Col lg="6">
+                          <CustomTextField
+                            label={t("end_Time")}
+                            // value={latitude}
+                            type="time"
+                            name="endTime"
+                            required
+                          />
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                </Col>
+              )}
             </Row>
             <div className="btn-Published mb-2">
               {loading ? (
@@ -454,7 +478,12 @@ export default function EventForm({
                   <Spinner size="md" />
                 </Button>
               ) : (
-                <Button color="primary" className="addEvent-btn " type="submit"   disabled={imageSpinner}>
+                <Button
+                  color="primary"
+                  className="addEvent-btn "
+                  type="submit"
+                  disabled={imageSpinner}
+                >
                   {plusIconDisable && (
                     <span>
                       <Plus className="me-1" size={15} strokeWidth={4} />

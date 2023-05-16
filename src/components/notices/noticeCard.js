@@ -15,6 +15,7 @@ import BtnPopover from "../partials/btnPopover";
 import { deleteNoticeDetail } from "../../api/noticeApi";
 import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
 import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
+import { useSelector } from "react-redux";
 
 const EventCardWaraper = styled.div`
   .card1 {
@@ -82,6 +83,7 @@ const EventCardWaraper = styled.div`
 `;
 function BtnContent({
   noticeId,
+  totalAvailableLanguage,
   currentPage,
   currentFilter,
   subPermission,
@@ -100,6 +102,10 @@ function BtnContent({
         background-color: #ff8744;
         color: #fff;
       }
+      .col-item-disabled{
+        cursor: not-allowed;
+        opacity:0.5;
+      }
     }
   `;
 
@@ -115,6 +121,9 @@ function BtnContent({
       }
     },
   });
+  const langList = useSelector((state) => state.auth.availableLang);
+console.log("langList",langList);
+console.log("langList t",totalAvailableLanguage);
 
   return (
     <BtnContentWraper>
@@ -174,8 +183,9 @@ function BtnContent({
         {allPermissions?.name === "all" || subPermission?.includes(WRITE) ? (
           <Col
             xs={12}
-            className="col-item"
+            className={`${langList?.length === totalAvailableLanguage ? "col-item-disabled opacity-50" : "col-item"}`}
             onClick={() =>
+              langList?.length === totalAvailableLanguage ? "" :
               history.push(
                 `/notices/add-language/${noticeId}?page=${currentPage}&filter=${currentFilter}`
               )
@@ -294,6 +304,7 @@ export default function NoticeCard({
             noticeId={data.id}
             currentPage={currentPage}
             currentFilter={currentFilter}
+            totalAvailableLanguage={data?.languages?.length}
             subPermission={subPermission}
             allPermissions={allPermissions}
           />

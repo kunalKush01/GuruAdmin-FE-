@@ -1,5 +1,6 @@
 import { lazy } from "react";
 import { EDIT, READ, WRITE } from "../../utility/permissionsVariable.js";
+import { exact } from "prop-types";
 
 // ** Document title
 const TemplateTitle = "%s - Vuexy React Admin Template";
@@ -68,7 +69,14 @@ const Routes = [
   {
     path: "/edit-profile",
     component: lazy(() => import("../../views/Profile/userProfile")),
-    type:"editProfile"
+    type:"editProfile",
+    exact:true
+  },
+  {
+    path: "/edit-profile/add-language/:profileId",
+    component: lazy(() => import("../../views/Profile/addProfileLanguage.js")),
+    type:"editProfile",
+    exact:true
   },
   // {
   //   path: "/facilities",

@@ -30,6 +30,7 @@ import Swal from "sweetalert2";
 import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
 import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
 import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
+import { useSelector } from "react-redux";
 
 const NewsCardWaraper = styled.div`
   .imgContainer {
@@ -84,6 +85,7 @@ function BtnContent({
   currentFilter,
   subPermission,
   allPermissions,
+  totalAvailableLanguage
 }) {
   const { t } = useTranslation();
   const history = useHistory();
@@ -97,6 +99,10 @@ function BtnContent({
       :hover {
         background-color: #ff8744;
         color: #fff;
+      }
+      .col-item-disabled{
+        cursor: not-allowed;
+        opacity:0.5;
       }
     }
   `;
@@ -114,6 +120,7 @@ function BtnContent({
     },
   });
 
+  const langList = useSelector((state) => state.auth.availableLang);
   return (
     <BtnContentWraper>
       <Row className="MainContainer d-block">
@@ -173,8 +180,9 @@ function BtnContent({
         {allPermissions?.name === "all" || subPermission?.includes(WRITE) ? (
           <Col
             xs={12}
-            className="col-item"
+            className={`${langList?.length === totalAvailableLanguage ? "col-item-disabled opacity-50" : "col-item"}`}
             onClick={() =>
+              langList?.length === totalAvailableLanguage ? "" :
               history.push(
                 `/news/add-language/${newsId}?page=${currentPage}&filter=${currentFilter}`,
                 newsId
@@ -275,6 +283,7 @@ export default function NewsCard({
           <BtnContent
             newsId={data.id}
             currentPage={currentPage}
+            totalAvailableLanguage={data?.languages?.length}
             currentFilter={currentFilter}
             subPermission={subPermission}
             allPermissions={allPermissions}

@@ -12,6 +12,7 @@ import comfromationIcon from "../../assets/images/icons/news/conformationIcon.sv
 import { deleteCategoryDetail } from "../../api/categoryApi";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
+import { useSelector } from "react-redux";
 
 export function CategoryListTable({ data,page ,currentPage, currentFilter ,subPermission,allPermissions }) {
   const handleDeleteCategory = async (payload) => {
@@ -39,13 +40,14 @@ export function CategoryListTable({ data,page ,currentPage, currentFilter ,subPe
       },
     },
     {
-      name: t("categories_master_category"),
-      selector: (row) => row.masterCategory,
+      name: t("name"),
+      selector: (row) => row.subCategory,
       width:"220px",
     },
     {
-      name: t("categories_sub_category"),
-      selector: (row) => row.subCategory,
+      name: t("categories_master_category"),
+      selector: (row) => row.masterCategory,
+      
       width:
         window.screen.width < "700"
           ? "250px"
@@ -74,6 +76,7 @@ export function CategoryListTable({ data,page ,currentPage, currentFilter ,subPe
     },
   ];
 
+  const langList = useSelector((state) => state.auth.availableLang);
 
   const categoriesList = useMemo(() => {
     return data.map((item) => ({
@@ -84,6 +87,7 @@ export function CategoryListTable({ data,page ,currentPage, currentFilter ,subPe
       addLanguage:  allPermissions?.name === "all" || subPermission?.includes(WRITE) ? (        
         <Button
           outline
+          className={langList?.length === item?.languages?.length && "opacity-50 disabled"}
           onClick={() =>
             history.push(`/configuration/categories/add-language/${item.id}?page=${currentPage}&filter=${currentFilter}`)
           }

@@ -13,6 +13,7 @@ import ProfileForm from "../../components/Profile/profileForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import he from "he";
 import { Helmet } from "react-helmet";
+import { Button } from "reactstrap";
 const ProfileWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -63,6 +64,7 @@ export default function AddProfile() {
   const userDetail = useSelector((state) => state.auth.userDetail);
   const history = useHistory();
   const langArray = useSelector((state) => state.auth.availableLang);
+
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
   const dispatch = useDispatch();
@@ -85,7 +87,7 @@ export default function AddProfile() {
       languageId: getLangId(langArray, langSelection),
     });
   };
-// console.log("files Api -----> ",profileDetail?.data?.result?.documents);
+  // console.log("files Api -----> ",profileDetail?.data?.result?.documents);
   const initialValues = useMemo(() => {
     const documentName = profileDetail?.data?.result?.documents?.map(
       (item) => item?.name
@@ -121,6 +123,9 @@ export default function AddProfile() {
     };
   }, [profileDetail]);
 
+  const langList = useSelector((state) => state.auth.availableLang);
+
+
   return (
     <ProfileWarper>
       <Helmet>
@@ -138,16 +143,36 @@ export default function AddProfile() {
             <Trans i18nKey={"userProfile"} />
           </div>
         </div>
-        <div className="addProfile">
-          <div className="d-none d-sm-block">
-            <Trans i18nKey={"news_InputIn"} />
+        <div className="d-flex justify-content-between">
+          <div className="addProfile">
+            <div className="d-none d-sm-block">
+              <Trans i18nKey={"news_InputIn"} />
+            </div>
+            <CustomDropDown
+              ItemListArray={profileDetail?.data?.result?.languages}
+              className={"ms-1"}
+              defaultDropDownName={ConverFirstLatterToCapital(
+                langSelection ?? ""
+              )}
+              handleDropDownClick={(e) =>
+                setLangSelection(ConverFirstLatterToCapital(e.target.name))
+              }
+            />
           </div>
-          <CustomDropDown
-            ItemListArray={langArray}
-            className={"ms-1"}
-            defaultDropDownName={"English"}
-            disabled
-          />
+          {langList?.length !== profileDetail?.data?.result?.languages?.length && (
+            <Button
+              color="primary"
+              className="ms-1"
+              onClick={() => {
+                history.push(
+                  `/edit-profile/add-language/${profileDetail?.data?.result?.id}`
+                );
+              }}
+            >
+              {" "}
+              Add language{" "}
+            </Button>
+          )}
         </div>
       </div>
       <ProfileForm

@@ -1,4 +1,5 @@
 import { useField } from "formik";
+import { Trans } from "react-i18next";
 import styled from "styled-components";
 
 const WaraperTextArea = styled.div`
@@ -11,7 +12,7 @@ const WaraperTextArea = styled.div`
   }
   .text-area {
     border: none !important;
-    background-color: #FFF7E8 !important;
+    background-color: #fff7e8 !important;
     color: #583703 !important;
     font: normal normal normal 13px/20px Noto Sans;
     width: 100%;
@@ -29,7 +30,9 @@ const TextArea = ({ label, ...props }) => {
       <label htmlFor={props.id || props.name}>{label}*</label>
       <textarea className="text-area" {...field} {...props} />
       {meta.touched && meta.error ? (
-        <div className="error text-danger">{meta.error}</div>
+        <div className="error text-danger">
+          <Trans i18nKey={meta.error} />
+        </div>
       ) : null}
     </WaraperTextArea>
   );
