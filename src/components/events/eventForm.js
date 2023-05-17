@@ -457,6 +457,25 @@ export default function EventForm({
                             required
                           />
                         </Col>
+
+                        {moment(formik.values.DateTime.start).format(
+                          "DD-MMM-YYYY"
+                        ) ===
+                        moment(formik.values.DateTime.end).format("DD-MMM-YYYY")
+                          ? formik.values.startTime === formik.values.endTime &&
+                            formik.values.startTime !== "" &&
+                            formik.values.endTime !== "" && (
+                              <div
+                                className="text-danger"
+                                style={{
+                                  height: "20px",
+                                  font: "normal normal bold 11px/5px Noto Sans",
+                                }}
+                              >
+                                <Trans i18nKey={"same_time"} />
+                              </div>
+                            )
+                          : ""}
                       </Row>
                     </Col>
                   </Row>

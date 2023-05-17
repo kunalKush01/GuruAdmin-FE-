@@ -399,7 +399,10 @@ export default function ProfileForm({
     endTime: yup.string().required("end_time_required"),
   });
   const [imageSpinner, setImageSpinner] = useState(false);
-  const [profileName, setProfileName] = useState(profileImageName);
+  const [profileName, setProfileName] = useState();
+  useEffect(()=>{
+    setProfileName(profileImageName) 
+  },[profileImageName])
   return (
     <ProfileFormWaraper className="FormikWraper">
       <Formik

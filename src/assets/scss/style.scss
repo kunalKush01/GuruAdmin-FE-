@@ -39,7 +39,7 @@ body::-webkit-scrollbar{
 	box-shadow: none !important;
   }
 .swal2-modal{
-	padding: 30px 55px;
+	padding: 10px 55px 30px 55px ;
 	
 	.swal2-title{
 		padding: 0px;
@@ -103,6 +103,7 @@ body::-webkit-scrollbar{
 	z-index: 1;
 	background: #fff7e8
 }
+
 .btn-Published {
 	z-index: 5000000000000000;
 	position: fixed;

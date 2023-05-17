@@ -181,7 +181,7 @@ function BtnContent({
         {allPermissions?.name === "all" || subPermission?.includes(WRITE) ? (
           <Col
             xs={12}
-            className={` ${langList?.length === totalAvailableLanguage ? "col-item-disabled opacity-50" : "col-item"}`}
+            className={` ${langList?.length === totalAvailableLanguage ? "col-item-disabled opacity-50 pb-1" : "col-item pb-1"}`}
             onClick={() =>
               langList?.length === totalAvailableLanguage ? "" :
               history.push(

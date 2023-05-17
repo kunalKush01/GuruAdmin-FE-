@@ -37,6 +37,7 @@ export const CustomReactSelect = ({
         backgroundColor: "#FFF7E8",
         color: "#583703",
         // width: "fit-content"  ,
+        maxHeight:"150px",
         font: "normal normal bold 15px/20px Noto Sans",
         "::-webkit-scrollbar": {
           display: "none",

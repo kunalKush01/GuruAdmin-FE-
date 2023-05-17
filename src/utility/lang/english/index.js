@@ -92,7 +92,7 @@ export const englishContent = {
   news_not_click_add_news: 'Click on "Add News" to add news on the screen',
 
   // All static content of Events
-
+  same_time:"End time cannot be same as start time",
   events_AddEvent: "Add Event",
   events_latest_event: "Latest Events",
   events_title_required: "Title is required",

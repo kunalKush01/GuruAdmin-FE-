@@ -176,7 +176,7 @@ export default function News() {
               </div>
             </div>
           </div>
-          <div className="addNews mt-1 justify-content-between">
+          <div className="addNews mt-1 mt-sm-0 justify-content-between">
             <ChangePeriodDropDown
               className={"me-1"}
               dropDownName={dropDownName}

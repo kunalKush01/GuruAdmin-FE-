@@ -68,7 +68,7 @@ const LoginCover = () => {
     password: yup.string().required("Password is required."),
   });
   const forgetPasswordSchema = yup.object().shape({
-    email: yup.string().required().min(5),
+    email: yup.string().required("Email is required.").min(5),
   });
   const LoginWarraper = styled.div`
     .errorMassage {
@@ -341,7 +341,7 @@ const LoginCover = () => {
                 </span>
 
                 <span className="text-primary signUp cursor-pointer">
-                  <a href="https://am-website-dev.paridhan.app/#home">
+                  <a href="https://am-website-staging.paridhan.app/#home">
                     Sign Up
                   </a>
                 </span>

@@ -78,6 +78,16 @@ const NewsCardWaraper = styled.div`
     padding: 0px 5px;
     font: normal normal bold 12px/30px noto sans;
   }
+  div.cardLangScroll {
+    /* height: 45px; */
+    display: flex;
+    min-width: 230px;
+    overflow-x: scroll !important;
+    ::-webkit-scrollbar {
+      width: 10px;
+      display: block;
+    }
+  }
 `;
 function BtnContent({
   newsId,
@@ -180,7 +190,7 @@ function BtnContent({
         {allPermissions?.name === "all" || subPermission?.includes(WRITE) ? (
           <Col
             xs={12}
-            className={`${langList?.length === totalAvailableLanguage ? "col-item-disabled opacity-50" : "col-item"}`}
+            className={`${langList?.length === totalAvailableLanguage ? "col-item-disabled opacity-50 pb-1" : "col-item pb-1"}`}
             onClick={() =>
               langList?.length === totalAvailableLanguage ? "" :
               history.push(
@@ -253,7 +263,7 @@ export default function NewsCard({
               />
             </CardText>
           </div>
-          <div>
+          <div className="cardLangScroll">
             {data.languages.map((item) => {
               return (
                 <Button outline key={item.id} color="primary">
