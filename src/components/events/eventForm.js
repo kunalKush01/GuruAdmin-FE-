@@ -263,7 +263,9 @@ export default function EventForm({
             endTime: e?.endTime,
             body: e.Body,
             startDate: moment(e?.DateTime?.start).format("YYYY-MM-DD"),
-            endDate: moment(e?.DateTime?.end).format("YYYY-MM-DD"),
+            endDate: e?.DateTime?.end
+              ? moment(e?.DateTime?.end).format("YYYY-MM-DD")
+              : moment(e?.DateTime?.start).format("YYYY-MM-DD"),
             images: e?.images,
             removedImages: deletedImages,
           });

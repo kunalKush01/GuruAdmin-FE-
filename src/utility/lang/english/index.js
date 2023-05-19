@@ -34,6 +34,7 @@ export const englishContent = {
   downloadReceipt: "Download Receipt",
   pay_donation: "Pay Donation",
   payment: "Pay Now",
+  injection_found:"Special characters are not supported",
   logout_msg: "Are you sure you want to logout ?",
   no: "No",
   yes: "Yes",

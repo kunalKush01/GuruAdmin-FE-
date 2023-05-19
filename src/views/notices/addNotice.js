@@ -33,7 +33,7 @@ const handleCreateNotice = async (payload) => {
   return createNotice(payload);
 };
 const schema = yup.object().shape({
-  Title: yup.string().required("notices_title_required"),
+  Title: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("notices_title_required"),
   Body: yup.string().required("notices_desc_required"),
   DateTime: yup.string(),
   SelectedNotice: yup.mixed(),

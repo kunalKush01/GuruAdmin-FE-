@@ -34,11 +34,11 @@ const handleCreateEvent = async (payload) => {
   return createEvent(payload);
 };
 const schema = yup.object().shape({
-  Title: yup.string().required("events_title_required"),
+  Title: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("events_title_required"),
   Body: yup.string().required("events_desc_required"),
   DateTime: yup.object().shape({
     start: yup.string().required("events_startDate_required"),
-    end: yup.mixed().required("events_endDate_required"),
+    // end: yup.mixed().required("events_endDate_required"),
   }),
   startTime: yup.string().required("events_startTime_required"),
   endTime: yup.string().required("events_endTime_required"),
@@ -52,7 +52,7 @@ const initialValues = {
   images: [],
   tagsInit: [],
   Body: "",
-  DateTime: { start: new Date(), end: "" },
+  DateTime: { start: new Date(), end: null },
   startTime: "",
   endTime: "",
 };

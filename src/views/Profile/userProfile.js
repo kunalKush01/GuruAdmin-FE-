@@ -28,7 +28,7 @@ const ProfileWarper = styled.div`
 `;
 
 const schema = yup.object().shape({
-  trustName: yup.string().required("name_required"),
+  trustName: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("name_required"),
   trustType: yup.mixed().required("trust_type_required"),
   // preference: yup.mixed().required("trust_prefenses_required"),
   trustEmail: yup.string().email("email_invalid").required("email_required"),
@@ -37,7 +37,7 @@ const schema = yup.object().shape({
     .min(10, "Mobile Number must be 10 digits.")
     .required("number_required"),
   about: yup.string().required("trust_about_required"),
-  name: yup.string().required("name_required"),
+  name: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("name_required"),
   email: yup.string().email("email_invalid").required("email_required"),
   mobileNumber: yup
     .string()

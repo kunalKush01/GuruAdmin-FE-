@@ -408,9 +408,9 @@ export default function ProfileForm({
   // facilities validation
 
   const facilitiesValidation = yup.object().shape({
-    name: yup.string().required("name_required"),
+    name: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("name_required"),
     // image: yup.string().required("email_required"),
-    description: yup.string().required("news_desc_required"),
+    description: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("news_desc_required"),
     startTime: yup.string().required("start_time_required"),
     endTime: yup.string().required("end_time_required"),
   });

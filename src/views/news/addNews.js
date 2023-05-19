@@ -33,7 +33,7 @@ const handleCreateNews = async (payload) => {
   return createNews(payload);
 };
 const schema = yup.object().shape({
-  Title: yup.string().required("news_title_required"),
+  Title: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("news_title_required"),
   // Tags: yup.string().required("news_tags_required"),
   Body: yup.string().required("news_desc_required"),
   PublishedBy: yup.string().required("news_publish_required"),
