@@ -84,7 +84,7 @@ export default function DonationBoxListTable({ data, financeReport }) {
             financeReport ? "d-none" : "cursor-pointer "
           }
           onClick={() => {
-            financeReport ? "" : history.push(`/donation_box/edit/${item.id}`);
+            financeReport ? "" : history.push(`/hundi/edit/${item.id}`);
           }}
         />
       ),

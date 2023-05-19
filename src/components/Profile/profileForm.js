@@ -14,7 +14,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Modal, ModalBody, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
-import { getAllCityState, getAllTrustType } from "../../api/profileApi";
+import {
+  getAllCityState,
+  getAllTrustPrefeces,
+  getAllTrustType,
+} from "../../api/profileApi";
 import defaultAvtar from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import pdfIcon from "../../assets/images/icons/iconPDF.svg";
 import passwordEyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
@@ -31,6 +35,7 @@ import RichTextField from "../partials/richTextEditorField";
 import { handleProfileUpdate, login } from "../../redux/authSlice";
 import { Prompt } from "react-router-dom";
 import { add } from "lodash";
+import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
 
 const ProfileFormWaraper = styled.div`
   .existlabel {
@@ -189,6 +194,7 @@ const ProfileFormWaraper = styled.div`
   }
   .trust_img img {
     border-radius: 10px;
+    background-color: #fff7e8;
     width: 100%;
     height: 100%;
   }
@@ -286,6 +292,16 @@ export default function ProfileForm({
     () => loadStateQuery?.data?.results ?? [],
     [loadStateQuery?.data?.results]
   );
+  // Trust preference
+  // const loadTrustPreference = useQuery(["Preference"], () =>
+  //   getAllTrustPrefeces()
+  // );
+
+  // const trustPreference = useMemo(
+  //   () => loadTrustPreference?.data?.results ?? [],
+  //   [loadTrustPreference?.data?.results]
+  // );
+
   const [cityLoadOption, setCityLoadOption] = useState([]);
 
   // Facility image uploade
@@ -400,9 +416,9 @@ export default function ProfileForm({
   });
   const [imageSpinner, setImageSpinner] = useState(false);
   const [profileName, setProfileName] = useState();
-  useEffect(()=>{
-    setProfileName(profileImageName) 
-  },[profileImageName])
+  useEffect(() => {
+    setProfileName(profileImageName);
+  }, [profileImageName]);
   return (
     <ProfileFormWaraper className="FormikWraper">
       <Formik
@@ -442,6 +458,7 @@ export default function ProfileForm({
                 profilePhoto: editProfile ? profileName : e?.profileImage,
                 trustName: e?.trustName,
                 typeId: e?.trustType?.id,
+                // preferenceId: e?.preference?._id,
                 trustEmail: e?.trustEmail,
                 trustNumber: e?.trustNumber.toString(),
                 about: e?.about,
@@ -571,8 +588,28 @@ export default function ProfileForm({
                       </Col>
                     </Row>
                   )}
+                  {/* <Row>
+                    <Col xs={12} md={6} lg={4}>
+                      <FormikCustomReactSelect
+                        labelName={t("trust_prefenses")}
+                        name="preference"
+                        required
+                        labelKey={"name"}
+                        valueKey="id"
+                        loadOptions={trustPreference?.map((item) => {
+                          return {
+                            ...item,
+                            name: ConverFirstLatterToCapital(item?.name),
+                          };
+                        })}
+                        defaultValue={formik?.values?.preference}
+                        width={"100"}
+                      />
+                    </Col>
+                  </Row> */}
                 </Col>
               </Row>
+
               <Row className="">
                 {/* <Col>
                   <TextArea
@@ -832,9 +869,16 @@ export default function ProfileForm({
                             <Trans i18nKey={"edit_image"} />
                           </div>
                           <img
-                            src={item?.preview ? item?.preview : item?.image}
-                            alt=""
+                            src={
+                              item?.preview
+                                ? item?.preview
+                                : item?.image
+                                ? item?.image
+                                : placeHolder
+                            }
+                            alt="Facility Image"
                           />
+                          {/* </div> */}
                         </div>
                         <div className="py-1">
                           <div className="temple_name">

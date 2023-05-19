@@ -30,6 +30,7 @@ const ProfileWarper = styled.div`
 const schema = yup.object().shape({
   trustName: yup.string().required("name_required"),
   trustType: yup.mixed().required("trust_type_required"),
+  // preference: yup.mixed().required("trust_prefenses_required"),
   trustEmail: yup.string().email("email_invalid").required("email_required"),
   trustNumber: yup
     .string()
@@ -97,6 +98,7 @@ export default function AddProfile() {
       trustName: profileDetail?.data?.result?.trustName ?? "",
       profileImage: profileDetail?.data?.result?.profilePhoto,
       trustType: profileDetail?.data?.result?.trustType ?? "",
+      // preference:profileDetail?.data?.result?.preference ?? "",
       trustEmail: profileDetail?.data?.result?.trustEmail ?? "",
       trustNumber: profileDetail?.data?.result?.trustNumber ?? "",
       about: he.decode(profileDetail?.data?.result?.about ?? ""),

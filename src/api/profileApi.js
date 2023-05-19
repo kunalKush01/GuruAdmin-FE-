@@ -31,3 +31,9 @@ export const getAllTrustType = (payload) =>
     requestFunction: (axios) =>
       axios.post(`${API_BASE_URL}trust/add-language`, payload),
   });
+  export const getAllTrustPrefeces = (payload) =>
+  callApi({
+    requestFunction: (axios) => axios.get(`${API_BASE_URL}preference`, payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });

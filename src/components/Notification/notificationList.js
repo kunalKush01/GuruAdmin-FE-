@@ -2,11 +2,12 @@ import React from "react";
 import { Col, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
 import defaultIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
+import he from "he"
 import {
   ConverFirstLatterToCapital,
-  ConvertToString,
 } from "../../utility/formater";
 import moment from "moment";
+import { ConvertToString } from "../financeReport/reportJsonExport";
 
 const NotificationWarapper = styled.div`
   .dateTime {
@@ -45,7 +46,7 @@ const NotificationList = ({ data }) => {
                 </div>
               </div>
               <div className="notificationPara">
-                {ConverFirstLatterToCapital(item?.notifyMessage ?? "")}
+                {ConvertToString(item?.notifyMessage ?? "")}
               </div>
             </Col>
             <hr className="mt-1" />

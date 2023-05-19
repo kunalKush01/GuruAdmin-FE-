@@ -302,6 +302,8 @@ export const englishContent = {
   trust_facility: "TRUST FACILITIES",
   trust_image_certificate: "TRUST IMAGES AND CERTIFICATES",
   location:"Location",
+  trust_prefenses:"Trust Prefenses",
+  trust_prefenses_required:"Trust prefenses is required",
   latitude:"Latitude",
   longitude:"Longitude",
   userProfile: "Profile",

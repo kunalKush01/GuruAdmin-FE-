@@ -16,7 +16,7 @@ const serchablepath = [
   "/punyarjak",
   "/donation",
   "/commitment",
-  "/donation_box",
+  "/hundi",
 ];
 export const isSerchable = () => {
   const pathName = useLocation().pathname;
@@ -52,7 +52,7 @@ export const setPlaceholderSerchbar = () => {
       return "Search All Donation";
       case "/punyarjak":
       return "Search All Punyarjak";
-    case "/donation_box":
+    case "/hundi":
       return "Search All Donation Collection Box";
     case "/commitment":
       return "Search All Commitment ";
