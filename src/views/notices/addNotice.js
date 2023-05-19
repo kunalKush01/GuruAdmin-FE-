@@ -37,6 +37,8 @@ const schema = yup.object().shape({
   Body: yup.string().required("notices_desc_required"),
   DateTime: yup.string(),
   SelectedNotice: yup.mixed(),
+  tagsInit:yup.array().max(15 ,"tags_limit"),
+
 });
 
 const initialValues = {

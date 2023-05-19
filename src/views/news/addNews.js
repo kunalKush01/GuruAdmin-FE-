@@ -38,6 +38,8 @@ const schema = yup.object().shape({
   Body: yup.string().required("news_desc_required"),
   PublishedBy: yup.string().required("news_publish_required"),
   DateTime: yup.string(),
+  tagsInit:yup.array().max(15 ,"tags_limit"),
+
 });
 
 export default function AddNews() {

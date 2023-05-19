@@ -38,6 +38,7 @@ export const englishContent = {
   logout_msg: "Are you sure you want to logout ?",
   no: "No",
   yes: "Yes",
+  tags_limit:"Tags limit exceeded",
   // All static content of Dashboard
   dashboard_donationReceived: "Donation Received",
   dashboard_donationPending: "Donation Pending",

@@ -44,6 +44,8 @@ const schema = yup.object().shape({
   startTime: yup.string().required("events_startTime_required"),
   endTime: yup.string().required("events_endTime_required"),
   SelectedEvent: yup.mixed(),
+  tagsInit:yup.array().max(15 ,"tags_limit"),
+
 });
 
 const getLangId = (langArray, langSelection) => {

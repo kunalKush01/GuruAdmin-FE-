@@ -38,6 +38,7 @@ const schema = yup.object().shape({
   Title: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("notices_title_required"),
   Body: yup.string().required("notices_desc_required"),
   DateTime: yup.string(),
+  tagsInit:yup.array().max(15 ,"tags_limit"),
 });
 
 const getLangId = (langArray, langSelection) => {
