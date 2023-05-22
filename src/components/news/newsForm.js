@@ -281,7 +281,6 @@ export default function NewsForm({
                   </Col>
                   <Col xs={12} md={6}>
                     <label>Tags</label>
-                    {/* {JSON.stringify(formik.values.tagsInit)} */}
                     <ReactTags
                       tags={formik.values.tagsInit}
                       suggestions={suggestions}
@@ -294,6 +293,20 @@ export default function NewsForm({
                       editable={false}
                       autofocus={false}
                     />
+                    {formik.errors.tagsInit && (
+                      <div
+                        style={{
+                          height: "20px",
+                          font: "normal normal bold 11px/33px Noto Sans",
+                        }}
+                      >
+                        {formik.errors.tagsInit && (
+                          <div className="text-danger">
+                            <Trans i18nKey={formik.errors.tagsInit} />
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </Col>
                 </Row>
                 <Row>

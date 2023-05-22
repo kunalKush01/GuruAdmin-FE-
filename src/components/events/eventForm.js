@@ -1,5 +1,5 @@
 import { Form, Formik } from "formik";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import CustomTextField from "../partials/customTextField";
 import * as yup from "yup";
 import RichTextField from "../partials/richTextEditorField";
@@ -27,7 +27,8 @@ import { ConvertToString } from "../financeReport/reportJsonExport";
 import ImageUpload from "../partials/imageUpload";
 import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
 import { Prompt } from "react-router-dom";
-
+import TimePicker from "react-time-picker";
+import "react-time-picker/dist/TimePicker.css";
 const FormWaraper = styled.div`
   .existlabel {
     margin-bottom: 10px;
@@ -144,6 +145,34 @@ const FormWaraper = styled.div`
     cursor: pointer;
   }
   /* input tags  css start */
+
+  /* time picker css */
+  .react-time-picker__wrapper {
+    border: none !important;
+  }
+  .react-time-picker {
+    width: 100%;
+  }
+  .react-time-picker__inputGroup {
+    color: #583703 !important;
+    border: none !important;
+    background-color: #fff7e8 !important;
+    font: normal normal normal 13px/20px Noto Sans;
+    width: 100%;
+    padding: 0rem 0.5rem !important;
+    border-radius: 5px;
+    line-height: 30px;
+  }
+  .react-time-picker__inputGroup__input:invalid {
+    background: #fff7e8 !important;
+  }
+  input:focus {
+    outline: none !important;
+  }
+  input:focus-visible {
+    outline-offset: none;
+    outline: none;
+  }
   //  media query
 
   @media only screen and (max-width: 768px) and (min-width: 320px) {
@@ -244,7 +273,21 @@ export default function EventForm({
   const [deletedImages, setDeletedImages] = useState([]);
   const [showPrompt, setShowPrompt] = useState(true);
   const [imageSpinner, setImageSpinner] = useState(false);
+  const [selectedTimeStart, setSelectedTimeStart] = useState("");
+  const [selectedTimeEnd, setSelectedTimeEnd] = useState("");
 
+  useEffect(() => {
+    setSelectedTimeEnd(initialValues?.endTime);
+    setSelectedTimeStart(initialValues?.startTime);
+  }, [initialValues]);
+
+  const handleTimeChange = (time) => {
+    setSelectedTimeStart(time);
+  };
+  const handleTimeChangeEnd = (time) => {
+    // setSelectedTimeStart(time);
+    setSelectedTimeEnd(time);
+  };
   return (
     <FormWaraper className="FormikWraper">
       <Formik
@@ -333,10 +376,10 @@ export default function EventForm({
                       autoFocus
                     />
                   </Col>
+
                   {AddLanguage && (
                     <Col xs={12} md={6}>
                       <label>Tags</label>
-                      {/* {JSON.stringify(formik.values.tagsInit)} */}
                       <ReactTags
                         tags={formik.values.tagsInit}
                         suggestions={suggestions}
@@ -349,6 +392,20 @@ export default function EventForm({
                         editable={false}
                         autofocus={false}
                       />
+                      {formik.errors.tagsInit && (
+                        <div
+                          style={{
+                            height: "20px",
+                            font: "normal normal bold 11px/33px Noto Sans",
+                          }}
+                        >
+                          {formik.errors.tagsInit && (
+                            <div className="text-danger">
+                              <Trans i18nKey={formik.errors.tagsInit} />
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </Col>
                   )}
                 </Row>
@@ -418,6 +475,20 @@ export default function EventForm({
                         editable={false}
                         autofocus={false}
                       />
+                      {formik.errors.tagsInit && (
+                        <div
+                          style={{
+                            height: "20px",
+                            font: "normal normal bold 11px/33px Noto Sans",
+                          }}
+                        >
+                          {formik.errors.tagsInit && (
+                            <div className="text-danger">
+                              <Trans i18nKey={formik.errors.tagsInit} />
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </Col>
 
                     <Col>
@@ -440,30 +511,101 @@ export default function EventForm({
                       </div>
                     </Col>
                     <Col xs="10">
-                      <Row className="">
-                        <Col lg="6">
-                          <CustomTextField
-                            label={t("start_Time")}
-                            // value={latitude}
-                            type="time"
-                            name="startTime"
-                            required
-                          />
+                      <Row>
+                        <Col xs="6" md="5">
+                          {/* {JSON.stringify(initialValues.startTime)} */}
+                          {!AddLanguage && (
+                            <>
+                              <label>
+                                <Trans i18nKey={"start_Time"} />*
+                              </label>
+                              <TimePicker
+                                onChange={(e) => {
+                                  handleTimeChange(e);
+                                  formik.setFieldValue("startTime", e);
+                                }}
+                                name="startTime"
+                                value={
+                                  selectedTimeStart ?? formik.values.startTime
+                                }
+                                disableClock={true}
+                                clearIcon={null}
+                                format="HH:mm"
+                                placeholder="HH:mm"
+                              />
+                              {formik.errors.startTime &&
+                                formik.touched.startTime && (
+                                  <div
+                                    style={{
+                                      height: "20px",
+                                      font: "normal normal bold 11px/33px Noto Sans",
+                                    }}
+                                  >
+                                    {formik.errors.startTime &&
+                                      formik.touched.startTime && (
+                                        <div className="text-danger">
+                                          <Trans
+                                            i18nKey={formik.errors.startTime}
+                                          />
+                                        </div>
+                                      )}
+                                  </div>
+                                )}
+                            </>
+                          )}
+                          {/* <RangeTimePicker
+                          label={t("Start")}
+                          name="startTime"
+                          placeholderText="00:00"
+                        /> */}
                         </Col>
-                        <Col lg="6">
-                          <CustomTextField
-                            label={t("end_Time")}
-                            // value={latitude}
-                            type="time"
-                            name="endTime"
-                            required
-                          />
+                        <Col xs="6" md="5" className="">
+                          {!AddLanguage && (
+                            // <CustomTextField
+                            //   label={t("end_Time")}
+                            //   // value={latitude}
+                            //   type="time"
+                            //   name="endTime"
+                            //   required
+                            // />
+                            <>
+                              <label>
+                                <Trans i18nKey={"end_Time"} />*
+                              </label>
+                              <TimePicker
+                                onChange={(e) => {
+                                  handleTimeChangeEnd(e);
+                                  formik.setFieldValue("endTime", e);
+                                }}
+                                name="endTime"
+                                value={selectedTimeEnd}
+                                disableClock={true}
+                                clearIcon={null}
+                                format="HH:mm"
+                                placeholder="HH:mm"
+                              />
+                              {formik.errors.endTime &&
+                                formik.touched.endTime && (
+                                  <div
+                                    style={{
+                                      height: "20px",
+                                      font: "normal normal bold 11px/33px Noto Sans",
+                                    }}
+                                  >
+                                    {formik.errors.endTime &&
+                                      formik.touched.endTime && (
+                                        <div className="text-danger">
+                                          <Trans
+                                            i18nKey={formik.errors.endTime}
+                                          />
+                                        </div>
+                                      )}
+                                  </div>
+                                )}
+                            </>
+                          )}
                         </Col>
-
-                        {moment(formik.values.DateTime.start).format(
-                          "DD-MMM-YYYY"
-                        ) ===
-                        moment(formik.values.DateTime.end).format("DD-MMM-YYYY")
+                        {formik.values.DateTime.end === null
                           ? formik.values.startTime === formik.values.endTime &&
                             formik.values.startTime !== "" &&
                             formik.values.endTime !== "" && (
@@ -471,7 +613,7 @@ export default function EventForm({
                                 className="text-danger"
                                 style={{
                                   height: "20px",
-                                  font: "normal normal bold 11px/5px Noto Sans",
+                                  font: "normal normal bold 11px/20px Noto Sans",
                                 }}
                               >
                                 <Trans i18nKey={"same_time"} />

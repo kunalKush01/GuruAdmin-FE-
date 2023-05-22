@@ -35,15 +35,15 @@ const handleCreateEvent = async (payload) => {
 };
 const schema = yup.object().shape({
   Title: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("events_title_required"),
+  tagsInit:yup.array().max(15 ,"tags_limit"),
   Body: yup.string().required("events_desc_required"),
   DateTime: yup.object().shape({
     start: yup.string().required("events_startDate_required"),
     // end: yup.mixed().required("events_endDate_required"),
   }),
-  startTime: yup.string().required("events_startTime_required"),
-  endTime: yup.string().required("events_endTime_required"),
+  startTime: yup.mixed().required("events_startTime_required"),
+  endTime: yup.mixed().required("events_endTime_required"),
   SelectedEvent: yup.mixed(),
-  tagsInit:yup.array().max(15 ,"tags_limit"),
 
 });
 
