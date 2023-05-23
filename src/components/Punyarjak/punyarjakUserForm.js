@@ -192,7 +192,7 @@ export default function PunyarjakForm({
                   </Col>
                   <Col xs={12} className="mt-lg-1">
                     <RichTextField
-                      height="100px"
+                      height="200px"
                       label={t("news_label_Description")}
                       name="description"
                     />

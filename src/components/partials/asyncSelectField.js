@@ -48,7 +48,7 @@ export default function AsyncSelectField({
       zIndex:999999,
       color: "#583703",
       maxHeight:"150px",
-      font: "normal normal bold 15px/20px Noto Sans",
+      font: "normal normal normal 15px/20px Noto Sans",
       "::-webkit-scrollbar":{
         display:"none"
       },

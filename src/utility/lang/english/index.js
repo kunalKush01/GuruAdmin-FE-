@@ -39,6 +39,7 @@ export const englishContent = {
   no: "No",
   yes: "Yes",
   tags_limit:"Tags limit exceeded",
+  end_time_less:"The End time must be greater than the Start time",
   // All static content of Dashboard
   dashboard_donationReceived: "Donation Received",
   dashboard_donationPending: "Donation Pending",

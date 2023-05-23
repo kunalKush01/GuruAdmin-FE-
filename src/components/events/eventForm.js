@@ -412,7 +412,7 @@ export default function EventForm({
                 <Row>
                   <Col xs={12} className="mt-lg-1">
                     <RichTextField
-                      height="100px"
+                      height="200px"
                       label={t("news_label_Description")}
                       name="Body"
                     />
@@ -605,7 +605,47 @@ export default function EventForm({
                             </>
                           )}
                         </Col>
-                        {formik.values.DateTime.end === null
+                        {formik?.values?.DateTime?.end === null ||
+                        moment(formik?.values?.DateTime?.start).format(
+                          "dd-mm-yy"
+                        ) ===
+                          moment(formik?.values?.DateTime?.end).format(
+                            "dd-mm-yy"
+                          ) ? (
+                          formik?.values?.startTime ===
+                            formik?.values?.endTime &&
+                          formik?.values?.startTime !== "" &&
+                          formik?.values?.endTime !== "" ? (
+                            <div
+                              className="text-danger"
+                              style={{
+                                height: "20px",
+                                font: "normal normal bold 11px/20px Noto Sans",
+                              }}
+                            >
+                              {/* <Trans i18nKey={"same_time"} /> */}
+                              <Trans i18nKey={"same_time"} />
+                            </div>
+                          ) : selectedTimeStart > selectedTimeEnd &&
+                            formik?.values?.endTime !== "" ? (
+                            <div
+                              className="text-danger"
+                              style={{
+                                height: "20px",
+                                font: "normal normal bold 11px/20px Noto Sans",
+                              }}
+                            >
+                              {/* <Trans i18nKey={"same_time"} /> */}
+                              <Trans i18nKey={"end_time_less"} />
+                            </div>
+                          ) : (
+                            ""
+                          )
+                        ) : (
+                          ""
+                        )}
+
+                        {/* {formik.values.DateTime.end === null
                           ? formik.values.startTime === formik.values.endTime &&
                             formik.values.startTime !== "" &&
                             formik.values.endTime !== "" && (
@@ -619,7 +659,7 @@ export default function EventForm({
                                 <Trans i18nKey={"same_time"} />
                               </div>
                             )
-                          : ""}
+                          : ""} */}
                       </Row>
                     </Col>
                   </Row>

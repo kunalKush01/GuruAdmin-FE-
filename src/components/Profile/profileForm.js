@@ -293,14 +293,14 @@ export default function ProfileForm({
     [loadStateQuery?.data?.results]
   );
   // Trust preference
-  // const loadTrustPreference = useQuery(["Preference"], () =>
-  //   getAllTrustPrefeces()
-  // );
+  const loadTrustPreference = useQuery(["Preference"], () =>
+    getAllTrustPrefeces()
+  );
 
-  // const trustPreference = useMemo(
-  //   () => loadTrustPreference?.data?.results ?? [],
-  //   [loadTrustPreference?.data?.results]
-  // );
+  const trustPreference = useMemo(
+    () => loadTrustPreference?.data?.results ?? [],
+    [loadTrustPreference?.data?.results]
+  );
 
   const [cityLoadOption, setCityLoadOption] = useState([]);
 
@@ -458,7 +458,7 @@ export default function ProfileForm({
                 profilePhoto: editProfile ? profileName : e?.profileImage,
                 trustName: e?.trustName,
                 typeId: e?.trustType?.id,
-                // preferenceId: e?.preference?._id,
+                preferenceId: e?.preference?._id,
                 trustEmail: e?.trustEmail,
                 trustNumber: e?.trustNumber.toString(),
                 about: e?.about,
@@ -588,25 +588,27 @@ export default function ProfileForm({
                       </Col>
                     </Row>
                   )}
-                  {/* <Row>
-                    <Col xs={12} md={6} lg={4}>
-                      <FormikCustomReactSelect
-                        labelName={t("trust_prefenses")}
-                        name="preference"
-                        required
-                        labelKey={"name"}
-                        valueKey="id"
-                        loadOptions={trustPreference?.map((item) => {
-                          return {
-                            ...item,
-                            name: ConverFirstLatterToCapital(item?.name),
-                          };
-                        })}
-                        defaultValue={formik?.values?.preference}
-                        width={"100"}
-                      />
-                    </Col>
-                  </Row> */}
+                  {!AddLanguage && (
+                    <Row>
+                      <Col xs={12} md={6} lg={4}>
+                        <FormikCustomReactSelect
+                          labelName={t("trust_prefenses")}
+                          name="preference"
+                          required
+                          labelKey={"name"}
+                          valueKey="_id"
+                          loadOptions={trustPreference?.map((item) => {
+                            return {
+                              ...item,
+                              name: ConverFirstLatterToCapital(item?.name),
+                            };
+                          })}
+                          defaultValue={formik?.values?.preference}
+                          width={"100"}
+                        />
+                      </Col>
+                    </Row>
+                  )}
                 </Col>
               </Row>
 
@@ -622,7 +624,7 @@ export default function ProfileForm({
                 </Col> */}
                 <Col xs={12}>
                   <RichTextField
-                    height="100px"
+                    height="200px"
                     label={t("about_trusts")}
                     name="about"
                   />
