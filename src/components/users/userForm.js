@@ -198,6 +198,7 @@ export default function UserForm({
                       <Col xs={12} sm={6} lg={4}>
                         <CustomTextField
                           label={t("user_name")}
+                          placeholder={t("placeHolder_user_name")}
                           name="name"
                           required
                           onInput={(e) =>
@@ -209,6 +210,7 @@ export default function UserForm({
                       <Col xs={12} sm={6} lg={4}>
                         <CustomTextField
                           label={t("dashboard_Recent_DonorNumber")}
+                          placeholder={t("placeHolder_mobile_number")}
                           name="mobile"
                           type="number"
                           pattern="[6789][0-9]{9}"
@@ -222,6 +224,7 @@ export default function UserForm({
                         <CustomTextField
                           label={t("subscribed_user_email")}
                           name="email"
+                          placeholder={t("placeHolder_email")}
                           required
                         />
                       </Col>
@@ -234,6 +237,7 @@ export default function UserForm({
                           <InputPasswordToggle
                             className="input-group-merge"
                             name="password"
+                            placeholder={t("placeHolder_password")}
                             inputClassName=""
                             id="login-password"
                             value={formik.values.password}

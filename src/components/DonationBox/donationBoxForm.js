@@ -88,9 +88,7 @@ export default function DonationBoxForm({
   });
 
   const hundiLogQuery = useQuery(
-    [
-      "hundiLogs",
-    ],
+    ["hundiLogs"],
     () =>
       getAllBoxCollectionLogs({
         // ...pagination,
@@ -143,15 +141,6 @@ export default function DonationBoxForm({
                 <Col xs={12} md={7}>
                   <Row>
                     <Col xs={12}>
-                      <CustomTextField
-                        label={t("created_by")}
-                        name="CreatedBy"
-                        disabled
-                      />
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col xs={12}>
                       <RichTextField
                         height="200px"
                         label={t("news_label_Description")}
@@ -161,7 +150,7 @@ export default function DonationBoxForm({
                     </Col>
                   </Row>
                   <Row>
-                    <Col xs={12} md={6} className="mt-1">
+                    <Col xs={12} md={6} className="">
                       <CustomTextField
                         type="number"
                         label={t("categories_select_amount")}
@@ -170,15 +159,26 @@ export default function DonationBoxForm({
                         name="Amount"
                       />
                     </Col>
+                    <Col xs={12} md={6} >
+                      <CustomTextField
+                        label={t("added_by")}
+                        name="CreatedBy"
+                        disabled
+                      />
+                    </Col>
                   </Row>
                 </Col>
                 <Col>
-                  <FormikCustomDatePicker
-                    label={t("donation_select_date")}
-                    futureDateNotAllowed
-                    name="DateTime"
-                    // showTimeInput={showTimeInput}
-                  />
+                  <Row>
+                    <Col xs={12}>
+                      <FormikCustomDatePicker
+                        label={t("donation_select_date")}
+                        futureDateNotAllowed
+                        name="DateTime"
+                        // showTimeInput={showTimeInput}
+                      />
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
               {editLogs && (

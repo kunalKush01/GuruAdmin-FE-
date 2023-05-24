@@ -65,34 +65,33 @@ export default function FormWithoutFormikForCommitment({
         }
       };
       results();
-    }
-    else if(formik?.values?.Mobile?.toString().length !== 10){
+    } else if (formik?.values?.Mobile?.toString().length !== 10) {
       formik.setFieldValue("SelectedUser", "");
     }
   }, [formik?.values?.Mobile]);
-  
 
   return (
     <Form>
-        {showPrompt && (
-              <Prompt
-                when={!!Object.values(formik?.values).find((val) => !!val)}
-                message={(location) =>
-                  `Are you sure you want to leave this page & visit ${location.pathname.replace(
-                    "/",
-                    ""
-                  )}`
-                }
-              />
-            )}
+      {showPrompt && (
+        <Prompt
+          when={!!Object.values(formik?.values).find((val) => !!val)}
+          message={(location) =>
+            `Are you sure you want to leave this page & visit ${location.pathname.replace(
+              "/",
+              ""
+            )}`
+          }
+        />
+      )}
 
       <Row className="paddingForm">
-        <Col xs={12}>
+        <Col xs={12} lg={8}>
           <Row>
-            <Col xs={12} sm={6} lg={4}>
+            <Col xs={12} sm={6}>
               <CustomTextField
                 type="number"
                 label={t("dashboard_Recent_DonorNumber")}
+                placeholder={t("placeHolder_mobile_number")}
                 name="Mobile"
                 pattern="[6789][0-9]{9}"
                 onInput={(e) => (e.target.value = e.target.value.slice(0, 12))}
@@ -100,7 +99,7 @@ export default function FormWithoutFormikForCommitment({
                 autoFocus
               />
             </Col>
-            <Col xs={12} sm={6} lg={4}>
+            <Col xs={12} sm={6}>
               <AsyncSelectField
                 name="SelectedUser"
                 loadOptions={loadOption}
@@ -112,19 +111,14 @@ export default function FormWithoutFormikForCommitment({
                 required
               />
             </Col>
-            <Col xs={12} sm={6} lg={4}>
-              <CustomTextField
-                label={t("dashboard_Recent_DonorName")}
-                name="donarName"
-              />
-            </Col>
-            <Col xs={12} sm={6} lg={4}>
+
+            <Col xs={12} sm={6}>
               <FormikCustomReactSelect
                 labelName={t("categories_select_category")}
                 name={"SelectedMasterCategory"}
                 disabled={editCommitment}
                 labelKey={"name"}
-                valueKey="id"
+                valueKey={"id"}
                 loadOptions={
                   masterloadOptionQuery?.data?.results &&
                   masterloadOptionQuery?.data?.results.map((item) => {
@@ -138,7 +132,7 @@ export default function FormWithoutFormikForCommitment({
                 required
               />
             </Col>
-            <Col xs={12} sm={6} lg={4}>
+            <Col xs={12} sm={6}>
               <FormikCustomReactSelect
                 labelName={t("category_select_sub_category")}
                 loadOptions={subLoadOption.map((cate) => {
@@ -154,16 +148,14 @@ export default function FormWithoutFormikForCommitment({
                 width
               />
             </Col>
-            <Col xs={12} sm={6} lg={4}>
+            <Col xs={12} sm={6}>
               <CustomTextField
-                label={t("created_by")}
-                name="createdBy"
-                disabled
+                label={t("dashboard_Recent_DonorName")}
+                name="donarName"
+                placeholder={t("placeHolder_donar_name")}
               />
             </Col>
-          </Row>
-          <Row>
-            <Col xs={12} sm={6} lg={4}>
+            <Col xs={12} sm={6}>
               <CustomTextField
                 type="number"
                 label={t("categories_select_amount")}
@@ -172,17 +164,21 @@ export default function FormWithoutFormikForCommitment({
                 required
               />
             </Col>
-            <Col xs={12} sm={6} lg={4}></Col>
-            <Col xs={12} sm={6} lg={4}>
-              <FormikCustomDatePicker
-                label={t("commitment_select_end_date")}
-                name="DateTime"
-                pastDateNotAllowed
+            <Col xs={12} sm={6}>
+              <CustomTextField
+                label={t("created_by")}
+                name="createdBy"
+                disabled
               />
             </Col>
           </Row>
-
-          <Row className="mt-1"></Row>
+        </Col>
+        <Col xs={12} lg={4}>
+          <FormikCustomDatePicker
+            label={t("commitment_select_end_date")}
+            name="DateTime"
+            pastDateNotAllowed
+          />
         </Col>
       </Row>
       <div className="btn-Published ">

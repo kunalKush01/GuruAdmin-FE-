@@ -378,4 +378,18 @@ export const englishContent = {
   punyarjak_not_found: "No Punyarjak User Found",
   punyarjak_not_click_add:
     'Click on "Add punyarjak" to add punyarjak user on the screen',
-};
+
+// all place holder images
+
+placeHolder_donar_name:"Enter Doner Name",
+placeHolder_mobile_number:"Enter Mobile Number",
+placeHolder_title:"Enter Title",
+placeHolder_description:"Enter Description",
+placeHolder_tags:"Enter Tags",
+placeHolder_name:"Enter Name",
+placeHolder_user_name:"Enter Username",
+placeHolder_email:"Enter Email",
+placeHolder_password:"Enter Password",
+placeHolder_sub_category:"Enter Sub Category",
+
+  };

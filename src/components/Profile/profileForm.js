@@ -408,9 +408,15 @@ export default function ProfileForm({
   // facilities validation
 
   const facilitiesValidation = yup.object().shape({
-    name: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("name_required"),
+    name: yup
+      .string()
+      .matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g, "injection_found")
+      .required("name_required"),
     // image: yup.string().required("email_required"),
-    description: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("news_desc_required"),
+    description: yup
+      .string()
+      .matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g, "injection_found")
+      .required("news_desc_required"),
     startTime: yup.string().required("start_time_required"),
     endTime: yup.string().required("end_time_required"),
   });
@@ -458,7 +464,7 @@ export default function ProfileForm({
                 profilePhoto: editProfile ? profileName : e?.profileImage,
                 trustName: e?.trustName,
                 typeId: e?.trustType?.id,
-                preferenceId: e?.preference?._id,
+                // preferenceId: e?.preference?._id,
                 trustEmail: e?.trustEmail,
                 trustNumber: e?.trustNumber.toString(),
                 about: e?.about,
@@ -541,6 +547,7 @@ export default function ProfileForm({
                     <Col xs={12} md={6} lg={4} className="">
                       <CustomTextField
                         label={t("userProfile_name")}
+                        placeholder={t("placeHolder_name")}
                         name="trustName"
                         required
                         onInput={(e) =>
@@ -570,6 +577,7 @@ export default function ProfileForm({
                         <CustomTextField
                           label={t("userProfile_email_id")}
                           name="trustEmail"
+                          placeholder={t("placeHolder_email")}
                           required
                         />
                       </Col>
@@ -577,6 +585,7 @@ export default function ProfileForm({
                         <CustomTextField
                           label={t("userProfile_phone_number")}
                           name="trustNumber"
+                          placeholder={t("placeHolder_mobile_number")}
                           disabled={AddLanguage}
                           type="number"
                           required
@@ -588,7 +597,7 @@ export default function ProfileForm({
                       </Col>
                     </Row>
                   )}
-                  {!AddLanguage && (
+                  {/* {!AddLanguage && (
                     <Row>
                       <Col xs={12} md={6} lg={4}>
                         <FormikCustomReactSelect
@@ -608,7 +617,7 @@ export default function ProfileForm({
                         />
                       </Col>
                     </Row>
-                  )}
+                  )} */}
                 </Col>
               </Row>
 
@@ -648,6 +657,7 @@ export default function ProfileForm({
                         <CustomTextField
                           required
                           label={t("userProfile_name")}
+                        placeholder={t("placeHolder_name")}
                           name="name"
                           disabled={AddLanguage}
                           onInput={(e) =>
@@ -661,6 +671,7 @@ export default function ProfileForm({
                           label={t("userProfile_email_id")}
                           disabled={AddLanguage}
                           name="email"
+                        placeholder={t("placeHolder_email")}
                           required
                         />
                       </Col>
@@ -668,6 +679,7 @@ export default function ProfileForm({
                         <CustomTextField
                           label={t("userProfile_phone_number")}
                           disabled={AddLanguage}
+                        placeholder={t("placeHolder_mobile_number")}
                           name="mobileNumber"
                           type="number"
                           required
@@ -1312,6 +1324,23 @@ export default function ProfileForm({
                               required
                             />
                           </Col>
+                          {formik?.values?.startTime ===
+                            formik?.values?.endTime &&
+                          formik?.values?.startTime !== "" &&
+                          formik?.values?.endTime !== "" ? (
+                            <div
+                              className="text-danger"
+                              style={{
+                                height: "20px",
+                                font: "normal normal bold 11px/20px Noto Sans",
+                              }}
+                            >
+                              {/* <Trans i18nKey={"same_time"} /> */}
+                              <Trans i18nKey={"same_time"} />
+                            </div>
+                          ) : (
+                            ""
+                          )}
                         </Row>
                       </Col>
                       <div className="mt-5">

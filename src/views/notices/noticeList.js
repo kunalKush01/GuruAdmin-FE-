@@ -344,10 +344,10 @@ export default function NoticeList() {
                       <></>
                     </Then>
                     <Else>
-                      <CustomDatePicker
+                      {/* <CustomDatePicker
                         disabledKeyboardNavigation
                         highlightDates={NoticeDates}
-                      />
+                      /> */}
                     </Else>
                   </If>
                 </Col>

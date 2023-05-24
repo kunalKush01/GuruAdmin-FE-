@@ -179,9 +179,10 @@ export default function PunyarjakForm({
                   </div>
                 </div>
                 <Row>
-                  <Col xs={12}>
+                  <Col xs={12} md={6}>
                     <CustomTextField
                       label={t("name")}
+                      placeholder={t("placeHolder_name")}
                       name="name"
                       required
                       onInput={(e) =>

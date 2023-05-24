@@ -279,6 +279,7 @@ export default function NoticeForm({
                     <CustomTextField
                       label={t("news_label_Title")}
                       name="Title"
+                      placeholder={t("placeHolder_title")}
                       onInput={(e) =>
                         (e.target.value = e.target.value.slice(0, 30))
                       }

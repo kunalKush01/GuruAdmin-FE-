@@ -142,7 +142,9 @@ export default function FormWithoutFormikForDonation({
               <CustomTextField
                 type="number"
                 label={t("dashboard_Recent_DonorNumber")}
+                placeholder={t("placeHolder_mobile_number")}
                 name="Mobile"
+                disabled={payDonation}
                 pattern="[6789][0-9]{9}"
                 onInput={(e) => (e.target.value = e.target.value.slice(0, 12))}
                 required
@@ -159,7 +161,7 @@ export default function FormWithoutFormikForDonation({
                 label={t("commitment_Username")}
                 placeholder={t("categories_select_user_name")}
                 defaultOptions
-                disabled={loadOption.length == 0}
+                disabled={payDonation || loadOption.length == 0}
               />
               {noUserFound && (
                 <div className="addUser">
@@ -181,6 +183,7 @@ export default function FormWithoutFormikForDonation({
             <Col xs={12} sm={6} lg={4} className=" pb-1">
               <CustomTextField
                 label={t("dashboard_Recent_DonorName")}
+                placeholder={t("placeHolder_donar_name")}
                 name="donarName"
                 onInput={(e) => (e.target.value = e.target.value.slice(0, 30))}
               />
@@ -189,14 +192,14 @@ export default function FormWithoutFormikForDonation({
               <FormikCustomReactSelect
                 labelName={t("categories_select_category")}
                 name={"SelectedMasterCategory"}
-                labelKey={"name"}
+                labelKey="name"
                 valueKey="id"
                 loadOptions={
                   masterloadOptionQuery?.data?.results &&
-                  masterloadOptionQuery?.data?.results.map((item) => {
+                  masterloadOptionQuery?.data?.results?.map((item) => {
                     return {
                       ...item,
-                      name: ConverFirstLatterToCapital(item.name),
+                      name: ConverFirstLatterToCapital(item?.name),
                     };
                   })
                 }
@@ -208,16 +211,16 @@ export default function FormWithoutFormikForDonation({
             <Col xs={12} sm={6} lg={4} className=" pb-1">
               <FormikCustomReactSelect
                 labelName={t("category_select_sub_category")}
-                loadOptions={subLoadOption.map((cate) => {
+                loadOptions={subLoadOption?.map((cate) => {
                   return {
                     ...cate,
                     name: ConverFirstLatterToCapital(cate.name),
                   };
                 })}
                 name={"SelectedSubCategory"}
-                labelKey={"name"}
-                valueKey={"id"}
-                disabled={subLoadOption.length == 0 || formik.values.SelectedCommitmentId !== ""}
+                labelKey="name"
+                valueKey="id"
+                disabled={subLoadOption?.length == 0 || formik?.values?.SelectedCommitmentId !== ""}
                 width
               />
             </Col>

@@ -3,7 +3,7 @@ import { useField } from "formik";
 import SunEditor, { buttonList } from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css";
 import styled from "styled-components";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 
 const RichTextFieldWarper = styled.div`
   font: normal normal bold 11px/20px noto sans;
@@ -35,6 +35,11 @@ const RichTextFieldWarper = styled.div`
       top: 30% !important;
     }
   }
+  .se-placeholder{
+    color: #583703 !important;
+    opacity: 60% !important;
+    font: normal normal bold 13px/20px Noto Sans !important;
+  }
   .se-toolbar {
     outline: none !important;
     border-radius: 0px 0px 20px 20px;
@@ -65,6 +70,7 @@ export default function RichTextField({
   ...props
 }) {
   const [field, meta, helpers] = useField(props);
+  const { t } = useTranslation();
 
   return (
     <RichTextFieldWarper key={field.name} className="mb-2">
@@ -73,6 +79,7 @@ export default function RichTextField({
         onChange={(value) => helpers.setValue(value)}
         setContents={field.value}
         autoFocus={autofocus}
+        placeholder={t("placeHolder_description")}
         {...props}
         setDefaultStyle={
           "font: normal normal normal 12px/20px Noto sans !important;color:#583703"

@@ -22,9 +22,9 @@ export const CustomReactSelect = ({
     option: (provided, { data, isDisabled, isFocused, isSelected }) => {
       return {
         ...provided,
-        color: isSelected && "#FF8744",
+        color: isSelected ? "#FF8744" : isFocused && "#fff",
         backgroundColor: isFocused ? "#FF8744" : "#FFF7E8",
-        color:isFocused ? "#fff" : "#583703",
+        // color:isFocused ? "#fff" : "#583703",
         "&:hover": {
           color: "#fff",
           backgroundColor: "#FF8744",

@@ -271,6 +271,7 @@ export default function NewsForm({
                   <Col xs={12} md={6}>
                     <CustomTextField
                       label={t("news_label_Title")}
+                      placeholder={t("placeHolder_title")}
                       name="Title"
                       required
                       onInput={(e) =>

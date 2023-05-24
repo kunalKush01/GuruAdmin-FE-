@@ -110,7 +110,7 @@ export default function ExpensesForm({
         // enableReinitialize
         initialValues={{ ...initialValues }}
         onSubmit={(e) => {
-          setShowPrompt(false)
+          setShowPrompt(false);
           setLoading(true);
           newsMutation.mutate({
             expenseId: e?.Id,
@@ -136,69 +136,73 @@ export default function ExpensesForm({
               />
             )}
             <div className="paddingForm">
-
-            <Row>
-              <Col xs={12} md={7}>
-                <Row>
-                  <Col xs="12" md="6">
-                    <CustomTextField
-                      label={t("news_label_Title")}
-                      name="Title"
-                      onInput={(e) =>
-                        (e.target.value = e.target.value.slice(0, 30))
-                      }
-                      autoFocus
-                      required
-                    />
-                  </Col>
-                  <Col>
-                    <CustomTextField
-                      label={t("added_by")}
-                      name="AddedBy"
-                      disabled
-                    />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs={12} className="mt-1">
-                    <RichTextField
-                      height="200px"
-                      label={t("news_label_Description")}
-                      name="Body"
-                    />
-                  </Col>
-                </Row>
-                <Row className="mt-1">
-                  <Col xs={12} md={6}>
-                    <CustomTextField
-                      type="number"
-                      label={t("categories_select_amount")}
-                      placeholder={t("enter_price_manually")}
-                      name="Amount"
-                      required
-                    />
-                  </Col>
-                </Row>
-              </Col>
-              <Col>
-                <FormikCustomDatePicker
-                  label={t("donation_select_date")}
-                  name="DateTime"
-                  pastDateNotAllowed
-                  // showTimeInput={showTimeInput}
-                />
-              </Col>
-            </Row>
-            {editLogs && (
               <Row>
-                <div>
-                  <Trans i18nKey={"Logs"} />
-                </div>
-                <Col lg={9} className='my-lg-2'>
-                  <LogListTable data={expenseLog} />
+                <Col xs={12} md={7}>
+                  <Row>
+                    <Col xs="12" md="6">
+                      <CustomTextField
+                        label={t("news_label_Title")}
+                        name="Title"
+                        placeholder={t("placeHolder_title")}
+                        onInput={(e) =>
+                          (e.target.value = e.target.value.slice(0, 30))
+                        }
+                        autoFocus
+                        required
+                      />
+                    </Col>
+                    <Col xs={12} md={6}>
+                      <CustomTextField
+                        label={t("added_by")}
+                        name="AddedBy"
+                        disabled
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col xs={12} className="mt-1">
+                      <RichTextField
+                        height="200px"
+                        label={t("news_label_Description")}
+                        name="Body"
+                      />
+                    </Col>
+                  </Row>
+                  <Row className="">
+                    <Col xs={12} md={6}>
+                      <CustomTextField
+                        type="number"
+                        label={t("categories_select_amount")}
+                        placeholder={t("enter_price_manually")}
+                        name="Amount"
+                        required
+                      />
+                    </Col>
+                  </Row>
+                </Col>
+                <Col>
+                  <Row>
+                    <Col xs={12}>
+                      <FormikCustomDatePicker
+                        label={t("donation_select_date")}
+                        name="DateTime"
+                        pastDateNotAllowed
+                        // showTimeInput={showTimeInput}
+                      />
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
-            )}
+              {editLogs && (
+                <Row>
+                  <div>
+                    <Trans i18nKey={"Logs"} />
+                  </div>
+                  <Col lg={9} className="my-lg-2">
+                    <LogListTable data={expenseLog} />
+                  </Col>
+                </Row>
+              )}
             </div>
 
             <div className="btn-Published mb-2 mt-lg-2">

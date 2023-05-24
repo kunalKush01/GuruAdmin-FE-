@@ -368,6 +368,7 @@ export default function EventForm({
                   <Col xs={12} md={6}>
                     <CustomTextField
                       label={t("news_label_Title")}
+                      placeholder={t("placeHolder_title")}
                       name="Title"
                       required
                       onInput={(e) =>
@@ -383,6 +384,7 @@ export default function EventForm({
                       <ReactTags
                         tags={formik.values.tagsInit}
                         suggestions={suggestions}
+                        placeholder={t("placeHolder_tags")}
                         delimiters={delimiters}
                         handleDelete={(index) => handleDelete(formik, index)}
                         handleAddition={(tag) => handleAddition(formik, tag)}
@@ -410,7 +412,7 @@ export default function EventForm({
                   )}
                 </Row>
                 <Row>
-                  <Col xs={12} className="mt-lg-1">
+                  <Col xs={12} className="">
                     <RichTextField
                       height="200px"
                       label={t("news_label_Description")}

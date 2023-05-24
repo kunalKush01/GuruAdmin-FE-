@@ -10,11 +10,16 @@ const CustomTextFieldWarper = styled.div`
 
   .formGroup {
     width: ${(props) => props.width ?? "auto"};
-    margin:${(props) => props.margin ?? "auto"} !important;
+    margin: ${(props) => props.margin ?? "auto"} !important;
   }
   label {
     /* margin-bottom: 0px; */
     font: normal normal bold 15px/33px Noto Sans;
+  }
+  input::placeholder{
+    color: #583703 !important;
+    opacity: 60% !important;
+    font: normal normal bold 13px/20px Noto Sans !important;
   }
   input {
     color: #583703 !important;
@@ -22,15 +27,15 @@ const CustomTextFieldWarper = styled.div`
     background-color: #fff7e8 !important;
     font: normal normal normal 13px/20px Noto Sans;
     border-radius: 20px;
-  } 
+  }
   input::-webkit-outer-spin-button,
-      input::-webkit-inner-spin-button {
-        display: none;
-      }
+  input::-webkit-inner-spin-button {
+    display: none;
+  }
 `;
 
 export default function CustomTextField({
-  required=false,
+  required = false,
   label,
   type = "text",
   icon,
@@ -40,18 +45,21 @@ export default function CustomTextField({
   ...props
 }) {
   const [field, meta, helpers] = useField(props);
-  
-  
 
   return (
     <CustomTextFieldWarper width={width}>
       <FormGroup className="formGroup">
-        {label&&<label>{`${label}`}{required&&"*"}</label>}
+        {label && (
+          <label>
+            {`${label}`}
+            {required && "*"}
+          </label>
+        )}
         <InputGroup>
           <input
             type={type}
             className={"form-control"}
-            placeholder={placeholder}            
+            placeholder={placeholder}
             value={field.value}
             {...field}
             {...props}

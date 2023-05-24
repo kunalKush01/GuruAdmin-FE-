@@ -113,6 +113,7 @@ export default function SubscribedUserForm({
                   <Col xs={12} sm={6} md={4}>
                     <CustomTextField
                       label={t("user_name")}
+                      placeholder={t("placeHolder_user_name")}
                       name="name"
                       required
                       onInput={(e) =>
@@ -124,6 +125,7 @@ export default function SubscribedUserForm({
                   <Col xs={12} sm={6} md={4}>
                     <CustomTextField
                       label={t("dashboard_Recent_DonorNumber")}
+                      placeholder={t("placeHolder_mobile_number")}
                       name="mobile"
                       required
                       type="number"
@@ -137,6 +139,7 @@ export default function SubscribedUserForm({
                     <CustomTextField
                       label={t("subscribed_user_email")}
                       name="email"
+                      placeholder={t("placeHolder_email")}
                       required
                     />
                   </Col>
