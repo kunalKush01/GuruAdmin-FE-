@@ -82,7 +82,7 @@ export const CustomReactSelect = ({
       opacity:"60%",
       // color: "#583703 ",
       color: `${props.color ?? "#583703"}`,
-      font: "normal normal bold 15px/20px Noto Sans",
+      font: "normal normal bold 13px/20px Noto Sans",
     }),
     valueContainer: (provided) => ({
       ...provided,

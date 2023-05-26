@@ -28,7 +28,7 @@ const EventDetailPage = () => {
     async () =>
       getEventDetail({
         eventId,
-        languageId: getLangId(langArray, langSelection),
+        languageId: selectedLang.id,
       })
   );
 

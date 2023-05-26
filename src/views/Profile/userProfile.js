@@ -28,7 +28,10 @@ const ProfileWarper = styled.div`
 `;
 
 const schema = yup.object().shape({
-  trustName: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("name_required"),
+  trustName: yup
+    .string()
+    .matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g, "injection_found")
+    .required("name_required"),
   trustType: yup.mixed().required("trust_type_required"),
   // preference: yup.mixed().required("trust_prefenses_required"),
   trustEmail: yup.string().email("email_invalid").required("email_required"),
@@ -37,7 +40,10 @@ const schema = yup.object().shape({
     .min(10, "Mobile Number must be 10 digits.")
     .required("number_required"),
   about: yup.string().required("trust_about_required"),
-  name: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("name_required"),
+  name: yup
+    .string()
+    .matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g, "injection_found")
+    .required("name_required"),
   email: yup.string().email("email_invalid").required("email_required"),
   mobileNumber: yup
     .string()
@@ -105,18 +111,9 @@ export default function AddProfile() {
       name: profileDetail?.data?.result?.name ?? "",
       email: profileDetail?.data?.result?.email ?? "",
       mobileNumber: profileDetail?.data?.result?.mobileNumber ?? "",
-      city: profileDetail?.data?.result?.state
-        ? { districts: profileDetail?.data?.result?.city }
-        : null,
-      state: profileDetail?.data?.result?.state
-        ? { state: profileDetail?.data?.result?.state }
-        : null,
-      location: profileDetail?.data?.result?.location
-        ? {
-            label: profileDetail?.data?.result?.location,
-            value: { place_id: profileDetail?.data?.result?.place_id },
-          }
-        : null,
+      city: profileDetail?.data?.result?.city,
+      state: profileDetail?.data?.result?.state,
+      location: profileDetail?.data?.result?.location,
       longitude: profileDetail?.data?.result?.longitude,
       latitude: profileDetail?.data?.result?.latitude,
       trustFacilities: profileDetail?.data?.result?.facilities ?? "",
@@ -126,7 +123,6 @@ export default function AddProfile() {
   }, [profileDetail]);
 
   const langList = useSelector((state) => state.auth.availableLang);
-
 
   return (
     <ProfileWarper>
@@ -161,7 +157,8 @@ export default function AddProfile() {
               }
             />
           </div>
-          {langList?.length !== profileDetail?.data?.result?.languages?.length && (
+          {langList?.length !==
+            profileDetail?.data?.result?.languages?.length && (
             <Button
               color="primary"
               className="ms-1"

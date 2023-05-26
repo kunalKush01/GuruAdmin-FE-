@@ -284,6 +284,7 @@ export default function NewsForm({
                     <label>Tags</label>
                     <ReactTags
                       tags={formik.values.tagsInit}
+                      placeholder={t("placeHolder_tags")}
                       suggestions={suggestions}
                       delimiters={delimiters}
                       handleDelete={(index) => handleDelete(formik, index)}

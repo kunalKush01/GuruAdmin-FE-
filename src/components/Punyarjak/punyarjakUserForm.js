@@ -84,7 +84,7 @@ export default function PunyarjakForm({
   return (
     <FormWaraper className="FormikWraper">
       <Formik
-        // enableReinitialize
+        enableReinitialize
         initialValues={initialValues}
         onSubmit={(e) => {
           setShowPrompt(false);
@@ -143,7 +143,7 @@ export default function PunyarjakForm({
             </Row> */}
 
             <Row className="paddingForm"> 
-              <Col xs={12} className=" mt-2 ps-0 d-flex flex-wrap">
+              <Col xs={12} md={10} className=" mt-2 ps-0 d-flex">
                 <div className="me-3">
                   <ImageUpload
                     bg_plus={defaultAvtar}
@@ -178,7 +178,7 @@ export default function PunyarjakForm({
                     )}
                   </div>
                 </div>
-                <Row>
+                <Row className="w-100">
                   <Col xs={12} md={6}>
                     <CustomTextField
                       label={t("name")}

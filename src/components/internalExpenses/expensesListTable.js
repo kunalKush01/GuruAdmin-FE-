@@ -195,6 +195,9 @@ export function ExpensesListTable({
     .tableDes p {
       margin-bottom: 0;
     }
+    .tableDes{
+      max-height: 1.7rem;
+    }
     .viewLogs {
       font: normal normal bold 15px/33px Noto Sans;
       color: #ff8744;

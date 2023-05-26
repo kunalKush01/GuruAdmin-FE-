@@ -288,6 +288,8 @@ export default function EventForm({
     // setSelectedTimeStart(time);
     setSelectedTimeEnd(time);
   };
+
+  const [imageOnGlobleEvent, setImageOnGlobleEvent] = useState(defaultImages);
   return (
     <FormWaraper className="FormikWraper">
       <Formik
@@ -344,6 +346,7 @@ export default function EventForm({
                         placeholder={t("events_select_globle")}
                         disabled={selectEventDisabled}
                         onChange={(selectOption) => {
+                          console.log("selectOption---------->", selectOption);
                           formik.setFieldValue("SelectedEvent", selectOption);
 
                           formik.setFieldValue(
@@ -361,6 +364,21 @@ export default function EventForm({
                               .utcOffset("+0530")
                               .toDate(),
                           });
+                          selectOption?.images?.map((item)=>{
+                            formik.values.images.length=0;
+                            formik.setFieldValue("images",[...formik.values.images, item?.name])  
+                          })
+                          setImageOnGlobleEvent(selectOption?.images);
+                          setSelectedTimeEnd(selectOption?.endTime);
+                          setSelectedTimeStart(selectOption?.startTime);
+                          formik.setFieldValue(
+                            "startTime",
+                            selectOption?.startTime
+                          );
+                          formik.setFieldValue(
+                            "endTime",
+                            selectOption?.endTime
+                          );
                         }}
                       />
                     </Col>
@@ -382,9 +400,9 @@ export default function EventForm({
                     <Col xs={12} md={6}>
                       <label>Tags</label>
                       <ReactTags
+                        placeholder={t("placeHolder_tags")}
                         tags={formik.values.tagsInit}
                         suggestions={suggestions}
-                        placeholder={t("placeHolder_tags")}
                         delimiters={delimiters}
                         handleDelete={(index) => handleDelete(formik, index)}
                         handleAddition={(tag) => handleAddition(formik, tag)}
@@ -437,7 +455,7 @@ export default function EventForm({
                         editedFileNameInitialValue={
                           formik?.values?.images ? formik?.values?.images : null
                         }
-                        defaultImages={defaultImages}
+                        defaultImages={imageOnGlobleEvent}
                         randomNumber={randomNumber}
                         fileName={(file, type) => {
                           formik.setFieldValue("images", [
@@ -466,6 +484,7 @@ export default function EventForm({
                       <label>Tags</label>
                       {/* {JSON.stringify(formik.values.tagsInit)} */}
                       <ReactTags
+                        placeholder={t("placeHolder_tags")}
                         tags={formik.values.tagsInit}
                         suggestions={suggestions}
                         delimiters={delimiters}

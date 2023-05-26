@@ -72,11 +72,7 @@ export default function PunyarjakTable({
         name: (
           <div className="d-flex align-items-center ">
             <img
-              src={
-                item?.profilePhoto !== ""
-                  ? item?.profilePhoto
-                  : avtarIcon
-              }
+              src={item?.profilePhoto !== "" ? item?.profilePhoto : avtarIcon}
               className="cursor-pointer"
               style={{
                 marginRight: "5px",
@@ -156,6 +152,9 @@ export default function PunyarjakTable({
 
     .tableDes p {
       margin-bottom: 0;
+    }
+    .tableDes {
+      max-height: 1.7rem;
     }
   `;
 

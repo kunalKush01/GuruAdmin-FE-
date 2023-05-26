@@ -273,9 +273,9 @@ export default function NoticeCard({
                     <div className="cardLangScroll">
                       {data?.languages?.map((item) => {
                         return (
-                          <Button outline key={item.id} color="primary">
+                          <div key={item.id} className="languageButton">
                             {ConverFirstLatterToCapital(item.name)}
-                          </Button>
+                          </div>
                         );
                       })}
                     </div>

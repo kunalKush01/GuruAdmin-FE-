@@ -36,6 +36,9 @@ import { handleProfileUpdate, login } from "../../redux/authSlice";
 import { Prompt } from "react-router-dom";
 import { add } from "lodash";
 import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
+import TimePicker from "react-time-picker";
+import "react-time-picker/dist/TimePicker.css";
+import CustomLocationField from "../partials/CustomLocationField";
 
 const ProfileFormWaraper = styled.div`
   .existlabel {
@@ -138,7 +141,9 @@ const ProfileFormWaraper = styled.div`
     }
   }
   .css-1wa3eu0-placeholder {
-    display: none;
+    opacity: 60%;
+    color: #583703;
+    font: normal normal bold 13px/20px Noto Sans;
   }
   .css-1wy0on6 {
     display: none;
@@ -230,6 +235,33 @@ const ProfileFormWaraper = styled.div`
   }
   .css-1hwfws3 {
     height: 40px;
+  }
+  /* time picker css */
+  .react-time-picker__wrapper {
+    border: none !important;
+  }
+  .react-time-picker {
+    width: 100%;
+  }
+  .react-time-picker__inputGroup {
+    color: #583703 !important;
+    border: none !important;
+    background-color: #fff7e8 !important;
+    font: normal normal normal 13px/20px Noto Sans;
+    width: 100%;
+    padding: 0rem 0.5rem !important;
+    border-radius: 5px;
+    line-height: 30px;
+  }
+  .react-time-picker__inputGroup__input:invalid {
+    background: #fff7e8 !important;
+  }
+  input:focus {
+    outline: none !important;
+  }
+  input:focus-visible {
+    outline-offset: none;
+    outline: none;
   }
 `;
 
@@ -385,6 +417,17 @@ export default function ProfileForm({
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
 
+  const [selectedTimeStart, setSelectedTimeStart] = useState("");
+  const [selectedTimeEnd, setSelectedTimeEnd] = useState("");
+
+  const handleTimeChange = (time) => {
+    setSelectedTimeStart(time);
+  };
+  const handleTimeChangeEnd = (time) => {
+    // setSelectedTimeStart(time);
+    setSelectedTimeEnd(time);
+  };
+
   const [facilityEditData, setFacilityEditData] = useState(null);
   // facilities initial values
   const facilityIntialValues = useMemo(() => {
@@ -398,8 +441,11 @@ export default function ProfileForm({
       endTime: facilityEditData?.data?.endTime ?? "",
     };
   }, [facilityEditData]);
+  useEffect(() => {}, [initialValues]);
   useEffect(() => {
     setFacilityFormData(initialValues?.trustFacilities ?? []);
+    setSelectedTimeEnd(initialValues?.trustFacilities?.endTime);
+    setSelectedTimeStart(initialValues?.trustFacilities?.startTime);
     return () => {
       setFacilityFormData([]);
     };
@@ -446,7 +492,7 @@ export default function ProfileForm({
                 // state: e?.state?.state,
                 // city: e?.city?.districts,
                 // place_id: e?.location.value.place_id,
-                location: e?.location.label,
+                location: e?.location,
                 // longitude: e?.longitude.toString(),
                 // latitude: e?.latitude.toString(),
                 trustFacilities: facilityFormData,
@@ -471,10 +517,9 @@ export default function ProfileForm({
                 name: e?.name,
                 email: e?.email,
                 mobileNumber: e?.mobileNumber.toString(),
-                state: e?.state?.state,
-                city: e?.city?.districts,
-                place_id: e?.location.value.place_id,
-                location: e?.location.label,
+                state: e?.state,
+                city: e?.city,
+                location: e?.location,
                 longitude: e?.longitude.toString(),
                 latitude: e?.latitude.toString(),
                 trustFacilities: facilityFormData,
@@ -585,7 +630,7 @@ export default function ProfileForm({
                         <CustomTextField
                           label={t("userProfile_phone_number")}
                           name="trustNumber"
-                          placeholder={t("placeHolder_mobile_number")}
+                          placeholder={t("placeHolder_phone_number")}
                           disabled={AddLanguage}
                           type="number"
                           required
@@ -657,7 +702,7 @@ export default function ProfileForm({
                         <CustomTextField
                           required
                           label={t("userProfile_name")}
-                        placeholder={t("placeHolder_name")}
+                          placeholder={t("placeHolder_name")}
                           name="name"
                           disabled={AddLanguage}
                           onInput={(e) =>
@@ -671,7 +716,7 @@ export default function ProfileForm({
                           label={t("userProfile_email_id")}
                           disabled={AddLanguage}
                           name="email"
-                        placeholder={t("placeHolder_email")}
+                          placeholder={t("placeHolder_email")}
                           required
                         />
                       </Col>
@@ -679,7 +724,7 @@ export default function ProfileForm({
                         <CustomTextField
                           label={t("userProfile_phone_number")}
                           disabled={AddLanguage}
-                        placeholder={t("placeHolder_mobile_number")}
+                          placeholder={t("placeHolder_phone_number")}
                           name="mobileNumber"
                           type="number"
                           required
@@ -704,101 +749,14 @@ export default function ProfileForm({
                 </div>
               </Col>
               <Row>
-                {!AddLanguage && (
-                  <Col md={4}>
-                    <FormikCustomReactSelect
-                      labelName={t("State")}
-                      required
-                      loadOptions={loadStates?.map((item) => {
-                        return {
-                          ...item,
-                          state: ConverFirstLatterToCapital(item?.state),
-                        };
-                      })}
-                      name={"state"}
-                      defaultValue={
-                        formik.values?.state
-                          ? { state: formik.values?.state }
-                          : ""
-                      }
-                      labelKey={"state"}
-                      valueKey={"state"}
-                      width={"100"}
-                      onChange={(data) => {
-                        formik.setFieldValue("state", data);
-                        formik.setFieldValue("city", null);
-                        setCityLoadOption(data?.districts);
-                      }}
-                      disabled={loadStates === 0 || AddLanguage}
-                    />
-                  </Col>
-                )}
-                {!AddLanguage && (
-                  <Col md={4}>
-                    <FormikCustomReactSelect
-                      labelName={t("City")}
-                      required
-                      loadOptions={cityLoadOption?.map((item) => {
-                        return {
-                          ...item,
-                          districts: ConverFirstLatterToCapital(item),
-                        };
-                      })}
-                      name={"city"}
-                      defaultValue={
-                        formik.values?.city
-                          ? { districts: formik.values?.city }
-                          : ""
-                      }
-                      labelKey={"districts"}
-                      valueKey={"id"}
-                      disabled={cityLoadOption?.length === 0 || AddLanguage}
-                      width
-                    />
-                  </Col>
-                )}
                 <Col md={4}>
                   <label>
                     <Trans i18nKey={"location"} />
                   </label>
-                  <GooglePlacesAutocomplete
-                    apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
-                    selectProps={{
-                      value: formik.values.location,
-                      onChange: (e) => {
-                        // setValue(e);
-                        formik.setFieldValue("location", e);
-                        geocodeByAddress(e.label)
-                          .then((results) => getLatLng(results[0]))
-                          .then(({ lat, lng }) => {
-                            formik.setFieldValue("longitude", lng);
-                            formik.setFieldValue("latitude", lat);
-                          });
-                      },
-                      styles: {
-                        input: (provided) => ({
-                          ...provided,
-                          color: "#583703 !important",
-                          font: "normal normal normal 13px/20px Noto Sans",
-                          borderRadius: "20px",
-                        }),
-                        option: (provided) => ({
-                          ...provided,
-                          font: "normal normal normal 13px/20px Noto Sans",
-                          color: "#583703 !important",
-                          background: " #fff7e8",
-                          "&:hover": {
-                            color: "#fff",
-                            backgroundColor: "#FF8744",
-                          },
-                        }),
-                        singleValue: (provided) => ({
-                          ...provided,
-                          color: "#583703 !important",
-                          font: "normal normal normal 13px/20px Noto Sans",
-                        }),
-                      },
-                    }}
+                  <CustomLocationField
+                    setFieldValue={formik.setFieldValue}
+                    error={formik}
+                    values={formik?.values}
                   />
                   {formik.errors.location && formik.touched.location ? (
                     <div style={{ fontSize: "11px", color: "red" }}>
@@ -807,6 +765,26 @@ export default function ProfileForm({
                   ) : null}
                 </Col>
                 {!AddLanguage && (
+                    <>
+                      <Col xs={12} md={4}>
+                        <CustomTextField
+                          label={t("City")}
+                          placeholder={t("placeHolder_city")}
+                          name="city"
+                          required
+                        />
+                      </Col>
+                      <Col xs={12} md={4}>
+                        <CustomTextField
+                          label={t("State")}
+                          placeholder={t("placeHolder_state")}
+                          name="state"
+                          required
+                        />
+                      </Col>
+                    </>
+                  )}
+                {/* {!AddLanguage && (
                   <Col sm={4}>
                     <CustomTextField
                       label={t("longitude")}
@@ -827,7 +805,7 @@ export default function ProfileForm({
                       required
                     />
                   </Col>
-                )}
+                )} */}
               </Row>
             </Row>
             {/* Trust Location Container  */}
@@ -1307,21 +1285,39 @@ export default function ProfileForm({
                       <Col sm={12} md={8}>
                         <Row>
                           <Col sm={6}>
-                            <CustomTextField
-                              label={t("start_time")}
-                              type="time"
+                            <label>
+                              <Trans i18nKey={"start_Time"} />*
+                            </label>
+                            <TimePicker
+                              onChange={(e) => {
+                                handleTimeChange(e);
+                                formik.setFieldValue("startTime", e);
+                              }}
                               name="startTime"
-                              disabled={AddLanguage}
-                              required
+                              value={
+                                selectedTimeStart ?? formik.values.startTime
+                              }
+                              disableClock={true}
+                              clearIcon={null}
+                              format="HH:mm"
+                              placeholder="HH:mm"
                             />
                           </Col>
                           <Col sm={6}>
-                            <CustomTextField
-                              label={t("end_time")}
-                              type="time"
-                              disabled={AddLanguage}
+                            <label>
+                              <Trans i18nKey={"end_Time"} />*
+                            </label>
+                            <TimePicker
+                              onChange={(e) => {
+                                handleTimeChangeEnd(e);
+                                formik.setFieldValue("endTime", e);
+                              }}
                               name="endTime"
-                              required
+                              value={selectedTimeEnd}
+                              disableClock={true}
+                              clearIcon={null}
+                              format="HH:mm"
+                              placeholder="HH:mm"
                             />
                           </Col>
                           {formik?.values?.startTime ===

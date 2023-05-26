@@ -326,7 +326,7 @@ export const englishContent = {
   events_city_required: "City is required",
   events_location_required: "Location is required",
   facilities: "Trust Facilities",
-  userProfile_email_id: "Email Id",
+  userProfile_email_id: "Email",
   userProfile_temple: "Temple",
   latitude: "Longitude",
   longitude: "Latitude",
@@ -383,6 +383,7 @@ export const englishContent = {
 
 placeHolder_donar_name:"Enter Doner Name",
 placeHolder_mobile_number:"Enter Mobile Number",
+placeHolder_phone_number:"Enter Phone Number",
 placeHolder_title:"Enter Title",
 placeHolder_description:"Enter Description",
 placeHolder_tags:"Enter Tags",
@@ -391,5 +392,6 @@ placeHolder_user_name:"Enter Username",
 placeHolder_email:"Enter Email",
 placeHolder_password:"Enter Password",
 placeHolder_sub_category:"Enter Sub Category",
-
+placeHolder_city:"Enter City",
+placeHolder_state:"Enter State"
   };

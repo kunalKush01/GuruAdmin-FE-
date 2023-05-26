@@ -53,6 +53,13 @@ const RichTextFieldWarper = styled.div`
   .se-wrapper {
     z-index: 0 !important;
   }
+  .se-toolbar-sticky-dummy {
+    display: none !important;
+    height: 0px !important;
+  }
+  .sun-editor .se-toolbar.se-toolbar-sticky {
+    position: inherit;
+  }
   @media only screen and (max-width: 576px) {
     label {
       font: normal normal bold 13px/20px noto sans !important;
@@ -106,7 +113,7 @@ export default function RichTextField({
 
               //   "horizontalRule",
               "list",
-              //   "lineHeight",
+                "lineHeight",
               //   "table",
               "link",
               // "image",

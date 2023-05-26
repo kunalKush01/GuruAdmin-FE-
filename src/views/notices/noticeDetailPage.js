@@ -29,7 +29,7 @@ const NoticeDetailPage = () => {
     async () =>
       getNoticeDetail({
         noticeId,
-        languageId: getLangId(langArray, langSelection),
+        languageId: selectedLang.id,
       })
   );
 

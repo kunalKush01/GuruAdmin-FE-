@@ -247,13 +247,22 @@ export default function EventCard({
                   </Col>
                   <Col md={6}>
                     <div className="card-Date">
-                      <p>
-                        {`${moment(data.startDate).format(
-                          "DD MMM YYYY"
-                        )} to ${moment(data.endDate).format("DD MMM YYYY")} ,${
-                          data.startTime
-                        } to ${data.endTime}`}
-                      </p>
+                    {moment(data?.startDate).format("DD MMM YYYY") ===
+                      moment(data?.endDate).format("DD MMM YYYY") ? (
+                        <p>
+                          {`${moment(data.startDate).format("DD MMM YYYY")} ,${
+                            data.startTime
+                          } to ${data.endTime}`}
+                        </p>
+                      ) : (
+                        <p>
+                          {`${moment(data.startDate).format(
+                            "DD MMM YYYY"
+                          )} to ${moment(data.endDate).format(
+                            "DD MMM YYYY"
+                          )} ,${data.startTime} to ${data.endTime}`}
+                        </p>
+                      )}
                     </div>
                   </Col>
                 </Row>
@@ -269,12 +278,12 @@ export default function EventCard({
                 </Row>
                 <Row>
                   <Col>
-                    <div className="cardLangScroll">
+                    <div className=" mt-1 cardLangScroll">
                       {data?.languages?.map((item) => {
                         return (
-                          <Button outline key={item.id} color="primary">
+                          <div key={item.id} className="languageButton">
                             {ConverFirstLatterToCapital(item.name)}
-                          </Button>
+                          </div>
                         );
                       })}
                     </div>

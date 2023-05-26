@@ -25,7 +25,7 @@ const NewsDetailPage = () => {
     async () =>
       getNewsDetail({
         newsId,
-        languageId: getLangId(langArray, langSelection),
+        languageId: selectedLang.id,
       })
   );
 
