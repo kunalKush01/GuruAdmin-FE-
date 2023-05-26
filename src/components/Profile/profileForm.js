@@ -39,6 +39,7 @@ import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
 import TimePicker from "react-time-picker";
 import "react-time-picker/dist/TimePicker.css";
 import CustomLocationField from "../partials/CustomLocationField";
+import { toast } from "react-toastify";
 
 const ProfileFormWaraper = styled.div`
   .existlabel {
@@ -562,6 +563,8 @@ export default function ProfileForm({
                       <ImageUpload
                         bg_plus={defaultAvtar}
                         profileImage
+                        acceptFile="image/*"
+                        svgNotSupported
                         editTrue="edit"
                         imageSpinner={imageSpinner}
                         setImageSpinner={setImageSpinner}
@@ -765,25 +768,25 @@ export default function ProfileForm({
                   ) : null}
                 </Col>
                 {!AddLanguage && (
-                    <>
-                      <Col xs={12} md={4}>
-                        <CustomTextField
-                          label={t("City")}
-                          placeholder={t("placeHolder_city")}
-                          name="city"
-                          required
-                        />
-                      </Col>
-                      <Col xs={12} md={4}>
-                        <CustomTextField
-                          label={t("State")}
-                          placeholder={t("placeHolder_state")}
-                          name="state"
-                          required
-                        />
-                      </Col>
-                    </>
-                  )}
+                  <>
+                    <Col xs={12} md={4}>
+                      <CustomTextField
+                        label={t("City")}
+                        placeholder={t("placeHolder_city")}
+                        name="city"
+                        required
+                      />
+                    </Col>
+                    <Col xs={12} md={4}>
+                      <CustomTextField
+                        label={t("State")}
+                        placeholder={t("placeHolder_state")}
+                        name="state"
+                        required
+                      />
+                    </Col>
+                  </>
+                )}
                 {/* {!AddLanguage && (
                   <Col sm={4}>
                     <CustomTextField
@@ -938,6 +941,8 @@ export default function ProfileForm({
                             multiple
                             type={editImage}
                             imageSpinner={imageSpinner}
+                            acceptFile="image/*"
+                            svgNotSupported
                             setImageSpinner={setImageSpinner}
                             bg_plus={thumbnailImage}
                             setDeletedImages={setDeletedImages}
@@ -1219,18 +1224,24 @@ export default function ProfileForm({
                             // label={t("apna_mandir_upload_background")}
                             disabled={AddLanguage}
                             name="imageName"
+                            acceptFile="image/*"
                             // placeholder={t("apna_mandir_upload_background_here")}
                             onChange={(e) => {
-                              handleUpload(e.target.files[0], "facility");
-                              // handleUpload(e.target.files[0]).then((e)=>formik.setFieldValue('templeImage',e.target.files[0].name));
-                              formik.setFieldValue(
-                                "imageName",
-                                `${randomNumber}_${e.target.files[0].name}`
-                              );
-                              formik.setFieldValue(
-                                "preview",
-                                URL.createObjectURL(e.target.files[0])
-                              );
+                              if (e.target.files[0]?.type?.includes("svg")) {
+                                toast.error("File type SVG is not supported.");
+                                formik?.setFieldValue("imageName", "");
+                              } else {
+                                handleUpload(e.target.files[0], "facility");
+                                // handleUpload(e.target.files[0]).then((e)=>formik.setFieldValue('templeImage',e.target.files[0].name));
+                                formik.setFieldValue(
+                                  "imageName",
+                                  `${randomNumber}_${e.target.files[0]?.name}`
+                                );
+                                formik.setFieldValue(
+                                  "preview",
+                                  URL.createObjectURL(e.target.files[0])
+                                );
+                              }
                             }}
                           />
                           {documentSpinner ? (

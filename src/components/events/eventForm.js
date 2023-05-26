@@ -364,10 +364,13 @@ export default function EventForm({
                               .utcOffset("+0530")
                               .toDate(),
                           });
-                          selectOption?.images?.map((item)=>{
-                            formik.values.images.length=0;
-                            formik.setFieldValue("images",[...formik.values.images, item?.name])  
-                          })
+                          selectOption?.images?.map((item) => {
+                            formik.values.images.length = 0;
+                            formik.setFieldValue("images", [
+                              ...formik.values.images,
+                              item?.name,
+                            ]);
+                          });
                           setImageOnGlobleEvent(selectOption?.images);
                           setSelectedTimeEnd(selectOption?.endTime);
                           setSelectedTimeStart(selectOption?.startTime);
@@ -447,6 +450,8 @@ export default function EventForm({
                       <ImageUpload
                         multiple
                         type={editImage}
+                        acceptFile="image/*"
+                        svgNotSupported
                         disabledAddLanguage={AddLanguage}
                         imageSpinner={imageSpinner}
                         setImageSpinner={setImageSpinner}

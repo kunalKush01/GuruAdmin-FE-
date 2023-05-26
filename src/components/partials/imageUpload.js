@@ -6,6 +6,7 @@ import { Storage } from "@aws-amplify/storage";
 import { Trans } from "react-i18next";
 import { Button, Spinner } from "reactstrap";
 import { X } from "react-feather";
+import { toast } from "react-toastify";
 
 const WraperImageField = styled.div`
   .image_text {
@@ -263,7 +264,12 @@ function ImageUpload(props) {
   const { getRootProps, getInputProps, open } = useDropzone({
     accept: "",
     onDrop: (acceptedFiles) => {
-      handleUpload(acceptedFiles[0]);
+      const file = acceptedFiles[0];
+      if (file?.type?.includes("svg") && props.svgNotSupported) {
+        toast.error("File type SVG is not supported.");
+      } else {
+        handleUpload(acceptedFiles[0]);
+      }
     },
   });
   const removeFile = (file) => {

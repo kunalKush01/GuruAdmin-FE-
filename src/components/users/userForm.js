@@ -176,6 +176,8 @@ export default function UserForm({
                     imageSpinner={imageSpinner}
                     setImageSpinner={setImageSpinner}
                     profileImage
+                    acceptFile="image/*"
+                    svgNotSupported
                     editTrue="edit"
                     editedFileNameInitialValue={
                       formik.values.file ? formik.values.file : null

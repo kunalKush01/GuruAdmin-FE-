@@ -330,6 +330,8 @@ export default function NewsForm({
                         multiple
                         type={editImage}
                         imageSpinner={imageSpinner}
+                        acceptFile="image/*"
+                        svgNotSupported
                         setImageSpinner={setImageSpinner}
                         bg_plus={thumbnailImage}
                         disabledAddLanguage={AddLanguage}

@@ -142,12 +142,14 @@ export default function PunyarjakForm({
               </Col>
             </Row> */}
 
-            <Row className="paddingForm"> 
+            <Row className="paddingForm">
               <Col xs={12} md={10} className=" mt-2 ps-0 d-flex">
                 <div className="me-3">
                   <ImageUpload
                     bg_plus={defaultAvtar}
                     profileImage
+                    acceptFile="image/*"
+                    svgNotSupported
                     imageSpinner={imageSpinner}
                     setImageSpinner={setImageSpinner}
                     editTrue="edit"

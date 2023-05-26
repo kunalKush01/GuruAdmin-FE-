@@ -320,6 +320,8 @@ export default function NoticeForm({
                     <ImageUpload
                       bg_plus={thumbnailImage}
                       imageSpinner={imageSpinner}
+                      acceptFile="image/*"
+                      svgNotSupported
                       setImageSpinner={setImageSpinner}
                       editTrue="edit"
                       disabledAddLanguage={AddLanguage}
