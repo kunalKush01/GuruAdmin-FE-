@@ -22,6 +22,7 @@ import moment from "moment";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import he from "he";
 import NewsForm from "../../components/news/newsForm";
+import { getAllTrustPrefeces } from "../../api/profileApi";
 
 const NewsWarper = styled.div`
   color: #583703;
@@ -43,6 +44,7 @@ const schema = yup.object().shape({
   PublishedBy: yup.string().required("news_publish_required"),
   DateTime: yup.string(),
   tagsInit:yup.array().max(15 ,"tags_limit"),
+  preference: yup.array().min(1,"trust_prefenses_required").required("trust_prefenses_required"),
 
 });
 
@@ -106,12 +108,25 @@ export default function AddLanguageNews() {
     text: item.tag,
     _id: item.id,
   }));
+
+  // Trust preference
+ const loadTrustPreference = useQuery(["Preference"], () =>
+ getAllTrustPrefeces()
+);
+
+const trustPreference = useMemo(
+ () => loadTrustPreference?.data?.results ?? [],
+ [loadTrustPreference?.data?.results]
+);
+
+
   const initialValues = useMemo(() => {
     return {
       Id: newsDetailQuery?.data?.result?.id,
       Title: newsDetailQuery?.data?.result?.title,
       tagsInit: tags,
       images: [],
+      preference: newsDetailQuery?.data?.result?.preference ?? [],
       Body: he.decode(newsDetailQuery?.data?.result?.body ?? ""),
       PublishedBy: newsDetailQuery?.data?.result?.publishedBy,
       DateTime: moment(newsDetailQuery?.data?.result?.publishDate)
@@ -157,6 +172,7 @@ export default function AddLanguageNews() {
             editImage="edit"
             AddLanguage
             defaultImages={newsDetailQuery?.data?.result?.images}
+            trustPreference={trustPreference}
             initialValues={initialValues}
             vailidationSchema={schema}
             showTimeInput

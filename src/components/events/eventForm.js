@@ -85,6 +85,11 @@ const FormWaraper = styled.div`
       color: #fff7e8;
     }
   }
+  .ReactTags__tagInput input.ReactTags__tagInputField::placeholder {
+    color: #583703 !important;
+    font: normal normal bold 13px/20px Noto Sans;
+    opacity: 60%;
+  }
   /* added tags  */
   .ReactTags__selected {
     width: 100%;

@@ -1,10 +1,17 @@
 import React from "react";
 import ReactSelect from "react-select";
-import {Trans} from "react-i18next";
-import {useField} from "formik";
+import { Trans } from "react-i18next";
+import { useField } from "formik";
+import styled from "styled-components";
+
+
+const ReactSelectWarapper = styled.div`
+  margin-bottom: 10px;
+  font: normal normal bold 15px/33px Noto Sans;
+`;
 
 export const CustomReactSelect = ({
-                                    required=false,
+  required = false,
   label,
   loadOptions,
   labelKey = "label",
@@ -37,8 +44,8 @@ export const CustomReactSelect = ({
         backgroundColor: "#FFF7E8",
         color: "#583703",
         // width: "fit-content"  ,
-        maxHeight:"150px",
-        zIndex:"9999999999",
+        maxHeight: "150px",
+        zIndex: "9999999999",
         font: "normal normal normal 15px/20px Noto Sans",
         "::-webkit-scrollbar": {
           display: "none",
@@ -79,7 +86,7 @@ export const CustomReactSelect = ({
     placeholder: (provided) => ({
       ...provided,
       margin: "0px",
-      opacity:"60%",
+      opacity: "60%",
       // color: "#583703 ",
       color: `${props.color ?? "#583703"}`,
       font: "normal normal bold 13px/20px Noto Sans",
@@ -88,15 +95,58 @@ export const CustomReactSelect = ({
       ...provided,
       padding: "0px 8px",
     }),
+    multiValueContainer: (style) => {
+      return {
+        ...style,
+        background: "red !importnt",
+      };
+    },
+
+    multiValue: (styles) => {
+      return {
+        ...styles,
+        border: "1px solid #E1DFEC",
+        background: "inherit",
+        width: "fit-content",
+        borderRadius: "50px",
+      };
+    },
+    multiValue: (styles) => {
+      return {
+        ...styles,
+        border: "1px solid #000000",
+        background: "inherit",
+        width: "fit-content",
+        borderRadius: "10px",
+        ":hover": {
+          borderColor: "rgba(0, 0, 0, 0.87)",
+        },
+      };
+    },
+    multiValueLabel: (styles) => {
+      return {
+        ...styles,
+        color: "#583703",
+        textOverflow: "inherit",
+      };
+    },
+    multiValueRemove: (styles, { data }) => ({
+      ...styles,
+
+      ":hover": {
+        backgroundColor: data.color,
+      },
+    }),
   };
   // const [field, meta, helpers] = useField(props);
   return (
-    <div>
-      {props.labelName &&
-          <div style={{ font: "normal normal bold 15px/33px Noto Sans" }}>
-          {`${props.labelName}`}{required&&'*'}
+    <ReactSelectWarapper>
+      {props.labelName && (
+        <div style={{ font: "normal normal bold 15px/33px Noto Sans" }}>
+          {`${props.labelName}`}
+          {required && "*"}
         </div>
-      }
+      )}
       <ReactSelect
         isDisabled={props.disabled}
         isMulti={multiple}
@@ -111,6 +161,6 @@ export const CustomReactSelect = ({
         styles={customStyles}
         {...props}
       />
-    </div>
+    </ReactSelectWarapper>
   );
 };

@@ -18,6 +18,7 @@ import he from "he";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { If, Then, Else } from "react-if-else-switch";
 import NewsForm from "../../components/news/newsForm";
+import { getAllTrustPrefeces } from "../../api/profileApi";
 
 const NewsWarper = styled.div`
   color: #583703;
@@ -33,13 +34,19 @@ const NewsWarper = styled.div`
 `;
 
 const schema = yup.object().shape({
-  Title: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("news_title_required"),
+  Title: yup
+    .string()
+    .matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g, "injection_found")
+    .required("news_title_required"),
   // Tags: yup.string().required("news_tags_required"),
   Body: yup.string().required("news_desc_required"),
   PublishedBy: yup.string().required("news_publish_required"),
   DateTime: yup.string(),
-  tagsInit:yup.array().max(15 ,"tags_limit"),
-
+  tagsInit: yup.array().max(15, "tags_limit"),
+  preference: yup
+    .array()
+    .min(1, "trust_prefenses_required")
+    .required("trust_prefenses_required"),
 });
 
 const getLangId = (langArray, langSelection) => {
@@ -88,12 +95,23 @@ export default function EditNews() {
     _id: item.id,
   }));
 
+  // Trust preference
+  const loadTrustPreference = useQuery(["Preference"], () =>
+    getAllTrustPrefeces()
+  );
+
+  const trustPreference = useMemo(
+    () => loadTrustPreference?.data?.results ?? [],
+    [loadTrustPreference?.data?.results]
+  );
+
   const initialValues = useMemo(() => {
     return {
       Id: newsDetailQuery?.data?.result?.id,
       Title: newsDetailQuery?.data?.result?.title,
       tagsInit: tags,
       images: [],
+      preference: newsDetailQuery?.data?.result?.preference ?? [],
       Body: he.decode(newsDetailQuery?.data?.result?.body ?? ""),
       PublishedBy: loggedInUser,
       DateTime: moment(newsDetailQuery?.data?.result?.publishDate)
@@ -118,14 +136,16 @@ export default function EditNews() {
           </div>
         </div>
         <div className="editNews">
-        <div className="d-none d-sm-block">
+          <div className="d-none d-sm-block">
             <Trans i18nKey={"news_InputIn"} />
           </div>
 
           <CustomDropDown
             ItemListArray={newsDetailQuery?.data?.result?.languages}
             className={"ms-1"}
-            defaultDropDownName={ConverFirstLatterToCapital(langSelection ?? "")}
+            defaultDropDownName={ConverFirstLatterToCapital(
+              langSelection ?? ""
+            )}
             handleDropDownClick={(e) =>
               setLangSelection(ConverFirstLatterToCapital(e.target.name))
             }
@@ -172,6 +192,7 @@ export default function EditNews() {
                 editImage="edit"
                 defaultImages={newsDetailQuery?.data?.result?.images}
                 vailidationSchema={schema}
+                trustPreference={trustPreference}
                 initialValues={initialValues}
                 showTimeInput
                 handleSubmit={handleNewsUpdate}

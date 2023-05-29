@@ -9,12 +9,13 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { Trans, useTranslation } from "react-i18next";
 import { Button, Col, Row } from "reactstrap";
 import { useHistory } from "react-router-dom";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createNews } from "../../api/newsApi";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import { authApiInstance } from "../../axiosApi/authApiInstans";
 import NewsForm from "../../components/news/newsForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
+import { getAllTrustPrefeces } from "../../api/profileApi";
+import { createNews } from "../../api/newsApi";
 
 const NewsWarper = styled.div`
   color: #583703;
@@ -39,6 +40,7 @@ const schema = yup.object().shape({
   PublishedBy: yup.string().required("news_publish_required"),
   DateTime: yup.string(),
   tagsInit:yup.array().max(15 ,"tags_limit"),
+  preference: yup.array().min(1,"trust_prefenses_required").required("trust_prefenses_required"),
 
 });
 
@@ -50,11 +52,21 @@ export default function AddNews() {
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
   const currentFilter = searchParams.get("filter");
+ // Trust preference
+ const loadTrustPreference = useQuery(["Preference"], () =>
+ getAllTrustPrefeces()
+);
+
+const trustPreference = useMemo(
+ () => loadTrustPreference?.data?.results ?? [],
+ [loadTrustPreference?.data?.results]
+);
 
   const initialValues = {
     Id: "",
     Title: "",
     images: [],
+    preference: [],
     tagsInit: [],
     Body: "",
     PublishedBy: ConverFirstLatterToCapital(loggedInUser ?? ""),
@@ -91,6 +103,7 @@ export default function AddNews() {
         <NewsForm
           handleSubmit={handleCreateNews}
           initialValues={initialValues}
+          trustPreference={trustPreference}
           vailidationSchema={schema}
           showTimeInput
           buttonName={"news_button_Publish"}

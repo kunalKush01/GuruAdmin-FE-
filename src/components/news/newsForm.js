@@ -21,6 +21,7 @@ import ImageUpload from "../partials/imageUpload";
 import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
 import { Prompt } from "react-router-dom";
 import { add } from "lodash";
+import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 
 const FormWaraper = styled.div`
   .FormikWraper {
@@ -74,6 +75,11 @@ const FormWaraper = styled.div`
       color: #fff7e8;
     }
   }
+  .ReactTags__tagInput input.ReactTags__tagInputField::placeholder {
+  color: #583703 !important;
+  font: normal normal bold 13px/20px Noto Sans;
+  opacity: 60%;
+}
   /* added tags  */
   .ReactTags__selected {
     width: 100%;
@@ -152,6 +158,8 @@ export default function NewsForm({
   AddLanguage,
   vailidationSchema,
   initialValues,
+  trustPreference,
+
   showTimeInput,
   buttonName,
 }) {
@@ -239,6 +247,7 @@ export default function NewsForm({
           setLoading(true);
           newsMutation.mutate({
             newsId: e.Id,
+            preferenceIds: e?.preference?.map((pantId) => pantId?._id),
             title: e.Title,
             tags: e?.tagsInit?.map((tag) => tag.text),
             deletedTags,
@@ -310,6 +319,30 @@ export default function NewsForm({
                       </div>
                     )}
                   </Col>
+                  {!AddLanguage && (
+                    <Col xs={12} md={6} className="mt-lg-1">
+                      <FormikCustomReactSelect
+                        labelName={t("trust_prefenses")}
+                        multiple
+                        name="preference"
+                        onChange={(e) => {
+                          e?.map((item) => item.name);
+                          console.log("e pre", e);
+                          formik.setFieldValue("preference", e);
+                        }}
+                        labelKey={"name"}
+                        valueKey="_id"
+                        loadOptions={trustPreference?.map((item) => {
+                          return {
+                            ...item,
+                            name: ConverFirstLatterToCapital(item?.name),
+                          };
+                        })}
+                        defaultValue={formik?.values?.preference}
+                        width={"100"}
+                      />
+                    </Col>
+                  )}
                 </Row>
                 <Row>
                   <Col xs={12} className="mt-lg-1">
