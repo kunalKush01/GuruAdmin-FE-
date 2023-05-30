@@ -35,11 +35,14 @@ export const updateNewsDetail = (payload) =>
     requestFunction: (axios) =>
       axios.post(`${API_BASE_URL}news/add-language`, payload),
   });
-
-
-
   export const deleteNewsDetail = (payload) =>
   callApi({
     requestFunction: (axios) =>
       axios.delete(`${API_BASE_URL}news/delete/${payload}`, ),
+  });
+
+  export const PublishNews = (payload) =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.get(`${API_BASE_URL}news/publish/${payload}`, ),
   });

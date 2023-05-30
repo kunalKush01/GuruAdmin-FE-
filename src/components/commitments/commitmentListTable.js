@@ -1,28 +1,40 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import moment from "moment/moment";
-import { useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import ReactToPrint from "react-to-print";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import {
   deleteCommitment,
   getAllPaidDonationsReceipts,
+  nudgeUserApi,
 } from "../../api/commitmentApi";
 import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
+import donationReceiptIcon from "../../assets/images/icons/donationReceipt.svg";
 import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
+import receiptIcon from "../../assets/images/icons/receiptIcon.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { DELETE, EDIT } from "../../utility/permissionsVariable";
 import CustomDataTable from "../partials/CustomDataTable";
-import donationReceiptIcon from "../../assets/images/icons/donationReceipt.svg";
-import receiptIcon from "../../assets/images/icons/receiptIcon.svg";
-import ReactToPdf from "react-to-pdf";
-import { useSelector } from "react-redux";
-import { Button, Modal, ModalBody, ModalFooter, Spinner } from "reactstrap";
-import ReactToPrint from "react-to-print";
-import { toast } from "react-toastify";
+
+const RecentDonationTableWarper = styled.div`
+  color: #583703 !important;
+  font: normal normal bold 15px/23px Noto Sans;
+  .payDonation {
+    font: normal normal bold 15px/33px Noto Sans;
+    color: #ff8744;
+  }
+  .model > .my {
+    max-height: 600px;
+    overflow: auto;
+  }
+`;
 
 export default function CommitmentListTable(
   {
@@ -35,6 +47,8 @@ export default function CommitmentListTable(
     currentStatus,
     currentSubCategory,
     subPermission,
+    selectedRows,
+    setSelectedRows,
     allPermissions,
   },
   args
@@ -104,9 +118,21 @@ export default function CommitmentListTable(
     [receiptMutation]
   );
 
-  // console.log(allPaidDonationsReceipt);
+  const handleChange = useCallback((state) => {
+    setSelectedRows(state?.selectedRows);
+  }, []);
 
+  console.log("rohit selectedRows", selectedRows);
   const columns = [
+    // {
+    //   name: (
+    //     <div>
+    //       <Input type="checkbox" />
+    //     </div>
+    //   ),
+    //   selector: (row) => row.notifyUserId,
+    //   width: "500px",
+    // },
     {
       name: t("commitment_Username"),
       selector: (row) => row.username,
@@ -191,6 +217,7 @@ export default function CommitmentListTable(
     return data.map((item, idx) => {
       return {
         id: idx + 1,
+        notifyUserId: item?.id,
         username: (
           <div className="d-flex align-items-center ">
             <img
@@ -235,7 +262,9 @@ export default function CommitmentListTable(
         amountDue: <div>₹&nbsp; {item?.amount - item.paidAmount}</div>,
         commitmentId: (
           <div
-            className={`cursor-pointer ${financeReport ? "" : "text-decoration-underline"}`}
+            className={`cursor-pointer ${
+              financeReport ? "" : "text-decoration-underline"
+            }`}
             onClick={() => {
               financeReport
                 ? ""
@@ -291,9 +320,7 @@ export default function CommitmentListTable(
             <img
               src={editIcon}
               width={35}
-              className={
-                financeReport ? "d-none" : "cursor-pointer "
-              }
+              className={financeReport ? "d-none" : "cursor-pointer "}
               onClick={() => {
                 financeReport
                   ? ""
@@ -312,9 +339,7 @@ export default function CommitmentListTable(
             <img
               src={deleteIcon}
               width={35}
-              className={
-                financeReport ? "d-none" : "cursor-pointer "
-              }
+              className={financeReport ? "d-none" : "cursor-pointer "}
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -351,25 +376,16 @@ export default function CommitmentListTable(
     });
   }, [data]);
 
-  const RecentDonationTableWarper = styled.div`
-    color: #583703 !important;
-    font: normal normal bold 15px/23px Noto Sans;
-    .payDonation {
-      font: normal normal bold 15px/33px Noto Sans;
-      color: #ff8744;
-    }
-    .model > .my {
-      max-height: 600px;
-      overflow: auto;
-    }
-  `;
-
   return (
     <RecentDonationTableWarper>
       <CustomDataTable
         maxHieght={""}
         columns={columns}
         data={commitment_Data}
+        selectableRows
+        // selectableRowSelected={selectedRows ?? []}
+        // onSelectedRowsChange={handleChange}
+        onSelectedRowsChange={handleChange}
       />
       <ReactToPrint
         trigger={() => (
@@ -457,7 +473,9 @@ export default function CommitmentListTable(
                           textAlign: "left",
                         }}
                       >
-                        {`${loggedTemple?.city ?? ""}, ${loggedTemple?.state ?? ""}`}
+                        {`${loggedTemple?.city ?? ""}, ${
+                          loggedTemple?.state ?? ""
+                        }`}
                       </div>
                     </div>
                   </div>

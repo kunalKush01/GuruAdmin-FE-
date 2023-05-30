@@ -12,7 +12,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
 import BtnPopover from "../partials/btnPopover";
-import { deleteNoticeDetail } from "../../api/noticeApi";
+import { PublishNotice, deleteNoticeDetail } from "../../api/noticeApi";
 import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
 import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 import { useSelector } from "react-redux";
@@ -69,17 +69,17 @@ const EventCardWaraper = styled.div`
     margin-right: 10px;
   }
   @media only screen and (max-width: 1200px) {
-    .card-body{
+    .card-body {
       max-height: 100%;
       padding: 1rem;
     }
   }
   @media only screen and (max-width: 600px) {
-    .card-body{
+    .card-body {
       max-height: 100%;
       padding: 1rem;
     }
-}
+  }
 `;
 function BtnContent({
   noticeId,
@@ -102,9 +102,9 @@ function BtnContent({
         background-color: #ff8744;
         color: #fff;
       }
-      .col-item-disabled{
+      .col-item-disabled {
         cursor: not-allowed;
-        opacity:0.5;
+        opacity: 0.5;
       }
     }
   `;
@@ -122,8 +122,8 @@ function BtnContent({
     },
   });
   const langList = useSelector((state) => state.auth.availableLang);
-console.log("langList",langList);
-console.log("langList t",totalAvailableLanguage);
+  console.log("langList", langList);
+  console.log("langList t", totalAvailableLanguage);
 
   return (
     <BtnContentWraper>
@@ -183,12 +183,17 @@ console.log("langList t",totalAvailableLanguage);
         {allPermissions?.name === "all" || subPermission?.includes(WRITE) ? (
           <Col
             xs={12}
-            className={`${langList?.length === totalAvailableLanguage ? "col-item-disabled opacity-50 pb-1" : "col-item pb-1"}`}
+            className={`${
+              langList?.length === totalAvailableLanguage
+                ? "col-item-disabled opacity-50 pb-1"
+                : "col-item pb-1"
+            }`}
             onClick={() =>
-              langList?.length === totalAvailableLanguage ? "" :
-              history.push(
-                `/notices/add-language/${noticeId}?page=${currentPage}&filter=${currentFilter}`
-              )
+              langList?.length === totalAvailableLanguage
+                ? ""
+                : history.push(
+                    `/notices/add-language/${noticeId}?page=${currentPage}&filter=${currentFilter}`
+                  )
             }
           >
             <Trans i18nKey={"news_popOver_AddLang"} />
@@ -209,6 +214,18 @@ export default function NoticeCard({
   allPermissions,
 }) {
   const history = useHistory();
+  const handlePublish = async (payload) => {
+    return PublishNotice(payload);
+  };
+  const queryCient = useQueryClient();
+  const publishMutation = useMutation({
+    mutationFn: handlePublish,
+    onSuccess: (data) => {
+      if (!data.error) {
+        queryCient.invalidateQueries(["Notices"]);
+      }
+    },
+  });
 
   return (
     <EventCardWaraper key={data.id}>
@@ -219,7 +236,6 @@ export default function NoticeCard({
             borderRadius: "20px",
             boxShadow: "none",
             margin: "10px 10px",
-
           }}
         >
           <CardBody>
@@ -282,15 +298,26 @@ export default function NoticeCard({
                   </Col>
                 </Row>
               </Col>
-              <Col xs={12} md={2}>
-                <div className="align-items-center d-flex justify-content-end h-100">
-                  <img
-                    src={cardThreeDotIcon}
-                    className="cursor-pointer"
-                    width={50}
-                    height={40}
-                    id={`popover-${data.id}`}
-                  />
+              <Col xs={12} md={2} className="">
+                <div className=" h-100">
+                  <div className="mt-md-1">
+                    <Button
+                      size="sm"
+                      color="primary"
+                      onClick={() => publishMutation.mutate(data.id)}
+                    >
+                      {data?.isPublished ? <Trans i18nKey={"unPublish"}/> :<Trans i18nKey={"publish"}/> }
+                    </Button>
+                  </div>
+                  <div className="align-items-center d-flex justify-content-end">
+                    <img
+                      src={cardThreeDotIcon}
+                      className="cursor-pointer"
+                      width={50}
+                      height={40}
+                      id={`popover-${data.id}`}
+                    />
+                  </div>
                 </div>
               </Col>
             </Row>

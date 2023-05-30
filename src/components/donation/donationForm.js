@@ -4,9 +4,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import {
-  getAllMasterCategories
-} from "../../api/expenseApi";
+import { getAllMasterCategories } from "../../api/expenseApi";
 import FormWithoutFormikForDonation from "./FormWithoutFormikForDonation";
 
 const FormWaraper = styled.div`
@@ -47,10 +45,10 @@ const FormWaraper = styled.div`
       color: #fff !important;
     }
   }
-  .addUser{
+  .addUser {
     font-size: 13px;
   }
-  .addUser >span{
+  .addUser > span {
     text-decoration: underline;
     color: #ff8744;
   }
@@ -68,7 +66,7 @@ export default function DonationForm({
   const history = useHistory();
   const donationQuerClient = useQueryClient();
   const selectedLang = useSelector((state) => state.auth.selectLang);
-const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const masterloadOptionQuery = useQuery(
     ["MasterCategory", selectedLang.id],
     async () =>
@@ -79,12 +77,12 @@ const [loading, setLoading] = useState(false)
   const donationMutation = useMutation({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
-      if (!data.error) {
+      if (!data?.error) {
         donationQuerClient.invalidateQueries(["donations"]);
-        setLoading(false)
+        setLoading(false);
         history.push("/donation");
-      }else if(data?.error){
-        setLoading(false)
+      } else if (data?.error || data === undefined) {
+        setLoading(false);
       }
     },
   });
@@ -97,22 +95,21 @@ const [loading, setLoading] = useState(false)
           initialValues={{
             ...initialValues,
           }}
-          onSubmit={(e) =>{
-            setShowPrompt(false)
-            setLoading(true)
+          onSubmit={(e) => {
+            setShowPrompt(false);
+            setLoading(true);
             donationMutation.mutate({
               categoryId: e?.SelectedSubCategory?.id,
               amount: e?.Amount,
               masterCategoryId: e?.SelectedMasterCategory?.id,
-              donarName:e?.donarName,
+              donarName: e?.donarName,
               mobileNumber: e?.Mobile.toString(),
-              commitmentId:e?.SelectedCommitmentId?.commitmentId,
-            })}
-          }
+              commitmentId: e?.SelectedCommitmentId?.commitmentId,
+            });
+          }}
           validationSchema={vailidationSchema}
         >
           {(formik) => (
-            
             <FormWithoutFormikForDonation
               formik={formik}
               masterloadOptionQuery={masterloadOptionQuery}

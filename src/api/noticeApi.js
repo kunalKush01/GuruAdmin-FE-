@@ -57,3 +57,9 @@ export const updateNoticeDetail = (payload) =>
     requestFunction: (axios) =>
       axios.delete(`${API_BASE_URL}notice/delete/${payload}`, ),
   });
+
+  export const PublishNotice = (payload) =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.get(`${API_BASE_URL}notice/publish/${payload}`, ),
+  });

@@ -4,7 +4,6 @@ import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { authApiInstance } from "../../axiosApi/authApiInstans";
 
-
 const TOASTSLIDE = {
   toastId: "apnaMandirSuperAdminError",
 };
@@ -15,7 +14,7 @@ export const login = createAsyncThunk("Auth", async (data, thunkApi) => {
     return res.data.data;
   } catch (error) {
     const message = error?.response?.data?.message ?? "Something went wrong";
-    toast.error(message,{ ...TOASTSLIDE });
+    toast.error(message, { ...TOASTSLIDE });
     // thunkApi.rejectWithValue(error?.response?.data);
     throw error.response;
   }
@@ -29,7 +28,7 @@ const authSlice = createSlice({
       accessToken: "",
       refreshToken: "",
     },
-
+    // notifyIds:[],
     isLogged: false,
     isLoading: false,
     selectLang: {
@@ -53,6 +52,9 @@ const authSlice = createSlice({
         id: "6332cbba8054b2cac94da3d1",
       };
     },
+    // selectedData: (state, action) => {
+    //   state.notifyIds = [...action.payload];
+    // },
     addFacility(state, action) {
       state.trustDetail.trustFacilities = Array.isArray(action.payload)
         ? action.payload
@@ -65,7 +67,7 @@ const authSlice = createSlice({
       state.trustDetail = { ...state.trustDetail, ...action.payload };
     },
 
-    handleTokenLogin(state,action){
+    handleTokenLogin(state, action) {
       state.userDetail = action.payload.result;
       state.isLogged =
         action.payload.tokens.access.token &&
@@ -129,6 +131,7 @@ export const {
   handleProfileUpdate,
   setTokens,
   setlang,
+  // selectedData,
   handleTokenLogin,
   setAvailableLang,
   setSearchbarValue,

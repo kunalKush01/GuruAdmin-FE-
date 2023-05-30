@@ -17,6 +17,7 @@ import {
 import {
   getAllCommitments,
   getAllPaidDonationsReceipts,
+  nudgeUserApi,
 } from "../../api/commitmentApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import CommitmentListTable from "../../components/commitments/commitmentListTable";
@@ -240,6 +241,10 @@ export default function Commitment() {
   const subPermission = subPermissions?.subpermissions?.map(
     (item) => item.name
   );
+  const [selectedRows, setSelectedRows] = useState([]);
+
+  const notifyIds = selectedRows?.map((item) => item?.notifyUserId);
+  console.log("notifyIds", notifyIds);
 
   return (
     <CommitmentWarapper>
@@ -346,6 +351,15 @@ export default function Commitment() {
             ) : (
               ""
             )}
+            {notifyIds?.length > 0 && (
+              <Button
+                color="success"
+                className="addCommitment ms-1"
+                onClick={() => nudgeUserApi({ commitmentIds: notifyIds })}
+              >
+                Notify User
+              </Button>
+            )}
           </div>
         </div>
         <div style={{ height: "10px" }}>
@@ -380,6 +394,8 @@ export default function Commitment() {
                       data={commitmentItems}
                       currentFilter={routFilter}
                       currentPage={routPagination}
+                      selectedRows={selectedRows}
+                      setSelectedRows={setSelectedRows}
                       currentCategory={routCategory}
                       currentStatus={routStatus}
                       currentSubCategory={routSubCategory}

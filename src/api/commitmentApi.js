@@ -61,6 +61,12 @@ export const updateCommitmentDetail = (payload) =>
       axios.post(`${API_BASE_URL}donation-category/add-language`, payload),
   });
 
+  export const nudgeUserApi = (payload) =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}commitment/nudge-user`, payload),
+  });
+
 
 
   export const deleteCommitment = (payload) =>

@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import ReactToPdf from "react-to-pdf";
 import ReactToPrint from "react-to-print";
-import { Button, Modal, ModalBody, ModalFooter } from "reactstrap";
+import { Button, Input, Modal, ModalBody, ModalFooter } from "reactstrap";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
@@ -35,6 +35,7 @@ export default function DonationListTable({ data, topdf }, args) {
   };
 
   const columns = [
+    
     {
       name: t("commitment_Username"),
       selector: (row) => row.username,

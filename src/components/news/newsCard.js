@@ -24,7 +24,7 @@ import BtnPopover from "../partials/btnPopover";
 import { CustomDropDown } from "../partials/customDropDown";
 import { Trans, useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import { deleteNewsDetail } from "../../api/newsApi";
+import { PublishNews, deleteNewsDetail } from "../../api/newsApi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
@@ -34,7 +34,8 @@ import { useSelector } from "react-redux";
 
 const NewsCardWaraper = styled.div`
   .imgContainer {
-    background-color:#fff7e8;
+    background-color: #fff7e8;
+    border-bottom: 1px solid rgb(255, 135, 68);
     img {
       border-radius: 10px 10px 0px 0px;
     }
@@ -73,7 +74,7 @@ const NewsCardWaraper = styled.div`
     }
   }
   .imgContent {
-    top: 80%;
+    top: 5%;
     color: #fff;
     padding: 0px 5px;
     font: normal normal bold 12px/30px noto sans;
@@ -95,7 +96,7 @@ function BtnContent({
   currentFilter,
   subPermission,
   allPermissions,
-  totalAvailableLanguage
+  totalAvailableLanguage,
 }) {
   const { t } = useTranslation();
   const history = useHistory();
@@ -110,9 +111,9 @@ function BtnContent({
         background-color: #ff8744;
         color: #fff;
       }
-      .col-item-disabled{
+      .col-item-disabled {
         cursor: not-allowed;
-        opacity:0.5;
+        opacity: 0.5;
       }
     }
   `;
@@ -120,6 +121,7 @@ function BtnContent({
   const handleDeleteNews = async (payload) => {
     return deleteNewsDetail(payload);
   };
+
   const queryCient = useQueryClient();
   const deleteMutation = useMutation({
     mutationFn: handleDeleteNews,
@@ -190,13 +192,18 @@ function BtnContent({
         {allPermissions?.name === "all" || subPermission?.includes(WRITE) ? (
           <Col
             xs={12}
-            className={`${langList?.length === totalAvailableLanguage ? "col-item-disabled opacity-50 pb-1" : "col-item pb-1"}`}
+            className={`${
+              langList?.length === totalAvailableLanguage
+                ? "col-item-disabled opacity-50 pb-1"
+                : "col-item pb-1"
+            }`}
             onClick={() =>
-              langList?.length === totalAvailableLanguage ? "" :
-              history.push(
-                `/news/add-language/${newsId}?page=${currentPage}&filter=${currentFilter}`,
-                newsId
-              )
+              langList?.length === totalAvailableLanguage
+                ? ""
+                : history.push(
+                    `/news/add-language/${newsId}?page=${currentPage}&filter=${currentFilter}`,
+                    newsId
+                  )
             }
           >
             <Trans i18nKey={"news_popOver_AddLang"} />
@@ -218,34 +225,52 @@ export default function NewsCard({
 }) {
   const history = useHistory();
 
+  const handlePublish = async (payload) => {
+    return PublishNews(payload);
+  };
+  const queryCient = useQueryClient();
+  const publishMutation = useMutation({
+    mutationFn: handlePublish,
+    onSuccess: (data) => {
+      if (!data.error) {
+        queryCient.invalidateQueries(["News"]);
+      }
+    },
+  });
+
   return (
     <NewsCardWaraper>
       <Card
         style={{
           width: "100%",
-          height:"337px",
-          borderRadiuis:"10px",
-          overflow:"hidden"
+          height: "337px",
+          borderRadiuis: "10px",
+          overflow: "hidden",
         }}
       >
-        <div
-          className="position-relative cursor-pointer imgContainer "
-          onClick={() => history.push(`/news/about/${data.id}`, data.id)}
-        >
+        <div className="position-relative cursor-pointer imgContainer ">
           <img
+            onClick={() => history.push(`/news/about/${data.id}`, data.id)}
             alt="News Image"
             style={{
               height: "150px",
               position: "relative",
               width: "100%",
+              borderBottom: "1px solid rgb(255, 135, 68)",
             }}
             src={data?.images[0]?.presignedUrl ?? placeHolder}
           />
-          {/* <div className=" position-absolute imgContent  w-100 ">
+          <div className=" position-absolute imgContent  w-100 ">
             <div className="text-end">
-              {`${moment(data.publishDate).startOf("hour").fromNow()}`}
+              <Button
+                color="primary"
+                size="sm"
+                onClick={()=>publishMutation.mutate(data.id)}
+              >
+                {data?.isPublished ? <Trans i18nKey={"unPublish"}/> :<Trans i18nKey={"publish"}/> }
+              </Button>
             </div>
-          </div> */}
+          </div>
         </div>
 
         <CardBody>
