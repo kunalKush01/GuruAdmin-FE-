@@ -40,8 +40,11 @@ export const englishContent = {
   yes: "Yes",
   tags_limit:"Tags limit exceeded",
   end_time_less:"The End time must be greater than the Start time",
-  publish:"Publish Now",
+  publish_now:"Publish Now",
   unPublish:"Unpublish",
+  schedule:"Schedule",
+  publish:"Publish",
+  invalid_amount:"Invalid value",
   // All static content of Dashboard
   dashboard_donationReceived: "Donation Received",
   dashboard_donationPending: "Donation Pending",
@@ -256,6 +259,8 @@ export const englishContent = {
     'Click on "Add Collection" to add donation box on the screen',
 
   // All Commitment Data
+  notify_user:"Notify User",
+  notify_user_content:"Please check the check box for nudge the user",
   commitment_Username: "Username",
   add_commitment: "Add Commitment",
   edit_commitment: "Edit Commitment",

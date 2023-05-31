@@ -8,9 +8,8 @@ import { Button, Col, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
-import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import ImageUpload from "../partials/imageUpload";
-import defaultAvtar from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
+import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
 import RichTextField from "../partials/richTextEditorField";
 import { Prompt } from "react-router-dom";
 
@@ -45,8 +44,9 @@ export default function PunyarjakForm({
   loadOptions,
   handleSubmit,
   vailidationSchema,
-  profileImageName,
-  editProfile,
+  editThumbnail,
+  AddLanguage,
+  thumbnailImageName,
   initialValues,
   showTimeInput,
   addDonationUser,
@@ -69,6 +69,7 @@ export default function PunyarjakForm({
     onSuccess: (data) => {
       if (!data.error) {
         punyarjakQueryClient.invalidateQueries(["punyarjak"]);
+        punyarjakQueryClient.invalidateQueries(["punyarjakDetails"]);
         setLoading(false);
         history.push("/punyarjak");
       } else if (data?.error) {
@@ -79,7 +80,7 @@ export default function PunyarjakForm({
   const randomNumber = Math.floor(100000000000 + Math.random() * 900000000000);
   const [showPrompt, setShowPrompt] = useState(true);
   const [imageSpinner, setImageSpinner] = useState(false);
-  const [imageName, setImageName] = useState(profileImageName);
+  const [imageName, setImageName] = useState(thumbnailImageName);
 
   return (
     <FormWaraper className="FormikWraper">
@@ -91,9 +92,10 @@ export default function PunyarjakForm({
           setLoading(true);
           punyarjakMutation.mutate({
             punyarjakId: e?.id,
-            profilePhoto: editProfile ? imageName : e?.file,
-            name: e?.name,
+            image: editThumbnail ? imageName : e?.image,
+            title: e?.title,
             description: e?.description,
+            publishDate: e.DateTime,
           });
         }}
         validationSchema={vailidationSchema}
@@ -111,81 +113,100 @@ export default function PunyarjakForm({
                 }
               />
             )}
-            {/* <Row>
-              <Col xs={12}>
+            <Row className="paddingForm">
+              <Col xs={12} lg={7}>
                 <Row>
-                  <Col>
+                  <Col xs={12} md={6}>
                     <CustomTextField
-                      label={t("user_name")}
-                      name="name"
+                      label={t("news_label_Title")}
+                      placeholder={t("placeHolder_title")}
+                      name="title"
+                      required
+                      onInput={(e) =>
+                        (e.target.value = e.target.value.slice(0, 30))
+                      }
                       autoFocus
                     />
                   </Col>
-                  <Col>
-                    <CustomTextField
-                      label={t("dashboard_Recent_DonorNumber")}
-                      name="mobile"
-                      type="number"
-                      pattern="[6789][0-9]{9}"
-                      onInput={(e) =>
-                        (e.target.value = e.target.value.slice(0, 12))
-                      }
-                    />
-                  </Col>
-                  <Col>
-                    <CustomTextField
-                      label={t("subscribed_user_email")}
-                      name="email"
+                  <Col xs={12} className="mt-lg-1">
+                    <RichTextField
+                      height="200px"
+                      label={t("news_label_Description")}
+                      name="description"
                     />
                   </Col>
                 </Row>
-              </Col>
-            </Row> */}
-
-            <Row className="paddingForm">
-              <Col xs={12} md={10} className=" mt-2 ps-0 d-flex">
-                <div className="me-3">
-                  <ImageUpload
-                    bg_plus={defaultAvtar}
-                    profileImage
-                    acceptFile="image/*"
-                    svgNotSupported
-                    imageSpinner={imageSpinner}
-                    setImageSpinner={setImageSpinner}
-                    editTrue="edit"
-                    editedFileNameInitialValue={
-                      formik.values.file ? formik.values.file : null
-                    }
-                    randomNumber={randomNumber}
-                    fileName={(file, type) => {
-                      formik.setFieldValue("file", `${randomNumber}_${file}`);
-                      formik.setFieldValue("type", type);
-                      setImageName(`${randomNumber}_${file}`);
-                    }}
-                    removeFile={(fileName) => {
-                      formik.setFieldValue("file", "");
-                      setImageName("");
-                    }}
-                  />
-                  <div
-                    style={{
-                      height: "20px",
-                      font: "normal normal bold 11px/15px Noto Sans",
-                    }}
-                  >
-                    {formik.errors.file && formik.touched.file && (
-                      <div className="text-danger text-center">
-                        <Trans i18nKey={formik.errors.file} />
+                {!AddLanguage && (
+                  <Row>
+                    <Col xs={12}>
+                      <div className="ImagesVideos">
+                        <Trans i18nKey={"add_image"} />
                       </div>
-                    )}
-                  </div>
-                </div>
+                      <ImageUpload
+                        bg_plus={thumbnailImage}
+                        imageSpinner={imageSpinner}
+                        acceptFile="image/*"
+                        svgNotSupported
+                        setImageSpinner={setImageSpinner}
+                        editTrue="edit"
+                        disabledAddLanguage={AddLanguage}
+                        editedFileNameInitialValue={
+                          formik?.values?.image ? formik?.values?.image : null
+                        }
+                        randomNumber={randomNumber}
+                        fileName={(file, type) => {
+                          formik.setFieldValue(
+                            "image",
+                            `${randomNumber}_${file}`
+                          );
+                          formik.setFieldValue("type", type);
+                          setImageName(`${randomNumber}_${file}`);
+                        }}
+                        removeFile={(fileName) => {
+                          formik.setFieldValue("image", "");
+                          setImageName("");
+                        }}
+                      />
+                      <div
+                        style={{
+                          height: "20px",
+                          width: "fit-content",
+                          textAlign: "left",
+                          font: "normal normal bold 11px/15px Noto Sans",
+                        }}
+                      >
+                        {formik.errors.image && formik.touched.image && (
+                          <div className="text-danger text-center">
+                            <Trans i18nKey={formik.errors.image} />
+                          </div>
+                        )}
+                      </div>
+                    </Col>
+                  </Row>
+                )}
+              </Col>
+              <Col xs={12} lg={4}>
+                {!AddLanguage && (
+                  <Col>
+                    <FormikCustomDatePicker
+                      label={t("donation_select_date")}
+                      name="DateTime"
+                      pastDateNotAllowed
+                      // showTimeInput={showTimeInput}
+                    />
+                  </Col>
+                )}
+              </Col>
+            </Row>
+
+            {/* <Row className="paddingForm">
+              <Col xs={12} md={10} className=" mt-2 ps-0 d-flex">
                 <Row className="w-100">
                   <Col xs={12} md={6}>
                     <CustomTextField
-                      label={t("name")}
-                      placeholder={t("placeHolder_name")}
-                      name="name"
+                      label={t("news_label_Title")}
+                      placeholder={t("placeHolder_title")}
+                      name="title"
                       required
                       onInput={(e) =>
                         (e.target.value = e.target.value.slice(0, 30))
@@ -202,7 +223,7 @@ export default function PunyarjakForm({
                   </Col>
                 </Row>
               </Col>
-            </Row>
+            </Row> */}
             <div className="btn-Published  mt-lg-3">
               {loading ? (
                 <Button

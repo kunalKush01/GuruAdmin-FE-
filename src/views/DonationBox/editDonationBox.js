@@ -10,7 +10,10 @@ import { useHistory, useParams } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import styled from "styled-components";
 import * as yup from "yup";
-import { getCollectionBoxDetail, updateCollectionBoxDetail } from "../../api/donationBoxCollectionApi";
+import {
+  getCollectionBoxDetail,
+  updateCollectionBoxDetail,
+} from "../../api/donationBoxCollectionApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import DonationBoxForm from "../../components/DonationBox/donationBoxForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
@@ -29,7 +32,10 @@ const NewsWarper = styled.div`
 `;
 const schema = yup.object().shape({
   // CreatedBy: yup.string().required("news_tags_required"),
-  Amount: yup.string().required("donation_box_amount_required"),
+  Amount: yup
+    .string()
+    .matches(/^[0-9\b]+$/, "invalid_amount")
+    .required("amount_required"),
   Body: yup.string().required("donation_box_desc_required"),
   DateTime: yup.string(),
 });
@@ -48,18 +54,20 @@ export default function EditDonationBox() {
   const history = useHistory();
 
   const { donationBoxId } = useParams();
-  
+
   const langArray = useSelector((state) => state.auth.availableLang);
-  const selectedLang= useSelector(state=>state.auth.selectLang)
+  const selectedLang = useSelector((state) => state.auth.selectLang);
   const loggedInUser = useSelector((state) => state.auth.userDetail.name);
   const searchParams = new URLSearchParams(history.location.search);
-  const currentPage = searchParams.get('page')
-  const currentFilter = searchParams.get('filter')
+  const currentPage = searchParams.get("page");
+  const currentFilter = searchParams.get("filter");
 
-  const [langSelection, setLangSelection] = useState(ConverFirstLatterToCapital(selectedLang.name));
+  const [langSelection, setLangSelection] = useState(
+    ConverFirstLatterToCapital(selectedLang.name)
+  );
 
   const collectionBoxDetailQuery = useQuery(
-    ["BoxCollectionDetail", donationBoxId, langSelection,selectedLang.id],
+    ["BoxCollectionDetail", donationBoxId, langSelection, selectedLang.id],
     async () =>
       await getCollectionBoxDetail({
         donationBoxId,
@@ -67,27 +75,23 @@ export default function EditDonationBox() {
       })
   );
 
-  
-
   const handleUpdate = async (payload) => {
     return updateCollectionBoxDetail({
       ...payload,
       languageId: getLangId(langArray, langSelection),
     });
   };
-    const initialValues = useMemo(()=>{
-    return  {
-       
-        Id:collectionBoxDetailQuery?.data?.result?.id,
-        CreatedBy: loggedInUser,
-        Body: he.decode(collectionBoxDetailQuery?.data?.result?.remarks??""),
-        Amount: collectionBoxDetailQuery?.data?.result?.amount,
-        DateTime: moment(collectionBoxDetailQuery?.data?.result?.collectionDate)
+  const initialValues = useMemo(() => {
+    return {
+      Id: collectionBoxDetailQuery?.data?.result?.id,
+      CreatedBy: loggedInUser,
+      Body: he.decode(collectionBoxDetailQuery?.data?.result?.remarks ?? ""),
+      Amount: collectionBoxDetailQuery?.data?.result?.amount,
+      DateTime: moment(collectionBoxDetailQuery?.data?.result?.collectionDate)
         .utcOffset("+0530")
         .toDate(),
-      
     };
-  },[collectionBoxDetailQuery])
+  }, [collectionBoxDetailQuery]);
 
   return (
     <NewsWarper>
@@ -96,14 +100,22 @@ export default function EditDonationBox() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push(`/hundi?page=${currentPage}&filter=${currentFilter}`)}
+            onClick={() =>
+              history.push(`/hundi?page=${currentPage}&filter=${currentFilter}`)
+            }
           />
           <div className="editNews">
             <Trans i18nKey={"DonationBox_EditCollectionBox"} />
           </div>
         </div>
       </div>
-      <If condition={collectionBoxDetailQuery.isLoading || collectionBoxDetailQuery.isFetching} diableMemo >
+      <If
+        condition={
+          collectionBoxDetailQuery.isLoading ||
+          collectionBoxDetailQuery.isFetching
+        }
+        diableMemo
+      >
         <Then>
           <Row>
             <SkeletonTheme
@@ -133,20 +145,19 @@ export default function EditDonationBox() {
           </Row>
         </Then>
         <Else>
-          
-          {!collectionBoxDetailQuery.isFetching&&
-          <div className="ms-md-3 mt-1">  
-            <DonationBoxForm
-              buttonName={"save_changes"}
-              editLogs
-              vailidationSchema={schema}
-              collectionId={donationBoxId}
-              initialValues={initialValues}
-              showTimeInput
-              handleSubmit={handleUpdate}
-            />
-          </div>
-          }
+          {!collectionBoxDetailQuery.isFetching && (
+            <div className="ms-md-3 mt-1">
+              <DonationBoxForm
+                buttonName={"save_changes"}
+                editLogs
+                vailidationSchema={schema}
+                collectionId={donationBoxId}
+                initialValues={initialValues}
+                showTimeInput
+                handleSubmit={handleUpdate}
+              />
+            </div>
+          )}
         </Else>
       </If>
     </NewsWarper>

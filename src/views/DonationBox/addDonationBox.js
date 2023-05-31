@@ -27,29 +27,30 @@ const handleCollectionBox = async (payload) => {
 };
 const schema = yup.object().shape({
   // CreatedBy: yup.string().required("news_tags_required"),
-  Amount: yup.number().required("donation_box_amount_required"),
+  Amount: yup
+    .string()
+    .matches(/^[0-9\b]+$/, "invalid_amount")
+    .required("amount_required"),
   Body: yup.string().required("donation_box_desc_required"),
   DateTime: yup.string(),
 });
-
 
 export default function AddNews() {
   const history = useHistory();
   const langArray = useSelector((state) => state.auth.availableLang);
 
   const searchParams = new URLSearchParams(history.location.search);
-  const currentPage = searchParams.get('page')
-  const currentFilter = searchParams.get('filter')
+  const currentPage = searchParams.get("page");
+  const currentFilter = searchParams.get("filter");
   const loggedInUser = useSelector((state) => state.auth.userDetail.name);
 
-
-const initialValues = {
-  Id:"",
-  CreatedBy: loggedInUser,
-  Body: "",
-  Amount: "",
-  DateTime: new Date(),
-};
+  const initialValues = {
+    Id: "",
+    CreatedBy: loggedInUser,
+    Body: "",
+    Amount: "",
+    DateTime: new Date(),
+  };
 
   return (
     <NewsWarper>
@@ -58,7 +59,9 @@ const initialValues = {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push(`/hundi?page=${currentPage}&filter=${currentFilter}`)}
+            onClick={() =>
+              history.push(`/hundi?page=${currentPage}&filter=${currentFilter}`)
+            }
           />
           <div className="addNews">
             <Trans i18nKey={"DonationBox_AddDonationBox"} />

@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import he from "he";
@@ -13,7 +13,10 @@ import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
 import Swal from "sweetalert2";
 import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
-import { DELETE, EDIT } from "../../utility/permissionsVariable";
+import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
+import placeHolderTable from "../../assets/images/placeholderImages/placeHolderTable.svg";
+import { Button } from "reactstrap";
+import { useSelector } from "react-redux";
 
 export default function PunyarjakTable({
   data,
@@ -38,20 +41,31 @@ export default function PunyarjakTable({
 
   const columns = [
     {
-      name: t("subscribed_user_name"),
+      name: t("news_label_Title"),
       selector: (row) => row.name,
       style: {
         font: "normal normal 700 13px/20px noto sans !important ",
       },
-      maxWidth: "350px",
-      minWidth: "150px",
+      width: "300px",
     },
     {
       name: t("description"),
       selector: (row) => row.description,
-      center: true,
-      maxWidth: "350px",
-      minWidth: "150px",
+      width:
+        window.screen.width < "700"
+          ? "250px"
+          : window.screen.width > "700" && window.screen.width < "900"
+          ? "350px"
+          : window.screen.width > "900" && window.screen.width < "1200"
+          ? "400px"
+          : window.screen.width > "1200" && window.screen.width < "1450"
+          ? "500px"
+          : "750px",
+    },
+    {
+      name: "",
+      selector: (row) => row.addLanguage,
+      width: "fit-content",
     },
     {
       name: t(""),
@@ -64,6 +78,7 @@ export default function PunyarjakTable({
       center: true,
     },
   ];
+  const langList = useSelector((state) => state.auth.availableLang);
 
   const punyarjak_user = useMemo(() => {
     return data.map((item, idx) => {
@@ -72,16 +87,17 @@ export default function PunyarjakTable({
         name: (
           <div className="d-flex align-items-center ">
             <img
-              src={item?.profilePhoto !== "" ? item?.profilePhoto : avtarIcon}
+              // src={item?.profilePhoto !== "" ? item?.profilePhoto : avtarIcon}
+              src={item?.image !== "" ? item?.image : placeHolderTable}
               className="cursor-pointer"
               style={{
-                marginRight: "5px",
+                marginRight: "10px",
                 width: "30px",
                 height: "30px",
                 borderRadius: "50%",
               }}
             />
-            <div>{ConverFirstLatterToCapital(item?.name ?? "-")}</div>
+            <div>{ConverFirstLatterToCapital(item?.title ?? "-")}</div>
           </div>
         ),
         description: (
@@ -92,6 +108,27 @@ export default function PunyarjakTable({
             }}
           />
         ),
+        addLanguage:
+          allPermissions?.name === "all" || subPermission?.includes(WRITE) ? (
+            <Button
+              outline
+              className={
+                langList?.length === item?.languages?.length &&
+                "opacity-50 disabled"
+              }
+              onClick={() =>
+                history.push(
+                  `/punyarjak/add-language/${item.id}?page=${currentPage}`
+                )
+              }
+              color="primary"
+              style={{ padding: "5px 20px" }}
+            >
+              <Trans i18nKey={"news_AddLangNews"} />
+            </Button>
+          ) : (
+            ""
+          ),
         edit:
           allPermissions?.name === "all" || subPermission?.includes(EDIT) ? (
             <img

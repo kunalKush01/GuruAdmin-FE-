@@ -19,7 +19,7 @@ export const getAllPunyarjak = (payload) =>
   export const getPunyarjakDetails = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.get(`${API_BASE_URL}punyarjak/${payload}`, payload),
+      axios.post(`${API_BASE_URL}punyarjak/get`, payload),
       showToastOnSuccess: false,
       showToastOnError: false,
   });
@@ -36,4 +36,10 @@ export const getAllPunyarjak = (payload) =>
   callApi({
     requestFunction: (axios) =>
       axios.delete(`${API_BASE_URL}punyarjak/${payload}`, ),
+  });
+
+  export const addLangPunyarjakDetail = (payload) =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}punyarjak/add-language`, payload),
   });

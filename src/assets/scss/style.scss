@@ -131,3 +131,14 @@ body::-webkit-scrollbar {
   border-radius: 20px;
   margin-right: 10px;
 }
+.notifyUserPOP{
+  width: 10px !important;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  transition: background-color 600000s 0s, color 600000s 0s;
+  -webkit-transition: background-color 600000s 0s, color 600000s 0s;
+  -moz-transition: background-color 600000s 0s, color 600000s 0s;
+  -ms-transition: background-color 600000s 0s, color 600000s 0s;
+  -o-transition: background-color 600000s 0s, color 600000s 0s;
+}

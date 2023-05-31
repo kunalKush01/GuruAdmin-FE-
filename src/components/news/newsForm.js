@@ -252,7 +252,7 @@ export default function NewsForm({
             tags: e?.tagsInit?.map((tag) => tag.text),
             deletedTags,
             body: e.Body,
-            publishDate: e.DateTime,
+            publishDate: e?.DateTime,
             publishedBy: e.PublishedBy,
             images: e?.images,
             removedImages: deletedImages,
@@ -402,7 +402,7 @@ export default function NewsForm({
                         label={t("donation_select_date")}
                         name="DateTime"
                         pastDateNotAllowed
-                        // showTimeInput={showTimeInput}
+                        showTimeInput={showTimeInput}
                       />
                     </Col>
                   )}

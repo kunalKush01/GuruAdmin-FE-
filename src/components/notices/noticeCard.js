@@ -1,6 +1,6 @@
 import moment from "moment";
 import React, { useState } from "react";
-import { Card, CardBody, Button, Row, Col } from "reactstrap";
+import { Card, CardBody, Button, Row, Col, ButtonGroup, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
 import he from "he";
 import styled from "styled-components";
 import cardThreeDotIcon from "../../assets/images/icons/news/threeDotIcon.svg";
@@ -269,7 +269,7 @@ export default function NoticeCard({
                     <div className="card-Date">
                       <p>
                         Posted on{" "}
-                        {`${moment(data.publishDate).format("D MMMM YYYY ")}`}
+                        {`${moment(data?.publishDate).format("D MMMM YYYY ")}`} At {`${moment(data?.publishDate).format("hh:mm")}`} 
                       </p>
                     </div>
                   </Col>
@@ -279,7 +279,7 @@ export default function NoticeCard({
                     <div
                       className="card-text "
                       dangerouslySetInnerHTML={{
-                        __html: he.decode(data.body),
+                        __html: he.decode(data?.body),
                       }}
                     />
                   </Col>
@@ -290,7 +290,7 @@ export default function NoticeCard({
                       {data?.languages?.map((item) => {
                         return (
                           <div key={item.id} className="languageButton">
-                            {ConverFirstLatterToCapital(item.name)}
+                            {ConverFirstLatterToCapital(item?.name ?? "")}
                           </div>
                         );
                       })}
@@ -301,13 +301,36 @@ export default function NoticeCard({
               <Col xs={12} md={2} className="">
                 <div className=" h-100">
                   <div className="mt-md-1">
-                    <Button
-                      size="sm"
-                      color="primary"
-                      onClick={() => publishMutation.mutate(data.id)}
-                    >
-                      {data?.isPublished ? <Trans i18nKey={"unPublish"}/> :<Trans i18nKey={"publish"}/> }
-                    </Button>
+                    <ButtonGroup>
+                      <UncontrolledDropdown>
+                        <DropdownToggle color="primary" size="sm" caret>
+                          <Trans i18nKey={"publish"} />
+                        </DropdownToggle>
+                        <DropdownMenu className="publishMenu">
+                          <DropdownItem
+                            className="py-0 w-100"
+                            onClick={() =>
+                              history.push(
+                                `/notices/edit/${data?.id}?page=${currentPage}&filter=${currentFilter}`,
+                                data?.id
+                              )
+                            }
+                          >
+                            <Trans i18nKey={"schedule"} />
+                          </DropdownItem>
+                          <DropdownItem
+                            className="py-0 w-100"
+                            onClick={() => publishMutation.mutate(data?.id)}
+                          >
+                            {data?.isPublished ? (
+                              <Trans i18nKey={"unPublish"} />
+                            ) : (
+                              <Trans i18nKey={"publish_now"} />
+                            )}
+                          </DropdownItem>
+                        </DropdownMenu>
+                      </UncontrolledDropdown>
+                    </ButtonGroup>
                   </div>
                   <div className="align-items-center d-flex justify-content-end">
                     <img

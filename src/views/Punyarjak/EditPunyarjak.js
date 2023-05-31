@@ -11,7 +11,10 @@ import * as yup from "yup";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { getPunyarjakDetails, updatePunyarjak } from "../../api/punarjakApi";
 import PunyarjakForm from "../../components/Punyarjak/punyarjakUserForm";
-import he from 'he'
+import he from "he";
+import moment from "moment";
+import { CustomDropDown } from "../../components/partials/customDropDown";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 const PunyarjakWarapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -25,15 +28,12 @@ const PunyarjakWarapper = styled.div`
   }
 `;
 const schema = yup.object().shape({
-  description:yup.string().required("punyarjak_desc_required"),
-  name: yup
+  description: yup.string().required("punyarjak_desc_required"),
+  title: yup
     .string()
-    .matches(
-      /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
-      "username"
-    )
-    .required("users_title_required"),
-    file:yup.string().required("img_required"),
+    .matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g, "injection_found")
+    .required("news_title_required"),
+  image: yup.string().required("img_required"), 
 });
 
 const getLangId = (langArray, langSelection) => {
@@ -56,21 +56,31 @@ export default function EditSubAdmin() {
   const currentPage = searchParams.get("page");
   const punyarjakDetailQuery = useQuery(
     ["punyarjakDetails", punyarjakId, langSelection],
-    () => getPunyarjakDetails(punyarjakId)
+    () =>
+      getPunyarjakDetails({
+        punyarjakId: punyarjakId,
+        languageId: getLangId(langArray, langSelection, selectedLang.id),
+      })
   );
 
   const handlePunyarjakUpdate = async (payload) => {
     return updatePunyarjak({
       ...payload,
+      languageId: getLangId(langArray, langSelection),
     });
   };
 
   const initialValues = useMemo(() => {
     return {
       id: punyarjakDetailQuery?.data?.result?.id,
-      name: punyarjakDetailQuery?.data?.result?.name,
-      description:he.decode(punyarjakDetailQuery?.data?.result?.description ?? ""),
-      file: punyarjakDetailQuery?.data?.result?.profilePhoto,
+      title: punyarjakDetailQuery?.data?.result?.title,
+      description: he.decode(
+        punyarjakDetailQuery?.data?.result?.description ?? ""
+      ),
+      DateTime: moment(punyarjakDetailQuery?.data?.result?.publishDate)
+        .utcOffset("+0530")
+        .toDate(),
+      image: punyarjakDetailQuery?.data?.result?.image,
     };
   }, [punyarjakDetailQuery]);
 
@@ -86,6 +96,22 @@ export default function EditSubAdmin() {
           <div className="editNotice">
             <Trans i18nKey={"edit_punyarjak"} />
           </div>
+        </div>
+        <div className="editNotice">
+          <div className="d-none d-sm-block">
+            <Trans i18nKey={"news_InputIn"} />
+          </div>
+          <CustomDropDown
+            ItemListArray={punyarjakDetailQuery?.data?.result?.languages}
+            className={"ms-1"}
+            defaultDropDownName={ConverFirstLatterToCapital(
+              langSelection ?? ""
+            )}
+            handleDropDownClick={(e) =>
+              setLangSelection(ConverFirstLatterToCapital(e.target?.name))
+            }
+            // disabled
+          />
         </div>
       </div>
 
@@ -125,12 +151,12 @@ export default function EditSubAdmin() {
         </Then>
         <Else>
           {!!punyarjakDetailQuery?.data?.result && (
-            <div className = "ms-sm-3 mt-1 ms-1">
+            <div className="ms-sm-3 mt-1 ms-1">
               <PunyarjakForm
-                editProfile
+                editThumbnail
                 editTrue="edit"
-                profileImageName={
-                  punyarjakDetailQuery?.data?.result?.profileName
+                thumbnailImageName={
+                  punyarjakDetailQuery?.data?.result?.imageName
                 }
                 buttonName={"edit_punyarjak"}
                 initialValues={initialValues}

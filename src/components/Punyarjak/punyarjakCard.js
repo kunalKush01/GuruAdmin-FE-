@@ -91,12 +91,9 @@ const NewsCardWaraper = styled.div`
       display: block;
     }
   }
-  .publishMenu{
-    background-color: #fff7e8;
-  }
 `;
 function BtnContent({
-  newsId,
+  punyarjakId,
   currentPage,
   currentFilter,
   subPermission,
@@ -147,8 +144,8 @@ function BtnContent({
             className="col-item"
             onClick={() =>
               history.push(
-                `/news/edit/${newsId}?page=${currentPage}&filter=${currentFilter}`,
-                newsId
+                `/punyarjak/edit/${punyarjakId}?page=${currentPage}`,
+                punyarjakId
               )
             }
           >
@@ -161,7 +158,7 @@ function BtnContent({
           <Col
             xs={12}
             className="col-item  "
-            // onClick={() => deleteMutation.mutate(newsId)}
+            // onClick={() => deleteMutation.mutate(punyarjakId)}
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -184,7 +181,7 @@ function BtnContent({
                 confirmButtonAriaLabel: "Confirm",
               }).then(async (result) => {
                 if (result.isConfirmed) {
-                  deleteMutation.mutate(newsId);
+                  deleteMutation.mutate(punyarjakId);
                 }
               });
             }}
@@ -206,8 +203,8 @@ function BtnContent({
               langList?.length === totalAvailableLanguage
                 ? ""
                 : history.push(
-                    `/news/add-language/${newsId}?page=${currentPage}&filter=${currentFilter}`,
-                    newsId
+                    `/punyarjak/add-language/${punyarjakId}?page=${currentPage}`,
+                    punyarjakId
                   )
             }
           >
@@ -221,28 +218,13 @@ function BtnContent({
   );
 }
 
-export default function NewsCard({
+export default function PunyarjakCard({
   data,
   currentPage,
   currentFilter,
   subPermission,
   allPermissions,
 }) {
-  const history = useHistory();
-
-  const handlePublish = async (payload) => {
-    return PublishNews(payload);
-  };
-  const queryCient = useQueryClient();
-  const publishMutation = useMutation({
-    mutationFn: handlePublish,
-    onSuccess: (data) => {
-      if (!data.error) {
-        queryCient.invalidateQueries(["News"]);
-      }
-    },
-  });
-
   return (
     <NewsCardWaraper>
       <Card
@@ -255,69 +237,22 @@ export default function NewsCard({
       >
         <div className="position-relative cursor-pointer imgContainer ">
           <img
-            onClick={() => history.push(`/news/about/${data?.id}`, data.id)}
-            alt="News Image"
+            alt="Punyarjak Image"
             style={{
               height: "150px",
               position: "relative",
               width: "100%",
               borderBottom: "1px solid rgb(255, 135, 68)",
             }}
-            src={data?.images[0]?.presignedUrl ?? placeHolder}
+            src={data?.image ?? placeHolder}
           />
-          <div className=" position-absolute imgContent  w-100 ">
-            <div className="text-end">
-              <ButtonGroup>
-                <UncontrolledDropdown>
-                  <DropdownToggle color="primary" size="sm" caret>
-                    <Trans i18nKey={"publish"}/>
-                  </DropdownToggle>
-                  <DropdownMenu className="publishMenu">
-                    <DropdownItem
-                      className="py-0 w-100"
-                      onClick={() =>
-                        history.push(
-                          `/news/edit/${data?.id}?page=${currentPage}&filter=${currentFilter}`,
-                          data?.id
-                        )
-                      }
-                    >
-                      <Trans i18nKey={"schedule"}/>
-                    </DropdownItem>
-                    <DropdownItem
-                      className="py-0 w-100"
-                      onClick={() => publishMutation.mutate(data.id)}
-                    >
-                      {data?.isPublished ? (
-                        <Trans i18nKey={"unPublish"} />
-                      ) : (
-                        <Trans i18nKey={"publish_now"} />
-                      )}
-                    </DropdownItem>
-                  </DropdownMenu>
-                </UncontrolledDropdown>
-              </ButtonGroup>
-              {/* <Button
-                color="primary"
-                size="sm"
-                onClick={() => publishMutation.mutate(data.id)}
-              >
-                {data?.isPublished ? (
-                  <Trans i18nKey={"unPublish"} />
-                ) : (
-                  <Trans i18nKey={"publish"} />
-                )}
-              </Button> */}
-            </div>
-          </div>
         </div>
 
         <CardBody>
-          <div
-            className="cursor-pointer"
-            onClick={() => history.push(`/news/about/${data.id}`, data.id)}
-          >
-            <CardTitle>{ConverFirstLatterToCapital(data.title)}</CardTitle>
+          <div className="cursor-pointer">
+            <CardTitle>
+              {ConverFirstLatterToCapital(data?.title ?? "")}
+            </CardTitle>
 
             <CardText>
               <div
@@ -331,7 +266,7 @@ export default function NewsCard({
             {data?.languages?.map((item) => {
               return (
                 <div key={item.id} className="languageButton">
-                  {ConverFirstLatterToCapital(item.name)}
+                  {ConverFirstLatterToCapital(item?.name ?? "")}
                 </div>
               );
             })}
@@ -340,12 +275,14 @@ export default function NewsCard({
             <div className="d-flex justify-content-between align-items-center">
               <div>
                 <img src={cardClockIcon} style={{ verticalAlign: "bottom" }} />
-                {`Posted on ${moment(data?.publishDate).format("D MMMM YYYY ")} At ${moment(data?.publishDate).format("hh:mm")}`}
+                {`Posted on ${moment(data?.publishDate).format(
+                  "D MMMM YYYY "
+                )}`}
               </div>
               <img
                 src={cardThreeDotIcon}
                 className="cursor-pointer"
-                id={`popover-${data.id}`}
+                id={`popover-${data?.id}`}
               />
             </div>
           </CardFooter>
@@ -355,7 +292,7 @@ export default function NewsCard({
         target={`popover-${data.id}`}
         content={
           <BtnContent
-            newsId={data.id}
+            punyarjakId={data?.id}
             currentPage={currentPage}
             totalAvailableLanguage={data?.languages?.length}
             currentFilter={currentFilter}

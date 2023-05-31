@@ -9,7 +9,10 @@ import { useHistory, useParams } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import styled from "styled-components";
 import * as yup from "yup";
-import { getCommitmentDetail, updateCommitmentDetail } from "../../api/commitmentApi";
+import {
+  getCommitmentDetail,
+  updateCommitmentDetail,
+} from "../../api/commitmentApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import CommitmentForm from "../../components/commitments/commitmentForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
@@ -28,17 +31,24 @@ const CommitmentWarapper = styled.div`
 `;
 
 const schema = yup.object().shape({
-    Mobile: yup.string().min(10 ,"mobile_number_limit").required("expenses_mobile_required"),
-    SelectedUser: yup.mixed().required("user_select_required"),
-    donarName: yup.string().matches(
+  Mobile: yup
+    .string()
+    .min(10, "mobile_number_limit")
+    .required("expenses_mobile_required"),
+  SelectedUser: yup.mixed().required("user_select_required"),
+  donarName: yup
+    .string()
+    .matches(
       /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
-      'donation_donar_name_only_letters'
-  ),
-    SelectedMasterCategory: yup.mixed().required("masterCategory_required"),
-    SelectedSubCategory: yup.mixed(),
-    Amount:yup.string().required("amount_required"),
-    
-  });
+      "donation_donar_name_only_letters"
+    ),
+  SelectedMasterCategory: yup.mixed().required("masterCategory_required"),
+  SelectedSubCategory: yup.mixed(),
+  Amount: yup
+    .string()
+    .matches(/^[0-9\b]+$/, "invalid_amount")
+    .required("amount_required"),
+});
 const getLangId = (langArray, langSelection) => {
   let languageId;
   langArray.map(async (Item) => {
@@ -56,8 +66,8 @@ export default function EditCommitment() {
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
   const searchParams = new URLSearchParams(history.location.search);
-  const currentPage = searchParams.get('page')
-  const currentFilter = searchParams.get('filter')
+  const currentPage = searchParams.get("page");
+  const currentFilter = searchParams.get("filter");
   const currentCategory = searchParams.get("category");
   const currentSubCategory = searchParams.get("subCategory");
   const currentStatus = searchParams.get("status");
@@ -84,15 +94,18 @@ export default function EditCommitment() {
 
   const initialValues = useMemo(() => {
     return {
-        Id:commitmentDetailQuery?.data?.result?.id,
-        Mobile:commitmentDetailQuery?.data?.result?.user?.mobileNumber,
-        SelectedUser: commitmentDetailQuery?.data?.result?.user,
-        donarName: commitmentDetailQuery?.data?.result?.donarName,
-        SelectedMasterCategory: commitmentDetailQuery?.data?.result?.masterCategory,
-        SelectedSubCategory:commitmentDetailQuery?.data?.result?.category,
-        createdBy:commitmentDetailQuery?.data?.result?.createdBy.name,
-        Amount:commitmentDetailQuery?.data?.result?.amount,
-        DateTime:moment(commitmentDetailQuery?.data?.result?.commitmentEndDate).utcOffset("+0530").toDate(),
+      Id: commitmentDetailQuery?.data?.result?.id,
+      Mobile: commitmentDetailQuery?.data?.result?.user?.mobileNumber,
+      SelectedUser: commitmentDetailQuery?.data?.result?.user,
+      donarName: commitmentDetailQuery?.data?.result?.donarName,
+      SelectedMasterCategory:
+        commitmentDetailQuery?.data?.result?.masterCategory,
+      SelectedSubCategory: commitmentDetailQuery?.data?.result?.category,
+      createdBy: commitmentDetailQuery?.data?.result?.createdBy.name,
+      Amount: commitmentDetailQuery?.data?.result?.amount,
+      DateTime: moment(commitmentDetailQuery?.data?.result?.commitmentEndDate)
+        .utcOffset("+0530")
+        .toDate(),
     };
   }, [commitmentDetailQuery]);
 
@@ -103,17 +116,18 @@ export default function EditCommitment() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push(`/commitment?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`)}
+            onClick={() =>
+              history.push(
+                `/commitment?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`
+              )
+            }
           />
           <div className="editCommitment">
             <Trans i18nKey={"edit_commitment"} />
           </div>
         </div>
       </div>
-      <If
-        condition={commitmentDetailQuery.isLoading }
-        diableMemo
-      >
+      <If condition={commitmentDetailQuery.isLoading} diableMemo>
         <Then>
           <Row>
             <SkeletonTheme

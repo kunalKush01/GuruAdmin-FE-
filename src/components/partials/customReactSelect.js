@@ -45,7 +45,7 @@ export const CustomReactSelect = ({
         color: "#583703",
         // width: "fit-content"  ,
         maxHeight: "150px",
-        zIndex: "9999999999",
+        zIndex: "50000000000000010000",
         font: "normal normal normal 15px/20px Noto Sans",
         "::-webkit-scrollbar": {
           display: "none",

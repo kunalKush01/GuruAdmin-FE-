@@ -8,7 +8,8 @@ import { createDonation } from "../../api/donationApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import DonationForm from "../../components/donation/donationForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-
+import 'react-phone-number-input/style.css'
+import PhoneInput from 'react-phone-number-input'
 const DonationWarapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -33,7 +34,7 @@ const schema = yup.object().shape({
       'donation_donar_name_only_letters'
   ),
   SelectedMasterCategory: yup.mixed().required("masterCategory_required"),
-  Amount: yup.number().required("amount_required"),
+  Amount: yup.string().matches(/^[0-9\b]+$/,"invalid_amount").required("amount_required"),
 });
 
 export default function AddDonation() {

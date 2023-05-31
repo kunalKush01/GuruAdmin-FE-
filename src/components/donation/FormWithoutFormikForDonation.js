@@ -16,6 +16,8 @@ import AsyncSelectField from "../partials/asyncSelectField";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import { Prompt } from "react-router-dom";
+import "react-phone-number-input/style.css";
+import PhoneInput from "react-phone-number-input";
 
 export default function FormWithoutFormikForDonation({
   formik,
@@ -139,17 +141,32 @@ export default function FormWithoutFormikForDonation({
         <Col xs={12}>
           <Row>
             <Col xs={12} sm={6} lg={4} className=" pb-1">
-              <CustomTextField
-                type="number"
-                label={t("dashboard_Recent_DonorNumber")}
-                placeholder={t("placeHolder_mobile_number")}
-                name="Mobile"
-                disabled={payDonation}
-                pattern="[6789][0-9]{9}"
-                onInput={(e) => (e.target.value = e.target.value.slice(0, 12))}
-                required
-                autoFocus
-              />
+              <Row>
+                <Col xs={4} className="align-self-center">
+                  <PhoneInput
+                    international
+                    countryCallingCodeEditable={false}
+                    defaultCountry="IN"
+                    // value={value}
+                    onChange={(e) => console.log("e country", e)}
+                  />
+                </Col>
+                <Col xs={8}>
+                  <CustomTextField
+                    type="number"
+                    label={t("dashboard_Recent_DonorNumber")}
+                    placeholder={t("placeHolder_mobile_number")}
+                    name="Mobile"
+                    disabled={payDonation}
+                    pattern="[6789][0-9]{9}"
+                    onInput={(e) =>
+                      (e.target.value = e.target.value.slice(0, 12))
+                    }
+                    required
+                    autoFocus
+                  />
+                </Col>
+              </Row>
             </Col>
             <Col xs={12} sm={6} lg={4} className=" pb-1">
               <AsyncSelectField
@@ -205,7 +222,10 @@ export default function FormWithoutFormikForDonation({
                 }
                 required
                 width={"100"}
-                disabled={masterloadOptionQuery?.data?.results == 0 || formik.values.SelectedCommitmentId !== ""}
+                disabled={
+                  masterloadOptionQuery?.data?.results == 0 ||
+                  formik.values.SelectedCommitmentId !== ""
+                }
               />
             </Col>
             <Col xs={12} sm={6} lg={4} className=" pb-1">
@@ -220,38 +240,41 @@ export default function FormWithoutFormikForDonation({
                 name={"SelectedSubCategory"}
                 labelKey="name"
                 valueKey="id"
-                disabled={subLoadOption?.length == 0 || formik?.values?.SelectedCommitmentId !== ""}
+                disabled={
+                  subLoadOption?.length == 0 ||
+                  formik?.values?.SelectedCommitmentId !== ""
+                }
                 width
               />
             </Col>
-            <Col xs={12} sm={6} lg={4} className=" pb-1">
-              <CustomTextField
-                label={t("created_by")}
-                name="createdBy"
-                disabled
+            <Col xs={12} sm={6} lg={4}>
+              <FormikCustomReactSelect
+                labelName={t("dashboard_Recent_DonorCommitId")}
+                loadOptions={commitmentIdByUser}
+                placeholder={t("commitment_select_commitment_id")}
+                name={"SelectedCommitmentId"}
+                disabled={payDonation || commitmentIdByUser?.length == 0}
+                valueKey={"id"}
+                getOptionLabel={(option) =>
+                  // `${option.commitmentId}   (₹${option.paidAmount}/${option.amount})`
+                  `${option.commitmentId}`
+                }
+                width
               />
             </Col>
           </Row>
           <Row>
             <Col>
               <Row>
-                <Col xs={12} sm={6} lg={4} className="mt-1">
-                  <FormikCustomReactSelect
-                    labelName={t("dashboard_Recent_DonorCommitId")}
-                    loadOptions={commitmentIdByUser}
-                    placeholder={t("commitment_select_commitment_id")}
-                    name={"SelectedCommitmentId"}
-                    disabled={payDonation || commitmentIdByUser?.length == 0}
-                    valueKey={"id"}
-                    getOptionLabel={(option) =>
-                      // `${option.commitmentId}   (₹${option.paidAmount}/${option.amount})`
-                      `${option.commitmentId}`
-                    }
-                    width
+                <Col xs={12} sm={6} lg={4} className=" pb-1">
+                  <CustomTextField
+                    label={t("created_by")}
+                    name="createdBy"
+                    disabled
                   />
                 </Col>
 
-                <Col xs={12} sm={6} lg={4} className="mt-1">
+                <Col xs={12} sm={6} lg={4}>
                   <CustomTextField
                     type="number"
                     label={t("categories_select_amount")}

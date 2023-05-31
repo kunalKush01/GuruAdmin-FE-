@@ -16,7 +16,7 @@ const CustomTextFieldWarper = styled.div`
     /* margin-bottom: 0px; */
     font: normal normal bold 15px/33px Noto Sans;
   }
-  input::placeholder{
+  input::placeholder {
     color: #583703 !important;
     opacity: 60% !important;
     font: normal normal bold 13px/20px Noto Sans !important;
@@ -32,6 +32,7 @@ const CustomTextFieldWarper = styled.div`
   input::-webkit-inner-spin-button {
     display: none;
   }
+ 
 `;
 
 export default function CustomTextField({

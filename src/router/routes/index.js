@@ -406,6 +406,13 @@ const Routes = [
     type:"punyarjak",
     subPermission:EDIT
   },
+  {
+    path: "/punyarjak/add-language/:punyarjakId",
+    component: lazy(() => import("../../views/Punyarjak/addPunyarjakLanguage.js")),
+    exact: true,
+    type:"punyarjak",
+    subPermission:EDIT
+  },
 ];
 
 export { DefaultRoute, TemplateTitle, Routes };

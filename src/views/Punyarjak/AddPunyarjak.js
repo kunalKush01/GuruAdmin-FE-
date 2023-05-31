@@ -27,15 +27,12 @@ const handleCreatePunyarjak = async (payload) => {
   return createPunyarjak(payload);
 };
 const schema = yup.object().shape({
-  description:yup.string().required("punyarjak_desc_required"),
-  name: yup
+  description: yup.string().required("punyarjak_desc_required"),
+  title: yup
     .string()
-    .matches(
-      /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
-      "username"
-    )
-    .required("users_title_required"),
-    file:yup.string().required("img_required"),
+    .matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g, "injection_found")
+    .required("news_title_required"),
+    image:yup.string().required("img_required")
 });
 
 export default function AddPunyarjak() {
@@ -45,11 +42,12 @@ export default function AddPunyarjak() {
 
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
-  
+
   const initialValues = {
-    name: "",
-    description:"",
-    file: "",
+    title: "",
+    description: "",
+    image: "",
+  DateTime: new Date(),
   };
 
   return (

@@ -1,14 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import React, { useEffect, useMemo, useState } from "react";
-import { Plus } from "react-feather";
+import { Plus, Trash } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { Button, Col, Row } from "reactstrap";
+import {
+  Button,
+  Col,
+  Popover,
+  PopoverBody,
+  PopoverHeader,
+  Row,
+} from "reactstrap";
 import styled from "styled-components";
 import {
   getAllCategories,
@@ -28,6 +35,7 @@ import { ChangeStatus } from "../../components/Report & Disput/changeStatus";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { WRITE } from "../../utility/permissionsVariable";
 import { Helmet } from "react-helmet";
+import Swal from "sweetalert2";
 const CommitmentWarapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -246,6 +254,14 @@ export default function Commitment() {
   const notifyIds = selectedRows?.map((item) => item?.notifyUserId);
   console.log("notifyIds", notifyIds);
 
+  const [popover, setPopover] = useState(false);
+
+  const onHover = () => {
+    setPopover(true);
+  };
+  const onHoverLeave = () => {
+    setPopover(false);
+  };
   return (
     <CommitmentWarapper>
       <Helmet>
@@ -351,15 +367,42 @@ export default function Commitment() {
             ) : (
               ""
             )}
-            {notifyIds?.length > 0 && (
-              <Button
-                color="success"
-                className="addCommitment ms-1"
-                onClick={() => nudgeUserApi({ commitmentIds: notifyIds })}
-              >
-                Notify User
-              </Button>
+            {/* {notifyIds?.length > 0 && ( */}
+            <Button
+              id="Popover1"
+              color="success"
+              onMouseEnter={onHover}
+              onMouseLeave={onHoverLeave}
+              className={`addCommitment ms-1 ${
+                notifyIds?.length > 0 ? "opacity-100" : "opacity-25"
+              }`}
+              onClick={() => {
+                notifyIds?.length > 0 &&
+                  nudgeUserApi({ commitmentIds: notifyIds });
+              }}
+            >
+              <Trans i18nKey={"notify_user"} />
+            </Button>
+            {notifyIds?.length <= 0 && (
+              <div className="">
+                <Popover
+                  placement="bottom"
+                  isOpen={popover}
+                  target="Popover1"
+                  trigger="hover"
+                  className="notifyUserPOP"
+                >
+                  <PopoverHeader>
+                    {" "}
+                    <Trans i18nKey={"notify_user"} />
+                  </PopoverHeader>
+                  <PopoverBody>
+                    <Trans i18nKey={"notify_user_content"} />
+                  </PopoverBody>
+                </Popover>
+              </div>
             )}
+            {/* )} */}
           </div>
         </div>
         <div style={{ height: "10px" }}>

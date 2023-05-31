@@ -20,6 +20,7 @@ import { getAllPunyarjak } from "../../api/punarjakApi";
 import PunyarjakTable from "../../components/Punyarjak/punyarjakUserListTable";
 import { WRITE } from "../../utility/permissionsVariable";
 import { Helmet } from "react-helmet";
+import PunyarjakCard from "../../components/Punyarjak/punyarjakCard";
 
 const PunyarjakWarapper = styled.div`
   color: #583703;
@@ -84,11 +85,10 @@ export default function Punyarjak() {
   const searchParams = new URLSearchParams(history.location.search);
 
   const currentPage = searchParams.get("page");
-  const currentFilter = searchParams.get("page");
   const routPagination = pagination.page;
   useEffect(() => {
-    if (currentPage || currentFilter) {
-      setdropDownName(currentFilter);
+    if (currentPage ) {
+      // setdropDownName(currentFilter);
       setPagination({ ...pagination, page: parseInt(currentPage) });
     }
   }, []);
@@ -234,12 +234,30 @@ export default function Punyarjak() {
               <Else>
                 <If condition={punyarjakUsers.length != 0} disableMemo>
                   <Then>
-                    <PunyarjakTable
+                    {punyarjakUsers?.map((item) => {
+                      return (
+                        <Col
+                          xs={12}
+                          md={6}
+                          lg={3}
+                          className="pe-sm-3 pe-0"
+                          key={item.id}
+                        >
+                          <PunyarjakCard
+                            data={item}
+                            currentPage={routPagination}
+                            allPermissions={allPermissions}
+                            subPermission={subPermission}
+                          />
+                        </Col>
+                      );
+                    })}
+                    {/* <PunyarjakTable
                       data={punyarjakUsers}
                       allPermissions={allPermissions}
                       subPermission={subPermission}
                       currentPage={routPagination}
-                    />
+                    /> */}
                   </Then>
                   <Else>
                     <NoContent
