@@ -22,6 +22,7 @@ import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
 import { Prompt } from "react-router-dom";
 import { add } from "lodash";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
+import Swal from "sweetalert2";
 
 const FormWaraper = styled.div`
   .FormikWraper {
@@ -295,6 +296,16 @@ export default function NewsForm({
                       tags={formik.values.tagsInit}
                       placeholder={t("placeHolder_tags")}
                       suggestions={suggestions}
+                      handleInputChange={(e) => {
+                        if (e?.length > 20) {
+                          Swal.fire({
+                            icon: "info",
+                            text: `${t("tagsChar_limit")}`,
+                            showConfirmButton: false,
+                          });
+                          return;
+                        }
+                      }}
                       delimiters={delimiters}
                       handleDelete={(index) => handleDelete(formik, index)}
                       handleAddition={(tag) => handleAddition(formik, tag)}

@@ -1,45 +1,36 @@
-import InputPasswordToggle from "@components/input-password-toggle";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Storage } from "aws-amplify";
 import { Form, Formik } from "formik";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { Plus, Trash, X } from "react-feather";
-import GooglePlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng,
-} from "react-google-places-autocomplete";
+import { Plus, X } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import TimePicker from "react-time-picker";
+import "react-time-picker/dist/TimePicker.css";
+import { toast } from "react-toastify";
 import { Button, Col, Modal, ModalBody, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
+import * as yup from "yup";
 import {
   getAllCityState,
   getAllTrustPrefeces,
   getAllTrustType,
 } from "../../api/profileApi";
+import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
 import defaultAvtar from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import pdfIcon from "../../assets/images/icons/iconPDF.svg";
-import passwordEyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
-import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
+import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
+import { handleProfileUpdate } from "../../redux/authSlice";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
+import CustomLocationField from "../partials/CustomLocationField";
 import { TextArea } from "../partials/CustomTextArea";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import ImageUpload from "../partials/imageUpload";
-import * as yup from "yup";
-import sha256 from "sha256";
-import md5 from "md5";
 import RichTextField from "../partials/richTextEditorField";
-import { handleProfileUpdate, login } from "../../redux/authSlice";
-import { Prompt } from "react-router-dom";
-import { add } from "lodash";
-import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
-import TimePicker from "react-time-picker";
-import "react-time-picker/dist/TimePicker.css";
-import CustomLocationField from "../partials/CustomLocationField";
-import { toast } from "react-toastify";
+import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
 
 const ProfileFormWaraper = styled.div`
   .existlabel {
@@ -278,6 +269,8 @@ export default function ProfileForm({
   defaultImages,
   initialValues,
   editProfile,
+  trustMobileNumber,
+  userMobileNumber,
   profileImageName,
   showTimeInput,
   selectEventDisabled,
@@ -292,6 +285,7 @@ export default function ProfileForm({
       console.log("data debug", data);
       if (!data.error) {
         setLoading(false);
+        queryClient.invalidateQueries(["ProfileModule"]);
         !AddLanguage &&
           dispatch(
             handleProfileUpdate({
@@ -349,11 +343,7 @@ export default function ProfileForm({
   }, [initialValues]);
   const [facilitiesFiles, setFacilitiesFiles] = useState([]);
   const [facilityFormData, setFacilityFormData] = useState([]);
-  useEffect(() => {
-    if (initialValues?.trustFacilities?.length > 0) {
-      setFacilityFormData(initialValues?.trustFacilities);
-    }
-  }, [initialValues]);
+
   const [deletedFacility, setDeletedFacility] = useState([]);
   const removeFacility = (file, formik) => {
     setDeletedFacility((prev) => [...prev, file]);
@@ -363,6 +353,8 @@ export default function ProfileForm({
     setFacilityFormData(newFacilitiesFiles);
     formik.setFieldValue("trustFacilities", newFacilitiesFiles);
   };
+
+  const formRef = useRef();
 
   const [deletedDocuments, setDeletedDocuments] = useState([]);
   const [documentSpinner, setDocumentSpinner] = useState(false);
@@ -425,7 +417,6 @@ export default function ProfileForm({
     setSelectedTimeStart(time);
   };
   const handleTimeChangeEnd = (time) => {
-    // setSelectedTimeStart(time);
     setSelectedTimeEnd(time);
   };
 
@@ -442,14 +433,13 @@ export default function ProfileForm({
       endTime: facilityEditData?.data?.endTime ?? "",
     };
   }, [facilityEditData]);
-  useEffect(() => {}, [initialValues]);
+
   useEffect(() => {
-    setFacilityFormData(initialValues?.trustFacilities ?? []);
-    setSelectedTimeEnd(initialValues?.trustFacilities?.endTime);
-    setSelectedTimeStart(initialValues?.trustFacilities?.startTime);
-    return () => {
-      setFacilityFormData([]);
-    };
+    if (initialValues?.trustFacilities?.length > 0) {
+      setFacilityFormData(initialValues?.trustFacilities);
+      setSelectedTimeStart(facilityIntialValues?.startTime);
+      setSelectedTimeEnd(facilityIntialValues?.endTime);
+    }
   }, [initialValues]);
 
   // facilities validation
@@ -462,7 +452,7 @@ export default function ProfileForm({
     // image: yup.string().required("email_required"),
     description: yup
       .string()
-      .matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g, "injection_found")
+      // .matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g, "injection_found")
       .required("news_desc_required"),
     startTime: yup.string().required("start_time_required"),
     endTime: yup.string().required("end_time_required"),
@@ -472,11 +462,18 @@ export default function ProfileForm({
   useEffect(() => {
     setProfileName(profileImageName);
   }, [profileImageName]);
+
+  const [userMobileNumberState, setUserMobileNumberState] =
+    useState(userMobileNumber ?? "");
+  const [trustMobileNumberState, setTrustMobileNumberState] =
+    useState(trustMobileNumber ?? "");
+
   return (
     <ProfileFormWaraper className="FormikWraper">
       <Formik
         enableReinitialize
         initialValues={initialValues}
+        innerRef={formRef}
         onSubmit={(e) => {
           setLoading(true);
           AddLanguage
@@ -514,10 +511,14 @@ export default function ProfileForm({
                 // preferenceId: e?.preference?._id,
                 trustEmail: e?.trustEmail,
                 trustNumber: e?.trustNumber.toString(),
+                trustCountryCode: e?.trustDialCode,
+                trustCountryName: e?.trustCountryCode,
                 about: e?.about,
                 name: e?.name,
                 email: e?.email,
                 mobileNumber: e?.mobileNumber.toString(),
+                countryCode: e?.dialCode,
+                countryName: e?.countryCode,
                 state: e?.state,
                 city: e?.city,
                 location: e?.location,
@@ -629,8 +630,30 @@ export default function ProfileForm({
                           required
                         />
                       </Col>
+                        {/* {JSON.stringify(formik.values.mobileNumber)} */}
                       <Col xs={12} md={6} lg={4} className="">
-                        <CustomTextField
+                        <CustomCountryMobileNumberField
+                          value={trustMobileNumberState}
+                          label={t("userProfile_phone_number")}
+                          placeholder={t("placeHolder_phone_number")}
+                          onChange={(phone, country) => {
+                            setTrustMobileNumberState(phone);
+                            formik.setFieldValue(
+                              "trustCountryCode",
+                              country?.countryCode
+                            );
+                            formik.setFieldValue(
+                              "trustDialCode",
+                              country?.dialCode
+                            );
+                            formik.setFieldValue(
+                              "trustNumber",
+                              phone?.replace(country?.dialCode, "")
+                            );
+                          }}
+                          required
+                        />
+                        {/* <CustomTextField
                           label={t("userProfile_phone_number")}
                           name="trustNumber"
                           placeholder={t("placeHolder_phone_number")}
@@ -641,7 +664,7 @@ export default function ProfileForm({
                           onInput={(e) =>
                             (e.target.value = e.target.value.slice(0, 12))
                           }
-                        />
+                        /> */}
                       </Col>
                     </Row>
                   )}
@@ -724,7 +747,29 @@ export default function ProfileForm({
                         />
                       </Col>
                       <Col xs={12} md={6} lg={4} className="">
-                        <CustomTextField
+                      <CustomCountryMobileNumberField
+                          value={userMobileNumberState}
+                          
+                          label={t("userProfile_phone_number")}
+                          placeholder={t("placeHolder_phone_number")}
+                          onChange={(phone, country) => {
+                            setUserMobileNumberState(phone);
+                            formik.setFieldValue(
+                              "countryCode",
+                              country?.countryCode
+                            );
+                            formik.setFieldValue(
+                              "dialCode",
+                              country?.dialCode
+                            );
+                            formik.setFieldValue(
+                              "mobileNumber",
+                              phone?.replace(country?.dialCode, "")
+                            );
+                          }}
+                          required
+                        />
+                        {/* <CustomTextField
                           label={t("userProfile_phone_number")}
                           disabled={AddLanguage}
                           placeholder={t("placeHolder_phone_number")}
@@ -735,7 +780,7 @@ export default function ProfileForm({
                           onInput={(e) =>
                             (e.target.value = e.target.value.slice(0, 12))
                           }
-                        />
+                        /> */}
                       </Col>
                     </Row>
                   </Col>
@@ -827,66 +872,67 @@ export default function ProfileForm({
                     <Trans i18nKey={"userProfile_facilities"} />
                   </div>
                 </Col>
-
                 {/* {[...formik?.values?.trustFacilities, ...facilityFormData]?.map( */}
-                {[...facilityFormData]?.map((item, idx) => {
-                  return (
-                    <Col
-                      lg={3}
-                      md={4}
-                      sm={6}
-                      key={idx}
-                      className="position-relative p-0 facilityCol ms-1"
-                    >
-                      {!AddLanguage && (
-                        <Button
-                          className="removeImageButton"
-                          onClick={(e) => {
-                            removeFacility(item, formik);
+                {[...(formRef?.current?.values?.trustFacilities ?? [])]?.map(
+                  (item, idx) => {
+                    return (
+                      <Col
+                        lg={3}
+                        md={4}
+                        sm={6}
+                        key={idx}
+                        className="position-relative p-0 facilityCol ms-1"
+                      >
+                        {!AddLanguage && (
+                          <Button
+                            className="removeImageButton"
+                            onClick={(e) => {
+                              removeFacility(item, formik);
+                            }}
+                          >
+                            <X color="#ff8744" stroke-width="3" />
+                          </Button>
+                        )}
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => {
+                            setFacilityEditData({
+                              type: "edit",
+                              data: item,
+                              index: idx,
+                            });
+                            toggle();
                           }}
                         >
-                          <X color="#ff8744" stroke-width="3" />
-                        </Button>
-                      )}
-                      <div
-                        className="cursor-pointer"
-                        onClick={() => {
-                          setFacilityEditData({
-                            type: "edit",
-                            data: item,
-                            index: idx,
-                          });
-                          toggle();
-                        }}
-                      >
-                        <div className="trust_img position-relative">
-                          <div className="editFacilityImageText">
-                            <Trans i18nKey={"edit_image"} />
+                          <div className="trust_img position-relative">
+                            <div className="editFacilityImageText">
+                              <Trans i18nKey={"edit_image"} />
+                            </div>
+                            <img
+                              src={
+                                item?.preview
+                                  ? item?.preview
+                                  : item?.image
+                                  ? item?.image
+                                  : placeHolder
+                              }
+                              alt="Facility Image"
+                            />
+                            {/* </div> */}
                           </div>
-                          <img
-                            src={
-                              item?.preview
-                                ? item?.preview
-                                : item?.image
-                                ? item?.image
-                                : placeHolder
-                            }
-                            alt="Facility Image"
-                          />
-                          {/* </div> */}
-                        </div>
-                        <div className="py-1">
-                          <div className="temple_name">
-                            {ConverFirstLatterToCapital(item?.name ?? "")}
-                          </div>
-                          <div className="temple_time">
-                            Timings : {item?.startTime} to {item?.endTime}
+                          <div className="py-1">
+                            <div className="temple_name">
+                              {ConverFirstLatterToCapital(item?.name ?? "")}
+                            </div>
+                            <div className="temple_time">
+                              Timings : {item?.startTime} to {item?.endTime}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </Col>
-                  );
-                })}
+                      </Col>
+                    );
+                  }
+                )}
                 {!AddLanguage && (
                   <Col lg={3} md={4} sm={6}>
                     <div
@@ -1187,7 +1233,11 @@ export default function ProfileForm({
         )}
       </Formik>
 
-      <Modal isOpen={modal} toggle={toggle}>
+      <Modal
+        isOpen={modal}
+        toggle={toggle}
+        onClosed={() => setFacilityEditData(null)}
+      >
         {/* <ModalHeader toggle={toggle}>Modal title</ModalHeader> */}
         <ModalBody>
           <ProfileFormWaraper>
@@ -1198,6 +1248,10 @@ export default function ProfileForm({
                   facilityFormData.splice(facilityEditData?.index, 1, values);
                 } else {
                   setFacilityFormData([...facilityFormData, values]);
+                  // formRef?.current?.setFieldValue("trustFacilities", [
+                  //   ...formRef?.current?.values?.trustFacilities,
+                  //   values,
+                  // ]);
                 }
                 toggle();
                 setFacilityEditData(null);
@@ -1289,7 +1343,7 @@ export default function ProfileForm({
                           label="Description"
                           name="description"
                           rows="4"
-                          placeholder="Enter about trust "
+                          placeholder="Enter description"
                           className="text-area form-control"
                         />
                       </Col>
@@ -1305,9 +1359,7 @@ export default function ProfileForm({
                                 formik.setFieldValue("startTime", e);
                               }}
                               name="startTime"
-                              value={
-                                selectedTimeStart ?? formik.values.startTime
-                              }
+                              value={selectedTimeStart}
                               disableClock={true}
                               clearIcon={null}
                               format="HH:mm"

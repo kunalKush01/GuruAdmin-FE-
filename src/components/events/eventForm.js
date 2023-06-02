@@ -1,34 +1,26 @@
-import { Form, Formik } from "formik";
-import React, { useEffect, useMemo, useState } from "react";
-import CustomTextField from "../partials/customTextField";
-import * as yup from "yup";
-import RichTextField from "../partials/richTextEditorField";
-import styled from "styled-components";
-import { CustomDropDown } from "../partials/customDropDown";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { Trans, useTranslation } from "react-i18next";
-import { Button, Col, Row, Spinner } from "reactstrap";
-import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
-import { useHistory } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createNews } from "../../api/newsApi";
-import { Plus } from "react-feather";
-import AsyncSelectField from "../partials/asyncSelectField";
-import { getGlobalEvents } from "../../api/eventApi";
-import FormikRangeDatePicker from "../partials/FormikRangeDatePicker";
-import { useUpdateEffect } from "react-use";
+import { Form, Formik } from "formik";
 import moment from "moment";
-import { flatMap, isDate } from "lodash";
-import { setlang } from "../../redux/authSlice";
-import { getAllTags } from "../../api/tagApi";
-import { WithContext as ReactTags } from "react-tag-input";
+import React, { useEffect, useMemo, useState } from "react";
+import { Plus } from "react-feather";
+import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { ConvertToString } from "../financeReport/reportJsonExport";
-import ImageUpload from "../partials/imageUpload";
-import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
-import { Prompt } from "react-router-dom";
+import { Prompt, useHistory } from "react-router-dom";
+import { WithContext as ReactTags } from "react-tag-input";
 import TimePicker from "react-time-picker";
 import "react-time-picker/dist/TimePicker.css";
+import { Button, Col, Row, Spinner } from "reactstrap";
+import styled from "styled-components";
+import { getGlobalEvents } from "../../api/eventApi";
+import { getAllTags } from "../../api/tagApi";
+import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
+import { ConvertToString } from "../financeReport/reportJsonExport";
+import FormikRangeDatePicker from "../partials/FormikRangeDatePicker";
+import AsyncSelectField from "../partials/asyncSelectField";
+import CustomTextField from "../partials/customTextField";
+import ImageUpload from "../partials/imageUpload";
+import RichTextField from "../partials/richTextEditorField";
+import Swal from "sweetalert2";
 const FormWaraper = styled.div`
   .existlabel {
     margin-bottom: 10px;
@@ -269,7 +261,16 @@ export default function EventForm({
     formik.setFieldValue("tagsInit", resetValues);
   };
 
+  const [tagsCharLimit, setTagsCharLimit] = useState(false);
+  console.log("tagsCharLimit", tagsCharLimit);
+
   const handleAddition = (formik, tag) => {
+    console.log("tags", tag);
+    // if (tag?.text?.length > 3) {
+    //   setIsError(prev=>([...prev,{index} ]))
+    //   setTagsCharLimit(true);
+    // }
+
     formik.setFieldValue("tagsInit", [...formik.values.tagsInit, tag]);
   };
 
@@ -294,13 +295,18 @@ export default function EventForm({
     setSelectedTimeEnd(time);
   };
 
+  const [isError, setIsError] = useState([]);
   const [imageOnGlobleEvent, setImageOnGlobleEvent] = useState(defaultImages);
+
   return (
     <FormWaraper className="FormikWraper">
       <Formik
         enableReinitialize
         initialValues={initialValues}
         onSubmit={(e) => {
+          if (tagsCharLimit) {
+            return;
+          }
           setShowPrompt(false);
           setLoading(true);
           eventMutation.mutate({
@@ -336,6 +342,12 @@ export default function EventForm({
                 }
               />
             )}
+            {/* {JSON.stringify(formik.values.tagsInit)}
+            {formik.values.tagsInit?.map((item) =>
+              item?.text?.length > 3
+                && setTagsCharLimit(true)
+                
+            )} */}
             <Row className="paddingForm">
               <Col xs={12} md={7}>
                 <Row>
@@ -411,15 +423,37 @@ export default function EventForm({
                         placeholder={t("placeHolder_tags")}
                         tags={formik.values.tagsInit}
                         suggestions={suggestions}
+                        handleInputChange={(e) => {
+                          if (e?.length > 20) {
+                            Swal.fire({
+                              icon: "info",
+                              text: `${t("tagsChar_limit")}`,
+                              showConfirmButton: false,
+                            });
+                            return;
+                          }
+                        }}
                         delimiters={delimiters}
                         handleDelete={(index) => handleDelete(formik, index)}
-                        handleAddition={(tag) => handleAddition(formik, tag)}
+                        handleAddition={(tag) => {
+                          handleAddition(formik, tag);
+                        }}
                         inputFieldPosition="top"
                         allowDragDrop={false}
                         autocomplete
                         editable={false}
                         autofocus={false}
                       />
+                      {tagsCharLimit && (
+                        <div
+                          style={{
+                            height: "20px",
+                            font: "normal normal bold 11px/33px Noto Sans",
+                          }}
+                        >
+                          <div className="text-danger">hello</div>
+                        </div>
+                      )}
                       {formik.errors.tagsInit && (
                         <div
                           style={{
@@ -497,15 +531,41 @@ export default function EventForm({
                         placeholder={t("placeHolder_tags")}
                         tags={formik.values.tagsInit}
                         suggestions={suggestions}
+                        handleInputChange={(e) => {
+                          if (e?.length > 20) {
+                            Swal.fire({
+                              icon: "info",
+                              text: `${t("tagsChar_limit")}`,
+                              showConfirmButton: false,
+                            });
+                            return;
+                          }
+                        }}
                         delimiters={delimiters}
                         handleDelete={(index) => handleDelete(formik, index)}
-                        handleAddition={(tag) => handleAddition(formik, tag)}
+                        handleAddition={(tag) => {
+                          if (tag.id.length > 3) {
+                            alert("Character limit exceed");
+                            return;
+                          }
+                          handleAddition(formik, tag);
+                        }}
                         inputFieldPosition="top"
                         allowDragDrop={false}
                         autocomplete
                         editable={false}
                         autofocus={false}
                       />
+                      {tagsCharLimit && (
+                        <div
+                          style={{
+                            height: "20px",
+                            font: "normal normal bold 11px/33px Noto Sans",
+                          }}
+                        >
+                          <div className="text-danger">hello</div>
+                        </div>
+                      )}
                       {formik.errors.tagsInit && (
                         <div
                           style={{

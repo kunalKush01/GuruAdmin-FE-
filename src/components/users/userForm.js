@@ -17,6 +17,7 @@ import hidePassIcon from "../../assets/images/icons/signInIcon/hidePassIcon.svg"
 import { getAllUserRoles } from "../../api/userApi";
 import { useSelector } from "react-redux";
 import { Prompt } from "react-router-dom";
+import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
 
 const FormWaraper = styled.div`
   .FormikWraper {
@@ -94,6 +95,7 @@ export default function UserForm({
   userRole,
   editProfile,
   showTimeInput,
+  getCommimentMobile,
   buttonName = "",
   ...props
 }) {
@@ -133,6 +135,7 @@ export default function UserForm({
   const [showPrompt, setShowPrompt] = useState(true);
   const [imageSpinner, setImageSpinner] = useState(false);
   const [imageName, setImageName] = useState(profileImageName);
+  const [phoneNumber, setPhoneNumber] = useState(getCommimentMobile ?? "");
 
   return (
     <FormWaraper className="FormikWraper">
@@ -146,6 +149,8 @@ export default function UserForm({
             subAdminId: e?.Id,
             email: e?.email,
             mobileNumber: e.mobile.toString(),
+            countryCode: e?.dialCode,
+            countryName: e?.countryCode,
             roles: e?.userRoleChacked,
             name: e.name,
             password: e?.password,
@@ -210,7 +215,39 @@ export default function UserForm({
                         />
                       </Col>
                       <Col xs={12} sm={6} lg={4}>
-                        <CustomTextField
+                        <CustomCountryMobileNumberField
+                          value={phoneNumber}
+                          label={t("dashboard_Recent_DonorNumber")}
+                          placeholder={t("placeHolder_mobile_number")}
+                          onChange={(phone, country) => {
+                            setPhoneNumber(phone);
+                            formik.setFieldValue(
+                              "countryCode",
+                              country?.countryCode
+                            );
+                            formik.setFieldValue("dialCode", country?.dialCode);
+                            formik.setFieldValue(
+                              "mobile",
+                              phone?.replace(country?.dialCode, "")
+                            );
+                          }}
+                          required
+                        />
+                        {formik.errors.mobile && (
+                          <div
+                            style={{
+                              height: "20px",
+                              font: "normal normal bold 11px/33px Noto Sans",
+                            }}
+                          >
+                            {formik.errors.mobile && (
+                              <div className="text-danger">
+                                <Trans i18nKey={formik.errors.mobile} />
+                              </div>
+                            )}
+                          </div>
+                        )}
+                        {/* <CustomTextField
                           label={t("dashboard_Recent_DonorNumber")}
                           placeholder={t("placeHolder_mobile_number")}
                           name="mobile"
@@ -220,7 +257,7 @@ export default function UserForm({
                             (e.target.value = e.target.value.slice(0, 12))
                           }
                           required
-                        />
+                        /> */}
                       </Col>
                       <Col xs={12} sm={6} lg={4}>
                         <CustomTextField

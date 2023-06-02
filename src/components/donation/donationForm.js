@@ -59,6 +59,7 @@ export default function DonationForm({
   buttonName = "",
   handleSubmit,
   payDonation,
+  getCommimentMobile,
   vailidationSchema,
   initialValues,
   showTimeInput,
@@ -104,6 +105,8 @@ export default function DonationForm({
               masterCategoryId: e?.SelectedMasterCategory?.id,
               donarName: e?.donarName,
               mobileNumber: e?.Mobile.toString(),
+              countryCode:e?.dialCode,
+              countryName:e?.countryCode,
               commitmentId: e?.SelectedCommitmentId?.commitmentId,
             });
           }}
@@ -116,6 +119,7 @@ export default function DonationForm({
               loading={loading}
               paidDonation={initialValues?.SelectedUser?.id}
               payDonation={payDonation}
+              getCommimentMobile={getCommimentMobile}
               plusIconDisable
               showPrompt={showPrompt}
               buttonName={buttonName}

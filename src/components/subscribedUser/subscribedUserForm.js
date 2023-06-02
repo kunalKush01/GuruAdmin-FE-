@@ -10,6 +10,7 @@ import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import { Prompt } from "react-router-dom";
+import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
 
 const FormWaraper = styled.div`
   .FormikWraper {
@@ -44,6 +45,7 @@ export default function SubscribedUserForm({
   vailidationSchema,
   initialValues,
   showTimeInput,
+  getNumber,
   addDonationUser,
   buttonName = "",
   ...props
@@ -52,12 +54,11 @@ export default function SubscribedUserForm({
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
 
-
   const searchParams = new URLSearchParams(history.location.search);
-  const currentPage = searchParams.get('page')
+  const currentPage = searchParams.get("page");
   const currentCategory = searchParams.get("category");
   const currentSubCategory = searchParams.get("subCategory");
-  const currentFilter = searchParams.get('filter')
+  const currentFilter = searchParams.get("filter");
   const categoryQuerClient = useQueryClient();
 
   const categoryMutation = useMutation({
@@ -69,7 +70,9 @@ export default function SubscribedUserForm({
           : categoryQuerClient.invalidateQueries(["subscribedUser"]);
         setLoading(false);
         addDonationUser
-          ? history.push(`/donation/add?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}`)
+          ? history.push(
+              `/donation/add?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}`
+            )
           : history.push("/subscribed-user");
       } else if (data?.error) {
         setLoading(false);
@@ -77,6 +80,7 @@ export default function SubscribedUserForm({
     },
   });
   const [showPrompt, setShowPrompt] = useState(true);
+  const [phoneNumber, setPhoneNumber] = useState(getNumber ?? "");
 
   return (
     <FormWaraper className="FormikWraper">
@@ -84,11 +88,13 @@ export default function SubscribedUserForm({
         // enableReinitialize
         initialValues={{ ...initialValues }}
         onSubmit={(e) => {
-          setShowPrompt(false)
+          setShowPrompt(false);
           setLoading(true);
           categoryMutation.mutate({
             email: e.email,
             mobileNumber: e.mobile.toString(),
+            countryCode: e?.dialCode,
+            countryName: e?.countryCode,
             name: e.name,
           });
         }}
@@ -123,7 +129,39 @@ export default function SubscribedUserForm({
                     />
                   </Col>
                   <Col xs={12} sm={6} md={4}>
-                    <CustomTextField
+                    <CustomCountryMobileNumberField
+                      value={phoneNumber}
+                      label={t("dashboard_Recent_DonorNumber")}
+                      placeholder={t("placeHolder_mobile_number")}
+                      onChange={(phone, country) => {
+                        setPhoneNumber(phone);
+                        formik.setFieldValue(
+                          "countryCode",
+                          country?.countryCode
+                        );
+                        formik.setFieldValue("dialCode", country?.dialCode);
+                        formik.setFieldValue(
+                          "mobile",
+                          phone?.replace(country?.dialCode, "")
+                        );
+                      }}
+                      required
+                    />
+                    {formik.errors.mobile && (
+                      <div
+                        style={{
+                          height: "20px",
+                          font: "normal normal bold 11px/33px Noto Sans",
+                        }}
+                      >
+                        {formik.errors.mobile && (
+                          <div className="text-danger">
+                            <Trans i18nKey={formik.errors.mobile} />
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    {/* <CustomTextField
                       label={t("dashboard_Recent_DonorNumber")}
                       placeholder={t("placeHolder_mobile_number")}
                       name="mobile"
@@ -133,7 +171,7 @@ export default function SubscribedUserForm({
                       onInput={(e) =>
                         (e.target.value = e.target.value.slice(0, 12))
                       }
-                    />
+                    /> */}
                   </Col>
                   <Col xs={12} sm={6} md={4}>
                     <CustomTextField

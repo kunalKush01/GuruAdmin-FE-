@@ -79,6 +79,8 @@ export default function EditSubAdmin() {
       Id: subAdminUserDetailQuery?.data?.result?.id,
       name: subAdminUserDetailQuery?.data?.result?.name,
       mobile: subAdminUserDetailQuery?.data?.result?.mobileNumber,
+      countryCode:subAdminUserDetailQuery?.data?.result?.countryName,
+      dialCode:subAdminUserDetailQuery?.data?.result?.countryCode,
       userRoleChacked: subAdminUserDetailQuery?.data?.result?.roles,
       email: subAdminUserDetailQuery?.data?.result?.email,
       password: "",

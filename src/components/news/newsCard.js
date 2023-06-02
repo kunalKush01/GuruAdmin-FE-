@@ -16,6 +16,10 @@ import {
   Col,
   ButtonGroup,
   UncontrolledDropdown,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
 } from "reactstrap";
 import he from "he";
 import styled from "styled-components";
@@ -26,13 +30,15 @@ import BtnPopover from "../partials/btnPopover";
 import { CustomDropDown } from "../partials/customDropDown";
 import { Trans, useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import { PublishNews, deleteNewsDetail } from "../../api/newsApi";
+import { PublishNews, ScheduleNews, deleteNewsDetail } from "../../api/newsApi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
 import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
 import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 import { useSelector } from "react-redux";
+import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
+import { Form, Formik } from "formik";
 
 const NewsCardWaraper = styled.div`
   .imgContainer {
@@ -91,7 +97,7 @@ const NewsCardWaraper = styled.div`
       display: block;
     }
   }
-  .publishMenu{
+  .publishMenu {
     background-color: #fff7e8;
   }
 `;
@@ -233,6 +239,9 @@ export default function NewsCard({
   const handlePublish = async (payload) => {
     return PublishNews(payload);
   };
+  const handleSchedule = async (payload) => {
+    return ScheduleNews(payload);
+  };
   const queryCient = useQueryClient();
   const publishMutation = useMutation({
     mutationFn: handlePublish,
@@ -242,7 +251,17 @@ export default function NewsCard({
       }
     },
   });
+  const schedulingMutation = useMutation({
+    mutationFn: handleSchedule,
+    onSuccess: (data) => {
+      if (!data.error) {
+        queryCient.invalidateQueries(["News"]);
+      }
+    },
+  });
+  const [modal, setModal] = useState(false);
 
+  const toggle = () => setModal(!modal);
   return (
     <NewsCardWaraper>
       <Card
@@ -270,19 +289,19 @@ export default function NewsCard({
               <ButtonGroup>
                 <UncontrolledDropdown>
                   <DropdownToggle color="primary" size="sm" caret>
-                    <Trans i18nKey={"publish"}/>
+                    <Trans i18nKey={"publish"} />
                   </DropdownToggle>
                   <DropdownMenu className="publishMenu">
                     <DropdownItem
                       className="py-0 w-100"
-                      onClick={() =>
-                        history.push(
-                          `/news/edit/${data?.id}?page=${currentPage}&filter=${currentFilter}`,
-                          data?.id
-                        )
-                      }
+                      onClick={toggle}
+                      // () =>
+                      // history.push(
+                      //   `/news/edit/${data?.id}?page=${currentPage}&filter=${currentFilter}`,
+                      //   data?.id
+                      // )
                     >
-                      <Trans i18nKey={"schedule"}/>
+                      <Trans i18nKey={"schedule"} />
                     </DropdownItem>
                     <DropdownItem
                       className="py-0 w-100"
@@ -340,7 +359,9 @@ export default function NewsCard({
             <div className="d-flex justify-content-between align-items-center">
               <div>
                 <img src={cardClockIcon} style={{ verticalAlign: "bottom" }} />
-                {`Posted on ${moment(data?.publishDate).format("D MMMM YYYY ")} At ${moment(data?.publishDate).format("hh:mm")}`}
+                {`Posted on ${moment(data?.publishDate).format(
+                  "D MMMM YYYY "
+                )} At ${moment(data?.publishDate).format("hh:mm")}`}
               </div>
               <img
                 src={cardThreeDotIcon}
@@ -364,6 +385,43 @@ export default function NewsCard({
           />
         }
       />
+      <Modal isOpen={modal} centered toggle={toggle}>
+        <ModalHeader toggle={toggle}></ModalHeader>
+        <ModalBody>
+          <Row>
+            <Col>
+              <Formik
+                initialValues={{ DateTime: new Date() }}
+                onSubmit={(e) => {
+                  console.log("e schedule", e);
+                  schedulingMutation.mutate({
+                    publishDate: e?.DateTime,
+                    newsId: data?.id,
+                  });
+                }}
+              >
+                <Form>
+                  <Row>
+                    <Col xs={12} className="">
+                      <FormikCustomDatePicker
+                        name="DateTime"
+                        width="100%"
+                        pastDateNotAllowed
+                        showTimeInput
+                      />
+                    </Col>
+                    <Col xs={12} className="mt-2">
+                      <Button type="submit" color="primary" size="sm">
+                        Submit
+                      </Button>
+                    </Col>
+                  </Row>
+                </Form>
+              </Formik>
+            </Col>
+          </Row>
+        </ModalBody>
+      </Modal>
     </NewsCardWaraper>
   );
 }

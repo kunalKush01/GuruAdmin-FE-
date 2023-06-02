@@ -53,6 +53,7 @@ export default function CommitmentForm({
   disbleCategoryOnEdit,
   vailidationSchema,
   initialValues,
+  getCommimentMobile,
   showTimeInput,
 }) {
   const history = useHistory();
@@ -100,6 +101,8 @@ export default function CommitmentForm({
               amount: e?.Amount,
               masterCategoryId: e?.SelectedMasterCategory?.id,
               mobileNumber: e?.Mobile.toString(),
+              countryCode:e?.dialCode,
+              countryName:e?.countryCode,
               commitmentEndDate: e.DateTime,
             });
           }}
@@ -113,6 +116,7 @@ export default function CommitmentForm({
                 loading={loading}
                 editCommitment={disbleCategoryOnEdit}
                 plusIconDisable
+                getCommimentMobile={getCommimentMobile}
                 showPrompt={showPrompt}
                 buttonName={buttonName}
               />

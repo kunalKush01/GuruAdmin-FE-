@@ -16,14 +16,14 @@ import AsyncSelectField from "../partials/asyncSelectField";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import { Prompt } from "react-router-dom";
-import "react-phone-number-input/style.css";
-import PhoneInput from "react-phone-number-input";
+import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
 
 export default function FormWithoutFormikForDonation({
   formik,
   masterloadOptionQuery,
   buttonName,
   paidDonation,
+  getCommimentMobile,
   payDonation,
   loading,
   showPrompt,
@@ -38,8 +38,6 @@ export default function FormWithoutFormikForDonation({
   const [commitmentIdByUser, setCommitmentIdByUser] = useState([]);
   const [noUserFound, setNoUserFound] = useState(false);
 
-  console.log("noUserFound", noUserFound);
-  console.log(formik?.values?.Mobile?.toString().length);
   const loadOption = async (name) => {
     const res = await findAllUsersByName({ name: name });
     return res.results;
@@ -64,6 +62,7 @@ export default function FormWithoutFormikForDonation({
     };
     SelectedUser && res();
   }, [SelectedUser?.userId]);
+  const [phoneNumber, setPhoneNumber] = useState(getCommimentMobile ?? "");
 
   useUpdateEffect(() => {
     if (formik?.values?.Mobile?.toString().length == 10) {
@@ -88,11 +87,16 @@ export default function FormWithoutFormikForDonation({
   useUpdateEffect(() => {
     const user = formik?.values?.SelectedUser;
     if (user?.id) {
-      formik.setFieldValue("Mobile", user.mobileNumber);
+      formik.setFieldValue("Mobile", user?.mobileNumber);
+      formik.setFieldValue("countryCode", user?.countryName);
+      formik.setFieldValue("dialCode", user?.countryCode);
       formik.setFieldValue("donarName", user?.name);
+      setPhoneNumber(user?.countryCode + user?.mobileNumber)
       return;
     }
     formik.setFieldValue("Mobile", "");
+    formik.setFieldValue("countryCode", "");
+    formik.setFieldValue("dialCode", "");
     formik.setFieldValue("donarName", "");
     formik.setFieldValue("SelectedMasterCategory", "");
     formik.setFieldValue("SelectedSubCategory", "");
@@ -124,6 +128,7 @@ export default function FormWithoutFormikForDonation({
   const currentSubCategory = searchParams.get("subCategory");
   const currentFilter = searchParams.get("filter");
 
+
   return (
     <Form>
       {showPrompt && (
@@ -142,16 +147,39 @@ export default function FormWithoutFormikForDonation({
           <Row>
             <Col xs={12} sm={6} lg={4} className=" pb-1">
               <Row>
-                <Col xs={4} className="align-self-center">
-                  <PhoneInput
-                    international
-                    countryCallingCodeEditable={false}
-                    defaultCountry="IN"
-                    // value={value}
-                    onChange={(e) => console.log("e country", e)}
+                <Col xs={12} className="align-self-center">
+                  <CustomCountryMobileNumberField
+                    value={phoneNumber}
+                    disabled={payDonation}
+                    label={t("dashboard_Recent_DonorNumber")}
+                    placeholder={t("placeHolder_mobile_number")}
+                    onChange={(phone, country) => {
+                      setPhoneNumber(phone);
+                      formik.setFieldValue("countryCode", country?.countryCode);
+                      formik.setFieldValue("dialCode", country?.dialCode);
+                      formik.setFieldValue(
+                        "Mobile",
+                        phone?.replace(country?.dialCode, "")
+                      );
+                    }}
+                    required
                   />
+                  {formik.errors.Mobile && (
+                      <div
+                        style={{
+                          height: "20px",
+                          font: "normal normal bold 11px/33px Noto Sans",
+                        }}
+                      >
+                        {formik.errors.Mobile && (
+                          <div className="text-danger">
+                            <Trans i18nKey={formik.errors.Mobile} />
+                          </div>
+                        )}
+                      </div>
+                    )}
                 </Col>
-                <Col xs={8}>
+                {/* <Col xs={8}>
                   <CustomTextField
                     type="number"
                     label={t("dashboard_Recent_DonorNumber")}
@@ -165,7 +193,7 @@ export default function FormWithoutFormikForDonation({
                     required
                     autoFocus
                   />
-                </Col>
+                </Col> */}
               </Row>
             </Col>
             <Col xs={12} sm={6} lg={4} className=" pb-1">

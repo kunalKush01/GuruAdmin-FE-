@@ -45,6 +45,7 @@ export const englishContent = {
   schedule:"Schedule",
   publish:"Publish",
   invalid_amount:"Invalid value",
+  tagsChar_limit:"The tag field has a character limit of 20 and cannot accept more than that.",
   // All static content of Dashboard
   dashboard_donationReceived: "Donation Received",
   dashboard_donationPending: "Donation Pending",
@@ -312,8 +313,8 @@ export const englishContent = {
   trust_facility: "TRUST FACILITIES",
   trust_image_certificate: "TRUST IMAGES AND CERTIFICATES",
   location:"Location",
-  trust_prefenses:"Trust Prefenses",
-  trust_prefenses_required:"Trust prefenses is required",
+  trust_prefenses:"Trust Preferences",
+  trust_prefenses_required:"Trust Preferences is required",
   latitude:"Latitude",
   longitude:"Longitude",
   userProfile: "Profile",

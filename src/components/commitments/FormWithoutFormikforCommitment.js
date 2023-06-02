@@ -12,6 +12,7 @@ import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import { Prompt } from "react-router-dom";
+import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
 
 export default function FormWithoutFormikForCommitment({
   formik,
@@ -20,6 +21,7 @@ export default function FormWithoutFormikForCommitment({
   showTimeInput,
   editCommitment,
   loading,
+  getCommimentMobile,
   showPrompt,
   ...props
 }) {
@@ -43,14 +45,23 @@ export default function FormWithoutFormikForCommitment({
     SelectedMasterCategory && res();
   }, [SelectedMasterCategory]);
 
+  const [phoneNumber, setPhoneNumber] = useState(getCommimentMobile);
+
+  console.log("getCommimentMobile",getCommimentMobile);
+
   useUpdateEffect(() => {
     const user = formik?.values?.SelectedUser;
     if (user?.id) {
       formik.setFieldValue("Mobile", user.mobileNumber);
+      formik.setFieldValue("countryCode", user?.countryName);
+      formik.setFieldValue("dialCode", user?.countryCode);
       formik.setFieldValue("donarName", user?.name);
+      setPhoneNumber(user?.countryCode + user?.mobileNumber)
       return;
     }
     formik.setFieldValue("Mobile", "");
+    formik.setFieldValue("countryCode", "");
+    formik.setFieldValue("dialCode", "");
     formik.setFieldValue("donarName", "");
   }, [formik?.values?.SelectedUser]);
 
@@ -88,6 +99,36 @@ export default function FormWithoutFormikForCommitment({
         <Col xs={12} lg={8}>
           <Row>
             <Col xs={12} sm={6}>
+              <CustomCountryMobileNumberField
+                value={phoneNumber}
+                label={t("dashboard_Recent_DonorNumber")}
+                placeholder={t("placeHolder_mobile_number")}
+                onChange={(phone, country) => {
+                  setPhoneNumber(phone);
+                  formik.setFieldValue("countryCode", country?.countryCode);
+                  formik.setFieldValue("dialCode", country?.dialCode);
+                  formik.setFieldValue(
+                    "Mobile",
+                    phone?.replace(country?.dialCode, "")
+                  );
+                }}
+                required
+              />
+              {formik.errors.Mobile && (
+                <div
+                  style={{
+                    height: "20px",
+                    font: "normal normal bold 11px/33px Noto Sans",
+                  }}
+                >
+                  {formik.errors.Mobile && (
+                    <div className="text-danger">
+                      <Trans i18nKey={formik.errors.Mobile} />
+                    </div>
+                  )}
+                </div>
+              )}
+              {/*               
               <CustomTextField
                 type="number"
                 label={t("dashboard_Recent_DonorNumber")}
@@ -97,7 +138,7 @@ export default function FormWithoutFormikForCommitment({
                 onInput={(e) => (e.target.value = e.target.value.slice(0, 12))}
                 required
                 autoFocus
-              />
+              /> */}
             </Col>
             <Col xs={12} sm={6}>
               <AsyncSelectField

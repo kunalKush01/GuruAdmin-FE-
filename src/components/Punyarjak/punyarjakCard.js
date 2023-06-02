@@ -257,12 +257,12 @@ export default function PunyarjakCard({
             <CardText>
               <div
                 dangerouslySetInnerHTML={{
-                  __html: he.decode(data?.body ?? ""),
+                  __html: he.decode(data?.description ?? ""),
                 }}
               />
             </CardText>
           </div>
-          <div className="cardLangScroll">
+          <div className="cardLangScroll mt-1">
             {data?.languages?.map((item) => {
               return (
                 <div key={item.id} className="languageButton">

@@ -1,0 +1,76 @@
+import React, { useState } from "react";
+import styled from "styled-components";
+
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import { useField } from "formik";
+import { Trans } from "react-i18next";
+const Warapper = styled.div`
+  label {
+    /* margin-bottom: 0px; */
+    font: normal normal bold 15px/33px Noto Sans;
+  }
+  input::placeholder {
+    color: #583703 !important;
+    opacity: 60% !important;
+    font: normal normal bold 13px/20px Noto Sans !important;
+  }
+  .react-tel-input {
+    color: #583703 !important;
+    border: none !important;
+    background-color: #fff7e8 !important;
+    font: normal normal normal 13px/20px Noto Sans;
+    border-radius: 20px;
+  }
+  input {
+    color: #583703 !important;
+    border: none !important;
+    background-color: #fff7e8 !important;
+    font: normal normal normal 13px/20px Noto Sans;
+    border-radius: 20px;
+  }
+  .react-tel-input .flag-dropdown {
+    background-color: #fff7e8 !important;
+    border: none !important;
+    border-right: 1px solid black !important;
+  }
+  .react-tel-input .selected-flag:hover {
+    background-color: #fff7e8 !important;
+  }
+  .react-tel-input .flag-dropdown.open .selected-flag {
+    background-color: #fff7e8 !important;
+  }
+  .country-list {
+    background-color: #fff7e8 !important;
+  }
+  .react-tel-input .country-list .country:hover {
+    background-color: #ff8744 !important;
+    color: #fff;
+  }
+  .dial-code {
+    color: #583703 !important;
+  }
+`;
+const CustomCountryMobileNumberField = ({
+  label,
+  placeholder,
+  formik,
+  required,
+  value,
+  ...props
+}) => {
+
+  return (
+    <Warapper>
+      {label && (
+        <label>
+          {`${label}`}
+          {required && "*"}
+        </label>
+      )}
+      <PhoneInput value={value} placeholder={placeholder} {...props} />
+    </Warapper>
+  );
+};
+
+export default CustomCountryMobileNumberField;

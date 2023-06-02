@@ -13,7 +13,7 @@ import ProfileForm from "../../components/Profile/profileForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import he from "he";
 import { Helmet } from "react-helmet";
-import { Button } from "reactstrap";
+import { Button, Spinner } from "reactstrap";
 const ProfileWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -82,7 +82,7 @@ export default function AddProfile() {
   const [loading, setLoading] = useState(false);
 
   const profileDetail = useQuery(
-    ["", langSelection, selectedLang.id],
+    ["ProfileModule", langSelection, selectedLang.id],
     async () =>
       getUpdatedTrustDetail({
         languageId: getLangId(langArray, langSelection),
@@ -95,7 +95,6 @@ export default function AddProfile() {
     });
   };
 
-  
   // console.log("files Api -----> ",profileDetail?.data?.result?.documents);
   const initialValues = useMemo(() => {
     const documentName = profileDetail?.data?.result?.documents?.map(
@@ -109,10 +108,14 @@ export default function AddProfile() {
       // preference:profileDetail?.data?.result?.preference ?? "",
       trustEmail: profileDetail?.data?.result?.trustEmail ?? "",
       trustNumber: profileDetail?.data?.result?.trustNumber ?? "",
+      trustCountryCode: profileDetail?.data?.result?.trustCountryName ?? "",
+      trustDialCode: profileDetail?.data?.result?.trustCountryCode ?? "",
       about: he.decode(profileDetail?.data?.result?.about ?? ""),
       name: profileDetail?.data?.result?.name ?? "",
       email: profileDetail?.data?.result?.email ?? "",
       mobileNumber: profileDetail?.data?.result?.mobileNumber ?? "",
+      countryCode: profileDetail?.data?.result?.user?.countryName ?? "",
+      dialCode: profileDetail?.data?.result?.user?.countryCode ?? "",
       city: profileDetail?.data?.result?.city,
       state: profileDetail?.data?.result?.state,
       location: profileDetail?.data?.result?.location,
@@ -176,12 +179,21 @@ export default function AddProfile() {
           )}
         </div>
       </div>
+
       <ProfileForm
         editProfile
         handleSubmit={handleUpdateProfile}
         setLoading={setLoading}
         loading={loading}
         editImage="edit"
+        trustMobileNumber={
+          "+91" +
+          `${profileDetail?.data?.result?.trustNumber}`
+        }
+        userMobileNumber={
+          "+91" +
+          profileDetail?.data?.result?.mobileNumber
+        }
         defaultImages={profileDetail?.data?.result?.images}
         profileImageName={profileDetail?.data?.result?.profileName}
         defaultDocuments={profileDetail?.data?.result?.documents}

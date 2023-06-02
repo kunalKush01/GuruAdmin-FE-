@@ -89,6 +89,8 @@ export default function AddSubscribedUser() {
           initialValues={{
             name: "",
             mobile: "",
+            countryCode:"",
+            dialCode:"",
             email: "",
           }}
           vailidationSchema={schema}

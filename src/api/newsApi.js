@@ -46,3 +46,10 @@ export const updateNewsDetail = (payload) =>
     requestFunction: (axios) =>
       axios.get(`${API_BASE_URL}news/publish/${payload}`, ),
   });
+
+
+  export const ScheduleNews = (payload) =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}news/schedule`,payload ),
+  });

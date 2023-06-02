@@ -133,18 +133,9 @@ export default function AddLanguageProfile() {
       name: profileDetailQuery?.data?.result?.name ?? "",
       email: profileDetailQuery?.data?.result?.email ?? "",
       mobileNumber: profileDetailQuery?.data?.result?.mobileNumber ?? "",
-      city: profileDetailQuery?.data?.result?.state
-        ? { districts: profileDetailQuery?.data?.result?.city }
-        : null,
-      state: profileDetailQuery?.data?.result?.state
-        ? { state: profileDetailQuery?.data?.result?.state }
-        : null,
-      location: profileDetailQuery?.data?.result?.location
-        ? {
-            label: profileDetailQuery?.data?.result?.location,
-            value: { place_id: profileDetailQuery?.data?.result?.place_id },
-          }
-        : null,
+      city: profileDetailQuery?.data?.result?.city,
+      state: profileDetailQuery?.data?.result?.state,
+      location: profileDetailQuery?.data?.result?.location,
       longitude: profileDetailQuery?.data?.result?.longitude,
       latitude: profileDetailQuery?.data?.result?.latitude,
       trustFacilities: profileDetailQuery?.data?.result?.facilities ?? "",
