@@ -634,6 +634,7 @@ export default function ProfileForm({
                       <Col xs={12} md={6} lg={4} className="">
                         <CustomCountryMobileNumberField
                           value={trustMobileNumberState}
+                          defaultCountry={initialValues?.trustCountryCode ?? ""}
                           label={t("userProfile_phone_number")}
                           placeholder={t("placeHolder_phone_number")}
                           onChange={(phone, country) => {
@@ -749,7 +750,7 @@ export default function ProfileForm({
                       <Col xs={12} md={6} lg={4} className="">
                       <CustomCountryMobileNumberField
                           value={userMobileNumberState}
-                          
+                          defaultCountry={initialValues?.countryCode ?? ""}
                           label={t("userProfile_phone_number")}
                           placeholder={t("placeHolder_phone_number")}
                           onChange={(phone, country) => {
@@ -1278,7 +1279,7 @@ export default function ProfileForm({
                             // label={t("apna_mandir_upload_background")}
                             disabled={AddLanguage}
                             name="imageName"
-                            acceptFile="image/*"
+                            accept="image/*"
                             // placeholder={t("apna_mandir_upload_background_here")}
                             onChange={(e) => {
                               if (e.target.files[0]?.type?.includes("svg")) {

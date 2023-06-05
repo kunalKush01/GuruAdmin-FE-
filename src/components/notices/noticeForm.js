@@ -351,7 +351,7 @@ export default function NoticeForm({
                     label={t("donation_select_date")}
                     name="DateTime"
                     pastDateNotAllowed
-                    showTimeInput={showTimeInput}
+                    // showTimeInput={showTimeInput}
                   />
                 </Col>
               )}

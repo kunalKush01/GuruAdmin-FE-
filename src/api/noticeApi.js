@@ -63,3 +63,10 @@ export const updateNoticeDetail = (payload) =>
     requestFunction: (axios) =>
       axios.get(`${API_BASE_URL}notice/publish/${payload}`, ),
   });
+  
+  export const ScheduleNotice = (payload) =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}notice/schedule`,payload ),
+  });
+  ScheduleNotice

@@ -132,6 +132,7 @@ export default function SubscribedUserForm({
                     <CustomCountryMobileNumberField
                       value={phoneNumber}
                       label={t("dashboard_Recent_DonorNumber")}
+                      defaultCountry={initialValues?.countryCode ?? ""}
                       placeholder={t("placeHolder_mobile_number")}
                       onChange={(phone, country) => {
                         setPhoneNumber(phone);

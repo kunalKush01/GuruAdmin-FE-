@@ -1,63 +1,65 @@
 import ReactApexChart from "react-apexcharts";
-import { useTranslation,Trans } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 import styled from "styled-components";
 
-export const RevenueChart = ({DonationData=[],TotalExpensesData=[],CommittmentData=[]}) => {
-  const {t}= useTranslation()
+export const RevenueChart = ({
+  DonationData = [],
+  TotalExpensesData = [],
+  CommittmentData = [],
+}) => {
+  const { t } = useTranslation();
 
   const RevenueChartWarrper = styled.div`
-    .apexcharts-toolbar{
+    .apexcharts-toolbar {
       display: none;
     }
-    .apexcharts-legend{
-      position:relative!important;
+    .apexcharts-legend {
+      position: relative !important;
       justify-content: end !important;
     }
-    p{
-      color: #583703;;
-      font: normal normal bold 25px/50px Noto Sans
+    p {
+      color: #583703;
+      font: normal normal bold 25px/50px Noto Sans;
     }
     .apexcharts-legend-text {
       color: #583703 !important;
     }
-    .apexcharts-xaxis-label  {
+    .apexcharts-xaxis-label {
       fill: #583703 !important;
       font: normal normal bold 11px/24px Noto Sans;
     }
-    .apexcharts-yaxis-label  {
+    .apexcharts-yaxis-label {
       fill: #583703 !important;
       font: normal normal bold 11px/24px Noto Sans;
     }
-    
   `;
 
   const series = [
     {
       name: t("donation_hundi"),
-      data:DonationData.map((item)=>{
+      data: DonationData?.map((item) => {
         return {
-          x:item.month,
-          y:item.amount
-        }
-      })
-      
+          x: item.month,
+          y: item?.amount,
+        };
+      }),
     },
     {
       name: t("commitment"),
-      data:CommittmentData.map((item)=>{
+      data: CommittmentData?.map((item) => {
         return {
-          x:item.month,
-          y:item.amount
-        }
+          x: item.month,
+          y: item.amount,
+        };
       }),
     },
-    { 
+    {
       name: t("dashboard_totalExpenses"),
-      data:TotalExpensesData.map((item)=>{
+      data: TotalExpensesData?.map((item) => {
         return {
-          x:item.month,
-          y:item.amount
-        }
+          x: item.month,
+          y: item.amount,
+        };
       }),
     },
   ];
@@ -67,8 +69,7 @@ export const RevenueChart = ({DonationData=[],TotalExpensesData=[],CommittmentDa
       type: "bar",
       height: 350,
       fontFamily: " Noto Sans",
-      fontColors:"#583703",
-      
+      fontColors: "#583703",
     },
     plotOptions: {
       bar: {
@@ -87,12 +88,16 @@ export const RevenueChart = ({DonationData=[],TotalExpensesData=[],CommittmentDa
       colors: ["transparent"],
     },
     xaxis: {
-      tyoe:"category",
-      
+      type: "category",
     },
     yaxis: {
-      title: {
-        // text: "₹(Thousands)",
+      labels: {
+        formatter: function (value) {
+          // Customize the label value based on your requirements
+          // const formattedValue = value.toFixed(2).replace(/\d(?=(\d{2})+\d{3})/g, '$&,');
+          // return `₹${formattedValue}`;
+          return `₹${value.toLocaleString('en-IN')}`; // Add a dollar sign to the label value
+        },
       },
     },
     fill: {
@@ -109,7 +114,10 @@ export const RevenueChart = ({DonationData=[],TotalExpensesData=[],CommittmentDa
 
   return (
     <RevenueChartWarrper id="chart">
-     <p> <Trans  i18nKey={"dashboard_RevenueReport"}  /></p>
+      <p>
+        {" "}
+        <Trans i18nKey={"dashboard_RevenueReport"} />
+      </p>
       <ReactApexChart
         options={options}
         series={series}

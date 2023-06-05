@@ -413,7 +413,7 @@ export default function NewsForm({
                         label={t("donation_select_date")}
                         name="DateTime"
                         pastDateNotAllowed
-                        showTimeInput={showTimeInput}
+                        // showTimeInput={showTimeInput}
                       />
                     </Col>
                   )}

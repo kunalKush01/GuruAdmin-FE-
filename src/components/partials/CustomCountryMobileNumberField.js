@@ -42,13 +42,32 @@ const Warapper = styled.div`
   }
   .country-list {
     background-color: #fff7e8 !important;
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #ff8744 !important;
+      border-radius: 5px;
+      height: 50px;
+      width: 10px !important;
+    }
   }
   .react-tel-input .country-list .country:hover {
     background-color: #ff8744 !important;
     color: #fff;
   }
+  .react-tel-input .country-list .country:hover .dial-code {
+    color: #fff !important;
+  }
   .dial-code {
     color: #583703 !important;
+  }
+  .react-tel-input .country-list .country.highlight {
+    background-color: #ff8744 !important;
+  }
+  .react-tel-input .country-list .country.highlight > span {
+    font: normal normal bold 13px/20px Noto Sans;
+    color: #ffffff !important;
   }
 `;
 const CustomCountryMobileNumberField = ({
@@ -59,7 +78,6 @@ const CustomCountryMobileNumberField = ({
   value,
   ...props
 }) => {
-
   return (
     <Warapper>
       {label && (

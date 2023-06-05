@@ -361,7 +361,7 @@ export default function NewsCard({
                 <img src={cardClockIcon} style={{ verticalAlign: "bottom" }} />
                 {`Posted on ${moment(data?.publishDate).format(
                   "D MMMM YYYY "
-                )} At ${moment(data?.publishDate).format("hh:mm")}`}
+                )}`}
               </div>
               <img
                 src={cardThreeDotIcon}

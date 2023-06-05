@@ -34,6 +34,7 @@ const RecentDonationTableWarper = styled.div`
     max-height: 600px;
     overflow: auto;
   }
+  
 `;
 
 export default function CommitmentListTable(

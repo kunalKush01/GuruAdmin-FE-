@@ -1,6 +1,20 @@
 import moment from "moment";
 import React, { useState } from "react";
-import { Card, CardBody, Button, Row, Col, ButtonGroup, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
+import {
+  Card,
+  CardBody,
+  Button,
+  Row,
+  Col,
+  ButtonGroup,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  Modal,
+  ModalHeader,
+  ModalBody,
+} from "reactstrap";
 import he from "he";
 import styled from "styled-components";
 import cardThreeDotIcon from "../../assets/images/icons/news/threeDotIcon.svg";
@@ -12,10 +26,16 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
 import BtnPopover from "../partials/btnPopover";
-import { PublishNotice, deleteNoticeDetail } from "../../api/noticeApi";
+import {
+  PublishNotice,
+  ScheduleNotice,
+  deleteNoticeDetail,
+} from "../../api/noticeApi";
 import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
 import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 import { useSelector } from "react-redux";
+import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
+import { Form, Formik } from "formik";
 
 const EventCardWaraper = styled.div`
   .card1 {
@@ -67,6 +87,9 @@ const EventCardWaraper = styled.div`
     padding: 5px 10px;
     border-radius: 20px;
     margin-right: 10px;
+  }
+  .publishMenu {
+    background-color: #fff7e8;
   }
   @media only screen and (max-width: 1200px) {
     .card-body {
@@ -217,6 +240,9 @@ export default function NoticeCard({
   const handlePublish = async (payload) => {
     return PublishNotice(payload);
   };
+  const handleSchedule = async (payload) => {
+    return ScheduleNotice(payload);
+  };
   const queryCient = useQueryClient();
   const publishMutation = useMutation({
     mutationFn: handlePublish,
@@ -226,6 +252,17 @@ export default function NoticeCard({
       }
     },
   });
+  const schedulingMutation = useMutation({
+    mutationFn: handleSchedule,
+    onSuccess: (data) => {
+      if (!data.error) {
+        queryCient.invalidateQueries(["Notices"]);
+      }
+    },
+  });
+  const [modal, setModal] = useState(false);
+
+  const toggle = () => setModal(!modal);
 
   return (
     <EventCardWaraper key={data.id}>
@@ -269,7 +306,7 @@ export default function NoticeCard({
                     <div className="card-Date">
                       <p>
                         Posted on{" "}
-                        {`${moment(data?.publishDate).format("D MMMM YYYY ")}`} At {`${moment(data?.publishDate).format("hh:mm")}`} 
+                        {`${moment(data?.publishDate).format("D MMMM YYYY ")}`}{" "}
                       </p>
                     </div>
                   </Col>
@@ -309,18 +346,18 @@ export default function NoticeCard({
                         <DropdownMenu className="publishMenu">
                           <DropdownItem
                             className="py-0 w-100"
-                            onClick={() =>
-                              history.push(
-                                `/notices/edit/${data?.id}?page=${currentPage}&filter=${currentFilter}`,
-                                data?.id
-                              )
-                            }
+                            onClick={toggle}
+                            // () =>
+                            // history.push(
+                            //   `/news/edit/${data?.id}?page=${currentPage}&filter=${currentFilter}`,
+                            //   data?.id
+                            // )
                           >
                             <Trans i18nKey={"schedule"} />
                           </DropdownItem>
                           <DropdownItem
                             className="py-0 w-100"
-                            onClick={() => publishMutation.mutate(data?.id)}
+                            onClick={() => publishMutation.mutate(data.id)}
                           >
                             {data?.isPublished ? (
                               <Trans i18nKey={"unPublish"} />
@@ -453,6 +490,42 @@ export default function NoticeCard({
           />
         }
       /> */}
+      <Modal isOpen={modal} centered toggle={toggle}>
+        <ModalHeader toggle={toggle}></ModalHeader>
+        <ModalBody>
+          <Row>
+            <Col>
+              <Formik
+                initialValues={{ DateTime: new Date() }}
+                onSubmit={(e) => {
+                  schedulingMutation.mutate({
+                    publishDate: e?.DateTime,
+                    noticeId: data?.id,
+                  });
+                }}
+              >
+                <Form>
+                  <Row>
+                    <Col xs={12} className="">
+                      <FormikCustomDatePicker
+                        name="DateTime"
+                        width="100%"
+                        pastDateNotAllowed
+                        showTimeInput
+                      />
+                    </Col>
+                    <Col xs={12} className="mt-2">
+                      <Button type="submit" color="primary" size="sm">
+                        Submit
+                      </Button>
+                    </Col>
+                  </Row>
+                </Form>
+              </Formik>
+            </Col>
+          </Row>
+        </ModalBody>
+      </Modal>
     </EventCardWaraper>
   );
 }

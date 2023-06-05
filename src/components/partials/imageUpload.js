@@ -145,6 +145,7 @@ const thumbInner = {
   display: "flex",
   minWidth: 0,
   overflow: "hidden",
+  borderRadius: "10px"
 };
 
 const thumbInnerBorderRadius = {
@@ -155,13 +156,13 @@ const thumbInnerBorderRadius = {
 };
 const img = {
   display: "block",
-  width: "100%",
+  width: "140px",
   height: "100%",
   borderRadius: "10px",
 };
 const imgBorderRadius = {
   display: "block",
-  width: "100%",
+  width: "140px",
   height: "100%",
   borderRadius: "50%",
 };
