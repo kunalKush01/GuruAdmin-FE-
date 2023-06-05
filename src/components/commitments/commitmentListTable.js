@@ -45,6 +45,7 @@ export default function CommitmentListTable(
     currentFilter,
     financeReport,
     currentCategory,
+    paymentStatus,
     currentStatus,
     currentSubCategory,
     subPermission,
@@ -299,11 +300,11 @@ export default function CommitmentListTable(
         payDonation:
           item?.paidStatus !== "completed" ? (
             <div
-              className="cursor-pointer payDonation"
+              className={`cursor-pointer payDonation ${paymentStatus && "opacity-50 cursor-not-allowed"}`}
               onClick={() =>
-                financeReport
+                financeReport && !paymentStatus
                   ? history.push(`/commitment/pay-donation/${item.id}`, item.id)
-                  : history.push(
+                  : !paymentStatus && history.push(
                       `/commitment/pay-donation/${item.id}?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`,
                       item.id
                     )

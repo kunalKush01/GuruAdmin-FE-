@@ -212,6 +212,8 @@ export default function Donation() {
   const subPermission = subPermissions?.subpermissions?.map(
     (item) => item.name
   );
+
+  console.log("subCategoryTypeQuery",donationQuery?.data?.isPaymentPaused);
   return (
     <DoationWarper>
       <Helmet>
@@ -289,8 +291,9 @@ export default function Donation() {
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
-                className="addDonation-btn "
+                className={`addDonation-btn ${donationQuery?.data?.isPaymentPaused && "disabled"}`}
                 onClick={() =>
+                  !donationQuery?.data?.isPaymentPaused && 
                   history.push(
                     `/donation/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}`
                   )

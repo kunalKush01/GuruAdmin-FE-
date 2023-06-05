@@ -350,8 +350,9 @@ export default function Commitment() {
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
-                className="addCommitment-btn mt-md-1 mt-lg-0"
+                className={`addCommitment-btn mt-md-1 mt-lg-0 ${commitmentQuery?.data?.isPaymentPaused && "disabled"}`}
                 onClick={() =>
+                  !commitmentQuery?.data?.isPaymentPaused &&
                   history.push(
                     `/commitment/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${dropDownName}`
                   )
@@ -374,7 +375,7 @@ export default function Commitment() {
               onMouseEnter={onHover}
               onMouseLeave={onHoverLeave}
               className={`addCommitment ms-1 ${
-                notifyIds?.length > 0 ? "opacity-100" : "opacity-25"
+                notifyIds?.length > 0 ? "opacity-100" : "opacity-50"
               }`}
               onClick={() => {
                 notifyIds?.length > 0 &&
@@ -438,6 +439,7 @@ export default function Commitment() {
                       currentFilter={routFilter}
                       currentPage={routPagination}
                       selectedRows={selectedRows}
+                      paymentStatus = {commitmentQuery?.data?.isPaymentPaused}
                       setSelectedRows={setSelectedRows}
                       currentCategory={routCategory}
                       currentStatus={routStatus}
