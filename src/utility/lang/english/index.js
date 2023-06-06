@@ -307,11 +307,11 @@ export const englishContent = {
   // notifications_not_click_add:'Click on "Add Notify Users" to add notifications on the screen',
 
   // All user Profile static Data
-  about_trust: "ABOUT TRUST",
-  trust_user: "ABOUT TRUST USER",
-  trust_location: "TRUST LOCATION",
-  trust_facility: "TRUST FACILITIES",
-  trust_image_certificate: "TRUST IMAGES AND CERTIFICATES",
+  about_trust: "ABOUT US",
+  trust_user: "ABOUT USER",
+  trust_location: "LOCATION",
+  trust_facility: "FACILITIES",
+  trust_image_certificate: "IMAGES AND CERTIFICATES",
   location:"Location",
   trust_prefenses:"Trust Preferences",
   trust_prefenses_required:"Trust Preferences is required",

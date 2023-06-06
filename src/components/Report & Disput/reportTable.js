@@ -1,27 +1,27 @@
-import React, {useMemo} from "react";
+import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import CustomDataTable from "../partials/CustomDataTable";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import { If } from "react-if-else-switch";
-import {ConverFirstLatterToCapital} from "../../utility/formater";
-import {useMutation, useQueryClient} from "@tanstack/react-query";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const ReportWaraper = styled.div`
   color: #583703 !important;
   /* margin-right: 20px; */
   font: normal normal bold 15px/23px Noto Sans;
-  .pending{
-    color: #F8450D;
+  .pending {
+    color: #f8450d;
     font: normal normal bold 13px/23px Noto Sans;
   }
-  .reSolved{
-    color: #24C444;
+  .reSolved {
+    color: #24c444;
     font: normal normal bold 13px/23px Noto Sans;
   }
 `;
-const ReportTable = ({data}) => {
+const ReportTable = ({ data }) => {
   const queryCient = useQueryClient();
   const deleteMutation = useMutation({
     // mutationFn: handleDeleteSubscribedUser,
@@ -66,30 +66,47 @@ const ReportTable = ({data}) => {
     },
   ];
 
-  const reportData = useMemo (()=>{
-    return data.map((item,idx)=>{
-      return{
-        id:idx+1,
+  const reportData = useMemo(() => {
+    return data.map((item, idx) => {
+      return {
+        id: idx + 1,
         name: (
-            <div className="d-flex align-items-center ">
-              <img src={avtarIcon} style={{ marginRight: "5px", width: "25px" }} />
-              <div>{ConverFirstLatterToCapital(item?.name??"-")}</div>
-            </div>
+          <div className="d-flex align-items-center ">
+            <img
+              src={
+                item?.profileImage !== "" || item?.profileImage
+                  ? item?.profileImage
+                  : avtarIcon
+              }
+              className="cursor-pointer"
+              style={{
+                marginRight: "5px",
+                width: "30px",
+                height: "30px",
+                borderRadius: "50%",
+              }}
+            />
+            <div>{ConverFirstLatterToCapital(item?.name ?? "-")}</div>
+          </div>
         ),
-        mobileNumber:item?.mobileNumber??"-",
-        email:item?.email??"-",
-        transactionIds: item?.transactionId??"-",
-        status:<div className={`${item.disputeStatus == 'pending' ? "pending" : "reSolved"}`}>{ConverFirstLatterToCapital(item?.disputeStatus)}</div>
-      }
-    })
-  })
+        mobileNumber: item?.mobileNumber ?? "-",
+        email: item?.email ?? "-",
+        transactionIds: item?.transactionId ?? "-",
+        status: (
+          <div
+            className={`${
+              item.disputeStatus == "pending" ? "pending" : "reSolved"
+            }`}
+          >
+            {ConverFirstLatterToCapital(item?.disputeStatus)}
+          </div>
+        ),
+      };
+    });
+  });
   return (
     <ReportWaraper>
-      <CustomDataTable 
-          maxHieght={"470px"} 
-          columns={column} 
-          data={reportData} 
-        />
+      <CustomDataTable maxHieght={"470px"} columns={column} data={reportData} />
     </ReportWaraper>
   );
 };
