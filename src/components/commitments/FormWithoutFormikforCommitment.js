@@ -21,6 +21,7 @@ export default function FormWithoutFormikForCommitment({
   showTimeInput,
   editCommitment,
   loading,
+  countryFlag,
   getCommimentMobile,
   showPrompt,
   ...props
@@ -102,6 +103,7 @@ export default function FormWithoutFormikForCommitment({
               <CustomCountryMobileNumberField
                 value={phoneNumber}
                 label={t("dashboard_Recent_DonorNumber")}
+                defaultCountry={countryFlag}
                 placeholder={t("placeHolder_mobile_number")}
                 onChange={(phone, country) => {
                   setPhoneNumber(phone);

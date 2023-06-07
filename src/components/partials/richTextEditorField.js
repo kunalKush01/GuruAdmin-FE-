@@ -92,6 +92,7 @@ export default function RichTextField({
           "font: normal normal normal 12px/20px Noto sans !important;color:#583703"
         }
         setOptions={{
+          linkTargetNewWindow:true,
           buttonList: [
             [
               "font",

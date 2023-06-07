@@ -324,7 +324,7 @@ export const englishContent = {
   password_required: "Password is required",
   userProfile_phone_number: "Phone Number",
   trust_trustType: "Trust Type",
-  about_trusts: "About Trust",
+  about_trusts: "About",
   userProfile_name: "Name",
   trust_type_required: "Trust type is required",
   trust_about_required: "Trust about is required",

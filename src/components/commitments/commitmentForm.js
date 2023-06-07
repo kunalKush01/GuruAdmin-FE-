@@ -92,7 +92,7 @@ export default function CommitmentForm({
             ...initialValues,
           }}
           onSubmit={(e) => {
-            setShowPrompt(false)
+            setShowPrompt(false);
             setLoading(true);
             commitmentMutation.mutate({
               donarName: e?.donarName,
@@ -101,8 +101,8 @@ export default function CommitmentForm({
               amount: e?.Amount,
               masterCategoryId: e?.SelectedMasterCategory?.id,
               mobileNumber: e?.Mobile.toString(),
-              countryCode:e?.dialCode,
-              countryName:e?.countryCode,
+              countryCode: e?.dialCode,
+              countryName: e?.countryCode,
               commitmentEndDate: e.DateTime,
             });
           }}
@@ -115,6 +115,7 @@ export default function CommitmentForm({
                 masterloadOptionQuery={masterloadOptionQuery}
                 loading={loading}
                 editCommitment={disbleCategoryOnEdit}
+                countryFlag={initialValues?.countryCode}
                 plusIconDisable
                 getCommimentMobile={getCommimentMobile}
                 showPrompt={showPrompt}

@@ -69,6 +69,12 @@ const Warapper = styled.div`
     font: normal normal bold 13px/20px Noto Sans;
     color: #ffffff !important;
   }
+  .react-tel-input .country-list .search {
+    padding: 0.5rem 1.5rem 0.5rem 0rem;
+  }
+  .react-tel-input .country-list .search-box {
+    width: 100%;
+  }
 `;
 const CustomCountryMobileNumberField = ({
   label,
@@ -76,6 +82,7 @@ const CustomCountryMobileNumberField = ({
   formik,
   required,
   value,
+  defaultCountry,
   ...props
 }) => {
   return (
@@ -86,7 +93,14 @@ const CustomCountryMobileNumberField = ({
           {required && "*"}
         </label>
       )}
-      <PhoneInput value={value} placeholder={placeholder} {...props} />
+      <PhoneInput
+        value={value}
+        placeholder={placeholder}
+        defaultCountry={defaultCountry}
+        enableSearch
+        disableSearchIcon
+        {...props}
+      />
     </Warapper>
   );
 };

@@ -24,13 +24,13 @@ import pdfIcon from "../../assets/images/icons/iconPDF.svg";
 import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
 import { handleProfileUpdate } from "../../redux/authSlice";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
+import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
 import CustomLocationField from "../partials/CustomLocationField";
 import { TextArea } from "../partials/CustomTextArea";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import ImageUpload from "../partials/imageUpload";
 import RichTextField from "../partials/richTextEditorField";
-import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
 
 const ProfileFormWaraper = styled.div`
   .existlabel {
@@ -248,6 +248,10 @@ const ProfileFormWaraper = styled.div`
   .react-time-picker__inputGroup__input:invalid {
     background: #fff7e8 !important;
   }
+  .react-time-picker__inputGroup__input--hasLeadingZero {
+    margin-left: 0 !important;
+    padding-left: 0px !important;
+  }
   input:focus {
     outline: none !important;
   }
@@ -440,7 +444,7 @@ export default function ProfileForm({
       setSelectedTimeStart(facilityIntialValues?.startTime);
       setSelectedTimeEnd(facilityIntialValues?.endTime);
     }
-  }, [initialValues]);
+  }, [initialValues ,facilityIntialValues]);
 
   // facilities validation
 
@@ -454,8 +458,8 @@ export default function ProfileForm({
       .string()
       // .matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g, "injection_found")
       .required("news_desc_required"),
-    startTime: yup.string().required("start_time_required"),
-    endTime: yup.string().required("end_time_required"),
+    startTime: yup.mixed().required("start_time_required"),
+    endTime: yup.mixed().required("end_time_required"),
   });
   const [imageSpinner, setImageSpinner] = useState(false);
   const [profileName, setProfileName] = useState();
@@ -463,11 +467,12 @@ export default function ProfileForm({
     setProfileName(profileImageName);
   }, [profileImageName]);
 
-  const [userMobileNumberState, setUserMobileNumberState] =
-    useState(userMobileNumber ?? "");
-  const [trustMobileNumberState, setTrustMobileNumberState] =
-    useState(trustMobileNumber ?? "");
-
+  const [userMobileNumberState, setUserMobileNumberState] = useState(
+    userMobileNumber ?? ""
+  );
+  const [trustMobileNumberState, setTrustMobileNumberState] = useState(
+    trustMobileNumber ?? ""
+  );
   return (
     <ProfileFormWaraper className="FormikWraper">
       <Formik
@@ -630,7 +635,7 @@ export default function ProfileForm({
                           required
                         />
                       </Col>
-                        {/* {JSON.stringify(formik.values.mobileNumber)} */}
+                      {/* {JSON.stringify(formik.values.mobileNumber)} */}
                       <Col xs={12} md={6} lg={4} className="">
                         <CustomCountryMobileNumberField
                           value={trustMobileNumberState}
@@ -748,7 +753,7 @@ export default function ProfileForm({
                         />
                       </Col>
                       <Col xs={12} md={6} lg={4} className="">
-                      <CustomCountryMobileNumberField
+                        <CustomCountryMobileNumberField
                           value={userMobileNumberState}
                           defaultCountry={initialValues?.countryCode ?? ""}
                           label={t("userProfile_phone_number")}
@@ -759,10 +764,7 @@ export default function ProfileForm({
                               "countryCode",
                               country?.countryCode
                             );
-                            formik.setFieldValue(
-                              "dialCode",
-                              country?.dialCode
-                            );
+                            formik.setFieldValue("dialCode", country?.dialCode);
                             formik.setFieldValue(
                               "mobileNumber",
                               phone?.replace(country?.dialCode, "")
@@ -869,9 +871,9 @@ export default function ProfileForm({
               </Col>
               <Row>
                 <Col xs={12}>
-                  <div className="existlabel  ">
+                  {/* <div className="existlabel  ">
                     <Trans i18nKey={"userProfile_facilities"} />
-                  </div>
+                  </div> */}
                 </Col>
                 {/* {[...formik?.values?.trustFacilities, ...facilityFormData]?.map( */}
                 {[...(formRef?.current?.values?.trustFacilities ?? [])]?.map(
@@ -882,7 +884,7 @@ export default function ProfileForm({
                         md={4}
                         sm={6}
                         key={idx}
-                        className="position-relative p-0 facilityCol ms-1"
+                        className="position-relative p-0 facilityCol ms-1 mb-2"
                       >
                         {!AddLanguage && (
                           <Button
@@ -921,7 +923,7 @@ export default function ProfileForm({
                             />
                             {/* </div> */}
                           </div>
-                          <div className="py-1">
+                          <div className="py-1 px-1">
                             <div className="temple_name">
                               {ConverFirstLatterToCapital(item?.name ?? "")}
                             </div>
@@ -1233,7 +1235,7 @@ export default function ProfileForm({
           </Form>
         )}
       </Formik>
-
+      {console.log("time", selectedTimeStart, selectedTimeEnd)}
       <Modal
         isOpen={modal}
         toggle={toggle}
@@ -1249,11 +1251,12 @@ export default function ProfileForm({
                   facilityFormData.splice(facilityEditData?.index, 1, values);
                 } else {
                   setFacilityFormData([...facilityFormData, values]);
-                  // formRef?.current?.setFieldValue("trustFacilities", [
-                  //   ...formRef?.current?.values?.trustFacilities,
-                  //   values,
-                  // ]);
+                  formRef?.current?.setFieldValue("trustFacilities", [
+                    ...formRef?.current?.values?.trustFacilities,
+                    values,
+                  ]);
                 }
+
                 toggle();
                 setFacilityEditData(null);
               }}
@@ -1263,7 +1266,7 @@ export default function ProfileForm({
                 return (
                   <Form>
                     <Row>
-                      <Col md={12}>
+                      <Col md={12} className="mb-1">
                         <CustomTextField
                           label="Facility Name"
                           placeholder="Enter name "
@@ -1366,6 +1369,24 @@ export default function ProfileForm({
                               format="HH:mm"
                               placeholder="HH:mm"
                             />
+                            {formik.errors.startTime &&
+                              formik.touched.startTime && (
+                                <div
+                                  style={{
+                                    height: "20px",
+                                    font: "normal normal bold 11px/33px Noto Sans",
+                                  }}
+                                >
+                                  {formik.errors.startTime &&
+                                    formik.touched.startTime && (
+                                      <div className="text-danger">
+                                        <Trans
+                                          i18nKey={formik.errors.startTime}
+                                        />
+                                      </div>
+                                    )}
+                                </div>
+                              )}
                           </Col>
                           <Col sm={6}>
                             <label>
@@ -1383,6 +1404,24 @@ export default function ProfileForm({
                               format="HH:mm"
                               placeholder="HH:mm"
                             />
+                            {formik.errors.endTime &&
+                              formik.touched.endTime && (
+                                <div
+                                  style={{
+                                    height: "20px",
+                                    font: "normal normal bold 11px/33px Noto Sans",
+                                  }}
+                                >
+                                  {formik.errors.endTime &&
+                                    formik.touched.endTime && (
+                                      <div className="text-danger">
+                                        <Trans
+                                          i18nKey={formik.errors.endTime}
+                                        />
+                                      </div>
+                                    )}
+                                </div>
+                              )}
                           </Col>
                           {formik?.values?.startTime ===
                             formik?.values?.endTime &&
@@ -1398,17 +1437,35 @@ export default function ProfileForm({
                               {/* <Trans i18nKey={"same_time"} /> */}
                               <Trans i18nKey={"same_time"} />
                             </div>
+                          ) : selectedTimeStart > selectedTimeEnd &&
+                            formik?.values?.endTime !== "" ? (
+                            <div
+                              className="text-danger"
+                              style={{
+                                height: "20px",
+                                font: "normal normal bold 11px/20px Noto Sans",
+                              }}
+                            >
+                              {/* <Trans i18nKey={"same_time"} /> */}
+                              <Trans i18nKey={"end_time_less"} />
+                            </div>
                           ) : (
                             ""
                           )}
                         </Row>
                       </Col>
-                      <div className="mt-5">
+                      <div className="mt-3">
                         <Button
                           className="bg_submit"
                           color="primary"
                           type="submit"
-                          disabled={documentSpinner}
+                          disabled={
+                            documentSpinner ||
+                            (selectedTimeStart !== "" &&
+                              selectedTimeEnd !== "" &&
+                              selectedTimeStart === selectedTimeEnd) ||
+                            selectedTimeStart > selectedTimeEnd
+                          }
                         >
                           Add Facility
                         </Button>
