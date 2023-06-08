@@ -36,7 +36,7 @@ const schema = yup.object().shape({
     .string()
     .matches(/^[0-9\b]+$/, "invalid_amount")
     .required("amount_required"),
-  Body: yup.string().required("donation_box_desc_required"),
+  Body: yup.string().required("donation_box_desc_required").trim(),
   DateTime: yup.string(),
 });
 

@@ -31,27 +31,27 @@ const schema = yup.object().shape({
   trustName: yup
     .string()
     .matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g, "injection_found")
-    .required("name_required"),
+    .required("name_required").trim(),
   trustType: yup.mixed().required("trust_type_required"),
   // preference: yup.mixed().required("trust_prefenses_required"),
-  trustEmail: yup.string().email("email_invalid").required("email_required"),
+  trustEmail: yup.string().email("email_invalid").required("email_required").trim(),
   trustNumber: yup
     .string()
     .min(10, "Mobile Number must be 10 digits.")
     .required("number_required"),
-  about: yup.string().required("trust_about_required"),
+  about: yup.string().required("trust_about_required").trim(),
   name: yup
     .string()
     .matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g, "injection_found")
-    .required("name_required"),
-  email: yup.string().email("email_invalid").required("email_required"),
+    .required("name_required").trim(),
+  email: yup.string().email("email_invalid").required("email_required").trim(),
   mobileNumber: yup
     .string()
     .min(10, "Mobile Number must be 10 digits.")
     .required("number_required"),
-  state: yup.mixed().required("events_state_required"),
-  city: yup.mixed().required("events_city_required"),
-  location: yup.mixed().required("events_location_required"),
+  state: yup.mixed().required("events_state_required").trim(),
+  city: yup.mixed().required("events_city_required").trim(),
+  location: yup.mixed().required("events_location_required").trim(),
   latitude: yup.string().required("latitude_required"),
   longitude: yup.string().required("longitude_required"),
 });

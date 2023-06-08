@@ -30,14 +30,14 @@ const schema = yup.object().shape({
     .string()
     .min(10, "mobile_number_limit")
     .required("users_mobile_required"),
-  email: yup.string().email("email_invalid").required("users_email_required"),
+  email: yup.string().email("email_invalid").required("users_email_required").trim(),
   name: yup
     .string()
     .matches(
       /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
       "user_only_letters"
     )
-    .required("users_title_required"),
+    .required("users_title_required").trim(),
 });
 
 export default function AddSubscribedUser() {

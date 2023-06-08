@@ -62,6 +62,7 @@ export default function CustomTextField({
             className={"form-control"}
             placeholder={placeholder}
             value={field.value}
+            
             {...field}
             {...props}
           />

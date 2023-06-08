@@ -28,7 +28,7 @@ const handleCreateExpense = async (payload) => {
   return updateExpensesDetail(payload);
 };
 const schema = yup.object().shape({
-  Title: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("expenses_title_required"),
+  Title: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("expenses_title_required").trim(),
   // AddedBy: yup.string().required("news_tags_required"),
   Amount: yup
     .string()

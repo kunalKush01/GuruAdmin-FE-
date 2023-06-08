@@ -38,9 +38,9 @@ const NewsWarper = styled.div`
 `;
 
 const schema = yup.object().shape({
-  Title: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("news_title_required"),
+  Title: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("news_title_required").trim(),
   // Tags: yup.string().required("news_tags_required"),
-  Body: yup.string().required("news_desc_required"),
+  Body: yup.string().required("news_desc_required").trim(),
   PublishedBy: yup.string().required("news_publish_required"),
   DateTime: yup.string(),
   tagsInit:yup.array().max(15 ,"tags_limit"),

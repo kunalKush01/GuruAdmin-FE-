@@ -1,15 +1,7 @@
 import ReactApexChart from "react-apexcharts";
 import { useTranslation, Trans } from "react-i18next";
 import styled from "styled-components";
-
-export const RevenueChart = ({
-  DonationData = [],
-  TotalExpensesData = [],
-  CommittmentData = [],
-}) => {
-  const { t } = useTranslation();
-
-  const RevenueChartWarrper = styled.div`
+const RevenueChartWarrper = styled.div`
     .apexcharts-toolbar {
       display: none;
     }
@@ -33,6 +25,14 @@ export const RevenueChart = ({
       font: normal normal bold 11px/24px Noto Sans;
     }
   `;
+export const RevenueChart = ({
+  DonationData = [],
+  TotalExpensesData = [],
+  CommittmentData = [],
+}) => {
+  const { t } = useTranslation();
+
+  
 
   const series = [
     {

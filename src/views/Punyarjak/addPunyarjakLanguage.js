@@ -43,11 +43,11 @@ const NewsWarper = styled.div`
 `;
 
 const schema = yup.object().shape({
-  description: yup.string().required("punyarjak_desc_required"),
+  description: yup.string().required("punyarjak_desc_required").trim(),
   title: yup
     .string()
     .matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g, "injection_found")
-    .required("news_title_required"),
+    .required("news_title_required").trim(),
     image:yup.string().required("img_required")
 });
 

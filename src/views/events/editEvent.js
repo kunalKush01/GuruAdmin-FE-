@@ -35,8 +35,8 @@ const EventWarper = styled.div`
 `;
 
 const schema = yup.object().shape({
-  Title: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("events_title_required"),
-  Body: yup.string().required("events_desc_required"),
+  Title: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("events_title_required").trim(),
+  Body: yup.string().required("events_desc_required").trim(),
   DateTime: yup.object().shape({
     start: yup.string().required("events_startDate_required"),
     // end: yup.mixed().required("events_endDate_required"),

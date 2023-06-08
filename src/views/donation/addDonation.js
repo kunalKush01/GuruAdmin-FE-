@@ -32,7 +32,7 @@ const schema = yup.object().shape({
   donarName: yup.string().matches(
       /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
       'donation_donar_name_only_letters'
-  ),
+  ).trim(),
   SelectedMasterCategory: yup.mixed().required("masterCategory_required"),
   Amount: yup.string().matches(/^[0-9\b]+$/,"invalid_amount").required("amount_required"),
 });

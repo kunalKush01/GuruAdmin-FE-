@@ -35,8 +35,8 @@ const NoticeWarper = styled.div`
 `;
 
 const schema = yup.object().shape({
-  Title: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("notices_title_required"),
-  Body: yup.string().required("notices_desc_required"),
+  Title: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("notices_title_required").trim(),
+  Body: yup.string().required("notices_desc_required").trim(),
   DateTime: yup.string(),
   // tagsInit:yup.array().max(15 ,"tags_limit"),
 });
