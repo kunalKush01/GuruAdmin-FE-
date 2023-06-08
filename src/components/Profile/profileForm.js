@@ -370,7 +370,8 @@ export default function ProfileForm({
       acceptedFiles,
       {
         contentType: acceptedFiles?.type,
-      }
+      },
+      console.log("havndle iploade", acceptedFiles)
     )
       .then((res) => {
         setDocumentSpinner(false);
@@ -1049,7 +1050,7 @@ export default function ProfileForm({
                                   formik.setFieldValue("documents", [
                                     ...formik.values.documents,
                                     {
-                                      name: `${randomNumber}_${e.target?.files[0]?.name}`,
+                                      name: `${randomNumber}_${e.target?.files[0]?.name.split(" ").join("-")}`,
                                     },
                                   ]);
                                 }
@@ -1293,7 +1294,7 @@ export default function ProfileForm({
                                 // handleUpload(e.target.files[0]).then((e)=>formik.setFieldValue('templeImage',e.target.files[0].name));
                                 formik.setFieldValue(
                                   "imageName",
-                                  `${randomNumber}_${e.target.files[0]?.name}`
+                                  `${randomNumber}_${e.target.files[0]?.name.split(" ").join("-")}`
                                 );
                                 formik.setFieldValue(
                                   "preview",

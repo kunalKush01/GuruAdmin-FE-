@@ -285,7 +285,7 @@ export default function NewsForm({
                       name="Title"
                       required
                       onInput={(e) =>
-                        (e.target.value = e.target.value.slice(0, 30))
+                        (e.target.value = e.target.value.slice(0, 256))
                       }
                       autoFocus
                     />

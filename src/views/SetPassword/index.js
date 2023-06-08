@@ -13,6 +13,7 @@ import backIconIcon from "../../assets/images/icons/signInIcon/backIcon.svg";
 import hidePassIcon from "../../assets/images/icons/signInIcon/hidePassIcon.svg";
 import passwordEyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
 import { loginPage } from "../../api/loginPageApi";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 const SetPassword = () => {
   const history = useHistory();
@@ -118,7 +119,7 @@ const SetPassword = () => {
   const currentToken = searchParams.get("token");
 
   const hostname = location.hostname;
-  const subDomainName = hostname.split(".", [1]);
+  const subDomainName = hostname.replace(".paridhan.app","");
   const loginPageQuery = useQuery([subDomainName], () =>
     loginPage(subDomainName)
   );
@@ -168,7 +169,7 @@ const SetPassword = () => {
             {<CardTitle className="fw-bold mb-0 ">Set Password</CardTitle>}
             {loginPageData?.name !== "" && (
               <div className="templeName">
-                Admin: <span>{loginPageData?.name}</span>
+                Admin: <span>{ConverFirstLatterToCapital(loginPageData?.name ?? "")}</span>
               </div>
             )}
             <CardText className="signInEnterUserNAme   ">

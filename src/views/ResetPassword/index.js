@@ -30,6 +30,7 @@ import { formatIsoTimeString } from "@fullcalendar/core";
 import { forgotPassword, resetPassword } from "../../api/forgotPassword";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { loginPage } from "../../api/loginPageApi";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 const ResetPassWord = () => {
   const history = useHistory();
 
@@ -137,7 +138,7 @@ const ResetPassWord = () => {
   const currentToken = searchParams.get("token");
 
   const hostname = location.hostname;
-  const subDomainName = hostname.split(".", [1]);
+  const subDomainName = hostname.replace(".paridhan.app","");
   const loginPageQuery = useQuery([subDomainName], () =>
     loginPage(subDomainName)
   );
@@ -189,7 +190,7 @@ const ResetPassWord = () => {
 
             {loginPageData?.name !== "" && (
               <div className="templeName">
-                Admin: <span>{loginPageData?.name}</span>
+                Admin: <span>{ConverFirstLatterToCapital(loginPageData?.name ?? "")}</span>
               </div>
             )}
             <CardText className="signInEnterUserNAme   ">

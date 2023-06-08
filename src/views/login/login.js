@@ -31,6 +31,7 @@ import {
   defaultHeaders,
   refreshTokenRequest,
 } from "../../utility/utils/callApi";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 const LoginCover = () => {
   const { isLogged } = useSelector((state) => state.auth);
   const history = useHistory();
@@ -152,7 +153,7 @@ const LoginCover = () => {
   }, [isLogged, loginPath]);
 
   const hostname = location.hostname;
-  const subDomainName = hostname.split(".", [1]);
+  const subDomainName = hostname.replace(".paridhan.app","");
   const loginPageQuery = useQuery([subDomainName], () =>
     loginPage(subDomainName)
   );
@@ -162,7 +163,6 @@ const LoginCover = () => {
     [loginPageQuery]
   );
 
-  console.log("loginPageData-------------->", loginPageData);
 
   // useEffect(() => {
   //   isLogged ? history.push("/dashboard") : "";
@@ -238,10 +238,9 @@ const LoginCover = () => {
           {!forgotPassWordActive ? (
             <Col className="px-xl-2 mx-auto" sm="8" md="6" lg="12">
               {<CardTitle className="fw-bold mb-2 ">Sign In</CardTitle>}
-
               {loginPageData?.name !== "" && (
                 <div className="templeName">
-                  Admin: <span>{loginPageData?.name}</span>
+                  Admin: <span>{ConverFirstLatterToCapital(loginPageData?.name ?? "")}</span>
                 </div>
               )}
 

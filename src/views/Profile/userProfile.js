@@ -49,9 +49,9 @@ const schema = yup.object().shape({
     .string()
     .min(10, "Mobile Number must be 10 digits.")
     .required("number_required"),
-  state: yup.mixed().required("events_state_required").trim(),
-  city: yup.mixed().required("events_city_required").trim(),
-  location: yup.mixed().required("events_location_required").trim(),
+  state: yup.string().required("events_state_required").trim(),
+  city: yup.string().required("events_city_required").trim(),
+  location: yup.string().required("events_location_required").trim(),
   latitude: yup.string().required("latitude_required"),
   longitude: yup.string().required("longitude_required"),
 });
