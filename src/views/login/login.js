@@ -340,7 +340,7 @@ const LoginCover = () => {
                 </span>
 
                 <span className="text-primary signUp cursor-pointer">
-                  <a href="https://am-website-dev.paridhan.app/#home">
+                  <a href="https://am-website-staging.paridhan.app/#home">
                     Sign Up
                   </a>
                 </span>

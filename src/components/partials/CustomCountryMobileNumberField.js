@@ -20,14 +20,14 @@ const Warapper = styled.div`
     border: none !important;
     background-color: #fff7e8 !important;
     font: normal normal normal 13px/20px Noto Sans;
-    border-radius: 20px;
+    border-radius: 5px;
   }
   input {
     color: #583703 !important;
     border: none !important;
     background-color: #fff7e8 !important;
     font: normal normal normal 13px/20px Noto Sans;
-    border-radius: 20px;
+    border-radius: 5px;
   }
   .react-tel-input .flag-dropdown {
     background-color: #fff7e8 !important;

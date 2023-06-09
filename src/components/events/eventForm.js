@@ -435,9 +435,7 @@ export default function EventForm({
                         }}
                         delimiters={delimiters}
                         handleDelete={(index) => handleDelete(formik, index)}
-                        handleAddition={(tag) => {
-                          handleAddition(formik, tag);
-                        }}
+                        handleAddition={(tag) => handleAddition(formik, tag)}
                         inputFieldPosition="top"
                         allowDragDrop={false}
                         autocomplete
@@ -543,13 +541,7 @@ export default function EventForm({
                         }}
                         delimiters={delimiters}
                         handleDelete={(index) => handleDelete(formik, index)}
-                        handleAddition={(tag) => {
-                          if (tag.id.length > 3) {
-                            alert("Character limit exceed");
-                            return;
-                          }
-                          handleAddition(formik, tag);
-                        }}
+                        handleAddition={(tag) => handleAddition(formik, tag)}
                         inputFieldPosition="top"
                         allowDragDrop={false}
                         autocomplete
