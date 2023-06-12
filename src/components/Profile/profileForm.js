@@ -86,6 +86,7 @@ const ProfileFormWaraper = styled.div`
     transition: background 1s;
     background: #434343;
     color: #ffffff;
+    opacity: 75%;
     border-radius: 10px;
   }
   .facilityCol:hover img {
@@ -885,7 +886,7 @@ export default function ProfileForm({
                         md={4}
                         sm={6}
                         key={idx}
-                        className="position-relative p-0 facilityCol ms-1 mb-2"
+                        className="position-relative p-1 facilityCol mb-2 "
                       >
                         {!AddLanguage && (
                           <Button

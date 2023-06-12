@@ -46,7 +46,7 @@ const schema = yup.object().shape({
     ).trim(),
   SelectedMasterCategory: yup.mixed().required("masterCategory_required"),
   SelectedSubCategory: yup.mixed(),
-  Amount: yup.string().required("amount_required"),
+  Amount: yup.string().matches(/^[1-9][0-9]*$/,"invalid_amount").required("amount_required"),
 });
 const getLangId = (langArray, langSelection) => {
   let languageId;

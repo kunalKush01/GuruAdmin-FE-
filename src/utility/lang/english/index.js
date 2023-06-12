@@ -174,7 +174,7 @@ export const englishContent = {
   users_AddUser: "Add Sub Admin ",
   users_latest_User: "Sub Admin ",
   users_title_required: "Username is required",
-  user_only_letters: "User name only contain alphabets ",
+  user_only_letters: "Username only contain alphabets ",
   users_mobile_required: "Mobile Number is Required",
   mobile_number_limit: "Mobile Number must be 10 digits",
   users_email_required: "Email is Required",

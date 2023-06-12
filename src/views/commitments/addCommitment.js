@@ -33,9 +33,7 @@ const schema = yup.object().shape({
   ).trim(),
   SelectedMasterCategory: yup.mixed().required("masterCategory_required"),
   SelectedSubCategory: yup.mixed(),  
-  Amount: yup.string().matches(/^[0-9\b]+$/,"invalid_amount").required("amount_required"),
-
-  
+  Amount: yup.string().matches(/^[1-9][0-9]*$/,"invalid_amount").required("amount_required"),
 });
 
 

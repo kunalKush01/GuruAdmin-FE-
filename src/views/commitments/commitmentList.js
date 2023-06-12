@@ -167,12 +167,14 @@ export default function Commitment() {
     }
   });
   const [categoryId, setCategoryId] = useState();
+console.log("categoryId",categoryId);
 
   // sub category
   const subCategoryTypeQuery = useQuery(
-    ["subCategoryTypes"],
+    ["subCategoryTypes",newId],
     () =>
       getAllCategories({
+        masterId:newId,
         languageId: selectedLang.id,
       }),
     {

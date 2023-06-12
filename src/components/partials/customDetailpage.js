@@ -9,6 +9,7 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import cardClockIcon from "../../assets/images/icons/news/clockIcon.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
+import Slider from "react-slick";
 
 const TrustWarapper = styled.div`
   color: #583703;
@@ -82,6 +83,18 @@ const TrustWarapper = styled.div`
     word-break: break-all;
     font: normal normal normal 14px/25px Noto Sans;
   }
+
+  .slick-next:before{
+    color: #ff8744 !important;
+    font-size: 25px;
+  }
+  .slick-prev:before {
+    color: #ff8744 !important;
+    font-size: 25px;  
+  }
+  .slick-slide {
+    padding: .5rem;
+  }
   //  media query
   @media only screen and (max-width: 578px) {
   }
@@ -103,7 +116,47 @@ export default function DetailPage({
 }) {
   const history = useHistory();
   const { t } = useTranslation();
-  let firstImage = image ? image ?? placeHolder : (images?.length ? images[0]?.presignedUrl : placeHolder);  ;
+  let firstImage = image
+    ? image ?? placeHolder
+    : images?.length
+    ? images[0]?.presignedUrl
+    : placeHolder;
+
+  var settings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    initialSlide: 0,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          infinite: false,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          initialSlide: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
+
   return (
     <TrustWarapper>
       <div className="window nav statusBar body "></div>
@@ -130,7 +183,25 @@ export default function DetailPage({
         </div>
         <Row className="my-lg-3 mt-2">
           <Col xs={12} lg={4} className="">
-            <img src={firstImage} className="detailImage" />
+            {images?.length > 1 ? (
+              <Slider {...settings}>
+                {images?.length
+                  ? images?.map((item) => {
+                      return (
+                        <div className="detailImage">
+                          <img
+                            src={item?.presignedUrl}
+                            className="detailImage h-100 w-100"
+                          />
+                        </div>
+                      );
+                    })
+                  : ""}
+                {/* </div> */}
+              </Slider>
+            ) : (
+              <img src={firstImage} className="detailImage" />
+            )}
             <div className="d-flex justify-content-between mt-1">
               <div className="about-temple-name">{templeName ?? ""}</div>
               <div className="d-flex justify-content-between long-let_tude">
@@ -159,7 +230,7 @@ export default function DetailPage({
                 {`Posted on ${moment(startDate).format("DD MMMM YYYY ")}`}
               </div>
             </div>
-            <div className="d-flex align-items-center flex-wrap gap-2 mt-2">
+            {/* <div className="d-flex align-items-center flex-wrap gap-2 mt-2">
             {subImages?.length ?subImages?.map((item) => {
                 return (
                   <div className="imageDiv">
@@ -170,9 +241,9 @@ export default function DetailPage({
                   </div>
                 );
               }):""}
-            </div>
+            </div> */}
           </Col>
-          <Col xs={12} lg={8} className="">
+          <Col xs={12} lg={8} className="ps-3">
             <Row>
               <Col xs={12} lg={11} className=" px-0 ps-2 pe-2">
                 <div className="detail-title">

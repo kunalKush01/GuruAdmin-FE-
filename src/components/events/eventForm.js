@@ -548,16 +548,7 @@ export default function EventForm({
                         editable={false}
                         autofocus={false}
                       />
-                      {tagsCharLimit && (
-                        <div
-                          style={{
-                            height: "20px",
-                            font: "normal normal bold 11px/33px Noto Sans",
-                          }}
-                        >
-                          <div className="text-danger">hello</div>
-                        </div>
-                      )}
+                     
                       {formik.errors.tagsInit && (
                         <div
                           style={{

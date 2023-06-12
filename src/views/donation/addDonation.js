@@ -34,7 +34,7 @@ const schema = yup.object().shape({
       'donation_donar_name_only_letters'
   ).trim(),
   SelectedMasterCategory: yup.mixed().required("masterCategory_required"),
-  Amount: yup.string().matches(/^[0-9\b]+$/,"invalid_amount").required("amount_required"),
+  Amount: yup.string().matches(/^[1-9][0-9]*$/,"invalid_amount").required("amount_required"),
 });
 
 export default function AddDonation() {
