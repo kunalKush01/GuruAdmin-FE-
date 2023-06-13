@@ -39,7 +39,7 @@ const schema = yup.object().shape({
   Body: yup.string().required("news_desc_required").trim(),
   PublishedBy: yup.string().required("news_publish_required"),
   DateTime: yup.string(),
-  tagsInit:yup.array().max(15 ,"tags_limit"),
+  // tagsInit:yup.array().max(15 ,"tags_limit"),
   preference: yup.array().min(1,"trust_prefenses_required").required("trust_prefenses_required"),
 
 });

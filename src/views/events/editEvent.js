@@ -44,7 +44,7 @@ const schema = yup.object().shape({
   startTime: yup.mixed().required("events_startTime_required"),
   endTime: yup.mixed().required("events_endTime_required"),
   SelectedEvent: yup.mixed(),
-  tagsInit:yup.array().max(15 ,"tags_limit"),
+  // tagsInit:yup.array().max(15 ,"tags_limit"),
 
 });
 

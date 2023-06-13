@@ -196,8 +196,8 @@ function BtnContent({
             xs={12}
             className={`${
               langList?.length === totalAvailableLanguage
-                ? "col-item-disabled opacity-50 pb-1"
-                : "col-item pb-1"
+                ? "col-item-disabled opacity-50"
+                : "col-item "
             }`}
             onClick={() =>
               langList?.length === totalAvailableLanguage

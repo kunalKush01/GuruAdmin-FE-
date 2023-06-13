@@ -149,7 +149,7 @@ function BtnContent({
   const langList = useSelector((state) => state.auth.availableLang);
   return (
     <BtnContentWraper>
-      <Row className="MainContainer d-block " >
+      <Row className="MainContainer d-block ">
         {allPermissions?.name === "all" || subPermission?.includes(EDIT) ? (
           <Col
             xs={12}
@@ -404,8 +404,8 @@ export default function NewsCard({
                 }}
               >
                 <Form>
-                  <Row>
-                    <Col xs={12} className="">
+                  <Row className="justify-content-center">
+                    <Col xs={8} className="">
                       <FormikCustomDatePicker
                         name="DateTime"
                         width="100%"
@@ -413,6 +413,8 @@ export default function NewsCard({
                         showTimeInput
                       />
                     </Col>
+                  </Row>
+                  <Row>
                     <Col xs={12} className="mt-2">
                       <Button type="submit" color="primary" size="sm">
                         Submit

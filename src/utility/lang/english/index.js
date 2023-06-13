@@ -96,7 +96,7 @@ export const englishContent = {
   news_popOver_Delete: "Delete",
 
   news_delete: "Delete News",
-  news_sure: "Are you sure you want to permanently delete the selected news ? ",
+  news_sure: "Are you sure you want to permanently delete this news ? ",
   news_not_found: "No News Found",
   news_not_click_add_news: 'Click on "Add News" to add news on the screen',
 
@@ -115,7 +115,7 @@ export const englishContent = {
   events_endDate_required: "End date is required",
   events_delete: "Delete Event",
   events_sure:
-    "Are you sure you want to permanently delete the selected event ? ",
+    "Are you sure you want to permanently delete this event ? ",
   events_not_found: "No Events Found",
   events_not_click_add_events:
     'Click on "Add Event" to add event on the screen',
@@ -132,7 +132,7 @@ export const englishContent = {
 
   notices_delete: "Delete Notice",
   notices_sure:
-    "Are you sure you want to permanently delete the selected notice ? ",
+    "Are you sure you want to permanently delete this notice ? ",
   notices_not_found: "No Notices Found",
   notices_not_click_add_notices:
     'Click on "Add Notice" to add notices on the screen',
@@ -164,7 +164,7 @@ export const englishContent = {
 
   category_delete: "Delete Category",
   category_sure:
-    "Are you sure you want to permanently delete the selected category ? ",
+    "Are you sure you want to permanently delete this category ? ",
   category_not_found: "No Categories Found",
   category_not_click_add_category:
     'Click on "Add Category" to add category on the screen',
@@ -197,7 +197,7 @@ export const englishContent = {
 
   expence_delete: "Delete Expense",
   expence_sure:
-    "Are you sure you want to permanently delete the selected expense ? ",
+    "Are you sure you want to permanently delete this expense ? ",
   expence_not_found: "No Expenses Found",
   expence_not_click_add_expence:
     'Click on "Add Expenses" to add expenses on the screen',
@@ -226,7 +226,7 @@ export const englishContent = {
   add_user_donation: "No user found click here to",
   donation_delete: "Delete Donation",
   donation_sure:
-    "Are you sure you want to permanently delete the selected donation ? ",
+    "Are you sure you want to permanently delete this donation ? ",
   donation_not_found: "No Donation Found",
   add_user: "Add User",
   donation_paid_not_found: "No Paid Donations Found",
@@ -272,7 +272,7 @@ export const englishContent = {
 
   commitment_delete: "Delete Commitment",
   commitment_sure:
-    "Are you sure you want to permanently delete the selected commitment ? ",
+    "Are you sure you want to permanently delete this commitment ? ",
   commitment_not_found: "No Commitment Found",
   commitment_not_click_add_commitment:
     'Click on "Add Commitment" to add commitment on the screen',
@@ -382,7 +382,7 @@ export const englishContent = {
   punyarjak_delete: "Delete Punyarjak",
   username: "The username must only consist of letters of the alphabet",
   punyarjak_sure:
-    "Are you sure you want to permanently delete the selected punyarjak ? ",
+    "Are you sure you want to permanently delete this punyarjak ? ",
   punyarjak_not_found: "No Punyarjak User Found",
   punyarjak_not_click_add:
     'Click on "Add punyarjak" to add punyarjak user on the screen',

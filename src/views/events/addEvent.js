@@ -35,7 +35,7 @@ const handleCreateEvent = async (payload) => {
 };
 const schema = yup.object().shape({
   Title: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("events_title_required").trim(),
-  tagsInit:yup.array().max(15 ,"tags_limit"),
+  // tagsInit:yup.array().max(15 ,"tags_limit"),
   Body: yup.string().required("events_desc_required").trim(),
   DateTime: yup.object().shape({
     start: yup.string().required("events_startDate_required"),

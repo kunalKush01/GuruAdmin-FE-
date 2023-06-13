@@ -505,8 +505,8 @@ export default function NoticeCard({
                 }}
               >
                 <Form>
-                  <Row>
-                    <Col xs={12} className="">
+                  <Row className="justify-content-center">
+                    <Col xs={8} >
                       <FormikCustomDatePicker
                         name="DateTime"
                         width="100%"
@@ -514,6 +514,8 @@ export default function NoticeCard({
                         showTimeInput
                       />
                     </Col>
+                  </Row>
+                  <Row>
                     <Col xs={12} className="mt-2">
                       <Button type="submit" color="primary" size="sm">
                         Submit
