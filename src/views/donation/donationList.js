@@ -291,9 +291,8 @@ export default function Donation() {
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
-                className={`addDonation-btn ${donationQuery?.data?.isPaymentPaused && "disabled"}`}
+                className={`addDonation-btn`}
                 onClick={() =>
-                  !donationQuery?.data?.isPaymentPaused && 
                   history.push(
                     `/donation/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}`
                   )

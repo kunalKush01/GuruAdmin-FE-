@@ -352,9 +352,8 @@ console.log("categoryId",categoryId);
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
-                className={`addCommitment-btn mt-md-1 mt-lg-0 ${commitmentQuery?.data?.isPaymentPaused && "disabled"}`}
+                className={`addCommitment-btn mt-md-1 mt-lg-0`}
                 onClick={() =>
-                  !commitmentQuery?.data?.isPaymentPaused &&
                   history.push(
                     `/commitment/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${dropDownName}`
                   )
