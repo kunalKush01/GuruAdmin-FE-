@@ -32,6 +32,10 @@ const EventCardWaraper = styled.div`
     white-space: nowrap;
     /* margin-bottom: 0.5rem !important; */
   }
+  .card-text > p , div{
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   .card-Date {
     font: normal normal normal 12px/16px Noto Sans;
     color: #9c9c9c;

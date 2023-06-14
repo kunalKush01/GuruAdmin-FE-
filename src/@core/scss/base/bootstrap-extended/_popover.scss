@@ -19,6 +19,7 @@
     .popover-arrow:after {
       border-bottom-color: $popover-header-bg;
     }
+    
   }
 }
 // To set arrow border as we have added border to popover-body and popover-header
@@ -26,6 +27,7 @@
   > .popover-arrow {
     &::after {
       bottom: $popover-border-width + 1px;
+      border-top-color: $popover-header-bg;
     }
   }
 }

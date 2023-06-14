@@ -41,6 +41,7 @@ export const englishContent = {
   tags_limit:"Tags limit exceeded",
   end_time_less:"The End time must be greater than the Start time",
   publish_now:"Publish Now",
+  already_publish:"News is already published.",
   unPublish:"Unpublish",
   schedule:"Schedule",
   publish:"Publish",

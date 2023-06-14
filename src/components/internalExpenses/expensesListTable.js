@@ -194,6 +194,8 @@ export function ExpensesListTable({
     font: normal normal bold 15px/23px Noto Sans;
     .tableDes p {
       margin-bottom: 0;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
     .tableDes{
       max-height: 1.7rem;

@@ -53,7 +53,7 @@ const ReportListCardWraper = styled.div`
     margin-top: 0.5rem;
     margin-bottom: 1.5rem;
   }
-  .text-with-dots {
+  .text-with-dots  > p{
     max-height: 20px;
     max-width: 100px;
     white-space: nowrap;

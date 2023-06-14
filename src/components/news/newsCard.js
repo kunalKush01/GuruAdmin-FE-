@@ -238,6 +238,11 @@ export default function NewsCard({
   allPermissions,
 }) {
   const history = useHistory();
+  const { t } = useTranslation();
+
+  const [modal, setModal] = useState(false);
+
+  const toggle = () => setModal(!modal);
 
   const handlePublish = async (payload) => {
     return PublishNews(payload);
@@ -258,13 +263,13 @@ export default function NewsCard({
     mutationFn: handleSchedule,
     onSuccess: (data) => {
       if (!data.error) {
+        setTimeout(() => {
+          toggle();
+        }, 500);
         queryCient.invalidateQueries(["News"]);
       }
     },
   });
-  const [modal, setModal] = useState(false);
-
-  const toggle = () => setModal(!modal);
   return (
     <NewsCardWaraper>
       <Card
@@ -297,7 +302,20 @@ export default function NewsCard({
                   <DropdownMenu className="publishMenu">
                     <DropdownItem
                       className="py-0 w-100"
-                      onClick={toggle}
+                      onClick={() => {
+                        data?.isPublished
+                          ? Swal.fire({
+                              // title: "News is already published",
+                              html: `<h3>${t("already_publish")}</h3>`,
+                              icon: "info",
+                              showConfirmButton: false,
+                              showCloseButton: false,
+                              showCancelButton: false,
+                              focusConfirm: false,
+                              timer: 1500,
+                            })
+                          : toggle();
+                      }}
                       // () =>
                       // history.push(
                       //   `/news/edit/${data?.id}?page=${currentPage}&filter=${currentFilter}`,

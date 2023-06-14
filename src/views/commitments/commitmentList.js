@@ -440,7 +440,7 @@ console.log("categoryId",categoryId);
                       currentFilter={routFilter}
                       currentPage={routPagination}
                       selectedRows={selectedRows}
-                      paymentStatus = {commitmentQuery?.data?.isPaymentPaused}
+                      // paymentStatus = {commitmentQuery?.data?.isPaymentPaused}
                       setSelectedRows={setSelectedRows}
                       currentCategory={routCategory}
                       currentStatus={routStatus}

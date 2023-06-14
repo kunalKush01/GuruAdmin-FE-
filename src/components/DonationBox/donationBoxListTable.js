@@ -107,6 +107,8 @@ export default function DonationBoxListTable({ data, financeReport }) {
     font: normal normal bold 15px/23px Noto Sans;
     .tableDes p {
       margin-bottom: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .tableDes{
       max-height: 1.7rem;

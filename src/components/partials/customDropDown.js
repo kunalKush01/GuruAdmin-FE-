@@ -65,6 +65,17 @@ export const CustomDropDown = ({
     .dropdown-menu {
       min-width: 150px;
       background: #fff7e8;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      max-height: 150px;
+      ::-webkit-scrollbar{
+          width: 5px;
+        }
+        ::-webkit-scrollbar-thumb{
+          background-color: #ff8744;
+          border-radius: 10px;
+          height: 1rem;
+        }
       .dropdown-item {
         color: #583703;
         width: 100%;

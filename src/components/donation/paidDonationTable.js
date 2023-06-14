@@ -68,7 +68,7 @@ export default function DonationListTable({ data, topdf }, args) {
     {
       name: t("dashboard_Recent_DonorDate"),
       selector: (row) => row.dateTime,
-      width:"150px",
+      width: "150px",
       cellExport: (row) => row.dateTime,
     },
     {
@@ -79,7 +79,7 @@ export default function DonationListTable({ data, topdf }, args) {
     {
       name: t("dashboard_Recent_DonorCommitId"),
       selector: (row) => row.commitmentID,
-      width:"180px",
+      width: "180px",
       cellExport: (row) => row.commitmentID,
     },
     {
@@ -98,21 +98,26 @@ export default function DonationListTable({ data, topdf }, args) {
       return {
         id: idx + 1,
         username: (
-          <div className="d-flex align-items-center">
+          <div className="d-flex align-items-center ">
             <img
               src={
                 item?.user?.profilePhoto !== "" && item?.user?.profilePhoto
                   ? item?.user?.profilePhoto
                   : avtarIcon
               }
-              style={{ marginRight: "5px", width: "25px" }}
+              style={{ marginRight: "5px", width: "30px", height: "30px" }}
+              className="rounded-circle"
             />
             <div>{ConverFirstLatterToCapital(item?.user?.name ?? "")}</div>
           </div>
         ),
         mobileNumber: item?.user?.mobileNumber,
         donarName: ConverFirstLatterToCapital(
-          item?.donarName ? item?.donarName : (item.user?.name ?item.user?.name : "" )
+          item?.donarName
+            ? item?.donarName
+            : item.user?.name
+            ? item.user?.name
+            : ""
         ),
         category: (
           <div>

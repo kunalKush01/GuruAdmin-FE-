@@ -17,6 +17,7 @@ import { RevenueChart } from "../../utility/revenueChart";
 import { Col, Row } from "reactstrap";
 import SpinnerComponent from "../../@core/components/spinner/Fallback-spinner";
 import { Helmet } from "react-helmet";
+import moment from "moment";
 const Home = () => {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const [dashboardData, setDashboardData] = useState();
@@ -25,39 +26,87 @@ const Home = () => {
   const [chartData, setChart] = useState();
 
   const { t } = useTranslation();
+  const periodDropDown = () => {
+    switch (dropDownName) {
+      case "dashboard_monthly":
+        return "month";
+      case "dashboard_yearly":
+        return "year";
+      case "dashboard_weekly":
+        return "week";
+
+      default:
+        return "month";
+    }
+  };
+  let filterStartDate = moment()
+    .startOf(periodDropDown())
+    .utcOffset(0, true)
+    .toISOString();
+  let filterEndDate = moment()
+    .endOf(periodDropDown())
+    .utcOffset(0, true)
+    .toISOString();
+
+
   const history = useHistory();
   
   useEffect(() => {
     const dashboardInfo = async () => {
-      const res = await getAllDashboardData();
+      const res = await getAllDashboardData({
+        startDate: filterStartDate,
+        endDate: filterEndDate,
+      });
       setDashboardData(res);
     };
     dashboardInfo();
-  }, []);
+  }, [filterStartDate,filterEndDate]);
 
   useEffect(() => {
     const chartInfo = async () => {
-      const chartRes = await getAllChartData();
+      const chartRes = await getAllChartData(
+      //   {
+      //   startDate: filterStartDate,
+      //   endDate: filterEndDate,
+      // }
+      );
       setChart(chartRes);
     };
     chartInfo();
-  }, []);
+  }, [
+    // filterStartDate,filterEndDate
+  ]);
 
   useEffect(() => {
     const topDonorInfo = async () => {
-      const topDonorRes = await getAllTopDonor();
+      const topDonorRes = await getAllTopDonor(
+      //   {
+      //   startDate: filterStartDate,
+      //   endDate: filterEndDate,
+      // }
+      );
       setTopDonorData(topDonorRes);
     };
     topDonorInfo();
-  }, []);
+  }, [
+    // filterStartDate,filterEndDate
+  ]);
 
   useEffect(() => {
     const recentDonationInfo = async () => {
-      const recentDonationRes = await getAllRecentDonationList();
+      const recentDonationRes = await getAllRecentDonationList(
+      //   {
+      //   startDate: filterStartDate,
+      //   endDate: filterEndDate,
+      // }
+      );
       setRecentDonationData(recentDonationRes);
     };
     recentDonationInfo();
-  }, []);
+  }, [
+    // filterStartDate,filterEndDate
+  
+  ]);
 
   return (
     <>

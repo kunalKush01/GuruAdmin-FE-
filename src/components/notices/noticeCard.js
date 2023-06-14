@@ -52,6 +52,10 @@ const EventCardWaraper = styled.div`
     white-space: nowrap;
     /* margin-bottom: 0.5rem !important; */
   }
+  .card-text > p , div{
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   .card-Date {
     font: normal normal normal 12px/16px Noto Sans;
     color: #9c9c9c;
@@ -237,6 +241,11 @@ export default function NoticeCard({
   allPermissions,
 }) {
   const history = useHistory();
+  const { t } = useTranslation();
+
+  const [modal, setModal] = useState(false);
+
+  const toggle = () => setModal(!modal);
   const handlePublish = async (payload) => {
     return PublishNotice(payload);
   };
@@ -256,13 +265,13 @@ export default function NoticeCard({
     mutationFn: handleSchedule,
     onSuccess: (data) => {
       if (!data.error) {
+        setTimeout(() => {
+          toggle();
+        }, 500);
         queryCient.invalidateQueries(["Notices"]);
       }
     },
   });
-  const [modal, setModal] = useState(false);
-
-  const toggle = () => setModal(!modal);
 
   return (
     <EventCardWaraper key={data.id}>
@@ -346,7 +355,19 @@ export default function NoticeCard({
                         <DropdownMenu className="publishMenu">
                           <DropdownItem
                             className="py-0 w-100"
-                            onClick={toggle}
+                            onClick={() => {
+                              data?.isPublished
+                                ? Swal.fire({
+                                    html: `<h3>${t("already_publish")}</h3>`,
+                                    icon: "info",
+                                    showConfirmButton: false,
+                                    showCloseButton: false,
+                                    showCancelButton: false,
+                                    focusConfirm: false,
+                                    timer: 1000,
+                                  })
+                                : toggle();
+                            }}
                             // () =>
                             // history.push(
                             //   `/news/edit/${data?.id}?page=${currentPage}&filter=${currentFilter}`,
@@ -506,7 +527,7 @@ export default function NoticeCard({
               >
                 <Form>
                   <Row className="justify-content-center">
-                    <Col xs={8} >
+                    <Col xs={8}>
                       <FormikCustomDatePicker
                         name="DateTime"
                         width="100%"
