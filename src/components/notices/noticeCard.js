@@ -52,7 +52,11 @@ const EventCardWaraper = styled.div`
     white-space: nowrap;
     /* margin-bottom: 0.5rem !important; */
   }
-  .card-text > p , div{
+  .card-text > p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .card-text > div {
     overflow: hidden;
     text-overflow: ellipsis;
   }
@@ -95,6 +99,11 @@ const EventCardWaraper = styled.div`
   .publishMenu {
     background-color: #fff7e8;
   }
+  img{
+ 
+ color: #583703;
+ font: 15px Noto Sans;
+ }
   @media only screen and (max-width: 1200px) {
     .card-body {
       max-height: 100%;
@@ -296,7 +305,7 @@ export default function NoticeCard({
               >
                 <img
                   src={data?.image || placeHolder}
-                  alt="Event Image"
+                  alt="Notice Image"
                   style={{
                     width: "130px",
                     height: "122px",

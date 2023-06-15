@@ -103,7 +103,7 @@ export default function FormWithoutFormikForCommitment({
               <CustomCountryMobileNumberField
                 value={phoneNumber}
                 label={t("dashboard_Recent_DonorNumber")}
-                defaultCountry={countryFlag}
+                defaultCountry={countryFlag ?? "IN"}
                 placeholder={t("placeHolder_mobile_number")}
                 onChange={(phone, country) => {
                   setPhoneNumber(phone);
@@ -207,7 +207,7 @@ export default function FormWithoutFormikForCommitment({
                 required
               />
             </Col>
-            <Col xs={12} sm={6}>
+            <Col xs={12} sm={6} className="opacity-75">
               <CustomTextField
                 label={t("created_by")}
                 name="createdBy"

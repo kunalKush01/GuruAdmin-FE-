@@ -56,7 +56,7 @@ const FormWaraper = styled.div`
   }
   #login-password {
     color: #583703 !important;
-    padding-left: 2px;
+    padding-left: 14px;
     border: none !important;
     background-color: #fff7e8 !important;
     font: normal normal normal 13px/20px Noto Sans;
@@ -81,6 +81,11 @@ const FormWaraper = styled.div`
   .checkBoxInput {
     border-color: #ff8744;
     cursor: pointer;
+  }
+  input::placeholder {
+    color: #583703 !important;
+    opacity: 60% !important;
+    font: normal normal bold 13px/20px Noto Sans !important;
   }
 `;
 
@@ -218,7 +223,7 @@ export default function UserForm({
                         <CustomCountryMobileNumberField
                           value={phoneNumber}
                           label={t("dashboard_Recent_DonorNumber")}
-                          defaultCountry={initialValues?.countryCode ?? ""}
+                          defaultCountry={initialValues?.countryCode ?? "IN"}
                           placeholder={t("placeHolder_mobile_number")}
                           onChange={(phone, country) => {
                             setPhoneNumber(phone);

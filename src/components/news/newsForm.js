@@ -418,7 +418,7 @@ export default function NewsForm({
                     </Col>
                   )}
                   <Row>
-                    <Col xs={7}>
+                    <Col xs={7} className="opacity-75">
                       <CustomTextField
                         label={t("news_label_Published")}
                         name="PublishedBy"

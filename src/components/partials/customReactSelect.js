@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 
 const ReactSelectWarapper = styled.div`
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
   font: normal normal bold 15px/33px Noto Sans;
 `;
 

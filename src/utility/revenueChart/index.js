@@ -106,7 +106,7 @@ export const RevenueChart = ({
     tooltip: {
       y: {
         formatter: (val) => {
-          return "₹" + val;
+          return "₹" + val.toLocaleString('en-IN');
         },
       },
     },

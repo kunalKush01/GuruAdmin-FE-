@@ -159,7 +159,7 @@ export default function DonationBoxForm({
                         name="Amount"
                       />
                     </Col>
-                    <Col xs={12} md={6} >
+                    <Col xs={12} md={6} className="opacity-75">
                       <CustomTextField
                         label={t("added_by")}
                         name="CreatedBy"

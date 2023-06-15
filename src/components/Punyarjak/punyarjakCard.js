@@ -81,6 +81,11 @@ const NewsCardWaraper = styled.div`
     padding: 0px 5px;
     font: normal normal bold 12px/30px noto sans;
   }
+  img{
+ 
+ color: #583703;
+ font: 15px Noto Sans;
+ }
   div.cardLangScroll {
     /* height: 45px; */
     display: flex;

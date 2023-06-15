@@ -103,6 +103,11 @@ const NewsCardWaraper = styled.div`
   .publishMenu {
     background-color: #fff7e8;
   }
+  img{
+ 
+ color: #583703;
+ font: 15px Noto Sans;
+ }
 `;
 function BtnContent({
   newsId,

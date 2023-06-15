@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import React, { useEffect, useMemo, useState } from "react";
 import { Plus, Trash } from "react-feather";
@@ -167,14 +167,14 @@ export default function Commitment() {
     }
   });
   const [categoryId, setCategoryId] = useState();
-console.log("categoryId",categoryId);
+  console.log("categoryId", categoryId);
 
   // sub category
   const subCategoryTypeQuery = useQuery(
-    ["subCategoryTypes",newId],
+    ["subCategoryTypes", newId],
     () =>
       getAllCategories({
-        masterId:newId,
+        masterId: newId,
         languageId: selectedLang.id,
       }),
     {
@@ -264,6 +264,8 @@ console.log("categoryId",categoryId);
   const onHoverLeave = () => {
     setPopover(false);
   };
+
+  const queryClient = useQueryClient();
   return (
     <CommitmentWarapper>
       <Helmet>
@@ -380,7 +382,11 @@ console.log("categoryId",categoryId);
               }`}
               onClick={() => {
                 notifyIds?.length > 0 &&
-                  nudgeUserApi({ commitmentIds: notifyIds });
+                  nudgeUserApi({ commitmentIds: notifyIds }).then((res)=>{
+                    if(!res.error){
+                      queryClient.invalidateQueries(["Commitments"])
+                    }
+                  });
               }}
             >
               <Trans i18nKey={"notify_user"} />
@@ -433,7 +439,7 @@ console.log("categoryId",categoryId);
                 </SkeletonTheme>
               </Then>
               <Else>
-                <If condition={commitmentItems.length != 0} disableMemo>
+                <If condition={!commitmentQuery.isFetching && commitmentItems.length != 0 } disableMemo>
                   <Then>
                     <CommitmentListTable
                       data={commitmentItems}

@@ -72,6 +72,11 @@ const EventCardWaraper = styled.div`
     border-radius: 20px;
     margin-right: 10px;
   }
+  img{
+  color: #583703;
+  font: 15px Noto Sans;
+  }
+
   @media only screen and (max-width: 1200px) {
     .card-body{
       max-height: 100%;
