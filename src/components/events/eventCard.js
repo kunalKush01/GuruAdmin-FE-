@@ -269,7 +269,7 @@ export default function EventCard({
                             "DD MMM YYYY"
                           )} to ${moment(data.endDate).format(
                             "DD MMM YYYY"
-                          )} ,${data.startTime} to ${data.endTime}`}
+                          )}, ${data.startTime} to ${data.endTime}`}
                         </p>
                       )}
                     </div>
