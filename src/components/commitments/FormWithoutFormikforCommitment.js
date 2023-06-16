@@ -103,7 +103,7 @@ export default function FormWithoutFormikForCommitment({
               <CustomCountryMobileNumberField
                 value={phoneNumber}
                 label={t("dashboard_Recent_DonorNumber")}
-                defaultCountry={countryFlag ?? "IN"}
+                defaultCountry={countryFlag}
                 placeholder={t("placeHolder_mobile_number")}
                 onChange={(phone, country) => {
                   setPhoneNumber(phone);

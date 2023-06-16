@@ -78,8 +78,8 @@ export default function AddCategory() {
           initialValues={{
             name: "",
             mobile: "",
-            countryCode:"",
-            dialCode:"",
+            countryCode:"in",
+            dialCode:"+91",
             email: "",
             password: "",
             file: "",

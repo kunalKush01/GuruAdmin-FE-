@@ -187,11 +187,11 @@ export default function AddProfile() {
         loading={loading}
         editImage="edit"
         trustMobileNumber={
-          "+91" +
+          profileDetail?.data?.result?.trustCountryCode ?? "+91" +
           `${profileDetail?.data?.result?.trustNumber}`
         }
         userMobileNumber={
-          "+91" +
+          profileDetail?.data?.result?.countryCode ?? "+91" +
           profileDetail?.data?.result?.mobileNumber
         }
         defaultImages={profileDetail?.data?.result?.images}

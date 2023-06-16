@@ -641,7 +641,7 @@ export default function ProfileForm({
                       <Col xs={12} md={6} lg={4} className="">
                         <CustomCountryMobileNumberField
                           value={trustMobileNumberState}
-                          defaultCountry={initialValues?.trustCountryCode ?? "IN"}
+                          defaultCountry={initialValues?.trustCountryCode}
                           label={t("userProfile_phone_number")}
                           placeholder={t("placeHolder_phone_number")}
                           onChange={(phone, country) => {
@@ -757,7 +757,7 @@ export default function ProfileForm({
                       <Col xs={12} md={6} lg={4} className="">
                         <CustomCountryMobileNumberField
                           value={userMobileNumberState}
-                          defaultCountry={initialValues?.countryCode ?? "IN"}
+                          defaultCountry={initialValues?.countryCode}
                           label={t("userProfile_phone_number")}
                           placeholder={t("placeHolder_phone_number")}
                           onChange={(phone, country) => {

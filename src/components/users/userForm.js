@@ -100,7 +100,7 @@ export default function UserForm({
   userRole,
   editProfile,
   showTimeInput,
-  getCommimentMobile,
+  getUserMobile,
   buttonName = "",
   ...props
 }) {
@@ -140,7 +140,7 @@ export default function UserForm({
   const [showPrompt, setShowPrompt] = useState(true);
   const [imageSpinner, setImageSpinner] = useState(false);
   const [imageName, setImageName] = useState(profileImageName);
-  const [phoneNumber, setPhoneNumber] = useState(getCommimentMobile ?? "");
+  const [phoneNumber, setPhoneNumber] = useState(getUserMobile ?? "");
 
   return (
     <FormWaraper className="FormikWraper">
@@ -223,7 +223,7 @@ export default function UserForm({
                         <CustomCountryMobileNumberField
                           value={phoneNumber}
                           label={t("dashboard_Recent_DonorNumber")}
-                          defaultCountry={initialValues?.countryCode ?? "IN"}
+                          defaultCountry={initialValues?.countryCode}
                           placeholder={t("placeHolder_mobile_number")}
                           onChange={(phone, country) => {
                             setPhoneNumber(phone);

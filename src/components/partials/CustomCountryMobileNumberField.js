@@ -96,7 +96,7 @@ const CustomCountryMobileNumberField = ({
       <PhoneInput
         value={value}
         placeholder={placeholder}
-        defaultCountry={defaultCountry}
+        country={defaultCountry}
         enableSearch
         disableSearchIcon
         {...props}

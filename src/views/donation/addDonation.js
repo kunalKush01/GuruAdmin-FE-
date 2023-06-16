@@ -51,8 +51,8 @@ export default function AddDonation() {
 
   const initialValues = {
     Mobile: "",
-    countryCode:"",
-    dialCode:"",
+    countryCode:"in",
+    dialCode:"+91",
     SelectedUser: "",
     donarName: "",
     SelectedMasterCategory: "",

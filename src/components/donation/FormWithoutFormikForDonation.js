@@ -152,7 +152,7 @@ export default function FormWithoutFormikForDonation({
                   <CustomCountryMobileNumberField
                     value={phoneNumber}
                     disabled={payDonation}
-                    defaultCountry={countryFlag ?? "IN"}
+                    defaultCountry={countryFlag}
                     label={t("dashboard_Recent_DonorNumber")}
                     placeholder={t("placeHolder_mobile_number")}
                     onChange={(phone, country) => {

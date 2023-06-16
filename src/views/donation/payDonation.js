@@ -101,8 +101,8 @@ export default function PayDonation() {
     return {
       Id: commitmentDetailQuery?.data?.result?.id,
       Mobile: commitmentDetailQuery?.data?.result?.user?.mobileNumber,
-      countryCode:commitmentDetailQuery?.data?.result?.user?.countryName,
-      dialCode:commitmentDetailQuery?.data?.result?.user?.countryCode,
+      countryCode:commitmentDetailQuery?.data?.result?.user?.countryName ?? "",
+      dialCode:commitmentDetailQuery?.data?.result?.user?.countryCode ?? "",
       SelectedUser: commitmentDetailQuery?.data?.result?.user,
       donarName: commitmentDetailQuery?.data?.result?.donarName,
       SelectedMasterCategory:

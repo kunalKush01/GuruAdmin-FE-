@@ -8,7 +8,20 @@ import styled from "styled-components";
 const ReactSelectWarapper = styled.div`
   /* margin-bottom: 10px; */
   font: normal normal bold 15px/33px Noto Sans;
+  .css-17xuu7l-ValueContainer {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    ::-webkit-scrollbar{
+      height: 5px;
+    }
+    ::-webkit-scrollbar-thumb{
+      background-color: #c9c6c5 !important;
+      border-radius: 25px;
+    }
+  }
+
 `;
+
 
 export const CustomReactSelect = ({
   required = false,
@@ -94,6 +107,7 @@ export const CustomReactSelect = ({
     valueContainer: (provided) => ({
       ...provided,
       padding: "0px 8px",
+      flexWrap:"nowrap",
     }),
     multiValueContainer: (style) => {
       return {
@@ -107,7 +121,7 @@ export const CustomReactSelect = ({
         ...styles,
         border: "1px solid #E1DFEC",
         background: "inherit",
-        width: "fit-content",
+        minWidth: "100px",
         borderRadius: "50px",
       };
     },
@@ -116,7 +130,7 @@ export const CustomReactSelect = ({
         ...styles,
         border: "1px solid #000000",
         background: "inherit",
-        width: "fit-content",
+        minWidth: "100px",
         borderRadius: "10px",
         ":hover": {
           borderColor: "rgba(0, 0, 0, 0.87)",
@@ -127,7 +141,8 @@ export const CustomReactSelect = ({
       return {
         ...styles,
         color: "#583703",
-        textOverflow: "inherit",
+        textOverflow: "ellipsis",
+        overflow: "hidden",
       };
     },
     multiValueRemove: (styles, { data }) => ({
