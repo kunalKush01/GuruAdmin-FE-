@@ -4,24 +4,10 @@ import { Trans } from "react-i18next";
 import { useField } from "formik";
 import styled from "styled-components";
 
-
 const ReactSelectWarapper = styled.div`
   /* margin-bottom: 10px; */
   font: normal normal bold 15px/33px Noto Sans;
-  .css-17xuu7l-ValueContainer {
-    overflow-x: scroll;
-    overflow-y: hidden;
-    ::-webkit-scrollbar{
-      height: 5px;
-    }
-    ::-webkit-scrollbar-thumb{
-      background-color: #c9c6c5 !important;
-      border-radius: 25px;
-    }
-  }
-
 `;
-
 
 export const CustomReactSelect = ({
   required = false,
@@ -107,7 +93,16 @@ export const CustomReactSelect = ({
     valueContainer: (provided) => ({
       ...provided,
       padding: "0px 8px",
-      flexWrap:"nowrap",
+      flexWrap: "nowrap",
+      overflow:"auto",
+      // overflow: "hidden",
+      "::-webkit-scrollbar": {
+        height: " 5px",
+      },
+      "::-webkit-scrollbar-thumb": {
+        backgroundColor: "#c9c6c5 !important",
+        borderRadius: " 25px",
+      },
     }),
     multiValueContainer: (style) => {
       return {
@@ -142,6 +137,7 @@ export const CustomReactSelect = ({
         ...styles,
         color: "#583703",
         textOverflow: "ellipsis",
+        padding:"0px",
         overflow: "hidden",
       };
     },

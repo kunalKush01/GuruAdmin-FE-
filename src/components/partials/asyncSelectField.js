@@ -103,7 +103,7 @@ export default function AsyncSelectField({
 
   return (
     <div >
-      <label style={{ marginBottom: "0px",font: "normal normal bold 15px/33px Noto Sans" }}>{label}{required&&"*"}</label>
+      <label style={{ marginBottom: "0px",font: "normal normal bold 15px/28px Noto Sans" }}>{label}{required&&"*"}</label>
       <AsyncSelect
         isDisabled={props.disabled}
         isMulti={multiple}

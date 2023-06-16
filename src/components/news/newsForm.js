@@ -331,7 +331,7 @@ export default function NewsForm({
                     )}
                   </Col>
                   {!AddLanguage && (
-                    <Col xs={12} md={6} className="mt-lg-1">
+                    <Col xs={12} md={6} className="" style={{paddingTop:"8px"}}>
                       <FormikCustomReactSelect
                         labelName={t("trust_prefenses")}
                         multiple
