@@ -235,7 +235,7 @@ export default function PunyarjakCard({
       <Card
         style={{
           width: "100%",
-          height: "337px",
+          height: "350px",
           borderRadiuis: "10px",
           overflow: "hidden",
         }}

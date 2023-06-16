@@ -321,7 +321,7 @@ export default function UserForm({
 
                   <Row className="mb-5 pb-2">
                     <Col xs={12}>
-                      <div className="mb-1 mt-1" style={{ fontSize: "15px" }}>
+                      <div className=" mt-1" style={{ fontSize: "15px" }}>
                         <Trans i18nKey={"user_userRole"} />*
                       </div>
                       <div

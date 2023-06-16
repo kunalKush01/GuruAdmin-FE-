@@ -131,7 +131,7 @@ export default function RichTextField({
           ],
         }}
       />
-      <div className="text-danger">
+      <div className="text-danger mt-1">
         {meta.error && meta.touched && <Trans i18nKey={meta.error} />}
       </div>
     </RichTextFieldWarper>
