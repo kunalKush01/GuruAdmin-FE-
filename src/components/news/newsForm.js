@@ -81,6 +81,9 @@ const FormWaraper = styled.div`
   font: normal normal bold 13px/20px Noto Sans;
   opacity: 60%;
 }
+.ReactTags__tagInput > input.ReactTags__tagInputField:focus-within {
+    box-shadow: 0 3px 10px 0 rgba(34, 41, 47, 0.1);
+  }
   /* added tags  */
   .ReactTags__selected {
     width: 100%;
@@ -238,6 +241,9 @@ export default function NewsForm({
   const [showPrompt, setShowPrompt] = useState(true);
   const [imageSpinner, setImageSpinner] = useState(false);
 
+
+  const [tagCharInput, setTagCharInput] = useState("");
+
   return (
     <FormWaraper className="FormikWraper">
       <Formik
@@ -296,19 +302,16 @@ export default function NewsForm({
                       tags={formik.values.tagsInit}
                       placeholder={t("placeHolder_tags")}
                       suggestions={suggestions}
+                      inputValue={tagCharInput}
                       handleInputChange={(e) => {
-                        if (e?.length > 20) {
-                          Swal.fire({
-                            icon: "info",
-                            text: `${t("tagsChar_limit")}`,
-                            showConfirmButton: false,
-                          });
-                          return;
-                        }
+                        setTagCharInput(e.slice(0, 20));
                       }}
                       delimiters={delimiters}
                       handleDelete={(index) => handleDelete(formik, index)}
-                      handleAddition={(tag) => handleAddition(formik, tag)}
+                      handleAddition={(tag) => {
+                        handleAddition(formik, tag);
+                        setTagCharInput("");
+                      }}
                       inputFieldPosition="top"
                       allowDragDrop={false}
                       autocomplete

@@ -45,6 +45,7 @@ export const englishContent = {
   unPublish:"Unpublish",
   schedule:"Schedule",
   publish:"Publish",
+  published:"Published",
   invalid_amount:"Invalid value",
   tagsChar_limit:"The tag field has a character limit of 20 and cannot accept more than that.",
   // All static content of Dashboard
