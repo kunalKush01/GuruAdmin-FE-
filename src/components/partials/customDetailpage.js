@@ -83,7 +83,19 @@ const TrustWarapper = styled.div`
     word-break: break-all;
     font: normal normal normal 14px/25px Noto Sans;
   }
-
+  ul.slick-dots{
+    padding-left: 0rem !important;
+  }
+  .slick-dots li{
+    width: 5px;
+    color: #fff ;
+  }
+  .slick-dots li.slick-active button:before{
+    color: #ff8744;
+    opacity: 1;
+    font-size: 10px;
+    line-height: 21px;
+  }
   .slick-next:before{
     color: #ff8744 !important;
     font-size: 25px;
