@@ -82,6 +82,9 @@ const FormWaraper = styled.div`
     font: normal normal bold 13px/20px Noto Sans;
     opacity: 60%;
   }
+  .ReactTags__tagInput > input.ReactTags__tagInputField:focus-within {
+    box-shadow: 0 3px 10px 0 rgba(34, 41, 47, 0.1);
+  }
   /* added tags  */
   .ReactTags__selected {
     width: 100%;
@@ -262,7 +265,6 @@ export default function EventForm({
   };
 
   const [tagsCharLimit, setTagsCharLimit] = useState(false);
-  console.log("tagsCharLimit", tagsCharLimit);
 
   const handleAddition = (formik, tag) => {
     console.log("tags", tag);
@@ -297,6 +299,8 @@ export default function EventForm({
 
   const [isError, setIsError] = useState([]);
   const [imageOnGlobleEvent, setImageOnGlobleEvent] = useState(defaultImages);
+
+  const [tagCharInput, setTagCharInput] = useState("");
 
   return (
     <FormWaraper className="FormikWraper">
@@ -423,19 +427,16 @@ export default function EventForm({
                         placeholder={t("placeHolder_tags")}
                         tags={formik.values.tagsInit}
                         suggestions={suggestions}
+                        inputValue={tagCharInput}
                         handleInputChange={(e) => {
-                          if (e?.length > 20) {
-                            Swal.fire({
-                              icon: "info",
-                              text: `${t("tagsChar_limit")}`,
-                              showConfirmButton: false,
-                            });
-                            return;
-                          }
+                          setTagCharInput(e.slice(0, 20));
                         }}
                         delimiters={delimiters}
                         handleDelete={(index) => handleDelete(formik, index)}
-                        handleAddition={(tag) => handleAddition(formik, tag)}
+                        handleAddition={(tag) => {
+                          handleAddition(formik, tag);
+                          setTagCharInput("");
+                        }}
                         inputFieldPosition="top"
                         allowDragDrop={false}
                         autocomplete
@@ -524,31 +525,27 @@ export default function EventForm({
                   <Row>
                     <Col xs="10">
                       <label>Tags</label>
-                      {/* {JSON.stringify(formik.values.tagsInit)} */}
                       <ReactTags
                         placeholder={t("placeHolder_tags")}
                         tags={formik.values.tagsInit}
                         suggestions={suggestions}
+                        inputValue={tagCharInput}
                         handleInputChange={(e) => {
-                          if (e?.length > 20) {
-                            Swal.fire({
-                              icon: "info",
-                              text: `${t("tagsChar_limit")}`,
-                              showConfirmButton: false,
-                            });
-                            return;
-                          }
+                          setTagCharInput(e.slice(0, 20));
                         }}
                         delimiters={delimiters}
                         handleDelete={(index) => handleDelete(formik, index)}
-                        handleAddition={(tag) => handleAddition(formik, tag)}
+                        handleAddition={(tag) => {
+                          handleAddition(formik, tag);
+                          setTagCharInput("");
+                        }}
                         inputFieldPosition="top"
                         allowDragDrop={false}
                         autocomplete
                         editable={false}
                         autofocus={false}
                       />
-                     
+
                       {formik.errors.tagsInit && (
                         <div
                           style={{

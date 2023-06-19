@@ -103,11 +103,10 @@ const NewsCardWaraper = styled.div`
   .publishMenu {
     background-color: #fff7e8;
   }
-  img{
- 
- color: #583703;
- font: 15px Noto Sans;
- }
+  img {
+    color: #583703;
+    font: 15px Noto Sans;
+  }
 `;
 function BtnContent({
   newsId,
@@ -302,7 +301,7 @@ export default function NewsCard({
               <ButtonGroup>
                 <UncontrolledDropdown>
                   <DropdownToggle color="primary" size="sm" caret>
-                    <Trans i18nKey={"publish"} />
+                    {data?.isPublished ? <Trans i18nKey={"published"} /> : <Trans i18nKey={"publish"} />}
                   </DropdownToggle>
                   <DropdownMenu className="publishMenu">
                     <DropdownItem
