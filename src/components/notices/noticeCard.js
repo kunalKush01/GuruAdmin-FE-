@@ -359,7 +359,7 @@ export default function NoticeCard({
                     <ButtonGroup>
                       <UncontrolledDropdown>
                         <DropdownToggle color="primary" size="sm" caret>
-                          <Trans i18nKey={"publish"} />
+                        {data?.isPublished ? <Trans i18nKey={"published"} /> : <Trans i18nKey={"publish"} />}
                         </DropdownToggle>
                         <DropdownMenu className="publishMenu">
                           <DropdownItem
