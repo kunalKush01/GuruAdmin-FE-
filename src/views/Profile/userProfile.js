@@ -37,8 +37,7 @@ const schema = yup.object().shape({
   trustEmail: yup.string().email("email_invalid").required("email_required").trim(),
   trustNumber: yup
     .string()
-    .min(10, "Mobile Number must be 10 digits.")
-    .required("number_required"),
+    .required("trust_contact_number_required"),
   about: yup.string().required("trust_about_required").trim(),
   name: yup
     .string()
@@ -47,7 +46,6 @@ const schema = yup.object().shape({
   email: yup.string().email("email_invalid").required("email_required").trim(),
   mobileNumber: yup
     .string()
-    .min(10, "Mobile Number must be 10 digits.")
     .required("number_required"),
   state: yup.string().required("events_state_required").trim(),
   city: yup.string().required("events_city_required").trim(),

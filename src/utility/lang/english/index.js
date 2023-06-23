@@ -313,6 +313,8 @@ export const englishContent = {
   trust_user: "ABOUT USER",
   trust_location: "LOCATION",
   trust_facility: "FACILITIES",
+  trust_contact_number_required:"Contact number is required.",
+  contact_number:"Contact Number",
   trust_image_certificate: "IMAGES AND CERTIFICATES",
   location:"Location",
   trust_prefenses:"Trust Preferences",
@@ -393,7 +395,7 @@ export const englishContent = {
 
 placeHolder_donar_name:"Enter Doner Name",
 placeHolder_mobile_number:"Enter Mobile Number",
-placeHolder_phone_number:"Enter Phone Number",
+placeHolder_phone_number:"Enter Contact Number",
 placeHolder_title:"Enter Title",
 placeHolder_description:"Enter Description",
 placeHolder_tags:"Enter Tags",

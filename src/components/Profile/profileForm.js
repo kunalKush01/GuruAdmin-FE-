@@ -642,7 +642,7 @@ export default function ProfileForm({
                         <CustomCountryMobileNumberField
                           value={trustMobileNumberState}
                           defaultCountry={initialValues?.trustCountryCode}
-                          label={t("userProfile_phone_number")}
+                          label={t("contact_number")}
                           placeholder={t("placeHolder_phone_number")}
                           onChange={(phone, country) => {
                             setTrustMobileNumberState(phone);

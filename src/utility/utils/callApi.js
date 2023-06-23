@@ -29,12 +29,12 @@ Api Response data sample
   }
 }
 */
-
+const fcm_token = localStorage.getItem('fcm_token')
 export const defaultHeaders = {
   "Access-Control-Allow-Origin": "*",
   "device-type": "android",
   "device-name": "1234567890",
-  "device-token": "1234567891",
+  "device-token": fcm_token,
   "is-debug": "0",
   "device-id": "12345678912",
   "app-version": "1.0",
