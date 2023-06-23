@@ -19,6 +19,7 @@ import BlankLayout from '@layouts/BlankLayout'
 import VerticalLayout from '@src/layouts/VerticalLayout'
 import HorizontalLayout from '@src/layouts/HorizontalLayout'
 import Permission from '../components/Permissions/Permission'
+import Notification from '../fireBase/Notification'
 
 const Router = () => {
 
@@ -116,6 +117,7 @@ const Router = () => {
 
       return (
         <Route path={LayoutPaths} key={index}>
+          <Notification/>
           <LayoutTag
             layout={layout}
             setLayout={setLayout}
