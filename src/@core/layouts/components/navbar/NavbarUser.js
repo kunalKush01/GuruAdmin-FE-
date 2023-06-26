@@ -83,7 +83,7 @@ const NavbarUserWarraper = styled.div`
   .date {
     font: normal normal normal 10px/5px noto sans;
   }
-  /* .notificationNumber {
+  .notificationNumber {
     background: red;
     width: 1.5rem;
     height: 1.5rem;
@@ -98,7 +98,21 @@ const NavbarUserWarraper = styled.div`
     right: 0;
     bottom: 20px;
     left: 35px;
-  } */
+  }
+  .shakeBell{
+    /* Start the shake animation and make the animation last for 0.5 seconds */
+    animation: skew-x-shake 1.3s infinite;
+    /* When the animation is finished, start again */
+  }
+
+  @keyframes skew-x-shake {
+  0% { transform: skewX(-15deg); }
+  5% { transform: skewX(15deg); }
+  10% { transform: skewX(-15deg); }
+  15% { transform: skewX(15deg); }
+  20% { transform: skewX(0deg); }
+  100% { transform: skewX(0deg); }  
+}
   @media only screen and (max-width: 576px) {
     .displayBlock {
       display: block !important;
@@ -125,21 +139,21 @@ const NavbarUser = (props) => {
   const [langSelection, setlangSelection] = useState(false);
 
   const [searchBarState, setSearchBarState] = useState(false);
-  // const [pagination, setPagination] = useState({
-  //   page: 1,
-  //   limit: 10,
-  // });
-  // const notificationQuery = useQuery(
-  //   ["notification", pagination.page],
-  //   async () =>
-  //     await getAllNotification({
-  //       ...pagination,
-  //     })
-  // );
-  // const allUnReadMessage = useMemo(
-  //   () => notificationQuery?.data ?? [],
-  //   [notificationQuery]
-  // );
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 10,
+  });
+  const notificationQuery = useQuery(
+    ["notificationMessagePing", pagination.page],
+    async () =>
+      await getAllNotification({
+        ...pagination,
+      })
+  );
+  const allUnReadMessage = useMemo(
+    () => notificationQuery?.data ?? [],
+    [notificationQuery]
+  );
 
   return (
     <Fragment>
@@ -173,15 +187,17 @@ const NavbarUser = (props) => {
               src={menuPanelIcon}
             />
             <div className="position-relative">
-              {/* {allUnReadMessage?.unSeenCount > 0 && (
+              {allUnReadMessage?.unSeenCount > 0 && (
                 <div className="notificationNumber">
                   {allUnReadMessage?.unSeenCount < 9
                     ? `0${allUnReadMessage?.unSeenCount}`
                     : allUnReadMessage?.unSeenCount}
                 </div>
-              )} */}
+              )}
               <img
-                className="icon "
+                className={`icon ${
+                  allUnReadMessage?.unSeenCount > 0 && "shakeBell"
+                }`}
                 src={bellIcon}
                 onClick={() => history.push("/notification")}
               />

@@ -53,7 +53,7 @@ const ReportListCardWraper = styled.div`
     margin-top: 0.5rem;
     margin-bottom: 1.5rem;
   }
-  .text-with-dots  > p{
+  .text-with-dots > p {
     max-height: 20px;
     max-width: 100px;
     white-space: nowrap;
@@ -102,16 +102,11 @@ export default function BoxListCard({
                                                 </div>
 
                                                 <div>
-                                                  Description:
-                                                </div>
-                                                <div
-                                                class="descriptionBoxSwal"
-                                                 style="
-                                                 
-                                                ">
+                                                  Description: <span class='descriptionBoxSwal'>
                                                   ${ConvertToString(
-                                                    data.remarks
+                                                    data?.remarks
                                                   )}
+                                                  </span> 
                                                 </div>
                                             </div>
                                               `,
@@ -151,18 +146,22 @@ export default function BoxListCard({
               </div>
             </Col>
             <Col xs={2} className="p-0 d-flex justify-content-center">
-            {allPermissions?.name === "all" || subPermission?.includes(EDIT) ? (
-              <div style={{ width: "30px" }}>
-                <img
-                  src={editIcon}
-                  className="w-100 cursor-pointer"
-                  onClick={() =>
-                    history.push(
-                      `/hundi/edit/${data.id}?page=${currentPage}&filter=${currentFilter}`
-                    )
-                  }
-                />
-              </div>):""}
+              {allPermissions?.name === "all" ||
+              subPermission?.includes(EDIT) ? (
+                <div style={{ width: "30px" }}>
+                  <img
+                    src={editIcon}
+                    className="w-100 cursor-pointer"
+                    onClick={() =>
+                      history.push(
+                        `/hundi/edit/${data.id}?page=${currentPage}&filter=${currentFilter}`
+                      )
+                    }
+                  />
+                </div>
+              ) : (
+                ""
+              )}
             </Col>
           </Row>
         </CardBody>
