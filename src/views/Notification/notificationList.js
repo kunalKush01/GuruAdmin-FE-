@@ -112,6 +112,7 @@ export default function Notification() {
     }
   );
 
+  // const queryClient 
   const NotificationsItem = useMemo(
     () => notificationQuery?.data?.results ?? [],
     [notificationQuery]
@@ -153,7 +154,6 @@ export default function Notification() {
       unseenIds.push(item?._id);
     }
   });
-  console.log("unseenIds", unseenIds);
 
   const notificationSeen = useQuery(
     [unseenIds],
