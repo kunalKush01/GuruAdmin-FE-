@@ -131,7 +131,7 @@ export default function DonationListTable({ data, topdf }, args) {
         dateTime: moment(item.createdAt ?? item?.updatedAt).format(
           " DD MMM YYYY,hh:mm A"
         ),
-        amount: <div>₹&nbsp;{item?.amount}</div>,
+        amount: <div>₹&nbsp;{item?.amount.toLocaleString('en-IN')}</div>,
         commitmentID: item.commitmentId
           ? item.commitmentId < 10
             ? `0${item.commitmentId}`

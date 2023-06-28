@@ -99,11 +99,10 @@ const EventCardWaraper = styled.div`
   .publishMenu {
     background-color: #fff7e8;
   }
-  img{
- 
- color: #583703;
- font: 15px Noto Sans;
- }
+  img {
+    color: #583703;
+    font: 15px Noto Sans;
+  }
   @media only screen and (max-width: 1200px) {
     .card-body {
       max-height: 100%;
@@ -359,7 +358,11 @@ export default function NoticeCard({
                     <ButtonGroup>
                       <UncontrolledDropdown>
                         <DropdownToggle color="primary" size="sm" caret>
-                        {data?.isPublished ? <Trans i18nKey={"published"} /> : <Trans i18nKey={"publish"} />}
+                          {data?.isPublished ? (
+                            <Trans i18nKey={"published"} />
+                          ) : (
+                            <Trans i18nKey={"publish"} />
+                          )}
                         </DropdownToggle>
                         <DropdownMenu className="publishMenu">
                           <DropdownItem
@@ -383,7 +386,11 @@ export default function NoticeCard({
                             //   data?.id
                             // )
                           >
-                            <Trans i18nKey={"schedule"} />
+                            {data?.isScheduled ? (
+                              <Trans i18nKey={"reSchedule"} />
+                            ) : (
+                              <Trans i18nKey={"schedule"} />
+                            )}
                           </DropdownItem>
                           <DropdownItem
                             className="py-0 w-100"

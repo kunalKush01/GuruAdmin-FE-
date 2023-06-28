@@ -566,6 +566,7 @@ export default function EventForm({
                       <FormikRangeDatePicker
                         label={t("donation_select_date_time")}
                         name="DateTime"
+                        pastDateNotAllowed
                         selectsRange
                       />
                       <div

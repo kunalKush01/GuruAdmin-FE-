@@ -324,7 +324,6 @@ export default function FinancialReport() {
                   }, [formik.values.DateTime]);
                   return (
                     <FormikRangeDatePicker
-                      // label={t("donation_select_date_time")}
                       name="DateTime"
                       inline={false}
                       dateFormat=" dd-MM-yyyy"

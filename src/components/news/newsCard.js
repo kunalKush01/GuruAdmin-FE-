@@ -301,7 +301,11 @@ export default function NewsCard({
               <ButtonGroup>
                 <UncontrolledDropdown>
                   <DropdownToggle color="primary" size="sm" caret>
-                    {data?.isPublished ? <Trans i18nKey={"published"} /> : <Trans i18nKey={"publish"} />}
+                    {data?.isPublished ? (
+                      <Trans i18nKey={"published"} />
+                    ) : (
+                      <Trans i18nKey={"publish"} />
+                    )}
                   </DropdownToggle>
                   <DropdownMenu className="publishMenu">
                     <DropdownItem
@@ -326,7 +330,7 @@ export default function NewsCard({
                       //   data?.id
                       // )
                     >
-                      <Trans i18nKey={"schedule"} />
+                      {data?.isScheduled ? <Trans i18nKey={"reSchedule"} /> : <Trans i18nKey={"schedule"} />}
                     </DropdownItem>
                     <DropdownItem
                       className="py-0 w-100"

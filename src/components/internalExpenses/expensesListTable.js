@@ -112,7 +112,7 @@ export function ExpensesListTable({
       ),
       // description:item?.description ?? "" ,
       date: moment(item?.expenseDate).utcOffset(0).format("DD MMM YYYY"),
-      amount: `₹${item.amount}`,
+      amount: `₹${item?.amount.toLocaleString('en-IN')}`,
       createdBy: ConverFirstLatterToCapital(item?.createdBy?.name ?? ""),
       edit:
         allPermissions?.name === "all" ||

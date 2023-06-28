@@ -98,7 +98,7 @@ export default function BoxListCard({
                                                   "dddd, DD MMM, YYYY"
                                                 )}</div>
                                                 <div>
-                                                  Amount : ₹ ${data.amount} 
+                                                  Amount : ₹ ${data?.amount.toLocaleString('en-IN')} 
                                                 </div>
 
                                                 <div>
@@ -141,7 +141,7 @@ export default function BoxListCard({
                   />
                 </div>
                 <CardFooter className="w-100">
-                  <div>₹ {data.amount}</div>
+                  <div>₹ {data?.amount.toLocaleString('en-IN')}</div>
                 </CardFooter>
               </div>
             </Col>
