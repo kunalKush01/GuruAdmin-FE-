@@ -66,7 +66,7 @@ export default function DonationBoxListTable({ data, financeReport }) {
     return data.map((item, idx) => ({
       _Id: item.id,
       id: `${idx + 1}`,
-      amount: `₹${item.amount}`,
+      amount: `₹${item?.amount.toLocaleString('en-IN')}`,
       remarks: (
         <div
           className="d-flex tableDes"

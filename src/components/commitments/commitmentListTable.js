@@ -141,7 +141,7 @@ export default function CommitmentListTable(
       style: {
         font: "normal normal 700 13px/20px Noto Sans !important",
       },
-      width: "150px",
+      width: "160px",
     },
     {
       name: t("dashboard_Recent_DonorNumber"),
@@ -235,7 +235,12 @@ export default function CommitmentListTable(
               }}
               className="rounded-circle"
             />
-            <div>{ConverFirstLatterToCapital(item?.user?.name ?? "")}</div>
+            <div
+              className="overflow-hidden"
+              style={{ textOverflow: "ellipsis" }}
+            >
+              {ConverFirstLatterToCapital(item?.user?.name ?? "")}
+            </div>
           </div>
         ),
         mobileNumber: item?.user?.mobileNumber,
@@ -260,8 +265,8 @@ export default function CommitmentListTable(
             <div>{ConverFirstLatterToCapital(item?.paidStatus)}</div>
           </div>
         ),
-        amount: <div>₹&nbsp;{item?.amount}</div>,
-        amountDue: <div>₹&nbsp; {item?.amount - item.paidAmount}</div>,
+        amount: <div>₹&nbsp;{item?.amount.toLocaleString('en-IN')}</div>,
+        amountDue: <div>₹&nbsp; {(item?.amount - item.paidAmount).toLocaleString('en-IN')}</div>,
         commitmentId: (
           <div
             className={`cursor-pointer ${
@@ -300,11 +305,14 @@ export default function CommitmentListTable(
         payDonation:
           item?.paidStatus !== "completed" ? (
             <div
-              className={`cursor-pointer payDonation ${paymentStatus && "opacity-50 cursor-not-allowed"}`}
+              className={`cursor-pointer payDonation ${
+                paymentStatus && "opacity-50 cursor-not-allowed"
+              }`}
               onClick={() =>
                 financeReport && !paymentStatus
                   ? history.push(`/commitment/pay-donation/${item.id}`, item.id)
-                  : !paymentStatus && history.push(
+                  : !paymentStatus &&
+                    history.push(
                       `/commitment/pay-donation/${item.id}?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`,
                       item.id
                     )
@@ -313,7 +321,13 @@ export default function CommitmentListTable(
               <Trans i18nKey={"payment"} />
             </div>
           ) : (
-            "-"
+            <div
+              className={`payDonation ${
+                item?.paidStatus === "completed" && "opacity-50 cursor-not-allowed"
+              }`}
+            >
+              <Trans i18nKey={"paymentPaid"} />
+            </div>
           ),
         edit:
           allPermissions?.name === "all" ||
@@ -384,7 +398,7 @@ export default function CommitmentListTable(
         maxHieght={""}
         columns={columns}
         data={commitment_Data}
-        selectableRows
+        selectableRows={!financeReport}
         // selectableRowSelected={selectedRows ?? []}
         // onSelectedRowsChange={handleChange}
         onSelectedRowsChange={handleChange}

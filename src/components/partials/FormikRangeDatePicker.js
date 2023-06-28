@@ -184,7 +184,7 @@ const FormikCustomDatePickerWraper = styled.div`
   }
 `;
 
-export default function FormikRangeDatePicker({ label, inline=true,...props }) {
+export default function FormikRangeDatePicker({ label, pastDateNotAllowed,futureDateNotAllowed,inline=true,...props }) {
   const [field, meta, helpers] = useField(props.name);
 
   
@@ -207,7 +207,8 @@ export default function FormikRangeDatePicker({ label, inline=true,...props }) {
         showMonthDropdown
         timeFormat="hh:mm aa"
         timeCaption="Time"
-        minDate={new Date()}
+        minDate={pastDateNotAllowed && new Date()}
+        maxDate={futureDateNotAllowed && new Date()}
         // minDate={new Date()}
         inline={inline}
         startDate={field?.value?.start}

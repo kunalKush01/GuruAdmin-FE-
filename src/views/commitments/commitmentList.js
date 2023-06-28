@@ -382,9 +382,10 @@ export default function Commitment() {
               }`}
               onClick={() => {
                 notifyIds?.length > 0 &&
-                  nudgeUserApi({ commitmentIds: notifyIds }).then((res)=>{
-                    if(!res.error){
-                      queryClient.invalidateQueries(["Commitments"])
+                  nudgeUserApi({ commitmentIds: notifyIds }).then((res) => {
+                    if (!res.error) {
+                      queryClient.invalidateQueries(["Commitments"]);
+                      setSelectedRows([]);
                     }
                   });
               }}
@@ -439,7 +440,12 @@ export default function Commitment() {
                 </SkeletonTheme>
               </Then>
               <Else>
-                <If condition={!commitmentQuery.isFetching && commitmentItems.length != 0 } disableMemo>
+                <If
+                  condition={
+                    !commitmentQuery.isFetching && commitmentItems.length != 0
+                  }
+                  disableMemo
+                >
                   <Then>
                     <CommitmentListTable
                       data={commitmentItems}
@@ -456,16 +462,26 @@ export default function Commitment() {
                     />
                   </Then>
                   <Else>
-                    <NoContent
-                      headingNotfound={t("commitment_not_found")}
-                      para={t("commitment_not_click_add_commitment")}
-                    />
+                    {!commitmentQuery.isFetching &&
+                      !commitmentQuery.isLoading &&
+                      commitmentItems.length == 0 && (
+                        <NoContent
+                          headingNotfound={t("commitment_not_found")}
+                          para={t("commitment_not_click_add_commitment")}
+                        />
+                      )}
                   </Else>
                 </If>
               </Else>
             </If>
 
-            <If condition={commitmentQuery?.data?.totalPages > 1}>
+            <If
+              condition={
+                commitmentQuery?.data?.totalPages > 1 &&
+                !commitmentQuery.isFetching &&
+                !commitmentQuery.isLoading
+              }
+            >
               <Then>
                 <Col xs={12} className="mb-2 d-flex justify-content-center">
                   <ReactPaginate

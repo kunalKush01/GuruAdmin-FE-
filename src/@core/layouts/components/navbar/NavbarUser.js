@@ -100,18 +100,36 @@ const NavbarUserWarraper = styled.div`
     left: 35px;
   }
   .shakeBell{
-    /* Start the shake animation and make the animation last for 0.5 seconds */
-    animation: skew-x-shake 1.3s infinite;
-    /* When the animation is finished, start again */
-  }
+  animation: ring 4s .7s ease-in-out infinite;
+  transform-origin: 50% 4px;
+}
 
-  @keyframes skew-x-shake {
-  0% { transform: skewX(-15deg); }
-  5% { transform: skewX(15deg); }
-  10% { transform: skewX(-15deg); }
-  15% { transform: skewX(15deg); }
-  20% { transform: skewX(0deg); }
-  100% { transform: skewX(0deg); }  
+@keyframes ring {
+  0% { transform: rotate(0); }
+  1% { transform: rotate(30deg); }
+  3% { transform: rotate(-28deg); }
+  5% { transform: rotate(34deg); }
+  7% { transform: rotate(-32deg); }
+  9% { transform: rotate(30deg); }
+  11% { transform: rotate(-28deg); }
+  13% { transform: rotate(26deg); }
+  15% { transform: rotate(-24deg); }
+  17% { transform: rotate(22deg); }
+  19% { transform: rotate(-20deg); }
+  21% { transform: rotate(18deg); }
+  23% { transform: rotate(-16deg); }
+  25% { transform: rotate(14deg); }
+  27% { transform: rotate(-12deg); }
+  29% { transform: rotate(10deg); }
+  31% { transform: rotate(-8deg); }
+  33% { transform: rotate(6deg); }
+  35% { transform: rotate(-4deg); }
+  37% { transform: rotate(2deg); }
+  39% { transform: rotate(-1deg); }
+  41% { transform: rotate(1deg); }
+
+  43% { transform: rotate(0); }
+  100% { transform: rotate(0); }
 }
   @media only screen and (max-width: 576px) {
     .displayBlock {
@@ -155,6 +173,8 @@ const NavbarUser = (props) => {
     [notificationQuery]
   );
 
+  let number = 2
+
   return (
     <Fragment>
       <NavbarUserWarraper className="d-flex justify-content-between w-100 align-items-center  ">
@@ -187,16 +207,16 @@ const NavbarUser = (props) => {
               src={menuPanelIcon}
             />
             <div className="position-relative">
-              {allUnReadMessage?.unSeenCount > 0 && (
+              {number > 0 && (
                 <div className="notificationNumber">
-                  {allUnReadMessage?.unSeenCount < 9
-                    ? `0${allUnReadMessage?.unSeenCount}`
+                  {number < 9
+                    ? `0${number}`
                     : allUnReadMessage?.unSeenCount}
                 </div>
               )}
               <img
                 className={`icon ${
-                  allUnReadMessage?.unSeenCount > 0 && "shakeBell"
+                  number > 0 && "shakeBell"
                 }`}
                 src={bellIcon}
                 onClick={() => history.push("/notification")}
