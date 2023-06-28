@@ -173,7 +173,6 @@ const NavbarUser = (props) => {
     [notificationQuery]
   );
 
-  let number = 2
 
   return (
     <Fragment>
@@ -207,16 +206,16 @@ const NavbarUser = (props) => {
               src={menuPanelIcon}
             />
             <div className="position-relative">
-              {number > 0 && (
+              {allUnReadMessage?.unSeenCount > 0 && (
                 <div className="notificationNumber">
-                  {number < 9
-                    ? `0${number}`
+                  {allUnReadMessage?.unSeenCount < 9
+                    ? `0${allUnReadMessage?.unSeenCount}`
                     : allUnReadMessage?.unSeenCount}
                 </div>
               )}
               <img
                 className={`icon ${
-                  number > 0 && "shakeBell"
+                  allUnReadMessage?.unSeenCount > 0 && "shakeBell"
                 }`}
                 src={bellIcon}
                 onClick={() => history.push("/notification")}
