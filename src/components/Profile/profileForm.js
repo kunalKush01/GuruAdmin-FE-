@@ -279,6 +279,7 @@ export default function ProfileForm({
   profileImageName,
   showTimeInput,
   selectEventDisabled,
+  langSelectionValue
 }) {
   const history = useHistory();
   const { t } = useTranslation();
@@ -291,6 +292,9 @@ export default function ProfileForm({
       if (!data.error) {
         setLoading(false);
         queryClient.invalidateQueries(["ProfileModule"]);
+        if(AddLanguage){
+          history.push("/edit-profile")
+        }
         !AddLanguage &&
           dispatch(
             handleProfileUpdate({
@@ -475,6 +479,9 @@ export default function ProfileForm({
   const [trustMobileNumberState, setTrustMobileNumberState] = useState(
     trustMobileNumber ?? ""
   );
+  const langToast = {
+    toastId: "langError",
+  };
   return (
     <ProfileFormWaraper className="FormikWraper">
       <Formik
@@ -482,6 +489,10 @@ export default function ProfileForm({
         initialValues={initialValues}
         innerRef={formRef}
         onSubmit={(e) => {
+          if (AddLanguage && langSelectionValue === "Select") {
+            toast.error("Please select a language", { ...langToast });
+            return;
+          }
           setLoading(true);
           AddLanguage
             ? mutation.mutate({
@@ -803,19 +814,30 @@ export default function ProfileForm({
               </Col>
               <Row>
                 <Col md={4}>
-                  <label>
-                    <Trans i18nKey={"location"} />
-                  </label>
-                  <CustomLocationField
-                    setFieldValue={formik.setFieldValue}
-                    error={formik}
-                    values={formik?.values}
-                  />
-                  {formik.errors.location && formik.touched.location ? (
-                    <div style={{ fontSize: "11px", color: "red" }}>
-                      <Trans i18nKey={formik.errors.location} />
-                    </div>
-                  ) : null}
+                  {!AddLanguage ? (
+                    <>
+                      <label>
+                        <Trans i18nKey={"location"} />
+                      </label>
+                      <CustomLocationField
+                        setFieldValue={formik.setFieldValue}
+                        error={formik}
+                        values={formik?.values}
+                      />
+                      {formik.errors.location && formik.touched.location ? (
+                        <div style={{ fontSize: "11px", color: "red" }}>
+                          <Trans i18nKey={formik.errors.location} />
+                        </div>
+                      ) : null}
+                    </>
+                  ) : (
+                    <CustomTextField
+                        label={t("location")}
+                        placeholder={t("placeHolder_location")}
+                        name="location"
+                        required
+                      />
+                  )}
                 </Col>
                 {!AddLanguage && (
                   <>
@@ -1051,7 +1073,9 @@ export default function ProfileForm({
                                   formik.setFieldValue("documents", [
                                     ...formik.values.documents,
                                     {
-                                      name: `${randomNumber}_${e.target?.files[0]?.name.split(" ").join("-")}`,
+                                      name: `${randomNumber}_${e.target?.files[0]?.name
+                                        .split(" ")
+                                        .join("-")}`,
                                     },
                                   ]);
                                 }
@@ -1295,7 +1319,9 @@ export default function ProfileForm({
                                 // handleUpload(e.target.files[0]).then((e)=>formik.setFieldValue('templeImage',e.target.files[0].name));
                                 formik.setFieldValue(
                                   "imageName",
-                                  `${randomNumber}_${e.target.files[0]?.name.split(" ").join("-")}`
+                                  `${randomNumber}_${e.target.files[0]?.name
+                                    .split(" ")
+                                    .join("-")}`
                                 );
                                 formik.setFieldValue(
                                   "preview",

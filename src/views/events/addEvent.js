@@ -83,7 +83,7 @@ export default function AddEvent() {
             <Trans i18nKey={"events_AddEvent"} />
           </div>
         </div>
-        <div className="addEvent">
+        {/* <div className="addEvent">
           <div className="d-none d-sm-block">
             <Trans i18nKey={"news_InputIn"} />
           </div>
@@ -93,7 +93,7 @@ export default function AddEvent() {
             defaultDropDownName={"English"}
             disabled
           />
-        </div>
+        </div> */}
       </div>
       <div className="ms-sm-3 mt-1">
         <EventForm

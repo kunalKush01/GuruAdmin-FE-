@@ -54,8 +54,13 @@ const OrdersReceived = ({ statTitle,stats,SeriesName="",data=[] }) => {
     },
     yaxis: {
       labels: {
-        show: false
-      }
+        formatter: function (value) {
+          // Customize the label value based on your requirements
+          // const formattedValue = value.toFixed(2).replace(/\d(?=(\d{2})+\d{3})/g, '$&,');
+          // return `₹${formattedValue}`;
+          return `₹${value.toLocaleString('en-IN')}`; // Add a dollar sign to the label value
+        },
+      },
     },
     tooltip: {
       x: { show: false }
@@ -68,10 +73,11 @@ const OrdersReceived = ({ statTitle,stats,SeriesName="",data=[] }) => {
     data:data?.map((item)=>{
       return {
         x:item.month,
-        y:item.amount
+        y:item?.amount
       }
     }),
   }]
+  console.log('stats',stats);
 
   return  (
     <StatsWithAreaChart

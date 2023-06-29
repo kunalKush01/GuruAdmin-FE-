@@ -33,20 +33,23 @@ const handleCreateNotice = async (payload) => {
   return createNotice(payload);
 };
 const schema = yup.object().shape({
-  Title: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("notices_title_required").trim(),
+  Title: yup
+    .string()
+    .matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g, "injection_found")
+    .required("notices_title_required")
+    .trim(),
   Body: yup.string().required("notices_desc_required").trim(),
   DateTime: yup.string(),
   SelectedNotice: yup.mixed(),
   // tagsInit:yup.array().max(15 ,"tags_limit"),
-
 });
 
 const initialValues = {
   SelectedNotice: null,
   Id: "",
   Title: "",
-  image:"",
-  tagsInit:[],
+  image: "",
+  tagsInit: [],
   Body: "",
   DateTime: new Date(),
 };
@@ -56,10 +59,9 @@ export default function AddNotice() {
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
-
   const searchParams = new URLSearchParams(history.location.search);
-  const currentPage = searchParams.get('page')
-  const currentFilter = searchParams.get('filter')
+  const currentPage = searchParams.get("page");
+  const currentFilter = searchParams.get("filter");
 
   return (
     <NoticeWraper>
@@ -68,14 +70,18 @@ export default function AddNotice() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push(`/notices?page=${currentPage}&filter=${currentFilter}`)}
+            onClick={() =>
+              history.push(
+                `/notices?page=${currentPage}&filter=${currentFilter}`
+              )
+            }
           />
           <div className="addNotice">
             <Trans i18nKey={"notices_AddNotice"} />
           </div>
         </div>
-        <div className="addNotice">
-        <div className="d-none d-sm-block">
+        {/* <div className="addNotice">
+          <div className="d-none d-sm-block">
             <Trans i18nKey={"news_InputIn"} />
           </div>
           <CustomDropDown
@@ -84,7 +90,7 @@ export default function AddNotice() {
             defaultDropDownName={"English"}
             disabled
           />
-        </div>
+        </div> */}
       </div>
       <div className="ms-sm-3 mt-1">
         <NoticeForm

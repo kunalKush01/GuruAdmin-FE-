@@ -15,8 +15,8 @@ const firebaseConfig = {
 };
 initializeApp(firebaseConfig);
 
-const messaging = getMessaging();
-console.log("messaging",messaging);
+// const messaging = getMessaging();
+// console.log("messaging",messaging);
 export const requestForToken = () => {
   return getToken(messaging, {
     vapidKey: `BC53FJ748DQoZ27hJEi7QGbQjZNtLClRf1IlS0g_a2LivHWRdMy6z_kZ63QmjUACpQJV2y5CeSoq85A7m98GSdM`,

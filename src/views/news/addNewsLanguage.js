@@ -57,9 +57,7 @@ export default function AddLanguageNews() {
   const currentPage = searchParams.get("page");
   const currentFilter = searchParams.get("filter");
 
-  const [langSelection, setLangSelection] = useState(
-    ConverFirstLatterToCapital(selectedLang.name)
-  );
+  const [langSelection, setLangSelection] = useState('Select');
   console.log("langSelection",langSelection);
 
   const newsDetailQuery = useQuery(
@@ -98,11 +96,11 @@ export default function AddLanguageNews() {
     langArray,
     newsDetailQuery?.data?.result?.languages,
   ]);
-  useEffect(() => {
-    if (availableLangOptions.length != 0) {
-      setLangSelection(availableLangOptions[0]?.name);
-    }
-  }, [availableLangOptions]);
+  // useEffect(() => {
+  //   if (availableLangOptions.length != 0) {
+  //     setLangSelection(availableLangOptions[0]?.name);
+  //   }
+  // }, [availableLangOptions]);
   const tags = newsDetailQuery?.data?.result?.tags?.map((item) => ({
     id: item.id,
     text: item.tag,
@@ -173,6 +171,7 @@ const trustPreference = useMemo(
             AddLanguage
             defaultImages={newsDetailQuery?.data?.result?.images}
             trustPreference={trustPreference}
+            langSelectionValue={langSelection}
             initialValues={initialValues}
             vailidationSchema={schema}
             showTimeInput

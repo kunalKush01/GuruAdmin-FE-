@@ -50,9 +50,7 @@ export default function AddLanguageNotice() {
   const currentPage = searchParams.get("page");
   const currentFilter = searchParams.get("filter");
 
-  const [langSelection, setLangSelection] = useState(
-    ConverFirstLatterToCapital(selectedLang.name)
-  );
+  const [langSelection, setLangSelection] = useState('Select');
 
   const noticeDetailQuery = useQuery(
     ["NoticeDetail", noticeId, selectedLang.id],
@@ -90,11 +88,11 @@ export default function AddLanguageNotice() {
     langArray,
     noticeDetailQuery?.data?.result?.languages,
   ]);
-  useEffect(() => {
-    if (availableLangOptions.length != 0) {
-      setLangSelection(availableLangOptions[0]?.name);
-    }
-  }, [availableLangOptions]);
+  // useEffect(() => {
+  //   if (availableLangOptions.length != 0) {
+  //     setLangSelection(availableLangOptions[0]?.name);
+  //   }
+  // }, [availableLangOptions]);
   const tags = noticeDetailQuery?.data?.result?.tags?.map((item) => ({
     id: item.id,
     text: item.tag,
@@ -156,6 +154,7 @@ export default function AddLanguageNotice() {
             thumbnailImageName={noticeDetailQuery?.data?.result?.imageName}
             initialValues={initialValues}
             AddLanguage
+            langSelectionValue={langSelection}
             vailidationSchema={schema}
             showTimeInput
             handleSubmit={handleNoticeLangUpdate}

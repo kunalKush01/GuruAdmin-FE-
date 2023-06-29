@@ -23,6 +23,7 @@ import { Prompt } from "react-router-dom";
 import { add } from "lodash";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 const FormWaraper = styled.div`
   .FormikWraper {
@@ -77,11 +78,11 @@ const FormWaraper = styled.div`
     }
   }
   .ReactTags__tagInput input.ReactTags__tagInputField::placeholder {
-  color: #583703 !important;
-  font: normal normal bold 13px/20px Noto Sans;
-  opacity: 60%;
-}
-.ReactTags__tagInput > input.ReactTags__tagInputField:focus-within {
+    color: #583703 !important;
+    font: normal normal bold 13px/20px Noto Sans;
+    opacity: 60%;
+  }
+  .ReactTags__tagInput > input.ReactTags__tagInputField:focus-within {
     box-shadow: 0 3px 10px 0 rgba(34, 41, 47, 0.1);
   }
   /* added tags  */
@@ -163,7 +164,7 @@ export default function NewsForm({
   vailidationSchema,
   initialValues,
   trustPreference,
-
+  langSelectionValue,
   showTimeInput,
   buttonName,
 }) {
@@ -241,15 +242,20 @@ export default function NewsForm({
   const [showPrompt, setShowPrompt] = useState(true);
   const [imageSpinner, setImageSpinner] = useState(false);
 
-
   const [tagCharInput, setTagCharInput] = useState("");
-
+  const langToast = {
+    toastId: "langError",
+  };
   return (
     <FormWaraper className="FormikWraper">
       <Formik
         // enableReinitialize
         initialValues={{ ...initialValues }}
         onSubmit={(e) => {
+          if (langSelectionValue === "Select") {
+            toast.error("Please select a language", { ...langToast });
+            return;
+          }
           setShowPrompt(false);
           setLoading(true);
           newsMutation.mutate({
@@ -334,7 +340,12 @@ export default function NewsForm({
                     )}
                   </Col>
                   {!AddLanguage && (
-                    <Col xs={12} md={6} className="" style={{paddingTop:"8px"}}>
+                    <Col
+                      xs={12}
+                      md={6}
+                      className=""
+                      style={{ paddingTop: "8px" }}
+                    >
                       <FormikCustomReactSelect
                         labelName={t("trust_prefenses")}
                         multiple

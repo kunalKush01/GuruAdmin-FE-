@@ -17,6 +17,7 @@ import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import { flatMap } from "lodash";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { Prompt } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const FormWaraper = styled.div`
   .FormikWraper {
@@ -67,6 +68,7 @@ export default function CategoryForm({
   handleSubmit,
   vailidationSchema,
   initialValues,
+  langSelectionValue,
   editDisableCategory,
   showTimeInput,
   ...props
@@ -89,12 +91,21 @@ export default function CategoryForm({
     },
   });
   const [showPrompt, setShowPrompt] = useState(true);
+
+  const langToast = {
+    toastId:"langError"
+  }
+
   return (
     <FormWaraper className="FormikWraper">
       <Formik
         // enableReinitialize
         initialValues={{ ...initialValues }}
         onSubmit={(e) => {
+          if (langSelectionValue === "Select") {
+            toast.error("Please select a language", { ...langToast });
+            return;
+          }
           setShowPrompt(false);
           setLoading(true);
           return categoryMutation.mutate({

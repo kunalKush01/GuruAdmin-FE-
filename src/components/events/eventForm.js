@@ -21,6 +21,7 @@ import CustomTextField from "../partials/customTextField";
 import ImageUpload from "../partials/imageUpload";
 import RichTextField from "../partials/richTextEditorField";
 import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 const FormWaraper = styled.div`
   .existlabel {
     margin-bottom: 10px;
@@ -194,6 +195,7 @@ export default function EventForm({
   initialValues,
   showTimeInput = false,
   selectEventDisabled,
+  langSelectionValue,
 }) {
   const history = useHistory();
   const { t } = useTranslation();
@@ -301,6 +303,9 @@ export default function EventForm({
   const [imageOnGlobleEvent, setImageOnGlobleEvent] = useState(defaultImages);
 
   const [tagCharInput, setTagCharInput] = useState("");
+  const langToast = {
+    toastId:"langError"
+  }
 
   return (
     <FormWaraper className="FormikWraper">
@@ -309,6 +314,9 @@ export default function EventForm({
         initialValues={initialValues}
         onSubmit={(e) => {
           if (tagsCharLimit) {
+            return;
+          } else if (langSelectionValue === "Select") {
+            toast.error("Please select a language", { ...langToast });
             return;
           }
           setShowPrompt(false);

@@ -12,6 +12,7 @@ import ImageUpload from "../partials/imageUpload";
 import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
 import RichTextField from "../partials/richTextEditorField";
 import { Prompt } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const FormWaraper = styled.div`
   .FormikWraper {
@@ -47,6 +48,7 @@ export default function PunyarjakForm({
   editThumbnail,
   AddLanguage,
   thumbnailImageName,
+  langSelectionValue,
   initialValues,
   showTimeInput,
   addDonationUser,
@@ -81,13 +83,20 @@ export default function PunyarjakForm({
   const [showPrompt, setShowPrompt] = useState(true);
   const [imageSpinner, setImageSpinner] = useState(false);
   const [imageName, setImageName] = useState(thumbnailImageName);
-
+  
+  const langToast = {
+    toastId: "langError",
+  };
   return (
     <FormWaraper className="FormikWraper">
       <Formik
         enableReinitialize
         initialValues={initialValues}
         onSubmit={(e) => {
+          if (langSelectionValue === "Select") {
+            toast.error("Please select a language", { ...langToast });
+            return;
+          }
           setShowPrompt(false);
           setLoading(true);
           punyarjakMutation.mutate({

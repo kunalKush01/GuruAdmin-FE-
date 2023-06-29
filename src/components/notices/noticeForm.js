@@ -22,6 +22,7 @@ import { WithContext as ReactTags } from "react-tag-input";
 import ImageUpload from "../partials/imageUpload";
 import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
 import { Prompt } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const FormWaraper = styled.div`
   .existlabel {
@@ -160,6 +161,7 @@ export default function NoticeForm({
   handleSubmit,
   vailidationSchema,
   initialValues,
+  langSelectionValue,
   showTimeInput,
   selectEventDisabled,
 }) {
@@ -236,13 +238,19 @@ export default function NoticeForm({
   const [showPrompt, setShowPrompt] = useState(true);
   const [imageSpinner, setImageSpinner] = useState(false);
   const [imageName, setImageName] = useState(thumbnailImageName);
-
+  const langToast = {
+    toastId: "langError",
+  };
   return (
     <FormWaraper className="FormikWraper">
       <Formik
         // enableReinitialize
         initialValues={initialValues}
         onSubmit={(e) => {
+          if (langSelectionValue === "Select") {
+            toast.error("Please select a language", { ...langToast });
+            return;
+          }
           setShowPrompt(false);
           setLoading(true);
           noticeMutation.mutate({

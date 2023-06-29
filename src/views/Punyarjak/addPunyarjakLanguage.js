@@ -60,9 +60,7 @@ export default function AddLanguagePunyarjak() {
   const currentPage = searchParams.get("page");
   const currentFilter = searchParams.get("filter");
 
-  const [langSelection, setLangSelection] = useState(
-    ConverFirstLatterToCapital(selectedLang.name)
-  );
+  const [langSelection, setLangSelection] = useState('Select');
   console.log("langSelection", langSelection);
 
   const punyarjakDetailQuery = useQuery(
@@ -102,11 +100,11 @@ export default function AddLanguagePunyarjak() {
     langArray,
     punyarjakDetailQuery?.data?.result?.languages,
   ]);
-  useEffect(() => {
-    if (availableLangOptions.length != 0) {
-      setLangSelection(availableLangOptions[0]?.name);
-    }
-  }, [availableLangOptions]);
+  // useEffect(() => {
+  //   if (availableLangOptions.length != 0) {
+  //     setLangSelection(availableLangOptions[0]?.name);
+  //   }
+  // }, [availableLangOptions]);
 
   const initialValues = useMemo(() => {
     return {
@@ -158,6 +156,7 @@ export default function AddLanguagePunyarjak() {
           <PunyarjakForm
             editThumbnail
             AddLanguage
+            langSelectionValue={langSelection}
             editTrue="edit"
             thumbnailImageName={punyarjakDetailQuery?.data?.result?.imageName}
             buttonName={"news_AddLangNews"}

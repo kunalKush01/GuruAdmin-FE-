@@ -47,9 +47,7 @@ export default function AddLanguageEvent() {
   const currentPage = searchParams.get('page')
   const currentFilter = searchParams.get('filter')
 
-  const [langSelection, setLangSelection] = useState(
-    ConverFirstLatterToCapital(selectedLang.name)
-  );
+  const [langSelection, setLangSelection] = useState('Select');
   const subCategoryDetailQuery = useQuery(
     ["SubCategories", subCategoryId, selectedLang.id],
     async () => await getSubCategoryDetail({ categoryId:subCategoryId, languageId: selectedLang.id })
@@ -87,12 +85,12 @@ export default function AddLanguageEvent() {
     subCategoryDetailQuery?.data?.result?.languages,
   ]);
   
-  useEffect(() => {
-    if (availableLangOptions.length != 0) {
-      setLangSelection(availableLangOptions[0]?.name);
+  // useEffect(() => {
+  //   if (availableLangOptions.length != 0) {
+  //     setLangSelection(availableLangOptions[0]?.name);
       
-    }
-  }, [availableLangOptions,selectedLang.id]);
+  //   }
+  // }, [availableLangOptions,selectedLang.id]);
 
   
 
@@ -129,6 +127,7 @@ export default function AddLanguageEvent() {
         <div className="ms-sm-3 mt-1">
           <CategoryForm
           loadOptions={[subCategoryDetailQuery?.data?.result?.masterCategory]}
+          langSelectionValue={langSelection}
           // placeholder={
           //   subCategoryDetailQuery?.data?.result?.masterCategory.name
           // }
