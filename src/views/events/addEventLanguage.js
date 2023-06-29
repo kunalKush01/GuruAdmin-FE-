@@ -54,9 +54,7 @@ export default function AddLanguageEvent() {
   const currentPage = searchParams.get("page");
   const currentFilter = searchParams.get("filter");
 
-  const [langSelection, setLangSelection] = useState(
-    ConverFirstLatterToCapital(selectedLang.name)
-  );
+  const [langSelection, setLangSelection] = useState('Select');
 
   console.log("langSelection", langSelection);
 
@@ -97,11 +95,11 @@ export default function AddLanguageEvent() {
     eventDetailQuery?.data?.result?.languages,
   ]);
 
-  useEffect(() => {
-    if (availableLangOptions.length != 0) {
-      setLangSelection(availableLangOptions[0]?.name);
-    }
-  }, [availableLangOptions]);
+  // useEffect(() => {
+  //   if (availableLangOptions.length != 0) {
+  //     setLangSelection(availableLangOptions[0]?.name);
+  //   }
+  // }, [availableLangOptions]);
 
   const tags = eventDetailQuery?.data?.result?.tags?.map((item) => ({
     id: item.id,
@@ -168,6 +166,7 @@ export default function AddLanguageEvent() {
           <EventForm
             AddLanguage
             editImage="edit"
+            langSelectionValue={langSelection}
             defaultImages={eventDetailQuery?.data?.result?.images}
             initialValues={initialValues}
             vailidationSchema={schema}

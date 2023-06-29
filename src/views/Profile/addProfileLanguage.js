@@ -68,9 +68,7 @@ export default function AddLanguageProfile() {
   const currentPage = searchParams.get("page");
   const currentFilter = searchParams.get("filter");
 
-  const [langSelection, setLangSelection] = useState(
-    ConverFirstLatterToCapital(selectedLang.name)
-  );
+  const [langSelection, setLangSelection] = useState('Select');
 
   const profileDetailQuery = useQuery(
     ["ProfileDetail", profileId, selectedLang.id],
@@ -108,11 +106,11 @@ export default function AddLanguageProfile() {
     langArray,
     profileDetailQuery?.data?.result?.languages,
   ]);
-  useEffect(() => {
-    if (availableLangOptions.length != 0) {
-      setLangSelection(availableLangOptions[0]?.name);
-    }
-  }, [availableLangOptions]);
+  // useEffect(() => {
+  //   if (availableLangOptions.length != 0) {
+  //     setLangSelection(availableLangOptions[0]?.name);
+  //   }
+  // }, [availableLangOptions]);
   const tags = profileDetailQuery?.data?.result?.tags?.map((item) => ({
     id: item.id,
     text: item.tag,
@@ -186,6 +184,7 @@ export default function AddLanguageProfile() {
             editProfile
             handleSubmit={handleProfileLangUpdate}
             AddLanguage
+            langSelectionValue={langSelection}
             setLoading={setLoading}
             loading={loading}
             editImage="edit"

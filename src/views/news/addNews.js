@@ -87,7 +87,7 @@ const trustPreference = useMemo(
             <Trans i18nKey={"news_AddNews"} />
           </div>
         </div>
-        <div className="addNews">
+        {/* <div className="addNews">
           <div className="d-none d-sm-block">
             <Trans i18nKey={"news_InputIn"} />
           </div>
@@ -97,7 +97,7 @@ const trustPreference = useMemo(
             defaultDropDownName={"English"}
             disabled
           />
-        </div>
+        </div> */}
       </div>
       <div className="mt-1 ms-sm-3 ms-1">
         <NewsForm

@@ -8,13 +8,19 @@ const TOASTSLIDE = {
   toastId: "apnaMandirSuperAdminError",
 };
 
-export const login = createAsyncThunk("Auth", async (data, thunkApi) => {
+export const login = createAsyncThunk("Auth", async (params, thunkApi) => {
   try {
-    const res = await authApiInstance.post("auth/login", data);
+    const res = await authApiInstance.post("auth/login", params?.data);
+    if (params?.onCallback) {
+      params?.onCallback(true);
+    }
     return res.data.data;
   } catch (error) {
     const message = error?.response?.data?.message ?? "Something went wrong";
     toast.error(message, { ...TOASTSLIDE });
+    if (params?.onCallback) {
+      params?.onCallback(false);
+    }
     // thunkApi.rejectWithValue(error?.response?.data);
     throw error.response;
   }

@@ -117,7 +117,7 @@ const Router = () => {
 
       return (
         <Route path={LayoutPaths} key={index}>
-          <Notification/>
+          {/* <Notification/> */}
           <LayoutTag
             layout={layout}
             setLayout={setLayout}

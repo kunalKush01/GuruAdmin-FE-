@@ -37,9 +37,17 @@ const LoginCover = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [forgotPassWordActive, setForgotPassWordActive] = useState(false);
+  const [loadingLogin, setLoadingLogin] = useState(false);
 
   const handleLoginSubmit = (data) => {
-    dispatch(login(data));
+    dispatch(
+      login({
+        data: data,
+        onCallback: () => {
+          setLoadingLogin(false);
+        },
+      })
+    );
   };
 
   const handleForgetPassword = (values) => {
@@ -54,7 +62,7 @@ const LoginCover = () => {
     onSuccess: (data) => {
       if (!data.error) {
         setLoading(false);
-        setForgotPassWordActive(false)
+        setForgotPassWordActive(false);
       } else if (data.error) {
         setLoading(false);
       }
@@ -145,7 +153,11 @@ const LoginCover = () => {
   useEffect(() => {
     if (isLogged && loginPath?.includes("all")) {
       history.push("/dashboard");
-    } else if (isLogged && (loginPath?.length && loginPath[0] === "configuration")) {
+    } else if (
+      isLogged &&
+      loginPath?.length &&
+      loginPath[0] === "configuration"
+    ) {
       history.push(`/configuration/categories`);
     } else if (isLogged || loginPath?.length) {
       history.push(`/${loginPath[0]}`);
@@ -153,7 +165,7 @@ const LoginCover = () => {
   }, [isLogged, loginPath]);
 
   const hostname = location.hostname;
-  const subDomainName = hostname.replace(".paridhan.app","");
+  const subDomainName = hostname.replace(".paridhan.app", "");
   const loginPageQuery = useQuery([subDomainName], () =>
     loginPage(subDomainName)
   );
@@ -162,7 +174,6 @@ const LoginCover = () => {
     () => loginPageQuery?.data?.result ?? {},
     [loginPageQuery]
   );
-
 
   // useEffect(() => {
   //   isLogged ? history.push("/dashboard") : "";
@@ -240,7 +251,10 @@ const LoginCover = () => {
               {<CardTitle className="fw-bold mb-2 ">Sign In</CardTitle>}
               {loginPageData?.name !== "" && (
                 <div className="templeName">
-                  Admin: <span>{ConverFirstLatterToCapital(loginPageData?.name ?? "")}</span>
+                  Admin:{" "}
+                  <span>
+                    {ConverFirstLatterToCapital(loginPageData?.name ?? "")}
+                  </span>
                 </div>
               )}
 
@@ -253,7 +267,11 @@ const LoginCover = () => {
                   password: "",
                 }}
                 validationSchema={loginSchema}
-                onSubmit={handleLoginSubmit}
+                // onSubmit={handleLoginSubmit}
+                onSubmit={(data) => {
+                  setLoadingLogin(true);
+                  handleLoginSubmit(data);
+                }}
               >
                 {(formik) => (
                   <Form
@@ -297,13 +315,13 @@ const LoginCover = () => {
                           onChange={formik.handleChange}
                           iconClassName="signInIcons"
                           hideIcon={
-                            <img
-                              className="signInIcons"
-                              src={hidePassIcon}
-                            />
+                            <img className="signInIcons" src={hidePassIcon} />
                           }
                           showIcon={
-                            <img className="signInIcons" src={passwordEyeIcon} />
+                            <img
+                              className="signInIcons"
+                              src={passwordEyeIcon}
+                            />
                           }
                         />
                         <div className="errorMassage text-primary">
@@ -327,9 +345,22 @@ const LoginCover = () => {
                 </Label>
               </div> */}
                     <div className="d-flex w-100 justify-content-center  ">
-                      <Button type="submit" color="primary" className="px-5">
-                        Sign In
-                      </Button>
+                      {loadingLogin ? (
+                        <Button
+                          type="submit"
+                          color="primary"
+                          className=""
+                          style={{
+                            padding: ".5rem 4rem",
+                          }}
+                        >
+                          <Spinner style={{ height: "2rem", width: "2rem" }} />
+                        </Button>
+                      ) : (
+                        <Button type="submit" color="primary" className="px-5">
+                          Sign In
+                        </Button>
+                      )}
                     </div>
                   </Form>
                 )}

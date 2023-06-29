@@ -183,6 +183,7 @@ export default function AddProfile() {
         handleSubmit={handleUpdateProfile}
         setLoading={setLoading}
         loading={loading}
+        
         editImage="edit"
         trustMobileNumber={
           profileDetail?.data?.result?.trustCountryCode ?? "+91" +
