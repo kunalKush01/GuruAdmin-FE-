@@ -291,6 +291,7 @@ export default function NewsCard({
             style={{
               height: "150px",
               position: "relative",
+              objectFit:'cover',
               width: "100%",
               borderBottom: "1px solid rgb(255, 135, 68)",
             }}

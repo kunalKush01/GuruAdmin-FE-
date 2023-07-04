@@ -82,6 +82,7 @@ export default function RecentDonationTable({ data }) {
                style={{
                 marginRight: "5px",
                 width: "30px",
+                objectFit:'cover',
                 height: "30px",
               }}
               className="rounded-circle"

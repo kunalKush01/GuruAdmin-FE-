@@ -40,6 +40,12 @@ export const getAllCommitments = (payload) =>
     showToastOnError: false,
   });
 
+  export const exportAllCommitments = (payload) =>
+  callApi({
+    requestFunction: (axios) => axios.post(`${API_BASE_URL}commitment`, payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
 export const getCommitmentDetail = (payload) =>
   callApi({
     requestFunction: (axios) =>

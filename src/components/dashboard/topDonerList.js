@@ -65,9 +65,10 @@ export const TopDonerList = ({ data }) => {
               <div className="d-flex align-items-center">
                 <img
                   src={item?.user?.profileImage !==  "" &&  item?.user?.profileImage  ? item?.user?.profileImage :   palceHolderIcon}
-                  className="rounded-circle"
+                  className="rounded-circle o"
                   width={"50px"}
                   height={"50px"}
+                  style={{objectFit:'cover'}}
                 />
                 <div className="">
                   <div className="headName ps-1">

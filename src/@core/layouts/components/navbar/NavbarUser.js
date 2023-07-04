@@ -261,9 +261,10 @@ const NavbarUser = (props) => {
               </div>
               <div
                 onClick={
-                  () => history.push("/edit-profile")
+                  () => 
+                  history.push("/edit-profile")
                   // Swal.fire({
-                  //   icon: "error",
+                  //   icon: "info",
                   //   title: "Oops...",
                   //   text: "Edit profile is Under Development!",
                   //   showConfirmButton: false,

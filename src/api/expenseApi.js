@@ -44,6 +44,13 @@ export const getAllExpense = (payload) =>
     showToastOnError: false,
   });
 
+  export const ExportAllExpense = (payload) =>
+  callApi({
+    requestFunction: (axios) => axios.post(`${API_BASE_URL}expense`, payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+
 export const getExpensesDetail = (payload) =>
   callApi({
     requestFunction: (axios) => axios.get(`${API_BASE_URL}expense/${payload}`),

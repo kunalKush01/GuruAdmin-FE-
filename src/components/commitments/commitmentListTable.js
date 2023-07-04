@@ -23,7 +23,7 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { DELETE, EDIT } from "../../utility/permissionsVariable";
 import CustomDataTable from "../partials/CustomDataTable";
 
-const RecentDonationTableWarper = styled.div`
+const CommitmentTableWarper = styled.div`
   color: #583703 !important;
   font: normal normal bold 15px/23px Noto Sans;
   .payDonation {
@@ -34,7 +34,6 @@ const RecentDonationTableWarper = styled.div`
     max-height: 600px;
     overflow: auto;
   }
-  
 `;
 
 export default function CommitmentListTable(
@@ -71,11 +70,6 @@ export default function CommitmentListTable(
   const history = useHistory();
   const ref = useRef();
   const pdfRef = useRef();
-  const options = {
-    orientation: "portrait",
-    setPage: 5,
-    unit: "in",
-  };
 
   const loggedTemple = useSelector((state) => state.auth.trustDetail);
   const [receipt, setReceipt] = useState();
@@ -216,7 +210,7 @@ export default function CommitmentListTable(
     },
   ];
   const commitment_Data = useMemo(() => {
-    return data.map((item, idx) => {
+    return data?.map((item, idx) => {
       return {
         id: idx + 1,
         notifyUserId: item?.id,
@@ -265,8 +259,12 @@ export default function CommitmentListTable(
             <div>{ConverFirstLatterToCapital(item?.paidStatus)}</div>
           </div>
         ),
-        amount: <div>₹&nbsp;{item?.amount.toLocaleString('en-IN')}</div>,
-        amountDue: <div>₹&nbsp; {(item?.amount - item.paidAmount).toLocaleString('en-IN')}</div>,
+        amount: <div>₹&nbsp;{item?.amount?.toLocaleString("en-IN")}</div>,
+        amountDue: (
+          <div>
+            ₹&nbsp; {(item?.amount - item.paidAmount).toLocaleString("en-IN")}
+          </div>
+        ),
         commitmentId: (
           <div
             className={`cursor-pointer ${
@@ -323,7 +321,8 @@ export default function CommitmentListTable(
           ) : (
             <div
               className={`payDonation ${
-                item?.paidStatus === "completed" && "opacity-50 cursor-not-allowed"
+                item?.paidStatus === "completed" &&
+                "opacity-50 cursor-not-allowed"
               }`}
             >
               <Trans i18nKey={"paymentPaid"} />
@@ -393,7 +392,7 @@ export default function CommitmentListTable(
   }, [data]);
 
   return (
-    <RecentDonationTableWarper>
+    <CommitmentTableWarper>
       <CustomDataTable
         maxHieght={""}
         columns={columns}
@@ -405,19 +404,15 @@ export default function CommitmentListTable(
       />
       <ReactToPrint
         trigger={() => (
-          <span
-            id="printAllRedeemedVoucher"
-            ref={pdfRef}
-            style={{ display: "none" }}
-          >
+          <span id="AllCommitment" ref={pdfRef} style={{ display: "none" }}>
             Print!
           </span>
         )}
         content={() => ref.current}
-        documentTitle={`Donation-Receipt.pdf`}
+        documentTitle={`Donation-Receipts.pdf`}
       />
       <div className="" style={{ display: "none" }}>
-        <div
+        {/* <div
           ref={ref}
           className=""
           // style={{
@@ -581,6 +576,114 @@ export default function CommitmentListTable(
               </div>
             );
           })}
+        </div> */}
+        <div ref={ref}>
+          {allPaidDonationsItems?.map((item, index) => (
+            <div key={index}>
+              <div
+                className="container"
+                style={{
+                  font: "normal normal normal 20px/53px noto sans",
+                  color: "#000000",
+                }}
+              >
+                <div className="row">
+                  <div className="col-12">
+                    <div className="row justify-content-center">
+                      <div
+                        className="col-10"
+                        // style={{margin:'auto'}}
+                      >
+                        <img
+                          src={loggedTemple?.profilePhoto ?? ""}
+                          style={{
+                            width: "100%",
+                            height: "250px",
+                            marginTop: "1rem",
+                            objectFit: "cover",
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="row" style={{ marginBottom: ".8rem" }}>
+                      <div className="col-1"></div>
+                      <div className="col-5">Receipt No/रसीद क्रमांक</div>
+                      <div className="col-5" style={{textAlign:'end'}}>
+                        Date/दिनांक &nbsp;{" "}
+                        {moment(item?.createdAt ?? item?.updatedAt).format(
+                          " DD MMM YYYY"
+                        )}
+                      </div>
+                    </div>
+                    <div className="row" style={{ marginBottom: ".8rem" }}>
+                      <div className="col-1"></div>
+                      <div className="col-11">
+                        Name/नाम &nbsp;
+                        {ConverFirstLatterToCapital(
+                          item?.donarName || item?.user?.name || ""
+                        )}
+                      </div>
+                    </div>
+                    <div className="row " style={{ marginBottom: ".8rem" }}>
+                      <div className="col-1"></div>
+                      <div className="col-5">Pan/पैन</div>
+                      <div className="col-5" style={{textAlign:'end'}}>
+                        Mobile/मोबाइल &nbsp; {item?.user?.countryCode}{" "}
+                        {item?.user?.mobileNumber}
+                      </div>
+                    </div>
+                    <div className="row " style={{ marginBottom: ".8rem" }}>
+                      <div className="col-1"></div>
+                      <div className="col-11">Address/पता</div>
+                    </div>
+                    <div className="row " style={{ marginBottom: ".8rem" }}>
+                      <div className="col-1"></div>
+                      <div className="col-11">
+                        Mode of Payment/भुगतान माध्यम{" "} &nbsp;
+                        {ConverFirstLatterToCapital(item?.paymentMethod ?? "None")}
+                      </div>
+                    </div>
+                    <div className="row " style={{ marginBottom: ".8rem" }}>
+                      <div className="col-1"></div>
+                      <div className="col-11">Remarks/विवरण </div>
+                    </div>
+                    <div
+                      className="row "
+                      style={{
+                        font: "normal normal bold 20px/53px noto sans",
+                      }}
+                    >
+                      <div className="col-1"></div>
+                      <div className="col-4">
+                        Amount/राशि &nbsp; ₹
+                        {item?.amount?.toLocaleString("en-IN")}
+                      </div>
+                      <div className="col-4">In Words(शब्दों में)</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr style={{ height: "3px" }} />
+              <div
+                className="container"
+                style={{
+                  font: "normal normal normal 20px/33px noto sans",
+                  color: "#000000",
+                }}
+              >
+                <div className="row">
+                  <div className="col-1"></div>
+                  <div className="col-5">
+                    This is system generated receipt/ यह कंप्यूटर के द्वारा बनाई
+                    गई रसीद है
+                  </div>
+                  <div className="col-5" style={{ textAlign: "end" }}>
+                    (Logo) Powered by apnamandir.com
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -628,6 +731,6 @@ export default function CommitmentListTable(
           </Button>
         </ModalFooter>
       </Modal> */}
-    </RecentDonationTableWarper>
+    </CommitmentTableWarper>
   );
 }
