@@ -22,6 +22,9 @@ const Warapper = styled.div`
     font: normal normal normal 13px/20px Noto Sans;
     border-radius: 5px;
   }
+  .react-tel-input .form-control {
+    width: inherit;
+  }
   input {
     color: #583703 !important;
     border: none !important;

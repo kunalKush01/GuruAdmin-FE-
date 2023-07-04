@@ -279,7 +279,11 @@ export default function ProfileForm({
   profileImageName,
   showTimeInput,
   selectEventDisabled,
-  langSelectionValue
+  userMobileNumberState,
+  setUserMobileNumberState,
+  langSelectionValue,
+  trustMobileNumberState,
+  setTrustMobileNumberState,
 }) {
   const history = useHistory();
   const { t } = useTranslation();
@@ -292,8 +296,8 @@ export default function ProfileForm({
       if (!data.error) {
         setLoading(false);
         queryClient.invalidateQueries(["ProfileModule"]);
-        if(AddLanguage){
-          history.push("/edit-profile")
+        if (AddLanguage) {
+          history.push("/edit-profile");
         }
         !AddLanguage &&
           dispatch(
@@ -450,7 +454,7 @@ export default function ProfileForm({
       setSelectedTimeStart(facilityIntialValues?.startTime);
       setSelectedTimeEnd(facilityIntialValues?.endTime);
     }
-  }, [initialValues ,facilityIntialValues]);
+  }, [initialValues, facilityIntialValues]);
 
   // facilities validation
 
@@ -473,12 +477,6 @@ export default function ProfileForm({
     setProfileName(profileImageName);
   }, [profileImageName]);
 
-  const [userMobileNumberState, setUserMobileNumberState] = useState(
-    userMobileNumber ?? ""
-  );
-  const [trustMobileNumberState, setTrustMobileNumberState] = useState(
-    trustMobileNumber ?? ""
-  );
   const langToast = {
     toastId: "langError",
   };
@@ -832,11 +830,11 @@ export default function ProfileForm({
                     </>
                   ) : (
                     <CustomTextField
-                        label={t("location")}
-                        placeholder={t("placeHolder_location")}
-                        name="location"
-                        required
-                      />
+                      label={t("location")}
+                      placeholder={t("placeHolder_location")}
+                      name="location"
+                      required
+                    />
                   )}
                 </Col>
                 {!AddLanguage && (

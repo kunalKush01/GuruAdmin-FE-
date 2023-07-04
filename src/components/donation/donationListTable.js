@@ -16,6 +16,18 @@ import templeImage from "../../assets/images/pages/login-v2.png";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomDataTable from "../partials/CustomDataTable";
 
+const RecentDonationTableWarper = styled.div`
+  color: #583703 !important;
+  font: normal normal bold 15px/23px Noto Sans;
+  .modal-body {
+    max-height: 600px !important;
+    overflow: auto !important;
+  }
+  .tableDes p {
+    margin-bottom: 0;
+  }
+`;
+
 export default function DonationListTable({ data, topdf }, args) {
   const { t } = useTranslation();
   const history = useHistory();
@@ -35,7 +47,6 @@ export default function DonationListTable({ data, topdf }, args) {
   };
 
   const columns = [
-    
     {
       name: t("commitment_Username"),
       selector: (row) => row.username,
@@ -70,7 +81,7 @@ export default function DonationListTable({ data, topdf }, args) {
     {
       name: t("dashboard_Recent_DonorDate"),
       selector: (row) => row.dateTime,
-      width:"150px",
+      width: "150px",
       cellExport: (row) => row.dateTime,
     },
     {
@@ -131,13 +142,13 @@ export default function DonationListTable({ data, topdf }, args) {
         dateTime: moment(item.createdAt ?? item?.updatedAt).format(
           " DD MMM YYYY,hh:mm A"
         ),
-        amount: <div>₹&nbsp;{item?.amount.toLocaleString('en-IN')}</div>,
+        amount: <div>₹&nbsp;{item?.amount.toLocaleString("en-IN")}</div>,
         commitmentID: item.commitmentId
           ? item.commitmentId < 10
             ? `0${item.commitmentId}`
             : `${item.commitmentId}`
           : "_",
-        createdBy: ConverFirstLatterToCapital(item?.createdBy?.name ?? ""),
+        createdBy: ConverFirstLatterToCapital(item?.createdBy?.name ?? "-"),
         receipt: (
           <img
             src={receiptIcon}
@@ -155,27 +166,12 @@ export default function DonationListTable({ data, topdf }, args) {
     });
   }, [data]);
 
-  const RecentDonationTableWarper = styled.div`
-    color: #583703 !important;
-    font: normal normal bold 15px/23px Noto Sans;
-    .modal-body {
-      max-height: 600px !important;
-      overflow: auto !important;
-    }
-    .tableDes p {
-      margin-bottom: 0;
-    }
-  `;
   return (
     <RecentDonationTableWarper>
       <CustomDataTable maxHieght={""} columns={columns} data={Donatio_data} />
       <ReactToPrint
         trigger={() => (
-          <span
-            id="printAllRedeemedVoucher"
-            ref={pdfRef}
-            style={{ display: "none" }}
-          >
+          <span id="AllDonations" ref={pdfRef} style={{ display: "none" }}>
             Print!
           </span>
         )}
@@ -184,7 +180,7 @@ export default function DonationListTable({ data, topdf }, args) {
       />
 
       <div className="d-none">
-        <div
+        {/* <div
           ref={ref}
           style={{
             width: "100%",
@@ -291,6 +287,115 @@ export default function DonationListTable({ data, topdf }, args) {
               {moment(receipt?.createdAt ?? receipt?.updatedAt).format(
                 " DD MMM YYYY,hh:mm A"
               )}
+            </div>
+          </div>
+        </div> */}
+        <div ref={ref}>
+          <div
+            className="container"
+            style={{
+              font: "normal normal normal 20px/53px noto sans",
+              color: "#000000",
+            }}
+          >
+            <div className="row">
+              <div className="col-12">
+                <div className="row justify-content-center">
+                  <div
+                    className="col-10"
+                    // style={{margin:'auto'}}
+                  >
+                    <img
+                      src={loggedTemple?.profilePhoto ?? ""}
+                      style={{
+                        width: "100%",
+                        marginTop: "1rem",
+                        height: "250px",
+                        objectFit: "cover",
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="row" style={{ marginBottom: ".8rem" }}>
+                  <div className="col-1"></div>
+                  <div className="col-5">Receipt No/रसीद क्रमांक</div>
+                  <div className="col-5" style={{ textAlign: "end" }}>
+                    Date/दिनांक &nbsp;{" "}
+                    {moment(receipt?.createdAt ?? receipt?.updatedAt).format(
+                      " DD MMM YYYY"
+                    )}
+                  </div>
+                </div>
+                <div className="row" style={{ marginBottom: ".8rem" }}>
+                  <div className="col-1"></div>
+                  <div className="col-11">
+                    Name/नाम &nbsp;
+                    {ConverFirstLatterToCapital(
+                      receipt?.donarName || receipt?.user?.name || ""
+                    )}
+                  </div>
+                </div>
+                <div className="row " style={{ marginBottom: ".8rem" }}>
+                  <div className="col-1"></div>
+                  <div className="col-5">Pan/पैन</div>
+                  <div className="col-5" style={{ textAlign: "end" }}>
+                    Mobile/मोबाइल &nbsp; {receipt?.user?.countryCode}{" "}
+                    {receipt?.user?.mobileNumber}
+                  </div>
+                </div>
+                <div className="row " style={{ marginBottom: ".8rem" }}>
+                  <div className="col-1"></div>
+                  <div className="col-11">Address/पता</div>
+                </div>
+                <div className="row " style={{ marginBottom: ".8rem" }}>
+                  <div className="col-1"></div>
+                  <div className="col-11">
+                    Mode of Payment/भुगतान माध्यम &nbsp;
+                    {ConverFirstLatterToCapital(
+                      receipt?.paymentMethod ?? "None"
+                    )}
+                  </div>
+                </div>
+                <div className="row " style={{ marginBottom: ".8rem" }}>
+                  <div className="col-1"></div>
+                  <div className="col-11">Remarks/विवरण </div>
+                </div>
+                <div
+                  className="row "
+                  style={{
+                    font: "normal normal bold 20px/53px noto sans",
+                  }}
+                >
+                  <div className="col-1"></div>
+                  <div className="col-4">
+                    Amount/राशि &nbsp; ₹
+                    {receipt?.amount?.toLocaleString("en-In")}
+                  </div>
+                  <div className="col-4">In Words(शब्दों में)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr style={{ height: "3px" }} />
+          <div
+            className="container"
+            style={{
+              font: "normal normal normal 20px/33px noto sans",
+              color: "#000000",
+            }}
+          >
+            <div className="row">
+              <div className="col-1"></div>
+              <div
+                className="col-5"
+                // style={{background:'blue'}}
+              >
+                This is system generated
+                receipt/ यह कंप्यूटर के द्वारा बनाई गई रसीद है 
+              </div>
+              <div className="col-5" style={{ textAlign: "end" }}>
+                (Logo) Powered by apnamandir.com
+              </div>
             </div>
           </div>
         </div>

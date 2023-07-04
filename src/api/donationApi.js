@@ -15,6 +15,14 @@ export const getAllDonation = (payload) =>
     showToastOnError: false,
   });
 
+
+export const exportAllDonation = (payload) =>
+callApi({
+  requestFunction: (axios) => axios.post(`${API_BASE_URL}donation`, payload),
+  showToastOnSuccess: false,
+  showToastOnError: false,
+});
+
 export const getAllPaidDonations = (payload) =>
   callApi({
     requestFunction: (axios) =>

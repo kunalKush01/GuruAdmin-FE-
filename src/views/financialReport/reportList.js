@@ -10,10 +10,13 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
-import { getAllCommitments } from "../../api/commitmentApi";
-import { getAllDonation } from "../../api/donationApi";
+import {
+  exportAllCommitments,
+  getAllCommitments,
+} from "../../api/commitmentApi";
+import { exportAllDonation, getAllDonation } from "../../api/donationApi";
 import { getAllBoxCollection } from "../../api/donationBoxCollectionApi";
-import { getAllExpense } from "../../api/expenseApi";
+import { ExportAllExpense, getAllExpense } from "../../api/expenseApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import ReportListTable from "../../components/financeReport/reportListTable";
@@ -65,12 +68,22 @@ const NewsWarper = styled.div`
     margin-top: 0.5rem;
     font: normal normal bold 13px/5px noto sans;
   }
-  .dateChooserReport {
-    border: 1px solid #ff8744;
+  .dateChooserReport .react-datepicker__input-container {
+    width: 158px;
+  }
+  .dateChooserReport .react-datepicker__input-container > input:focus-within {
+    outline: none !important;
+    /* border: none; */
+    outline-offset: 0px;
+  }
+  .dateChooserReport .react-datepicker__input-container > input {
+    border: 1px solid #ff8744 !important;
+    text-align: center;
     color: #ff8744;
+    width: 100%;
     font: normal normal bold 15px/20px noto sans;
     /* padding: .4rem 1rem .4rem 2rem ; */
-    padding: 0.5rem;
+    padding: 10px 20px;
     border-radius: 7px;
   }
   .total_collection {
@@ -83,10 +96,10 @@ const NewsWarper = styled.div`
 `;
 
 export default function FinancialReport() {
-  const [reportDate, setreportDate] = useState({
-    start: new Date(moment().startOf("year")),
-    end: new Date(),
-  });
+  const [reportStartDate, setReportStartDate] = useState(
+    new Date(moment().startOf("month"))
+  );
+  const [reportEndDate, setReportEndDate] = useState(new Date());
 
   const { t } = useTranslation();
   const [activeReportTab, setActiveReportTab] = useState({
@@ -123,16 +136,16 @@ export default function FinancialReport() {
       "Expenses",
       pagination.page,
       selectedLang.id,
-      reportDate.start,
-      reportDate.end,
+      reportStartDate,
+      reportEndDate,
       searchBarValue,
     ],
     () =>
       getAllExpense({
         search: searchBarValue,
         ...pagination,
-        startDate: moment(reportDate.start).utcOffset(0, true).toISOString(),
-        endDate: moment(reportDate.end).utcOffset(0, true).toISOString(),
+        startDate: moment(reportStartDate).utcOffset(0, true).toISOString(),
+        endDate: moment(reportEndDate).utcOffset(0, true).toISOString(),
         languageId: selectedLang.id,
       }),
     {
@@ -145,16 +158,16 @@ export default function FinancialReport() {
       "donations",
       pagination.page,
       selectedLang.id,
-      reportDate.end,
-      reportDate.start,
+      reportEndDate,
+      reportStartDate,
       searchBarValue,
     ],
     () =>
       getAllDonation({
         search: searchBarValue,
         ...pagination,
-        startDate: moment(reportDate.start).utcOffset(0, true).toISOString(),
-        endDate: moment(reportDate.end).utcOffset(0, true).toISOString(),
+        startDate: moment(reportStartDate).utcOffset(0, true).toISOString(),
+        endDate: moment(reportEndDate).utcOffset(0, true).toISOString(),
         languageId: selectedLang.id,
       }),
     {
@@ -167,16 +180,16 @@ export default function FinancialReport() {
       "Commitments",
       pagination.page,
       selectedLang.id,
-      reportDate.end,
-      reportDate.start,
+      reportEndDate,
+      reportStartDate,
       searchBarValue,
     ],
     () =>
       getAllCommitments({
         search: searchBarValue,
         ...pagination,
-        startDate: moment(reportDate.start).utcOffset(0, true).toISOString(),
-        endDate: moment(reportDate.end).utcOffset(0, true).toISOString(),
+        startDate: moment(reportStartDate).utcOffset(0, true).toISOString(),
+        endDate: moment(reportEndDate).utcOffset(0, true).toISOString(),
         languageId: selectedLang.id,
       }),
     {
@@ -190,16 +203,16 @@ export default function FinancialReport() {
       "Collections",
       pagination.page,
       selectedLang.id,
-      reportDate.start,
-      reportDate.end,
+      reportStartDate,
+      reportEndDate,
       searchBarValue,
     ],
     () =>
       getAllBoxCollection({
         search: searchBarValue,
         ...pagination,
-        startDate: moment(reportDate.start).utcOffset(0, true).toISOString(),
-        endDate: moment(reportDate.end).utcOffset(0, true).toISOString(),
+        startDate: moment(reportStartDate).utcOffset(0, true).toISOString(),
+        endDate: moment(reportEndDate).utcOffset(0, true).toISOString(),
         languageId: selectedLang.id,
       }),
     {
@@ -207,7 +220,6 @@ export default function FinancialReport() {
       enabled: activeReportTab.name == t("report_donation_box"),
     }
   );
-
   const Items = useMemo(() => {
     switch (activeReportTab.name) {
       case t("report_expences"):
@@ -225,6 +237,98 @@ export default function FinancialReport() {
         return [];
     }
   }, [expensesQuery, donationQuery, commitmentQuery, boxCollectionQuery]);
+  // Export
+
+  const exportExpenseData = useQuery(
+    [
+      "ExportExpenses",
+      selectedLang.id,
+      reportStartDate,
+      reportEndDate,
+      searchBarValue,
+      expensesQuery
+    ],
+    () =>
+      ExportAllExpense({
+        search: searchBarValue,
+        limit: expensesQuery?.data?.totalResults,
+        startDate: moment(reportStartDate).utcOffset(0, true).toISOString(),
+        endDate: moment(reportEndDate).utcOffset(0, true).toISOString(),
+        languageId: selectedLang.id,
+      }),
+    {
+      keepPreviousData: true,
+      enabled: activeReportTab.name == t("report_expences"),
+    }
+  );
+  const exportAllCommitmentsData = useQuery(
+    [
+      "ExportCommitments",
+      selectedLang.id,
+      reportEndDate,
+      reportStartDate,
+      searchBarValue,
+      commitmentQuery,
+    ],
+    () =>
+      exportAllCommitments({
+        search: searchBarValue,
+        // ...pagination,
+        limit: commitmentQuery?.data?.totalResults,
+        startDate: moment(reportStartDate).utcOffset(0, true).toISOString(),
+        endDate: moment(reportEndDate).utcOffset(0, true).toISOString(),
+        languageId: selectedLang.id,
+      }),
+    {
+      keepPreviousData: true,
+      enabled: activeReportTab.name == t("report_commitment"),
+    }
+  );
+  const exportDonationData = useQuery(
+    [
+      "ExportDonations",
+      selectedLang.id,
+      reportEndDate,
+      reportStartDate,
+      searchBarValue,
+      donationQuery
+    ],
+    () =>
+      exportAllDonation({
+        search: searchBarValue,
+        limit: donationQuery?.data?.totalResults,
+        startDate: moment(reportStartDate).utcOffset(0, true).toISOString(),
+        endDate: moment(reportEndDate).utcOffset(0, true).toISOString(),
+        languageId: selectedLang.id,
+      }),
+    {
+      keepPreviousData: true,
+      enabled: activeReportTab.name == t("donation_Donation"),
+    }
+  );
+
+  const exportBoxCollectionData = useQuery(
+    [
+      "ExportCollections",
+      selectedLang.id,
+      reportStartDate,
+      reportEndDate,
+      searchBarValue,
+      boxCollectionQuery
+    ],
+    () =>
+      getAllBoxCollection({
+        search: searchBarValue,
+        limit: boxCollectionQuery?.data?.totalResults,
+        startDate: moment(reportStartDate).utcOffset(0, true).toISOString(),
+        endDate: moment(reportEndDate).utcOffset(0, true).toISOString(),
+        languageId: selectedLang.id,
+      }),
+    {
+      keepPreviousData: true,
+      enabled: activeReportTab.name == t("report_donation_box"),
+    }
+  );
 
   useEffect(() => {
     setPagination({ page: 1, limit: 10 });
@@ -236,37 +340,36 @@ export default function FinancialReport() {
     let tableData = [];
     let fileName;
     let sheetName;
-
+    
     switch (activeReportTab.name) {
       case t("report_expences"):
         fileName = "Expenses report";
         sheetName = "Expenses";
         tableData = jsonDataExpences({
-          data: expensesQuery?.data?.results ?? [],
+          data: exportExpenseData?.data?.results ?? [],
         });
         break;
       case t("donation_Donation"):
         fileName = "Donation report";
         sheetName = "Donation";
         tableData = jsonDataDonation({
-          data: donationQuery?.data?.results ?? [],
+          data: exportDonationData?.data?.results ?? [],
         });
         break;
       case t("report_commitment"):
         fileName = "Commitment report";
         sheetName = "Commitment";
         tableData = jsonDataCommitment({
-          data: commitmentQuery?.data?.results ?? [],
+          data: exportAllCommitmentsData?.data?.results ?? [],
         });
         break;
       case t("report_donation_box"):
         fileName = "Hundi report";
         sheetName = "Hundi";
         tableData = jsonDataDonationBox({
-          data: boxCollectionQuery?.data?.results ?? [],
+          data: exportBoxCollectionData?.data?.results ?? [],
         });
         break;
-
       default:
         break;
     }
@@ -276,6 +379,8 @@ export default function FinancialReport() {
       sheetName: sheetName,
     });
   };
+
+  
 
   return (
     <NewsWarper>
@@ -309,25 +414,42 @@ export default function FinancialReport() {
               <div>₹</div>&nbsp;
               <div>{Items?.totalAmount ?? 0}</div>
             </div>
-            <div className="dateChooserReport d-flex me-2 position-relative justify-content-between align-item-center">
+            <div className="dateChooserReport me-2 position-relative justify-content-between align-item-center">
               <Formik
                 initialValues={{
-                  DateTime: {
-                    start: new Date(moment().startOf("year")),
-                    end: null,
-                  },
+                  startDate: new Date(moment().startOf("month")),
                 }}
               >
                 {(formik) => {
                   useUpdateEffect(() => {
-                    setreportDate(formik.values.DateTime);
-                  }, [formik.values.DateTime]);
+                    setReportStartDate(formik.values.startDate);
+                  }, [formik.values.startDate]);
                   return (
-                    <FormikRangeDatePicker
-                      name="DateTime"
+                    <FormikCustomDatePicker
+                      name="startDate"
                       inline={false}
                       dateFormat=" dd-MM-yyyy"
-                      selectsRange
+                    />
+                  );
+                }}
+              </Formik>
+            </div>
+            <div className="dateChooserReport d-flex me-2 position-relative justify-content-between align-item-center">
+              <Formik
+                initialValues={{
+                  endDate: new Date(),
+                }}
+              >
+                {(formik) => {
+                  useUpdateEffect(() => {
+                    setReportEndDate(formik.values.endDate);
+                  }, [formik.values.endDate]);
+                  return (
+                    <FormikCustomDatePicker
+                      name="endDate"
+                      inline={false}
+                      minDate={reportStartDate}
+                      dateFormat=" dd-MM-yyyy"
                     />
                   );
                 }}

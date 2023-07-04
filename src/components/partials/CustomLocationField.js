@@ -94,11 +94,11 @@ const CustomLocationField = (props) => {
         .then((latLng) => {
           props.setFieldValue("location", results[0].formatted_address);
           props.setFieldValue(
-            "City",
+            "city",
             getCity(results[0].address_components) || ""
           );
           props.setFieldValue(
-            "State",
+            "state",
             getState(results[0].address_components) || ""
           );
           // props.setFieldValue(
@@ -109,8 +109,8 @@ const CustomLocationField = (props) => {
           //   "user_postal_code",
           //   getPostalCode(results[0].address_components) || ""
           // );
-          props.setFieldValue("longitude", latLng.lat);
-          props.setFieldValue("latitude", latLng.lng);
+          props.setFieldValue("longitude", latLng.lng);
+          props.setFieldValue("latitude", latLng.lat);
           //   this.setState({
           //     address: results[0].formatted_address,
           //     city: getCity(results[0].address_components) || "",

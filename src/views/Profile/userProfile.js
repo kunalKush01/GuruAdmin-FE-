@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Trans } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -31,22 +31,24 @@ const schema = yup.object().shape({
   trustName: yup
     .string()
     .matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g, "injection_found")
-    .required("name_required").trim(),
+    .required("name_required")
+    .trim(),
   trustType: yup.mixed().required("trust_type_required"),
   // preference: yup.mixed().required("trust_prefenses_required"),
-  trustEmail: yup.string().email("email_invalid").required("email_required").trim(),
-  trustNumber: yup
+  trustEmail: yup
     .string()
-    .required("trust_contact_number_required"),
+    .email("email_invalid")
+    .required("email_required")
+    .trim(),
+  trustNumber: yup.string().required("trust_contact_number_required"),
   about: yup.string().required("trust_about_required").trim(),
   name: yup
     .string()
     .matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g, "injection_found")
-    .required("name_required").trim(),
+    .required("name_required")
+    .trim(),
   email: yup.string().email("email_invalid").required("email_required").trim(),
-  mobileNumber: yup
-    .string()
-    .required("number_required"),
+  mobileNumber: yup.string().required("number_required"),
   state: yup.string().required("events_state_required").trim(),
   city: yup.string().required("events_city_required").trim(),
   location: yup.string().required("events_location_required").trim(),
@@ -106,14 +108,14 @@ export default function AddProfile() {
       // preference:profileDetail?.data?.result?.preference ?? "",
       trustEmail: profileDetail?.data?.result?.trustEmail ?? "",
       trustNumber: profileDetail?.data?.result?.trustNumber ?? "",
-      trustCountryCode: profileDetail?.data?.result?.trustCountryName ?? "",
-      trustDialCode: profileDetail?.data?.result?.trustCountryCode ?? "",
+      trustCountryCode: profileDetail?.data?.result?.trustCountryName ?? "in",
+      trustDialCode: profileDetail?.data?.result?.trustCountryCode ?? "+91",
       about: he.decode(profileDetail?.data?.result?.about ?? ""),
       name: profileDetail?.data?.result?.name ?? "",
       email: profileDetail?.data?.result?.email ?? "",
       mobileNumber: profileDetail?.data?.result?.mobileNumber ?? "",
-      countryCode: profileDetail?.data?.result?.user?.countryName ?? "",
-      dialCode: profileDetail?.data?.result?.user?.countryCode ?? "",
+      countryCode: profileDetail?.data?.result?.countryName ?? "in",
+      dialCode: profileDetail?.data?.result?.countryCode ?? "+91",
       city: profileDetail?.data?.result?.city,
       state: profileDetail?.data?.result?.state,
       location: profileDetail?.data?.result?.location,
@@ -126,6 +128,32 @@ export default function AddProfile() {
   }, [profileDetail]);
 
   const langList = useSelector((state) => state.auth.availableLang);
+
+  const [userMobileNumberState, setUserMobileNumberState] = useState();
+  const [trustMobileNumberState, setTrustMobileNumberState] = useState();
+  console.log("trustMobileNumberState",trustMobileNumberState);
+  useEffect(() => {
+    if (
+      profileDetail?.data?.result?.mobileNumber &&
+      profileDetail?.data?.result?.trustNumber
+    ) {
+      setUserMobileNumberState(
+        profileDetail?.data?.result?.countryCode +
+          profileDetail?.data?.result?.mobileNumber
+      );
+      setTrustMobileNumberState(
+        profileDetail?.data?.result?.trustCountryCode +
+          profileDetail?.data?.result?.trustNumber
+      );
+    } else {
+      setUserMobileNumberState("91" + "");
+      setTrustMobileNumberState("91" + "");
+    }
+  }, [
+    profileDetail?.data?.result?.mobileNumber,
+    profileDetail?.data?.result?.trustNumber,
+    userMobileNumberState,trustMobileNumberState
+  ]);
 
   return (
     <ProfileWarper>
@@ -177,29 +205,31 @@ export default function AddProfile() {
           )}
         </div>
       </div>
-
-      <ProfileForm
-        editProfile
-        handleSubmit={handleUpdateProfile}
-        setLoading={setLoading}
-        loading={loading}
-        
-        editImage="edit"
-        trustMobileNumber={
-          profileDetail?.data?.result?.trustCountryCode ?? "+91" +
-          `${profileDetail?.data?.result?.trustNumber}`
-        }
-        userMobileNumber={
-          profileDetail?.data?.result?.countryCode ?? "+91" +
+      <div>
+        {console.log(
+          "profileDetail?.data?.result?.mobileNumber",
           profileDetail?.data?.result?.mobileNumber
-        }
-        defaultImages={profileDetail?.data?.result?.images}
-        profileImageName={profileDetail?.data?.result?.profileName}
-        defaultDocuments={profileDetail?.data?.result?.documents}
-        initialValues={initialValues}
-        vailidationSchema={schema}
-        buttonLabel={"update_profile"}
-      />
+        )}
+        {!profileDetail?.isFetching && (
+          <ProfileForm
+            editProfile
+            handleSubmit={handleUpdateProfile}
+            setLoading={setLoading}
+            loading={loading}
+            editImage="edit"
+            userMobileNumberState={userMobileNumberState}
+            setUserMobileNumberState={setUserMobileNumberState}
+            trustMobileNumberState={trustMobileNumberState}
+            setTrustMobileNumberState={setTrustMobileNumberState}
+            defaultImages={profileDetail?.data?.result?.images}
+            profileImageName={profileDetail?.data?.result?.profileName}
+            defaultDocuments={profileDetail?.data?.result?.documents}
+            initialValues={initialValues}
+            vailidationSchema={schema}
+            buttonLabel={"update_profile"}
+          />
+        )}
+      </div>
     </ProfileWarper>
   );
 }

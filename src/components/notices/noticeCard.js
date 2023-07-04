@@ -302,15 +302,18 @@ export default function NoticeCard({
                 }
                 className="cursor-pointer  me-md-1 me-xl-0"
               >
-                <img
-                  src={data?.image || placeHolder}
-                  alt="Notice Image"
-                  style={{
-                    width: "130px",
-                    height: "122px",
-                    borderRadius: "10px",
-                  }}
-                />
+                <div className="w-100 h-100">
+                    <img
+                      src={data?.image || placeHolder}
+                      alt="Notice Image"
+                      style={{
+                        width: "100%",
+                        borderRadius: "10px",
+                        objectFit: "cover",
+                        height: "100%",
+                      }}
+                    />
+                </div>
               </Col>
               <Col className="py-1" xs={12} lg={8}>
                 <Row>

@@ -129,7 +129,7 @@ export default function DonationListTable({ data, topdf }, args) {
         dateTime: moment(item.createdAt ?? item?.updatedAt).format(
           " DD MMM YYYY,hh:mm A"
         ),
-        amount: <div>₹&nbsp;{item?.amount.toLocaleString('en-IN')}</div>,
+        amount: <div>₹&nbsp;{item?.amount?.toLocaleString("en-IN")}</div>,
         commitmentID: item.commitmentId
           ? item.commitmentId < 10
             ? `0${item.commitmentId}`
@@ -169,11 +169,7 @@ export default function DonationListTable({ data, topdf }, args) {
       <CustomDataTable maxHieght={""} columns={columns} data={Donatio_data} />
       <ReactToPrint
         trigger={() => (
-          <span
-            id="printAllRedeemedVoucher"
-            ref={pdfRef}
-            style={{ display: "none" }}
-          >
+          <span id="AllPaidDonation" ref={pdfRef} style={{ display: "none" }}>
             Print!
           </span>
         )}
@@ -182,113 +178,112 @@ export default function DonationListTable({ data, topdf }, args) {
       />
 
       <div className="d-none">
+        <div ref={ref}>
         <div
-          ref={ref}
-          style={{
-            width: "100%",
-            // border:"1px solid black",
-            // background:"yellow",
-            height: "1100px",
-            display: "flex",
-            justifyContent: "center",
-            // background:"yellow",
-            alignItems: "center",
-          }}
-        >
-          <div
+            className="container"
             style={{
-              width: "479px",
-              height: "auto",
-              textAlign: "center",
-              padding: "2rem 2rem",
+              font: "normal normal normal 20px/53px noto sans",
+              color: "#000000",
             }}
           >
-            <img src={donationReceiptIcon} style={{ width: "130px" }} />
-            <div
-              className="d-flex align-items-center"
-              style={{
-                background: "#FFF7E8",
-                height: "80px",
-                borderRadius: "8px",
-                marginTop: "20px",
-              }}
-            >
-              <img
-                src={loggedTemple?.profilePhoto ?? ""}
-                style={{ width: "80px", height: "80px", borderRadius: "8px" }}
-              />
-              <div style={{ padding: "25px" }}>
-                <div
-                  className="ms-2"
-                  style={{
-                    fontSize: "17px",
-                    fontWeight: "bold",
-                    color: "#583703",
-                  }}
-                >
-                  {ConverFirstLatterToCapital(loggedTemple?.name ?? "")}
+            <div className="row">
+              <div className="col-12">
+                <div className="row justify-content-center">
+                  <div
+                    className="col-10"
+                    // style={{margin:'auto'}}
+                  >
+                    <img
+                      src={loggedTemple?.profilePhoto ?? ""}
+                      style={{
+                        width: "100%",
+                        marginTop: "1rem",
+                        height: "250px",
+                        objectFit: "cover",
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="row" style={{ marginBottom: ".8rem" }}>
+                  <div className="col-1"></div>
+                  <div className="col-5">Receipt No/रसीद क्रमांक</div>
+                  <div className="col-5" style={{ textAlign: "end" }}>
+                    Date/दिनांक &nbsp;{" "}
+                    {moment(receipt?.createdAt ?? receipt?.updatedAt).format(
+                      " DD MMM YYYY"
+                    )}
+                  </div>
+                </div>
+                <div className="row" style={{ marginBottom: ".8rem" }}>
+                  <div className="col-1"></div>
+                  <div className="col-11">
+                    Name/नाम &nbsp;
+                    {ConverFirstLatterToCapital(
+                      receipt?.donarName || receipt?.user?.name || ""
+                    )}
+                  </div>
+                </div>
+                <div className="row " style={{ marginBottom: ".8rem" }}>
+                  <div className="col-1"></div>
+                  <div className="col-5">Pan/पैन</div>
+                  <div className="col-5" style={{ textAlign: "end" }}>
+                    Mobile/मोबाइल &nbsp; {receipt?.user?.countryCode}{" "}
+                    {receipt?.user?.mobileNumber}
+                  </div>
+                </div>
+                <div className="row " style={{ marginBottom: ".8rem" }}>
+                  <div className="col-1"></div>
+                  <div className="col-11">Address/पता</div>
+                </div>
+                <div className="row " style={{ marginBottom: ".8rem" }}>
+                  <div className="col-1"></div>
+                  <div className="col-11">
+                    Mode of Payment/भुगतान माध्यम &nbsp;
+                    {ConverFirstLatterToCapital(
+                      receipt?.paymentMethod ?? "None"
+                    )}
+                  </div>
+                </div>
+                <div className="row " style={{ marginBottom: ".8rem" }}>
+                  <div className="col-1"></div>
+                  <div className="col-11">Remarks/विवरण </div>
                 </div>
                 <div
-                  class="ms-2"
+                  className="row "
                   style={{
-                    fontSize: "13px",
-                    color: "#583703",
-                    textAlign: "left",
+                    font: "normal normal bold 20px/53px noto sans",
                   }}
                 >
-                  {`${loggedTemple?.city ?? ""}, ${loggedTemple?.state ?? ""}`}
+                  <div className="col-1"></div>
+                  <div className="col-4">
+                    Amount/राशि &nbsp; ₹
+                    {receipt?.amount?.toLocaleString("en-In")}
+                  </div>
+                  <div className="col-4">In Words(शब्दों में)</div>
                 </div>
               </div>
             </div>
-            <div
-              style={{
-                font: "normal normal bold 16px/27px Noto Sans",
-                letterSpacing: "0px",
-                paddingTop: "27px",
-                paddingBottom: "25px",
-                color: "#583703",
-              }}
-            >
-              With each donation we receive, we become all that much closer to
-              our goal. Thank you for making a difference through your
-              compassion and generosity
-            </div>
-
-            <div
-              style={{ textAlign: "left", marginTop: "5px", color: "#583703" }}
-            >
-              <span style={{ font: "normal normal bold 16px/27px Noto Sans" }}>
-                Amount :
-              </span>{" "}
-              {receipt?.amount} Rs
-            </div>
-            <div
-              style={{ textAlign: "left", marginTop: "5px", color: "#583703" }}
-            >
-              <span style={{ font: "normal normal bold 16px/27px Noto Sans" }}>
-                Mode of Payment :
-              </span>{" "}
-              {receipt?.paymentMethod}
-            </div>
-            <div
-              style={{ textAlign: "left", marginTop: "5px", color: "#583703" }}
-            >
-              <span style={{ font: "normal normal bold 16px/27px Noto Sans" }}>
-                Donor Name :
-              </span>{" "}
-              {ConverFirstLatterToCapital(
-                receipt?.donarName || receipt?.user?.name || ""
-              )}
-            </div>
-            <div
-              style={{ textAlign: "left", marginTop: "5px", color: "#583703" }}
-            >
-              <span style={{ font: "normal normal bold 16px/27px Noto Sans" }}>
-                Date & Time :
-              </span>{" "}
-              {moment(receipt?.createdAt ?? receipt?.updatedAt).format(
-                " DD MMM YYYY,hh:mm A"
-              )}
+          </div>
+          <hr style={{ height: "3px" }} />
+          <div
+            className="container"
+            style={{
+              font: "normal normal normal 20px/33px noto sans",
+              color: "#000000",
+            }}
+          >
+            <div className="row">
+              <div className="col-1"></div>
+              <div
+                className="col-5"
+                // style={{background:'blue'}}
+              >
+                This is system generated
+                receipt/ यह कंप्यूटर के द्वारा बनाई गई रसीद है 
+              </div>
+              <div className="col-5" style={{ textAlign: "end" }}>
+                (Logo) Powered by apnamandir.com
+              </div>
             </div>
           </div>
         </div>

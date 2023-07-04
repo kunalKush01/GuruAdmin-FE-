@@ -296,8 +296,6 @@ export default function Commitment() {
             </div>
           </div>
           <div className="addCommitment d-flex flex-wrap gap-2 gap-md-0">
-            {/* <Trans i18nKey={"category"} />
-            &nbsp; */}
             <ChangeCategoryType
               className={"me-1"}
               categoryTypeArray={newTypes}
@@ -313,8 +311,6 @@ export default function Commitment() {
                 );
               }}
             />
-            {/* <Trans i18nKey={"categories_sub_category"} />
-            &nbsp; */}
             <ChangeCategoryType
               className={"me-1"}
               categoryTypeArray={subCategoryTypes}
@@ -330,12 +326,18 @@ export default function Commitment() {
                 );
               }}
             />
-            {/* <Trans i18nKey={"dashboard_Recent_DonorStatus"} />
-            &nbsp; */}
             <ChangeStatus
               className={"me-1"}
               dropDownName={commitmentStatus}
-              setdropDownName={(e) => setCommitmentStatus(e.target.name)}
+              setdropDownName={(e) => {
+                setCommitmentStatus(e.target.name)
+                setPagination({ page: 1 });
+                history.push(
+                  `/commitment?page=${1}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${e.target.name}&filter=${
+                    dropDownName
+                  }`
+                );
+              }}
             />
             <ChangePeriodDropDown
               className={"me-1"}
@@ -344,9 +346,9 @@ export default function Commitment() {
                 setdropDownName(e.target.name);
                 setPagination({ page: 1 });
                 history.push(
-                  `/commitment?page=${1}&category=${categoryTypeName}&subCategory=${
+                  `/commitment?page=${1}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${
                     e.target.name
-                  }&status=${commitmentStatus}&filter=${e.target.name}`
+                  }`
                 );
               }}
             />

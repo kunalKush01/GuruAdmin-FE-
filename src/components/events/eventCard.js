@@ -18,7 +18,7 @@ import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 import { useSelector } from "react-redux";
 
 const EventCardWaraper = styled.div`
- .card1 {
+  .card1 {
     font: normal normal bold 13px/16px Noto Sans;
     margin-bottom: 0.5rem !important;
   }
@@ -32,7 +32,8 @@ const EventCardWaraper = styled.div`
     white-space: nowrap;
     /* margin-bottom: 0.5rem !important; */
   }
-  .card-text > p , div{
+  .card-text > p,
+  div {
     overflow: hidden;
     text-overflow: ellipsis;
   }
@@ -57,7 +58,7 @@ const EventCardWaraper = styled.div`
   .cardLangScroll {
     display: flex;
     /* background-color: red; */
-    margin-top:.7rem;
+    margin-top: 0.7rem;
     min-width: 230px;
     overflow-x: scroll !important;
     ::-webkit-scrollbar {
@@ -72,23 +73,23 @@ const EventCardWaraper = styled.div`
     border-radius: 20px;
     margin-right: 10px;
   }
-  img{
-  color: #583703;
-  font: 15px Noto Sans;
+  img {
+    color: #583703;
+    font: 15px Noto Sans;
   }
 
   @media only screen and (max-width: 1200px) {
-    .card-body{
+    .card-body {
       max-height: 100%;
       padding: 1rem;
     }
   }
   @media only screen and (max-width: 600px) {
-    .card-body{
+    .card-body {
       max-height: 100%;
       padding: 1rem;
     }
-}
+  }
 `;
 function BtnContent({
   eventId,
@@ -235,17 +236,21 @@ export default function EventCard({
                 onClick={() =>
                   history.push(`/events/about/${data.id}`, data.id)
                 }
-                className="cursor-pointer  me-md-1 me-xl-0"
+                className="cursor-pointer me-md-1 me-xl-0"
               >
-                <img
-                  src={data?.images[0]?.presignedUrl ?? placeHolder}
-                  alt="Event Image"
-                  style={{
-                    width: "130px",
-                    height: "122px",
-                    borderRadius: "10px",
-                  }}
-                />
+                <div className="w-100 h-100"
+                  style={{borderRadius:'15px'}}
+                >
+                  <img
+                    src={data?.images[0]?.presignedUrl ?? placeHolder}
+                    alt="Event Image"
+                    style={{
+                      width: "100%",
+                      objectFit: "cover ",
+                      height: "100%",
+                    }}
+                  />
+                </div>
               </Col>
               <Col className="py-1" xs={12} lg={8}>
                 <Row>
@@ -256,7 +261,7 @@ export default function EventCard({
                   </Col>
                   <Col md={6}>
                     <div className="card-Date">
-                    {moment(data?.startDate).format("DD MMM YYYY") ===
+                      {moment(data?.startDate).format("DD MMM YYYY") ===
                       moment(data?.endDate).format("DD MMM YYYY") ? (
                         <p>
                           {`${moment(data.startDate).format("DD MMM YYYY")} ,${

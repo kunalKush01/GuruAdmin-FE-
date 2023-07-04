@@ -86,6 +86,8 @@ export function SubAdminUserListTable({
               marginRight: "5px",
               width: "30px",
               height: "30px",
+              objectFit:"cover",
+              backgroundPosition:'center center',
               borderRadius: "50%",
             }}
           />
