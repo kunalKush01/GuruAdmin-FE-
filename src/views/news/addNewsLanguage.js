@@ -58,7 +58,6 @@ export default function AddLanguageNews() {
   const currentFilter = searchParams.get("filter");
 
   const [langSelection, setLangSelection] = useState('Select');
-  console.log("langSelection",langSelection);
 
   const newsDetailQuery = useQuery(
     ["NewsDetail", newsId, selectedLang.id],

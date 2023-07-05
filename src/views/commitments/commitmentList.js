@@ -74,7 +74,6 @@ const CommitmentWarapper = styled.div`
 
 export default function Commitment() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
-  console.log("GS dropDownName",dropDownName);
   const [categoryTypeName, setCategoryTypeName] = useState("All");
   const [subCategoryTypeName, setSubCategoryTypeName] = useState("All");
   const [commitmentStatus, setCommitmentStatus] = useState("All");
@@ -168,7 +167,6 @@ export default function Commitment() {
     }
   });
   const [categoryId, setCategoryId] = useState();
-  console.log("categoryId", categoryId);
 
   // sub category
   const subCategoryTypeQuery = useQuery(
@@ -256,7 +254,6 @@ export default function Commitment() {
   const [selectedRows, setSelectedRows] = useState([]);
 
   const notifyIds = selectedRows?.map((item) => item?.notifyUserId);
-  console.log("notifyIds", notifyIds);
 
   const [popover, setPopover] = useState(false);
 
@@ -345,7 +342,6 @@ export default function Commitment() {
               className={"me-1"}
               dropDownName={dropDownName}
               setdropDownName={(e) => {
-                console.log("GS e.target.name",e.target.name);
                 setdropDownName(e.target.name);
                 setPagination({ page: 1 ,limit:10});
                 history.push(
@@ -457,6 +453,7 @@ export default function Commitment() {
                       currentFilter={routFilter}
                       currentPage={routPagination}
                       selectedRows={selectedRows}
+                      notifyIds={notifyIds}
                       // paymentStatus = {commitmentQuery?.data?.isPaymentPaused}
                       setSelectedRows={setSelectedRows}
                       currentCategory={routCategory}

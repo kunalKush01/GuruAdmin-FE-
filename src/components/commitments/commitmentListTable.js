@@ -51,6 +51,7 @@ export default function CommitmentListTable(
     selectedRows,
     setSelectedRows,
     allPermissions,
+    notifyIds,
   },
   args
 ) {
@@ -83,7 +84,6 @@ export default function CommitmentListTable(
   };
 
   const [loading, setLoading] = useState(false);
-  console.log(loading);
   const receiptMutation = useMutation({
     mutationFn: handleDownloadReceipt,
     onSuccess: (data) => {
@@ -117,8 +117,6 @@ export default function CommitmentListTable(
   const handleChange = useCallback((state) => {
     setSelectedRows(state?.selectedRows);
   }, []);
-
-  console.log("rohit selectedRows", selectedRows);
   const columns = [
     // {
     //   name: (
@@ -392,8 +390,9 @@ export default function CommitmentListTable(
   }, [data]);
 
   const DisableSelectRow = (row) => {
-    return row?.status?.props?.children?.props?.children === "Completed"
-  }
+    return row?.status?.props?.children?.props?.children === "Completed";
+  };
+  // const isRowPreSelected = row =>  notifyIds.includes(row.id);
 
   return (
     <CommitmentTableWarper>
@@ -403,7 +402,7 @@ export default function CommitmentListTable(
         data={commitment_Data}
         selectableRows={!financeReport}
         selectableRowDisabled={DisableSelectRow}
-        // selectableRowSelected={selectedRows ?? []}
+        // selectableRowSelected={isRowPreSelected}
         // onSelectedRowsChange={handleChange}
         onSelectedRowsChange={handleChange}
       />
@@ -613,7 +612,7 @@ export default function CommitmentListTable(
                     <div className="row" style={{ marginBottom: ".8rem" }}>
                       <div className="col-1"></div>
                       <div className="col-5">Receipt No/रसीद क्रमांक</div>
-                      <div className="col-5" style={{textAlign:'end'}}>
+                      <div className="col-5" style={{ textAlign: "end" }}>
                         Date/दिनांक &nbsp;{" "}
                         {moment(item?.createdAt ?? item?.updatedAt).format(
                           " DD MMM YYYY"
@@ -632,7 +631,7 @@ export default function CommitmentListTable(
                     <div className="row " style={{ marginBottom: ".8rem" }}>
                       <div className="col-1"></div>
                       <div className="col-5">Pan/पैन</div>
-                      <div className="col-5" style={{textAlign:'end'}}>
+                      <div className="col-5" style={{ textAlign: "end" }}>
                         Mobile/मोबाइल &nbsp; {item?.user?.countryCode}{" "}
                         {item?.user?.mobileNumber}
                       </div>
@@ -644,8 +643,10 @@ export default function CommitmentListTable(
                     <div className="row " style={{ marginBottom: ".8rem" }}>
                       <div className="col-1"></div>
                       <div className="col-11">
-                        Mode of Payment/भुगतान माध्यम{" "} &nbsp;
-                        {ConverFirstLatterToCapital(item?.paymentMethod ?? "None")}
+                        Mode of Payment/भुगतान माध्यम &nbsp;
+                        {ConverFirstLatterToCapital(
+                          item?.paymentMethod ?? "None"
+                        )}
                       </div>
                     </div>
                     <div className="row " style={{ marginBottom: ".8rem" }}>

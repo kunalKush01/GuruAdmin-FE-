@@ -48,8 +48,6 @@ export default function FormWithoutFormikForCommitment({
 
   const [phoneNumber, setPhoneNumber] = useState(getCommimentMobile);
 
-  console.log("getCommimentMobile",getCommimentMobile);
-
   useUpdateEffect(() => {
     const user = formik?.values?.SelectedUser;
     if (user?.id) {

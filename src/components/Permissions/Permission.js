@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 const Permission = ({ subPermission, type, ...props }) => {
-  console.log("type", type);
   const permissions = useSelector((state) => state.auth.userDetail.permissions);
 
   // const subPermissions = permissions?.map((item) => item?.subpermissions);
@@ -29,7 +28,6 @@ const Permission = ({ subPermission, type, ...props }) => {
   const subPermissionRoute = subPermissionArr?.map((item) =>
     item?.name ? item?.name : ""
   );
-  console.log("map debug", subPermissionRoute, permissionRoute, subPermission);
   const history = useHistory();
   // if (permissionRoute?.name === "all" || (!!permissionRoute && subPermissionArr?.name === "")) {
   if (

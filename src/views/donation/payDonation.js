@@ -68,7 +68,6 @@ export default function PayDonation() {
 
   const currentPage = searchParams.get("page");
   const currentFilter = searchParams.get("filter");
-  console.log("currentFilter", currentFilter);
   const currentCategory = searchParams.get("category");
   const currentSubCategory = searchParams.get("subCategory");
   const currentStatus = searchParams.get("status");

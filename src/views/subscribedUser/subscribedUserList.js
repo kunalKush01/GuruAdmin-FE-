@@ -130,7 +130,6 @@ export default function SubscribedUser() {
   const subPermissions = permissions?.find(
     (permissionName) => permissionName.name === "dashboard"
   );
-  console.log(permissions);
 
   const subPermission = subPermissions?.subpermissions?.map(
     (item) => item.name

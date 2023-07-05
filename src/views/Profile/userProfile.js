@@ -131,7 +131,6 @@ export default function AddProfile() {
 
   const [userMobileNumberState, setUserMobileNumberState] = useState();
   const [trustMobileNumberState, setTrustMobileNumberState] = useState();
-  console.log("trustMobileNumberState",trustMobileNumberState);
   useEffect(() => {
     if (
       profileDetail?.data?.result?.mobileNumber &&
@@ -152,7 +151,8 @@ export default function AddProfile() {
   }, [
     profileDetail?.data?.result?.mobileNumber,
     profileDetail?.data?.result?.trustNumber,
-    userMobileNumberState,trustMobileNumberState
+    userMobileNumberState,
+    trustMobileNumberState,
   ]);
 
   return (
@@ -206,10 +206,6 @@ export default function AddProfile() {
         </div>
       </div>
       <div>
-        {console.log(
-          "profileDetail?.data?.result?.mobileNumber",
-          profileDetail?.data?.result?.mobileNumber
-        )}
         {!profileDetail?.isFetching && (
           <ProfileForm
             editProfile

@@ -61,7 +61,6 @@ export default function AddLanguagePunyarjak() {
   const currentFilter = searchParams.get("filter");
 
   const [langSelection, setLangSelection] = useState('Select');
-  console.log("langSelection", langSelection);
 
   const punyarjakDetailQuery = useQuery(
     ["punyarjakDetails", punyarjakId, selectedLang.id],
