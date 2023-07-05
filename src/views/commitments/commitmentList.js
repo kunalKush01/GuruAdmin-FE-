@@ -74,6 +74,7 @@ const CommitmentWarapper = styled.div`
 
 export default function Commitment() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
+  console.log("GS dropDownName",dropDownName);
   const [categoryTypeName, setCategoryTypeName] = useState("All");
   const [subCategoryTypeName, setSubCategoryTypeName] = useState("All");
   const [commitmentStatus, setCommitmentStatus] = useState("All");
@@ -212,6 +213,7 @@ export default function Commitment() {
       selectedLang.id,
       filterEndDate,
       newId,
+      dropDownName,
       subCategoryId,
       commitmentStatus,
       filterStartDate,
@@ -303,7 +305,7 @@ export default function Commitment() {
               setTypeName={(e) => {
                 setCategoryId(e.target.id);
                 setCategoryTypeName(e.target.name);
-                setPagination({ page: 1 });
+                setPagination({ page: 1 ,limit:10});
                 history.push(
                   `/commitment?page=${1}&category=${
                     e.target.name
@@ -318,7 +320,7 @@ export default function Commitment() {
               setTypeName={(e) => {
                 setSubCategoryTypeId(e.target.id);
                 setSubCategoryTypeName(e.target.name);
-                setPagination({ page: 1 });
+                setPagination({ page: 1 ,limit:10});
                 history.push(
                   `/commitment?page=${1}&category=${categoryTypeName}&subCategory=${
                     e.target.name
@@ -330,12 +332,12 @@ export default function Commitment() {
               className={"me-1"}
               dropDownName={commitmentStatus}
               setdropDownName={(e) => {
-                setCommitmentStatus(e.target.name)
-                setPagination({ page: 1 });
+                setCommitmentStatus(e.target.name);
+                setPagination({ page: 1 ,limit:10});
                 history.push(
-                  `/commitment?page=${1}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${e.target.name}&filter=${
-                    dropDownName
-                  }`
+                  `/commitment?page=${1}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${
+                    e.target.name
+                  }&filter=${dropDownName}`
                 );
               }}
             />
@@ -343,8 +345,9 @@ export default function Commitment() {
               className={"me-1"}
               dropDownName={dropDownName}
               setdropDownName={(e) => {
+                console.log("GS e.target.name",e.target.name);
                 setdropDownName(e.target.name);
-                setPagination({ page: 1 });
+                setPagination({ page: 1 ,limit:10});
                 history.push(
                   `/commitment?page=${1}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${
                     e.target.name

@@ -14,9 +14,6 @@ import { areaChartOptions } from './ChartOptions'
 import styled from 'styled-components'
 import { numberWithCommas } from '../../../../utility/formater'
 
-const StatsWithAreaChart = props => {
-  // ** Props
-  const { icon, color, stats, statTitle, series, options, type, height, className, ...rest } = props
   const ChartCardWarraper = styled.div`
       
       font: normal normal bold 25px/20px Noto Sans;
@@ -31,7 +28,10 @@ const StatsWithAreaChart = props => {
         font: normal normal normal 16px/20px Noto Sans
       }
   
-  `
+  `;
+const StatsWithAreaChart = props => {
+  // ** Props
+  const { icon, color, stats, statTitle, series, options, type, height, className, ...rest } = props
 
   const sta=numberWithCommas(stats)
   return (

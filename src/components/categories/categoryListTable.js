@@ -14,6 +14,11 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 import { useSelector } from "react-redux";
 
+const CategoryTableWarapper = styled.div`
+color: #583703 !important;
+font: normal normal bold 15px/23px Noto Sans;
+`;
+
 export function CategoryListTable({ data,page ,currentPage, currentFilter ,subPermission,allPermissions }) {
   const handleDeleteCategory = async (payload) => {
     return deleteCategoryDetail(payload);
@@ -141,19 +146,16 @@ export function CategoryListTable({ data,page ,currentPage, currentFilter ,subPe
     }));
   }, [data]);
 
-  const RecentDonationTableWarper = styled.div`
-    color: #583703 !important;
-    font: normal normal bold 15px/23px Noto Sans;
-  `;
+
 
   return (
-    <RecentDonationTableWarper>
+    <CategoryTableWarapper>
       <CustomDataTable
         // minWidth="fit-content"
         maxHieght={""}
         columns={columns}
         data={categoriesList}
       />
-    </RecentDonationTableWarper>
+    </CategoryTableWarapper>
   );
 }

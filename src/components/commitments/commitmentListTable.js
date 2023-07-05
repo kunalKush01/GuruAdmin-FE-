@@ -391,6 +391,10 @@ export default function CommitmentListTable(
     });
   }, [data]);
 
+  const DisableSelectRow = (row) => {
+    return row?.status?.props?.children?.props?.children === "Completed"
+  }
+
   return (
     <CommitmentTableWarper>
       <CustomDataTable
@@ -398,6 +402,7 @@ export default function CommitmentListTable(
         columns={columns}
         data={commitment_Data}
         selectableRows={!financeReport}
+        selectableRowDisabled={DisableSelectRow}
         // selectableRowSelected={selectedRows ?? []}
         // onSelectedRowsChange={handleChange}
         onSelectedRowsChange={handleChange}
