@@ -133,8 +133,8 @@ export default function EventList() {
     ],
     () =>
       getAllEvents({
-        search: searchBarValue,
         ...pagination,
+        search: searchBarValue,
         startDate: filterStartDate,
         endDate: filterEndDate,
         languageId: selectedLang.id,
@@ -260,7 +260,7 @@ export default function EventList() {
                     highlightColor="#fff"
                     borderRadius={"10px"}
                   >
-                    {randomArray.map((itm, idx) => {
+                    {randomArray?.map((itm, idx) => {
                       return (
                         <Col xs={12} key={idx}>
                           <Skeleton height={"63px"} />
