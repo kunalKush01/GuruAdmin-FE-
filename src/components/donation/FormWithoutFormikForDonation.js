@@ -310,6 +310,7 @@ export default function FormWithoutFormikForDonation({
                     label={t("categories_select_amount")}
                     placeholder={t("enter_price_manually")}
                     name="Amount"
+                    onInput={(e) => (e.target.value = e.target.value?.toLocaleString('en-IN'))}                    
                     required
                   />
                 </Col>

@@ -247,7 +247,8 @@ export default function EventCard({
                     style={{
                       width: "100%",
                       objectFit: "cover ",
-                      height: "100%",
+                      height: "122px",
+                      objectPosition: "top",
                     }}
                   />
                 </div>

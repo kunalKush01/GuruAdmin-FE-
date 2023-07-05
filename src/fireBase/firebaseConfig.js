@@ -15,7 +15,7 @@ const firebaseConfig = {
 };
 initializeApp(firebaseConfig);
 
-// const messaging = getMessaging();
+const messaging = getMessaging();
 // console.log("messaging",messaging);
 export const requestForToken = () => {
   return getToken(messaging, {

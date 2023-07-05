@@ -27,8 +27,6 @@ const SubHeaderWarraper = styled.div`
   }
 `;
 
-function BtnContent({ setClosePopover }) {
-  const history = useHistory();
   const BtnContentWraper = styled.div`
     color: #583703;
     font: normal normal normal 15px/20px noto sans;
@@ -43,6 +41,8 @@ function BtnContent({ setClosePopover }) {
       }
     }
   `;
+function BtnContent({ setClosePopover }) {
+  const history = useHistory();
 
   return (
     <BtnContentWraper>

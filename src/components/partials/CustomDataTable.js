@@ -70,6 +70,7 @@ function CustomDataTable({
   data,
   minWidth,
   maxHieght,
+  selectableRowDisabled,
   selectableRowsHighlight,
   selectableRows,
   selectableRowSelected,
@@ -89,6 +90,7 @@ function CustomDataTable({
           columns={columns}
           selectableRows={selectableRows}
           onSelectedRowsChange={onSelectedRowsChange}
+          selectableRowDisabled={selectableRowDisabled}
           selectableRowsHighlight={selectableRowsHighlight} // highlight selected rows
           selectableRowSelected={selectableRowSelected}
           data={data}
