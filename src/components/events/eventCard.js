@@ -84,10 +84,23 @@ const EventCardWaraper = styled.div`
       padding: 1rem;
     }
   }
-  @media only screen and (max-width: 600px) {
+  @media only screen and (max-width: 992px) {
     .card-body {
       max-height: 100%;
-      padding: 1rem;
+      padding:0rem 1rem 1rem 1rem;
+    }
+    .eventImage {
+      height: 250px !important;
+      object-position: center center !important;
+    }
+  }
+  @media only screen and (max-width: 576px) {
+    .card-body {
+      max-height: 100%;
+      padding:0rem 1rem 1rem 1rem;
+    }
+    .eventImage {
+      height: 200px !important;
     }
   }
 `;
@@ -111,9 +124,9 @@ function BtnContent({
         background-color: #ff8744;
         color: #fff;
       }
-      .col-item-disabled{
+      .col-item-disabled {
         cursor: not-allowed;
-        opacity:0.5;
+        opacity: 0.5;
       }
     }
   `;
@@ -191,12 +204,17 @@ function BtnContent({
         {allPermissions?.name === "all" || subPermission?.includes(WRITE) ? (
           <Col
             xs={12}
-            className={` ${langList?.length === totalAvailableLanguage ? "col-item-disabled opacity-50 " : "col-item "}`}
+            className={` ${
+              langList?.length === totalAvailableLanguage
+                ? "col-item-disabled opacity-50 "
+                : "col-item "
+            }`}
             onClick={() =>
-              langList?.length === totalAvailableLanguage ? "" :
-              history.push(
-                `/events/add-language/${eventId}?page=${currentPage}&filter=${currentFilter}`
-              )
+              langList?.length === totalAvailableLanguage
+                ? ""
+                : history.push(
+                    `/events/add-language/${eventId}?page=${currentPage}&filter=${currentFilter}`
+                  )
             }
           >
             <Trans i18nKey={"news_popOver_AddLang"} />
@@ -232,18 +250,17 @@ export default function EventCard({
             <Row>
               <Col
                 xs={12}
-                md={2}
+                lg={2}
                 onClick={() =>
                   history.push(`/events/about/${data.id}`, data.id)
                 }
-                className="cursor-pointer me-md-1 me-xl-0"
+                className="cursor-pointer me-md-1 me-xl-0 ps-0"
               >
-                <div className="w-100 h-100"
-                  style={{borderRadius:'15px'}}
-                >
+                <div className="w-100 h-100" style={{ borderRadius: "15px" }}>
                   <img
                     src={data?.images[0]?.presignedUrl ?? placeHolder}
                     alt="Event Image"
+                    className="eventImage"
                     style={{
                       width: "100%",
                       objectFit: "cover ",

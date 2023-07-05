@@ -13,6 +13,7 @@ import {
   getAllPaidDonationsReceipts,
   nudgeUserApi,
 } from "../../api/commitmentApi";
+import numberToWords from 'number-to-words';
 import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
@@ -393,6 +394,8 @@ export default function CommitmentListTable(
     return row?.status?.props?.children?.props?.children === "Completed";
   };
   // const isRowPreSelected = row =>  notifyIds.includes(row.id);
+  const inWordsNumber = numberToWords.toWords(parseInt(receipt?.amount ?? 0)).toUpperCase();
+
 
   return (
     <CommitmentTableWarper>
@@ -664,7 +667,7 @@ export default function CommitmentListTable(
                         Amount/राशि &nbsp; ₹
                         {item?.amount?.toLocaleString("en-IN")}
                       </div>
-                      <div className="col-4">In Words(शब्दों में)</div>
+                      <div className="col-7">In Words(शब्दों में) &nbsp; {inWordsNumber}</div>
                     </div>
                   </div>
                 </div>

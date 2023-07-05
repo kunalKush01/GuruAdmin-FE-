@@ -15,6 +15,7 @@ import receiptIcon from "../../assets/images/icons/receiptIcon.svg";
 import templeImage from "../../assets/images/pages/login-v2.png";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomDataTable from "../partials/CustomDataTable";
+import numberToWords from 'number-to-words';
 
 export default function DonationListTable({ data, topdf }, args) {
   const { t } = useTranslation();
@@ -164,6 +165,11 @@ export default function DonationListTable({ data, topdf }, args) {
       margin-bottom: 0;
     }
   `;
+
+  const inWordsNumber = numberToWords
+    .toWords(parseInt(receipt?.amount ?? 0))
+    .toUpperCase();
+
   return (
     <RecentDonationTableWarper>
       <CustomDataTable maxHieght={""} columns={columns} data={Donatio_data} />
@@ -179,7 +185,7 @@ export default function DonationListTable({ data, topdf }, args) {
 
       <div className="d-none">
         <div ref={ref}>
-        <div
+          <div
             className="container"
             style={{
               font: "normal normal normal 20px/53px noto sans",
@@ -259,7 +265,9 @@ export default function DonationListTable({ data, topdf }, args) {
                     Amount/राशि &nbsp; ₹
                     {receipt?.amount?.toLocaleString("en-In")}
                   </div>
-                  <div className="col-4">In Words(शब्दों में)</div>
+                  <div className="col-7">
+                    In Words(शब्दों में) &nbsp; {inWordsNumber}
+                  </div>
                 </div>
               </div>
             </div>
@@ -278,8 +286,8 @@ export default function DonationListTable({ data, topdf }, args) {
                 className="col-5"
                 // style={{background:'blue'}}
               >
-                This is system generated
-                receipt/ यह कंप्यूटर के द्वारा बनाई गई रसीद है 
+                This is system generated receipt/ यह कंप्यूटर के द्वारा बनाई गई
+                रसीद है
               </div>
               <div className="col-5" style={{ textAlign: "end" }}>
                 (Logo) Powered by apnamandir.com
