@@ -352,7 +352,6 @@ export default function NewsForm({
                         name="preference"
                         onChange={(e) => {
                           e?.map((item) => item.name);
-                          console.log("e pre", e);
                           formik.setFieldValue("preference", e);
                         }}
                         labelKey={"name"}

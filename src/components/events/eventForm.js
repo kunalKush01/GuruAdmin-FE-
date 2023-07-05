@@ -269,7 +269,6 @@ export default function EventForm({
   const [tagsCharLimit, setTagsCharLimit] = useState(false);
 
   const handleAddition = (formik, tag) => {
-    console.log("tags", tag);
     // if (tag?.text?.length > 3) {
     //   setIsError(prev=>([...prev,{index} ]))
     //   setTagsCharLimit(true);
@@ -375,7 +374,6 @@ export default function EventForm({
                         placeholder={t("events_select_globle")}
                         disabled={selectEventDisabled}
                         onChange={(selectOption) => {
-                          console.log("selectOption---------->", selectOption);
                           formik.setFieldValue("SelectedEvent", selectOption);
 
                           formik.setFieldValue(

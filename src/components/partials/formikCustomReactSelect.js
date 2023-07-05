@@ -6,8 +6,6 @@ import { Trans } from "react-i18next";
 export default function FormikCustomReactSelect({ loadOptions, ...props }) {
   const [field, meta, helpers] = useField(props);
 
-  console.log("valueKye",props.valueKey);
-
   return (
     <div>
       <CustomReactSelect

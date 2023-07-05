@@ -54,7 +54,6 @@ const LoginCover = () => {
     return forgotPassword(values);
   };
 
-  console.log("searchParams--------->", location.hostname);
 
   const forgetPasswordQueryClient = useQueryClient();
   const resetPasswordMutation = useMutation({
@@ -149,7 +148,6 @@ const LoginCover = () => {
     (state) => state.auth?.userDetail?.permissions
   );
   const loginPath = permissions?.map((item) => item?.name);
-  console.log("withoutAll", loginPath);
   useEffect(() => {
     if (isLogged && loginPath?.includes("all")) {
       history.push("/dashboard");
@@ -191,7 +189,6 @@ const LoginCover = () => {
     "atoken"
   );
 
-  console.log("refreshToken----->", refreshToken);
 
   const headers = {
     ...defaultHeaders,
@@ -208,7 +205,6 @@ const LoginCover = () => {
       const res = await refreshTokenRequest({ refreshToken, axiosInstance });
       if (!res.error) {
         dispatch(handleTokenLogin(res));
-        console.log("res--------->", res);
       }
     }
   }, [refreshToken]);

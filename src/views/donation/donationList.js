@@ -213,7 +213,6 @@ export default function Donation() {
     (item) => item.name
   );
 
-  console.log("subCategoryTypeQuery",donationQuery?.data?.isPaymentPaused);
   return (
     <DoationWarper>
       <Helmet>

@@ -157,8 +157,6 @@ function BtnContent({
     },
   });
   const langList = useSelector((state) => state.auth.availableLang);
-  console.log("langList", langList);
-  console.log("langList t", totalAvailableLanguage);
 
   return (
     <BtnContentWraper>

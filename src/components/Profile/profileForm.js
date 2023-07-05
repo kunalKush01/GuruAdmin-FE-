@@ -292,7 +292,6 @@ export default function ProfileForm({
   const mutation = useMutation({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
-      console.log("data debug", data);
       if (!data.error) {
         setLoading(false);
         queryClient.invalidateQueries(["ProfileModule"]);
@@ -348,7 +347,6 @@ export default function ProfileForm({
   const uploadeFacility = useRef();
   // doc upload
   const [files, setFiles] = useState([]);
-  console.log("files state--->", files);
   useEffect(() => {
     if (initialValues?.documents?.length > 0) {
       setFiles(initialValues?.documents);
@@ -380,14 +378,11 @@ export default function ProfileForm({
       {
         contentType: acceptedFiles?.type,
       },
-      console.log("havndle iploade", acceptedFiles)
     )
       .then((res) => {
         setDocumentSpinner(false);
-        console.log("files res--->", res);
         if (uploadType === "document") {
           const uploadedDocumentName = res.key.split("temp/")[1];
-          console.log("files uploade --->", uploadedDocumentName);
 
           setFiles([...files, { name: uploadedDocumentName }]);
         } else if (uploadType === "facility") {
@@ -403,11 +398,9 @@ export default function ProfileForm({
   };
 
   const removeDocumentFile = (file, formik) => {
-    console.log("file--->", file);
     setDeletedDocuments((prev) => [...prev, file?.name]);
     const newFiles = [...files];
     newFiles.splice(newFiles.indexOf(file), 1);
-    console.log("file newFiles--->", newFiles);
     setFiles(newFiles);
     formik.setFieldValue("documents", newFiles);
   };
@@ -1259,7 +1252,6 @@ export default function ProfileForm({
           </Form>
         )}
       </Formik>
-      {console.log("time", selectedTimeStart, selectedTimeEnd)}
       <Modal
         isOpen={modal}
         toggle={toggle}

@@ -77,7 +77,6 @@ const OrdersReceived = ({ statTitle,stats,SeriesName="",data=[] }) => {
       }
     }),
   }]
-  console.log('stats',stats);
 
   return  (
     <StatsWithAreaChart

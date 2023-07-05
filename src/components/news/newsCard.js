@@ -423,7 +423,6 @@ export default function NewsCard({
               <Formik
                 initialValues={{ DateTime: new Date() }}
                 onSubmit={(e) => {
-                  console.log("e schedule", e);
                   schedulingMutation.mutate({
                     publishDate: e?.DateTime,
                     newsId: data?.id,

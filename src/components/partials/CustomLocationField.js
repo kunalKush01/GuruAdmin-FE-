@@ -27,7 +27,7 @@ const LocationWaraper = styled.div`
     border-radius: 3px;
     margin-top: 2px;
     width: 100%;
-    max-height:150px;
+    max-height: 150px;
     overflow-y: scroll;
     position: absolute;
     /* padding: 1rem; */
@@ -36,11 +36,11 @@ const LocationWaraper = styled.div`
     ::focus {
       background-color: #fff7e8 !important;
     }
-    ::-webkit-scrollbar{
+    ::-webkit-scrollbar {
       display: none;
     }
   }
-  .suggestion-item{
+  .suggestion-item {
     border: none;
     background-color: #fff7e8 !important;
     box-shadow: none;
@@ -51,9 +51,7 @@ const LocationWaraper = styled.div`
 `;
 
 const CustomLocationField = (props) => {
-  console.log("props", props);
   const handleChange = (address) => {
-    console.log("address", address);
     props.setFieldValue("location", address);
     // this.setState({ address });
   };
@@ -81,15 +79,6 @@ const CustomLocationField = (props) => {
 
   const handleSelect = (address) => {
     geocodeByAddress(address).then((results) => {
-      console.log("results", results);
-      console.log(
-        getCity(results[0].address_components),
-        // getArea(results[0].address_components),
-        getState(results[0].address_components)
-        // getCountry(results[0].address_components),
-        // getPostalCode(results[0].address_components)
-      );
-
       getLatLng(results[0])
         .then((latLng) => {
           props.setFieldValue("location", results[0].formatted_address);
@@ -120,7 +109,6 @@ const CustomLocationField = (props) => {
           //     lat: latLng.lat,
           //     lng: latLng.lng,
           //   });
-          console.log("Success", latLng);
         })
         .catch((error) => console.error("Error", error));
     });

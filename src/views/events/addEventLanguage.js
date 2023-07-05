@@ -56,8 +56,6 @@ export default function AddLanguageEvent() {
 
   const [langSelection, setLangSelection] = useState('Select');
 
-  console.log("langSelection", langSelection);
-
   const eventDetailQuery = useQuery(
     ["EventDetail", eventId, selectedLang.id],
     async () => await getEventDetail({ eventId, languageId: selectedLang.id })
