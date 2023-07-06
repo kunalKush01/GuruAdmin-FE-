@@ -108,14 +108,14 @@ export default function AddProfile() {
       // preference:profileDetail?.data?.result?.preference ?? "",
       trustEmail: profileDetail?.data?.result?.trustEmail ?? "",
       trustNumber: profileDetail?.data?.result?.trustNumber ?? "",
-      trustCountryCode: profileDetail?.data?.result?.trustCountryName ?? "in",
-      trustDialCode: profileDetail?.data?.result?.trustCountryCode ?? "+91",
+      trustCountryCode: profileDetail?.data?.result?.trustCountryName ?? "",
+      trustDialCode: profileDetail?.data?.result?.trustCountryCode ?? "",
       about: he.decode(profileDetail?.data?.result?.about ?? ""),
       name: profileDetail?.data?.result?.name ?? "",
       email: profileDetail?.data?.result?.email ?? "",
       mobileNumber: profileDetail?.data?.result?.mobileNumber ?? "",
-      countryCode: profileDetail?.data?.result?.countryName ?? "in",
-      dialCode: profileDetail?.data?.result?.countryCode ?? "+91",
+      countryCode: profileDetail?.data?.result?.countryName ?? "",
+      dialCode: profileDetail?.data?.result?.countryCode ?? "",
       city: profileDetail?.data?.result?.city,
       state: profileDetail?.data?.result?.state,
       location: profileDetail?.data?.result?.location,
@@ -129,8 +129,8 @@ export default function AddProfile() {
 
   const langList = useSelector((state) => state.auth.availableLang);
 
-  const [userMobileNumberState, setUserMobileNumberState] = useState();
-  const [trustMobileNumberState, setTrustMobileNumberState] = useState();
+  const [userMobileNumberState, setUserMobileNumberState] = useState("");
+  const [trustMobileNumberState, setTrustMobileNumberState] = useState("");
   useEffect(() => {
     if (
       profileDetail?.data?.result?.mobileNumber &&
@@ -151,8 +151,6 @@ export default function AddProfile() {
   }, [
     profileDetail?.data?.result?.mobileNumber,
     profileDetail?.data?.result?.trustNumber,
-    userMobileNumberState,
-    trustMobileNumberState,
   ]);
 
   return (

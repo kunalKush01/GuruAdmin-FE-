@@ -412,7 +412,7 @@ export default function FinancialReport() {
               <div>{`Total ${activeReportTab.name} :`}</div>
               &nbsp;
               <div>₹</div>&nbsp;
-              <div>{Items?.totalAmount ?? 0}</div>
+              <div>{Items?.totalAmount?.toLocaleString('en-IN') ?? 0}</div>
             </div>
             <div className="dateChooserReport me-2 position-relative justify-content-between align-item-center">
               <Formik

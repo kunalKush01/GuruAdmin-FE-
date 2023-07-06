@@ -61,6 +61,7 @@ export default function DonationListTable({ data, topdf }, args) {
       name: t("dashboard_Recent_DonorNumber"),
       selector: (row) => row.mobileNumber,
       cellExport: (row) => row.mobileNumber,
+      width: "150px",
     },
     {
       name: t("dashboard_Recent_DonorName"),
@@ -129,7 +130,7 @@ export default function DonationListTable({ data, topdf }, args) {
             <div>{ConverFirstLatterToCapital(item?.user?.name ?? "")}</div>
           </div>
         ),
-        mobileNumber: item?.user?.mobileNumber,
+        mobileNumber: `+${item?.user?.countryCode?.replace('+','') ?? '91'} ${item?.user?.mobileNumber}`,
         donarName: ConverFirstLatterToCapital(
           item?.donarName ?? item.user?.name
         ),

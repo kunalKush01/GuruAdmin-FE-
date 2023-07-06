@@ -236,7 +236,7 @@ export default function CommitmentListTable(
             </div>
           </div>
         ),
-        mobileNumber: item?.user?.mobileNumber,
+        mobileNumber: `+${item?.user?.countryCode?.replace('+','') ?? '91'} ${item?.user?.mobileNumber}`,
         donarName: ConverFirstLatterToCapital(
           item?.donarName ?? item.user?.name
         ),
@@ -588,109 +588,140 @@ export default function CommitmentListTable(
           {allPaidDonationsItems?.map((item, index) => (
             <div key={index}>
               <div
-                className="container"
-                style={{
-                  font: "normal normal normal 20px/53px noto sans",
-                  color: "#000000",
-                }}
-              >
-                <div className="row">
-                  <div className="col-12">
-                    <div className="row justify-content-center">
-                      <div
-                        className="col-10"
-                        // style={{margin:'auto'}}
-                      >
-                        <img
-                          src={loggedTemple?.profilePhoto ?? ""}
-                          style={{
-                            width: "100%",
-                            height: "250px",
-                            marginTop: "1rem",
-                            objectFit: "cover",
-                          }}
-                        />
-                      </div>
-                    </div>
-                    <div className="row" style={{ marginBottom: ".8rem" }}>
-                      <div className="col-1"></div>
-                      <div className="col-5">Receipt No/रसीद क्रमांक</div>
-                      <div className="col-5" style={{ textAlign: "end" }}>
-                        Date/दिनांक &nbsp;{" "}
-                        {moment(item?.createdAt ?? item?.updatedAt).format(
-                          " DD MMM YYYY"
-                        )}
-                      </div>
-                    </div>
-                    <div className="row" style={{ marginBottom: ".8rem" }}>
-                      <div className="col-1"></div>
-                      <div className="col-11">
-                        Name/नाम &nbsp;
-                        {ConverFirstLatterToCapital(
-                          item?.donarName || item?.user?.name || ""
-                        )}
-                      </div>
-                    </div>
-                    <div className="row " style={{ marginBottom: ".8rem" }}>
-                      <div className="col-1"></div>
-                      <div className="col-5">Pan/पैन</div>
-                      <div className="col-5" style={{ textAlign: "end" }}>
-                        Mobile/मोबाइल &nbsp; {item?.user?.countryCode}{" "}
-                        {item?.user?.mobileNumber}
-                      </div>
-                    </div>
-                    <div className="row " style={{ marginBottom: ".8rem" }}>
-                      <div className="col-1"></div>
-                      <div className="col-11">Address/पता</div>
-                    </div>
-                    <div className="row " style={{ marginBottom: ".8rem" }}>
-                      <div className="col-1"></div>
-                      <div className="col-11">
-                        Mode of Payment/भुगतान माध्यम &nbsp;
-                        {ConverFirstLatterToCapital(
-                          item?.paymentMethod ?? "None"
-                        )}
-                      </div>
-                    </div>
-                    <div className="row " style={{ marginBottom: ".8rem" }}>
-                      <div className="col-1"></div>
-                      <div className="col-11">Remarks/विवरण </div>
-                    </div>
-                    <div
-                      className="row "
+            className="container"
+            style={{
+              font: "normal normal normal 18px/45px noto sans",
+              color: "#000000",
+            }}
+          >
+            <div className="row">
+              <div className="col-12">
+                <div className="row justify-content-center">
+                  <div
+                    className="col-10"
+                    // style={{margin:'auto'}}
+                  >
+                    <img
+                      src={loggedTemple?.profilePhoto ?? ""}
                       style={{
-                        font: "normal normal bold 20px/53px noto sans",
+                        width: "100%",
+                        marginTop: "1rem",
+                        height: "250px",
+                        objectFit: "cover",
                       }}
-                    >
-                      <div className="col-1"></div>
-                      <div className="col-4">
-                        Amount/राशि &nbsp; ₹
-                        {item?.amount?.toLocaleString("en-IN")}
-                      </div>
-                      <div className="col-7">In Words(शब्दों में) &nbsp; {inWordsNumber}</div>
-                    </div>
+                    />
                   </div>
                 </div>
-              </div>
-              <hr style={{ height: "3px" }} />
-              <div
-                className="container"
-                style={{
-                  font: "normal normal normal 20px/33px noto sans",
-                  color: "#000000",
-                }}
-              >
                 <div className="row">
                   <div className="col-1"></div>
-                  <div className="col-5">
-                    This is system generated receipt/ यह कंप्यूटर के द्वारा बनाई
-                    गई रसीद है
-                  </div>
-                  <div className="col-5" style={{ textAlign: "end" }}>
-                    (Logo) Powered by apnamandir.com
+                  <div className="col-5">Receipt No/रसीद क्रमांक</div>
+                  <div className="col-5" >
+                    01
                   </div>
                 </div>
+                <div className="row">
+                  <div className="col-1"></div>
+                  <div className="col-5">Date/दिनांक</div>
+                  <div className="col-5" >
+                    {moment(item?.createdAt ?? item?.updatedAt).format(
+                          " DD MMM YYYY"
+                        )}
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-1"></div>
+                  <div className="col-5">Name/नाम &nbsp;</div>
+                  <div className="col-5" >
+                   {ConverFirstLatterToCapital(
+                          item?.donarName || item?.user?.name || ""
+                        )}
+                  </div>
+                </div>
+                <div className="row ">
+                  <div className="col-1"></div>
+                  <div className="col-5">Pan/पैन</div>
+                  <div className="col-5" >
+                    ASED123456
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-1"></div>
+                  <div className="col-5">Mobile/मोबाइल</div>
+                  <div className="col-5" >
+                   {item?.user?.countryCode}{" "}
+                        {item?.user?.mobileNumber}
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-1"></div>
+                  <div className="col-5">Address/पता</div>
+                  <div className="col-5" >
+                    Ratanada, Jodhpur Rajasthan
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-1"></div>
+                  <div className="col-5">Mode of Payment/भुगतान माध्यम</div>
+                  <div className="col-5" >
+                    {ConverFirstLatterToCapital(
+                          item?.paymentMethod ?? "None"
+                        )}
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-1"></div>
+                  <div className="col-5">Remarks/विवरण </div>
+                  <div className="col-5" >
+                    Dummy
+                  </div>
+                </div>
+                <div
+                  className="row"
+                  style={{
+                     font: "normal normal bold 18px/45px noto sans",
+                  }}
+                >
+                  <div className="col-1"></div>
+                  <div className="col-5">Amount/राशि</div>
+                  <div className="col-5" >
+                    ₹{item?.amount?.toLocaleString("en-IN")}
+                  </div>
+                </div>
+                <div className="row"
+                 style={{
+                   font: "normal normal bold 18px/45px noto sans",
+                }}
+                >
+                  <div className="col-1"></div>
+                  <div className="col-5">In Words(शब्दों में)</div>
+                  {/* <div className="col-5" >{inWordsNumber} ONLY</div> */}
+                  <div className="col-5" >{numberToWords.toWords(parseInt(item?.amount ?? 0)).toUpperCase()} ONLY</div>
+                </div>
               </div>
+            </div>
+          </div>
+          <hr style={{ height: "3px" }} />
+          <div
+            className="container"
+            style={{
+              font: "normal normal normal 18px/33px noto sans",
+              color: "#000000",
+            }}
+          >
+            <div className="row">
+              <div className="col-1"></div>
+              <div
+                className="col-5"
+                // style={{background:'blue'}}
+              >
+                This is system generated receipt/ यह कंप्यूटर के द्वारा बनाई गई
+                रसीद है
+              </div>
+              <div className="col-5" style={{textAlign:'end'}} >
+                (Logo) Powered by apnamandir.com
+              </div>
+            </div>
+          </div>
             </div>
           ))}
         </div>

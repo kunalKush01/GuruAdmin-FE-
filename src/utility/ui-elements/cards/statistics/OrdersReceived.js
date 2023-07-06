@@ -54,6 +54,7 @@ const OrdersReceived = ({ statTitle,stats,SeriesName="",data=[] }) => {
     },
     yaxis: {
       labels: {
+        show:false,
         formatter: function (value) {
           // Customize the label value based on your requirements
           // const formattedValue = value.toFixed(2).replace(/\d(?=(\d{2})+\d{3})/g, '$&,');
