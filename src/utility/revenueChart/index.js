@@ -53,15 +53,15 @@ export const RevenueChart = ({
         };
       }),
     },
-    {
-      name: t("dashboard_totalExpenses"),
-      data: TotalExpensesData?.map((item) => {
-        return {
-          x: item.month,
-          y: item.amount,
-        };
-      }),
-    },
+    // {
+    //   name: t("dashboard_totalExpenses"),
+    //   data: TotalExpensesData?.map((item) => {
+    //     return {
+    //       x: item.month,
+    //       y: item.amount,
+    //     };
+    //   }),
+    // },
   ];
 
   const options = {
@@ -115,7 +115,6 @@ export const RevenueChart = ({
   return (
     <RevenueChartWarrper id="chart">
       <p>
-        {" "}
         <Trans i18nKey={"dashboard_RevenueReport"} />
       </p>
       <ReactApexChart

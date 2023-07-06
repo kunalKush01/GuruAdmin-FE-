@@ -185,10 +185,10 @@ export default function DonationListTable({ data, topdf }, args) {
 
       <div className="d-none">
         <div ref={ref}>
-          <div
+        <div
             className="container"
             style={{
-              font: "normal normal normal 20px/53px noto sans",
+              font: "normal normal normal 18px/45px noto sans",
               color: "#000000",
             }}
           >
@@ -210,64 +210,88 @@ export default function DonationListTable({ data, topdf }, args) {
                     />
                   </div>
                 </div>
-                <div className="row" style={{ marginBottom: ".8rem" }}>
+                <div className="row">
                   <div className="col-1"></div>
                   <div className="col-5">Receipt No/रसीद क्रमांक</div>
-                  <div className="col-5" style={{ textAlign: "end" }}>
-                    Date/दिनांक &nbsp;{" "}
+                  <div className="col-5" >
+                    01
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-1"></div>
+                  <div className="col-5">Date/दिनांक</div>
+                  <div className="col-5" >
                     {moment(receipt?.createdAt ?? receipt?.updatedAt).format(
                       " DD MMM YYYY"
                     )}
                   </div>
                 </div>
-                <div className="row" style={{ marginBottom: ".8rem" }}>
+                <div className="row">
                   <div className="col-1"></div>
-                  <div className="col-11">
-                    Name/नाम &nbsp;
+                  <div className="col-5">Name/नाम &nbsp;</div>
+                  <div className="col-5" >
                     {ConverFirstLatterToCapital(
                       receipt?.donarName || receipt?.user?.name || ""
                     )}
                   </div>
                 </div>
-                <div className="row " style={{ marginBottom: ".8rem" }}>
+                <div className="row ">
                   <div className="col-1"></div>
                   <div className="col-5">Pan/पैन</div>
-                  <div className="col-5" style={{ textAlign: "end" }}>
-                    Mobile/मोबाइल &nbsp; {receipt?.user?.countryCode}{" "}
-                    {receipt?.user?.mobileNumber}
+                  <div className="col-5" >
+                    ASED123456
                   </div>
                 </div>
-                <div className="row " style={{ marginBottom: ".8rem" }}>
+                <div className="row">
                   <div className="col-1"></div>
-                  <div className="col-11">Address/पता</div>
+                  <div className="col-5">Mobile/मोबाइल</div>
+                  <div className="col-5" >
+                    {receipt?.user?.countryCode} {receipt?.user?.mobileNumber}
+                  </div>
                 </div>
-                <div className="row " style={{ marginBottom: ".8rem" }}>
+                <div className="row">
                   <div className="col-1"></div>
-                  <div className="col-11">
-                    Mode of Payment/भुगतान माध्यम &nbsp;
+                  <div className="col-5">Address/पता</div>
+                  <div className="col-5" >
+                    Ratanada, Jodhpur Rajasthan
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-1"></div>
+                  <div className="col-5">Mode of Payment/भुगतान माध्यम</div>
+                  <div className="col-5" >
                     {ConverFirstLatterToCapital(
                       receipt?.paymentMethod ?? "None"
                     )}
                   </div>
                 </div>
-                <div className="row " style={{ marginBottom: ".8rem" }}>
+                <div className="row">
                   <div className="col-1"></div>
-                  <div className="col-11">Remarks/विवरण </div>
+                  <div className="col-5">Remarks/विवरण </div>
+                  <div className="col-5" >
+                    Dummy
+                  </div>
                 </div>
                 <div
-                  className="row "
+                  className="row"
                   style={{
-                    font: "normal normal bold 20px/53px noto sans",
+                     font: "normal normal bold 18px/45px noto sans",
                   }}
                 >
                   <div className="col-1"></div>
-                  <div className="col-4">
-                    Amount/राशि &nbsp; ₹
-                    {receipt?.amount?.toLocaleString("en-In")}
+                  <div className="col-5">Amount/राशि</div>
+                  <div className="col-5" >
+                    ₹{receipt?.amount?.toLocaleString("en-In")}
                   </div>
-                  <div className="col-7">
-                    In Words(शब्दों में) &nbsp; {inWordsNumber}
-                  </div>
+                </div>
+                <div className="row"
+                 style={{
+                   font: "normal normal bold 18px/45px noto sans",
+                }}
+                >
+                  <div className="col-1"></div>
+                  <div className="col-5">In Words(शब्दों में)</div>
+                  <div className="col-5" >{inWordsNumber} ONLY</div>
                 </div>
               </div>
             </div>
@@ -276,7 +300,7 @@ export default function DonationListTable({ data, topdf }, args) {
           <div
             className="container"
             style={{
-              font: "normal normal normal 20px/33px noto sans",
+              font: "normal normal normal 18px/33px noto sans",
               color: "#000000",
             }}
           >
@@ -289,7 +313,7 @@ export default function DonationListTable({ data, topdf }, args) {
                 This is system generated receipt/ यह कंप्यूटर के द्वारा बनाई गई
                 रसीद है
               </div>
-              <div className="col-5" style={{ textAlign: "end" }}>
+              <div className="col-5" style={{textAlign:'end'}} >
                 (Logo) Powered by apnamandir.com
               </div>
             </div>

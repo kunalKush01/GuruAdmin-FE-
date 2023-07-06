@@ -79,7 +79,7 @@ export default function AddCategory() {
             name: "",
             mobile: "",
             countryCode:"in",
-            dialCode:"+91",
+            dialCode:"91",
             email: "",
             password: "",
             file: "",

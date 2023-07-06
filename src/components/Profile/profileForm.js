@@ -641,6 +641,7 @@ export default function ProfileForm({
                       </Col>
                       {/* {JSON.stringify(formik.values.mobileNumber)} */}
                       <Col xs={12} md={6} lg={4} className="">
+                        {console.log('trustMobileNumberState',trustMobileNumberState)}
                         <CustomCountryMobileNumberField
                           value={trustMobileNumberState}
                           defaultCountry={initialValues?.trustCountryCode}

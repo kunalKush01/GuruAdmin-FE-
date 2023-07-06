@@ -54,7 +54,7 @@ export default function AddCommitment() {
   const initialValues = {
     Mobile:"",
     countryCode:"in",
-    dialCode:"+91",
+    dialCode:"91",
     SelectedUser: "", 
     donarName: "",
     SelectedMasterCategory: "",

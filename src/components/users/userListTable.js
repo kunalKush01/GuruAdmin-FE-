@@ -94,7 +94,7 @@ export function SubAdminUserListTable({
           <div>{ConverFirstLatterToCapital(item.name ?? "-")}</div>
         </div>
       ),
-      mobile: item.mobileNumber ?? "-",
+      mobile:  `+${item?.countryCode ?? "91"} ${item.mobileNumber}` ?? "-",
       email: item.email ?? "-",
       userRole: item?.roles?.join(",") ?? "-",
       // addLanguage: (

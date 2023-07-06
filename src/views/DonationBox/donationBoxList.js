@@ -191,7 +191,7 @@ export default function Expenses() {
               <Trans i18nKey={"DonationBox_total_collection"} />
               &nbsp;
               <div>₹</div>&nbsp;
-              <div>{boxCollectionQuery?.data?.totalAmount ?? 0}</div>
+              <div>{boxCollectionQuery?.data?.totalAmount?.toLocaleString('en-IN') ?? 0}</div>
             </div>
             <ChangePeriodDropDown
               className={"me-2"}

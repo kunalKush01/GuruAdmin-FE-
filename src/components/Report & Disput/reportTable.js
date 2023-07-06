@@ -89,7 +89,7 @@ const ReportTable = ({ data }) => {
             <div>{ConverFirstLatterToCapital(item?.name ?? "-")}</div>
           </div>
         ),
-        mobileNumber: item?.mobileNumber ?? "-",
+        mobileNumber: `+${item?.countryCode ?? "91"} ${item?.mobileNumber}` ?? "-",
         email: item?.email ?? "-",
         transactionIds: item?.transactionId ?? "-",
         status: (
