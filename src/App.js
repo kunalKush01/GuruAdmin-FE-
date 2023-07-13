@@ -10,8 +10,13 @@ import { isSerchable } from "./utility/localSerachBar";
 import configureAmplify from "./AWS/awsPool";
 import * as serviceWorker from "./serviceWorker";
 import Notification from "./fireBase/Notification";
+import { disableInspect } from "./utility/removeContextMenu";
 
 const App = () => {
+  if (process.env.REACT_APP_ENVIRMENT !== "development") {
+    disableInspect();
+  }
+
   configureAmplify();
 
   const selectedLanguage = useSelector((state) => state.auth.selectLang);

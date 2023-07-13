@@ -27,7 +27,7 @@ const SetPassword = () => {
     onSuccess: (data) => {
       if (!data.error) {
         setLoading(false);
-        history.push("/login")
+        history.push("/login");
       } else if (data.error) {
         setLoading(false);
       }
@@ -104,8 +104,11 @@ const SetPassword = () => {
     .loginBackground {
       background: #fff7e8;
     }
-    .templeName{
+    .templeName {
       font: normal normal 600 23px/43px Noto Sans;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
     }
   `;
 
@@ -119,7 +122,7 @@ const SetPassword = () => {
   const currentToken = searchParams.get("token");
 
   const hostname = location.hostname;
-  const subDomainName = hostname.replace(".paridhan.app","");
+  const subDomainName = hostname.replace("-staging.paridhan.app", "");
   const loginPageQuery = useQuery([subDomainName], () =>
     loginPage(subDomainName)
   );
@@ -169,7 +172,10 @@ const SetPassword = () => {
             {<CardTitle className="fw-bold mb-0 ">Set Password</CardTitle>}
             {loginPageData?.name !== "" && (
               <div className="templeName">
-                Admin: <span>{ConverFirstLatterToCapital(loginPageData?.name ?? "")}</span>
+                Admin:{" "}
+                <span title={ConverFirstLatterToCapital(loginPageData?.name ?? "")}>
+                  {ConverFirstLatterToCapital(loginPageData?.name ?? "")}
+                </span>
               </div>
             )}
             <CardText className="signInEnterUserNAme   ">

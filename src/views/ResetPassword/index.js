@@ -125,6 +125,9 @@ const ResetPassWord = () => {
     }
     .templeName {
       font: normal normal 600 23px/43px Noto Sans;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
     }
   `;
 
@@ -138,7 +141,7 @@ const ResetPassWord = () => {
   const currentToken = searchParams.get("token");
 
   const hostname = location.hostname;
-  const subDomainName = hostname.replace(".paridhan.app","");
+  const subDomainName = hostname.replace("-staging.paridhan.app","");
   const loginPageQuery = useQuery([subDomainName], () =>
     loginPage(subDomainName)
   );
@@ -190,7 +193,7 @@ const ResetPassWord = () => {
 
             {loginPageData?.name !== "" && (
               <div className="templeName">
-                Admin: <span>{ConverFirstLatterToCapital(loginPageData?.name ?? "")}</span>
+                Admin: <span title={ConverFirstLatterToCapital(loginPageData?.name ?? "")}>{ConverFirstLatterToCapital(loginPageData?.name ?? "")}</span>
               </div>
             )}
             <CardText className="signInEnterUserNAme   ">

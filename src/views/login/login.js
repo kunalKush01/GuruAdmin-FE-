@@ -54,7 +54,6 @@ const LoginCover = () => {
     return forgotPassword(values);
   };
 
-
   const forgetPasswordQueryClient = useQueryClient();
   const resetPasswordMutation = useMutation({
     mutationFn: handleForgetPassword,
@@ -139,6 +138,9 @@ const LoginCover = () => {
     }
     .templeName {
       font: normal normal 600 23px/43px Noto Sans;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
     }
     .loginBackground {
       background: #fff7e8;
@@ -163,7 +165,7 @@ const LoginCover = () => {
   }, [isLogged, loginPath]);
 
   const hostname = location.hostname;
-  const subDomainName = hostname.replace(".paridhan.app", "");
+  const subDomainName = hostname.replace("-staging.paridhan.app", "");
   const loginPageQuery = useQuery([subDomainName], () =>
     loginPage(subDomainName)
   );
@@ -188,7 +190,6 @@ const LoginCover = () => {
   const accessToken = new URLSearchParams(history.location.search)?.get(
     "atoken"
   );
-
 
   const headers = {
     ...defaultHeaders,
@@ -248,7 +249,7 @@ const LoginCover = () => {
               {loginPageData?.name !== "" && (
                 <div className="templeName">
                   Admin:{" "}
-                  <span>
+                  <span title={ConverFirstLatterToCapital(loginPageData?.name ?? "")}>
                     {ConverFirstLatterToCapital(loginPageData?.name ?? "")}
                   </span>
                 </div>
