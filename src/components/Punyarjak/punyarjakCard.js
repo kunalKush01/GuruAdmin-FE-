@@ -240,7 +240,7 @@ export default function PunyarjakCard({
           overflow: "hidden",
         }}
       >
-        <div className="position-relative cursor-pointer imgContainer ">
+        <div className="position-relative imgContainer ">
           <img
             alt="Punyarjak Image"
             style={{
@@ -255,7 +255,7 @@ export default function PunyarjakCard({
         </div>
 
         <CardBody>
-          <div className="cursor-pointer">
+          <div className="">
             <CardTitle>
               {ConverFirstLatterToCapital(data?.title ?? "")}
             </CardTitle>

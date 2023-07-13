@@ -5,22 +5,16 @@ export const forgotPassword = (payload) =>
   callApi({
     requestFunction: (axios) =>
       axios.post(`${API_BASE_URL}auth/forgot-password`, payload),
-    showToastOnSuccess: true,
-    showToastOnError: true,
   });
 
 export const resetPassword = (payload) =>
   callApi({
     requestFunction: (axios) =>
       axios.post(`${API_BASE_URL}auth/reset-password`, payload),
-    showToastOnSuccess: true,
-    showToastOnError: true,
   });
 
 export const setPassword = (payload) =>
   callApi({
     requestFunction: (axios) =>
       axios.post(`${API_BASE_URL}auth/set-password`, payload),
-    showToastOnSuccess: true,
-    showToastOnError: true,
   });

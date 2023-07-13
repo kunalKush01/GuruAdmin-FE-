@@ -16,12 +16,14 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 
 const messaging = getMessaging();
+
 export const requestForToken = () => {
   return getToken(messaging, {
     vapidKey: `BC53FJ748DQoZ27hJEi7QGbQjZNtLClRf1IlS0g_a2LivHWRdMy6z_kZ63QmjUACpQJV2y5CeSoq85A7m98GSdM`,
   })
     .then((currentToken) => {
       if (currentToken) {
+        console.log("currentToken",currentToken);
         localStorage.setItem("fcm_token", currentToken);
         // Perform any other neccessary action with the token
       } else {

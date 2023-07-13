@@ -377,7 +377,7 @@ export default function ProfileForm({
       acceptedFiles,
       {
         contentType: acceptedFiles?.type,
-      },
+      }
     )
       .then((res) => {
         setDocumentSpinner(false);
@@ -461,8 +461,8 @@ export default function ProfileForm({
       .string()
       // .matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g, "injection_found")
       .required("news_desc_required"),
-    startTime: yup.mixed().required("start_time_required"),
-    endTime: yup.mixed().required("end_time_required"),
+    // startTime: yup.mixed().required("start_time_required"),
+    // endTime: yup.mixed().required("end_time_required"),
   });
   const [imageSpinner, setImageSpinner] = useState(false);
   const [profileName, setProfileName] = useState();
@@ -641,7 +641,10 @@ export default function ProfileForm({
                       </Col>
                       {/* {JSON.stringify(formik.values.mobileNumber)} */}
                       <Col xs={12} md={6} lg={4} className="">
-                        {console.log('trustMobileNumberState',trustMobileNumberState)}
+                        {console.log(
+                          "trustMobileNumberState",
+                          trustMobileNumberState
+                        )}
                         <CustomCountryMobileNumberField
                           value={trustMobileNumberState}
                           defaultCountry={initialValues?.trustCountryCode}
@@ -809,7 +812,7 @@ export default function ProfileForm({
                   {!AddLanguage ? (
                     <>
                       <label>
-                        <Trans i18nKey={"location"} />
+                        <Trans i18nKey={"location"} />*
                       </label>
                       <CustomLocationField
                         setFieldValue={formik.setFieldValue}
@@ -833,20 +836,20 @@ export default function ProfileForm({
                 </Col>
                 {!AddLanguage && (
                   <>
-                    <Col xs={12} md={4}>
+                    <Col xs={12} md={4} className="opacity-75">
                       <CustomTextField
                         label={t("City")}
                         placeholder={t("placeHolder_city")}
                         name="city"
-                        required
+                        disabled
                       />
                     </Col>
-                    <Col xs={12} md={4}>
+                    <Col xs={12} md={4} className="opacity-75">
                       <CustomTextField
                         label={t("State")}
                         placeholder={t("placeHolder_state")}
                         name="state"
-                        required
+                        disabled
                       />
                     </Col>
                   </>
@@ -943,9 +946,11 @@ export default function ProfileForm({
                             <div className="temple_name">
                               {ConverFirstLatterToCapital(item?.name ?? "")}
                             </div>
-                            <div className="temple_time">
-                              Timings : {item?.startTime} to {item?.endTime}
-                            </div>
+                            {item?.startTime && item?.endTime && (
+                              <div className="temple_time">
+                                Timings : {item?.startTime} to {item?.endTime}
+                              </div>
+                            )}
                           </div>
                         </div>
                       </Col>
@@ -969,7 +974,7 @@ export default function ProfileForm({
                       //   );
                       // }}
                     >
-                      <div>
+                      <div className="p-1">
                         <div className="facility_button">
                           <Plus />
                         </div>
@@ -1374,7 +1379,7 @@ export default function ProfileForm({
                         <Row>
                           <Col sm={6}>
                             <label>
-                              <Trans i18nKey={"start_Time"} />*
+                              <Trans i18nKey={"start_Time"} />
                             </label>
                             <TimePicker
                               onChange={(e) => {
@@ -1409,7 +1414,7 @@ export default function ProfileForm({
                           </Col>
                           <Col sm={6}>
                             <label>
-                              <Trans i18nKey={"end_Time"} />*
+                              <Trans i18nKey={"end_Time"} />
                             </label>
                             <TimePicker
                               onChange={(e) => {

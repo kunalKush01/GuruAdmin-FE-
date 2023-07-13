@@ -55,8 +55,8 @@ const initialValues = {
   tagsInit: [],
   Body: "",
   DateTime: { start: new Date(), end: null },
-  startTime: "",
-  endTime: "",
+  startTime: new Date(),
+  endTime: "00:00",
 };
 
 export default function AddEvent() {
