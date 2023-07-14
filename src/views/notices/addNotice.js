@@ -1,19 +1,11 @@
-import { Form, Formik } from "formik";
-import React, { useMemo, useState } from "react";
-import CustomTextField from "../../components/partials/customTextField";
-import * as yup from "yup";
-import RichTextField from "../../components/partials/richTextEditorField";
-import styled from "styled-components";
-import { CustomDropDown } from "../../components/partials/customDropDown";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { Trans, useTranslation } from "react-i18next";
-import { Button, Col, Row } from "reactstrap";
-import { useHistory } from "react-router-dom";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createNews } from "../../api/newsApi";
+import React from "react";
+import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
-import { authApiInstance } from "../../axiosApi/authApiInstans";
+import { useHistory } from "react-router-dom";
+import styled from "styled-components";
+import * as yup from "yup";
 import { createNotice } from "../../api/noticeApi.js";
+import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import NoticeForm from "../../components/notices/noticeForm";
 
 const NoticeWraper = styled.div`
@@ -35,7 +27,7 @@ const handleCreateNotice = async (payload) => {
 const schema = yup.object().shape({
   Title: yup
     .string()
-    .matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g, "injection_found")
+    .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
     .required("notices_title_required")
     .trim(),
   Body: yup.string().required("notices_desc_required").trim(),

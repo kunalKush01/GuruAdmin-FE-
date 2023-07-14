@@ -9,11 +9,9 @@ import {
   createSubCategory,
   getAllMasterCategories,
 } from "../../../api/categoryApi.js";
-import { createNotice } from "../../../api/noticeApi.js";
 import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
 import CategoryForm from "../../../components/categories/categoryForm";
 import { CustomDropDown } from "../../../components/partials/customDropDown";
-import FormikCustomReactSelect from "../../../components/partials/formikCustomReactSelect.js";
 
 const NoticeWraper = styled.div`
   color: #583703;
@@ -35,7 +33,7 @@ const schema = yup.object().shape({
   MasterCategory: yup.mixed().required("categories_category_required"),
   SubCategory: yup
     .string()
-    .matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found")
+    .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g,"injection_found")
     // .matches(
     //   /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
     //   "only_letters"

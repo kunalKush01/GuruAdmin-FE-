@@ -28,7 +28,11 @@ const handleCreateExpense = async (payload) => {
   return updateExpensesDetail(payload);
 };
 const schema = yup.object().shape({
-  Title: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("expenses_title_required").trim(),
+  Title: yup
+    .string()
+    .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
+    .required("expenses_title_required")
+    .trim(),
   // AddedBy: yup.string().required("news_tags_required"),
   Amount: yup
     .string()
@@ -42,11 +46,9 @@ export default function AddNews() {
   const history = useHistory();
   const langArray = useSelector((state) => state.auth.availableLang);
 
-
   const searchParams = new URLSearchParams(history.location.search);
-  const currentPage = searchParams.get('page')
-  const currentFilter = searchParams.get('filter')
-
+  const currentPage = searchParams.get("page");
+  const currentFilter = searchParams.get("filter");
 
   const { expensesId } = useParams();
 
@@ -55,12 +57,12 @@ export default function AddNews() {
     async () => await getExpensesDetail(expensesId)
   );
   const loggedInUser = useSelector((state) => state.auth.userDetail.name);
-  
+
   const initialValues = {
-    Id:ExpensesDetailQuery?.data?.result?.id,
-    Title: ExpensesDetailQuery?.data?.result?.title ??null,
+    Id: ExpensesDetailQuery?.data?.result?.id,
+    Title: ExpensesDetailQuery?.data?.result?.title ?? null,
     AddedBy: loggedInUser,
-    Body: he.decode(ExpensesDetailQuery?.data?.result?.description ??""),
+    Body: he.decode(ExpensesDetailQuery?.data?.result?.description ?? ""),
     Amount: ExpensesDetailQuery?.data?.result?.amount ?? "",
     DateTime: moment(ExpensesDetailQuery?.data?.result?.expenseDate)
       .utcOffset("+0530")
@@ -73,13 +75,16 @@ export default function AddNews() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push(`/internal_expenses?page=${currentPage}&filter=${currentFilter}`)}
+            onClick={() =>
+              history.push(
+                `/internal_expenses?page=${currentPage}&filter=${currentFilter}`
+              )
+            }
           />
           <div className="addNews">
             <Trans i18nKey={"expenses_EditExpenses"} />
           </div>
         </div>
-        
       </div>
 
       {!ExpensesDetailQuery.isLoading ? (

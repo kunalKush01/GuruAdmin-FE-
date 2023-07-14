@@ -3,17 +3,17 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Trans } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
+import he from "he";
+import { Helmet } from "react-helmet";
 import { useHistory } from "react-router-dom";
+import { Button } from "reactstrap";
 import styled from "styled-components";
 import * as yup from "yup";
 import { getUpdatedTrustDetail, updateProfile } from "../../api/profileApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { CustomDropDown } from "../../components/partials/customDropDown";
 import ProfileForm from "../../components/Profile/profileForm";
+import { CustomDropDown } from "../../components/partials/customDropDown";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-import he from "he";
-import { Helmet } from "react-helmet";
-import { Button, Spinner } from "reactstrap";
 const ProfileWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -30,7 +30,7 @@ const ProfileWarper = styled.div`
 const schema = yup.object().shape({
   trustName: yup
     .string()
-    .matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g, "injection_found")
+    .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
     .required("name_required")
     .trim(),
   trustType: yup.mixed().required("trust_type_required"),
@@ -44,7 +44,7 @@ const schema = yup.object().shape({
   about: yup.string().required("trust_about_required").trim(),
   name: yup
     .string()
-    .matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g, "injection_found")
+    .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
     .required("name_required")
     .trim(),
   email: yup.string().email("email_invalid").required("email_required").trim(),

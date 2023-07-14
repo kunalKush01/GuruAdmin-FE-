@@ -1,21 +1,15 @@
-import { Form, Formik } from "formik";
-import React, { useMemo, useState } from "react";
-import CustomTextField from "../../components/partials/customTextField";
-import * as yup from "yup";
-import RichTextField from "../../components/partials/richTextEditorField";
-import styled from "styled-components";
-import { CustomDropDown } from "../../components/partials/customDropDown";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { Trans, useTranslation } from "react-i18next";
-import { Button, Col, Row } from "reactstrap";
-import { useHistory } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+import React, { useMemo } from "react";
+import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
-import { authApiInstance } from "../../axiosApi/authApiInstans";
+import { useHistory } from "react-router-dom";
+import styled from "styled-components";
+import * as yup from "yup";
+import { createNews } from "../../api/newsApi";
+import { getAllTrustPrefeces } from "../../api/profileApi";
+import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import NewsForm from "../../components/news/newsForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-import { getAllTrustPrefeces } from "../../api/profileApi";
-import { createNews } from "../../api/newsApi";
 
 const NewsWarper = styled.div`
   color: #583703;
@@ -34,14 +28,20 @@ const handleCreateNews = async (payload) => {
   return createNews(payload);
 };
 const schema = yup.object().shape({
-  Title: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("news_title_required").trim(),
+  Title: yup
+    .string()
+    .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
+    .required("news_title_required")
+    .trim(),
   // Tags: yup.string().required("news_tags_required"),
   Body: yup.string().required("news_desc_required").trim(),
   PublishedBy: yup.string().required("news_publish_required"),
   DateTime: yup.string(),
   // tagsInit:yup.array().max(15 ,"tags_limit"),
-  preference: yup.array().min(1,"trust_prefenses_required").required("trust_prefenses_required"),
-
+  preference: yup
+    .array()
+    .min(1, "trust_prefenses_required")
+    .required("trust_prefenses_required"),
 });
 
 export default function AddNews() {
@@ -52,15 +52,15 @@ export default function AddNews() {
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
   const currentFilter = searchParams.get("filter");
- // Trust preference
- const loadTrustPreference = useQuery(["Preference"], () =>
- getAllTrustPrefeces()
-);
+  // Trust preference
+  const loadTrustPreference = useQuery(["Preference"], () =>
+    getAllTrustPrefeces()
+  );
 
-const trustPreference = useMemo(
- () => loadTrustPreference?.data?.results ?? [],
- [loadTrustPreference?.data?.results]
-);
+  const trustPreference = useMemo(
+    () => loadTrustPreference?.data?.results ?? [],
+    [loadTrustPreference?.data?.results]
+  );
 
   const initialValues = {
     Id: "",

@@ -1,25 +1,20 @@
-import { Form, Formik } from "formik";
-import React, { useEffect, useMemo, useState } from "react";
-import CustomTextField from "../../components/partials/customTextField";
-import * as yup from "yup";
-import RichTextField from "../../components/partials/richTextEditorField";
-import styled from "styled-components";
-import { CustomDropDown } from "../../components/partials/customDropDown";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { Trans, useTranslation } from "react-i18next";
-import { Button, Col, Row } from "reactstrap";
-import { useHistory, useParams } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createNews, getNewsDetail, updateNewsDetail } from "../../api/newsApi";
-import { useSelector } from "react-redux";
-import moment from "moment";
-import { ConverFirstLatterToCapital } from "../../utility/formater";
+import { useQuery } from "@tanstack/react-query";
 import he from "he";
+import moment from "moment";
+import React, { useMemo, useState } from "react";
+import { Trans } from "react-i18next";
+import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import { If, Then, Else } from "react-if-else-switch";
-import NewsForm from "../../components/news/newsForm";
+import { useSelector } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
+import { Col, Row } from "reactstrap";
+import styled from "styled-components";
+import * as yup from "yup";
 import { getEventDetail, updateEventDetail } from "../../api/eventApi";
+import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import EventForm from "../../components/events/eventForm";
+import { CustomDropDown } from "../../components/partials/customDropDown";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 const EventWarper = styled.div`
   color: #583703;
@@ -35,7 +30,11 @@ const EventWarper = styled.div`
 `;
 
 const schema = yup.object().shape({
-  Title: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("events_title_required").trim(),
+  Title: yup
+    .string()
+    .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
+    .required("events_title_required")
+    .trim(),
   Body: yup.string().required("events_desc_required").trim(),
   DateTime: yup.object().shape({
     start: yup.string().required("events_startDate_required"),
@@ -45,7 +44,6 @@ const schema = yup.object().shape({
   endTime: yup.mixed().required("events_endTime_required"),
   SelectedEvent: yup.mixed(),
   // tagsInit:yup.array().max(15 ,"tags_limit"),
-
 });
 
 const getLangId = (langArray, langSelection) => {

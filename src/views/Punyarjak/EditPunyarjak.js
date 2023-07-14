@@ -1,4 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
+import he from "he";
+import moment from "moment";
 import React, { useMemo, useState } from "react";
 import { Trans } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
@@ -8,11 +10,9 @@ import { useHistory, useParams } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import styled from "styled-components";
 import * as yup from "yup";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { getPunyarjakDetails, updatePunyarjak } from "../../api/punarjakApi";
+import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import PunyarjakForm from "../../components/Punyarjak/punyarjakUserForm";
-import he from "he";
-import moment from "moment";
 import { CustomDropDown } from "../../components/partials/customDropDown";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 const PunyarjakWarapper = styled.div`
@@ -31,9 +31,10 @@ const schema = yup.object().shape({
   description: yup.string().required("punyarjak_desc_required").trim(),
   title: yup
     .string()
-    .matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g, "injection_found")
-    .required("news_title_required").trim(),
-  image: yup.string().required("img_required"), 
+    .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
+    .required("news_title_required")
+    .trim(),
+  image: yup.string().required("img_required"),
 });
 
 const getLangId = (langArray, langSelection) => {

@@ -454,12 +454,12 @@ export default function ProfileForm({
   const facilitiesValidation = yup.object().shape({
     name: yup
       .string()
-      .matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g, "injection_found")
+      .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
       .required("name_required"),
     // image: yup.string().required("email_required"),
     description: yup
       .string()
-      // .matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g, "injection_found")
+      // .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
       .required("news_desc_required"),
     // startTime: yup.mixed().required("start_time_required"),
     // endTime: yup.mixed().required("end_time_required"),
@@ -609,7 +609,7 @@ export default function ProfileForm({
                         name="trustName"
                         required
                         onInput={(e) =>
-                          (e.target.value = e.target.value.slice(0, 30))
+                          (e.target.value = e.target.value.slice(0, 256))
                         }
                         autoFocus
                       />
@@ -1291,7 +1291,10 @@ export default function ProfileForm({
                       <Col md={12} className="mb-1">
                         <CustomTextField
                           label="Facility Name"
-                          placeholder="Enter name "
+                          onInput={(e) =>
+                            (e.target.value = e.target.value.slice(0, 30))
+                          }
+                          placeholder="Enter name"
                           name="name"
                         />
                       </Col>
@@ -1393,7 +1396,7 @@ export default function ProfileForm({
                               format="HH:mm"
                               placeholder="HH:mm"
                             />
-                            {formik.errors.startTime &&
+                            {/* {formik.errors.startTime &&
                               formik.touched.startTime && (
                                 <div
                                   style={{
@@ -1410,7 +1413,7 @@ export default function ProfileForm({
                                       </div>
                                     )}
                                 </div>
-                              )}
+                              )} */}
                           </Col>
                           <Col sm={6}>
                             <label>
@@ -1428,7 +1431,7 @@ export default function ProfileForm({
                               format="HH:mm"
                               placeholder="HH:mm"
                             />
-                            {formik.errors.endTime &&
+                            {/* {formik.errors.endTime &&
                               formik.touched.endTime && (
                                 <div
                                   style={{
@@ -1445,9 +1448,9 @@ export default function ProfileForm({
                                       </div>
                                     )}
                                 </div>
-                              )}
+                              )} */}
                           </Col>
-                          {formik?.values?.startTime ===
+                          {/* {formik?.values?.startTime ===
                             formik?.values?.endTime &&
                           formik?.values?.startTime !== "" &&
                           formik?.values?.endTime !== "" ? (
@@ -1458,7 +1461,6 @@ export default function ProfileForm({
                                 font: "normal normal bold 11px/20px Noto Sans",
                               }}
                             >
-                              {/* <Trans i18nKey={"same_time"} /> */}
                               <Trans i18nKey={"same_time"} />
                             </div>
                           ) : selectedTimeStart > selectedTimeEnd &&
@@ -1470,12 +1472,11 @@ export default function ProfileForm({
                                 font: "normal normal bold 11px/20px Noto Sans",
                               }}
                             >
-                              {/* <Trans i18nKey={"same_time"} /> */}
                               <Trans i18nKey={"end_time_less"} />
                             </div>
                           ) : (
                             ""
-                          )}
+                          )} */}
                         </Row>
                       </Col>
                       <div className="mt-3">

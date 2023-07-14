@@ -1,33 +1,21 @@
-import { Form, Formik } from "formik";
-import _ from "lodash";
-import React, { useEffect, useMemo, useState } from "react";
-import CustomTextField from "../../components/partials/customTextField";
-import * as yup from "yup";
-import RichTextField from "../../components/partials/richTextEditorField";
-import styled from "styled-components";
-import { CustomDropDown } from "../../components/partials/customDropDown";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { Trans, useTranslation } from "react-i18next";
-import { Button, Col, Row } from "reactstrap";
-import { useHistory, useParams } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  addLangNewsDetail,
-  createNews,
-  getNewsDetail,
-  updateNewsDetail,
-} from "../../api/newsApi";
-import { useSelector } from "react-redux";
-import moment from "moment";
-import { ConverFirstLatterToCapital } from "../../utility/formater";
+import { useQuery } from "@tanstack/react-query";
 import he from "he";
-import NewsForm from "../../components/news/newsForm";
-import { getAllTrustPrefeces } from "../../api/profileApi";
+import _ from "lodash";
+import moment from "moment";
+import React, { useMemo, useState } from "react";
+import { Trans } from "react-i18next";
+import { useSelector } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
+import styled from "styled-components";
+import * as yup from "yup";
 import {
   addLangPunyarjakDetail,
   getPunyarjakDetails,
 } from "../../api/punarjakApi";
+import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import PunyarjakForm from "../../components/Punyarjak/punyarjakUserForm";
+import { CustomDropDown } from "../../components/partials/customDropDown";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 const NewsWarper = styled.div`
   color: #583703;
@@ -46,9 +34,10 @@ const schema = yup.object().shape({
   description: yup.string().required("punyarjak_desc_required").trim(),
   title: yup
     .string()
-    .matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g, "injection_found")
-    .required("news_title_required").trim(),
-    image:yup.string().required("img_required")
+    .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
+    .required("news_title_required")
+    .trim(),
+  image: yup.string().required("img_required"),
 });
 
 export default function AddLanguagePunyarjak() {
@@ -60,7 +49,7 @@ export default function AddLanguagePunyarjak() {
   const currentPage = searchParams.get("page");
   const currentFilter = searchParams.get("filter");
 
-  const [langSelection, setLangSelection] = useState('Select');
+  const [langSelection, setLangSelection] = useState("Select");
 
   const punyarjakDetailQuery = useQuery(
     ["punyarjakDetails", punyarjakId, selectedLang.id],

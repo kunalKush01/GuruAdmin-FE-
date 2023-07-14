@@ -1,22 +1,18 @@
-import { Form, Formik } from "formik";
-import React, { useEffect, useMemo, useState } from "react";
-import CustomTextField from "../../components/partials/customTextField";
-import * as yup from "yup";
-import RichTextField from "../../components/partials/richTextEditorField";
-import styled from "styled-components";
-import { CustomDropDown } from "../../components/partials/customDropDown";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { Trans, useTranslation } from "react-i18next";
-import { Button, Col, Row } from "reactstrap";
-import { useHistory, useParams } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createNews, getNewsDetail, updateNewsDetail } from "../../api/newsApi";
-import { useSelector } from "react-redux";
-import moment from "moment";
-import { ConverFirstLatterToCapital } from "../../utility/formater";
+import { useQuery } from "@tanstack/react-query";
 import he from "he";
+import moment from "moment";
+import React, { useMemo, useState } from "react";
+import { Trans } from "react-i18next";
+import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import { If, Then, Else } from "react-if-else-switch";
+import { useSelector } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
+import { Col, Row } from "reactstrap";
+import styled from "styled-components";
+import * as yup from "yup";
+import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import { CustomDropDown } from "../../components/partials/customDropDown";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 import { getNoticeDetail, updateNoticeDetail } from "../../api/noticeApi";
 import NoticeForm from "../../components/notices/noticeForm";
@@ -35,7 +31,11 @@ const NoticeWarper = styled.div`
 `;
 
 const schema = yup.object().shape({
-  Title: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("notices_title_required").trim(),
+  Title: yup
+    .string()
+    .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
+    .required("notices_title_required")
+    .trim(),
   Body: yup.string().required("notices_desc_required").trim(),
   DateTime: yup.string(),
   // tagsInit:yup.array().max(15 ,"tags_limit"),
@@ -56,20 +56,19 @@ export default function EditNotice() {
   const { noticeId } = useParams();
 
   const langArray = useSelector((state) => state.auth.availableLang);
-  const selectedLang= useSelector(state=>state.auth.selectLang)
+  const selectedLang = useSelector((state) => state.auth.selectLang);
   const [langSelection, setLangSelection] = useState(selectedLang.name);
 
-
   const searchParams = new URLSearchParams(history.location.search);
-  const currentPage = searchParams.get('page')
-  const currentFilter = searchParams.get('filter')
+  const currentPage = searchParams.get("page");
+  const currentFilter = searchParams.get("filter");
 
   const noticeDetailQuery = useQuery(
     ["NoticeDetail", noticeId, langSelection],
     async () =>
       getNoticeDetail({
         noticeId,
-        languageId: getLangId(langArray, langSelection,selectedLang.id),
+        languageId: getLangId(langArray, langSelection, selectedLang.id),
       })
   );
 
@@ -79,17 +78,17 @@ export default function EditNotice() {
       languageId: getLangId(langArray, langSelection),
     });
   };
-  const tags = noticeDetailQuery?.data?.result?.tags?.map((item)=>({
+  const tags = noticeDetailQuery?.data?.result?.tags?.map((item) => ({
     id: item.id,
     text: item.tag,
-    _id: item.id
-  }))
+    _id: item.id,
+  }));
   const initialValues = useMemo(() => {
     return {
       Id: noticeDetailQuery?.data?.result?.id,
       Title: noticeDetailQuery?.data?.result?.title,
-      tagsInit:tags,
-      image:noticeDetailQuery?.data?.result?.image,
+      tagsInit: tags,
+      image: noticeDetailQuery?.data?.result?.image,
       Body: he.decode(noticeDetailQuery?.data?.result?.body ?? ""),
       PublishedBy: noticeDetailQuery?.data?.result?.publishedBy,
       DateTime: moment(noticeDetailQuery?.data?.result?.publishDate)
@@ -105,20 +104,26 @@ export default function EditNotice() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push(`/notices?page=${currentPage}&filter=${currentFilter}`)}
+            onClick={() =>
+              history.push(
+                `/notices?page=${currentPage}&filter=${currentFilter}`
+              )
+            }
           />
           <div className="editNotice">
             <Trans i18nKey={"notices_EditNotice"} />
           </div>
         </div>
         <div className="editNotice">
-        <div className="d-none d-sm-block">
+          <div className="d-none d-sm-block">
             <Trans i18nKey={"news_InputIn"} />
           </div>
           <CustomDropDown
             ItemListArray={noticeDetailQuery?.data?.result?.languages}
             className={"ms-1"}
-            defaultDropDownName={ConverFirstLatterToCapital(langSelection ?? "")}
+            defaultDropDownName={ConverFirstLatterToCapital(
+              langSelection ?? ""
+            )}
             handleDropDownClick={(e) =>
               setLangSelection(ConverFirstLatterToCapital(e.target.name))
             }
@@ -126,7 +131,7 @@ export default function EditNotice() {
           />
         </div>
       </div>
-      
+
       <If
         disableMemo
         condition={noticeDetailQuery.isLoading || noticeDetailQuery.isFetching}
@@ -162,7 +167,6 @@ export default function EditNotice() {
         <Else>
           {!!noticeDetailQuery?.data?.result && (
             <div className="ms-sm-3 mt-1">
-
               <NoticeForm
                 initialValues={initialValues}
                 editThumbnail
