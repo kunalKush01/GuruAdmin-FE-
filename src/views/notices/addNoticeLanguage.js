@@ -1,22 +1,19 @@
-import { Form, Formik } from "formik";
+import { useQuery } from "@tanstack/react-query";
 import _ from "lodash";
-import React, { useEffect, useMemo, useState } from "react";
-import CustomTextField from "../../components/partials/customTextField";
-import * as yup from "yup";
-import styled from "styled-components";
-import { CustomDropDown } from "../../components/partials/customDropDown";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { Trans, useTranslation } from "react-i18next";
-import { Button, Col, Row } from "reactstrap";
+import React, { useMemo, useState } from "react";
+import { Trans } from "react-i18next";
 import { useHistory, useParams } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import styled from "styled-components";
+import * as yup from "yup";
+import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import { CustomDropDown } from "../../components/partials/customDropDown";
 
-import { useSelector } from "react-redux";
-import moment from "moment";
-import { ConverFirstLatterToCapital } from "../../utility/formater";
 import he from "he";
-import NoticeForm from "../../components/notices/noticeForm";
+import moment from "moment";
+import { useSelector } from "react-redux";
 import { addLangNoticeDetail, getNoticeDetail } from "../../api/noticeApi";
+import NoticeForm from "../../components/notices/noticeForm";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 const NoticeWarper = styled.div`
   color: #583703;
@@ -32,11 +29,14 @@ const NoticeWarper = styled.div`
 `;
 
 const schema = yup.object().shape({
-  Title: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("notices_title_required").trim(),
+  Title: yup
+    .string()
+    .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
+    .required("notices_title_required")
+    .trim(),
   Body: yup.string().required("notices_desc_required").trim(),
   DateTime: yup.string(),
   // tagsInit:yup.array().max(15 ,"tags_limit"),
-
 });
 
 export default function AddLanguageNotice() {
@@ -50,7 +50,7 @@ export default function AddLanguageNotice() {
   const currentPage = searchParams.get("page");
   const currentFilter = searchParams.get("filter");
 
-  const [langSelection, setLangSelection] = useState('Select');
+  const [langSelection, setLangSelection] = useState("Select");
 
   const noticeDetailQuery = useQuery(
     ["NoticeDetail", noticeId, selectedLang.id],

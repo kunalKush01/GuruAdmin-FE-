@@ -8,7 +8,6 @@ import { createExpense } from "../../api/expenseApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import ExpensesForm from "../../components/internalExpenses/expensesForm";
 
-
 const NewsWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -26,7 +25,11 @@ const handleCreateExpense = async (payload) => {
   return createExpense(payload);
 };
 const schema = yup.object().shape({
-  Title: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("expenses_title_required").trim(),
+  Title: yup
+    .string()
+    .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
+    .required("expenses_title_required")
+    .trim(),
   // AddedBy: yup.string().required("news_tags_required"),
   Amount: yup
     .string()
@@ -36,15 +39,13 @@ const schema = yup.object().shape({
   DateTime: yup.string(),
 });
 
-
 export default function AddNews() {
   const history = useHistory();
   const langArray = useSelector((state) => state.auth.availableLang);
 
-
   const searchParams = new URLSearchParams(history.location.search);
-  const currentPage = searchParams.get('page')
-  const currentFilter = searchParams.get('filter')
+  const currentPage = searchParams.get("page");
+  const currentFilter = searchParams.get("filter");
   const loggedInUser = useSelector((state) => state.auth.userDetail.name);
 
   const initialValues = {
@@ -62,7 +63,11 @@ export default function AddNews() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push(`/internal_expenses?page=${currentPage}&filter=${currentFilter}`)}
+            onClick={() =>
+              history.push(
+                `/internal_expenses?page=${currentPage}&filter=${currentFilter}`
+              )
+            }
           />
           <div className="addNews">
             <Trans i18nKey={"expenses_AddExpenses"} />

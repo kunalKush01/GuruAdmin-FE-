@@ -1,21 +1,12 @@
-import { Form, Formik } from "formik";
-import React, { useMemo, useState } from "react";
-import CustomTextField from "../../components/partials/customTextField";
-import * as yup from "yup";
-import RichTextField from "../../components/partials/richTextEditorField";
-import styled from "styled-components";
-import { CustomDropDown } from "../../components/partials/customDropDown";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { Trans, useTranslation } from "react-i18next";
-import { Button, Col, Row } from "reactstrap";
-import { useHistory } from "react-router-dom";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createNews } from "../../api/newsApi";
+import React from "react";
+import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
-import { authApiInstance } from "../../axiosApi/authApiInstans";
+import { useHistory } from "react-router-dom";
+import styled from "styled-components";
+import * as yup from "yup";
 import { createEvent } from "../../api/eventApi.js";
+import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import EventForm from "../../components/events/eventForm";
-import he from "he";
 
 const EventWraper = styled.div`
   color: #583703;
@@ -34,7 +25,11 @@ const handleCreateEvent = async (payload) => {
   return createEvent(payload);
 };
 const schema = yup.object().shape({
-  Title: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("events_title_required").trim(),
+  Title: yup
+    .string()
+    .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
+    .required("events_title_required")
+    .trim(),
   // tagsInit:yup.array().max(15 ,"tags_limit"),
   Body: yup.string().required("events_desc_required").trim(),
   DateTime: yup.object().shape({
@@ -44,7 +39,6 @@ const schema = yup.object().shape({
   startTime: yup.mixed().required("events_startTime_required"),
   endTime: yup.mixed().required("events_endTime_required"),
   SelectedEvent: yup.mixed(),
-
 });
 
 const initialValues = {

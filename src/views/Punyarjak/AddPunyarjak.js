@@ -5,10 +5,8 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import * as yup from "yup";
 import { createPunyarjak } from "../../api/punarjakApi.js";
-import { createSubscribedUser } from "../../api/subscribedUser.js";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import PunyarjakForm from "../../components/Punyarjak/punyarjakUserForm.js";
-import SubscribedUserForm from "../../components/subscribedUser/subscribedUserForm.js";
 
 const NoticeWraper = styled.div`
   color: #583703;
@@ -30,9 +28,10 @@ const schema = yup.object().shape({
   description: yup.string().required("punyarjak_desc_required").trim(),
   title: yup
     .string()
-    .matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g, "injection_found")
-    .required("news_title_required").trim(),
-    image:yup.string().required("img_required")
+    .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
+    .required("news_title_required")
+    .trim(),
+  image: yup.string().required("img_required"),
 });
 
 export default function AddPunyarjak() {
@@ -47,7 +46,7 @@ export default function AddPunyarjak() {
     title: "",
     description: "",
     image: "",
-  DateTime: new Date(),
+    DateTime: new Date(),
   };
 
   return (

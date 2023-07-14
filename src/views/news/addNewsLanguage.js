@@ -1,28 +1,19 @@
-import { Form, Formik } from "formik";
-import _ from "lodash";
-import React, { useEffect, useMemo, useState } from "react";
-import CustomTextField from "../../components/partials/customTextField";
-import * as yup from "yup";
-import RichTextField from "../../components/partials/richTextEditorField";
-import styled from "styled-components";
-import { CustomDropDown } from "../../components/partials/customDropDown";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { Trans, useTranslation } from "react-i18next";
-import { Button, Col, Row } from "reactstrap";
-import { useHistory, useParams } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  addLangNewsDetail,
-  createNews,
-  getNewsDetail,
-  updateNewsDetail,
-} from "../../api/newsApi";
-import { useSelector } from "react-redux";
-import moment from "moment";
-import { ConverFirstLatterToCapital } from "../../utility/formater";
+import { useQuery } from "@tanstack/react-query";
 import he from "he";
-import NewsForm from "../../components/news/newsForm";
+import _ from "lodash";
+import moment from "moment";
+import React, { useMemo, useState } from "react";
+import { Trans } from "react-i18next";
+import { useSelector } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
+import styled from "styled-components";
+import * as yup from "yup";
+import { addLangNewsDetail, getNewsDetail } from "../../api/newsApi";
 import { getAllTrustPrefeces } from "../../api/profileApi";
+import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import NewsForm from "../../components/news/newsForm";
+import { CustomDropDown } from "../../components/partials/customDropDown";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 const NewsWarper = styled.div`
   color: #583703;
@@ -38,14 +29,20 @@ const NewsWarper = styled.div`
 `;
 
 const schema = yup.object().shape({
-  Title: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("news_title_required").trim(),
+  Title: yup
+    .string()
+    .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
+    .required("news_title_required")
+    .trim(),
   // Tags: yup.string().required("news_tags_required"),
   Body: yup.string().required("news_desc_required").trim(),
   PublishedBy: yup.string().required("news_publish_required"),
   DateTime: yup.string(),
   // tagsInit:yup.array().max(15 ,"tags_limit"),
-  preference: yup.array().min(1,"trust_prefenses_required").required("trust_prefenses_required"),
-
+  preference: yup
+    .array()
+    .min(1, "trust_prefenses_required")
+    .required("trust_prefenses_required"),
 });
 
 export default function AddLanguageNews() {
@@ -57,7 +54,7 @@ export default function AddLanguageNews() {
   const currentPage = searchParams.get("page");
   const currentFilter = searchParams.get("filter");
 
-  const [langSelection, setLangSelection] = useState('Select');
+  const [langSelection, setLangSelection] = useState("Select");
 
   const newsDetailQuery = useQuery(
     ["NewsDetail", newsId, selectedLang.id],
@@ -107,15 +104,14 @@ export default function AddLanguageNews() {
   }));
 
   // Trust preference
- const loadTrustPreference = useQuery(["Preference"], () =>
- getAllTrustPrefeces()
-);
+  const loadTrustPreference = useQuery(["Preference"], () =>
+    getAllTrustPrefeces()
+  );
 
-const trustPreference = useMemo(
- () => loadTrustPreference?.data?.results ?? [],
- [loadTrustPreference?.data?.results]
-);
-
+  const trustPreference = useMemo(
+    () => loadTrustPreference?.data?.results ?? [],
+    [loadTrustPreference?.data?.results]
+  );
 
   const initialValues = useMemo(() => {
     return {
@@ -148,13 +144,15 @@ const trustPreference = useMemo(
           </div>
         </div>
         <div className="editNews">
-        <div className="d-none d-sm-block">
+          <div className="d-none d-sm-block">
             <Trans i18nKey={"news_InputIn"} />
           </div>
           <CustomDropDown
             ItemListArray={availableLangOptions}
             className={"ms-1"}
-            defaultDropDownName={ConverFirstLatterToCapital(langSelection ?? "")}
+            defaultDropDownName={ConverFirstLatterToCapital(
+              langSelection ?? ""
+            )}
             handleDropDownClick={(e) =>
               setLangSelection(ConverFirstLatterToCapital(e.target.name))
             }

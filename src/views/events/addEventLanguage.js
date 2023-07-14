@@ -1,22 +1,19 @@
-import { Form, Formik } from "formik";
+import { useQuery } from "@tanstack/react-query";
 import _ from "lodash";
-import React, { useEffect, useMemo, useState } from "react";
-import CustomTextField from "../../components/partials/customTextField";
-import * as yup from "yup";
-import styled from "styled-components";
-import { CustomDropDown } from "../../components/partials/customDropDown";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { Trans, useTranslation } from "react-i18next";
-import { Button, Col, Row } from "reactstrap";
+import React, { useMemo, useState } from "react";
+import { Trans } from "react-i18next";
 import { useHistory, useParams } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import styled from "styled-components";
+import * as yup from "yup";
+import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import { CustomDropDown } from "../../components/partials/customDropDown";
 
-import { useSelector } from "react-redux";
-import moment from "moment";
-import { ConverFirstLatterToCapital } from "../../utility/formater";
 import he from "he";
-import EventForm from "../../components/events/eventForm";
+import moment from "moment";
+import { useSelector } from "react-redux";
 import { addLangEventDetail, getEventDetail } from "../../api/eventApi";
+import EventForm from "../../components/events/eventForm";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 const EventWarper = styled.div`
   color: #583703;
@@ -32,7 +29,11 @@ const EventWarper = styled.div`
 `;
 
 const schema = yup.object().shape({
-  Title: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found").required("events_title_required").trim(),
+  Title: yup
+    .string()
+    .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
+    .required("events_title_required")
+    .trim(),
   Body: yup.string().required("events_desc_required").trim(),
   DateTime: yup.object().shape({
     start: yup.string().required("events_startDate_required"),
@@ -42,7 +43,6 @@ const schema = yup.object().shape({
   endTime: yup.mixed().required("events_endTime_required"),
   SelectedEvent: yup.mixed(),
   // tagsInit:yup.array().max(15 ,"tags_limit"),
-
 });
 export default function AddLanguageEvent() {
   const history = useHistory();
@@ -54,7 +54,7 @@ export default function AddLanguageEvent() {
   const currentPage = searchParams.get("page");
   const currentFilter = searchParams.get("filter");
 
-  const [langSelection, setLangSelection] = useState('Select');
+  const [langSelection, setLangSelection] = useState("Select");
 
   const eventDetailQuery = useQuery(
     ["EventDetail", eventId, selectedLang.id],

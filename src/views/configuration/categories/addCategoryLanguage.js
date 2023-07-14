@@ -1,6 +1,6 @@
-import { QueryClient, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import _ from "lodash";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Trans } from "react-i18next";
 import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -8,10 +8,11 @@ import * as yup from "yup";
 import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
 import { CustomDropDown } from "../../../components/partials/customDropDown";
 
-import he from "he";
-import moment from "moment";
 import { useSelector } from "react-redux";
-import { addLangCategoryDetail, getSubCategoryDetail } from "../../../api/categoryApi";
+import {
+  addLangCategoryDetail,
+  getSubCategoryDetail,
+} from "../../../api/categoryApi";
 import CategoryForm from "../../../components/categories/categoryForm";
 import { ConverFirstLatterToCapital } from "../../../utility/formater";
 
@@ -29,12 +30,15 @@ const EventWarper = styled.div`
 `;
 
 const schema = yup.object().shape({
-  MasterCategory:yup.mixed().required("categories_category_required"),
-  SubCategory: yup.string().matches(/^[^!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]*$/g,"injection_found")
-  // .matches(
-  //   /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
-  //   'only_letters')
-    .required("categories_sub_category_required").trim(),
+  MasterCategory: yup.mixed().required("categories_category_required"),
+  SubCategory: yup
+    .string()
+    .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
+    // .matches(
+    //   /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+    //   'only_letters')
+    .required("categories_sub_category_required")
+    .trim(),
 });
 
 export default function AddLanguageEvent() {
@@ -44,14 +48,18 @@ export default function AddLanguageEvent() {
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
   const searchParams = new URLSearchParams(history.location.search);
-  const currentPage = searchParams.get('page')
-  const currentFilter = searchParams.get('filter')
+  const currentPage = searchParams.get("page");
+  const currentFilter = searchParams.get("filter");
 
-  const [langSelection, setLangSelection] = useState('Select');
+  const [langSelection, setLangSelection] = useState("Select");
   const subCategoryDetailQuery = useQuery(
     ["SubCategories", subCategoryId, selectedLang.id],
-    async () => await getSubCategoryDetail({ categoryId:subCategoryId, languageId: selectedLang.id })
-    )
+    async () =>
+      await getSubCategoryDetail({
+        categoryId: subCategoryId,
+        languageId: selectedLang.id,
+      })
+  );
 
   const handleCategoryLangUpdate = (payload) => {
     let languageId;
@@ -60,8 +68,12 @@ export default function AddLanguageEvent() {
         languageId = Item.id;
       }
     });
-    
-    return addLangCategoryDetail({ ...payload, languageId,categoryId:subCategoryDetailQuery?.data?.result?.id });
+
+    return addLangCategoryDetail({
+      ...payload,
+      languageId,
+      categoryId: subCategoryDetailQuery?.data?.result?.id,
+    });
   };
 
   const getAvailLangOption = () => {
@@ -84,15 +96,13 @@ export default function AddLanguageEvent() {
     langArray,
     subCategoryDetailQuery?.data?.result?.languages,
   ]);
-  
+
   // useEffect(() => {
   //   if (availableLangOptions.length != 0) {
   //     setLangSelection(availableLangOptions[0]?.name);
-      
+
   //   }
   // }, [availableLangOptions,selectedLang.id]);
-
-  
 
   return (
     <EventWarper>
@@ -101,20 +111,26 @@ export default function AddLanguageEvent() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push(`/configuration/categories?page=${currentPage}&filter=${currentFilter}`)}
+            onClick={() =>
+              history.push(
+                `/configuration/categories?page=${currentPage}&filter=${currentFilter}`
+              )
+            }
           />
           <div className="editEvent">
             <Trans i18nKey={"news_AddLangNews"} />
           </div>
         </div>
         <div className="editEvent">
-        <div className="d-none d-sm-block">
+          <div className="d-none d-sm-block">
             <Trans i18nKey={"news_InputIn"} />
           </div>
           <CustomDropDown
             ItemListArray={availableLangOptions}
             className={"ms-1"}
-            defaultDropDownName={ConverFirstLatterToCapital(langSelection ?? "")}
+            defaultDropDownName={ConverFirstLatterToCapital(
+              langSelection ?? ""
+            )}
             handleDropDownClick={(e) =>
               setLangSelection(ConverFirstLatterToCapital(e.target.name))
             }
@@ -126,23 +142,23 @@ export default function AddLanguageEvent() {
       {!subCategoryDetailQuery.isLoading ? (
         <div className="ms-sm-3 mt-1">
           <CategoryForm
-          loadOptions={[subCategoryDetailQuery?.data?.result?.masterCategory]}
-          langSelectionValue={langSelection}
-          // placeholder={
-          //   subCategoryDetailQuery?.data?.result?.masterCategory.name
-          // }
-          AddLanguage
-          CategoryFormName={"MasterCategory"}
-          handleSubmit={handleCategoryLangUpdate}
-          initialValues={{
-            Id: "",
-            MasterCategory:
-              subCategoryDetailQuery?.data?.result?.masterCategory,
-            SubCategory: subCategoryDetailQuery?.data?.result?.name,
-          }}
-          buttonName={"news_AddLangNews"}
-          vailidationSchema={schema}
-        />
+            loadOptions={[subCategoryDetailQuery?.data?.result?.masterCategory]}
+            langSelectionValue={langSelection}
+            // placeholder={
+            //   subCategoryDetailQuery?.data?.result?.masterCategory.name
+            // }
+            AddLanguage
+            CategoryFormName={"MasterCategory"}
+            handleSubmit={handleCategoryLangUpdate}
+            initialValues={{
+              Id: "",
+              MasterCategory:
+                subCategoryDetailQuery?.data?.result?.masterCategory,
+              SubCategory: subCategoryDetailQuery?.data?.result?.name,
+            }}
+            buttonName={"news_AddLangNews"}
+            vailidationSchema={schema}
+          />
         </div>
       ) : (
         ""
