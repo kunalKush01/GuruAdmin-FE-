@@ -6,10 +6,10 @@ export const englishContent = {
   hundi: "Donation Box Collections",
   financial_reports: "Financial Reports",
   internal_expenses: "Expenses",
-  total_donation:"Total Donation :",
+  total_donation: "Total Donation :",
   events: "Events",
-  total:"Total : ",
-  Select:"Select",
+  total: "Total : ",
+  Select: "Select",
   news: "News",
   notices: "Notices",
   configuration: "Configuration",
@@ -37,22 +37,23 @@ export const englishContent = {
   downloadReceipt: "Download Receipt",
   pay_donation: "Pay Donation",
   payment: "Pay Now",
-  paymentPaid:"Paid",
-  injection_found:"Special characters are not supported",
+  paymentPaid: "Paid",
+  injection_found: "Special characters are not supported",
   logout_msg: "Are you sure you want to logout ?",
   no: "No",
   yes: "Yes",
-  tags_limit:"Tags limit exceeded",
-  end_time_less:"The End time must be greater than the Start time",
-  publish_now:"Publish Now",
-  already_publish:"News is already published.",
-  unPublish:"Unpublish",
-  schedule:"Schedule",
-  reSchedule:"Re-schedule",
-  publish:"Publish",
-  published:"Published",
-  invalid_amount:"Invalid value",
-  tagsChar_limit:"The tag field has a character limit of 20 and cannot accept more than that.",
+  tags_limit: "Tags limit exceeded",
+  end_time_less: "The End time must be greater than the Start time",
+  publish_now: "Publish Now",
+  already_publish: "News is already published.",
+  unPublish: "Unpublish",
+  schedule: "Schedule",
+  reSchedule: "Re-schedule",
+  publish: "Publish",
+  published: "Published",
+  invalid_amount: "Invalid value",
+  tagsChar_limit:
+    "The tag field has a character limit of 20 and cannot accept more than that.",
   // All static content of Dashboard
   dashboard_donationReceived: "Donation Received",
   dashboard_donationPending: "Donation Pending",
@@ -108,7 +109,7 @@ export const englishContent = {
   news_not_click_add_news: 'Click on "Add News" to add news on the screen',
 
   // All static content of Events
-  same_time:"End time cannot be same as start time",
+  same_time: "End time cannot be same as start time",
   events_AddEvent: "Add Event",
   events_latest_event: "Latest Events",
   events_title_required: "Title is required",
@@ -121,8 +122,7 @@ export const englishContent = {
   events_startDate_required: "Start date is required",
   events_endDate_required: "End date is required",
   events_delete: "Delete Event",
-  events_sure:
-    "Are you sure you want to permanently delete this event ? ",
+  events_sure: "Are you sure you want to permanently delete this event ? ",
   events_not_found: "No Events Found",
   events_not_click_add_events:
     'Click on "Add Event" to add event on the screen',
@@ -138,8 +138,7 @@ export const englishContent = {
   notices_EditNotice: "Edit Notice",
 
   notices_delete: "Delete Notice",
-  notices_sure:
-    "Are you sure you want to permanently delete this notice ? ",
+  notices_sure: "Are you sure you want to permanently delete this notice ? ",
   notices_not_found: "No Notices Found",
   notices_not_click_add_notices:
     'Click on "Add Notice" to add notices on the screen',
@@ -170,8 +169,7 @@ export const englishContent = {
   amount_required: "Amount is required",
 
   category_delete: "Delete Category",
-  category_sure:
-    "Are you sure you want to permanently delete this category ? ",
+  category_sure: "Are you sure you want to permanently delete this category ? ",
   category_not_found: "No Categories Found",
   category_not_click_add_category:
     'Click on "Add Category" to add category on the screen',
@@ -203,8 +201,7 @@ export const englishContent = {
   expence_amount_required: "Amount is Required",
 
   expence_delete: "Delete Expense",
-  expence_sure:
-    "Are you sure you want to permanently delete this expense ? ",
+  expence_sure: "Are you sure you want to permanently delete this expense ? ",
   expence_not_found: "No Expenses Found",
   expence_not_click_add_expence:
     'Click on "Add Expenses" to add expenses on the screen',
@@ -232,8 +229,7 @@ export const englishContent = {
     "Donor Name can only contain character letters",
   add_user_donation: "No user found click here to",
   donation_delete: "Delete Donation",
-  donation_sure:
-    "Are you sure you want to permanently delete this donation ? ",
+  donation_sure: "Are you sure you want to permanently delete this donation ? ",
   donation_not_found: "No Donation Found",
   add_user: "Add User",
   donation_paid_not_found: "No Paid Donations Found",
@@ -267,8 +263,8 @@ export const englishContent = {
     'Click on "Add Collection" to add donation box on the screen',
 
   // All Commitment Data
-  notify_user:"Notify User",
-  notify_user_content:"Please check the check box for nudge the user",
+  notify_user: "Notify User",
+  notify_user_content: "Please check the check box for nudge the user",
   commitment_Username: "Username",
   add_commitment: "Add Commitment",
   edit_commitment: "Edit Commitment",
@@ -315,17 +311,20 @@ export const englishContent = {
 
   // All user Profile static Data
   about_trust: "ABOUT US",
+  trust_address:'Address',
   trust_user: "ABOUT USER",
   trust_location: "LOCATION",
   trust_facility: "FACILITIES",
-  trust_contact_number_required:"Contact number is required.",
-  contact_number:"Contact Number",
+  trust_facebookLink: "Facebook Link",
+  trust_facebookLink_required: "Facebook link is required",
+  trust_contact_number_required: "Contact number is required.",
+  contact_number: "Contact Number",
   trust_image_certificate: "IMAGES AND CERTIFICATES",
-  location:"Location",
-  trust_prefenses:"Trust Preferences",
-  trust_prefenses_required:"Trust Preferences is required",
-  latitude:"Latitude",
-  longitude:"Longitude",
+  location: "Location",
+  trust_prefenses: "Trust Preferences",
+  trust_prefenses_required: "Trust Preferences is required",
+  latitude: "Latitude",
+  longitude: "Longitude",
   userProfile: "Profile",
   user_editUser: "Edit User",
   user_userRoleRequired: "User Role is required",
@@ -396,20 +395,23 @@ export const englishContent = {
   punyarjak_not_click_add:
     'Click on "Add punyarjak" to add punyarjak user on the screen',
 
-// all place holder images
+  // all place holder images
 
-placeHolder_donar_name:"Enter Doner Name",
-placeHolder_mobile_number:"Enter Mobile Number",
-placeHolder_phone_number:"Enter Contact Number",
-placeHolder_title:"Enter Title",
-placeHolder_description:"Enter Description",
-placeHolder_tags:"Enter Tags",
-placeHolder_name:"Enter Name",
-placeHolder_user_name:"Enter Username",
-placeHolder_email:"Enter Email",
-placeHolder_password:"Enter Password",
-placeHolder_sub_category:"Enter Sub Category",
-placeHolder_city:"Enter City",
-placeHolder_state:"Enter State",
-placeHolder_location:"Enter Location",
+  placeHolder_donar_name: "Enter Doner Name",
+  placeHolder_mobile_number: "Enter Mobile Number",
+  placeHolder_phone_number: "Enter Contact Number",
+  placeHolder_title: "Enter Title",
+  placeHolder_description: "Enter Description",
+  placeHolder_tags: "Enter Tags",
+  placeHolder_name: "Enter Name",
+  placeHolder_user_name: "Enter Username",
+  placeHolder_email: "Enter Email",
+  placeHolder_password: "Enter Password",
+  placeHolder_sub_category: "Enter Sub Category",
+  placeHolder_city: "Enter City",
+  placeHolder_state: "Enter State",
+  placeHolder_location: "Enter Location",
+  placeHolder_trust_facebook: "Enter Facebook Link",
+  placeHolder_trust_address:'Enter Address ',
+
 };
