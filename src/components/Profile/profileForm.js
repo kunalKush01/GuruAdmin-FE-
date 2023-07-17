@@ -500,6 +500,7 @@ export default function ProfileForm({
                 // city: e?.city?.districts,
                 // place_id: e?.location.value.place_id,
                 location: e?.location,
+                address:e?.address,
                 // longitude: e?.longitude.toString(),
                 // latitude: e?.latitude.toString(),
                 trustFacilities: facilityFormData,
@@ -521,6 +522,8 @@ export default function ProfileForm({
                 trustEmail: e?.trustEmail,
                 trustNumber: e?.trustNumber.toString(),
                 trustCountryCode: e?.trustDialCode,
+                address:e?.address,
+                facbookLink:e?.facebookLink,
                 trustCountryName: e?.trustCountryCode,
                 about: e?.about,
                 name: e?.name,
@@ -682,6 +685,23 @@ export default function ProfileForm({
                       </Col>
                     </Row>
                   )}
+                  {!AddLanguage && (
+                    <Row>
+                      <Col
+                        xs={12}
+                        md={6}
+                        lg={4}
+                        // className={`ps-lg-3 ${formik.errors ? "mt-1" : "mt-2"}`}
+                      >
+                        <CustomTextField
+                          label={t("trust_facebookLink")}
+                          placeholder={t("placeHolder_trust_facebook")}
+                          name="facebookLink"
+                          required
+                        />
+                      </Col>
+                    </Row>
+                  )}
                   {/* {!AddLanguage && (
                     <Row>
                       <Col xs={12} md={6} lg={4}>
@@ -808,6 +828,20 @@ export default function ProfileForm({
                 </div>
               </Col>
               <Row>
+                <Col xs={12}>
+                  {/* <Col
+                    xs={12}
+                    className={`ps-lg-3 ${formik.errors ? "mt-1" : "mt-2"}`}
+                  > */}
+                    <TextArea
+                      label={t("trust_address")}
+                      name="address"
+                      rows="4"
+                      placeholder={t("placeHolder_trust_address")}
+                      className="text-area form-control"
+                    />
+                  {/* </Col> */}
+                </Col>
                 <Col md={4}>
                   {!AddLanguage ? (
                     <>

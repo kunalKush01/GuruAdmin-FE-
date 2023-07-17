@@ -4,11 +4,16 @@ import styled from "styled-components";
 
 const WaraperTextArea = styled.div`
   label {
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
     font: normal normal bold 15px/33px Noto Sans;
   }
   .error {
     font: normal normal bold 11px/33px Noto Sans;
+  }
+  textarea::placeholder {
+    color: #583703 !important;
+    opacity: 60% !important;
+    font: normal normal bold 13px/20px Noto Sans !important;
   }
   .text-area {
     border: none !important;

@@ -41,6 +41,7 @@ const schema = yup.object().shape({
     .required("email_required")
     .trim(),
   trustNumber: yup.string().required("trust_contact_number_required"),
+  facebookLink: yup.string().required("trust_facebookLink_required").trim(),
   about: yup.string().required("trust_about_required").trim(),
   name: yup
     .string()
@@ -110,6 +111,8 @@ export default function AddProfile() {
       trustNumber: profileDetail?.data?.result?.trustNumber ?? "",
       trustCountryCode: profileDetail?.data?.result?.trustCountryName ?? "",
       trustDialCode: profileDetail?.data?.result?.trustCountryCode ?? "",
+      facebookLink: profileDetail?.data?.result?.facebookLink ?? "",
+      address: profileDetail?.data?.result?.address ?? "",
       about: he.decode(profileDetail?.data?.result?.about ?? ""),
       name: profileDetail?.data?.result?.name ?? "",
       email: profileDetail?.data?.result?.email ?? "",
