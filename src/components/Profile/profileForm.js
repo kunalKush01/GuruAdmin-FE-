@@ -697,7 +697,6 @@ export default function ProfileForm({
                           label={t("trust_facebookLink")}
                           placeholder={t("placeHolder_trust_facebook")}
                           name="facebookLink"
-                          required
                         />
                       </Col>
                     </Row>

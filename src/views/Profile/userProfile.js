@@ -41,7 +41,7 @@ const schema = yup.object().shape({
     .required("email_required")
     .trim(),
   trustNumber: yup.string().required("trust_contact_number_required"),
-  facebookLink: yup.string().required("trust_facebookLink_required").trim(),
+  // facebookLink: yup.string().required("trust_facebookLink_required").trim(),
   about: yup.string().required("trust_about_required").trim(),
   name: yup
     .string()
