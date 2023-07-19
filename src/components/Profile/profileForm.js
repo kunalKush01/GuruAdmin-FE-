@@ -523,7 +523,7 @@ export default function ProfileForm({
                 trustNumber: e?.trustNumber.toString(),
                 trustCountryCode: e?.trustDialCode,
                 address:e?.address,
-                facbookLink:e?.facebookLink,
+                facebookLink:e?.facebookLink,
                 trustCountryName: e?.trustCountryCode,
                 about: e?.about,
                 name: e?.name,
