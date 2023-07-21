@@ -44,7 +44,11 @@ const StatsWithAreaChart = props => {
       >
         {/* <Avatar className='avatar-stats p-50 m-0' color={`light-${color}`} icon={icon} /> */}
         <p className='card-text'>{statTitle}</p>
-        <p className='fw-bolder mt-1  '>₹ {sta}</p>
+        <p className='fw-bolder mt-1  overflow-hidden' title={`₹ ${sta}`} style={{
+            textOverflow:' ellipsis',
+            whiteSpace:'nowrap',
+            maxWidth:'250px',
+        }} >₹ {sta}</p>
       </CardBody>
       <Chart options={options}  series={series} type={type} height={height ? height : 100}  />
     </Card>

@@ -23,6 +23,10 @@ const CustomCard = ({ cardTitle, cardNumber, cardImage }) => {
       font-family: Noto Sans;
       font-weight: bold;
       color: #583703;
+      overflow: hidden;
+    text-overflow: ellipsis;
+    white-space:nowrap;
+    max-width: 180px;
       font-size: 30px;
       line-height: 75px;
     }
@@ -39,7 +43,7 @@ const CustomCard = ({ cardTitle, cardNumber, cardImage }) => {
         <div className="d-flex ">
           <div className="">
             <div className="cardtitle">{cardTitle}</div>
-            <div className="cardnumber">{cardNumber}</div>
+            <div className="cardnumber" title={cardNumber}>{cardNumber}</div>
           </div>
           <div className="cardimage">
             <img src={cardImage} width={80} height={80} />

@@ -281,8 +281,8 @@ export default function EventForm({
 
   const [deletedImages, setDeletedImages] = useState([]);
   const [showPrompt, setShowPrompt] = useState(true);
-  const [imageSpinner, setImageSpinner] = useState(false);
-  const [selectedTimeStart, setSelectedTimeStart] = useState("");
+  const [imageSpinner, setImageSpinner] = useState(false);  
+  const [selectedTimeStart, setSelectedTimeStart] = useState(moment(new Date(), ['HH:mm']).format("HH:mm"));
   const [selectedTimeEnd, setSelectedTimeEnd] = useState("");
 
   useEffect(() => {
@@ -291,11 +291,11 @@ export default function EventForm({
   }, [initialValues]);
 
   const handleTimeChange = (time) => {
-    setSelectedTimeStart(time);
+    setSelectedTimeStart(moment(time,['HH:mm']).format("HH:mm"));
   };
   const handleTimeChangeEnd = (time) => {
     // setSelectedTimeStart(time);
-    setSelectedTimeEnd(time);
+    setSelectedTimeEnd(moment(time,['HH:mm']).format("HH:mm"));
   };
 
   const [isError, setIsError] = useState([]);
@@ -326,7 +326,7 @@ export default function EventForm({
             title: e.Title,
             tags: e?.tagsInit?.map((tag) => tag.text),
             deletedTags,
-            startTime: e?.startTime,
+            startTime:moment(e?.startTime,['HH:mm']).format('HH:mm'),
             endTime: e?.endTime,
             body: e.Body,
             startDate: moment(e?.DateTime?.start).format("YYYY-MM-DD"),
@@ -683,45 +683,41 @@ export default function EventForm({
                             </>
                           )}
                         </Col>
-                        {formik?.values?.DateTime?.end === null ||
-                        moment(formik?.values?.DateTime?.start).format(
-                          "dd-mm-yy"
-                        ) ===
-                          moment(formik?.values?.DateTime?.end).format(
-                            "dd-mm-yy"
-                          ) ? (
-                          formik?.values?.startTime ===
-                            formik?.values?.endTime &&
-                          formik?.values?.startTime !== "" &&
-                          formik?.values?.endTime !== "" ? (
-                            <div
-                              className="text-danger"
-                              style={{
-                                height: "20px",
-                                font: "normal normal bold 11px/20px Noto Sans",
-                              }}
-                            >
-                              {/* <Trans i18nKey={"same_time"} /> */}
-                              <Trans i18nKey={"same_time"} />
-                            </div>
-                          ) : selectedTimeStart > selectedTimeEnd &&
-                            formik?.values?.endTime !== "" ? (
-                            <div
-                              className="text-danger"
-                              style={{
-                                height: "20px",
-                                font: "normal normal bold 11px/20px Noto Sans",
-                              }}
-                            >
-                              {/* <Trans i18nKey={"same_time"} /> */}
-                              <Trans i18nKey={"end_time_less"} />
-                            </div>
-                          ) : (
-                            ""
-                          )
-                        ) : (
-                          ""
-                        )}
+                        {!AddLanguage ? 
+                    formik?.values?.DateTime?.end === null ||
+                    moment(formik?.values?.DateTime?.start).format("dd-mm-yy") ===
+                    moment(formik?.values?.DateTime?.end).format("dd-mm-yy") ? (
+                    formik?.values?.startTime === formik?.values?.endTime &&
+                    formik?.values?.startTime !== "" &&
+                    formik?.values?.endTime !== "" ? (
+                      <div
+                        className="text-danger"
+                        style={{
+                          height: "20px",
+                          font: "normal normal bold 11px/20px Noto Sans",
+                        }}
+                      >
+                        {/* <Trans i18nKey={"same_time"} /> */}
+                        <Trans i18nKey={"same_time"} />
+                      </div>
+                    ) : selectedTimeStart > selectedTimeEnd &&
+                      formik?.values?.endTime !== "" ? (
+                      <div
+                        className="text-danger"
+                        style={{
+                          height: "20px",
+                          font: "normal normal bold 11px/20px Noto Sans",
+                        }}
+                      >
+                        {/* <Trans i18nKey={"same_time"} /> */}
+                        <Trans i18nKey={"end_time_less"} />
+                      </div>
+                    ) : (
+                      ""
+                    )
+                  ) : (
+                    ""
+                  ): ""}
 
                         {/* {formik.values.DateTime.end === null
                           ? formik.values.startTime === formik.values.endTime &&
@@ -763,7 +759,8 @@ export default function EventForm({
                   color="primary"
                   className="addEvent-btn "
                   type="submit"
-                  disabled={imageSpinner}
+                  disabled={imageSpinner || (moment(formik?.values?.DateTime?.start).format("dd-mm-yy") ===
+                  moment(formik?.values?.DateTime?.end).format("dd-mm-yy") && selectedTimeStart > selectedTimeEnd)}
                 >
                   {plusIconDisable && (
                     <span>

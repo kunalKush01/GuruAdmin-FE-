@@ -7,6 +7,7 @@ import * as yup from "yup";
 import { createEvent } from "../../api/eventApi.js";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import EventForm from "../../components/events/eventForm";
+import moment from "moment";
 
 const EventWraper = styled.div`
   color: #583703;
@@ -49,8 +50,8 @@ const initialValues = {
   tagsInit: [],
   Body: "",
   DateTime: { start: new Date(), end: null },
-  startTime: new Date(),
-  endTime: "00:00",
+  startTime:moment(new Date, ['HH:mm']).format("HH:mm"),
+  endTime: "23:59",
 };
 
 export default function AddEvent() {
