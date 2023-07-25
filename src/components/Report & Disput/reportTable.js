@@ -71,12 +71,13 @@ const ReportTable = ({ data }) => {
       return {
         id: idx + 1,
         name: (
-          <div className="d-flex align-items-center ">
+          <div className="d-flex align-items-center">
             <img
               src={
-                item?.profileImage !== "" || item?.profileImage
-                  ? item?.profileImage
-                  : avtarIcon
+                // item?.profileImage ?? avtarIcon
+                (item?.profileImage && item?.profileImage !== "" )
+                ? item?.profileImage
+                : avtarIcon
               }
               className="cursor-pointer"
               style={{
