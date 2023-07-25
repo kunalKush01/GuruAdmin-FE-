@@ -212,6 +212,9 @@ function ImageUpload(props) {
     if (props.defaultImages?.length > 0) {
       setFiles(props.defaultImages);
     }
+    else if(props.defaultImages?.length === 0){
+      setFiles([]);
+    }
   }, [props.defaultImages]);
   const [indexValue, setIndexValue] = useState({ type: "", idx: "" });
 
