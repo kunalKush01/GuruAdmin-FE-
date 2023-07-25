@@ -127,6 +127,7 @@ export default function AddLanguageProfile() {
       trustType: profileDetailQuery?.data?.result?.trustType ?? "",
       trustEmail: profileDetailQuery?.data?.result?.trustEmail ?? "",
       trustNumber: profileDetailQuery?.data?.result?.trustNumber ?? "",
+      address: profileDetailQuery?.data?.result?.address ?? "",
       about: he.decode(profileDetailQuery?.data?.result?.about ?? ""),
       name: profileDetailQuery?.data?.result?.name ?? "",
       email: profileDetailQuery?.data?.result?.email ?? "",

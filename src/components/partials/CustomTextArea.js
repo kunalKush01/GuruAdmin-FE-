@@ -32,7 +32,7 @@ const TextArea = ({ label, ...props }) => {
   const [field, meta] = useField(props);
   return (
     <WaraperTextArea>
-      <label htmlFor={props.id || props.name}>{label}*</label>
+      <label htmlFor={props.id || props.name}>{label}</label>
       <textarea className="text-area" {...field} {...props} />
       {meta.touched && meta.error ? (
         <div className="error text-danger">

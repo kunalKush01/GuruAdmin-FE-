@@ -605,7 +605,7 @@ export default function ProfileForm({
                 )}
                 <Col lg={10} xs={12} className="">
                   <Row>
-                    <Col xs={12} md={6} lg={4} className="">
+                    <Col xs={12} md={6} lg={4} className={AddLanguage && 'mb-1'}>
                       <CustomTextField
                         label={t("userProfile_name")}
                         placeholder={t("placeHolder_name")}

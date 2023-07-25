@@ -53,7 +53,8 @@ const ResetPassWord = () => {
     password: yup
       .string()
       .required("Password is required.")
-      .min(8, "Password is too short - should be 8 chars minimum."),
+      .min(8, "Password is too short - should be 8 chars minimum.")
+      .matches(/^(?=.*[a-zA-Z])(?=.*\d).+$/,'Password must contain at least one letter and one number'),
     confirmPassword: yup
       .string()
       .oneOf([yup.ref("password"), null], "Passwords must match"),
@@ -137,8 +138,10 @@ const ResetPassWord = () => {
     source = require(`@src/assets/images/pages/${illustration}`).default;
   const [loading, setLoading] = useState(false);
 
-  const searchParams = new URLSearchParams(history.location.search);
+  const searchParams = new URLSearchParams(history?.location?.search);
+
   const currentToken = searchParams.get("token");
+  console.log('currentToken',currentToken);
 
   const hostname = location.hostname;
   const subDomainName = hostname.replace("-staging.paridhan.app","");
@@ -200,6 +203,7 @@ const ResetPassWord = () => {
               Enter the New and confirm password to reset the password.
             </CardText>
             <Formik
+            enableReinitialize
               initialValues={{
                 password: "",
                 confirmPassword: "",
@@ -223,6 +227,7 @@ const ResetPassWord = () => {
                     {/* <Label className="form-label" for="login-email">
                   Email
                 </Label> */}
+
                     <InputPasswordToggle
                       className="input-group-merge"
                       name="password"

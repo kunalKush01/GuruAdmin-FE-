@@ -122,7 +122,7 @@ export default function DonationListTable({ data, topdf }, args) {
         ),
         category: (
           <div>
-            {ConverFirstLatterToCapital(item?.masterCategory?.name ?? "")}
+            {ConverFirstLatterToCapital(item?.masterCategory?.name ?? "-")}
             {/* {item?.subCategory && `(${item?.subCategory?.name ?? ""})`} */}
           </div>
         ),
@@ -136,7 +136,7 @@ export default function DonationListTable({ data, topdf }, args) {
             ? `0${item.commitmentId}`
             : `${item.commitmentId}`
           : "_",
-        createdBy: ConverFirstLatterToCapital(item?.createdBy?.name ?? ""),
+        createdBy: ConverFirstLatterToCapital(item?.createdBy?.name ?? "-"),
         receipt: (
           <img
             src={receiptIcon}
