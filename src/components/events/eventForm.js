@@ -281,8 +281,10 @@ export default function EventForm({
 
   const [deletedImages, setDeletedImages] = useState([]);
   const [showPrompt, setShowPrompt] = useState(true);
-  const [imageSpinner, setImageSpinner] = useState(false);  
-  const [selectedTimeStart, setSelectedTimeStart] = useState(moment(new Date(), ['HH:mm']).format("HH:mm"));
+  const [imageSpinner, setImageSpinner] = useState(false);
+  const [selectedTimeStart, setSelectedTimeStart] = useState(
+    moment(new Date(), ["HH:mm"]).format("HH:mm")
+  );
   const [selectedTimeEnd, setSelectedTimeEnd] = useState("");
 
   useEffect(() => {
@@ -291,20 +293,20 @@ export default function EventForm({
   }, [initialValues]);
 
   const handleTimeChange = (time) => {
-    setSelectedTimeStart(moment(time,['HH:mm']).format("HH:mm"));
+    setSelectedTimeStart(moment(time, ["HH:mm"]).format("HH:mm"));
   };
   const handleTimeChangeEnd = (time) => {
     // setSelectedTimeStart(time);
-    setSelectedTimeEnd(moment(time,['HH:mm']).format("HH:mm"));
+    setSelectedTimeEnd(moment(time, ["HH:mm"]).format("HH:mm"));
   };
 
   const [isError, setIsError] = useState([]);
   const [imageOnGlobleEvent, setImageOnGlobleEvent] = useState(defaultImages);
-
+  console.log("imageOnGlobleEvent", defaultImages);
   const [tagCharInput, setTagCharInput] = useState("");
   const langToast = {
-    toastId:"langError"
-  }
+    toastId: "langError",
+  };
 
   return (
     <FormWaraper className="FormikWraper">
@@ -326,7 +328,7 @@ export default function EventForm({
             title: e.Title,
             tags: e?.tagsInit?.map((tag) => tag.text),
             deletedTags,
-            startTime:moment(e?.startTime,['HH:mm']).format('HH:mm'),
+            startTime: moment(e?.startTime, ["HH:mm"]).format("HH:mm"),
             endTime: e?.endTime,
             body: e.Body,
             startDate: moment(e?.DateTime?.start).format("YYYY-MM-DD"),
@@ -362,6 +364,7 @@ export default function EventForm({
             <Row className="paddingForm">
               <Col xs={12} md={7}>
                 <Row>
+                  {/* {JSON.stringify(formik.values.images)} */}
                   {!AddLanguage && (
                     <Col xs={12} md={6}>
                       <AsyncSelectField
@@ -391,23 +394,32 @@ export default function EventForm({
                               .utcOffset("+0530")
                               .toDate(),
                           });
-                          selectOption?.images?.map((item) => {
-                            formik.values.images.length = 0;
-                            formik.setFieldValue("images", [
+                          if (selectOption?.images) {
+                            const globalImage = selectOption?.images?.map(
+                              (item) => item?.name
+                            );
+                            formik?.setFieldValue("images", [
                               ...formik.values.images,
-                              item?.name,
+                              ...(globalImage ?? ""),
                             ]);
-                          });
-                          setImageOnGlobleEvent(selectOption?.images);
-                          setSelectedTimeEnd(selectOption?.endTime);
-                          setSelectedTimeStart(selectOption?.startTime);
+                          }else if(selectOption == null){
+                            formik?.setFieldValue("images", [])
+                            setImageOnGlobleEvent([])
+                          }
+                          setImageOnGlobleEvent(selectOption?.images ?? []);
+                          setSelectedTimeEnd(selectOption?.endTime ?? "23:59");
+                          setSelectedTimeStart(
+                            selectOption?.startTime ??
+                              moment(new Date(), ["HH:mm"]).format("HH:mm")
+                          );
                           formik.setFieldValue(
                             "startTime",
-                            selectOption?.startTime
+                            selectOption?.startTime ??
+                              moment(new Date(), ["HH:mm"]).format("HH:mm")
                           );
                           formik.setFieldValue(
                             "endTime",
-                            selectOption?.endTime
+                            selectOption?.endTime ?? "23:59"
                           );
                         }}
                       />
@@ -683,41 +695,49 @@ export default function EventForm({
                             </>
                           )}
                         </Col>
-                        {!AddLanguage ? 
-                    formik?.values?.DateTime?.end === null ||
-                    moment(formik?.values?.DateTime?.start).format("dd-mm-yy") ===
-                    moment(formik?.values?.DateTime?.end).format("dd-mm-yy") ? (
-                    formik?.values?.startTime === formik?.values?.endTime &&
-                    formik?.values?.startTime !== "" &&
-                    formik?.values?.endTime !== "" ? (
-                      <div
-                        className="text-danger"
-                        style={{
-                          height: "20px",
-                          font: "normal normal bold 11px/20px Noto Sans",
-                        }}
-                      >
-                        {/* <Trans i18nKey={"same_time"} /> */}
-                        <Trans i18nKey={"same_time"} />
-                      </div>
-                    ) : selectedTimeStart > selectedTimeEnd &&
-                      formik?.values?.endTime !== "" ? (
-                      <div
-                        className="text-danger"
-                        style={{
-                          height: "20px",
-                          font: "normal normal bold 11px/20px Noto Sans",
-                        }}
-                      >
-                        {/* <Trans i18nKey={"same_time"} /> */}
-                        <Trans i18nKey={"end_time_less"} />
-                      </div>
-                    ) : (
-                      ""
-                    )
-                  ) : (
-                    ""
-                  ): ""}
+                        {!AddLanguage ? (
+                          formik?.values?.DateTime?.end === null ||
+                          moment(formik?.values?.DateTime?.start).format(
+                            "dd-mm-yy"
+                          ) ===
+                            moment(formik?.values?.DateTime?.end).format(
+                              "dd-mm-yy"
+                            ) ? (
+                            formik?.values?.startTime ===
+                              formik?.values?.endTime &&
+                            formik?.values?.startTime !== "" &&
+                            formik?.values?.endTime !== "" ? (
+                              <div
+                                className="text-danger"
+                                style={{
+                                  height: "20px",
+                                  font: "normal normal bold 11px/20px Noto Sans",
+                                }}
+                              >
+                                {/* <Trans i18nKey={"same_time"} /> */}
+                                <Trans i18nKey={"same_time"} />
+                              </div>
+                            ) : selectedTimeStart > selectedTimeEnd &&
+                              formik?.values?.endTime !== "" ? (
+                              <div
+                                className="text-danger"
+                                style={{
+                                  height: "20px",
+                                  font: "normal normal bold 11px/20px Noto Sans",
+                                }}
+                              >
+                                {/* <Trans i18nKey={"same_time"} /> */}
+                                <Trans i18nKey={"end_time_less"} />
+                              </div>
+                            ) : (
+                              ""
+                            )
+                          ) : (
+                            ""
+                          )
+                        ) : (
+                          ""
+                        )}
 
                         {/* {formik.values.DateTime.end === null
                           ? formik.values.startTime === formik.values.endTime &&
@@ -759,8 +779,16 @@ export default function EventForm({
                   color="primary"
                   className="addEvent-btn "
                   type="submit"
-                  disabled={imageSpinner || (moment(formik?.values?.DateTime?.start).format("dd-mm-yy") ===
-                  moment(formik?.values?.DateTime?.end).format("dd-mm-yy") && selectedTimeStart > selectedTimeEnd)}
+                  disabled={
+                    imageSpinner ||
+                    (moment(formik?.values?.DateTime?.start).format(
+                      "dd-mm-yy"
+                    ) ===
+                      moment(formik?.values?.DateTime?.end).format(
+                        "dd-mm-yy"
+                      ) &&
+                      selectedTimeStart > selectedTimeEnd)
+                  }
                 >
                   {plusIconDisable && (
                     <span>
