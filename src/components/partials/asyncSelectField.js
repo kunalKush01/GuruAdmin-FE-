@@ -9,11 +9,13 @@ export default function AsyncSelectField({
   label,
   required=false,
   loadOptions,
+  isSearchable,
   minHeight,
   labelKey = "label",
   valueKey = "value",
   placeholder,
   value,
+  filterOption,
   multiple = false,
   isClearable = true,
   ...props
@@ -111,8 +113,10 @@ export default function AsyncSelectField({
         debounceTimeout={300}
         cacheOptions
         minMenuHeight={minHeight}
+        filterOption={filterOption}
         defaultOptions
         placeholder={placeholder}
+        isSearchable={isSearchable}
         isClearable={isClearable}
         loadOptions={loadOptions}
         getOptionValue={(option) => option[valueKey]}
@@ -121,7 +125,6 @@ export default function AsyncSelectField({
         styles={customStyles}
         onChange={(data) => {
           helpers.setValue(data)
-
         }}
         {...props}
       />
