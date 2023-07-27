@@ -216,8 +216,46 @@ export default function EventForm({
     },
   });
 
-  const loadOption = async () => {
-    const getGlobalEventsRES = await getGlobalEvents(100);
+  // const [globalEvents, setglobalEvents] = useState([])
+  // console.log('globalEvents',globalEvents);
+
+  // const filterGlobalEvents = (inputValue) => {
+  //   console.log('inputValue',inputValue);
+  //   return globalEvents.filter((i) =>
+  //     i.label.toLowerCase().includes(inputValue?.toLowerCase())
+  //   );
+  // };
+  // const getGlobalEventsData = (
+  //   inputValue,
+  //   callback: (options: globalEvents[]) => void
+  // ) => {
+  //   setTimeout(() => {
+  //     callback(filterColors(inputValue));
+  //   }, 1000);
+  // };
+  
+//   const loadOptions = async (
+//   callback: (options: getGlobalEventsRES.results[]) => void
+// ) => {
+// //  getGlobalEventsRES.results;
+
+//   setTimeout(() => {
+//     callback(filterColors(inputValue));
+//   }, 1000);
+// };
+
+// const loadOptions = (
+//   inputValue: string,
+//   callback: (options: ColourOption[]) => void
+// ) => {
+//   setTimeout(() => {
+//     callback(filterColors(inputValue));
+//   }, 1000);
+// };
+
+  const loadOption = async (input) => {
+    const getGlobalEventsRES = await getGlobalEvents({search:input})
+    // setglobalEvents(getGlobalEventsRES.results ?? [])
     return getGlobalEventsRES.results;
   };
 
@@ -367,18 +405,28 @@ export default function EventForm({
                   {/* {JSON.stringify(formik.values.images)} */}
                   {!AddLanguage && (
                     <Col xs={12} md={6}>
+                      {/* <FormikCustomReactSelect
+                        labelName={t("jinvani_jinvaniCategory")}
+                        name={'SelectedEvent'}
+                        labelKey={"title"}
+                        valueKey="id"
+                        // loadOptions={initialValues.Type}
+                        loadOptions={loadOptions}
+                        defaultValue={formik?.values?.jinvaniCategory}
+                        width={"100"}
+                      /> */}
                       <AsyncSelectField
                         // minHeight={"50px"}
                         name="SelectedEvent"
                         loadOptions={loadOption}
                         labelKey={"title"}
+                        // filterOption={filterGlobalEvents}
                         valueKey={"id"}
                         label={t("events_select_globle")}
                         placeholder={t("events_select_globle")}
                         disabled={selectEventDisabled}
                         onChange={(selectOption) => {
                           formik.setFieldValue("SelectedEvent", selectOption);
-
                           formik.setFieldValue(
                             "Title",
                             selectOption?.title ?? ""
