@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { useField } from "formik";
+import icon from '../../assets/images/icons/resizeField.png'
 import SunEditor, { buttonList } from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css";
 import styled from "styled-components";
@@ -25,7 +26,21 @@ const RichTextFieldWarper = styled.div`
     border-radius: 20px !important ;
 
     .se-resizing-bar {
-      display: none !important;
+      display: block !important;
+      width: 15px !important;
+      height: 15px !important;
+      background-size: 12px;
+      background-repeat: no-repeat;
+      background-color: #fbe6cf !important;
+      border-radius: 0px 0px 5px 0px ;
+      position: absolute;
+      /* background-color: red !important; */
+      background-image: url('${icon}');
+      z-index: 10;
+      background-position: bottom right;
+      bottom: 5px ;
+      right: 5px;
+      border-top: none !important;
     }
     .sun-editor-editable {
       background-color: #fdf7e8 !important;

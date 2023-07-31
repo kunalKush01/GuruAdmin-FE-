@@ -91,7 +91,7 @@ export const englishContent = {
   news_label_Description: "Add Description",
   news_label_Date: "Selected Date",
   news_label_Published: "Published by",
-  news_label_ImageVedio: "Add Images",
+  news_label_ImageVedio: "Add Images (Please upload the image with the size of 450px*350px)",
   news_button_Publish: "Publish",
   news_title_required: "Title is required",
   news_tags_required: "Tags are required",
@@ -131,7 +131,7 @@ export const englishContent = {
 
   notices_AddNotice: "Add Notice",
   notices_latest_Notice: "Notices",
-  add_image: "Add Image",
+  add_image: "Add Image (Please upload the image with the size of 450px*350px)",
   notices_title_required: "Title is required",
   notices_desc_required: "Description is required",
   notices_select_dropDown: "Select Notice",
