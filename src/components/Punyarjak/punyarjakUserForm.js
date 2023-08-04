@@ -132,7 +132,7 @@ export default function PunyarjakForm({
                       name="title"
                       required
                       onInput={(e) =>
-                        (e.target.value = e.target.value.slice(0, 30))
+                        (e.target.value = e.target.value.slice(0, 256))
                       }
                       autoFocus
                     />

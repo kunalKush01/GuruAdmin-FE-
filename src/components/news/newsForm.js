@@ -308,6 +308,7 @@ export default function NewsForm({
                       tags={formik.values.tagsInit}
                       placeholder={t("placeHolder_tags")}
                       suggestions={suggestions}
+                      allowAdditionFromPaste={false}
                       inputValue={tagCharInput}
                       handleInputChange={(e) => {
                         setTagCharInput(e.slice(0, 20));

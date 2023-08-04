@@ -493,6 +493,7 @@ export default function EventForm({
                         placeholder={t("placeHolder_tags")}
                         tags={formik.values.tagsInit}
                         suggestions={suggestions}
+                        allowAdditionFromPaste={false}
                         inputValue={tagCharInput}
                         handleInputChange={(e) => {
                           setTagCharInput(e.slice(0, 20));
@@ -596,6 +597,7 @@ export default function EventForm({
                         tags={formik.values.tagsInit}
                         suggestions={suggestions}
                         inputValue={tagCharInput}
+                        allowAdditionFromPaste={false}
                         handleInputChange={(e) => {
                           setTagCharInput(e.slice(0, 20));
                         }}
