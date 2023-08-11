@@ -24,7 +24,9 @@ const RichTextFieldWarper = styled.div`
   .sun-editor {
     border: none !important;
     border-radius: 20px !important ;
-
+.se-navigation{
+    display: none;
+   }
     .se-resizing-bar {
       display: block !important;
       width: 15px !important;
