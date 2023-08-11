@@ -323,7 +323,9 @@ export default function NoticeForm({
                 {!AddLanguage && (
                   <Row>
                     <div className="ImagesVideos">
-                      <Trans i18nKey={"add_image"} />
+                      <Trans i18nKey={"add_image"} /> <span style={{fontSize:'13px', color:'gray'}}>
+                        <Trans i18nKey={'image_size_suggestion'}/>
+                        </span>
                     </div>
                     <ImageUpload
                       bg_plus={thumbnailImage}
