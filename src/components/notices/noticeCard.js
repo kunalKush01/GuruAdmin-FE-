@@ -371,7 +371,7 @@ export default function NoticeCard({
                             onClick={() => {
                               data?.isPublished
                                 ? Swal.fire({
-                                    html: `<h3>${t("already_publish")}</h3>`,
+                                    html: `<h3>${t("already_publish_notice")}</h3>`,
                                     icon: "info",
                                     showConfirmButton: false,
                                     showCloseButton: false,

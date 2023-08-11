@@ -549,7 +549,9 @@ export default function EventForm({
                 {!AddLanguage && (
                   <Row>
                     <div className="ImagesVideos">
-                      <Trans i18nKey={"news_label_ImageVedio"} />
+                      <Trans i18nKey={"news_label_ImageVedio"} /> <span style={{fontSize:'13px', color:'gray'}}>
+                        <Trans i18nKey={'image_size_suggestion'}/>
+                        </span>
                     </div>
                     <div>
                       <ImageUpload
