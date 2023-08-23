@@ -106,8 +106,8 @@ export const englishContent = {
 
   news_delete: "Delete News",
   news_sure: "Are you sure you want to permanently delete this news ? ",
-  news_not_found: "No News Found",
-  news_not_click_add_news: 'Click on "Add News" to add news on the screen',
+  news_not_found: "News Absent  ",
+  news_not_click_add_news: "To add a new news article, click 'Add News'.",
 
   // All static content of Events
   same_time: "End time cannot be same as start time",
@@ -124,9 +124,9 @@ export const englishContent = {
   events_endDate_required: "End date is required",
   events_delete: "Delete Event",
   events_sure: "Are you sure you want to permanently delete this event ? ",
-  events_not_found: "No Events Found",
+  events_not_found: "Events Absent",
   events_not_click_add_events:
-    'Click on "Add Event" to add event on the screen',
+    "To introduce a new event, click 'Add Event'",
 
   // All static content of Notices
 
@@ -141,9 +141,9 @@ export const englishContent = {
 
   notices_delete: "Delete Notice",
   notices_sure: "Are you sure you want to permanently delete this notice ? ",
-  notices_not_found: "No Notices Found",
+  notices_not_found: "Notices Missing  ",
   notices_not_click_add_notices:
-    'Click on "Add Notice" to add notices on the screen',
+    "To include a new notice, simply click on 'Add Notice'.",
 
   // All static content of Categories
   only_letters: "Sub category can only contain character letters",
@@ -172,9 +172,9 @@ export const englishContent = {
 
   category_delete: "Delete Category",
   category_sure: "Are you sure you want to permanently delete this category ? ",
-  category_not_found: "No Categories Found",
+  category_not_found: "Categories Unavailable  ",
   category_not_click_add_category:
-    'Click on "Add Category" to add category on the screen',
+    "To introduce a new category, click on 'Add Category'.",
 
   // All static content of Users
 
@@ -185,9 +185,9 @@ export const englishContent = {
   users_mobile_required: "Mobile Number is Required",
   mobile_number_limit: "Mobile Number must be 10 digits",
   users_email_required: "Email is Required",
-  users_not_found: "No Sub Admin Found",
+  users_not_found: "Sub Admins Not Found  ",
   users_not_click_add_users:
-    'Click on "Add Sub Admin" to add sub admin user on the screen',
+    "To add a new sub admin user, click 'Add Sub Admin'.",
 
   // All static content of Internal Expense
   expenses_AddExpenses: "Add Expense",
@@ -204,9 +204,9 @@ export const englishContent = {
 
   expence_delete: "Delete Expense",
   expence_sure: "Are you sure you want to permanently delete this expense ? ",
-  expence_not_found: "No Expenses Found",
+  expence_not_found: "Expenses Not Found  ",
   expence_not_click_add_expence:
-    'Click on "Add Expenses" to add expenses on the screen',
+    "To record new expenses, click on 'Add Expenses'.",
 
   // All static content of Financial Report
 
@@ -216,7 +216,7 @@ export const englishContent = {
   report_commitment: "Commitment",
   reports_not_found: "Report & Disput Not Found",
   report_donation_box: "Donation Box Collections",
-  finance_report_no_found: "No Financial Report Found",
+  finance_report_no_found: "No Financial Report Available for Selected Timeline",
   financial_not_found: "No Financial Found",
 
   // All static content of Donation
@@ -260,9 +260,9 @@ export const englishContent = {
   logData_createdAmount: "Created Amount",
   logData_editedAmount: "Edited Amount",
 
-  donation_box_not_found: "No Donation Box Found",
+  donation_box_not_found: "Donation Boxes Missing",
   donation_box_not_click_add_donation_box:
-    'Click on "Add Collection" to add donation box on the screen',
+    "To introduce a new donation box, just click 'Add Collection'",
 
   // All Commitment Data
   notify_user: "Notify User",
@@ -278,9 +278,9 @@ export const englishContent = {
   commitment_delete: "Delete Commitment",
   commitment_sure:
     "Are you sure you want to permanently delete this commitment ? ",
-  commitment_not_found: "No Commitment Found",
+  commitment_not_found: "Commitments Not Found  ",
   commitment_not_click_add_commitment:
-    'Click on "Add Commitment" to add commitment on the screen',
+    "To make a new commitment, click 'Add Commitment'.",
   commitment_complete: "Completed",
   commitment_partial: "Partial",
 
@@ -303,7 +303,7 @@ export const englishContent = {
   report_Transaction_IDs: "Transaction IDs",
   report_panding: "Pending",
   report_re_solved: "Re-Solved",
-  report_dispute_not_found: "No Report & Dispute Found",
+  report_dispute_not_found: "Reports & Disputes Not Found  ",
 
   // All notification static data
   notifications: "Notifications",
@@ -393,9 +393,9 @@ export const englishContent = {
   username: "The username must only consist of letters of the alphabet",
   punyarjak_sure:
     "Are you sure you want to permanently delete this punyarjak ? ",
-  punyarjak_not_found: "No Punyarjak User Found",
+  punyarjak_not_found: "Punyarjak Users Absent  ",
   punyarjak_not_click_add:
-    'Click on "Add punyarjak" to add punyarjak user on the screen',
+    "To include a new Punyarjak user, click 'Add Punyarjak'.",
 
   // all place holder images
 
