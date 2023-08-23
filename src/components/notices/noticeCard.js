@@ -76,6 +76,7 @@ const EventCardWaraper = styled.div`
     background: #fff7e8;
     border-radius: 10px;
     padding: 0px;
+    overflow:hidden;
     max-height: 122px;
   }
   .cardLangScroll {
@@ -308,7 +309,7 @@ export default function NoticeCard({
                         width: "100%",
                         borderRadius: "10px",
                         objectFit: "cover",
-                        height: "100%",
+                        height: "122px",
                       }}
                     />
                 </div>

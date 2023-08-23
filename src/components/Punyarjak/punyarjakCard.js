@@ -45,6 +45,9 @@ const NewsCardWaraper = styled.div`
   .card-title {
     font: normal normal bold 13px/16px Noto Sans;
     margin-bottom: 10px !important;
+    white-space:nowrap;
+    text-overflow: ellipsis;
+    overflow:hidden
   }
   .card-text {
     font: normal normal normal 12px/16px Noto Sans;
@@ -256,7 +259,7 @@ export default function PunyarjakCard({
 
         <CardBody>
           <div className="">
-            <CardTitle>
+            <CardTitle title={data?.title ?? ''}>
               {ConverFirstLatterToCapital(data?.title ?? "")}
             </CardTitle>
 
