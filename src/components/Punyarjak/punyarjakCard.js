@@ -33,6 +33,7 @@ import comfromationIcon from "../../assets/images/icons/news/conformationIcon.sv
 import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
 import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 import { useSelector } from "react-redux";
+import { deletePunyarjak } from "../../api/punarjakApi";
 
 const NewsCardWaraper = styled.div`
   .imgContainer {
@@ -128,16 +129,16 @@ function BtnContent({
     }
   `;
 
-  const handleDeleteNews = async (payload) => {
-    return deleteNewsDetail(payload);
+  const handleDeletePunyarjak = async (payload) => {
+    return deletePunyarjak(payload);
   };
 
   const queryCient = useQueryClient();
   const deleteMutation = useMutation({
-    mutationFn: handleDeleteNews,
+    mutationFn: handleDeletePunyarjak,
     onSuccess: (data) => {
       if (!data.error) {
-        queryCient.invalidateQueries(["News"]);
+        queryCient.invalidateQueries(["punyarjak"]);
       }
     },
   });
@@ -175,9 +176,9 @@ function BtnContent({
                 title: `<img src="${comfromationIcon}"/>`,
                 html: `
                                       <h3 class="swal-heading">${t(
-                                        "news_delete"
+                                        "punyarjak_delete"
                                       )}</h3>
-                                      <p>${t("news_sure")}</p>
+                                      <p>${t("punyarjak_sure")}</p>
                                       `,
                 showCloseButton: false,
                 showCancelButton: true,
