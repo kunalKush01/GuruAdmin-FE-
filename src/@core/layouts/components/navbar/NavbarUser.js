@@ -38,7 +38,7 @@ import {
 } from "../../../../utility/localSerachBar";
 import CustomSearchBar from "../../../../components/partials/customSearchBar";
 import Swal from "sweetalert2";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   getAllNotification,
   readNotification,
@@ -209,6 +209,8 @@ const NavbarUser = (props) => {
     page: 1,
     limit: 10,
   });
+
+  
   const notificationQuery = useQuery(
     ["notificationMessagePing", pagination.page],
     async () =>
@@ -220,6 +222,20 @@ const NavbarUser = (props) => {
     () => notificationQuery?.data ?? [],
     [notificationQuery]
   );
+  const notificationInvalidateQuery = useQueryClient();
+
+  const [notificationMessagePing, setNotificationMessagePing] = useState(
+    allUnReadMessage?.unSeenCount ?? 0
+  );
+  useEffect(() => {
+    if (location.pathname === '/notification') {
+      setTimeout(()=> {
+        notificationInvalidateQuery.invalidateQueries(['notificationMessagePing'])
+        setNotificationMessagePing(0);
+      },1000)
+    }
+  }, [allUnReadMessage,location?.pathname]);
+
 
   return (
     <Fragment>
@@ -253,16 +269,20 @@ const NavbarUser = (props) => {
               src={menuPanelIcon}
             />
             <div className="position-relative">
-              {allUnReadMessage?.unSeenCount > 0 && (
-                <div className="notificationNumber">
-                  {allUnReadMessage?.unSeenCount < 9
-                    ? `0${allUnReadMessage?.unSeenCount}`
-                    : allUnReadMessage?.unSeenCount}
-                </div>
-              )}
+              {allUnReadMessage?.unSeenCount > 0 &&
+                notificationMessagePing !== "/notification" && (
+                  <div className="notificationNumber">
+                    {allUnReadMessage?.unSeenCount < 9
+                      ? `0${allUnReadMessage?.unSeenCount}`
+                      : allUnReadMessage?.unSeenCount}
+                  </div>
+                )}
               <img
                 className={`icon ${
-                  allUnReadMessage?.unSeenCount > 0 && "shakeBell"
+                  allUnReadMessage?.unSeenCount > 0 &&
+                  notificationMessagePing !== "/notification"
+                    ? "shakeBell"
+                    : ""
                 }`}
                 src={bellIcon}
                 onClick={() => history.push("/notification")}
@@ -300,7 +320,7 @@ const NavbarUser = (props) => {
               <div className="navepara">
                 <div
                   className="templeName text-end d-none d-xl-block text-truncate "
-                  style={{maxWidth:'200px'}}
+                  style={{ maxWidth: "200px" }}
                   title={trustDetails?.name}
                 >
                   {ConverFirstLatterToCapital(trustDetails?.name ?? "")}
