@@ -76,7 +76,6 @@ const EventCardWaraper = styled.div`
     background: #fff7e8;
     border-radius: 10px;
     padding: 0px;
-    overflow:hidden;
     max-height: 122px;
   }
   .cardLangScroll {
