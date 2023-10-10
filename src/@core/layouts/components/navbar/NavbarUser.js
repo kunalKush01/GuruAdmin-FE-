@@ -332,7 +332,7 @@ const NavbarUser = (props) => {
                 </div>
                 <div
                   className="text-end d-none d-xl-block text-truncate "
-                  style={{ fontSize: "15px", lineHeight: "10px",maxWidth: "200px" }}
+                  style={{ fontSize: "15px", lineHeight: "16px" }}
                   title={userDetails?.name}
                 >
                   {ConverFirstLatterToCapital(userDetails?.name ?? "")}
