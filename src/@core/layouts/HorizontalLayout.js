@@ -152,7 +152,7 @@ const HorizontalLayout = (props) => {
           <Navbar
             tag="div"
             expand="sm"
-            style={{ background: "#FF8744",top:"77px" }}
+            style={{ background: "#FF8744",top:"80px" }}
             light={skin !== "dark"}
             dark={skin === "dark" || bgColorCondition}
             className={classnames(

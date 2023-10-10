@@ -191,6 +191,7 @@ const NavbarUserWarraper = styled.div`
 const NavbarUser = (props) => {
   const history = useHistory();
   const trustDetails = useSelector((state) => state.auth.trustDetail);
+  const userDetails = useSelector((state) => state.auth.userDetail);
   const refreshToken = useSelector((state) => state.auth.tokens.refreshToken);
   const searchBarValue = useSelector((state) => state.auth.LocalSearch);
   const dispatch = useDispatch();
@@ -247,6 +248,10 @@ const NavbarUser = (props) => {
                 {/* <img src={themeConfig.app.appLogoImage} alt='logo' /> */}
                 <div>Logo Here</div>
               </span>
+              <div className="date d-none d-xl-block">
+                  <Trans i18nKey={"last_login"} />:{" "}
+                  {moment().format("DD MMM YYYY,h:mm a")}
+                </div>
               {/* <h2 className='brand-text mb-0'>{themeConfig.app.appName}</h2> */}
             </NavLink>
           </NavItem>
@@ -320,15 +325,19 @@ const NavbarUser = (props) => {
               <div className="navepara">
                 <div
                   className="templeName text-end d-none d-xl-block text-truncate "
-                  style={{ maxWidth: "200px" }}
+                  style={{ maxWidth: "130px" }}
                   title={trustDetails?.name}
                 >
                   {ConverFirstLatterToCapital(trustDetails?.name ?? "")}
                 </div>
-                <div className="date d-none d-xl-block">
-                  <Trans i18nKey={"last_login"} />:{" "}
-                  {moment().format("DD MMM YYYY,h:mm a")}
+                <div
+                  className="text-end d-none d-xl-block text-truncate "
+                  style={{ fontSize: "15px", lineHeight: "10px",maxWidth: "200px" }}
+                  title={userDetails?.name}
+                >
+                  {ConverFirstLatterToCapital(userDetails?.name ?? "")}
                 </div>
+                
               </div>
               <div
                 onClick={
