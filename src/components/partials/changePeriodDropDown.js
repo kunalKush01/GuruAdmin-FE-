@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CustomDropDown } from "./customDropDown";
 
-export const ChangePeriodDropDown = ({dropDownName,setdropDownName,...props}) => {
+export const ChangePeriodDropDown = ({
+  dropDownName,
+  setdropDownName,
+  allFilter,
+  ...props
+}) => {
   
-
   const i18nKeyDropDownItemArray = [
     {
       id: 2,
@@ -18,11 +22,24 @@ export const ChangePeriodDropDown = ({dropDownName,setdropDownName,...props}) =>
       key: "dashboard_yearly",
     },
   ];
+
+  const [dashboardAllLabelState, setDashboardAllLabelState] = useState(
+    i18nKeyDropDownItemArray
+  );
+
+  useEffect(() => {
+    if (allFilter) {
+      setDashboardAllLabelState([
+        { id: 4, key: "dashboard_all" },
+        ...i18nKeyDropDownItemArray,
+      ]);
+    }
+  }, []);
   return (
     <CustomDropDown
       defaultDropDownName={dropDownName}
-      i18nKeyDropDownItemArray={i18nKeyDropDownItemArray}
-      handleDropDownClick={(e)=>setdropDownName(e)}
+      i18nKeyDropDownItemArray={dashboardAllLabelState}
+      handleDropDownClick={(e) => setdropDownName(e)}
       {...props}
     />
   );

@@ -48,65 +48,69 @@ const Home = () => {
     .utcOffset(0, true)
     .toISOString();
 
-
   const history = useHistory();
-  
+
   useEffect(() => {
     const dashboardInfo = async () => {
       const res = await getAllDashboardData({
-        startDate: filterStartDate,
-        endDate: filterEndDate,
+        startDate: dropDownName === "dashboard_all" ? "" : filterStartDate,
+        endDate: dropDownName === "dashboard_all" ? "" : filterEndDate,
       });
       setDashboardData(res);
     };
     dashboardInfo();
-  }, [filterStartDate,filterEndDate]);
+  }, [filterStartDate, filterEndDate,dropDownName]);
 
-  useEffect(() => {
-    const chartInfo = async () => {
-      const chartRes = await getAllChartData(
-      //   {
-      //   startDate: filterStartDate,
-      //   endDate: filterEndDate,
-      // }
-      );
-      setChart(chartRes);
-    };
-    chartInfo();
-  }, [
-    // filterStartDate,filterEndDate
-  ]);
+  useEffect(
+    () => {
+      const chartInfo = async () => {
+        const chartRes = await getAllChartData();
+        //   {
+        //   startDate: filterStartDate,
+        //   endDate: filterEndDate,
+        // }
+        setChart(chartRes);
+      };
+      chartInfo();
+    },
+    [
+      // filterStartDate,filterEndDate
+    ]
+  );
 
-  useEffect(() => {
-    const topDonorInfo = async () => {
-      const topDonorRes = await getAllTopDonor(
-      //   {
-      //   startDate: filterStartDate,
-      //   endDate: filterEndDate,
-      // }
-      );
-      setTopDonorData(topDonorRes);
-    };
-    topDonorInfo();
-  }, [
-    // filterStartDate,filterEndDate
-  ]);
+  useEffect(
+    () => {
+      const topDonorInfo = async () => {
+        const topDonorRes = await getAllTopDonor();
+        //   {
+        //   startDate: filterStartDate,
+        //   endDate: filterEndDate,
+        // }
+        setTopDonorData(topDonorRes);
+      };
+      topDonorInfo();
+    },
+    [
+      // filterStartDate,filterEndDate
+    ]
+  );
 
-  useEffect(() => {
-    const recentDonationInfo = async () => {
-      const recentDonationRes = await getAllRecentDonationList(
-      //   {
-      //   startDate: filterStartDate,
-      //   endDate: filterEndDate,
-      // }
-      );
-      setRecentDonationData(recentDonationRes);
-    };
-    recentDonationInfo();
-  }, [
-    // filterStartDate,filterEndDate
-  
-  ]);
+  useEffect(
+    () => {
+      const recentDonationInfo = async () => {
+        const recentDonationRes = await getAllRecentDonationList();
+        //   {
+        //   startDate: filterStartDate,
+        //   endDate: filterEndDate,
+        // }
+        setRecentDonationData(recentDonationRes);
+      };
+      recentDonationInfo();
+    },
+    [
+      // filterStartDate,filterEndDate
+    ]
+  );
 
   return (
     <>
@@ -117,27 +121,40 @@ const Home = () => {
       {dashboardData && chartData && topDonorData && recentDonationData ? (
         <div className="pb-4">
           <ChangePeriodDropDown
+            allFilter
             dropDownName={dropDownName}
             setdropDownName={(e) => setdropDownName(e.target.name)}
           />
           <div className="d-flex flex-wrap gap-1 justify-content-between mt-1 mb-lg-3">
             <OrdersReceived
               statTitle={t("dashboard_donationReceived")}
-              stats={parseInt(dashboardData?.donationReceived === undefined ? 0 : dashboardData?.donationReceived)}
+              stats={parseInt(
+                dashboardData?.donationReceived === undefined
+                  ? 0
+                  : dashboardData?.donationReceived
+              )}
               warning={"primary"}
               data={dashboardData?.donationReceivedArr}
               SeriesName={"Donation Recieved"}
             />
             <OrdersReceived
               statTitle={t("dashboard_donationPending")}
-              stats={parseInt(dashboardData?.donationPending === undefined ? 0 :dashboardData?.donationPending )}
+              stats={parseInt(
+                dashboardData?.donationPending === undefined
+                  ? 0
+                  : dashboardData?.donationPending
+              )}
               warning={"primary"}
               data={dashboardData?.donationPendingArr}
               SeriesName={"Donation Pending"}
             />
             <OrdersReceived
               statTitle={t("dashboard_totalExpenses")}
-              stats={parseInt(dashboardData?.totalExpenses === undefined ? 0 :dashboardData?.totalExpenses)}
+              stats={parseInt(
+                dashboardData?.totalExpenses === undefined
+                  ? 0
+                  : dashboardData?.totalExpenses
+              )}
               warning={"primary"}
               data={dashboardData?.totalExpensesArr}
               SeriesName={"Total Expenses"}
@@ -148,7 +165,11 @@ const Home = () => {
             >
               <CustomCard
                 cardTitle={t("dashboard_card_title3")}
-                cardNumber={parseInt(dashboardData?.subscribedUsers === undefined ? 0 :dashboardData?.subscribedUsers )}
+                cardNumber={parseInt(
+                  dashboardData?.subscribedUsers === undefined
+                    ? 0
+                    : dashboardData?.subscribedUsers
+                )}
                 cardImage={custcardImage3}
               />
             </div>

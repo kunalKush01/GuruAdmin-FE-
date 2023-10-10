@@ -58,6 +58,7 @@ export const englishContent = {
   // All static content of Dashboard
   dashboard_donationReceived: "Donation Received",
   dashboard_donationPending: "Donation Pending",
+  dashboard_all:"All",
   donation_hundi: "Donation + Hundi",
   dashboard_totalExpenses: "Total Expenses",
   noTopDonar: "There are no ",
