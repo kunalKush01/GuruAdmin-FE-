@@ -52,7 +52,8 @@ export const ConvertToString = (html)  => {
  export const jsonDataDonationBox = ({data}) => {
     return data.map((item)=>({
         amount:`₹${item.amount}`,
-        remarks:<div className="d-flex tableDes" dangerouslySetInnerHTML={{__html:he.decode(item?.remarks??"")}} /> ,
+        // remarks:<div className="d-flex tableDes" dangerouslySetInnerHTML={{__html:he.decode(item?.remarks??"")}} /> ,
+        remarks:item?.remarks,
         dateTime:moment(item?.collectionDate).format("h:mm A, DD MMM YYYY"),
         createdBy:ConverFirstLatterToCapital (item?.createdBy?.name),
     }))

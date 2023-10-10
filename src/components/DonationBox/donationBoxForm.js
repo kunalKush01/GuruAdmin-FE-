@@ -18,6 +18,7 @@ import { setlang } from "../../redux/authSlice";
 import LogListTable from "./logListTable";
 import { getAllBoxCollectionLogs } from "../../api/donationBoxCollectionApi";
 import { Prompt } from "react-router-dom";
+import { TextArea } from "../partials/CustomTextArea";
 
 const FormWaraper = styled.div`
   .FormikWraper {
@@ -141,8 +142,8 @@ export default function DonationBoxForm({
                 <Col xs={12} md={7}>
                   <Row>
                     <Col xs={12}>
-                      <RichTextField
-                        height="200px"
+                      <TextArea
+                        rows="8"
                         label={t("news_label_Description")}
                         name="Body"
                         autoFocus
