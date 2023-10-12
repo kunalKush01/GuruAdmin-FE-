@@ -35,7 +35,7 @@ import {
   defaultHeaders,
   refreshTokenRequest,
 } from "../../utility/utils/callApi";
-import { ConverFirstLatterToCapital } from "../../utility/formater";
+import { ConverFirstLatterToCapital, getCookie } from "../../utility/formater";
 const LoginCover = () => {
   const { isLogged, isShowModel, trustDetail } = useSelector(
     (state) => state.auth
@@ -222,8 +222,8 @@ const LoginCover = () => {
   //   "atoken"
   // );
 
-  const refreshToken = localStorage.getItem('refreshToken')
-  const accessToken = localStorage.getItem('accessToken')
+  const refreshToken = getCookie("refreshToken");
+  const accessToken = getCookie("accessToken");
 
   const headers = {
     ...defaultHeaders,
