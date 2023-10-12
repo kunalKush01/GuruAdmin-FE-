@@ -15,6 +15,10 @@ import {
   Input,
   InputGroup,
   InputGroupText,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
   Row,
   Spinner,
 } from "reactstrap";
@@ -26,18 +30,21 @@ import backIconIcon from "../../assets/images/icons/signInIcon/backIcon.svg";
 import emailInputIcon from "../../assets/images/icons/signInIcon/email.svg";
 import hidePassIcon from "../../assets/images/icons/signInIcon/hidePassIcon.svg";
 import passwordEyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
-import { handleTokenLogin, login } from "../../redux/authSlice";
+import { handleTokenLogin, login, openModel } from "../../redux/authSlice";
 import {
   defaultHeaders,
   refreshTokenRequest,
 } from "../../utility/utils/callApi";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 const LoginCover = () => {
-  const { isLogged } = useSelector((state) => state.auth);
+  const { isLogged, isShowModel, trustDetail } = useSelector(
+    (state) => state.auth
+  );
   const history = useHistory();
   const dispatch = useDispatch();
   const [forgotPassWordActive, setForgotPassWordActive] = useState(false);
   const [loadingLogin, setLoadingLogin] = useState(false);
+  const [modal, setModal] = useState(false);
 
   const handleLoginSubmit = (data) => {
     dispatch(
@@ -149,8 +156,32 @@ const LoginCover = () => {
   const permissions = useSelector(
     (state) => state.auth?.userDetail?.permissions
   );
+
   const loginPath = permissions?.map((item) => item?.name);
+
+  // const handleLoginAsTemple = () => {
+  //   if (isLogged && loginPath?.includes("all")) {
+  //     history.push("/dashboard");
+  //   } else if (
+  //     isLogged &&
+  //     loginPath?.length &&
+  //     loginPath[0] === "configuration"
+  //   ) {
+  //     history.push(`/configuration/categories`);
+  //   } else if (isLogged || loginPath?.length) {
+  //     history.push(`/${loginPath[0]}`);
+  //   }
+  // };
+
   useEffect(() => {
+    // if (
+    //   isLogged &&
+    //   (location.hostname === "localhost" ||
+    //     location.hostname === "am-admin-staging.paridhan.app")
+    // ) {
+    //   setModal(true);
+    // }
+    // else 
     if (isLogged && loginPath?.includes("all")) {
       history.push("/dashboard");
     } else if (
@@ -184,12 +215,15 @@ const LoginCover = () => {
   const illustration = skin === "dark" ? "login-v2-dark.svg" : "login.svg",
     source = require(`@src/assets/images/pages/${illustration}`).default;
 
-  const refreshToken = new URLSearchParams(history.location.search)?.get(
-    "rtoken"
-  );
-  const accessToken = new URLSearchParams(history.location.search)?.get(
-    "atoken"
-  );
+  // const refreshToken = new URLSearchParams(history.location.search)?.get(
+  //   "rtoken"
+  // );
+  // const accessToken = new URLSearchParams(history.location.search)?.get(
+  //   "atoken"
+  // );
+
+  const refreshToken = localStorage.getItem('refreshToken')
+  const accessToken = localStorage.getItem('accessToken')
 
   const headers = {
     ...defaultHeaders,
@@ -211,6 +245,14 @@ const LoginCover = () => {
   }, [refreshToken]);
 
   const [loading, setLoading] = useState(false);
+
+  const trustArray = [
+    {
+      id: "6524edc5767cc81601d53ac6",
+      name: trustDetail?.name,
+      subDomain:trustDetail?.subDomain
+    },
+  ];
   return (
     <LoginWarraper className="auth-wrapper auth-cover ">
       <Row className="auth-inner m-0 defaultFontColor">
@@ -249,7 +291,11 @@ const LoginCover = () => {
               {loginPageData?.name !== "" && (
                 <div className="templeName">
                   Admin:{" "}
-                  <span title={ConverFirstLatterToCapital(loginPageData?.name ?? "")}>
+                  <span
+                    title={ConverFirstLatterToCapital(
+                      loginPageData?.name ?? ""
+                    )}
+                  >
                     {ConverFirstLatterToCapital(loginPageData?.name ?? "")}
                   </span>
                 </div>
@@ -335,12 +381,6 @@ const LoginCover = () => {
                         </div>
                       </div>
                     </div>
-                    {/* <div className="form-check mb-1">
-                <Input type="checkbox" id="remember-me" />
-                <Label className="form-check-label" for="remember-me">
-                  Remember Me
-                </Label>
-              </div> */}
                     <div className="d-flex w-100 justify-content-center  ">
                       {loadingLogin ? (
                         <Button
@@ -373,23 +413,6 @@ const LoginCover = () => {
                   </a>
                 </span>
               </p>
-              {/* <div className="divider my-2">
-              <div className="divider-text">or</div>
-            </div>
-            <div className="auth-footer-btn d-flex justify-content-center">
-              <Button color="facebook">
-                <Facebook size={14} />
-              </Button>
-              <Button color="twitter">
-                <Twitter size={14} />
-              </Button>
-              <Button color="google">
-                <Mail size={14} />
-              </Button>
-              <Button className="me-0" color="github">
-                <GitHub size={14} />
-              </Button>
-            </div> */}
             </Col>
           ) : (
             <Col className="px-xl-2 mx-auto " sm="8" md="6" lg="12">
@@ -468,35 +491,52 @@ const LoginCover = () => {
                   </Form>
                 )}
               </Formik>
-              {/* <p className="text-center mt-2">
-              <span className="me-25 an_account ">
-                Don't Have an account ?{" "}
-              </span>
-              <Link to="/pages/register-cover">
-                <span>Sign Up</span>
-              </Link>
-            </p> */}
-              {/* <div className="divider my-2">
-              <div className="divider-text">or</div>
-            </div>
-            <div className="auth-footer-btn d-flex justify-content-center">
-              <Button color="facebook">
-                <Facebook size={14} />
-              </Button>
-              <Button color="twitter">
-                <Twitter size={14} />
-              </Button>
-              <Button color="google">
-                <Mail size={14} />
-              </Button>
-              <Button className="me-0" color="github">
-                <GitHub size={14} />
-              </Button>
-            </div> */}
             </Col>
           )}
         </Col>
       </Row>
+      <Modal
+        isOpen={modal}
+        toggle={() => {
+          setModal(false);
+        }}
+        centered
+      >
+        <ModalBody>
+          There are Trust List
+          {trustArray?.map((item) => (
+            <div>
+              <a
+                href={`https://${item?.subDomain}-staging.paridhan.app/${item?.id}?rtoken=${item?.refreshToken}&atoken=${item?.accessToken}`}
+              >
+                {item?.name}
+              </a>{" "}
+            </div>
+          ))}
+          {/* <div onClick={handleLoginAsTemple}>Login as This temple</div> */}
+        </ModalBody>
+
+        {/* <ModalFooter>
+          <Button
+            color="primary"
+            onClick={() => {
+              setModal(false);
+              dispatch(openModel(false));
+            }}
+          >
+            Do Something
+          </Button>{" "}
+          <Button
+            color="secondary"
+            onClick={() => {
+              setModal(false);
+              dispatch(openModel(false));
+            }}
+          >
+            Cancel
+          </Button>
+        </ModalFooter> */}
+      </Modal>
     </LoginWarraper>
   );
 };
