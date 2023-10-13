@@ -225,6 +225,8 @@ const LoginCover = () => {
   const refreshToken = getCookie("refreshToken");
   const accessToken = getCookie("accessToken");
 
+    console.log("refreshToken",refreshToken);
+
   const headers = {
     ...defaultHeaders,
     // 'Content-Type': 'application/json',
