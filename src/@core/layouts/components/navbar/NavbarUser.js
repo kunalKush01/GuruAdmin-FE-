@@ -200,10 +200,6 @@ const NavbarUser = (props) => {
     try {
       const res = await authApiInstance.post("auth/logout", { refreshToken });
       toast.success(res.data.message);
-      document.cookie =
-        "refreshToken" + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        document.cookie =
-        "accessToken" + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
       dispatch(logOut());
     } catch (error) {}
   };
