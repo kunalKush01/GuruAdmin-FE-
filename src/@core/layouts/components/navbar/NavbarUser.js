@@ -5,44 +5,44 @@ import { Fragment, useEffect, useMemo, useState } from "react";
 import UserDropdown from "./UserDropdown";
 
 // ** Third Party Components
-import { Sun, Moon } from "react-feather";
+import { Moon, Sun } from "react-feather";
 
 // ** Reactstrap Imports
+import moment from "moment";
+import { Trans, useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
 import {
-  NavItem,
-  NavLink,
-  Link,
   Input,
   InputGroup,
   InputGroupText,
+  Link,
+  NavItem,
+  NavLink,
 } from "reactstrap";
 import styled from "styled-components";
+import logOutIcon from "../../../../assets/images/icons/dashBoard/Group 5995.svg";
+import bellIcon from "../../../../assets/images/icons/dashBoard/Group 5996.svg";
 import searchIcon from "../../../../assets/images/icons/dashBoard/Group 5997.svg";
 import menuPanelIcon from "../../../../assets/images/icons/dashBoard/icn_MenuPanel.svg";
-import bellIcon from "../../../../assets/images/icons/dashBoard/Group 5996.svg";
-import logOutIcon from "../../../../assets/images/icons/dashBoard/Group 5995.svg";
-import LangModel from "../langModel";
-import { useTranslation, Trans } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import comfromationIcon from "../../../../assets/images/icons/news/conformationIcon.svg";
 import { authApiInstance } from "../../../../axiosApi/authApiInstans";
 import { logOut, setSearchbarValue } from "../../../../redux/authSlice";
-import { toast } from "react-toastify";
-import moment from "moment";
-import { useHistory } from "react-router-dom";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
-import comfromationIcon from "../../../../assets/images/icons/news/conformationIcon.svg";
+import LangModel from "../langModel";
 
-import {
-  isSerchable,
-  setPlaceholderSerchbar,
-} from "../../../../utility/localSerachBar";
-import CustomSearchBar from "../../../../components/partials/customSearchBar";
-import Swal from "sweetalert2";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import Swal from "sweetalert2";
 import {
   getAllNotification,
   readNotification,
 } from "../../../../api/notification";
+import CustomSearchBar from "../../../../components/partials/customSearchBar";
+import {
+  isSerchable,
+  setPlaceholderSerchbar,
+} from "../../../../utility/localSerachBar";
 
 const NavbarUserWarraper = styled.div`
   color: #583703 !important ;
@@ -200,6 +200,8 @@ const NavbarUser = (props) => {
     try {
       const res = await authApiInstance.post("auth/logout", { refreshToken });
       toast.success(res.data.message);
+      document.cookie = 'refreshToken= "" ';
+      document.cookie = 'accessToken= "" ';
       dispatch(logOut());
     } catch (error) {}
   };
@@ -211,7 +213,6 @@ const NavbarUser = (props) => {
     limit: 10,
   });
 
-  
   const notificationQuery = useQuery(
     ["notificationMessagePing", pagination.page],
     async () =>
@@ -229,14 +230,15 @@ const NavbarUser = (props) => {
     allUnReadMessage?.unSeenCount ?? 0
   );
   useEffect(() => {
-    if (location.pathname === '/notification') {
-      setTimeout(()=> {
-        notificationInvalidateQuery.invalidateQueries(['notificationMessagePing'])
+    if (location.pathname === "/notification") {
+      setTimeout(() => {
+        notificationInvalidateQuery.invalidateQueries([
+          "notificationMessagePing",
+        ]);
         setNotificationMessagePing(0);
-      },1000)
+      }, 1000);
     }
-  }, [allUnReadMessage,location?.pathname]);
-
+  }, [allUnReadMessage, location?.pathname]);
 
   return (
     <Fragment>
@@ -249,9 +251,9 @@ const NavbarUser = (props) => {
                 <div>Logo Here</div>
               </span>
               <div className="date d-none d-xl-block">
-                  <Trans i18nKey={"last_login"} />:{" "}
-                  {moment().format("DD MMM YYYY,h:mm a")}
-                </div>
+                <Trans i18nKey={"last_login"} />:{" "}
+                {moment().format("DD MMM YYYY,h:mm a")}
+              </div>
               {/* <h2 className='brand-text mb-0'>{themeConfig.app.appName}</h2> */}
             </NavLink>
           </NavItem>
@@ -337,7 +339,6 @@ const NavbarUser = (props) => {
                 >
                   {ConverFirstLatterToCapital(userDetails?.name ?? "")}
                 </div>
-                
               </div>
               <div
                 onClick={
