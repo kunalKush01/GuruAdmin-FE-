@@ -25,19 +25,20 @@ import {
 import styled from "styled-components";
 import * as yup from "yup";
 import { forgotPassword } from "../../api/forgotPassword";
-import { loginPage } from "../../api/loginPageApi";
+import { checkUserTrust, loginPage } from "../../api/loginPageApi";
+import passwordEyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
 import backIconIcon from "../../assets/images/icons/signInIcon/backIcon.svg";
 import emailInputIcon from "../../assets/images/icons/signInIcon/email.svg";
 import hidePassIcon from "../../assets/images/icons/signInIcon/hidePassIcon.svg";
-import passwordEyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
 import { handleTokenLogin, login, openModel } from "../../redux/authSlice";
+import { ConverFirstLatterToCapital, getCookie } from "../../utility/formater";
 import {
   defaultHeaders,
   refreshTokenRequest,
 } from "../../utility/utils/callApi";
-import { ConverFirstLatterToCapital, getCookie } from "../../utility/formater";
+import TrustListModal from "./TrustListModal";
 const LoginCover = () => {
-  const { isLogged, isShowModel, trustDetail } = useSelector(
+  const { isLogged, userDetail, trustDetail } = useSelector(
     (state) => state.auth
   );
   const history = useHistory();
@@ -45,6 +46,8 @@ const LoginCover = () => {
   const [forgotPassWordActive, setForgotPassWordActive] = useState(false);
   const [loadingLogin, setLoadingLogin] = useState(false);
   const [modal, setModal] = useState(false);
+  const [userTrustList, setUserTrustList] = useState([]);
+  const hostname = location.hostname;
 
   const handleLoginSubmit = (data) => {
     dispatch(
@@ -54,7 +57,21 @@ const LoginCover = () => {
           setLoadingLogin(false);
         },
       })
-    );
+    )
+      .unwrap()
+      .then(async (res) => {
+        console.log("res", res);
+        if (hostname === `localhost`) {
+          const TrustsList = await checkUserTrust({ userId: res?.result?.id });
+          setUserTrustList(TrustsList?.results);
+          if (TrustsList?.results?.length > 1) {
+            setModal(true);
+            localStorage.setItem("trustModal", true);
+          }
+        }
+
+        return res;
+      });
   };
 
   const handleForgetPassword = (values) => {
@@ -159,6 +176,13 @@ const LoginCover = () => {
 
   const loginPath = permissions?.map((item) => item?.name);
 
+  // useEffect(async () => {
+  //   if (userDetail?.id) {
+  //     const trustList = );
+  //     console.log("trustList", trustList);
+  //     setModal(true)
+  //   }
+  // });
   // const handleLoginAsTemple = () => {
   //   if (isLogged && loginPath?.includes("all")) {
   //     history.push("/dashboard");
@@ -173,30 +197,53 @@ const LoginCover = () => {
   //   }
   // };
 
+  // useEffect(() => {
+  //   if (TrustQuery?.data?.results?.length > 1) {
+  //     setModal(true);
+  //     localStorage.setItem("trustsModal", true);
+  //   } else if (
+  //     isLogged &&
+  //     loginPath?.includes("all") &&
+  //     TrustQuery?.data?.results?.length === 1
+  //   ) {
+  //     history.push("/dashboard");
+  //   } else if (
+  //     TrustQuery?.data?.results?.length === 1 &&
+  //     isLogged &&
+  //     loginPath?.length &&
+  //     loginPath[0] === "configuration"
+  //   ) {
+  //     history.push(`/configuration/categories`);
+  //   } else if (
+  //     (isLogged || loginPath?.length) &&
+  //     TrustQuery?.data?.results?.length === 1
+  //   ) {
+  //     history.push(`/${loginPath[0]}`);
+  //   }
+  // }, [isLogged, loginPath, TrustQuery]);
+
+  const subDomainName = hostname.replace("-staging.paridhan.app", "");
+
+  console.log("userTrustList", userTrustList);
+
   useEffect(() => {
-    // if (
-    //   isLogged &&
-    //   (location.hostname === "localhost" ||
-    //     location.hostname === "am-admin-staging.paridhan.app")
-    // ) {
-    //   setModal(true);
-    // }
-    // else 
-    if (isLogged && loginPath?.includes("all")) {
+    if (isLogged && loginPath?.includes("all") && userTrustList === 1) {
+      localStorage.setItem("trustModal", false);
       history.push("/dashboard");
     } else if (
       isLogged &&
       loginPath?.length &&
-      loginPath[0] === "configuration"
+      loginPath[0] === "configuration" &&
+      userTrustList?.length === 1
     ) {
+      localStorage.setItem("trustModal", false);
       history.push(`/configuration/categories`);
-    } else if (isLogged || loginPath?.length) {
+    } else if ((isLogged || loginPath?.length) && userTrustList === 1) {
+      localStorage.setItem("trustModal", false);
       history.push(`/${loginPath[0]}`);
     }
-  }, [isLogged, loginPath]);
+  }, [isLogged, loginPath, userTrustList]);
 
-  const hostname = location.hostname;
-  const subDomainName = hostname.replace("-staging.paridhan.app", "");
   const loginPageQuery = useQuery([subDomainName], () =>
     loginPage(subDomainName)
   );
@@ -206,30 +253,18 @@ const LoginCover = () => {
     [loginPageQuery]
   );
 
-  // useEffect(() => {
-  //   isLogged ? history.push("/dashboard") : "";
-  // }, [isLogged]);
-
   const { skin } = useSkin();
 
   const illustration = skin === "dark" ? "login-v2-dark.svg" : "login.svg",
     source = require(`@src/assets/images/pages/${illustration}`).default;
 
-  // const refreshToken = new URLSearchParams(history.location.search)?.get(
-  //   "rtoken"
-  // );
-  // const accessToken = new URLSearchParams(history.location.search)?.get(
-  //   "atoken"
-  // );
-
   const refreshToken = getCookie("refreshToken");
   const accessToken = getCookie("accessToken");
 
-    console.log("refreshToken",refreshToken);
+  console.log("refreshToken", refreshToken);
 
   const headers = {
     ...defaultHeaders,
-    // 'Content-Type': 'application/json',
     Authorization: `Bearer ${accessToken}`,
   };
   const axiosInstance = axios.create({
@@ -248,13 +283,6 @@ const LoginCover = () => {
 
   const [loading, setLoading] = useState(false);
 
-  const trustArray = [
-    {
-      id: "6524edc5767cc81601d53ac6",
-      name: trustDetail?.name,
-      subDomain:trustDetail?.subDomain
-    },
-  ];
   return (
     <LoginWarraper className="auth-wrapper auth-cover ">
       <Row className="auth-inner m-0 defaultFontColor">
@@ -312,7 +340,6 @@ const LoginCover = () => {
                   password: "",
                 }}
                 validationSchema={loginSchema}
-                // onSubmit={handleLoginSubmit}
                 onSubmit={(data) => {
                   setLoadingLogin(true);
                   handleLoginSubmit(data);
@@ -497,48 +524,12 @@ const LoginCover = () => {
           )}
         </Col>
       </Row>
-      <Modal
-        isOpen={modal}
-        toggle={() => {
-          setModal(false);
-        }}
-        centered
-      >
-        <ModalBody>
-          There are Trust List
-          {trustArray?.map((item) => (
-            <div>
-              <a
-                href={`https://${item?.subDomain}-staging.paridhan.app/${item?.id}?rtoken=${item?.refreshToken}&atoken=${item?.accessToken}`}
-              >
-                {item?.name}
-              </a>{" "}
-            </div>
-          ))}
-          {/* <div onClick={handleLoginAsTemple}>Login as This temple</div> */}
-        </ModalBody>
-
-        {/* <ModalFooter>
-          <Button
-            color="primary"
-            onClick={() => {
-              setModal(false);
-              dispatch(openModel(false));
-            }}
-          >
-            Do Something
-          </Button>{" "}
-          <Button
-            color="secondary"
-            onClick={() => {
-              setModal(false);
-              dispatch(openModel(false));
-            }}
-          >
-            Cancel
-          </Button>
-        </ModalFooter> */}
-      </Modal>
+      <TrustListModal
+        tModal
+        modal={modal}
+        setModal={setModal}
+        trustArray={userTrustList}
+      />
     </LoginWarraper>
   );
 };
