@@ -584,10 +584,11 @@ const LoginCover = () => {
         </Col>
       </Row>
       <TrustListModal
-        tModal
         modal={modal}
         setModal={setModal}
         trustArray={userTrustList}
+        rToken={refreshToken}
+        aToken={accessToken}
       />
     </LoginWarraper>
   );
