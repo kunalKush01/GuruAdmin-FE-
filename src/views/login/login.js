@@ -246,8 +246,9 @@ const LoginCover = () => {
     if (
       isLogged &&
       loginPath?.includes("all") &&
-      userTrustList?.length === 1 &&
-      userTrustList[0]?.isAproved === "approved"
+      (userTrustList?.length === 1 ||
+        userTrustList[0]?.isAproved === "approved" ||
+        hostname !== "am-admin-dev.paridhan.app")
     ) {
       localStorage.setItem("trustModal", false);
       history.push("/dashboard");
@@ -255,15 +256,17 @@ const LoginCover = () => {
       isLogged &&
       loginPath?.length &&
       loginPath[0] === "configuration" &&
-      userTrustList?.length === 1 &&
-      userTrustList[0]?.isAproved === "approved"
+      (userTrustList?.length === 1 ||
+        userTrustList[0]?.isAproved === "approved" ||
+        hostname !== "am-admin-dev.paridhan.app")
     ) {
       localStorage.setItem("trustModal", false);
       history.push(`/configuration/categories`);
     } else if (
       (isLogged || loginPath?.length) &&
-      userTrustList?.length === 1 &&
-      userTrustList[0]?.isAproved === "approved"
+      (userTrustList?.length === 1 ||
+        userTrustList[0]?.isAproved === "approved" ||
+        hostname !== "am-admin-dev.paridhan.app")
     ) {
       localStorage.setItem("trustModal", false);
       history.push(`/${loginPath[0]}`);
