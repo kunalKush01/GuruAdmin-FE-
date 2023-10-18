@@ -6,7 +6,7 @@ const TrustListModal = ({ trustArray, modal, setModal }) => {
   const redirectTrust = (subDomain, rtoken, atoken) => {
     setCookieWithMainDomain("refreshToken", rtoken, ".paridhan.app");
     setCookieWithMainDomain("accessToken", atoken, ".paridhan.app");
-
+    
     window.location.replace(`https://${subDomain}-dev.paridhan.app/login`)
   };
 

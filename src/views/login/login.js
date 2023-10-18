@@ -7,6 +7,7 @@ import { ErrorMessage, Form, Formik } from "formik";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
 import {
   Button,
   CardText,
@@ -30,7 +31,12 @@ import passwordEyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-e
 import backIconIcon from "../../assets/images/icons/signInIcon/backIcon.svg";
 import emailInputIcon from "../../assets/images/icons/signInIcon/email.svg";
 import hidePassIcon from "../../assets/images/icons/signInIcon/hidePassIcon.svg";
-import { handleTokenLogin, login, openModel } from "../../redux/authSlice";
+import {
+  handleTokenLogin,
+  handleTrustDetail,
+  login,
+  openModel,
+} from "../../redux/authSlice";
 import { ConverFirstLatterToCapital, getCookie } from "../../utility/formater";
 import {
   defaultHeaders,
@@ -67,6 +73,16 @@ const LoginCover = () => {
           if (TrustsList?.results?.length > 1) {
             setModal(true);
             localStorage.setItem("trustModal", true);
+          } else if (
+            TrustsList?.results?.length === 1 &&
+            TrustsList?.results[0]?.isAproved !== "approved"
+          ) {
+            toast.error("Your trust not approved");
+          } else if (
+            TrustsList?.results?.length === 1 &&
+            TrustsList?.results[0]?.isAproved === "approved"
+          ) {
+            dispatch(handleTrustDetail(TrustsList?.results[0]));
           }
         }
 
@@ -222,23 +238,33 @@ const LoginCover = () => {
   //   }
   // }, [isLogged, loginPath, TrustQuery]);
 
-  const subDomainName = hostname.replace("-staging.paridhan.app", "");
+  const subDomainName = hostname.replace("-dev.paridhan.app", "");
 
   console.log("userTrustList", userTrustList);
 
   useEffect(() => {
-    if (isLogged && loginPath?.includes("all") && userTrustList === 1) {
+    if (
+      isLogged &&
+      loginPath?.includes("all") &&
+      userTrustList?.length === 1 &&
+      userTrustList[0]?.isAproved === "approved"
+    ) {
       localStorage.setItem("trustModal", false);
       history.push("/dashboard");
     } else if (
       isLogged &&
       loginPath?.length &&
       loginPath[0] === "configuration" &&
-      userTrustList?.length === 1
+      userTrustList?.length === 1 &&
+      userTrustList[0]?.isAproved === "approved"
     ) {
       localStorage.setItem("trustModal", false);
       history.push(`/configuration/categories`);
-    } else if ((isLogged || loginPath?.length) && userTrustList === 1) {
+    } else if (
+      (isLogged || loginPath?.length) &&
+      userTrustList?.length === 1 &&
+      userTrustList[0]?.isAproved === "approved"
+    ) {
       localStorage.setItem("trustModal", false);
       history.push(`/${loginPath[0]}`);
     }
