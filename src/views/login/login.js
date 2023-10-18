@@ -37,7 +37,11 @@ import {
   login,
   openModel,
 } from "../../redux/authSlice";
-import { ConverFirstLatterToCapital, getCookie } from "../../utility/formater";
+import {
+  ConverFirstLatterToCapital,
+  getCookie,
+  setCookieWithMainDomain,
+} from "../../utility/formater";
 import {
   defaultHeaders,
   refreshTokenRequest,
@@ -81,6 +85,16 @@ const LoginCover = () => {
             TrustsList?.results?.length === 1 &&
             TrustsList?.results[0]?.isAproved === "approved"
           ) {
+            setCookieWithMainDomain(
+              "refreshToken",
+              res?.token?.refresh?.token,
+              ".paridhan.app"
+            );
+            setCookieWithMainDomain(
+              "accessToken",
+              res?.token?.access.token,
+              ".paridhan.app"
+            );
             window.location.replace(
               `https://${TrustsList?.results[0]?.subDomain}-dev.paridhan.app/login`
             );
@@ -255,7 +269,7 @@ const LoginCover = () => {
     } else if (
       isLogged &&
       loginPath?.length &&
-      loginPath[0] === "configuration" 
+      loginPath[0] === "configuration"
       // &&
       // (userTrustList?.length === 1 ||
       //   userTrustList[0]?.isAproved === "approved" ||
@@ -264,7 +278,8 @@ const LoginCover = () => {
       localStorage.setItem("trustModal", false);
       history.push(`/configuration/categories`);
     } else if (
-      (isLogged || loginPath?.length) 
+      isLogged ||
+      loginPath?.length
       // &&
       // (userTrustList?.length === 1 ||
       //   userTrustList[0]?.isAproved === "approved" ||
