@@ -1,7 +1,11 @@
-import OrdersReceived from "../../utility/ui-elements/cards/statistics/OrdersReceived";
+import moment from "moment";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { Col, Row } from "reactstrap";
+import SpinnerComponent from "../../@core/components/spinner/Fallback-spinner";
 import {
   getAllChartData,
   getAllDashboardData,
@@ -13,11 +17,9 @@ import RecentDonationTable from "../../components/dashboard/recentDonationTable"
 import { TopDonerList } from "../../components/dashboard/topDonerList";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
 import CustomCard from "../../components/partials/customCard";
+import { setCookieWithMainDomain } from "../../utility/formater";
 import { RevenueChart } from "../../utility/revenueChart";
-import { Col, Row } from "reactstrap";
-import SpinnerComponent from "../../@core/components/spinner/Fallback-spinner";
-import { Helmet } from "react-helmet";
-import moment from "moment";
+import OrdersReceived from "../../utility/ui-elements/cards/statistics/OrdersReceived";
 const Home = () => {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const [dashboardData, setDashboardData] = useState();
@@ -50,6 +52,15 @@ const Home = () => {
 
   const history = useHistory();
 
+  const tokens = useSelector((state) => state?.auth?.tokens);
+
+  setCookieWithMainDomain(
+    "refreshToken",
+    tokens?.refreshToken,
+    ".paridhan.app"
+  );
+  setCookieWithMainDomain("accessToken", tokens?.accessToken, ".paridhan.app");
+
   useEffect(() => {
     const dashboardInfo = async () => {
       const res = await getAllDashboardData({
@@ -59,7 +70,7 @@ const Home = () => {
       setDashboardData(res);
     };
     dashboardInfo();
-  }, [filterStartDate, filterEndDate,dropDownName]);
+  }, [filterStartDate, filterEndDate, dropDownName]);
 
   useEffect(
     () => {
@@ -111,7 +122,6 @@ const Home = () => {
       // filterStartDate,filterEndDate
     ]
   );
-
 
   return (
     <>
