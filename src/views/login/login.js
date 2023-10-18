@@ -95,14 +95,12 @@ const LoginCover = () => {
               res?.tokens?.access?.token,
               ".paridhan.app"
             );
-            setTimeout(() => {
-              dispatch(handleTrustDetail(TrustsList?.results[0]));
-              if (res?.tokens?.access?.token && res?.tokens?.refresh?.token) {
-                window.location.replace(
-                  `https://${TrustsList?.results[0]?.subDomain}-dev.paridhan.app/login`
-                );
-              }
-            });
+            dispatch(handleTrustDetail(TrustsList?.results[0]));
+            if (res?.tokens?.access?.token && res?.tokens?.refresh?.token) {
+              window.location.replace(
+                `https://${TrustsList?.results[0]?.subDomain}-dev.paridhan.app/login`
+              );
+            }
           }
         }
 
@@ -296,7 +294,7 @@ const LoginCover = () => {
         history.push(`/${loginPath[0]}`);
       }
     }
-  }, [isLogged, loginPath, refreshToken, accessToken]);
+  }, [isLogged, loginPath, refreshToken, accessToken, subDomainName]);
 
   const loginPageQuery = useQuery([subDomainName], () =>
     loginPage(subDomainName)
