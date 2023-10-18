@@ -92,15 +92,17 @@ const LoginCover = () => {
             );
             setCookieWithMainDomain(
               "accessToken",
-              res?.tokens?.access.token,
+              res?.tokens?.access?.token,
               ".paridhan.app"
             );
             setTimeout(() => {
-              window.location.replace(
-                `https://${TrustsList?.results[0]?.subDomain}-dev.paridhan.app/login`
-              );
+              dispatch(handleTrustDetail(TrustsList?.results[0]));
+              if (res?.tokens?.access?.token && res?.tokens?.refresh?.token) {
+                window.location.replace(
+                  `https://${TrustsList?.results[0]?.subDomain}-dev.paridhan.app/login`
+                );
+              }
             }, 1000);
-            dispatch(handleTrustDetail(TrustsList?.results[0]));
           }
         }
 
