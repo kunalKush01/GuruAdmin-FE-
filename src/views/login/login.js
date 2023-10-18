@@ -278,8 +278,8 @@ const LoginCover = () => {
   //   }
   // }, [isLogged, loginPath, TrustQuery]);
 
-  // const subDomainName = hostname.replace("-dev.paridhan.app", "");
-  const subDomainName = hostname.replace("-dev.localhost", "");
+  const subDomainName = hostname.replace("-dev.paridhan.app", "");
+  // const subDomainName = hostname.replace("-dev.localhost", "");
 
   const refreshToken = getCookie("refreshToken");
   const accessToken = getCookie("accessToken");
