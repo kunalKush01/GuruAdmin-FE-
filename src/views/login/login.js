@@ -286,7 +286,7 @@ const LoginCover = () => {
   console.log("accessToken", accessToken);
 
   useEffect(() => {
-    if (refreshToken && accessToken) {
+    // if (refreshToken && accessToken) {
       if (
         isLogged &&
         loginPath?.includes("all") &&
@@ -322,7 +322,7 @@ const LoginCover = () => {
         localStorage.setItem("trustModal", false);
         history.push(`/${loginPath[0]}`);
       }
-    }
+    // }
   }, [isLogged, loginPath, refreshToken, accessToken]);
 
   const loginPageQuery = useQuery([subDomainName], () =>
