@@ -71,7 +71,7 @@ const LoginCover = () => {
       .unwrap()
       .then(async (res) => {
         // if (hostname === `am-admin-dev.paridhan.app`) {
-        if (hostname === `localhost`) {
+        if (hostname === `am-admin-dev.paridhan.app`) {
           const TrustsList = await checkUserTrust({ userId: res?.result?.id });
           setUserTrustList(TrustsList?.results);
           if (TrustsList?.results?.length > 1) {
