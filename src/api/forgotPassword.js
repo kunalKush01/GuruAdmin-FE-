@@ -17,5 +17,5 @@ export const resetPassword = (payload) =>
 export const setPassword = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}auth/set-password`, payload),
+      axios.post(`${API_AUTH_URL}auth/set-password`, payload),
   });
