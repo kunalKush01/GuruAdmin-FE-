@@ -259,40 +259,44 @@ const LoginCover = () => {
   // }, [isLogged, loginPath, TrustQuery]);
 
   const subDomainName = hostname.replace("-dev.paridhan.app", "");
+  const refreshToken = getCookie("refreshToken");
+  const accessToken = getCookie("accessToken");
 
   useEffect(() => {
-    if (
-      isLogged &&
-      loginPath?.includes("all")
-      // (userTrustList?.length === 1 ||
-      //   userTrustList[0]?.isAproved === "approved" ||
-      //   hostname !== "am-admin-dev.paridhan.app")
-    ) {
-      localStorage.setItem("trustModal", false);
-      history.push("/dashboard");
-    } else if (
-      isLogged &&
-      loginPath?.length &&
-      loginPath[0] === "configuration"
-      // &&
-      // (userTrustList?.length === 1 ||
-      //   userTrustList[0]?.isAproved === "approved" ||
-      //   hostname !== "am-admin-dev.paridhan.app")
-    ) {
-      localStorage.setItem("trustModal", false);
-      history.push(`/configuration/categories`);
-    } else if (
-      isLogged ||
-      loginPath?.length
-      // &&
-      // (userTrustList?.length === 1 ||
-      //   userTrustList[0]?.isAproved === "approved" ||
-      //   hostname !== "am-admin-dev.paridhan.app")
-    ) {
-      localStorage.setItem("trustModal", false);
-      history.push(`/${loginPath[0]}`);
+    if (refreshToken && accessToken) {
+      if (
+        isLogged &&
+        loginPath?.includes("all")
+        // (userTrustList?.length === 1 ||
+        //   userTrustList[0]?.isAproved === "approved" ||
+        //   hostname !== "am-admin-dev.paridhan.app")
+      ) {
+        localStorage.setItem("trustModal", false);
+        history.push("/dashboard");
+      } else if (
+        isLogged &&
+        loginPath?.length &&
+        loginPath[0] === "configuration"
+        // &&
+        // (userTrustList?.length === 1 ||
+        //   userTrustList[0]?.isAproved === "approved" ||
+        //   hostname !== "am-admin-dev.paridhan.app")
+      ) {
+        localStorage.setItem("trustModal", false);
+        history.push(`/configuration/categories`);
+      } else if (
+        isLogged ||
+        loginPath?.length
+        // &&
+        // (userTrustList?.length === 1 ||
+        //   userTrustList[0]?.isAproved === "approved" ||
+        //   hostname !== "am-admin-dev.paridhan.app")
+      ) {
+        localStorage.setItem("trustModal", false);
+        history.push(`/${loginPath[0]}`);
+      }
     }
-  }, [isLogged, loginPath]);
+  }, [isLogged, loginPath, refreshToken, accessToken]);
 
   const loginPageQuery = useQuery([subDomainName], () =>
     loginPage(subDomainName)
@@ -308,10 +312,8 @@ const LoginCover = () => {
   const illustration = skin === "dark" ? "login-v2-dark.svg" : "login.svg",
     source = require(`@src/assets/images/pages/${illustration}`).default;
 
-  const refreshToken = getCookie("refreshToken");
-  const accessToken = getCookie("accessToken");
-
-  console.log("refreshToken", refreshToken);
+  // const refreshToken = getCookie("refreshToken");
+  // const accessToken = getCookie("accessToken");
 
   const headers = {
     ...defaultHeaders,
