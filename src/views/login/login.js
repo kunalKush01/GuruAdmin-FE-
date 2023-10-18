@@ -71,6 +71,7 @@ const LoginCover = () => {
       .unwrap()
       .then(async (res) => {
         if (hostname === `am-admin-dev.paridhan.app`) {
+          // if (hostname === `localhost`) {
           const TrustsList = await checkUserTrust({ userId: res?.result?.id });
           setUserTrustList(TrustsList?.results);
           if (TrustsList?.results?.length > 1) {
@@ -89,16 +90,19 @@ const LoginCover = () => {
               "refreshToken",
               res?.tokens?.refresh?.token,
               ".paridhan.app"
+              // "localhost"
             );
             setCookieWithMainDomain(
               "accessToken",
               res?.tokens?.access?.token,
               ".paridhan.app"
+              // "localhost"
             );
             dispatch(handleTrustDetail(TrustsList?.results[0]));
             if (res?.tokens?.access?.token && res?.tokens?.refresh?.token) {
               window.location.replace(
                 `https://${TrustsList?.results[0]?.subDomain}-dev.paridhan.app/login`
+                // `http://${TrustsList?.results[0]?.subDomain}-dev.localhost:3000/login`
               );
             }
           }
