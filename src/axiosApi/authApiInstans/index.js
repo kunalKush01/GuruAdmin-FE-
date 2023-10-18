@@ -4,7 +4,7 @@ const authJSONData = localStorage.getItem("persist:auth");
 
 const authData = authJSONData && JSON.parse(authJSONData);
 const trustJSONData = authData?.trustDetail;
-const trustData = trustJSONData && JSON.parse(trustJSONData);
+const trustData = trustJSONData && JSON.parse(trustJSONData); 
 
 export const API_BASE_URL = `${process.env.REACT_APP_BASEURL}${trustData?.id}/`;
 export const API_AUTH_URL = process.env.REACT_APP_AUTHURL;

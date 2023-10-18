@@ -73,6 +73,10 @@ const authSlice = createSlice({
       state.trustDetail = { ...state.trustDetail, ...action.payload };
     },
 
+    handleTrustDetail(state, action){
+      state.trustDetail = action.payload
+    },
+
     handleTokenLogin(state, action) {
       state.userDetail = action.payload.result;
       state.isLogged =
@@ -137,6 +141,7 @@ export const {
   handleProfileUpdate,
   setTokens,
   setlang,
+  handleTrustDetail,
   // selectedData,
   handleTokenLogin,
   setAvailableLang,
