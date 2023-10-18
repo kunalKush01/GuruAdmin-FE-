@@ -66,7 +66,6 @@ const LoginCover = () => {
     )
       .unwrap()
       .then(async (res) => {
-        console.log("res", res);
         if (hostname === `am-admin-dev.paridhan.app`) {
           const TrustsList = await checkUserTrust({ userId: res?.result?.id });
           setUserTrustList(TrustsList?.results);
@@ -82,6 +81,9 @@ const LoginCover = () => {
             TrustsList?.results?.length === 1 &&
             TrustsList?.results[0]?.isAproved === "approved"
           ) {
+            window.location.replace(
+              `https://${TrustsList?.results[0]?.subDomain}-dev.paridhan.app/login`
+            );
             dispatch(handleTrustDetail(TrustsList?.results[0]));
           }
         }
@@ -240,38 +242,38 @@ const LoginCover = () => {
 
   const subDomainName = hostname.replace("-dev.paridhan.app", "");
 
-  console.log("userTrustList", userTrustList);
-
   useEffect(() => {
     if (
       isLogged &&
-      loginPath?.includes("all") &&
-      (userTrustList?.length === 1 ||
-        userTrustList[0]?.isAproved === "approved" ||
-        hostname !== "am-admin-dev.paridhan.app")
+      loginPath?.includes("all")
+      // (userTrustList?.length === 1 ||
+      //   userTrustList[0]?.isAproved === "approved" ||
+      //   hostname !== "am-admin-dev.paridhan.app")
     ) {
       localStorage.setItem("trustModal", false);
       history.push("/dashboard");
     } else if (
       isLogged &&
       loginPath?.length &&
-      loginPath[0] === "configuration" &&
-      (userTrustList?.length === 1 ||
-        userTrustList[0]?.isAproved === "approved" ||
-        hostname !== "am-admin-dev.paridhan.app")
+      loginPath[0] === "configuration" 
+      // &&
+      // (userTrustList?.length === 1 ||
+      //   userTrustList[0]?.isAproved === "approved" ||
+      //   hostname !== "am-admin-dev.paridhan.app")
     ) {
       localStorage.setItem("trustModal", false);
       history.push(`/configuration/categories`);
     } else if (
-      (isLogged || loginPath?.length) &&
-      (userTrustList?.length === 1 ||
-        userTrustList[0]?.isAproved === "approved" ||
-        hostname !== "am-admin-dev.paridhan.app")
+      (isLogged || loginPath?.length) 
+      // &&
+      // (userTrustList?.length === 1 ||
+      //   userTrustList[0]?.isAproved === "approved" ||
+      //   hostname !== "am-admin-dev.paridhan.app")
     ) {
       localStorage.setItem("trustModal", false);
       history.push(`/${loginPath[0]}`);
     }
-  }, [isLogged, loginPath, userTrustList]);
+  }, [isLogged, loginPath]);
 
   const loginPageQuery = useQuery([subDomainName], () =>
     loginPage(subDomainName)
