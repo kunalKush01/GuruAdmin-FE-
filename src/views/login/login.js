@@ -70,12 +70,28 @@ const LoginCover = () => {
     )
       .unwrap()
       .then(async (res) => {
-        // if (hostname === `am-admin-dev.paridhan.app`) {
         if (hostname === `am-admin-dev.paridhan.app`) {
+        // if (hostname === `localhost`) {
           const TrustsList = await checkUserTrust({ userId: res?.result?.id });
           setUserTrustList(TrustsList?.results);
-          if (TrustsList?.results?.length > 1) {
+          if (
+            TrustsList?.results?.length > 1 &&
+            res?.tokens?.access?.token &&
+            res?.tokens?.refresh?.token
+          ) {
             setModal(true);
+            setCookieWithMainDomain(
+              "refreshToken",
+              res?.tokens?.refresh?.token,
+              ".paridhan.app"
+              // "localhost"
+            );
+            setCookieWithMainDomain(
+              "accessToken",
+              res?.tokens?.access?.token,
+              ".paridhan.app"
+              // "localhost"
+            );
             localStorage.setItem("trustModal", true);
           } else if (
             TrustsList?.results?.length === 1 &&
@@ -86,18 +102,18 @@ const LoginCover = () => {
             TrustsList?.results?.length === 1 &&
             TrustsList?.results[0]?.isAproved === "approved"
           ) {
-            setCookieWithMainDomain(
-              "refreshToken",
-              res?.tokens?.refresh?.token,
-              ".paridhan.app"
-              // ".localhost"
-            );
-            setCookieWithMainDomain(
-              "accessToken",
-              res?.tokens?.access?.token,
-              ".paridhan.app"
-              // "localhost"
-            );
+            // setCookieWithMainDomain(
+            //   "refreshToken",
+            //   res?.tokens?.refresh?.token,
+            //   // ".paridhan.app"
+            //   "localhost"
+            // );
+            // setCookieWithMainDomain(
+            //   "accessToken",
+            //   res?.tokens?.access?.token,
+            //   // ".paridhan.app"
+            //   "localhost"
+            // );
             dispatch(handleTrustDetail(TrustsList?.results[0]));
             if (res?.tokens?.access?.token && res?.tokens?.refresh?.token) {
               window.location.replace(
@@ -272,10 +288,10 @@ const LoginCover = () => {
       if (
         isLogged &&
         loginPath?.includes("all") &&
+        // hostname !== "localhost"
         subDomainName !== "am-admin"
         // (userTrustList?.length === 1 ||
         //   userTrustList[0]?.isAproved === "approved" ||
-        //   hostname !== "am-admin-dev.paridhan.app-dev.paridhan.app")
       ) {
         localStorage.setItem("trustModal", false);
         history.push("/dashboard");
@@ -284,6 +300,7 @@ const LoginCover = () => {
         loginPath?.length &&
         loginPath[0] === "configuration" &&
         subDomainName !== "am-admin"
+        // hostname !== "localhost"
         // &&
         // (userTrustList?.length === 1 ||
         //   userTrustList[0]?.isAproved === "approved" ||
@@ -294,6 +311,7 @@ const LoginCover = () => {
       } else if (
         isLogged ||
         (loginPath?.length && subDomainName !== "am-admin")
+        // hostname !== "localhost"
         // &&
         // (userTrustList?.length === 1 ||
         //   userTrustList[0]?.isAproved === "approved" ||
@@ -583,6 +601,7 @@ const LoginCover = () => {
           )}
         </Col>
       </Row>
+      {/* {refreshToken && accessToken && ( */}
       <TrustListModal
         modal={modal}
         setModal={setModal}
@@ -590,6 +609,7 @@ const LoginCover = () => {
         rToken={refreshToken}
         aToken={accessToken}
       />
+      {/* )} */}
     </LoginWarraper>
   );
 };

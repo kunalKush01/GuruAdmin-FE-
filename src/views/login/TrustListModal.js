@@ -5,10 +5,12 @@ import { setCookieWithMainDomain } from "../../utility/formater";
 
 const TrustListModal = ({ trustArray, modal, setModal, rToken, aToken }) => {
   const redirectTrust = (subDomain, rtoken, atoken) => {
-    setCookieWithMainDomain("refreshToken", rtoken, ".paridhan.app");
-    setCookieWithMainDomain("accessToken", atoken, ".paridhan.app");
+    console.log('rtoken',rtoken);
+    // setCookieWithMainDomain("refreshToken", rtoken, ".paridhan.app");
+    // setCookieWithMainDomain("accessToken", atoken, ".paridhan.app");
 
     window.location.replace(`https://${subDomain}-dev.paridhan.app/login`);
+    // window.location.replace(`http://${subDomain}-dev.localhost:3000/login`);
   };
 
   return (
