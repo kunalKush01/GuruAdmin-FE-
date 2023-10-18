@@ -278,52 +278,51 @@ const LoginCover = () => {
   //   }
   // }, [isLogged, loginPath, TrustQuery]);
 
-  const subDomainName = hostname.replace("-dev.paridhan.app", "");
+  // const subDomainName = hostname.replace("-dev.paridhan.app", "");
+  const subDomainName = hostname.replace("-dev.localhost", "");
+
   const refreshToken = getCookie("refreshToken");
   const accessToken = getCookie("accessToken");
 
-  console.log("refreshToken", refreshToken);
-  console.log("accessToken", accessToken);
-
   useEffect(() => {
     // if (refreshToken && accessToken) {
-      if (
-        isLogged &&
-        loginPath?.includes("all") &&
-        // hostname !== "localhost"
-        subDomainName !== "am-admin"
-        // (userTrustList?.length === 1 ||
-        //   userTrustList[0]?.isAproved === "approved" ||
-      ) {
-        localStorage.setItem("trustModal", false);
-        history.push("/dashboard");
-      } else if (
-        isLogged &&
-        loginPath?.length &&
-        loginPath[0] === "configuration" &&
-        subDomainName !== "am-admin"
-        // hostname !== "localhost"
-        // &&
-        // (userTrustList?.length === 1 ||
-        //   userTrustList[0]?.isAproved === "approved" ||
-        //   hostname !== "am-admin-dev.paridhan.app")
-      ) {
-        localStorage.setItem("trustModal", false);
-        history.push(`/configuration/categories`);
-      } else if (
-        (isLogged || loginPath?.length) &&
-        subDomainName !== "am-admin"
-        // hostname !== "localhost"
-        // &&
-        // (userTrustList?.length === 1 ||
-        //   userTrustList[0]?.isAproved === "approved" ||
-        //   hostname !== "am-admin-dev.paridhan.app")
-      ) {
-        localStorage.setItem("trustModal", false);
-        history.push(`/${loginPath[0]}`);
-      }
+    if (
+      isLogged &&
+      loginPath?.includes("all") &&
+      // hostname !== "localhost"
+      subDomainName !== "am-admin"
+      // (userTrustList?.length === 1 ||
+      //   userTrustList[0]?.isAproved === "approved" ||
+    ) {
+      localStorage.setItem("trustModal", false);
+      history.push("/dashboard");
+    } else if (
+      isLogged &&
+      loginPath?.length &&
+      loginPath[0] === "configuration" &&
+      subDomainName !== "am-admin"
+      // hostname !== "localhost"
+      // &&
+      // (userTrustList?.length === 1 ||
+      //   userTrustList[0]?.isAproved === "approved" ||
+      //   hostname !== "am-admin-dev.paridhan.app")
+    ) {
+      localStorage.setItem("trustModal", false);
+      history.push(`/configuration/categories`);
+    } else if (
+      (isLogged || loginPath?.length) &&
+      subDomainName !== "am-admin"
+      // hostname !== "localhost"
+      // &&
+      // (userTrustList?.length === 1 ||
+      //   userTrustList[0]?.isAproved === "approved" ||
+      //   hostname !== "am-admin-dev.paridhan.app")
+    ) {
+      localStorage.setItem("trustModal", false);
+      history.push(`/${loginPath[0]}`);
+    }
     // }
-  }, [isLogged, loginPath, refreshToken, accessToken]);
+  }, [isLogged, loginPath]);
 
   const loginPageQuery = useQuery([subDomainName], () =>
     loginPage(subDomainName)
@@ -333,6 +332,12 @@ const LoginCover = () => {
     () => loginPageQuery?.data?.result ?? {},
     [loginPageQuery]
   );
+
+  useEffect(() => {
+    if (loginPageData) {
+      dispatch(handleTrustDetail(loginPageData));
+    }
+  },[]);
 
   const { skin } = useSkin();
 
