@@ -28,7 +28,8 @@ export function getCookie(cookieName) {
   return null; // Return null if the cookie with the specified name is not found
 }
 
-export function setCookieWithMainDomain(name, value, days, mainDomain) {
+export function setCookieWithMainDomain(name, value, mainDomain) {
+  alert('token',value)
   const date = new Date();
   date.setTime(date.getTime() + 1 * 60 * 1000);
   const expires = "expires=" + date.toUTCString();

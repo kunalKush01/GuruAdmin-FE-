@@ -52,15 +52,6 @@ const Home = () => {
 
   const history = useHistory();
 
-  const tokens = useSelector((state) => state?.auth?.tokens);
-
-  setCookieWithMainDomain(
-    "refreshToken",
-    tokens?.refreshToken,
-    ".paridhan.app"
-  );
-  setCookieWithMainDomain("accessToken", tokens?.accessToken, ".paridhan.app");
-
   useEffect(() => {
     const dashboardInfo = async () => {
       const res = await getAllDashboardData({
