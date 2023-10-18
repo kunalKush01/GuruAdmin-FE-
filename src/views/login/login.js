@@ -102,7 +102,7 @@ const LoginCover = () => {
                   `https://${TrustsList?.results[0]?.subDomain}-dev.paridhan.app/login`
                 );
               }
-            }, 1000);
+            });
           }
         }
 

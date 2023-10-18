@@ -29,7 +29,6 @@ export function getCookie(cookieName) {
 }
 
 export function setCookieWithMainDomain(name, value, mainDomain) {
-  alert('token',value)
   const date = new Date();
   date.setTime(date.getTime() + 1 * 60 * 1000);
   const expires = "expires=" + date.toUTCString();
