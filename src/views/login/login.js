@@ -311,8 +311,8 @@ const LoginCover = () => {
         localStorage.setItem("trustModal", false);
         history.push(`/configuration/categories`);
       } else if (
-        isLogged ||
-        (loginPath?.length && subDomainName !== "am-admin")
+        (isLogged || loginPath?.length) &&
+        subDomainName !== "am-admin"
         // hostname !== "localhost"
         // &&
         // (userTrustList?.length === 1 ||
