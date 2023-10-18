@@ -260,6 +260,9 @@ const LoginCover = () => {
   const refreshToken = getCookie("refreshToken");
   const accessToken = getCookie("accessToken");
 
+  console.log("refreshToken", refreshToken);
+  console.log("accessToken", accessToken);
+
   useEffect(() => {
     if (refreshToken && accessToken) {
       if (
@@ -294,7 +297,7 @@ const LoginCover = () => {
         history.push(`/${loginPath[0]}`);
       }
     }
-  }, [isLogged, loginPath, refreshToken, accessToken, subDomainName]);
+  }, [isLogged, loginPath, refreshToken, accessToken]);
 
   const loginPageQuery = useQuery([subDomainName], () =>
     loginPage(subDomainName)
