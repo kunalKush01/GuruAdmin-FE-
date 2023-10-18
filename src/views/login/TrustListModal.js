@@ -1,11 +1,39 @@
 import { at } from "lodash";
 import React from "react";
 import { Modal, ModalBody } from "reactstrap";
+import styled from "styled-components";
 import { setCookieWithMainDomain } from "../../utility/formater";
+
+const TrustModalWrapper = styled.div`
+  .trustItem, .notApproved {
+    color: #583703;
+    font-size: 17px;
+    margin: 0px;
+    padding: 0.5rem;
+    font-weight: 600;
+    line-height: 25px;
+  }
+  p{
+    margin:0px;
+  }
+  .hoverItem:hover{
+    background: #ff8744;
+    color: white !important;
+  }
+  .notApproved {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .notApproved > span {
+    color: red;
+    font-size:14px !important;
+  }
+`;
 
 const TrustListModal = ({ trustArray, modal, setModal, rToken, aToken }) => {
   const redirectTrust = (subDomain, rtoken, atoken) => {
-    console.log('rtoken',rtoken);
+    console.log("rtoken", rtoken);
     // setCookieWithMainDomain("refreshToken", rtoken, ".paridhan.app");
     // setCookieWithMainDomain("accessToken", atoken, ".paridhan.app");
 
@@ -23,11 +51,13 @@ const TrustListModal = ({ trustArray, modal, setModal, rToken, aToken }) => {
         centered
       >
         <ModalBody>
-          There are Trust List
-          {trustArray?.map((item) => (
-            <div>
+          <h2>There are Trust List</h2>
+          <hr />
+          {trustArray?.map((item, idx) => (
+            <TrustModalWrapper>
               {item?.isAproved === "approved" ? (
                 <div
+                  className="trustItem hoverItem"
                   onClick={() => redirectTrust(item?.subDomain, rToken, aToken)}
                 >
                   <a
@@ -37,9 +67,12 @@ const TrustListModal = ({ trustArray, modal, setModal, rToken, aToken }) => {
                   </a>
                 </div>
               ) : (
-                <p>{item?.name}</p>
+                <div className="notApproved hoverItem">
+                  <p>{item?.name}</p>
+                  <span>Not Approved</span>
+                </div>
               )}{" "}
-            </div>
+            </TrustModalWrapper>
           ))}
         </ModalBody>
       </Modal>
