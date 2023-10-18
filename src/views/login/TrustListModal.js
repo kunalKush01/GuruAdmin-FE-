@@ -1,13 +1,14 @@
+import { at } from "lodash";
 import React from "react";
 import { Modal, ModalBody } from "reactstrap";
 import { setCookieWithMainDomain } from "../../utility/formater";
 
-const TrustListModal = ({ trustArray, modal, setModal }) => {
+const TrustListModal = ({ trustArray, modal, setModal, rToken, aToken }) => {
   const redirectTrust = (subDomain, rtoken, atoken) => {
     setCookieWithMainDomain("refreshToken", rtoken, ".paridhan.app");
     setCookieWithMainDomain("accessToken", atoken, ".paridhan.app");
-    
-    window.location.replace(`https://${subDomain}-dev.paridhan.app/login`)
+
+    window.location.replace(`https://${subDomain}-dev.paridhan.app/login`);
   };
 
   return (
@@ -25,13 +26,7 @@ const TrustListModal = ({ trustArray, modal, setModal }) => {
             <div>
               {item?.isAproved === "approved" ? (
                 <div
-                  onClick={() =>
-                    redirectTrust(
-                      item?.subDomain,
-                      item?.refreshToken,
-                      item?.accessToken
-                    )
-                  }
+                  onClick={() => redirectTrust(item?.subDomain, rToken, aToken)}
                 >
                   <a
                   // href={`https://${item?.subDomain}-staging.paridhan.app/${item?.id}?rtoken=${item?.refreshToken}&atoken=${item?.accessToken}`}
