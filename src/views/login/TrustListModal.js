@@ -10,7 +10,7 @@ const TrustModalWrapper = styled.div`
     font-size: 17px;
     margin: 0px;
     padding: 0.5rem;
-    font-weight: 600;
+    font-weight: 400;
     line-height: 25px;
   }
   p{
@@ -18,6 +18,7 @@ const TrustModalWrapper = styled.div`
   }
   .hoverItem:hover{
     background: #ff8744;
+    cursor:pointer;
     color: white !important;
   }
   .notApproved {
@@ -51,7 +52,7 @@ const TrustListModal = ({ trustArray, modal, setModal, rToken, aToken }) => {
         centered
       >
         <ModalBody>
-          <h2>There are Trust List</h2>
+          <h3 style={{color:'#583703' , fontWeight:600, textAlign:'center'}}>Trust you are associated with.</h3>
           <hr />
           {trustArray?.map((item, idx) => (
             <TrustModalWrapper>
