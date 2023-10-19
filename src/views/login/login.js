@@ -59,9 +59,8 @@ const LoginCover = () => {
   const [userTrustList, setUserTrustList] = useState([]);
   const hostname = location.hostname;
 
-  const adminUrl = process.env.NODE_ENV.REACT_APP_ADMIN_URL;
-  const subdomainChange =
-    process.env.NODE_ENV.REACT_APP_ADMIN_SUBDOMAIN_REPLACE_URL;
+  const adminUrl = process.env.REACT_APP_ADMIN_URL;
+  const subdomainChange = process.env.REACT_APP_ADMIN_SUBDOMAIN_REPLACE_URL;
 
   const handleLoginSubmit = (data) => {
     dispatch(
