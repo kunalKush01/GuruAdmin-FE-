@@ -380,7 +380,8 @@ const LoginCover = () => {
             <img
               className="img-fluid w-100 h-100"
               src={
-                loginPageData?.profilePhoto !== "" || loginPageData?.profilePhoto
+                (loginPageData && loginPageData?.profilePhoto !== "") ||
+                loginPageData?.profilePhoto
                   ? loginPageData?.profilePhoto
                   : source
               }
@@ -396,7 +397,7 @@ const LoginCover = () => {
           {!forgotPassWordActive ? (
             <Col className="px-xl-2 mx-auto" sm="8" md="6" lg="12">
               {<CardTitle className="fw-bold mb-2 ">Sign In</CardTitle>}
-              {loginPageData?.name !== "" && (
+              {loginPageData && loginPageData?.name !== "" && (
                 <div className="templeName">
                   Admin:{" "}
                   <span
