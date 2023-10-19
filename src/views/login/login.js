@@ -329,15 +329,9 @@ const LoginCover = () => {
   );
 
   const loginPageData = useMemo(
-    () => loginPageQuery?.data?.result ?? {},
-    [loginPageQuery]
+    () => loginPageQuery?.data?.result,
+    dispatch(handleTrustDetail(loginPageQuery?.data?.result))[loginPageQuery]
   );
-
-  useEffect(() => {
-    if (loginPageData) {
-      dispatch(handleTrustDetail(loginPageData));
-    }
-  },[]);
 
   const { skin } = useSkin();
 
