@@ -212,7 +212,7 @@ export default function CommitmentListTable(
     return data?.map((item, idx) => {
       return {
         id: idx + 1,
-        notifyUserId: item?.id,
+        notifyUserId: item?._id,
         username: (
           <div className="d-flex align-items-center ">
             <img
@@ -275,7 +275,7 @@ export default function CommitmentListTable(
               financeReport
                 ? ""
                 : history.push(
-                    `/donations/paid/${item.id}?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`
+                    `/donations/paid/${item._id}?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`
                   );
             }}
           >
@@ -293,7 +293,7 @@ export default function CommitmentListTable(
             }`}
             onClick={() => {
               item?.amount != item?.amount - item?.paidAmount &&
-                receiptMutation.mutate(item?.id);
+                receiptMutation.mutate(item?._id);
               // setCommitmentId(item?.id);
               // pdfRef.current.click();
               // toggle();
@@ -309,11 +309,11 @@ export default function CommitmentListTable(
               }`}
               onClick={() =>
                 financeReport && !paymentStatus
-                  ? history.push(`/commitment/pay-donation/${item.id}`, item.id)
+                  ? history.push(`/commitment/pay-donation/${item._id}`, item._id)
                   : !paymentStatus &&
                     history.push(
-                      `/commitment/pay-donation/${item.id}?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`,
-                      item.id
+                      `/commitment/pay-donation/${item._id}?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`,
+                      item._id
                     )
               }
             >
@@ -341,7 +341,7 @@ export default function CommitmentListTable(
                 financeReport
                   ? ""
                   : history.push(
-                      `/commitment/edit/${item.id}?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`
+                      `/commitment/edit/${item?._id}?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`
                     );
               }}
             />
@@ -380,7 +380,7 @@ export default function CommitmentListTable(
                       confirmButtonAriaLabel: "Confirm",
                     }).then(async (result) => {
                       if (result.isConfirmed) {
-                        deleteMutation.mutate(item.id);
+                        deleteMutation.mutate(item._id);
                       }
                     });
               }}

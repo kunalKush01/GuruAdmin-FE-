@@ -59,6 +59,10 @@ const LoginCover = () => {
   const [userTrustList, setUserTrustList] = useState([]);
   const hostname = location.hostname;
 
+  const adminUrl = process.env.NODE_ENV.REACT_APP_ADMIN_URL;
+  const subdomainChange =
+    process.env.NODE_ENV.REACT_APP_ADMIN_SUBDOMAIN_REPLACE_URL;
+
   const handleLoginSubmit = (data) => {
     dispatch(
       login({
@@ -70,7 +74,7 @@ const LoginCover = () => {
     )
       .unwrap()
       .then(async (res) => {
-        if (hostname === `am-admin-dev.paridhan.app`) {
+        if (hostname === adminUrl) {
           // if (hostname === `localhost`) {
           const TrustsList = await checkUserTrust({ userId: res?.result?.id });
           setUserTrustList(TrustsList?.results);
@@ -118,8 +122,8 @@ const LoginCover = () => {
               dispatch(handleTrustDetail(TrustsList?.results[0]));
               if (res?.tokens?.access?.token && res?.tokens?.refresh?.token) {
                 window.location.replace(
-                  `https://${TrustsList?.results[0]?.subDomain}-dev.paridhan.app/login`
-                  // `http://${TrustsList?.results[0]?.subDomain}-dev.localhost:3000/login`
+                  `https://${TrustsList?.results[0]?.subDomain}${subdomainChange}/login`
+                  // `http://${TrustsList?.results[0]?.subDomain}-dev.localhost:3001/login`
                 );
               }
             }
@@ -278,7 +282,7 @@ const LoginCover = () => {
   //   }
   // }, [isLogged, loginPath, TrustQuery]);
 
-  const subDomainName = hostname.replace("-dev.paridhan.app", "");
+  const subDomainName = hostname.replace(subdomainChange, "");
   // const subDomainName = hostname.replace("-dev.localhost", "");
 
   const refreshToken = getCookie("refreshToken");

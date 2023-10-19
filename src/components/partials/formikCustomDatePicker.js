@@ -174,7 +174,7 @@ export default function FormikCustomDatePicker({ label,futureDateNotAllowed,past
         onChange={(date) => {          
          helpers.setValue(date)
         }}
-        yearDropdownItemNumber={50}        
+        yearDropdownItemNumber={30}        
         showYearDropdown
         minDate={pastDateNotAllowed ? new Date() : minDate}
         maxDate={futureDateNotAllowed && new Date()}
