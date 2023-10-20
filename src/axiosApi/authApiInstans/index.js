@@ -1,12 +1,19 @@
 import axios from "axios";
 
-export const API_BASE_URL = process.env.REACT_APP_BASEURL;
+const authJSONData = localStorage.getItem("persist:auth");
+
+const authData = authJSONData && JSON.parse(authJSONData);
+const trustJSONData = authData?.trustDetail;
+const trustData = trustJSONData && JSON.parse(trustJSONData); 
+
+export const API_BASE_URL = `${process.env.REACT_APP_BASEURL}${trustData?.id}/`;
+export const API_AUTH_URL = process.env.REACT_APP_AUTHURL;
 
 export const authApiInstance = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: API_AUTH_URL,
   responseType: "json",
 });
-const fcm_token = localStorage.getItem('fcm_token')
+const fcm_token = localStorage.getItem("fcm_token");
 
 authApiInstance.defaults.timeout = 20000;
 authApiInstance.defaults.headers.common["device-type"] = "ios";

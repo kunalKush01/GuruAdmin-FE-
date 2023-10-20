@@ -8,7 +8,7 @@ import {
 import { extractDataFromResponse, parseApiErrorResponse } from "./apiUtils";
 
 import { store } from "../../redux/store";
-import { API_BASE_URL } from "../../axiosApi/authApiInstans";
+import { API_AUTH_URL } from "../../axiosApi/authApiInstans";
 import { toast } from "react-toastify";
 
 /*
@@ -56,7 +56,7 @@ const ApiTimeOutToast = {
 export const refreshTokenRequest = async ({ refreshToken, axiosInstance }) => {
   try {
     const response = await axiosInstance.post(
-      `${API_BASE_URL}auth/refresh-token`,
+      `${API_AUTH_URL}auth/refresh-token`,
       { refreshToken }
     );
     return extractDataFromResponse({

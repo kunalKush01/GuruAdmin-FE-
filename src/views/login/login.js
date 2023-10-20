@@ -7,6 +7,7 @@ import { ErrorMessage, Form, Formik } from "formik";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
 import {
   Button,
   CardText,
@@ -15,29 +16,51 @@ import {
   Input,
   InputGroup,
   InputGroupText,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
   Row,
   Spinner,
 } from "reactstrap";
 import styled from "styled-components";
 import * as yup from "yup";
 import { forgotPassword } from "../../api/forgotPassword";
-import { loginPage } from "../../api/loginPageApi";
+import { checkUserTrust, loginPage } from "../../api/loginPageApi";
+import passwordEyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
 import backIconIcon from "../../assets/images/icons/signInIcon/backIcon.svg";
 import emailInputIcon from "../../assets/images/icons/signInIcon/email.svg";
 import hidePassIcon from "../../assets/images/icons/signInIcon/hidePassIcon.svg";
-import passwordEyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
-import { handleTokenLogin, login } from "../../redux/authSlice";
+import {
+  handleTokenLogin,
+  handleTrustDetail,
+  login,
+  openModel,
+} from "../../redux/authSlice";
+import {
+  ConverFirstLatterToCapital,
+  getCookie,
+  setCookieWithMainDomain,
+} from "../../utility/formater";
 import {
   defaultHeaders,
   refreshTokenRequest,
 } from "../../utility/utils/callApi";
-import { ConverFirstLatterToCapital } from "../../utility/formater";
+import TrustListModal from "./TrustListModal";
 const LoginCover = () => {
-  const { isLogged } = useSelector((state) => state.auth);
+  const { isLogged, userDetail, trustDetail } = useSelector(
+    (state) => state.auth
+  );
   const history = useHistory();
   const dispatch = useDispatch();
   const [forgotPassWordActive, setForgotPassWordActive] = useState(false);
   const [loadingLogin, setLoadingLogin] = useState(false);
+  const [modal, setModal] = useState(false);
+  const [userTrustList, setUserTrustList] = useState([]);
+  const hostname = location.hostname;
+
+  const adminUrl = process.env.REACT_APP_ADMIN_URL;
+  const subdomainChange = process.env.REACT_APP_ADMIN_SUBDOMAIN_REPLACE_URL;
 
   const handleLoginSubmit = (data) => {
     dispatch(
@@ -47,7 +70,67 @@ const LoginCover = () => {
           setLoadingLogin(false);
         },
       })
-    );
+    )
+      .unwrap()
+      .then(async (res) => {
+        if (hostname === adminUrl) {
+          // if (hostname === `localhost`) {
+          const TrustsList = await checkUserTrust({ userId: res?.result?.id });
+          setUserTrustList(TrustsList?.results);
+          if (res?.tokens?.access?.token && res?.tokens?.refresh?.token) {
+            setCookieWithMainDomain(
+              "refreshToken",
+              res?.tokens?.refresh?.token,
+              ".paridhan.app"
+              // "localhost"
+            );
+            setCookieWithMainDomain(
+              "accessToken",
+              res?.tokens?.access?.token,
+              ".paridhan.app"
+              // "localhost"
+            );
+            if (
+              TrustsList?.results?.length > 1 &&
+              res?.tokens?.access?.token &&
+              res?.tokens?.refresh?.token
+            ) {
+              setModal(true);
+              localStorage.setItem("trustModal", true);
+            } else if (
+              TrustsList?.results?.length === 1 &&
+              TrustsList?.results[0]?.isAproved !== "approved"
+            ) {
+              toast.error("Your trust not approved");
+            } else if (
+              TrustsList?.results?.length === 1 &&
+              TrustsList?.results[0]?.isAproved === "approved"
+            ) {
+              // setCookieWithMainDomain(
+              //   "refreshToken",
+              //   res?.tokens?.refresh?.token,
+              //   // ".paridhan.app"
+              //   "localhost"
+              // );
+              // setCookieWithMainDomain(
+              //   "accessToken",
+              //   res?.tokens?.access?.token,
+              //   // ".paridhan.app"
+              //   "localhost"
+              // );
+              dispatch(handleTrustDetail(TrustsList?.results[0]));
+              if (res?.tokens?.access?.token && res?.tokens?.refresh?.token) {
+                window.location.replace(
+                  `https://${TrustsList?.results[0]?.subDomain}${subdomainChange}/login`
+                  // `http://${TrustsList?.results[0]?.subDomain}-dev.localhost:3001/login`
+                );
+              }
+            }
+          }
+        }
+
+        return res;
+      });
   };
 
   const handleForgetPassword = (values) => {
@@ -149,51 +232,120 @@ const LoginCover = () => {
   const permissions = useSelector(
     (state) => state.auth?.userDetail?.permissions
   );
+
   const loginPath = permissions?.map((item) => item?.name);
+
+  // useEffect(async () => {
+  //   if (userDetail?.id) {
+  //     const trustList = );
+  //     console.log("trustList", trustList);
+  //     setModal(true)
+  //   }
+  // });
+  // const handleLoginAsTemple = () => {
+  //   if (isLogged && loginPath?.includes("all")) {
+  //     history.push("/dashboard");
+  //   } else if (
+  //     isLogged &&
+  //     loginPath?.length &&
+  //     loginPath[0] === "configuration"
+  //   ) {
+  //     history.push(`/configuration/categories`);
+  //   } else if (isLogged || loginPath?.length) {
+  //     history.push(`/${loginPath[0]}`);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   if (TrustQuery?.data?.results?.length > 1) {
+  //     setModal(true);
+  //     localStorage.setItem("trustsModal", true);
+  //   } else if (
+  //     isLogged &&
+  //     loginPath?.includes("all") &&
+  //     TrustQuery?.data?.results?.length === 1
+  //   ) {
+  //     history.push("/dashboard");
+  //   } else if (
+  //     TrustQuery?.data?.results?.length === 1 &&
+  //     isLogged &&
+  //     loginPath?.length &&
+  //     loginPath[0] === "configuration"
+  //   ) {
+  //     history.push(`/configuration/categories`);
+  //   } else if (
+  //     (isLogged || loginPath?.length) &&
+  //     TrustQuery?.data?.results?.length === 1
+  //   ) {
+  //     history.push(`/${loginPath[0]}`);
+  //   }
+  // }, [isLogged, loginPath, TrustQuery]);
+
+  const subDomainName = hostname.replace(subdomainChange, "");
+  // const subDomainName = hostname.replace("-dev.localhost", "");
+
+  const refreshToken = getCookie("refreshToken");
+  const accessToken = getCookie("accessToken");
+
   useEffect(() => {
-    if (isLogged && loginPath?.includes("all")) {
+    // if (refreshToken && accessToken) {
+    if (
+      isLogged &&
+      loginPath?.includes("all") &&
+      // hostname !== "localhost"
+      subDomainName !== "am-admin"
+      // (userTrustList?.length === 1 ||
+      //   userTrustList[0]?.isAproved === "approved" ||
+    ) {
+      localStorage.setItem("trustModal", false);
       history.push("/dashboard");
     } else if (
       isLogged &&
       loginPath?.length &&
-      loginPath[0] === "configuration"
+      loginPath[0] === "configuration" &&
+      subDomainName !== "am-admin"
+      // hostname !== "localhost"
+      // &&
+      // (userTrustList?.length === 1 ||
+      //   userTrustList[0]?.isAproved === "approved" ||
+      //   hostname !== "am-admin-dev.paridhan.app")
     ) {
+      localStorage.setItem("trustModal", false);
       history.push(`/configuration/categories`);
-    } else if (isLogged || loginPath?.length) {
+    } else if (
+      (isLogged || loginPath?.length) &&
+      subDomainName !== "am-admin"
+      // hostname !== "localhost"
+      // &&
+      // (userTrustList?.length === 1 ||
+      //   userTrustList[0]?.isAproved === "approved" ||
+      //   hostname !== "am-admin-dev.paridhan.app")
+    ) {
+      localStorage.setItem("trustModal", false);
       history.push(`/${loginPath[0]}`);
     }
+    // }
   }, [isLogged, loginPath]);
 
-  const hostname = location.hostname;
-  const subDomainName = hostname.replace("-staging.paridhan.app", "");
   const loginPageQuery = useQuery([subDomainName], () =>
     loginPage(subDomainName)
   );
 
   const loginPageData = useMemo(
-    () => loginPageQuery?.data?.result ?? {},
-    [loginPageQuery]
+    () => loginPageQuery?.data?.result,
+    dispatch(handleTrustDetail(loginPageQuery?.data?.result))[loginPageQuery]
   );
-
-  // useEffect(() => {
-  //   isLogged ? history.push("/dashboard") : "";
-  // }, [isLogged]);
 
   const { skin } = useSkin();
 
   const illustration = skin === "dark" ? "login-v2-dark.svg" : "login.svg",
     source = require(`@src/assets/images/pages/${illustration}`).default;
 
-  const refreshToken = new URLSearchParams(history.location.search)?.get(
-    "rtoken"
-  );
-  const accessToken = new URLSearchParams(history.location.search)?.get(
-    "atoken"
-  );
+  // const refreshToken = getCookie("refreshToken");
+  // const accessToken = getCookie("accessToken");
 
   const headers = {
     ...defaultHeaders,
-    // 'Content-Type': 'application/json',
     Authorization: `Bearer ${accessToken}`,
   };
   const axiosInstance = axios.create({
@@ -211,6 +363,7 @@ const LoginCover = () => {
   }, [refreshToken]);
 
   const [loading, setLoading] = useState(false);
+
   return (
     <LoginWarraper className="auth-wrapper auth-cover ">
       <Row className="auth-inner m-0 defaultFontColor">
@@ -230,8 +383,9 @@ const LoginCover = () => {
             <img
               className="img-fluid w-100 h-100"
               src={
-                loginPageData?.image !== "" || loginPageData?.image
-                  ? loginPageData?.image
+                (loginPageData && loginPageData?.profilePhoto !== "") ||
+                loginPageData?.profilePhoto
+                  ? loginPageData?.profilePhoto
                   : source
               }
               alt="Login Cover"
@@ -246,10 +400,14 @@ const LoginCover = () => {
           {!forgotPassWordActive ? (
             <Col className="px-xl-2 mx-auto" sm="8" md="6" lg="12">
               {<CardTitle className="fw-bold mb-2 ">Sign In</CardTitle>}
-              {loginPageData?.name !== "" && (
+              {loginPageData && loginPageData?.name !== "" && (
                 <div className="templeName">
                   Admin:{" "}
-                  <span title={ConverFirstLatterToCapital(loginPageData?.name ?? "")}>
+                  <span
+                    title={ConverFirstLatterToCapital(
+                      loginPageData?.name ?? ""
+                    )}
+                  >
                     {ConverFirstLatterToCapital(loginPageData?.name ?? "")}
                   </span>
                 </div>
@@ -264,7 +422,6 @@ const LoginCover = () => {
                   password: "",
                 }}
                 validationSchema={loginSchema}
-                // onSubmit={handleLoginSubmit}
                 onSubmit={(data) => {
                   setLoadingLogin(true);
                   handleLoginSubmit(data);
@@ -335,12 +492,6 @@ const LoginCover = () => {
                         </div>
                       </div>
                     </div>
-                    {/* <div className="form-check mb-1">
-                <Input type="checkbox" id="remember-me" />
-                <Label className="form-check-label" for="remember-me">
-                  Remember Me
-                </Label>
-              </div> */}
                     <div className="d-flex w-100 justify-content-center  ">
                       {loadingLogin ? (
                         <Button
@@ -373,23 +524,6 @@ const LoginCover = () => {
                   </a>
                 </span>
               </p>
-              {/* <div className="divider my-2">
-              <div className="divider-text">or</div>
-            </div>
-            <div className="auth-footer-btn d-flex justify-content-center">
-              <Button color="facebook">
-                <Facebook size={14} />
-              </Button>
-              <Button color="twitter">
-                <Twitter size={14} />
-              </Button>
-              <Button color="google">
-                <Mail size={14} />
-              </Button>
-              <Button className="me-0" color="github">
-                <GitHub size={14} />
-              </Button>
-            </div> */}
             </Col>
           ) : (
             <Col className="px-xl-2 mx-auto " sm="8" md="6" lg="12">
@@ -468,35 +602,19 @@ const LoginCover = () => {
                   </Form>
                 )}
               </Formik>
-              {/* <p className="text-center mt-2">
-              <span className="me-25 an_account ">
-                Don't Have an account ?{" "}
-              </span>
-              <Link to="/pages/register-cover">
-                <span>Sign Up</span>
-              </Link>
-            </p> */}
-              {/* <div className="divider my-2">
-              <div className="divider-text">or</div>
-            </div>
-            <div className="auth-footer-btn d-flex justify-content-center">
-              <Button color="facebook">
-                <Facebook size={14} />
-              </Button>
-              <Button color="twitter">
-                <Twitter size={14} />
-              </Button>
-              <Button color="google">
-                <Mail size={14} />
-              </Button>
-              <Button className="me-0" color="github">
-                <GitHub size={14} />
-              </Button>
-            </div> */}
             </Col>
           )}
         </Col>
       </Row>
+      {/* {refreshToken && accessToken && ( */}
+      <TrustListModal
+        modal={modal}
+        setModal={setModal}
+        trustArray={userTrustList}
+        rToken={refreshToken}
+        aToken={accessToken}
+      />
+      {/* )} */}
     </LoginWarraper>
   );
 };
