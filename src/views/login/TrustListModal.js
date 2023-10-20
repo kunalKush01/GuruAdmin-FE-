@@ -5,7 +5,8 @@ import styled from "styled-components";
 import { setCookieWithMainDomain } from "../../utility/formater";
 
 const TrustModalWrapper = styled.div`
-  .trustItem, .notApproved {
+  .trustItem,
+  .notApproved {
     color: #583703;
     font-size: 17px;
     margin: 0px;
@@ -13,12 +14,12 @@ const TrustModalWrapper = styled.div`
     font-weight: 400;
     line-height: 25px;
   }
-  p{
-    margin:0px;
+  p {
+    margin: 0px;
   }
-  .hoverItem:hover{
+  .hoverItem:hover {
     background: #ff8744;
-    cursor:pointer;
+    cursor: pointer;
     color: white !important;
   }
   .notApproved {
@@ -28,17 +29,18 @@ const TrustModalWrapper = styled.div`
   }
   .notApproved > span {
     color: red;
-    font-size:14px !important;
+    font-size: 14px !important;
   }
 `;
 
+const subdomainChange = process.env.REACT_APP_ADMIN_SUBDOMAIN_REPLACE_URL;
 const TrustListModal = ({ trustArray, modal, setModal, rToken, aToken }) => {
   const redirectTrust = (subDomain, rtoken, atoken) => {
-    console.log("rtoken", rtoken);
+    // console.log("rtoken", rtoken);
     // setCookieWithMainDomain("refreshToken", rtoken, ".paridhan.app");
     // setCookieWithMainDomain("accessToken", atoken, ".paridhan.app");
 
-    window.location.replace(`https://${subDomain}-dev.paridhan.app/login`);
+    window.location.replace(`https://${subDomain}-${subdomainChange}/login`);
     // window.location.replace(`http://${subDomain}-dev.localhost:3000/login`);
   };
 
@@ -52,7 +54,11 @@ const TrustListModal = ({ trustArray, modal, setModal, rToken, aToken }) => {
         centered
       >
         <ModalBody>
-          <h3 style={{color:'#583703' , fontWeight:600, textAlign:'center'}}>Trust you are associated with.</h3>
+          <h3
+            style={{ color: "#583703", fontWeight: 600, textAlign: "center" }}
+          >
+            Trust you are associated with.
+          </h3>
           <hr />
           {trustArray?.map((item, idx) => (
             <TrustModalWrapper>
