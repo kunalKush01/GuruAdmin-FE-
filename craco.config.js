@@ -26,14 +26,14 @@ module.exports = {
       '@utils': path.resolve(__dirname, 'src/utility/Utils'),
       '@hooks': path.resolve(__dirname, 'src/utility/hooks')
     },
-    configure: (webpackConfig) => {
-      if (process.env.NODE_ENV === 'production') {
-        const TerserPlugin = webpackConfig.optimization.minimizer.find((i) => i.constructor.name === 'TerserPlugin');
-        if (TerserPlugin) {
-          TerserPlugin.options.terserOptions.compress['drop_console'] = true;
-        }
-      }
-      return webpackConfig;
-    },
+    // configure: (webpackConfig) => {
+    //   if (process.env.NODE_ENV === 'production') {
+    //     const TerserPlugin = webpackConfig.optimization.minimizer.find((i) => i.constructor.name === 'TerserPlugin');
+    //     if (TerserPlugin) {
+    //       TerserPlugin.options.terserOptions.compress['drop_console'] = true;
+    //     }
+    //   }
+    //   return webpackConfig;
+    // },
   }
 }

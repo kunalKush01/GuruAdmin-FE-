@@ -30,13 +30,22 @@ const Permission = ({ subPermission, type, ...props }) => {
   );
   const history = useHistory();
   // if (permissionRoute?.name === "all" || (!!permissionRoute && subPermissionArr?.name === "")) {
+  const trustsModal = localStorage.getItem("trustsModal");
   if (
     permissionRoute?.name === "all" ||
     (!!permissionRoute && subPermissionRoute.includes(subPermission))
   ) {
-    return props.children;
-  } else if (type === "notification" || type === 'editProfile') {
-    return props.children;
+    if (!trustsModal) {
+      return props.children;
+    } else {
+      history.push("/not-found");
+    }
+  } else if (type === "notification" || type === "editProfile") {
+    if (!trustsModal) {
+      return props.children;
+    } else {
+      history.push("/not-found");
+    }
   } else {
     history.push("/not-found");
   }
