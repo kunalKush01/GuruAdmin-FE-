@@ -33,14 +33,15 @@ const TrustModalWrapper = styled.div`
   }
 `;
 
-const subdomainChange = process.env.REACT_APP_ADMIN_SUBDOMAIN_REPLACE_URL;
 const TrustListModal = ({ trustArray, modal, setModal, rToken, aToken }) => {
+  const subdomainChange = process.env.REACT_APP_ADMIN_SUBDOMAIN_REPLACE_URL;
+
   const redirectTrust = (subDomain, rtoken, atoken) => {
     // console.log("rtoken", rtoken);
     // setCookieWithMainDomain("refreshToken", rtoken, ".paridhan.app");
     // setCookieWithMainDomain("accessToken", atoken, ".paridhan.app");
 
-    window.location.replace(`https://${subDomain}-${subdomainChange}/login`);
+    window.location.replace(`https://${subDomain}${subdomainChange}/login`);
     // window.location.replace(`http://${subDomain}-dev.localhost:3000/login`);
   };
 

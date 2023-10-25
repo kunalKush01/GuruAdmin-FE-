@@ -82,13 +82,13 @@ const LoginCover = () => {
               "refreshToken",
               res?.tokens?.refresh?.token,
               ".paridhan.app"
-              // "localhost"
+              // ".localhost"
             );
             setCookieWithMainDomain(
               "accessToken",
               res?.tokens?.access?.token,
               ".paridhan.app"
-              // "localhost"
+              // ".localhost"
             );
             if (
               TrustsList?.results?.length > 1 &&
