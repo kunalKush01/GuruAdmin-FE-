@@ -1,16 +1,16 @@
+import { Button } from "bootstrap";
+import he from "he";
+import moment from "moment";
 import React from "react";
+import { Item } from "react-contexify";
+import { useHistory } from "react-router-dom";
 import { Card, CardBody, CardFooter, Col, Row } from "reactstrap";
 import styled from "styled-components";
+import Swal from "sweetalert2";
+import lockIcon from "../../assets/images/icons/donationBox/Lock.svg";
+import donationBoxDesIcon from "../../assets/images/icons/donationBox/donationBoxDesIcon.png";
 import donationBoxIcon from "../../assets/images/icons/donationBox/donationBoxIcon.png";
 import editIcon from "../../assets/images/icons/donationBox/editIcon.svg";
-import donationBoxDesIcon from "../../assets/images/icons/donationBox/donationBoxDesIcon.png";
-import { Button } from "bootstrap";
-import moment from "moment";
-import { useHistory } from "react-router-dom";
-import lockIcon from "../../assets/images/icons/donationBox/Lock.svg";
-import he from "he";
-import { Item } from "react-contexify";
-import Swal from "sweetalert2";
 import { EDIT } from "../../utility/permissionsVariable";
 
 const ReportListCardWraper = styled.div`
@@ -53,7 +53,7 @@ const ReportListCardWraper = styled.div`
     margin-top: 0.5rem;
     margin-bottom: 1.5rem;
   }
-  .text-with-dots > p {
+  .text-with-dots {
     max-height: 20px;
     max-width: 100px;
     white-space: nowrap;
@@ -98,7 +98,9 @@ export default function BoxListCard({
                                                   "dddd, DD MMM, YYYY"
                                                 )}</div>
                                                 <div>
-                                                  Amount : ₹ ${data?.amount.toLocaleString('en-IN')} 
+                                                  Amount : ₹ ${data?.amount.toLocaleString(
+                                                    "en-IN"
+                                                  )} 
                                                 </div>
 
                                                 <div>
@@ -141,7 +143,7 @@ export default function BoxListCard({
                   />
                 </div>
                 <CardFooter className="w-100">
-                  <div>₹ {data?.amount.toLocaleString('en-IN')}</div>
+                  <div>₹ {data?.amount.toLocaleString("en-IN")}</div>
                 </CardFooter>
               </div>
             </Col>
