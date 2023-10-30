@@ -287,9 +287,20 @@ const LoginCover = () => {
   const refreshToken = getCookie("refreshToken");
   const accessToken = getCookie("accessToken");
 
+  const loginPageQuery = useQuery([subDomainName], () =>
+    loginPage(subDomainName)
+  );
+
+  const loginPageData = useMemo(
+    () => loginPageQuery?.data?.result,
+    dispatch(handleTrustDetail(loginPageQuery?.data?.result))[loginPageQuery]
+  );
+
   useEffect(() => {
     // if (refreshToken && accessToken) {
-    if (
+    if (hostname !== adminUrl && loginPageData == null) {
+      history.push("/not-found");
+    } else if (
       isLogged &&
       loginPath?.includes("all") &&
       // hostname !== "localhost"
@@ -325,16 +336,7 @@ const LoginCover = () => {
       history.push(`/${loginPath[0]}`);
     }
     // }
-  }, [isLogged, loginPath]);
-
-  const loginPageQuery = useQuery([subDomainName], () =>
-    loginPage(subDomainName)
-  );
-
-  const loginPageData = useMemo(
-    () => loginPageQuery?.data?.result,
-    dispatch(handleTrustDetail(loginPageQuery?.data?.result))[loginPageQuery]
-  );
+  }, [isLogged, loginPath, loginPageData]);
 
   const { skin } = useSkin();
 
