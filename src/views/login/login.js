@@ -295,7 +295,7 @@ const LoginCover = () => {
     () => loginPageQuery?.data?.result,
     dispatch(handleTrustDetail(loginPageQuery?.data?.result))[loginPageQuery]
   );
-
+  console.log("loginPageQuery?.data", loginPageQuery?.data?.error);
   useEffect(() => {
     // if (refreshToken && accessToken) {
     if (hostname !== adminUrl && loginPageQuery?.data?.error) {
@@ -336,7 +336,7 @@ const LoginCover = () => {
       history.push(`/${loginPath[0]}`);
     }
     // }
-  }, [isLogged, loginPath, loginPageData]);
+  }, [isLogged, loginPath, loginPageQuery]);
 
   const { skin } = useSkin();
 
