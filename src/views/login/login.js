@@ -298,7 +298,7 @@ const LoginCover = () => {
 
   useEffect(() => {
     // if (refreshToken && accessToken) {
-    if (hostname !== adminUrl && loginPageData == null) {
+    if (hostname !== adminUrl && loginPageQuery.error) {
       history.push("/not-found");
     } else if (
       isLogged &&
