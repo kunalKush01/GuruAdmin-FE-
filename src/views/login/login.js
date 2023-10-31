@@ -81,14 +81,14 @@ const LoginCover = () => {
             setCookieWithMainDomain(
               "refreshToken",
               res?.tokens?.refresh?.token,
-              // ".paridhan.app"
-              ".localhost"
+              ".paridhan.app"
+              // ".localhost"
             );
             setCookieWithMainDomain(
               "accessToken",
               res?.tokens?.access?.token,
-              // ".paridhan.app"
-              ".localhost"
+              ".paridhan.app"
+              // ".localhost"
             );
             if (
               TrustsList?.results?.length > 1 &&
@@ -109,8 +109,8 @@ const LoginCover = () => {
               dispatch(handleTrustDetail(TrustsList?.results[0]));
               if (res?.tokens?.access?.token && res?.tokens?.refresh?.token) {
                 window.location.replace(
-                  // `https://${TrustsList?.results[0]?.subDomain}${subdomainChange}/login`
-                  `http://${TrustsList?.results[0]?.subDomain}-dev.localhost:3000/login`
+                  `https://${TrustsList?.results[0]?.subDomain}${subdomainChange}/login`
+                  // `http://${TrustsList?.results[0]?.subDomain}-dev.localhost:3000/login`
                 );
               }
             }
@@ -329,9 +329,6 @@ const LoginCover = () => {
   const illustration = skin === "dark" ? "login-v2-dark.svg" : "login.svg",
     source = require(`@src/assets/images/pages/${illustration}`).default;
 
-  // const refreshToken = getCookie("refreshToken");
-  // const accessToken = getCookie("accessToken");
-
   const headers = {
     ...defaultHeaders,
     Authorization: `Bearer ${accessToken}`,
@@ -416,14 +413,8 @@ const LoginCover = () => {
                 }}
               >
                 {(formik) => (
-                  <Form
-                    className="auth-login-form mt-3"
-                    // onSubmit={(e) => e.preventDefault()}
-                  >
+                  <Form className="auth-login-form mt-3">
                     <div className="mb-1">
-                      {/* <Label className="form-label" for="login-email">
-                  Email
-                </Label> */}
                       <InputGroup className="input-group-merge">
                         <InputGroupText className="border-top-0  p-0 border-end-0 border-start-0 ">
                           <img className="signInIcons" src={emailInputIcon} />
@@ -444,9 +435,6 @@ const LoginCover = () => {
                     </div>
                     <div className="">
                       <div className="d-flex flex-column justify-content-between">
-                        {/* <Label className="form-label" for="login-password">
-                    Password
-                  </Label> */}
                         <InputPasswordToggle
                           className="input-group-merge"
                           name="password"
@@ -540,10 +528,6 @@ const LoginCover = () => {
                 {(formik) => (
                   <Form className="auth-login-form mt-2">
                     <div className="mb-1">
-                      {/* <Label className="form-label" for="login-email">
-                  Email
-                </Label> */}
-
                       <InputGroup className="input-group-merge ">
                         <InputGroupText className="border-top-0  p-0 border-end-0 border-start-0 ">
                           <img className="signInIcons" src={emailInputIcon} />
@@ -562,13 +546,6 @@ const LoginCover = () => {
                         <ErrorMessage name="email" />
                       </div>
                     </div>
-
-                    {/* <div className="form-check mb-1">
-                <Input type="checkbox" id="remember-me" />
-                <Label className="form-check-label" for="remember-me">
-                  Remember Me
-                </Label>
-              </div> */}
                     <div className="d-flex w-100 justify-content-center py-4 ">
                       {loading ? (
                         <Button
