@@ -4,7 +4,7 @@ import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import * as yup from "yup";
+import * as Yup from "yup";
 import {
   createSubCategory,
   getAllMasterCategories,
@@ -13,13 +13,13 @@ import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
 import CategoryForm from "../../../components/categories/categoryForm";
 import { CustomDropDown } from "../../../components/partials/customDropDown";
 
-const NoticeWraper = styled.div`
+const CategoryAddWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addNotice {
+  // .ImagesVideos {
+  //   font: normal normal bold 15px/33px Noto Sans;
+  // }
+  .addCategory {
     color: #583703;
     display: flex;
     align-items: center;
@@ -33,12 +33,9 @@ const schema = yup.object().shape({
   MasterCategory: yup.mixed().required("categories_category_required"),
   SubCategory: yup
     .string()
-    .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g,"injection_found")
-    // .matches(
-    //   /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
-    //   "only_letters"
-    // )
-    .required("categories_sub_category_required").trim(),
+    .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
+    .required("categories_sub_category_required")
+    .trim(),
 });
 
 export default function AddCategory() {
@@ -58,23 +55,23 @@ export default function AddCategory() {
       })
   );
   return (
-    <NoticeWraper>
+    <CategoryAddWrapper>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
             src={arrowLeft}
-            className="me-2  cursor-pointer"
+            className="me-2 cursor-pointer"
             onClick={() =>
               history.push(
                 `/configuration/categories?page=${currentPage}&filter=${currentFilter}`
               )
             }
           />
-          <div className="addNotice">
+          <div className="addCategory">
             <Trans i18nKey={"categories_AddCategory"} />
           </div>
         </div>
-        <div className="addNotice">
+        <div className="addCategory">
           <div className="d-none d-sm-block">
             <Trans i18nKey={"news_InputIn"} />
           </div>
@@ -91,7 +88,6 @@ export default function AddCategory() {
         <div className="ms-sm-3 mt-1">
           <CategoryForm
             loadOptions={masterloadOptionQuery?.data?.results}
-            // placeholder={masterloadOptionQuery?.data?.results[0]?.name ?? "All"}
             CategoryFormName={"MasterCategory"}
             handleSubmit={handleCreateSubCategory}
             initialValues={{
@@ -99,13 +95,13 @@ export default function AddCategory() {
               MasterCategory: masterloadOptionQuery?.data?.results[0],
               SubCategory: "",
             }}
-            vailidationSchema={schema}
+            validationSchema={schema}
             buttonName={"categories_AddCategory"}
           />
         </div>
       ) : (
         ""
       )}
-    </NoticeWraper>
+    </CategoryAddWrapper>
   );
 }

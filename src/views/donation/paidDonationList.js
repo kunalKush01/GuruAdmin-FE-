@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
+import React, { useEffect, useMemo, useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
@@ -10,20 +10,20 @@ import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
-import { getAllDonation, getAllPaidDonations } from "../../api/donationApi";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import DonationListTable from "../../components/donation/donationListTable";
-import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
-import NoContent from "../../components/partials/noContent";
-import { ChangeCategoryType } from "../../components/partials/categoryDropdown";
-import { ConverFirstLatterToCapital } from "../../utility/formater";
 import {
   getAllCategories,
   getAllMasterCategories,
 } from "../../api/categoryApi";
+import { getAllDonation, getAllPaidDonations } from "../../api/donationApi";
+import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import DonationListTable from "../../components/donation/donationListTable";
 import PaidDonationTable from "../../components/donation/paidDonationTable";
+import { ChangeCategoryType } from "../../components/partials/categoryDropdown";
+import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
+import NoContent from "../../components/partials/noContent";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-const DoationWarper = styled.div`
+const DonationWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
@@ -60,24 +60,8 @@ const DoationWarper = styled.div`
 `;
 
 export default function PaidDonationList() {
-  //   const [categoryTypeName, setCategoryTypeName] = useState("All");
-  //   const [subCategoryTypeName, setSubCategoryTypeName] = useState("All");
-  //   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
-
   const selectedLang = useSelector((state) => state.auth.selectLang);
-  //   const periodDropDown = () => {
-  //     switch (dropDownName) {
-  //       case "dashboard_monthly":
-  //         return "month";
-  //       case "dashboard_yearly":
-  //         return "year";
-  //       case "dashboard_weekly":
-  //         return "week";
 
-  //       default:
-  //         return "month";
-  //     }
-  //   };
   const { t } = useTranslation();
   const history = useHistory();
   const { commitmentId } = useParams();
@@ -93,31 +77,9 @@ export default function PaidDonationList() {
   const currentSubCategory = searchParams.get("subCategory");
   const currentStatus = searchParams.get("status");
 
-  //   useEffect(() => {
-  //     if (currentPage || currentCategory || currentFilter || currentSubCategory) {
-  //       setCategoryTypeName(currentCategory);
-  //       setSubCategoryTypeName(currentSubCategory);
-  //       setdropDownName(currentFilter);
-  //       setPagination({ ...pagination, page: parseInt(currentPage) });
-  //     }
-  //   }, []);
-
-  //   let filterStartDate = moment()
-  //     .startOf(periodDropDown())
-  //     .utcOffset(0, true)
-  //     .toISOString();
-  //   let filterEndDate = moment()
-  //     .endOf(periodDropDown())
-  //     .utcOffset(0, true)
-  //     .toISOString();
-
-  //   let startDate = moment(filterStartDate).format("DD MMM");
-  //   let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
-
   const paidDonationListQuery = useQuery(
     ["categoryTypes"],
-    () =>
-      getAllPaidDonations(commitmentId),
+    () => getAllPaidDonations(commitmentId),
     {
       keepPreviousData: true,
     }
@@ -126,76 +88,8 @@ export default function PaidDonationList() {
     () => paidDonationListQuery?.data?.results ?? [],
     [paidDonationListQuery]
   );
-  //   const newTypes = [{ id: "", name: "All" }, ...paidpaidDonationItems];
-
-  //   let newId;
-  //   newTypes.forEach((newObeject) => {
-  //     if (newObeject.name == categoryTypeName) {
-  //       newId = newObeject.id;
-  //     }
-  //   });
-  //   const [categoryId, setCategoryId] = useState();
-
-  //   // sub category
-  //   const subpaidDonationListQuery = useQuery(
-  //     ["subCategoryTypes",newId],
-  //     () =>
-  //       getAllCategories({
-  //         masterId:newId,
-  //         languageId: selectedLang.id,
-  //       }),
-  //     {
-  //       keepPreviousData: true,
-  //     }
-  //   );
-  //   const subpaidpaidDonationItems = useMemo(
-  //     () => subpaidDonationListQuery?.data?.results ?? [],
-  //     [subpaidDonationListQuery]
-  //   );
-  //   const subCategoryTypes = [{ id: "", name: "All" }, ...subpaidpaidDonationItems];
-
-  //   let subCategoryId;
-  //   subCategoryTypes.forEach((subCategoryObject) => {
-  //     if (subCategoryObject.name == subCategoryTypeName) {
-  //       subCategoryId = subCategoryObject.id;
-  //     }
-  //   });
-  //   const [subCategoryTypeId, setSubCategoryTypeId] = useState();
-
-  //   const searchBarValue = useSelector((state) => state.search.LocalSearch);
-
-  //   const paidDonationListQuery = useQuery(
-  //     [
-  //       "donations",
-  //       pagination.page,
-  //       selectedLang.id,
-  //       newId,
-  //       subCategoryId,
-  //       filterEndDate,
-  //       filterStartDate,
-  //       searchBarValue,
-  //     ],
-  //     () =>
-  //       getAllDonation({
-  //         ...pagination,
-  //         search: searchBarValue,
-  //         startDate: filterStartDate,
-  //         masterId: newId,
-  //         categoryId: subCategoryId,
-  //         endDate: filterEndDate,
-  //         languageId: selectedLang.id,
-  //       }),
-  //     {
-  //       keepPreviousData: true,
-  //     }
-  //   );
-
-  //   const paidDonationItems = useMemo(
-  //     () => paidDonationListQuery?.data?.results ?? [],
-  //     [paidDonationListQuery]
-  //   );
   return (
-    <DoationWarper>
+    <DonationWrapper>
       <div className="window nav statusBar body "></div>
 
       <div>
@@ -215,63 +109,9 @@ export default function PaidDonationList() {
                 <div>
                   <Trans i18nKey={"donation_Donation"} />
                 </div>
-                {/* <div className="filterPeriod">
-                  <span>
-                    {startDate} - {endDate}
-                  </span>
-                </div> */}
               </div>
             </div>
           </div>
-          {/* <div className="addDonation">
-            <ChangeCategoryType
-              className={"me-1"}
-              categoryTypeArray={newTypes}
-              typeName={categoryTypeName}
-              setTypeName={(e) => {
-                setCategoryId(e.target.id);
-                setCategoryTypeName(e.target.name);
-                setPagination({ page: 1 });
-                history.push(`/donation?page=${1}&category=${e.target.name}&subCategory=${subCategoryTypeName}&filter=${dropDownName}`);
-              }}
-            />
-            <ChangeCategoryType
-              className={"me-1"}
-              categoryTypeArray={subCategoryTypes}
-              typeName={ConverFirstLatterToCapital(subCategoryTypeName ?? "")}
-              setTypeName={(e) => {
-                setSubCategoryTypeId(e.target.id);
-                setSubCategoryTypeName(e.target.name);
-                setPagination({ page: 1 });
-                history.push(`/donation?page=${1}&category=${categoryTypeName}&subCategory=${e.target.name}&filter=${dropDownName}`);
-              }}
-            />
-            <ChangePeriodDropDown
-              className={"me-1"}
-              dropDownName={dropDownName}
-              setdropDownName={(e) => {
-                setdropDownName(e.target.name);
-                setPagination({ page: 1 });
-                history.push(`/donation?page=${1}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${e.target.name}`);
-              }}
-            />
-            <Button
-              color="primary"
-              className="addDonation-btn  "
-              onClick={() =>
-                history.push(
-                  `/donation/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}`
-                )
-              }
-            >
-              <span>
-                <Plus className="" size={15} strokeWidth={4} />
-              </span>
-              <span>
-                <Trans i18nKey={"donation_Adddonation"} />
-              </span>
-            </Button>
-          </div> */}
         </div>
         <div style={{ height: "10px" }}>
           <If condition={paidDonationListQuery.isFetching}>
@@ -304,10 +144,7 @@ export default function PaidDonationList() {
                     <PaidDonationTable data={paidDonationItems} />
                   </Then>
                   <Else>
-                    <NoContent
-                      headingNotfound={t("donation_paid_not_found")}
-                      //   para={t("donation_not_click_add_donation")}
-                    />
+                    <NoContent headingNotfound={t("donation_paid_not_found")} />
                   </Else>
                 </If>
               </Else>
@@ -355,6 +192,6 @@ export default function PaidDonationList() {
           </Row>
         </div>
       </div>
-    </DoationWarper>
+    </DonationWrapper>
   );
 }

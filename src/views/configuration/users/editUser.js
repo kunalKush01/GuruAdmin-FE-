@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import styled from "styled-components";
-import * as yup from "yup";
+import * as Yup from "yup";
 import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
 
 import { getSubAdminDetail, updateSubAdminUser } from "../../../api/userApi";
@@ -24,22 +24,26 @@ const SubAdminUserWarapper = styled.div`
     align-items: center;
   }
 `;
-const schema = yup.object().shape({
-  name: yup
+const schema = Yup.object().shape({
+  name: Yup
     .string()
     .matches(
       /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
       "user_only_letters"
     )
-    .required("users_title_required").trim(),
-  // mobile: yup.string().required("users_mobile_required"),
-  mobile: yup
+    .required("users_title_required")
+    .trim(),
+  // mobile: Yup.string().required("users_mobile_required"),
+  mobile: Yup
     .string()
-    
+
     .required("users_mobile_required"),
-  email: yup.string().email("email_invalid").required("users_email_required").trim(),
-  // password: yup.string().required("password_required"),
-  userRoleChacked: yup
+  email: Yup
+    .string()
+    .email("email_invalid")
+    .required("users_email_required")
+    .trim(),
+  userRoleChacked: Yup
     .array()
     .min(1, "minimum_one_role_required")
     .required("user_userRoleRequired"),
@@ -79,8 +83,8 @@ export default function EditSubAdmin() {
       Id: subAdminUserDetailQuery?.data?.result?.id,
       name: subAdminUserDetailQuery?.data?.result?.name,
       mobile: subAdminUserDetailQuery?.data?.result?.mobileNumber,
-      countryCode:subAdminUserDetailQuery?.data?.result?.countryName ?? "",
-      dialCode:subAdminUserDetailQuery?.data?.result?.countryCode ?? "",
+      countryCode: subAdminUserDetailQuery?.data?.result?.countryName ?? "",
+      dialCode: subAdminUserDetailQuery?.data?.result?.countryCode ?? "",
       userRoleChacked: subAdminUserDetailQuery?.data?.result?.roles,
       email: subAdminUserDetailQuery?.data?.result?.email,
       password: "",
@@ -149,10 +153,13 @@ export default function EditSubAdmin() {
                 profileImageName={
                   subAdminUserDetailQuery?.data?.result?.profileName
                 }
-                getUserMobile={subAdminUserDetailQuery?.data?.result?.countryCode + subAdminUserDetailQuery?.data?.result?.mobileNumber}
+                getUserMobile={
+                  subAdminUserDetailQuery?.data?.result?.countryCode +
+                  subAdminUserDetailQuery?.data?.result?.mobileNumber
+                }
                 buttonName={"user_editUser"}
                 initialValues={initialValues}
-                vailidationSchema={schema}
+                validationSchema={schema}
                 handleSubmit={handleSubAdminUpdate}
               />
             </div>

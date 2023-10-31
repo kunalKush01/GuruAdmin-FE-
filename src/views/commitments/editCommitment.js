@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import styled from "styled-components";
-import * as yup from "yup";
+import * as Yup from "yup";
 import {
   getCommitmentDetail,
   updateCommitmentDetail,
@@ -17,12 +17,12 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import CommitmentForm from "../../components/commitments/commitmentForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-const CommitmentWarapper = styled.div`
+const CommitmentWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
+  // .ImagesVideos {
+  //   font: normal normal bold 15px/33px Noto Sans;
+  // }
   .editCommitment {
     color: #583703;
     display: flex;
@@ -30,21 +30,22 @@ const CommitmentWarapper = styled.div`
   }
 `;
 
-const schema = yup.object().shape({
-  Mobile: yup
+const schema = Yup.object().shape({
+  Mobile: Yup
     .string()
-    
+
     .required("expenses_mobile_required"),
-  SelectedUser: yup.mixed().required("user_select_required"),
-  donarName: yup
+  SelectedUser: Yup.mixed().required("user_select_required"),
+  donarName: Yup
     .string()
     .matches(
       /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
       "donation_donar_name_only_letters"
-    ).trim(),
-  SelectedMasterCategory: yup.mixed().required("masterCategory_required"),
-  SelectedSubCategory: yup.mixed(),
-  Amount: yup
+    )
+    .trim(),
+  SelectedMasterCategory: Yup.mixed().required("masterCategory_required"),
+  SelectedSubCategory: Yup.mixed(),
+  Amount: Yup
     .string()
     .matches(/^[1-9][0-9]*$/, "invalid_amount")
     .required("amount_required"),
@@ -96,8 +97,8 @@ export default function EditCommitment() {
     return {
       Id: commitmentDetailQuery?.data?.result?._id,
       Mobile: commitmentDetailQuery?.data?.result?.user?.mobileNumber,
-      countryCode:commitmentDetailQuery?.data?.result?.user?.countryName ?? "",
-      dialCode:commitmentDetailQuery?.data?.result?.user?.countryCode ?? "",
+      countryCode: commitmentDetailQuery?.data?.result?.user?.countryName ?? "",
+      dialCode: commitmentDetailQuery?.data?.result?.user?.countryCode ?? "",
       SelectedUser: commitmentDetailQuery?.data?.result?.user,
       donarName: commitmentDetailQuery?.data?.result?.donarName,
       SelectedMasterCategory:
@@ -112,7 +113,7 @@ export default function EditCommitment() {
   }, [commitmentDetailQuery]);
 
   return (
-    <CommitmentWarapper>
+    <CommitmentWrapper>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -162,9 +163,12 @@ export default function EditCommitment() {
           {!commitmentDetailQuery?.isLoading && (
             <div className="ms-md-3 mt-1 mb-3">
               <CommitmentForm
-                vailidationSchema={schema}
-                disbleCategoryOnEdit
-                getCommimentMobile={commitmentDetailQuery?.data?.result?.user?.countryCode + commitmentDetailQuery?.data?.result?.user?.mobileNumber}
+                validationSchema={schema}
+                disableCategoryOnEdit
+                getCommitmentMobile={
+                  commitmentDetailQuery?.data?.result?.user?.countryCode +
+                  commitmentDetailQuery?.data?.result?.user?.mobileNumber
+                }
                 initialValues={initialValues}
                 showTimeInput
                 handleSubmit={handleCommitmentUpdate}
@@ -174,6 +178,6 @@ export default function EditCommitment() {
           )}
         </Else>
       </If>
-    </CommitmentWarapper>
+    </CommitmentWrapper>
   );
 }

@@ -11,18 +11,18 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomDataTable from "../partials/CustomDataTable";
 
 export default function DonationBoxListTable({ data, financeReport }) {
-  const handleDeleteDonationBox = async (payload) => {
-    return deleteExpensesDetail(payload);
-  };
-  const queryCient = useQueryClient();
-  const deleteMutation = useMutation({
-    mutationFn: handleDeleteDonationBox,
-    onSuccess: (data) => {
-      if (!data.error) {
-        queryCient.invalidateQueries(["Collections"]);
-      }
-    },
-  });
+  // const handleDeleteDonationBox = async (payload) => {
+  //   return deleteExpensesDetail(payload);
+  // };
+  // const queryClient = useQueryClient();
+  // const deleteMutation = useMutation({
+  //   mutationFn: handleDeleteDonationBox,
+  //   onSuccess: (data) => {
+  //     if (!data.error) {
+  //       queryClient.invalidateQueries(["Collections"]);
+  //     }
+  //   },
+  // });
   const { t } = useTranslation();
   const history = useHistory();
 
@@ -55,49 +55,31 @@ export default function DonationBoxListTable({ data, financeReport }) {
       center: true,
       selector: (row) => row.edit,
     },
-    // {
-    //   name: t(""),
-    //   center: true,
-    //   selector: (row) => row.viewLogs,
-    // },
   ];
 
   const donatioBoxList = useMemo(() => {
     return data.map((item, idx) => ({
       _Id: item.id,
       id: `${idx + 1}`,
-      amount: `₹${item?.amount.toLocaleString('en-IN')}`,
+      amount: `₹${item?.amount.toLocaleString("en-IN")}`,
       remarks: (
         <div
           className="d-flex tableDes"
-          dangerouslySetInnerHTML={{ __html: he.decode(item?.remarks ?? "") }}
+          dangerouslySetInnerHTML={{ __html: he?.decode(item?.remarks ?? "") }}
         />
       ),
-      createdBy:ConverFirstLatterToCapital(item?.createdBy?.name ?? ""),
-      dateTime: moment(item?.collectionDate)
-        .format("DD MMM YYYY, h:mm A "),
+      createdBy: ConverFirstLatterToCapital(item?.createdBy?.name ?? ""),
+      dateTime: moment(item?.collectionDate).format("DD MMM YYYY, h:mm A "),
       edit: (
         <img
           src={editIcon}
           width={35}
-          className={
-            financeReport ? "d-none" : "cursor-pointer "
-          }
+          className={financeReport ? "d-none" : "cursor-pointer "}
           onClick={() => {
             financeReport ? "" : history.push(`/hundi/edit/${item.id}`);
           }}
         />
       ),
-      // viewLogs: (
-      //   <div
-      //     className="cursor-pointer viewLogs"
-      //     onClick={() =>
-      //       history.push(`/financial_reports/Hundi/Logs/${item.id}`, item._id)
-      //     }
-      //   >
-      //     <Trans i18nKey={"viewLogs"} />
-      //   </div>
-      // ),
     }));
   }, [data]);
 
@@ -110,7 +92,7 @@ export default function DonationBoxListTable({ data, financeReport }) {
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .tableDes{
+    .tableDes {
       max-height: 1.7rem;
     }
     .viewLogs {
@@ -121,7 +103,7 @@ export default function DonationBoxListTable({ data, financeReport }) {
 
   return (
     <RecentDonationTableWarper>
-      <CustomDataTable maxHieght={""} columns={columns} data={donatioBoxList} />
+      <CustomDataTable maxHeight={""} columns={columns} data={donatioBoxList} />
     </RecentDonationTableWarper>
   );
 }

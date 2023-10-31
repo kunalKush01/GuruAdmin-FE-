@@ -1,28 +1,28 @@
-import { Form, Formik } from "formik";
-import React, { useEffect, useMemo, useState } from "react";
-import styled from "styled-components";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { Trans, useTranslation } from "react-i18next";
-import { Button, Col, Row } from "reactstrap";
-import FormikCustomDatePicker from "../../components/partials/formikCustomDatePicker";
-import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import ReactPaginate from "react-paginate";
-import { Plus } from "react-feather";
+import { Form, Formik } from "formik";
 import moment from "moment";
-import { useHistory } from "react-router-dom";
+import React, { useEffect, useMemo, useState } from "react";
+import { Plus } from "react-feather";
+import { Helmet } from "react-helmet";
+import { Trans, useTranslation } from "react-i18next";
+import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import { If, Then, Else } from "react-if-else-switch";
-import { getAllEvents, getEventDates } from "../../api/eventApi";
-import NoEvent from "../../components/events/noEvent";
-import EventCard from "../../components/events/eventCard";
-import CustomDatePicker from "../../components/partials/customDatePicker";
-import HinduCalenderDetailCard from "../../components/events/hinduCalenderDetailCard";
+import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { Button, Col, Row } from "reactstrap";
+import styled from "styled-components";
+import { getAllEvents, getEventDates } from "../../api/eventApi";
+import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import EventCard from "../../components/events/eventCard";
+import HinduCalenderDetailCard from "../../components/events/hinduCalenderDetailCard";
+import NoEvent from "../../components/events/noEvent";
+import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
+import CustomDatePicker from "../../components/partials/customDatePicker";
+import FormikCustomDatePicker from "../../components/partials/formikCustomDatePicker";
 import NoContent from "../../components/partials/noContent";
 import { WRITE } from "../../utility/permissionsVariable";
-import { Helmet } from "react-helmet";
-const EventWarper = styled.div`
+const EventWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
@@ -179,7 +179,7 @@ export default function EventList() {
     (item) => item.name
   );
   return (
-    <EventWarper>
+    <EventWrapper>
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Mandir Admin | Events</title>
@@ -199,11 +199,6 @@ export default function EventList() {
                 <div>
                   <Trans i18nKey={"events"} />
                 </div>
-                {/* <div className="filterPeriod">
-                  <span>
-                    {startDate} - {endDate}
-                  </span>
-                </div> */}
               </div>
             </div>
           </div>
@@ -367,6 +362,6 @@ export default function EventList() {
           </Row>
         </div>
       </div>
-    </EventWarper>
+    </EventWrapper>
   );
 }

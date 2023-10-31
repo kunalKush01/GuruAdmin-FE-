@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import { Plus } from "react-feather";
+import { Helmet } from "react-helmet";
 import { Trans, useTranslation } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
@@ -11,51 +12,50 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
+import { getAllPunyarjak } from "../../api/punarjakApi";
 import { getAllSubscribedUser } from "../../api/subscribedUser";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import PunyarjakCard from "../../components/Punyarjak/punyarjakCard";
+import PunyarjakTable from "../../components/Punyarjak/punyarjakUserListTable";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
 import NoContent from "../../components/partials/noContent";
 import SubscribedUSerListTable from "../../components/subscribedUser/subscribedUserListTable";
-import { getAllPunyarjak } from "../../api/punarjakApi";
-import PunyarjakTable from "../../components/Punyarjak/punyarjakUserListTable";
 import { WRITE } from "../../utility/permissionsVariable";
-import { Helmet } from "react-helmet";
-import PunyarjakCard from "../../components/Punyarjak/punyarjakCard";
 
-const PunyarjakWarapper = styled.div`
+const PunyarjakWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
     font: normal normal bold 15px/33px Noto Sans;
   }
-  .addNews {
+  .addPunyarjak {
     color: #583703;
     display: flex;
     align-items: center;
   }
 
-  .FormikWraper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addNews-btn {
+  // .FormikWraper {
+  //   padding: 40px;
+  // }
+  // .btn-Published {
+  //   text-align: center;
+  // }
+  .addPunyarjak-btn {
     padding: 8px 20px;
     margin-left: 10px;
     font: normal normal bold 15px/20px noto sans;
   }
-  .newsContent {
+  .punyarjakContent {
     margin-top: 1rem;
     ::-webkit-scrollbar {
       display: none;
     }
   }
-  .filterPeriod {
-    color: #ff8744;
-    margin-top: 0.5rem;
-    font: normal normal bold 13px/5px noto sans;
-  }
+  // .filterPeriod {
+  //   color: #ff8744;
+  //   margin-top: 0.5rem;
+  //   font: normal normal bold 13px/5px noto sans;
+  // }
 `;
 
 export default function Punyarjak() {
@@ -87,13 +87,11 @@ export default function Punyarjak() {
   const currentPage = searchParams.get("page");
   const routPagination = pagination.page;
   useEffect(() => {
-    if (currentPage ) {
+    if (currentPage) {
       // setdropDownName(currentFilter);
       setPagination({ ...pagination, page: parseInt(currentPage) });
     }
   }, []);
-
-  const [selectedMasterCate, setSelectedMasterCate] = useState("");
 
   let filterStartDate = moment()
     .startOf(periodDropDown())
@@ -104,8 +102,6 @@ export default function Punyarjak() {
     .utcOffset(0, true)
     .toISOString();
 
-  let startDate = moment(filterStartDate).format("DD MMM");
-  let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
 
   const punyarjakUsersQuery = useQuery(
@@ -151,7 +147,7 @@ export default function Punyarjak() {
   );
 
   return (
-    <PunyarjakWarapper>
+    <PunyarjakWrapper>
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Mandir Admin | Punyarjak</title>
@@ -166,30 +162,20 @@ export default function Punyarjak() {
               className="me-2 cursor-pointer align-self-center"
               onClick={() => history.push("/")}
             />
-            <div className="addNews">
+            <div className="addPunyarjak">
               <div className="">
                 <div>
                   <Trans i18nKey={"punyarjak"} />
                 </div>
-                {/* <div className="filterPeriod">
-                  <span>
-                    {startDate} - {endDate}
-                  </span>
-                </div> */}
               </div>
             </div>
           </div>
-          <div className="addNews">
-            {/* <ChangePeriodDropDown
-              className={"me-1"}
-              dropDownName={dropDownName}
-              setdropDownName={(e) => setdropDownName(e.target.name)}
-            /> */}
+          <div className="addPunyarjak">
             {allPermissions?.name === "all" ||
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
-                className="addNews-btn"
+                className="addPunyarjak-btn"
                 onClick={() =>
                   history.push(`/punyarjak/add?page=${pagination.page}`)
                 }
@@ -217,7 +203,7 @@ export default function Punyarjak() {
             </Then>
           </If>
         </div>
-        <div className="newsContent  ">
+        <div className="punyarjakContent  ">
           <Row>
             <If condition={punyarjakUsersQuery.isLoading} disableMemo>
               <Then>
@@ -252,12 +238,6 @@ export default function Punyarjak() {
                         </Col>
                       );
                     })}
-                    {/* <PunyarjakTable
-                      data={punyarjakUsers}
-                      allPermissions={allPermissions}
-                      subPermission={subPermission}
-                      currentPage={routPagination}
-                    /> */}
                   </Then>
                   <Else>
                     <NoContent
@@ -300,6 +280,6 @@ export default function Punyarjak() {
           </Row>
         </div>
       </div>
-    </PunyarjakWarapper>
+    </PunyarjakWrapper>
   );
 }

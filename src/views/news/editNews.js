@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import styled from "styled-components";
-import * as yup from "yup";
+import * as Yup from "yup";
 import { getNewsDetail, updateNewsDetail } from "../../api/newsApi";
 import { getAllTrustPrefeces } from "../../api/profileApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
@@ -30,19 +30,17 @@ const NewsWarper = styled.div`
   }
 `;
 
-const schema = yup.object().shape({
-  Title: yup
-    .string()
+const schema = Yup.object().shape({
+  Title: Yup.string()
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
     .required("news_title_required")
     .trim(),
-  // Tags: yup.string().required("news_tags_required"),
-  Body: yup.string().required("news_desc_required").trim(),
-  PublishedBy: yup.string().required("news_publish_required"),
-  DateTime: yup.string(),
-  // tagsInit: yup.array().max(15, "tags_limit"),
-  preference: yup
-    .array()
+  // Tags: Yup.string().required("news_tags_required"),
+  Body: Yup.string().required("news_desc_required").trim(),
+  PublishedBy: Yup.string().required("news_publish_required"),
+  DateTime: Yup.string(),
+  // tagsInit: Yup.array().max(15, "tags_limit"),
+  preference: Yup.array()
     .min(1, "trust_prefenses_required")
     .required("trust_prefenses_required"),
 });
@@ -110,7 +108,7 @@ export default function EditNews() {
       tagsInit: tags,
       images: [],
       preference: newsDetailQuery?.data?.result?.preference ?? [],
-      Body: he.decode(newsDetailQuery?.data?.result?.body ?? ""),
+      Body: he?.decode(newsDetailQuery?.data?.result?.body ?? ""),
       PublishedBy: loggedInUser,
       DateTime: moment(newsDetailQuery?.data?.result?.publishDate)
         .utcOffset("+0530")
@@ -189,7 +187,7 @@ export default function EditNews() {
               <NewsForm
                 editImage="edit"
                 defaultImages={newsDetailQuery?.data?.result?.images}
-                vailidationSchema={schema}
+                validationSchema={schema}
                 trustPreference={trustPreference}
                 initialValues={initialValues}
                 showTimeInput

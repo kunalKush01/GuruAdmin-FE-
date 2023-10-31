@@ -1,19 +1,16 @@
-import { Button } from "bootstrap";
 import he from "he";
 import moment from "moment";
 import React from "react";
-import { Item } from "react-contexify";
 import { useHistory } from "react-router-dom";
 import { Card, CardBody, CardFooter, Col, Row } from "reactstrap";
 import styled from "styled-components";
 import Swal from "sweetalert2";
-import lockIcon from "../../assets/images/icons/donationBox/Lock.svg";
 import donationBoxDesIcon from "../../assets/images/icons/donationBox/donationBoxDesIcon.png";
 import donationBoxIcon from "../../assets/images/icons/donationBox/donationBoxIcon.png";
 import editIcon from "../../assets/images/icons/donationBox/editIcon.svg";
 import { EDIT } from "../../utility/permissionsVariable";
 
-const ReportListCardWraper = styled.div`
+const DonationBoxWrapper = styled.div`
   .card-footer {
     border: none !important;
     padding: 0%;
@@ -74,14 +71,12 @@ export default function BoxListCard({
   };
   const history = useHistory();
   return (
-    <ReportListCardWraper>
+    <DonationBoxWrapper>
       <Card>
         <CardBody>
           <Row className=" d-flex justify-content-between w-100 m-0">
             <Col xs={2} className="p-0 d-flex justify-content-center">
-              <div style={{ width: "30px" }}>
-                {/* {data.isLocked&&<img src={lockIcon} className="w-100"  />} */}
-              </div>
+              <div style={{ width: "30px" }}></div>
             </Col>
             <Col xs={8} className="p-0">
               <div
@@ -89,9 +84,7 @@ export default function BoxListCard({
                 onClick={() => {
                   Swal.fire({
                     padding: "15px 20px",
-                    // title: `<img src="${donationBoxIcon}"/>`,
-                    html: `
-                                            <div class="text-start">
+                    html: `<div class="text-start">
                                                 <div>Date : ${moment(
                                                   data.collectionDate
                                                 ).format(
@@ -114,13 +107,8 @@ export default function BoxListCard({
                                               `,
                     showCloseButton: false,
                     showConfirmButton: false,
-                    // showCancelButton: true,
-                    // focusConfirm: true,
                     cancelButtonText: "cancel",
                     cancelButtonAriaLabel: "cancel",
-
-                    // confirmButtonText:"confirm",
-                    // confirmButtonAriaLabel: "Confirm",
                   });
                 }}
               >
@@ -138,7 +126,7 @@ export default function BoxListCard({
                   <div
                     className="text-with-dots"
                     dangerouslySetInnerHTML={{
-                      __html: he.decode(data.remarks),
+                      __html: he?.decode(data.remarks),
                     }}
                   />
                 </div>
@@ -168,6 +156,6 @@ export default function BoxListCard({
           </Row>
         </CardBody>
       </Card>
-    </ReportListCardWraper>
+    </DonationBoxWrapper>
   );
 }

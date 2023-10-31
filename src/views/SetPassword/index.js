@@ -7,12 +7,12 @@ import { useMemo, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { Button, CardText, CardTitle, Col, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
-import * as yup from "yup";
+import * as Yup from "yup";
 import { setPassword } from "../../api/forgotPassword";
+import { loginPage } from "../../api/loginPageApi";
+import passwordEyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
 import backIconIcon from "../../assets/images/icons/signInIcon/backIcon.svg";
 import hidePassIcon from "../../assets/images/icons/signInIcon/hidePassIcon.svg";
-import passwordEyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
-import { loginPage } from "../../api/loginPageApi";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 const SetPassword = () => {
@@ -33,15 +33,18 @@ const SetPassword = () => {
       }
     },
   });
-  const setPasswordSchema = yup.object().shape({
-    password: yup
+  const setPasswordSchema = Yup.object().shape({
+    password: Yup
       .string()
       .required("Password is required.")
-      .matches(/^(?=.*[a-zA-Z])(?=.*\d).+$/,'Password must contain at least one letter and one number')
+      .matches(
+        /^(?=.*[a-zA-Z])(?=.*\d).+$/,
+        "Password must contain at least one letter and one number"
+      )
       .min(8, "Password is too short - should be 8 chars minimum."),
-    confirmPassword: yup
+    confirmPassword: Yup
       .string()
-      .oneOf([yup.ref("password"), null], "Passwords must match"),
+      .oneOf([Yup.ref("password"), null], "Passwords must match"),
   });
   const SetPasswordWarapper = styled.div`
     .errorMassage {
@@ -174,7 +177,9 @@ const SetPassword = () => {
             {loginPageData?.name !== "" && (
               <div className="templeName">
                 Admin:{" "}
-                <span title={ConverFirstLatterToCapital(loginPageData?.name ?? "")}>
+                <span
+                  title={ConverFirstLatterToCapital(loginPageData?.name ?? "")}
+                >
                   {ConverFirstLatterToCapital(loginPageData?.name ?? "")}
                 </span>
               </div>

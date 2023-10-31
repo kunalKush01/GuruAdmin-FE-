@@ -2,11 +2,8 @@ import moment from "moment";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
-import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomDataTable from "../partials/CustomDataTable";
 export default function LogListTable({ data }) {
-  
   const { t } = useTranslation();
 
   const columns = [
@@ -34,24 +31,20 @@ export default function LogListTable({ data }) {
       name: t("logData_editedAmount"),
       selector: (row) => row.editedAmount,
     },
-  
   ];
 
-  const logData =useMemo(()=>{
-    return data.map((item,idx)=>{
-      return{
-        id:idx+1,
-        editedBy:item?.updatedUser?.name,
-        createdBy:item?.createdUser?.name,
-        timeDate:moment(item.createdAt).format(
-          " DD MMM YYYY,hh:mm A"
-        ),
-        createdAmount:item?.oldAmount,
-        editedAmount:item?.amount,
-      }
-    })
-  }) 
-  
+  const logData = useMemo(() => {
+    return data.map((item, idx) => {
+      return {
+        id: idx + 1,
+        editedBy: item?.updatedUser?.name,
+        createdBy: item?.createdUser?.name,
+        timeDate: moment(item.createdAt).format(" DD MMM YYYY,hh:mm A"),
+        createdAmount: item?.oldAmount,
+        editedAmount: item?.amount,
+      };
+    });
+  });
 
   const LogListTableWarper = styled.div`
     color: #583703 !important;
@@ -60,11 +53,7 @@ export default function LogListTable({ data }) {
 
   return (
     <LogListTableWarper>
-      <CustomDataTable
-        columns={columns}
-        maxHieght="350px"
-        data={logData}
-      />
+      <CustomDataTable columns={columns} maxHeight="350px" data={logData} />
     </LogListTableWarper>
   );
 }

@@ -3,7 +3,7 @@ import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import * as yup from "yup";
+import * as Yup from "yup";
 import { createBoxCollection } from "../../api/donationBoxCollectionApi";
 import { createExpense } from "../../api/expenseApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
@@ -25,14 +25,14 @@ const NewsWarper = styled.div`
 const handleCollectionBox = async (payload) => {
   return createBoxCollection(payload);
 };
-const schema = yup.object().shape({
-  // CreatedBy: yup.string().required("news_tags_required"),
-  Amount: yup
+const schema = Yup.object().shape({
+  // CreatedBy: Yup.string().required("news_tags_required"),
+  Amount: Yup
     .string()
-    .matches(/^[1-9][0-9]*$/,"invalid_amount")
+    .matches(/^[1-9][0-9]*$/, "invalid_amount")
     .required("amount_required"),
-  Body: yup.string().required("donation_box_desc_required").trim(),
-  DateTime: yup.string(),
+  Body: Yup.string().required("donation_box_desc_required").trim(),
+  DateTime: Yup.string(),
 });
 
 export default function AddNews() {
@@ -81,7 +81,7 @@ export default function AddNews() {
         <DonationBoxForm
           handleSubmit={handleCollectionBox}
           initialValues={initialValues}
-          vailidationSchema={schema}
+          validationSchema={schema}
           showTimeInput
           buttonName="DonationBox_AddCollectionBox"
         />

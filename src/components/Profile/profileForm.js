@@ -12,7 +12,7 @@ import "react-time-picker/dist/TimePicker.css";
 import { toast } from "react-toastify";
 import { Button, Col, Modal, ModalBody, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
-import * as yup from "yup";
+import * as Yup from "yup";
 import {
   getAllCityState,
   getAllTrustPrefeces,
@@ -32,8 +32,8 @@ import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import ImageUpload from "../partials/imageUpload";
 import RichTextField from "../partials/richTextEditorField";
 
-const ProfileFormWaraper = styled.div`
-  .existlabel {
+const ProfileFormWrapper = styled.div`
+  .existLabel {
     margin-bottom: 10px;
     font: normal normal bold 15px/33px Noto Sans;
   }
@@ -264,7 +264,7 @@ const ProfileFormWaraper = styled.div`
 
 export default function ProfileForm({
   handleSubmit,
-  vailidationSchema,
+  validationSchema,
   buttonLabel,
   editImage,
   AddLanguage,
@@ -474,7 +474,7 @@ export default function ProfileForm({
     toastId: "langError",
   };
   return (
-    <ProfileFormWaraper className="FormikWraper">
+    <ProfileFormWrapper className="FormikWraper">
       <Formik
         enableReinitialize
         initialValues={initialValues}
@@ -500,7 +500,7 @@ export default function ProfileForm({
                 // city: e?.city?.districts,
                 // place_id: e?.location.value.place_id,
                 location: e?.location,
-                address:e?.address,
+                address: e?.address,
                 // longitude: e?.longitude.toString(),
                 // latitude: e?.latitude.toString(),
                 trustFacilities: facilityFormData,
@@ -522,8 +522,8 @@ export default function ProfileForm({
                 trustEmail: e?.trustEmail,
                 trustNumber: e?.trustNumber.toString(),
                 trustCountryCode: e?.trustDialCode,
-                address:e?.address,
-                facebookLink:e?.facebookLink,
+                address: e?.address,
+                facebookLink: e?.facebookLink,
                 trustCountryName: e?.trustCountryCode,
                 about: e?.about,
                 name: e?.name,
@@ -548,7 +548,7 @@ export default function ProfileForm({
                 // confirmPassword: e?.confirmPassword,
               });
         }}
-        validationSchema={vailidationSchema}
+        validationSchema={validationSchema}
       >
         {(formik) => (
           <Form>
@@ -564,7 +564,7 @@ export default function ProfileForm({
             {/* About Trust Container */}
             <Row className="mt-1">
               <Col xs={12}>
-                <div className="heading_div existlabel">
+                <div className="heading_div existLabel">
                   <Trans i18nKey={"about_trust"} />
                   <hr />
                 </div>
@@ -605,7 +605,12 @@ export default function ProfileForm({
                 )}
                 <Col lg={10} xs={12} className="">
                   <Row>
-                    <Col xs={12} md={6} lg={4} className={AddLanguage && 'mb-1'}>
+                    <Col
+                      xs={12}
+                      md={6}
+                      lg={4}
+                      className={AddLanguage && "mb-1"}
+                    >
                       <CustomTextField
                         label={t("userProfile_name")}
                         placeholder={t("placeHolder_name")}
@@ -749,7 +754,7 @@ export default function ProfileForm({
             {!AddLanguage && (
               <Row className="mt-1">
                 <Col xs={12}>
-                  <div className="heading_div existlabel">
+                  <div className="heading_div existLabel">
                     <Trans i18nKey={"trust_user"} />
                     <hr />
                   </div>
@@ -821,7 +826,7 @@ export default function ProfileForm({
             {/* Trust Location Container  */}
             <Row className="mt-1">
               <Col xs={12}>
-                <div className="heading_div existlabel">
+                <div className="heading_div existLabel">
                   <Trans i18nKey={"trust_location"} />
                   <hr />
                 </div>
@@ -832,13 +837,13 @@ export default function ProfileForm({
                     xs={12}
                     className={`ps-lg-3 ${formik.errors ? "mt-1" : "mt-2"}`}
                   > */}
-                    <TextArea
-                      label={t("trust_address")}
-                      name="address"
-                      rows="4"
-                      placeholder={t("placeHolder_trust_address")}
-                      className="text-area form-control"
-                    />
+                  <TextArea
+                    label={t("trust_address")}
+                    name="address"
+                    rows="4"
+                    placeholder={t("placeHolder_trust_address")}
+                    className="text-area form-control"
+                  />
                   {/* </Col> */}
                 </Col>
                 <Col md={4}>
@@ -916,14 +921,14 @@ export default function ProfileForm({
 
             <Row className={`mt-1 ${AddLanguage && "paddingForm"}`}>
               <Col xs={12}>
-                <div className="heading_div existlabel">
+                <div className="heading_div existLabel">
                   <Trans i18nKey={"trust_facility"} />
                   <hr />
                 </div>
               </Col>
               <Row>
                 <Col xs={12}>
-                  {/* <div className="existlabel  ">
+                  {/* <div className="existLabel  ">
                     <Trans i18nKey={"userProfile_facilities"} />
                   </div> */}
                 </Col>
@@ -1026,7 +1031,7 @@ export default function ProfileForm({
             {!AddLanguage && (
               <Row className="mt-1 paddingForm">
                 <Col xs={12}>
-                  <div className="heading_div existlabel">
+                  <div className="heading_div existLabel">
                     <Trans i18nKey={"trust_image_certificate"} />
                     <hr />
                   </div>
@@ -1036,7 +1041,7 @@ export default function ProfileForm({
                   <Col lg={6}>
                     <Row>
                       <Col>
-                        <div className="existlabel">
+                        <div className="existLabel">
                           <Trans i18nKey={"images"} />
                         </div>
                         <div>
@@ -1170,7 +1175,7 @@ export default function ProfileForm({
             {/* Trust Password Container */}
             {/* <Row className="mt-1">
               <Col xs={12}>
-                <div className="heading_div existlabel">
+                <div className="heading_div existLabel">
                   CHANGE PASSWORD
                   <hr />
                 </div>
@@ -1298,7 +1303,7 @@ export default function ProfileForm({
       >
         {/* <ModalHeader toggle={toggle}>Modal title</ModalHeader> */}
         <ModalBody>
-          <ProfileFormWaraper>
+          <ProfileFormWrapper>
             <Formik
               initialValues={facilityIntialValues}
               onSubmit={(values) => {
@@ -1533,9 +1538,9 @@ export default function ProfileForm({
                 );
               }}
             </Formik>
-          </ProfileFormWaraper>
+          </ProfileFormWrapper>
         </ModalBody>
       </Modal>
-    </ProfileFormWaraper>
+    </ProfileFormWrapper>
   );
 }

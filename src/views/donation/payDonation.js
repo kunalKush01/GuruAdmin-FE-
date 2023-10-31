@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import styled from "styled-components";
-import * as yup from "yup";
+import * as Yup from "yup";
 import {
   getCommitmentDetail,
   updateCommitmentDetail,
@@ -19,7 +19,7 @@ import CommitmentForm from "../../components/commitments/commitmentForm";
 import DonationForm from "../../components/donation/donationForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-const PayDonationWarapper = styled.div`
+const PayDonationWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
@@ -32,21 +32,20 @@ const PayDonationWarapper = styled.div`
   }
 `;
 
-const schema = yup.object().shape({
-  Mobile: yup
-    .string()
-    
-    .required("expenses_mobile_required"),
-  SelectedUser: yup.mixed().required("user_select_required"),
-  donarName: yup
-    .string()
+const schema = Yup.object().shape({
+  Mobile: Yup.string().required("expenses_mobile_required"),
+  SelectedUser: Yup.mixed().required("user_select_required"),
+  donarName: Yup.string()
     .matches(
       /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
       "donation_donar_name_only_letters"
-    ).trim(),
-  SelectedMasterCategory: yup.mixed().required("masterCategory_required"),
-  SelectedSubCategory: yup.mixed(),
-  Amount: yup.string().matches(/^[1-9][0-9]*$/,"invalid_amount").required("amount_required"),
+    )
+    .trim(),
+  SelectedMasterCategory: Yup.mixed().required("masterCategory_required"),
+  SelectedSubCategory: Yup.mixed(),
+  Amount: Yup.string()
+    .matches(/^[1-9][0-9]*$/, "invalid_amount")
+    .required("amount_required"),
 });
 const getLangId = (langArray, langSelection) => {
   let languageId;
@@ -85,14 +84,6 @@ export default function PayDonation() {
       })
   );
 
-  //   const handlePayDonation = async (payload) => {
-  // return updateCommitmentDetail({
-  //   ...payload,
-  //   languageId: getLangId(langArray, langSelection),
-  // });
-  //     return createDonation(payload);
-  //   };
-
   const handlePayDonation = async (payload) => {
     return createDonation(payload);
   };
@@ -100,8 +91,8 @@ export default function PayDonation() {
     return {
       Id: commitmentDetailQuery?.data?.result?.id,
       Mobile: commitmentDetailQuery?.data?.result?.user?.mobileNumber,
-      countryCode:commitmentDetailQuery?.data?.result?.user?.countryName ?? "",
-      dialCode:commitmentDetailQuery?.data?.result?.user?.countryCode ?? "",
+      countryCode: commitmentDetailQuery?.data?.result?.user?.countryName ?? "",
+      dialCode: commitmentDetailQuery?.data?.result?.user?.countryCode ?? "",
       SelectedUser: commitmentDetailQuery?.data?.result?.user,
       donarName: commitmentDetailQuery?.data?.result?.donarName,
       SelectedMasterCategory:
@@ -123,7 +114,7 @@ export default function PayDonation() {
   }, [commitmentDetailQuery]);
 
   return (
-    <PayDonationWarapper>
+    <PayDonationWrapper>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -175,11 +166,14 @@ export default function PayDonation() {
           {!commitmentDetailQuery?.isLoading && (
             <div className="ms-md-3 mt-1 mb-3">
               <DonationForm
-                vailidationSchema={schema}
+                validationSchema={schema}
                 initialValues={initialValues}
                 payDonation
                 showTimeInput
-                getCommimentMobile={commitmentDetailQuery?.data?.result?.user?.countryCode + commitmentDetailQuery?.data?.result?.user?.mobileNumber}
+                getCommitmentMobile={
+                  commitmentDetailQuery?.data?.result?.user?.countryCode +
+                  commitmentDetailQuery?.data?.result?.user?.mobileNumber
+                }
                 handleSubmit={handlePayDonation}
                 buttonName={"payment"}
               />
@@ -187,6 +181,6 @@ export default function PayDonation() {
           )}
         </Else>
       </If>
-    </PayDonationWarapper>
+    </PayDonationWrapper>
   );
 }

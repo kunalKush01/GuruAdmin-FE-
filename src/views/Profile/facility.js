@@ -5,12 +5,12 @@ import { useSelector } from "react-redux";
 
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import * as yup from "yup";
+import * as Yup from "yup";
 import { createNews } from "../../api/newsApi";
 import { getUpdatedTrustDetail, updateProfile } from "../../api/profileApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { CustomDropDown } from "../../components/partials/customDropDown";
 import ProfileForm from "../../components/Profile/profileForm";
+import { CustomDropDown } from "../../components/partials/customDropDown";
 import { addFacility, handleProfileUpdate } from "../../redux/authSlice";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
@@ -47,19 +47,6 @@ const ProfileWarper = styled.div`
   }
 `;
 
-const schema = yup.object().shape({
-  name: yup.string().required("name_required"),
-  EmailId: yup.string().email("email_invalid").required("email_required"),
-  Contact: yup
-    .number()
-    .typeError("number_type")
-    .positive("cant_start_minus")
-    .integer("number_in_point")
-    .min(8)
-    .required("number_required"),
-  // documents: yup.string().required("doc_required"),
-});
-
 const getLangId = (langArray, langSelection) => {
   let languageId;
   langArray.map(async (Item) => {
@@ -90,7 +77,6 @@ export default function AddProfile() {
     return res;
   };
 
-
   return (
     <ProfileWarper>
       <div className="d-flex justify-content-between align-items-center mb-2">
@@ -114,8 +100,7 @@ export default function AddProfile() {
           />
         </div>
       </div>
-      <ProfileForm
-      />
+      <ProfileForm />
     </ProfileWarper>
   );
 }

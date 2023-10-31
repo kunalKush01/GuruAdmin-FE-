@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import { Plus } from "react-feather";
+import { Helmet } from "react-helmet";
 import { Trans, useTranslation } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
@@ -17,48 +18,45 @@ import {
 } from "../../../api/categoryApi";
 import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
 import { CategoryListTable } from "../../../components/categories/categoryListTable";
+import { ChangeCategoryType } from "../../../components/partials/categoryDropdown";
 import { CustomReactSelect } from "../../../components/partials/customReactSelect";
 import NoContent from "../../../components/partials/noContent";
-import { ChangeCategoryType } from "../../../components/partials/categoryDropdown";
 import { ConverFirstLatterToCapital } from "../../../utility/formater";
 import { WRITE } from "../../../utility/permissionsVariable";
-import { Helmet } from "react-helmet";
-const NewsWarper = styled.div`
+const CategoryListWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addNews {
+  // .ImagesVideos {
+  //   font: normal normal bold 15px/33px Noto Sans;
+  // }
+  .addCategory {
     color: #583703;
     display: flex;
     align-items: center;
   }
 
-  .FormikWraper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addNews-btn {
+  // .FormikWraper {
+  //   padding: 40px;
+  // }
+  // .btn-Published {
+  //   text-align: center;
+  // }
+  .addCategory-btn {
     padding: 8px 20px;
     margin-left: 10px;
     font: normal normal bold 15px/20px noto sans;
   }
-  .newsContent {
+  .categoryContent {
     margin-top: 1rem;
     ::-webkit-scrollbar {
       display: none;
     }
   }
-  .filterPeriod {
-    color: #ff8744;
-    font: normal normal bold 13px/5px noto sans;
-  }
+  // .filterPeriod {
+  //   color: #ff8744;
+  //   font: normal normal bold 13px/5px noto sans;
+  // }
 `;
-
-const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 export default function Category() {
   const [dropDownName, setdropDownName] = useState("All");
@@ -99,8 +97,6 @@ export default function Category() {
     }
   }, []);
 
-  const [selectedMasterCate, setSelectedMasterCate] = useState("");
-
   let filterStartDate = moment()
     .startOf(periodDropDown())
     .utcOffset(0, true)
@@ -110,11 +106,8 @@ export default function Category() {
     .utcOffset(0, true)
     .toISOString();
 
-  let startDate = moment(filterStartDate).format("DD MMM");
-  let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
 
-  // master category
   // master category
   const categoryTypeQuery = useQuery(
     ["categoryTypes"],
@@ -175,16 +168,9 @@ export default function Category() {
     (item) => item.name
   );
 
-  const masterloadOptionQuery = useQuery(
-    ["MasterCategory", selectedLang.id],
-    async () =>
-      await getAllMasterCategories({
-        languageId: selectedLang.id,
-      })
-  );
 
   return (
-    <NewsWarper>
+    <CategoryListWrapper>
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Mandir Admin | Category</title>
@@ -199,7 +185,7 @@ export default function Category() {
               className="me-2  cursor-pointer"
               onClick={() => history.push("/")}
             />
-            <div className="addNews">
+            <div className="addCategory">
               <div className="">
                 <div>
                   <Trans i18nKey={"categories_latest_Category"} />
@@ -207,7 +193,7 @@ export default function Category() {
               </div>
             </div>
           </div>
-          <div className="addNews justify-content-between">
+          <div className="addCategory justify-content-between">
             <ChangeCategoryType
               className={"me-1"}
               categoryTypeArray={newTypes}
@@ -225,7 +211,7 @@ export default function Category() {
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
-                className="addNews-btn"
+                className="addCategory-btn"
                 onClick={() =>
                   history.push(
                     `/configuration/categories/add?page=${pagination.page}&filter=${dropDownName}`
@@ -255,7 +241,7 @@ export default function Category() {
             </Then>
           </If>
         </div>
-        <div className="newsContent  ">
+        <div className="categoryContent  ">
           <Row>
             <If condition={categoryQuery?.isLoading} disableMemo>
               <Then>
@@ -324,7 +310,6 @@ export default function Category() {
                         }&filter=${dropDownName}`
                       );
                     }}
-                    // forcePage={pagination.page !== 0 ? pagination.page - 1 : 0}
                     containerClassName={
                       "pagination react-paginate justify-content-end p-1"
                     }
@@ -335,6 +320,6 @@ export default function Category() {
           </Row>
         </div>
       </div>
-    </NewsWarper>
+    </CategoryListWrapper>
   );
 }

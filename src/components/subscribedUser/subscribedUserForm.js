@@ -3,37 +3,35 @@ import { Form, Formik } from "formik";
 import React, { useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { Prompt, useHistory } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
+import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
-import { Prompt } from "react-router-dom";
-import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
 
-const FormWaraper = styled.div`
-  .FormikWraper {
+const FormWrapper = styled.div`
+  .FormikWrapper {
     padding: 40px;
   }
   .btn-Published {
     text-align: center;
   }
-  .addNews-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .newsContent {
-    height: 350px;
-    overflow: auto;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
+  // .addNews-btn {
+  //   padding: 8px 20px;
+  //   margin-left: 10px;
+  //   font: normal normal bold 15px/20px noto sans;
+  // }
+  // .newsContent {
+  //   height: 350px;
+  //   overflow: auto;
+  //   ::-webkit-scrollbar {
+  //     display: none;
+  //   }
+  // }
   .filterPeriod {
     color: #ff8744;
-
     font: normal normal bold 13px/5px noto sans;
   }
 `;
@@ -42,7 +40,7 @@ export default function SubscribedUserForm({
   plusIconDisable = false,
   loadOptions,
   handleSubmit,
-  vailidationSchema,
+  validationSchema,
   initialValues,
   showTimeInput,
   getNumber,
@@ -59,15 +57,15 @@ export default function SubscribedUserForm({
   const currentCategory = searchParams.get("category");
   const currentSubCategory = searchParams.get("subCategory");
   const currentFilter = searchParams.get("filter");
-  const categoryQuerClient = useQueryClient();
+  const categoryQueryClient = useQueryClient();
 
   const categoryMutation = useMutation({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
       if (!data.error) {
         addDonationUser
-          ? categoryQuerClient.invalidateQueries(["donations"])
-          : categoryQuerClient.invalidateQueries(["subscribedUser"]);
+          ? categoryQueryClient.invalidateQueries(["donations"])
+          : categoryQueryClient.invalidateQueries(["subscribedUser"]);
         setLoading(false);
         addDonationUser
           ? history.push(
@@ -83,7 +81,7 @@ export default function SubscribedUserForm({
   const [phoneNumber, setPhoneNumber] = useState(getNumber ?? "");
 
   return (
-    <FormWaraper className="FormikWraper">
+    <FormWrapper className="FormikWrapper">
       <Formik
         // enableReinitialize
         initialValues={{ ...initialValues }}
@@ -98,7 +96,7 @@ export default function SubscribedUserForm({
             name: e.name,
           });
         }}
-        validationSchema={vailidationSchema}
+        validationSchema={validationSchema}
       >
         {(formik) => (
           <Form>
@@ -219,6 +217,6 @@ export default function SubscribedUserForm({
           </Form>
         )}
       </Formik>
-    </FormWaraper>
+    </FormWrapper>
   );
 }

@@ -7,8 +7,8 @@ import styled from "styled-components";
 import { getAllMasterCategories } from "../../api/expenseApi";
 import FormWithoutFormikForDonation from "./FormWithoutFormikForDonation";
 
-const FormWaraper = styled.div`
-  .FormikWraper {
+const FormWrapper = styled.div`
+  .FormikWrapper {
     padding: 40px;
   }
   .btn-Published {
@@ -59,13 +59,13 @@ export default function DonationForm({
   buttonName = "",
   handleSubmit,
   payDonation,
-  getCommimentMobile,
-  vailidationSchema,
+  getCommitmentMobile,
+  validationSchema,
   initialValues,
   showTimeInput,
 }) {
   const history = useHistory();
-  const donationQuerClient = useQueryClient();
+  const donationQueryClient = useQueryClient();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const [loading, setLoading] = useState(false);
   const masterloadOptionQuery = useQuery(
@@ -79,7 +79,7 @@ export default function DonationForm({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
       if (!data?.error) {
-        donationQuerClient.invalidateQueries(["donations"]);
+        donationQueryClient.invalidateQueries(["donations"]);
         setLoading(false);
         history.push("/donation");
       } else if (data?.error || data === undefined) {
@@ -89,10 +89,9 @@ export default function DonationForm({
   });
   const [showPrompt, setShowPrompt] = useState(true);
   return (
-    <FormWaraper className="FormikWraper">
+    <FormWrapper className="FormikWrapper">
       {!masterloadOptionQuery.isLoading && (
         <Formik
-          // enableReinitialize
           initialValues={{
             ...initialValues,
           }}
@@ -105,12 +104,12 @@ export default function DonationForm({
               masterCategoryId: e?.SelectedMasterCategory?.id,
               donarName: e?.donarName,
               mobileNumber: e?.Mobile.toString(),
-              countryCode:e?.dialCode,
-              countryName:e?.countryCode,
+              countryCode: e?.dialCode,
+              countryName: e?.countryCode,
               commitmentId: e?.SelectedCommitmentId?.commitmentId,
             });
           }}
-          validationSchema={vailidationSchema}
+          validationSchema={validationSchema}
         >
           {(formik) => (
             <FormWithoutFormikForDonation
@@ -120,7 +119,7 @@ export default function DonationForm({
               countryFlag={initialValues?.countryCode}
               paidDonation={initialValues?.SelectedUser?.id}
               payDonation={payDonation}
-              getCommimentMobile={getCommimentMobile}
+              getCommitmentMobile={getCommitmentMobile}
               plusIconDisable
               showPrompt={showPrompt}
               buttonName={buttonName}
@@ -128,6 +127,6 @@ export default function DonationForm({
           )}
         </Formik>
       )}
-    </FormWaraper>
+    </FormWrapper>
   );
 }

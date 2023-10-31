@@ -1,61 +1,61 @@
-import { FastField, Form, Formik } from "formik";
-import React, { useMemo, useState } from "react";
-import CustomTextField from "../partials/customTextField";
-import * as yup from "yup";
-import RichTextField from "../partials/richTextEditorField";
-import styled from "styled-components";
-import { CustomDropDown } from "../partials/customDropDown";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { Trans, useTranslation } from "react-i18next";
-import { Button, ButtonGroup, Col, Row, Spinner } from "reactstrap";
-import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
-import { useHistory } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createNews } from "../../api/newsApi";
-import { Plus } from "react-feather";
-import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
+import { FastField, Form, Formik } from "formik";
 import { flatMap } from "lodash";
-import { ConverFirstLatterToCapital } from "../../utility/formater";
-import { Prompt } from "react-router-dom";
+import React, { useMemo, useState } from "react";
+import { Plus } from "react-feather";
+import { Trans, useTranslation } from "react-i18next";
+import { Prompt, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Button, ButtonGroup, Col, Row, Spinner } from "reactstrap";
+import styled from "styled-components";
+import * as Yup from "yup";
+import { createNews } from "../../api/newsApi";
+import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
+import { CustomDropDown } from "../partials/customDropDown";
+import CustomTextField from "../partials/customTextField";
+import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
+import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
+import RichTextField from "../partials/richTextEditorField";
 
-const FormWaraper = styled.div`
-  .FormikWraper {
+const FormWrapper = styled.div`
+  .FormikWrapper {
     padding: 40px;
   }
   .btn-Published {
     text-align: center;
   }
-  .addNews-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .newsContent {
-    height: 350px;
-    overflow: auto;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: #ff8744;
+  // .addNews-btn {
+  //   padding: 8px 20px;
+  //   margin-left: 10px;
+  //   font: normal normal bold 15px/20px noto sans;
+  // }
+  // .newsContent {
+  //   height: 350px;
+  //   overflow: auto;
+  //   ::-webkit-scrollbar {
+  //     display: none;
+  //   }
+  // }
+  // .filterPeriod {
+  //   color: #ff8744;
 
-    font: normal normal bold 13px/5px noto sans;
-  }
-  .btn-secondary {
-    background-color: #fff7e8 !important;
-    color: #583703 !important ;
-    border: none;
-    font: normal normal bold 20px/20px noto sans !important ;
-    box-shadow: none !important ;
-    :hover {
-      color: #fff !important;
-      background-color: #ff8744 !important;
-    }
-    .secondary.active {
-      color: #fff !important;
-    }
+  //   font: normal normal bold 13px/5px noto sans;
+  // }
+
+  // .btn-secondary {
+  //   background-color: #fff7e8 !important;
+  //   color: #583703 !important ;
+  //   border: none;
+  //   font: normal normal bold 20px/20px noto sans !important ;
+  //   box-shadow: none !important ;
+  //   :hover {
+  //     color: #fff !important;
+  //     background-color: #ff8744 !important;
+  //   }
+    // .secondary.active {
+    //   color: #fff !important;
+    // }
   }
 `;
 
@@ -66,7 +66,7 @@ export default function CategoryForm({
   plusIconDisable = false,
   buttonName = "",
   handleSubmit,
-  vailidationSchema,
+  validationSchema,
   initialValues,
   langSelectionValue,
   editDisableCategory,
@@ -93,13 +93,12 @@ export default function CategoryForm({
   const [showPrompt, setShowPrompt] = useState(true);
 
   const langToast = {
-    toastId:"langError"
-  }
+    toastId: "langError",
+  };
 
   return (
-    <FormWaraper className="FormikWraper">
+    <FormWrapper className="FormikWrapper">
       <Formik
-        // enableReinitialize
         initialValues={{ ...initialValues }}
         onSubmit={(e) => {
           if (langSelectionValue === "Select") {
@@ -110,11 +109,11 @@ export default function CategoryForm({
           setLoading(true);
           return categoryMutation.mutate({
             name: e?.SubCategory,
-            masterId: e?.MasterCategory.id,
+            masterId: e?.MasterCategory?.id,
             categoryId: e?.Id,
           });
         }}
-        validationSchema={vailidationSchema}
+        validationSchema={validationSchema}
       >
         {(formik) => (
           <Form>
@@ -171,11 +170,10 @@ export default function CategoryForm({
                 </Row>
               </Col>
             </Row>
-            <div className="btn-Published ">
+            <div className="btn-Published">
               {loading ? (
                 <Button
                   color="primary"
-                  className="add-trust-btn"
                   style={{
                     borderRadius: "10px",
                     padding: "5px 40px",
@@ -186,11 +184,7 @@ export default function CategoryForm({
                   <Spinner size="md" />
                 </Button>
               ) : (
-                <Button
-                  color="primary mt-2"
-                  className="addNotice-btn "
-                  type="submit"
-                >
+                <Button color="primary mt-2" type="submit">
                   {plusIconDisable && (
                     <span>
                       <Plus className="me-1" size={15} strokeWidth={4} />
@@ -205,6 +199,6 @@ export default function CategoryForm({
           </Form>
         )}
       </Formik>
-    </FormWaraper>
+    </FormWrapper>
   );
 }

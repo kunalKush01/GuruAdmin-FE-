@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import styled from "styled-components";
-import * as yup from "yup";
+import * as Yup from "yup";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { CustomDropDown } from "../../components/partials/customDropDown";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
@@ -30,15 +30,14 @@ const NoticeWarper = styled.div`
   }
 `;
 
-const schema = yup.object().shape({
-  Title: yup
-    .string()
+const schema = Yup.object().shape({
+  Title: Yup.string()
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
     .required("notices_title_required")
     .trim(),
-  Body: yup.string().required("notices_desc_required").trim(),
-  DateTime: yup.string(),
-  // tagsInit:yup.array().max(15 ,"tags_limit"),
+  Body: Yup.string().required("notices_desc_required").trim(),
+  DateTime: Yup.string(),
+  // tagsInit:Yup.array().max(15 ,"tags_limit"),
 });
 
 const getLangId = (langArray, langSelection) => {
@@ -89,7 +88,7 @@ export default function EditNotice() {
       Title: noticeDetailQuery?.data?.result?.title,
       tagsInit: tags,
       image: noticeDetailQuery?.data?.result?.image,
-      Body: he.decode(noticeDetailQuery?.data?.result?.body ?? ""),
+      Body: he?.decode(noticeDetailQuery?.data?.result?.body ?? ""),
       PublishedBy: noticeDetailQuery?.data?.result?.publishedBy,
       DateTime: moment(noticeDetailQuery?.data?.result?.publishDate)
         .utcOffset("+0530")
@@ -171,7 +170,7 @@ export default function EditNotice() {
                 initialValues={initialValues}
                 editThumbnail
                 thumbnailImageName={noticeDetailQuery?.data?.result?.imageName}
-                vailidationSchema={schema}
+                validationSchema={schema}
                 showTimeInput
                 selectNoticeDisabled
                 buttonName="save_changes"

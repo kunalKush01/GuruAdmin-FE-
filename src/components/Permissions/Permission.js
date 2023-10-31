@@ -5,15 +5,6 @@ import { useHistory } from "react-router-dom";
 const Permission = ({ subPermission, type, ...props }) => {
   const permissions = useSelector((state) => state.auth.userDetail.permissions);
 
-  // const subPermissions = permissions?.map((item) => item?.subpermissions);
-  // subPermissions?.map((item) => {
-  //   let temp = item.map((item2) => {
-  //     console.log("item in newArr", item2);
-  //     nameArr.push({ name: item2.name });
-  //   });
-  //   return item;
-  // });
-
   const permissionRoute = permissions?.find(
     (item) => item?.name === type || item?.name === "all"
   );

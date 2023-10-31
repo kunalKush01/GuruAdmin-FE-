@@ -3,18 +3,18 @@ import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import * as yup from "yup";
+import * as Yup from "yup";
 import { createPunyarjak } from "../../api/punarjakApi.js";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import PunyarjakForm from "../../components/Punyarjak/punyarjakUserForm.js";
 
-const NoticeWraper = styled.div`
+const PunyarjakWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
     font: normal normal bold 15px/33px Noto Sans;
   }
-  .addNotice {
+  .addPunyarjak {
     color: #583703;
     display: flex;
     align-items: center;
@@ -24,14 +24,14 @@ const NoticeWraper = styled.div`
 const handleCreatePunyarjak = async (payload) => {
   return createPunyarjak(payload);
 };
-const schema = yup.object().shape({
-  description: yup.string().required("punyarjak_desc_required").trim(),
-  title: yup
+const schema = Yup.object().shape({
+  description: Yup.string().required("punyarjak_desc_required").trim(),
+  title: Yup
     .string()
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
     .required("news_title_required")
     .trim(),
-  image: yup.string().required("img_required"),
+  image: Yup.string().required("img_required"),
 });
 
 export default function AddPunyarjak() {
@@ -50,7 +50,7 @@ export default function AddPunyarjak() {
   };
 
   return (
-    <NoticeWraper>
+    <PunyarjakWrapper>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -58,11 +58,11 @@ export default function AddPunyarjak() {
             className="me-2 cursor-pointer"
             onClick={() => history.push(`/punyarjak?page=${currentPage}`)}
           />
-          <div className="addNotice">
+          <div className="addPunyarjak">
             <Trans i18nKey={"add_punyarjak"} />
           </div>
         </div>
-        {/* <div className="addNotice">
+        {/* <div className="addPunyarjak">
           <Trans i18nKey={"news_InputIn"} />
           <CustomDropDown
             ItemListArray={langArray}
@@ -77,10 +77,10 @@ export default function AddPunyarjak() {
         <PunyarjakForm
           handleSubmit={handleCreatePunyarjak}
           initialValues={initialValues}
-          vailidationSchema={schema}
+          validationSchema={schema}
           buttonName={"add_punyarjak"}
         />
       </div>
-    </NoticeWraper>
+    </PunyarjakWrapper>
   );
 }

@@ -1,7 +1,8 @@
-import React, { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
+import React, { useEffect, useMemo, useState } from "react";
 import { Plus } from "react-feather";
+import { Helmet } from "react-helmet";
 import { Trans, useTranslation } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
@@ -10,26 +11,25 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
-import { getAllDonation } from "../../api/donationApi";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import DonationListTable from "../../components/donation/donationListTable";
-import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
-import NoContent from "../../components/partials/noContent";
-import { ChangeCategoryType } from "../../components/partials/categoryDropdown";
-import { ConverFirstLatterToCapital } from "../../utility/formater";
 import {
   getAllCategories,
   getAllMasterCategories,
 } from "../../api/categoryApi";
+import { getAllDonation } from "../../api/donationApi";
+import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import DonationListTable from "../../components/donation/donationListTable";
+import { ChangeCategoryType } from "../../components/partials/categoryDropdown";
+import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
+import NoContent from "../../components/partials/noContent";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { WRITE } from "../../utility/permissionsVariable";
-import { Helmet } from "react-helmet";
 
-const DoationWarper = styled.div`
+const DonationWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
+  // .ImagesVideos {
+  //   font: normal normal bold 15px/33px Noto Sans;
+  // }
   .addDonation {
     color: #583703;
     /* display: flex; */
@@ -112,9 +112,6 @@ export default function Donation() {
     .utcOffset(0, true)
     .toISOString();
 
-  let startDate = moment(filterStartDate).format("DD MMM");
-  let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
-
   const categoryTypeQuery = useQuery(
     ["categoryTypes"],
     () =>
@@ -132,9 +129,9 @@ export default function Donation() {
   const newTypes = [{ id: "", name: "All" }, ...categoryTypeItem];
 
   let newId;
-  newTypes.forEach((newObeject) => {
-    if (newObeject.name == categoryTypeName) {
-      newId = newObeject.id;
+  newTypes.forEach((newObject) => {
+    if (newObject.name == categoryTypeName) {
+      newId = newObject.id;
     }
   });
   const [categoryId, setCategoryId] = useState();
@@ -214,7 +211,7 @@ export default function Donation() {
   );
 
   return (
-    <DoationWarper>
+    <DonationWrapper>
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Mandir Admin | Donations</title>
@@ -234,11 +231,6 @@ export default function Donation() {
                 <div>
                   <Trans i18nKey={"donation_Donation"} />
                 </div>
-                {/* <div className="filterPeriod">
-                  <span>
-                    {startDate} - {endDate}
-                  </span>
-                </div> */}
               </div>
             </div>
           </div>
@@ -384,7 +376,6 @@ export default function Donation() {
                         }&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}`
                       );
                     }}
-                    // forcePage={pagination.page !== 0 ? pagination.page - 1 : 0}
                     containerClassName={
                       "pagination react-paginate justify-content-end p-1"
                     }
@@ -395,6 +386,6 @@ export default function Donation() {
           </Row>
         </div>
       </div>
-    </DoationWarper>
+    </DonationWrapper>
   );
 }

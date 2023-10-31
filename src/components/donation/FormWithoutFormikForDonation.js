@@ -2,7 +2,7 @@ import { Form } from "formik";
 import React, { useEffect, useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { Prompt, useHistory } from "react-router-dom";
 import { useUpdateEffect } from "react-use";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import { getAllSubCategories } from "../../api/expenseApi";
@@ -12,18 +12,17 @@ import {
   findAllUsersByNumber,
 } from "../../api/findUser";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
+import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
 import AsyncSelectField from "../partials/asyncSelectField";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
-import { Prompt } from "react-router-dom";
-import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
 
 export default function FormWithoutFormikForDonation({
   formik,
   masterloadOptionQuery,
   buttonName,
   paidDonation,
-  getCommimentMobile,
+  getCommitmentMobile,
   countryFlag,
   payDonation,
   loading,
@@ -34,7 +33,7 @@ export default function FormWithoutFormikForDonation({
   const history = useHistory();
 
   const { SelectedMasterCategory, SelectedSubCategory, Amount } = formik.values;
-  const [subLoadOption, setsubLoadOption] = useState([]);
+  const [subLoadOption, setSubLoadOption] = useState([]);
   const { SelectedUser, SelectedCommitmentId } = formik.values;
   const [commitmentIdByUser, setCommitmentIdByUser] = useState([]);
   const [noUserFound, setNoUserFound] = useState(false);
@@ -48,7 +47,7 @@ export default function FormWithoutFormikForDonation({
       const apiRes = await getAllSubCategories({
         masterId: SelectedMasterCategory?.id,
       });
-      setsubLoadOption(apiRes?.results);
+      setSubLoadOption(apiRes?.results);
     };
     SelectedMasterCategory && res();
   }, [SelectedMasterCategory]);
@@ -63,7 +62,7 @@ export default function FormWithoutFormikForDonation({
     };
     SelectedUser && res();
   }, [SelectedUser?.userId]);
-  const [phoneNumber, setPhoneNumber] = useState(getCommimentMobile ?? "");
+  const [phoneNumber, setPhoneNumber] = useState(getCommitmentMobile ?? "");
 
   useUpdateEffect(() => {
     if (formik?.values?.Mobile?.toString().length == 10) {
@@ -92,7 +91,7 @@ export default function FormWithoutFormikForDonation({
       formik.setFieldValue("countryCode", user?.countryName);
       formik.setFieldValue("dialCode", user?.countryCode);
       formik.setFieldValue("donarName", user?.name);
-      setPhoneNumber(user?.countryCode + user?.mobileNumber)
+      setPhoneNumber(user?.countryCode + user?.mobileNumber);
       return;
     }
     formik.setFieldValue("Mobile", "");
@@ -128,7 +127,6 @@ export default function FormWithoutFormikForDonation({
   const currentCategory = searchParams.get("category");
   const currentSubCategory = searchParams.get("subCategory");
   const currentFilter = searchParams.get("filter");
-
 
   return (
     <Form>
@@ -167,35 +165,20 @@ export default function FormWithoutFormikForDonation({
                     required
                   />
                   {formik.errors.Mobile && (
-                      <div
-                        style={{
-                          height: "20px",
-                          font: "normal normal bold 11px/33px Noto Sans",
-                        }}
-                      >
-                        {formik.errors.Mobile && (
-                          <div className="text-danger">
-                            <Trans i18nKey={formik.errors.Mobile} />
-                          </div>
-                        )}
-                      </div>
-                    )}
+                    <div
+                      style={{
+                        height: "20px",
+                        font: "normal normal bold 11px/33px Noto Sans",
+                      }}
+                    >
+                      {formik.errors.Mobile && (
+                        <div className="text-danger">
+                          <Trans i18nKey={formik.errors.Mobile} />
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </Col>
-                {/* <Col xs={8}>
-                  <CustomTextField
-                    type="number"
-                    label={t("dashboard_Recent_DonorNumber")}
-                    placeholder={t("placeHolder_mobile_number")}
-                    name="Mobile"
-                    disabled={payDonation}
-                    pattern="[6789][0-9]{9}"
-                    onInput={(e) =>
-                      (e.target.value = e.target.value.slice(0, 12))
-                    }
-                    required
-                    autoFocus
-                  />
-                </Col> */}
               </Row>
             </Col>
             <Col xs={12} sm={6} lg={4} className=" pb-1">
@@ -285,10 +268,7 @@ export default function FormWithoutFormikForDonation({
                 name={"SelectedCommitmentId"}
                 disabled={payDonation || commitmentIdByUser?.length == 0}
                 valueKey={"id"}
-                getOptionLabel={(option) =>
-                  // `${option.commitmentId}   (₹${option.paidAmount}/${option.amount})`
-                  `${option.commitmentId}`
-                }
+                getOptionLabel={(option) => `${option.commitmentId}`}
                 width
               />
             </Col>
@@ -310,7 +290,9 @@ export default function FormWithoutFormikForDonation({
                     label={t("categories_select_amount")}
                     placeholder={t("enter_price_manually")}
                     name="Amount"
-                    onInput={(e) => (e.target.value = e.target.value?.toLocaleString('en-IN'))}                    
+                    onInput={(e) =>
+                      (e.target.value = e.target.value?.toLocaleString("en-IN"))
+                    }
                     required
                   />
                 </Col>

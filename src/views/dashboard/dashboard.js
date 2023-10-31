@@ -63,56 +63,31 @@ const Home = () => {
     dashboardInfo();
   }, [filterStartDate, filterEndDate, dropDownName]);
 
-  useEffect(
-    () => {
-      const chartInfo = async () => {
-        const chartRes = await getAllChartData();
-        //   {
-        //   startDate: filterStartDate,
-        //   endDate: filterEndDate,
-        // }
-        setChart(chartRes);
-      };
-      chartInfo();
-    },
-    [
-      // filterStartDate,filterEndDate
-    ]
-  );
+  useEffect(() => {
+    const chartInfo = async () => {
+      const chartRes = await getAllChartData();
+      setChart(chartRes);
+    };
+    chartInfo();
+  }, []);
 
-  useEffect(
-    () => {
-      const topDonorInfo = async () => {
-        const topDonorRes = await getAllTopDonor();
-        //   {
-        //   startDate: filterStartDate,
-        //   endDate: filterEndDate,
-        // }
-        setTopDonorData(topDonorRes);
-      };
-      topDonorInfo();
-    },
-    [
-      // filterStartDate,filterEndDate
-    ]
-  );
+  useEffect(() => {
+    const topDonorInfo = async () => {
+      const topDonorRes = await getAllTopDonor();
 
-  useEffect(
-    () => {
-      const recentDonationInfo = async () => {
-        const recentDonationRes = await getAllRecentDonationList();
-        //   {
-        //   startDate: filterStartDate,
-        //   endDate: filterEndDate,
-        // }
-        setRecentDonationData(recentDonationRes);
-      };
-      recentDonationInfo();
-    },
-    [
-      // filterStartDate,filterEndDate
-    ]
-  );
+      setTopDonorData(topDonorRes);
+    };
+    topDonorInfo();
+  }, []);
+
+  useEffect(() => {
+    const recentDonationInfo = async () => {
+      const recentDonationRes = await getAllRecentDonationList();
+
+      setRecentDonationData(recentDonationRes);
+    };
+    recentDonationInfo();
+  }, []);
 
   return (
     <>
@@ -137,7 +112,7 @@ const Home = () => {
               )}
               warning={"primary"}
               data={dashboardData?.donationReceivedArr}
-              SeriesName={"Donation Recieved"}
+              SeriesName={"Donation Received"}
             />
             <OrdersReceived
               statTitle={t("dashboard_donationPending")}
@@ -178,7 +153,7 @@ const Home = () => {
           </div>
 
           <RevenueChart
-            CommittmentData={chartData?.totalCommitmentArr}
+            CommitmentData={chartData?.totalCommitmentArr}
             DonationData={chartData?.donationAmountArr}
             // TotalExpensesData={chartData?.expenseAmountArr}
           />

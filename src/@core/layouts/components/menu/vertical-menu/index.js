@@ -1,24 +1,23 @@
 // ** React Imports
-import { Fragment, useState, useRef } from "react";
+import { Fragment, useRef, useState } from "react";
 
 // ** Third Party Components
 import classnames from "classnames";
 import PerfectScrollbar from "react-perfect-scrollbar";
 
 // ** Vertical Menu Components
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
+import Swal from "sweetalert2";
+import logOutIcon from "../../../../../assets/images/icons/dashBoard/Group 5995.svg";
+import confirmationIcon from "../../../../../assets/images/icons/news/conformationIcon.svg";
+import { authApiInstance } from "../../../../../axiosApi/authApiInstans";
+import { logOut } from "../../../../../redux/authSlice";
+import { subHeaderContentResponsive } from "../../../../../utility/subHeaderContent";
 import VerticalMenuHeader from "./VerticalMenuHeader";
 import VerticalNavMenuItems from "./VerticalNavMenuItems";
-import { subHeaderContentResponsive } from "../../../../../utility/subHeaderContent";
-import logOutIcon from "../../../../../assets/images/icons/dashBoard/Group 5995.svg";
-import { useHistory, useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { authApiInstance } from "../../../../../axiosApi/authApiInstans";
-import { toast } from "react-toastify";
-import { logOut } from "../../../../../redux/authSlice";
-import Swal from "sweetalert2";
-import comfromationIcon from "../../../../../assets/images/icons/news/conformationIcon.svg";
-import { useTranslation } from "react-i18next";
-
 
 const Sidebar = (props) => {
   // ** Props
@@ -63,18 +62,17 @@ const Sidebar = (props) => {
   };
 
   const dispatch = useDispatch();
-  const history = useHistory()
+  const history = useHistory();
   const refreshToken = useSelector((state) => state.auth.tokens.refreshToken);
   const handleLogOut = async () => {
     try {
       const res = await authApiInstance.post("auth/logout", { refreshToken });
       toast.success(res.data.message);
       dispatch(logOut());
-      history.push("/login")
+      history.push("/login");
     } catch (error) {}
   };
   const { t, i18n } = useTranslation();
-
 
   return (
     <Fragment>
@@ -131,9 +129,10 @@ const Sidebar = (props) => {
                     style={{ paddingLeft: "30px" }}
                   >
                     <img src={logOutIcon} width={25} height={25} />
-                    <a onClick={() => {
+                    <a
+                      onClick={() => {
                         Swal.fire({
-                          title: `<img src="${comfromationIcon}"/>`,
+                          title: `<img src="${confirmationIcon}"/>`,
                           html: `
                                     
                   <h3 class="swal-heading mt-1">${t("logout_msg")}</h3>
@@ -151,7 +150,10 @@ const Sidebar = (props) => {
                             handleLogOut();
                           }
                         });
-                      }}>Logout</a>
+                      }}
+                    >
+                      Logout
+                    </a>
                   </div>
                 </li>
               </ul>

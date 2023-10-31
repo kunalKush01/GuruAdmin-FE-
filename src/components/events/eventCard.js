@@ -1,23 +1,23 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import he from "he";
 import moment from "moment";
 import React, { useState } from "react";
-import { Card, CardBody, Button, Row, Col } from "reactstrap";
-import he from "he";
-import styled from "styled-components";
-import cardThreeDotIcon from "../../assets/images/icons/news/threeDotIcon.svg";
-import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { Trans, useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
-import { deleteNewsDetail } from "../../api/newsApi";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import Swal from "sweetalert2";
-import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
-import BtnPopover from "../partials/btnPopover";
-import { deleteEventDetail } from "../../api/eventApi";
-import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
-import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { Button, Card, CardBody, Col, Row } from "reactstrap";
+import styled from "styled-components";
+import Swal from "sweetalert2";
+import { deleteEventDetail } from "../../api/eventApi";
+import { deleteNewsDetail } from "../../api/newsApi";
+import confirmationIcon from "../../assets/images/icons/news/conformationIcon.svg";
+import cardThreeDotIcon from "../../assets/images/icons/news/threeDotIcon.svg";
+import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
+import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
+import BtnPopover from "../partials/btnPopover";
 
-const EventCardWaraper = styled.div`
+const EventCardWrapper = styled.div`
   .card1 {
     font: normal normal bold 13px/16px Noto Sans;
     margin-bottom: 0.5rem !important;
@@ -87,7 +87,7 @@ const EventCardWaraper = styled.div`
   @media only screen and (max-width: 992px) {
     .card-body {
       max-height: 100%;
-      padding:0rem 1rem 1rem 1rem;
+      padding: 0rem 1rem 1rem 1rem;
     }
     .eventImage {
       height: 250px !important;
@@ -97,7 +97,7 @@ const EventCardWaraper = styled.div`
   @media only screen and (max-width: 576px) {
     .card-body {
       max-height: 100%;
-      padding:0rem 1rem 1rem 1rem;
+      padding: 0rem 1rem 1rem 1rem;
     }
     .eventImage {
       height: 200px !important;
@@ -134,18 +134,19 @@ function BtnContent({
   const handleDeleteEvent = async (payload) => {
     return deleteEventDetail(payload);
   };
-  const queryCient = useQueryClient();
+  const queryCLient = useQueryClient();
   const deleteMutation = useMutation({
     mutationFn: handleDeleteEvent,
     onSuccess: (data) => {
       if (!data.error) {
-        queryCient.invalidateQueries(["Events"]);
-        queryCient.invalidateQueries(["EventDates"]);
+        queryCLient.invalidateQueries(["Events"]);
+        queryCLient.invalidateQueries(["EventDates"]);
       }
     },
   });
   const { t } = useTranslation();
   const langList = useSelector((state) => state.auth.availableLang);
+
   return (
     <BtnContentWraper>
       <Row className="MainContainer d-block ">
@@ -168,13 +169,11 @@ function BtnContent({
           <Col
             xs={12}
             className="col-item  "
-            // onClick={() => deleteMutation.mutate(eventId)}
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              // Swal.fire("Oops...", "Something went wrong!", "error");
               Swal.fire({
-                title: `<img src="${comfromationIcon}"/>`,
+                title: `<img src="${confirmationIcon}"/>`,
                 html: `
                                       <h3 class="swal-heading">${t(
                                         "events_delete"
@@ -236,7 +235,7 @@ export default function EventCard({
 }) {
   const history = useHistory();
   return (
-    <EventCardWaraper>
+    <EventCardWrapper>
       <div>
         <Card
           style={{
@@ -303,7 +302,7 @@ export default function EventCard({
                     <div
                       className="card-text"
                       dangerouslySetInnerHTML={{
-                        __html: he.decode(data.body),
+                        __html: he?.decode(data.body),
                       }}
                     />
                   </Col>
@@ -350,107 +349,6 @@ export default function EventCard({
           />
         }
       />
-      {/* <Card
-        style={{
-          width: "100%",
-          borderRadius: "20px",
-          boxShadow: "none",
-          margin: "10px 10px   ",
-        }}
-      >
-        <CardBody>
-          <Row className="align-items-center">
-            <Col
-              xs={2}
-              onClick={() => history.push(`/events/about/${data.id}`, data.id)}
-              className="cursor-pointer"
-            >
-              <img
-                src={data?.images[0]?.presignedUrl || placeHolder}
-                style={{
-                  width: "130px",
-                  height: "100px",
-                  borderRadius: "10px",
-                }}
-              />
-            </Col>
-            <Col xs={9}>
-              <div
-                onClick={() =>
-                  history.push(`/events/about/${data.id}`, data.id)
-                }
-                className="cursor-pointer"
-              >
-                <Row>
-                  <Col xs={6}>
-                    <div className="card1">
-                      {ConverFirstLatterToCapital(data.title)}
-                    </div>
-                  </Col>
-                  <Col xs={6}>
-                    <div className="card-Date">
-                      <p>
-                        {`${moment(data.startDate).format(
-                          "DD MMM YYYY"
-                        )} to ${moment(data.endDate).format("DD MMM YYYY")} ,${
-                          data.startTime
-                        } to ${data.endTime}`}
-                      </p>
-                    </div>
-                  </Col>
-                </Row>
-              </div>
-              <Row>
-                <Col>
-                  <Col xs={12}>
-                    <div
-                      className="card-text"
-                      dangerouslySetInnerHTML={{
-                        __html: he.decode(data.body),
-                      }}
-                    />
-                  </Col>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <div>
-                    {data.languages.map((item) => {
-                      return (
-                        <Button outline key={item.id} color="primary">
-                          {ConverFirstLatterToCapital(item.name)}
-                        </Button>
-                      );
-                    })}
-                  </div>
-                </Col>
-              </Row>
-            </Col>
-
-            <Col xs={1}>
-              <div className="d-flex justify-content-between align-items-center">
-                <img
-                  src={cardThreeDotIcon}
-                  className="cursor-pointer"
-                  id={`popover-${data.id}`}
-                />
-              </div>
-            </Col>
-          </Row>
-        </CardBody>
-      </Card>
-      <BtnPopover
-        target={`popover-${data.id}`}
-        content={
-          <BtnContent
-            eventId={data.id}
-            currentPage={currentPage}
-            currentFilter={currentFilter}
-            subPermission={subPermission}
-            allPermissions={allPermissions}
-          />
-        }
-      /> */}
-    </EventCardWaraper>
+    </EventCardWrapper>
   );
 }

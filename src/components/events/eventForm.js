@@ -9,8 +9,10 @@ import { Prompt, useHistory } from "react-router-dom";
 import { WithContext as ReactTags } from "react-tag-input";
 import TimePicker from "react-time-picker";
 import "react-time-picker/dist/TimePicker.css";
+import { toast } from "react-toastify";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
+import Swal from "sweetalert2";
 import { getGlobalEvents } from "../../api/eventApi";
 import { getAllTags } from "../../api/tagApi";
 import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
@@ -20,14 +22,8 @@ import AsyncSelectField from "../partials/asyncSelectField";
 import CustomTextField from "../partials/customTextField";
 import ImageUpload from "../partials/imageUpload";
 import RichTextField from "../partials/richTextEditorField";
-import Swal from "sweetalert2";
-import { toast } from "react-toastify";
-const FormWaraper = styled.div`
-  .existlabel {
-    margin-bottom: 10px;
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .FormikWraper {
+const FormWrapper = styled.div`
+  .FormikWrapper {
     padding: 40px;
   }
   .btn-Published {
@@ -191,7 +187,7 @@ export default function EventForm({
   handleSubmit,
   editImage,
   defaultImages,
-  vailidationSchema,
+  validationSchema,
   initialValues,
   showTimeInput = false,
   selectEventDisabled,
@@ -200,14 +196,14 @@ export default function EventForm({
   const history = useHistory();
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
-  const eventQuerClient = useQueryClient();
+  const eventQueryClient = useQueryClient();
   const eventMutation = useMutation({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
       if (!data.error) {
-        eventQuerClient.invalidateQueries(["Events"]);
-        eventQuerClient.invalidateQueries(["EventDates"]);
-        eventQuerClient.invalidateQueries(["EventDetail"]);
+        eventQueryClient.invalidateQueries(["Events"]);
+        eventQueryClient.invalidateQueries(["EventDates"]);
+        eventQueryClient.invalidateQueries(["EventDetail"]);
         setLoading(false);
         history.push("/events");
       } else if (data.error) {
@@ -216,46 +212,8 @@ export default function EventForm({
     },
   });
 
-  // const [globalEvents, setglobalEvents] = useState([])
-  // console.log('globalEvents',globalEvents);
-
-  // const filterGlobalEvents = (inputValue) => {
-  //   console.log('inputValue',inputValue);
-  //   return globalEvents.filter((i) =>
-  //     i.label.toLowerCase().includes(inputValue?.toLowerCase())
-  //   );
-  // };
-  // const getGlobalEventsData = (
-  //   inputValue,
-  //   callback: (options: globalEvents[]) => void
-  // ) => {
-  //   setTimeout(() => {
-  //     callback(filterColors(inputValue));
-  //   }, 1000);
-  // };
-  
-//   const loadOptions = async (
-//   callback: (options: getGlobalEventsRES.results[]) => void
-// ) => {
-// //  getGlobalEventsRES.results;
-
-//   setTimeout(() => {
-//     callback(filterColors(inputValue));
-//   }, 1000);
-// };
-
-// const loadOptions = (
-//   inputValue: string,
-//   callback: (options: ColourOption[]) => void
-// ) => {
-//   setTimeout(() => {
-//     callback(filterColors(inputValue));
-//   }, 1000);
-// };
-
   const loadOption = async (input) => {
-    const getGlobalEventsRES = await getGlobalEvents({search:input})
-    // setglobalEvents(getGlobalEventsRES.results ?? [])
+    const getGlobalEventsRES = await getGlobalEvents({ search: input });
     return getGlobalEventsRES.results;
   };
 
@@ -307,11 +265,6 @@ export default function EventForm({
   const [tagsCharLimit, setTagsCharLimit] = useState(false);
 
   const handleAddition = (formik, tag) => {
-    // if (tag?.text?.length > 3) {
-    //   setIsError(prev=>([...prev,{index} ]))
-    //   setTagsCharLimit(true);
-    // }
-
     formik.setFieldValue("tagsInit", [...formik.values.tagsInit, tag]);
   };
 
@@ -334,20 +287,18 @@ export default function EventForm({
     setSelectedTimeStart(moment(time, ["HH:mm"]).format("HH:mm"));
   };
   const handleTimeChangeEnd = (time) => {
-    // setSelectedTimeStart(time);
     setSelectedTimeEnd(moment(time, ["HH:mm"]).format("HH:mm"));
   };
 
-  const [isError, setIsError] = useState([]);
-  const [imageOnGlobleEvent, setImageOnGlobleEvent] = useState(defaultImages);
-  console.log("imageOnGlobleEvent", defaultImages);
+  const [imageOnGlobalEvent, setImageOnGlobalEvent] = useState(defaultImages);
+  console.log("imageOnGlobalEvent", defaultImages);
   const [tagCharInput, setTagCharInput] = useState("");
   const langToast = {
     toastId: "langError",
   };
 
   return (
-    <FormWaraper className="FormikWraper">
+    <FormWrapper className="FormikWrapper">
       <Formik
         enableReinitialize
         initialValues={initialValues}
@@ -378,7 +329,7 @@ export default function EventForm({
           });
           setDeletedTags([]);
         }}
-        validationSchema={vailidationSchema}
+        validationSchema={validationSchema}
       >
         {(formik) => (
           <Form>
@@ -393,34 +344,16 @@ export default function EventForm({
                 }
               />
             )}
-            {/* {JSON.stringify(formik.values.tagsInit)}
-            {formik.values.tagsInit?.map((item) =>
-              item?.text?.length > 3
-                && setTagsCharLimit(true)
-                
-            )} */}
+
             <Row className="paddingForm">
               <Col xs={12} md={7}>
                 <Row>
-                  {/* {JSON.stringify(formik.values.images)} */}
                   {!AddLanguage && (
                     <Col xs={12} md={6}>
-                      {/* <FormikCustomReactSelect
-                        labelName={t("jinvani_jinvaniCategory")}
-                        name={'SelectedEvent'}
-                        labelKey={"title"}
-                        valueKey="id"
-                        // loadOptions={initialValues.Type}
-                        loadOptions={loadOptions}
-                        defaultValue={formik?.values?.jinvaniCategory}
-                        width={"100"}
-                      /> */}
                       <AsyncSelectField
-                        // minHeight={"50px"}
                         name="SelectedEvent"
                         loadOptions={loadOption}
                         labelKey={"title"}
-                        // filterOption={filterGlobalEvents}
                         valueKey={"id"}
                         label={t("events_select_globle")}
                         placeholder={t("events_select_globle")}
@@ -450,11 +383,11 @@ export default function EventForm({
                               ...formik.values.images,
                               ...(globalImage ?? ""),
                             ]);
-                          }else if(selectOption == null){
-                            formik?.setFieldValue("images", [])
-                            setImageOnGlobleEvent([])
+                          } else if (selectOption == null) {
+                            formik?.setFieldValue("images", []);
+                            setImageOnGlobalEvent([]);
                           }
-                          setImageOnGlobleEvent(selectOption?.images ?? []);
+                          setImageOnGlobalEvent(selectOption?.images ?? []);
                           setSelectedTimeEnd(selectOption?.endTime ?? "23:59");
                           setSelectedTimeStart(
                             selectOption?.startTime ??
@@ -549,9 +482,10 @@ export default function EventForm({
                 {!AddLanguage && (
                   <Row>
                     <div className="ImagesVideos">
-                      <Trans i18nKey={"news_label_ImageVedio"} /> <span style={{fontSize:'13px', color:'gray'}}>
-                        <Trans i18nKey={'image_size_suggestion'}/>
-                        </span>
+                      <Trans i18nKey={"news_label_ImageVedio"} />{" "}
+                      <span style={{ fontSize: "13px", color: "gray" }}>
+                        <Trans i18nKey={"image_size_suggestion"} />
+                      </span>
                     </div>
                     <div>
                       <ImageUpload
@@ -567,7 +501,7 @@ export default function EventForm({
                         editedFileNameInitialValue={
                           formik?.values?.images ? formik?.values?.images : null
                         }
-                        defaultImages={imageOnGlobleEvent}
+                        defaultImages={imageOnGlobalEvent}
                         randomNumber={randomNumber}
                         fileName={(file, type) => {
                           formik.setFieldValue("images", [
@@ -578,7 +512,7 @@ export default function EventForm({
                         }}
                         removeFile={(fileName) => {
                           const newFiles = [...formik.values.images];
-                          // newFiles.splice(index, 1);
+
                           const updatedFiles = newFiles.filter(
                             (img) => !img.includes(fileName)
                           );
@@ -655,7 +589,6 @@ export default function EventForm({
                     <Col xs="10">
                       <Row>
                         <Col xs="6" md="5">
-                          {/* {JSON.stringify(initialValues.startTime)} */}
                           {!AddLanguage && (
                             <>
                               <label>
@@ -695,21 +628,9 @@ export default function EventForm({
                                 )}
                             </>
                           )}
-                          {/* <RangeTimePicker
-                          label={t("Start")}
-                          name="startTime"
-                          placeholderText="00:00"
-                        /> */}
                         </Col>
                         <Col xs="6" md="5" className="">
                           {!AddLanguage && (
-                            // <CustomTextField
-                            //   label={t("end_Time")}
-                            //   // value={latitude}
-                            //   type="time"
-                            //   name="endTime"
-                            //   required
-                            // />
                             <>
                               <label>
                                 <Trans i18nKey={"end_Time"} />*
@@ -778,7 +699,6 @@ export default function EventForm({
                                   font: "normal normal bold 11px/20px Noto Sans",
                                 }}
                               >
-                                {/* <Trans i18nKey={"same_time"} /> */}
                                 <Trans i18nKey={"end_time_less"} />
                               </div>
                             ) : (
@@ -790,22 +710,6 @@ export default function EventForm({
                         ) : (
                           ""
                         )}
-
-                        {/* {formik.values.DateTime.end === null
-                          ? formik.values.startTime === formik.values.endTime &&
-                            formik.values.startTime !== "" &&
-                            formik.values.endTime !== "" && (
-                              <div
-                                className="text-danger"
-                                style={{
-                                  height: "20px",
-                                  font: "normal normal bold 11px/20px Noto Sans",
-                                }}
-                              >
-                                <Trans i18nKey={"same_time"} />
-                              </div>
-                            )
-                          : ""} */}
                       </Row>
                     </Col>
                   </Row>
@@ -856,6 +760,6 @@ export default function EventForm({
           </Form>
         )}
       </Formik>
-    </FormWaraper>
+    </FormWrapper>
   );
 }

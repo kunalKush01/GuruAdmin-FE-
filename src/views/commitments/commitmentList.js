@@ -2,6 +2,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import React, { useEffect, useMemo, useState } from "react";
 import { Plus, Trash } from "react-feather";
+import { Helmet } from "react-helmet";
 import { Trans, useTranslation } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
@@ -17,6 +18,7 @@ import {
   Row,
 } from "reactstrap";
 import styled from "styled-components";
+import Swal from "sweetalert2";
 import {
   getAllCategories,
   getAllMasterCategories,
@@ -27,33 +29,32 @@ import {
   nudgeUserApi,
 } from "../../api/commitmentApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import { ChangeStatus } from "../../components/Report & Disput/changeStatus";
 import CommitmentListTable from "../../components/commitments/commitmentListTable";
 import { ChangeCategoryType } from "../../components/partials/categoryDropdown";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
 import NoContent from "../../components/partials/noContent";
-import { ChangeStatus } from "../../components/Report & Disput/changeStatus";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { WRITE } from "../../utility/permissionsVariable";
-import { Helmet } from "react-helmet";
-import Swal from "sweetalert2";
-const CommitmentWarapper = styled.div`
+
+const CommitmentWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
+  // .ImagesVideos {
+  //   font: normal normal bold 15px/33px Noto Sans;
+  // }
   .addCommitment {
     color: #583703;
     /* display: flex; */
     align-items: center;
   }
 
-  .FormikWraper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
+  // .FormikWraper {
+  //   padding: 40px;
+  // }
+  // .btn-Published {
+  //   text-align: center;
+  // }
   .addCommitment-btn {
     padding: 8px 20px;
     /* margin-left: 10px; */
@@ -65,11 +66,11 @@ const CommitmentWarapper = styled.div`
       display: none;
     }
   }
-  .filterPeriod {
-    color: #ff8744;
-    margin-top: 0.5rem;
-    font: normal normal bold 13px/5px noto sans;
-  }
+  // .filterPeriod {
+  //   color: #ff8744;
+  //   margin-top: 0.5rem;
+  //   font: normal normal bold 13px/5px noto sans;
+  // }
 `;
 
 export default function Commitment() {
@@ -139,8 +140,6 @@ export default function Commitment() {
     .utcOffset(0, true)
     .toISOString();
 
-  let startDate = moment(filterStartDate).format("DD MMM");
-  let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
 
   // master category
@@ -266,7 +265,7 @@ export default function Commitment() {
 
   const queryClient = useQueryClient();
   return (
-    <CommitmentWarapper>
+    <CommitmentWrapper>
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Mandir Admin | Commitment</title>
@@ -286,11 +285,6 @@ export default function Commitment() {
                 <div>
                   <Trans i18nKey={"commitment"} />
                 </div>
-                {/* <div className="filterPeriod">
-                  <span>
-                    {startDate} - {endDate}
-                  </span>
-                </div> */}
               </div>
             </div>
           </div>
@@ -302,7 +296,7 @@ export default function Commitment() {
               setTypeName={(e) => {
                 setCategoryId(e.target.id);
                 setCategoryTypeName(e.target.name);
-                setPagination({ page: 1 ,limit:10});
+                setPagination({ page: 1, limit: 10 });
                 history.push(
                   `/commitment?page=${1}&category=${
                     e.target.name
@@ -317,7 +311,7 @@ export default function Commitment() {
               setTypeName={(e) => {
                 setSubCategoryTypeId(e.target.id);
                 setSubCategoryTypeName(e.target.name);
-                setPagination({ page: 1 ,limit:10});
+                setPagination({ page: 1, limit: 10 });
                 history.push(
                   `/commitment?page=${1}&category=${categoryTypeName}&subCategory=${
                     e.target.name
@@ -330,7 +324,7 @@ export default function Commitment() {
               dropDownName={commitmentStatus}
               setdropDownName={(e) => {
                 setCommitmentStatus(e.target.name);
-                setPagination({ page: 1 ,limit:10});
+                setPagination({ page: 1, limit: 10 });
                 history.push(
                   `/commitment?page=${1}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${
                     e.target.name
@@ -343,7 +337,7 @@ export default function Commitment() {
               dropDownName={dropDownName}
               setdropDownName={(e) => {
                 setdropDownName(e.target.name);
-                setPagination({ page: 1 ,limit:10});
+                setPagination({ page: 1, limit: 10 });
                 history.push(
                   `/commitment?page=${1}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${
                     e.target.name
@@ -372,7 +366,6 @@ export default function Commitment() {
             ) : (
               ""
             )}
-            {/* {notifyIds?.length > 0 && ( */}
             <Button
               id="Popover1"
               color="success"
@@ -412,7 +405,6 @@ export default function Commitment() {
                 </Popover>
               </div>
             )}
-            {/* )} */}
           </div>
         </div>
         <div style={{ height: "10px" }}>
@@ -454,7 +446,6 @@ export default function Commitment() {
                       currentPage={routPagination}
                       selectedRows={selectedRows}
                       notifyIds={notifyIds}
-                      // paymentStatus = {commitmentQuery?.data?.isPaymentPaused}
                       setSelectedRows={setSelectedRows}
                       currentCategory={routCategory}
                       currentStatus={routStatus}
@@ -514,7 +505,6 @@ export default function Commitment() {
                         }&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${dropDownName}`
                       );
                     }}
-                    // forcePage={pagination.page !== 0 ? pagination.page - 1 : 0}
                     containerClassName={
                       "pagination react-paginate justify-content-end p-1"
                     }
@@ -525,6 +515,6 @@ export default function Commitment() {
           </Row>
         </div>
       </div>
-    </CommitmentWarapper>
+    </CommitmentWrapper>
   );
 }

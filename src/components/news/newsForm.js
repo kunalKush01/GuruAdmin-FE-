@@ -1,32 +1,31 @@
-import { Form, Formik } from "formik";
-import React, { useMemo, useState } from "react";
-import CustomTextField from "../partials/customTextField";
-import * as yup from "yup";
-import RichTextField from "../partials/richTextEditorField";
-import styled from "styled-components";
-import { CustomDropDown } from "../partials/customDropDown";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { Trans, useTranslation } from "react-i18next";
-import { Button, Col, Row, Spinner } from "reactstrap";
-import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
-import { useHistory } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createNews } from "../../api/newsApi";
-import { Plus } from "react-feather";
-import { ConverFirstLatterToCapital } from "../../utility/formater";
-import { useSelector } from "react-redux";
-import { WithContext as ReactTags } from "react-tag-input";
-import { getAllTags } from "../../api/tagApi";
-import ImageUpload from "../partials/imageUpload";
-import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
-import { Prompt } from "react-router-dom";
+import { Form, Formik } from "formik";
 import { add } from "lodash";
-import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
-import Swal from "sweetalert2";
+import React, { useMemo, useState } from "react";
+import { Plus } from "react-feather";
+import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { Prompt, useHistory } from "react-router-dom";
+import { WithContext as ReactTags } from "react-tag-input";
 import { toast } from "react-toastify";
+import { Button, Col, Row, Spinner } from "reactstrap";
+import styled from "styled-components";
+import Swal from "sweetalert2";
+import * as Yup from "yup";
+import { createNews } from "../../api/newsApi";
+import { getAllTags } from "../../api/tagApi";
+import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
+import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
+import { CustomDropDown } from "../partials/customDropDown";
+import CustomTextField from "../partials/customTextField";
+import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
+import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
+import ImageUpload from "../partials/imageUpload";
+import RichTextField from "../partials/richTextEditorField";
 
-const FormWaraper = styled.div`
-  .FormikWraper {
+const FormWrapper = styled.div`
+  .FormikWrapper {
     padding: 40px;
   }
   .btn-Published {
@@ -161,7 +160,7 @@ export default function NewsForm({
   editImage,
   defaultImages,
   AddLanguage,
-  vailidationSchema,
+  validationSchema,
   initialValues,
   trustPreference,
   langSelectionValue,
@@ -170,15 +169,15 @@ export default function NewsForm({
 }) {
   const history = useHistory();
   const { t } = useTranslation();
-  const newsQuerClient = useQueryClient();
+  const newsQueryClient = useQueryClient();
   const [loading, setLoading] = useState(false);
 
   const newsMutation = useMutation({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
       if (!data.error) {
-        newsQuerClient.invalidateQueries(["News"]);
-        newsQuerClient.invalidateQueries(["NewsDetail"]);
+        newsQueryClient.invalidateQueries(["News"]);
+        newsQueryClient.invalidateQueries(["NewsDetail"]);
         setLoading(false);
         history.push("/news");
       } else if (data.error) {
@@ -247,7 +246,7 @@ export default function NewsForm({
     toastId: "langError",
   };
   return (
-    <FormWaraper className="FormikWraper">
+    <FormWrapper className="FormikWrapper">
       <Formik
         // enableReinitialize
         initialValues={{ ...initialValues }}
@@ -272,7 +271,7 @@ export default function NewsForm({
           });
           setDeletedTags([]);
         }}
-        validationSchema={vailidationSchema}
+        validationSchema={validationSchema}
       >
         {(formik) => (
           <Form>
@@ -381,9 +380,10 @@ export default function NewsForm({
                 {!AddLanguage && (
                   <Row>
                     <div className="ImagesVideos">
-                      <Trans i18nKey={"news_label_ImageVedio"} /> <span style={{fontSize:'13px', color:'gray'}}>
-                        <Trans i18nKey={'image_size_suggestion'}/>
-                        </span>
+                      <Trans i18nKey={"news_label_ImageVedio"} />{" "}
+                      <span style={{ fontSize: "13px", color: "gray" }}>
+                        <Trans i18nKey={"image_size_suggestion"} />
+                      </span>
                     </div>
                     <div>
                       <ImageUpload
@@ -475,6 +475,6 @@ export default function NewsForm({
           </Form>
         )}
       </Formik>
-    </FormWaraper>
+    </FormWrapper>
   );
 }

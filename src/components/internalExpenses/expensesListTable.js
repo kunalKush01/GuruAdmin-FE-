@@ -1,20 +1,20 @@
-import { useTranslation, Trans } from "react-i18next";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import he from "he";
+import moment from "moment";
+import { useMemo } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { Link, useHistory } from "react-router-dom";
 import { Button } from "reactstrap";
 import styled from "styled-components";
-import CustomDataTable from "../partials/CustomDataTable";
-import editIcon from "../../assets/images/icons/category/editIcon.svg";
-import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
-import { useMemo } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
-import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
 import { deleteCategoryDetail } from "../../api/categoryApi";
 import { deleteExpensesDetail } from "../../api/expenseApi";
-import he from "he";
-import moment from "moment";
+import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
+import editIcon from "../../assets/images/icons/category/editIcon.svg";
+import confirmationIcon from "../../assets/images/icons/news/conformationIcon.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
+import CustomDataTable from "../partials/CustomDataTable";
 
 export function ExpensesListTable({
   data,
@@ -28,12 +28,12 @@ export function ExpensesListTable({
   const handleDeleteExpenses = async (payload) => {
     return deleteExpensesDetail(payload);
   };
-  const queryCient = useQueryClient();
+  const queryClient = useQueryClient();
   const deleteMutation = useMutation({
     mutationFn: handleDeleteExpenses,
     onSuccess: (data) => {
       if (!data.error) {
-        queryCient.invalidateQueries(["Expenses"]);
+        queryClient.invalidateQueries(["Expenses"]);
       }
     },
   });
@@ -87,16 +87,6 @@ export function ExpensesListTable({
     },
   ];
 
-  // if (financeReport) {
-  //   columns = [
-  //     ...columns,
-  //     {
-  //       name: t("created_by"),
-  //       center: true,
-  //       selector: (row) => row.createdBy,
-  //     },
-  //   ];
-  // }
   const categoriesList = useMemo(() => {
     return data.map((item, idx) => ({
       _Id: item?.id,
@@ -107,12 +97,12 @@ export function ExpensesListTable({
       description: (
         <div
           className="d-flex tableDes"
-          dangerouslySetInnerHTML={{ __html: he.decode(item.description) }}
+          dangerouslySetInnerHTML={{ __html: he?.decode(item.description) }}
         />
       ),
       // description:item?.description ?? "" ,
       date: moment(item?.expenseDate).utcOffset(0).format("DD MMM YYYY"),
-      amount: `₹${item?.amount.toLocaleString('en-IN')}`,
+      amount: `₹${item?.amount.toLocaleString("en-IN")}`,
       createdBy: ConverFirstLatterToCapital(item?.createdBy?.name ?? ""),
       edit:
         allPermissions?.name === "all" ||
@@ -148,7 +138,7 @@ export function ExpensesListTable({
               financeReport
                 ? ""
                 : Swal.fire({
-                    title: `<img src="${comfromationIcon}"/>`,
+                    title: `<img src="${confirmationIcon}"/>`,
                     html: `
                                   <h3 class="swal-heading">${t(
                                     "expence_delete"
@@ -173,18 +163,6 @@ export function ExpensesListTable({
         ) : (
           ""
         ),
-      // viewLogs: (
-      //   <div
-      //     className={`cursor-pointer viewLogs ${
-      //       financeReport ? "d-block" : "d-none"
-      //     }`}
-      //     onClick={() =>
-      //       history.push(`/financial_reports/Expenses/Logs/${item.id}`, item.id)
-      //     }
-      //   >
-      //     <Trans i18nKey={"viewLogs"} />
-      //   </div>
-      // ),
     }));
   }, [data]);
 
@@ -197,7 +175,7 @@ export function ExpensesListTable({
       text-overflow: ellipsis;
       overflow: hidden;
     }
-    .tableDes{
+    .tableDes {
       max-height: 1.7rem;
     }
     .viewLogs {
@@ -208,12 +186,7 @@ export function ExpensesListTable({
 
   return (
     <RecentDonationTableWarper>
-      <CustomDataTable
-        // minWidth="fit-content"
-        maxHieght={""}
-        columns={columns}
-        data={categoriesList}
-      />
+      <CustomDataTable maxHeight={""} columns={columns} data={categoriesList} />
     </RecentDonationTableWarper>
   );
 }

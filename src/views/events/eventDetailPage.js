@@ -8,21 +8,9 @@ import DetailPage from "../../components/partials/customDetailpage";
 
 const EventDetailPage = () => {
   const selectedLang = useSelector((state) => state.auth.selectLang);
-  const { t } = useTranslation();
-  const history = useHistory();
-  const { eventId } = useParams();
-  const getLangId = (langArray, langSelection) => {
-    let languageId;
-    langArray.map(async (Item) => {
-      if (Item.name == langSelection?.toLowerCase()) {
-        languageId = Item.id;
-      }
-    });
-    return languageId;
-  };
-  const langArray = useSelector((state) => state.auth.availableLang);
 
-  const [langSelection, setLangSelection] = useState(selectedLang.name);
+  const { eventId } = useParams();
+
   const eventDetailQuery = useQuery(
     ["EventDetail", eventId, selectedLang.id],
     async () =>

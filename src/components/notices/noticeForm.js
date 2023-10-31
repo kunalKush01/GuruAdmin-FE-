@@ -1,35 +1,30 @@
-import { Form, Formik } from "formik";
-import React, { useMemo, useState } from "react";
-import CustomTextField from "../partials/customTextField";
-import * as yup from "yup";
-import RichTextField from "../partials/richTextEditorField";
-import styled from "styled-components";
-import { CustomDropDown } from "../partials/customDropDown";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { Trans, useTranslation } from "react-i18next";
-import { Button, Col, Row, Spinner } from "reactstrap";
-import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
-import { useHistory } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createNews } from "../../api/newsApi";
-import { Plus } from "react-feather";
-import AsyncSelectField from "../partials/asyncSelectField";
-import { getGlobalNotice } from "../../api/eventApi";
+import { Form, Formik } from "formik";
 import { flatMap } from "lodash";
+import React, { useMemo, useState } from "react";
+import { Plus } from "react-feather";
+import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { getAllTags } from "../../api/tagApi";
+import { Prompt, useHistory } from "react-router-dom";
 import { WithContext as ReactTags } from "react-tag-input";
-import ImageUpload from "../partials/imageUpload";
-import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
-import { Prompt } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Button, Col, Row, Spinner } from "reactstrap";
+import styled from "styled-components";
+import * as Yup from "yup";
+import { getGlobalNotice } from "../../api/eventApi";
+import { createNews } from "../../api/newsApi";
+import { getAllTags } from "../../api/tagApi";
+import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
+import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import AsyncSelectField from "../partials/asyncSelectField";
+import { CustomDropDown } from "../partials/customDropDown";
+import CustomTextField from "../partials/customTextField";
+import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
+import ImageUpload from "../partials/imageUpload";
+import RichTextField from "../partials/richTextEditorField";
 
-const FormWaraper = styled.div`
-  .existlabel {
-    margin-bottom: 10px;
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .FormikWraper {
+const FormWrapper = styled.div`
+  .FormikWrapper {
     padding: 40px;
   }
   .btn-Published {
@@ -159,7 +154,7 @@ export default function NoticeForm({
   AddLanguage,
   thumbnailImageName,
   handleSubmit,
-  vailidationSchema,
+  validationSchema,
   initialValues,
   langSelectionValue,
   showTimeInput,
@@ -167,14 +162,14 @@ export default function NoticeForm({
 }) {
   const history = useHistory();
   const { t } = useTranslation();
-  const noticeQuerClient = useQueryClient();
+  const noticeQueryClient = useQueryClient();
   const [loading, setLoading] = useState(false);
   const noticeMutation = useMutation({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
       if (!data.error) {
-        noticeQuerClient.invalidateQueries(["Notices"]);
-        noticeQuerClient.invalidateQueries(["NoticeDetail"]);
+        noticeQueryClient.invalidateQueries(["Notices"]);
+        noticeQueryClient.invalidateQueries(["NoticeDetail"]);
         setLoading(false);
         history.push("/notices");
       } else if (data.error) {
@@ -242,7 +237,7 @@ export default function NoticeForm({
     toastId: "langError",
   };
   return (
-    <FormWaraper className="FormikWraper">
+    <FormWrapper className="FormikWrapper">
       <Formik
         // enableReinitialize
         initialValues={initialValues}
@@ -265,7 +260,7 @@ export default function NoticeForm({
           });
           setDeletedTags([]);
         }}
-        validationSchema={vailidationSchema}
+        validationSchema={validationSchema}
       >
         {(formik) => (
           <Form>
@@ -323,9 +318,10 @@ export default function NoticeForm({
                 {!AddLanguage && (
                   <Row>
                     <div className="ImagesVideos">
-                      <Trans i18nKey={"add_image"} /> <span style={{fontSize:'13px', color:'gray'}}>
-                        <Trans i18nKey={'image_size_suggestion'}/>
-                        </span>
+                      <Trans i18nKey={"add_image"} />{" "}
+                      <span style={{ fontSize: "13px", color: "gray" }}>
+                        <Trans i18nKey={"image_size_suggestion"} />
+                      </span>
                     </div>
                     <ImageUpload
                       bg_plus={thumbnailImage}
@@ -401,6 +397,6 @@ export default function NoticeForm({
           </Form>
         )}
       </Formik>
-    </FormWaraper>
+    </FormWrapper>
   );
 }

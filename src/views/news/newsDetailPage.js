@@ -8,18 +8,7 @@ import DetailPage from "../../components/partials/customDetailpage";
 const NewsDetailPage = () => {
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const { newsId } = useParams();
-  const getLangId = (langArray, langSelection) => {
-    let languageId;
-    langArray.map(async (Item) => {
-      if (Item.name == langSelection?.toLowerCase()) {
-        languageId = Item.id;
-      }
-    });
-    return languageId;
-  };
-  const langArray = useSelector((state) => state.auth.availableLang);
 
-  const [langSelection, setLangSelection] = useState(selectedLang.name);
   const newsDetailQuery = useQuery(
     ["EventDetail", newsId, selectedLang.id],
     async () =>
@@ -33,10 +22,7 @@ const NewsDetailPage = () => {
 
   let subImages = [];
   newsDetailQuery?.data?.result?.images?.length > 1
-    ? (subImages = [
-        ...subImages,
-        ...newsDetailQuery?.data?.result?.images,
-      ])
+    ? (subImages = [...subImages, ...newsDetailQuery?.data?.result?.images])
     : [];
   subImages.splice(0, 1);
   return (

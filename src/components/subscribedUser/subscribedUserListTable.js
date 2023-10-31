@@ -8,20 +8,7 @@ import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomDataTable from "../partials/CustomDataTable";
 export default function SubscribedUSerListTable({ data }) {
-  const handleDeleteSubscribedUser = async (payload) => {
-    return deleteSubscribedUSerDetail(payload);
-  };
-  const queryCient = useQueryClient();
-  const deleteMutation = useMutation({
-    mutationFn: handleDeleteSubscribedUser,
-    onSuccess: (data) => {
-      if (!data.error) {
-        queryCient.invalidateQueries(["subscribedUser"]);
-      }
-    },
-  });
   const { t } = useTranslation();
-  const history = useHistory();
 
   const columns = [
     {
@@ -66,7 +53,11 @@ export default function SubscribedUSerListTable({ data }) {
         name: (
           <div className="d-flex align-items-center ">
             <img
-              src={item?.profileImage !== "" && item?.profileImage ? item?.profileImage :  avtarIcon}
+              src={
+                item?.profileImage !== "" && item?.profileImage
+                  ? item?.profileImage
+                  : avtarIcon
+              }
               style={{
                 marginRight: "5px",
                 width: "30px",
@@ -77,7 +68,10 @@ export default function SubscribedUSerListTable({ data }) {
             <div>{ConverFirstLatterToCapital(item?.name ?? "-")}</div>
           </div>
         ),
-        mobileNumber: `+${item?.countryCode?.replace('+','') ?? "91"} ${item?.mobileNumber}` ?? "-",
+        mobileNumber:
+          `+${item?.countryCode?.replace("+", "") ?? "91"} ${
+            item?.mobileNumber
+          }` ?? "-",
         email: item?.email ?? "-",
         dateOfBirth: moment(item?.dob).format("DD MMM YYYY "),
         address: item?.address ?? "-",
@@ -124,8 +118,7 @@ export default function SubscribedUSerListTable({ data }) {
   return (
     <SubscribedUSerTableWarper>
       <CustomDataTable
-        // minWidth="fit-content"
-        maxHieght={""}
+        maxHeight={""}
         columns={columns}
         data={subscribed_user}
       />

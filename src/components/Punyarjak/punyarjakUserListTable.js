@@ -1,22 +1,22 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import he from "he";
 import moment from "moment";
 import { useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
-import styled from "styled-components";
-import he from "he";
-import { deletePunyarjak } from "../../api/punarjakApi";
-import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
-import { ConverFirstLatterToCapital } from "../../utility/formater";
-import CustomDataTable from "../partials/CustomDataTable";
-import editIcon from "../../assets/images/icons/category/editIcon.svg";
-import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
-import Swal from "sweetalert2";
-import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
-import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
-import placeHolderTable from "../../assets/images/placeholderImages/placeHolderTable.svg";
-import { Button } from "reactstrap";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { Button } from "reactstrap";
+import styled from "styled-components";
+import Swal from "sweetalert2";
+import { deletePunyarjak } from "../../api/punarjakApi";
+import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
+import editIcon from "../../assets/images/icons/category/editIcon.svg";
+import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
+import confirmationIcon from "../../assets/images/icons/news/conformationIcon.svg";
+import placeHolderTable from "../../assets/images/placeholderImages/placeHolderTable.svg";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
+import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
+import CustomDataTable from "../partials/CustomDataTable";
 
 export default function PunyarjakTable({
   data,
@@ -27,12 +27,12 @@ export default function PunyarjakTable({
   const handleDeletePunyarjakUser = async (payload) => {
     return deletePunyarjak(payload);
   };
-  const queryCient = useQueryClient();
+  const queryClient = useQueryClient();
   const deleteMutation = useMutation({
     mutationFn: handleDeletePunyarjakUser,
     onSuccess: (data) => {
       if (!data.error) {
-        queryCient.invalidateQueries(["punyarjak"]);
+        queryClient.invalidateQueries(["punyarjak"]);
       }
     },
   });
@@ -104,7 +104,7 @@ export default function PunyarjakTable({
           <div
             className="d-flex tableDes"
             dangerouslySetInnerHTML={{
-              __html: he.decode(item?.description ?? ""),
+              __html: he?.decode(item?.description ?? ""),
             }}
           />
         ),
@@ -153,7 +153,7 @@ export default function PunyarjakTable({
                 e.stopPropagation();
                 // Swal.fire("Oops...", "Something went wrong!", "error");
                 Swal.fire({
-                  title: `<img src="${comfromationIcon}"/>`,
+                  title: `<img src="${confirmationIcon}"/>`,
                   html: `
                                     <h3 class="swal-heading">${t(
                                       "punyarjak_delete"
@@ -197,12 +197,7 @@ export default function PunyarjakTable({
 
   return (
     <PunyarjakUSerTableWarper>
-      <CustomDataTable
-        // minWidth="fit-content"
-        maxHieght={""}
-        columns={columns}
-        data={punyarjak_user}
-      />
+      <CustomDataTable maxHeight={""} columns={columns} data={punyarjak_user} />
     </PunyarjakUSerTableWarper>
   );
 }

@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import moment from "moment/moment";
+import numberToWords from "number-to-words";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -13,12 +14,11 @@ import {
   getAllPaidDonationsReceipts,
   nudgeUserApi,
 } from "../../api/commitmentApi";
-import numberToWords from "number-to-words";
 import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import donationReceiptIcon from "../../assets/images/icons/donationReceipt.svg";
-import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
+import confirmationIcon from "../../assets/images/icons/news/conformationIcon.svg";
 import receiptIcon from "../../assets/images/icons/receiptIcon.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { DELETE, EDIT } from "../../utility/permissionsVariable";
@@ -31,10 +31,10 @@ const CommitmentTableWarper = styled.div`
     font: normal normal bold 15px/33px Noto Sans;
     color: #ff8744;
   }
-  .model > .my {
-    max-height: 600px;
-    overflow: auto;
-  }
+  // .model > .my {
+  //   max-height: 600px;
+  //   overflow: auto;
+  // }
 `;
 
 export default function CommitmentListTable(
@@ -59,12 +59,12 @@ export default function CommitmentListTable(
   const handleDeleteCommitment = async (payload) => {
     return deleteCommitment(payload);
   };
-  const queryCient = useQueryClient();
+  const queryClient = useQueryClient();
   const deleteMutation = useMutation({
     mutationFn: handleDeleteCommitment,
     onSuccess: (data) => {
       if (!data.error) {
-        queryCient.invalidateQueries(["Commitments"]);
+        queryClient.invalidateQueries(["Commitments"]);
       }
     },
   });
@@ -75,10 +75,6 @@ export default function CommitmentListTable(
 
   const loggedTemple = useSelector((state) => state.auth.trustDetail);
   const [receipt, setReceipt] = useState();
-  const [modal, setModal] = useState(false);
-  const toggle = () => {
-    setModal(!modal);
-  };
 
   const handleDownloadReceipt = (id) => {
     return getAllPaidDonationsReceipts(id);
@@ -94,21 +90,11 @@ export default function CommitmentListTable(
           setLoading(false);
         }, 100);
       } else if (data.error) {
-        toast.error("Someting went wrong.");
+        toast.error("Something went wrong.");
         setLoading(false);
       }
     },
   });
-  // const [commitmentId, setCommitmentId] = useState("");
-  // console.log(commitmentId);
-  // const allPaidDonationsReceipt = useQuery(
-  //   ["Commitments", commitmentId],
-  //   () => {
-  //     if (commitmentId) {
-  //       return getAllPaidDonationsReceipts(commitmentId);
-  //     }
-  //   }
-  // );
 
   const allPaidDonationsItems = useMemo(
     () => receiptMutation?.data?.results ?? [],
@@ -118,16 +104,8 @@ export default function CommitmentListTable(
   const handleChange = useCallback((state) => {
     setSelectedRows(state?.selectedRows);
   }, []);
+
   const columns = [
-    // {
-    //   name: (
-    //     <div>
-    //       <Input type="checkbox" />
-    //     </div>
-    //   ),
-    //   selector: (row) => row.notifyUserId,
-    //   width: "500px",
-    // },
     {
       name: t("commitment_Username"),
       selector: (row) => row.username,
@@ -294,9 +272,6 @@ export default function CommitmentListTable(
             onClick={() => {
               item?.amount != item?.amount - item?.paidAmount &&
                 receiptMutation.mutate(item?._id);
-              // setCommitmentId(item?.id);
-              // pdfRef.current.click();
-              // toggle();
             }}
           />
         ),
@@ -309,7 +284,10 @@ export default function CommitmentListTable(
               }`}
               onClick={() =>
                 financeReport && !paymentStatus
-                  ? history.push(`/commitment/pay-donation/${item._id}`, item._id)
+                  ? history.push(
+                      `/commitment/pay-donation/${item._id}`,
+                      item._id
+                    )
                   : !paymentStatus &&
                     history.push(
                       `/commitment/pay-donation/${item._id}?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`,
@@ -359,11 +337,10 @@ export default function CommitmentListTable(
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                // Swal.fire("Oops...", "Something went wrong!", "error");
                 financeReport
                   ? ""
                   : Swal.fire({
-                      title: `<img src="${comfromationIcon}"/>`,
+                      title: `<img src="${confirmationIcon}"/>`,
                       html: `
                                           <h3 class="swal-heading mt-1">${t(
                                             "commitment_delete"
@@ -395,7 +372,7 @@ export default function CommitmentListTable(
   const DisableSelectRow = (row) => {
     return row?.status?.props?.children?.props?.children === "Completed";
   };
-  // const isRowPreSelected = row =>  notifyIds.includes(row.id);
+
   const inWordsNumber = numberToWords
     .toWords(parseInt(receipt?.amount ?? 0))
     .toUpperCase();
@@ -403,13 +380,11 @@ export default function CommitmentListTable(
   return (
     <CommitmentTableWarper>
       <CustomDataTable
-        maxHieght={""}
+        maxHeight={""}
         columns={columns}
         data={commitment_Data}
         selectableRows={!financeReport}
         selectableRowDisabled={DisableSelectRow}
-        // selectableRowSelected={isRowPreSelected}
-        // onSelectedRowsChange={handleChange}
         onSelectedRowsChange={handleChange}
       />
       <ReactToPrint
@@ -422,171 +397,6 @@ export default function CommitmentListTable(
         documentTitle={`Donation-Receipts.pdf`}
       />
       <div className="" style={{ display: "none" }}>
-        {/* <div
-          ref={ref}
-          className=""
-          // style={{
-          //   width: "700px",
-          //   height: "auto",
-          //   textAlign: "center",
-          //   padding: "3rem 11rem",
-          // }}
-        >
-          {allPaidDonationsItems?.map((item) => {
-            return (
-              <div
-                style={{
-                  width: "100%",
-                  // border:"1px solid black",
-                  // background:"yellow",
-                  height: "1100px",
-                  display: "flex",
-                  justifyContent: "center",
-                  // background:"yellow",
-                  alignItems: "center",
-                }}
-              >
-                <div
-                  style={{
-                    width: "479px",
-                    // display:"none",
-                    height: "auto",
-                    // background:"red",
-                    textAlign: "center",
-                    padding: "2rem 2rem",
-                  }}
-                >
-                  <img src={donationReceiptIcon} style={{ width: "130px" }} />
-                  <div
-                    className="d-flex align-items-center"
-                    style={{
-                      background: "#FFF7E8",
-                      height: "80px",
-                      borderRadius: "8px",
-                      marginTop: "20px",
-                    }}
-                  >
-                    <img
-                      src={loggedTemple?.profilePhoto ?? ""}
-                      // src="https://apnamandir.s3.ap-south-1.amazonaws.com/trust_profile/979242110891_ranakpur.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQ5TSNJ6QOEXRBCNH%2F20230411%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20230411T132833Z&X-Amz-Expires=604800&X-Amz-Signature=83d929ffa3f78302c4a83b11883c677ad36d6c2d8059226f26fec9f4308cbd9b&X-Amz-SignedHeaders=host"
-                      style={{
-                        width: "80px",
-                        height: "80px",
-                        borderRadius: "8px",
-                      }}
-                    />
-                    <div style={{ padding: "25px" }}>
-                      <div
-                        className="ms-2"
-                        style={{
-                          fontSize: "17px",
-                          fontWeight: "bold",
-                          color: "#583703",
-                        }}
-                      >
-                        {ConverFirstLatterToCapital(loggedTemple?.name ?? "")}
-                      </div>
-                      <div
-                        class="ms-2"
-                        style={{
-                          fontSize: "13px",
-                          color: "#583703",
-                          textAlign: "left",
-                        }}
-                      >
-                        {`${loggedTemple?.city ?? ""}, ${
-                          loggedTemple?.state ?? ""
-                        }`}
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      font: "normal normal bold 16px/27px Noto Sans",
-                      letterSpacing: "0px",
-                      paddingTop: "27px",
-                      paddingBottom: "25px",
-                      color: "#583703",
-                    }}
-                  >
-                    With each donation we receive, we become all that much
-                    closer to our goal. Thank you for making a difference
-                    through your compassion and generosity
-                  </div>
-
-                  <div
-                    style={{
-                      textAlign: "left",
-                      marginTop: "5px",
-                      color: "#583703",
-                    }}
-                  >
-                    <span
-                      style={{
-                        font: "normal normal bold 16px/27px Noto Sans",
-                      }}
-                    >
-                      Amount :
-                    </span>{" "}
-                    {item?.amount} Rs
-                  </div>
-                  <div
-                    style={{
-                      textAlign: "left",
-                      marginTop: "5px",
-                      color: "#583703",
-                    }}
-                  >
-                    <span
-                      style={{
-                        font: "normal normal bold 16px/27px Noto Sans",
-                      }}
-                    >
-                      Mode of Payment :
-                    </span>{" "}
-                    {ConverFirstLatterToCapital(item?.paymentMethod ?? "")}
-                  </div>
-                  <div
-                    style={{
-                      textAlign: "left",
-                      marginTop: "5px",
-                      color: "#583703",
-                    }}
-                  >
-                    <span
-                      style={{
-                        font: "normal normal bold 16px/27px Noto Sans",
-                      }}
-                    >
-                      Donor Name :
-                    </span>{" "}
-                    {ConverFirstLatterToCapital(
-                      item?.donarName || item?.user?.name || ""
-                    )}
-                  </div>
-                  <div
-                    style={{
-                      textAlign: "left",
-                      marginTop: "5px",
-                      color: "#583703",
-                    }}
-                  >
-                    <span
-                      style={{
-                        font: "normal normal bold 16px/27px Noto Sans",
-                      }}
-                    >
-                      Date & Time :
-                    </span>{" "}
-                    {moment(item?.createdAt ?? item?.updatedAt).format(
-                      " DD MMM YYYY,hh:mm A"
-                    )}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div> */}
         <div ref={ref}>
           {allPaidDonationsItems?.map((item, index) => (
             <div key={index}>
@@ -691,7 +501,6 @@ export default function CommitmentListTable(
                     >
                       <div className="col-1"></div>
                       <div className="col-5">In Words(शब्दों में)</div>
-                      {/* <div className="col-5" >{inWordsNumber} ONLY</div> */}
                       <div className="col-5">
                         {numberToWords
                           .toWords(parseInt(item?.amount ?? 0))
@@ -712,10 +521,7 @@ export default function CommitmentListTable(
               >
                 <div className="row">
                   <div className="col-1"></div>
-                  <div
-                    className="col-5"
-                    // style={{background:'blue'}}
-                  >
+                  <div className="col-5">
                     This is system generated receipt/ यह कंप्यूटर के द्वारा बनाई
                     गई रसीद है
                   </div>
@@ -728,51 +534,6 @@ export default function CommitmentListTable(
           ))}
         </div>
       </div>
-
-      {/* <ReactToPdf
-        targetRef={ref}
-        filename="Donation-Receipt.pdf"
-        options={options}
-      >
-        {({ toPdf }) => (
-          <button onClick={toPdf} ref={pdfRef} className="d-none">
-            Generate pdf
-          </button>
-        )}
-      </ReactToPdf> */}
-
-      {/* <Modal
-        className="allPaidDonationsModel"
-        isOpen={modal}
-        toggle={toggle}
-        {...args}
-      >
-        <ModalBody className="my">
-          
-        </ModalBody>
-        <ModalFooter>
-          <Button
-            color="primary"
-            onClick={() => {
-              // pdfRef.current.click();
-              toggle();
-              // setTimeout(() => {
-              //   Swal.fire({
-              //     icon: "success",
-              //     title: "Receipt Download Successfully.",
-              //     showConfirmButton: false,
-              //     timer: 1500,
-              //   });
-              // }, 300);
-            }}
-          >
-            Download
-          </Button>{" "}
-          <Button color="secondary" onClick={toggle}>
-            Cancel
-          </Button>
-        </ModalFooter>
-      </Modal> */}
     </CommitmentTableWarper>
   );
 }
