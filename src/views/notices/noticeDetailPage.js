@@ -9,21 +9,9 @@ import DetailPage from "../../components/partials/customDetailpage";
 
 const NoticeDetailPage = () => {
   const selectedLang = useSelector((state) => state.auth.selectLang);
-  const { t } = useTranslation();
-  const history = useHistory();
-  const { noticeId } = useParams();
-  const getLangId = (langArray, langSelection) => {
-    let languageId;
-    langArray.map(async (Item) => {
-      if (Item.name == langSelection?.toLowerCase()) {
-        languageId = Item.id;
-      }
-    });
-    return languageId;
-  };
-  const langArray = useSelector((state) => state.auth.availableLang);
 
-  const [langSelection, setLangSelection] = useState(selectedLang.name);
+  const { noticeId } = useParams();
+
   const noticeDetailQuery = useQuery(
     ["NoticeDetail", noticeId, selectedLang.id],
     async () =>
@@ -34,7 +22,6 @@ const NoticeDetailPage = () => {
   );
 
   const tags = noticeDetailQuery?.data?.result?.tags?.map((item) => item?.tag);
-
 
   return (
     <>

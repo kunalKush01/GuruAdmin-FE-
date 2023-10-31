@@ -1,38 +1,36 @@
 import ReactApexChart from "react-apexcharts";
-import { useTranslation, Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import styled from "styled-components";
 const RevenueChartWarrper = styled.div`
-    .apexcharts-toolbar {
-      display: none;
-    }
-    .apexcharts-legend {
-      position: relative !important;
-      justify-content: end !important;
-    }
-    p {
-      color: #583703;
-      font: normal normal bold 25px/50px Noto Sans;
-    }
-    .apexcharts-legend-text {
-      color: #583703 !important;
-    }
-    .apexcharts-xaxis-label {
-      fill: #583703 !important;
-      font: normal normal bold 11px/24px Noto Sans;
-    }
-    .apexcharts-yaxis-label {
-      fill: #583703 !important;
-      font: normal normal bold 11px/24px Noto Sans;
-    }
-  `;
+  .apexcharts-toolbar {
+    display: none;
+  }
+  .apexcharts-legend {
+    position: relative !important;
+    justify-content: end !important;
+  }
+  p {
+    color: #583703;
+    font: normal normal bold 25px/50px Noto Sans;
+  }
+  .apexcharts-legend-text {
+    color: #583703 !important;
+  }
+  .apexcharts-xaxis-label {
+    fill: #583703 !important;
+    font: normal normal bold 11px/24px Noto Sans;
+  }
+  .apexcharts-yaxis-label {
+    fill: #583703 !important;
+    font: normal normal bold 11px/24px Noto Sans;
+  }
+`;
 export const RevenueChart = ({
   DonationData = [],
   TotalExpensesData = [],
-  CommittmentData = [],
+  CommitmentData = [],
 }) => {
   const { t } = useTranslation();
-
-  
 
   const series = [
     {
@@ -46,7 +44,7 @@ export const RevenueChart = ({
     },
     {
       name: t("commitment"),
-      data: CommittmentData?.map((item) => {
+      data: CommitmentData?.map((item) => {
         return {
           x: item.month,
           y: item.amount,
@@ -96,7 +94,7 @@ export const RevenueChart = ({
           // Customize the label value based on your requirements
           // const formattedValue = value.toFixed(2).replace(/\d(?=(\d{2})+\d{3})/g, '$&,');
           // return `₹${formattedValue}`;
-          return `₹${value.toLocaleString('en-IN')}`; // Add a dollar sign to the label value
+          return `₹${value.toLocaleString("en-IN")}`; // Add a dollar sign to the label value
         },
       },
     },
@@ -106,7 +104,7 @@ export const RevenueChart = ({
     tooltip: {
       y: {
         formatter: (val) => {
-          return "₹" + val.toLocaleString('en-IN');
+          return "₹" + val.toLocaleString("en-IN");
         },
       },
     },

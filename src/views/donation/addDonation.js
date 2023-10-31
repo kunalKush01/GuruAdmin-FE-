@@ -1,16 +1,16 @@
 import React from "react";
 import { Trans } from "react-i18next";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import * as yup from "yup";
+import * as Yup from "yup";
 import { createDonation } from "../../api/donationApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import DonationForm from "../../components/donation/donationForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-import 'react-phone-number-input/style.css'
-import PhoneInput from 'react-phone-number-input'
-const DonationWarapper = styled.div`
+const DonationWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
@@ -26,33 +26,38 @@ const DonationWarapper = styled.div`
 const handleCreateDonation = async (payload) => {
   return createDonation(payload);
 };
-const schema = yup.object().shape({
-  Mobile: yup.string().required("expenses_mobile_required"),
-  SelectedUser: yup.mixed().required("user_select_required"),
-  donarName: yup.string().matches(
+const schema = Yup.object().shape({
+  Mobile: Yup.string().required("expenses_mobile_required"),
+  SelectedUser: Yup.mixed().required("user_select_required"),
+  donarName: Yup
+    .string()
+    .matches(
       /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
-      'donation_donar_name_only_letters'
-  ).trim(),
-  SelectedMasterCategory: yup.mixed().required("masterCategory_required"),
-  Amount: yup.string().matches(/^[1-9][0-9]*$/,"invalid_amount").required("amount_required"),
+      "donation_donar_name_only_letters"
+    )
+    .trim(),
+  SelectedMasterCategory: Yup.mixed().required("masterCategory_required"),
+  Amount: Yup
+    .string()
+    .matches(/^[1-9][0-9]*$/, "invalid_amount")
+    .required("amount_required"),
 });
 
 export default function AddDonation() {
   const history = useHistory();
-  const langArray = useSelector((state) => state.auth.availableLang);
+  // const langArray = useSelector((state) => state.auth.availableLang);
   const loggedInUser = useSelector((state) => state.auth.userDetail.name);
 
-
   const searchParams = new URLSearchParams(history.location.search);
-  const currentPage = searchParams.get('page')
+  const currentPage = searchParams.get("page");
   const currentCategory = searchParams.get("category");
   const currentSubCategory = searchParams.get("subCategory");
-  const currentFilter = searchParams.get('filter')
+  const currentFilter = searchParams.get("filter");
 
   const initialValues = {
     Mobile: "",
-    countryCode:"in",
-    dialCode:"91",
+    countryCode: "in",
+    dialCode: "91",
     SelectedUser: "",
     donarName: "",
     SelectedMasterCategory: "",
@@ -62,13 +67,17 @@ export default function AddDonation() {
     createdBy: ConverFirstLatterToCapital(loggedInUser),
   };
   return (
-    <DonationWarapper>
+    <DonationWrapper>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push(`/donation?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}`)}
+            onClick={() =>
+              history.push(
+                `/donation?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}`
+              )
+            }
           />
           <div className="addDonation">
             <Trans i18nKey={"donation_Adddonation"} />
@@ -79,11 +88,11 @@ export default function AddDonation() {
         <DonationForm
           handleSubmit={handleCreateDonation}
           initialValues={initialValues}
-          vailidationSchema={schema}
+          validationSchema={schema}
           showTimeInput
           buttonName="donation_Adddonation"
         />
       </div>
-    </DonationWarapper>
+    </DonationWrapper>
   );
 }

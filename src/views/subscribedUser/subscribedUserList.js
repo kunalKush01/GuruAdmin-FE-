@@ -3,6 +3,7 @@ import React, { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import { Plus } from "react-feather";
+import { Helmet } from "react-helmet";
 import { Trans, useTranslation } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
@@ -17,15 +18,11 @@ import { ChangePeriodDropDown } from "../../components/partials/changePeriodDrop
 import NoContent from "../../components/partials/noContent";
 import SubscribedUSerListTable from "../../components/subscribedUser/subscribedUserListTable";
 import { WRITE } from "../../utility/permissionsVariable";
-import { Helmet } from "react-helmet";
 
 const SubscribedUserWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addNews {
+  .addSubscribeUser {
     color: #583703;
     display: flex;
     align-items: center;
@@ -37,21 +34,16 @@ const SubscribedUserWarper = styled.div`
   .btn-Published {
     text-align: center;
   }
-  .addNews-btn {
+  .addSubscribeUser-btn {
     padding: 8px 20px;
     margin-left: 10px;
     font: normal normal bold 15px/20px noto sans;
   }
-  .newsContent {
+  .subscribeUserContent {
     margin-top: 1rem;
     ::-webkit-scrollbar {
       display: none;
     }
-  }
-  .filterPeriod {
-    color: #ff8744;
-    margin-top: 0.5rem;
-    font: normal normal bold 13px/5px noto sans;
   }
 `;
 
@@ -78,7 +70,6 @@ export default function SubscribedUser() {
     page: 1,
     limit: 10,
   });
-  const [selectedMasterCate, setSelectedMasterCate] = useState("");
 
   let filterStartDate = moment()
     .startOf(periodDropDown())
@@ -89,8 +80,6 @@ export default function SubscribedUser() {
     .utcOffset(0, true)
     .toISOString();
 
-  let startDate = moment(filterStartDate).format("DD MMM");
-  let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
 
   const subscribedUserQuery = useQuery(
@@ -151,20 +140,15 @@ export default function SubscribedUser() {
               className="me-2 cursor-pointer align-self-center"
               onClick={() => history.push("/")}
             />
-            <div className="addNews">
+            <div className="addSubscribeUser">
               <div className="">
                 <div>
                   <Trans i18nKey={"dashboard_card_title3"} />
                 </div>
-                {/* <div className="filterPeriod">
-                  <span>
-                    {startDate} - {endDate}
-                  </span>
-                </div> */}
               </div>
             </div>
           </div>
-          <div className="addNews">
+          <div className="addSubscribeUser">
             <ChangePeriodDropDown
               className={"me-1"}
               dropDownName={dropDownName}
@@ -174,7 +158,7 @@ export default function SubscribedUser() {
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
-                className="addNews-btn"
+                className="addSubscribeUser-btn"
                 onClick={() => history.push("/subscribed-user/add")}
               >
                 <span>
@@ -200,7 +184,7 @@ export default function SubscribedUser() {
             </Then>
           </If>
         </div>
-        <div className="newsContent  ">
+        <div className="subscribeUserContent  ">
           <Row>
             <If condition={subscribedUserQuery.isLoading} disableMemo>
               <Then>
@@ -225,8 +209,8 @@ export default function SubscribedUser() {
                   </Then>
                   <Else>
                     <NoContent
-                      headingNotfound={t("notifications_not_found")}
-                      para={t("notifications_not_click_add")}
+                      headingNotfound={t("subscribed_not_found")}
+                      para={t("subscribed_not_click_add")}
                     />
                   </Else>
                 </If>

@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import { Plus } from "react-feather";
+import { Helmet } from "react-helmet";
 import { Trans, useTranslation } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
@@ -17,42 +18,42 @@ import { ExpensesListTable } from "../../components/internalExpenses/expensesLis
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
 import NoContent from "../../components/partials/noContent";
 import { WRITE } from "../../utility/permissionsVariable";
-import { Helmet } from "react-helmet";
-const NewsWarper = styled.div`
+
+const ExpenseWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addNews {
+  // .ImagesVideos {
+  //   font: normal normal bold 15px/33px Noto Sans;
+  // }
+  .addExpense {
     color: #583703;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
 
-  .FormikWraper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addNews-btn {
+  // .FormikWraper {
+  //   padding: 40px;
+  // }
+  // .btn-Published {
+  //   text-align: center;
+  // }
+  .addExpense-btn {
     padding: 8px 20px;
     margin-left: 10px;
     font: normal normal bold 15px/20px noto sans;
   }
-  .newsContent {
+  .expenseContent {
     margin-top: 1rem;
     ::-webkit-scrollbar {
       display: none;
     }
   }
-  .filterPeriod {
-    color: #ff8744;
-    margin-top: 0.5rem;
-    font: normal normal bold 13px/5px noto sans;
-  }
+  // .filterPeriod {
+  //   color: #ff8744;
+  //   margin-top: 0.5rem;
+  //   font: normal normal bold 13px/5px noto sans;
+  // }
 `;
 
 export default function Expenses() {
@@ -94,8 +95,6 @@ export default function Expenses() {
     }
   }, []);
 
-  const [selectedMasterCate, setSelectedMasterCate] = useState("");
-
   let filterStartDate = moment()
     .startOf(periodDropDown())
     .utcOffset(0, true)
@@ -105,8 +104,6 @@ export default function Expenses() {
     .utcOffset(0, true)
     .toISOString();
 
-  let startDate = moment(filterStartDate).format("DD MMM");
-  let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
 
   const expensesQuery = useQuery(
@@ -151,7 +148,7 @@ export default function Expenses() {
     (item) => item.name
   );
   return (
-    <NewsWarper>
+    <ExpenseWrapper>
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Mandir Admin | Expenses</title>
@@ -166,20 +163,15 @@ export default function Expenses() {
               className="me-2  cursor-pointer align-self-center"
               onClick={() => history.push("/")}
             />
-            <div className="addNews">
+            <div className="addExpense">
               <div className="">
                 <div>
                   <Trans i18nKey={"expenses_latest_Expenses"} />
                 </div>
-                {/* <div className="filterPeriod">
-                  <span>
-                    {startDate} - {endDate}
-                  </span>
-                </div> */}
               </div>
             </div>
           </div>
-          <div className="addNews">
+          <div className="addExpense">
             <ChangePeriodDropDown
               className={"me-1"}
               dropDownName={dropDownName}
@@ -195,7 +187,7 @@ export default function Expenses() {
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
-                className="addNews-btn"
+                className="addExpense-btn"
                 onClick={() =>
                   history.push(
                     `/internal_expenses/add?page=${pagination.page}&filter=${dropDownName}`
@@ -225,7 +217,7 @@ export default function Expenses() {
             </Then>
           </If>
         </div>
-        <div className="newsContent mb-3">
+        <div className="expenseContent mb-3">
           <Row>
             <If condition={expensesQuery.isLoading} disableMemo>
               <Then>
@@ -292,7 +284,6 @@ export default function Expenses() {
                         }&filter=${dropDownName}`
                       );
                     }}
-                    // forcePage={pagination.page !== 0 ? pagination.page - 1 : 0}
                     containerClassName={
                       "pagination react-paginate justify-content-end p-1"
                     }
@@ -303,6 +294,6 @@ export default function Expenses() {
           </Row>
         </div>
       </div>
-    </NewsWarper>
+    </ExpenseWrapper>
   );
 }

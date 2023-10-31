@@ -26,7 +26,7 @@ import logOutIcon from "../../../../assets/images/icons/dashBoard/Group 5995.svg
 import bellIcon from "../../../../assets/images/icons/dashBoard/Group 5996.svg";
 import searchIcon from "../../../../assets/images/icons/dashBoard/Group 5997.svg";
 import menuPanelIcon from "../../../../assets/images/icons/dashBoard/icn_MenuPanel.svg";
-import comfromationIcon from "../../../../assets/images/icons/news/conformationIcon.svg";
+import confirmationIcon from "../../../../assets/images/icons/news/conformationIcon.svg";
 import { authApiInstance } from "../../../../axiosApi/authApiInstans";
 import { logOut, setSearchbarValue } from "../../../../redux/authSlice";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
@@ -299,7 +299,7 @@ const NavbarUser = (props) => {
               src={logOutIcon}
               onClick={() => {
                 Swal.fire({
-                  title: `<img src="${comfromationIcon}"/>`,
+                  title: `<img src="${confirmationIcon}"/>`,
                   html: `
                                     
                   <h3 class="swal-heading mt-1">${t("logout_msg")}</h3>

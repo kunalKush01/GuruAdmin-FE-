@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import styled from "styled-components";
-import * as yup from "yup";
+import * as Yup from "yup";
 import {
   getCollectionBoxDetail,
   updateCollectionBoxDetail,
@@ -30,14 +30,13 @@ const NewsWarper = styled.div`
     align-items: center;
   }
 `;
-const schema = yup.object().shape({
-  // CreatedBy: yup.string().required("news_tags_required"),
-  Amount: yup
-    .string()
+const schema = Yup.object().shape({
+  // CreatedBy: Yup.string().required("news_tags_required"),
+  Amount: Yup.string()
     .matches(/^[1-9][0-9]*$/, "invalid_amount")
     .required("amount_required"),
-  Body: yup.string().required("donation_box_desc_required").trim(),
-  DateTime: yup.string(),
+  Body: Yup.string().required("donation_box_desc_required").trim(),
+  DateTime: Yup.string(),
 });
 
 const getLangId = (langArray, langSelection) => {
@@ -85,7 +84,7 @@ export default function EditDonationBox() {
     return {
       Id: collectionBoxDetailQuery?.data?.result?.id,
       CreatedBy: loggedInUser,
-      Body: he.decode(collectionBoxDetailQuery?.data?.result?.remarks ?? ""),
+      Body: he?.decode(collectionBoxDetailQuery?.data?.result?.remarks ?? ""),
       Amount: collectionBoxDetailQuery?.data?.result?.amount,
       DateTime: moment(collectionBoxDetailQuery?.data?.result?.collectionDate)
         .utcOffset("+0530")
@@ -150,7 +149,7 @@ export default function EditDonationBox() {
               <DonationBoxForm
                 buttonName={"save_changes"}
                 editLogs
-                vailidationSchema={schema}
+                validationSchema={schema}
                 collectionId={donationBoxId}
                 initialValues={initialValues}
                 showTimeInput

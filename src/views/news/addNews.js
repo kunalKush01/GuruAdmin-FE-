@@ -4,14 +4,14 @@ import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import * as yup from "yup";
+import * as Yup from "yup";
 import { createNews } from "../../api/newsApi";
 import { getAllTrustPrefeces } from "../../api/profileApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import NewsForm from "../../components/news/newsForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-const NewsWarper = styled.div`
+const NewsWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
@@ -27,26 +27,23 @@ const NewsWarper = styled.div`
 const handleCreateNews = async (payload) => {
   return createNews(payload);
 };
-const schema = yup.object().shape({
-  Title: yup
-    .string()
+const schema = Yup.object().shape({
+  Title: Yup.string()
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
     .required("news_title_required")
     .trim(),
-  // Tags: yup.string().required("news_tags_required"),
-  Body: yup.string().required("news_desc_required").trim(),
-  PublishedBy: yup.string().required("news_publish_required"),
-  DateTime: yup.string(),
-  // tagsInit:yup.array().max(15 ,"tags_limit"),
-  preference: yup
-    .array()
+  // Tags: Yup.string().required("news_tags_required"),
+  Body: Yup.string().required("news_desc_required").trim(),
+  PublishedBy: Yup.string().required("news_publish_required"),
+  DateTime: Yup.string(),
+  // tagsInit:Yup.array().max(15 ,"tags_limit"),
+  preference: Yup.array()
     .min(1, "trust_prefenses_required")
     .required("trust_prefenses_required"),
 });
 
 export default function AddNews() {
   const history = useHistory();
-  const langArray = useSelector((state) => state.auth.availableLang);
   const loggedInUser = useSelector((state) => state.auth.userDetail?.name);
 
   const searchParams = new URLSearchParams(history.location.search);
@@ -73,7 +70,7 @@ export default function AddNews() {
     DateTime: new Date(),
   };
   return (
-    <NewsWarper>
+    <NewsWrapper>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex align-items-center ">
           <img
@@ -87,28 +84,17 @@ export default function AddNews() {
             <Trans i18nKey={"news_AddNews"} />
           </div>
         </div>
-        {/* <div className="addNews">
-          <div className="d-none d-sm-block">
-            <Trans i18nKey={"news_InputIn"} />
-          </div>
-          <CustomDropDown
-            ItemListArray={langArray}
-            className={"ms-1"}
-            defaultDropDownName={"English"}
-            disabled
-          />
-        </div> */}
       </div>
       <div className="mt-1 ms-sm-3 ms-1">
         <NewsForm
           handleSubmit={handleCreateNews}
           initialValues={initialValues}
           trustPreference={trustPreference}
-          vailidationSchema={schema}
+          validationSchema={schema}
           showTimeInput
           buttonName={"news_button_Publish"}
         />
       </div>
-    </NewsWarper>
+    </NewsWrapper>
   );
 }

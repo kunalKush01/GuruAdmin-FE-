@@ -3,48 +3,46 @@ import { Form, Formik } from "formik";
 import React, { useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { Prompt, useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
+import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import ImageUpload from "../partials/imageUpload";
-import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
 import RichTextField from "../partials/richTextEditorField";
-import { Prompt } from "react-router-dom";
-import { toast } from "react-toastify";
 
-const FormWaraper = styled.div`
-  .FormikWraper {
+const FormWrapper = styled.div`
+  .FormikWrapper {
     padding: 40px;
   }
   .btn-Published {
     text-align: center;
   }
-  .addNews-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .newsContent {
-    height: 350px;
-    overflow: auto;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: #ff8744;
-
-    font: normal normal bold 13px/5px noto sans;
-  }
+  // .addNews-btn {
+  //   padding: 8px 20px;
+  //   margin-left: 10px;
+  //   font: normal normal bold 15px/20px noto sans;
+  // }
+  // .newsContent {
+  //   height: 350px;
+  //   overflow: auto;
+  //   ::-webkit-scrollbar {
+  //     display: none;
+  //   }
+  // }
+  // .filterPeriod {
+  //   color: #ff8744;
+  //   font: normal normal bold 13px/5px noto sans;
+  // }
 `;
 
 export default function PunyarjakForm({
   plusIconDisable = false,
   loadOptions,
   handleSubmit,
-  vailidationSchema,
+  validationSchema,
   editThumbnail,
   AddLanguage,
   thumbnailImageName,
@@ -83,12 +81,12 @@ export default function PunyarjakForm({
   const [showPrompt, setShowPrompt] = useState(true);
   const [imageSpinner, setImageSpinner] = useState(false);
   const [imageName, setImageName] = useState(thumbnailImageName);
-  
+
   const langToast = {
     toastId: "langError",
   };
   return (
-    <FormWaraper className="FormikWraper">
+    <FormWrapper className="FormikWrapper">
       <Formik
         enableReinitialize
         initialValues={initialValues}
@@ -107,7 +105,7 @@ export default function PunyarjakForm({
             publishDate: e.DateTime,
           });
         }}
-        validationSchema={vailidationSchema}
+        validationSchema={validationSchema}
       >
         {(formik) => (
           <Form>
@@ -149,8 +147,9 @@ export default function PunyarjakForm({
                   <Row>
                     <Col xs={12}>
                       <div className="ImagesVideos">
-                        <Trans i18nKey={"add_image"} /> <span style={{fontSize:'13px', color:'gray'}}>
-                        <Trans i18nKey={'image_size_suggestion'}/>
+                        <Trans i18nKey={"add_image"} />{" "}
+                        <span style={{ fontSize: "13px", color: "gray" }}>
+                          <Trans i18nKey={"image_size_suggestion"} />
                         </span>
                       </div>
                       <ImageUpload
@@ -270,6 +269,6 @@ export default function PunyarjakForm({
           </Form>
         )}
       </Formik>
-    </FormWaraper>
+    </FormWrapper>
   );
 }

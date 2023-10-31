@@ -1,34 +1,29 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import he from "he";
 import moment from "moment";
-import React, { useState } from "react";
+import React from "react";
+import { Trans } from "react-i18next";
+import { useHistory } from "react-router-dom";
 import {
   Card,
   CardBody,
-  CardTitle,
-  CardSubtitle,
-  CardText,
-  Button,
   CardFooter,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
-  DropdownToggle,
-  Row,
+  CardText,
+  CardTitle,
   Col,
+  Row,
 } from "reactstrap";
-import he from "he";
 import styled from "styled-components";
-import cardClockIcon from "../../assets/images/icons/news/clockIcon.svg";
-import cardThreeDotIcon from "../../assets/images/icons/news/threeDotIcon.svg";
-import { ConverFirstLatterToCapital } from "../../utility/formater";
-import BtnPopover from "../partials/btnPopover";
-import { CustomDropDown } from "../partials/customDropDown";
-import { Trans } from "react-i18next";
-import { useHistory } from "react-router-dom";
-import { deleteNewsDetail } from "../../api/newsApi";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
-import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg"
-const NewsCardWaraper = styled.div`
+import { deleteNewsDetail } from "../../api/newsApi";
+import cardClockIcon from "../../assets/images/icons/news/clockIcon.svg";
+import confirmationIcon from "../../assets/images/icons/news/conformationIcon.svg";
+import cardThreeDotIcon from "../../assets/images/icons/news/threeDotIcon.svg";
+// import { ConverFirstLatterToCapital } from "../../utility/formater";
+import BtnPopover from "../partials/btnPopover";
+// import { CustomDropDown } from "../partials/customDropDown";
+
+const CategoryCardWrapper = styled.div`
   .imgContainer {
     border-radius: 10px 10px 0px 0px;
     img {
@@ -89,18 +84,18 @@ function BtnContent({ newsId }) {
         color: #fff;
       }
     }
-    
   `;
 
-  const handleDeleteNews = async (payload) => {
+  const handleDeleteCategory = async (payload) => {
     return deleteNewsDetail(payload);
   };
-  const queryCient = useQueryClient();
+  const queryClient = useQueryClient();
+
   const deleteMutation = useMutation({
-    mutationFn: handleDeleteNews,
+    mutationFn: handleDeleteCategory,
     onSuccess: (data) => {
       if (!data.error) {
-        queryCient.invalidateQueries(["Categories"]);
+        queryClient.invalidateQueries(["Categories"]);
       }
     },
   });
@@ -120,7 +115,6 @@ function BtnContent({ newsId }) {
           xs={12}
           className="col-item"
           onClick={() => history.push(`/news/edit/${newsId}`, newsId)}
-          
         >
           <Trans i18nKey={"news_popOver_Edit"} />
         </Col>
@@ -134,7 +128,7 @@ function BtnContent({ newsId }) {
             e.stopPropagation();
             // Swal.fire("Oops...", "Something went wrong!", "error");
             Swal.fire({
-              title: `<img src="${comfromationIcon}"/>`,
+              title: `<img src="${confirmationIcon}"/>`,
               html: `
                                       <h3 class="swal-heading">Delete Category</h3>
                                       <p>Are you sure you want to permanently delete the selected category ?</p>
@@ -147,11 +141,9 @@ function BtnContent({ newsId }) {
 
               confirmButtonText: "Confirm Delete",
               confirmButtonAriaLabel: "Confirm",
-              
-              
             }).then(async (result) => {
               if (result.isConfirmed) {
-                deleteMutation.mutate(newsId)
+                deleteMutation.mutate(newsId);
               }
             });
           }}
@@ -165,7 +157,7 @@ function BtnContent({ newsId }) {
 
 export default function CategoryCard({ data }) {
   return (
-    <NewsCardWaraper>
+    <CategoryCardWrapper>
       <Card
         style={{
           width: "300px",
@@ -194,20 +186,11 @@ export default function CategoryCard({ data }) {
           <CardText>
             <div
               dangerouslySetInnerHTML={{
-                __html: he.decode(data?.body ?? ""),
+                __html: he?.decode(data?.body ?? ""),
               }}
             />
           </CardText>
 
-          {/* <div>
-            {data.languages.map((item) => {
-              return (
-                <Button outline key={item.id} color="primary">
-                  {ConverFirstLatterToCapital(item.name)}
-                </Button>
-              );
-            })}
-          </div> */}
           <CardFooter>
             <div className="d-flex justify-content-between align-items-center">
               <div>
@@ -224,6 +207,6 @@ export default function CategoryCard({ data }) {
         target={`popover-${data.id}`}
         content={<BtnContent newsId={data.id} />}
       />
-    </NewsCardWaraper>
+    </CategoryCardWrapper>
   );
 }

@@ -1,23 +1,22 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
 import React, { useMemo, useState } from "react";
-import CustomTextField from "../partials/customTextField";
-import * as yup from "yup";
-import RichTextField from "../partials/richTextEditorField";
-import styled from "styled-components";
-import { CustomDropDown } from "../partials/customDropDown";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { Trans, useTranslation } from "react-i18next";
-import { Button, ButtonGroup, Col, Row, Spinner } from "reactstrap";
-import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
-import { useHistory } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createNews } from "../../api/newsApi";
 import { Plus } from "react-feather";
-import LogListTable from "../DonationBox/logListTable";
+import { Trans, useTranslation } from "react-i18next";
+import { Prompt, useHistory } from "react-router-dom";
+import { Button, ButtonGroup, Col, Row, Spinner } from "reactstrap";
+import styled from "styled-components";
+import * as Yup from "yup";
 import { getAllExpensesLogs } from "../../api/expenseApi";
-import { Prompt } from "react-router-dom";
+import { createNews } from "../../api/newsApi";
+import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import LogListTable from "../DonationBox/logListTable";
+import { CustomDropDown } from "../partials/customDropDown";
+import CustomTextField from "../partials/customTextField";
+import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
+import RichTextField from "../partials/richTextEditorField";
 
-const FormWaraper = styled.div`
+const FormWrapper = styled.div`
   .FormikWraper {
     padding: 40px;
   }
@@ -63,21 +62,21 @@ export default function ExpensesForm({
   handleSubmit,
   expensesId,
   editLogs,
-  vailidationSchema,
+  validationSchema,
   initialValues,
   showTimeInput,
 }) {
   const history = useHistory();
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
-  const newsQuerClient = useQueryClient();
+  const expenseQueryClient = useQueryClient();
 
-  const newsMutation = useMutation({
+  const expenseMutation = useMutation({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
       if (!data.error) {
-        newsQuerClient.invalidateQueries(["Expenses"]);
-        newsQuerClient.invalidateQueries(["ExpensesDetail"]);
+        expenseQueryClient.invalidateQueries(["Expenses"]);
+        expenseQueryClient.invalidateQueries(["ExpensesDetail"]);
         setLoading(false);
         history.push("/internal_expenses");
       } else if (data?.error) {
@@ -105,14 +104,14 @@ export default function ExpensesForm({
   const [showPrompt, setShowPrompt] = useState(true);
 
   return (
-    <FormWaraper className="FormikWraper">
+    <FormWrapper className="FormikWraper">
       <Formik
         // enableReinitialize
         initialValues={{ ...initialValues }}
         onSubmit={(e) => {
           setShowPrompt(false);
           setLoading(true);
-          newsMutation.mutate({
+          expenseMutation.mutate({
             expenseId: e?.Id,
             amount: e?.Amount,
             title: e?.Title,
@@ -120,7 +119,7 @@ export default function ExpensesForm({
             expenseDate: e?.DateTime,
           });
         }}
-        validationSchema={vailidationSchema}
+        validationSchema={validationSchema}
       >
         {(formik) => (
           <Form>
@@ -239,6 +238,6 @@ export default function ExpensesForm({
           </Form>
         )}
       </Formik>
-    </FormWaraper>
+    </FormWrapper>
   );
 }

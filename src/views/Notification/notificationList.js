@@ -3,6 +3,7 @@ import React, { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import { Plus } from "react-feather";
+import { Helmet } from "react-helmet";
 import { Trans, useTranslation } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
@@ -11,12 +12,11 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import NoContent from "../../components/partials/noContent";
-import NotificationList from "../../components/Notification/notificationList";
 import { getAllNotification, readNotification } from "../../api/notification";
-import { Helmet } from "react-helmet";
-const NotificationWarper = styled.div`
+import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import NotificationList from "../../components/Notification/notificationList";
+import NoContent from "../../components/partials/noContent";
+const NotificationWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
@@ -49,8 +49,6 @@ const NotificationWarper = styled.div`
     font: normal normal bold 13px/5px noto sans;
   }
 `;
-
-const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 export default function Notification() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
@@ -112,7 +110,7 @@ export default function Notification() {
     }
   );
 
-  // const queryClient 
+  // const queryClient
   const NotificationsItem = useMemo(
     () => notificationQuery?.data?.results ?? [],
     [notificationQuery]
@@ -157,11 +155,11 @@ export default function Notification() {
 
   const notificationSeen = useQuery(
     [unseenIds],
-    async () => await readNotification({notificationIds:unseenIds})
+    async () => await readNotification({ notificationIds: unseenIds })
   );
 
   return (
-    <NotificationWarper>
+    <NotificationWrapper>
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Mandir Admin | Notifications</title>
@@ -273,6 +271,6 @@ export default function Notification() {
           </Row>
         </div>
       </div>
-    </NotificationWarper>
+    </NotificationWrapper>
   );
 }

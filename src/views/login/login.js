@@ -24,7 +24,7 @@ import {
   Spinner,
 } from "reactstrap";
 import styled from "styled-components";
-import * as yup from "yup";
+import * as Yup from "yup";
 import { forgotPassword } from "../../api/forgotPassword";
 import { checkUserTrust, loginPage } from "../../api/loginPageApi";
 import passwordEyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
@@ -81,14 +81,14 @@ const LoginCover = () => {
             setCookieWithMainDomain(
               "refreshToken",
               res?.tokens?.refresh?.token,
-              ".paridhan.app"
-              // ".localhost"
+              // ".paridhan.app"
+              ".localhost"
             );
             setCookieWithMainDomain(
               "accessToken",
               res?.tokens?.access?.token,
-              ".paridhan.app"
-              // ".localhost"
+              // ".paridhan.app"
+              ".localhost"
             );
             if (
               TrustsList?.results?.length > 1 &&
@@ -106,23 +106,11 @@ const LoginCover = () => {
               TrustsList?.results?.length === 1 &&
               TrustsList?.results[0]?.isAproved === "approved"
             ) {
-              // setCookieWithMainDomain(
-              //   "refreshToken",
-              //   res?.tokens?.refresh?.token,
-              //   // ".paridhan.app"
-              //   "localhost"
-              // );
-              // setCookieWithMainDomain(
-              //   "accessToken",
-              //   res?.tokens?.access?.token,
-              //   // ".paridhan.app"
-              //   "localhost"
-              // );
               dispatch(handleTrustDetail(TrustsList?.results[0]));
               if (res?.tokens?.access?.token && res?.tokens?.refresh?.token) {
                 window.location.replace(
-                  `https://${TrustsList?.results[0]?.subDomain}${subdomainChange}/login`
-                  // `http://${TrustsList?.results[0]?.subDomain}-dev.localhost:3001/login`
+                  // `https://${TrustsList?.results[0]?.subDomain}${subdomainChange}/login`
+                  `http://${TrustsList?.results[0]?.subDomain}-dev.localhost:3000/login`
                 );
               }
             }
@@ -137,7 +125,6 @@ const LoginCover = () => {
     return forgotPassword(values);
   };
 
-  const forgetPasswordQueryClient = useQueryClient();
   const resetPasswordMutation = useMutation({
     mutationFn: handleForgetPassword,
     onSuccess: (data) => {
@@ -149,16 +136,15 @@ const LoginCover = () => {
       }
     },
   });
-  const loginSchema = yup.object().shape({
-    email: yup
-      .string()
+  const loginSchema = Yup.object().shape({
+    email: Yup.string()
       .email("Invalid Email.")
       .required("Email is required.")
       .min(5),
-    password: yup.string().required("Password is required."),
+    password: Yup.string().required("Password is required."),
   });
-  const forgetPasswordSchema = yup.object().shape({
-    email: yup.string().required("Email is required.").min(5),
+  const forgetPasswordSchema = Yup.object().shape({
+    email: Yup.string().required("Email is required.").min(5),
   });
   const LoginWarraper = styled.div`
     .errorMassage {

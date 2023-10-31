@@ -3,7 +3,7 @@ import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import * as yup from "yup";
+import * as Yup from "yup";
 import { createSubscribedUser } from "../../api/subscribedUser.js";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import SubscribedUserForm from "../../components/subscribedUser/subscribedUserForm.js";
@@ -24,14 +24,22 @@ const NoticeWraper = styled.div`
 const handleCreateUser = async (payload) => {
   return createSubscribedUser(payload);
 };
-const schema = yup.object().shape({
-  // name: yup.string().required("users_title_required"),
-  mobile: yup.string().required("users_mobile_required"),
-  email: yup.string().email("email_invalid").required("users_email_required").trim(),
-  name: yup.string().matches(
-    /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
-    'user_only_letters'
-).required("users_title_required").trim(),
+const schema = Yup.object().shape({
+  // name: Yup.string().required("users_title_required"),
+  mobile: Yup.string().required("users_mobile_required"),
+  email: Yup
+    .string()
+    .email("email_invalid")
+    .required("users_email_required")
+    .trim(),
+  name: Yup
+    .string()
+    .matches(
+      /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+      "user_only_letters"
+    )
+    .required("users_title_required")
+    .trim(),
 });
 
 export default function AddSubscribedUser() {
@@ -39,7 +47,6 @@ export default function AddSubscribedUser() {
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
- 
   return (
     <NoticeWraper>
       <div className="d-flex justify-content-between align-items-center ">
@@ -73,11 +80,11 @@ export default function AddSubscribedUser() {
           initialValues={{
             name: "",
             mobile: "",
-            countryCode:"in",
-            dialCode:"91",
+            countryCode: "in",
+            dialCode: "91",
             email: "",
           }}
-          vailidationSchema={schema}
+          validationSchema={schema}
           buttonName={"subscribed_user_add_user"}
         />
       </div>

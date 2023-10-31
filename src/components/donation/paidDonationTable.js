@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import moment from "moment";
+import numberToWords from "number-to-words";
 import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -15,7 +16,6 @@ import receiptIcon from "../../assets/images/icons/receiptIcon.svg";
 import templeImage from "../../assets/images/pages/login-v2.png";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomDataTable from "../partials/CustomDataTable";
-import numberToWords from "number-to-words";
 
 export default function DonationListTable({ data, topdf }, args) {
   const { t } = useTranslation();
@@ -123,7 +123,6 @@ export default function DonationListTable({ data, topdf }, args) {
         category: (
           <div>
             {ConverFirstLatterToCapital(item?.masterCategory?.name ?? "-")}
-            {/* {item?.subCategory && `(${item?.subCategory?.name ?? ""})`} */}
           </div>
         ),
         subCategory: ConverFirstLatterToCapital(item?.category?.name ?? "-"),
@@ -172,7 +171,7 @@ export default function DonationListTable({ data, topdf }, args) {
 
   return (
     <RecentDonationTableWarper>
-      <CustomDataTable maxHieght={""} columns={columns} data={Donatio_data} />
+      <CustomDataTable maxHeight={""} columns={columns} data={Donatio_data} />
       <ReactToPrint
         trigger={() => (
           <span id="AllPaidDonation" ref={pdfRef} style={{ display: "none" }}>

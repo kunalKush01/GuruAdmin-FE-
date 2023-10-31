@@ -3,12 +3,12 @@ import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import * as yup from "yup";
+import * as Yup from "yup";
 import { createExpense } from "../../api/expenseApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import ExpensesForm from "../../components/internalExpenses/expensesForm";
 
-const NewsWarper = styled.div`
+const ExpenseWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
@@ -24,19 +24,19 @@ const NewsWarper = styled.div`
 const handleCreateExpense = async (payload) => {
   return createExpense(payload);
 };
-const schema = yup.object().shape({
-  Title: yup
+const schema = Yup.object().shape({
+  Title: Yup
     .string()
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
     .required("expenses_title_required")
     .trim(),
-  // AddedBy: yup.string().required("news_tags_required"),
-  Amount: yup
+  // AddedBy: Yup.string().required("news_tags_required"),
+  Amount: Yup
     .string()
     .matches(/^[1-9][0-9]*$/, "invalid_amount")
     .required("amount_required"),
-  Body: yup.string().required("expenses_desc_required"),
-  DateTime: yup.string(),
+  Body: Yup.string().required("expenses_desc_required"),
+  DateTime: Yup.string(),
 });
 
 export default function AddNews() {
@@ -57,7 +57,7 @@ export default function AddNews() {
   };
 
   return (
-    <NewsWarper>
+    <ExpenseWrapper>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -78,11 +78,11 @@ export default function AddNews() {
         <ExpensesForm
           handleSubmit={handleCreateExpense}
           initialValues={initialValues}
-          vailidationSchema={schema}
+          validationSchema={schema}
           showTimeInput
           buttonName="expenses_AddExpenses"
         />
       </div>
-    </NewsWarper>
+    </ExpenseWrapper>
   );
 }

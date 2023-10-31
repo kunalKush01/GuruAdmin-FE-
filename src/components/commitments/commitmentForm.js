@@ -7,42 +7,43 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { getAllMasterCategories } from "../../api/expenseApi";
 import FormWithoutFormikForCommitment from "./FormWithoutFormikforCommitment";
-const FormWaraper = styled.div`
-  .FormikWraper {
+
+const FormWraper = styled.div`
+  .FormikWrapper {
     padding: 40px;
   }
-  .btn-Published {
-    text-align: center;
-  }
-  .addCommitment-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .commitmentContent {
-    height: 350px;
-    overflow: auto;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: #ff8744;
-    font: normal normal bold 13px/5px noto sans;
-  }
-  .btn-secondary {
-    background-color: #fff7e8 !important;
-    color: #583703 !important ;
-    border: none;
-    font: normal normal bold 20px/20px noto sans !important ;
-    box-shadow: none !important ;
-    :hover {
-      color: #fff !important;
-      background-color: #ff8744 !important;
-    }
-    .secondary.active {
-      color: #fff !important;
-    }
+  // .btn-Published {
+  //   text-align: center;
+  // }
+  // .addCommitment-btn {
+  //   padding: 8px 20px;
+  //   margin-left: 10px;
+  //   font: normal normal bold 15px/20px noto sans;
+  // }
+  // .commitmentContent {
+  //   height: 350px;
+  //   overflow: auto;
+  //   ::-webkit-scrollbar {
+  //     display: none;
+  //   }
+  // }
+  // .filterPeriod {
+  //   color: #ff8744;
+  //   font: normal normal bold 13px/5px noto sans;
+  // }
+  // .btn-secondary {
+  //   background-color: #fff7e8 !important;
+  //   color: #583703 !important ;
+  //   border: none;
+  //   font: normal normal bold 20px/20px noto sans !important ;
+  //   box-shadow: none !important ;
+  //   :hover {
+  //     color: #fff !important;
+  //     background-color: #ff8744 !important;
+  //   }
+    // .secondary.active {
+    //   color: #fff !important;
+    // }
   }
 `;
 
@@ -50,11 +51,10 @@ export default function CommitmentForm({
   plusIconDisable = false,
   buttonName = "",
   handleSubmit,
-  disbleCategoryOnEdit,
-  vailidationSchema,
+  disableCategoryOnEdit,
+  validationSchema,
   initialValues,
-  getCommimentMobile,
-  showTimeInput,
+  getCommitmentMobile,
 }) {
   const history = useHistory();
   const commitmentQueryClient = useQueryClient();
@@ -84,10 +84,9 @@ export default function CommitmentForm({
   const [showPrompt, setShowPrompt] = useState(true);
 
   return (
-    <FormWaraper className="FormikWraper">
+    <FormWraper className="FormikWrapper">
       {!masterloadOptionQuery.isLoading && (
         <Formik
-          // enableReinitialize
           initialValues={{
             ...initialValues,
           }}
@@ -106,7 +105,7 @@ export default function CommitmentForm({
               commitmentEndDate: e.DateTime,
             });
           }}
-          validationSchema={vailidationSchema}
+          validationSchema={validationSchema}
         >
           {(formik) => (
             <>
@@ -114,10 +113,10 @@ export default function CommitmentForm({
                 formik={formik}
                 masterloadOptionQuery={masterloadOptionQuery}
                 loading={loading}
-                editCommitment={disbleCategoryOnEdit}
+                editCommitment={disableCategoryOnEdit}
                 countryFlag={initialValues?.countryCode}
                 plusIconDisable
-                getCommimentMobile={getCommimentMobile}
+                getCommitmentMobile={getCommitmentMobile}
                 showPrompt={showPrompt}
                 buttonName={buttonName}
               />
@@ -125,6 +124,6 @@ export default function CommitmentForm({
           )}
         </Formik>
       )}
-    </FormWaraper>
+    </FormWraper>
   );
 }

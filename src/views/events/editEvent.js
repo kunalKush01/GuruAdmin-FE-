@@ -9,41 +9,40 @@ import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import styled from "styled-components";
-import * as yup from "yup";
+import * as Yup from "yup";
 import { getEventDetail, updateEventDetail } from "../../api/eventApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import EventForm from "../../components/events/eventForm";
 import { CustomDropDown } from "../../components/partials/customDropDown";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-const EventWarper = styled.div`
+const EventWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
     font: normal normal bold 15px/33px Noto Sans;
   }
-  .editevent {
+  .editEvent {
     color: #583703;
     display: flex;
     align-items: center;
   }
 `;
 
-const schema = yup.object().shape({
-  Title: yup
-    .string()
+const schema = Yup.object().shape({
+  Title: Yup.string()
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
     .required("events_title_required")
     .trim(),
-  Body: yup.string().required("events_desc_required").trim(),
-  DateTime: yup.object().shape({
-    start: yup.string().required("events_startDate_required"),
-    // end: yup.mixed().required("events_endDate_required"),
+  Body: Yup.string().required("events_desc_required").trim(),
+  DateTime: Yup.object().shape({
+    start: Yup.string().required("events_startDate_required"),
+    // end: Yup.mixed().required("events_endDate_required"),
   }),
-  startTime: yup.mixed().required("events_startTime_required"),
-  endTime: yup.mixed().required("events_endTime_required"),
-  SelectedEvent: yup.mixed(),
-  // tagsInit:yup.array().max(15 ,"tags_limit"),
+  startTime: Yup.mixed().required("events_startTime_required"),
+  endTime: Yup.mixed().required("events_endTime_required"),
+  SelectedEvent: Yup.mixed(),
+  // tagsInit:Yup.array().max(15 ,"tags_limit"),
 });
 
 const getLangId = (langArray, langSelection) => {
@@ -56,7 +55,7 @@ const getLangId = (langArray, langSelection) => {
   return languageId;
 };
 
-export default function Editevent() {
+export default function EditEvent() {
   const history = useHistory();
   const { eventId } = useParams();
   const langArray = useSelector((state) => state.auth.availableLang);
@@ -96,7 +95,7 @@ export default function Editevent() {
       Id: eventDetailQuery?.data?.result?.id,
       Title: eventDetailQuery?.data?.result?.title,
       tagsInit: tags,
-      Body: he.decode(eventDetailQuery?.data?.result?.body ?? ""),
+      Body: he?.decode(eventDetailQuery?.data?.result?.body ?? ""),
       images: [],
       PublishedBy: eventDetailQuery?.data?.result?.publishedBy,
       DateTime: {
@@ -113,7 +112,7 @@ export default function Editevent() {
   }, [eventDetailQuery]);
 
   return (
-    <EventWarper>
+    <EventWrapper>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -125,11 +124,11 @@ export default function Editevent() {
               )
             }
           />
-          <div className="editevent">
+          <div className="editEvent">
             <Trans i18nKey={"events_EditEvent"} />
           </div>
         </div>
-        <div className="editevent">
+        <div className="editEvent">
           <div className="d-none d-sm-block">
             <Trans i18nKey={"news_InputIn"} />
           </div>
@@ -186,7 +185,7 @@ export default function Editevent() {
                 editImage="edit"
                 defaultImages={eventDetailQuery?.data?.result?.images}
                 initialValues={initialValues}
-                vailidationSchema={schema}
+                validationSchema={schema}
                 showTimeInput
                 selectEventDisabled
                 handleSubmit={handleEventUpdate}
@@ -196,6 +195,6 @@ export default function Editevent() {
           )}
         </Else>
       </If>
-    </EventWarper>
+    </EventWrapper>
   );
 }

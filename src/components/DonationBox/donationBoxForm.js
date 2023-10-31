@@ -1,27 +1,26 @@
-import { Form, Formik } from "formik";
-import React, { useMemo, useState } from "react";
-import CustomTextField from "../partials/customTextField";
-import * as yup from "yup";
-import RichTextField from "../partials/richTextEditorField";
-import styled from "styled-components";
-import { CustomDropDown } from "../partials/customDropDown";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { Trans, useTranslation } from "react-i18next";
-import { Button, ButtonGroup, Col, Row, Spinner } from "reactstrap";
-import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
-import { useHistory } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createNews } from "../../api/newsApi";
-import { Plus } from "react-feather";
+import { Form, Formik } from "formik";
 import { flatMap } from "lodash";
-import { setlang } from "../../redux/authSlice";
-import LogListTable from "./logListTable";
+import React, { useMemo, useState } from "react";
+import { Plus } from "react-feather";
+import { Trans, useTranslation } from "react-i18next";
+import { Prompt, useHistory } from "react-router-dom";
+import { Button, ButtonGroup, Col, Row, Spinner } from "reactstrap";
+import styled from "styled-components";
+import * as Yup from "yup";
 import { getAllBoxCollectionLogs } from "../../api/donationBoxCollectionApi";
-import { Prompt } from "react-router-dom";
+import { createNews } from "../../api/newsApi";
+import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import { setlang } from "../../redux/authSlice";
 import { TextArea } from "../partials/CustomTextArea";
+import { CustomDropDown } from "../partials/customDropDown";
+import CustomTextField from "../partials/customTextField";
+import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
+import RichTextField from "../partials/richTextEditorField";
+import LogListTable from "./logListTable";
 
-const FormWaraper = styled.div`
-  .FormikWraper {
+const FormWrapper = styled.div`
+  .FormikWrapper {
     padding: 40px;
   }
   .btn-Published {
@@ -64,7 +63,7 @@ export default function DonationBoxForm({
   plusIconDisable = false,
   buttonName = "",
   handleSubmit,
-  vailidationSchema,
+  validationSchema,
   collectionId,
   editLogs,
   initialValues,
@@ -108,7 +107,7 @@ export default function DonationBoxForm({
   const [showPrompt, setShowPrompt] = useState(true);
 
   return (
-    <FormWaraper className="FormikWraper">
+    <FormWrapper className="FormikWrapper">
       <Formik
         // enableReinitialize
         initialValues={{ ...initialValues }}
@@ -122,7 +121,7 @@ export default function DonationBoxForm({
             collectionDate: e?.DateTime,
           });
         }}
-        validationSchema={vailidationSchema}
+        validationSchema={validationSchema}
       >
         {(formik) => (
           <Form>
@@ -176,7 +175,6 @@ export default function DonationBoxForm({
                         label={t("donation_select_date")}
                         futureDateNotAllowed
                         name="DateTime"
-                        // showTimeInput={showTimeInput}
                       />
                     </Col>
                   </Row>
@@ -227,6 +225,6 @@ export default function DonationBoxForm({
           </Form>
         )}
       </Formik>
-    </FormWaraper>
+    </FormWrapper>
   );
 }

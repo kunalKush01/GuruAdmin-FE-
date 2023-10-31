@@ -1,14 +1,14 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { If } from "react-if-else-switch";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import CustomDataTable from "../partials/CustomDataTable";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
-import { If } from "react-if-else-switch";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import CustomDataTable from "../partials/CustomDataTable";
 
-const ReportWaraper = styled.div`
+const ReportWrapper = styled.div`
   color: #583703 !important;
   /* margin-right: 20px; */
   font: normal normal bold 15px/23px Noto Sans;
@@ -22,17 +22,8 @@ const ReportWaraper = styled.div`
   }
 `;
 const ReportTable = ({ data }) => {
-  const queryCient = useQueryClient();
-  const deleteMutation = useMutation({
-    // mutationFn: handleDeleteSubscribedUser,
-    onSuccess: (data) => {
-      if (!data.error) {
-        queryCient.invalidateQueries(["reportUser"]);
-      }
-    },
-  });
   const { t } = useTranslation();
-  const history = useHistory();
+
   // table colum and heading
   const column = [
     {
@@ -74,10 +65,9 @@ const ReportTable = ({ data }) => {
           <div className="d-flex align-items-center">
             <img
               src={
-                // item?.profileImage ?? avtarIcon
-                (item?.profileImage && item?.profileImage !== "" )
-                ? item?.profileImage
-                : avtarIcon
+                item?.profileImage && item?.profileImage !== ""
+                  ? item?.profileImage
+                  : avtarIcon
               }
               className="cursor-pointer"
               style={{
@@ -90,7 +80,8 @@ const ReportTable = ({ data }) => {
             <div>{ConverFirstLatterToCapital(item?.name ?? "-")}</div>
           </div>
         ),
-        mobileNumber: `+${item?.countryCode ?? "91"} ${item?.mobileNumber}` ?? "-",
+        mobileNumber:
+          `+${item?.countryCode ?? "91"} ${item?.mobileNumber}` ?? "-",
         email: item?.email ?? "-",
         transactionIds: item?.transactionId ?? "-",
         status: (
@@ -106,9 +97,9 @@ const ReportTable = ({ data }) => {
     });
   });
   return (
-    <ReportWaraper>
-      <CustomDataTable maxHieght={"470px"} columns={column} data={reportData} />
-    </ReportWaraper>
+    <ReportWrapper>
+      <CustomDataTable maxHeight={"470px"} columns={column} data={reportData} />
+    </ReportWrapper>
   );
 };
 

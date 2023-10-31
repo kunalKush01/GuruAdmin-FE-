@@ -9,32 +9,31 @@ import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import styled from "styled-components";
-import * as yup from "yup";
+import * as Yup from "yup";
 import { getPunyarjakDetails, updatePunyarjak } from "../../api/punarjakApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import PunyarjakForm from "../../components/Punyarjak/punyarjakUserForm";
 import { CustomDropDown } from "../../components/partials/customDropDown";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-const PunyarjakWarapper = styled.div`
+const PunyarjakWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
     font: normal normal bold 15px/33px Noto Sans;
   }
-  .editNotice {
+  .editPunyarjak {
     color: #583703;
     display: flex;
     align-items: center;
   }
 `;
-const schema = yup.object().shape({
-  description: yup.string().required("punyarjak_desc_required").trim(),
-  title: yup
-    .string()
+const schema = Yup.object().shape({
+  description: Yup.string().required("punyarjak_desc_required").trim(),
+  title: Yup.string()
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
     .required("news_title_required")
     .trim(),
-  image: yup.string().required("img_required"),
+  image: Yup.string().required("img_required"),
 });
 
 const getLangId = (langArray, langSelection) => {
@@ -75,7 +74,7 @@ export default function EditSubAdmin() {
     return {
       id: punyarjakDetailQuery?.data?.result?.id,
       title: punyarjakDetailQuery?.data?.result?.title,
-      description: he.decode(
+      description: he?.decode(
         punyarjakDetailQuery?.data?.result?.description ?? ""
       ),
       DateTime: moment(punyarjakDetailQuery?.data?.result?.publishDate)
@@ -86,7 +85,7 @@ export default function EditSubAdmin() {
   }, [punyarjakDetailQuery]);
 
   return (
-    <PunyarjakWarapper>
+    <PunyarjakWrapper>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex align-items-center ">
           <img
@@ -94,11 +93,11 @@ export default function EditSubAdmin() {
             className="me-2 cursor-pointer"
             onClick={() => history.push(`/punyarjak?page=${currentPage}`)}
           />
-          <div className="editNotice">
+          <div className="editPunyarjak">
             <Trans i18nKey={"edit_punyarjak"} />
           </div>
         </div>
-        <div className="editNotice">
+        <div className="editPunyarjak">
           <div className="d-none d-sm-block">
             <Trans i18nKey={"news_InputIn"} />
           </div>
@@ -161,13 +160,13 @@ export default function EditSubAdmin() {
                 }
                 buttonName={"edit_punyarjak"}
                 initialValues={initialValues}
-                vailidationSchema={schema}
+                validationSchema={schema}
                 handleSubmit={handlePunyarjakUpdate}
               />
             </div>
           )}
         </Else>
       </If>
-    </PunyarjakWarapper>
+    </PunyarjakWrapper>
   );
 }

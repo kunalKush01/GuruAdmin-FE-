@@ -1,13 +1,13 @@
+import moment from "moment";
 import React from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import * as yup from "yup";
+import * as Yup from "yup";
 import { createEvent } from "../../api/eventApi.js";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import EventForm from "../../components/events/eventForm";
-import moment from "moment";
 
 const EventWraper = styled.div`
   color: #583703;
@@ -25,21 +25,20 @@ const EventWraper = styled.div`
 const handleCreateEvent = async (payload) => {
   return createEvent(payload);
 };
-const schema = yup.object().shape({
-  Title: yup
-    .string()
+const schema = Yup.object().shape({
+  Title: Yup.string()
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
     .required("events_title_required")
     .trim(),
-  // tagsInit:yup.array().max(15 ,"tags_limit"),
-  Body: yup.string().required("events_desc_required").trim(),
-  DateTime: yup.object().shape({
-    start: yup.string().required("events_startDate_required"),
-    // end: yup.mixed().required("events_endDate_required"),
+  // tagsInit:Yup.array().max(15 ,"tags_limit"),
+  Body: Yup.string().required("events_desc_required").trim(),
+  DateTime: Yup.object().shape({
+    start: Yup.string().required("events_startDate_required"),
+    // end: Yup.mixed().required("events_endDate_required"),
   }),
-  startTime: yup.mixed().required("events_startTime_required"),
-  endTime: yup.mixed().required("events_endTime_required"),
-  SelectedEvent: yup.mixed(),
+  startTime: Yup.mixed().required("events_startTime_required"),
+  endTime: Yup.mixed().required("events_endTime_required"),
+  SelectedEvent: Yup.mixed(),
 });
 
 const initialValues = {
@@ -50,7 +49,7 @@ const initialValues = {
   tagsInit: [],
   Body: "",
   DateTime: { start: new Date(), end: null },
-  startTime:moment(new Date, ['HH:mm']).format("HH:mm"),
+  startTime: moment(new Date(), ["HH:mm"]).format("HH:mm"),
   endTime: "23:59",
 };
 
@@ -78,23 +77,12 @@ export default function AddEvent() {
             <Trans i18nKey={"events_AddEvent"} />
           </div>
         </div>
-        {/* <div className="addEvent">
-          <div className="d-none d-sm-block">
-            <Trans i18nKey={"news_InputIn"} />
-          </div>
-          <CustomDropDown
-            ItemListArray={langArray}
-            className={"ms-1"}
-            defaultDropDownName={"English"}
-            disabled
-          />
-        </div> */}
       </div>
       <div className="ms-sm-3 mt-1">
         <EventForm
           handleSubmit={handleCreateEvent}
           initialValues={initialValues}
-          vailidationSchema={schema}
+          validationSchema={schema}
           showTimeInput
           buttonName="events_AddEvent"
         />

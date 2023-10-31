@@ -1,43 +1,43 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Form, Formik } from "formik";
+import he from "he";
 import moment from "moment";
 import React, { useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import {
+  Button,
+  ButtonGroup,
   Card,
   CardBody,
-  Button,
-  Row,
   Col,
-  ButtonGroup,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
   DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
   Modal,
-  ModalHeader,
   ModalBody,
+  ModalHeader,
+  Row,
+  UncontrolledDropdown,
 } from "reactstrap";
-import he from "he";
 import styled from "styled-components";
-import cardThreeDotIcon from "../../assets/images/icons/news/threeDotIcon.svg";
-import { ConverFirstLatterToCapital } from "../../utility/formater";
-import { Trans, useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
-import { deleteNewsDetail } from "../../api/newsApi";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
-import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
-import BtnPopover from "../partials/btnPopover";
+import { deleteNewsDetail } from "../../api/newsApi";
 import {
   PublishNotice,
   ScheduleNotice,
   deleteNoticeDetail,
 } from "../../api/noticeApi";
+import confirmationIcon from "../../assets/images/icons/news/conformationIcon.svg";
+import cardThreeDotIcon from "../../assets/images/icons/news/threeDotIcon.svg";
 import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
-import { useSelector } from "react-redux";
+import BtnPopover from "../partials/btnPopover";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
-import { Form, Formik } from "formik";
 
-const EventCardWaraper = styled.div`
+const NoticeCardWrapper = styled.div`
   .card1 {
     font: normal normal bold 13px/16px Noto Sans;
     margin-bottom: 0.5rem !important;
@@ -147,12 +147,12 @@ function BtnContent({
   const handleDeleteNotice = async (payload) => {
     return deleteNoticeDetail(payload);
   };
-  const queryCient = useQueryClient();
+  const queryClient = useQueryClient();
   const deleteMutation = useMutation({
     mutationFn: handleDeleteNotice,
     onSuccess: (data) => {
       if (!data.error) {
-        queryCient.invalidateQueries(["Notices"]);
+        queryClient.invalidateQueries(["Notices"]);
       }
     },
   });
@@ -180,13 +180,11 @@ function BtnContent({
           <Col
             xs={12}
             className="col-item  "
-            // onClick={() => deleteMutation.mutate(noticeId)}
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              // Swal.fire("Oops...", "Something went wrong!", "error");
               Swal.fire({
-                title: `<img src="${comfromationIcon}"/>`,
+                title: `<img src="${confirmationIcon}"/>`,
                 html: `
                                       <h3 class="swal-heading">${t(
                                         "notices_delete"
@@ -258,12 +256,12 @@ export default function NoticeCard({
   const handleSchedule = async (payload) => {
     return ScheduleNotice(payload);
   };
-  const queryCient = useQueryClient();
+  const queryClient = useQueryClient();
   const publishMutation = useMutation({
     mutationFn: handlePublish,
     onSuccess: (data) => {
       if (!data.error) {
-        queryCient.invalidateQueries(["Notices"]);
+        queryClient.invalidateQueries(["Notices"]);
       }
     },
   });
@@ -274,13 +272,13 @@ export default function NoticeCard({
         setTimeout(() => {
           toggle();
         }, 500);
-        queryCient.invalidateQueries(["Notices"]);
+        queryClient.invalidateQueries(["Notices"]);
       }
     },
   });
 
   return (
-    <EventCardWaraper key={data.id}>
+    <NoticeCardWrapper key={data.id}>
       <div>
         <Card
           style={{
@@ -301,16 +299,16 @@ export default function NoticeCard({
                 className="cursor-pointer  me-md-1 me-xl-0"
               >
                 <div className="w-100 h-100">
-                    <img
-                      src={data?.image || placeHolder}
-                      alt="Notice Image"
-                      style={{
-                        width: "100%",
-                        borderRadius: "10px",
-                        objectFit: "cover",
-                        height: "122px",
-                      }}
-                    />
+                  <img
+                    src={data?.image || placeHolder}
+                    alt="Notice Image"
+                    style={{
+                      width: "100%",
+                      borderRadius: "10px",
+                      objectFit: "cover",
+                      height: "122px",
+                    }}
+                  />
                 </div>
               </Col>
               <Col className="py-1" xs={12} lg={8}>
@@ -334,7 +332,7 @@ export default function NoticeCard({
                     <div
                       className="card-text "
                       dangerouslySetInnerHTML={{
-                        __html: he.decode(data?.body),
+                        __html: he?.decode(data?.body),
                       }}
                     />
                   </Col>
@@ -371,7 +369,9 @@ export default function NoticeCard({
                             onClick={() => {
                               data?.isPublished
                                 ? Swal.fire({
-                                    html: `<h3>${t("already_publish_notice")}</h3>`,
+                                    html: `<h3>${t(
+                                      "already_publish_notice"
+                                    )}</h3>`,
                                     icon: "info",
                                     showConfirmButton: false,
                                     showCloseButton: false,
@@ -482,7 +482,7 @@ export default function NoticeCard({
                     <div
                       className="card-text "
                       dangerouslySetInnerHTML={{
-                        __html: he.decode(data.body),
+                        __html: he?.decode(data.body),
                       }}
                     />
                   </Col>
@@ -566,6 +566,6 @@ export default function NoticeCard({
           </Row>
         </ModalBody>
       </Modal>
-    </EventCardWaraper>
+    </NoticeCardWrapper>
   );
 }

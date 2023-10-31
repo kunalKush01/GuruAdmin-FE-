@@ -8,7 +8,7 @@ import { Helmet } from "react-helmet";
 import { useHistory } from "react-router-dom";
 import { Button } from "reactstrap";
 import styled from "styled-components";
-import * as yup from "yup";
+import * as Yup from "yup";
 import { getUpdatedTrustDetail, updateProfile } from "../../api/profileApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import ProfileForm from "../../components/Profile/profileForm";
@@ -27,34 +27,31 @@ const ProfileWarper = styled.div`
   }
 `;
 
-const schema = yup.object().shape({
-  trustName: yup
-    .string()
+const schema = Yup.object().shape({
+  trustName: Yup.string()
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
     .required("name_required")
     .trim(),
-  trustType: yup.mixed().required("trust_type_required"),
-  // preference: yup.mixed().required("trust_prefenses_required"),
-  trustEmail: yup
-    .string()
+  trustType: Yup.mixed().required("trust_type_required"),
+  // preference: Yup.mixed().required("trust_prefenses_required"),
+  trustEmail: Yup.string()
     .email("email_invalid")
     .required("email_required")
     .trim(),
-  trustNumber: yup.string().required("trust_contact_number_required"),
-  // facebookLink: yup.string().required("trust_facebookLink_required").trim(),
-  about: yup.string().required("trust_about_required").trim(),
-  name: yup
-    .string()
+  trustNumber: Yup.string().required("trust_contact_number_required"),
+  // facebookLink: Yup.string().required("trust_facebookLink_required").trim(),
+  about: Yup.string().required("trust_about_required").trim(),
+  name: Yup.string()
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
     .required("name_required")
     .trim(),
-  email: yup.string().email("email_invalid").required("email_required").trim(),
-  mobileNumber: yup.string().required("number_required"),
-  // state: yup.string().required("events_state_required").trim(),
-  // city: yup.string().required("events_city_required").trim(),
-  location: yup.string().required("events_location_required").trim(),
-  latitude: yup.string().required("latitude_required"),
-  longitude: yup.string().required("longitude_required"),
+  email: Yup.string().email("email_invalid").required("email_required").trim(),
+  mobileNumber: Yup.string().required("number_required"),
+  // state: Yup.string().required("events_state_required").trim(),
+  // city: Yup.string().required("events_city_required").trim(),
+  location: Yup.string().required("events_location_required").trim(),
+  latitude: Yup.string().required("latitude_required"),
+  longitude: Yup.string().required("longitude_required"),
 });
 
 const getLangId = (langArray, langSelection) => {
@@ -113,7 +110,7 @@ export default function AddProfile() {
       trustDialCode: profileDetail?.data?.result?.trustCountryCode ?? "",
       facebookLink: profileDetail?.data?.result?.facebookLink ?? "",
       address: profileDetail?.data?.result?.address ?? "",
-      about: he.decode(profileDetail?.data?.result?.about ?? ""),
+      about: he?.decode(profileDetail?.data?.result?.about ?? ""),
       name: profileDetail?.data?.result?.name ?? "",
       email: profileDetail?.data?.result?.email ?? "",
       mobileNumber: profileDetail?.data?.result?.mobileNumber ?? "",
@@ -222,7 +219,7 @@ export default function AddProfile() {
             profileImageName={profileDetail?.data?.result?.profileName}
             defaultDocuments={profileDetail?.data?.result?.documents}
             initialValues={initialValues}
-            vailidationSchema={schema}
+            validationSchema={schema}
             buttonLabel={"update_profile"}
           />
         )}

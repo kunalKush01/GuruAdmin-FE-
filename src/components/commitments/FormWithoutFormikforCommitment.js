@@ -2,17 +2,17 @@ import { Form } from "formik";
 import React, { useEffect, useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
+import { Prompt } from "react-router-dom";
 import { useUpdateEffect } from "react-use";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import { getAllSubCategories } from "../../api/expenseApi";
 import { findAllUsersByName, findAllUsersByNumber } from "../../api/findUser";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
+import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
 import AsyncSelectField from "../partials/asyncSelectField";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
-import { Prompt } from "react-router-dom";
-import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
 
 export default function FormWithoutFormikForCommitment({
   formik,
@@ -22,14 +22,14 @@ export default function FormWithoutFormikForCommitment({
   editCommitment,
   loading,
   countryFlag,
-  getCommimentMobile,
+  getCommitmentMobile,
   showPrompt,
   ...props
 }) {
   const { t } = useTranslation();
 
-  const { SelectedMasterCategory, SelectedSubCategory } = formik.values;
-  const [subLoadOption, setsubLoadOption] = useState([]);
+  const { SelectedMasterCategory } = formik.values;
+  const [subLoadOption, setSubLoadOption] = useState([]);
 
   const loadOption = async (name) => {
     const res = await findAllUsersByName({ name: name });
@@ -40,13 +40,13 @@ export default function FormWithoutFormikForCommitment({
       const apiRes = await getAllSubCategories({
         masterId: SelectedMasterCategory?.id,
       });
-      setsubLoadOption(apiRes?.results);
+      setSubLoadOption(apiRes?.results);
     };
 
     SelectedMasterCategory && res();
   }, [SelectedMasterCategory]);
 
-  const [phoneNumber, setPhoneNumber] = useState(getCommimentMobile);
+  const [phoneNumber, setPhoneNumber] = useState(getCommitmentMobile);
 
   useUpdateEffect(() => {
     const user = formik?.values?.SelectedUser;
@@ -55,7 +55,7 @@ export default function FormWithoutFormikForCommitment({
       formik.setFieldValue("countryCode", user?.countryName);
       formik.setFieldValue("dialCode", user?.countryCode);
       formik.setFieldValue("donarName", user?.name);
-      setPhoneNumber(user?.countryCode + user?.mobileNumber)
+      setPhoneNumber(user?.countryCode + user?.mobileNumber);
       return;
     }
     formik.setFieldValue("Mobile", "");
@@ -128,17 +128,6 @@ export default function FormWithoutFormikForCommitment({
                   )}
                 </div>
               )}
-              {/*               
-              <CustomTextField
-                type="number"
-                label={t("dashboard_Recent_DonorNumber")}
-                placeholder={t("placeHolder_mobile_number")}
-                name="Mobile"
-                pattern="[6789][0-9]{9}"
-                onInput={(e) => (e.target.value = e.target.value.slice(0, 12))}
-                required
-                autoFocus
-              /> */}
             </Col>
             <Col xs={12} sm={6}>
               <AsyncSelectField

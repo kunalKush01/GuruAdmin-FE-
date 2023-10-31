@@ -1,46 +1,46 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Form, Formik } from "formik";
+import he from "he";
 import moment from "moment";
 import React, { useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import {
+  Button,
+  ButtonGroup,
   Card,
   CardBody,
-  CardTitle,
+  CardFooter,
   CardSubtitle,
   CardText,
-  Button,
-  CardFooter,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
-  DropdownToggle,
-  Row,
+  CardTitle,
   Col,
-  ButtonGroup,
-  UncontrolledDropdown,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
   Modal,
-  ModalHeader,
   ModalBody,
   ModalFooter,
+  ModalHeader,
+  Row,
+  UncontrolledDropdown,
 } from "reactstrap";
-import he from "he";
 import styled from "styled-components";
+import Swal from "sweetalert2";
+import { PublishNews, ScheduleNews, deleteNewsDetail } from "../../api/newsApi";
 import cardClockIcon from "../../assets/images/icons/news/clockIcon.svg";
+import confirmationIcon from "../../assets/images/icons/news/conformationIcon.svg";
 import cardThreeDotIcon from "../../assets/images/icons/news/threeDotIcon.svg";
+import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
+import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 import BtnPopover from "../partials/btnPopover";
 import { CustomDropDown } from "../partials/customDropDown";
-import { Trans, useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
-import { PublishNews, ScheduleNews, deleteNewsDetail } from "../../api/newsApi";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import Swal from "sweetalert2";
-import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
-import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
-import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
-import { useSelector } from "react-redux";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
-import { Form, Formik } from "formik";
 
-const NewsCardWaraper = styled.div`
+const NewsCardWrapper = styled.div`
   .imgContainer {
     background-color: #fff7e8;
     border-bottom: 1px solid rgb(255, 135, 68);
@@ -140,12 +140,12 @@ function BtnContent({
     return deleteNewsDetail(payload);
   };
 
-  const queryCient = useQueryClient();
+  const queryClient = useQueryClient();
   const deleteMutation = useMutation({
     mutationFn: handleDeleteNews,
     onSuccess: (data) => {
       if (!data.error) {
-        queryCient.invalidateQueries(["News"]);
+        queryClient.invalidateQueries(["News"]);
       }
     },
   });
@@ -180,7 +180,7 @@ function BtnContent({
               e.stopPropagation();
               // Swal.fire("Oops...", "Something went wrong!", "error");
               Swal.fire({
-                title: `<img src="${comfromationIcon}"/>`,
+                title: `<img src="${confirmationIcon}"/>`,
                 html: `
                                       <h3 class="swal-heading">${t(
                                         "news_delete"
@@ -254,12 +254,12 @@ export default function NewsCard({
   const handleSchedule = async (payload) => {
     return ScheduleNews(payload);
   };
-  const queryCient = useQueryClient();
+  const queryClient = useQueryClient();
   const publishMutation = useMutation({
     mutationFn: handlePublish,
     onSuccess: (data) => {
       if (!data.error) {
-        queryCient.invalidateQueries(["News"]);
+        queryClient.invalidateQueries(["News"]);
       }
     },
   });
@@ -270,17 +270,17 @@ export default function NewsCard({
         setTimeout(() => {
           toggle();
         }, 500);
-        queryCient.invalidateQueries(["News"]);
+        queryClient.invalidateQueries(["News"]);
       }
     },
   });
   return (
-    <NewsCardWaraper>
+    <NewsCardWrapper>
       <Card
         style={{
           width: "100%",
           height: "337px",
-          borderRadiuis: "10px",
+          borderRadius: "10px",
           overflow: "hidden",
         }}
       >
@@ -291,7 +291,7 @@ export default function NewsCard({
             style={{
               height: "150px",
               position: "relative",
-              objectFit:'cover',
+              objectFit: "cover",
               width: "100%",
               borderBottom: "1px solid rgb(255, 135, 68)",
             }}
@@ -325,13 +325,12 @@ export default function NewsCard({
                             })
                           : toggle();
                       }}
-                      // () =>
-                      // history.push(
-                      //   `/news/edit/${data?.id}?page=${currentPage}&filter=${currentFilter}`,
-                      //   data?.id
-                      // )
                     >
-                      {data?.isScheduled ? <Trans i18nKey={"reSchedule"} /> : <Trans i18nKey={"schedule"} />}
+                      {data?.isScheduled ? (
+                        <Trans i18nKey={"reSchedule"} />
+                      ) : (
+                        <Trans i18nKey={"schedule"} />
+                      )}
                     </DropdownItem>
                     <DropdownItem
                       className="py-0 w-100"
@@ -346,17 +345,6 @@ export default function NewsCard({
                   </DropdownMenu>
                 </UncontrolledDropdown>
               </ButtonGroup>
-              {/* <Button
-                color="primary"
-                size="sm"
-                onClick={() => publishMutation.mutate(data.id)}
-              >
-                {data?.isPublished ? (
-                  <Trans i18nKey={"unPublish"} />
-                ) : (
-                  <Trans i18nKey={"publish"} />
-                )}
-              </Button> */}
             </div>
           </div>
         </div>
@@ -371,7 +359,7 @@ export default function NewsCard({
             <CardText>
               <div
                 dangerouslySetInnerHTML={{
-                  __html: he.decode(data?.body ?? ""),
+                  __html: he?.decode(data?.body ?? ""),
                 }}
               />
             </CardText>
@@ -453,6 +441,6 @@ export default function NewsCard({
           </Row>
         </ModalBody>
       </Modal>
-    </NewsCardWaraper>
+    </NewsCardWrapper>
   );
 }

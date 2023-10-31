@@ -1,33 +1,34 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import he from "he";
 import moment from "moment";
 import React, { useState } from "react";
+import { Trans } from "react-i18next";
+import { useHistory } from "react-router-dom";
 import {
+  Button,
   Card,
   CardBody,
-  CardTitle,
+  CardFooter,
   CardSubtitle,
   CardText,
-  Button,
-  CardFooter,
+  CardTitle,
+  Col,
   Dropdown,
-  DropdownMenu,
   DropdownItem,
+  DropdownMenu,
   DropdownToggle,
   Row,
-  Col,
 } from "reactstrap";
-import he from "he";
 import styled from "styled-components";
+import Swal from "sweetalert2";
+import { deleteNewsDetail } from "../../api/newsApi";
 import cardClockIcon from "../../assets/images/icons/news/clockIcon.svg";
+import confirmationIcon from "../../assets/images/icons/news/conformationIcon.svg";
 import cardThreeDotIcon from "../../assets/images/icons/news/threeDotIcon.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import BtnPopover from "../partials/btnPopover";
 import { CustomDropDown } from "../partials/customDropDown";
-import { Trans } from "react-i18next";
-import { useHistory } from "react-router-dom";
-import { deleteNewsDetail } from "../../api/newsApi";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import Swal from "sweetalert2";
-import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg"
+
 const NewsCardWaraper = styled.div`
   .imgContainer {
     border-radius: 10px 10px 0px 0px;
@@ -89,7 +90,6 @@ function BtnContent({ newsId }) {
         color: #fff;
       }
     }
-    
   `;
 
   const handleDeleteNews = async (payload) => {
@@ -120,7 +120,6 @@ function BtnContent({ newsId }) {
           xs={12}
           className="col-item"
           onClick={() => history.push(`/news/edit/${newsId}`, newsId)}
-          
         >
           <Trans i18nKey={"news_popOver_Edit"} />
         </Col>
@@ -134,7 +133,7 @@ function BtnContent({ newsId }) {
             e.stopPropagation();
             // Swal.fire("Oops...", "Something went wrong!", "error");
             Swal.fire({
-              title: `<img src="${comfromationIcon}"/>`,
+              title: `<img src="${confirmationIcon}"/>`,
               html: `
                                       <h3 class="swal-heading">Delete Category</h3>
                                       <p>Are you sure you want to permanently delete the selected category ?</p>
@@ -147,11 +146,9 @@ function BtnContent({ newsId }) {
 
               confirmButtonText: "Confirm Delete",
               confirmButtonAriaLabel: "Confirm",
-              
-              
             }).then(async (result) => {
               if (result.isConfirmed) {
-                deleteMutation.mutate(newsId)
+                deleteMutation.mutate(newsId);
               }
             });
           }}
@@ -194,7 +191,7 @@ export default function CategoryCard({ data }) {
           <CardText>
             <div
               dangerouslySetInnerHTML={{
-                __html: he.decode(data?.body ?? ""),
+                __html: he?.decode(data?.body ?? ""),
               }}
             />
           </CardText>

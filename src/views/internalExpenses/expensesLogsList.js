@@ -11,49 +11,49 @@ import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
+import { getAllBoxCollectionLogs } from "../../api/donationBoxCollectionApi";
+import { getAllExpensesLogs } from "../../api/expenseApi";
 import { getAllSubscribedUser } from "../../api/subscribedUser";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import LogListTable from "../../components/DonationBox/logListTable";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
 import NoContent from "../../components/partials/noContent";
 import SubscribedUSerListTable from "../../components/subscribedUser/subscribedUserListTable";
-import LogListTable from "../../components/DonationBox/logListTable";
-import { getAllBoxCollectionLogs } from "../../api/donationBoxCollectionApi";
-import { getAllExpensesLogs } from "../../api/expenseApi";
 
-const HundiLogWarapper = styled.div`
+const ExpenseLogWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
     font: normal normal bold 15px/33px Noto Sans;
   }
-  .addNews {
+  .addExpense {
     color: #583703;
     display: flex;
     align-items: center;
   }
 
-  .FormikWraper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addNews-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .newsContent {
+  // .FormikWraper {
+  //   padding: 40px;
+  // }
+  // .btn-Published {
+  //   text-align: center;
+  // }
+  // .addExpense-btn {
+  //   padding: 8px 20px;
+  //   margin-left: 10px;
+  //   font: normal normal bold 15px/20px noto sans;
+  // }
+  .expenseContent {
     margin-top: 1rem;
     ::-webkit-scrollbar {
       display: none;
     }
   }
-  .filterPeriod {
-    color: #ff8744;
-    margin-top: 0.5rem;
-    font: normal normal bold 13px/5px noto sans;
-  }
+  // .filterPeriod {
+  //   color: #ff8744;
+  //   margin-top: 0.5rem;
+  //   font: normal normal bold 13px/5px noto sans;
+  // }
 `;
 
 export default function ExpensesLog() {
@@ -91,17 +91,10 @@ export default function ExpensesLog() {
     .utcOffset(0, true)
     .toISOString();
 
-  let startDate = moment(filterStartDate).format("DD MMM");
-  let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
 
   const expenseLogQuery = useQuery(
-    [
-      "expenseLog",
-      pagination.page,
-      searchBarValue,
-      expensesId,
-    ],
+    ["expenseLog", pagination.page, searchBarValue, expensesId],
     () =>
       getAllExpensesLogs({
         ...pagination,
@@ -119,7 +112,7 @@ export default function ExpensesLog() {
   );
 
   return (
-    <HundiLogWarapper>
+    <ExpenseLogWrapper>
       <div className="window nav statusBar body "></div>
 
       <div>
@@ -130,7 +123,7 @@ export default function ExpensesLog() {
               className="me-2 cursor-pointer align-self-end"
               onClick={() => history.push("/financial_reports")}
             />
-            <div className="addNews">
+            <div className="addExpense">
               <div className="">
                 <div>
                   <Trans i18nKey={"logs"} />
@@ -150,7 +143,7 @@ export default function ExpensesLog() {
             </Then>
           </If>
         </div>
-        <div className="newsContent">
+        <div className="expenseContent">
           <Row>
             <If condition={expenseLogQuery.isLoading} disableMemo>
               <Then>
@@ -210,6 +203,6 @@ export default function ExpensesLog() {
           </Row>
         </div>
       </div>
-    </HundiLogWarapper>
+    </ExpenseLogWrapper>
   );
 }

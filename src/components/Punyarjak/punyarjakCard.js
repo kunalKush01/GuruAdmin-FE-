@@ -1,41 +1,41 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import he from "he";
 import moment from "moment";
 import React, { useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import {
+  Button,
+  ButtonGroup,
   Card,
   CardBody,
-  CardTitle,
+  CardFooter,
   CardSubtitle,
   CardText,
-  Button,
-  CardFooter,
+  CardTitle,
+  Col,
   Dropdown,
-  DropdownMenu,
   DropdownItem,
+  DropdownMenu,
   DropdownToggle,
   Row,
-  Col,
-  ButtonGroup,
   UncontrolledDropdown,
 } from "reactstrap";
-import he from "he";
 import styled from "styled-components";
+import Swal from "sweetalert2";
+import { PublishNews, deleteNewsDetail } from "../../api/newsApi";
+import { deletePunyarjak } from "../../api/punarjakApi";
 import cardClockIcon from "../../assets/images/icons/news/clockIcon.svg";
+import confirmationIcon from "../../assets/images/icons/news/conformationIcon.svg";
 import cardThreeDotIcon from "../../assets/images/icons/news/threeDotIcon.svg";
+import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
+import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 import BtnPopover from "../partials/btnPopover";
 import { CustomDropDown } from "../partials/customDropDown";
-import { Trans, useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
-import { PublishNews, deleteNewsDetail } from "../../api/newsApi";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import Swal from "sweetalert2";
-import comfromationIcon from "../../assets/images/icons/news/conformationIcon.svg";
-import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
-import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
-import { useSelector } from "react-redux";
-import { deletePunyarjak } from "../../api/punarjakApi";
 
-const NewsCardWaraper = styled.div`
+const PunyarjakCardWrapper = styled.div`
   .imgContainer {
     background-color: #fff7e8;
     border-bottom: 1px solid rgb(255, 135, 68);
@@ -46,9 +46,9 @@ const NewsCardWaraper = styled.div`
   .card-title {
     font: normal normal bold 13px/16px Noto Sans;
     margin-bottom: 10px !important;
-    white-space:nowrap;
+    white-space: nowrap;
     text-overflow: ellipsis;
-    overflow:hidden
+    overflow: hidden;
   }
   .card-text {
     font: normal normal normal 12px/16px Noto Sans;
@@ -85,11 +85,10 @@ const NewsCardWaraper = styled.div`
     padding: 0px 5px;
     font: normal normal bold 12px/30px noto sans;
   }
-  img{
- 
- color: #583703;
- font: 15px Noto Sans;
- }
+  img {
+    color: #583703;
+    font: 15px Noto Sans;
+  }
   div.cardLangScroll {
     /* height: 45px; */
     display: flex;
@@ -133,12 +132,12 @@ function BtnContent({
     return deletePunyarjak(payload);
   };
 
-  const queryCient = useQueryClient();
+  const queryClient = useQueryClient();
   const deleteMutation = useMutation({
     mutationFn: handleDeletePunyarjak,
     onSuccess: (data) => {
       if (!data.error) {
-        queryCient.invalidateQueries(["punyarjak"]);
+        queryClient.invalidateQueries(["punyarjak"]);
       }
     },
   });
@@ -173,7 +172,7 @@ function BtnContent({
               e.stopPropagation();
               // Swal.fire("Oops...", "Something went wrong!", "error");
               Swal.fire({
-                title: `<img src="${comfromationIcon}"/>`,
+                title: `<img src="${confirmationIcon}"/>`,
                 html: `
                                       <h3 class="swal-heading">${t(
                                         "punyarjak_delete"
@@ -235,7 +234,7 @@ export default function PunyarjakCard({
   allPermissions,
 }) {
   return (
-    <NewsCardWaraper>
+    <PunyarjakCardWrapper>
       <Card
         style={{
           width: "100%",
@@ -250,7 +249,7 @@ export default function PunyarjakCard({
             style={{
               height: "150px",
               position: "relative",
-              objectFit:'cover',
+              objectFit: "cover",
               width: "100%",
               borderBottom: "1px solid rgb(255, 135, 68)",
             }}
@@ -260,14 +259,14 @@ export default function PunyarjakCard({
 
         <CardBody>
           <div className="">
-            <CardTitle title={data?.title ?? ''}>
+            <CardTitle title={data?.title ?? ""}>
               {ConverFirstLatterToCapital(data?.title ?? "")}
             </CardTitle>
 
             <CardText>
               <div
                 dangerouslySetInnerHTML={{
-                  __html: he.decode(data?.description ?? ""),
+                  __html: he?.decode(data?.description ?? ""),
                 }}
               />
             </CardText>
@@ -311,6 +310,6 @@ export default function PunyarjakCard({
           />
         }
       />
-    </NewsCardWaraper>
+    </PunyarjakCardWrapper>
   );
 }

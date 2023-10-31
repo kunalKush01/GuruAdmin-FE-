@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import styled from "styled-components";
-import * as yup from "yup";
+import * as Yup from "yup";
 import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
 import { CustomDropDown } from "../../../components/partials/customDropDown";
 import { ConverFirstLatterToCapital } from "../../../utility/formater";
@@ -19,13 +19,13 @@ import {
 } from "../../../api/categoryApi";
 import CategoryForm from "../../../components/categories/categoryForm";
 
-const NoticeWarper = styled.div`
+const CategoryEditWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .editNotice {
+  // .ImagesVideos {
+  //   font: normal normal bold 15px/33px Noto Sans;
+  // }
+  .editCategory {
     color: #583703;
     display: flex;
     align-items: center;
@@ -37,10 +37,6 @@ const schema = yup.object().shape({
   SubCategory: yup
     .string()
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
-    // .matches(
-    //   /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
-    //   "only_letters"
-    // )
     .required("categories_sub_category_required")
     .trim(),
 });
@@ -55,7 +51,7 @@ const getLangId = (langArray, langSelection) => {
   return languageId;
 };
 
-export default function EditNotice() {
+export default function EditCategory() {
   const history = useHistory();
   const { subCategoryId } = useParams();
 
@@ -94,7 +90,7 @@ export default function EditNotice() {
   };
 
   return (
-    <NoticeWarper>
+    <CategoryEditWrapper>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -106,11 +102,11 @@ export default function EditNotice() {
               )
             }
           />
-          <div className="editNotice">
+          <div className="editCategory">
             <Trans i18nKey={"categories_EditCategory"} />
           </div>
         </div>
-        <div className="editNotice">
+        <div className="editCategory">
           <div className="d-none d-sm-block">
             <Trans i18nKey={"news_InputIn"} />
           </div>
@@ -171,9 +167,6 @@ export default function EditNotice() {
                 <CategoryForm
                   editDisableCategory
                   loadOptions={masterloadOptionQuery?.data?.results}
-                  // placeholder={
-                  //   subCategoryDetailQuery?.data?.result?.masterCategory.name
-                  // }
                   CategoryFormName={"MasterCategory"}
                   handleSubmit={handleCategoryUpdate}
                   initialValues={{
@@ -183,12 +176,12 @@ export default function EditNotice() {
                     SubCategory: subCategoryDetailQuery.data.result.name,
                   }}
                   buttonName={"save_changes"}
-                  vailidationSchema={schema}
+                  validationSchema={schema}
                 />
               </div>
             )}
         </Else>
       </If>
-    </NoticeWarper>
+    </CategoryEditWrapper>
   );
 }

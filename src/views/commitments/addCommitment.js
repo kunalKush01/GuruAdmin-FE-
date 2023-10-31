@@ -3,17 +3,17 @@ import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import * as yup from "yup";
+import * as Yup from "yup";
 import { createCommitment } from "../../api/commitmentApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import CommitmentForm from "../../components/commitments/commitmentForm";
 
-const CommitmentWarapper = styled.div`
+const CommitmentWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
+  // .ImagesVideos {
+  //   font: normal normal bold 15px/33px Noto Sans;
+  // }
   .addCommitment {
     color: #583703;
     display: flex;
@@ -24,53 +24,60 @@ const CommitmentWarapper = styled.div`
 const handleCreateCommitment = async (payload) => {
   return createCommitment(payload);
 };
-const schema = yup.object().shape({
-  Mobile: yup.string().required("expenses_mobile_required"),
-  SelectedUser: yup.mixed().required("user_select_required"),
-  donarName: yup.string().matches(
+const schema = Yup.object().shape({
+  Mobile: Yup.string().required("expenses_mobile_required"),
+  SelectedUser: Yup.mixed().required("user_select_required"),
+  donarName: Yup
+    .string()
+    .matches(
       /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
-      'donation_donar_name_only_letters'
-  ).trim(),
-  SelectedMasterCategory: yup.mixed().required("masterCategory_required"),
-  SelectedSubCategory: yup.mixed(),  
-  Amount: yup.string().matches(/^[1-9][0-9]*$/,"invalid_amount").required("amount_required"),
+      "donation_donar_name_only_letters"
+    )
+    .trim(),
+  SelectedMasterCategory: Yup.mixed().required("masterCategory_required"),
+  SelectedSubCategory: Yup.mixed(),
+  Amount: Yup
+    .string()
+    .matches(/^[1-9][0-9]*$/, "invalid_amount")
+    .required("amount_required"),
 });
-
-
 
 export default function AddCommitment() {
   const history = useHistory();
-  const langArray = useSelector((state) => state.auth.availableLang);
-  const loggedInUser = useSelector(state=>state.auth.userDetail.name)
-
+  // const langArray = useSelector((state) => state.auth.availableLang);
+  const loggedInUser = useSelector((state) => state.auth.userDetail.name);
 
   const searchParams = new URLSearchParams(history.location.search);
-  const currentPage = searchParams.get('page')
-  const currentFilter = searchParams.get('filter')
+  const currentPage = searchParams.get("page");
+  const currentFilter = searchParams.get("filter");
   const currentCategory = searchParams.get("category");
   const currentSubCategory = searchParams.get("subCategory");
   const currentStatus = searchParams.get("status");
 
   const initialValues = {
-    Mobile:"",
-    countryCode:"in",
-    dialCode:"91",
-    SelectedUser: "", 
+    Mobile: "",
+    countryCode: "in",
+    dialCode: "91",
+    SelectedUser: "",
     donarName: "",
     SelectedMasterCategory: "",
-    SelectedSubCategory:"",
-    createdBy:loggedInUser,
-    Amount:"",
-    DateTime:new Date()
+    SelectedSubCategory: "",
+    createdBy: loggedInUser,
+    Amount: "",
+    DateTime: new Date(),
   };
   return (
-    <CommitmentWarapper>
+    <CommitmentWrapper>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push(`/commitment?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`)}
+            onClick={() =>
+              history.push(
+                `/commitment?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`
+              )
+            }
           />
           <div className="addCommitment">
             <Trans i18nKey={"add_commitment"} />
@@ -81,11 +88,11 @@ export default function AddCommitment() {
         <CommitmentForm
           handleSubmit={handleCreateCommitment}
           initialValues={initialValues}
-          vailidationSchema={schema}
+          validationSchema={schema}
           showTimeInput
           buttonName="add_commitment"
         />
       </div>
-    </CommitmentWarapper>
+    </CommitmentWrapper>
   );
 }

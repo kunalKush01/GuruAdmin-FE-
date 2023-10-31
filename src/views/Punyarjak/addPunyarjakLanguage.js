@@ -7,7 +7,7 @@ import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
-import * as yup from "yup";
+import * as Yup from "yup";
 import {
   addLangPunyarjakDetail,
   getPunyarjakDetails,
@@ -17,27 +17,26 @@ import PunyarjakForm from "../../components/Punyarjak/punyarjakUserForm";
 import { CustomDropDown } from "../../components/partials/customDropDown";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-const NewsWarper = styled.div`
+const PunyarjakWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
     font: normal normal bold 15px/33px Noto Sans;
   }
-  .editNews {
+  .addPunyarjak {
     color: #583703;
     display: flex;
     align-items: center;
   }
 `;
 
-const schema = yup.object().shape({
-  description: yup.string().required("punyarjak_desc_required").trim(),
-  title: yup
-    .string()
+const schema = Yup.object().shape({
+  description: Yup.string().required("punyarjak_desc_required").trim(),
+  title: Yup.string()
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
     .required("news_title_required")
     .trim(),
-  image: yup.string().required("img_required"),
+  image: Yup.string().required("img_required"),
 });
 
 export default function AddLanguagePunyarjak() {
@@ -98,7 +97,7 @@ export default function AddLanguagePunyarjak() {
     return {
       id: punyarjakDetailQuery?.data?.result?.id,
       title: punyarjakDetailQuery?.data?.result?.title,
-      description: he.decode(
+      description: he?.decode(
         punyarjakDetailQuery?.data?.result?.description ?? ""
       ),
       DateTime: moment(punyarjakDetailQuery?.data?.result?.publishDate)
@@ -109,7 +108,7 @@ export default function AddLanguagePunyarjak() {
   }, [punyarjakDetailQuery]);
 
   return (
-    <NewsWarper>
+    <PunyarjakWrapper>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -117,11 +116,11 @@ export default function AddLanguagePunyarjak() {
             className="me-2  cursor-pointer"
             onClick={() => history.push(`/punyarjak?page=${currentPage}`)}
           />
-          <div className="editNews">
+          <div className="addPunyarjak">
             <Trans i18nKey={"news_AddLangNews"} />
           </div>
         </div>
-        <div className="editNews">
+        <div className="addPunyarjak">
           <div className="d-none d-sm-block">
             <Trans i18nKey={"news_InputIn"} />
           </div>
@@ -149,24 +148,13 @@ export default function AddLanguagePunyarjak() {
             thumbnailImageName={punyarjakDetailQuery?.data?.result?.imageName}
             buttonName={"news_AddLangNews"}
             initialValues={initialValues}
-            vailidationSchema={schema}
+            validationSchema={schema}
             handleSubmit={handlePunyarjakLangUpdate}
           />
-          {/* <NewsForm
-            editImage="edit"
-            AddLanguage
-            defaultImages={punyarjakDetailQuery?.data?.result?.images}
-            trustPreference={trustPreference}
-            initialValues={initialValues}
-            vailidationSchema={schema}
-            showTimeInput
-            buttonName={"news_AddLangNews"}
-            handleSubmit={handlePunyarjakLangUpdate}
-          /> */}
         </div>
       ) : (
         ""
       )}
-    </NewsWarper>
+    </PunyarjakWrapper>
   );
 }

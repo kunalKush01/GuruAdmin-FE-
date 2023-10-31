@@ -3,7 +3,7 @@ import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import * as yup from "yup";
+import * as Yup from "yup";
 import { createNotice } from "../../api/noticeApi.js";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import NoticeForm from "../../components/notices/noticeForm";
@@ -24,16 +24,16 @@ const NoticeWraper = styled.div`
 const handleCreateNotice = async (payload) => {
   return createNotice(payload);
 };
-const schema = yup.object().shape({
-  Title: yup
+const schema = Yup.object().shape({
+  Title: Yup
     .string()
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
     .required("notices_title_required")
     .trim(),
-  Body: yup.string().required("notices_desc_required").trim(),
-  DateTime: yup.string(),
-  SelectedNotice: yup.mixed(),
-  // tagsInit:yup.array().max(15 ,"tags_limit"),
+  Body: Yup.string().required("notices_desc_required").trim(),
+  DateTime: Yup.string(),
+  SelectedNotice: Yup.mixed(),
+  // tagsInit:Yup.array().max(15 ,"tags_limit"),
 });
 
 const initialValues = {
@@ -88,7 +88,7 @@ export default function AddNotice() {
         <NoticeForm
           handleSubmit={handleCreateNotice}
           initialValues={initialValues}
-          vailidationSchema={schema}
+          validationSchema={schema}
           showTimeInput
           buttonName="notices_AddNotice"
         />

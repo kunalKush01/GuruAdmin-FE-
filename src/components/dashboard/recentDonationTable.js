@@ -8,19 +8,20 @@ import { deleteExpensesDetail } from "../../api/expenseApi";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomDataTable from "../partials/CustomDataTable";
+
 export default function RecentDonationTable({ data }) {
-  const handleDeleteExpenses = async (payload) => {
-    return deleteExpensesDetail(payload);
-  };
-  const queryCient = useQueryClient();
-  const deleteMutation = useMutation({
-    mutationFn: handleDeleteExpenses,
-    onSuccess: (data) => {
-      if (!data.error) {
-        queryCient.invalidateQueries(["Expenses"]);
-      }
-    },
-  });
+  // const handleDeleteExpenses = async (payload) => {
+  //   return deleteExpensesDetail(payload);
+  // };
+  const queryClient = useQueryClient();
+  // const deleteMutation = useMutation({
+  //   mutationFn: handleDeleteExpenses,
+  //   onSuccess: (data) => {
+  //     if (!data.error) {
+  //       queryClient.invalidateQueries(["Expenses"]);
+  //     }
+  //   },
+  // });
   const { t } = useTranslation();
   const history = useHistory();
 
@@ -79,10 +80,10 @@ export default function RecentDonationTable({ data }) {
                   ? item?.user?.profilePhoto
                   : avtarIcon
               }
-               style={{
+              style={{
                 marginRight: "5px",
                 width: "30px",
-                objectFit:'cover',
+                objectFit: "cover",
                 height: "30px",
               }}
               className="rounded-circle"
@@ -90,7 +91,9 @@ export default function RecentDonationTable({ data }) {
             <div>{ConverFirstLatterToCapital(item?.user?.name ?? "")}</div>
           </div>
         ),
-        mobileNumber: `+${item?.user?.countryCode?.replace('+','') ?? '91'} ${item?.user?.mobileNumber}`,
+        mobileNumber: `+${item?.user?.countryCode?.replace("+", "") ?? "91"} ${
+          item?.user?.mobileNumber
+        }`,
         donarName: ConverFirstLatterToCapital(
           item?.donarName ?? item.user?.name
         ),
@@ -103,7 +106,7 @@ export default function RecentDonationTable({ data }) {
         date_time: moment(item?.createdAt)
           .utcOffset(0)
           .format(" DD MMM YYYY,h:mm A"),
-        amount: <div>₹&nbsp;{item?.amount.toLocaleString('en-IN')}</div>,
+        amount: <div>₹&nbsp;{item?.amount.toLocaleString("en-IN")}</div>,
         commitmentID: item.commitmentId
           ? item.commitmentId < 10
             ? `0${item.commitmentId}`
@@ -113,7 +116,7 @@ export default function RecentDonationTable({ data }) {
     });
   }, [data]);
 
-  const RecentDonationTableWarper = styled.div`
+  const RecentDonationTableWrapper = styled.div`
     color: #583703 !important;
     margin-right: 20px;
     font: normal normal bold 20px/23px Noto Sans !important;
@@ -127,7 +130,7 @@ export default function RecentDonationTable({ data }) {
   `;
 
   return (
-    <RecentDonationTableWarper>
+    <RecentDonationTableWrapper>
       <div className="d-flex listHeading justify-content-between">
         <p className="recentDonationHeading">
           <Trans i18nKey={"dashboard_Recent_DonationCommitment"} />
@@ -140,11 +143,10 @@ export default function RecentDonationTable({ data }) {
         </p>
       </div>
       <CustomDataTable
-        // minWidth="fit-content"
-        maxHieght={100}
+        maxHeight={100}
         columns={columns}
         data={recent_Donation}
       />
-    </RecentDonationTableWarper>
+    </RecentDonationTableWrapper>
   );
 }

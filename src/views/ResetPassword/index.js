@@ -1,35 +1,35 @@
-import { useSkin } from "@hooks/useSkin";
-import { Link, useHistory } from "react-router-dom";
-import { Facebook, Twitter, Mail, GitHub, User, Lock } from "react-feather";
 import InputPasswordToggle from "@components/input-password-toggle";
+import { formatIsoTimeString } from "@fullcalendar/core";
+import { useSkin } from "@hooks/useSkin";
+import "@styles/react/pages/page-authentication.scss";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { ErrorMessage, Form, Formik } from "formik";
+import { useEffect, useMemo, useState } from "react";
+import { Facebook, GitHub, Lock, Mail, Twitter, User } from "react-feather";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
 import {
-  Row,
-  Col,
-  CardTitle,
-  CardText,
-  Label,
-  Input,
   Button,
+  CardText,
+  CardTitle,
+  Col,
+  Input,
   InputGroup,
   InputGroupText,
+  Label,
+  Row,
   Spinner,
 } from "reactstrap";
-import "@styles/react/pages/page-authentication.scss";
-import { Formik, Form, ErrorMessage } from "formik";
 import styled from "styled-components";
-import emailInputIcon from "../../assets/images/icons/signInIcon/email.svg";
-import passwordEyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
-import hidePassIcon from "../../assets/images/icons/signInIcon/hidePassIcon.svg";
-import backIconIcon from "../../assets/images/icons/signInIcon/backIcon.svg";
-import * as yup from "yup";
-import { useEffect, useMemo, useState } from "react";
-import { login } from "../../redux/authSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import { formatIsoTimeString } from "@fullcalendar/core";
+import * as Yup from "yup";
 import { forgotPassword, resetPassword } from "../../api/forgotPassword";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { loginPage } from "../../api/loginPageApi";
+import passwordEyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
+import backIconIcon from "../../assets/images/icons/signInIcon/backIcon.svg";
+import emailInputIcon from "../../assets/images/icons/signInIcon/email.svg";
+import hidePassIcon from "../../assets/images/icons/signInIcon/hidePassIcon.svg";
+import { login } from "../../redux/authSlice";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 const ResetPassWord = () => {
   const history = useHistory();
@@ -43,24 +43,27 @@ const ResetPassWord = () => {
     onSuccess: (data) => {
       if (!data.error) {
         setLoading(false);
-        history.push("/login")
+        history.push("/login");
       } else if (data.error) {
         setLoading(false);
       }
     },
   });
-  const loginSchema = yup.object().shape({
-    password: yup
+  const loginSchema = Yup.object().shape({
+    password: Yup
       .string()
       .required("Password is required.")
       .min(8, "Password is too short - should be 8 chars minimum.")
-      .matches(/^(?=.*[a-zA-Z])(?=.*\d).+$/,'Password must contain at least one letter and one number'),
-    confirmPassword: yup
+      .matches(
+        /^(?=.*[a-zA-Z])(?=.*\d).+$/,
+        "Password must contain at least one letter and one number"
+      ),
+    confirmPassword: Yup
       .string()
-      .oneOf([yup.ref("password"), null], "Passwords must match"),
+      .oneOf([Yup.ref("password"), null], "Passwords must match"),
   });
-  const forgetPasswordSchema = yup.object().shape({
-    email: yup.string().required().min(5),
+  const forgetPasswordSchema = Yup.object().shape({
+    email: Yup.string().required().min(5),
   });
   const LoginWarraper = styled.div`
     .errorMassage {
@@ -141,10 +144,10 @@ const ResetPassWord = () => {
   const searchParams = new URLSearchParams(history?.location?.search);
 
   const currentToken = searchParams.get("token");
-  console.log('currentToken',currentToken);
+  console.log("currentToken", currentToken);
 
   const hostname = location.hostname;
-  const subDomainName = hostname.replace("-staging.paridhan.app","");
+  const subDomainName = hostname.replace("-staging.paridhan.app", "");
   const loginPageQuery = useQuery([subDomainName], () =>
     loginPage(subDomainName)
   );
@@ -196,14 +199,19 @@ const ResetPassWord = () => {
 
             {loginPageData?.name !== "" && (
               <div className="templeName">
-                Admin: <span title={ConverFirstLatterToCapital(loginPageData?.name ?? "")}>{ConverFirstLatterToCapital(loginPageData?.name ?? "")}</span>
+                Admin:{" "}
+                <span
+                  title={ConverFirstLatterToCapital(loginPageData?.name ?? "")}
+                >
+                  {ConverFirstLatterToCapital(loginPageData?.name ?? "")}
+                </span>
               </div>
             )}
             <CardText className="signInEnterUserNAme   ">
               Enter the New and confirm password to reset the password.
             </CardText>
             <Formik
-            enableReinitialize
+              enableReinitialize
               initialValues={{
                 password: "",
                 confirmPassword: "",

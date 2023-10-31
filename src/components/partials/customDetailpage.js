@@ -3,13 +3,13 @@ import moment from "moment";
 import React, { useEffect } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
+import Slider from "react-slick";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import cardClockIcon from "../../assets/images/icons/news/clockIcon.svg";
-import { ConverFirstLatterToCapital } from "../../utility/formater";
 import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
-import Slider from "react-slick";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 const TrustWarapper = styled.div`
   color: #583703;
@@ -83,29 +83,29 @@ const TrustWarapper = styled.div`
     word-break: break-all;
     font: normal normal normal 14px/25px Noto Sans;
   }
-  ul.slick-dots{
+  ul.slick-dots {
     padding-left: 0rem !important;
   }
-  .slick-dots li{
+  .slick-dots li {
     width: 5px;
-    color: #fff ;
+    color: #fff;
   }
-  .slick-dots li.slick-active button:before{
+  .slick-dots li.slick-active button:before {
     color: #ff8744;
     opacity: 1;
     font-size: 10px;
     line-height: 21px;
   }
-  .slick-next:before{
+  .slick-next:before {
     color: #ff8744 !important;
     font-size: 25px;
   }
   .slick-prev:before {
     color: #ff8744 !important;
-    font-size: 25px;  
+    font-size: 25px;
   }
   .slick-slide {
-    padding: .5rem;
+    padding: 0.5rem;
   }
   //  media query
   @media only screen and (max-width: 578px) {
@@ -264,7 +264,7 @@ export default function DetailPage({
                 <div
                   className="detail-content mt-1 text-break"
                   dangerouslySetInnerHTML={{
-                    __html: he.decode(description ?? ""),
+                    __html: he?.decode(description ?? ""),
                   }}
                 ></div>
               </Col>

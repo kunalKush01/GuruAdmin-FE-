@@ -4,7 +4,7 @@ import React, { useMemo, useState } from "react";
 import { Trans } from "react-i18next";
 import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
-import * as yup from "yup";
+import * as Yup from "yup";
 import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
 import { CustomDropDown } from "../../../components/partials/customDropDown";
 
@@ -16,13 +16,13 @@ import {
 import CategoryForm from "../../../components/categories/categoryForm";
 import { ConverFirstLatterToCapital } from "../../../utility/formater";
 
-const EventWarper = styled.div`
+const CategoryLangWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .editEvent {
+  // .ImagesVideos {
+  //   font: normal normal bold 15px/33px Noto Sans;
+  // }
+  .categoryAddLang {
     color: #583703;
     display: flex;
     align-items: center;
@@ -34,14 +34,11 @@ const schema = yup.object().shape({
   SubCategory: yup
     .string()
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
-    // .matches(
-    //   /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
-    //   'only_letters')
     .required("categories_sub_category_required")
     .trim(),
 });
 
-export default function AddLanguageEvent() {
+export default function AddLanguageCategory() {
   const history = useHistory();
   const { subCategoryId } = useParams();
   const langArray = useSelector((state) => state.auth.availableLang);
@@ -97,15 +94,8 @@ export default function AddLanguageEvent() {
     subCategoryDetailQuery?.data?.result?.languages,
   ]);
 
-  // useEffect(() => {
-  //   if (availableLangOptions.length != 0) {
-  //     setLangSelection(availableLangOptions[0]?.name);
-
-  //   }
-  // }, [availableLangOptions,selectedLang.id]);
-
   return (
-    <EventWarper>
+    <CategoryLangWrapper>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -117,11 +107,11 @@ export default function AddLanguageEvent() {
               )
             }
           />
-          <div className="editEvent">
+          <div className="categoryAddLang">
             <Trans i18nKey={"news_AddLangNews"} />
           </div>
         </div>
-        <div className="editEvent">
+        <div className="categoryAddLang">
           <div className="d-none d-sm-block">
             <Trans i18nKey={"news_InputIn"} />
           </div>
@@ -144,9 +134,6 @@ export default function AddLanguageEvent() {
           <CategoryForm
             loadOptions={[subCategoryDetailQuery?.data?.result?.masterCategory]}
             langSelectionValue={langSelection}
-            // placeholder={
-            //   subCategoryDetailQuery?.data?.result?.masterCategory.name
-            // }
             AddLanguage
             CategoryFormName={"MasterCategory"}
             handleSubmit={handleCategoryLangUpdate}
@@ -157,12 +144,12 @@ export default function AddLanguageEvent() {
               SubCategory: subCategoryDetailQuery?.data?.result?.name,
             }}
             buttonName={"news_AddLangNews"}
-            vailidationSchema={schema}
+            validationSchema={schema}
           />
         </div>
       ) : (
         ""
       )}
-    </EventWarper>
+    </CategoryLangWrapper>
   );
 }

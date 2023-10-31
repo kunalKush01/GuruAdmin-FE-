@@ -1,26 +1,25 @@
+import InputPasswordToggle from "@components/input-password-toggle";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Field, Form, Formik } from "formik";
 import React, { useMemo, useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Prompt, useHistory } from "react-router-dom";
 import { Button, Col, FormGroup, Input, Label, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
+import { getAllUserRoles } from "../../api/userApi";
+import defaultAvtar from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
+import passwordEyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
+import hidePassIcon from "../../assets/images/icons/signInIcon/hidePassIcon.svg";
+import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
-import defaultAvtar from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import ImageUpload from "../partials/imageUpload";
-import InputPasswordToggle from "@components/input-password-toggle";
-import passwordEyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
-import hidePassIcon from "../../assets/images/icons/signInIcon/hidePassIcon.svg";
-import { getAllUserRoles } from "../../api/userApi";
-import { useSelector } from "react-redux";
-import { Prompt } from "react-router-dom";
-import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
 
-const FormWaraper = styled.div`
-  .FormikWraper {
+const FormWrapper = styled.div`
+  .FormikWrapper {
     padding: 40px;
   }
   .btn-Published {
@@ -93,7 +92,7 @@ export default function UserForm({
   plusIconDisable = false,
   loadOptions,
   handleSubmit,
-  vailidationSchema,
+  validationSchema,
   initialValues,
   profileImageName,
   adduser,
@@ -107,13 +106,13 @@ export default function UserForm({
   const history = useHistory();
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
-  const categoryQuerClient = useQueryClient();
+  const userQueryClient = useQueryClient();
 
-  const categoryMutation = useMutation({
+  const userMutation = useMutation({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
       if (!data.error) {
-        categoryQuerClient.invalidateQueries(["Users"]);
+        userQueryClient.invalidateQueries(["Users"]);
         setLoading(false);
         history.push("/configuration/users");
       } else if (data.error) {
@@ -143,14 +142,14 @@ export default function UserForm({
   const [phoneNumber, setPhoneNumber] = useState(getUserMobile ?? "");
 
   return (
-    <FormWaraper className="FormikWraper">
+    <FormWrapper className="FormikWrapper">
       <Formik
         enableReinitialize
         initialValues={initialValues}
         onSubmit={(e) => {
           setShowPrompt(false);
           setLoading(true);
-          categoryMutation.mutate({
+          userMutation.mutate({
             subAdminId: e?.Id,
             email: e?.email,
             mobileNumber: e.mobile.toString(),
@@ -163,7 +162,7 @@ export default function UserForm({
             // profilePhoto: e?.file,
           });
         }}
-        validationSchema={vailidationSchema}
+        validationSchema={validationSchema}
       >
         {(formik) => (
           <Form>
@@ -447,6 +446,6 @@ export default function UserForm({
           </Form>
         )}
       </Formik>
-    </FormWaraper>
+    </FormWrapper>
   );
 }

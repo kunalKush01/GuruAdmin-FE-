@@ -1,26 +1,26 @@
-import { Form, Formik } from "formik";
-import React, { useEffect, useMemo, useState } from "react";
-import CustomTextField from "../../components/partials/customTextField";
-import * as yup from "yup";
-import RichTextField from "../../components/partials/richTextEditorField";
-import styled from "styled-components";
-import { CustomDropDown } from "../../components/partials/customDropDown";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { Trans, useTranslation } from "react-i18next";
-import { Button, Col, Row } from "reactstrap";
-import { useHistory, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createNews, getNewsDetail, updateNewsDetail } from "../../api/newsApi";
-import { useSelector } from "react-redux";
-import moment from "moment";
-import { ConverFirstLatterToCapital } from "../../utility/formater";
+import { Form, Formik } from "formik";
 import he from "he";
+import moment from "moment";
+import React, { useEffect, useMemo, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
+import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import { If, Then, Else } from "react-if-else-switch";
+import { useSelector } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
+import { Button, Col, Row } from "reactstrap";
+import styled from "styled-components";
+import * as Yup from "yup";
+import { createNews, getNewsDetail, updateNewsDetail } from "../../api/newsApi";
+import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import { CustomDropDown } from "../../components/partials/customDropDown";
+import CustomTextField from "../../components/partials/customTextField";
+import RichTextField from "../../components/partials/richTextEditorField";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 import { getNoticeDetail, updateNoticeDetail } from "../../api/noticeApi";
-import NoticeForm from "../../components/notices/noticeForm";
 import CategoryForm from "../../components/categories/categoryForm";
+import NoticeForm from "../../components/notices/noticeForm";
 
 const NoticeWarper = styled.div`
   color: #583703;
@@ -56,14 +56,14 @@ export default function EditReportDispute() {
   const { noticeId } = useParams();
 
   const langArray = useSelector((state) => state.auth.availableLang);
-  const selectedLang= useSelector(state=>state.auth.selectLang)
+  const selectedLang = useSelector((state) => state.auth.selectLang);
   const [langSelection, setLangSelection] = useState(selectedLang.name);
   const noticeDetailQuery = useQuery(
     ["NoticeDetail", noticeId, langSelection],
     async () =>
       getNoticeDetail({
         noticeId,
-        languageId: getLangId(langArray, langSelection,selectedLang.id),
+        languageId: getLangId(langArray, langSelection, selectedLang.id),
       })
   );
 
@@ -79,7 +79,7 @@ export default function EditReportDispute() {
       Id: noticeDetailQuery?.data?.result?.id,
       Title: noticeDetailQuery?.data?.result?.title,
       Tags: noticeDetailQuery?.data?.result?.tags,
-      Body: he.decode(noticeDetailQuery?.data?.result?.body ?? ""),
+      Body: he?.decode(noticeDetailQuery?.data?.result?.body ?? ""),
       PublishedBy: noticeDetailQuery?.data?.result?.publishedBy,
       DateTime: moment(noticeDetailQuery?.data?.result?.publishDate)
         .utcOffset("+0530")
@@ -113,7 +113,7 @@ export default function EditReportDispute() {
           />
         </div>
       </div>
-      
+
       <If
         disableMemo
         condition={noticeDetailQuery.isLoading || noticeDetailQuery.isFetching}
@@ -151,7 +151,7 @@ export default function EditReportDispute() {
             <CategoryForm
               buttonLabel={"category_save"}
               initialValues={initialValues}
-              vailidationSchema={schema}
+              validationSchema={schema}
               showTimeInput
               selectNoticeDisabled
               handleSubmit={handleNoticeUpdate}

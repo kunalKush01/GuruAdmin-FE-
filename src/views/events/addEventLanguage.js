@@ -4,7 +4,7 @@ import React, { useMemo, useState } from "react";
 import { Trans } from "react-i18next";
 import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
-import * as yup from "yup";
+import * as Yup from "yup";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { CustomDropDown } from "../../components/partials/customDropDown";
 
@@ -15,12 +15,10 @@ import { addLangEventDetail, getEventDetail } from "../../api/eventApi";
 import EventForm from "../../components/events/eventForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-const EventWarper = styled.div`
+const EventWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
+
   .editEvent {
     color: #583703;
     display: flex;
@@ -28,21 +26,20 @@ const EventWarper = styled.div`
   }
 `;
 
-const schema = yup.object().shape({
-  Title: yup
-    .string()
+const schema = Yup.object().shape({
+  Title: Yup.string()
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
     .required("events_title_required")
     .trim(),
-  Body: yup.string().required("events_desc_required").trim(),
-  DateTime: yup.object().shape({
-    start: yup.string().required("events_startDate_required"),
-    // end: yup.mixed().required("events_endDate_required"),
+  Body: Yup.string().required("events_desc_required").trim(),
+  DateTime: Yup.object().shape({
+    start: Yup.string().required("events_startDate_required"),
+    // end: Yup.mixed().required("events_endDate_required"),
   }),
-  startTime: yup.mixed().required("events_startTime_required"),
-  endTime: yup.mixed().required("events_endTime_required"),
-  SelectedEvent: yup.mixed(),
-  // tagsInit:yup.array().max(15 ,"tags_limit"),
+  startTime: Yup.mixed().required("events_startTime_required"),
+  endTime: Yup.mixed().required("events_endTime_required"),
+  SelectedEvent: Yup.mixed(),
+  // tagsInit:Yup.array().max(15 ,"tags_limit"),
 });
 export default function AddLanguageEvent() {
   const history = useHistory();
@@ -93,12 +90,6 @@ export default function AddLanguageEvent() {
     eventDetailQuery?.data?.result?.languages,
   ]);
 
-  // useEffect(() => {
-  //   if (availableLangOptions.length != 0) {
-  //     setLangSelection(availableLangOptions[0]?.name);
-  //   }
-  // }, [availableLangOptions]);
-
   const tags = eventDetailQuery?.data?.result?.tags?.map((item) => ({
     id: item.id,
     text: item.tag,
@@ -110,7 +101,7 @@ export default function AddLanguageEvent() {
       Id: eventDetailQuery?.data?.result?.id,
       Title: eventDetailQuery?.data?.result?.title,
       tagsInit: tags,
-      Body: he.decode(eventDetailQuery?.data?.result?.body ?? ""),
+      Body: he?.decode(eventDetailQuery?.data?.result?.body ?? ""),
       images: [],
       PublishedBy: eventDetailQuery?.data?.result?.publishedBy,
       DateTime: {
@@ -127,7 +118,7 @@ export default function AddLanguageEvent() {
   }, [eventDetailQuery]);
 
   return (
-    <EventWarper>
+    <EventWrapper>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -167,7 +158,7 @@ export default function AddLanguageEvent() {
             langSelectionValue={langSelection}
             defaultImages={eventDetailQuery?.data?.result?.images}
             initialValues={initialValues}
-            vailidationSchema={schema}
+            validationSchema={schema}
             showTimeInput
             handleSubmit={handleEventLangUpdate}
             buttonName={"news_AddLangNews"}
@@ -176,6 +167,6 @@ export default function AddLanguageEvent() {
       ) : (
         ""
       )}
-    </EventWarper>
+    </EventWrapper>
   );
 }
