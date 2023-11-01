@@ -61,6 +61,8 @@ const LoginCover = () => {
 
   const adminUrl = process.env.REACT_APP_ADMIN_URL;
   const subdomainChange = process.env.REACT_APP_ADMIN_SUBDOMAIN_REPLACE_URL;
+  const mainDomain = process.env.REACT_APP_DOMAIN;
+  const genericSubDomain = process.env.REACT_APP_GENERIC_SUB_DOMAIN;
 
   const handleLoginSubmit = (data) => {
     dispatch(
@@ -81,13 +83,13 @@ const LoginCover = () => {
             setCookieWithMainDomain(
               "refreshToken",
               res?.tokens?.refresh?.token,
-              ".paridhan.app"
+              mainDomain
               // ".localhost"
             );
             setCookieWithMainDomain(
               "accessToken",
               res?.tokens?.access?.token,
-              ".paridhan.app"
+              mainDomain
               // ".localhost"
             );
             if (
@@ -290,7 +292,7 @@ const LoginCover = () => {
       isLogged &&
       loginPath?.includes("all") &&
       // hostname !== "localhost"
-      subDomainName !== "am-admin"
+      subDomainName !== genericSubDomain
       // (userTrustList?.length === 1 ||
       //   userTrustList[0]?.isAproved === "approved" ||
     ) {
@@ -300,7 +302,7 @@ const LoginCover = () => {
       isLogged &&
       loginPath?.length &&
       loginPath[0] === "configuration" &&
-      subDomainName !== "am-admin"
+      subDomainName !== genericSubDomain
       // hostname !== "localhost"
       // &&
       // (userTrustList?.length === 1 ||
@@ -311,7 +313,7 @@ const LoginCover = () => {
       history.push(`/configuration/categories`);
     } else if (
       (isLogged || loginPath?.length) &&
-      subDomainName !== "am-admin"
+      subDomainName !== genericSubDomain
       // hostname !== "localhost"
       // &&
       // (userTrustList?.length === 1 ||
