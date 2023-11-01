@@ -32,10 +32,9 @@ const CategoryEditWrapper = styled.div`
   }
 `;
 
-const schema = yup.object().shape({
-  MasterCategory: yup.mixed().required("categories_category_required"),
-  SubCategory: yup
-    .string()
+const schema = Yup.object().shape({
+  MasterCategory: Yup.mixed().required("categories_category_required"),
+  SubCategory: Yup.string()
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
     .required("categories_sub_category_required")
     .trim(),
