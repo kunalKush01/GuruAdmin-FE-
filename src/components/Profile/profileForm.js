@@ -451,14 +451,12 @@ export default function ProfileForm({
 
   // facilities validation
 
-  const facilitiesValidation = yup.object().shape({
-    name: yup
-      .string()
+  const facilitiesValidation = Yup.object().shape({
+    name: Yup.string()
       .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
       .required("name_required"),
     // image: yup.string().required("email_required"),
-    description: yup
-      .string()
+    description: Yup.string()
       // .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
       .required("news_desc_required"),
     // startTime: yup.mixed().required("start_time_required"),

@@ -35,10 +35,10 @@ const NoticeWarper = styled.div`
   }
 `;
 
-const schema = yup.object().shape({
-  Title: yup.string().required("notices_title_required"),
-  Body: yup.string().required("notices_desc_required"),
-  DateTime: yup.string(),
+const schema = Yup.object().shape({
+  Title: Yup.string().required("notices_title_required"),
+  Body: Yup.string().required("notices_desc_required"),
+  DateTime: Yup.string(),
 });
 
 const getLangId = (langArray, langSelection) => {
