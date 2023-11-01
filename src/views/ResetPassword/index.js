@@ -179,8 +179,9 @@ const ResetPassWord = () => {
             <img
               className="img-fluid w-100 h-100"
               src={
-                loginPageData?.image !== "" || loginPageData?.image
-                  ? loginPageData?.image
+                (loginPageData && loginPageData?.profilePhoto !== "") ||
+                loginPageData?.profilePhoto
+                  ? loginPageData?.profilePhoto
                   : source
               }
               alt="Login Cover"
