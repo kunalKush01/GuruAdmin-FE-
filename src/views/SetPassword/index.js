@@ -34,17 +34,17 @@ const SetPassword = () => {
     },
   });
   const setPasswordSchema = Yup.object().shape({
-    password: Yup
-      .string()
+    password: Yup.string()
       .required("Password is required.")
       .matches(
         /^(?=.*[a-zA-Z])(?=.*\d).+$/,
         "Password must contain at least one letter and one number"
       )
       .min(8, "Password is too short - should be 8 chars minimum."),
-    confirmPassword: Yup
-      .string()
-      .oneOf([Yup.ref("password"), null], "Passwords must match"),
+    confirmPassword: Yup.string().oneOf(
+      [Yup.ref("password"), null],
+      "Passwords must match"
+    ),
   });
   const SetPasswordWarapper = styled.div`
     .errorMassage {
@@ -126,7 +126,11 @@ const SetPassword = () => {
   const currentToken = searchParams.get("token");
 
   const hostname = location.hostname;
-  const subDomainName = hostname.replace("-staging.paridhan.app", "");
+
+  // const subDomainName = hostname.replace("-staging.paridhan.app", "");
+  const subdomainChange = process.env.REACT_APP_ADMIN_SUBDOMAIN_REPLACE_URL;
+  const subDomainName = hostname.replace(subdomainChange, "");
+
   const loginPageQuery = useQuery([subDomainName], () =>
     loginPage(subDomainName)
   );
