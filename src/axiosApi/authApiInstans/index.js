@@ -1,12 +1,14 @@
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const authJSONData = localStorage.getItem("persist:auth");
 
 const authData = authJSONData && JSON.parse(authJSONData);
 const trustJSONData = authData?.trustDetail;
-const trustData = trustJSONData && JSON.parse(trustJSONData); 
+const trustData = trustJSONData && JSON.parse(trustJSONData);
 
-export const API_BASE_URL = `${process.env.REACT_APP_BASEURL}${trustData?.id}/`;
+// export const API_BASE_URL = `${process.env.REACT_APP_BASEURL}${JSON.parse(localStorage.getItem('trustDetails'))?.id}/`;
+export const API_BASE_URL = ``;
 export const API_AUTH_URL = process.env.REACT_APP_AUTHURL;
 
 export const authApiInstance = axios.create({

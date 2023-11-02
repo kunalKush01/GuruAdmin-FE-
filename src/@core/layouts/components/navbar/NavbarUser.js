@@ -28,12 +28,17 @@ import searchIcon from "../../../../assets/images/icons/dashBoard/Group 5997.svg
 import menuPanelIcon from "../../../../assets/images/icons/dashBoard/icn_MenuPanel.svg";
 import confirmationIcon from "../../../../assets/images/icons/news/conformationIcon.svg";
 import { authApiInstance } from "../../../../axiosApi/authApiInstans";
-import { logOut, setSearchbarValue } from "../../../../redux/authSlice";
+import {
+  handleTrustDetail,
+  logOut,
+  setSearchbarValue,
+} from "../../../../redux/authSlice";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
 import LangModel from "../langModel";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
+import { loginPage } from "../../../../api/loginPageApi";
 import {
   getAllNotification,
   readNotification,
@@ -237,6 +242,16 @@ const NavbarUser = (props) => {
       }, 1000);
     }
   }, [allUnReadMessage, location?.pathname]);
+
+  const subDomainName = location.hostname.replace("-staging.localhost", "");
+  const loginPageQuery = useQuery([subDomainName], () =>
+    loginPage(subDomainName)
+  );
+
+  const loginPageData = useMemo(
+    () => loginPageQuery?.data?.result,
+    dispatch(handleTrustDetail(loginPageQuery?.data?.result))[loginPageQuery]
+  );
 
   return (
     <Fragment>

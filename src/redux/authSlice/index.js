@@ -73,8 +73,8 @@ const authSlice = createSlice({
       state.trustDetail = { ...state.trustDetail, ...action.payload };
     },
 
-    handleTrustDetail(state, action){
-      state.trustDetail = action.payload
+    handleTrustDetail(state, action) {
+      state.trustDetail = action.payload;
     },
 
     handleTokenLogin(state, action) {
@@ -85,7 +85,7 @@ const authSlice = createSlice({
         true;
       state.tokens.accessToken = action.payload.tokens.access.token;
       state.tokens.refreshToken = action.payload.tokens.refresh.token;
-      state.trustDetail = action.payload.trust;
+      // state.trustDetail = action.payload.trust;
       state.isLoading = false;
     },
 
@@ -117,7 +117,7 @@ const authSlice = createSlice({
         true;
       state.tokens.accessToken = action.payload.tokens.access.token;
       state.tokens.refreshToken = action.payload.tokens.refresh.token;
-      state.trustDetail = action.payload.trust;
+      // state.trustDetail = action.payload.trust;
       state.isLoading = false;
       // toast.success(action.payload.message)
     },
