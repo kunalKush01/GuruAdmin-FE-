@@ -7,9 +7,9 @@ import {
 } from "../../redux/authSlice/index";
 import { extractDataFromResponse, parseApiErrorResponse } from "./apiUtils";
 
-import { store } from "../../redux/store";
-import { API_AUTH_URL } from "../../axiosApi/authApiInstans";
 import { toast } from "react-toastify";
+import { API_AUTH_URL } from "../../axiosApi/authApiInstans";
+import { store } from "../../redux/store";
 
 /*
 Api Response data sample
@@ -29,7 +29,7 @@ Api Response data sample
   }
 }
 */
-const fcm_token = localStorage.getItem('fcm_token')
+const fcm_token = localStorage.getItem("fcm_token");
 export const defaultHeaders = {
   "Access-Control-Allow-Origin": "*",
   "device-type": "android",
@@ -48,10 +48,9 @@ export const defaultHeaders = {
   "os-version": "11.2",
 };
 
-
 const ApiTimeOutToast = {
-    toastId:"ApiTimeout"
-  }
+  toastId: "ApiTimeout",
+};
 
 export const refreshTokenRequest = async ({ refreshToken, axiosInstance }) => {
   try {
@@ -78,6 +77,7 @@ export const callApi = async ({
   showToastOnSuccess = true,
   showToastOnError = true,
   callRefreshTokenOnAuthError = true,
+  refreshSuccessRestFail = false,
   authErrorCode = 401,
 }) => {
   const accessToken = selectAccessToken(store.getState());
@@ -88,6 +88,9 @@ export const callApi = async ({
     Authorization: `Bearer ${accessToken}`,
   };
   const axiosInstance = axios.create({
+    baseURL: `${process.env.REACT_APP_BASEURL}${
+      store.getState()?.auth?.trustDetail?.id
+    }/`,
     headers,
     responseType: "json",
     timeout: 10000,
@@ -96,6 +99,7 @@ export const callApi = async ({
   if (requestFunction) {
     try {
       const response = await requestFunction(axiosInstance);
+      console.log("response gs", response);
 
       return extractDataFromResponse({
         response,
@@ -104,6 +108,8 @@ export const callApi = async ({
         showErrorToast: showToastOnError,
       });
     } catch (error) {
+      console.log("gs logs-------->", error.response);
+
       if (error.code === "ECONNABORTED") {
         toast.error("Please check your internet connection.", {
           ...ApiTimeOutToast,
@@ -136,15 +142,21 @@ export const callApi = async ({
                   refreshToken: newRefreshToken,
                 })
               );
+
               return callApi({
                 requestFunction,
                 successCode,
                 showToastOnSuccess,
                 showToastOnError,
                 callRefreshTokenOnAuthError: false,
+                refreshSuccessRestFail: newAccessToken && newRefreshToken && error?.response?.data?.code === 401
               });
             }
 
+            return { error: true };
+          }
+          else if(refreshSuccessRestFail){
+            store.dispatch(logOut());
             return { error: true };
           }
           return { error: true };
