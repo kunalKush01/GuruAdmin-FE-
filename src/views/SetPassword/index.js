@@ -142,13 +142,13 @@ const SetPassword = () => {
   return (
     <SetPasswordWarapper className="auth-wrapper auth-cover ">
       <Row className="auth-inner m-0 defaultFontColor">
-        <Link
+        {/* <Link
           className=" d-inline brand-logo"
           to="/"
           onClick={(e) => e.preventDefault()}
         >
           <h1 className="brand-text  mt-2 ms-1">Your Logo</h1>
-        </Link>
+        </Link> */}
         <Col
           className="d-none  d-lg-flex pe-0 ps-0 align-items-center  h-100 "
           lg="7"

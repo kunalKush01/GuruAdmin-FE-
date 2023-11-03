@@ -43,6 +43,7 @@ import {
   getAllNotification,
   readNotification,
 } from "../../../../api/notification";
+import logo from "../../../../assets/images/pages/main-logo.svg";
 import CustomSearchBar from "../../../../components/partials/customSearchBar";
 import {
   isSerchable,
@@ -86,7 +87,7 @@ const NavbarUserWarraper = styled.div`
     font: normal normal bold 16px/30px noto sans;
   }
   .date {
-    font: normal normal normal 10px/5px noto sans;
+    font: normal normal normal 10px/20px noto sans;
   }
   .notificationNumber {
     background: red;
@@ -107,6 +108,13 @@ const NavbarUserWarraper = styled.div`
   .shakeBell {
     animation: ring 4s 0.7s ease-in-out infinite;
     transform-origin: 50% 4px;
+  }
+
+  .logo {
+    width: 150px;
+    height: 35px;
+    object-fit: cover;
+    object-position: center;
   }
 
   @keyframes ring {
@@ -243,7 +251,11 @@ const NavbarUser = (props) => {
     }
   }, [allUnReadMessage, location?.pathname]);
 
-  const subDomainName = location.hostname.replace("-staging.localhost", "");
+  const subdomainChange = process.env.REACT_APP_ADMIN_SUBDOMAIN_REPLACE_URL;
+  
+  const subDomainName = location.hostname.replace(subdomainChange, "");
+  // const subDomainName = location.hostname.replace("-staging.localhost", "");
+
   const loginPageQuery = useQuery([subDomainName], () =>
     loginPage(subDomainName)
   );
@@ -259,10 +271,10 @@ const NavbarUser = (props) => {
         <div className="bookmark-wrapper d-flex align-items-center">
           <NavItem className="d-none d-lg-block">
             <NavLink to="/" className="navbar-brand">
-              <span className="brand-logo">
-                {/* <img src={themeConfig.app.appLogoImage} alt='logo' /> */}
-                <div>Logo Here</div>
-              </span>
+              <div className="brand-logo">
+                <img src={logo} alt="logo" className="logo" />
+                {/* <div><img /></div> */}
+              </div>
               <div className="date d-none d-xl-block">
                 <Trans i18nKey={"last_login"} />:{" "}
                 {moment().format("DD MMM YYYY,h:mm a")}

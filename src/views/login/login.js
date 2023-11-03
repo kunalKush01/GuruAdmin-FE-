@@ -270,7 +270,7 @@ const LoginCover = () => {
   // }, [isLogged, loginPath, TrustQuery]);
 
   const subDomainName = hostname.replace(subdomainChange, "");
-  // const subDomainName = hostname.replace("-dev.localhost", "");
+  // const subDomainName = hostname.replace("-staging.localhost", "");
 
   const refreshToken = getCookie("refreshToken");
   const accessToken = getCookie("accessToken");
@@ -328,7 +328,7 @@ const LoginCover = () => {
 
   const { skin } = useSkin();
 
-  const illustration = skin === "dark" ? "login-v2-dark.svg" : "login.svg",
+  const illustration = skin === "dark" ? "login-v2-dark.svg" : "main-logo.svg",
     source = require(`@src/assets/images/pages/${illustration}`).default;
 
   const headers = {
@@ -354,13 +354,13 @@ const LoginCover = () => {
   return (
     <LoginWarraper className="auth-wrapper auth-cover ">
       <Row className="auth-inner m-0 defaultFontColor">
-        <Link
+        {/* <Link
           className=" d-inline brand-logo"
           to="/"
           onClick={(e) => e.preventDefault()}
         >
           <h1 className="brand-text  mt-2 ms-1">Your Logo</h1>
-        </Link>
+        </Link> */}
         <Col
           className="d-none  d-lg-flex pe-0 ps-0 align-items-center  h-100 "
           lg="7"
