@@ -137,7 +137,8 @@ const ResetPassWord = () => {
 
   const { skin } = useSkin();
 
-  const illustration = skin === "dark" ? "login-v2-dark.svg" : "login.svg",
+  // const illustration = skin === "dark" ? "login-v2-dark.svg" : "login.svg",
+  const illustration = skin === "dark" ? "login-v2-dark.svg" : "main-logo.svg",
     source = require(`@src/assets/images/pages/${illustration}`).default;
   const [loading, setLoading] = useState(false);
 
@@ -163,13 +164,13 @@ const ResetPassWord = () => {
   return (
     <LoginWarraper className="auth-wrapper auth-cover ">
       <Row className="auth-inner m-0 defaultFontColor">
-        <Link
+        {/* <Link
           className=" d-inline brand-logo"
           to="/"
           onClick={(e) => e.preventDefault()}
         >
           <h1 className="brand-text  mt-2 ms-1">Your Logo</h1>
-        </Link>
+        </Link> */}
         <Col
           className="d-none  d-lg-flex pe-0 ps-0 align-items-center  h-100 "
           lg="7"
