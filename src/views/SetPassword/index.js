@@ -118,7 +118,7 @@ const SetPassword = () => {
 
   const { skin } = useSkin();
 
-  const illustration = skin === "dark" ? "login-v2-dark.svg" : "login.svg",
+  const illustration = skin === "dark" ? "login-v2-dark.svg" : "main-logo.svg",
     source = require(`@src/assets/images/pages/${illustration}`).default;
   const [loading, setLoading] = useState(false);
 
