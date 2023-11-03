@@ -497,7 +497,7 @@ const LoginCover = () => {
                 </span>
 
                 <span className="text-primary signUp cursor-pointer">
-                  <a href="https://am-website-staging.paridhan.app/#home">
+                  <a href="https://apnadharm.com/#home">
                     Sign Up
                   </a>
                 </span>
