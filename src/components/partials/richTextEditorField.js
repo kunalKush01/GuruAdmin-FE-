@@ -1,10 +1,10 @@
-import React, { useRef } from "react";
 import { useField } from "formik";
-import icon from '../../assets/images/icons/resizeField.png'
+import React, { useRef } from "react";
+import { Trans, useTranslation } from "react-i18next";
+import styled from "styled-components";
 import SunEditor, { buttonList } from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css";
-import styled from "styled-components";
-import { Trans, useTranslation } from "react-i18next";
+import icon from "../../assets/images/icons/resizeField.png";
 
 const RichTextFieldWarper = styled.div`
   font: normal normal bold 11px/20px noto sans;
@@ -24,9 +24,9 @@ const RichTextFieldWarper = styled.div`
   .sun-editor {
     border: none !important;
     border-radius: 20px !important ;
-.se-navigation{
-    display: none;
-   }
+    .se-navigation {
+      display: none;
+    }
     .se-resizing-bar {
       display: block !important;
       width: 15px !important;
@@ -34,13 +34,13 @@ const RichTextFieldWarper = styled.div`
       background-size: 12px;
       background-repeat: no-repeat;
       background-color: #fbe6cf !important;
-      border-radius: 0px 0px 5px 0px ;
+      border-radius: 0px 0px 5px 0px;
       position: absolute;
       /* background-color: red !important; */
-      background-image: url('${icon}');
+      background-image: url("${icon}");
       z-index: 10;
       background-position: bottom right;
-      bottom: 5px ;
+      bottom: 5px;
       right: 5px;
       border-top: none !important;
     }
@@ -52,7 +52,7 @@ const RichTextFieldWarper = styled.div`
       top: 30% !important;
     }
   }
-  .se-placeholder{
+  .se-placeholder {
     color: #583703 !important;
     opacity: 60% !important;
     font: normal normal bold 13px/20px Noto Sans !important;
@@ -109,7 +109,7 @@ export default function RichTextField({
           "font: normal normal normal 12px/20px Noto sans !important;color:#583703"
         }
         setOptions={{
-          linkTargetNewWindow:true,
+          linkTargetNewWindow: true,
           buttonList: [
             [
               "font",
@@ -121,7 +121,7 @@ export default function RichTextField({
               //   "strike",
               //   "subscript",
               //   "superscript",
-              //   "fontColor",
+              "fontColor",
               //   "hiliteColor",
               //   "textStyle",
               //   "removeFormat",
@@ -131,7 +131,7 @@ export default function RichTextField({
 
               //   "horizontalRule",
               "list",
-                "lineHeight",
+              "lineHeight",
               //   "table",
               "link",
               // "image",

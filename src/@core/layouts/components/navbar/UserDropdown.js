@@ -1,6 +1,6 @@
 // ** React Imports
-import { Link } from "react-router-dom";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 // ** Custom Components
 import Avatar from "@components/avatar";
@@ -10,47 +10,46 @@ import Avatar from "@components/avatar";
 
 // ** Third Party Components
 import {
-  User,
-  Mail,
   CheckSquare,
-  MessageSquare,
-  Settings,
   CreditCard,
   HelpCircle,
+  Mail,
+  MessageSquare,
   Power,
+  Settings,
+  User,
 } from "react-feather";
 
 // ** Reactstrap Imports
 import {
-  UncontrolledDropdown,
+  DropdownItem,
   DropdownMenu,
   DropdownToggle,
-  DropdownItem,
+  UncontrolledDropdown,
 } from "reactstrap";
 
 // ** Default Avatar Image
 import defaultAvatar from "../../../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import editProfileIcon from "../../../../assets/images/icons/dashBoard/icon_awesome_edit.svg";
 
-import styled from "styled-components";
 import { useSelector } from "react-redux";
+import styled from "styled-components";
 
 const AvatarWarraper = styled.div`
-    
-  .imgClassName {    
+  .imgClassName {
     width: 50px !important;
-    height:50px !important  ;
-    
-} 
-.editProfileIcon{
-  width: 16px;
-  border-radius: 0%  !important;
-  box-shadow: none !important;
-  bottom: 2px;
-  right: -2px;
-
-}
-`
+    height: 50px !important;
+    object-fit: cover;
+    object-position: top center;
+  }
+  .editProfileIcon {
+    width: 16px;
+    border-radius: 0% !important;
+    box-shadow: none !important;
+    bottom: 2px;
+    right: -2px;
+  }
+`;
 
 const UserDropdown = () => {
   // ** State
@@ -64,7 +63,9 @@ const UserDropdown = () => {
   // }, [])
 
   //** Vars
-  const userProfile = useSelector((state)=> state?.auth?.trustDetail?.profilePhoto )
+  const userProfile = useSelector(
+    (state) => state?.auth?.trustDetail?.profilePhoto
+  );
   // const userAvatar = (userData && userData.avatar) || defaultAvatar;
   const userAvatar = userProfile || defaultAvatar;
 
@@ -80,18 +81,16 @@ const UserDropdown = () => {
           <span className='user-name fw-bold'>{(userData && userData['username']) || 'John Doe'}</span>
           <span className='user-status'>{(userData && userData.role) || 'Admin'}</span>
         </div> */}
-        
+
         <AvatarWarraper>
-        <Avatar
-          img={userAvatar}
-          
-          // imgHeight="50"
-          // imgWidth="50"
-          status="online"
-          imgClassName={"imgClassName"}
-          editProfileIcon={editProfileIcon}
-        />
-        
+          <Avatar
+            img={userAvatar}
+            // imgHeight="50"
+            // imgWidth="50"
+            status="online"
+            imgClassName={"imgClassName"}
+            editProfileIcon={editProfileIcon}
+          />
         </AvatarWarraper>
       </DropdownToggle>
       {/* <DropdownMenu end>

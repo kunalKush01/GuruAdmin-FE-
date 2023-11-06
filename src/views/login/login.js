@@ -493,7 +493,7 @@ const LoginCover = () => {
               </Formik>
               <p className="text-center mt-5 ">
                 <span className="me-25  an_account ">
-                  Don't Have an account ?{" "}
+                  Don't have an account ?{" "}
                 </span>
 
                 <span className="text-primary signUp cursor-pointer">
