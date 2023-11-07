@@ -180,11 +180,11 @@ export default function Category() {
       <div>
         <div className="d-sm-flex justify-content-between align-items-center ">
           <div className="d-flex align-items-center mb-2 mb-sm-0">
-            <img
+            {/* <img
               src={arrowLeft}
               className="me-2  cursor-pointer"
               onClick={() => history.push("/")}
-            />
+            /> */}
             <div className="addCategory">
               <div className="">
                 <div>

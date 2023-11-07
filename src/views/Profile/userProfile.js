@@ -161,11 +161,11 @@ export default function AddProfile() {
       </Helmet>
       <div className="d-flex justify-content-between align-items-center mb-2">
         <div className="d-flex justify-content-between align-items-center ">
-          <img
+          {/* <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
             onClick={() => history.push("/")}
-          />
+          /> */}
           <div className="addProfile">
             <Trans i18nKey={"userProfile"} />
           </div>

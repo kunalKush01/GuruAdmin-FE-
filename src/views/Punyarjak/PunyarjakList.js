@@ -157,11 +157,11 @@ export default function Punyarjak() {
       <div>
         <div className="d-flex justify-content-between align-items-center ">
           <div className="d-flex align-items-center">
-            <img
+            {/* <img
               src={arrowLeft}
               className="me-2 cursor-pointer align-self-center"
               onClick={() => history.push("/")}
-            />
+            /> */}
             <div className="addPunyarjak">
               <div className="">
                 <div>

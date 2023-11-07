@@ -158,11 +158,11 @@ export default function News() {
       <div>
         <div className="d-sm-flex mb-1 justify-content-between align-items-center ">
           <div className="d-flex align-items-center mb-2 mb-lg-0">
-            <img
+            {/* <img
               src={arrowLeft}
               className="me-2  cursor-pointer align-self-center"
               onClick={() => history.push("/")}
-            />
+            /> */}
             <div className="addNews">
               <div className="">
                 <div>
