@@ -275,11 +275,11 @@ export default function Commitment() {
       <div>
         <div className="d-lg-flex justify-content-between align-items-center">
           <div className="d-flex align-items-center mb-2 mb-lg-0">
-            <img
+            {/* <img
               src={arrowLeft}
               className="me-2  cursor-pointer align-self-center"
               onClick={() => history.push("/")}
-            />
+            /> */}
             <div className="addCommitment d-flex">
               <div className="">
                 <div>

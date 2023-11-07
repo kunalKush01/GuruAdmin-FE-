@@ -1,6 +1,16 @@
-import { useTranslation, Trans } from "react-i18next";
+import { useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { Card, CardBody, CardImg } from "reactstrap";
+import {
+  Card,
+  CardBody,
+  CardImg,
+  FormGroup,
+  Input,
+  Label,
+  Tooltip,
+  UncontrolledTooltip,
+} from "reactstrap";
 import styled from "styled-components";
 import palceHolderIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import rank1 from "../../assets/images/icons/dashBoard/rank1.svg";
@@ -19,6 +29,9 @@ export const TopDonerList = ({ data }) => {
       font: normal normal bold 20px/23px Noto Sans;
     }
 
+    span {
+      font: normal normal bold 12px/23px Noto Sans;
+    }
     .listContainer {
       border: 2px solid #ff8744;
       height: 100%;
@@ -57,6 +70,16 @@ export const TopDonerList = ({ data }) => {
         <p>
           <Trans i18nKey={"dashboard_top"} />
         </p>
+
+        <div className="position-relative">
+          <FormGroup switch id="showInApp">
+            <Input type="switch" role="switch"  disabled />
+            <UncontrolledTooltip placement="top" target="showInApp">
+              Show in app. But yet it's in under development
+            </UncontrolledTooltip>
+            {/* <Label check>Show in app</Label> */}
+          </FormGroup>
+        </div>
       </div>
       <div className="listContainer d-flex justify-content-between flex-column">
         {data?.map((item, idx) => (
@@ -64,11 +87,15 @@ export const TopDonerList = ({ data }) => {
             <CardBody className="d-flex p-1 justify-content-between align-items-center   ">
               <div className="d-flex align-items-center">
                 <img
-                  src={item?.user?.profileImage !==  "" &&  item?.user?.profileImage  ? item?.user?.profileImage :   palceHolderIcon}
+                  src={
+                    item?.user?.profileImage !== "" && item?.user?.profileImage
+                      ? item?.user?.profileImage
+                      : palceHolderIcon
+                  }
                   className="rounded-circle o"
                   width={"50px"}
                   height={"50px"}
-                  style={{objectFit:'cover'}}
+                  style={{ objectFit: "cover" }}
                 />
                 <div className="">
                   <div className="headName ps-1">

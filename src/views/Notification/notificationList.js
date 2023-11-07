@@ -169,11 +169,11 @@ export default function Notification() {
       <div>
         <div className="d-flex justify-content-between align-items-center ">
           <div className="d-flex justify-content-between align-items-center ">
-            <img
+            {/* <img
               src={arrowLeft}
               className="me-2  cursor-pointer"
               onClick={() => history.push("/")}
-            />
+            /> */}
             <div className="addNotification">
               <div className="">
                 <div>
