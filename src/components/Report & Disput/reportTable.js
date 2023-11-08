@@ -98,7 +98,7 @@ const ReportTable = ({ data }) => {
   });
   return (
     <ReportWrapper>
-      <CustomDataTable maxHeight={"470px"} columns={column} data={reportData} />
+      <CustomDataTable maxHeight={""} columns={column} data={reportData} />
     </ReportWrapper>
   );
 };

@@ -14,7 +14,6 @@ import { Button, Col, Modal, ModalBody, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
 import * as Yup from "yup";
 import {
-  getAllCityState,
   getAllTrustPrefeces,
   getAllTrustType,
 } from "../../api/profileApi";
@@ -324,13 +323,6 @@ export default function ProfileForm({
   const randomNumber = Math.floor(100000000000 + Math.random() * 900000000000);
   const [deletedImages, setDeletedImages] = useState([]);
 
-  // City State
-  const loadStateQuery = useQuery(["state"], () => getAllCityState());
-
-  const loadStates = useMemo(
-    () => loadStateQuery?.data?.results ?? [],
-    [loadStateQuery?.data?.results]
-  );
   // Trust preference
   const loadTrustPreference = useQuery(["Preference"], () =>
     getAllTrustPrefeces()
