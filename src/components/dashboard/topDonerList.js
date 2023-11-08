@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
   Card,
@@ -12,6 +13,7 @@ import {
   UncontrolledTooltip,
 } from "reactstrap";
 import styled from "styled-components";
+import { showInAppTopDonors } from "../../api/dashboard";
 import palceHolderIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import rank1 from "../../assets/images/icons/dashBoard/rank1.svg";
 import rank2 from "../../assets/images/icons/dashBoard/rank2.svg";
@@ -19,10 +21,13 @@ import rank3 from "../../assets/images/icons/dashBoard/rank3.svg";
 import rank4 from "../../assets/images/icons/dashBoard/rank4.svg";
 import rank5 from "../../assets/images/icons/dashBoard/rank5.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-import { showInAppTopDonors } from "../../api/dashboard";
 
 export const TopDonerList = ({ data }) => {
   const { t } = useTranslation();
+
+  const { showTopDonor } = useSelector((state) => state?.auth?.trustDetail);
+  const [toggleState, setToggleState] = useState(showTopDonor ?? false);
+
   const TopDonerWarpper = styled.div`
     height: auto;
     .listHeading {
@@ -76,8 +81,14 @@ export const TopDonerList = ({ data }) => {
           <FormGroup switch id="showInApp">
             <Input
               type="switch"
+              checked={toggleState}
               role="switch"
-              onChange={async(e) => await showInAppTopDonors(e.target.checked) }
+              onChange={(e) => {
+                setTimeout(async () => {
+                  setToggleState(!toggleState);
+                  await showInAppTopDonors(e.target.checked);
+                }, 500);
+              }}
             />
             <UncontrolledTooltip placement="top" target="showInApp">
               Show in app
