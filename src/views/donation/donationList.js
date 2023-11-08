@@ -347,7 +347,7 @@ export default function Donation() {
 
             <If condition={donationQuery?.data?.totalPages > 1}>
               <Then>
-                <Col xs={12} className="mb-2 d-flex justify-content-center">
+                <Col xs={12} className="d-flex justify-content-center">
                   <ReactPaginate
                     nextLabel=""
                     forcePage={pagination.page - 1}

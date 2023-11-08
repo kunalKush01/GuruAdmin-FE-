@@ -9,12 +9,6 @@ export const getAllTrustType = (payload) =>
     showToastOnSuccess: false,
     showToastOnError: false,
   });
-  export const getAllCityState = (payload) =>
-  callApi({
-    requestFunction: (axios) => axios.get(`${API_BASE_URL}state`, payload),
-    showToastOnSuccess: false,
-    showToastOnError: false,
-  });
   export const updateProfile = (payload) =>
   callApi({
     requestFunction: (axios) => axios.put(`${API_BASE_URL}trust/update`, payload),

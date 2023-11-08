@@ -83,7 +83,7 @@ function CustomDataTable({
 
   return (
     <>
-      <DataTableWarraper minWidth={minWidth} maxHeight={maxHeight}>
+      <DataTableWarraper minWidth={minWidth} maxHeight={'270px'}>
         <DataTable
           conditionalRowStyles={[conditionStyle]}
           className="DonetionList"

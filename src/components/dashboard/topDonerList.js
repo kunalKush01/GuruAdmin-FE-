@@ -19,6 +19,7 @@ import rank3 from "../../assets/images/icons/dashBoard/rank3.svg";
 import rank4 from "../../assets/images/icons/dashBoard/rank4.svg";
 import rank5 from "../../assets/images/icons/dashBoard/rank5.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
+import { showInAppTopDonors } from "../../api/dashboard";
 
 export const TopDonerList = ({ data }) => {
   const { t } = useTranslation();
@@ -73,9 +74,13 @@ export const TopDonerList = ({ data }) => {
 
         <div className="position-relative">
           <FormGroup switch id="showInApp">
-            <Input type="switch" role="switch"  disabled />
+            <Input
+              type="switch"
+              role="switch"
+              onChange={async(e) => await showInAppTopDonors(e.target.checked) }
+            />
             <UncontrolledTooltip placement="top" target="showInApp">
-              Show in app. But yet it's in under development
+              Show in app
             </UncontrolledTooltip>
             {/* <Label check>Show in app</Label> */}
           </FormGroup>
