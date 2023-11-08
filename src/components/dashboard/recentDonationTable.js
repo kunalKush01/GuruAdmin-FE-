@@ -106,7 +106,7 @@ export default function RecentDonationTable({ data }) {
         date_time: moment(item?.createdAt)
           .utcOffset(0)
           .format(" DD MMM YYYY,h:mm A"),
-        amount: <div>₹&nbsp;{item?.amount.toLocaleString("en-IN")}</div>,
+        amount: <div>₹{item?.amount.toLocaleString("en-IN")}</div>,
         commitmentID: item.commitmentId
           ? item.commitmentId < 10
             ? `0${item.commitmentId}`

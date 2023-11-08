@@ -28,7 +28,7 @@ export const jsonDataDonation = ({ data }) => {
     dateTime: moment(item.createdAt ?? item?.updatedAt).format(
       " DD MMM YYYY,hh:mm"
     ),
-    amount: `₹ ${item?.amount}`,
+    amount: `₹${item?.amount}`,
     commitmentID: item.commitmentId
       ? item.commitmentId < 10
         ? `0${item.commitmentId}`
@@ -47,8 +47,8 @@ export const jsonDataCommitment = ({ data }) => {
     subCategory: `${item?.category?.name ?? "-"}`,
     endDate: moment(item?.commitmentEndDate).format("DD MMM YYYY"),
     status: ConverFirstLatterToCapital(item?.paidStatus),
-    amount: `₹ ${item?.amount}`,
-    amountDue: `₹ ${item?.amount - item.paidAmount}`,
+    amount: `₹${item?.amount}`,
+    amountDue: `₹${item?.amount - item.paidAmount}`,
     commitmentID: item.commitmentId
       ? item.commitmentId < 10
         ? `0${item.commitmentId}`

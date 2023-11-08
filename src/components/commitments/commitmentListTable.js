@@ -238,11 +238,9 @@ export default function CommitmentListTable(
             <div>{ConverFirstLatterToCapital(item?.paidStatus)}</div>
           </div>
         ),
-        amount: <div>₹&nbsp;{item?.amount?.toLocaleString("en-IN")}</div>,
+        amount: <div>₹{item?.amount?.toLocaleString("en-IN")}</div>,
         amountDue: (
-          <div>
-            ₹&nbsp; {(item?.amount - item.paidAmount).toLocaleString("en-IN")}
-          </div>
+          <div>₹{(item?.amount - item.paidAmount).toLocaleString("en-IN")}</div>
         ),
         commitmentId: (
           <div
