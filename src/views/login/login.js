@@ -111,8 +111,8 @@ const LoginCover = () => {
               dispatch(handleTrustDetail(TrustsList?.results[0]));
               if (res?.tokens?.access?.token && res?.tokens?.refresh?.token) {
                 window.location.replace(
-                  // `https://${TrustsList?.results[0]?.subDomain}${subdomainChange}/login`
-                  `http://${TrustsList?.results[0]?.subDomain}-dev.localhost:5001/login`
+                  `https://${TrustsList?.results[0]?.subDomain}${subdomainChange}/login`
+                  // `http://${TrustsList?.results[0]?.subDomain}-dev.localhost:5001/login`
                 );
               }
             }
@@ -269,8 +269,8 @@ const LoginCover = () => {
   //   }
   // }, [isLogged, loginPath, TrustQuery]);
 
-  // const subDomainName = hostname.replace(subdomainChange, "");
-  const subDomainName = hostname.replace("-dev.localhost", "");
+  const subDomainName = hostname.replace(subdomainChange, "");
+  // const subDomainName = hostname.replace("-dev.localhost", "");
 
   const refreshToken = getCookie("refreshToken");
   const accessToken = getCookie("accessToken");
@@ -287,7 +287,7 @@ const LoginCover = () => {
   useEffect(() => {
     // if (refreshToken && accessToken) {
     if (hostname !== adminUrl && loginPageQuery?.data?.error) {
-      // history.push("/not-found");
+      history.push("/not-found");
     } else if (
       isLogged &&
       loginPath?.includes("all") &&
