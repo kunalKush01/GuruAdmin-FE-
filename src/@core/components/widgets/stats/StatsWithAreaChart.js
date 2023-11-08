@@ -48,7 +48,7 @@ const StatsWithAreaChart = props => {
             textOverflow:' ellipsis',
             whiteSpace:'nowrap',
             maxWidth:'250px',
-        }} >₹ {sta}</p>
+        }} >₹{sta}</p>
       </CardBody>
       <Chart options={options}  series={series} type={type} height={height ? height : 100}  />
     </Card>

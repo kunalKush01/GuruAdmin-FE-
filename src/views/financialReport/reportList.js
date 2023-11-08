@@ -1,13 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
+import { Formik } from "formik";
 import moment from "moment";
 import React, { useEffect, useMemo, useState } from "react";
+import { Helmet } from "react-helmet";
 import { Trans, useTranslation } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import ReactPaginate from "react-paginate";
-import FormikCustomDatePicker from "../../components/partials/formikCustomDatePicker";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { useUpdateEffect } from "react-use";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
 import {
@@ -19,23 +21,21 @@ import { getAllBoxCollection } from "../../api/donationBoxCollectionApi";
 import { ExportAllExpense, getAllExpense } from "../../api/expenseApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
-import ReportListTable from "../../components/financeReport/reportListTable";
-import BtnPopover from "../../components/partials/btnPopover";
-import CustomDatePicker from "../../components/partials/customDatePicker";
-import NoContent from "../../components/partials/noContent";
-import FinancialReportTabs from "./financialReportTabs";
-import FormikRangeDatePicker from "../../components/partials/FormikRangeDatePicker";
 import exportIcon from "../../assets/images/icons/exportIcon.svg";
-import { Formik } from "formik";
-import { useUpdateEffect } from "react-use";
-import { handleExport } from "../../utility/utils/exportTabele";
 import {
   jsonDataCommitment,
   jsonDataDonation,
   jsonDataDonationBox,
   jsonDataExpences,
 } from "../../components/financeReport/reportJsonExport";
-import { Helmet } from "react-helmet";
+import ReportListTable from "../../components/financeReport/reportListTable";
+import FormikRangeDatePicker from "../../components/partials/FormikRangeDatePicker";
+import BtnPopover from "../../components/partials/btnPopover";
+import CustomDatePicker from "../../components/partials/customDatePicker";
+import FormikCustomDatePicker from "../../components/partials/formikCustomDatePicker";
+import NoContent from "../../components/partials/noContent";
+import { handleExport } from "../../utility/utils/exportTabele";
+import FinancialReportTabs from "./financialReportTabs";
 const NewsWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -246,7 +246,7 @@ export default function FinancialReport() {
       reportStartDate,
       reportEndDate,
       searchBarValue,
-      expensesQuery
+      expensesQuery,
     ],
     () =>
       ExportAllExpense({
@@ -291,7 +291,7 @@ export default function FinancialReport() {
       reportEndDate,
       reportStartDate,
       searchBarValue,
-      donationQuery
+      donationQuery,
     ],
     () =>
       exportAllDonation({
@@ -314,7 +314,7 @@ export default function FinancialReport() {
       reportStartDate,
       reportEndDate,
       searchBarValue,
-      boxCollectionQuery
+      boxCollectionQuery,
     ],
     () =>
       getAllBoxCollection({
@@ -340,7 +340,7 @@ export default function FinancialReport() {
     let tableData = [];
     let fileName;
     let sheetName;
-    
+
     switch (activeReportTab.name) {
       case t("report_expences"):
         fileName = "Expenses report";
@@ -380,8 +380,6 @@ export default function FinancialReport() {
     });
   };
 
-  
-
   return (
     <NewsWarper>
       <Helmet>
@@ -411,8 +409,8 @@ export default function FinancialReport() {
               {/* <Trans i18nKey={"DonationBox_total_collection"} /> */}
               <div>{`Total ${activeReportTab.name} :`}</div>
               &nbsp;
-              <div>₹</div>&nbsp;
-              <div>{Items?.totalAmount?.toLocaleString('en-IN') ?? 0}</div>
+              <div>₹</div>
+              <div>{Items?.totalAmount?.toLocaleString("en-IN") ?? 0}</div>
             </div>
             <div className="dateChooserReport me-2 position-relative justify-content-between align-item-center">
               <Formik

@@ -14,11 +14,11 @@ import styled from "styled-components";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
 
+import { Helmet } from "react-helmet";
 import { getAllBoxCollection } from "../../api/donationBoxCollectionApi";
 import BoxListCard from "../../components/DonationBox/BoxListCard.js";
 import NoContent from "../../components/partials/noContent";
 import { WRITE } from "../../utility/permissionsVariable";
-import { Helmet } from "react-helmet";
 const NewsWarper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -190,8 +190,12 @@ export default function Expenses() {
             <div className="total_collection me-2 d-flex justify-content-center align-items-center ">
               <Trans i18nKey={"DonationBox_total_collection"} />
               &nbsp;
-              <div>₹</div>&nbsp;
-              <div>{boxCollectionQuery?.data?.totalAmount?.toLocaleString('en-IN') ?? 0}</div>
+              <div>₹</div>
+              <div>
+                {boxCollectionQuery?.data?.totalAmount?.toLocaleString(
+                  "en-IN"
+                ) ?? 0}
+              </div>
             </div>
             <ChangePeriodDropDown
               className={"me-2"}
