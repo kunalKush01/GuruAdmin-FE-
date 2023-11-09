@@ -431,6 +431,6 @@ export const englishContent = {
   search_financial_reports: "Search All Financial Reports",
   search_donation: "Search All Donations",
   search_punyarjak: "Search All Punyarjak",
-  search_donation_box: "Search All Donation Box Collection",
+  search_donation_box_collection: "Search All Donation Box Collection",
   search_commitment: "Search All Commitments",
 };
