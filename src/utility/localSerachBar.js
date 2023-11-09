@@ -53,7 +53,7 @@ export const setPlaceholderSerchbar = () => {
       case "/punyarjak":
       return "search_punyarjak";
     case "/hundi":
-      return "search_donation_box";
+      return "search_donation_box_collection";
     case "/commitment":
       return "search_commitment";
     default:
