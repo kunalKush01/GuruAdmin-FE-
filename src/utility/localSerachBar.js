@@ -29,33 +29,33 @@ export const setPlaceholderSerchbar = () => {
   
   switch (pathName) {
     case "/notification":
-      return "Search All Notification";
+      return "search_notification";
     case "/subscribed-user":
-      return "Search All Subscribed User";
+      return "search_subscribe_user";
     case "/news":
-      return "Search All News";
+      return "search_news";
     case "/events":
-      return "Search All Events ";
+      return "search_events";
     case "/notices":
-      return "Search All Notices ";
+      return "search_notices";
     case "/configuration/categories":
-      return "Search All Categories";
+      return "search_categories";
     case "/configuration/users":
-      return "Search All Users";
+      return "search_users";
     case "/configuration/reportDispute":
-      return "Search All report and Dispute";
+      return "search_disputes";
     case "/internal_expenses":
-      return "Search All Expenses";
+      return "search_expenses";
     case "/financial_reports":
-      return "Search All Financial Reports";
+      return "search_financial_reports";
     case "/donation":
-      return "Search All Donation";
+      return "search_donation";
       case "/punyarjak":
-      return "Search All Punyarjak";
+      return "search_punyarjak";
     case "/hundi":
-      return "Search All Donation Collection Box";
+      return "search_donation_box";
     case "/commitment":
-      return "Search All Commitment ";
+      return "search_commitment";
     default:
       return "Search";
   }
