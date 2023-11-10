@@ -95,7 +95,7 @@ export default function FormWithoutFormikForCommitment({
       )}
 
       <Row className="paddingForm">
-        <Col xs={12} lg={8}>
+        <Col xs={12} lg={6}>
           <Row>
             <Col xs={12} sm={6}>
               <CustomCountryMobileNumberField
@@ -203,10 +203,17 @@ export default function FormWithoutFormikForCommitment({
             </Col>
           </Row>
         </Col>
-        <Col xs={12} lg={4}>
+        <Col xs={12} lg={3}>
+          <FormikCustomDatePicker
+            label={t("commitment_select_start_date")}
+            name="startDate"
+            pastDateNotAllowed
+          />
+        </Col>
+        <Col xs={12} lg={3}>
           <FormikCustomDatePicker
             label={t("commitment_select_end_date")}
-            name="DateTime"
+            name="endDate"
             pastDateNotAllowed
           />
         </Col>
