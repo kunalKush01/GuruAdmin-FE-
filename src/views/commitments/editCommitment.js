@@ -31,13 +31,9 @@ const CommitmentWrapper = styled.div`
 `;
 
 const schema = Yup.object().shape({
-  Mobile: Yup
-    .string()
-
-    .required("expenses_mobile_required"),
+  Mobile: Yup.string().required("expenses_mobile_required"),
   SelectedUser: Yup.mixed().required("user_select_required"),
-  donarName: Yup
-    .string()
+  donarName: Yup.string()
     .matches(
       /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
       "donation_donar_name_only_letters"
@@ -45,8 +41,7 @@ const schema = Yup.object().shape({
     .trim(),
   SelectedMasterCategory: Yup.mixed().required("masterCategory_required"),
   SelectedSubCategory: Yup.mixed(),
-  Amount: Yup
-    .string()
+  Amount: Yup.string()
     .matches(/^[1-9][0-9]*$/, "invalid_amount")
     .required("amount_required"),
 });
@@ -106,7 +101,12 @@ export default function EditCommitment() {
       SelectedSubCategory: commitmentDetailQuery?.data?.result?.category,
       createdBy: commitmentDetailQuery?.data?.result?.createdBy.name,
       Amount: commitmentDetailQuery?.data?.result?.amount,
-      DateTime: moment(commitmentDetailQuery?.data?.result?.commitmentEndDate)
+      endDate: moment(commitmentDetailQuery?.data?.result?.commitmentEndDate)
+        .utcOffset("+0530")
+        .toDate(),
+      startDate: moment(
+        commitmentDetailQuery?.data?.result?.commitmentStartDate
+      )
         .utcOffset("+0530")
         .toDate(),
     };
