@@ -1,3 +1,4 @@
+import moment from "moment";
 import React from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -27,8 +28,7 @@ const handleCreateCommitment = async (payload) => {
 const schema = Yup.object().shape({
   Mobile: Yup.string().required("expenses_mobile_required"),
   SelectedUser: Yup.mixed().required("user_select_required"),
-  donarName: Yup
-    .string()
+  donarName: Yup.string()
     .matches(
       /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
       "donation_donar_name_only_letters"
@@ -36,8 +36,7 @@ const schema = Yup.object().shape({
     .trim(),
   SelectedMasterCategory: Yup.mixed().required("masterCategory_required"),
   SelectedSubCategory: Yup.mixed(),
-  Amount: Yup
-    .string()
+  Amount: Yup.string()
     .matches(/^[1-9][0-9]*$/, "invalid_amount")
     .required("amount_required"),
 });
@@ -64,7 +63,8 @@ export default function AddCommitment() {
     SelectedSubCategory: "",
     createdBy: loggedInUser,
     Amount: "",
-    DateTime: new Date(),
+    startDate: new Date(),
+    endDate: moment(new Date()).endOf("month").toDate(),
   };
   return (
     <CommitmentWrapper>
