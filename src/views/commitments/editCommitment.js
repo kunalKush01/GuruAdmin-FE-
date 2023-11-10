@@ -164,7 +164,7 @@ export default function EditCommitment() {
             <div className="ms-md-3 mt-1 mb-3">
               <CommitmentForm
                 validationSchema={schema}
-                disableCategoryOnEdit
+                disableOnEdit
                 getCommitmentMobile={
                   commitmentDetailQuery?.data?.result?.user?.countryCode +
                   commitmentDetailQuery?.data?.result?.user?.mobileNumber
