@@ -51,7 +51,7 @@ export default function CommitmentForm({
   plusIconDisable = false,
   buttonName = "",
   handleSubmit,
-  disableCategoryOnEdit,
+  disableOnEdit,
   validationSchema,
   initialValues,
   getCommitmentMobile,
@@ -114,7 +114,7 @@ export default function CommitmentForm({
                 formik={formik}
                 masterloadOptionQuery={masterloadOptionQuery}
                 loading={loading}
-                editCommitment={disableCategoryOnEdit}
+                editCommitment={disableOnEdit}
                 countryFlag={initialValues?.countryCode}
                 plusIconDisable
                 getCommitmentMobile={getCommitmentMobile}
