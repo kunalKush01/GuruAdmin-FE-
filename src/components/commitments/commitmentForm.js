@@ -102,7 +102,8 @@ export default function CommitmentForm({
               mobileNumber: e?.Mobile.toString(),
               countryCode: e?.dialCode,
               countryName: e?.countryCode,
-              commitmentEndDate: e.DateTime,
+              commitmentStartDate:e?.startDate,
+              commitmentEndDate: e.endDate,
             });
           }}
           validationSchema={validationSchema}

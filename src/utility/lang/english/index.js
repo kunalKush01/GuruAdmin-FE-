@@ -58,7 +58,7 @@ export const englishContent = {
   // All static content of Dashboard
   dashboard_donationReceived: "Donation Received",
   dashboard_donationPending: "Donation Pending",
-  dashboard_all:"All",
+  dashboard_all: "All",
   donation_hundi: "Donation + Hundi",
   dashboard_totalExpenses: "Total Expenses",
   noTopDonar: "There are no ",
@@ -126,15 +126,15 @@ export const englishContent = {
   events_delete: "Delete Event",
   events_sure: "Are you sure you want to permanently delete this event ? ",
   events_not_found: "Events Absent",
-  events_not_click_add_events:
-    "To introduce a new event, click 'Add Event'",
+  events_not_click_add_events: "To introduce a new event, click 'Add Event'",
 
   // All static content of Notices
 
   notices_AddNotice: "Add Notice",
   notices_latest_Notice: "Notices",
   add_image: "Add Image",
-  image_size_suggestion:'(Please upload the image with the size of 450px*350px)',
+  image_size_suggestion:
+    "(Please upload the image with the size of 450px*350px)",
   notices_title_required: "Title is required",
   notices_desc_required: "Description is required",
   notices_select_dropDown: "Select Notice",
@@ -217,7 +217,8 @@ export const englishContent = {
   report_commitment: "Commitment",
   reports_not_found: "Report & Disput Not Found",
   report_donation_box: "Donation Box Collections",
-  finance_report_no_found: "No Financial Report Available for Selected Timeline",
+  finance_report_no_found:
+    "No Financial Report Available for Selected Timeline",
   financial_not_found: "No Financial Found",
 
   // All static content of Donation
@@ -274,6 +275,7 @@ export const englishContent = {
   commitment_end_Date: "End Date ",
   commitment_Amount_Due: "Amount Due",
   commitment_select_commitment_id: "Select Commitment ID",
+  commitment_select_start_date:'Select Start Date',
   commitment_select_end_date: "Select End Date",
 
   commitment_delete: "Delete Commitment",
@@ -314,7 +316,7 @@ export const englishContent = {
 
   // All user Profile static Data
   about_trust: "ABOUT US",
-  trust_address:'Address',
+  trust_address: "Address",
   trust_user: "ABOUT USER",
   trust_location: "LOCATION",
   trust_facility: "FACILITIES",
@@ -415,6 +417,21 @@ export const englishContent = {
   placeHolder_state: "Enter State",
   placeHolder_location: "Enter Location",
   placeHolder_trust_facebook: "Enter Facebook Link",
-  placeHolder_trust_address:'Enter Address ',
+  placeHolder_trust_address: "Enter Address ",
 
+  // All search static keys
+  search_notification: "Search All Notifications",
+  search_subscribe_user: "Search All Subscribe User",
+  search_news: "Search All News",
+  search_events: "Search All Events",
+  search_notices: "Search All Notices",
+  search_categories: "Search All Categories",
+  search_users: "Search All Users",
+  search_disputes: "Search All Disputes",
+  search_expenses: "Search All Expenses",
+  search_financial_reports: "Search All Financial Reports",
+  search_donation: "Search All Donations",
+  search_punyarjak: "Search All Punyarjak",
+  search_donation_box_collection: "Search All Donation Box Collection",
+  search_commitment: "Search All Commitments",
 };
