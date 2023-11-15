@@ -208,7 +208,6 @@ export default function FormWithoutFormikForCommitment({
             <FormikCustomDatePicker
               label={t("commitment_select_start_date")}
               name="startDate"
-              pastDateNotAllowed
             />
           </Col>
         )}
