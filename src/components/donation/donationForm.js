@@ -88,6 +88,8 @@ export default function DonationForm({
     },
   });
   const [showPrompt, setShowPrompt] = useState(true);
+  const [toggleState, setToggleState] = useState(false);
+  console.log("toggleState", toggleState);
   return (
     <FormWrapper className="FormikWrapper">
       {!masterloadOptionQuery.isLoading && (
@@ -107,6 +109,13 @@ export default function DonationForm({
               countryCode: e?.dialCode,
               countryName: e?.countryCode,
               commitmentId: e?.SelectedCommitmentId?.commitmentId,
+              articleType: e?.articleType,
+              articleItem: e?.articleItem,
+              articleWeight: e?.articleWeight,
+              articleUnit: e?.articleUnit?.id,
+              articleQuantity: e?.articleQuantity,
+              articleRemarks: e?.remarks,
+              isArticle: toggleState,
             });
           }}
           validationSchema={validationSchema}
@@ -116,6 +125,8 @@ export default function DonationForm({
               formik={formik}
               masterloadOptionQuery={masterloadOptionQuery}
               loading={loading}
+              article={toggleState}
+              setArticle={setToggleState}
               countryFlag={initialValues?.countryCode}
               paidDonation={initialValues?.SelectedUser?.id}
               payDonation={payDonation}

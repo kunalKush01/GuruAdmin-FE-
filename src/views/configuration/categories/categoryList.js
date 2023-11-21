@@ -173,7 +173,7 @@ export default function Category() {
     <CategoryListWrapper>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Mandir Admin | Category</title>
+        <title>Apna Dharam Admin | Category</title>
       </Helmet>
       <div className="window nav statusBar body "></div>
 

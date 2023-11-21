@@ -94,7 +94,7 @@ const ReportList = () => {
     <ReportDisputWaraper>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Mandir Admin | Reports & Disputes</title>
+        <title>Apna Dharam Admin | Reports & Disputes</title>
       </Helmet>
       <div className="d-flex justify-content-between align-items-center table_upper_row">
         <div className="d-flex justify-content-between align-items-center ">

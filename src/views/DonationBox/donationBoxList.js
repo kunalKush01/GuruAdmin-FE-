@@ -161,7 +161,7 @@ export default function Expenses() {
     <NewsWarper>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Mandir Admin | Donation Box</title>
+        <title>Apna Dharam Admin | Donation Box</title>
       </Helmet>
       <div className="window nav statusBar body "></div>
 
