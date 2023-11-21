@@ -162,7 +162,7 @@ export default function Notification() {
     <NotificationWrapper>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Mandir Admin | Notifications</title>
+        <title>Apna Dharam Admin | Notifications</title>
       </Helmet>
       <div className="window nav statusBar body "></div>
 

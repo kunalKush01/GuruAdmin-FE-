@@ -384,7 +384,7 @@ export default function FinancialReport() {
     <NewsWarper>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Mandir Admin | Financial Report</title>
+        <title>Apna Dharam Admin | Financial Report</title>
       </Helmet>
       <div className="window nav statusBar body "></div>
 
