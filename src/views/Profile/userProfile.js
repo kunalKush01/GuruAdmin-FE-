@@ -157,7 +157,7 @@ export default function AddProfile() {
     <ProfileWarper>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Mandir Admin | Profile</title>
+        <title>Apna Dharam Admin | Profile</title>
       </Helmet>
       <div className="d-flex justify-content-between align-items-center mb-2">
         <div className="d-flex justify-content-between align-items-center ">

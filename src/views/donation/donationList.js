@@ -214,7 +214,7 @@ export default function Donation() {
     <DonationWrapper>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Mandir Admin | Donations</title>
+        <title>Apna Dharam Admin | Donations</title>
       </Helmet>
       <div className="window nav statusBar body "></div>
 

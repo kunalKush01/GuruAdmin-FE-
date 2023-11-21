@@ -4,7 +4,15 @@ import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { Prompt, useHistory } from "react-router-dom";
 import { useUpdateEffect } from "react-use";
-import { Button, Col, Row, Spinner } from "reactstrap";
+import {
+  Button,
+  Col,
+  FormGroup,
+  Input,
+  Row,
+  Spinner,
+  UncontrolledTooltip,
+} from "reactstrap";
 import { getAllSubCategories } from "../../api/expenseApi";
 import {
   findAllComitmentByUser,
@@ -13,6 +21,7 @@ import {
 } from "../../api/findUser";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
+import { TextArea } from "../partials/CustomTextArea";
 import AsyncSelectField from "../partials/asyncSelectField";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
@@ -26,6 +35,8 @@ export default function FormWithoutFormikForDonation({
   countryFlag,
   payDonation,
   loading,
+  article,
+  setArticle,
   showPrompt,
   ...props
 }) {
@@ -266,13 +277,16 @@ export default function FormWithoutFormikForDonation({
                 loadOptions={commitmentIdByUser}
                 placeholder={t("commitment_select_commitment_id")}
                 name={"SelectedCommitmentId"}
-                disabled={payDonation || commitmentIdByUser?.length == 0}
+                disabled={
+                  payDonation || commitmentIdByUser?.length == 0 || article
+                }
                 valueKey={"id"}
                 getOptionLabel={(option) => `${option.commitmentId}`}
                 width
               />
             </Col>
           </Row>
+
           <Row>
             <Col>
               <Row>
@@ -299,6 +313,104 @@ export default function FormWithoutFormikForDonation({
               </Row>
             </Col>
           </Row>
+          {/* article dan Row */}
+          {!location.pathname.includes("/pay-donation") && (
+            <>
+              <Row>
+                <Col xs={12}>
+                  <div className="d-flex align-items-center gap-1">
+                    Article Daan
+                    <FormGroup switch id="articleDaan">
+                      <Input
+                        type="switch"
+                        checked={article}
+                        role="switch"
+                        onChange={(e) => {
+                          // setTimeout(async () => {
+                          formik.setFieldValue("SelectedCommitmentId", null);
+                          setArticle(!article);
+                          // }, 500);
+                        }}
+                      />
+                      <UncontrolledTooltip placement="top" target="articleDaan">
+                        Enable article daan
+                      </UncontrolledTooltip>
+                    </FormGroup>
+                  </div>
+                  {article && (
+                    <hr
+                      style={{
+                        height: "3px",
+                        borderRadius: "#c7c7c7",
+                        background: "gray",
+                        marginTop: 0,
+                      }}
+                    />
+                  )}
+                </Col>
+              </Row>
+              {article && (
+                <Row>
+                  <Col xs={12} sm={6} lg={4}>
+                    <CustomTextField
+                      label={t("Article Type")}
+                      name="articleType"
+                      placeholder={t(
+                        "Enter Article Type (i.e. Gold, Silver, etc..)"
+                      )}
+                    />
+                  </Col>
+                  <Col xs={12} sm={6} lg={4}>
+                    <CustomTextField
+                      label={t("Article Item")}
+                      name="articleItem"
+                      placeholder={t("Enter Article Item")}
+                    />
+                  </Col>
+                  <Col xs={12} sm={6} lg={4}>
+                    <CustomTextField
+                      label={t("Article Weight")}
+                      name="articleWeight"
+                      placeholder={t("Enter Article Weight")}
+                    />
+                  </Col>
+                  <Col xs={12} sm={6} lg={4}>
+                    <FormikCustomReactSelect
+                      labelName={t("Article Unit")}
+                      name="articleUnit"
+                      placeholder={t("Enter Article Unit")}
+                      width="100"
+                      loadOptions={[
+                        {
+                          label: "Kilo Gram",
+                          value: "kg",
+                        },
+                        {
+                          label: "Gram",
+                          value: "gm",
+                        },
+                      ]}
+                    />
+                  </Col>
+                  <Col xs={12} sm={6} lg={4}>
+                    <CustomTextField
+                      label={t("Article Quantity")}
+                      name="articleQuantity"
+                      placeholder={t("Enter Article Quantity")}
+                    />
+                  </Col>
+                  <Col xs={12}>
+                    <TextArea
+                      name="remarks"
+                      placeholder={t("Enter Remarks here")}
+                      label={t("Remarks")}
+                      rows="6"
+                    />
+                  </Col>
+                </Row>
+              )}
+            </>
+          )}
         </Col>
       </Row>
       <div className="btn-Published mt-3">

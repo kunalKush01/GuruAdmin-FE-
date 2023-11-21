@@ -184,7 +184,7 @@ export default function User() {
     <NewsWarper>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Mandir Admin | Users</title>
+        <title>Apna Dharam Admin | Users</title>
       </Helmet>
       <div className="window nav statusBar body "></div>
 
