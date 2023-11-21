@@ -151,7 +151,7 @@ export default function Expenses() {
     <ExpenseWrapper>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Mandir Admin | Expenses</title>
+        <title>Apna Dharam Admin | Expenses</title>
       </Helmet>
       <div className="window nav statusBar body "></div>
 
