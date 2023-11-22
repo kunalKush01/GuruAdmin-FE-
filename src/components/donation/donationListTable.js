@@ -10,12 +10,15 @@ import ReactToPrint from "react-to-print";
 import { Button, Input, Modal, ModalBody, ModalFooter } from "reactstrap";
 import styled from "styled-components";
 import Swal from "sweetalert2";
+import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import donationReceiptIcon from "../../assets/images/icons/donationReceipt.svg";
 import receiptIcon from "../../assets/images/icons/receiptIcon.svg";
 import templeImage from "../../assets/images/pages/login-v2.png";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
+import { EDIT } from "../../utility/permissionsVariable";
 import CustomDataTable from "../partials/CustomDataTable";
+import EditDonation from "./editDonation";
 
 const RecentDonationTableWarper = styled.div`
   color: #583703 !important;
@@ -29,7 +32,10 @@ const RecentDonationTableWarper = styled.div`
   }
 `;
 
-export default function DonationListTable({ data, topdf }, args) {
+export default function DonationListTable(
+  { data, topdf, allPermissions, subPermission, financeReport },
+  args
+) {
   const { t } = useTranslation();
   const history = useHistory();
   const ref = useRef();
@@ -42,9 +48,18 @@ export default function DonationListTable({ data, topdf }, args) {
 
   const loggedTemple = useSelector((state) => state.auth.trustDetail);
   const [receipt, setReceipt] = useState();
-  const [modal, setModal] = useState(false);
-  const toggle = () => {
-    setModal(!modal);
+  const [modal, setModal] = useState({
+    modal: false,
+    donationId: "",
+    estimateAmount: "",
+  });
+  console.log("modalDonation", modal);
+  const toggle = (row) => {
+    setModal({
+      modal: !modal.modal,
+      donationId: row?._id,
+      estimateAmount: row?.amount,
+    });
   };
 
   const columns = [
@@ -106,6 +121,10 @@ export default function DonationListTable({ data, topdf }, args) {
       name: t("dashboard_Recent_DonorReceipt"),
       selector: (row) => row.receipt,
     },
+    {
+      name: "",
+      selector: (row) => row.edit,
+    },
   ];
 
   const Donatio_data = useMemo(() => {
@@ -166,6 +185,22 @@ export default function DonationListTable({ data, topdf }, args) {
             }}
           />
         ),
+        edit:
+          item?.isArticle && (allPermissions?.name === "all" ||
+          subPermission?.includes(EDIT) ||
+          financeReport) ? (
+            <img
+              src={editIcon}
+              width={35}
+              className={financeReport ? "d-none" : "cursor-pointer "}
+              onClick={() => {
+                console.log("rowdsads", item);
+                financeReport ? "" : toggle(item);
+              }}
+            />
+          ) : (
+            ""
+          ),
       };
     });
   }, [data]);
@@ -317,6 +352,13 @@ export default function DonationListTable({ data, topdf }, args) {
           </div>
         </div>
       </div>
+
+      <EditDonation
+        isOpen={modal?.modal}
+        toggle={toggle}
+        donationId={modal?.donationId}
+        estimateAmount={modal?.estimateAmount}
+      />
     </RecentDonationTableWarper>
   );
 }
