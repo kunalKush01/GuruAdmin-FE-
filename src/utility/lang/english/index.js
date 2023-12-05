@@ -227,6 +227,8 @@ export const englishContent = {
   end_Time: "End Time",
 
   donation_Adddonation: "Add Donation",
+  original_amount: "Original Amount",
+  estimate_amount: "Estimate Amount",
   donation_select_date_time: "Select Date",
   donation_select_date: "Select Date",
   donation_donar_name_only_letters:
@@ -275,7 +277,7 @@ export const englishContent = {
   commitment_end_Date: "End Date ",
   commitment_Amount_Due: "Amount Due",
   commitment_select_commitment_id: "Select Commitment ID",
-  commitment_select_start_date:'Select Start Date',
+  commitment_select_start_date: "Select Start Date",
   commitment_select_end_date: "Select End Date",
 
   commitment_delete: "Delete Commitment",

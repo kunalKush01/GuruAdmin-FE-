@@ -19,6 +19,7 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { EDIT } from "../../utility/permissionsVariable";
 import CustomDataTable from "../partials/CustomDataTable";
 import EditDonation from "./editDonation";
+import receiptLogo from "./png-transparent-orange-illustration-jainism-jain-symbols-jain-temple-ahimsa-jainism-angle-white-text-removebg-preview.png";
 
 const RecentDonationTableWarper = styled.div`
   color: #583703 !important;
@@ -102,7 +103,14 @@ export default function DonationListTable(
       cellExport: (row) => row.dateTime,
     },
     {
-      name: t("dashboard_Recent_DonorAmount"),
+      name: t("original_amount"),
+      width: "180px",
+      selector: (row) => row.originalAmount,
+      cellExport: (row) => row.originalAmount,
+    },
+    {
+      name: t("estimate_amount"),
+      width: "180px",
       selector: (row) => row.amount,
       cellExport: (row) => row.amount,
     },
@@ -165,6 +173,13 @@ export default function DonationListTable(
         dateTime: moment(item.createdAt ?? item?.updatedAt).format(
           " DD MMM YYYY,hh:mm A"
         ),
+        originalAmount: (
+          <div>
+            {item?.originalAmount
+              ? `₹${item?.originalAmount.toLocaleString("en-IN")}`
+              : "-"}
+          </div>
+        ),
         amount: <div>₹{item?.amount.toLocaleString("en-IN")}</div>,
         commitmentID: item.commitmentId
           ? item.commitmentId < 10
@@ -186,9 +201,10 @@ export default function DonationListTable(
           />
         ),
         edit:
-          item?.isArticle && (allPermissions?.name === "all" ||
-          subPermission?.includes(EDIT) ||
-          financeReport) ? (
+          item?.isArticle &&
+          (allPermissions?.name === "all" ||
+            subPermission?.includes(EDIT) ||
+            financeReport) ? (
             <img
               src={editIcon}
               width={35}
@@ -221,8 +237,7 @@ export default function DonationListTable(
         content={() => ref.current}
         documentTitle={`Donation-Receipt.pdf`}
       />
-
-      <div className="d-none">
+      {/* <div className="d-none">
         <div ref={ref}>
           <div
             className="container"
@@ -351,8 +366,343 @@ export default function DonationListTable(
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
+      <div className="d-none">
+        <div ref={ref}>
+          <div
+            style={{
+              width: "90%",
+              margin: "auto",
+              font: "normal normal normal 17px/30px noto sans",
+              color: "#000000",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                padding: "0rem 2rem",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <img
+                width="80px"
+                src={receiptLogo}
+                style={{ mixBlendMode: "color-burn" }}
+              />
+              <h1>{loggedTemple?.name}</h1>
+              <img
+                width="80px"
+                src={receiptLogo}
+                style={{ mixBlendMode: "color-burn" }}
+              />
+            </div>
 
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                marginTop: "1rem",
+              }}
+            >
+              <div style={{ width: "50%", display: "grid" }}>
+                <span>{loggedTemple?.name}</span>
+                <span>Reg. No. BK-IV-655-2022-23</span>
+                <span>PAN: {loggedTemple?.panNumber}</span>
+              </div>
+
+              <div style={{ width: "50%" }}>
+                <span>Registered at: </span>
+                <span>{loggedTemple?.address}</span>
+              </div>
+            </div>
+
+            <div
+              style={{
+                background: "red",
+                color: "#fff",
+                fontWeight: "bold",
+                fontSize: "20px",
+                textAlign: "center",
+                margin: "1.5rem 0rem",
+              }}
+            >
+              दान रसीद
+              <span style={{ fontSize: "17px" }}>(Donation Receipt)</span>
+            </div>
+
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div style={{ width: "50%" }}>
+                <div style={{ display: "flex", alignItems: "start" }}>
+                  <div style={{ display: "grid", width: "30%" }}>
+                    <span style={{ fontSize: "20px" }}>रसीद नं.</span>
+                    <span>(Receipt No.)</span>
+                  </div>
+                  <div
+                    style={{
+                      borderBottom: "2px solid red",
+                      width: "60%",
+                      minHeight: "32px",
+                    }}
+                  >
+                    {receipt?.receiptNo}
+                  </div>
+                </div>
+              </div>
+              <div style={{ width: "50%" }}>
+                <div style={{ display: "flex", alignItems: "start" }}>
+                  <div style={{ display: "grid", width: "25%" }}>
+                    <span style={{ fontSize: "20px" }}>दिनांक:</span>
+                    <span>(Date)</span>
+                  </div>
+                  <div
+                    style={{
+                      borderBottom: "2px solid red",
+                      width: "60%",
+                      minHeight: "32px",
+                    }}
+                  >
+                    {moment(receipt?.createdAt ?? receipt?.updatedAt).format(
+                      " DD MMM YYYY"
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style={{ marginTop: "1.5rem" }}>
+              <div style={{ display: "flex", alignItems: "start" }}>
+                <div style={{ display: "grid", width: "20%" }}>
+                  <span style={{ fontSize: "20px" }}> दाता का नाम:</span>
+                  <span>(Donar Name)</span>
+                </div>
+                <div
+                  style={{
+                    borderBottom: "2px solid red",
+                    width: "80%",
+                    minHeight: "32px",
+                  }}
+                >
+                  {ConverFirstLatterToCapital(
+                    receipt?.donarName || receipt?.user?.name || ""
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div style={{ width: "50%" }}>
+                <div style={{ display: "flex", alignItems: "start" }}>
+                  <div style={{ display: "grid", width: "25%" }}>
+                    <span style={{ fontSize: "20px" }}>मोबाइल:</span>
+                    <span>(Mobile)</span>
+                  </div>
+                  <div
+                    style={{
+                      borderBottom: "2px solid red",
+                      width: "65%",
+                      minHeight: "32px",
+                    }}
+                  >
+                    {receipt?.user?.countryCode} {receipt?.user?.mobileNumber}
+                  </div>
+                </div>
+              </div>
+              <div style={{ width: "50%" }}>
+                <div style={{ display: "flex", alignItems: "start" }}>
+                  <div style={{ display: "grid", width: "30%" }}>
+                    <span style={{ fontSize: "20px" }}>निवासी:</span>
+                    <span>(Residing at)</span>
+                  </div>
+                  <div
+                    style={{
+                      borderBottom: "2px solid red",
+                      width: "70%",
+                      minHeight: "32px",
+                    }}
+                  >
+                    {receipt?.user?.address ?? ""}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* <div
+              style={{
+                width: "100%",
+                margin: "1.5rem 0rem",
+                justifyContent: "end",
+                display: "flex",
+              }}
+            >
+              <div style={{ width: "65%", display: "flex" }}>
+                <div style={{ display: "grid" }}>
+                  <span style={{ fontSize: "20px" }}>राशि: </span>
+                  <span>(Amount)</span>
+                </div>
+                <div
+                  style={{
+                    border: "1px solid red",
+                    marginLeft: ".5rem",
+                    width: "100%",
+                    padding: "1rem",
+                  }}
+                >
+                  ₹{receipt?.amount?.toLocaleString("en-In")}
+                </div>
+              </div>
+            </div> */}
+
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                margin: "1.5rem 0rem",
+              }}
+            >
+              <div style={{ width: "50%" }}>
+                <div style={{ display: "flex", alignItems: "start" }}>
+                  <div style={{ display: "grid", width: "25%" }}>
+                    <span style={{ fontSize: "20px" }}>पैन:</span>
+                    <span>(PAN )</span>
+                  </div>
+                  <div
+                    style={{
+                      borderBottom: "2px solid red",
+                      width: "65%",
+                      minHeight: "32px",
+                    }}
+                  >
+                    {receipt?.user?.panNumber}
+                  </div>
+                </div>
+              </div>
+              <div style={{ width: "50%" }}>
+                <div style={{ display: "flex", alignItems: "start" }}>
+                  <div style={{ display: "grid", width: "30%" }}>
+                    <span style={{ fontSize: "20px" }}>राशि:</span>
+                    <span>(Amount)</span>
+                  </div>
+                  <div
+                    style={{
+                      borderBottom: "2px solid red",
+                      width: "70%",
+                      minHeight: "32px",
+                    }}
+                  >
+                    ₹{receipt?.amount?.toLocaleString("en-In")}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style={{ display: "flex", alignItems: "start" }}>
+              <div style={{ display: "grid", width: "35%" }}>
+                <span style={{ fontSize: "20px" }}>
+                  दान का माध्यम तथा सन्दर्भ नं
+                </span>
+                <span>(Transaction Details)</span>
+              </div>
+              <div
+                style={{
+                  borderBottom: "2px solid red",
+                  width: "70%",
+                  minHeight: "32px",
+                }}
+              >
+                {ConverFirstLatterToCapital(receipt?.paymentMethod ?? "")}
+              </div>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                alignItems: "start",
+                margin: "1.5rem 0rem",
+              }}
+            >
+              <div style={{ display: "grid", width: "20%" }}>
+                <span style={{ fontSize: "20px" }}>दाता का मद :</span>
+                <span>(Donation for)</span>
+              </div>
+              <div
+                style={{
+                  borderBottom: "2px solid red",
+                  width: "80%",
+                  minHeight: "32px",
+                }}
+              >
+                {" "}
+              </div>
+            </div>
+
+            <div
+              style={{
+                margin: "1.5rem 0rem",
+                fontSize: "20px",
+                fontWeight: "bold",
+              }}
+            >
+              <span>To DONATE:</span>
+              <span></span>
+            </div>
+
+            <div
+              style={{
+                margin: "1.5rem 0rem",
+                fontSize: "20px",
+              }}
+            >
+              <span>UPI:</span>
+              <span></span>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                margin: "2rem 0rem",
+              }}
+            >
+              <div style={{ width: "50%", display: "grid" }}>
+                <span>Bank Details:</span>
+                <div>
+                  <span>A/c no.</span>
+                  <span>{loggedTemple?.accountNumber}</span>
+                </div>
+                <div>
+                  <span>IFSC Code: </span>
+                  <span>{loggedTemple?.ifsc_code}</span>
+                </div>
+                <div>
+                  <span>Branch: </span>
+                  <span>{loggedTemple?.branch}</span>
+                </div>
+              </div>
+
+              <div
+                style={{ width: "50%", display: "grid", textAlign: "center" }}
+              >
+                <span style={{ fontSize: "20px" }}>
+                  दान प्राप्तकर्ता हस्ताक्षर
+                </span>
+                <span>(Donation recipient signature)</span>
+              </div>
+            </div>
+
+            <div style={{ width: "100%", display: "flex" }}>
+              <span style={{ width: "50%" }}>
+                This is system generated receipt/ यह कंप्यूटर के द्वारा बनाई गई
+                रसीद है
+              </span>
+              <span style={{ width: "50%", textAlign: "end" }}>
+                Powered by apnadharam.com
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
       <EditDonation
         isOpen={modal?.modal}
         toggle={toggle}
