@@ -374,7 +374,7 @@ export default function DonationListTable(
               width: "90%",
               margin: "auto",
               font: "normal normal normal 17px/30px noto sans",
-              color: "#000000",
+              color: "#583703",
             }}
           >
             <div
@@ -390,7 +390,7 @@ export default function DonationListTable(
                 src={receiptLogo}
                 style={{ mixBlendMode: "color-burn" }}
               />
-              <h1>{loggedTemple?.name}</h1>
+              <h1 style={{ color: "#583703" }}>{loggedTemple?.name}</h1>
               <img
                 width="80px"
                 src={receiptLogo}
@@ -419,7 +419,7 @@ export default function DonationListTable(
 
             <div
               style={{
-                background: "red",
+                background: "#ff8744",
                 color: "#fff",
                 fontWeight: "bold",
                 fontSize: "20px",
@@ -440,7 +440,7 @@ export default function DonationListTable(
                   </div>
                   <div
                     style={{
-                      borderBottom: "2px solid red",
+                      borderBottom: "2px solid #ff8744",
                       width: "60%",
                       minHeight: "32px",
                     }}
@@ -457,7 +457,7 @@ export default function DonationListTable(
                   </div>
                   <div
                     style={{
-                      borderBottom: "2px solid red",
+                      borderBottom: "2px solid #ff8744",
                       width: "60%",
                       minHeight: "32px",
                     }}
@@ -478,7 +478,7 @@ export default function DonationListTable(
                 </div>
                 <div
                   style={{
-                    borderBottom: "2px solid red",
+                    borderBottom: "2px solid #ff8744",
                     width: "80%",
                     minHeight: "32px",
                   }}
@@ -499,7 +499,7 @@ export default function DonationListTable(
                   </div>
                   <div
                     style={{
-                      borderBottom: "2px solid red",
+                      borderBottom: "2px solid #ff8744",
                       width: "65%",
                       minHeight: "32px",
                     }}
@@ -516,7 +516,7 @@ export default function DonationListTable(
                   </div>
                   <div
                     style={{
-                      borderBottom: "2px solid red",
+                      borderBottom: "2px solid #ff8744",
                       width: "70%",
                       minHeight: "32px",
                     }}
@@ -568,7 +568,7 @@ export default function DonationListTable(
                   </div>
                   <div
                     style={{
-                      borderBottom: "2px solid red",
+                      borderBottom: "2px solid #ff8744",
                       width: "65%",
                       minHeight: "32px",
                     }}
@@ -585,7 +585,7 @@ export default function DonationListTable(
                   </div>
                   <div
                     style={{
-                      borderBottom: "2px solid red",
+                      borderBottom: "2px solid #ff8744",
                       width: "70%",
                       minHeight: "32px",
                     }}
@@ -605,7 +605,7 @@ export default function DonationListTable(
               </div>
               <div
                 style={{
-                  borderBottom: "2px solid red",
+                  borderBottom: "2px solid #ff8744",
                   width: "70%",
                   minHeight: "32px",
                 }}
@@ -627,7 +627,7 @@ export default function DonationListTable(
               </div>
               <div
                 style={{
-                  borderBottom: "2px solid red",
+                  borderBottom: "2px solid #ff8744",
                   width: "80%",
                   minHeight: "32px",
                 }}
@@ -691,14 +691,14 @@ export default function DonationListTable(
               </div>
             </div>
 
-            <div style={{ width: "100%", display: "flex" }}>
-              <span style={{ width: "50%" }}>
+            <div
+              style={{ width: "100%", display: "grid", textAlign: "center" }}
+            >
+              <span>
                 This is system generated receipt/ यह कंप्यूटर के द्वारा बनाई गई
                 रसीद है
               </span>
-              <span style={{ width: "50%", textAlign: "end" }}>
-                Powered by apnadharam.com
-              </span>
+              <span>Powered by apnadharam.com</span>
             </div>
           </div>
         </div>
