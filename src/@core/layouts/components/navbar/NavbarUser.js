@@ -207,6 +207,7 @@ const NavbarUser = (props) => {
   const userDetails = useSelector((state) => state.auth.userDetail);
   const refreshToken = useSelector((state) => state.auth.tokens.refreshToken);
   const searchBarValue = useSelector((state) => state.auth.LocalSearch);
+
   const dispatch = useDispatch();
   const { t, i18n } = useTranslation();
   const handleLogOut = async () => {
@@ -223,6 +224,18 @@ const NavbarUser = (props) => {
     page: 1,
     limit: 10,
   });
+  const subdomainChange = process.env.REACT_APP_ADMIN_SUBDOMAIN_REPLACE_URL;
+
+  const subDomainName = location.hostname.replace(subdomainChange, "");
+  // const subDomainName = location.hostname.replace("-staging.localhost", "");
+  const loginPageQuery = useQuery([subDomainName], () =>
+    loginPage(subDomainName)
+  );
+
+  const loginPageData = useMemo(
+    () => loginPageQuery?.data?.result,
+    dispatch(handleTrustDetail(loginPageQuery?.data?.result))[loginPageQuery]
+  );
 
   const notificationQuery = useQuery(
     ["notificationMessagePing", pagination.page],
@@ -250,20 +263,6 @@ const NavbarUser = (props) => {
       }, 1000);
     }
   }, [allUnReadMessage, location?.pathname]);
-
-  const subdomainChange = process.env.REACT_APP_ADMIN_SUBDOMAIN_REPLACE_URL;
-
-  const subDomainName = location.hostname.replace(subdomainChange, "");
-  // const subDomainName = location.hostname.replace("-dev.localhost", "");
-
-  const loginPageQuery = useQuery([subDomainName], () =>
-    loginPage(subDomainName)
-  );
-
-  const loginPageData = useMemo(
-    () => loginPageQuery?.data?.result,
-    dispatch(handleTrustDetail(loginPageQuery?.data?.result))[loginPageQuery]
-  );
 
   return (
     <Fragment>
@@ -342,6 +341,7 @@ const NavbarUser = (props) => {
                 }).then(async (result) => {
                   if (result.isConfirmed) {
                     handleLogOut();
+                    localStorage.setItem("trustId", "");
                   }
                 });
               }}

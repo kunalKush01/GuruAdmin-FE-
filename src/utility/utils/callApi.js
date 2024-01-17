@@ -82,6 +82,8 @@ export const callApi = async ({
 }) => {
   const accessToken = selectAccessToken(store.getState());
 
+  const trustId = localStorage.getItem("trustId");
+
   const headers = {
     ...defaultHeaders,
     // 'Content-Type': 'application/json',
@@ -89,7 +91,8 @@ export const callApi = async ({
   };
   const axiosInstance = axios.create({
     baseURL: `${process.env.REACT_APP_BASEURL}${
-      store.getState()?.auth?.trustDetail?.id
+      // store.getState()?.auth?.trustDetail?.id
+      trustId
     }/`,
     headers,
     responseType: "json",
@@ -149,13 +152,15 @@ export const callApi = async ({
                 showToastOnSuccess,
                 showToastOnError,
                 callRefreshTokenOnAuthError: false,
-                refreshSuccessRestFail: newAccessToken && newRefreshToken && error?.response?.data?.code === 401
+                refreshSuccessRestFail:
+                  newAccessToken &&
+                  newRefreshToken &&
+                  error?.response?.data?.code === 401,
               });
             }
 
             return { error: true };
-          }
-          else if(refreshSuccessRestFail){
+          } else if (refreshSuccessRestFail) {
             store.dispatch(logOut());
             return { error: true };
           }
