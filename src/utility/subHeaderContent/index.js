@@ -10,6 +10,11 @@ export const subHeaderContent = [
   },
 
   {
+    name: "cattles_management",
+    url: "/cattle/dashboard",
+  },
+
+  {
     name: "commitment",
     url: "/commitment",
   },
