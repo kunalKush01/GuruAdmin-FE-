@@ -155,6 +155,7 @@ const Home = () => {
           <RevenueChart
             CommitmentData={chartData?.totalCommitmentArr}
             DonationData={chartData?.donationAmountArr}
+            chartHeading="dashboard_RevenueReport"
             // TotalExpensesData={chartData?.expenseAmountArr}
           />
 

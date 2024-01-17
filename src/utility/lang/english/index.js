@@ -128,6 +128,19 @@ export const englishContent = {
   events_not_found: "Events Absent",
   events_not_click_add_events: "To introduce a new event, click 'Add Event'",
 
+  // All static content of Cattles
+  cattles_management: "Cattle Management",
+  cattle_info: "Cattle Info",
+  cattle_medical_record: "Medical Record",
+  cattle_pregnancy_record: "Pregnancy Report",
+  cattle_expense: "Expense Management",
+  cattle_stock: "Stock Management",
+  cattle_usage: "Usage Management",
+  cattle_revenueHeading: "Daily Registration Report ",
+  recent_registered_cattles: "Recent Registered Cattles",
+  cattle_registered: "Registered Cattle",
+  cattle_add: "Add Cattle",
+
   // All static content of Notices
 
   notices_AddNotice: "Add Notice",

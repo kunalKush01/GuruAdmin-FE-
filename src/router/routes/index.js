@@ -1,6 +1,6 @@
+import { exact } from "prop-types";
 import { lazy } from "react";
 import { EDIT, READ, WRITE } from "../../utility/permissionsVariable.js";
-import { exact } from "prop-types";
 
 // ** Document title
 const TemplateTitle = "%s - Vuexy React Admin Template";
@@ -40,43 +40,105 @@ const Routes = [
     type: "dashboard",
     subPermission: READ,
   },
+
+  {
+    path: "/cattle/dashboard",
+    component: lazy(() =>
+      import("../../views/cattles-management/dashboard/index.js")
+    ),
+    type: "cattle-dashboard",
+    subPermission: READ,
+  },
+  {
+    path: "/cattle/info",
+    component: lazy(() =>
+      import("../../views/cattles-management/cattles-info/index.js")
+    ),
+    type: "cattle-info",
+    subPermission: READ,
+  },
+  {
+    path: "/cattle/medical-info",
+    component: lazy(() =>
+      import("../../views/cattles-management/medical-record/index.js")
+    ),
+    type: "cattle-medical",
+    subPermission: READ,
+  },
+
+  {
+    path: "/cattle/pregnancy-reports",
+    component: lazy(() =>
+      import("../../views/cattles-management/pregnancy-report/index.js")
+    ),
+    type: "cattle-pregnancy",
+    subPermission: READ,
+  },
+
+  {
+    path: "/cattle/expenses",
+    component: lazy(() =>
+      import("../../views/cattles-management/Expense-management/index.js")
+    ),
+    type: "cattle-expense",
+    subPermission: READ,
+  },
+
+  {
+    path: "/cattle/stock",
+    component: lazy(() =>
+      import("../../views/cattles-management/stock-management/index.js")
+    ),
+    type: "cattle-stock",
+    subPermission: READ,
+  },
+
+  {
+    path: "/cattle/usage",
+    component: lazy(() =>
+      import("../../views/cattles-management/usage-management/index.js")
+    ),
+    type: "cattle-usage",
+    subPermission: READ,
+  },
+
   {
     path: "/events/about/:eventId",
     component: lazy(() => import("../../views/events/eventDetailPage")),
     exact: true,
-    type:"events",
-    subPermission:READ
+    type: "events",
+    subPermission: READ,
   },
   {
     path: "/notices/about/:noticeId",
     component: lazy(() => import("../../views/notices/noticeDetailPage")),
     exact: true,
-    type:"notices",
-    subPermission:READ
+    type: "notices",
+    subPermission: READ,
   },
   {
     path: "/news/about/:newsId",
     component: lazy(() => import("../../views/news/newsDetailPage")),
     exact: true,
-    type:"news",
-    subPermission:READ
+    type: "news",
+    subPermission: READ,
   },
   {
     path: "/notification",
     component: lazy(() => import("../../views/Notification/notificationList")),
-    type:"notification"
+    type: "notification",
   },
   {
     path: "/edit-profile",
     component: lazy(() => import("../../views/Profile/userProfile")),
-    type:"editProfile",
-    exact:true
+    type: "editProfile",
+    exact: true,
   },
   {
     path: "/edit-profile/add-language/:profileId",
     component: lazy(() => import("../../views/Profile/addProfileLanguage.js")),
-    type:"editProfile",
-    exact:true
+    type: "editProfile",
+    exact: true,
   },
   // {
   //   path: "/facilities",
@@ -89,107 +151,107 @@ const Routes = [
       import("../../views/subscribedUser/subscribedUserList")
     ),
     exact: true,
-    type:"dashboard",
-    subPermission:READ
+    type: "dashboard",
+    subPermission: READ,
   },
   {
     path: "/subscribed-user/add",
     component: lazy(() =>
       import("../../views/subscribedUser/addSubscribedUser")
     ),
-    type:"dashboard",
-    subPermission:WRITE
+    type: "dashboard",
+    subPermission: WRITE,
   },
   {
     path: "/Add-user",
     component: lazy(() => import("../../views/subscribedUser/addUser")),
-    type:"donation",
-    subPermission:WRITE
+    type: "donation",
+    subPermission: WRITE,
   },
 
   {
     path: "/news",
     component: lazy(() => import("../../views/news/newsList")),
     exact: true,
-    type:"news",
-    subPermission:READ
+    type: "news",
+    subPermission: READ,
   },
   {
     path: "/news/add",
     component: lazy(() => import("../../views/news/addNews")),
     // exact:true
-    type:"news",
-    subPermission:WRITE
+    type: "news",
+    subPermission: WRITE,
   },
   {
     path: "/news/edit/:newsId",
     component: lazy(() => import("../../views/news/editNews")),
     // exact:true
-    type:"news",
-    subPermission:EDIT
+    type: "news",
+    subPermission: EDIT,
   },
   {
     path: "/news/add-language/:newsId",
     component: lazy(() => import("../../views/news/addNewsLanguage")),
     // exact:true
-    type:"news",
-    subPermission:WRITE
+    type: "news",
+    subPermission: WRITE,
   },
   {
     path: "/events",
     component: lazy(() => import("../../views/events/eventList")),
     exact: true,
-    type:"events",
-    subPermission:READ
+    type: "events",
+    subPermission: READ,
   },
   {
     path: "/events/add",
     component: lazy(() => import("../../views/events/addEvent")),
     exact: true,
-    type:"events",
-    subPermission:WRITE
+    type: "events",
+    subPermission: WRITE,
   },
   {
     path: "/events/add-language/:eventId",
     component: lazy(() => import("../../views/events/addEventLanguage")),
     // exact:true
-    type:"events",
-    subPermission:WRITE
+    type: "events",
+    subPermission: WRITE,
   },
   {
     path: "/events/edit/:eventId",
     component: lazy(() => import("../../views/events/editEvent")),
     // exact:true
-    type:"events",
-    subPermission:EDIT
+    type: "events",
+    subPermission: EDIT,
   },
   {
     path: "/notices",
     component: lazy(() => import("../../views/notices/noticeList")),
     exact: true,
-    type:"notices",
-    subPermission:READ
+    type: "notices",
+    subPermission: READ,
   },
   {
     path: "/notices/add",
     component: lazy(() => import("../../views/notices/addNotice")),
     exact: true,
-    type:"notices",
-    subPermission:WRITE
+    type: "notices",
+    subPermission: WRITE,
   },
   {
     path: "/notices/add-language/:noticeId",
     component: lazy(() => import("../../views/notices/addNoticeLanguage")),
     // exact:true
-    type:"notices",
-    subPermission:WRITE
+    type: "notices",
+    subPermission: WRITE,
   },
   {
     path: "/notices/edit/:noticeId",
     component: lazy(() => import("../../views/notices/editNotice")),
     // exact:true
-    type:"notices",
-    subPermission:EDIT
+    type: "notices",
+    subPermission: EDIT,
   },
   {
     path: "/configuration/categories",
@@ -197,8 +259,8 @@ const Routes = [
       import("../../views/configuration/categories/categoryList")
     ),
     exact: true,
-    type:"configuration",
-    subPermission:READ
+    type: "configuration",
+    subPermission: READ,
   },
 
   {
@@ -206,9 +268,9 @@ const Routes = [
     component: lazy(() =>
       import("../../views/configuration/categories/addCategory")
     ),
-    // exact:true  
-    type:"configuration",
-    subPermission:WRITE
+    // exact:true
+    type: "configuration",
+    subPermission: WRITE,
   },
   {
     path: "/configuration/categories/edit/:subCategoryId",
@@ -216,9 +278,8 @@ const Routes = [
       import("../../views/configuration/categories/editCategory")
     ),
     // exact:true
-    type:"configuration",
-    subPermission:EDIT
-  
+    type: "configuration",
+    subPermission: EDIT,
   },
   {
     path: "/configuration/categories/add-language/:subCategoryId",
@@ -226,33 +287,30 @@ const Routes = [
       import("../../views/configuration/categories/addCategoryLanguage")
     ),
     // exact:true
-    type:"configuration",
-    subPermission:WRITE
-  
+    type: "configuration",
+    subPermission: WRITE,
   },
   {
     path: "/configuration/users",
     component: lazy(() => import("../../views/configuration/users/userList")),
     exact: true,
-    type:"configuration",
-    subPermission:READ
-  
+    type: "configuration",
+    subPermission: READ,
   },
 
   {
     path: "/configuration/users/add",
     component: lazy(() => import("../../views/configuration/users/addUser")),
     // exact:true
-    type:"configuration",
-    subPermission:WRITE
+    type: "configuration",
+    subPermission: WRITE,
   },
   {
     path: "/configuration/users/edit/:subAdminId",
     component: lazy(() => import("../../views/configuration/users/editUser")),
     // exact:true
-    type:"configuration",
-    subPermission:EDIT
-  
+    type: "configuration",
+    subPermission: EDIT,
   },
   {
     path: "/configuration/reportDispute",
@@ -260,16 +318,15 @@ const Routes = [
       import("../../views/configuration/Report&Disput/reportDisputList")
     ),
     // exact:true
-    type:"configuration",
-    subPermission:READ
+    type: "configuration",
+    subPermission: READ,
   },
   {
     path: "/internal_expenses",
     component: lazy(() => import("../../views/internalExpenses/expensesList")),
     exact: true,
-    type:"internal_expenses",
-    subPermission:READ
-  
+    type: "internal_expenses",
+    subPermission: READ,
   },
   {
     path: "/internal_expenses/add",
@@ -277,9 +334,8 @@ const Routes = [
       import("../../views/internalExpenses/addExpenses.js")
     ),
     // exact:true
-    type:"internal_expenses",
-    subPermission:WRITE
-    
+    type: "internal_expenses",
+    subPermission: WRITE,
   },
   {
     path: "/internal_expenses/edit/:expensesId",
@@ -287,89 +343,87 @@ const Routes = [
       import("../../views/internalExpenses/editExpenses.js")
     ),
     // exact:true
-    type:"internal_expenses",
-    subPermission:EDIT
-  
+    type: "internal_expenses",
+    subPermission: EDIT,
   },
   {
     path: "/financial_reports",
     component: lazy(() => import("../../views/financialReport/reportList.js")),
     exact: true,
-    type:"financial_reports",
-    subPermission:READ
+    type: "financial_reports",
+    subPermission: READ,
   },
   {
     path: "/donation",
     component: lazy(() => import("../../views/donation/donationList.js")),
     exact: true,
-    type:"donation",
-    subPermission:READ
+    type: "donation",
+    subPermission: READ,
   },
   {
     path: "/donation/add",
     component: lazy(() => import("../../views/donation/addDonation")),
     exact: true,
-    type:"donation",
-    subPermission:WRITE
+    type: "donation",
+    subPermission: WRITE,
   },
   {
     path: "/commitment",
     component: lazy(() => import("../../views/commitments/commitmentList.js")),
     exact: true,
-    type:"commitment",
-    subPermission:READ
+    type: "commitment",
+    subPermission: READ,
   },
   {
     path: "/commitment/pay-donation/:commitmentId",
     component: lazy(() => import("../../views/donation/payDonation")),
     exact: true,
-    type:"commitment",
-    subPermission:READ
-    
+    type: "commitment",
+    subPermission: READ,
   },
   {
     path: "/commitment/add",
     component: lazy(() => import("../../views/commitments/addCommitment")),
     exact: true,
-    type:"commitment",
-    subPermission:WRITE
+    type: "commitment",
+    subPermission: WRITE,
   },
   {
     path: "/commitment/edit/:commitmentId",
     component: lazy(() => import("../../views/commitments/editCommitment")),
     exact: true,
-    type:"commitment",
-    subPermission:EDIT
+    type: "commitment",
+    subPermission: EDIT,
   },
   {
     path: "/donations/paid/:commitmentId",
     component: lazy(() => import("../../views/donation/paidDonationList")),
     exact: true,
-    type:"commitment",
-    subPermission:READ
+    type: "commitment",
+    subPermission: READ,
   },
 
   {
     path: "/hundi",
     component: lazy(() => import("../../views/DonationBox/donationBoxList.js")),
     exact: true,
-    type:"hundi",
-    subPermission:READ
+    type: "hundi",
+    subPermission: READ,
   },
   {
     path: "/hundi/add",
     component: lazy(() => import("../../views/DonationBox/addDonationBox.js")),
     // exact:true
-    type:"hundi",
-    subPermission:WRITE
+    type: "hundi",
+    subPermission: WRITE,
   },
   {
     path: "/hundi/edit/:donationBoxId",
     component: lazy(() => import("../../views/DonationBox/editDonationBox")),
     // exact:true
-    
-    type:"hundi",
-    subPermission:EDIT
+
+    type: "hundi",
+    subPermission: EDIT,
   },
   // {
   //   path: "/financial_reports/Hundi/Logs/:collectionId",
@@ -389,30 +443,32 @@ const Routes = [
     path: "/punyarjak",
     component: lazy(() => import("../../views/Punyarjak/PunyarjakList")),
     exact: true,
-    type:"punyarjak",
-    subPermission:READ
+    type: "punyarjak",
+    subPermission: READ,
   },
   {
     path: "/punyarjak/add",
     component: lazy(() => import("../../views/Punyarjak/AddPunyarjak")),
     exact: true,
-    type:"punyarjak",
-    subPermission:WRITE
+    type: "punyarjak",
+    subPermission: WRITE,
   },
   {
     path: "/punyarjak/edit/:punyarjakId",
     component: lazy(() => import("../../views/Punyarjak/EditPunyarjak")),
     exact: true,
-    type:"punyarjak",
-    subPermission:EDIT
+    type: "punyarjak",
+    subPermission: EDIT,
   },
   {
     path: "/punyarjak/add-language/:punyarjakId",
-    component: lazy(() => import("../../views/Punyarjak/addPunyarjakLanguage.js")),
+    component: lazy(() =>
+      import("../../views/Punyarjak/addPunyarjakLanguage.js")
+    ),
     exact: true,
-    type:"punyarjak",
-    subPermission:EDIT
+    type: "punyarjak",
+    subPermission: EDIT,
   },
 ];
 
-export { DefaultRoute, TemplateTitle, Routes };
+export { DefaultRoute, Routes, TemplateTitle };

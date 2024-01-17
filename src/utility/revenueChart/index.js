@@ -29,6 +29,7 @@ export const RevenueChart = ({
   DonationData = [],
   TotalExpensesData = [],
   CommitmentData = [],
+  chartHeading,
 }) => {
   const { t } = useTranslation();
 
@@ -113,7 +114,7 @@ export const RevenueChart = ({
   return (
     <RevenueChartWarrper id="chart">
       <p>
-        <Trans i18nKey={"dashboard_RevenueReport"} />
+        <Trans i18nKey={chartHeading} />
       </p>
       <ReactApexChart
         options={options}
