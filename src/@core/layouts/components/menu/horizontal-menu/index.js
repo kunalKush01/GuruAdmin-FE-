@@ -118,8 +118,8 @@ const HorizontalMenu = ({ menuData, currentActiveItem, routerProps }) => {
               permissionsKey?.includes(item?.name)
             ) {
               return (
-                <>
-                  <SubHeaderWarraper key={idx}>
+                <div key={idx}>
+                  <SubHeaderWarraper>
                     <div
                       id={item.name}
                       onClick={() => {
@@ -144,7 +144,7 @@ const HorizontalMenu = ({ menuData, currentActiveItem, routerProps }) => {
                       />
                     )}
                   </SubHeaderWarraper>
-                </>
+                </div>
               );
             } else {
               return null;

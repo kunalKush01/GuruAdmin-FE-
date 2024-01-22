@@ -1,80 +1,12 @@
-import React, { useState } from "react";
-import { Plus } from "react-feather";
-import { Trans } from "react-i18next";
-import { Button, Row } from "reactstrap";
-import styled from "styled-components";
-import CattleTabBar from "../../../components/cattleTabBar";
-import { ChangePeriodDropDown } from "../../../components/partials/changePeriodDropDown";
-import { cattleHeader } from "../../../utility/subHeaderContent/cattleHeader";
-import { default as UsageManagementTable } from "./table";
+import React from "react";
+import { Row } from "reactstrap";
+import StockManagementTable from "../table";
 
-const UsageManagementWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-
-  .btn {
-    font-weight: bold;
-  }
-`;
-
-const UsageManagement = () => {
-  const [active, setActive] = useState(location.pathname);
-  const [dropDownName, setdropDownName] = useState("dashboard_monthly");
-  const periodDropDown = () => {
-    switch (dropDownName) {
-      case "dashboard_monthly":
-        return "month";
-      case "dashboard_yearly":
-        return "year";
-      case "dashboard_weekly":
-        return "week";
-
-      default:
-        return "month";
-    }
-  };
+const Items = () => {
   return (
-    <UsageManagementWrapper>
-      {/* <CattleTabBar tabs={cattleHeader} active={active} setActive={setActive} /> */}
-      <div>
-        <div className="d-sm-flex mb-1 justify-content-between align-items-center ">
-          <Trans i18nKey="cattle_usage" />
-
-          <div className="d-flex mt-1 mt-sm-0 justify-content-between">
-            <ChangePeriodDropDown
-              className={"me-1"}
-              dropDownName={dropDownName}
-              setdropDownName={(e) => {
-                setdropDownName(e.target.name);
-                setPagination({ page: 1 });
-                // history.push(`/news?page=${1}&filter=${e.target.name}`);
-              }}
-            />
-            {/* {allPermissions?.name === "all" ||
-            subPermission?.includes(WRITE) ? ( */}
-            <Button
-              color="primary"
-              onClick={
-                () => alert("Sorry it's in under development")
-                // history.push(
-                //   `/news/add?page=${pagination.page}&filter=${dropDownName}`
-                // )
-              }
-            >
-              <span>
-                <Plus className="" size={15} strokeWidth={4} />
-              </span>
-              <span>
-                <Trans i18nKey={"cattle_usage_add"} />
-              </span>
-            </Button>
-            {/* ) : (
-              ""
-            )} */}
-          </div>
-        </div>
-        <div style={{ height: "10px" }}>
-          {/* <If condition={newsQuery.isFetching}>
+    <>
+      <div style={{ height: "10px" }}>
+        {/* <If condition={newsQuery.isFetching}>
             <Then>
               <Skeleton
                 baseColor="#ff8744"
@@ -83,15 +15,15 @@ const UsageManagement = () => {
               />
             </Then>
           </If> */}
-        </div>
-        <div className="">
-          <Row>
-            <UsageManagementTable
-              data={[]}
-              // allPermissions={allPermissions}
-              // subPermission={subPermission}
-            />
-            {/* <If condition={newsQuery.isLoading} disableMemo>
+      </div>
+      <div className="">
+        <Row>
+          <StockManagementTable
+            data={[]}
+            // allPermissions={allPermissions}
+            // subPermission={subPermission}
+          />
+          {/* <If condition={newsQuery.isLoading} disableMemo>
               <Then>
                 <SkeletonTheme
                   baseColor="#FFF7E8"
@@ -126,7 +58,7 @@ const UsageManagement = () => {
               </Else>
             </If> */}
 
-            {/* <If condition={newsQuery?.data?.totalPages > 1}>
+          {/* <If condition={newsQuery?.data?.totalPages > 1}>
               <Then>
                 <Col xs={12} className="mb-2 d-flex justify-content-center">
                   <ReactPaginate
@@ -165,11 +97,10 @@ const UsageManagement = () => {
                 </Col>
               </Then>
             </If> */}
-          </Row>
-        </div>
+        </Row>
       </div>
-    </UsageManagementWrapper>
+    </>
   );
 };
 
-export default UsageManagement;
+export default Items;

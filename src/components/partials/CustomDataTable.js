@@ -75,6 +75,7 @@ function CustomDataTable({
   selectableRows,
   selectableRowSelected,
   onSelectedRowsChange,
+  noDataComponent
 }) {
   // const tableData = {
   //     columns,
@@ -88,6 +89,7 @@ function CustomDataTable({
           conditionalRowStyles={[conditionStyle]}
           className="DonetionList"
           columns={columns}
+          noDataComponent={noDataComponent}
           selectableRows={selectableRows}
           onSelectedRowsChange={onSelectedRowsChange}
           selectableRowDisabled={selectableRowDisabled}

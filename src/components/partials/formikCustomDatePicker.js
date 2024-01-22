@@ -1,25 +1,21 @@
+import { useField } from "formik";
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
-import styled from "styled-components";
+import "react-datepicker/dist/react-datepicker.css";
 import { Trans } from "react-i18next";
-import { useField } from "formik";
+import styled from "styled-components";
 const FormikCustomDatePickerWraper = styled.div`
-
-
-.react-datepicker__day--outside-month {
+  .react-datepicker__day--outside-month {
     color: #9c9c9c !important;
-                /* color: #DFD3BE !important; */
-                pointer-events: none;
-              }
+    /* color: #DFD3BE !important; */
+    pointer-events: none;
+  }
 
-/* 
+  /* 
               .react-datepicker__day--disabled{
       color: #9c9c9c !important;
     } */
-
-
 
   label {
     color: #583703;
@@ -80,31 +76,31 @@ const FormikCustomDatePickerWraper = styled.div`
     .react-datepicker__month-dropdown {
       border: none !important;
       /* color: #ff8744; */
-      background-color: #FFF7E8;
+      background-color: #fff7e8;
       box-shadow: 2px 2px 10px 2px gray;
       max-height: 250px;
       overflow: auto;
       ::-webkit-scrollbar {
         display: none;
       }
-      .react-datepicker__month-option:hover{
+      .react-datepicker__month-option:hover {
         background-color: #ff8744;
-        color: #fff;        
+        color: #fff;
       }
     }
     .react-datepicker__year-dropdown {
       border: none !important;
       /* color: #ff8744; */
-      background-color: #FFF7E8;
+      background-color: #fff7e8;
       box-shadow: 0px 0px 7px 0px gray;
       max-height: 250px;
       overflow: auto;
       ::-webkit-scrollbar {
         display: none;
       }
-      .react-datepicker__year-option:hover{
+      .react-datepicker__year-option:hover {
         background-color: #ff8744;
-        color: #fff;        
+        color: #fff;
       }
     }
 
@@ -120,9 +116,9 @@ const FormikCustomDatePickerWraper = styled.div`
         display: none;
       }
     }
-    .react-datepicker__header__dropdown{
-      .react-datepicker__month-dropdown-container{
-        margin-right:50px ;
+    .react-datepicker__header__dropdown {
+      .react-datepicker__month-dropdown-container {
+        margin-right: 50px;
       }
     }
 
@@ -152,15 +148,18 @@ const FormikCustomDatePickerWraper = styled.div`
     input[type="time"]::-webkit-calendar-picker-indicator {
       display: none;
     }
-    
   }
 `;
 
-export default function FormikCustomDatePicker({ label,futureDateNotAllowed,pastDateNotAllowed ,minDate, inline=true,...props }) {
-
+export default function FormikCustomDatePicker({
+  label,
+  futureDateNotAllowed,
+  pastDateNotAllowed,
+  minDate,
+  inline = true,
+  ...props
+}) {
   const [field, meta, helpers] = useField(props.name);
-
-  
 
   return (
     <FormikCustomDatePickerWraper>
@@ -168,19 +167,19 @@ export default function FormikCustomDatePicker({ label,futureDateNotAllowed,past
         <Trans i18nKey={"news_label_Date"} />
       </label>
        */}
-      {label&&<label>{`${label}*`}</label>}
-      <DatePicker 
+      {label && <label>{`${label}*`}</label>}
+      <DatePicker
         selected={field.value}
-        onChange={(date) => {          
-         helpers.setValue(date)
+        onChange={(date) => {
+          helpers.setValue(date);
         }}
-        yearDropdownItemNumber={30}        
+        yearDropdownItemNumber={30}
         showYearDropdown
         minDate={pastDateNotAllowed ? new Date() : minDate}
         maxDate={futureDateNotAllowed && new Date()}
         showMonthDropdown
         timeFormat="hh:mm aa"
-        timeCaption="Time"        
+        timeCaption="Time"
         inline={inline}
         {...props}
       />
