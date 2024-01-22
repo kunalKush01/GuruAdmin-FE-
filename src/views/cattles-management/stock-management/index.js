@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button } from "reactstrap";
 import styled from "styled-components";
+import Swal from "sweetalert2";
 import {
   getCattlesItemsList,
   getCattlesStockList,
@@ -111,7 +112,7 @@ const StockManagement = () => {
           <CattleTabBar
             tabs={[
               { name: "Stock", url: "/cattle/stock" },
-              { name: "Items", url: "/cattle/Items" },
+              { name: "Items", url: "/cattle/items" },
             ]}
             active={active}
             setActive={setActive}
@@ -132,11 +133,19 @@ const StockManagement = () => {
             subPermission?.includes(WRITE) ? ( */}
             <Button
               color="primary"
-              onClick={
-                () => alert("Sorry it's in under development")
-                // history.push(
-                //   `/news/add?page=${pagination.page}&filter=${dropDownName}`
-                // )
+              onClick={() =>
+                active == "/cattle/stock"
+                  ? Swal.fire({
+                      icon: "info",
+                      title: "Oops...",
+                      text: "Add Stock is in underdevelopment ",
+                      showConfirmButton: false,
+                      showCloseButton: false,
+                      timer: 2000,
+                    })
+                  : history.push(
+                      `/cattle/items/add?page=${pagination.page}&filter=${dropDownName}`
+                    )
               }
             >
               <span>
@@ -158,9 +167,9 @@ const StockManagement = () => {
           </div>
         </div>
         {active == "/cattle/stock" ? (
-          <Stocks list={cattleStockManagementList} />
+          <Stocks list={cattleStockManagementListData} />
         ) : (
-          <Items list={cattleStockManagementList} />
+          <Items list={cattleStockManagementListData} />
         )}
       </div>
     </StockManagementWrapper>

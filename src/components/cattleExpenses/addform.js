@@ -181,7 +181,7 @@ const AddExpenseForm = ({
                       valueKey="name"
                       loadOptions={nameLoadOption}
                       label={t("name")}
-                      placeholder={t("placeHolder_cattle_item_id")}
+                      placeholder={t("placeHolder_cattle_item_name")}
                       defaultOptions
                       required
                     />

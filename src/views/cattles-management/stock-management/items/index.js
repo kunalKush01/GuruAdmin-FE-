@@ -1,8 +1,9 @@
 import React from "react";
 import { Row } from "reactstrap";
-import StockManagementTable from "../table";
+import StockManagementItemTable from "./table";
 
-const Items = () => {
+const Items = ({ list }) => {
+  console.log("list", list);
   return (
     <>
       <div style={{ height: "10px" }}>
@@ -18,8 +19,8 @@ const Items = () => {
       </div>
       <div className="">
         <Row>
-          <StockManagementTable
-            data={[]}
+          <StockManagementItemTable
+            data={list}
             // allPermissions={allPermissions}
             // subPermission={subPermission}
           />
