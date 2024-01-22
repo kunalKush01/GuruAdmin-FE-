@@ -1,0 +1,24 @@
+import { API_BASE_URL } from "../../axiosApi/authApiInstans";
+import { callApi } from "../../utility/utils/callApi";
+
+export const getCattlesMedicalList = (payload) =>
+  callApi({
+    requestFunction: (axios) => axios.post(`cattle/medical-list`, payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+
+export const createCattleMedicalRecord = (payload) =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}cattle/add-medical`, payload),
+    successCode: 200,
+  });
+
+export const findAllCattle = (payload) =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}cattle/find-cattle`, payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });

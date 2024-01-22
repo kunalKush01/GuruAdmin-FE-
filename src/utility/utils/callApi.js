@@ -111,7 +111,7 @@ export const callApi = async ({
         showErrorToast: showToastOnError,
       });
     } catch (error) {
-      console.log("gs logs-------->", error.response);
+      console.log("gs logs-------->", error);
 
       if (error.code === "ECONNABORTED") {
         toast.error("Please check your internet connection.", {

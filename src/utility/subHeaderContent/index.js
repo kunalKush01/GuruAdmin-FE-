@@ -5,13 +5,13 @@ export const subHeaderContent = [
   },
 
   {
-    name: "donation",
-    url: "/donation",
+    name: "cattles_management",
+    url: "/cattle/dashboard",
   },
 
   {
-    name: "cattles_management",
-    url: "/cattle/dashboard",
+    name: "donation",
+    url: "/donation",
   },
 
   {

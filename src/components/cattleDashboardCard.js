@@ -32,32 +32,67 @@ const CattleDashboardCardWrapper = styled.div`
   }
 `;
 
-const CattleDashboardCard = ({ title, number, showSubDetails }) => {
+const CattleDashboardCard = ({
+  showRupeesSymbol = false,
+  title,
+  number,
+  showCattleDetails,
+  showCattleDonation,
+  privateDonor,
+  govtDonor,
+  cow,
+  calf,
+  bull,
+  other,
+}) => {
   return (
     <CattleDashboardCardWrapper>
       <div className="customCard">
         <p className="cardTitle">{title}</p>
-        <h2 className="cardNumber">{number}</h2>
-        {showSubDetails && (
+        <h2 className="cardNumber">
+          {!showRupeesSymbol ? number : `₹${number.toLocaleString("en-IN")}`}
+        </h2>
+        {showCattleDetails && (
           <div className="d-flex justify-content-between ">
             <div>
               <p className="sub-heading">
                 Cow:
-                <span className="count"> 250</span>
+                <span className="count"> {cow}</span>
               </p>
               <p className="sub-heading">
                 Calf:
-                <span className="count"> 150</span>
+                <span className="count"> {calf}</span>
               </p>
             </div>
             <div>
               <p className="sub-heading">
                 Bull:
-                <span className="count"> 250</span>
+                <span className="count"> {bull}</span>
               </p>
               <p className="sub-heading">
                 Other:
-                <span className="count"> 150</span>
+                <span className="count"> {other}</span>
+              </p>
+            </div>
+          </div>
+        )}
+
+        {showCattleDonation && (
+          <div className="d-flex justify-content-between ">
+            <div>
+              <p className="sub-heading">
+                Private Donors:
+                <span className="count">
+                  {" "}
+                  ₹{privateDonor.toLocaleString("en-IN")}
+                </span>
+              </p>
+              <p className="sub-heading">
+                Govt Donors:
+                <span className="count">
+                  {" "}
+                  ₹{govtDonor.toLocaleString("en-IN")}
+                </span>
               </p>
             </div>
           </div>

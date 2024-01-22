@@ -3,7 +3,7 @@ import { Trans } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import { Nav, NavItem, NavLink } from "reactstrap";
 
-const CattleTabBar = ({ tabs = [], setActive, active }) => {
+const CattleTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
   const history = useHistory();
 
   useLayoutEffect(() => {
@@ -11,13 +11,26 @@ const CattleTabBar = ({ tabs = [], setActive, active }) => {
   }, [location.pathname]);
 
   return (
-    <div>
+    <div
+    // style={{
+    //   position: "fixed",
+    //   width: "100%",
+    //   top: "130px",
+    //   zIndex: 100,
+    //   background: "#ffffff",
+    //   padding: "1rem 0rem",
+    // }}
+    >
       <Nav
-        pills
+        pills={!tabBar}
+        tabs={tabBar}
         style={{
-          backgroundColor: "#fff7e8",
-          justifyContent: "space-between",
-          padding: ".5rem",
+          backgroundColor: !tabBar && "#fff7e8",
+          justifyContent: tabs?.length === 7 ? "space-between" : "",
+          padding: !tabBar && ".5rem",
+          // width: "97%",
+          marginBottom: tabBar && 0,
+          // margin: "0 auto",
         }}
       >
         {tabs?.map((item, index) => (
@@ -26,8 +39,12 @@ const CattleTabBar = ({ tabs = [], setActive, active }) => {
               active={active?.includes(item?.url)}
               onClick={() => history.push(item?.url)}
               style={{
-                fontWeight: active?.includes(item?.url) && 800,
-                color: !active?.includes(item?.url) && "#583703",
+                fontWeight: active?.includes(item?.url) ? 800 : 400,
+                color: !active?.includes(item?.url)
+                  ? "#583703"
+                  : tabBar
+                  ? "#583703"
+                  : "",
               }}
             >
               <Trans i18nKey={item?.name} />

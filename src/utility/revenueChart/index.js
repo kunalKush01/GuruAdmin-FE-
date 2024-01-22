@@ -27,11 +27,13 @@ const RevenueChartWarrper = styled.div`
 `;
 export const RevenueChart = ({
   DonationData = [],
-  TotalExpensesData = [],
   CommitmentData = [],
   chartHeading,
+  cattleSeries,
+  barColors = ["#FF8744", "#FFDEB8", "#FF0700"],
 }) => {
   const { t } = useTranslation();
+  console.log("cattleSeries", cattleSeries);
 
   const series = [
     {
@@ -80,15 +82,16 @@ export const RevenueChart = ({
     dataLabels: {
       enabled: false,
     },
-    colors: ["#FF8744", "#FFDEB8", "#FF0700"],
+    colors: barColors,
+
     stroke: {
       show: true,
       width: 2,
       colors: ["transparent"],
     },
-    xaxis: {
-      type: "category",
-    },
+    // xaxis: {
+    //   type: "category",
+    // },
     yaxis: {
       labels: {
         formatter: function (value) {
@@ -118,7 +121,7 @@ export const RevenueChart = ({
       </p>
       <ReactApexChart
         options={options}
-        series={series}
+        series={cattleSeries ? cattleSeries : series}
         type="bar"
         height={"450"}
       />

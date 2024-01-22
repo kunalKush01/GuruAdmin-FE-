@@ -46,6 +46,7 @@ const Routes = [
     component: lazy(() =>
       import("../../views/cattles-management/dashboard/index.js")
     ),
+    exact: true,
     type: "cattle-dashboard",
     subPermission: READ,
   },
@@ -54,14 +55,37 @@ const Routes = [
     component: lazy(() =>
       import("../../views/cattles-management/cattles-info/index.js")
     ),
+    exact: true,
     type: "cattle-info",
     subPermission: READ,
   },
+
+  {
+    path: "/cattle/info/add",
+    component: lazy(() =>
+      import("../../views/cattles-management/cattles-info/add/index.js")
+    ),
+    exact: true,
+    type: "cattle-info",
+    subPermission: WRITE,
+  },
+
   {
     path: "/cattle/medical-info",
     component: lazy(() =>
       import("../../views/cattles-management/medical-record/index.js")
     ),
+    exact: true,
+    type: "cattle-medical",
+    subPermission: READ,
+  },
+
+  {
+    path: "/cattle/medical-info/add",
+    component: lazy(() =>
+      import("../../views/cattles-management/medical-record/add/index.js")
+    ),
+    exact: true,
     type: "cattle-medical",
     subPermission: READ,
   },
@@ -71,6 +95,17 @@ const Routes = [
     component: lazy(() =>
       import("../../views/cattles-management/pregnancy-report/index.js")
     ),
+    exact: true,
+    type: "cattle-pregnancy",
+    subPermission: READ,
+  },
+
+  {
+    path: "/cattle/pregnancy-reports/add",
+    component: lazy(() =>
+      import("../../views/cattles-management/pregnancy-report/add/index.js")
+    ),
+    exact: true,
     type: "cattle-pregnancy",
     subPermission: READ,
   },
@@ -80,6 +115,17 @@ const Routes = [
     component: lazy(() =>
       import("../../views/cattles-management/Expense-management/index.js")
     ),
+    exact: true,
+    type: "cattle-expense",
+    subPermission: READ,
+  },
+
+  {
+    path: "/cattle/expenses/add",
+    component: lazy(() =>
+      import("../../views/cattles-management/Expense-management/add/index.js")
+    ),
+    exact: true,
     type: "cattle-expense",
     subPermission: READ,
   },
@@ -89,7 +135,18 @@ const Routes = [
     component: lazy(() =>
       import("../../views/cattles-management/stock-management/index.js")
     ),
+    exact: true,
     type: "cattle-stock",
+    subPermission: READ,
+  },
+
+  {
+    path: "/cattle/items",
+    component: lazy(() =>
+      import("../../views/cattles-management/stock-management/index.js")
+    ),
+    exact: true,
+    type: "cattle-item",
     subPermission: READ,
   },
 
@@ -98,6 +155,7 @@ const Routes = [
     component: lazy(() =>
       import("../../views/cattles-management/usage-management/index.js")
     ),
+    exact: true,
     type: "cattle-usage",
     subPermission: READ,
   },
