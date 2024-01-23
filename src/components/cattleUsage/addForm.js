@@ -9,22 +9,23 @@ import styled from "styled-components";
 import {
   findAllExpenseName,
   findAllItemId,
-} from "../../../api/cattle/cattleExpense";
-import AsyncSelectField from "../../partials/asyncSelectField";
-import CustomTextField from "../../partials/customTextField";
-import FormikCustomReactSelect from "../../partials/formikCustomReactSelect";
+} from "../../api/cattle/cattleExpense";
+import AsyncSelectField from "../partials/asyncSelectField";
+import CustomTextField from "../partials/customTextField";
+import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
+import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 
 const FormikWrapper = styled.div``;
 
-const AddStockForm = ({
+const AddItemUsageForm = ({
   initialValues,
   validationSchema,
   handleSubmit,
   buttonName,
   ...props
 }) => {
-  const history = useHistory();
   const { t } = useTranslation();
+  const history = useHistory();
   const [showPrompt, setShowPrompt] = useState(true);
   const [loading, setLoading] = useState(false);
 
@@ -32,10 +33,29 @@ const AddStockForm = ({
     const res = await findAllItemId({ itemId: itemId });
     return res.results;
   };
+
   const nameLoadOption = async (name) => {
     const res = await findAllExpenseName({ name: name });
     return res.results;
   };
+  //   useUpdateEffect(() => {
+  //     const handleSetData = (value, formik) => {
+  //       const user = formik?.values?.SelectedUser;
+  //       if (user?.id) {
+  //         formik.setFieldValue("Mobile", user?.mobileNumber);
+  //         formik.setFieldValue("countryCode", user?.countryName);
+  //         formik.setFieldValue("dialCode", user?.countryCode);
+  //         formik.setFieldValue("donarName", user?.name);
+  //         setPhoneNumber(user?.countryCode + user?.mobileNumber);
+  //         return;
+  //       }
+  //       formik.setFieldValue("Mobile", "");
+  //       formik.setFieldValue("countryCode", "");
+
+  //     };
+
+  //     handleSetData();
+  //   }, [user]);
 
   const queryClient = useQueryClient();
 
@@ -43,9 +63,9 @@ const AddStockForm = ({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
       if (!data?.error) {
-        queryClient.invalidateQueries(["cattleStockManagementList"]);
+        queryClient.invalidateQueries(["cattleItemUsageList"]);
         setLoading(false);
-        history.push("/cattle/stock");
+        history.push("/cattle/usage");
       } else if (data?.error || data === undefined) {
         setLoading(false);
       }
@@ -63,10 +83,11 @@ const AddStockForm = ({
           setShowPrompt(false);
           mutation.mutate({
             itemId: values?.itemId?._id,
-            name: values?.name,
+            name: values?.name?.name,
+            date: values?.Date,
+            quantity: values?.quantity,
             unit: values?.unit?.value,
-            orderQuantity: values?.orderQuantity,
-            currentQuantity: values?.currentQuantity,
+            purpose: values?.purpose?.value,
           });
         }}
       >
@@ -97,14 +118,6 @@ const AddStockForm = ({
                       onChange={(e) => {
                         formik.setFieldValue("itemId", e);
                         formik.setFieldValue("name", e);
-                        formik.setFieldValue("unit", {
-                          label: e?.unit,
-                          value: e?.unit,
-                        });
-                        formik.setFieldValue(
-                          "currentQuantity",
-                          e?.currentQuantity ?? 0
-                        );
                       }}
                       placeholder={t("placeHolder_cattle_itemId")}
                       defaultOptions
@@ -121,18 +134,23 @@ const AddStockForm = ({
                       onChange={(e) => {
                         formik.setFieldValue("name", e);
                         formik.setFieldValue("itemId", e);
-                        formik.setFieldValue("unit", {
-                          label: e?.unit,
-                          value: e?.unit,
-                        });
-                        formik.setFieldValue(
-                          "currentQuantity",
-                          e?.currentQuantity ?? 0
-                        );
                       }}
                       placeholder={t("placeHolder_cattle_item_name")}
                       defaultOptions
                       required
+                    />
+                  </Col>
+                  <Col xs={12} md={4}>
+                    <CustomTextField
+                      label={t("cattle_expense_quantity")}
+                      type="number"
+                      placeholder={t("placeHolder_cattle_expense_quantity")}
+                      name="quantity"
+                      required
+                      autoFocus
+                      onInput={(e) =>
+                        (e.target.value = e.target.value.slice(0, 30))
+                      }
                     />
                   </Col>
                   <Col xs={12} md={4}>
@@ -156,41 +174,38 @@ const AddStockForm = ({
                       placeholder={t("placeHolder_cattle_unit")}
                       required
                       width="100%"
-                      disabled={formik.values.itemId || formik.values.name}
                     />
                   </Col>
                   <Col xs={12} md={4}>
-                    <CustomTextField
-                      label={t("cattle_expense_order_quantity")}
-                      type="number"
-                      placeholder={t(
-                        "placeHolder_cattle_expense_order_quantity"
-                      )}
-                      name="orderQuantity"
+                    <FormikCustomReactSelect
+                      name="purpose"
+                      loadOptions={[
+                        {
+                          label: "Buying Consumable",
+                          value: "BUYING_CONSUMABLE",
+                        },
+                        {
+                          label: "Assets",
+                          value: "ASSETS",
+                        },
+                        {
+                          label: "General",
+                          value: "GENERAL",
+                        },
+                      ]}
+                      labelName={t("cattle_purpose")}
+                      placeholder={t("placeHolder_cattle_purpose")}
                       required
-                      autoFocus
-                      onInput={(e) =>
-                        (e.target.value = e.target.value.slice(0, 30))
-                      }
-                    />
-                  </Col>
-                  <Col xs={12} md={4}>
-                    <CustomTextField
-                      label={t("cattle_expense_current_quantity")}
-                      type="number"
-                      placeholder={t(
-                        "placeHolder_cattle_expense_current_quantity"
-                      )}
-                      name="currentQuantity"
-                      required
-                      autoFocus
-                      onInput={(e) =>
-                        (e.target.value = e.target.value.slice(0, 30))
-                      }
-                      disabled={formik.values.itemId || formik.values.name}
+                      width="100%"
                     />
                   </Col>
                 </Row>
+              </Col>
+              <Col xs={12} md={3}>
+                <FormikCustomDatePicker
+                  label={t("expenses_Date")}
+                  name="Date"
+                />
               </Col>
             </Row>
 
@@ -232,4 +247,4 @@ const AddStockForm = ({
   );
 };
 
-export default AddStockForm;
+export default AddItemUsageForm;

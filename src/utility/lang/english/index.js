@@ -172,7 +172,11 @@ export const englishContent = {
   cattle_expense_quantity: "Quantity",
   cattle_expense_bill_invoice: "Bill/Invoice",
   cattle_expense_bill_invoice_upload: "Upload ",
-
+  cattle_unit: "Unit",
+  cattle_expense_unitType: "Unit Type",
+  cattle_expense_current_quantity: "Current Quantity",
+  cattle_expense_order_quantity: "Order Quantity",
+  cattle_last_update: "Last Updated",
   // All static content of Notices
 
   notices_AddNotice: "Add Notice",
@@ -472,6 +476,16 @@ export const englishContent = {
   placeHolder_cattle_purchase_price: "Enter Price here",
   placeHolder_cattle_symptoms: "Enter Symptoms",
   placeHolder_cattle_pregnancy_status: "Enter Pregnancy Status",
+  placeHolder_cattle_itemId: "Select Item ID",
+  placeHolder_cattle_item_name: "Select Item Name",
+  placeHolder_cattle_expense_quantity: "Enter Quantity here",
+  placeHolder_cattle_unit: "Select Quantity Unit",
+  placeHolder_cattle_expense_unitType: "Select Unit Type",
+  placeHolder_cattle_purpose: "Select Purpose",
+  placeHolder_cattle_item_id: "Enter Item Name here",
+  placeHolder_cattle_expense_current_quantity: "Enter Current Quantity",
+  placeHolder_cattle_expense_order_quantity: "Enter Order Quantity",
+
   // All search static keys
   search_notification: "Search All Notifications",
   search_subscribe_user: "Search All Subscribe User",

@@ -7,6 +7,20 @@ import avtarIcon from "../../../assets/images/icons/dashBoard/defaultAvatar.svg"
 import CustomDataTable from "../../../components/partials/CustomDataTable";
 import { ConverFirstLatterToCapital } from "../../../utility/formater";
 
+const RecentRegisteredCattleTableWrapper = styled.div`
+  color: #583703 !important;
+  margin-right: 20px;
+  margin: 1rem 0;
+  font: normal normal bold 20px/23px Noto Sans !important;
+  .DonationViewAll {
+    color: #ff8744;
+    cursor: pointer;
+  }
+  .recentDonationHeading {
+    font: normal normal bold 20px/23px Noto Sans;
+  }
+`;
+
 export default function RecentRegisteredCattlesTable({ data }) {
   // const handleDeleteExpenses = async (payload) => {
   //   return deleteExpensesDetail(payload);
@@ -20,112 +34,112 @@ export default function RecentRegisteredCattlesTable({ data }) {
   //   },
   // });
   const { t } = useTranslation();
-  const history = useHistory();
 
   const columns = [
     {
-      name: t("commitment_Username"),
-      selector: (row) => row.username,
-      style: {
-        font: "normal normal 700 13px/20px noto sans !important ",
-      },
-      width: "150px",
+      name: t("cattle_calf_id"),
+      selector: (row) => row.cattleId,
     },
     {
-      name: t("dashboard_Recent_DonorNumber"),
-      selector: (row) => row.mobileNumber,
-      width: "150px",
+      name: t("cattle_photo"),
+      selector: (row) => row.cowPhoto,
     },
     {
-      name: t("dashboard_Recent_DonorName"),
-      selector: (row) => row.donarName,
-      width: "150px",
-    },
-
-    {
-      name: t("category"),
-      selector: (row) => row.category,
-      width: "150px",
-    },
-
-    {
-      name: t("dashboard_Recent_DonorDate"),
-      selector: (row) => row.date_time,
-      // width:"auto"
-      width: "200px",
+      name: t("cattle_photo"),
+      selector: (row) => row.ownerPhoto,
     },
     {
-      name: t("dashboard_Recent_DonorAmount"),
-      selector: (row) => row.amount,
-      width: "150px",
+      name: t("cattle_owner_id"),
+      selector: (row) => row.ownerId,
     },
     {
-      name: t("dashboard_Recent_DonorCommitId"),
-      selector: (row) => row.commitmentID,
+      name: t("cattle_type"),
+      selector: (row) => row.type,
+    },
+    {
+      name: t("cattle_mother_id"),
+      selector: (row) => row.motherId,
+    },
+    {
+      name: t("cattle_breed"),
+      selector: (row) => row.breed,
+    },
+    {
+      name: t("cattle_date_of_birth"),
+      selector: (row) => row.dateOfBirth,
+    },
+    {
+      name: t("cattle_age"),
+      selector: (row) => row.age,
+    },
+    {
+      name: t("cattle_is_pregnant"),
+      selector: (row) => row.isPregnant,
+    },
+    {
+      name: t("cattle_pregnancy_date"),
+      selector: (row) => row.pregnancyDate,
+    },
+    {
+      name: t("cattle_is_milking"),
+      selector: (row) => row.isMilking,
+    },
+    {
+      name: t("cattle_milk_quantity"),
+      selector: (row) => row.milkQuantity,
     },
   ];
 
-  const recent_Donation = useMemo(() => {
+  const CattlesInfo = useMemo(() => {
     return data?.map((item, idx) => {
       return {
         id: idx + 1,
-        username: (
-          <div className="d-flex align-items-center ">
-            <img
-              src={
-                item?.user?.profilePhoto !== "" && item?.user?.profilePhoto
-                  ? item?.user?.profilePhoto
-                  : avtarIcon
-              }
-              style={{
-                marginRight: "5px",
-                width: "30px",
-                objectFit: "cover",
-                height: "30px",
-              }}
-              className="rounded-circle"
-            />
-            <div>{ConverFirstLatterToCapital(item?.user?.name ?? "")}</div>
-          </div>
+        cattleId: item?.tagId,
+        cowPhoto: (
+          <img
+            src={
+              item?.user?.profilePhoto !== "" && item?.user?.profilePhoto
+                ? item?.user?.profilePhoto
+                : avtarIcon
+            }
+            style={{
+              marginRight: "5px",
+              width: "30px",
+              height: "30px",
+            }}
+            className="rounded-circle"
+          />
         ),
-        mobileNumber: `+${item?.user?.countryCode?.replace("+", "") ?? "91"} ${
-          item?.user?.mobileNumber
-        }`,
-        donarName: ConverFirstLatterToCapital(
-          item?.donarName ?? item.user?.name
+        ownerPhoto: (
+          <img
+            src={
+              item?.user?.profilePhoto !== "" && item?.user?.profilePhoto
+                ? item?.user?.profilePhoto
+                : avtarIcon
+            }
+            style={{
+              marginRight: "5px",
+              width: "30px",
+              height: "30px",
+            }}
+            className="rounded-circle"
+          />
         ),
-        category: (
-          <div>
-            {item?.masterCategory?.name}
-            {item?.subCategory && `(${item?.subCategory.name})`}
-          </div>
-        ),
-        date_time: moment(item?.createdAt)
-          .utcOffset(0)
-          .format(" DD MMM YYYY,h:mm A"),
-        amount: <div>₹{item?.amount.toLocaleString("en-IN")}</div>,
-        commitmentID: item.commitmentId
-          ? item.commitmentId < 10
-            ? `0${item.commitmentId}`
-            : `${item.commitmentId}`
-          : "_",
+        ownerId: item?.ownerId,
+        type: item?.type,
+        motherId: item?.motherId ?? "N/A",
+        breed: item?.breed,
+        dateOfBirth: moment(item?.dob).format(" DD MMM YYYY"),
+        age: item?.age,
+        isPregnant: item?.isPregnant ? "YES" : "NO",
+        isMilking: item?.isPregnant ? "YES" : "NO",
+        pregnancyDate: item?.pregnancyDate
+          ? moment(item?.pregnancyDate).format(" DD MMM YYYY")
+          : "N/A",
+        milkQuantity: item?.milkQuantity ?? "N/A",
       };
     });
   }, [data]);
-
-  const RecentRegisteredCattleTableWrapper = styled.div`
-    color: #583703 !important;
-    margin-right: 20px;
-    margin: 1rem 0;
-    font: normal normal bold 20px/23px Noto Sans !important;
-    .DonationViewAll {
-      color: #ff8744;
-      cursor: pointer;
-    }
-    .recentDonationHeading {
-      font: normal normal bold 20px/23px Noto Sans;
-    }
-  `;
 
   return (
     <RecentRegisteredCattleTableWrapper>
@@ -140,11 +154,7 @@ export default function RecentRegisteredCattlesTable({ data }) {
           <Trans i18nKey={"dashboard_viewAll"} />
         </p>
       </div>
-      <CustomDataTable
-        maxHeight={100}
-        columns={columns}
-        data={recent_Donation}
-      />
+      <CustomDataTable maxHeight={100} columns={columns} data={CattlesInfo} />
     </RecentRegisteredCattleTableWrapper>
   );
 }

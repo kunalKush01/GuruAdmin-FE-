@@ -124,7 +124,7 @@ const CattleInfoTable = ({ data = [] }) => {
         milkQuantity: item?.milkQuantity ?? "N/A",
       };
     });
-  });
+  },[data]);
 
   return (
     <CattleInfoTableWrapper>

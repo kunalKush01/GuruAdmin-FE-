@@ -59,7 +59,7 @@ const ExpenseTable = ({ data = [] }) => {
         ),
       };
     });
-  });
+  },[data]);
 
   return (
     <ExpenseTableWrapper>

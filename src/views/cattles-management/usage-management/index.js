@@ -1,12 +1,19 @@
-import React, { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import moment from "moment";
+import React, { useEffect, useMemo, useState } from "react";
 import { Plus } from "react-feather";
-import { Trans } from "react-i18next";
-import { Button, Row } from "reactstrap";
+import { Trans, useTranslation } from "react-i18next";
+import { Else, If, Then } from "react-if-else-switch";
+import Skeleton from "react-loading-skeleton";
+import ReactPaginate from "react-paginate";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
-import CattleTabBar from "../../../components/cattleTabBar";
+import { getCattlesUsageList } from "../../../api/cattle/cattleUsage";
 import { ChangePeriodDropDown } from "../../../components/partials/changePeriodDropDown";
-import { cattleHeader } from "../../../utility/subHeaderContent/cattleHeader";
-import { default as UsageManagementTable } from "./table";
+import NoContent from "../../../components/partials/noContent";
+import UsageManagementTable from "./table";
 
 const UsageManagementWrapper = styled.div`
   color: #583703;
@@ -18,8 +25,27 @@ const UsageManagementWrapper = styled.div`
 `;
 
 const UsageManagement = () => {
-  const [active, setActive] = useState(location.pathname);
+  const history = useHistory();
+  const { t } = useTranslation();
+  const selectedLang = useSelector((state) => state.auth.selectLang);
+  const searchBarValue = useSelector((state) => state.search.LocalSearch);
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 12,
+  });
+
+  const searchParams = new URLSearchParams(history.location.search);
+  const currentPage = searchParams.get("page");
+  const currentFilter = searchParams.get("filter");
+
+  useEffect(() => {
+    if (currentPage || currentFilter) {
+      setdropDownName(currentFilter);
+      setPagination({ ...pagination, page: parseInt(currentPage) });
+    }
+  }, []);
+
   const periodDropDown = () => {
     switch (dropDownName) {
       case "dashboard_monthly":
@@ -33,9 +59,42 @@ const UsageManagement = () => {
         return "month";
     }
   };
+
+  let filterStartDate = moment()
+    .startOf(periodDropDown())
+    .utcOffset(0, true)
+    .toISOString();
+  let filterEndDate = moment()
+    .endOf(periodDropDown())
+    .utcOffset(0, true)
+    .toISOString();
+
+  const cattleItemUsageList = useQuery(
+    [
+      "cattleItemUsageList",
+      filterStartDate,
+      filterEndDate,
+      pagination?.page,
+      selectedLang.id,
+      searchBarValue,
+    ],
+    () =>
+      getCattlesUsageList({
+        ...pagination,
+        search: searchBarValue,
+        startDate: filterStartDate,
+        endDate: filterEndDate,
+        languageId: selectedLang.id,
+      })
+  );
+
+  const cattleItemUsageListData = useMemo(
+    () => cattleItemUsageList?.data?.results ?? [],
+    [cattleItemUsageList]
+  );
+
   return (
     <UsageManagementWrapper>
-      {/* <CattleTabBar tabs={cattleHeader} active={active} setActive={setActive} /> */}
       <div>
         <div className="d-sm-flex mb-1 justify-content-between align-items-center ">
           <Trans i18nKey="cattle_usage" />
@@ -54,11 +113,10 @@ const UsageManagement = () => {
             subPermission?.includes(WRITE) ? ( */}
             <Button
               color="primary"
-              onClick={
-                () => alert("Sorry it's in under development")
-                // history.push(
-                //   `/news/add?page=${pagination.page}&filter=${dropDownName}`
-                // )
+              onClick={() =>
+                history.push(
+                  `/cattle/usage/add?page=${pagination.page}&filter=${dropDownName}`
+                )
               }
             >
               <span>
@@ -74,7 +132,7 @@ const UsageManagement = () => {
           </div>
         </div>
         <div style={{ height: "10px" }}>
-          {/* <If condition={newsQuery.isFetching}>
+          <If condition={cattleItemUsageList.isFetching}>
             <Then>
               <Skeleton
                 baseColor="#ff8744"
@@ -82,51 +140,44 @@ const UsageManagement = () => {
                 height={"3px"}
               />
             </Then>
-          </If> */}
+          </If>
         </div>
         <div className="">
           <Row>
-            <UsageManagementTable
-              data={[]}
-              // allPermissions={allPermissions}
-              // subPermission={subPermission}
-            />
-            {/* <If condition={newsQuery.isLoading} disableMemo>
+            <If
+              condition={
+                !cattleItemUsageList.isLoading &&
+                cattleItemUsageListData.length != 0 &&
+                !cattleItemUsageList.isFetching
+              }
+              disableMemo
+            >
               <Then>
-                <SkeletonTheme
-                  baseColor="#FFF7E8"
-                  highlightColor="#fff"
-                  borderRadius={"10px"}
-                >
-                  {randomArray.map((itm, idx) => {
-                    return (
-                      <Col xs={3} key={idx}>
-                        <Skeleton height={"335px"} width={"300px"} />
-                      </Col>
-                    );
-                  })}
-                </SkeletonTheme>
+                <UsageManagementTable
+                  data={cattleItemUsageListData}
+                  // allPermissions={allPermissions}
+                  // subPermission={subPermission}
+                />
               </Then>
               <Else>
-                <If condition={newsItems.length != 0} disableMemo>
+                <If
+                  condition={
+                    !cattleItemUsageList.isLoading &&
+                    cattleItemUsageListData.length == 0
+                  }
+                  disableMemo
+                >
                   <Then>
-                    <CattleInfoTable
-                      data={[]}
-                      allPermissions={allPermissions}
-                      subPermission={subPermission}
+                    <NoContent
+                      headingNotfound={t("no_data_found")}
+                      para={t("no_data_found_add_data")}
                     />
                   </Then>
-                  <Else>
-                    <NoContent
-                      headingNotfound={t("news_not_found")}
-                      para={t("news_not_click_add_news")}
-                    />
-                  </Else>
                 </If>
               </Else>
-            </If> */}
+            </If>
 
-            {/* <If condition={newsQuery?.data?.totalPages > 1}>
+            <If condition={cattleItemUsageListData?.data?.totalPages > 1}>
               <Then>
                 <Col xs={12} className="mb-2 d-flex justify-content-center">
                   <ReactPaginate
@@ -134,7 +185,7 @@ const UsageManagement = () => {
                     forcePage={pagination.page - 1}
                     breakLabel="..."
                     previousLabel=""
-                    pageCount={newsQuery?.data?.totalPages || 0}
+                    pageCount={cattleItemUsageListData?.data?.totalPages || 0}
                     activeClassName="active"
                     initialPage={
                       parseInt(searchParams.get("page"))
@@ -152,19 +203,18 @@ const UsageManagement = () => {
                     onPageChange={(page) => {
                       setPagination({ ...pagination, page: page.selected + 1 });
                       history.push(
-                        `/events?page=${
+                        `/cattle/usage?page=${
                           page.selected + 1
                         }&filter=${dropDownName}`
                       );
                     }}
-                    // forcePage={pagination.page !== 0 ? pagination.page - 1 : 0}
                     containerClassName={
                       "pagination react-paginate justify-content-end p-1"
                     }
                   />
                 </Col>
               </Then>
-            </If> */}
+            </If>
           </Row>
         </div>
       </div>
