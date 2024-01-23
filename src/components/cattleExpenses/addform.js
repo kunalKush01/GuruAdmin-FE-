@@ -137,7 +137,7 @@ const AddExpenseForm = ({
             )}
 
             <Row className="paddingForm">
-              <Col xs={12} md={9}>
+              <Col xs={12} md={10}>
                 <Row>
                   <Col xs={12} md={4}>
                     <FormikCustomReactSelect
@@ -168,8 +168,12 @@ const AddExpenseForm = ({
                       labelKey="itemId"
                       valueKey="itemId"
                       loadOptions={loadOption}
-                      label={t("cattle_item_id")}
-                      placeholder={t("placeHolder_cattle_item_id")}
+                      label={t("cattle_itemId")}
+                      onChange={(e) => {
+                        formik.setFieldValue("itemId", e);
+                        formik.setFieldValue("name", e);
+                      }}
+                      placeholder={t("placeHolder_cattle_itemId")}
                       defaultOptions
                       required
                     />
@@ -181,6 +185,10 @@ const AddExpenseForm = ({
                       valueKey="name"
                       loadOptions={nameLoadOption}
                       label={t("name")}
+                      onChange={(e) => {
+                        formik.setFieldValue("name", e);
+                        formik.setFieldValue("itemId", e);
+                      }}
                       placeholder={t("placeHolder_cattle_item_name")}
                       defaultOptions
                       required

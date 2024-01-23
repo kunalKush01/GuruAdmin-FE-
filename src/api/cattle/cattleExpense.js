@@ -10,7 +10,7 @@ export const getCattlesExpenseList = (payload) =>
 export const createCattleExpenses = (payload) =>
   callApi({
     requestFunction: (axios) => axios.post(`item-expense/create`, payload),
-    successCode: 200,
+    successCode: 201,
   });
 
 export const findAllItemId = (payload) =>

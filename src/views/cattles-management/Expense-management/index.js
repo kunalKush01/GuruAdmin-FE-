@@ -108,7 +108,9 @@ const ExpenseManagement = () => {
               setdropDownName={(e) => {
                 setdropDownName(e.target.name);
                 setPagination({ page: 1 });
-                // history.push(`/news?page=${1}&filter=${e.target.name}`);
+                history.push(
+                  `/cattle/expenses?page=${1}&filter=${e.target.name}`
+                );
               }}
             />
             {/* {allPermissions?.name === "all" ||

@@ -6,6 +6,11 @@ export const getCattlesStockList = (payload) =>
     showToastOnSuccess: false,
     showToastOnError: false,
   });
+export const createStock = (payload) =>
+  callApi({
+    requestFunction: (axios) => axios.post(`item/add-stock`, payload),
+    successCode: 201,
+  });
 
 export const getCattlesItemsList = (payload) =>
   callApi({
@@ -17,5 +22,5 @@ export const getCattlesItemsList = (payload) =>
 export const createStockItem = (payload) =>
   callApi({
     requestFunction: (axios) => axios.post(`item/create`, payload),
-    successCode: 200,
+    successCode: 201,
   });

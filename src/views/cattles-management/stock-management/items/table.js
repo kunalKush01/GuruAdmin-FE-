@@ -46,7 +46,7 @@ const StockManagementItemTable = ({ data = [] }) => {
         unitType: item?.unitType,
       };
     });
-  });
+  }, [data]);
 
   return (
     <StockManagementItemTableWrapper>

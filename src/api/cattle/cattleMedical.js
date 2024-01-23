@@ -12,7 +12,7 @@ export const createCattleMedicalRecord = (payload) =>
   callApi({
     requestFunction: (axios) =>
       axios.post(`${API_BASE_URL}cattle/add-medical`, payload),
-    successCode: 200,
+    successCode: 201,
   });
 
 export const findAllCattle = (payload) =>

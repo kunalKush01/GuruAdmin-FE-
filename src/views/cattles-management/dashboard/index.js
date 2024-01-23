@@ -41,7 +41,7 @@ const CattlesDashboard = () => {
     .toISOString();
 
   const dashboardData = useQuery(
-    ["dashboardData", filterStartDate, filterEndDate],
+    ["dashboardData", filterStartDate, filterEndDate, dropDownName],
     () =>
       getAllDashboardData({
         startDate: filterStartDate,
@@ -50,7 +50,7 @@ const CattlesDashboard = () => {
   );
 
   const chartData = useQuery(
-    ["dashboardChartData", filterStartDate, filterEndDate],
+    ["dashboardChartData", filterStartDate, filterEndDate, dropDownName],
     () =>
       getAllChartData({ startDate: filterStartDate, endDate: filterEndDate })
   );
@@ -99,15 +99,15 @@ const CattlesDashboard = () => {
       }),
     },
 
-    {
-      name: t("report_expences"),
-      data: chartData?.data?.expenseArr?.map((item) => {
-        return {
-          x: item?.month,
-          y: item?.amount,
-        };
-      }),
-    },
+    // {
+    //   name: t("report_expences"),
+    //   data: chartData?.data?.expenseArr?.map((item) => {
+    //     return {
+    //       x: item?.month,
+    //       y: item?.amount,
+    //     };
+    //   }),
+    // },
   ];
 
   return (
@@ -121,12 +121,12 @@ const CattlesDashboard = () => {
       <div className="d-flex gap-5 mt-2 mb-3">
         <CattleDashboardCard
           showCattleDetails
-          cow={dashboardData?.data?.totalCattles?.cow}
-          bull={dashboardData?.data?.totalCattles?.bull}
-          calf={dashboardData?.data?.totalCattles?.calf}
-          other={dashboardData?.data?.totalCattles?.other}
+          cow={dashboardData?.data?.totalCattles?.cow ?? 0}
+          bull={dashboardData?.data?.totalCattles?.bull ?? 0}
+          calf={dashboardData?.data?.totalCattles?.calf ?? 0}
+          other={dashboardData?.data?.totalCattles?.other ?? 0}
           title="Total Registered Cattle"
-          number={dashboardData?.data?.totalCattles?.totalCattle}
+          number={dashboardData?.data?.totalCattles?.totalCattle ?? 0}
         />
 
         <CattleDashboardCard
@@ -140,13 +140,13 @@ const CattlesDashboard = () => {
           showRupeesSymbol
           title="Total Donation for Cattles"
           number={dashboardData?.data?.donationReceived ?? 0}
-          privateDonor={50000}
-          govtDonor={1500}
+          privateDonor={dashboardData?.data?.private ?? 0}
+          govtDonor={dashboardData?.data?.govt ?? 0}
         />
 
         <CattleDashboardCard
           title="Cattles Death Registered"
-          number={dashboardData?.data?.deathCattle}
+          number={dashboardData?.data?.deathCattle ?? 0}
         />
       </div>
       {chartData?.isFetching && chartData?.isLoading ? (

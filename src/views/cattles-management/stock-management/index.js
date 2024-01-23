@@ -126,7 +126,11 @@ const StockManagement = () => {
               setdropDownName={(e) => {
                 setdropDownName(e.target.name);
                 setPagination({ page: 1 });
-                // history.push(`/news?page=${1}&filter=${e.target.name}`);
+                history.push(
+                  `/${
+                    active == "/cattle/stock" ? "cattle/stock" : "cattle/items"
+                  }?page=${1}&filter=${e.target.name}`
+                );
               }}
             />
             {/* {allPermissions?.name === "all" ||
@@ -135,14 +139,9 @@ const StockManagement = () => {
               color="primary"
               onClick={() =>
                 active == "/cattle/stock"
-                  ? Swal.fire({
-                      icon: "info",
-                      title: "Oops...",
-                      text: "Add Stock is in underdevelopment ",
-                      showConfirmButton: false,
-                      showCloseButton: false,
-                      timer: 2000,
-                    })
+                  ? history.push(
+                      `/cattle/stock/add?page=${pagination.page}&filter=${dropDownName}`
+                    )
                   : history.push(
                       `/cattle/items/add?page=${pagination.page}&filter=${dropDownName}`
                     )
@@ -167,9 +166,23 @@ const StockManagement = () => {
           </div>
         </div>
         {active == "/cattle/stock" ? (
-          <Stocks list={cattleStockManagementListData} />
+          <Stocks
+            pagination={pagination}
+            setPagination={setPagination}
+            dropDownName={dropDownName}
+            list={cattleStockManagementListData}
+            query={cattleStockManagementList}
+            searchParams={searchParams}
+          />
         ) : (
-          <Items list={cattleStockManagementListData} />
+          <Items
+            pagination={pagination}
+            setPagination={setPagination}
+            dropDownName={dropDownName}
+            searchParams={searchParams}
+            list={cattleStockManagementListData}
+            query={cattleStockManagementList}
+          />
         )}
       </div>
     </StockManagementWrapper>

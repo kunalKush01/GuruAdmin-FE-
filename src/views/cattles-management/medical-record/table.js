@@ -65,7 +65,7 @@ const MedicalReportTable = ({ data = [] }) => {
         symptoms: item?.symptoms,
       };
     });
-  });
+  },[data]);
 
   return (
     <MedicalTableWrapper>

@@ -10,5 +10,5 @@ export const getCattlesPregnancyList = (payload) =>
 export const createPregnancyReport = (payload) =>
   callApi({
     requestFunction: (axios) => axios.post(`cattle/add-pregnancy`, payload),
-    successCode: 200,
+    successCode: 201,
   });

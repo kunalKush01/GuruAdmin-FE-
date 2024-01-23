@@ -50,7 +50,7 @@ const PregnancyReportTable = ({ data = [] }) => {
         pregnancyStatus: item?.status,
       };
     });
-  });
+  },[data]);
 
   return (
     <PregnancyTableWrapper>

@@ -141,6 +141,18 @@ const Routes = [
   },
 
   {
+    path: "/cattle/stock/add",
+    component: lazy(() =>
+      import(
+        "../../views/cattles-management/stock-management/stock/add/index.js"
+      )
+    ),
+    exact: true,
+    type: "cattle-stock",
+    subPermission: READ,
+  },
+
+  {
     path: "/cattle/items",
     component: lazy(() =>
       import("../../views/cattles-management/stock-management/index.js")
@@ -166,6 +178,16 @@ const Routes = [
     path: "/cattle/usage",
     component: lazy(() =>
       import("../../views/cattles-management/usage-management/index.js")
+    ),
+    exact: true,
+    type: "cattle-usage",
+    subPermission: READ,
+  },
+
+  {
+    path: "/cattle/usage/add",
+    component: lazy(() =>
+      import("../../views/cattles-management/usage-management/add/index.js")
     ),
     exact: true,
     type: "cattle-usage",
