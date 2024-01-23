@@ -226,8 +226,8 @@ const NavbarUser = (props) => {
   });
   const subdomainChange = process.env.REACT_APP_ADMIN_SUBDOMAIN_REPLACE_URL;
 
-  // const subDomainName = location.hostname.replace(subdomainChange, "");
-  const subDomainName = location.hostname.replace("-dev.localhost", "");
+  const subDomainName = location.hostname.replace(subdomainChange, "");
+  // const subDomainName = location.hostname.replace("-dev.localhost", "");
   const loginPageQuery = useQuery([subDomainName], () =>
     loginPage(subDomainName)
   );
