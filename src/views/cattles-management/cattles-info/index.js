@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
@@ -13,7 +13,7 @@ import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
 
 import Swal from "sweetalert2";
-import { getCattlesList } from "../../../api/cattle/cattleInfo";
+import { getCattlesList, importFile } from "../../../api/cattle/cattleInfo";
 import { ChangePeriodDropDown } from "../../../components/partials/changePeriodDropDown";
 import NoContent from "../../../components/partials/noContent";
 import CattleInfoTable from "./table";
@@ -30,6 +30,7 @@ const CattleInfo = styled.div`
 const CattlesInfo = () => {
   const history = useHistory();
   const { t } = useTranslation();
+  const importFileRef = useRef();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const [pagination, setPagination] = useState({
@@ -97,6 +98,15 @@ const CattlesInfo = () => {
     [cattleList]
   );
 
+  const handleImportFile = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
+      await importFile(formData);
+    }
+  };
+
   return (
     <CattleInfo>
       <div>
@@ -116,6 +126,7 @@ const CattlesInfo = () => {
             {/* {allPermissions?.name === "all" ||
             subPermission?.includes(WRITE) ? ( */}
             <Button
+              className="me-1"
               color="primary"
               onClick={
                 () =>
@@ -139,6 +150,21 @@ const CattlesInfo = () => {
                 <Trans i18nKey={"cattle_add"} />
               </span>
             </Button>
+
+            <Button
+              color="primary"
+              onClick={() => importFileRef.current.click()}
+            >
+              Import File
+            </Button>
+
+            <input
+              type="file"
+              ref={importFileRef}
+              accept=""
+              className="d-none"
+              onChange={handleImportFile}
+            />
             {/* ) : (
               ""
             )} */}
