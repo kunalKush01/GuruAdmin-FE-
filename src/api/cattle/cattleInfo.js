@@ -6,3 +6,10 @@ export const getCattlesList = (payload) =>
     showToastOnSuccess: false,
     showToastOnError: false,
   });
+
+export const importFile = (payload) =>
+  callApi({
+    requestFunction: (axios) => axios.post(`cattle/import-file`, payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
