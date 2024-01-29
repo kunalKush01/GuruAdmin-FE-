@@ -149,7 +149,7 @@ export const englishContent = {
   cattle_pregnancy_report: "Pregnancy Reports",
   cattle_pregnancy_report_add: "Add Pregnancy Report",
   cattle_expense_add: "Add Expenses",
-  cattle_stock_add: "Add Stock",
+  cattle_supplies_add: "Add Supplies",
   cattle_items_add: "Add Items",
   cattle_calf_id: "Cattle/Calf ID",
   cattle_treatment_medicine: "Treatment/Medicine",
@@ -177,6 +177,22 @@ export const englishContent = {
   cattle_expense_current_quantity: "Current Quantity",
   cattle_expense_order_quantity: "Order Quantity",
   cattle_last_update: "Last Updated",
+
+  // cattle validation messages
+  cattle_itemID_required: "Item ID is required",
+  cattle_id_required: "Cattle/Calf ID is required",
+  cattle_pregnancy_status_required: "Pregnancy Status is required",
+  cattle_name_required: "Name is required",
+  cattle_order_quantity_required: "Order Quantity is required",
+  cattle_unit_required: "Unit is required",
+  cattle_unit_type_required: "Unit Type is required",
+  cattle_quantity_required: "Quantity is required",
+  cattle_purpose_required: "Purpose is required",
+  cattle_treatment_medicine_required: "Treatment/Medicine is required",
+  cattle_dosage_required: "Dosage is required",
+  cattle_DrName_required: "Dr. Name is required",
+  cattle_price_required: "Price is required",
+  cattle_symptoms_required: "Symptoms is required",
   // All static content of Notices
 
   notices_AddNotice: "Add Notice",

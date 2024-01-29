@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import CustomDataTable from "../../../../components/partials/CustomDataTable";
 
-const StockManagementTableWrapper = styled.div`
+const SuppliesTableWrapper = styled.div`
   color: #583703 !important;
   font: normal normal bold 15px/23px Noto Sans;
   .modal-body {
@@ -16,7 +16,7 @@ const StockManagementTableWrapper = styled.div`
   }
 `;
 
-const StockManagementTable = ({ data = [] }) => {
+const SuppliesTable = ({ data = [] }) => {
   const { t } = useTranslation();
   const columns = [
     {
@@ -28,8 +28,8 @@ const StockManagementTable = ({ data = [] }) => {
       selector: (row) => row?.name,
     },
     {
-      name: t("cattle_expense_current_quantity"),
-      selector: (row) => row?.currentQuantity,
+      name: t("cattle_expense_order_quantity"),
+      selector: (row) => row?.orderQuantity,
     },
     {
       name: t("cattle_unit"),
@@ -41,14 +41,13 @@ const StockManagementTable = ({ data = [] }) => {
     },
   ];
 
-  const StockData = useMemo(() => {
+  const SupplyData = useMemo(() => {
     return data?.map((item, idx) => {
       return {
         id: idx + 1,
         itemID: item?.itemId,
         name: item?.name,
         orderQuantity: item?.orderQuantity,
-        currentQuantity: item?.currentQuantity,
         unit: item?.unit,
         lastUpdate: moment(item?.updatedAt).format("DD MMM YYYY"),
       };
@@ -56,10 +55,10 @@ const StockManagementTable = ({ data = [] }) => {
   });
 
   return (
-    <StockManagementTableWrapper>
-      <CustomDataTable maxHeight={""} columns={columns} data={StockData} />
-    </StockManagementTableWrapper>
+    <SuppliesTableWrapper>
+      <CustomDataTable maxHeight={""} columns={columns} data={SupplyData} />
+    </SuppliesTableWrapper>
   );
 };
 
-export default StockManagementTable;
+export default SuppliesTable;

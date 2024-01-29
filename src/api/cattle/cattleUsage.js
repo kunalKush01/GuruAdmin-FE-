@@ -10,5 +10,5 @@ export const getCattlesUsageList = (payload) =>
 export const createItemUsage = (payload) =>
   callApi({
     requestFunction: (axios) => axios.post(`item/add-usage`, payload),
-    successCode: 200,
+    successCode: 201,
   });

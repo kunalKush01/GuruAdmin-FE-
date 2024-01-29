@@ -2,9 +2,11 @@ import React from "react";
 import { Trans } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { createItemUsage } from "../../../../api/cattle/cattleUsage";
-import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
-import AddItemUsageForm from "../../../../components/cattleUsage/addForm";
+import * as Yup from "yup";
+
+import { createItemUsage } from "../../../../../api/cattle/cattleUsage";
+import arrowLeft from "../../../../../assets/images/icons/arrow-left.svg";
+import AddItemUsageForm from "../../../../../components/cattleUsage/addForm";
 
 const ItemUsageAddWraper = styled.div`
   color: #583703;
@@ -29,21 +31,13 @@ const AddItemUsage = () => {
     return createItemUsage(payload);
   };
 
-  // const schema = Yup.object().shape({
-  //   Title: Yup.string()
-  //     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
-  //     .required("events_title_required")
-  //     .trim(),
-  //   // tagsInit:Yup.array().max(15 ,"tags_limit"),
-  //   Body: Yup.string().required("events_desc_required").trim(),
-  //   DateTime: Yup.object().shape({
-  //     start: Yup.string().required("events_startDate_required"),
-  //     // end: Yup.mixed().required("events_endDate_required"),
-  //   }),
-  //   startTime: Yup.mixed().required("events_startTime_required"),
-  //   endTime: Yup.mixed().required("events_endTime_required"),
-  //   SelectedEvent: Yup.mixed(),
-  // });
+  const schema = Yup.object().shape({
+    itemId: Yup.mixed().required("cattle_itemID_required"),
+    name: Yup.mixed().required("cattle_name_required"),
+    quantity: Yup.number().required("cattle_quantity_required"),
+    unit: Yup.mixed().required("cattle_unit_required"),
+    purpose: Yup.mixed().required("cattle_purpose_required"),
+  });
 
   const initialValues = {
     itemId: "",
@@ -63,7 +57,7 @@ const AddItemUsage = () => {
             className="me-2  cursor-pointer"
             onClick={() =>
               history.push(
-                `/cattle/usage?page=${currentPage}&filter=${currentFilter}`
+                `/cattle/management/usage?page=${currentPage}&filter=${currentFilter}`
               )
             }
           />
@@ -76,7 +70,7 @@ const AddItemUsage = () => {
         <AddItemUsageForm
           handleSubmit={handleCreateItemUsage}
           initialValues={initialValues}
-          // validationSchema={schema}
+          validationSchema={schema}
           buttonName="cattle_record_add"
         />
       </div>

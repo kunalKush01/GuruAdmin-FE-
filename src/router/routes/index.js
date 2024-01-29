@@ -131,7 +131,7 @@ const Routes = [
   },
 
   {
-    path: "/cattle/stock",
+    path: "/cattle/management/stock",
     component: lazy(() =>
       import("../../views/cattles-management/stock-management/index.js")
     ),
@@ -141,10 +141,19 @@ const Routes = [
   },
 
   {
-    path: "/cattle/stock/add",
+    path: "/cattle/management/supplies",
+    component: lazy(() =>
+      import("../../views/cattles-management/stock-management/index.js")
+    ),
+    exact: true,
+    type: "cattle-stock",
+    subPermission: READ,
+  },
+  {
+    path: "/cattle/management/supplies/add",
     component: lazy(() =>
       import(
-        "../../views/cattles-management/stock-management/stock/add/index.js"
+        "../../views/cattles-management/stock-management/supplies/add/index.js"
       )
     ),
     exact: true,
@@ -153,7 +162,7 @@ const Routes = [
   },
 
   {
-    path: "/cattle/items",
+    path: "/cattle/management/items",
     component: lazy(() =>
       import("../../views/cattles-management/stock-management/index.js")
     ),
@@ -163,7 +172,7 @@ const Routes = [
   },
 
   {
-    path: "/cattle/items/add",
+    path: "/cattle/management/items/add",
     component: lazy(() =>
       import(
         "../../views/cattles-management/stock-management/items/add/index.js"
@@ -175,9 +184,9 @@ const Routes = [
   },
 
   {
-    path: "/cattle/usage",
+    path: "/cattle/management/usage",
     component: lazy(() =>
-      import("../../views/cattles-management/usage-management/index.js")
+      import("../../views/cattles-management/stock-management/index.js")
     ),
     exact: true,
     type: "cattle-usage",
@@ -185,9 +194,11 @@ const Routes = [
   },
 
   {
-    path: "/cattle/usage/add",
+    path: "/cattle/management/usage/add",
     component: lazy(() =>
-      import("../../views/cattles-management/usage-management/add/index.js")
+      import(
+        "../../views/cattles-management/stock-management/usage/add/index.js"
+      )
     ),
     exact: true,
     type: "cattle-usage",

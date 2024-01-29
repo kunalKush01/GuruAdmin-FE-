@@ -1,6 +1,6 @@
 // ** React Imports
 import { useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 // ** Store & Actions
 import { handleContentWidth, handleMenuHidden } from "@store/layout";
@@ -11,7 +11,7 @@ import classnames from "classnames";
 import { ArrowUp } from "react-feather";
 
 // ** Reactstrap Imports
-import { Button, Input, NavItem, Navbar } from "reactstrap";
+import { Button, Navbar } from "reactstrap";
 
 // ** Configs
 import themeConfig from "@configs/themeConfig";
@@ -32,9 +32,7 @@ import { useSkin } from "@hooks/useSkin";
 
 // ** Styles
 import "@styles/base/core/menu/menu-types/horizontal-menu.scss";
-import CattleTabBar from "../../components/cattleTabBar";
 import { subHeaderContent } from "../../utility/subHeaderContent";
-import { cattleHeader } from "../../utility/subHeaderContent/cattleHeader";
 const HorizontalLayout = (props) => {
   const history = useHistory();
   const { isLogged } = useSelector((state) => state.auth);

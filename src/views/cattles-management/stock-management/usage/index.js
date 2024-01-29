@@ -1,14 +1,16 @@
 import React from "react";
+
 import { useTranslation } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton from "react-loading-skeleton";
 import ReactPaginate from "react-paginate";
 import { useHistory } from "react-router-dom";
 import { Col, Row } from "reactstrap";
-import NoContent from "../../../../components/partials/noContent";
-import StockManagementItemTable from "./table";
 
-const Items = ({
+import NoContent from "../../../../components/partials/noContent";
+import UsageTable from "./table";
+
+const Usage = ({
   list,
   query,
   pagination,
@@ -16,6 +18,7 @@ const Items = ({
   dropDownName,
   searchParams,
 }) => {
+  console.log("list", list);
   const history = useHistory();
   const { t } = useTranslation();
 
@@ -41,7 +44,7 @@ const Items = ({
             disableMemo
           >
             <Then>
-              <StockManagementItemTable
+              <UsageTable
                 data={list}
                 // allPermissions={allPermissions}
                 // subPermission={subPermission}
@@ -85,7 +88,7 @@ const Items = ({
                   onPageChange={(page) => {
                     setPagination({ ...pagination, page: page.selected + 1 });
                     history.push(
-                      `/cattle/management/items?page=${
+                      `/cattle/management/usage?page=${
                         page.selected + 1
                       }&filter=${dropDownName}`
                     );
@@ -103,4 +106,4 @@ const Items = ({
   );
 };
 
-export default Items;
+export default Usage;

@@ -1,7 +1,8 @@
+import moment from "moment";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import CustomDataTable from "../../../components/partials/CustomDataTable";
+import CustomDataTable from "../../../../components/partials/CustomDataTable";
 
 const UsageManagementTableWrapper = styled.div`
   color: #583703 !important;
@@ -20,23 +21,23 @@ const UsageManagementTable = ({ data = [] }) => {
 
   const columns = [
     {
-      name: t("itemID"),
+      name: t("cattle_itemId"),
       selector: (row) => row?.itemId,
     },
     {
-      name: t("date"),
-      selector: (row) => row?.Date,
+      name: t("expenses_Date"),
+      selector: (row) => row?.date,
     },
     {
-      name: t("quantity"),
+      name: t("cattle_expense_quantity"),
       selector: (row) => row?.quantity,
     },
     {
-      name: t("unit"),
+      name: t("cattle_unit"),
       selector: (row) => row?.unit,
     },
     {
-      name: t("purpose"),
+      name: t("cattle_purpose"),
       selector: (row) => row?.purpose,
     },
   ];
@@ -46,7 +47,7 @@ const UsageManagementTable = ({ data = [] }) => {
       return {
         id: idx + 1,
         itemId: item?.itemId,
-        date: item?.date,
+        date: moment(item?.date).format("DD MMM YYYY"),
         quantity: item?.quantity,
         unit: item?.unit,
         purpose: item?.purpose,

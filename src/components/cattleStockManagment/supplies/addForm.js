@@ -16,7 +16,7 @@ import FormikCustomReactSelect from "../../partials/formikCustomReactSelect";
 
 const FormikWrapper = styled.div``;
 
-const AddStockForm = ({
+const AddSuppliesForm = ({
   initialValues,
   validationSchema,
   handleSubmit,
@@ -45,7 +45,7 @@ const AddStockForm = ({
       if (!data?.error) {
         queryClient.invalidateQueries(["cattleStockManagementList"]);
         setLoading(false);
-        history.push("/cattle/stock");
+        history.push("/cattle/supplies");
       } else if (data?.error || data === undefined) {
         setLoading(false);
       }
@@ -66,7 +66,6 @@ const AddStockForm = ({
             name: values?.name,
             unit: values?.unit?.value,
             orderQuantity: values?.orderQuantity,
-            currentQuantity: values?.currentQuantity,
           });
         }}
       >
@@ -101,16 +100,13 @@ const AddStockForm = ({
                           label: e?.unit,
                           value: e?.unit,
                         });
-                        formik.setFieldValue(
-                          "currentQuantity",
-                          e?.currentQuantity ?? 0
-                        );
                       }}
                       placeholder={t("placeHolder_cattle_itemId")}
                       defaultOptions
                       required
                     />
                   </Col>
+
                   <Col xs={12} md={4}>
                     <AsyncSelectField
                       name="name"
@@ -125,16 +121,29 @@ const AddStockForm = ({
                           label: e?.unit,
                           value: e?.unit,
                         });
-                        formik.setFieldValue(
-                          "currentQuantity",
-                          e?.currentQuantity ?? 0
-                        );
                       }}
                       placeholder={t("placeHolder_cattle_item_name")}
                       defaultOptions
                       required
                     />
                   </Col>
+
+                  <Col xs={12} md={4}>
+                    <CustomTextField
+                      label={t("cattle_expense_order_quantity")}
+                      type="number"
+                      placeholder={t(
+                        "placeHolder_cattle_expense_order_quantity"
+                      )}
+                      name="orderQuantity"
+                      required
+                      autoFocus
+                      onInput={(e) =>
+                        (e.target.value = e.target.value.slice(0, 30))
+                      }
+                    />
+                  </Col>
+
                   <Col xs={12} md={4}>
                     <FormikCustomReactSelect
                       name="unit"
@@ -159,22 +168,8 @@ const AddStockForm = ({
                       disabled={formik.values.itemId || formik.values.name}
                     />
                   </Col>
-                  <Col xs={12} md={4}>
-                    <CustomTextField
-                      label={t("cattle_expense_order_quantity")}
-                      type="number"
-                      placeholder={t(
-                        "placeHolder_cattle_expense_order_quantity"
-                      )}
-                      name="orderQuantity"
-                      required
-                      autoFocus
-                      onInput={(e) =>
-                        (e.target.value = e.target.value.slice(0, 30))
-                      }
-                    />
-                  </Col>
-                  <Col xs={12} md={4}>
+
+                  {/* <Col xs={12} md={4}>
                     <CustomTextField
                       label={t("cattle_expense_current_quantity")}
                       type="number"
@@ -189,7 +184,7 @@ const AddStockForm = ({
                       }
                       disabled={formik.values.itemId || formik.values.name}
                     />
-                  </Col>
+                  </Col> */}
                 </Row>
               </Col>
             </Row>
@@ -232,4 +227,4 @@ const AddStockForm = ({
   );
 };
 
-export default AddStockForm;
+export default AddSuppliesForm;

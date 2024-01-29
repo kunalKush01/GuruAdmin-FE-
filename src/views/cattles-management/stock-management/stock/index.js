@@ -50,10 +50,7 @@ const Stocks = ({
             <Else>
               <If condition={!query.isLoading && list.length == 0} disableMemo>
                 <Then>
-                  <NoContent
-                    headingNotfound={t("no_data_found")}
-                    para={t("no_data_found_add_data")}
-                  />
+                  <NoContent headingNotfound={t("no_data_found")} />
                 </Then>
               </If>
             </Else>
@@ -85,7 +82,7 @@ const Stocks = ({
                   onPageChange={(page) => {
                     setPagination({ ...pagination, page: page.selected + 1 });
                     history.push(
-                      `/cattle/stock?page=${
+                      `/cattle/management/stock?page=${
                         page.selected + 1
                       }&filter=${dropDownName}`
                     );
