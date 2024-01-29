@@ -1,14 +1,15 @@
 import React from "react";
+
 import { Trans } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import * as Yup from "yup";
 
-import { createPregnancyReport } from "../../../../api/cattle/cattlePregnancy";
-import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
-import AddPregnancyForm from "../../../../components/cattlePregnancy/addForm";
+import { createSupplyItem } from "../../../../../api/cattle/cattleStock";
+import arrowLeft from "../../../../../assets/images/icons/arrow-left.svg";
+import AddSuppliesForm from "../../../../../components/cattleStockManagment/supplies/addForm";
 
-const PregnancyAddWraper = styled.div`
+const StockAddWraper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
@@ -21,30 +22,32 @@ const PregnancyAddWraper = styled.div`
   }
 `;
 
-const AddPregnancy = () => {
+const AddSupplies = () => {
   const history = useHistory();
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
   const currentFilter = searchParams.get("filter");
 
-  const handleCreatePregnancyReport = async (payload) => {
-    return createPregnancyReport(payload);
+  const handleCreateSupply = async (payload) => {
+    return createSupplyItem(payload);
   };
 
   const schema = Yup.object().shape({
-    cattleCalfId: Yup.mixed().required("cattle_id_required"),
-    pregnancyStatus: Yup.string().required("cattle_pregnancy_status_required"),
+    itemId: Yup.mixed().required("cattle_itemID_required"),
+    name: Yup.mixed().required("cattle_name_required"),
+    orderQuantity: Yup.number().required("cattle_order_quantity_required"),
+    unit: Yup.mixed().required("cattle_unit_required"),
   });
 
   const initialValues = {
-    cattleCalfId: "",
-    pregnancyDate: new Date(),
-    conceivingDate: new Date(),
-    pregnancyStatus: "",
+    itemId: "",
+    name: "",
+    orderQuantity: "",
+    unit: "",
   };
 
   return (
-    <PregnancyAddWraper>
+    <StockAddWraper>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -52,25 +55,25 @@ const AddPregnancy = () => {
             className="me-2  cursor-pointer"
             onClick={() =>
               history.push(
-                `/cattle/pregnancy-reports?page=${currentPage}&filter=${currentFilter}`
+                `/cattle/management/supplies?page=${currentPage}&filter=${currentFilter}`
               )
             }
           />
           <div className="addEvent">
-            <Trans i18nKey={"cattle_pregnancy_report_add"} />
+            <Trans i18nKey={"cattle_supplies_add"} />
           </div>
         </div>
       </div>
       <div className="ms-sm-3 mt-1">
-        <AddPregnancyForm
-          handleSubmit={handleCreatePregnancyReport}
+        <AddSuppliesForm
+          handleSubmit={handleCreateSupply}
           initialValues={initialValues}
           validationSchema={schema}
           buttonName="cattle_record_add"
         />
       </div>
-    </PregnancyAddWraper>
+    </StockAddWraper>
   );
 };
 
-export default AddPregnancy;
+export default AddSupplies;

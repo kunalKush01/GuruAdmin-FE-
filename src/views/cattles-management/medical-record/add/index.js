@@ -1,9 +1,9 @@
-import moment from "moment";
 import React from "react";
 import { Trans } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import * as Yup from "yup";
+
 import { createCattleMedicalRecord } from "../../../../api/cattle/cattleMedical";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddMedicalInfoForm from "../../../../components/cattleMedicalInfo/addForm";
@@ -31,21 +31,17 @@ const AddMedicalInfo = () => {
     return createCattleMedicalRecord(payload);
   };
 
-  // const schema = Yup.object().shape({
-  //   Title: Yup.string()
-  //     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
-  //     .required("events_title_required")
-  //     .trim(),
-  //   // tagsInit:Yup.array().max(15 ,"tags_limit"),
-  //   Body: Yup.string().required("events_desc_required").trim(),
-  //   DateTime: Yup.object().shape({
-  //     start: Yup.string().required("events_startDate_required"),
-  //     // end: Yup.mixed().required("events_endDate_required"),
-  //   }),
-  //   startTime: Yup.mixed().required("events_startTime_required"),
-  //   endTime: Yup.mixed().required("events_endTime_required"),
-  //   SelectedEvent: Yup.mixed(),
-  // });
+  const schema = Yup.object().shape({
+    cattleCalfId: Yup.mixed().required("cattle_id_required"),
+    treatmentMedicine: Yup.string().required(
+      "cattle_treatment_medicine_required"
+    ),
+    dosage: Yup.string().required("cattle_dosage_required"),
+    DrName: Yup.string().required("cattle_DrName_required"),
+    Mobile: Yup.string().required("expenses_mobile_required"),
+    price: Yup.number().required("cattle_price_required"),
+    cattleSymptoms: Yup.number().required("cattle_symptoms_required"),
+  });
 
   const initialValues = {
     cattleCalfId: "",
@@ -82,7 +78,7 @@ const AddMedicalInfo = () => {
         <AddMedicalInfoForm
           handleSubmit={handleCreateMedicalInfo}
           initialValues={initialValues}
-          // validationSchema={schema}
+          validationSchema={schema}
           buttonName="cattle_record_add"
         />
       </div>

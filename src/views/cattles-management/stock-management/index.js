@@ -11,11 +11,15 @@ import Swal from "sweetalert2";
 import {
   getCattlesItemsList,
   getCattlesStockList,
+  getSupplyList,
 } from "../../../api/cattle/cattleStock";
+import { getCattlesUsageList } from "../../../api/cattle/cattleUsage";
 import CattleTabBar from "../../../components/cattleTabBar";
 import { ChangePeriodDropDown } from "../../../components/partials/changePeriodDropDown";
 import Items from "./items";
 import Stocks from "./stock";
+import Supplies from "./supplies";
+import Usage from "./usage";
 
 const StockManagementWrapper = styled.div`
   color: #583703;
@@ -23,6 +27,11 @@ const StockManagementWrapper = styled.div`
 
   .btn {
     font-weight: bold;
+  }
+
+  hr {
+    height: 1px;
+    margin-top: 0;
   }
 `;
 
@@ -82,7 +91,7 @@ const StockManagement = () => {
       searchBarValue,
     ],
     () =>
-      active == "/cattle/stock"
+      active == "/cattle/management/stock"
         ? getCattlesStockList({
             ...pagination,
             search: searchBarValue,
@@ -90,7 +99,24 @@ const StockManagement = () => {
             endDate: filterEndDate,
             languageId: selectedLang.id,
           })
-        : getCattlesItemsList({
+        : active == "/cattle/management/items"
+        ? getCattlesItemsList({
+            ...pagination,
+            search: searchBarValue,
+            startDate: filterStartDate,
+            endDate: filterEndDate,
+            languageId: selectedLang.id,
+          })
+        : active == "/cattle/management/supplies"
+        ? getSupplyList({
+            ...pagination,
+            search: searchBarValue,
+            startDate: filterStartDate,
+            endDate: filterEndDate,
+            languageId: selectedLang.id,
+          })
+        : active == "/cattle/management/usage" &&
+          getCattlesUsageList({
             ...pagination,
             search: searchBarValue,
             startDate: filterStartDate,
@@ -107,65 +133,107 @@ const StockManagement = () => {
   return (
     <StockManagementWrapper>
       <div>
-        <div className="d-sm-flex mb-1 mb-lg-0 justify-content-between align-items-center ">
-          {/* <Trans i18nKey="cattle_stock" /> */}
-          <CattleTabBar
-            tabs={[
-              { name: "Stock", url: "/cattle/stock" },
-              { name: "Items", url: "/cattle/items" },
-            ]}
-            active={active}
-            setActive={setActive}
-            tabBar
-          />
-
-          <div className="d-flex  mt-sm-0 justify-content-between">
-            <ChangePeriodDropDown
-              className={"me-1"}
-              dropDownName={dropDownName}
-              setdropDownName={(e) => {
-                setdropDownName(e.target.name);
-                setPagination({ page: 1 });
-                history.push(
-                  `/${
-                    active == "/cattle/stock" ? "cattle/stock" : "cattle/items"
-                  }?page=${1}&filter=${e.target.name}`
-                );
-              }}
+        <div className="relative">
+          <div className="d-sm-flex  justify-content-between align-items-center ">
+            {/* <Trans i18nKey="cattle_stock" /> */}
+            <CattleTabBar
+              tabs={[
+                {
+                  name: "Stock",
+                  url: "/cattle/management/stock",
+                  active: "/cattle/management/stock",
+                },
+                {
+                  name: "Supplies",
+                  url: "/cattle/management/supplies",
+                  active: "/cattle/management/supplies",
+                },
+                {
+                  name: "Usage",
+                  url: "/cattle/management/usage",
+                  active: "/cattle/management/usage",
+                },
+                {
+                  name: "Items",
+                  url: "/cattle/management/items",
+                  active: "/cattle/management/items",
+                },
+              ]}
+              active={active}
+              setActive={setActive}
+              tabBar
             />
-            {/* {allPermissions?.name === "all" ||
+            <div className="d-flex  mt-sm-0 justify-content-between">
+              <ChangePeriodDropDown
+                className={"me-1"}
+                dropDownName={dropDownName}
+                setdropDownName={(e) => {
+                  setdropDownName(e.target.name);
+                  setPagination({ page: 1 });
+                  history.push(
+                    `/${
+                      active == "/cattle/management/stock"
+                        ? "cattle/stock"
+                        : active == "/cattle/management/items"
+                        ? "cattle/items"
+                        : active == "/cattle/management/supplies"
+                        ? "/cattle/management/supplies"
+                        : active == "/cattle/management/usage"
+                        ? "/cattle/management/usage"
+                        : "/not-fount"
+                    }?page=${1}&filter=${e.target.name}`
+                  );
+                }}
+              />
+              {/* {allPermissions?.name === "all" ||
             subPermission?.includes(WRITE) ? ( */}
-            <Button
-              color="primary"
-              onClick={() =>
-                active == "/cattle/stock"
-                  ? history.push(
-                      `/cattle/stock/add?page=${pagination.page}&filter=${dropDownName}`
-                    )
-                  : history.push(
-                      `/cattle/items/add?page=${pagination.page}&filter=${dropDownName}`
-                    )
-              }
-            >
-              <span>
-                <Plus className="" size={15} strokeWidth={4} />
-              </span>
-              <span>
-                <Trans
-                  i18nKey={
-                    active == "/cattle/stock"
-                      ? "cattle_stock_add"
-                      : "cattle_items_add"
+              {active == "/cattle/management/stock" ? (
+                ""
+              ) : (
+                <Button
+                  color="primary"
+                  onClick={() =>
+                    active == "/cattle/management/supplies"
+                      ? history.push(
+                          `/cattle/management/supplies/add?page=${pagination.page}&filter=${dropDownName}`
+                        )
+                      : active == "/cattle/management/items"
+                      ? history.push(
+                          `/cattle/management/items/add?page=${pagination.page}&filter=${dropDownName}`
+                        )
+                      : active == "/cattle/management/usage"
+                      ? history.push(
+                          `/cattle/management/usage/add?page=${pagination.page}&filter=${dropDownName}`
+                        )
+                      : "/not-found"
                   }
-                />
-              </span>
-            </Button>
-            {/* ) : (
+                >
+                  <span>
+                    <Plus className="" size={15} strokeWidth={4} />
+                  </span>
+                  <span>
+                    <Trans
+                      i18nKey={
+                        active == "/cattle/management/supplies"
+                          ? "cattle_supplies_add"
+                          : active == "/cattle/management/items"
+                          ? "cattle_items_add"
+                          : active == "/cattle/management/usage" &&
+                            "cattle_usage_add"
+                      }
+                    />
+                  </span>
+                </Button>
+              )}
+              {/* ) : (
               ""
             )} */}
+            </div>
           </div>
+          <hr />
         </div>
-        {active == "/cattle/stock" ? (
+
+        {active == "/cattle/management/stock" ? (
           <Stocks
             pagination={pagination}
             setPagination={setPagination}
@@ -174,7 +242,7 @@ const StockManagement = () => {
             query={cattleStockManagementList}
             searchParams={searchParams}
           />
-        ) : (
+        ) : active == "/cattle/management/items" ? (
           <Items
             pagination={pagination}
             setPagination={setPagination}
@@ -183,6 +251,26 @@ const StockManagement = () => {
             list={cattleStockManagementListData}
             query={cattleStockManagementList}
           />
+        ) : active == "/cattle/management/supplies" ? (
+          <Supplies
+            pagination={pagination}
+            setPagination={setPagination}
+            dropDownName={dropDownName}
+            list={cattleStockManagementListData}
+            query={cattleStockManagementList}
+            searchParams={searchParams}
+          />
+        ) : (
+          active == "/cattle/management/usage" && (
+            <Usage
+              pagination={pagination}
+              setPagination={setPagination}
+              dropDownName={dropDownName}
+              list={cattleStockManagementListData}
+              query={cattleStockManagementList}
+              searchParams={searchParams}
+            />
+          )
         )}
       </div>
     </StockManagementWrapper>

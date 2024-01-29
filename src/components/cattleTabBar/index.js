@@ -26,8 +26,9 @@ const CattleTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
         tabs={tabBar}
         style={{
           backgroundColor: !tabBar && "#fff7e8",
-          justifyContent: tabs?.length === 7 ? "space-between" : "",
+          justifyContent: tabs?.length === 5 ? "space-between" : "",
           padding: !tabBar && ".5rem",
+          gap: tabBar && "2rem",
           // width: "97%",
           marginBottom: tabBar && 0,
           // margin: "0 auto",
@@ -36,11 +37,11 @@ const CattleTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
         {tabs?.map((item, index) => (
           <NavItem key={index}>
             <NavLink
-              active={active?.includes(item?.url)}
+              active={active?.includes(item?.active)}
               onClick={() => history.push(item?.url)}
               style={{
-                fontWeight: active?.includes(item?.url) ? 800 : 400,
-                color: !active?.includes(item?.url)
+                fontWeight: active?.includes(item?.active) ? 800 : 400,
+                color: !active?.includes(item?.active)
                   ? "#583703"
                   : tabBar
                   ? "#583703"

@@ -118,6 +118,10 @@ const AddItemUsageForm = ({
                       onChange={(e) => {
                         formik.setFieldValue("itemId", e);
                         formik.setFieldValue("name", e);
+                        formik.setFieldValue("unit", {
+                          label: e?.unit,
+                          value: e?.unit,
+                        });
                       }}
                       placeholder={t("placeHolder_cattle_itemId")}
                       defaultOptions
@@ -134,6 +138,10 @@ const AddItemUsageForm = ({
                       onChange={(e) => {
                         formik.setFieldValue("name", e);
                         formik.setFieldValue("itemId", e);
+                        formik.setFieldValue("unit", {
+                          label: e?.unit,
+                          value: e?.unit,
+                        });
                       }}
                       placeholder={t("placeHolder_cattle_item_name")}
                       defaultOptions

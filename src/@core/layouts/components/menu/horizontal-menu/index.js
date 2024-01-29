@@ -130,7 +130,7 @@ const HorizontalMenu = ({ menuData, currentActiveItem, routerProps }) => {
                       }}
                       key={idx}
                       className={`text-light ${
-                        active?.startsWith(item.url) ? "activeTab" : ""
+                        active?.startsWith(item.activeTab) ? "activeTab" : ""
                       } `}
                     >
                       <Trans i18nKey={item.name} />

@@ -2,6 +2,8 @@ import React from "react";
 import { Trans } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import * as Yup from "yup";
+
 import { createStockItem } from "../../../../../api/cattle/cattleStock";
 import arrowLeft from "../../../../../assets/images/icons/arrow-left.svg";
 import AddStockItemForm from "../../../../../components/cattleStockManagment/Items/addForm";
@@ -29,26 +31,16 @@ const AddStockItem = () => {
     return createStockItem(payload);
   };
 
-  // const schema = Yup.object().shape({
-  //   Title: Yup.string()
-  //     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
-  //     .required("events_title_required")
-  //     .trim(),
-  //   // tagsInit:Yup.array().max(15 ,"tags_limit"),
-  //   Body: Yup.string().required("events_desc_required").trim(),
-  //   DateTime: Yup.object().shape({
-  //     start: Yup.string().required("events_startDate_required"),
-  //     // end: Yup.mixed().required("events_endDate_required"),
-  //   }),
-  //   startTime: Yup.mixed().required("events_startTime_required"),
-  //   endTime: Yup.mixed().required("events_endTime_required"),
-  //   SelectedEvent: Yup.mixed(),
-  // });
+  const schema = Yup.object().shape({
+    name: Yup.string().required("cattle_name_required"),
+    unit: Yup.mixed().required("cattle_unit_required"),
+    unitType: Yup.mixed().required("cattle_unit_type_required"),
+  });
 
   const initialValues = {
     name: "",
     unit: "",
-    type: "",
+    unitType: "",
   };
 
   return (
@@ -60,7 +52,7 @@ const AddStockItem = () => {
             className="me-2  cursor-pointer"
             onClick={() =>
               history.push(
-                `/cattle/items?page=${currentPage}&filter=${currentFilter}`
+                `/cattle/management/items?page=${currentPage}&filter=${currentFilter}`
               )
             }
           />
@@ -73,7 +65,7 @@ const AddStockItem = () => {
         <AddStockItemForm
           handleSubmit={handleCreateStockItem}
           initialValues={initialValues}
-          // validationSchema={schema}
+          validationSchema={schema}
           buttonName="cattle_record_add"
         />
       </div>
