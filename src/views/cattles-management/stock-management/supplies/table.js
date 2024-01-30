@@ -3,6 +3,7 @@ import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import CustomDataTable from "../../../../components/partials/CustomDataTable";
+import { ConverFirstLatterToCapital } from "../../../../utility/formater";
 
 const SuppliesTableWrapper = styled.div`
   color: #583703 !important;
@@ -46,7 +47,7 @@ const SuppliesTable = ({ data = [] }) => {
       return {
         id: idx + 1,
         itemID: item?.itemId,
-        name: item?.name,
+        name: ConverFirstLatterToCapital(item?.name ?? ""),
         orderQuantity: item?.orderQuantity,
         unit: item?.unit,
         lastUpdate: moment(item?.updatedAt).format("DD MMM YYYY"),

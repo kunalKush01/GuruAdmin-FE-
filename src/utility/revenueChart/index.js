@@ -33,7 +33,6 @@ export const RevenueChart = ({
   barColors = ["#FF8744", "#FFDEB8", "#FF0700"],
 }) => {
   const { t } = useTranslation();
-  console.log("cattleSeries", cattleSeries);
 
   const series = [
     {
@@ -108,7 +107,7 @@ export const RevenueChart = ({
     tooltip: {
       y: {
         formatter: (val) => {
-          return "₹" + val.toLocaleString("en-IN");
+          return !cattleSeries ? "₹" + val.toLocaleString("en-IN")  : val;
         },
       },
     },

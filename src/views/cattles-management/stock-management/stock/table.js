@@ -3,6 +3,7 @@ import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import CustomDataTable from "../../../../components/partials/CustomDataTable";
+import { ConverFirstLatterToCapital } from "../../../../utility/formater";
 
 const StockManagementTableWrapper = styled.div`
   color: #583703 !important;
@@ -46,7 +47,7 @@ const StockManagementTable = ({ data = [] }) => {
       return {
         id: idx + 1,
         itemID: item?.itemId,
-        name: item?.name,
+        name: ConverFirstLatterToCapital(item?.name ?? ""),
         orderQuantity: item?.orderQuantity,
         currentQuantity: item?.currentQuantity,
         unit: item?.unit,
