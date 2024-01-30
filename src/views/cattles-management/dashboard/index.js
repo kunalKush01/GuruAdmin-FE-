@@ -120,28 +120,50 @@ const CattlesDashboard = () => {
 
       <div className="d-flex gap-5 mt-2 mb-3">
         <CattleDashboardCard
-          showCattleDetails
-          cow={dashboardData?.data?.totalCattles?.cow ?? 0}
-          bull={dashboardData?.data?.totalCattles?.bull ?? 0}
-          calf={dashboardData?.data?.totalCattles?.calf ?? 0}
-          other={dashboardData?.data?.totalCattles?.other ?? 0}
+          ShowSubDetails
           title="Total Registered Cattle"
           number={dashboardData?.data?.totalCattles?.totalCattle ?? 0}
+          data={[
+            {
+              heading: "Cow",
+              value: dashboardData?.data?.totalCattles?.cow ?? 0,
+            },
+            {
+              heading: "Calf",
+              value: dashboardData?.data?.totalCattles?.calf ?? 0,
+            },
+            {
+              heading: "Bull",
+              value: dashboardData?.data?.totalCattles?.bull ?? 0,
+            },
+            {
+              heading: "Others",
+              value: dashboardData?.data?.totalCattles?.other ?? 0,
+            },
+          ]}
         />
 
-        <CattleDashboardCard
+        {/* <CattleDashboardCard
           title="Total Expense for Cattles"
           number={dashboardData?.data?.itemExpense ?? 0}
           showRupeesSymbol
-        />
+        /> */}
 
         <CattleDashboardCard
-          showCattleDonation
           showRupeesSymbol
+          ShowSubDetails
           title="Total Donation for Cattles"
           number={dashboardData?.data?.donationReceived ?? 0}
-          privateDonor={dashboardData?.data?.private ?? 0}
-          govtDonor={dashboardData?.data?.govt ?? 0}
+          data={[
+            {
+              heading: " Private Donors",
+              value: dashboardData?.data?.private ?? 0,
+            },
+            {
+              heading: "Govt Donors",
+              value: dashboardData?.data?.govt ?? 0,
+            },
+          ]}
         />
 
         <CattleDashboardCard
@@ -160,7 +182,7 @@ const CattlesDashboard = () => {
         />
       )}
 
-      <RecentRegisteredCattlesTable data={[]} />
+      {/* <RecentRegisteredCattlesTable data={[]} /> */}
     </div>
   );
 };

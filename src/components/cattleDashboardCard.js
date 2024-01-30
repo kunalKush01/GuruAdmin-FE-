@@ -3,11 +3,11 @@ import styled from "styled-components";
 
 const CattleDashboardCardWrapper = styled.div`
   width: 100%;
-  height: 180px;
+  height: 150px;
   .customCard {
     background-color: #fff7e8;
     padding: 1.5rem;
-    width: 100%;
+    width: 400px;
     height: 100%;
     border-radius: 5px;
   }
@@ -18,6 +18,9 @@ const CattleDashboardCardWrapper = styled.div`
   }
   .cardNumber {
     font-size: 25px;
+    width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-weight: bold;
     color: #583703;
   }
@@ -25,6 +28,10 @@ const CattleDashboardCardWrapper = styled.div`
     font-weight: bold;
     color: #583703;
     margin: 0.5rem 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 50%;
   }
   .count {
     font-weight: normal;
@@ -34,50 +41,65 @@ const CattleDashboardCardWrapper = styled.div`
 
 const CattleDashboardCard = ({
   showRupeesSymbol = false,
+  ShowSubDetails = false,
   title,
   number,
-  showCattleDetails,
-  showCattleDonation,
-  privateDonor,
-  govtDonor,
-  cow,
-  calf,
-  bull,
-  other,
+  data,
 }) => {
   return (
     <CattleDashboardCardWrapper>
       <div className="customCard">
         <p className="cardTitle">{title}</p>
-        <h2 className="cardNumber">
+        <h2
+          className="cardNumber"
+          title={
+            !showRupeesSymbol ? number : `₹${number.toLocaleString("en-IN")}`
+          }
+        >
           {!showRupeesSymbol ? number : `₹${number.toLocaleString("en-IN")}`}
         </h2>
-        {showCattleDetails && (
+
+        {ShowSubDetails && (
           <div className="d-flex justify-content-between ">
-            <div>
-              <p className="sub-heading">
-                Cow:
-                <span className="count"> {cow}</span>
+            {data?.map((item, idx) => (
+              <p className="sub-heading" key={idx}>
+                {item?.heading}
+                {":"}{" "}
+                <span
+                  className="count"
+                  title={showRupeesSymbol ? "₹" + item?.value : item?.value}
+                >
+                  {showRupeesSymbol && "₹"}
+                  {item?.value}
+                </span>
               </p>
-              <p className="sub-heading">
-                Calf:
-                <span className="count"> {calf}</span>
-              </p>
-            </div>
-            <div>
-              <p className="sub-heading">
-                Bull:
-                <span className="count"> {bull}</span>
-              </p>
-              <p className="sub-heading">
-                Other:
-                <span className="count"> {other}</span>
-              </p>
-            </div>
+            ))}
           </div>
         )}
 
-        {showCattleDonation && (
+        {/* {showCattleDetails && (
+          <div className="d-flex justify-content-between ">
+            <p className="sub-heading">
+              Cow:
+              <span className="count"> {cow}</span>
+            </p>
+            <p className="sub-heading">
+              Calf:
+              <span className="count"> {calf}</span>
+            </p>
+
+            <p className="sub-heading">
+              Bull:
+              <span className="count"> {bull}</span>
+            </p>
+            <p className="sub-heading">
+              Other:
+              <span className="count"> {other}</span>
+            </p>
+          </div>
+        )} */}
+
+        {/* {showCattleDonation && (
           <div className="d-flex justify-content-between ">
             <div>
               <p className="sub-heading">
@@ -96,7 +118,7 @@ const CattleDashboardCard = ({
               </p>
             </div>
           </div>
-        )}
+        )} */}
       </div>
     </CattleDashboardCardWrapper>
   );
