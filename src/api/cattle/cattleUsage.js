@@ -12,3 +12,8 @@ export const createItemUsage = (payload) =>
     requestFunction: (axios) => axios.post(`item/add-usage`, payload),
     successCode: 201,
   });
+
+export const deleteUsage = (payload) =>
+  callApi({
+    requestFunction: (axios) => axios.delete(`item/delete-supply/${payload}`),
+  });

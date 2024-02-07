@@ -65,7 +65,7 @@ const AddItemUsageForm = ({
       if (!data?.error) {
         queryClient.invalidateQueries(["cattleItemUsageList"]);
         setLoading(false);
-        history.push("/cattle/usage");
+        history.push("/cattle/management/usage");
       } else if (data?.error || data === undefined) {
         setLoading(false);
       }
@@ -166,16 +166,16 @@ const AddItemUsageForm = ({
                       name="unit"
                       loadOptions={[
                         {
-                          label: "Kilograms (KGs)",
+                          label: "KG",
                           value: "KG",
                         },
                         {
-                          label: "Liters (Ltrs)",
+                          label: "ltrs",
                           value: "ltrs",
                         },
                         {
-                          label: "Unit",
-                          value: "UNIT",
+                          label: "unit",
+                          value: "unit",
                         },
                       ]}
                       labelName={t("cattle_unit")}

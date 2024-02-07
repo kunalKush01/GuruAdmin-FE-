@@ -32,3 +32,13 @@ export const createStockItem = (payload) =>
     requestFunction: (axios) => axios.post(`item/create`, payload),
     successCode: 201,
   });
+
+export const deleteSupplies = (payload) =>
+  callApi({
+    requestFunction: (axios) => axios.delete(`item/delete-supply/${payload}`),
+  });
+
+export const deleteItem = (payload) =>
+  callApi({
+    requestFunction: (axios) => axios.delete(`item/${payload}`),
+  });

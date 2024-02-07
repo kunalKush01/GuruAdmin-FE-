@@ -37,6 +37,7 @@ const StockManagementWrapper = styled.div`
 
 const StockManagement = () => {
   const [active, setActive] = useState(location.pathname);
+  console.log("active", active);
   const history = useHistory();
   const { t } = useTranslation();
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -173,13 +174,13 @@ const StockManagement = () => {
                   history.push(
                     `/${
                       active == "/cattle/management/stock"
-                        ? "cattle/stock"
+                        ? "cattle/management/stock"
                         : active == "/cattle/management/items"
-                        ? "cattle/items"
+                        ? "cattle/management/items"
                         : active == "/cattle/management/supplies"
-                        ? "/cattle/management/supplies"
+                        ? "cattle/management/supplies"
                         : active == "/cattle/management/usage"
-                        ? "/cattle/management/usage"
+                        ? "cattle/management/usage"
                         : "/not-fount"
                     }?page=${1}&filter=${e.target.name}`
                   );

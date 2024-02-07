@@ -1,12 +1,19 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
+import Swal from "sweetalert2";
+
+import { deleteCattleInfo } from "../../../api/cattle/cattleInfo";
+import deleteIcon from "../../../assets/images/icons/category/deleteIcon.svg";
 import avtarIcon from "../../../assets/images/icons/dashBoard/defaultAvatar.svg";
+import confirmationIcon from "../../../assets/images/icons/news/conformationIcon.svg";
 import CustomDataTable from "../../../components/partials/CustomDataTable";
 
 const CattleInfoTableWrapper = styled.div`
   color: #583703 !important;
+  margin-bottom: 1rem;
   font: normal normal bold 15px/23px Noto Sans;
   .modal-body {
     max-height: 600px !important;
@@ -20,38 +27,61 @@ const CattleInfoTableWrapper = styled.div`
 const CattleInfoTable = ({ data = [] }) => {
   const { t } = useTranslation();
 
+  const handleDeleteCattle = async (payload) => {
+    return deleteCattleInfo(payload);
+  };
+  const queryClient = useQueryClient();
+  const deleteMutation = useMutation({
+    mutationFn: handleDeleteCattle,
+    onSuccess: (data) => {
+      if (!data.error) {
+        queryClient.invalidateQueries(["cattleList"]);
+      }
+    },
+  });
+
   const columns = [
     {
       name: t("cattle_calf_id"),
       selector: (row) => row.cattleId,
+      width: "130px",
     },
     {
       name: t("cattle_photo"),
       selector: (row) => row.cowPhoto,
+      center: true,
+      width: "130px",
     },
     {
-      name: t("cattle_photo"),
+      name: t("cattle_owner_photo"),
       selector: (row) => row.ownerPhoto,
+      center: true,
+      width: "140px",
     },
     {
       name: t("cattle_owner_id"),
       selector: (row) => row.ownerId,
+      width: "130px",
     },
     {
-      name: t("cattle_type"),
+      name: t("dashboard_Recent_DonorType"),
       selector: (row) => row.type,
+      width: "130px",
     },
     {
       name: t("cattle_mother_id"),
       selector: (row) => row.motherId,
+      width: "150px",
     },
     {
       name: t("cattle_breed"),
       selector: (row) => row.breed,
+      width: "130px",
     },
     {
       name: t("cattle_date_of_birth"),
       selector: (row) => row.dateOfBirth,
+      width: "150px",
     },
     {
       name: t("cattle_age"),
@@ -60,10 +90,12 @@ const CattleInfoTable = ({ data = [] }) => {
     {
       name: t("cattle_is_pregnant"),
       selector: (row) => row.isPregnant,
+      width: "130px",
     },
     {
       name: t("cattle_pregnancy_date"),
       selector: (row) => row.pregnancyDate,
+      width: "150px",
     },
     {
       name: t("cattle_is_milking"),
@@ -72,6 +104,12 @@ const CattleInfoTable = ({ data = [] }) => {
     {
       name: t("cattle_milk_quantity"),
       selector: (row) => row.milkQuantity,
+      width: "150px",
+    },
+    {
+      name: t(""),
+      selector: (row) => row.delete,
+      width: "80px",
     },
   ];
 
@@ -122,9 +160,42 @@ const CattleInfoTable = ({ data = [] }) => {
           ? moment(item?.pregnancyDate).format(" DD MMM YYYY")
           : "N/A",
         milkQuantity: item?.milkQuantity ?? "N/A",
+        delete: (
+          // allPermissions?.name === "all" || subPermission?.includes(DELETE) ? (
+          <img
+            src={deleteIcon}
+            width={35}
+            className="cursor-pointer "
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              Swal.fire({
+                title: `<img src="${confirmationIcon}"/>`,
+                html: `
+                                      <h3 class="swal-heading mt-1">${t(
+                                        "cattle_cattle_delete"
+                                      )}</h3>
+                                      <p>${t("cattle_cattle_sure")}</p>
+                                      `,
+                showCloseButton: false,
+                showCancelButton: true,
+                focusConfirm: true,
+                cancelButtonText: ` ${t("cancel")}`,
+                cancelButtonAriaLabel: ` ${t("cancel")}`,
+
+                confirmButtonText: ` ${t("confirm")}`,
+                confirmButtonAriaLabel: "Confirm",
+              }).then(async (result) => {
+                if (result.isConfirmed) {
+                  deleteMutation.mutate(item._id);
+                }
+              });
+            }}
+          />
+        ),
       };
     });
-  },[data]);
+  }, [data]);
 
   return (
     <CattleInfoTableWrapper>

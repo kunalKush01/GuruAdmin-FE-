@@ -12,3 +12,9 @@ export const createPregnancyReport = (payload) =>
     requestFunction: (axios) => axios.post(`cattle/add-pregnancy`, payload),
     successCode: 201,
   });
+
+export const deletePregnancy = (payload) =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.delete(`cattle/delete-pregnancy/${payload}`),
+  });

@@ -13,3 +13,8 @@ export const importFile = (payload) =>
     showToastOnSuccess: false,
     showToastOnError: false,
   });
+
+export const deleteCattleInfo = (payload) =>
+  callApi({
+    requestFunction: (axios) => axios.delete(`cattle/${payload}`),
+  });

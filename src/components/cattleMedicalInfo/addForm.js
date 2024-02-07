@@ -163,9 +163,9 @@ const AddMedicalInfoForm = ({
                   </Col>
                   <Col xs={12} md={4}>
                     <CustomTextField
-                      label={t("cattle_purchase_price")}
+                      label={t("cattle_fees")}
                       type="number"
-                      placeholder={t("placeHolder_cattle_purchase_price")}
+                      placeholder={t("placeHolder_cattle_fees")}
                       name="price"
                       required
                       autoFocus
