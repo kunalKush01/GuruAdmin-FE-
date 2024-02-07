@@ -219,6 +219,15 @@ export const englishContent = {
 
   cattle_item_delete: "Delete Item",
   cattle_item_sure: "Are you sure you want to delete this item?",
+
+  // All cattle search variable
+  search_cattles: "Search Cattles",
+  search_cattles_medical: "Search Cattle Medical Info",
+  search_cattles_pregnancy: "Search Cattle Pregnancy Report",
+  search_cattles_stock: "Search Stock",
+  search_cattles_supplies: "Search Item Supplies",
+  search_cattles_usage: "Search Item Usages",
+  search_cattles_items: "Search Cattle Item",
   // All static content of Notices
 
   notices_AddNotice: "Add Notice",
