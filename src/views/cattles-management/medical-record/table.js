@@ -1,8 +1,14 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
+import Swal from "sweetalert2";
+import { deleteMedicalRecord } from "../../../api/cattle/cattleMedical";
+import deleteIcon from "../../../assets/images/icons/category/deleteIcon.svg";
+import confirmationIcon from "../../../assets/images/icons/news/conformationIcon.svg";
 import CustomDataTable from "../../../components/partials/CustomDataTable";
+import { DELETE } from "../../../utility/permissionsVariable";
 
 const MedicalTableWrapper = styled.div`
   color: #583703 !important;
@@ -16,8 +22,21 @@ const MedicalTableWrapper = styled.div`
   }
 `;
 
-const MedicalReportTable = ({ data = [] }) => {
+const MedicalReportTable = ({ data = [], allPermissions, subPermission }) => {
   const { t } = useTranslation();
+
+  const handleDeleteMedicalRecord = async (payload) => {
+    return deleteMedicalRecord(payload);
+  };
+  const queryClient = useQueryClient();
+  const deleteMutation = useMutation({
+    mutationFn: handleDeleteMedicalRecord,
+    onSuccess: (data) => {
+      if (!data.error) {
+        queryClient.invalidateQueries(["cattleMedicalList"]);
+      }
+    },
+  });
 
   const columns = [
     {
@@ -48,6 +67,11 @@ const MedicalReportTable = ({ data = [] }) => {
       name: t("cattle_symptoms"),
       selector: (row) => row.symptoms,
     },
+    {
+      name: t(""),
+      selector: (row) => row.delete,
+      width: "80px",
+    },
   ];
 
   const MedicalReportData = useMemo(() => {
@@ -63,9 +87,45 @@ const MedicalReportTable = ({ data = [] }) => {
           item?.doctorNumber
         }`,
         symptoms: item?.symptoms,
+        delete: (
+          // allPermissions?.name === "all" || subPermission?.includes(DELETE) ? (
+          <img
+            src={deleteIcon}
+            width={35}
+            className="cursor-pointer "
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              Swal.fire({
+                title: `<img src="${confirmationIcon}"/>`,
+                html: `
+                                      <h3 class="swal-heading mt-1">${t(
+                                        "cattle_medical_delete"
+                                      )}</h3>
+                                      <p>${t("cattle_medical_sure")}</p>
+                                      `,
+                showCloseButton: false,
+                showCancelButton: true,
+                focusConfirm: true,
+                cancelButtonText: ` ${t("cancel")}`,
+                cancelButtonAriaLabel: ` ${t("cancel")}`,
+
+                confirmButtonText: ` ${t("confirm")}`,
+                confirmButtonAriaLabel: "Confirm",
+              }).then(async (result) => {
+                if (result.isConfirmed) {
+                  deleteMutation.mutate(item.id);
+                }
+              });
+            }}
+          />
+        ),
+        // ) : (
+        //   ""
+        // ),
       };
     });
-  },[data]);
+  }, [data]);
 
   return (
     <MedicalTableWrapper>

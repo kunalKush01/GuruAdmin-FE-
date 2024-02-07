@@ -45,7 +45,7 @@ const AddSuppliesForm = ({
       if (!data?.error) {
         queryClient.invalidateQueries(["cattleStockManagementList"]);
         setLoading(false);
-        history.push("/cattle/supplies");
+        history.push("/cattle/management/supplies");
       } else if (data?.error || data === undefined) {
         setLoading(false);
       }
@@ -115,6 +115,7 @@ const AddSuppliesForm = ({
                       loadOptions={nameLoadOption}
                       label={t("name")}
                       onChange={(e) => {
+                        console.log("e", e);
                         formik.setFieldValue("name", e);
                         formik.setFieldValue("itemId", e);
                         formik.setFieldValue("unit", {
@@ -149,16 +150,16 @@ const AddSuppliesForm = ({
                       name="unit"
                       loadOptions={[
                         {
-                          label: "Kilograms (KGs)",
+                          label: "KG",
                           value: "KG",
                         },
                         {
-                          label: "Liters (Ltrs)",
+                          label: "ltrs",
                           value: "ltrs",
                         },
                         {
-                          label: "Unit",
-                          value: "UNIT",
+                          label: "unit",
+                          value: "unit",
                         },
                       ]}
                       labelName={t("cattle_unit")}

@@ -121,7 +121,7 @@ const CattlesDashboard = () => {
       <div className="d-flex gap-5 mt-2 mb-3">
         <CattleDashboardCard
           ShowSubDetails
-          title="Total Registered Cattle"
+          title="Total Registered Cattles"
           number={dashboardData?.data?.totalCattles?.totalCattle ?? 0}
           data={[
             {

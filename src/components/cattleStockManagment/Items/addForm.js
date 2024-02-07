@@ -33,7 +33,7 @@ const AddStockItemForm = ({
       if (!data?.error) {
         queryClient.invalidateQueries(["cattleStockManagementList"]);
         setLoading(false);
-        history.push("/cattle/items");
+        history.push("/cattle/management/items");
       } else if (data?.error || data === undefined) {
         setLoading(false);
       }
@@ -90,16 +90,16 @@ const AddStockItemForm = ({
                       name="unit"
                       loadOptions={[
                         {
-                          label: "Kilograms (KGs)",
+                          label: "KG",
                           value: "KG",
                         },
                         {
-                          label: "Liters (Ltrs)",
+                          label: "ltrs",
                           value: "ltrs",
                         },
                         {
-                          label: "Unit",
-                          value: "UNIT",
+                          label: "unit",
+                          value: "unit",
                         },
                       ]}
                       labelName={t("cattle_unit")}

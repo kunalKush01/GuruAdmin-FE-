@@ -40,7 +40,7 @@ const AddMedicalInfo = () => {
     DrName: Yup.string().required("cattle_DrName_required"),
     Mobile: Yup.string().required("expenses_mobile_required"),
     price: Yup.number().required("cattle_price_required"),
-    cattleSymptoms: Yup.number().required("cattle_symptoms_required"),
+    cattleSymptoms: Yup.string().required("cattle_symptoms_required"),
   });
 
   const initialValues = {

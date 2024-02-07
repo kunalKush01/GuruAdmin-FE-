@@ -22,3 +22,23 @@ export const findAllCattle = (payload) =>
     showToastOnSuccess: false,
     showToastOnError: false,
   });
+
+export const getMedicalInfoDetail = (payload) =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}event/get-event`, payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+
+export const updateMedicalInfo = (payload) =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.put(`${API_BASE_URL}event/update`, payload),
+  });
+
+export const deleteMedicalRecord = (payload) =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.delete(`cattle/delete-medical/${payload}`),
+  });
