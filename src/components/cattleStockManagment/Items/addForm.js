@@ -149,7 +149,7 @@ const AddStockItemForm = ({
               ) : (
                 <Button
                   color="primary"
-                  className="addNotice-btn "
+                  className="d-flex align-items-center m-auto"
                   type="submit"
                 >
                   {!props.plusIconDisable && (
