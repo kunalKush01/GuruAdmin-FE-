@@ -1,12 +1,14 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import moment from "moment/moment";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteSupplies } from "../../../../api/cattle/cattleStock";
 import deleteIcon from "../../../../assets/images/icons/category/deleteIcon.svg";
+import editIcon from "../../../../assets/images/icons/category/editIcon.svg";
 import confirmationIcon from "../../../../assets/images/icons/news/conformationIcon.svg";
 import CustomDataTable from "../../../../components/partials/CustomDataTable";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
@@ -24,8 +26,15 @@ const SuppliesTableWrapper = styled.div`
   }
 `;
 
-const SuppliesTable = ({ data = [], allPermissions, subPermission }) => {
+const SuppliesTable = ({
+  data = [],
+  allPermissions,
+  subPermission,
+  currentPage,
+  currentFilter,
+}) => {
   const { t } = useTranslation();
+  const history = useHistory();
 
   const handleDeleteSupplies = async (payload) => {
     return deleteSupplies(payload);
@@ -63,6 +72,11 @@ const SuppliesTable = ({ data = [], allPermissions, subPermission }) => {
     },
     {
       name: t(""),
+      selector: (row) => row.edit,
+      width: "100px",
+    },
+    {
+      name: t(""),
       selector: (row) => row.delete,
       width: "80px",
     },
@@ -77,6 +91,18 @@ const SuppliesTable = ({ data = [], allPermissions, subPermission }) => {
         orderQuantity: item?.orderQuantity,
         unit: item?.unit,
         lastUpdate: moment(item?.updatedAt).format("DD MMM YYYY"),
+        edit: (
+          <img
+            src={editIcon}
+            width={35}
+            className="cursor-pointer "
+            onClick={() => {
+              history.push(
+                `/cattle/management/supplies/${item?.id}?page=${currentPage}&filter=${currentFilter}`
+              );
+            }}
+          />
+        ),
         delete: (
           // allPermissions?.name === "all" || subPermission?.includes(DELETE) ? (
           <img

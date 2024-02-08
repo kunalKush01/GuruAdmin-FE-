@@ -6,20 +6,21 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { Col, Row } from "reactstrap";
+import styled from "styled-components";
 import * as Yup from "yup";
 
-import moment from "moment";
-import styled from "styled-components";
 import {
-  getMedicalInfoDetail,
-  updateMedicalInfo,
-} from "../../../../api/cattle/cattleMedical";
-import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
-import AddMedicalInfoForm from "../../../../components/cattleMedicalInfo/addForm";
-import { CustomDropDown } from "../../../../components/partials/customDropDown";
-import { ConverFirstLatterToCapital } from "../../../../utility/formater";
+  getItemDetail,
+  getSupplyDetail,
+  updateItem,
+  updateSupply,
+} from "../../../../../api/cattle/cattleStock";
+import arrowLeft from "../../../../../assets/images/icons/arrow-left.svg";
+import AddStockItemForm from "../../../../../components/cattleStockManagment/Items/addForm";
+import AddSuppliesForm from "../../../../../components/cattleStockManagment/supplies/addForm";
+import { ConverFirstLatterToCapital } from "../../../../../utility/formater";
 
-const MedicalInfoAddWraper = styled.div`
+const StockAddWraper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
@@ -42,9 +43,9 @@ const getLangId = (langArray, langSelection) => {
   return languageId;
 };
 
-const EditMedicalInfo = () => {
+const EditSupply = () => {
   const history = useHistory();
-  const { medicalInfoId } = useParams();
+  const { supplyId } = useParams();
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
@@ -56,54 +57,44 @@ const EditMedicalInfo = () => {
     ConverFirstLatterToCapital(selectedLang.name)
   );
 
-  const medicalInfoDetailQuery = useQuery(
-    ["MedicalDetail", medicalInfoId, langSelection, selectedLang.id],
-    async () => getMedicalInfoDetail(medicalInfoId)
-    // getMedicalInfoDetail({
-    //   medicalInfoId,
+  const supplyDetailQuery = useQuery(
+    ["supplyDetail", supplyId, langSelection, selectedLang.id],
+    async () => getSupplyDetail(supplyId)
+    // getPregnancyReportDetail({
+    //   supplyId,
     //   languageId: getLangId(langArray, langSelection),
     // })
   );
-  console.log("medicalInfoDetailQuery", medicalInfoDetailQuery?.data?.result);
-  const handleMedicalInfoUpdate = async (payload) => {
-    return updateMedicalInfo({
+
+  const handleUpdateItem = async (payload) => {
+    return updateSupply({
       ...payload,
       languageId: getLangId(langArray, langSelection),
     });
   };
 
   const schema = Yup.object().shape({
-    cattleCalfId: Yup.mixed().required("cattle_id_required"),
-    treatmentMedicine: Yup.string().required(
-      "cattle_treatment_medicine_required"
-    ),
-    dosage: Yup.string().required("cattle_dosage_required"),
-    DrName: Yup.string().required("cattle_DrName_required"),
-    Mobile: Yup.string().required("expenses_mobile_required"),
-    price: Yup.number().required("cattle_price_required"),
-    cattleSymptoms: Yup.string().required("cattle_symptoms_required"),
+    itemId: Yup.mixed().required("cattle_itemID_required"),
+    name: Yup.mixed().required("cattle_name_required"),
+    orderQuantity: Yup.number().required("cattle_order_quantity_required"),
+    unit: Yup.mixed().required("cattle_unit_required"),
   });
 
   const initialValues = useMemo(() => {
     return {
-      medicalId: medicalInfoDetailQuery?.data?.result?.id,
-      cattleCalfId: medicalInfoDetailQuery?.data?.result?.cattleId,
-      treatmentMedicine: medicalInfoDetailQuery?.data?.result?.medicine ?? "",
-      dosage: medicalInfoDetailQuery?.data?.result?.dosage ?? "",
-      DrName: medicalInfoDetailQuery?.data?.result?.doctorName ?? "",
-      countryCode: medicalInfoDetailQuery?.data?.result?.countryName ?? "in",
-      dialCode: medicalInfoDetailQuery?.data?.result?.countryCode ?? "+91",
-      Mobile: medicalInfoDetailQuery?.data?.result?.doctorNumber,
-      price: medicalInfoDetailQuery?.data?.result?.expenseAmount ?? "",
-      cattleSymptoms: medicalInfoDetailQuery?.data?.result?.symptoms ?? "",
-      startDate: moment(
-        medicalInfoDetailQuery?.data?.result?.treatmentDate
-      ).toDate(),
+      supplyId: supplyDetailQuery?.data?.result?.id,
+      itemId: supplyDetailQuery?.data?.result?.itemReferenceId,
+      name: supplyDetailQuery?.data?.result?.itemReferenceId,
+      orderQuantity: supplyDetailQuery?.data?.result?.orderQuantity,
+      unit: {
+        label: supplyDetailQuery?.data?.result?.unit,
+        value: supplyDetailQuery?.data?.result?.unit,
+      },
     };
-  }, [medicalInfoDetailQuery]);
+  }, [supplyDetailQuery]);
 
   return (
-    <MedicalInfoAddWraper>
+    <StockAddWraper>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -111,12 +102,12 @@ const EditMedicalInfo = () => {
             className="me-2  cursor-pointer"
             onClick={() =>
               history.push(
-                `/cattle/medical-info?page=${currentPage}&filter=${currentFilter}`
+                `/cattle/management/supplies?page=${currentPage}&filter=${currentFilter}`
               )
             }
           />
           <div className="editEvent">
-            <Trans i18nKey={"cattle_edit_medical"} />
+            <Trans i18nKey={"cattle_edit_supplies"} />
           </div>
         </div>
         {/* <div className="editEvent">
@@ -124,7 +115,7 @@ const EditMedicalInfo = () => {
             <Trans i18nKey={"news_InputIn"} />
           </div>
           <CustomDropDown
-            ItemListArray={medicalInfoDetailQuery?.data?.result?.languages}
+            ItemListArray={supplyDetailQuery?.data?.result?.languages}
             className={"ms-1"}
             defaultDropDownName={ConverFirstLatterToCapital(
               langSelection ?? ""
@@ -138,9 +129,7 @@ const EditMedicalInfo = () => {
       </div>
 
       <If
-        condition={
-          medicalInfoDetailQuery.isLoading || medicalInfoDetailQuery.isFetching
-        }
+        condition={supplyDetailQuery.isLoading || supplyDetailQuery.isFetching}
         disableMemo
       >
         <Then>
@@ -172,24 +161,20 @@ const EditMedicalInfo = () => {
           </Row>
         </Then>
         <Else>
-          {!medicalInfoDetailQuery.isFetching && (
+          {!supplyDetailQuery.isFetching && (
             <div className="ms-sm-3 mt-1">
-              <AddMedicalInfoForm
-                getMobile={
-                  medicalInfoDetailQuery?.data?.result?.countryCode +
-                  medicalInfoDetailQuery?.data?.result?.doctorNumber
-                }
+              <AddSuppliesForm
                 initialValues={initialValues}
                 validationSchema={schema}
-                handleSubmit={handleMedicalInfoUpdate}
+                handleSubmit={handleUpdateItem}
                 buttonName="save_changes"
               />
             </div>
           )}
         </Else>
       </If>
-    </MedicalInfoAddWraper>
+    </StockAddWraper>
   );
 };
 
-export default EditMedicalInfo;
+export default EditSupply;

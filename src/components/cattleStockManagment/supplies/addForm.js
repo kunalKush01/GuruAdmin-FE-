@@ -62,8 +62,9 @@ const AddSuppliesForm = ({
           setLoading(true);
           setShowPrompt(false);
           mutation.mutate({
+            supplyId: values?.supplyId,
             itemId: values?.itemId?._id,
-            name: values?.name,
+            name: values?.name?.name,
             unit: values?.unit?.value,
             orderQuantity: values?.orderQuantity,
           });

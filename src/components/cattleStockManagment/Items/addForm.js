@@ -50,6 +50,7 @@ const AddStockItemForm = ({
           setLoading(true);
           setShowPrompt(false);
           mutation.mutate({
+            itemId: values?.itemId,
             name: values?.name,
             unit: values?.unit?.value,
             unitType: values?.unitType?.value,

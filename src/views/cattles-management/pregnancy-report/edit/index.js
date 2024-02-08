@@ -169,13 +169,8 @@ const EditPregnancyReport = () => {
           {!PregnancyReportDetailQuery.isFetching && (
             <div className="ms-sm-3 mt-1">
               <AddPregnancyForm
-                getMobile={
-                  PregnancyReportDetailQuery?.data?.result?.countryCode +
-                  PregnancyReportDetailQuery?.data?.result?.doctorNumber
-                }
                 initialValues={initialValues}
                 validationSchema={schema}
-                selectEventDisabled
                 handleSubmit={handlePregnancyReportUpdate}
                 buttonName="save_changes"
               />

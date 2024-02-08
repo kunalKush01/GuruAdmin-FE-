@@ -82,6 +82,7 @@ const AddItemUsageForm = ({
           setLoading(true);
           setShowPrompt(false);
           mutation.mutate({
+            usageId: values?.usageId,
             itemId: values?.itemId?._id,
             name: values?.name?.name,
             date: values?.Date,

@@ -13,7 +13,19 @@ export const createItemUsage = (payload) =>
     successCode: 201,
   });
 
+export const getItemUsageDetail = (payload) =>
+  callApi({
+    requestFunction: (axios) => axios.get(`item/get-usage/${payload}`),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+
+export const updateItemUsage = (payload) =>
+  callApi({
+    requestFunction: (axios) => axios.put(`item/edit-usage`, payload),
+  });
+
 export const deleteUsage = (payload) =>
   callApi({
-    requestFunction: (axios) => axios.delete(`item/delete-supply/${payload}`),
+    requestFunction: (axios) => axios.delete(`item/delete-usage/${payload}`),
   });

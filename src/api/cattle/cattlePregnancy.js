@@ -24,6 +24,7 @@ export const updatePregnancyReport = (payload) =>
   callApi({
     requestFunction: (axios) => axios.put(`cattle/edit-pregnancy`, payload),
   });
+
 export const deletePregnancy = (payload) =>
   callApi({
     requestFunction: (axios) =>
