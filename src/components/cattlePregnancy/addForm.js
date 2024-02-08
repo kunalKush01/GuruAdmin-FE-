@@ -57,6 +57,7 @@ const AddPregnancyForm = ({
           setLoading(true);
           setShowPrompt(false);
           mutation.mutate({
+            pregnancyId: values?.pregnancyId,
             cattleId: values?.cattleCalfId?._id,
             conceivingDate: values?.conceivingDate,
             pregnancyDate: values?.pregnancyDate,

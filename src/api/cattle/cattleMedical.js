@@ -25,16 +25,14 @@ export const findAllCattle = (payload) =>
 
 export const getMedicalInfoDetail = (payload) =>
   callApi({
-    requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}event/get-event`, payload),
+    requestFunction: (axios) => axios.get(`cattle/get-medical/${payload}`),
     showToastOnSuccess: false,
     showToastOnError: false,
   });
 
 export const updateMedicalInfo = (payload) =>
   callApi({
-    requestFunction: (axios) =>
-      axios.put(`${API_BASE_URL}event/update`, payload),
+    requestFunction: (axios) => axios.put(`cattle/edit-medical`, payload),
   });
 
 export const deleteMedicalRecord = (payload) =>

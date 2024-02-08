@@ -1,12 +1,14 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deletePregnancy } from "../../../api/cattle/cattlePregnancy";
 import deleteIcon from "../../../assets/images/icons/category/deleteIcon.svg";
+import editIcon from "../../../assets/images/icons/category/editIcon.svg";
 import confirmationIcon from "../../../assets/images/icons/news/conformationIcon.svg";
 import CustomDataTable from "../../../components/partials/CustomDataTable";
 import { DELETE } from "../../../utility/permissionsVariable";
@@ -23,8 +25,15 @@ const PregnancyTableWrapper = styled.div`
   }
 `;
 
-const PregnancyReportTable = ({ data = [], allPermissions, subPermission }) => {
+const PregnancyReportTable = ({
+  data = [],
+  allPermissions,
+  subPermission,
+  currentPage,
+  currentFilter,
+}) => {
   const { t } = useTranslation();
+  const history = useHistory();
 
   const handleDeletePregnancy = async (payload) => {
     return deletePregnancy(payload);
@@ -58,6 +67,11 @@ const PregnancyReportTable = ({ data = [], allPermissions, subPermission }) => {
     },
     {
       name: t(""),
+      selector: (row) => row.edit,
+      width: "100px",
+    },
+    {
+      name: t(""),
       selector: (row) => row.delete,
       width: "80px",
     },
@@ -73,6 +87,18 @@ const PregnancyReportTable = ({ data = [], allPermissions, subPermission }) => {
           ? moment(item?.deliveryDate).format("DD MMM YYYY")
           : "N/A",
         pregnancyStatus: item?.status,
+        edit: (
+          <img
+            src={editIcon}
+            width={35}
+            className="cursor-pointer "
+            onClick={() => {
+              history.push(
+                `/cattle/pregnancy-reports/${item?.id}?page=${currentPage}&filter=${currentFilter}`
+              );
+            }}
+          />
+        ),
         delete: (
           // allPermissions?.name === "all" || subPermission?.includes(DELETE) ? (
           <img
