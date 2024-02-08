@@ -6,20 +6,19 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { Col, Row } from "reactstrap";
+import styled from "styled-components";
 import * as Yup from "yup";
 
 import moment from "moment";
-import styled from "styled-components";
 import {
-  getMedicalInfoDetail,
-  updateMedicalInfo,
-} from "../../../../api/cattle/cattleMedical";
-import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
-import AddMedicalInfoForm from "../../../../components/cattleMedicalInfo/addForm";
-import { CustomDropDown } from "../../../../components/partials/customDropDown";
-import { ConverFirstLatterToCapital } from "../../../../utility/formater";
+  getItemUsageDetail,
+  updateItemUsage,
+} from "../../../../../api/cattle/cattleUsage";
+import arrowLeft from "../../../../../assets/images/icons/arrow-left.svg";
+import AddItemUsageForm from "../../../../../components/cattleUsage/addForm";
+import { ConverFirstLatterToCapital } from "../../../../../utility/formater";
 
-const MedicalInfoAddWraper = styled.div`
+const ItemUsageAddWraper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
@@ -42,9 +41,9 @@ const getLangId = (langArray, langSelection) => {
   return languageId;
 };
 
-const EditMedicalInfo = () => {
+const EditItemUsage = () => {
   const history = useHistory();
-  const { medicalInfoId } = useParams();
+  const { itemUsageId } = useParams();
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
@@ -56,54 +55,49 @@ const EditMedicalInfo = () => {
     ConverFirstLatterToCapital(selectedLang.name)
   );
 
-  const medicalInfoDetailQuery = useQuery(
-    ["MedicalDetail", medicalInfoId, langSelection, selectedLang.id],
-    async () => getMedicalInfoDetail(medicalInfoId)
-    // getMedicalInfoDetail({
-    //   medicalInfoId,
+  const itemUsageDetailQuery = useQuery(
+    ["usageDetail", itemUsageId, langSelection, selectedLang.id],
+    async () => getItemUsageDetail(itemUsageId)
+    // getPregnancyReportDetail({
+    //   itemUsageId,
     //   languageId: getLangId(langArray, langSelection),
     // })
   );
-  console.log("medicalInfoDetailQuery", medicalInfoDetailQuery?.data?.result);
-  const handleMedicalInfoUpdate = async (payload) => {
-    return updateMedicalInfo({
+
+  const handleUpdateItemUsage = async (payload) => {
+    return updateItemUsage({
       ...payload,
       languageId: getLangId(langArray, langSelection),
     });
   };
 
   const schema = Yup.object().shape({
-    cattleCalfId: Yup.mixed().required("cattle_id_required"),
-    treatmentMedicine: Yup.string().required(
-      "cattle_treatment_medicine_required"
-    ),
-    dosage: Yup.string().required("cattle_dosage_required"),
-    DrName: Yup.string().required("cattle_DrName_required"),
-    Mobile: Yup.string().required("expenses_mobile_required"),
-    price: Yup.number().required("cattle_price_required"),
-    cattleSymptoms: Yup.string().required("cattle_symptoms_required"),
+    itemId: Yup.mixed().required("cattle_itemID_required"),
+    name: Yup.mixed().required("cattle_name_required"),
+    quantity: Yup.number().required("cattle_quantity_required"),
+    unit: Yup.mixed().required("cattle_unit_required"),
+    purpose: Yup.mixed().required("cattle_purpose_required"),
   });
-
   const initialValues = useMemo(() => {
     return {
-      medicalId: medicalInfoDetailQuery?.data?.result?.id,
-      cattleCalfId: medicalInfoDetailQuery?.data?.result?.cattleId,
-      treatmentMedicine: medicalInfoDetailQuery?.data?.result?.medicine ?? "",
-      dosage: medicalInfoDetailQuery?.data?.result?.dosage ?? "",
-      DrName: medicalInfoDetailQuery?.data?.result?.doctorName ?? "",
-      countryCode: medicalInfoDetailQuery?.data?.result?.countryName ?? "in",
-      dialCode: medicalInfoDetailQuery?.data?.result?.countryCode ?? "+91",
-      Mobile: medicalInfoDetailQuery?.data?.result?.doctorNumber,
-      price: medicalInfoDetailQuery?.data?.result?.expenseAmount ?? "",
-      cattleSymptoms: medicalInfoDetailQuery?.data?.result?.symptoms ?? "",
-      startDate: moment(
-        medicalInfoDetailQuery?.data?.result?.treatmentDate
-      ).toDate(),
+      usageId: itemUsageDetailQuery?.data?.result?._id,
+      itemId: itemUsageDetailQuery?.data?.result?.itemReferenceId,
+      name: itemUsageDetailQuery?.data?.result?.itemReferenceId,
+      quantity: itemUsageDetailQuery?.data?.result?.quantity,
+      purpose: {
+        label: itemUsageDetailQuery?.data?.result?.purpose,
+        value: itemUsageDetailQuery?.data?.result?.purpose,
+      },
+      unit: {
+        label: itemUsageDetailQuery?.data?.result?.unit,
+        value: itemUsageDetailQuery?.data?.result?.unit,
+      },
+      Date: moment(itemUsageDetailQuery?.data?.result?.date).toDate(),
     };
-  }, [medicalInfoDetailQuery]);
+  }, [itemUsageDetailQuery]);
 
   return (
-    <MedicalInfoAddWraper>
+    <ItemUsageAddWraper>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -111,12 +105,12 @@ const EditMedicalInfo = () => {
             className="me-2  cursor-pointer"
             onClick={() =>
               history.push(
-                `/cattle/medical-info?page=${currentPage}&filter=${currentFilter}`
+                `/cattle/management/usage?page=${currentPage}&filter=${currentFilter}`
               )
             }
           />
           <div className="editEvent">
-            <Trans i18nKey={"cattle_edit_medical"} />
+            <Trans i18nKey={"cattle_edit_supplies"} />
           </div>
         </div>
         {/* <div className="editEvent">
@@ -124,7 +118,7 @@ const EditMedicalInfo = () => {
             <Trans i18nKey={"news_InputIn"} />
           </div>
           <CustomDropDown
-            ItemListArray={medicalInfoDetailQuery?.data?.result?.languages}
+            ItemListArray={itemUsageDetailQuery?.data?.result?.languages}
             className={"ms-1"}
             defaultDropDownName={ConverFirstLatterToCapital(
               langSelection ?? ""
@@ -139,7 +133,7 @@ const EditMedicalInfo = () => {
 
       <If
         condition={
-          medicalInfoDetailQuery.isLoading || medicalInfoDetailQuery.isFetching
+          itemUsageDetailQuery.isLoading || itemUsageDetailQuery.isFetching
         }
         disableMemo
       >
@@ -172,24 +166,20 @@ const EditMedicalInfo = () => {
           </Row>
         </Then>
         <Else>
-          {!medicalInfoDetailQuery.isFetching && (
+          {!itemUsageDetailQuery.isFetching && (
             <div className="ms-sm-3 mt-1">
-              <AddMedicalInfoForm
-                getMobile={
-                  medicalInfoDetailQuery?.data?.result?.countryCode +
-                  medicalInfoDetailQuery?.data?.result?.doctorNumber
-                }
+              <AddItemUsageForm
                 initialValues={initialValues}
                 validationSchema={schema}
-                handleSubmit={handleMedicalInfoUpdate}
+                handleSubmit={handleUpdateItemUsage}
                 buttonName="save_changes"
               />
             </div>
           )}
         </Else>
       </If>
-    </MedicalInfoAddWraper>
+    </ItemUsageAddWraper>
   );
 };
 
-export default EditMedicalInfo;
+export default EditItemUsage;

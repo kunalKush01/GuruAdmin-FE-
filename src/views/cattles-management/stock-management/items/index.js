@@ -45,6 +45,8 @@ const Items = ({
                 data={list}
                 // allPermissions={allPermissions}
                 // subPermission={subPermission}
+                currentFilter={dropDownName}
+                currentPage={pagination.page}
               />
             </Then>
             <Else>

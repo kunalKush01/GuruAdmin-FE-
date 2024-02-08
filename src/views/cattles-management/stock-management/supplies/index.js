@@ -45,6 +45,8 @@ const Supplies = ({
             <Then>
               <SuppliesTable
                 data={list}
+                currentPage={pagination.page}
+                currentFilter={dropDownName}
                 // allPermissions={allPermissions}
                 // subPermission={subPermission}
               />

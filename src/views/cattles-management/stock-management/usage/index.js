@@ -46,6 +46,8 @@ const Usage = ({
             <Then>
               <UsageTable
                 data={list}
+                currentFilter={dropDownName}
+                currentPage={pagination.page}
                 // allPermissions={allPermissions}
                 // subPermission={subPermission}
               />

@@ -1,12 +1,14 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
+
 import { deleteUsage } from "../../../../api/cattle/cattleUsage";
 import deleteIcon from "../../../../assets/images/icons/category/deleteIcon.svg";
+import editIcon from "../../../../assets/images/icons/category/editIcon.svg";
 import confirmationIcon from "../../../../assets/images/icons/news/conformationIcon.svg";
 import CustomDataTable from "../../../../components/partials/CustomDataTable";
 
@@ -22,8 +24,9 @@ const UsageManagementTableWrapper = styled.div`
   }
 `;
 
-const UsageManagementTable = ({ data = [] }) => {
+const UsageManagementTable = ({ data = [], currentFilter, currentPage }) => {
   const { t } = useTranslation();
+  const history = useHistory();
 
   const handleDeleteUsage = async (payload) => {
     return deleteUsage(payload);
@@ -59,11 +62,16 @@ const UsageManagementTable = ({ data = [] }) => {
       name: t("cattle_purpose"),
       selector: (row) => row?.purpose,
     },
-    // {
-    //   name: t(""),
-    //   selector: (row) => row.delete,
-    //   width: "80px",
-    // },
+    {
+      name: t(""),
+      selector: (row) => row.edit,
+      width: "100px",
+    },
+    {
+      name: t(""),
+      selector: (row) => row.delete,
+      width: "80px",
+    },
   ];
 
   const usageData = useMemo(() => {
@@ -75,6 +83,18 @@ const UsageManagementTable = ({ data = [] }) => {
         quantity: item?.quantity,
         unit: item?.unit,
         purpose: item?.purpose,
+        edit: (
+          <img
+            src={editIcon}
+            width={35}
+            className="cursor-pointer "
+            onClick={() => {
+              history.push(
+                `/cattle/management/usage/${item?._id}?page=${currentPage}&filter=${currentFilter}`
+              );
+            }}
+          />
+        ),
         delete: (
           // allPermissions?.name === "all" || subPermission?.includes(DELETE) ? (
           <img
