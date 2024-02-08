@@ -19,7 +19,7 @@ const AddMedicalInfoForm = ({
   initialValues,
   countryFlag = "in",
   validationSchema,
-  getCommitmentMobile,
+  getMobile,
   handleSubmit,
   buttonName,
   ...props
@@ -27,11 +27,9 @@ const AddMedicalInfoForm = ({
   const history = useHistory();
   const { t } = useTranslation();
   const [showPrompt, setShowPrompt] = useState(true);
-  const [phoneNumber, setPhoneNumber] = useState(getCommitmentMobile ?? "");
+  const [phoneNumber, setPhoneNumber] = useState(getMobile ?? "");
   const [loading, setLoading] = useState(false);
-
-  console.log(loading);
-
+  console.log("phoneNumber", phoneNumber);
   const loadOption = async (tagId) => {
     const res = await findAllCattle({ cattleId: tagId });
     return res.results;
@@ -62,6 +60,7 @@ const AddMedicalInfoForm = ({
           setLoading(true);
           setShowPrompt(false);
           mutation.mutate({
+            medicalId: values?.medicalId,
             cattleId: values?.cattleCalfId?._id,
             symptoms: values?.cattleSymptoms,
             doctorName: values?.DrName,

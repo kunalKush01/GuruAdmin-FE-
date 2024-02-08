@@ -91,6 +91,16 @@ const Routes = [
   },
 
   {
+    path: "/cattle/medical-info/:medicalInfoId",
+    component: lazy(() =>
+      import("../../views/cattles-management/medical-record/edit/index.js")
+    ),
+    exact: true,
+    type: "cattle-medical",
+    subPermission: READ,
+  },
+
+  {
     path: "/cattle/pregnancy-reports",
     component: lazy(() =>
       import("../../views/cattles-management/pregnancy-report/index.js")
@@ -104,6 +114,16 @@ const Routes = [
     path: "/cattle/pregnancy-reports/add",
     component: lazy(() =>
       import("../../views/cattles-management/pregnancy-report/add/index.js")
+    ),
+    exact: true,
+    type: "cattle-pregnancy",
+    subPermission: READ,
+  },
+
+  {
+    path: "/cattle/pregnancy-reports/:pregnancyReportId",
+    component: lazy(() =>
+      import("../../views/cattles-management/pregnancy-report/edit/index.js")
     ),
     exact: true,
     type: "cattle-pregnancy",

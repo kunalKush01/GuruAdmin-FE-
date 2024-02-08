@@ -161,6 +161,8 @@ const PregnancyReport = () => {
               <Then>
                 <PregnancyReportTable
                   data={cattlePregnancyListData}
+                  currentFilter={dropDownName}
+                  currentPage={pagination.page}
                   // allPermissions={allPermissions}
                   // subPermission={subPermission}
                 />
