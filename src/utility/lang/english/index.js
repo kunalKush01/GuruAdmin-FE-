@@ -155,8 +155,8 @@ export const englishContent = {
   cattle_registered: "Registered Cattle",
   cattle_add: "Add Cattle",
   cattle_record_add: "Add Record",
-  cattle_medical_report: "Medical Reports",
-  cattle_medical_add: "Add Medical Report",
+  cattle_medical_report: "Medical Records",
+  cattle_medical_add: "Add Medical Record",
   cattle_pregnancy_report: "Pregnancy Records",
   cattle_pregnancy_report_add: "Add Pregnancy Record",
   cattle_expense_add: "Add Expenses",
@@ -207,7 +207,7 @@ export const englishContent = {
 
   // all cattle management delete messages
   cattle_medical_delete: "Delete Medical Info",
-  cattle_medical_sure: "Are you sure you want to delete this medical record?",
+  cattle_medical_sure: "Are you sure you want to delete this medical report?",
   cattle_pregnancy_delete: "Delete Pregnancy Report",
   cattle_pregnancy_sure:
     "Are you sure you want to delete this pregnancy report?",
