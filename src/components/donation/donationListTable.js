@@ -165,7 +165,7 @@ export default function DonationListTable(
         ),
         category: (
           <div>
-            {ConverFirstLatterToCapital(item?.masterCategory?.name)}
+            {ConverFirstLatterToCapital(item?.masterCategory?.name ?? "-")}
             {/* {item?.subCategory && `(${item?.subCategory?.name ?? ""})`} */}
           </div>
         ),
