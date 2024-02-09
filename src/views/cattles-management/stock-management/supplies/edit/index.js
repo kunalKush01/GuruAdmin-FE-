@@ -166,6 +166,7 @@ const EditSupply = () => {
               <AddSuppliesForm
                 initialValues={initialValues}
                 validationSchema={schema}
+                plusIconDisable
                 handleSubmit={handleUpdateItem}
                 buttonName="save_changes"
               />
