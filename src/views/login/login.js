@@ -281,11 +281,10 @@ const LoginCover = () => {
     loginPage(subDomainName)
   );
 
-  const loginPageData = useMemo(
-    () => loginPageQuery?.data?.result,
-    dispatch(handleTrustDetail(loginPageQuery?.data?.result)),
-    [loginPageQuery]
-  );
+  const loginPageData = useMemo(() => {
+    dispatch(handleTrustDetail(loginPageQuery?.data?.result));
+    return loginPageQuery?.data?.result;
+  }, [loginPageQuery]);
 
   localStorage.setItem("trustId", loginPageQuery?.data?.result?.id),
     useEffect(() => {
