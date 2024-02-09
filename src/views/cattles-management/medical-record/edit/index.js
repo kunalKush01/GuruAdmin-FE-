@@ -179,6 +179,7 @@ const EditMedicalInfo = () => {
                   medicalInfoDetailQuery?.data?.result?.countryCode +
                   medicalInfoDetailQuery?.data?.result?.doctorNumber
                 }
+                plusIconDisable
                 initialValues={initialValues}
                 validationSchema={schema}
                 handleSubmit={handleMedicalInfoUpdate}

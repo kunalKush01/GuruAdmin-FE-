@@ -15,6 +15,7 @@ const CattleInfoTableWrapper = styled.div`
   color: #583703 !important;
   margin-bottom: 1rem;
   font: normal normal bold 15px/23px Noto Sans;
+
   .modal-body {
     max-height: 600px !important;
     overflow: auto !important;
@@ -100,6 +101,7 @@ const CattleInfoTable = ({ data = [], maxHeight }) => {
     {
       name: t("cattle_is_milking"),
       selector: (row) => row.isMilking,
+      width: "130px",
     },
     {
       name: t("cattle_milk_quantity"),
@@ -154,12 +156,26 @@ const CattleInfoTable = ({ data = [], maxHeight }) => {
         breed: item?.breed,
         dateOfBirth: moment(item?.dob).format(" DD MMM YYYY"),
         age: item?.age,
-        isPregnant: item?.isPregnant ? "YES" : "NO",
-        isMilking: item?.isPregnant ? "YES" : "NO",
-        pregnancyDate: item?.pregnancyDate
-          ? moment(item?.pregnancyDate).format(" DD MMM YYYY")
-          : "N/A",
-        milkQuantity: item?.milkQuantity ?? "N/A",
+        isPregnant: (
+          <div style={{ padding: "16px" }}>
+            {item?.isPregnant ? "YES" : "NO"}
+          </div>
+        ),
+        isMilking: (
+          <div style={{ padding: "16px" }}>
+            {item?.isMilking ? "YES" : "NO"}
+          </div>
+        ),
+        pregnancyDate: (
+          <div style={{ padding: "16px" }}>
+            {item?.pregnancyDate
+              ? moment(item?.pregnancyDate).format(" DD MMM YYYY")
+              : "N/A"}
+          </div>
+        ),
+        milkQuantity: (
+          <div style={{ padding: "16px" }}>{item?.milkQuantity ?? "N/A"}</div>
+        ),
         delete: (
           // allPermissions?.name === "all" || subPermission?.includes(DELETE) ? (
           <img

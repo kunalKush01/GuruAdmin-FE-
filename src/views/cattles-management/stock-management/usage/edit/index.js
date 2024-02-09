@@ -110,7 +110,7 @@ const EditItemUsage = () => {
             }
           />
           <div className="editEvent">
-            <Trans i18nKey={"cattle_edit_supplies"} />
+            <Trans i18nKey={"cattle_edit_usage"} />
           </div>
         </div>
         {/* <div className="editEvent">
@@ -170,6 +170,7 @@ const EditItemUsage = () => {
             <div className="ms-sm-3 mt-1">
               <AddItemUsageForm
                 initialValues={initialValues}
+                plusIconDisable
                 validationSchema={schema}
                 handleSubmit={handleUpdateItemUsage}
                 buttonName="save_changes"

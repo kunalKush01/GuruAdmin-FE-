@@ -164,7 +164,7 @@ const EditItem = () => {
               <AddStockItemForm
                 initialValues={initialValues}
                 validationSchema={schema}
-                selectEventDisabled
+                plusIconDisable
                 handleSubmit={handleUpdateItem}
                 buttonName="save_changes"
               />

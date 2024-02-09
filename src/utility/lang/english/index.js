@@ -203,6 +203,11 @@ export const englishContent = {
   cattle_purchaser_id: "Purchaser ID",
   cattle_sold_date: "Sold Date",
   cattle_sold_price: "Sold Price",
+  cattle_edit_medical: "Edit Medical Record",
+  cattle_edit_pregnancy: "Edit Pregnancy Record",
+  cattle_edit_item: "Edit Item",
+  cattle_edit_supplies: "Edit Supplies",
+  cattle_edit_usage: "Edit Usage",
 
   // cattle validation messages
   cattle_itemID_required: "Item ID is required",
@@ -229,6 +234,8 @@ export const englishContent = {
   cattle_owner_id_required: "Owner's id is required",
 
   // all cattle management delete messages
+  cattle_cattle_delete: "Delete Cattle",
+  cattle_cattle_sure: "Are you sure you want to delete this cattle?",
   cattle_medical_delete: "Delete Medical Info",
   cattle_medical_sure: "Are you sure you want to delete this medical report?",
   cattle_pregnancy_delete: "Delete Pregnancy Report",

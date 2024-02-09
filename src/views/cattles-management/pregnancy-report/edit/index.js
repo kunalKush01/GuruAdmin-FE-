@@ -171,6 +171,7 @@ const EditPregnancyReport = () => {
               <AddPregnancyForm
                 initialValues={initialValues}
                 validationSchema={schema}
+                plusIconDisable
                 handleSubmit={handlePregnancyReportUpdate}
                 buttonName="save_changes"
               />
