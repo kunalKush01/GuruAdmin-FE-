@@ -45,6 +45,7 @@ const Supplies = ({
             <Then>
               <SuppliesTable
                 data={list}
+                maxHeight="220px"
                 currentPage={pagination.page}
                 currentFilter={dropDownName}
                 // allPermissions={allPermissions}

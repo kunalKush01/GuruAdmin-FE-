@@ -1,9 +1,10 @@
-import moment from "moment";
 import React from "react";
 import { Trans } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import * as Yup from "yup";
+
+import { createCattleInfo } from "../../../../api/cattle/cattleInfo";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddCattleForm from "../../../../components/cattleInfo/addForm";
 
@@ -20,6 +21,44 @@ const CattleAddWraper = styled.div`
   }
 `;
 
+const cattleType = [
+  {
+    label: "Cow",
+    value: "cow",
+  },
+  {
+    label: "Bull",
+    value: "bull",
+  },
+  {
+    label: "Calf",
+    value: "calf",
+  },
+  {
+    label: "Other",
+    value: "other",
+  },
+];
+
+const cattleSource = [
+  {
+    label: "Owner",
+    value: "owner",
+  },
+  {
+    label: "Gaurakshak",
+    value: "gaurakshak",
+  },
+  {
+    label: "Police",
+    value: "police",
+  },
+  {
+    label: "Other",
+    value: "other",
+  },
+];
+
 const AddCattle = () => {
   const history = useHistory();
   const searchParams = new URLSearchParams(history.location.search);
@@ -31,31 +70,50 @@ const AddCattle = () => {
   };
 
   const schema = Yup.object().shape({
-    Title: Yup.string()
-      .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
-      .required("events_title_required")
-      .trim(),
-    // tagsInit:Yup.array().max(15 ,"tags_limit"),
-    Body: Yup.string().required("events_desc_required").trim(),
-    DateTime: Yup.object().shape({
-      start: Yup.string().required("events_startDate_required"),
-      // end: Yup.mixed().required("events_endDate_required"),
-    }),
-    startTime: Yup.mixed().required("events_startTime_required"),
-    endTime: Yup.mixed().required("events_endTime_required"),
-    SelectedEvent: Yup.mixed(),
+    tagId: Yup.string().required("cattle_tag_id_required"),
+    type: Yup.mixed().required("cattle_type_required"),
+    breed: Yup.string().required("cattle_breed_required"),
+    age: Yup.string().required("cattle_age_required"),
+    purchasePrice: Yup.string().required("cattle_purchase_price_required"),
+    source: Yup.mixed().required("cattle_source_required"),
+    ownerName: Yup.string().required("cattle_owner_name_required"),
+    ownerMobile: Yup.string().required("expenses_mobile_required"),
+    ownerId: Yup.string().required("cattle_owner_id_required"),
   });
 
   const initialValues = {
-    SelectedEvent: null,
-    Id: "",
-    Title: "",
-    images: [],
-    tagsInit: [],
-    Body: "",
-    DateTime: { start: new Date(), end: null },
-    startTime: moment(new Date(), ["HH:mm"]).format("HH:mm"),
-    endTime: "23:59",
+    tagId: "",
+    motherId: "",
+    type: "",
+    breed: "",
+    soldDate: new Date(),
+    dob: new Date(),
+    purchaseDate: new Date(),
+    deathDate: new Date(),
+    deliveryDate: new Date(),
+    pregnantDate: new Date(),
+    deathReason: "",
+    purchasePrice: "",
+    source: "",
+    ownerName: "",
+    ownerCountryName: "",
+    ownerCountryCode: "",
+    ownerMobile: "",
+    ownerId: "",
+    cattleImage: "",
+    ownerImage: "",
+    age: "",
+    isDead: "NO",
+    isPregnant: "NO",
+    isSold: "NO",
+    isMilking: "NO",
+    purchaserName: "",
+    purchaserCountryCode: "",
+    purchaserDialCode: "",
+    purchaserMobile: "",
+    purchaserId: "",
+    soldPrice: "",
+    milkQuantity: "",
   };
 
   return (
@@ -72,7 +130,7 @@ const AddCattle = () => {
             }
           />
           <div className="addEvent">
-            <Trans i18nKey={"cattle_stock_add"} />
+            <Trans i18nKey={"cattle_add"} />
           </div>
         </div>
       </div>
@@ -81,7 +139,9 @@ const AddCattle = () => {
           handleSubmit={handleCreateCattleInfo}
           initialValues={initialValues}
           validationSchema={schema}
-          buttonName="cattle_info_add"
+          buttonName="cattle_add"
+          cattleType={cattleType}
+          cattleSource={cattleSource}
         />
       </div>
     </CattleAddWraper>

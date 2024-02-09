@@ -32,6 +32,7 @@ const SuppliesTable = ({
   subPermission,
   currentPage,
   currentFilter,
+  maxHeight
 }) => {
   const { t } = useTranslation();
   const history = useHistory();
@@ -145,7 +146,7 @@ const SuppliesTable = ({
 
   return (
     <SuppliesTableWrapper>
-      <CustomDataTable maxHeight={""} columns={columns} data={SupplyData} />
+      <CustomDataTable maxHeight={maxHeight} columns={columns} data={SupplyData} />
     </SuppliesTableWrapper>
   );
 };

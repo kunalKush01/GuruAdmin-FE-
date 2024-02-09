@@ -28,6 +28,7 @@ const StockManagementItemTable = ({
   data = [],
   currentPage,
   currentFilter,
+  maxHeight,
 }) => {
   const { t } = useTranslation();
   const history = useHistory();
@@ -133,7 +134,11 @@ const StockManagementItemTable = ({
 
   return (
     <StockManagementItemTableWrapper>
-      <CustomDataTable maxHeight={""} columns={columns} data={ItemData} />
+      <CustomDataTable
+        maxHeight={maxHeight}
+        columns={columns}
+        data={ItemData}
+      />
     </StockManagementItemTableWrapper>
   );
 };

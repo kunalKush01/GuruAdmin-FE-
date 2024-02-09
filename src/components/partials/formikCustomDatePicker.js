@@ -5,6 +5,7 @@ import "react-datepicker/dist/react-datepicker-cssmodules.css";
 import "react-datepicker/dist/react-datepicker.css";
 import { Trans } from "react-i18next";
 import styled from "styled-components";
+import { calculateAge } from "../../utility/formater";
 const FormikCustomDatePickerWraper = styled.div`
   .react-datepicker__day--outside-month {
     color: #9c9c9c !important;
@@ -149,6 +150,19 @@ const FormikCustomDatePickerWraper = styled.div`
       display: none;
     }
   }
+
+  .react-datepicker__input-container > input {
+    color: #583703 !important;
+    width: 100%;
+    height: 35.97px;
+    border: none !important;
+    background-color: #fff7e8 !important;
+    font: normal normal normal 13px/20px Noto Sans;
+    border-radius: 5px;
+  }
+  .react-datepicker__input-container > input:focus-visible {
+    outline: none;
+  }
 `;
 
 export default function FormikCustomDatePicker({
@@ -157,6 +171,7 @@ export default function FormikCustomDatePicker({
   pastDateNotAllowed,
   minDate,
   inline = true,
+  setFieldValue,
   ...props
 }) {
   const [field, meta, helpers] = useField(props.name);
@@ -172,6 +187,10 @@ export default function FormikCustomDatePicker({
         selected={field.value}
         onChange={(date) => {
           helpers.setValue(date);
+          if (props.calculateAge) {
+            const age = calculateAge(date);
+            setFieldValue("age", age);
+          }
         }}
         yearDropdownItemNumber={30}
         showYearDropdown

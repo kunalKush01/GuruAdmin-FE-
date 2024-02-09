@@ -17,7 +17,7 @@ const StockManagementTableWrapper = styled.div`
   }
 `;
 
-const StockManagementTable = ({ data = [] }) => {
+const StockManagementTable = ({ data = [],  maxHeight }) => {
   const { t } = useTranslation();
   const columns = [
     {
@@ -58,7 +58,7 @@ const StockManagementTable = ({ data = [] }) => {
 
   return (
     <StockManagementTableWrapper>
-      <CustomDataTable maxHeight={""} columns={columns} data={StockData} />
+      <CustomDataTable maxHeight={maxHeight} columns={columns} data={StockData} />
     </StockManagementTableWrapper>
   );
 };

@@ -163,6 +163,7 @@ const CattlesMedical = () => {
                   data={cattleMedicalListData}
                   // allPermissions={allPermissions}
                   // subPermission={subPermission}
+                  maxHeight="220px"
                   currentFilter={dropDownName}
                   currentPage={pagination.page}
                 />

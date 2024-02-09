@@ -162,6 +162,7 @@ const PregnancyReport = () => {
                 <PregnancyReportTable
                   data={cattlePregnancyListData}
                   currentFilter={dropDownName}
+                  maxHeight="220px"
                   currentPage={pagination.page}
                   // allPermissions={allPermissions}
                   // subPermission={subPermission}

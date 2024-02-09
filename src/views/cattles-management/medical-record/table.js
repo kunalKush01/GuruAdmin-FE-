@@ -30,6 +30,7 @@ const MedicalReportTable = ({
   subPermission,
   currentPage,
   currentFilter,
+  maxHeight
 }) => {
   const { t } = useTranslation();
   const history = useHistory();
@@ -156,7 +157,7 @@ const MedicalReportTable = ({
   return (
     <MedicalTableWrapper>
       <CustomDataTable
-        maxHeight={""}
+        maxHeight={maxHeight}
         columns={columns}
         data={MedicalReportData}
       />
