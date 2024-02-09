@@ -75,7 +75,7 @@ function CustomDataTable({
   selectableRows,
   selectableRowSelected,
   onSelectedRowsChange,
-  noDataComponent
+  noDataComponent,
 }) {
   // const tableData = {
   //     columns,
@@ -84,7 +84,7 @@ function CustomDataTable({
 
   return (
     <>
-      <DataTableWarraper minWidth={minWidth} maxHeight={'270px'}>
+      <DataTableWarraper minWidth={minWidth} maxHeight={maxHeight ?? "  270px"}>
         <DataTable
           conditionalRowStyles={[conditionStyle]}
           className="DonetionList"

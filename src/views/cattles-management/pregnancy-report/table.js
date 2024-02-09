@@ -31,6 +31,7 @@ const PregnancyReportTable = ({
   subPermission,
   currentPage,
   currentFilter,
+  maxHeight
 }) => {
   const { t } = useTranslation();
   const history = useHistory();
@@ -141,7 +142,7 @@ const PregnancyReportTable = ({
 
   return (
     <PregnancyTableWrapper>
-      <CustomDataTable maxHeight={""} columns={columns} data={pregnancyData} />
+      <CustomDataTable maxHeight={maxHeight} columns={columns} data={pregnancyData} />
     </PregnancyTableWrapper>
   );
 };

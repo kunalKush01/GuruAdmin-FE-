@@ -86,7 +86,6 @@ const AddExpenseForm = ({
   };
 
   const queryClient = useQueryClient();
-
   const mutation = useMutation({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
@@ -326,7 +325,7 @@ const AddExpenseForm = ({
               ) : (
                 <Button
                   color="primary"
-                  className="addNotice-btn "
+                  className="d-flex align-items-center m-auto "
                   type="submit"
                 >
                   {!props.plusIconDisable && (

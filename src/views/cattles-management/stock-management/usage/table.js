@@ -24,7 +24,12 @@ const UsageManagementTableWrapper = styled.div`
   }
 `;
 
-const UsageManagementTable = ({ data = [], currentFilter, currentPage }) => {
+const UsageManagementTable = ({
+  data = [],
+  currentFilter,
+  currentPage,
+  maxHeight,
+}) => {
   const { t } = useTranslation();
   const history = useHistory();
 
@@ -134,7 +139,11 @@ const UsageManagementTable = ({ data = [], currentFilter, currentPage }) => {
 
   return (
     <UsageManagementTableWrapper>
-      <CustomDataTable maxHeight={""} columns={columns} data={usageData} />
+      <CustomDataTable
+        maxHeight={maxHeight}
+        columns={columns}
+        data={usageData}
+      />
     </UsageManagementTableWrapper>
   );
 };

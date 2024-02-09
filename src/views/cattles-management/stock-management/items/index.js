@@ -46,6 +46,7 @@ const Items = ({
                 // allPermissions={allPermissions}
                 // subPermission={subPermission}
                 currentFilter={dropDownName}
+                maxHeight="220px"
                 currentPage={pagination.page}
               />
             </Then>

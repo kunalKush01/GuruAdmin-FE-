@@ -14,6 +14,12 @@ export const importFile = (payload) =>
     showToastOnError: false,
   });
 
+export const createCattleInfo = (payload) =>
+  callApi({
+    requestFunction: (axios) => axios.post(`cattle/create`, payload),
+    successCode: 201,
+  });
+
 export const deleteCattleInfo = (payload) =>
   callApi({
     requestFunction: (axios) => axios.delete(`cattle/${payload}`),

@@ -48,6 +48,7 @@ const Usage = ({
                 data={list}
                 currentFilter={dropDownName}
                 currentPage={pagination.page}
+                maxHeight="220px"
                 // allPermissions={allPermissions}
                 // subPermission={subPermission}
               />

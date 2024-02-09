@@ -24,7 +24,7 @@ const CattleInfoTableWrapper = styled.div`
   }
 `;
 
-const CattleInfoTable = ({ data = [] }) => {
+const CattleInfoTable = ({ data = [], maxHeight }) => {
   const { t } = useTranslation();
 
   const handleDeleteCattle = async (payload) => {
@@ -121,8 +121,8 @@ const CattleInfoTable = ({ data = [] }) => {
         cowPhoto: (
           <img
             src={
-              item?.user?.profilePhoto !== "" && item?.user?.profilePhoto
-                ? item?.user?.profilePhoto
+              item?.cattleImage !== "" && item?.cattleImage
+                ? item?.cattleImage
                 : avtarIcon
             }
             style={{
@@ -136,8 +136,8 @@ const CattleInfoTable = ({ data = [] }) => {
         ownerPhoto: (
           <img
             src={
-              item?.user?.profilePhoto !== "" && item?.user?.profilePhoto
-                ? item?.user?.profilePhoto
+              item?.ownerImage !== "" && item?.ownerImage
+                ? item?.ownerImage
                 : avtarIcon
             }
             style={{
@@ -199,7 +199,11 @@ const CattleInfoTable = ({ data = [] }) => {
 
   return (
     <CattleInfoTableWrapper>
-      <CustomDataTable maxHeight={""} columns={columns} data={CattlesInfo} />
+      <CustomDataTable
+        maxHeight={maxHeight}
+        columns={columns}
+        data={CattlesInfo}
+      />
     </CattleInfoTableWrapper>
   );
 };

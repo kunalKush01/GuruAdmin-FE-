@@ -128,19 +128,10 @@ const CattlesInfo = () => {
             <Button
               className="me-1"
               color="primary"
-              onClick={
-                () =>
-                  Swal.fire({
-                    icon: "info",
-                    title: "Oops...",
-                    text: "Add Cattle is in underdevelopment ",
-                    showConfirmButton: false,
-                    showCloseButton: false,
-                    timer: 2000,
-                  })
-                // history.push(
-                //   `/cattle/info/add?page=${pagination.page}&filter=${dropDownName}`
-                // )
+              onClick={() =>
+                history.push(
+                  `/cattle/info/add?page=${pagination.page}&filter=${dropDownName}`
+                )
               }
             >
               <span>
@@ -194,6 +185,7 @@ const CattlesInfo = () => {
               <Then>
                 <CattleInfoTable
                   data={cattleListData}
+                  maxHeight="220px"
                   // allPermissions={allPermissions}
                   // subPermission={subPermission}
                 />
