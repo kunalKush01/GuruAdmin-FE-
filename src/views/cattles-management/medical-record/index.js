@@ -97,7 +97,7 @@ const CattlesMedical = () => {
     <MedicalWrapper>
       <div>
         <div className="d-sm-flex mb-1 justify-content-between align-items-center ">
-          <Trans i18nKey="cattle_medical_report" />
+          <Trans i18nKey="cattle_medical_record" />
 
           <div className="d-flex mt-1 mt-sm-0 justify-content-between">
             <ChangePeriodDropDown
