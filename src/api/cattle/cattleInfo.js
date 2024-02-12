@@ -24,3 +24,15 @@ export const deleteCattleInfo = (payload) =>
   callApi({
     requestFunction: (axios) => axios.delete(`cattle/${payload}`),
   });
+
+export const getCattleInfoDetail = (payload) =>
+  callApi({
+    requestFunction: (axios) => axios.get(`cattle/${payload}`),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+export const updateCattleInfo = (payload) =>
+  callApi({
+    requestFunction: (axios) => axios.put(`cattle/edit`, payload),
+  });
+  
