@@ -12,10 +12,16 @@ import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
 
-import Swal from "sweetalert2";
-import { getCattlesList, importFile } from "../../../api/cattle/cattleInfo";
+import {
+  exportData,
+  getCattlesList,
+  importFile,
+} from "../../../api/cattle/cattleInfo";
+import exportIcon from "../../../assets/images/icons/exportIcon.svg";
 import { ChangePeriodDropDown } from "../../../components/partials/changePeriodDropDown";
 import NoContent from "../../../components/partials/noContent";
+import { handleExport } from "../../../utility/utils/exportTabele";
+import { exportCattleJson } from "./exportableJsonData";
 import CattleInfoTable from "./table";
 
 const CattleInfo = styled.div`
@@ -98,6 +104,15 @@ const CattlesInfo = () => {
     [cattleList]
   );
 
+  const exportDataQuery = useQuery([], () =>
+    exportData({
+      limit: cattleList?.data?.totalResults,
+      startDate: filterStartDate,
+      endDate: filterEndDate,
+      languageId: selectedLang.id,
+    })
+  );
+
   const handleImportFile = async (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -143,10 +158,27 @@ const CattlesInfo = () => {
             </Button>
 
             <Button
+              className="me-1"
               color="primary"
               onClick={() => importFileRef.current.click()}
             >
               Import File
+            </Button>
+
+            <Button
+              color="primary"
+              onClick={() =>
+                handleExport({
+                  dataName: exportCattleJson(
+                    exportDataQuery?.data.results ?? []
+                  ),
+                  fileName: "Cattles List",
+                  sheetName: "Cattles List",
+                })
+              }
+            >
+              <Trans i18nKey={"export_report"} />
+              <img src={exportIcon} width={15} className="ms-2" />
             </Button>
 
             <input
