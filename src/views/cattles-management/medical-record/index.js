@@ -32,7 +32,7 @@ const CattlesMedical = () => {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const [pagination, setPagination] = useState({
     page: 1,
-    limit: 12,
+    limit: 10,
   });
 
   const searchParams = new URLSearchParams(history.location.search);

@@ -37,6 +37,8 @@ const AddCattleForm = ({
   const { t } = useTranslation();
   const [showPrompt, setShowPrompt] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [cattleImageName, setCattleImageName] = useState(props.cattleImageName);
+  const [ownerImageName, setOwnerImageName] = useState(props.ownerImageName);
 
   const [phoneNumber, setPhoneNumber] = useState(getMobile ?? "");
   const [purchaserNumber, setPurchaserNumber] = useState(
@@ -84,6 +86,8 @@ const AddCattleForm = ({
             isPregnant,
             isSold,
             isMilking,
+            cattleImage,
+            ownerImage,
             ...formValues
           } = values;
           const data = {
@@ -94,6 +98,12 @@ const AddCattleForm = ({
             isPregnant: isPregnant == "NO" ? false : true,
             isSold: isSold == "NO" ? false : true,
             isMilking: isMilking == "NO" ? false : true,
+            cattleImage: props.editThumbnail
+              ? cattleImageName
+              : values.cattleImage,
+            ownerImage: props.editThumbnail
+              ? ownerImageName
+              : values.ownerImage,
             ...formValues,
           };
           mutation.mutate(data);
@@ -290,12 +300,11 @@ const AddCattleForm = ({
                           "cattleImage",
                           `${randomNumber}_${file}`
                         );
-                        // formik.setFieldValue("type", type);
-                        // setImageName(`${randomNumber}_${file}`);
+                        setCattleImageName(`${randomNumber}_${file}`);
                       }}
                       removeFile={(fileName) => {
                         formik.setFieldValue("cattleImage", "");
-                        // setImageName("");
+                        setCattleImageName("");
                       }}
                     />
                   </Col>
@@ -322,9 +331,11 @@ const AddCattleForm = ({
                           "ownerImage",
                           `${randomNumber}_${file}`
                         );
+                        setOwnerImageName(`${randomNumber}_${file}`);
                       }}
                       removeFile={(fileName) => {
                         formik.setFieldValue("ownerImage", "");
+                        setOwnerImageName("");
                       }}
                     />
                   </Col>
@@ -405,11 +416,11 @@ const AddCattleForm = ({
                       onChange={(phone, country) => {
                         setPurchaserNumber(phone);
                         formik.setFieldValue(
-                          "purchaserCountryCode",
+                          "purchaserCountryName",
                           country?.countryCode
                         );
                         formik.setFieldValue(
-                          "purchaserDialCode",
+                          "purchaserCountryCode",
                           country?.dialCode
                         );
                         formik.setFieldValue(

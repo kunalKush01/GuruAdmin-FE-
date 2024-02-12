@@ -6,18 +6,18 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { Col, Row } from "reactstrap";
+import styled from "styled-components";
 import * as Yup from "yup";
 
 import moment from "moment";
-import styled from "styled-components";
 import {
   getCattleInfoDetail,
   updateCattleInfo,
 } from "../../../../api/cattle/cattleInfo";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
-import AddMedicalInfoForm from "../../../../components/cattleMedicalInfo/addForm";
-import { CustomDropDown } from "../../../../components/partials/customDropDown";
+import AddCattleForm from "../../../../components/cattleInfo/addForm";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
+import { cattleSource, cattleType } from "../add";
 
 const CattleAddWraper = styled.div`
   color: #583703;
@@ -31,7 +31,6 @@ const CattleAddWraper = styled.div`
     align-items: center;
   }
 `;
-
 
 const getLangId = (langArray, langSelection) => {
   let languageId;
@@ -60,12 +59,9 @@ const EditCattle = () => {
   const cattleDetails = useQuery(
     ["cattleDetails", cattleId, langSelection, selectedLang.id],
     async () => getCattleInfoDetail(cattleId)
-    // getMedicalInfoDetail({
-    //   cattleId,
-    //   languageId: getLangId(langArray, langSelection),
-    // })
   );
-  const handleMedicalInfoUpdate = async (payload) => {
+  console.log(cattleDetails);
+  const handleCattleUpdate = async (payload) => {
     return updateCattleInfo({
       ...payload,
       languageId: getLangId(langArray, langSelection),
@@ -73,51 +69,66 @@ const EditCattle = () => {
   };
 
   const schema = Yup.object().shape({
-    cattleCalfId: Yup.mixed().required("cattle_id_required"),
-    treatmentMedicine: Yup.string().required(
-      "cattle_treatment_medicine_required"
-    ),
-    dosage: Yup.string().required("cattle_dosage_required"),
-    DrName: Yup.string().required("cattle_DrName_required"),
-    Mobile: Yup.string().required("expenses_mobile_required"),
-    price: Yup.number().required("cattle_price_required"),
-    cattleSymptoms: Yup.string().required("cattle_symptoms_required"),
+    tagId: Yup.string().required("cattle_tag_id_required"),
+    type: Yup.mixed().required("cattle_type_required"),
+    breed: Yup.string().required("cattle_breed_required"),
+    age: Yup.string().required("cattle_age_required"),
+    purchasePrice: Yup.string().required("cattle_purchase_price_required"),
+    source: Yup.mixed().required("cattle_source_required"),
+    ownerName: Yup.string().required("cattle_owner_name_required"),
+    ownerMobile: Yup.string().required("expenses_mobile_required"),
+    ownerId: Yup.string().required("cattle_owner_id_required"),
   });
 
   const initialValues = useMemo(() => {
     return {
-    tagId: "",
-    motherId: "",
-    type: "",
-    breed: "",
-    soldDate: new Date(),
-    dob: new Date(),
-    purchaseDate: new Date(),
-    deathDate: new Date(),
-    deliveryDate: new Date(),
-    pregnantDate: new Date(),
-    deathReason: "",
-    purchasePrice: "",
-    source: "",
-    ownerName: "",
-    ownerCountryName: "",
-    ownerCountryCode: "",
-    ownerMobile: "",
-    ownerId: "",
-    cattleImage: "",
-    ownerImage: "",
-    age: "",
-    isDead: "NO",
-    isPregnant: "NO",
-    isSold: "NO",
-    isMilking: "NO",
-    purchaserName: "",
-    purchaserCountryCode: "",
-    purchaserDialCode: "",
-    purchaserMobile: "",
-    purchaserId: "",
-    soldPrice: "",
-    milkQuantity: "",
+      tagId: cattleDetails?.data?.result?.tagId ?? "",
+      cattleId: cattleDetails?.data?.result?._id,
+      motherId: "",
+      type:
+        {
+          label: ConverFirstLatterToCapital(
+            cattleDetails?.data?.result?.type?.toLowerCase() ?? ""
+          ),
+          value: cattleDetails?.data?.result?.type,
+        } ?? "",
+      breed: cattleDetails?.data?.result?.breed ?? "",
+      soldDate: moment(cattleDetails?.data?.result?.soldDate).toDate(),
+      dob: moment(cattleDetails?.data?.result?.dob).toDate(),
+      purchaseDate: moment(cattleDetails?.data?.result?.purchaseDate).toDate(),
+      deathDate: moment(cattleDetails?.data?.result?.deathDate).toDate(),
+      deliveryDate: moment(cattleDetails?.data?.result?.deliveryDate).toDate(),
+      pregnantDate: moment(cattleDetails?.data?.result?.pregnantDate).toDate(),
+      deathReason: cattleDetails?.data?.result?.deathReason ?? "",
+      purchasePrice: cattleDetails?.data?.result?.purchasePrice ?? "",
+      source:
+        {
+          label: ConverFirstLatterToCapital(
+            cattleDetails?.data?.result?.source?.toLowerCase() ?? ""
+          ),
+          value: cattleDetails?.data?.result?.source,
+        } ?? "",
+      ownerName: cattleDetails?.data?.result?.ownerName ?? "",
+      ownerCountryName: cattleDetails?.data?.result?.ownerCountryName ?? "in",
+      ownerCountryCode: cattleDetails?.data?.result?.ownerCountryCode ?? "+91",
+      ownerMobile: cattleDetails?.data?.result?.ownerMobile ?? "",
+      ownerId: cattleDetails?.data?.result?.ownerId ?? "",
+      cattleImage: cattleDetails?.data?.result?.cattleImage ?? "",
+      ownerImage: cattleDetails?.data?.result?.ownerImage ?? "",
+      age: cattleDetails?.data?.result?.age ?? "",
+      isDead: cattleDetails?.data?.result?.isDead ? "YES" : "NO",
+      isPregnant: cattleDetails?.data?.result?.isPregnant ? "YES" : "NO",
+      isSold: cattleDetails?.data?.result?.isSold ? "YES" : "NO",
+      isMilking: cattleDetails?.data?.result?.isMilking ? "YES" : "NO",
+      purchaserName: cattleDetails?.data?.result?.purchaserName ?? "",
+      purchaserCountryName:
+        cattleDetails?.data?.result?.purchaserCountryName ?? "in",
+      purchaserCountryCode:
+        cattleDetails?.data?.result?.purchaserCountryCode ?? "+91",
+      purchaserMobile: cattleDetails?.data?.result?.purchaserMobile ?? "",
+      purchaserId: cattleDetails?.data?.result?.purchaserId ?? "",
+      soldPrice: cattleDetails?.data?.result?.soldPrice ?? "",
+      milkQuantity: cattleDetails?.data?.result?.milkQuantity ?? "",
     };
   }, [cattleDetails]);
 
@@ -130,7 +141,7 @@ const EditCattle = () => {
             className="me-2  cursor-pointer"
             onClick={() =>
               history.push(
-                `/cattle/medical-info?page=${currentPage}&filter=${currentFilter}`
+                `/cattle/info?page=${currentPage}&filter=${currentFilter}`
               )
             }
           />
@@ -143,7 +154,7 @@ const EditCattle = () => {
             <Trans i18nKey={"news_InputIn"} />
           </div>
           <CustomDropDown
-            ItemListArray={medicalInfoDetailQuery?.data?.result?.languages}
+            ItemListArray={cattleDetails?.data?.result?.languages}
             className={"ms-1"}
             defaultDropDownName={ConverFirstLatterToCapital(
               langSelection ?? ""
@@ -157,9 +168,7 @@ const EditCattle = () => {
       </div>
 
       <If
-        condition={
-          medicalInfoDetailQuery.isLoading || medicalInfoDetailQuery.isFetching
-        }
+        condition={cattleDetails.isLoading || cattleDetails.isFetching}
         disableMemo
       >
         <Then>
@@ -191,24 +200,32 @@ const EditCattle = () => {
           </Row>
         </Then>
         <Else>
-          {!medicalInfoDetailQuery.isFetching && (
+          {!cattleDetails.isFetching && (
             <div className="ms-sm-3 mt-1">
-              <AddMedicalInfoForm
-                getMobile={
-                  medicalInfoDetailQuery?.data?.result?.countryCode +
-                  medicalInfoDetailQuery?.data?.result?.doctorNumber
-                }
-                plusIconDisable
+              <AddCattleForm
+                handleSubmit={handleCattleUpdate}
                 initialValues={initialValues}
                 validationSchema={schema}
-                handleSubmit={handleMedicalInfoUpdate}
+                editThumbnail
+                getMobile={
+                  cattleDetails?.data?.result?.ownerCountryCode +
+                  cattleDetails?.data?.result?.ownerMobile
+                }
+                getPurchaserMobile={
+                  cattleDetails?.data?.result?.purchaserCountryCode +
+                  cattleDetails?.data?.result?.purchaserMobile
+                }
+                ownerImageName={cattleDetails?.data?.result?.ownerImageName}
+                cattleImageName={cattleDetails?.data?.result?.cattleImageName}
                 buttonName="save_changes"
+                cattleType={cattleType}
+                cattleSource={cattleSource}
               />
             </div>
           )}
         </Else>
       </If>
-    </MedicalInfoAddWraper>
+    </CattleAddWraper>
   );
 };
 

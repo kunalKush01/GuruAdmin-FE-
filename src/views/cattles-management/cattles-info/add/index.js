@@ -21,7 +21,7 @@ import AddCattleForm from "../../../../components/cattleInfo/addForm";
     }
   `;
 
-const cattleType = [
+export const cattleType = [
   {
     label: "Cow",
     value: "cow",
@@ -40,7 +40,7 @@ const cattleType = [
   },
 ];
 
-const cattleSource = [
+export const cattleSource = [
   {
     label: "Owner",
     value: "owner",

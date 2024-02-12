@@ -35,7 +35,7 @@ const CattlesInfo = () => {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const [pagination, setPagination] = useState({
     page: 1,
-    limit: 12,
+    limit: 10,
   });
 
   const searchParams = new URLSearchParams(history.location.search);
@@ -186,6 +186,8 @@ const CattlesInfo = () => {
                 <CattleInfoTable
                   data={cattleListData}
                   maxHeight="220px"
+                  currentFilter={dropDownName}
+                  currentPage={pagination.page}
                   // allPermissions={allPermissions}
                   // subPermission={subPermission}
                 />

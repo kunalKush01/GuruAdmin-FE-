@@ -2,11 +2,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 
 import { deleteCattleInfo } from "../../../api/cattle/cattleInfo";
 import deleteIcon from "../../../assets/images/icons/category/deleteIcon.svg";
+import editIcon from "../../../assets/images/icons/category/editIcon.svg";
 import avtarIcon from "../../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import confirmationIcon from "../../../assets/images/icons/news/conformationIcon.svg";
 import CustomDataTable from "../../../components/partials/CustomDataTable";
@@ -25,12 +27,18 @@ const CattleInfoTableWrapper = styled.div`
   }
 `;
 
-const CattleInfoTable = ({ data = [], maxHeight }) => {
+const CattleInfoTable = ({
+  data = [],
+  maxHeight,
+  currentFilter,
+  currentPage,
+}) => {
   const { t } = useTranslation();
-
+  const history = useHistory();
   const handleDeleteCattle = async (payload) => {
     return deleteCattleInfo(payload);
   };
+
   const queryClient = useQueryClient();
   const deleteMutation = useMutation({
     mutationFn: handleDeleteCattle,
@@ -87,6 +95,7 @@ const CattleInfoTable = ({ data = [], maxHeight }) => {
     {
       name: t("cattle_age"),
       selector: (row) => row.age,
+      width: "60px",
     },
     {
       name: t("cattle_is_pregnant"),
@@ -107,6 +116,11 @@ const CattleInfoTable = ({ data = [], maxHeight }) => {
       name: t("cattle_milk_quantity"),
       selector: (row) => row.milkQuantity,
       width: "150px",
+    },
+    {
+      name: t(""),
+      selector: (row) => row.edit,
+      width: "100px",
     },
     {
       name: t(""),
@@ -156,25 +170,26 @@ const CattleInfoTable = ({ data = [], maxHeight }) => {
         breed: item?.breed,
         dateOfBirth: moment(item?.dob).format(" DD MMM YYYY"),
         age: item?.age,
-        isPregnant: (
-          <div style={{ padding: "16px" }}>
-            {item?.isPregnant ? "YES" : "NO"}
-          </div>
-        ),
-        isMilking: (
-          <div style={{ padding: "16px" }}>
-            {item?.isMilking ? "YES" : "NO"}
-          </div>
-        ),
-        pregnancyDate: (
-          <div style={{ padding: "16px" }}>
-            {item?.pregnancyDate
-              ? moment(item?.pregnancyDate).format(" DD MMM YYYY")
-              : "N/A"}
-          </div>
-        ),
-        milkQuantity: (
-          <div style={{ padding: "16px" }}>{item?.milkQuantity ?? "N/A"}</div>
+        isPregnant:
+          // <div style={{ padding: "16px" }}>
+          item?.isPregnant ? "YES" : "NO",
+        // </div>
+        isMilking: item?.isMilking ? "YES" : "NO",
+        pregnancyDate: item?.pregnancyDate
+          ? moment(item?.pregnancyDate).format(" DD MMM YYYY")
+          : "N/A",
+        milkQuantity: item?.milkQuantity ?? "N/A",
+        edit: (
+          <img
+            src={editIcon}
+            width={35}
+            className="cursor-pointer "
+            onClick={() => {
+              history.push(
+                `/cattle/info/${item?._id}?page=${currentPage}&filter=${currentFilter}`
+              );
+            }}
+          />
         ),
         delete: (
           // allPermissions?.name === "all" || subPermission?.includes(DELETE) ? (
