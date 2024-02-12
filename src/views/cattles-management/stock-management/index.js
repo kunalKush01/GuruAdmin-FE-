@@ -37,7 +37,6 @@ const StockManagementWrapper = styled.div`
 
 const StockManagement = () => {
   const [active, setActive] = useState(location.pathname);
-  console.log("active", active);
   const history = useHistory();
   const { t } = useTranslation();
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -45,7 +44,7 @@ const StockManagement = () => {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const [pagination, setPagination] = useState({
     page: 1,
-    limit: 12,
+    limit: 10,
   });
 
   const searchParams = new URLSearchParams(history.location.search);

@@ -71,6 +71,16 @@ const Routes = [
   },
 
   {
+    path: "/cattle/info/:cattleId",
+    component: lazy(() =>
+      import("../../views/cattles-management/cattles-info/edit/index.js")
+    ),
+    exact: true,
+    type: "cattle-info",
+    subPermission: WRITE,
+  },
+
+  {
     path: "/cattle/medical-info",
     component: lazy(() =>
       import("../../views/cattles-management/medical-record/index.js")
@@ -87,7 +97,7 @@ const Routes = [
     ),
     exact: true,
     type: "cattle-medical",
-    subPermission: READ,
+    subPermission: WRITE,
   },
 
   {
@@ -97,7 +107,7 @@ const Routes = [
     ),
     exact: true,
     type: "cattle-medical",
-    subPermission: READ,
+    subPermission: WRITE,
   },
 
   {
@@ -117,7 +127,7 @@ const Routes = [
     ),
     exact: true,
     type: "cattle-pregnancy",
-    subPermission: READ,
+    subPermission: WRITE,
   },
 
   {
@@ -127,7 +137,7 @@ const Routes = [
     ),
     exact: true,
     type: "cattle-pregnancy",
-    subPermission: READ,
+    subPermission: WRITE,
   },
 
   {
@@ -147,7 +157,7 @@ const Routes = [
     ),
     exact: true,
     type: "cattle-expense",
-    subPermission: READ,
+    subPermission: WRITE,
   },
 
   {
@@ -157,7 +167,7 @@ const Routes = [
     ),
     exact: true,
     type: "cattle-stock",
-    subPermission: READ,
+    subPermission: WRITE,
   },
 
   {
@@ -178,7 +188,7 @@ const Routes = [
     ),
     exact: true,
     type: "cattle-stock",
-    subPermission: READ,
+    subPermission: WRITE,
   },
 
   {
@@ -190,7 +200,7 @@ const Routes = [
     ),
     exact: true,
     type: "cattle-stock",
-    subPermission: READ,
+    subPermission: WRITE,
   },
 
   {
@@ -212,7 +222,7 @@ const Routes = [
     ),
     exact: true,
     type: "cattle-item",
-    subPermission: READ,
+    subPermission: WRITE,
   },
 
   {
@@ -224,7 +234,7 @@ const Routes = [
     ),
     exact: true,
     type: "cattle-item",
-    subPermission: READ,
+    subPermission: WRITE,
   },
 
   {
@@ -246,7 +256,7 @@ const Routes = [
     ),
     exact: true,
     type: "cattle-usage",
-    subPermission: READ,
+    subPermission: WRITE,
   },
 
   {
@@ -258,7 +268,7 @@ const Routes = [
     ),
     exact: true,
     type: "cattle-usage",
-    subPermission: READ,
+    subPermission: WRITE,
   },
 
   {
