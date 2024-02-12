@@ -120,7 +120,7 @@ const CattleInfoTable = ({
     {
       name: t(""),
       selector: (row) => row.edit,
-      width: "100px",
+      width: "80px",
     },
     {
       name: t(""),

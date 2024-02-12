@@ -14,6 +14,13 @@ export const importFile = (payload) =>
     showToastOnError: false,
   });
 
+export const exportData = (payload) =>
+  callApi({
+    requestFunction: (axios) => axios.post(`cattle`, payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+
 export const createCattleInfo = (payload) =>
   callApi({
     requestFunction: (axios) => axios.post(`cattle/create`, payload),
@@ -35,4 +42,3 @@ export const updateCattleInfo = (payload) =>
   callApi({
     requestFunction: (axios) => axios.put(`cattle/edit`, payload),
   });
-  

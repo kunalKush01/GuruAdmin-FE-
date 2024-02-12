@@ -19,6 +19,10 @@ import ImageUpload from "../partials/imageUpload";
 
 const FormikWrapper = styled.div`
   font: normal normal bold 15px/33px Noto Sans;
+
+  .animated-height {
+    transition: height 0.5s;
+  }
 `;
 
 const AddCattleForm = ({
@@ -361,22 +365,33 @@ const AddCattleForm = ({
                       label="no"
                     />
                   </Col>
-                  <Col xs={12} md={4}>
-                    <FormikCustomDatePicker
-                      name="deathDate"
-                      inline={false}
-                      label={t("cattle_date_death")}
-                      dateFormat=" dd-MM-yyyy"
-                    />
-                  </Col>
-                  <Col xs={12} md={8}>
-                    <CustomTextField
-                      label={t("cattle_death_reason")}
-                      placeholder={t("placeHolder_cattle_death_reason")}
-                      name="deathReason"
-                      required
-                    />
-                  </Col>
+                  {/* {formik.values.isDead === "YES" ? ( */}
+                  <Row
+                    className="overflow-hidden animated-height"
+                    style={{
+                      height: formik.values.isDead === "YES" ? "80px" : "0px",
+                    }}
+                  >
+                    <Col xs={12} md={4}>
+                      <FormikCustomDatePicker
+                        name="deathDate"
+                        inline={false}
+                        label={t("cattle_date_death")}
+                        dateFormat=" dd-MM-yyyy"
+                      />
+                    </Col>
+                    <Col xs={12} md={8}>
+                      <CustomTextField
+                        label={t("cattle_death_reason")}
+                        placeholder={t("placeHolder_cattle_death_reason")}
+                        name="deathReason"
+                        required
+                      />
+                    </Col>
+                  </Row>
+                  {/* ) : (
+                    ""
+                  )} */}
                 </Row>
                 {/* sixth row */}
                 <Row className="pt-2">
@@ -399,64 +414,71 @@ const AddCattleForm = ({
                       label="no"
                     />
                   </Col>
-                  <Col xs={12} md={4}>
-                    <CustomTextField
-                      label={t("cattle_purchaser_name")}
-                      placeholder={t("placeHolder_cattle_purchaser_name")}
-                      name="purchaserName"
-                      required
-                    />
-                  </Col>
-                  <Col xs={12} md={4}>
-                    <CustomCountryMobileNumberField
-                      value={purchaserNumber}
-                      defaultCountry={countryFlag}
-                      label={t("cattle_purchaser_number")}
-                      placeholder={t("placeHolder_cattle_purchaser_number")}
-                      onChange={(phone, country) => {
-                        setPurchaserNumber(phone);
-                        formik.setFieldValue(
-                          "purchaserCountryName",
-                          country?.countryCode
-                        );
-                        formik.setFieldValue(
-                          "purchaserCountryCode",
-                          country?.dialCode
-                        );
-                        formik.setFieldValue(
-                          "purchaserMobile",
-                          phone?.replace(country?.dialCode, "")
-                        );
-                      }}
-                      required
-                    />
-                  </Col>
-                  <Col xs={12} md={4}>
-                    <CustomTextField
-                      label={t("cattle_purchaser_id")}
-                      placeholder={t("placeHolder_cattle_purchaser_id")}
-                      name="purchaserId"
-                      required
-                    />
-                  </Col>
+                  <Row
+                    className="overflow-hidden animated-height"
+                    style={{
+                      height: formik.values.isSold === "YES" ? "180px" : "0px",
+                    }}
+                  >
+                    <Col xs={12} md={4}>
+                      <CustomTextField
+                        label={t("cattle_purchaser_name")}
+                        placeholder={t("placeHolder_cattle_purchaser_name")}
+                        name="purchaserName"
+                        required
+                      />
+                    </Col>
+                    <Col xs={12} md={4}>
+                      <CustomCountryMobileNumberField
+                        value={purchaserNumber}
+                        defaultCountry={countryFlag}
+                        label={t("cattle_purchaser_number")}
+                        placeholder={t("placeHolder_cattle_purchaser_number")}
+                        onChange={(phone, country) => {
+                          setPurchaserNumber(phone);
+                          formik.setFieldValue(
+                            "purchaserCountryName",
+                            country?.countryCode
+                          );
+                          formik.setFieldValue(
+                            "purchaserCountryCode",
+                            country?.dialCode
+                          );
+                          formik.setFieldValue(
+                            "purchaserMobile",
+                            phone?.replace(country?.dialCode, "")
+                          );
+                        }}
+                        required
+                      />
+                    </Col>
+                    <Col xs={12} md={4}>
+                      <CustomTextField
+                        label={t("cattle_purchaser_id")}
+                        placeholder={t("placeHolder_cattle_purchaser_id")}
+                        name="purchaserId"
+                        required
+                      />
+                    </Col>
 
-                  <Col xs={12} md={4}>
-                    <FormikCustomDatePicker
-                      name="soldDate"
-                      inline={false}
-                      label={t("cattle_sold_date")}
-                      dateFormat=" dd-MM-yyyy"
-                    />
-                  </Col>
-                  <Col xs={12} md={4}>
-                    <CustomTextField
-                      label={t("cattle_sold_price")}
-                      type="number"
-                      placeholder={t("placeHolder_cattle_sold_price")}
-                      name="soldPrice"
-                      required
-                    />
-                  </Col>
+                    <Col xs={12} md={4}>
+                      <FormikCustomDatePicker
+                        name="soldDate"
+                        inline={false}
+                        label={t("cattle_sold_date")}
+                        dateFormat=" dd-MM-yyyy"
+                      />
+                    </Col>
+                    <Col xs={12} md={4}>
+                      <CustomTextField
+                        label={t("cattle_sold_price")}
+                        type="number"
+                        placeholder={t("placeHolder_cattle_sold_price")}
+                        name="soldPrice"
+                        required
+                      />
+                    </Col>
+                  </Row>
                 </Row>
                 {/* seventh row */}
                 <Row className="pt-2">
@@ -479,7 +501,16 @@ const AddCattleForm = ({
                       label="no"
                     />
                   </Col>
-                  <Col xs={12} md={4}>
+
+                  <Col
+                    xs={12}
+                    md={4}
+                    className="overflow-hidden animated-height"
+                    style={{
+                      height:
+                        formik.values.isMilking === "YES" ? "80px" : "0px",
+                    }}
+                  >
                     <CustomTextField
                       label={t("cattle_milk_quantity")}
                       placeholder={t("placeHolder_cattle_milk_quantity")}
@@ -513,22 +544,30 @@ const AddCattleForm = ({
                       label="no"
                     />
                   </Col>
-                  <Col xs={12} md={4}>
-                    <FormikCustomDatePicker
-                      name="deliveryDate"
-                      inline={false}
-                      label={t("cattle_delivery_date")}
-                      dateFormat=" dd-MM-yyyy"
-                    />
-                  </Col>
-                  <Col xs={12} md={4}>
-                    <FormikCustomDatePicker
-                      name="pregnantDate"
-                      inline={false}
-                      label={t("cattle_pregnancy_date")}
-                      dateFormat=" dd-MM-yyyy"
-                    />
-                  </Col>
+                  <Row
+                    className="overflow-hidden animated-height"
+                    style={{
+                      height:
+                        formik.values.isPregnant === "YES" ? "80px" : "0px",
+                    }}
+                  >
+                    <Col xs={12} md={4}>
+                      <FormikCustomDatePicker
+                        name="deliveryDate"
+                        inline={false}
+                        label={t("cattle_delivery_date")}
+                        dateFormat=" dd-MM-yyyy"
+                      />
+                    </Col>
+                    <Col xs={12} md={4}>
+                      <FormikCustomDatePicker
+                        name="pregnantDate"
+                        inline={false}
+                        label={t("cattle_pregnancy_date")}
+                        dateFormat=" dd-MM-yyyy"
+                      />
+                    </Col>
+                  </Row>
                 </Row>
               </Col>
             </Row>
