@@ -84,7 +84,7 @@ const EditCattle = () => {
     return {
       tagId: cattleDetails?.data?.result?.tagId ?? "",
       cattleId: cattleDetails?.data?.result?._id,
-      motherId: "",
+      motherId: cattleDetails?.data?.result?.motherId,
       type:
         {
           label: ConverFirstLatterToCapital(

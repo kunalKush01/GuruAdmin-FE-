@@ -93,7 +93,7 @@ const AddCattleForm = ({
           const data = {
             type: type?.value.toUpperCase(),
             source: source?.value.toUpperCase(),
-            motherId: motherId?.tagId,
+            motherId: motherId?._id,
             isDead: isDead == "NO" ? false : true,
             isPregnant: isPregnant == "NO" ? false : true,
             isSold: isSold == "NO" ? false : true,
