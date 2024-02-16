@@ -212,8 +212,8 @@ const EditCattle = () => {
                   cattleDetails?.data?.result?.ownerMobile
                 }
                 getPurchaserMobile={
-                  cattleDetails?.data?.result?.purchaserCountryCode +
-                  cattleDetails?.data?.result?.purchaserMobile
+                  cattleDetails?.data?.result?.purchaserCountryCode ??
+                  "+91" + cattleDetails?.data?.result?.purchaserMobile
                 }
                 ownerImageName={cattleDetails?.data?.result?.ownerImageName}
                 cattleImageName={cattleDetails?.data?.result?.cattleImageName}

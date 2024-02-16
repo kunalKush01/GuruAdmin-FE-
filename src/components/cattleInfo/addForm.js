@@ -8,8 +8,8 @@ import { Button, Col, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
 import { findAllCattle } from "../../api/cattle/cattleMedical";
 import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
+
 import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
-import FormikRangeDatePicker from "../partials/FormikRangeDatePicker";
 import AsyncSelectField from "../partials/asyncSelectField";
 import CustomRadioButton from "../partials/customRadioButton";
 import CustomTextField from "../partials/customTextField";
@@ -97,7 +97,7 @@ const AddCattleForm = ({
           const data = {
             type: type?.value.toUpperCase(),
             source: source?.value.toUpperCase(),
-            motherId: motherId?._id,
+            motherId: motherId?.tagId,
             isDead: isDead == "NO" ? false : true,
             isPregnant: isPregnant == "NO" ? false : true,
             isSold: isSold == "NO" ? false : true,
