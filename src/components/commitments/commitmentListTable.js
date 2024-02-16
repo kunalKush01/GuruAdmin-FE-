@@ -222,7 +222,7 @@ export default function CommitmentListTable(
         ),
         category: (
           <div>
-            {ConverFirstLatterToCapital(item?.masterCategory?.name)}{" "}
+            {ConverFirstLatterToCapital(item?.masterCategory?.name ?? "-")}{" "}
             {/* {item?.category && `(${item?.category?.name})`} */}
           </div>
         ),
@@ -235,7 +235,7 @@ export default function CommitmentListTable(
               font: "normal normal 600 11px/20px Noto Sans",
             }}
           >
-            <div>{ConverFirstLatterToCapital(item?.paidStatus)}</div>
+            <div>{ConverFirstLatterToCapital(item?.paidStatus ?? "")}</div>
           </div>
         ),
         amount: <div>₹{item?.amount?.toLocaleString("en-IN")}</div>,
@@ -273,7 +273,7 @@ export default function CommitmentListTable(
             }}
           />
         ),
-        createdBy: ConverFirstLatterToCapital(item?.createdBy.name),
+        createdBy: ConverFirstLatterToCapital(item?.createdBy.name ?? ""),
         payDonation:
           item?.paidStatus !== "completed" ? (
             <div
