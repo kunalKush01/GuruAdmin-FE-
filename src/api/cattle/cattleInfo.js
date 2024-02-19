@@ -10,8 +10,6 @@ export const getCattlesList = (payload) =>
 export const importFile = (payload) =>
   callApi({
     requestFunction: (axios) => axios.post(`cattle/import-file`, payload),
-    showToastOnSuccess: false,
-    showToastOnError: false,
   });
 
 export const exportData = (payload) =>
