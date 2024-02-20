@@ -186,7 +186,7 @@ const CattlesMedical = () => {
               </Else>
             </If>
 
-            <If condition={cattleMedicalListData?.data?.totalPages > 1}>
+            <If condition={cattleMedicalList?.data?.totalPages > 1}>
               <Then>
                 <Col xs={12} className="mb-2 d-flex justify-content-center">
                   <ReactPaginate
@@ -194,7 +194,7 @@ const CattlesMedical = () => {
                     forcePage={pagination.page - 1}
                     breakLabel="..."
                     previousLabel=""
-                    pageCount={cattleMedicalListData?.data?.totalPages || 0}
+                    pageCount={cattleMedicalList?.data?.totalPages || 0}
                     activeClassName="active"
                     initialPage={
                       parseInt(searchParams.get("page"))

@@ -57,7 +57,7 @@ const Stocks = ({
             </Else>
           </If>
 
-          <If condition={list?.data?.totalPages > 1}>
+          <If condition={query?.data?.totalPages > 1}>
             <Then>
               <Col xs={12} className="mb-2 d-flex justify-content-center">
                 <ReactPaginate
@@ -65,7 +65,7 @@ const Stocks = ({
                   forcePage={pagination.page - 1}
                   breakLabel="..."
                   previousLabel=""
-                  pageCount={list?.data?.totalPages || 0}
+                  pageCount={query?.data?.totalPages || 0}
                   activeClassName="active"
                   initialPage={
                     parseInt(searchParams.get("page"))
