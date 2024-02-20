@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
@@ -113,12 +113,15 @@ const CattlesInfo = () => {
     })
   );
 
+  const queryClient = useQueryClient();
+
   const handleImportFile = async (event) => {
     const file = event.target.files[0];
     if (file) {
       const formData = new FormData();
       formData.append("file", file);
       await importFile(formData);
+      queryClient.invalidateQueries(["cattleList"]);
     }
   };
 
