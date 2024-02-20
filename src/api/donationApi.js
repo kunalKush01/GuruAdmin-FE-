@@ -22,6 +22,11 @@ export const exportAllDonation = (payload) =>
     showToastOnError: false,
   });
 
+export const importDonationFile = (payload) =>
+  callApi({
+    requestFunction: (axios) => axios.post(`donation/import-file`, payload),
+  });
+
 export const getAllPaidDonations = (payload) =>
   callApi({
     requestFunction: (axios) =>
