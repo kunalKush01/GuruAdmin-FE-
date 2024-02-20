@@ -8,41 +8,46 @@ export const createCommitment = (payload) =>
     successCode: 200,
   });
 
-
 export const getAllPaidDonationsReceipts = (payload) =>
-callApi({
-  requestFunction: (axios) =>
-     (axios.get(`${API_BASE_URL}commitment/all-donations/${payload}`)),
-    showToastOnSuccess: false,
-    showToastOnError: false,
-});
-
-
-
-  export const getAllMasterCategories = (payload) =>
-  
   callApi({
-    requestFunction: (axios) => axios.post(`${API_BASE_URL}donation-category/list-master`, payload),
+    requestFunction: (axios) =>
+      axios.get(`${API_BASE_URL}commitment/all-donations/${payload}`),
     showToastOnSuccess: false,
     showToastOnError: false,
   });
-  export const getCommitmentDates = (payload) =>
+
+export const importCommitmentFile = (payload) =>
   callApi({
-    requestFunction: (axios) => axios.get(`${API_BASE_URL}event/get-dates`, payload),
+    requestFunction: (axios) => axios.post(`commitment/import-file`, payload),
+  });
+
+export const getAllMasterCategories = (payload) =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}donation-category/list-master`, payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+export const getCommitmentDates = (payload) =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.get(`${API_BASE_URL}event/get-dates`, payload),
     showToastOnSuccess: false,
     showToastOnError: false,
   });
 
 export const getAllCommitments = (payload) =>
   callApi({
-    requestFunction: (axios) => axios.post(`${API_BASE_URL}commitment`, payload),
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}commitment`, payload),
     showToastOnSuccess: false,
     showToastOnError: false,
   });
 
-  export const exportAllCommitments = (payload) =>
+export const exportAllCommitments = (payload) =>
   callApi({
-    requestFunction: (axios) => axios.post(`${API_BASE_URL}commitment`, payload),
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}commitment`, payload),
     showToastOnSuccess: false,
     showToastOnError: false,
   });
@@ -60,23 +65,20 @@ export const updateCommitmentDetail = (payload) =>
       axios.put(`${API_BASE_URL}commitment/update`, payload),
   });
 
-
-  export const addLangCommitmentDetail = (payload) =>
+export const addLangCommitmentDetail = (payload) =>
   callApi({
     requestFunction: (axios) =>
       axios.post(`${API_BASE_URL}donation-category/add-language`, payload),
   });
 
-  export const nudgeUserApi = (payload) =>
+export const nudgeUserApi = (payload) =>
   callApi({
     requestFunction: (axios) =>
       axios.post(`${API_BASE_URL}commitment/nudge-user`, payload),
   });
 
-
-
-  export const deleteCommitment = (payload) =>
+export const deleteCommitment = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.delete(`${API_BASE_URL}commitment/delete/${payload}`, ),
+      axios.delete(`${API_BASE_URL}commitment/delete/${payload}`),
   });
