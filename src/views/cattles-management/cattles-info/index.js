@@ -121,7 +121,7 @@ const CattlesInfo = () => {
       const formData = new FormData();
       formData.append("file", file);
       await importFile(formData);
-      queryClient.invalidateQueries(["cattleList"]);
+      // queryClient.invalidateQueries(["cattleList"]);
     }
   };
 
