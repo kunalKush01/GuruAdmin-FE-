@@ -238,6 +238,7 @@ export default function Commitment() {
     () => commitmentQuery?.data?.results ?? [],
     [commitmentQuery]
   );
+  const queryClient = useQueryClient();
 
   const handleImportFile = async (event) => {
     const file = event.target.files[0];
@@ -245,6 +246,7 @@ export default function Commitment() {
       const formData = new FormData();
       formData.append("file", file);
       await importCommitmentFile(formData);
+      queryClient.invalidateQueries(["Commitments"]);
     }
   };
 
@@ -275,7 +277,6 @@ export default function Commitment() {
     setPopover(false);
   };
 
-  const queryClient = useQueryClient();
   return (
     <CommitmentWrapper>
       <Helmet>
