@@ -8,18 +8,18 @@ import { createCattleInfo } from "../../../../api/cattle/cattleInfo";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddCattleForm from "../../../../components/cattleInfo/addForm";
 
-  const CattleAddWraper = styled.div`
+const CattleAddWraper = styled.div`
+  color: #583703;
+  font: normal normal bold 20px/33px Noto Sans;
+  .ImagesVideos {
+    font: normal normal bold 15px/33px Noto Sans;
+  }
+  .addEvent {
     color: #583703;
-    font: normal normal bold 20px/33px Noto Sans;
-    .ImagesVideos {
-      font: normal normal bold 15px/33px Noto Sans;
-    }
-    .addEvent {
-      color: #583703;
-      display: flex;
-      align-items: center;
-    }
-  `;
+    display: flex;
+    align-items: center;
+  }
+`;
 
 export const cattleType = [
   {
@@ -79,6 +79,37 @@ const AddCattle = () => {
     ownerName: Yup.string().required("cattle_owner_name_required"),
     ownerMobile: Yup.string().required("expenses_mobile_required"),
     ownerId: Yup.string().required("cattle_owner_id_required"),
+    deathReason: Yup.string().when("isDead", {
+      is: "YES",
+      then: Yup.string().required("cattle_deathReason_required"),
+      otherwise: Yup.string(),
+    }),
+    milkQuantity: Yup.string().when("isMilking", {
+      is: "YES",
+      then: Yup.string().required("cattle_milk_quantity_required"),
+      otherwise: Yup.string(),
+    }),
+
+    purchaserId: Yup.string().when("isSold", {
+      is: "YES",
+      then: Yup.string().required("cattle_purchaser_id_required"),
+      otherwise: Yup.string(),
+    }),
+    purchaserName: Yup.string().when("isSold", {
+      is: "YES",
+      then: Yup.string().required("cattle_purchaser_name_required"),
+      otherwise: Yup.string(),
+    }),
+    purchaserMobile: Yup.string().when("isSold", {
+      is: "YES",
+      then: Yup.string().required("expenses_mobile_required"),
+      otherwise: Yup.string(),
+    }),
+    soldPrice: Yup.string().when("isSold", {
+      is: "YES",
+      then: Yup.string().required("cattle_sold_price_required"),
+      otherwise: Yup.string(),
+    }),
   });
 
   const initialValues = {

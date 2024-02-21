@@ -84,7 +84,7 @@ export default function BoxListCard({
                 onClick={() => {
                   Swal.fire({
                     padding: "15px 20px",
-                    html: `<div class="text-start">
+                    html: `<div className="text-start">
                                                 <div>Date : ${moment(
                                                   data.collectionDate
                                                 ).format(
@@ -97,7 +97,7 @@ export default function BoxListCard({
                                                 </div>
 
                                                 <div>
-                                                  Description: <span class='descriptionBoxSwal'>
+                                                  Description: <span className='descriptionBoxSwal'>
                                                   ${ConvertToString(
                                                     data?.remarks
                                                   )}

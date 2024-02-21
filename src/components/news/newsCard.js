@@ -182,7 +182,7 @@ function BtnContent({
               Swal.fire({
                 title: `<img src="${confirmationIcon}"/>`,
                 html: `
-                                      <h3 class="swal-heading">${t(
+                                      <h3 className="swal-heading">${t(
                                         "news_delete"
                                       )}</h3>
                                       <p>${t("news_sure")}</p>

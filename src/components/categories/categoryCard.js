@@ -130,7 +130,7 @@ function BtnContent({ newsId }) {
             Swal.fire({
               title: `<img src="${confirmationIcon}"/>`,
               html: `
-                                      <h3 class="swal-heading">Delete Category</h3>
+                                      <h3 className="swal-heading">Delete Category</h3>
                                       <p>Are you sure you want to permanently delete the selected category ?</p>
                                       `,
               showCloseButton: false,

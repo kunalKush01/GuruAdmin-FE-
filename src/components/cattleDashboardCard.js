@@ -53,10 +53,20 @@ const CattleDashboardCard = ({
         <h2
           className="cardNumber"
           title={
-            !showRupeesSymbol ? number : `₹${number.toLocaleString("en-IN")}`
+            !showRupeesSymbol
+              ? number
+              : `₹${number.toLocaleString("en-IN", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}`
           }
         >
-          {!showRupeesSymbol ? number : `₹${number.toLocaleString("en-IN")}`}
+          {!showRupeesSymbol
+            ? number
+            : `₹${number.toLocaleString("en-IN", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}`}
         </h2>
 
         {ShowSubDetails && (
@@ -67,10 +77,23 @@ const CattleDashboardCard = ({
                 {":"}{" "}
                 <span
                   className="count"
-                  title={showRupeesSymbol ? "₹" + item?.value : item?.value}
+                  title={
+                    showRupeesSymbol
+                      ? "₹" +
+                        item?.value.toLocaleString("en-IN", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })
+                      : item?.value
+                  }
                 >
-                  {showRupeesSymbol && "₹"}
-                  {item?.value}
+                  {showRupeesSymbol
+                    ? "₹" +
+                      item?.value.toLocaleString("en-IN", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })
+                    : item?.value}
                 </span>
               </p>
             ))}

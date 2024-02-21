@@ -50,16 +50,17 @@ export function setCookieWithMainDomain(name, value, mainDomain) {
 
 export const calculateAge = (dob) => {
   const today = new Date();
-  const dateOfBirth = new Date(dob);
+  const birthDate = new Date(dob);
 
-  let age = today.getFullYear() - dateOfBirth.getFullYear();
-  const monthDiff = today.getMonth() - dateOfBirth.getMonth();
-  if (
-    monthDiff < 0 ||
-    (monthDiff === 0 && today.getDate() < dateOfBirth.getDate())
-  ) {
-    age--;
-  }
+  const years = today.getFullYear() - birthDate.getFullYear();
+  const months = today.getMonth() - birthDate.getMonth();
+  const days = today.getDate() - birthDate.getDate();
 
-  return age;
+  const ageParts = [];
+
+  if (years > 0) ageParts.push(`${years} year${years > 1 ? "s" : ""}`);
+  if (months > 0) ageParts.push(`${months} month${months > 1 ? "s" : ""}`);
+  if (days > 0) ageParts.push(`${days} day${days > 1 ? "s" : ""}`);
+
+  return ageParts.join(" ");
 };

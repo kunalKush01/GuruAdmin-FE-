@@ -267,6 +267,20 @@ const AddCattleForm = ({
                       }}
                       required
                     />
+                    {formik.errors.ownerMobile && (
+                      <div
+                        style={{
+                          height: "20px",
+                          font: "normal normal bold 11px/33px Noto Sans",
+                        }}
+                      >
+                        {formik.errors.ownerMobile && (
+                          <div className="text-danger">
+                            <Trans i18nKey={formik.errors.ownerMobile} />
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </Col>
                   <Col xs={12} md={4}>
                     <CustomTextField
@@ -363,13 +377,16 @@ const AddCattleForm = ({
                       id="isDead2"
                       value="NO"
                       label="no"
+                      customOnChange={() =>
+                        formik.setFieldValue("deathReason", "")
+                      }
                     />
                   </Col>
                   {/* {formik.values.isDead === "YES" ? ( */}
                   <Row
                     className="overflow-hidden animated-height"
                     style={{
-                      height: formik.values.isDead === "YES" ? "80px" : "0px",
+                      height: formik.values.isDead === "YES" ? "95px" : "0px",
                     }}
                   >
                     <Col xs={12} md={4}>
@@ -412,12 +429,18 @@ const AddCattleForm = ({
                       id="isSold2"
                       value="NO"
                       label="no"
+                      customOnChange={() => {
+                        formik.setFieldValue("purchaserName", "");
+                        formik.setFieldValue("purchaserMobile", "");
+                        formik.setFieldValue("purchaserId", "");
+                        formik.setFieldValue("soldPrice", "");
+                      }}
                     />
                   </Col>
                   <Row
                     className="overflow-hidden animated-height"
                     style={{
-                      height: formik.values.isSold === "YES" ? "180px" : "0px",
+                      height: formik.values.isSold === "YES" ? "195px" : "0px",
                     }}
                   >
                     <Col xs={12} md={4}>
@@ -451,6 +474,20 @@ const AddCattleForm = ({
                         }}
                         required
                       />
+                      {formik.errors.purchaserMobile && (
+                        <div
+                          style={{
+                            height: "20px",
+                            font: "normal normal bold 11px/33px Noto Sans",
+                          }}
+                        >
+                          {formik.errors.purchaserMobile && (
+                            <div className="text-danger">
+                              <Trans i18nKey={formik.errors.purchaserMobile} />
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </Col>
                     <Col xs={12} md={4}>
                       <CustomTextField
@@ -499,6 +536,9 @@ const AddCattleForm = ({
                       id="isMilking2"
                       value="NO"
                       label="no"
+                      customOnChange={() => {
+                        formik.setFieldValue("milkQuantity", "");
+                      }}
                     />
                   </Col>
 
@@ -508,7 +548,7 @@ const AddCattleForm = ({
                     className="overflow-hidden animated-height"
                     style={{
                       height:
-                        formik.values.isMilking === "YES" ? "80px" : "0px",
+                        formik.values.isMilking === "YES" ? "95px" : "0px",
                     }}
                   >
                     <CustomTextField

@@ -17,28 +17,34 @@ const StockManagementTableWrapper = styled.div`
   }
 `;
 
-const StockManagementTable = ({ data = [],  maxHeight }) => {
+const StockManagementTable = ({ data = [], maxHeight }) => {
   const { t } = useTranslation();
   const columns = [
     {
       name: t("cattle_itemId"),
       selector: (row) => row?.itemID,
+      width: "200px",
     },
     {
       name: t("name"),
       selector: (row) => row?.name,
+      width: "200px",
     },
     {
       name: t("cattle_expense_current_quantity"),
       selector: (row) => row?.currentQuantity,
+      width: "200px",
     },
     {
       name: t("cattle_unit"),
       selector: (row) => row?.unit,
+      width: "200px",
     },
+
     {
       name: t("cattle_last_update"),
       selector: (row) => row?.lastUpdate,
+      width: "200px",
     },
   ];
 
@@ -58,7 +64,11 @@ const StockManagementTable = ({ data = [],  maxHeight }) => {
 
   return (
     <StockManagementTableWrapper>
-      <CustomDataTable maxHeight={maxHeight} columns={columns} data={StockData} />
+      <CustomDataTable
+        maxHeight={maxHeight}
+        columns={columns}
+        data={StockData}
+      />
     </StockManagementTableWrapper>
   );
 };

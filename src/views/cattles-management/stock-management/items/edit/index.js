@@ -85,7 +85,9 @@ const EditItem = () => {
         value: itemDetailQuery?.data?.result?.unit,
       },
       unitType: {
-        label: itemDetailQuery?.data?.result?.unitType,
+        label: ConverFirstLatterToCapital(
+          itemDetailQuery?.data?.result?.unitType?.toLowerCase() ?? ""
+        ),
         value: itemDetailQuery?.data?.result?.unitType,
       },
     };

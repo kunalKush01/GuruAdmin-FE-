@@ -155,7 +155,7 @@ export default function PunyarjakTable({
                 Swal.fire({
                   title: `<img src="${confirmationIcon}"/>`,
                   html: `
-                                    <h3 class="swal-heading">${t(
+                                    <h3 className="swal-heading">${t(
                                       "punyarjak_delete"
                                     )}</h3>
                                     <p>${t("punyarjak_sure")}</p>
