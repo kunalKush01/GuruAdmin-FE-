@@ -50,18 +50,22 @@ const StockManagementItemTable = ({
     {
       name: t("Item ID"),
       selector: (row) => row?.itemId,
+      width: "200px",
     },
     {
       name: t("Name"),
       selector: (row) => row?.name,
+      width: "200px",
     },
     {
       name: t("Unit"),
       selector: (row) => row?.unit,
+      width: "200px",
     },
     {
       name: t("Type"),
       selector: (row) => row?.unitType,
+      width: "500px",
     },
     {
       name: t(""),
@@ -82,7 +86,9 @@ const StockManagementItemTable = ({
         itemId: item?.itemId,
         name: ConverFirstLatterToCapital(item?.name ?? ""),
         unit: item?.unit,
-        unitType: item?.unitType,
+        unitType: ConverFirstLatterToCapital(
+          item?.unitType?.toLowerCase() ?? "  "
+        ),
         edit: (
           <img
             src={editIcon}
@@ -107,7 +113,7 @@ const StockManagementItemTable = ({
               Swal.fire({
                 title: `<img src="${confirmationIcon}"/>`,
                 html: `
-                                      <h3 class="swal-heading mt-1">${t(
+                                      <h3 className="swal-heading mt-1">${t(
                                         "cattle_item_delete"
                                       )}</h3>
                                       <p>${t("cattle_item_sure")}</p>

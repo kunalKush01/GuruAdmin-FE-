@@ -31,7 +31,7 @@ const PregnancyReportTable = ({
   subPermission,
   currentPage,
   currentFilter,
-  maxHeight
+  maxHeight,
 }) => {
   const { t } = useTranslation();
   const history = useHistory();
@@ -112,7 +112,7 @@ const PregnancyReportTable = ({
               Swal.fire({
                 title: `<img src="${confirmationIcon}"/>`,
                 html: `
-                                      <h3 class="swal-heading mt-1">${t(
+                                      <h3 className="swal-heading mt-1">${t(
                                         "cattle_pregnancy_delete"
                                       )}</h3>
                                       <p>${t("cattle_pregnancy_sure")}</p>
@@ -142,7 +142,11 @@ const PregnancyReportTable = ({
 
   return (
     <PregnancyTableWrapper>
-      <CustomDataTable maxHeight={maxHeight} columns={columns} data={pregnancyData} />
+      <CustomDataTable
+        maxHeight={maxHeight}
+        columns={columns}
+        data={pregnancyData}
+      />
     </PregnancyTableWrapper>
   );
 };

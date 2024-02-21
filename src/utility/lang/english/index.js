@@ -179,6 +179,7 @@ export const englishContent = {
   cattle_pregnancy_status: "Pregnancy Status",
   cattle_purpose: "Purpose",
   cattle_itemId: "Item ID",
+  cattle_itemName: "Item Name",
   cattle_expense_quantity: "Quantity",
   cattle_expense_bill_invoice: "Bill/Invoice",
   cattle_expense_bill_invoice_upload: "Upload ",
@@ -232,6 +233,11 @@ export const englishContent = {
   cattle_source_required: "Source is required",
   cattle_owner_name_required: "Owner's name is required",
   cattle_owner_id_required: "Owner's id is required",
+  cattle_deathReason_required: "Death Reason is required",
+  cattle_purchaser_name_required: "Purchaser Name is required",
+  cattle_purchaser_id_required: "Purchaser ID is required",
+  cattle_sold_price_required: "Sold Price is required",
+  cattle_milk_quantity_required: "Milk Quantity is required",
 
   // all cattle management delete messages
   cattle_cattle_delete: "Delete Cattle",

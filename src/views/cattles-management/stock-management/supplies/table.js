@@ -32,7 +32,7 @@ const SuppliesTable = ({
   subPermission,
   currentPage,
   currentFilter,
-  maxHeight
+  maxHeight,
 }) => {
   const { t } = useTranslation();
   const history = useHistory();
@@ -54,22 +54,27 @@ const SuppliesTable = ({
     {
       name: t("cattle_itemId"),
       selector: (row) => row?.itemID,
+      width: "200px",
     },
     {
       name: t("name"),
       selector: (row) => row?.name,
+      width: "200px",
     },
     {
       name: t("cattle_expense_order_quantity"),
       selector: (row) => row?.orderQuantity,
+      width: "200px",
     },
     {
       name: t("cattle_unit"),
       selector: (row) => row?.unit,
+      width: "200px",
     },
     {
       name: t("cattle_last_update"),
       selector: (row) => row?.lastUpdate,
+      width: "300px",
     },
     {
       name: t(""),
@@ -116,7 +121,7 @@ const SuppliesTable = ({
               Swal.fire({
                 title: `<img src="${confirmationIcon}"/>`,
                 html: `
-                                      <h3 class="swal-heading mt-1">${t(
+                                      <h3 className="swal-heading mt-1">${t(
                                         "cattle_supplies_delete"
                                       )}</h3>
                                       <p>${t("cattle_supplies_sure")}</p>
@@ -146,7 +151,11 @@ const SuppliesTable = ({
 
   return (
     <SuppliesTableWrapper>
-      <CustomDataTable maxHeight={maxHeight} columns={columns} data={SupplyData} />
+      <CustomDataTable
+        maxHeight={maxHeight}
+        columns={columns}
+        data={SupplyData}
+      />
     </SuppliesTableWrapper>
   );
 };

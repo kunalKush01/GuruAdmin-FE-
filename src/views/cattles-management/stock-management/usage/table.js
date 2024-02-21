@@ -11,6 +11,7 @@ import deleteIcon from "../../../../assets/images/icons/category/deleteIcon.svg"
 import editIcon from "../../../../assets/images/icons/category/editIcon.svg";
 import confirmationIcon from "../../../../assets/images/icons/news/conformationIcon.svg";
 import CustomDataTable from "../../../../components/partials/CustomDataTable";
+import { ConverFirstLatterToCapital } from "../../../../utility/formater";
 
 const UsageManagementTableWrapper = styled.div`
   color: #583703 !important;
@@ -50,22 +51,32 @@ const UsageManagementTable = ({
     {
       name: t("cattle_itemId"),
       selector: (row) => row?.itemId,
+      width: "200px",
+    },
+    {
+      name: t("cattle_itemName"),
+      selector: (row) => row?.itemName,
+      width: "200px",
     },
     {
       name: t("expenses_Date"),
       selector: (row) => row?.date,
+      width: "180px",
     },
     {
       name: t("cattle_expense_quantity"),
       selector: (row) => row?.quantity,
+      width: "200px",
     },
     {
       name: t("cattle_unit"),
       selector: (row) => row?.unit,
+      width: "200px",
     },
     {
       name: t("cattle_purpose"),
       selector: (row) => row?.purpose,
+      width: "320px",
     },
     {
       name: t(""),
@@ -84,10 +95,13 @@ const UsageManagementTable = ({
       return {
         id: idx + 1,
         itemId: item?.itemId,
+        itemName: ConverFirstLatterToCapital(item?.itemName ?? "-"),
         date: moment(item?.date).format("DD MMM YYYY"),
         quantity: item?.quantity,
         unit: item?.unit,
-        purpose: item?.purpose,
+        purpose: ConverFirstLatterToCapital(
+          item?.purpose?.replace("_", " ")?.toLowerCase() ?? ""
+        ),
         edit: (
           <img
             src={editIcon}
@@ -112,7 +126,7 @@ const UsageManagementTable = ({
               Swal.fire({
                 title: `<img src="${confirmationIcon}"/>`,
                 html: `
-                                      <h3 class="swal-heading mt-1">${t(
+                                      <h3 className="swal-heading mt-1">${t(
                                         "cattle_usage_delete"
                                       )}</h3>
                                       <p>${t("cattle_usage_sure")}</p>
