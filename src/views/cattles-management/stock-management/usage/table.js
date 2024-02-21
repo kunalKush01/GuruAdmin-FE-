@@ -76,7 +76,7 @@ const UsageManagementTable = ({
     {
       name: t("cattle_purpose"),
       selector: (row) => row?.purpose,
-      width: "320px",
+      width: "200px",
     },
     {
       name: t(""),
