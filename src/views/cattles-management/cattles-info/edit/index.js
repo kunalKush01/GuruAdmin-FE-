@@ -93,14 +93,24 @@ const EditCattle = () => {
           value: cattleDetails?.data?.result?.type,
         } ?? "",
       breed: cattleDetails?.data?.result?.breed ?? "",
-      soldDate: moment(cattleDetails?.data?.result?.soldDate).toDate(),
-      dob: moment(cattleDetails?.data?.result?.dob).toDate(),
-      purchaseDate: moment(cattleDetails?.data?.result?.purchaseDate).toDate(),
-      deathDate: moment(cattleDetails?.data?.result?.deathDate).toDate(),
-      deliveryDate: moment(cattleDetails?.data?.result?.deliveryDate).toDate(),
-      pregnancyDate: moment(
-        cattleDetails?.data?.result?.pregnancyDate
-      ).toDate(),
+      soldDate: cattleDetails?.data?.result?.soldDate
+        ? moment(cattleDetails?.data?.result?.soldDate).toDate()
+        : new Date(),
+      dob: cattleDetails?.data?.result?.dob
+        ? moment(cattleDetails?.data?.result?.dob).toDate()
+        : new Date(),
+      purchaseDate: cattleDetails?.data?.result?.purchaseDate
+        ? moment(cattleDetails?.data?.result?.purchaseDate).toDate()
+        : new Date(),
+      deathDate: cattleDetails?.data?.result?.deathDate
+        ? moment(cattleDetails?.data?.result?.deathDate).toDate()
+        : new Date(),
+      deliveryDate: cattleDetails?.data?.result?.deliveryDate
+        ? moment(cattleDetails?.data?.result?.deliveryDate).toDate()
+        : new Date(),
+      pregnancyDate: cattleDetails?.data?.result?.pregnancyDate
+        ? moment(cattleDetails?.data?.result?.pregnancyDate).toDate()
+        : new Date(),
       deathReason: cattleDetails?.data?.result?.deathReason ?? "",
       purchasePrice: cattleDetails?.data?.result?.purchasePrice ?? "",
       source:
