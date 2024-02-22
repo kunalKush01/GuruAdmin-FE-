@@ -98,7 +98,9 @@ const EditCattle = () => {
       purchaseDate: moment(cattleDetails?.data?.result?.purchaseDate).toDate(),
       deathDate: moment(cattleDetails?.data?.result?.deathDate).toDate(),
       deliveryDate: moment(cattleDetails?.data?.result?.deliveryDate).toDate(),
-      pregnantDate: moment(cattleDetails?.data?.result?.pregnantDate).toDate(),
+      pregnancyDate: moment(
+        cattleDetails?.data?.result?.pregnancyDate
+      ).toDate(),
       deathReason: cattleDetails?.data?.result?.deathReason ?? "",
       purchasePrice: cattleDetails?.data?.result?.purchasePrice ?? "",
       source:

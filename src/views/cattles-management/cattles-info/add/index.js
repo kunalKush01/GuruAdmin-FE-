@@ -122,7 +122,7 @@ const AddCattle = () => {
     purchaseDate: new Date(),
     deathDate: new Date(),
     deliveryDate: new Date(),
-    pregnantDate: new Date(),
+    pregnancyDate: new Date(),
     deathReason: "",
     purchasePrice: "",
     source: "",
