@@ -29,16 +29,14 @@ const handleCreateDonation = async (payload) => {
 const schema = Yup.object().shape({
   Mobile: Yup.string().required("expenses_mobile_required"),
   SelectedUser: Yup.mixed().required("user_select_required"),
-  donarName: Yup
-    .string()
+  donarName: Yup.string()
     .matches(
       /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
       "donation_donar_name_only_letters"
     )
     .trim(),
   SelectedMasterCategory: Yup.mixed().required("masterCategory_required"),
-  Amount: Yup
-    .string()
+  Amount: Yup.string()
     .matches(/^[1-9][0-9]*$/, "invalid_amount")
     .required("amount_required"),
 });
@@ -64,6 +62,7 @@ export default function AddDonation() {
     SelectedSubCategory: "",
     SelectedCommitmentId: "",
     Amount: "",
+    isGovernment: "NO",
     createdBy: ConverFirstLatterToCapital(loggedInUser),
   };
   return (
