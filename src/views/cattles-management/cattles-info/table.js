@@ -51,7 +51,7 @@ const CattleInfoTable = ({
 
   const columns = [
     {
-      name: t("cattle_calf_id"),
+      name: t("cattle_id"),
       selector: (row) => row.cattleId,
       width: "130px",
     },

@@ -88,6 +88,10 @@ const AddCattleForm = ({
             motherId,
             isDead,
             isPregnant,
+            soldDate,
+            deathDate,
+            deliveryDate,
+            pregnancyDate,
             isSold,
             isMilking,
             cattleImage,
@@ -99,8 +103,12 @@ const AddCattleForm = ({
             source: source?.value.toUpperCase(),
             motherId: motherId?.tagId,
             isDead: isDead == "NO" ? false : true,
+            deathDate: isDead == "YES" ? deathDate : "",
             isPregnant: isPregnant == "NO" ? false : true,
+            pregnancyDate: isPregnant == "YES" ? pregnancyDate : "",
+            deliveryDate: isPregnant == "YES" ? deliveryDate : "",
             isSold: isSold == "NO" ? false : true,
+            soldDate: isSold == "YES" ? soldDate : "",
             isMilking: isMilking == "NO" ? false : true,
             cattleImage: props.editThumbnail
               ? cattleImageName
