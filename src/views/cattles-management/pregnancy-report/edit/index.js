@@ -84,7 +84,8 @@ const EditPregnancyReport = () => {
   const initialValues = useMemo(() => {
     return {
       pregnancyId: PregnancyReportDetailQuery?.data?.result?.id,
-      cattleCalfId: PregnancyReportDetailQuery?.data?.result?.cattleId,
+      cattleId: PregnancyReportDetailQuery?.data?.result?.cattleId,
+      calfId: PregnancyReportDetailQuery?.data?.result?.calfId,
       pregnancyStatus: PregnancyReportDetailQuery?.data?.result?.status,
       pregnancyDate: moment(
         PregnancyReportDetailQuery?.data?.result?.pregnancyDate

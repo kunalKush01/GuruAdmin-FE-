@@ -197,7 +197,7 @@ const CattlesInfo = () => {
           </div>
         </div>
         <div style={{ height: "10px" }}>
-          <If condition={cattleList.isFetching && cattleList.isLoading}>
+          <If condition={cattleList.isFetching || cattleList.isLoading}>
             <Then>
               <Skeleton
                 baseColor="#ff8744"
@@ -243,8 +243,11 @@ const CattlesInfo = () => {
                 </If>
               </Else>
             </If>
-            {console.log("cattleListData", cattleListData?.data?.totalPages)}
-            <If condition={cattleList?.data?.totalPages > 1}>
+            <If
+              condition={
+                !cattleList.isFetching && cattleList?.data?.totalPages > 1
+              }
+            >
               <Then>
                 <Col xs={12} className="mb-2 d-flex justify-content-center">
                   <ReactPaginate
