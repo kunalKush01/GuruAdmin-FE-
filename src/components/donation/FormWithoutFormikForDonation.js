@@ -23,6 +23,7 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
 import { TextArea } from "../partials/CustomTextArea";
 import AsyncSelectField from "../partials/asyncSelectField";
+import CustomRadioButton from "../partials/customRadioButton";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 
@@ -310,6 +311,31 @@ export default function FormWithoutFormikForDonation({
                     required
                   />
                 </Col>
+                {!payDonation && (
+                  <Col xs={12} sm={6} lg={5} className="mb-3">
+                    <Row>
+                      <label style={{ fontSize: "15px" }}>
+                        <Trans i18nKey="is_government" />
+                      </label>
+                      <Col md={2}>
+                        <CustomRadioButton
+                          name="isGovernment"
+                          id="isGovernment1"
+                          value="YES"
+                          label="yes"
+                        />
+                      </Col>
+                      <Col md={2}>
+                        <CustomRadioButton
+                          name="isGovernment"
+                          id="isGovernment2"
+                          value="NO"
+                          label="no"
+                        />
+                      </Col>
+                    </Row>
+                  </Col>
+                )}
               </Row>
             </Col>
           </Row>

@@ -362,7 +362,7 @@ export const englishContent = {
   donation_Donation: "Donation",
   start_Time: "Start Time",
   end_Time: "End Time",
-
+  is_government: "Is Government Donor",
   donation_Adddonation: "Add Donation",
   original_amount: "Original Amount",
   estimate_amount: "Estimate Amount",
