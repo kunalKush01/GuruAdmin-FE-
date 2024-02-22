@@ -161,7 +161,8 @@ export const englishContent = {
   cattle_expense_add: "Add Expenses",
   cattle_supplies_add: "Add Supplies",
   cattle_items_add: "Add Items",
-  cattle_calf_id: "Cattle/Calf ID",
+  cattle_id: "Cattle ID",
+  calf_id: "Calf ID",
   cattle_treatment_medicine: "Treatment/Medicine",
   cattle_dosage: "Dosage",
   cattle_dr_name: "Dr. Name",
@@ -212,7 +213,7 @@ export const englishContent = {
 
   // cattle validation messages
   cattle_itemID_required: "Item ID is required",
-  cattle_id_required: "Cattle/Calf ID is required",
+  cattle_id_required: "Cattle ID is required",
   cattle_pregnancy_status_required: "Pregnancy Status is required",
   cattle_name_required: "Name is required",
   cattle_order_quantity_required: "Order Quantity is required",
@@ -556,7 +557,8 @@ export const englishContent = {
   placeHolder_location: "Enter Location",
   placeHolder_trust_facebook: "Enter Facebook Link",
   placeHolder_trust_address: "Enter Address ",
-  placeHolder_cattle_calf_id: "Select Cattle/Calf Id",
+  placeHolder_cattle_id: "Select Cattle Id",
+  placeHolder_calf_id: "Select Calf Id",
   placeHolder_cattle_treatment_medicine: "Enter Treatment/Medicine here",
   placeHolder_cattle_dosage: "Enter dosage here",
   placeHolder_cattle_dr_name: "Enter Dr. Name",

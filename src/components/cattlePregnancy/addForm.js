@@ -58,7 +58,8 @@ const AddPregnancyForm = ({
           setShowPrompt(false);
           mutation.mutate({
             pregnancyId: values?.pregnancyId,
-            cattleId: values?.cattleCalfId?._id,
+            cattleId: values?.cattleId?._id,
+            calfId: values?.calfId?._id,
             conceivingDate: values?.conceivingDate,
             pregnancyDate: values?.pregnancyDate,
             status: values?.pregnancyStatus,
@@ -84,14 +85,25 @@ const AddPregnancyForm = ({
                 <Row>
                   <Col xs={12}>
                     <AsyncSelectField
-                      name="cattleCalfId"
+                      name="cattleId"
                       labelKey="tagId"
                       valueKey="_id"
                       loadOptions={loadOption}
-                      label={t("cattle_calf_id")}
-                      placeholder={t("placeHolder_cattle_calf_id")}
+                      label={t("cattle_id")}
+                      placeholder={t("placeHolder_cattle_id")}
                       defaultOptions
                       required
+                    />
+                  </Col>
+                  <Col xs={12}>
+                    <AsyncSelectField
+                      name="calfId"
+                      labelKey="tagId"
+                      valueKey="_id"
+                      loadOptions={loadOption}
+                      label={t("calf_id")}
+                      placeholder={t("placeHolder_calf_id")}
+                      defaultOptions
                     />
                   </Col>
                   <Col xs={12}>
