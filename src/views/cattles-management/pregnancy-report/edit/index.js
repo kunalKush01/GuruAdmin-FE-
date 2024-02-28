@@ -78,7 +78,7 @@ const EditPregnancyReport = () => {
   };
 
   const schema = Yup.object().shape({
-    cattleCalfId: Yup.mixed().required("cattle_id_required"),
+    cattleId: Yup.mixed().required("cattle_id_required"),
     pregnancyStatus: Yup.string().required("cattle_pregnancy_status_required"),
   });
 

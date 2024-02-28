@@ -96,7 +96,7 @@ const CattleInfoTable = ({
     {
       name: t("cattle_age"),
       selector: (row) => row.age,
-      width: "60px",
+      width: "100px",
     },
     {
       name: t("cattle_is_pregnant"),
