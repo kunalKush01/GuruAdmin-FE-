@@ -263,6 +263,7 @@ export default function Donation() {
                 );
               }}
             />
+            
             <ChangeCategoryType
               className={"me-1"}
               categoryTypeArray={subCategoryTypes}

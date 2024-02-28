@@ -49,6 +49,7 @@ const EditPregnancyReport = () => {
 
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
+  const currentPregnancyStatus = searchParams.get("status");
   const currentFilter = searchParams.get("filter");
 
   const [langSelection, setLangSelection] = useState(
@@ -105,7 +106,7 @@ const EditPregnancyReport = () => {
             className="me-2  cursor-pointer"
             onClick={() =>
               history.push(
-                `/cattle/pregnancy-reports?page=${currentPage}&filter=${currentFilter}`
+                `/cattle/pregnancy-reports?page=${currentPage}&status=${currentPregnancyStatus}&filter=${currentFilter}`
               )
             }
           />

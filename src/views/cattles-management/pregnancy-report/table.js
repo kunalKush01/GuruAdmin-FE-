@@ -31,6 +31,7 @@ const PregnancyReportTable = ({
   subPermission,
   currentPage,
   currentFilter,
+  currentPregnancyStatus,
   maxHeight,
   height,
 }) => {
@@ -99,7 +100,7 @@ const PregnancyReportTable = ({
             className="cursor-pointer "
             onClick={() => {
               history.push(
-                `/cattle/pregnancy-reports/${item?.id}?page=${currentPage}&filter=${currentFilter}`
+                `/cattle/pregnancy-reports/${item?.id}?page=${currentPage}&status=${currentPregnancyStatus}&filter=${currentFilter}`
               );
             }}
           />

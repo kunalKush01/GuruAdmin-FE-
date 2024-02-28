@@ -46,6 +46,7 @@ export default function AddExpense() {
 
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
+  const currentExpenseType = searchParams.get("expenseType");
   const currentFilter = searchParams.get("filter");
 
   const { expensesId } = useParams();
@@ -75,7 +76,7 @@ export default function AddExpense() {
             className="me-2  cursor-pointer"
             onClick={() =>
               history.push(
-                `/internal_expenses?page=${currentPage}&filter=${currentFilter}`
+                `/internal_expenses?page=${currentPage}&expenseType=${currentExpenseType}&filter=${currentFilter}`
               )
             }
           />
