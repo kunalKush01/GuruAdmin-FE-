@@ -30,6 +30,7 @@ const UsageManagementTable = ({
   currentFilter,
   currentPage,
   maxHeight,
+  height,
 }) => {
   const { t } = useTranslation();
   const history = useHistory();
@@ -155,6 +156,7 @@ const UsageManagementTable = ({
     <UsageManagementTableWrapper>
       <CustomDataTable
         maxHeight={maxHeight}
+        height={height}
         columns={columns}
         data={usageData}
       />

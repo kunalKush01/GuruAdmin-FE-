@@ -32,6 +32,7 @@ const PregnancyReportTable = ({
   currentPage,
   currentFilter,
   maxHeight,
+  height,
 }) => {
   const { t } = useTranslation();
   const history = useHistory();
@@ -51,16 +52,19 @@ const PregnancyReportTable = ({
 
   const columns = [
     {
-      name: t("cattle_calf_id"),
+      name: t("cattle_id"),
       selector: (row) => row?.cattleId,
+      width: "200px",
     },
     {
       name: t("cattle_conceiving_date"),
       selector: (row) => row?.conceivingDate,
+      width: "200px",
     },
     {
       name: t("cattle_delivery_date"),
       selector: (row) => row?.deliveryDate,
+      width: "200px",
     },
     {
       name: t("cattle_pregnancy_status"),
@@ -145,6 +149,7 @@ const PregnancyReportTable = ({
       <CustomDataTable
         maxHeight={maxHeight}
         columns={columns}
+        height={height}
         data={pregnancyData}
       />
     </PregnancyTableWrapper>

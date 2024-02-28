@@ -89,27 +89,6 @@ const AddSuppliesForm = ({
                 <Row>
                   <Col xs={12} md={4}>
                     <AsyncSelectField
-                      name="itemId"
-                      labelKey="itemId"
-                      valueKey="itemId"
-                      loadOptions={loadOption}
-                      label={t("cattle_itemId")}
-                      onChange={(e) => {
-                        formik.setFieldValue("itemId", e);
-                        formik.setFieldValue("name", e);
-                        formik.setFieldValue("unit", {
-                          label: e?.unit,
-                          value: e?.unit,
-                        });
-                      }}
-                      placeholder={t("placeHolder_cattle_itemId")}
-                      defaultOptions
-                      required
-                    />
-                  </Col>
-
-                  <Col xs={12} md={4}>
-                    <AsyncSelectField
                       name="name"
                       labelKey="name"
                       valueKey="name"
@@ -125,6 +104,26 @@ const AddSuppliesForm = ({
                         });
                       }}
                       placeholder={t("placeHolder_cattle_item_name")}
+                      defaultOptions
+                      required
+                    />
+                  </Col>
+                  <Col xs={12} md={4}>
+                    <AsyncSelectField
+                      name="itemId"
+                      labelKey="itemId"
+                      valueKey="itemId"
+                      loadOptions={loadOption}
+                      label={t("cattle_itemId")}
+                      onChange={(e) => {
+                        formik.setFieldValue("itemId", e);
+                        formik.setFieldValue("name", e);
+                        formik.setFieldValue("unit", {
+                          label: e?.unit,
+                          value: e?.unit,
+                        });
+                      }}
+                      placeholder={t("placeHolder_cattle_itemId")}
                       defaultOptions
                       required
                     />

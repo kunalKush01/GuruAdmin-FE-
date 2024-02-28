@@ -111,26 +111,6 @@ const AddItemUsageForm = ({
                 <Row>
                   <Col xs={12} md={4}>
                     <AsyncSelectField
-                      name="itemId"
-                      labelKey="itemId"
-                      valueKey="itemId"
-                      loadOptions={loadOption}
-                      label={t("cattle_itemId")}
-                      onChange={(e) => {
-                        formik.setFieldValue("itemId", e);
-                        formik.setFieldValue("name", e);
-                        formik.setFieldValue("unit", {
-                          label: e?.unit,
-                          value: e?.unit,
-                        });
-                      }}
-                      placeholder={t("placeHolder_cattle_itemId")}
-                      defaultOptions
-                      required
-                    />
-                  </Col>
-                  <Col xs={12} md={4}>
-                    <AsyncSelectField
                       name="name"
                       labelKey="name"
                       valueKey="name"
@@ -145,6 +125,26 @@ const AddItemUsageForm = ({
                         });
                       }}
                       placeholder={t("placeHolder_cattle_item_name")}
+                      defaultOptions
+                      required
+                    />
+                  </Col>
+                  <Col xs={12} md={4}>
+                    <AsyncSelectField
+                      name="itemId"
+                      labelKey="itemId"
+                      valueKey="itemId"
+                      loadOptions={loadOption}
+                      label={t("cattle_itemId")}
+                      onChange={(e) => {
+                        formik.setFieldValue("itemId", e);
+                        formik.setFieldValue("name", e);
+                        formik.setFieldValue("unit", {
+                          label: e?.unit,
+                          value: e?.unit,
+                        });
+                      }}
+                      placeholder={t("placeHolder_cattle_itemId")}
                       defaultOptions
                       required
                     />
@@ -186,7 +186,16 @@ const AddItemUsageForm = ({
                     />
                   </Col>
                   <Col xs={12} md={4}>
-                    <FormikCustomReactSelect
+                    <CustomTextField
+                      label={t("cattle_purpose")}
+                      placeholder={t("placeHolder_cattle_purpose")}
+                      name="purpose"
+                      required
+                      onInput={(e) =>
+                        (e.target.value = e.target.value.slice(0, 30))
+                      }
+                    />
+                    {/* <FormikCustomReactSelect
                       name="purpose"
                       loadOptions={[
                         {
@@ -206,7 +215,7 @@ const AddItemUsageForm = ({
                       placeholder={t("placeHolder_cattle_purpose")}
                       required
                       width="100%"
-                    />
+                    /> */}
                   </Col>
                 </Row>
               </Col>

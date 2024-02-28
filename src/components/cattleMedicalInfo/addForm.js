@@ -98,8 +98,8 @@ const AddMedicalInfoForm = ({
                       labelKey="tagId"
                       valueKey="_id"
                       loadOptions={loadOption}
-                      label={t("cattle_calf_id")}
-                      placeholder={t("placeHolder_cattle_calf_id")}
+                      label={t("cattle_id")}
+                      placeholder={t("placeHolder_cattle_id")}
                       defaultOptions
                       required
                     />
