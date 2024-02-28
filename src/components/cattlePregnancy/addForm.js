@@ -7,13 +7,13 @@ import { Prompt, useHistory } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
 import { findAllCattle } from "../../api/cattle/cattleMedical";
-import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
-import FormikRangeDatePicker from "../partials/FormikRangeDatePicker";
 import AsyncSelectField from "../partials/asyncSelectField";
-import CustomTextField from "../partials/customTextField";
+import CustomRadioButton from "../partials/customRadioButton";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 
-const FormikWrapper = styled.div``;
+const FormikWrapper = styled.div`
+  font: normal normal bold 15px/33px Noto Sans;
+`;
 
 const AddPregnancyForm = ({
   initialValues,
@@ -107,16 +107,30 @@ const AddPregnancyForm = ({
                     />
                   </Col>
                   <Col xs={12}>
-                    <CustomTextField
-                      label={t("cattle_pregnancy_status")}
-                      placeholder={t("placeHolder_cattle_pregnancy_status")}
-                      name="pregnancyStatus"
-                      required
-                      autoFocus
-                      onInput={(e) =>
-                        (e.target.value = e.target.value.slice(0, 30))
-                      }
-                    />
+                    <Row>
+                      <label>
+                        <Trans i18nKey="cattle_pregnancy_status" />
+                      </label>
+                      <Col md={3}>
+                        <CustomRadioButton
+                          name="pregnancyStatus"
+                          id="pregnancyStatus1"
+                          value="YES"
+                          label="yes"
+                        />
+                      </Col>
+                      <Col md={3}>
+                        <CustomRadioButton
+                          name="pregnancyStatus"
+                          id="pregnancyStatus2"
+                          value="NO"
+                          label="no"
+                          customOnChange={() =>
+                            formik.setFieldValue("deathReason", "")
+                          }
+                        />
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
               </Col>
@@ -128,7 +142,7 @@ const AddPregnancyForm = ({
               </Col>
               <Col xs={12} md={3}>
                 <FormikCustomDatePicker
-                  label={t("cattle_pregnancy_date")}
+                  label={t("cattle_delivery_date")}
                   name="pregnancyDate"
                 />
               </Col>

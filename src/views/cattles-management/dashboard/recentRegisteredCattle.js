@@ -37,7 +37,7 @@ export default function RecentRegisteredCattlesTable({ data }) {
 
   const columns = [
     {
-      name: t("cattle_calf_id"),
+      name: t("cattle_id"),
       selector: (row) => row.cattleId,
     },
     {

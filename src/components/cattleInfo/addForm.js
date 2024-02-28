@@ -6,7 +6,10 @@ import { Trans, useTranslation } from "react-i18next";
 import { Prompt, useHistory } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
-import { findAllCattle } from "../../api/cattle/cattleMedical";
+import {
+  findAllCattle,
+  findAllCattleBreed,
+} from "../../api/cattle/cattleMedical";
 import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
 
 import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
@@ -33,6 +36,7 @@ const AddCattleForm = ({
   getPurchaserMobile,
   handleSubmit,
   cattleType,
+  breedType,
   cattleSource,
   buttonName,
   ...props
@@ -56,6 +60,11 @@ const AddCattleForm = ({
 
   const loadOption = async (tagId) => {
     const res = await findAllCattle({ cattleId: tagId });
+    return res.results;
+  };
+
+  const breedLoadOption = async (breed) => {
+    const res = await findAllCattleBreed({ name: breed });
     return res.results;
   };
 
@@ -165,7 +174,7 @@ const AddCattleForm = ({
                   </Col>
                   <Col xs={12} md={4}>
                     <FormikCustomReactSelect
-                      labelName={t("dashboard_Recent_DonorType")}
+                      labelName={t("categories_select_category")}
                       placeholder={t("placeholder_cattle_type")}
                       name="type"
                       width="100%"
@@ -174,14 +183,15 @@ const AddCattleForm = ({
                     />
                   </Col>
                   <Col xs={12} md={4}>
-                    <CustomTextField
+                    <AsyncSelectField
+                      name="breed"
+                      labelKey="name"
+                      valueKey="_id"
+                      loadOptions={breedLoadOption}
                       label={t("cattle_breed")}
                       placeholder={t("placeHolder_cattle_breed")}
-                      name="breed"
+                      defaultOptions
                       required
-                      onInput={(e) =>
-                        (e.target.value = e.target.value.slice(0, 30))
-                      }
                     />
                   </Col>
                 </Row>
@@ -367,164 +377,171 @@ const AddCattleForm = ({
                   </Col>
                 </Row>
                 {/* fifth row */}
-                <Row className="pt-2">
-                  <label>
-                    <Trans i18nKey="cattle_is_dead" />
-                  </label>
-                  <Col md={1}>
-                    <CustomRadioButton
-                      name="isDead"
-                      id="isDead1"
-                      value="YES"
-                      label="yes"
-                    />
-                  </Col>
-                  <Col md={10}>
-                    <CustomRadioButton
-                      name="isDead"
-                      id="isDead2"
-                      value="NO"
-                      label="no"
-                      customOnChange={() =>
-                        formik.setFieldValue("deathReason", "")
-                      }
-                    />
-                  </Col>
-                  {/* {formik.values.isDead === "YES" ? ( */}
-                  <Row
-                    className="overflow-hidden animated-height"
-                    style={{
-                      height: formik.values.isDead === "YES" ? "95px" : "0px",
-                    }}
-                  >
-                    <Col xs={12} md={4}>
-                      <FormikCustomDatePicker
-                        name="deathDate"
-                        inline={false}
-                        label={t("cattle_date_death")}
-                        dateFormat=" dd-MM-yyyy"
+                {props.editThumbnail && (
+                  <Row className="pt-2">
+                    <label>
+                      <Trans i18nKey="cattle_is_dead" />
+                    </label>
+                    <Col md={1}>
+                      <CustomRadioButton
+                        name="isDead"
+                        id="isDead1"
+                        value="YES"
+                        label="yes"
                       />
                     </Col>
-                    <Col xs={12} md={8}>
-                      <CustomTextField
-                        label={t("cattle_death_reason")}
-                        placeholder={t("placeHolder_cattle_death_reason")}
-                        name="deathReason"
-                        required
+                    <Col md={10}>
+                      <CustomRadioButton
+                        name="isDead"
+                        id="isDead2"
+                        value="NO"
+                        label="no"
+                        customOnChange={() =>
+                          formik.setFieldValue("deathReason", "")
+                        }
                       />
                     </Col>
-                  </Row>
-                  {/* ) : (
+                    {/* {formik.values.isDead === "YES" ? ( */}
+                    <Row
+                      className="overflow-hidden animated-height"
+                      style={{
+                        height: formik.values.isDead === "YES" ? "95px" : "0px",
+                      }}
+                    >
+                      <Col xs={12} md={4}>
+                        <FormikCustomDatePicker
+                          name="deathDate"
+                          inline={false}
+                          label={t("cattle_date_death")}
+                          dateFormat=" dd-MM-yyyy"
+                        />
+                      </Col>
+                      <Col xs={12} md={8}>
+                        <CustomTextField
+                          label={t("cattle_death_reason")}
+                          placeholder={t("placeHolder_cattle_death_reason")}
+                          name="deathReason"
+                          required
+                        />
+                      </Col>
+                    </Row>
+                    {/* ) : (
                     ""
                   )} */}
-                </Row>
-                {/* sixth row */}
-                <Row className="pt-2">
-                  <label>
-                    <Trans i18nKey="cattle_is_sold" />
-                  </label>
-                  <Col md={1}>
-                    <CustomRadioButton
-                      name="isSold"
-                      id="isSold1"
-                      value="YES"
-                      label="yes"
-                    />
-                  </Col>
-                  <Col md={10}>
-                    <CustomRadioButton
-                      name="isSold"
-                      id="isSold2"
-                      value="NO"
-                      label="no"
-                      customOnChange={() => {
-                        formik.setFieldValue("purchaserName", "");
-                        formik.setFieldValue("purchaserMobile", "");
-                        formik.setFieldValue("purchaserId", "");
-                        formik.setFieldValue("soldPrice", "");
-                      }}
-                    />
-                  </Col>
-                  <Row
-                    className="overflow-hidden animated-height"
-                    style={{
-                      height: formik.values.isSold === "YES" ? "195px" : "0px",
-                    }}
-                  >
-                    <Col xs={12} md={4}>
-                      <CustomTextField
-                        label={t("cattle_purchaser_name")}
-                        placeholder={t("placeHolder_cattle_purchaser_name")}
-                        name="purchaserName"
-                        required
-                      />
-                    </Col>
-                    <Col xs={12} md={4}>
-                      <CustomCountryMobileNumberField
-                        value={purchaserNumber}
-                        defaultCountry={countryFlag}
-                        label={t("cattle_purchaser_number")}
-                        placeholder={t("placeHolder_cattle_purchaser_number")}
-                        onChange={(phone, country) => {
-                          setPurchaserNumber(phone);
-                          formik.setFieldValue(
-                            "purchaserCountryName",
-                            country?.countryCode
-                          );
-                          formik.setFieldValue(
-                            "purchaserCountryCode",
-                            country?.dialCode
-                          );
-                          formik.setFieldValue(
-                            "purchaserMobile",
-                            phone?.replace(country?.dialCode, "")
-                          );
-                        }}
-                        required
-                      />
-                      {formik.errors.purchaserMobile && (
-                        <div
-                          style={{
-                            height: "20px",
-                            font: "normal normal bold 11px/33px Noto Sans",
-                          }}
-                        >
-                          {formik.errors.purchaserMobile && (
-                            <div className="text-danger">
-                              <Trans i18nKey={formik.errors.purchaserMobile} />
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </Col>
-                    <Col xs={12} md={4}>
-                      <CustomTextField
-                        label={t("cattle_purchaser_id")}
-                        placeholder={t("placeHolder_cattle_purchaser_id")}
-                        name="purchaserId"
-                        required
-                      />
-                    </Col>
-
-                    <Col xs={12} md={4}>
-                      <FormikCustomDatePicker
-                        name="soldDate"
-                        inline={false}
-                        label={t("cattle_sold_date")}
-                        dateFormat=" dd-MM-yyyy"
-                      />
-                    </Col>
-                    <Col xs={12} md={4}>
-                      <CustomTextField
-                        label={t("cattle_sold_price")}
-                        type="number"
-                        placeholder={t("placeHolder_cattle_sold_price")}
-                        name="soldPrice"
-                        required
-                      />
-                    </Col>
                   </Row>
-                </Row>
+                )}
+                {/* sixth row */}
+                {props.editThumbnail && (
+                  <Row className="pt-2">
+                    <label>
+                      <Trans i18nKey="cattle_is_sold" />
+                    </label>
+                    <Col md={1}>
+                      <CustomRadioButton
+                        name="isSold"
+                        id="isSold1"
+                        value="YES"
+                        label="yes"
+                      />
+                    </Col>
+                    <Col md={10}>
+                      <CustomRadioButton
+                        name="isSold"
+                        id="isSold2"
+                        value="NO"
+                        label="no"
+                        customOnChange={() => {
+                          formik.setFieldValue("purchaserName", "");
+                          formik.setFieldValue("purchaserMobile", "");
+                          formik.setFieldValue("purchaserId", "");
+                          formik.setFieldValue("soldPrice", "");
+                        }}
+                      />
+                    </Col>
+                    <Row
+                      className="overflow-hidden animated-height"
+                      style={{
+                        height:
+                          formik.values.isSold === "YES" ? "195px" : "0px",
+                      }}
+                    >
+                      <Col xs={12} md={4}>
+                        <CustomTextField
+                          label={t("cattle_purchaser_name")}
+                          placeholder={t("placeHolder_cattle_purchaser_name")}
+                          name="purchaserName"
+                          required
+                        />
+                      </Col>
+                      <Col xs={12} md={4}>
+                        <CustomCountryMobileNumberField
+                          value={purchaserNumber}
+                          defaultCountry={countryFlag}
+                          label={t("cattle_purchaser_number")}
+                          placeholder={t("placeHolder_cattle_purchaser_number")}
+                          onChange={(phone, country) => {
+                            setPurchaserNumber(phone);
+                            formik.setFieldValue(
+                              "purchaserCountryName",
+                              country?.countryCode
+                            );
+                            formik.setFieldValue(
+                              "purchaserCountryCode",
+                              country?.dialCode
+                            );
+                            formik.setFieldValue(
+                              "purchaserMobile",
+                              phone?.replace(country?.dialCode, "")
+                            );
+                          }}
+                          required
+                        />
+                        {formik.errors.purchaserMobile && (
+                          <div
+                            style={{
+                              height: "20px",
+                              font: "normal normal bold 11px/33px Noto Sans",
+                            }}
+                          >
+                            {formik.errors.purchaserMobile && (
+                              <div className="text-danger">
+                                <Trans
+                                  i18nKey={formik.errors.purchaserMobile}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </Col>
+                      <Col xs={12} md={4}>
+                        <CustomTextField
+                          label={t("cattle_purchaser_id")}
+                          placeholder={t("placeHolder_cattle_purchaser_id")}
+                          name="purchaserId"
+                          required
+                        />
+                      </Col>
+
+                      <Col xs={12} md={4}>
+                        <FormikCustomDatePicker
+                          name="soldDate"
+                          inline={false}
+                          label={t("cattle_sold_date")}
+                          dateFormat=" dd-MM-yyyy"
+                        />
+                      </Col>
+                      <Col xs={12} md={4}>
+                        <CustomTextField
+                          label={t("cattle_sold_price")}
+                          type="number"
+                          placeholder={t("placeHolder_cattle_sold_price")}
+                          name="soldPrice"
+                          required
+                        />
+                      </Col>
+                    </Row>
+                  </Row>
+                )}
                 {/* seventh row */}
                 <Row className="pt-2">
                   <label>

@@ -30,6 +30,7 @@ const CattleInfoTableWrapper = styled.div`
 const CattleInfoTable = ({
   data = [],
   maxHeight,
+  height,
   currentFilter,
   currentPage,
 }) => {
@@ -61,17 +62,17 @@ const CattleInfoTable = ({
       center: true,
       width: "130px",
     },
-    {
-      name: t("cattle_owner_photo"),
-      selector: (row) => row.ownerPhoto,
-      center: true,
-      width: "140px",
-    },
-    {
-      name: t("cattle_owner_id"),
-      selector: (row) => row.ownerId,
-      width: "130px",
-    },
+    // {
+    //   name: t("cattle_owner_photo"),
+    //   selector: (row) => row.ownerPhoto,
+    //   center: true,
+    //   width: "140px",
+    // },
+    // {
+    //   name: t("cattle_owner_id"),
+    //   selector: (row) => row.ownerId,
+    //   width: "130px",
+    // },
     {
       name: t("dashboard_Recent_DonorType"),
       selector: (row) => row.type,
@@ -232,6 +233,7 @@ const CattleInfoTable = ({
     <CattleInfoTableWrapper>
       <CustomDataTable
         maxHeight={maxHeight}
+        height={height}
         columns={columns}
         data={CattlesInfo}
       />

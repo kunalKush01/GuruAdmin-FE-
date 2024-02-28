@@ -43,7 +43,9 @@ const Stocks = ({
             <Then>
               <StockManagementTable
                 data={list}
-                maxHeight="220px"
+                height='160px'
+                // maxHeight="220px"
+
                 // allPermissions={allPermissions}
                 // subPermission={subPermission}
               />

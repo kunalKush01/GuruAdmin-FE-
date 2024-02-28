@@ -120,7 +120,7 @@ const CattlesDashboard = () => {
 
       <div className="d-flex gap-5 mt-2 mb-3">
         <CattleDashboardCard
-          ShowSubDetails
+          // ShowSubDetails
           title="Total Registered Cattles"
           number={dashboardData?.data?.totalCattles?.totalCattle ?? 0}
           data={[
@@ -160,7 +160,7 @@ const CattlesDashboard = () => {
               value: dashboardData?.data?.privateDonationReceived ?? 0,
             },
             {
-              heading: "Govt Donors",
+              heading: "Govt aid",
               value: dashboardData?.data?.govDonationReceived ?? 0,
             },
           ]}

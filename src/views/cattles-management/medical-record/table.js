@@ -31,6 +31,7 @@ const MedicalReportTable = ({
   currentPage,
   currentFilter,
   maxHeight,
+  height,
 }) => {
   const { t } = useTranslation();
   const history = useHistory();
@@ -49,32 +50,44 @@ const MedicalReportTable = ({
 
   const columns = [
     {
-      name: t("cattle_calf_id"),
+      name: t("cattle_id"),
       selector: (row) => row.cattleId,
+      width: "130px",
     },
     {
       name: t("expenses_Date"),
       selector: (row) => row.date,
+      width: "130px",
     },
     {
       name: t("cattle_treatment_medicine"),
       selector: (row) => row.medicine,
+      width: "180px",
     },
     {
       name: t("cattle_dosage"),
       selector: (row) => row.dosage,
+      width: "150px",
     },
     {
       name: t("cattle_dr_name"),
       selector: (row) => row.drName,
+      width: "130px",
     },
     {
       name: t("dashboard_Recent_DonorNumber"),
       selector: (row) => row.mobileNumber,
+      width: "150px",
     },
     {
       name: t("cattle_symptoms"),
       selector: (row) => row.symptoms,
+      width: "130px",
+    },
+    {
+      name: t("cattle_fees"),
+      selector: (row) => row.medicalExpense,
+      width: "150px",
     },
     {
       name: t(""),
@@ -97,6 +110,7 @@ const MedicalReportTable = ({
         medicine: item?.medicine,
         dosage: item?.dosage ?? "N/A",
         drName: item?.doctorName,
+        medicalExpense: `₹${item?.expenseAmount.toLocaleString("en-IN")}`,
         mobileNumber: `+${item?.countryCode?.replace("+", "") ?? "91"} ${
           item?.doctorNumber
         }`,
@@ -159,6 +173,7 @@ const MedicalReportTable = ({
       <CustomDataTable
         maxHeight={maxHeight}
         columns={columns}
+        height={height}
         data={MedicalReportData}
       />
     </MedicalTableWrapper>

@@ -220,7 +220,7 @@ const CattlesInfo = () => {
               <Then>
                 <CattleInfoTable
                   data={cattleListData}
-                  maxHeight="220px"
+                  height="160px"
                   currentFilter={dropDownName}
                   currentPage={pagination.page}
                   // allPermissions={allPermissions}
@@ -249,7 +249,7 @@ const CattlesInfo = () => {
               }
             >
               <Then>
-                <Col xs={12} className="mb-2 d-flex justify-content-center">
+                <Col xs={12} className=" d-flex justify-content-center">
                   <ReactPaginate
                     nextLabel=""
                     forcePage={pagination.page - 1}

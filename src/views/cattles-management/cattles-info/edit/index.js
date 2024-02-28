@@ -158,7 +158,7 @@ const EditCattle = () => {
             }
           />
           <div className="editEvent">
-            <Trans i18nKey={"cattle_edit_medical"} />
+            <Trans i18nKey={"cattle_edit_cattle"} />
           </div>
         </div>
         {/* <div className="editEvent">

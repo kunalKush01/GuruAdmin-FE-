@@ -39,7 +39,7 @@ const AddPregnancy = () => {
   const initialValues = {
     cattleId: "",
     calfId: "",
-    pregnancyStatus: "",
+    pregnancyStatus: "NO",
     pregnancyDate: new Date(),
     conceivingDate: new Date(),
   };
