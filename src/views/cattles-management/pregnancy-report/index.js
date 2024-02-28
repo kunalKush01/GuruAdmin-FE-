@@ -14,6 +14,7 @@ import { getCattlesPregnancyList } from "../../../api/cattle/cattlePregnancy";
 import { ChangePeriodDropDown } from "../../../components/partials/changePeriodDropDown";
 import NoContent from "../../../components/partials/noContent";
 import PregnancyReportTable from "./table";
+import { ChangeCategoryType } from "../../../components/partials/categoryDropdown";
 
 const PregnancyReportWrapper = styled.div`
   color: #583703;
@@ -30,6 +31,7 @@ const PregnancyReport = () => {
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
+  const [pregnancyStatus, setPregnancyStatus] = useState(t("all"));
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 10,
@@ -37,11 +39,13 @@ const PregnancyReport = () => {
 
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
+  const currentPregnancyStatus = searchParams.get("status");
   const currentFilter = searchParams.get("filter");
 
   useEffect(() => {
-    if (currentPage || currentFilter) {
+    if (currentPage || currentFilter || currentPregnancyStatus) {
       setdropDownName(currentFilter);
+      setPregnancyStatus(currentPregnancyStatus);
       setPagination({ ...pagination, page: parseInt(currentPage) });
     }
   }, []);
@@ -73,6 +77,7 @@ const PregnancyReport = () => {
     [
       "cattlePregnancyList",
       filterStartDate,
+      pregnancyStatus,
       filterEndDate,
       pagination?.page,
       selectedLang.id,
@@ -84,6 +89,7 @@ const PregnancyReport = () => {
         search: searchBarValue,
         startDate: filterStartDate,
         endDate: filterEndDate,
+        status: pregnancyStatus?.toUpperCase(),
         languageId: selectedLang.id,
       })
   );
@@ -100,6 +106,34 @@ const PregnancyReport = () => {
           <Trans i18nKey="cattle_pregnancy_report" />
 
           <div className="d-flex mt-1 mt-sm-0 justify-content-between">
+            <ChangeCategoryType
+              className={"me-1"}
+              categoryTypeArray={[
+                {
+                  id: 1,
+                  name: t("all"),
+                },
+                {
+                  id: 2,
+                  name: t("yes"),
+                },
+                {
+                  id: 2,
+                  name: t("no"),
+                },
+              ]}
+              typeName={pregnancyStatus}
+              setTypeName={(e) => {
+                setPregnancyStatus(e.target.name);
+                setPagination({ page: 1 });
+                history.push(
+                  `/cattle/pregnancy-reports?page=${1}&status=${
+                    e.target.name
+                  }&filter=${dropDownName}`
+                );
+              }}
+            />
+
             <ChangePeriodDropDown
               className={"me-1"}
               dropDownName={dropDownName}
@@ -107,7 +141,9 @@ const PregnancyReport = () => {
                 setdropDownName(e.target.name);
                 setPagination({ page: 1 });
                 history.push(
-                  `/cattle/pregnancy-reports?page=${1}&filter=${e.target.name}`
+                  `/cattle/pregnancy-reports?page=${1}&status=${pregnancyStatus}&filter=${
+                    e.target.name
+                  }`
                 );
               }}
             />
@@ -117,7 +153,7 @@ const PregnancyReport = () => {
               color="primary"
               onClick={() =>
                 history.push(
-                  `/cattle/pregnancy-reports/add?page=${pagination.page}&filter=${dropDownName}`
+                  `/cattle/pregnancy-reports/add?page=${pagination.page}&status=${pregnancyStatus}&filter=${dropDownName}`
                 )
               }
             >
@@ -162,6 +198,7 @@ const PregnancyReport = () => {
                 <PregnancyReportTable
                   data={cattlePregnancyListData}
                   currentFilter={dropDownName}
+                  currentPregnancyStatus={pregnancyStatus}
                   // maxHeight="220px"
                   height="160px"
                   currentPage={pagination.page}
@@ -215,7 +252,7 @@ const PregnancyReport = () => {
                       history.push(
                         `/cattle/pregnancy-reports?page=${
                           page.selected + 1
-                        }&filter=${dropDownName}`
+                        }&status=${pregnancyStatus}&filter=${dropDownName}`
                       );
                     }}
                     containerClassName={

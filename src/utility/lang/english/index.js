@@ -133,6 +133,9 @@ export const englishContent = {
 
   // All static content of Cattles
   cattles_management: "Cattle Management",
+  cattle_expense_type_assets: "Assets",
+  cattle_expense_type_consumable: "Consumable",
+  cattle_expense_type_general: "General",
   cattle_info: "Cattle Info",
   cattle_photo: "Cow's Photo",
   cattle_owner_photo: "Owner's Photo",

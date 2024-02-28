@@ -23,8 +23,10 @@ const PregnancyAddWraper = styled.div`
 
 const AddPregnancy = () => {
   const history = useHistory();
+
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
+  const currentPregnancyStatus = searchParams.get("status");
   const currentFilter = searchParams.get("filter");
 
   const handleCreatePregnancyReport = async (payload) => {
@@ -53,7 +55,7 @@ const AddPregnancy = () => {
             className="me-2  cursor-pointer"
             onClick={() =>
               history.push(
-                `/cattle/pregnancy-reports?page=${currentPage}&filter=${currentFilter}`
+                `/cattle/pregnancy-reports?page=${currentPage}&status=${currentPregnancyStatus}&filter=${currentFilter}`
               )
             }
           />

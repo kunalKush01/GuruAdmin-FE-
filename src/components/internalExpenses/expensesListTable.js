@@ -21,6 +21,7 @@ export function ExpensesListTable({
   page,
   currentFilter,
   currentPage,
+  currentExpenseFilter,
   financeReport,
   subPermission,
   allPermissions,
@@ -116,7 +117,7 @@ export function ExpensesListTable({
               financeReport
                 ? ""
                 : history.push(
-                    `/internal_expenses/edit/${item.id}?page=${currentPage}&filter=${currentFilter}`
+                    `/internal_expenses/edit/${item.id}?page=${currentPage}&expenseType=${currentExpenseFilter}&filter=${currentFilter}`
                   );
             }}
           />

@@ -21,7 +21,7 @@ import exportIcon from "../../../assets/images/icons/exportIcon.svg";
 import { ChangePeriodDropDown } from "../../../components/partials/changePeriodDropDown";
 import NoContent from "../../../components/partials/noContent";
 import { handleExport } from "../../../utility/utils/exportTabele";
-import { exportCattleJson } from "./exportableJsonData";
+import { exportCattleJson, exportCattleJsonSample } from "./exportableJsonData";
 import CattleInfoTable from "./table";
 
 const CattleInfo = styled.div`
@@ -167,7 +167,19 @@ const CattlesInfo = () => {
             >
               Import File
             </Button>
-
+            {/* <Button
+              color="primary"
+              className="me-1"
+              onClick={() =>
+                handleExport({
+                  dataName: exportCattleJsonSample([]),
+                  fileName: "Sample Cattles List",
+                  sheetName: "Sample Cattles List",
+                })
+              }
+            >
+              Sample File
+            </Button> */}
             <Button
               color="primary"
               onClick={() =>
