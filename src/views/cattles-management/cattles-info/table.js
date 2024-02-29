@@ -32,6 +32,8 @@ const CattleInfoTable = ({
   maxHeight,
   height,
   currentFilter,
+  // currentBreed,
+  currentStatus,
   currentPage,
 }) => {
   const { t } = useTranslation();
@@ -187,7 +189,7 @@ const CattleInfoTable = ({
             className="cursor-pointer "
             onClick={() => {
               history.push(
-                `/cattle/info/${item?._id}?page=${currentPage}&filter=${currentFilter}`
+                `/cattle/info/${item?._id}?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
               );
             }}
           />
@@ -204,7 +206,7 @@ const CattleInfoTable = ({
               Swal.fire({
                 title: `<img src="${confirmationIcon}"/>`,
                 html: `
-                                      <h3 className="swal-heading mt-1">${t(
+                                      <h3 class="swal-heading mt-1">${t(
                                         "cattle_cattle_delete"
                                       )}</h3>
                                       <p>${t("cattle_cattle_sure")}</p>

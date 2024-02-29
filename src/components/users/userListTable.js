@@ -123,7 +123,7 @@ export function SubAdminUserListTable({
               Swal.fire({
                 title: `<img src="${confirmationIcon}"/>`,
                 html: `
-                                  <h3 className="swal-heading">Delete Sub Admin</h3>
+                                  <h3 class="swal-heading">Delete Sub Admin</h3>
                                   <p>Are you sure you want to permanently delete the selected sub admin ?</p>
                                   `,
                 showCloseButton: false,

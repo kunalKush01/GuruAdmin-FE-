@@ -1,21 +1,20 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import moment from "moment";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Swal from "sweetalert2";
-
-import { deletePregnancy } from "../../../api/cattle/cattlePregnancy";
+import { deleteCattleCategory } from "../../../api/cattle/cattleCategory";
 import deleteIcon from "../../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../../assets/images/icons/category/editIcon.svg";
 import confirmationIcon from "../../../assets/images/icons/news/conformationIcon.svg";
 import CustomDataTable from "../../../components/partials/CustomDataTable";
-import { DELETE } from "../../../utility/permissionsVariable";
+import { ConverFirstLatterToCapital } from "../../../utility/formater";
 
-const PregnancyTableWrapper = styled.div`
+const CattleCategoryTableWrapper = styled.div`
   color: #583703 !important;
+  margin-bottom: 1rem;
   font: normal normal bold 15px/23px Noto Sans;
+
   .modal-body {
     max-height: 600px !important;
     overflow: auto !important;
@@ -25,56 +24,33 @@ const PregnancyTableWrapper = styled.div`
   }
 `;
 
-const PregnancyReportTable = ({
-  data = [],
-  allPermissions,
-  subPermission,
-  currentPage,
-  currentFilter,
-  currentPregnancyStatus,
-  maxHeight,
-  height,
-}) => {
+const CattleCategoryTable = ({ data = [], maxHeight, height, toggle }) => {
   const { t } = useTranslation();
-  const history = useHistory();
 
-  const handleDeletePregnancy = async (payload) => {
-    return deletePregnancy(payload);
+  const handleDeleteCattleCategory = async (payload) => {
+    return deleteCattleCategory(payload);
   };
+
   const queryClient = useQueryClient();
   const deleteMutation = useMutation({
-    mutationFn: handleDeletePregnancy,
+    mutationFn: handleDeleteCattleCategory,
     onSuccess: (data) => {
       if (!data.error) {
-        queryClient.invalidateQueries(["cattlePregnancyList"]);
+        queryClient.invalidateQueries(["cattleCategoryList"]);
       }
     },
   });
 
   const columns = [
     {
-      name: t("cattle_id"),
-      selector: (row) => row?.cattleId,
-      width: "200px",
-    },
-    {
-      name: t("cattle_conceiving_date"),
-      selector: (row) => row?.conceivingDate,
-      width: "200px",
-    },
-    {
-      name: t("cattle_delivery_date"),
-      selector: (row) => row?.deliveryDate,
-      width: "200px",
-    },
-    {
-      name: t("cattle_pregnancy_status"),
-      selector: (row) => row?.pregnancyStatus,
+      name: t("name"),
+      selector: (row) => row.name,
+      width: "87%",
     },
     {
       name: t(""),
       selector: (row) => row.edit,
-      width: "100px",
+      width: "80px",
     },
     {
       name: t(""),
@@ -83,26 +59,17 @@ const PregnancyReportTable = ({
     },
   ];
 
-  const pregnancyData = useMemo(() => {
+  const CattleCategoryList = useMemo(() => {
     return data?.map((item, idx) => {
       return {
         id: idx + 1,
-        cattleId: item?.tagId,
-        conceivingDate: moment(item?.conceivingDate).format("DD MMM YYYY"),
-        deliveryDate: item?.deliveryDate
-          ? moment(item?.deliveryDate).format("DD MMM YYYY")
-          : "N/A",
-        pregnancyStatus: item?.status,
+        name: ConverFirstLatterToCapital(item?.name ?? ""),
         edit: (
           <img
             src={editIcon}
             width={35}
             className="cursor-pointer "
-            onClick={() => {
-              history.push(
-                `/cattle/pregnancy-reports/${item?.id}?page=${currentPage}&status=${currentPregnancyStatus}&filter=${currentFilter}`
-              );
-            }}
+            onClick={() => toggle({ addCattleCategory: false, ...item })}
           />
         ),
         delete: (
@@ -118,9 +85,9 @@ const PregnancyReportTable = ({
                 title: `<img src="${confirmationIcon}"/>`,
                 html: `
                                       <h3 class="swal-heading mt-1">${t(
-                                        "cattle_pregnancy_delete"
+                                        "category_delete"
                                       )}</h3>
-                                      <p>${t("cattle_pregnancy_sure")}</p>
+                                      <p>${t("category_sure")}</p>
                                       `,
                 showCloseButton: false,
                 showCancelButton: true,
@@ -132,29 +99,26 @@ const PregnancyReportTable = ({
                 confirmButtonAriaLabel: "Confirm",
               }).then(async (result) => {
                 if (result.isConfirmed) {
-                  deleteMutation.mutate(item.id);
+                  deleteMutation.mutate(item._id);
                 }
               });
             }}
           />
         ),
-        // ) : (
-        //   ""
-        // ),
       };
     });
   }, [data]);
 
   return (
-    <PregnancyTableWrapper>
+    <CattleCategoryTableWrapper>
       <CustomDataTable
         maxHeight={maxHeight}
-        columns={columns}
         height={height}
-        data={pregnancyData}
+        columns={columns}
+        data={CattleCategoryList}
       />
-    </PregnancyTableWrapper>
+    </CattleCategoryTableWrapper>
   );
 };
 
-export default PregnancyReportTable;
+export default CattleCategoryTable;

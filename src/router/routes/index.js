@@ -490,6 +490,27 @@ const Routes = [
     type: "configuration",
     subPermission: READ,
   },
+
+  {
+    path: "/configuration/cattle-breed",
+    component: lazy(() =>
+      import("../../views/cattles-management/cattle-breed/index.js")
+    ),
+    exact: true,
+    type: "configuration",
+    subPermission: READ,
+  },
+
+  {
+    path: "/configuration/cattle-category",
+    component: lazy(() =>
+      import("../../views/cattles-management/cattle-category/index.js")
+    ),
+    exact: true,
+    type: "configuration",
+    subPermission: READ,
+  },
+
   {
     path: "/internal_expenses",
     component: lazy(() => import("../../views/internalExpenses/expensesList")),

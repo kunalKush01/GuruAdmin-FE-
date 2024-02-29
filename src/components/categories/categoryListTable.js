@@ -146,7 +146,7 @@ export function CategoryListTable({
               Swal.fire({
                 title: `<img src="${confirmationIcon}"/>`,
                 html: `
-                                  <h3 className="swal-heading mt-1">${t(
+                                  <h3 class="swal-heading mt-1">${t(
                                     "category_delete"
                                   )}</h3>
                                   <p>${t("category_sure")}</p>
