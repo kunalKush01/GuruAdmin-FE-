@@ -63,6 +63,28 @@ function BtnContent({ setClosePopover }) {
           className="col-item"
           onClick={() => {
             setClosePopover(false);
+            history.push(`/configuration/cattle-breed`);
+          }}
+        >
+          <Trans i18nKey={"cattles"} /> <Trans i18nKey={"cattle_breed"} />
+        </Col>
+
+        <Col
+          xs={12}
+          className="col-item"
+          onClick={() => {
+            setClosePopover(false);
+            history.push(`/configuration/cattle-category`);
+          }}
+        >
+          <Trans i18nKey={"cattles"} /> <Trans i18nKey={"category"} />
+        </Col>
+
+        <Col
+          xs={12}
+          className="col-item"
+          onClick={() => {
+            setClosePopover(false);
             history.push(`/configuration/users`);
           }}
         >

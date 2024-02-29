@@ -122,7 +122,7 @@ const SuppliesTable = ({
               Swal.fire({
                 title: `<img src="${confirmationIcon}"/>`,
                 html: `
-                                      <h3 className="swal-heading mt-1">${t(
+                                      <h3 class="swal-heading mt-1">${t(
                                         "cattle_supplies_delete"
                                       )}</h3>
                                       <p>${t("cattle_supplies_sure")}</p>

@@ -63,6 +63,8 @@ const AddCattle = () => {
   const history = useHistory();
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
+  const currentStatus = searchParams.get("status");
+  // const currentBreed = searchParams.get("breed");
   const currentFilter = searchParams.get("filter");
 
   const handleCreateCattleInfo = async (payload) => {
@@ -156,7 +158,7 @@ const AddCattle = () => {
             className="me-2  cursor-pointer"
             onClick={() =>
               history.push(
-                `/cattle/info?page=${currentPage}&filter=${currentFilter}`
+                `/cattle/info?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
               )
             }
           />

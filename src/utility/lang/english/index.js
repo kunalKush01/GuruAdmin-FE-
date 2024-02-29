@@ -134,6 +134,8 @@ export const englishContent = {
   // All static content of Cattles
   cattles_management: "Cattle Management",
   cattle_expense_type_assets: "Assets",
+  cattle_dead: "Dead",
+  cattle_alive: "Alive",
   cattle_expense_type_consumable: "Consumable",
   cattle_expense_type_general: "General",
   cattle_info: "Cattle Info",
@@ -158,6 +160,8 @@ export const englishContent = {
   cattle_registered: "Registered Cattle",
   cattle_add: "Add Cattle",
   cattle_record_add: "Add Record",
+  cattle_breed_add: "Add Breed",
+  cattle_breed_edit: "Edit Breed",
   cattle_medical_add: "Add Medical Record",
   cattle_pregnancy_report: "Pregnancy Records",
   cattle_pregnancy_report_add: "Add Pregnancy Record",
@@ -214,6 +218,8 @@ export const englishContent = {
   cattle_edit_item: "Edit Item",
   cattle_edit_supplies: "Edit Supplies",
   cattle_edit_usage: "Edit Usage",
+  cattle_category_edit: "Edit Category",
+  cattle_category_add: "Add Category",
 
   // cattle validation messages
   cattle_itemID_required: "Item ID is required",
@@ -260,6 +266,8 @@ export const englishContent = {
 
   cattle_item_delete: "Delete Item",
   cattle_item_sure: "Are you sure you want to delete this item?",
+  cattle_breed_delete: "Delete Breed",
+  cattle_breed_sure: "Are you sure you want to delete this breed?",
 
   // All cattle search variable
   search_cattles: "Search Cattles",
@@ -319,7 +327,6 @@ export const englishContent = {
     "To introduce a new category, click on 'Add Category'.",
 
   // All static content of Users
-
   users_AddUser: "Add Sub Admin ",
   users_latest_User: "Sub Admin ",
   users_title_required: "Username is required",

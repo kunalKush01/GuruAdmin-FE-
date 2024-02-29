@@ -54,7 +54,6 @@ export default function DonationListTable(
     donationId: "",
     estimateAmount: "",
   });
-  console.log("modalDonation", modal);
   const toggle = (row) => {
     setModal({
       modal: !modal.modal,

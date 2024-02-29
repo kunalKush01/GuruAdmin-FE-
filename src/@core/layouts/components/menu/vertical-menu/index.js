@@ -135,7 +135,7 @@ const Sidebar = (props) => {
                           title: `<img src="${confirmationIcon}"/>`,
                           html: `
                                     
-                  <h3 className="swal-heading mt-1">${t("logout_msg")}</h3>
+                  <h3 class="swal-heading mt-1">${t("logout_msg")}</h3>
                                     `,
                           showCloseButton: false,
                           showCancelButton: true,
