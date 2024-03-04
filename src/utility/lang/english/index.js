@@ -1,7 +1,7 @@
 export const englishContent = {
   no_data_found: "No data found",
   no_data_found_add_data: 'Click to "Add Button" to add data on screen ',
-
+  amount: "Amount",
   all: "All",
   dashboard: "Dashboard",
   donation: "Donation",
@@ -270,7 +270,7 @@ export const englishContent = {
   cattle_breed_sure: "Are you sure you want to delete this breed?",
 
   // All cattle search variable
-  search_cattles: "Search Cattles",
+  search_cattles: "Search by CattleID, Type, Breed ",
   search_cattles_medical: "Search Cattle Medical Info",
   search_cattles_pregnancy: "Search Cattle Pregnancy Report",
   search_cattles_stock: "Search Stock",
@@ -340,6 +340,8 @@ export const englishContent = {
 
   // All static content of Internal Expense
   expenses_AddExpenses: "Add Expense",
+  price_per_item: "Price per item",
+  expense_type_required: "Expense Type is required",
   expenses_EditExpenses: "Edit Expense",
   expenses_Date: "Date",
   expence_description: " Description",
@@ -553,6 +555,7 @@ export const englishContent = {
   // all place holder images
 
   placeHolder_donar_name: "Enter Doner Name",
+  placeHolder_price_per_item: "Enter price per item",
   placeHolder_mobile_number: "Enter Mobile Number",
   placeHolder_phone_number: "Enter Contact Number",
   placeHolder_title: "Enter Title",
@@ -601,6 +604,7 @@ export const englishContent = {
   placeHolder_cattle_purchaser_id: "Enter Purchaser ID",
   placeHolder_cattle_sold_price: "Enter Sold Price",
   placeHolder_cattle_milk_quantity: "Enter Milk Quantity in liters",
+  placeHolder_expense_type: "Select Expense Type",
   // All search static keys
   search_notification: "Search All Notifications",
   search_subscribe_user: "Search All Subscribe User",

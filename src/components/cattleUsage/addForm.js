@@ -30,32 +30,14 @@ const AddItemUsageForm = ({
   const [loading, setLoading] = useState(false);
 
   const loadOption = async (itemId) => {
-    const res = await findAllItemId({ itemId: itemId });
+    const res = await findAllItemId({ itemId: itemId, isUsage: true });
     return res.results;
   };
 
   const nameLoadOption = async (name) => {
-    const res = await findAllExpenseName({ name: name });
+    const res = await findAllExpenseName({ name: name, isUsage: true });
     return res.results;
   };
-  //   useUpdateEffect(() => {
-  //     const handleSetData = (value, formik) => {
-  //       const user = formik?.values?.SelectedUser;
-  //       if (user?.id) {
-  //         formik.setFieldValue("Mobile", user?.mobileNumber);
-  //         formik.setFieldValue("countryCode", user?.countryName);
-  //         formik.setFieldValue("dialCode", user?.countryCode);
-  //         formik.setFieldValue("donarName", user?.name);
-  //         setPhoneNumber(user?.countryCode + user?.mobileNumber);
-  //         return;
-  //       }
-  //       formik.setFieldValue("Mobile", "");
-  //       formik.setFieldValue("countryCode", "");
-
-  //     };
-
-  //     handleSetData();
-  //   }, [user]);
 
   const queryClient = useQueryClient();
 

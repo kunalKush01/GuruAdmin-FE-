@@ -74,7 +74,7 @@ const AddCattle = () => {
   const schema = Yup.object().shape({
     tagId: Yup.string().required("cattle_tag_id_required"),
     type: Yup.mixed().required("cattle_type_required"),
-    breed: Yup.string().required("cattle_breed_required"),
+    breed: Yup.mixed().required("cattle_breed_required"),
     age: Yup.string().required("cattle_age_required"),
     purchasePrice: Yup.string().required("cattle_purchase_price_required"),
     source: Yup.mixed().required("cattle_source_required"),

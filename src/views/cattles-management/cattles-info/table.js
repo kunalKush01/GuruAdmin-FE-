@@ -12,6 +12,7 @@ import editIcon from "../../../assets/images/icons/category/editIcon.svg";
 import avtarIcon from "../../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import confirmationIcon from "../../../assets/images/icons/news/conformationIcon.svg";
 import CustomDataTable from "../../../components/partials/CustomDataTable";
+import { ConverFirstLatterToCapital } from "../../../utility/formater";
 
 const CattleInfoTableWrapper = styled.div`
   color: #583703 !important;
@@ -168,9 +169,9 @@ const CattleInfoTable = ({
           />
         ),
         ownerId: item?.ownerId,
-        type: item?.type,
+        type: ConverFirstLatterToCapital(item?.typeId?.name ?? ""),
         motherId: item?.motherId ?? "N/A",
-        breed: item?.breed,
+        breed: ConverFirstLatterToCapital(item?.breedId?.name ?? ""),
         dateOfBirth: moment(item?.dob).format(" DD MMM YYYY"),
         age: item?.age,
         isPregnant:

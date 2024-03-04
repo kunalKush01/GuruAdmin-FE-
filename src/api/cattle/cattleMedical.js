@@ -26,7 +26,14 @@ export const findAllCattle = (payload) =>
 export const findAllCattleBreed = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}cattle/find-cattle-breed`, payload),
+      axios.post(`${API_BASE_URL}cattle/get-breed-list`, payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+export const findAllCattleCategory = (payload) =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}cattle/get-category-list`, payload),
     showToastOnSuccess: false,
     showToastOnError: false,
   });

@@ -73,7 +73,7 @@ const EditCattle = () => {
   const schema = Yup.object().shape({
     tagId: Yup.string().required("cattle_tag_id_required"),
     type: Yup.mixed().required("cattle_type_required"),
-    breed: Yup.string().required("cattle_breed_required"),
+    breed: Yup.mixed().required("cattle_breed_required"),
     age: Yup.string().required("cattle_age_required"),
     purchasePrice: Yup.string().required("cattle_purchase_price_required"),
     source: Yup.mixed().required("cattle_source_required"),
@@ -87,14 +87,8 @@ const EditCattle = () => {
       tagId: cattleDetails?.data?.result?.tagId ?? "",
       cattleId: cattleDetails?.data?.result?._id,
       motherId: cattleDetails?.data?.result?.motherId,
-      type:
-        {
-          label: ConverFirstLatterToCapital(
-            cattleDetails?.data?.result?.type?.toLowerCase() ?? ""
-          ),
-          value: cattleDetails?.data?.result?.type,
-        } ?? "",
-      breed: cattleDetails?.data?.result?.breed ?? "",
+      type: cattleDetails?.data?.result?.typeId ?? "",
+      breed: cattleDetails?.data?.result?.breedId ?? "",
       soldDate: cattleDetails?.data?.result?.soldDate
         ? moment(cattleDetails?.data?.result?.soldDate).toDate()
         : new Date(),

@@ -10,6 +10,8 @@ import * as Yup from "yup";
 import { getExpensesDetail, updateExpensesDetail } from "../../api/expenseApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import ExpensesForm from "../../components/internalExpenses/expensesForm";
+import { ExpenseType } from "./addExpenses";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 const ExpenseWrapper = styled.div`
   color: #583703;
@@ -32,11 +34,32 @@ const schema = Yup.object().shape({
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
     .required("expenses_title_required")
     .trim(),
-  // AddedBy: Yup.string().required("news_tags_required"),
   Amount: Yup.string()
     .matches(/^[1-9][0-9]*$/, "invalid_amount")
     .required("amount_required"),
   Body: Yup.string().required("expenses_desc_required"),
+  expenseType: Yup.mixed().required("expense_type_required"),
+
+  itemId: Yup.mixed().when("expenseType", {
+    is: (val) => val && (val.value === "assets" || val.value === "consumable"),
+    then: Yup.mixed().required("cattle_itemID_required"),
+    otherwise: Yup.mixed(),
+  }),
+
+  perItemAmount: Yup.string().when("expenseType", {
+    is: (val) => val && (val.value === "assets" || val.value === "consumable"),
+    then: Yup.string()
+      .matches(/^[1-9][0-9]*$/, "invalid_amount")
+      .required("amount_required"),
+    otherwise: Yup.string(),
+  }),
+
+  name: Yup.mixed().when("expenseType", {
+    is: (val) => val && (val.value === "assets" || val.value === "consumable"),
+    then: Yup.mixed().required("cattle_name_required"),
+    otherwise: Yup.mixed(),
+  }),
+
   DateTime: Yup.string(),
 });
 
@@ -60,13 +83,24 @@ export default function AddExpense() {
   const initialValues = {
     Id: ExpensesDetailQuery?.data?.result?.id,
     Title: ExpensesDetailQuery?.data?.result?.title ?? null,
+    expenseType: {
+      label: ConverFirstLatterToCapital(
+        ExpensesDetailQuery?.data?.result?.expenseType?.toLowerCase() ?? ""
+      ),
+      value: ExpensesDetailQuery?.data?.result?.expenseType.toLowerCase(),
+    },
+    name: ExpensesDetailQuery?.data?.result?.itemId,
+    itemId: ExpensesDetailQuery?.data?.result?.itemId,
+    orderQuantity: ExpensesDetailQuery?.data?.result?.orderQuantity,
+    perItemAmount: ExpensesDetailQuery?.data?.result?.pricePerItem,
+    Amount: ExpensesDetailQuery?.data?.result?.amount ?? "",
     AddedBy: loggedInUser,
     Body: he?.decode(ExpensesDetailQuery?.data?.result?.description ?? ""),
-    Amount: ExpensesDetailQuery?.data?.result?.amount ?? "",
     DateTime: moment(ExpensesDetailQuery?.data?.result?.expenseDate)
       .utcOffset("+0530")
       .toDate(),
   };
+
   return (
     <ExpenseWrapper>
       <div className="d-flex justify-content-between align-items-center ">
@@ -93,6 +127,7 @@ export default function AddExpense() {
             editLogs
             initialValues={initialValues}
             expensesId={expensesId}
+            expenseTypeArr={ExpenseType}
             validationSchema={schema}
             showTimeInput
             buttonName="save_changes"
