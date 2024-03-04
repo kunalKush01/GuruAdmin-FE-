@@ -3,7 +3,6 @@ import { Storage } from "aws-amplify";
 import { Form, Formik } from "formik";
 import React, { useRef, useState } from "react";
 
-import { useDropzone } from "react-dropzone";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { Prompt, useHistory } from "react-router-dom";
@@ -13,9 +12,6 @@ import {
   findAllExpenseName,
   findAllItemId,
 } from "../../api/cattle/cattleExpense";
-import { findAllCattle } from "../../api/cattle/cattleMedical";
-import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
-import FormikRangeDatePicker from "../partials/FormikRangeDatePicker";
 import AsyncSelectField from "../partials/asyncSelectField";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";

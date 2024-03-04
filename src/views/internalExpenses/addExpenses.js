@@ -21,6 +21,21 @@ const ExpenseWrapper = styled.div`
   }
 `;
 
+export const ExpenseType = [
+  {
+    label: "General",
+    value: "general",
+  },
+  {
+    label: "Assets",
+    value: "assets",
+  },
+  {
+    label: "Consumable",
+    value: "consumable",
+  },
+];
+
 const handleCreateExpense = async (payload) => {
   return createExpense(payload);
 };
@@ -29,11 +44,32 @@ const schema = Yup.object().shape({
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
     .required("expenses_title_required")
     .trim(),
-  // AddedBy: Yup.string().required("news_tags_required"),
   Amount: Yup.string()
     .matches(/^[1-9][0-9]*$/, "invalid_amount")
     .required("amount_required"),
   Body: Yup.string().required("expenses_desc_required"),
+  expenseType: Yup.mixed().required("expense_type_required"),
+
+  itemId: Yup.mixed().when("expenseType", {
+    is: (val) => val && (val.value === "assets" || val.value === "consumable"),
+    then: Yup.mixed().required("cattle_itemID_required"),
+    otherwise: Yup.mixed(),
+  }),
+
+  perItemAmount: Yup.string().when("expenseType", {
+    is: (val) => val && (val.value === "assets" || val.value === "consumable"),
+    then: Yup.string()
+      .matches(/^[1-9][0-9]*$/, "invalid_amount")
+      .required("amount_required"),
+    otherwise: Yup.string(),
+  }),
+
+  name: Yup.mixed().when("expenseType", {
+    is: (val) => val && (val.value === "assets" || val.value === "consumable"),
+    then: Yup.mixed().required("cattle_name_required"),
+    otherwise: Yup.mixed(),
+  }),
+
   DateTime: Yup.string(),
 });
 
@@ -49,9 +85,14 @@ export default function AddNews() {
 
   const initialValues = {
     Title: "",
-    AddedBy: loggedInUser,
-    Body: "",
+    expenseType: ExpenseType[0],
+    name: "",
+    itemId: "",
+    perItemAmount: "",
     Amount: "",
+    bill_invoice: "",
+    Body: "",
+    AddedBy: loggedInUser,
     DateTime: new Date(),
   };
 
@@ -77,6 +118,7 @@ export default function AddNews() {
         <ExpensesForm
           handleSubmit={handleCreateExpense}
           initialValues={initialValues}
+          expenseTypeArr={ExpenseType}
           validationSchema={schema}
           showTimeInput
           buttonName="expenses_AddExpenses"

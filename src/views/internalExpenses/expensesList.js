@@ -97,16 +97,17 @@ export default function Expenses() {
   const ExpenseType = [
     {
       id: 1,
-      name: t("cattle_expense_type_assets"),
+      name: t("cattle_expense_type_general"),
     },
     {
       id: 2,
-      name: t("cattle_expense_type_consumable"),
+      name: t("cattle_expense_type_assets"),
     },
     {
       id: 3,
-      name: t("cattle_expense_type_general"),
+      name: t("cattle_expense_type_consumable"),
     },
+    ,
   ];
 
   useEffect(() => {

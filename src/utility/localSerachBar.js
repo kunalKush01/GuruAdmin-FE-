@@ -1,6 +1,4 @@
-import { findKey } from "lodash";
-import { useTranslation } from "react-i18next";
-import { useHistory, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const serchablepath = [
   "/notification",
@@ -27,7 +25,6 @@ const serchablepath = [
 ];
 export const isSerchable = () => {
   const pathName = useLocation().pathname;
-
   return serchablepath.includes(pathName);
 };
 

@@ -9,6 +9,7 @@ import styled from "styled-components";
 import {
   findAllCattle,
   findAllCattleBreed,
+  findAllCattleCategory,
 } from "../../api/cattle/cattleMedical";
 import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
 
@@ -19,6 +20,7 @@ import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import ImageUpload from "../partials/imageUpload";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 const FormikWrapper = styled.div`
   font: normal normal bold 15px/33px Noto Sans;
@@ -63,9 +65,18 @@ const AddCattleForm = ({
     return res.results;
   };
 
+  const categoriesLoadOption = async (category) => {
+    const res = await findAllCattleCategory({ name: category });
+    return res.results?.map((item) => {
+      return { ...item, name: ConverFirstLatterToCapital(item?.name ?? "") };
+    });
+  };
+
   const breedLoadOption = async (breed) => {
     const res = await findAllCattleBreed({ name: breed });
-    return res.results;
+    return res.results?.map((item) => {
+      return { ...item, name: ConverFirstLatterToCapital(item?.name ?? "") };
+    });
   };
 
   const queryClient = useQueryClient();
@@ -105,10 +116,12 @@ const AddCattleForm = ({
             isMilking,
             cattleImage,
             ownerImage,
+            breed,
             ...formValues
           } = values;
           const data = {
-            type: type?.value.toUpperCase(),
+            typeId: type?._id,
+            breedId: breed?._id,
             source: source?.value.toUpperCase(),
             motherId: motherId?.tagId,
             isDead: isDead == "NO" ? false : true,
@@ -173,13 +186,15 @@ const AddCattleForm = ({
                     />
                   </Col>
                   <Col xs={12} md={4}>
-                    <FormikCustomReactSelect
-                      labelName={t("categories_select_category")}
-                      placeholder={t("placeholder_cattle_type")}
+                    <AsyncSelectField
                       name="type"
-                      width="100%"
+                      labelKey="name"
+                      valueKey="_id"
+                      loadOptions={categoriesLoadOption}
+                      label={t("categories_select_category")}
+                      placeholder={t("placeholder_cattle_type")}
+                      defaultOptions
                       required
-                      loadOptions={cattleType}
                     />
                   </Col>
                   <Col xs={12} md={4}>
