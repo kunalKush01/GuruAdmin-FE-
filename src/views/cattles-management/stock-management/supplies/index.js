@@ -9,6 +9,7 @@ import { Col, Row } from "reactstrap";
 
 import NoContent from "../../../../components/partials/noContent";
 import SuppliesTable from "./table";
+import { Helmet } from "react-helmet";
 
 const Supplies = ({
   list,
@@ -23,6 +24,11 @@ const Supplies = ({
 
   return (
     <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Apna Dharam Admin | Cattles Stock Management | Supplies </title>
+      </Helmet>
+
       <div style={{ height: "10px" }}>
         <If condition={query.isFetching}>
           <Then>
