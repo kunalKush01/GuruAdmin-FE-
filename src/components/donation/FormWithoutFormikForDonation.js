@@ -327,7 +327,7 @@ export default function FormWithoutFormikForDonation({
                         role="switch"
                         onChange={(e) => {
                           // setTimeout(async () => {
-                          formik.setFieldValue("SelectedCommitmentId", null);
+                          formik.setFieldValue("SelectedCommitmentId", "");
                           setArticle(!article);
                           // }, 500);
                         }}

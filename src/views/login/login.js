@@ -109,6 +109,8 @@ const LoginCover = () => {
               TrustsList?.results[0]?.isAproved === "approved"
             ) {
               dispatch(handleTrustDetail(TrustsList?.results[0]));
+              localStorage.setItem("trustId", TrustsList?.results[0]?.id);
+
               if (res?.tokens?.access?.token && res?.tokens?.refresh?.token) {
                 window.location.replace(
                   `https://${TrustsList?.results[0]?.subDomain}${subdomainChange}/login`
@@ -270,7 +272,7 @@ const LoginCover = () => {
   // }, [isLogged, loginPath, TrustQuery]);
 
   const subDomainName = hostname.replace(subdomainChange, "");
-  // const subDomainName = hostname.replace("-dev.localhost", "");
+  // const subDomainName = hostname.replace("-staging.localhost", "");
 
   const refreshToken = getCookie("refreshToken");
   const accessToken = getCookie("accessToken");
@@ -281,50 +283,52 @@ const LoginCover = () => {
 
   const loginPageData = useMemo(
     () => loginPageQuery?.data?.result,
-    dispatch(handleTrustDetail(loginPageQuery?.data?.result))[loginPageQuery]
+    dispatch(handleTrustDetail(loginPageQuery?.data?.result)),
+    [loginPageQuery]
   );
-  console.log("loginPageQuery?.data", loginPageQuery?.data?.error);
-  useEffect(() => {
-    // if (refreshToken && accessToken) {
-    if (hostname !== adminUrl && loginPageQuery?.data?.error) {
-      history.push("/not-found");
-    } else if (
-      isLogged &&
-      loginPath?.includes("all") &&
-      // hostname !== "localhost"
-      subDomainName !== genericSubDomain
-      // (userTrustList?.length === 1 ||
-      //   userTrustList[0]?.isAproved === "approved" ||
-    ) {
-      localStorage.setItem("trustModal", false);
-      history.push("/dashboard");
-    } else if (
-      isLogged &&
-      loginPath?.length &&
-      loginPath[0] === "configuration" &&
-      subDomainName !== genericSubDomain
-      // hostname !== "localhost"
-      // &&
-      // (userTrustList?.length === 1 ||
-      //   userTrustList[0]?.isAproved === "approved" ||
-      //   hostname !== "am-admin-dev.paridhan.app")
-    ) {
-      localStorage.setItem("trustModal", false);
-      history.push(`/configuration/categories`);
-    } else if (
-      (isLogged || loginPath?.length) &&
-      subDomainName !== genericSubDomain
-      // hostname !== "localhost"
-      // &&
-      // (userTrustList?.length === 1 ||
-      //   userTrustList[0]?.isAproved === "approved" ||
-      //   hostname !== "am-admin-dev.paridhan.app")
-    ) {
-      localStorage.setItem("trustModal", false);
-      history.push(`/${loginPath[0]}`);
-    }
-    // }
-  }, [isLogged, loginPath, loginPageQuery]);
+
+  localStorage.setItem("trustId", loginPageQuery?.data?.result?.id),
+    useEffect(() => {
+      // if (refreshToken && accessToken) {
+      if (hostname !== adminUrl && loginPageQuery?.data?.error) {
+        history.push("/not-found");
+      } else if (
+        isLogged &&
+        loginPath?.includes("all") &&
+        // hostname !== "localhost"
+        subDomainName !== genericSubDomain
+        // (userTrustList?.length === 1 ||
+        //   userTrustList[0]?.isAproved === "approved" ||
+      ) {
+        localStorage.setItem("trustModal", false);
+        history.push("/dashboard");
+      } else if (
+        isLogged &&
+        loginPath?.length &&
+        loginPath[0] === "configuration" &&
+        subDomainName !== genericSubDomain
+        // hostname !== "localhost"
+        // &&
+        // (userTrustList?.length === 1 ||
+        //   userTrustList[0]?.isAproved === "approved" ||
+        //   hostname !== "am-admin-dev.paridhan.app")
+      ) {
+        localStorage.setItem("trustModal", false);
+        history.push(`/configuration/categories`);
+      } else if (
+        (isLogged || loginPath?.length) &&
+        subDomainName !== genericSubDomain
+        // hostname !== "localhost"
+        // &&
+        // (userTrustList?.length === 1 ||
+        //   userTrustList[0]?.isAproved === "approved" ||
+        //   hostname !== "am-admin-dev.paridhan.app")
+      ) {
+        localStorage.setItem("trustModal", false);
+        history.push(`/${loginPath[0]}`);
+      }
+      // }
+    }, [isLogged, loginPath, loginPageQuery]);
 
   const { skin } = useSkin();
 
@@ -497,9 +501,7 @@ const LoginCover = () => {
                 </span>
 
                 <span className="text-primary signUp cursor-pointer">
-                  <a href="https://apnadharm.com/#home">
-                    Sign Up
-                  </a>
+                  <a href="https://apnadharm.com/#home">Sign Up</a>
                 </span>
               </p>
             </Col>

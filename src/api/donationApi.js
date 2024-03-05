@@ -15,13 +15,12 @@ export const getAllDonation = (payload) =>
     showToastOnError: false,
   });
 
-
 export const exportAllDonation = (payload) =>
-callApi({
-  requestFunction: (axios) => axios.post(`${API_BASE_URL}donation`, payload),
-  showToastOnSuccess: false,
-  showToastOnError: false,
-});
+  callApi({
+    requestFunction: (axios) => axios.post(`${API_BASE_URL}donation`, payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
 
 export const getAllPaidDonations = (payload) =>
   callApi({
@@ -31,19 +30,17 @@ export const getAllPaidDonations = (payload) =>
     showToastOnError: false,
   });
 
-export const getDonationDetail = (payload) =>
+export const updateDonation = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}news/get-news`, payload),
-    showToastOnSuccess: false,
-    showToastOnError: false,
+      axios.post(`${API_BASE_URL}donation/update`, payload),
   });
 
-export const updateDonationDetail = (payload) =>
-  callApi({
-    requestFunction: (axios) =>
-      axios.put(`${API_BASE_URL}news/update`, payload),
-  });
+// export const updateDonationDetail = (payload) =>
+//   callApi({
+//     requestFunction: (axios) =>
+//       axios.put(`${API_BASE_URL}news/update`, payload),
+//   });
 
 export const addLangDonationDetail = (payload) =>
   callApi({
