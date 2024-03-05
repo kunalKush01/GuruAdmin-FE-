@@ -24,6 +24,7 @@ import { handleExport } from "../../../utility/utils/exportTabele";
 import { exportCattleJson, exportCattleJsonSample } from "./exportableJsonData";
 import CattleInfoTable from "./table";
 import { ChangeCategoryType } from "../../../components/partials/categoryDropdown";
+import { Helmet } from "react-helmet";
 
 const CattleInfo = styled.div`
   color: #583703;
@@ -145,6 +146,10 @@ const CattlesInfo = () => {
 
   return (
     <CattleInfo>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Apna Dharam Admin | Cattles</title>
+      </Helmet>
       <div>
         <div className="d-sm-flex mb-1 justify-content-between align-items-center ">
           <Trans i18nKey="cattle_registered" />

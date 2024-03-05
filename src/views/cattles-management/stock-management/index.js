@@ -20,6 +20,7 @@ import Items from "./items";
 import Stocks from "./stock";
 import Supplies from "./supplies";
 import Usage from "./usage";
+import { Helmet } from "react-helmet";
 
 const StockManagementWrapper = styled.div`
   color: #583703;
@@ -132,6 +133,11 @@ const StockManagement = () => {
 
   return (
     <StockManagementWrapper>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Apna Dharam Admin | Cattles Stock Management | Stock </title>
+      </Helmet>
+
       <div>
         <div className="relative">
           <div className="d-sm-flex  justify-content-between align-items-center ">

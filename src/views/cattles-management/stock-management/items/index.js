@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import NoContent from "../../../../components/partials/noContent";
 import StockManagementItemTable from "./table";
+import { Helmet } from "react-helmet";
 
 const Items = ({
   list,
@@ -21,6 +22,11 @@ const Items = ({
 
   return (
     <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Apna Dharam Admin | Cattles Stock Management | Items </title>
+      </Helmet>
+
       <div style={{ height: "10px" }}>
         <If condition={query.isFetching}>
           <Then>

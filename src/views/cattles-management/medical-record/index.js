@@ -14,6 +14,7 @@ import { getCattlesMedicalList } from "../../../api/cattle/cattleMedical";
 import { ChangePeriodDropDown } from "../../../components/partials/changePeriodDropDown";
 import NoContent from "../../../components/partials/noContent";
 import MedicalReportTable from "./table";
+import { Helmet } from "react-helmet";
 
 const MedicalWrapper = styled.div`
   color: #583703;
@@ -95,6 +96,10 @@ const CattlesMedical = () => {
 
   return (
     <MedicalWrapper>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Apna Dharam Admin | Cattles Medical Records</title>
+      </Helmet>
       <div>
         <div className="d-sm-flex mb-1 justify-content-between align-items-center ">
           <Trans i18nKey="cattle_medical_record" />

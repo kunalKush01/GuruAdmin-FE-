@@ -12,6 +12,7 @@ import CattleDashboardCard from "../../../components/cattleDashboardCard";
 import { ChangePeriodDropDown } from "../../../components/partials/changePeriodDropDown";
 import { RevenueChart } from "../../../utility/revenueChart";
 import RecentRegisteredCattlesTable from "./recentRegisteredCattle";
+import { Helmet } from "react-helmet";
 
 const CattlesDashboard = () => {
   const { t } = useTranslation();
@@ -112,6 +113,11 @@ const CattlesDashboard = () => {
 
   return (
     <div>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Apna Dharam Admin | Cattle Management Dashboard</title>
+      </Helmet>
+
       <ChangePeriodDropDown
         allFilter
         dropDownName={dropDownName}

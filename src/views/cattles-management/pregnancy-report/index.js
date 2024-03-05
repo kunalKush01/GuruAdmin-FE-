@@ -15,6 +15,7 @@ import { ChangePeriodDropDown } from "../../../components/partials/changePeriodD
 import NoContent from "../../../components/partials/noContent";
 import PregnancyReportTable from "./table";
 import { ChangeCategoryType } from "../../../components/partials/categoryDropdown";
+import { Helmet } from "react-helmet";
 
 const PregnancyReportWrapper = styled.div`
   color: #583703;
@@ -100,6 +101,10 @@ const PregnancyReport = () => {
   );
   return (
     <PregnancyReportWrapper>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Apna Dharam Admin | Cattles Pregnancy Records</title>
+      </Helmet>
       {/* <CattleTabBar tabs={cattleHeader} active={active} setActive={setActive} /> */}
       <div>
         <div className="d-sm-flex mb-1 justify-content-between align-items-center ">
