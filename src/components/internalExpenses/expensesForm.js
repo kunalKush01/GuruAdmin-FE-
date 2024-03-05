@@ -123,6 +123,10 @@ export default function ExpensesForm({
       })
       .catch((err) => console.log(err));
   };
+  const searchParams = new URLSearchParams(history.location.search);
+  const currentPage = searchParams.get("page");
+  const currentExpenseType = searchParams.get("expenseType");
+  const currentFilter = searchParams.get("filter");
 
   const expenseMutation = useMutation({
     mutationFn: handleSubmit,
@@ -131,7 +135,9 @@ export default function ExpensesForm({
         expenseQueryClient.invalidateQueries(["Expenses"]);
         expenseQueryClient.invalidateQueries(["ExpensesDetail"]);
         setLoading(false);
-        history.push("/internal_expenses");
+        history.push(
+          `/internal_expenses?page=${currentPage}&expenseType=${currentExpenseType}&filter=${currentFilter}`
+        );
       } else if (data?.error) {
         setLoading(false);
       }
@@ -218,6 +224,7 @@ export default function ExpensesForm({
                         loadOptions={expenseTypeArr}
                         placeholder={t("placeHolder_expense_type")}
                         required
+                        disabled={editLogs}
                         width={"100"}
                       />
                     </Col>
@@ -264,6 +271,15 @@ export default function ExpensesForm({
                               "placeHolder_cattle_expense_order_quantity"
                             )}
                             name="orderQuantity"
+                            onBlur={() => {
+                              if (formik.values?.perItemAmount) {
+                                formik.setFieldValue(
+                                  "Amount",
+                                  formik.values?.orderQuantity *
+                                    formik.values?.perItemAmount
+                                );
+                              }
+                            }}
                             required
                             autoFocus
                             onInput={(e) =>
