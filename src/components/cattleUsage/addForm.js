@@ -70,7 +70,7 @@ const AddItemUsageForm = ({
             date: values?.Date,
             quantity: values?.quantity,
             unit: values?.unit?.value,
-            purpose: values?.purpose?.value,
+            purpose: values?.purpose,
           });
         }}
       >
