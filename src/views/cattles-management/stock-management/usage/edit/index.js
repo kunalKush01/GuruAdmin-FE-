@@ -84,10 +84,7 @@ const EditItemUsage = () => {
       itemId: itemUsageDetailQuery?.data?.result?.itemReferenceId,
       name: itemUsageDetailQuery?.data?.result?.itemReferenceId,
       quantity: itemUsageDetailQuery?.data?.result?.quantity,
-      purpose: {
-        label: itemUsageDetailQuery?.data?.result?.purpose,
-        value: itemUsageDetailQuery?.data?.result?.purpose,
-      },
+      purpose: itemUsageDetailQuery?.data?.result?.purpose,
       unit: {
         label: itemUsageDetailQuery?.data?.result?.unit,
         value: itemUsageDetailQuery?.data?.result?.unit,
