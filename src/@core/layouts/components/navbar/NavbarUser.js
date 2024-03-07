@@ -111,7 +111,7 @@ const NavbarUserWarraper = styled.div`
   }
 
   .logo {
-    width: 150px;
+    width: 125px;
     height: 35px;
     object-fit: cover;
     object-position: center;
