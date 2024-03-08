@@ -633,17 +633,17 @@ const AddCattleForm = ({
                   >
                     <Col xs={12} md={4}>
                       <FormikCustomDatePicker
-                        name="deliveryDate"
+                        name="pregnancyDate"
                         inline={false}
-                        label={t("cattle_delivery_date")}
+                        label={t("cattle_pregnancy_date")}
                         dateFormat=" dd-MM-yyyy"
                       />
                     </Col>
                     <Col xs={12} md={4}>
                       <FormikCustomDatePicker
-                        name="pregnancyDate"
+                        name="deliveryDate"
                         inline={false}
-                        label={t("cattle_pregnancy_date")}
+                        label={t("cattle_delivery_date")}
                         dateFormat=" dd-MM-yyyy"
                       />
                     </Col>
