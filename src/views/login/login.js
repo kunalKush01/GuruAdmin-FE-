@@ -331,7 +331,7 @@ const LoginCover = () => {
 
   const { skin } = useSkin();
 
-  const illustration = skin === "dark" ? "login-v2-dark.svg" : "main-logo.svg",
+  const illustration = skin === "dark" ? "login-v2-dark.svg" : "main-logo.png",
     source = require(`@src/assets/images/pages/${illustration}`).default;
 
   const headers = {

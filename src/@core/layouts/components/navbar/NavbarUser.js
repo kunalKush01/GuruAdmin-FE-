@@ -43,7 +43,7 @@ import {
   getAllNotification,
   readNotification,
 } from "../../../../api/notification";
-import logo from "../../../../assets/images/pages/main-logo.svg";
+import logo from "../../../../assets/images/pages/main-logo.png";
 import CustomSearchBar from "../../../../components/partials/customSearchBar";
 import {
   isSerchable,
