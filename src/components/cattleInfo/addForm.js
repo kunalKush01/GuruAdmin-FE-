@@ -6,13 +6,13 @@ import { Trans, useTranslation } from "react-i18next";
 import { Prompt, useHistory } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
+
 import {
   findAllCattle,
   findAllCattleBreed,
   findAllCattleCategory,
 } from "../../api/cattle/cattleMedical";
 import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
-
 import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
 import AsyncSelectField from "../partials/asyncSelectField";
 import CustomRadioButton from "../partials/customRadioButton";
