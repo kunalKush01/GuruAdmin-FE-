@@ -495,15 +495,6 @@ const LoginCover = () => {
                   </Form>
                 )}
               </Formik>
-              <p className="text-center mt-5 ">
-                <span className="me-25  an_account ">
-                  Don't have an account ?{" "}
-                </span>
-
-                <span className="text-primary signUp cursor-pointer">
-                  <a href="https://apnadharm.com/#home">Sign Up</a>
-                </span>
-              </p>
             </Col>
           ) : (
             <Col className="px-xl-2 mx-auto " sm="8" md="6" lg="12">
