@@ -1,12 +1,12 @@
 import InputPasswordToggle from "@components/input-password-toggle";
 import { useSkin } from "@hooks/useSkin";
 import "@styles/react/pages/page-authentication.scss";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { ErrorMessage, Form, Formik } from "formik";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   Button,
@@ -16,10 +16,6 @@ import {
   Input,
   InputGroup,
   InputGroupText,
-  Modal,
-  ModalBody,
-  ModalFooter,
-  ModalHeader,
   Row,
   Spinner,
 } from "reactstrap";
@@ -35,7 +31,6 @@ import {
   handleTokenLogin,
   handleTrustDetail,
   login,
-  openModel,
 } from "../../redux/authSlice";
 import {
   ConverFirstLatterToCapital,
@@ -371,7 +366,7 @@ const LoginCover = () => {
         >
           <div className="w-100 h-100 d-lg-flex align-items-center justify-content-center loginBackground">
             <img
-              className="img-fluid w-100 h-100"
+              className="img-fluid w-100 "
               src={
                 (loginPageData && loginPageData?.profilePhoto !== "") ||
                 loginPageData?.profilePhoto
