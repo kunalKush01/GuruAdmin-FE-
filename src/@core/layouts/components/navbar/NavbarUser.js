@@ -43,7 +43,7 @@ import {
   getAllNotification,
   readNotification,
 } from "../../../../api/notification";
-import logo from "../../../../assets/images/pages/main-logo.svg";
+import logo from "../../../../assets/images/pages/main-logo.png";
 import CustomSearchBar from "../../../../components/partials/customSearchBar";
 import {
   isSerchable,
@@ -111,9 +111,9 @@ const NavbarUserWarraper = styled.div`
   }
 
   .logo {
-    width: 150px;
+    width: 125px;
     height: 35px;
-    object-fit: cover;
+    object-fit: contain;
     object-position: center;
   }
 
@@ -227,7 +227,7 @@ const NavbarUser = (props) => {
   const subdomainChange = process.env.REACT_APP_ADMIN_SUBDOMAIN_REPLACE_URL;
 
   const subDomainName = location.hostname.replace(subdomainChange, "");
-  // const subDomainName = location.hostname.replace("-staging.localhost", "");
+  // const subDomainName = location.hostname.replace("-dev.localhost", "");
   const loginPageQuery = useQuery([subDomainName], () =>
     loginPage(subDomainName)
   );

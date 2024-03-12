@@ -272,7 +272,7 @@ const LoginCover = () => {
   // }, [isLogged, loginPath, TrustQuery]);
 
   const subDomainName = hostname.replace(subdomainChange, "");
-  // const subDomainName = hostname.replace("-staging.localhost", "");
+  // const subDomainName = hostname.replace("-dev.localhost", "");
 
   const refreshToken = getCookie("refreshToken");
   const accessToken = getCookie("accessToken");
@@ -281,11 +281,10 @@ const LoginCover = () => {
     loginPage(subDomainName)
   );
 
-  const loginPageData = useMemo(
-    () => loginPageQuery?.data?.result,
-    dispatch(handleTrustDetail(loginPageQuery?.data?.result)),
-    [loginPageQuery]
-  );
+  const loginPageData = useMemo(() => {
+    dispatch(handleTrustDetail(loginPageQuery?.data?.result));
+    return loginPageQuery?.data?.result;
+  }, [loginPageQuery]);
 
   localStorage.setItem("trustId", loginPageQuery?.data?.result?.id),
     useEffect(() => {
@@ -332,7 +331,7 @@ const LoginCover = () => {
 
   const { skin } = useSkin();
 
-  const illustration = skin === "dark" ? "login-v2-dark.svg" : "main-logo.svg",
+  const illustration = skin === "dark" ? "login-v2-dark.svg" : "main-logo.png",
     source = require(`@src/assets/images/pages/${illustration}`).default;
 
   const headers = {
@@ -372,7 +371,12 @@ const LoginCover = () => {
         >
           <div className="w-100 h-100 d-lg-flex align-items-center justify-content-center loginBackground">
             <img
-              className="img-fluid w-100 h-100"
+              className={`img-fluid w-100 ${
+                (loginPageData && loginPageData?.profilePhoto !== "") ||
+                loginPageData?.profilePhoto
+                  ? "h-100"
+                  : ""
+              }`}
               src={
                 (loginPageData && loginPageData?.profilePhoto !== "") ||
                 loginPageData?.profilePhoto
