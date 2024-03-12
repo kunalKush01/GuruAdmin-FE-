@@ -68,7 +68,7 @@ export const subHeaderContentResponsive = [
     url: "/commitment",
   },
   {
-    name: "donation_box",
+    name: "hundi",
     url: "/hundi",
   },
 
