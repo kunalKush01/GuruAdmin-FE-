@@ -366,7 +366,12 @@ const LoginCover = () => {
         >
           <div className="w-100 h-100 d-lg-flex align-items-center justify-content-center loginBackground">
             <img
-              className="img-fluid w-100 "
+              className={`img-fluid w-100 ${
+                (loginPageData && loginPageData?.profilePhoto !== "") ||
+                loginPageData?.profilePhoto
+                  ? "h-100"
+                  : ""
+              }`}
               src={
                 (loginPageData && loginPageData?.profilePhoto !== "") ||
                 loginPageData?.profilePhoto
