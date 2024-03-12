@@ -118,7 +118,7 @@ const SetPassword = () => {
 
   const { skin } = useSkin();
 
-  const illustration = skin === "dark" ? "login-v2-dark.svg" : "main-logo.svg",
+  const illustration = skin === "dark" ? "login-v2-dark.svg" : "main-logo.png",
     source = require(`@src/assets/images/pages/${illustration}`).default;
   const [loading, setLoading] = useState(false);
 
@@ -127,9 +127,9 @@ const SetPassword = () => {
 
   const hostname = location.hostname;
 
-  // const subDomainName = hostname.replace("-staging.paridhan.app", "");
   const subdomainChange = process.env.REACT_APP_ADMIN_SUBDOMAIN_REPLACE_URL;
   const subDomainName = hostname.replace(subdomainChange, "");
+  // const subDomainName = hostname.replace("-dev.localhost", "");
 
   const loginPageQuery = useQuery([subDomainName], () =>
     loginPage(subDomainName)
@@ -156,7 +156,12 @@ const SetPassword = () => {
         >
           <div className="w-100 h-100 d-lg-flex align-items-center justify-content-center loginBackground">
             <img
-              className="img-fluid w-100 h-100"
+              className={`img-fluid w-100 ${
+                (loginPageData && loginPageData?.profilePhoto !== "") ||
+                loginPageData?.profilePhoto
+                  ? "h-100"
+                  : ""
+              }`}
               src={
                 (loginPageData && loginPageData?.profilePhoto !== "") ||
                 loginPageData?.profilePhoto
