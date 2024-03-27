@@ -140,7 +140,13 @@ const LoginCover = () => {
       .email("Invalid Email.")
       .required("Email is required.")
       .min(5),
-    password: Yup.string().required("Password is required."),
+    password: Yup.string()
+      .matches(
+        /^(?=.*[!@#$%^&*()-_+=|{}[\]:;'"<>,.?/~`])(?=.*\d)(?=.*[A-Z])(?=.*[a-z]).{8,}$/,
+        "Password must contain at least one special character, one number, one capital letter, and one small letter"
+      )
+      .min(8, "Password is too short - should be 8 chars minimum.")
+      .required("Password is required."),
   });
   const forgetPasswordSchema = Yup.object().shape({
     email: Yup.string().required("Email is required.").min(5),
