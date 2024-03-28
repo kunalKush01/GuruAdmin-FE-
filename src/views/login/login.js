@@ -141,12 +141,7 @@ const LoginCover = () => {
       .required("Email is required.")
       .min(5),
     password: Yup.string()
-      .matches(
-        /^(?=.*[!@#$%^&*()-_+=|{}[\]:;'"<>,.?/~`])(?=.*\d)(?=.*[A-Z])(?=.*[a-z]).{8,}$/,
-        "Password must contain at least one special character, one number, one capital letter, and one small letter"
-      )
-      .min(8, "Password is too short - should be 8 chars minimum.")
-      .required("Password is required."),
+    .required("Password is required."),
   });
   const forgetPasswordSchema = Yup.object().shape({
     email: Yup.string().required("Email is required.").min(5),
@@ -273,7 +268,7 @@ const LoginCover = () => {
   // }, [isLogged, loginPath, TrustQuery]);
 
   const subDomainName = hostname.replace(subdomainChange, "");
-  // const subDomainName = hostname.replace("-dev.localhost", "");
+  // const subDomainName = hostname.replace("-admin-dev.localhost", "");
 
   const refreshToken = getCookie("refreshToken");
   const accessToken = getCookie("accessToken");
