@@ -40,12 +40,12 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 // ** Lazy load app
 const LazyApp = lazy(() => import("./App"));
-const queryClient =new QueryClient({
+const queryClient = new QueryClient({
   defaultOptions: {
-      queries: {
-          refetchOnWindowFocus: false
-      }
-  }
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
 });
 ReactDOM.render(
   <Provider store={store}>
@@ -56,7 +56,6 @@ ReactDOM.render(
             <LazyApp />
             <ReactQueryDevtools />
           </QueryClientProvider>
-
           <ToastContainer newestOnTop />
         </ThemeContext>
       </Suspense>
