@@ -85,6 +85,12 @@ export default function FormWithoutFormikForCommitment({
     }
   }, [formik?.values?.Mobile]);
 
+  const searchParams = new URLSearchParams(history.location.search);
+  const currentPage = searchParams.get("page");
+  const currentCategory = searchParams.get("category");
+  const currentSubCategory = searchParams.get("subCategory");
+  const currentFilter = searchParams.get("filter");
+
   return (
     <Form>
       {showPrompt && (
