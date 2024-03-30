@@ -2,7 +2,7 @@ import { Form } from "formik";
 import React, { useEffect, useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
-import { Prompt } from "react-router-dom";
+import { Prompt, useHistory } from "react-router-dom";
 import { useUpdateEffect } from "react-use";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import { getAllSubCategories } from "../../api/expenseApi";
@@ -27,6 +27,7 @@ export default function FormWithoutFormikForCommitment({
   ...props
 }) {
   const { t } = useTranslation();
+  const history = useHistory();
 
   const { SelectedMasterCategory } = formik.values;
   const [subLoadOption, setSubLoadOption] = useState([]);
