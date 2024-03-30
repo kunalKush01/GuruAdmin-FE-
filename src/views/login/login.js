@@ -393,10 +393,10 @@ const LoginCover = () => {
           sm="12"
         >
           {!forgotPassWordActive ? (
-            <Col className="px-xl-2 mx-auto" sm="8" md="6" lg="12">
+            <Col className="px-xl-2 mx-auto" xs="12" sm="8" md="6" lg="12">
               {<CardTitle className="fw-bold mb-2 ">Sign In</CardTitle>}
               {loginPageData && loginPageData?.name !== "" && (
-                <div className="templeName">
+                <p className="templeName">
                   Admin:{" "}
                   <span
                     title={ConverFirstLatterToCapital(
@@ -405,7 +405,7 @@ const LoginCover = () => {
                   >
                     {ConverFirstLatterToCapital(loginPageData?.name ?? "")}
                   </span>
-                </div>
+                </p>
               )}
 
               <CardText className="signInEnterUserNAme">

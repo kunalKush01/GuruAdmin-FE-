@@ -177,7 +177,7 @@ const SetPassword = () => {
           lg="5"
           sm="12"
         >
-          <Col className="px-xl-2 mx-auto" sm="8" md="6" lg="12">
+          <Col className="px-xl-2 mx-auto" xs="12" sm="8" md="6" lg="12">
             <img
               src={backIconIcon}
               onClick={() => history.push("/login")}
