@@ -30,6 +30,7 @@ export default function FormWithoutFormikForCommitment({
 
   const { SelectedMasterCategory } = formik.values;
   const [subLoadOption, setSubLoadOption] = useState([]);
+  const [noUserFound, setNoUserFound] = useState(false);
 
   const loadOption = async (name) => {
     const res = await findAllUsersByName({ name: name });
@@ -72,11 +73,15 @@ export default function FormWithoutFormikForCommitment({
         });
         if (res.result) {
           formik.setFieldValue("SelectedUser", res.result);
+        } else {
+          setNoUserFound(true);
         }
       };
       results();
     } else if (formik?.values?.Mobile?.toString().length !== 10) {
       formik.setFieldValue("SelectedUser", "");
+    } else {
+      setNoUserFound(false);
     }
   }, [formik?.values?.Mobile]);
 
@@ -140,8 +145,23 @@ export default function FormWithoutFormikForCommitment({
                 defaultOptions
                 required
               />
+              {noUserFound && (
+                <div className="addUser">
+                  {" "}
+                  <Trans i18nKey={"add_user_donation"} />{" "}
+                  <span
+                    className="cursor-pointer"
+                    onClick={() =>
+                      history.push(
+                        `/Add-user?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}`
+                      )
+                    }
+                  >
+                    <Trans i18nKey={"add_user"} />
+                  </span>
+                </div>
+              )}
             </Col>
-
             <Col xs={12} sm={6}>
               <FormikCustomReactSelect
                 labelName={t("categories_select_category")}
