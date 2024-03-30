@@ -134,7 +134,7 @@ export default function FormWithoutFormikForCommitment({
                 </div>
               )}
             </Col>
-            <Col xs={12} sm={6}>
+            <Col xs={12} sm={6} lg={4} className=" pb-1">
               <AsyncSelectField
                 name="SelectedUser"
                 loadOptions={loadOption}
