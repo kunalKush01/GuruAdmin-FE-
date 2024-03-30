@@ -12,6 +12,13 @@ const FormWraper = styled.div`
   .FormikWrapper {
     padding: 40px;
   }
+  .addUser {
+    font-size: 13px;
+  }
+  .addUser > span {
+    text-decoration: underline;
+    color: #ff8744;
+  }
   // .btn-Published {
   //   text-align: center;
   // }
@@ -102,7 +109,7 @@ export default function CommitmentForm({
               mobileNumber: e?.Mobile.toString(),
               countryCode: e?.dialCode,
               countryName: e?.countryCode,
-              commitmentStartDate:e?.startDate,
+              commitmentStartDate: e?.startDate,
               commitmentEndDate: e.endDate,
             });
           }}
