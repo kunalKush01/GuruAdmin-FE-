@@ -176,7 +176,7 @@ const Routes = [
       import("../../views/cattles-management/stock-management/index.js")
     ),
     exact: true,
-    type: "cattle-stock",
+    type: "cattle-supplies",
     subPermission: READ,
   },
   {
@@ -187,7 +187,7 @@ const Routes = [
       )
     ),
     exact: true,
-    type: "cattle-stock",
+    type: "cattle-supplies",
     subPermission: WRITE,
   },
 
@@ -199,7 +199,7 @@ const Routes = [
       )
     ),
     exact: true,
-    type: "cattle-stock",
+    type: "cattle-supplies",
     subPermission: WRITE,
   },
 
