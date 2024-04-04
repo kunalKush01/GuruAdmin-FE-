@@ -67,3 +67,4 @@ export const jsonDataDonationBox = ({ data }) => {
     createdBy: ConverFirstLatterToCapital(item?.createdBy?.name),
   }));
 };
+

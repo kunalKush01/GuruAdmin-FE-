@@ -54,7 +54,6 @@ export default function DonationListTable(
     donationId: "",
     estimateAmount: "",
   });
-  console.log("modalDonation", modal);
   const toggle = (row) => {
     setModal({
       modal: !modal.modal,
@@ -165,7 +164,7 @@ export default function DonationListTable(
         ),
         category: (
           <div>
-            {ConverFirstLatterToCapital(item?.masterCategory?.name)}
+            {ConverFirstLatterToCapital(item?.masterCategory?.name ?? "-")}
             {/* {item?.subCategory && `(${item?.subCategory?.name ?? ""})`} */}
           </div>
         ),
@@ -573,7 +572,7 @@ export default function DonationListTable(
                       minHeight: "32px",
                     }}
                   >
-                    {receipt?.user?.panNumber}
+                    {receipt?.user?.pan}
                   </div>
                 </div>
               </div>
@@ -632,11 +631,11 @@ export default function DonationListTable(
                   minHeight: "32px",
                 }}
               >
-                {" "}
+                {receipt?.masterCategory?.name} / {receipt?.category?.name}
               </div>
             </div>
 
-            <div
+            {/* <div
               style={{
                 margin: "1.5rem 0rem",
                 fontSize: "20px",
@@ -645,9 +644,9 @@ export default function DonationListTable(
             >
               <span>To DONATE:</span>
               <span></span>
-            </div>
+            </div> */}
 
-            <div
+            {/* <div
               style={{
                 margin: "1.5rem 0rem",
                 fontSize: "20px",
@@ -655,17 +654,17 @@ export default function DonationListTable(
             >
               <span>UPI:</span>
               <span></span>
-            </div>
+            </div> */}
 
             <div
               style={{
                 display: "flex",
-                justifyContent: "space-between",
+                justifyContent: "end",
                 alignItems: "center",
                 margin: "2rem 0rem",
               }}
             >
-              <div style={{ width: "50%", display: "grid" }}>
+              {/* <div style={{ width: "50%", display: "grid" }}>
                 <span>Bank Details:</span>
                 <div>
                   <span>A/c no.</span>
@@ -679,10 +678,15 @@ export default function DonationListTable(
                   <span>Branch: </span>
                   <span>{loggedTemple?.branch}</span>
                 </div>
-              </div>
+              </div> */}
 
               <div
-                style={{ width: "50%", display: "grid", textAlign: "center" }}
+                style={{
+                  width: "50%",
+                  display: "grid",
+                  textAlign: "end",
+                  marginTop: "4rem",
+                }}
               >
                 <span style={{ fontSize: "20px" }}>
                   दान प्राप्तकर्ता हस्ताक्षर

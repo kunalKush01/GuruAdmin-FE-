@@ -1,17 +1,17 @@
 // ** React Imports
-import { useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 
 // ** Store & Actions
-import { useSelector, useDispatch } from "react-redux";
-import { handleMenuHidden, handleContentWidth } from "@store/layout";
+import { handleContentWidth, handleMenuHidden } from "@store/layout";
+import { useDispatch, useSelector } from "react-redux";
 
 // ** Third Party Components
 import classnames from "classnames";
 import { ArrowUp } from "react-feather";
 
 // ** Reactstrap Imports
-import { Navbar, NavItem, Button, Input } from "reactstrap";
+import { Button, Navbar } from "reactstrap";
 
 // ** Configs
 import themeConfig from "@configs/themeConfig";
@@ -19,27 +19,27 @@ import themeConfig from "@configs/themeConfig";
 // ** Custom Components
 import Customizer from "@components/customizer";
 import ScrollToTop from "@components/scrolltop";
-import NavbarComponent from "./components/navbar";
 import FooterComponent from "./components/footer";
 import MenuComponent from "./components/menu/horizontal-menu";
+import NavbarComponent from "./components/navbar";
 
 // ** Custom Hooks
-import { useRTL } from "@hooks/useRTL";
-import { useSkin } from "@hooks/useSkin";
-import { useNavbarType } from "@hooks/useNavbarType";
 import { useFooterType } from "@hooks/useFooterType";
 import { useNavbarColor } from "@hooks/useNavbarColor";
+import { useNavbarType } from "@hooks/useNavbarType";
+import { useRTL } from "@hooks/useRTL";
+import { useSkin } from "@hooks/useSkin";
 
 // ** Styles
 import "@styles/base/core/menu/menu-types/horizontal-menu.scss";
 import { subHeaderContent } from "../../utility/subHeaderContent";
 const HorizontalLayout = (props) => {
-  const history = useHistory() 
-  const {isLogged} = useSelector(state=>state.auth)
-  
-  useEffect(()=>{
-    !isLogged&& history.push("/login")
-  },[isLogged])
+  const history = useHistory();
+  const { isLogged } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    !isLogged && history.push("/login");
+  }, [isLogged]);
   // ** Props
   const {
     children,
@@ -61,6 +61,7 @@ const HorizontalLayout = (props) => {
 
   // ** States
   const [isMounted, setIsMounted] = useState(false);
+  const [active, setActive] = useState(location.pathname);
   const [navbarScrolled, setNavbarScrolled] = useState(false);
 
   // ** Store Vars
@@ -152,7 +153,7 @@ const HorizontalLayout = (props) => {
           <Navbar
             tag="div"
             expand="sm"
-            style={{ background: "#FF8744",top:"85px" }}
+            style={{ background: "#FF8744", top: "85px" }}
             light={skin !== "dark"}
             dark={skin === "dark" || bgColorCondition}
             className={classnames(
@@ -168,16 +169,17 @@ const HorizontalLayout = (props) => {
             {menu ? (
               menu
             ) : (
-              <MenuComponent
-                menuData={subHeaderContent}
-                routerProps={routerProps}
-                currentActiveItem={currentActiveItem}
-              />
+              <>
+                <MenuComponent
+                  menuData={subHeaderContent}
+                  routerProps={routerProps}
+                  currentActiveItem={currentActiveItem}
+                />
+              </>
             )}
           </Navbar>
         </div>
       ) : null}
-
       {children}
       {themeConfig.layout.customizer === true ? (
         <Customizer
@@ -220,7 +222,6 @@ const HorizontalLayout = (props) => {
           />
         )}
       </footer>
-
       {themeConfig.layout.scrollTop === true ? (
         <div className="scroll-to-top">
           <ScrollToTop showOffset={300} className="scroll-top d-block">

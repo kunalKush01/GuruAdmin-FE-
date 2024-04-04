@@ -18,6 +18,7 @@ import { ExpensesListTable } from "../../components/internalExpenses/expensesLis
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
 import NoContent from "../../components/partials/noContent";
 import { WRITE } from "../../utility/permissionsVariable";
+import { ChangeCategoryType } from "../../components/partials/categoryDropdown";
 
 const ExpenseWrapper = styled.div`
   color: #583703;
@@ -79,18 +80,40 @@ export default function Expenses() {
     page: 1,
     limit: 10,
   });
+  const [expenseType, setExpenseType] = useState(
+    t("cattle_expense_type_general")
+  );
 
   const searchParams = new URLSearchParams(history.location.search);
 
   const currentPage = searchParams.get("page");
+  const currentExpenseType = searchParams.get("expenseType");
   const currentFilter = searchParams.get("filter");
 
   const routPagination = pagination.page;
   const routFilter = dropDownName;
+  const routeExpenseType = expenseType;
+
+  const ExpenseType = [
+    {
+      id: 1,
+      name: t("cattle_expense_type_general"),
+    },
+    {
+      id: 2,
+      name: t("cattle_expense_type_assets"),
+    },
+    {
+      id: 3,
+      name: t("cattle_expense_type_consumable"),
+    },
+    ,
+  ];
 
   useEffect(() => {
-    if (currentPage || currentFilter) {
+    if (currentPage || currentFilter || currentExpenseType) {
       setdropDownName(currentFilter);
+      setExpenseType(currentExpenseType);
       setPagination({ ...pagination, page: parseInt(currentPage) });
     }
   }, []);
@@ -112,6 +135,7 @@ export default function Expenses() {
       pagination.page,
       selectedLang.id,
       filterEndDate,
+      expenseType,
       filterStartDate,
       searchBarValue,
     ],
@@ -120,6 +144,7 @@ export default function Expenses() {
         ...pagination,
         startDate: filterStartDate,
         endDate: filterEndDate,
+        expenseType: expenseType?.toUpperCase(),
         languageId: selectedLang.id,
         search: searchBarValue,
       }),
@@ -172,6 +197,21 @@ export default function Expenses() {
             </div>
           </div>
           <div className="addExpense">
+            <ChangeCategoryType
+              className={"me-1"}
+              categoryTypeArray={ExpenseType}
+              typeName={expenseType}
+              setTypeName={(e) => {
+                setExpenseType(e.target.name);
+                setPagination({ page: 1 });
+                history.push(
+                  `/internal_expenses?page=${1}&expenseType=${
+                    e.target.name
+                  }&filter=${dropDownName}`
+                );
+              }}
+            />
+
             <ChangePeriodDropDown
               className={"me-1"}
               dropDownName={dropDownName}
@@ -179,10 +219,13 @@ export default function Expenses() {
                 setdropDownName(e.target.name);
                 setPagination({ page: 1 });
                 history.push(
-                  `/internal_expenses?page=${1}&filter=${e.target.name}`
+                  `/internal_expenses?page=${1}&expenseType=${expenseType}&filter=${
+                    e.target.name
+                  }`
                 );
               }}
             />
+
             {allPermissions?.name === "all" ||
             subPermission?.includes(WRITE) ? (
               <Button
@@ -190,7 +233,7 @@ export default function Expenses() {
                 className="addExpense-btn"
                 onClick={() =>
                   history.push(
-                    `/internal_expenses/add?page=${pagination.page}&filter=${dropDownName}`
+                    `/internal_expenses/add?page=${pagination.page}&expenseType=${expenseType}&filter=${dropDownName}`
                   )
                 }
               >
@@ -237,6 +280,7 @@ export default function Expenses() {
                     <ExpensesListTable
                       data={categoryItems}
                       currentFilter={routFilter}
+                      currentExpenseFilter={routeExpenseType}
                       currentPage={routPagination}
                       page={pagination}
                       allPermissions={allPermissions}
@@ -281,7 +325,7 @@ export default function Expenses() {
                       history.push(
                         `/internal_expenses?page=${
                           page.selected + 1
-                        }&filter=${dropDownName}`
+                        }&expenseType=${expenseType}&filter=${dropDownName}`
                       );
                     }}
                     containerClassName={

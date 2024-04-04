@@ -38,7 +38,13 @@ const schema = Yup.object().shape({
     .email("email_invalid")
     .required("users_email_required")
     .trim(),
-  password: Yup.string().required("password_required").trim(),
+  password: Yup.string()
+    .matches(
+      /^(?=.*[!@#$%^&*()-_+=|{}[\]:;'"<>,.?/~`])(?=.*\d)(?=.*[A-Z])(?=.*[a-z]).{8,}$/,
+      "Password must contain at least one special character, one number, one capital letter, and one small letter"
+    )
+    .min(8, "Password is too short - should be 8 chars minimum.")
+    .trim(),
   userRoleChacked: Yup.array()
     .min(1, "minimum_one_role_required")
     .required("user_userRoleRequired"),

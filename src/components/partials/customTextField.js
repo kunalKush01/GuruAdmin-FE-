@@ -1,8 +1,8 @@
+import { ErrorMessage, useField } from "formik";
 import React from "react";
-import { useField, ErrorMessage } from "formik";
+import { Trans, useTranslation } from "react-i18next";
 import { FormGroup, InputGroup } from "reactstrap";
 import styled from "styled-components";
-import { Trans, useTranslation } from "react-i18next";
 
 const CustomTextFieldWarper = styled.div`
   color: #583703 !important;
@@ -32,7 +32,6 @@ const CustomTextFieldWarper = styled.div`
   input::-webkit-inner-spin-button {
     display: none;
   }
- 
 `;
 
 export default function CustomTextField({
@@ -62,7 +61,6 @@ export default function CustomTextField({
             className={"form-control"}
             placeholder={placeholder}
             value={field.value}
-            
             {...field}
             {...props}
           />

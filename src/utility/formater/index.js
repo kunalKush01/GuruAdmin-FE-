@@ -47,3 +47,20 @@ export function setCookieWithMainDomain(name, value, mainDomain) {
     path +
     "; secure";
 }
+
+export const calculateAge = (dob) => {
+  const today = new Date();
+  const birthDate = new Date(dob);
+
+  const years = today.getFullYear() - birthDate.getFullYear();
+  const months = today.getMonth() - birthDate.getMonth();
+  const days = today.getDate() - birthDate.getDate();
+
+  const ageParts = [];
+
+  if (years > 0) ageParts.push(`${years} year${years > 1 ? "s" : ""}`);
+  if (months > 0) ageParts.push(`${months} month${months > 1 ? "s" : ""}`);
+  if (days > 0) ageParts.push(`${days} day${days > 1 ? "s" : ""}`);
+
+  return ageParts.join(" ");
+};

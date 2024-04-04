@@ -102,12 +102,12 @@ export default function EventList() {
   const routPagination = pagination.page;
   const routFilter = dropDownName;
 
-  useEffect(() => {
-    if (currentPage || currentFilter) {
-      setdropDownName(currentFilter);
-      setPagination({ ...pagination, page: parseInt(currentPage) });
-    }
-  }, []);
+    useEffect(() => {
+      if (currentPage || currentFilter) {
+        setdropDownName(currentFilter);
+        setPagination({ ...pagination, page: parseInt(currentPage) });
+      }
+    }, []);
 
   let filterStartDate = moment()
     .startOf(periodDropDown())

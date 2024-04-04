@@ -1,12 +1,12 @@
 import InputPasswordToggle from "@components/input-password-toggle";
 import { useSkin } from "@hooks/useSkin";
 import "@styles/react/pages/page-authentication.scss";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { ErrorMessage, Form, Formik } from "formik";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   Button,
@@ -16,10 +16,6 @@ import {
   Input,
   InputGroup,
   InputGroupText,
-  Modal,
-  ModalBody,
-  ModalFooter,
-  ModalHeader,
   Row,
   Spinner,
 } from "reactstrap";
@@ -35,7 +31,6 @@ import {
   handleTokenLogin,
   handleTrustDetail,
   login,
-  openModel,
 } from "../../redux/authSlice";
 import {
   ConverFirstLatterToCapital,
@@ -145,7 +140,8 @@ const LoginCover = () => {
       .email("Invalid Email.")
       .required("Email is required.")
       .min(5),
-    password: Yup.string().required("Password is required."),
+    password: Yup.string()
+    .required("Password is required."),
   });
   const forgetPasswordSchema = Yup.object().shape({
     email: Yup.string().required("Email is required.").min(5),
@@ -272,7 +268,7 @@ const LoginCover = () => {
   // }, [isLogged, loginPath, TrustQuery]);
 
   const subDomainName = hostname.replace(subdomainChange, "");
-  // const subDomainName = hostname.replace("-dev.localhost", "");
+  // const subDomainName = hostname.replace("-admin-dev.localhost", "");
 
   const refreshToken = getCookie("refreshToken");
   const accessToken = getCookie("accessToken");
@@ -499,6 +495,16 @@ const LoginCover = () => {
                   </Form>
                 )}
               </Formik>
+              {/* <p className="text-center mt-5 ">
+               {/* <p className="text-center mt-5 ">
+                <span className="me-25  an_account ">
+                  Don't have an account ?{" "}
+                </span>
+
+                <span className="text-primary signUp cursor-pointer">
+                  <a href="https://apnadharm.com/#home">Sign Up</a>
+                </span>
+              </p> */}
             </Col>
           ) : (
             <Col className="px-xl-2 mx-auto " sm="8" md="6" lg="12">

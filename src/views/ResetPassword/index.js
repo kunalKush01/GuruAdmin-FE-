@@ -52,15 +52,14 @@ const ResetPassWord = () => {
   const loginSchema = Yup.object().shape({
     password: Yup.string()
       .required("Password is required.")
-      .min(8, "Password is too short - should be 8 chars minimum.")
       .matches(
-        /^(?=.*[a-zA-Z])(?=.*\d).+$/,
-        "Password must contain at least one letter and one number"
-      ),
-    confirmPassword: Yup.string().oneOf(
-      [Yup.ref("password"), null],
-      "Passwords must match"
-    ),
+        /^(?=.*[!@#$%^&*()-_+=|{}[\]:;'"<>,.?/~`])(?=.*\d)(?=.*[A-Z])(?=.*[a-z]).{8,}$/,
+        "Password must contain at least one special character, one number, one capital letter, and one small letter"
+      )
+      .min(8, "Password is too short - should be 8 chars minimum."),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password"), null], "Passwords must match")
+      .required("Confirm Password is required"),
   });
   const forgetPasswordSchema = Yup.object().shape({
     email: Yup.string().required().min(5),
