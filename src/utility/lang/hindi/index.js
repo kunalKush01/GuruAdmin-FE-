@@ -392,7 +392,7 @@ export const hindiContent = {
   search_donation: "सभी दानों को खोजें",
   search_punyarjak: "सभी पुण्यार्थियों को खोजें ",
   search_donation_box_collection: "सभी दान बॉक्स संग्रह खोजें",
-  search_commitment: "सभी बोलीओं को खोजें",
+  search_commitment: "सभी बोलियों को खोजें",
 };
 
 // all: "सभी",
