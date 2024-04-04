@@ -63,6 +63,28 @@ function BtnContent({ setClosePopover }) {
           className="col-item"
           onClick={() => {
             setClosePopover(false);
+            history.push(`/configuration/cattle-breed`);
+          }}
+        >
+          <Trans i18nKey={"cattles"} /> <Trans i18nKey={"cattle_breed"} />
+        </Col>
+
+        <Col
+          xs={12}
+          className="col-item"
+          onClick={() => {
+            setClosePopover(false);
+            history.push(`/configuration/cattle-category`);
+          }}
+        >
+          <Trans i18nKey={"cattles"} /> <Trans i18nKey={"category"} />
+        </Col>
+
+        <Col
+          xs={12}
+          className="col-item"
+          onClick={() => {
+            setClosePopover(false);
             history.push(`/configuration/users`);
           }}
         >
@@ -102,49 +124,57 @@ const HorizontalMenu = ({ menuData, currentActiveItem, routerProps }) => {
   }, [location.pathname]);
 
   return (
-    <div className="navbar-container w-100 main-menu-content">
-      <ul
-        className={`nav navbar-nav ${
-          permissionsKey?.length >= 10 || permissionsKey?.length === 1
-            ? "justify-content-between"
-            : "gap-5"
-        }  `}
-        id="main-menu-navigation"
-      >
-        {menuData.map((item, idx) => {
-          if (
-            permissionsKey?.includes("all") ||
-            permissionsKey?.includes(item?.name)
-          ) {
-            return (
-              <SubHeaderWarraper key={idx}>
-                <div
-                  id={item.name}
-                  onClick={() => {
-                    item.url != "/configuration" ? history.push(item.url) : "";
-                    //  setActive(item)
-                  }}
-                  key={idx}
-                  className={`text-light ${
-                    active?.includes(item.url) ? "activeTab" : ""
-                  } `}
-                >
-                  <Trans i18nKey={item.name} />
+    <>
+      <div className="navbar-container w-100 main-menu-content">
+        <ul
+          className={`nav navbar-nav ${
+            permissionsKey?.length >= 10 || permissionsKey?.length === 1
+              ? "justify-content-between"
+              : "gap-5"
+          }  `}
+          id="main-menu-navigation"
+        >
+          {menuData.map((item, idx) => {
+            if (
+              permissionsKey?.includes("all") ||
+              permissionsKey?.includes(item?.name)
+            ) {
+              return (
+                <div key={idx}>
+                  <SubHeaderWarraper>
+                    <div
+                      id={item.name}
+                      onClick={() => {
+                        item.url != "/configuration"
+                          ? history.push(item.url)
+                          : "";
+                        //  setActive(item)
+                      }}
+                      key={idx}
+                      className={`text-light ${
+                        active?.startsWith(item.activeTab) ? "activeTab" : ""
+                      } `}
+                    >
+                      <Trans i18nKey={item.name} />
+                    </div>
+                    {item.name === "configuration" && closePopover && (
+                      <BtnPopover
+                        target={item.name}
+                        content={
+                          <BtnContent setClosePopover={setClosePopover} />
+                        }
+                      />
+                    )}
+                  </SubHeaderWarraper>
                 </div>
-                {item.name === "configuration" && closePopover && (
-                  <BtnPopover
-                    target={item.name}
-                    content={<BtnContent setClosePopover={setClosePopover} />}
-                  />
-                )}
-              </SubHeaderWarraper>
-            );
-          } else {
-            return null;
-          }
-        })}
-      </ul>
-    </div>
+              );
+            } else {
+              return null;
+            }
+          })}
+        </ul>
+      </div>
+    </>
   );
 };
 

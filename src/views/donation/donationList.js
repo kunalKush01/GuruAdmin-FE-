@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Plus } from "react-feather";
 import { Helmet } from "react-helmet";
 import { Trans, useTranslation } from "react-i18next";
@@ -15,7 +15,7 @@ import {
   getAllCategories,
   getAllMasterCategories,
 } from "../../api/categoryApi";
-import { getAllDonation } from "../../api/donationApi";
+import { getAllDonation, importDonationFile } from "../../api/donationApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import DonationListTable from "../../components/donation/donationListTable";
 import { ChangeCategoryType } from "../../components/partials/categoryDropdown";
@@ -61,6 +61,7 @@ const DonationWrapper = styled.div`
 `;
 
 export default function Donation() {
+  const importFileRef = useRef();
   const [categoryTypeName, setCategoryTypeName] = useState("All");
   const [subCategoryTypeName, setSubCategoryTypeName] = useState("All");
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
@@ -195,6 +196,18 @@ export default function Donation() {
     [donationQuery]
   );
 
+  const queryClient = useQueryClient();
+
+  const handleImportFile = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
+      await importDonationFile(formData);
+      queryClient.invalidateQueries(["donations"]);
+    }
+  };
+
   // PERMISSSIONS
   const permissions = useSelector(
     (state) => state.auth.userDetail?.permissions
@@ -250,6 +263,7 @@ export default function Donation() {
                 );
               }}
             />
+            
             <ChangeCategoryType
               className={"me-1"}
               categoryTypeArray={subCategoryTypes}
@@ -278,6 +292,23 @@ export default function Donation() {
                 );
               }}
             />
+
+            <Button
+              className="me-1"
+              color="primary"
+              onClick={() => importFileRef.current.click()}
+            >
+              Import File
+            </Button>
+
+            <input
+              type="file"
+              ref={importFileRef}
+              accept=""
+              className="d-none"
+              onChange={handleImportFile}
+            />
+
             {allPermissions?.name === "all" ||
             subPermission?.includes(WRITE) ? (
               <Button

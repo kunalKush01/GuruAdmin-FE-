@@ -27,8 +27,10 @@ const RevenueChartWarrper = styled.div`
 `;
 export const RevenueChart = ({
   DonationData = [],
-  TotalExpensesData = [],
   CommitmentData = [],
+  chartHeading,
+  cattleSeries,
+  barColors = ["#FF8744", "#FFDEB8", "#FF0700"],
 }) => {
   const { t } = useTranslation();
 
@@ -79,15 +81,16 @@ export const RevenueChart = ({
     dataLabels: {
       enabled: false,
     },
-    colors: ["#FF8744", "#FFDEB8", "#FF0700"],
+    colors: barColors,
+
     stroke: {
       show: true,
       width: 2,
       colors: ["transparent"],
     },
-    xaxis: {
-      type: "category",
-    },
+    // xaxis: {
+    //   type: "category",
+    // },
     yaxis: {
       labels: {
         formatter: function (value) {
@@ -104,7 +107,7 @@ export const RevenueChart = ({
     tooltip: {
       y: {
         formatter: (val) => {
-          return "₹" + val.toLocaleString("en-IN");
+          return !cattleSeries ? "₹" + val.toLocaleString("en-IN")  : val;
         },
       },
     },
@@ -113,11 +116,11 @@ export const RevenueChart = ({
   return (
     <RevenueChartWarrper id="chart">
       <p>
-        <Trans i18nKey={"dashboard_RevenueReport"} />
+        <Trans i18nKey={chartHeading} />
       </p>
       <ReactApexChart
         options={options}
-        series={series}
+        series={cattleSeries ? cattleSeries : series}
         type="bar"
         height={"450"}
       />

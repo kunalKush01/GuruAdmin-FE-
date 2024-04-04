@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Plus, Trash } from "react-feather";
 import { Helmet } from "react-helmet";
 import { Trans, useTranslation } from "react-i18next";
@@ -26,6 +26,7 @@ import {
 import {
   getAllCommitments,
   getAllPaidDonationsReceipts,
+  importCommitmentFile,
   nudgeUserApi,
 } from "../../api/commitmentApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
@@ -74,6 +75,7 @@ const CommitmentWrapper = styled.div`
 `;
 
 export default function Commitment() {
+  const importFileRef = useRef();
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const [categoryTypeName, setCategoryTypeName] = useState("All");
   const [subCategoryTypeName, setSubCategoryTypeName] = useState("All");
@@ -236,6 +238,18 @@ export default function Commitment() {
     () => commitmentQuery?.data?.results ?? [],
     [commitmentQuery]
   );
+  const queryClient = useQueryClient();
+
+  const handleImportFile = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
+      await importCommitmentFile(formData);
+      queryClient.invalidateQueries(["Commitments"]);
+    }
+  };
+
   // PERMISSSIONS
   const permissions = useSelector(
     (state) => state.auth.userDetail?.permissions
@@ -263,7 +277,6 @@ export default function Commitment() {
     setPopover(false);
   };
 
-  const queryClient = useQueryClient();
   return (
     <CommitmentWrapper>
       <Helmet>
@@ -344,6 +357,21 @@ export default function Commitment() {
                   }`
                 );
               }}
+            />
+            <Button
+              className="me-1"
+              color="primary"
+              onClick={() => importFileRef.current.click()}
+            >
+              Import File
+            </Button>
+
+            <input
+              type="file"
+              ref={importFileRef}
+              accept=""
+              className="d-none"
+              onChange={handleImportFile}
             />
             {allPermissions?.name === "all" ||
             subPermission?.includes(WRITE) ? (

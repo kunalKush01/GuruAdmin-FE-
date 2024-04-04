@@ -21,6 +21,7 @@ export function ExpensesListTable({
   page,
   currentFilter,
   currentPage,
+  currentExpenseFilter,
   financeReport,
   subPermission,
   allPermissions,
@@ -71,10 +72,16 @@ export function ExpensesListTable({
       width: "200px",
     },
     {
+      name: t("dashboard_Recent_DonorType"),
+      width: "200px",
+      selector: (row) => row.expenseType,
+    },
+    {
       name: t("created_by"),
       center: true,
       selector: (row) => row.createdBy,
     },
+
     {
       name: t(""),
       center: true,
@@ -104,6 +111,9 @@ export function ExpensesListTable({
       date: moment(item?.expenseDate).utcOffset(0).format("DD MMM YYYY"),
       amount: `₹${item?.amount.toLocaleString("en-IN")}`,
       createdBy: ConverFirstLatterToCapital(item?.createdBy?.name ?? ""),
+      expenseType: item?.expenseType
+        ? ConverFirstLatterToCapital(item?.expenseType?.toLowerCase() ?? "")
+        : "-",
       edit:
         allPermissions?.name === "all" ||
         subPermission?.includes(EDIT) ||
@@ -116,7 +126,7 @@ export function ExpensesListTable({
               financeReport
                 ? ""
                 : history.push(
-                    `/internal_expenses/edit/${item.id}?page=${currentPage}&filter=${currentFilter}`
+                    `/internal_expenses/edit/${item.id}?page=${currentPage}&expenseType=${currentExpenseFilter}&filter=${currentFilter}`
                   );
             }}
           />

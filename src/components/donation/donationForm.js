@@ -116,6 +116,8 @@ export default function DonationForm({
               articleQuantity: e?.articleQuantity,
               articleRemarks: e?.remarks,
               isArticle: toggleState,
+              isGovernment:
+                !payDonation && e?.isGovernment === "YES" ? true : false,
             });
           }}
           validationSchema={validationSchema}

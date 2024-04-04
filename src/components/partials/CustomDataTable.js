@@ -57,6 +57,7 @@ const DataTableWarraper = styled.div`
     }
     .rdt_TableBody {
       max-height: ${(props) => props.maxHeight ?? ""};
+      height: ${(props) => props.height ?? ""};
       overflow: auto;
       ::-webkit-scrollbar {
         display: block;
@@ -75,6 +76,8 @@ function CustomDataTable({
   selectableRows,
   selectableRowSelected,
   onSelectedRowsChange,
+  noDataComponent,
+  height,
 }) {
   // const tableData = {
   //     columns,
@@ -83,11 +86,16 @@ function CustomDataTable({
 
   return (
     <>
-      <DataTableWarraper minWidth={minWidth} maxHeight={'270px'}>
+      <DataTableWarraper
+        minWidth={minWidth}
+        maxHeight={maxHeight ?? "  270px"}
+        height={height}
+      >
         <DataTable
           conditionalRowStyles={[conditionStyle]}
           className="DonetionList"
           columns={columns}
+          noDataComponent={noDataComponent}
           selectableRows={selectableRows}
           onSelectedRowsChange={onSelectedRowsChange}
           selectableRowDisabled={selectableRowDisabled}

@@ -5,7 +5,6 @@ import { Fragment, useEffect, useMemo, useState } from "react";
 import UserDropdown from "./UserDropdown";
 
 // ** Third Party Components
-import { Moon, Sun } from "react-feather";
 
 // ** Reactstrap Imports
 import moment from "moment";
@@ -13,42 +12,24 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
-import {
-  Input,
-  InputGroup,
-  InputGroupText,
-  Link,
-  NavItem,
-  NavLink,
-} from "reactstrap";
+import { NavItem, NavLink } from "reactstrap";
 import styled from "styled-components";
 import logOutIcon from "../../../../assets/images/icons/dashBoard/Group 5995.svg";
 import bellIcon from "../../../../assets/images/icons/dashBoard/Group 5996.svg";
-import searchIcon from "../../../../assets/images/icons/dashBoard/Group 5997.svg";
 import menuPanelIcon from "../../../../assets/images/icons/dashBoard/icn_MenuPanel.svg";
 import confirmationIcon from "../../../../assets/images/icons/news/conformationIcon.svg";
 import { authApiInstance } from "../../../../axiosApi/authApiInstans";
-import {
-  handleTrustDetail,
-  logOut,
-  setSearchbarValue,
-} from "../../../../redux/authSlice";
+import { handleTrustDetail, logOut } from "../../../../redux/authSlice";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
 import LangModel from "../langModel";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import { loginPage } from "../../../../api/loginPageApi";
-import {
-  getAllNotification,
-  readNotification,
-} from "../../../../api/notification";
+import { getAllNotification } from "../../../../api/notification";
 import logo from "../../../../assets/images/pages/main-logo.png";
 import CustomSearchBar from "../../../../components/partials/customSearchBar";
-import {
-  isSerchable,
-  setPlaceholderSerchbar,
-} from "../../../../utility/localSerachBar";
+import { isSerchable } from "../../../../utility/localSerachBar";
 
 const NavbarUserWarraper = styled.div`
   color: #583703 !important ;

@@ -25,26 +25,29 @@ const SubAdminUserWarapper = styled.div`
   }
 `;
 const schema = Yup.object().shape({
-  name: Yup
-    .string()
+  name: Yup.string()
     .matches(
       /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
       "user_only_letters"
     )
     .required("users_title_required")
     .trim(),
+  password: Yup.string()
+    .matches(
+      /^(?=.*[!@#$%^&*()-_+=|{}[\]:;'"<>,.?/~`])(?=.*\d)(?=.*[A-Z])(?=.*[a-z]).{8,}$/,
+      "Password must contain at least one special character, one number, one capital letter, and one small letter"
+    )
+    .min(8, "Password is too short - should be 8 chars minimum.")
+    .required("password_required")
+    .trim(),
   // mobile: Yup.string().required("users_mobile_required"),
-  mobile: Yup
-    .string()
-
-    .required("users_mobile_required"),
-  email: Yup
-    .string()
+  mobile: Yup.string()
+  .required("users_mobile_required"),
+  email: Yup.string()
     .email("email_invalid")
     .required("users_email_required")
     .trim(),
-  userRoleChacked: Yup
-    .array()
+  userRoleChacked: Yup.array()
     .min(1, "minimum_one_role_required")
     .required("user_userRoleRequired"),
 });

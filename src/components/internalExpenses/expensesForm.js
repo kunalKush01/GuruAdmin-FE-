@@ -1,20 +1,23 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { Prompt, useHistory } from "react-router-dom";
-import { Button, ButtonGroup, Col, Row, Spinner } from "reactstrap";
+import { Button, Col, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
-import * as Yup from "yup";
 import { getAllExpensesLogs } from "../../api/expenseApi";
-import { createNews } from "../../api/newsApi";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import LogListTable from "../DonationBox/logListTable";
-import { CustomDropDown } from "../partials/customDropDown";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
+import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import RichTextField from "../partials/richTextEditorField";
+import AsyncSelectField from "../partials/asyncSelectField";
+import {
+  findAllExpenseName,
+  findAllItemId,
+} from "../../api/cattle/cattleExpense";
+import { Storage } from "aws-amplify";
 
 const FormWrapper = styled.div`
   .FormikWraper {
@@ -54,6 +57,26 @@ const FormWrapper = styled.div`
       color: #fff !important;
     }
   }
+  .upload-invoice {
+    color: #583703 !important;
+    border: none !important;
+    height: 36px;
+    width: 100%;
+    padding-top: 9px;
+    padding-left: 5px;
+    /* text-align: center; */
+    background-color: #fff7e8 !important;
+    font: normal normal normal 13px/20px Noto Sans;
+    border-radius: 5px;
+  }
+  .upload-invoice[type="file"]::file-selector-button {
+    display: none;
+  }
+  label {
+    /* margin-bottom: 0px; */
+    color: #583703;
+    font: normal normal bold 15px/33px Noto Sans;
+  }
 `;
 
 export default function ExpensesForm({
@@ -64,12 +87,46 @@ export default function ExpensesForm({
   editLogs,
   validationSchema,
   initialValues,
-  showTimeInput,
+  expenseTypeArr,
 }) {
   const history = useHistory();
   const { t } = useTranslation();
+  const uploadInvoice = useRef();
   const [loading, setLoading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const expenseQueryClient = useQueryClient();
+
+  const loadOption = async (itemId) => {
+    const res = await findAllItemId({ itemId: itemId });
+    return res.results;
+  };
+
+  const nameLoadOption = async (name) => {
+    const res = await findAllExpenseName({ name: name });
+    return res.results;
+  };
+  const randomNumber = Math.floor(100000000000 + Math.random() * 900000000000);
+
+  const handleUpload = (acceptedFiles, uploadType) => {
+    setIsUploading(true);
+    Storage.put(
+      `temp/${randomNumber}_${acceptedFiles?.name.split(" ").join("-")}`,
+      acceptedFiles,
+      {
+        contentType: acceptedFiles?.type,
+      }
+    )
+      .then((res) => {
+        setIsUploading(false);
+        const uploadedDocumentName = res.key.split("temp/")[1];
+        setFiles(uploadedDocumentName);
+      })
+      .catch((err) => console.log(err));
+  };
+  const searchParams = new URLSearchParams(history.location.search);
+  const currentPage = searchParams.get("page");
+  const currentExpenseType = searchParams.get("expenseType");
+  const currentFilter = searchParams.get("filter");
 
   const expenseMutation = useMutation({
     mutationFn: handleSubmit,
@@ -78,7 +135,9 @@ export default function ExpensesForm({
         expenseQueryClient.invalidateQueries(["Expenses"]);
         expenseQueryClient.invalidateQueries(["ExpensesDetail"]);
         setLoading(false);
-        history.push("/internal_expenses");
+        history.push(
+          `/internal_expenses?page=${currentPage}&expenseType=${currentExpenseType}&filter=${currentFilter}`
+        );
       } else if (data?.error) {
         setLoading(false);
       }
@@ -113,8 +172,16 @@ export default function ExpensesForm({
           setLoading(true);
           expenseMutation.mutate({
             expenseId: e?.Id,
-            amount: e?.Amount,
             title: e?.Title,
+            expenseType: e?.expenseType?.value?.toUpperCase(),
+            name: e?.name?.name,
+            itemId: e?.itemId?._id,
+            orderQuantity: e?.orderQuantity,
+            pricePerItem: e?.perItemAmount,
+            amount: e?.orderQuantity
+              ? e?.perItemAmount * e?.orderQuantity
+              : e?.Amount,
+            billInvoice: e?.bill_invoice,
             description: e?.Body,
             expenseDate: e?.DateTime,
           });
@@ -150,13 +217,160 @@ export default function ExpensesForm({
                         required
                       />
                     </Col>
-                    <Col xs={12} md={6} className="opacity-75">
-                      <CustomTextField
-                        label={t("added_by")}
-                        name="AddedBy"
-                        disabled
+                    <Col xs={12} md={6}>
+                      <FormikCustomReactSelect
+                        labelName={t("dashboard_Recent_DonorType")}
+                        name="expenseType"
+                        loadOptions={expenseTypeArr}
+                        placeholder={t("placeHolder_expense_type")}
+                        required
+                        disabled={editLogs}
+                        width={"100"}
                       />
                     </Col>
+                    {(formik.values?.expenseType?.value === "assets" ||
+                      formik.values?.expenseType?.value === "consumable") && (
+                      <>
+                        <Col xs={12} md={6}>
+                          <AsyncSelectField
+                            name="name"
+                            labelKey="name"
+                            valueKey="name"
+                            loadOptions={nameLoadOption}
+                            label={t("name")}
+                            onChange={(e) => {
+                              formik.setFieldValue("name", e);
+                              formik.setFieldValue("itemId", e);
+                            }}
+                            placeholder={t("placeHolder_cattle_item_name")}
+                            defaultOptions
+                            required
+                          />
+                        </Col>
+                        <Col xs={12} md={6}>
+                          <AsyncSelectField
+                            name="itemId"
+                            labelKey="itemId"
+                            valueKey="itemId"
+                            loadOptions={loadOption}
+                            label={t("cattle_itemId")}
+                            onChange={(e) => {
+                              formik.setFieldValue("itemId", e);
+                              formik.setFieldValue("name", e);
+                            }}
+                            placeholder={t("placeHolder_cattle_itemId")}
+                            defaultOptions
+                            required
+                          />
+                        </Col>
+                        <Col xs={12} md={6}>
+                          <CustomTextField
+                            label={t("cattle_expense_order_quantity")}
+                            type="number"
+                            placeholder={t(
+                              "placeHolder_cattle_expense_order_quantity"
+                            )}
+                            name="orderQuantity"
+                            onBlur={() => {
+                              if (formik.values?.perItemAmount) {
+                                formik.setFieldValue(
+                                  "Amount",
+                                  formik.values?.orderQuantity *
+                                    formik.values?.perItemAmount
+                                );
+                              }
+                            }}
+                            required
+                            autoFocus
+                            onInput={(e) =>
+                              (e.target.value = e.target.value.slice(0, 30))
+                            }
+                          />
+                        </Col>
+                        <Col xs={12} md={6}>
+                          <CustomTextField
+                            type="number"
+                            name="perItemAmount"
+                            label={t("price_per_item")}
+                            placeholder={t("placeHolder_price_per_item")}
+                            onBlur={() => {
+                              if (formik.values?.orderQuantity) {
+                                formik.setFieldValue(
+                                  "Amount",
+                                  formik.values?.orderQuantity *
+                                    formik.values?.perItemAmount
+                                );
+                              }
+                            }}
+                            required
+                          />
+                        </Col>
+                      </>
+                    )}
+                    <Col
+                      xs={12}
+                      md={6}
+                      className={
+                        (formik.values?.expenseType?.value === "assets" ||
+                          formik.values?.expenseType?.value === "consumable") &&
+                        "opacity-75"
+                      }
+                    >
+                      <CustomTextField
+                        type="number"
+                        label={t("amount")}
+                        placeholder={t("enter_price_manually")}
+                        name="Amount"
+                        disabled={
+                          formik.values?.expenseType?.value === "assets" ||
+                          formik.values?.expenseType?.value === "consumable"
+                        }
+                        required
+                      />
+                    </Col>
+                    {(formik.values?.expenseType?.value === "assets" ||
+                      formik.values?.expenseType?.value === "consumable") && (
+                      <>
+                        <Col xs={12} md={8}>
+                          <div>
+                            <label>
+                              <Trans i18nKey={"cattle_expense_bill_invoice"} />
+                            </label>
+                          </div>
+                          <div className="d-flex gap-2 align-items-center">
+                            <input
+                              ref={uploadInvoice}
+                              type={"file"}
+                              className="upload-invoice"
+                              name="bill_invoice"
+                              accept=".pdf"
+                              onChange={(e) => {
+                                if (e.target.files?.length) {
+                                  handleUpload(e.target.files[0]);
+                                  // handleUpload(e.target.files[0]).then((e)=>formik.setFieldValue('documents',e.target.files[0].name));
+                                  formik.setFieldValue(
+                                    "bill_invoice",
+                                    `${randomNumber}_${e.target?.files[0]?.name
+                                      .split(" ")
+                                      .join("-")}`
+                                  );
+                                }
+                              }}
+                            />
+                            {isUploading ? (
+                              <Spinner color="primary" size="sm" />
+                            ) : (
+                              <Button
+                                color="primary"
+                                onClick={() => uploadInvoice.current.click()}
+                              >
+                                <Trans i18nKey="cattle_expense_bill_invoice_upload" />
+                              </Button>
+                            )}
+                          </div>
+                        </Col>
+                      </>
+                    )}
                   </Row>
                   <Row>
                     <Col xs={12} className="mt-1">
@@ -168,13 +382,11 @@ export default function ExpensesForm({
                     </Col>
                   </Row>
                   <Row className="">
-                    <Col xs={12} md={6}>
+                    <Col xs={12} md={6} className="opacity-75">
                       <CustomTextField
-                        type="number"
-                        label={t("categories_select_amount")}
-                        placeholder={t("enter_price_manually")}
-                        name="Amount"
-                        required
+                        label={t("added_by")}
+                        name="AddedBy"
+                        disabled
                       />
                     </Col>
                   </Row>
