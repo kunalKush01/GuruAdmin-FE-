@@ -35,7 +35,12 @@ import confirmationIcon from "../../assets/images/icons/news/conformationIcon.sv
 import cardThreeDotIcon from "../../assets/images/icons/news/threeDotIcon.svg";
 import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
+import {
+  DELETE,
+  EDIT,
+  PUBLISHER,
+  WRITE,
+} from "../../utility/permissionsVariable";
 import BtnPopover from "../partials/btnPopover";
 import { CustomDropDown } from "../partials/customDropDown";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
@@ -113,6 +118,7 @@ function BtnContent({
   currentPage,
   currentFilter,
   subPermission,
+  isPublished,
   allPermissions,
   totalAvailableLanguage,
 }) {
@@ -154,7 +160,10 @@ function BtnContent({
   return (
     <BtnContentWraper>
       <Row className="MainContainer d-block ">
-        {allPermissions?.name === "all" || subPermission?.includes(EDIT) ? (
+        {(allPermissions?.name === "all" ||
+          subPermission?.includes(EDIT) ||
+          subPermission?.includes(PUBLISHER)) &&
+        !isPublished ? (
           <Col
             xs={12}
             className="col-item"
@@ -298,54 +307,57 @@ export default function NewsCard({
             src={data?.images[0]?.presignedUrl ?? placeHolder}
           />
           <div className=" position-absolute imgContent  w-100 ">
-            <div className="text-end">
-              <ButtonGroup>
-                <UncontrolledDropdown>
-                  <DropdownToggle color="primary" size="sm" caret>
-                    {data?.isPublished ? (
-                      <Trans i18nKey={"published"} />
-                    ) : (
-                      <Trans i18nKey={"publish"} />
-                    )}
-                  </DropdownToggle>
-                  <DropdownMenu className="publishMenu">
-                    <DropdownItem
-                      className="py-0 w-100"
-                      onClick={() => {
-                        data?.isPublished
-                          ? Swal.fire({
-                              // title: "News is already published",
-                              html: `<h3>${t("already_publish")}</h3>`,
-                              icon: "info",
-                              showConfirmButton: false,
-                              showCloseButton: false,
-                              showCancelButton: false,
-                              focusConfirm: false,
-                              timer: 1500,
-                            })
-                          : toggle();
-                      }}
-                    >
-                      {data?.isScheduled ? (
-                        <Trans i18nKey={"reSchedule"} />
-                      ) : (
-                        <Trans i18nKey={"schedule"} />
-                      )}
-                    </DropdownItem>
-                    <DropdownItem
-                      className="py-0 w-100"
-                      onClick={() => publishMutation.mutate(data.id)}
-                    >
-                      {data?.isPublished ? (
-                        <Trans i18nKey={"unPublish"} />
-                      ) : (
-                        <Trans i18nKey={"publish_now"} />
-                      )}
-                    </DropdownItem>
-                  </DropdownMenu>
-                </UncontrolledDropdown>
-              </ButtonGroup>
-            </div>
+            {allPermissions?.name === "all" ||
+              (subPermission?.includes(PUBLISHER) && (
+                <div className="text-end">
+                  <ButtonGroup>
+                    <UncontrolledDropdown>
+                      <DropdownToggle color="primary" size="sm" caret>
+                        {data?.isPublished ? (
+                          <Trans i18nKey={"published"} />
+                        ) : (
+                          <Trans i18nKey={"publish"} />
+                        )}
+                      </DropdownToggle>
+                      <DropdownMenu className="publishMenu">
+                        <DropdownItem
+                          className="py-0 w-100"
+                          onClick={() => {
+                            data?.isPublished
+                              ? Swal.fire({
+                                  // title: "News is already published",
+                                  html: `<h3>${t("already_publish")}</h3>`,
+                                  icon: "info",
+                                  showConfirmButton: false,
+                                  showCloseButton: false,
+                                  showCancelButton: false,
+                                  focusConfirm: false,
+                                  timer: 1500,
+                                })
+                              : toggle();
+                          }}
+                        >
+                          {data?.isScheduled ? (
+                            <Trans i18nKey={"reSchedule"} />
+                          ) : (
+                            <Trans i18nKey={"schedule"} />
+                          )}
+                        </DropdownItem>
+                        <DropdownItem
+                          className="py-0 w-100"
+                          onClick={() => publishMutation.mutate(data.id)}
+                        >
+                          {data?.isPublished ? (
+                            <Trans i18nKey={"unPublish"} />
+                          ) : (
+                            <Trans i18nKey={"publish_now"} />
+                          )}
+                        </DropdownItem>
+                      </DropdownMenu>
+                    </UncontrolledDropdown>
+                  </ButtonGroup>
+                </div>
+              ))}
           </div>
         </div>
 
@@ -400,6 +412,7 @@ export default function NewsCard({
             currentFilter={currentFilter}
             subPermission={subPermission}
             allPermissions={allPermissions}
+            isPublished={data?.isPublished}
           />
         }
       />
