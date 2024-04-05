@@ -25,7 +25,10 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 export const TopDonerList = ({ data }) => {
   const { t } = useTranslation();
 
-  const { showTopDonor } = useSelector((state) => state?.auth?.trustDetail);
+  const showTopDonor = useSelector(
+    (state) => state?.auth?.trustDetail?.showTopDonor
+  );
+
   const [toggleState, setToggleState] = useState(showTopDonor ?? false);
 
   const TopDonerWarpper = styled.div`
