@@ -128,6 +128,7 @@
     "start": "craco start",
     "start:dev": "env-cmd -f .env.dev craco start",
     "start:staging": "env-cmd -f .env.staging craco start",
+    "start:production": "env-cmd -f .env.production craco start",
     "build:dev": "env-cmd -f .env.dev craco build",
     "build:staging": "env-cmd -f .env.staging craco build",
     "build:production": "env-cmd -f .env.production craco build",
