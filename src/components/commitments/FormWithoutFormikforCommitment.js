@@ -161,7 +161,7 @@ export default function FormWithoutFormikForCommitment({
                     className="cursor-pointer"
                     onClick={() =>
                       history.push(
-                        `/Add-user?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}`
+                        `/add-user?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}&redirect=commitment`
                       )
                     }
                   >

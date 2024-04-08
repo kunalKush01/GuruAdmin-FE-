@@ -332,9 +332,9 @@ const Routes = [
     subPermission: WRITE,
   },
   {
-    path: "/Add-user",
+    path: "/add-user",
     component: lazy(() => import("../../views/subscribedUser/addUser")),
-    type: "donation",
+    type: "donation" || "commitment",
     subPermission: WRITE,
   },
 
