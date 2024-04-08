@@ -326,6 +326,7 @@ export default function NoticeForm({
                     <ImageUpload
                       bg_plus={thumbnailImage}
                       imageSpinner={imageSpinner}
+                      imageName="NoticeImage"
                       acceptFile="image/*"
                       svgNotSupported
                       setImageSpinner={setImageSpinner}
@@ -336,12 +337,9 @@ export default function NoticeForm({
                       }
                       randomNumber={randomNumber}
                       fileName={(file, type) => {
-                        formik.setFieldValue(
-                          "image",
-                          `${randomNumber}_${file}`
-                        );
+                        formik.setFieldValue("image", `${file}`);
                         formik.setFieldValue("type", type);
-                        setImageName(`${randomNumber}_${file}`);
+                        setImageName(`${file}`);
                       }}
                       removeFile={(fileName) => {
                         formik.setFieldValue("image", "");

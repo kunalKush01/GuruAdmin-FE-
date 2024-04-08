@@ -13,10 +13,7 @@ import { toast } from "react-toastify";
 import { Button, Col, Modal, ModalBody, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
 import * as Yup from "yup";
-import {
-  getAllTrustPrefeces,
-  getAllTrustType,
-} from "../../api/profileApi";
+import { getAllTrustPrefeces, getAllTrustType } from "../../api/profileApi";
 import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
 import defaultAvtar from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import pdfIcon from "../../assets/images/icons/iconPDF.svg";
@@ -30,6 +27,7 @@ import CustomTextField from "../partials/customTextField";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import ImageUpload from "../partials/imageUpload";
 import RichTextField from "../partials/richTextEditorField";
+import useTimeStampAndImageExtension from "../../utility/hooks/useTimeStampAndImageExtension";
 
 const ProfileFormWrapper = styled.div`
   .existLabel {
@@ -364,8 +362,12 @@ export default function ProfileForm({
 
   const handleUpload = (acceptedFiles, uploadType) => {
     setDocumentSpinner(true);
+    const { extension, unixTimestampSeconds } =
+      useTimeStampAndImageExtension(acceptedFiles);
     Storage.put(
-      `temp/${randomNumber}_${acceptedFiles?.name.split(" ").join("-")}`,
+      `temp/${
+        uploadType == "document" ? "Documents" : "FacilitiesImage"
+      }_${randomNumber}_${unixTimestampSeconds}.${extension}`,
       acceptedFiles,
       {
         contentType: acceptedFiles?.type,
@@ -567,6 +569,7 @@ export default function ProfileForm({
                         bg_plus={defaultAvtar}
                         profileImage
                         acceptFile="image/*"
+                        imageName="TrustProfileImage"
                         svgNotSupported
                         editTrue="edit"
                         imageSpinner={imageSpinner}
@@ -578,12 +581,9 @@ export default function ProfileForm({
                         }
                         randomNumber={randomNumber}
                         fileName={(file, type) => {
-                          formik.setFieldValue(
-                            "profileImage",
-                            `${randomNumber}_${file}`
-                          );
+                          formik.setFieldValue("profileImage", `${file}`);
                           formik.setFieldValue("type", type);
-                          setProfileName(`${randomNumber}_${file}`);
+                          setProfileName(`${file}`);
                         }}
                         removeFile={(fileName) => {
                           formik.setFieldValue("profileImage", "");
@@ -1038,6 +1038,7 @@ export default function ProfileForm({
                           <ImageUpload
                             multiple
                             type={editImage}
+                            imageName="TrustImage"
                             imageSpinner={imageSpinner}
                             acceptFile="image/*"
                             svgNotSupported
@@ -1054,7 +1055,7 @@ export default function ProfileForm({
                             fileName={(file, type) => {
                               formik.setFieldValue("images", [
                                 ...formik?.values?.images,
-                                `${randomNumber}_${file}`,
+                                `${file}`,
                               ]);
                               formik.setFieldValue("type", type);
                             }}

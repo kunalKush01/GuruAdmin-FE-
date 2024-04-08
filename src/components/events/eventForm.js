@@ -492,6 +492,7 @@ export default function EventForm({
                         multiple
                         type={editImage}
                         acceptFile="image/*"
+                        imageName="EventImage"
                         svgNotSupported
                         disabledAddLanguage={AddLanguage}
                         imageSpinner={imageSpinner}
@@ -506,7 +507,7 @@ export default function EventForm({
                         fileName={(file, type) => {
                           formik.setFieldValue("images", [
                             ...formik?.values?.images,
-                            `${randomNumber}_${file}`,
+                            `${file}`,
                           ]);
                           formik.setFieldValue("type", type);
                         }}

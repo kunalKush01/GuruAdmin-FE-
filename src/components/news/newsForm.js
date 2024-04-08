@@ -390,6 +390,7 @@ export default function NewsForm({
                         multiple
                         type={editImage}
                         imageSpinner={imageSpinner}
+                        imageName="NewsImage"
                         acceptFile="image/*"
                         svgNotSupported
                         setImageSpinner={setImageSpinner}
@@ -404,7 +405,7 @@ export default function NewsForm({
                         fileName={(file, type) => {
                           formik.setFieldValue("images", [
                             ...formik.values.images,
-                            `${randomNumber}_${file}`,
+                            `${file}`,
                           ]);
                           formik.setFieldValue("type", type);
                         }}
