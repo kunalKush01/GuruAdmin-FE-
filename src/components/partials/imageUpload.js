@@ -234,10 +234,6 @@ function ImageUpload(props) {
       }
     )
       .then((res) => {
-        console.log(
-          "hhh",
-          `${props.imageName}_${props.randomNumber}_${unixTimestampSeconds}.${extension}`
-        );
         props.setImageSpinner(false);
         props.fileName(
           `${props.imageName}_${props.randomNumber}_${unixTimestampSeconds}.${extension}`,
