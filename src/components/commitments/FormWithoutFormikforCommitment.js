@@ -37,7 +37,7 @@ export default function FormWithoutFormikForCommitment({
     const res = await findAllUsersByName({ name: name });
     return res.results;
   };
-  
+
   useEffect(() => {
     const res = async () => {
       const apiRes = await getAllSubCategories({
@@ -70,9 +70,9 @@ export default function FormWithoutFormikForCommitment({
   useUpdateEffect(() => {
     if (formik?.values?.Mobile?.toString().length == 10) {
       const results = async () => {
-        // const res = await findAllUsersByNumber({
-        //   mobileNumber: formik?.values?.Mobile.toString(),
-        // });
+        const res = await findAllUsersByNumber({
+          mobileNumber: formik?.values?.Mobile.toString(),
+        });
         if (res.result) {
           formik.setFieldValue("SelectedUser", res.result);
         } else {
@@ -142,7 +142,7 @@ export default function FormWithoutFormikForCommitment({
                 </div>
               )}
             </Col>
-            <Col xs={12} sm={6} lg={4} className=" pb-1">
+            <Col xs={12} lg={6} className=" pb-1">
               <AsyncSelectField
                 name="SelectedUser"
                 loadOptions={loadOption}
