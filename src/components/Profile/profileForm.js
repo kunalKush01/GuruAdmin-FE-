@@ -1109,15 +1109,6 @@ export default function ProfileForm({
                                     "document",
                                     formik
                                   );
-                                  // handleUpload(e.target.files[0]).then((e)=>formik.setFieldValue('documents',e.target.files[0].name));
-                                  // formik.setFieldValue("documents", [
-                                  //   ...formik.values.documents,
-                                  //   {
-                                  //     name: `${randomNumber}_${e.target?.files[0]?.name
-                                  //       .split(" ")
-                                  //       .join("-")}`,
-                                  //   },
-                                  // ]);
                                 }
                               }}
                             />
@@ -1361,17 +1352,6 @@ export default function ProfileForm({
                                   e.target.files[0],
                                   "facility",
                                   formik
-                                );
-                                // handleUpload(e.target.files[0]).then((e)=>formik.setFieldValue('templeImage',e.target.files[0].name));
-                                formik.setFieldValue(
-                                  "imageName",
-                                  `${randomNumber}_${e.target.files[0]?.name
-                                    .split(" ")
-                                    .join("-")}`
-                                );
-                                formik.setFieldValue(
-                                  "preview",
-                                  URL.createObjectURL(e.target.files[0])
                                 );
                               }
                             }}
