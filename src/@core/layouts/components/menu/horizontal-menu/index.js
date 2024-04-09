@@ -58,7 +58,7 @@ function BtnContent({ setClosePopover }) {
           <Trans i18nKey={"category"} />
         </Col>
 
-        <Col
+        {/* <Col
           xs={12}
           className="col-item"
           onClick={() => {
@@ -78,7 +78,7 @@ function BtnContent({ setClosePopover }) {
           }}
         >
           <Trans i18nKey={"cattles"} /> <Trans i18nKey={"category"} />
-        </Col>
+        </Col> */}
 
         <Col
           xs={12}
