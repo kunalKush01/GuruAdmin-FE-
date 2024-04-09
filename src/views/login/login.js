@@ -71,9 +71,10 @@ const LoginCover = () => {
       .unwrap()
       .then(async (res) => {
         if (hostname === adminUrl) {
-          // if (hostname === `localhost`) {
+          // if (hostname === `admin-dev.localhost`) {
           const TrustsList = await checkUserTrust({ userId: res?.result?.id });
           setUserTrustList(TrustsList?.results);
+
           if (res?.tokens?.access?.token && res?.tokens?.refresh?.token) {
             setCookieWithMainDomain(
               "refreshToken",
@@ -105,7 +106,6 @@ const LoginCover = () => {
             ) {
               dispatch(handleTrustDetail(TrustsList?.results[0]));
               localStorage.setItem("trustId", TrustsList?.results[0]?.id);
-
               if (res?.tokens?.access?.token && res?.tokens?.refresh?.token) {
                 window.location.replace(
                   `https://${TrustsList?.results[0]?.subDomain}${subdomainChange}/login`
@@ -140,8 +140,7 @@ const LoginCover = () => {
       .email("Invalid Email.")
       .required("Email is required.")
       .min(5),
-    password: Yup.string()
-    .required("Password is required."),
+    password: Yup.string().required("Password is required."),
   });
   const forgetPasswordSchema = Yup.object().shape({
     email: Yup.string().required("Email is required.").min(5),
@@ -267,8 +266,16 @@ const LoginCover = () => {
   //   }
   // }, [isLogged, loginPath, TrustQuery]);
 
-  const subDomainName = hostname.replace(subdomainChange, "");
-  // const subDomainName = hostname.replace("-admin-dev.localhost", "");
+  // const subDomainName = hostname.replace(subdomainChange, "");
+  let subDomainName;
+  if (hostname !== adminUrl) {
+    subDomainName = hostname.replace(subdomainChange, "");
+  } else {
+    subDomainName = hostname.replace(
+      process.env.REACT_APP_GENERIC_ADMIN_SUBDOMAIN_REPLACE_URL,
+      ""
+    );
+  }
 
   const refreshToken = getCookie("refreshToken");
   const accessToken = getCookie("accessToken");
@@ -290,7 +297,7 @@ const LoginCover = () => {
       } else if (
         isLogged &&
         loginPath?.includes("all") &&
-        // hostname !== "localhost"
+        // hostname !== "admin-dev.localhost"
         subDomainName !== genericSubDomain
         // (userTrustList?.length === 1 ||
         //   userTrustList[0]?.isAproved === "approved" ||
