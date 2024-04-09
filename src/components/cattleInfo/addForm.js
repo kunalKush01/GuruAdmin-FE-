@@ -339,6 +339,7 @@ const AddCattleForm = ({
                       acceptFile="image/*"
                       svgNotSupported
                       setImageSpinner={setImageSpinner}
+                      imageName="CattleImage"
                       editTrue="edit"
                       editedFileNameInitialValue={
                         formik?.values?.cattleImage
@@ -347,11 +348,8 @@ const AddCattleForm = ({
                       }
                       randomNumber={randomNumber}
                       fileName={(file, type) => {
-                        formik.setFieldValue(
-                          "cattleImage",
-                          `${randomNumber}_${file}`
-                        );
-                        setCattleImageName(`${randomNumber}_${file}`);
+                        formik.setFieldValue("cattleImage", `${file}`);
+                        setCattleImageName(`${file}`);
                       }}
                       removeFile={(fileName) => {
                         formik.setFieldValue("cattleImage", "");
@@ -369,6 +367,7 @@ const AddCattleForm = ({
                       imageSpinner={ownerImageUploading}
                       acceptFile="image/*"
                       svgNotSupported
+                      imageName="OwnerImage"
                       setImageSpinner={setOwnerImageUploading}
                       editTrue="edit"
                       editedFileNameInitialValue={
@@ -378,11 +377,8 @@ const AddCattleForm = ({
                       }
                       randomNumber={randomNumber}
                       fileName={(file, type) => {
-                        formik.setFieldValue(
-                          "ownerImage",
-                          `${randomNumber}_${file}`
-                        );
-                        setOwnerImageName(`${randomNumber}_${file}`);
+                        formik.setFieldValue("ownerImage", `${file}`);
+                        setOwnerImageName(`${file}`);
                       }}
                       removeFile={(fileName) => {
                         formik.setFieldValue("ownerImage", "");

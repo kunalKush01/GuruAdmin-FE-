@@ -156,6 +156,7 @@ export default function PunyarjakForm({
                         bg_plus={thumbnailImage}
                         imageSpinner={imageSpinner}
                         acceptFile="image/*"
+                        imageName="PunyarjakImage"
                         svgNotSupported
                         setImageSpinner={setImageSpinner}
                         editTrue="edit"
@@ -165,12 +166,9 @@ export default function PunyarjakForm({
                         }
                         randomNumber={randomNumber}
                         fileName={(file, type) => {
-                          formik.setFieldValue(
-                            "image",
-                            `${randomNumber}_${file}`
-                          );
+                          formik.setFieldValue("image", `${file}`);
                           formik.setFieldValue("type", type);
-                          setImageName(`${randomNumber}_${file}`);
+                          setImageName(`${file}`);
                         }}
                         removeFile={(fileName) => {
                           formik.setFieldValue("image", "");
