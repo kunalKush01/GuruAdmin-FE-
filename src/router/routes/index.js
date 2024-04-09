@@ -41,235 +41,235 @@ const Routes = [
     subPermission: READ,
   },
 
-  {
-    path: "/cattle/dashboard",
-    component: lazy(() =>
-      import("../../views/cattles-management/dashboard/index.js")
-    ),
-    exact: true,
-    type: "cattle-dashboard",
-    subPermission: READ,
-  },
-  {
-    path: "/cattle/info",
-    component: lazy(() =>
-      import("../../views/cattles-management/cattles-info/index.js")
-    ),
-    exact: true,
-    type: "cattle-info",
-    subPermission: READ,
-  },
+  // {
+  //   path: "/cattle/dashboard",
+  //   component: lazy(() =>
+  //     import("../../views/cattles-management/dashboard/index.js")
+  //   ),
+  //   exact: true,
+  //   type: "cattle-dashboard",
+  //   subPermission: READ,
+  // },
+  // {
+  //   path: "/cattle/info",
+  //   component: lazy(() =>
+  //     import("../../views/cattles-management/cattles-info/index.js")
+  //   ),
+  //   exact: true,
+  //   type: "cattle-info",
+  //   subPermission: READ,
+  // },
 
-  {
-    path: "/cattle/info/add",
-    component: lazy(() =>
-      import("../../views/cattles-management/cattles-info/add/index.js")
-    ),
-    exact: true,
-    type: "cattle-info",
-    subPermission: WRITE,
-  },
+  // {
+  //   path: "/cattle/info/add",
+  //   component: lazy(() =>
+  //     import("../../views/cattles-management/cattles-info/add/index.js")
+  //   ),
+  //   exact: true,
+  //   type: "cattle-info",
+  //   subPermission: WRITE,
+  // },
 
-  {
-    path: "/cattle/info/:cattleId",
-    component: lazy(() =>
-      import("../../views/cattles-management/cattles-info/edit/index.js")
-    ),
-    exact: true,
-    type: "cattle-info",
-    subPermission: WRITE,
-  },
+  // {
+  //   path: "/cattle/info/:cattleId",
+  //   component: lazy(() =>
+  //     import("../../views/cattles-management/cattles-info/edit/index.js")
+  //   ),
+  //   exact: true,
+  //   type: "cattle-info",
+  //   subPermission: WRITE,
+  // },
 
-  {
-    path: "/cattle/medical-info",
-    component: lazy(() =>
-      import("../../views/cattles-management/medical-record/index.js")
-    ),
-    exact: true,
-    type: "cattle-medical",
-    subPermission: READ,
-  },
+  // {
+  //   path: "/cattle/medical-info",
+  //   component: lazy(() =>
+  //     import("../../views/cattles-management/medical-record/index.js")
+  //   ),
+  //   exact: true,
+  //   type: "cattle-medical",
+  //   subPermission: READ,
+  // },
 
-  {
-    path: "/cattle/medical-info/add",
-    component: lazy(() =>
-      import("../../views/cattles-management/medical-record/add/index.js")
-    ),
-    exact: true,
-    type: "cattle-medical",
-    subPermission: WRITE,
-  },
+  // {
+  //   path: "/cattle/medical-info/add",
+  //   component: lazy(() =>
+  //     import("../../views/cattles-management/medical-record/add/index.js")
+  //   ),
+  //   exact: true,
+  //   type: "cattle-medical",
+  //   subPermission: WRITE,
+  // },
 
-  {
-    path: "/cattle/medical-info/:medicalInfoId",
-    component: lazy(() =>
-      import("../../views/cattles-management/medical-record/edit/index.js")
-    ),
-    exact: true,
-    type: "cattle-medical",
-    subPermission: WRITE,
-  },
+  // {
+  //   path: "/cattle/medical-info/:medicalInfoId",
+  //   component: lazy(() =>
+  //     import("../../views/cattles-management/medical-record/edit/index.js")
+  //   ),
+  //   exact: true,
+  //   type: "cattle-medical",
+  //   subPermission: WRITE,
+  // },
 
-  {
-    path: "/cattle/pregnancy-reports",
-    component: lazy(() =>
-      import("../../views/cattles-management/pregnancy-report/index.js")
-    ),
-    exact: true,
-    type: "cattle-pregnancy",
-    subPermission: READ,
-  },
+  // {
+  //   path: "/cattle/pregnancy-reports",
+  //   component: lazy(() =>
+  //     import("../../views/cattles-management/pregnancy-report/index.js")
+  //   ),
+  //   exact: true,
+  //   type: "cattle-pregnancy",
+  //   subPermission: READ,
+  // },
 
-  {
-    path: "/cattle/pregnancy-reports/add",
-    component: lazy(() =>
-      import("../../views/cattles-management/pregnancy-report/add/index.js")
-    ),
-    exact: true,
-    type: "cattle-pregnancy",
-    subPermission: WRITE,
-  },
+  // {
+  //   path: "/cattle/pregnancy-reports/add",
+  //   component: lazy(() =>
+  //     import("../../views/cattles-management/pregnancy-report/add/index.js")
+  //   ),
+  //   exact: true,
+  //   type: "cattle-pregnancy",
+  //   subPermission: WRITE,
+  // },
 
-  {
-    path: "/cattle/pregnancy-reports/:pregnancyReportId",
-    component: lazy(() =>
-      import("../../views/cattles-management/pregnancy-report/edit/index.js")
-    ),
-    exact: true,
-    type: "cattle-pregnancy",
-    subPermission: WRITE,
-  },
+  // {
+  //   path: "/cattle/pregnancy-reports/:pregnancyReportId",
+  //   component: lazy(() =>
+  //     import("../../views/cattles-management/pregnancy-report/edit/index.js")
+  //   ),
+  //   exact: true,
+  //   type: "cattle-pregnancy",
+  //   subPermission: WRITE,
+  // },
 
-  {
-    path: "/cattle/expenses",
-    component: lazy(() =>
-      import("../../views/cattles-management/Expense-management/index.js")
-    ),
-    exact: true,
-    type: "cattle-expense",
-    subPermission: READ,
-  },
+  // {
+  //   path: "/cattle/expenses",
+  //   component: lazy(() =>
+  //     import("../../views/cattles-management/Expense-management/index.js")
+  //   ),
+  //   exact: true,
+  //   type: "cattle-expense",
+  //   subPermission: READ,
+  // },
 
-  {
-    path: "/cattle/expenses/add",
-    component: lazy(() =>
-      import("../../views/cattles-management/Expense-management/add/index.js")
-    ),
-    exact: true,
-    type: "cattle-expense",
-    subPermission: WRITE,
-  },
+  // {
+  //   path: "/cattle/expenses/add",
+  //   component: lazy(() =>
+  //     import("../../views/cattles-management/Expense-management/add/index.js")
+  //   ),
+  //   exact: true,
+  //   type: "cattle-expense",
+  //   subPermission: WRITE,
+  // },
 
-  {
-    path: "/cattle/management/stock",
-    component: lazy(() =>
-      import("../../views/cattles-management/stock-management/index.js")
-    ),
-    exact: true,
-    type: "cattle-stock",
-    subPermission: WRITE,
-  },
+  // {
+  //   path: "/cattle/management/stock",
+  //   component: lazy(() =>
+  //     import("../../views/cattles-management/stock-management/index.js")
+  //   ),
+  //   exact: true,
+  //   type: "cattle-stock",
+  //   subPermission: WRITE,
+  // },
 
-  {
-    path: "/cattle/management/supplies",
-    component: lazy(() =>
-      import("../../views/cattles-management/stock-management/index.js")
-    ),
-    exact: true,
-    type: "cattle-supplies",
-    subPermission: READ,
-  },
-  {
-    path: "/cattle/management/supplies/add",
-    component: lazy(() =>
-      import(
-        "../../views/cattles-management/stock-management/supplies/add/index.js"
-      )
-    ),
-    exact: true,
-    type: "cattle-supplies",
-    subPermission: WRITE,
-  },
+  // {
+  //   path: "/cattle/management/supplies",
+  //   component: lazy(() =>
+  //     import("../../views/cattles-management/stock-management/index.js")
+  //   ),
+  //   exact: true,
+  //   type: "cattle-supplies",
+  //   subPermission: READ,
+  // },
+  // {
+  //   path: "/cattle/management/supplies/add",
+  //   component: lazy(() =>
+  //     import(
+  //       "../../views/cattles-management/stock-management/supplies/add/index.js"
+  //     )
+  //   ),
+  //   exact: true,
+  //   type: "cattle-supplies",
+  //   subPermission: WRITE,
+  // },
 
-  {
-    path: "/cattle/management/supplies/:supplyId",
-    component: lazy(() =>
-      import(
-        "../../views/cattles-management/stock-management/supplies/edit/index.js"
-      )
-    ),
-    exact: true,
-    type: "cattle-supplies",
-    subPermission: WRITE,
-  },
+  // {
+  //   path: "/cattle/management/supplies/:supplyId",
+  //   component: lazy(() =>
+  //     import(
+  //       "../../views/cattles-management/stock-management/supplies/edit/index.js"
+  //     )
+  //   ),
+  //   exact: true,
+  //   type: "cattle-supplies",
+  //   subPermission: WRITE,
+  // },
 
-  {
-    path: "/cattle/management/items",
-    component: lazy(() =>
-      import("../../views/cattles-management/stock-management/index.js")
-    ),
-    exact: true,
-    type: "cattle-item",
-    subPermission: READ,
-  },
+  // {
+  //   path: "/cattle/management/items",
+  //   component: lazy(() =>
+  //     import("../../views/cattles-management/stock-management/index.js")
+  //   ),
+  //   exact: true,
+  //   type: "cattle-item",
+  //   subPermission: READ,
+  // },
 
-  {
-    path: "/cattle/management/items/add",
-    component: lazy(() =>
-      import(
-        "../../views/cattles-management/stock-management/items/add/index.js"
-      )
-    ),
-    exact: true,
-    type: "cattle-item",
-    subPermission: WRITE,
-  },
+  // {
+  //   path: "/cattle/management/items/add",
+  //   component: lazy(() =>
+  //     import(
+  //       "../../views/cattles-management/stock-management/items/add/index.js"
+  //     )
+  //   ),
+  //   exact: true,
+  //   type: "cattle-item",
+  //   subPermission: WRITE,
+  // },
 
-  {
-    path: "/cattle/management/items/:itemId",
-    component: lazy(() =>
-      import(
-        "../../views/cattles-management/stock-management/items/edit/index.js"
-      )
-    ),
-    exact: true,
-    type: "cattle-item",
-    subPermission: WRITE,
-  },
+  // {
+  //   path: "/cattle/management/items/:itemId",
+  //   component: lazy(() =>
+  //     import(
+  //       "../../views/cattles-management/stock-management/items/edit/index.js"
+  //     )
+  //   ),
+  //   exact: true,
+  //   type: "cattle-item",
+  //   subPermission: WRITE,
+  // },
 
-  {
-    path: "/cattle/management/usage",
-    component: lazy(() =>
-      import("../../views/cattles-management/stock-management/index.js")
-    ),
-    exact: true,
-    type: "cattle-usage",
-    subPermission: READ,
-  },
+  // {
+  //   path: "/cattle/management/usage",
+  //   component: lazy(() =>
+  //     import("../../views/cattles-management/stock-management/index.js")
+  //   ),
+  //   exact: true,
+  //   type: "cattle-usage",
+  //   subPermission: READ,
+  // },
 
-  {
-    path: "/cattle/management/usage/add",
-    component: lazy(() =>
-      import(
-        "../../views/cattles-management/stock-management/usage/add/index.js"
-      )
-    ),
-    exact: true,
-    type: "cattle-usage",
-    subPermission: WRITE,
-  },
+  // {
+  //   path: "/cattle/management/usage/add",
+  //   component: lazy(() =>
+  //     import(
+  //       "../../views/cattles-management/stock-management/usage/add/index.js"
+  //     )
+  //   ),
+  //   exact: true,
+  //   type: "cattle-usage",
+  //   subPermission: WRITE,
+  // },
 
-  {
-    path: "/cattle/management/usage/:itemUsageId",
-    component: lazy(() =>
-      import(
-        "../../views/cattles-management/stock-management/usage/edit/index.js"
-      )
-    ),
-    exact: true,
-    type: "cattle-usage",
-    subPermission: WRITE,
-  },
+  // {
+  //   path: "/cattle/management/usage/:itemUsageId",
+  //   component: lazy(() =>
+  //     import(
+  //       "../../views/cattles-management/stock-management/usage/edit/index.js"
+  //     )
+  //   ),
+  //   exact: true,
+  //   type: "cattle-usage",
+  //   subPermission: WRITE,
+  // },
 
   {
     path: "/events/about/:eventId",
@@ -491,25 +491,25 @@ const Routes = [
     subPermission: READ,
   },
 
-  {
-    path: "/configuration/cattle-breed",
-    component: lazy(() =>
-      import("../../views/cattles-management/cattle-breed/index.js")
-    ),
-    exact: true,
-    type: "configuration",
-    subPermission: READ,
-  },
+  // {
+  //   path: "/configuration/cattle-breed",
+  //   component: lazy(() =>
+  //     import("../../views/cattles-management/cattle-breed/index.js")
+  //   ),
+  //   exact: true,
+  //   type: "configuration",
+  //   subPermission: READ,
+  // },
 
-  {
-    path: "/configuration/cattle-category",
-    component: lazy(() =>
-      import("../../views/cattles-management/cattle-category/index.js")
-    ),
-    exact: true,
-    type: "configuration",
-    subPermission: READ,
-  },
+  // {
+  //   path: "/configuration/cattle-category",
+  //   component: lazy(() =>
+  //     import("../../views/cattles-management/cattle-category/index.js")
+  //   ),
+  //   exact: true,
+  //   type: "configuration",
+  //   subPermission: READ,
+  // },
 
   {
     path: "/internal_expenses",
