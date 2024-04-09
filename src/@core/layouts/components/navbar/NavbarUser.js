@@ -207,8 +207,16 @@ const NavbarUser = (props) => {
   });
   const subdomainChange = process.env.REACT_APP_ADMIN_SUBDOMAIN_REPLACE_URL;
 
-  const subDomainName = location.hostname.replace(subdomainChange, "");
-  // const subDomainName = location.hostname.replace("-dev.localhost", "");
+  // const subDomainName = location.hostname.replace(subdomainChange, "");
+  let subDomainName;
+  if (hostname !== adminUrl) {
+    subDomainName = location.hostname.replace(subdomainChange, "");
+  } else {
+    subDomainName = location.hostname.replace(
+      process.env.REACT_APP_GENERIC_ADMIN_SUBDOMAIN_REPLACE_URL,
+      ""
+    );
+  }
   const loginPageQuery = useQuery([subDomainName], () =>
     loginPage(subDomainName)
   );
