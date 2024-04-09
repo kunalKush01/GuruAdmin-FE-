@@ -185,6 +185,7 @@ export default function UserForm({
                     imageSpinner={imageSpinner}
                     setImageSpinner={setImageSpinner}
                     profileImage
+                    imageName="UserProfileImage"
                     acceptFile="image/*"
                     svgNotSupported
                     editTrue="edit"
@@ -193,9 +194,9 @@ export default function UserForm({
                     }
                     randomNumber={randomNumber}
                     fileName={(file, type) => {
-                      formik.setFieldValue("file", `${randomNumber}_${file}`);
+                      formik.setFieldValue("file", `${file}`);
                       formik.setFieldValue("type", type);
-                      setImageName(`${randomNumber}_${file}`);
+                      setImageName(`${file}`);
                     }}
                     removeFile={(fileName) => {
                       formik.setFieldValue("file", "");

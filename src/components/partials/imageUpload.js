@@ -7,6 +7,7 @@ import { Trans } from "react-i18next";
 import { Button, Spinner } from "reactstrap";
 import { X } from "react-feather";
 import { toast } from "react-toastify";
+import useTimeStampAndImageExtension from "../../utility/hooks/useTimeStampAndImageExtension";
 
 const WraperImageField = styled.div`
   .image_text {
@@ -145,7 +146,7 @@ const thumbInner = {
   display: "flex",
   minWidth: 0,
   overflow: "hidden",
-  borderRadius: "10px"
+  borderRadius: "10px",
 };
 
 const thumbInnerBorderRadius = {
@@ -211,8 +212,7 @@ function ImageUpload(props) {
   useEffect(() => {
     if (props.defaultImages?.length > 0) {
       setFiles(props.defaultImages);
-    }
-    else if(props.defaultImages?.length === 0){
+    } else if (props.defaultImages?.length === 0) {
       setFiles([]);
     }
   }, [props.defaultImages]);
@@ -221,10 +221,13 @@ function ImageUpload(props) {
   const handleUpload = (acceptedFiles) => {
     props.setImageSpinner(true);
 
+    const { extension, unixTimestampSeconds } =
+      useTimeStampAndImageExtension(acceptedFiles);
+
     const cloneFiles = [...files];
 
     Storage.put(
-      `temp/${props.randomNumber}_${acceptedFiles?.name}`,
+      `temp/${props.imageName}_${props.randomNumber}_${unixTimestampSeconds}.${extension}`,
       acceptedFiles,
       {
         contentType: acceptedFiles?.type,
@@ -232,7 +235,10 @@ function ImageUpload(props) {
     )
       .then((res) => {
         props.setImageSpinner(false);
-        props.fileName(acceptedFiles?.name, acceptedFiles?.type);
+        props.fileName(
+          `${props.imageName}_${props.randomNumber}_${unixTimestampSeconds}.${extension}`,
+          acceptedFiles?.type
+        );
         // props.filePreview(acceptedFiles)
         if (props.multiple) {
           if (indexValue.type === "edit") {
