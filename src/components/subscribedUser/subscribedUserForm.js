@@ -57,6 +57,8 @@ export default function SubscribedUserForm({
   const currentCategory = searchParams.get("category");
   const currentSubCategory = searchParams.get("subCategory");
   const currentFilter = searchParams.get("filter");
+  const redirectTo = searchParams.get("redirect");
+
   const categoryQueryClient = useQueryClient();
 
   const categoryMutation = useMutation({
@@ -69,7 +71,7 @@ export default function SubscribedUserForm({
         setLoading(false);
         addDonationUser
           ? history.push(
-              `/donation/add?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}`
+              `/${redirectTo}/add?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}`
             )
           : history.push("/subscribed-user");
       } else if (data?.error) {

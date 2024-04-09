@@ -26,17 +26,12 @@ const handleCreateUser = async (payload) => {
 };
 const schema = Yup.object().shape({
   // name: Yup.string().required("users_title_required"),
-  mobile: Yup
-    .string()
-
-    .required("users_mobile_required"),
-  email: Yup
-    .string()
+  mobile: Yup.string().required("users_mobile_required"),
+  email: Yup.string()
     .email("email_invalid")
     .required("users_email_required")
     .trim(),
-  name: Yup
-    .string()
+  name: Yup.string()
     .matches(
       /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
       "user_only_letters"
@@ -55,6 +50,7 @@ export default function AddSubscribedUser() {
   const currentCategory = searchParams.get("category");
   const currentSubCategory = searchParams.get("subCategory");
   const currentFilter = searchParams.get("filter");
+  const redirectTo = searchParams.get("redirect");
 
   return (
     <NoticeWraper>
@@ -65,7 +61,7 @@ export default function AddSubscribedUser() {
             className="me-2 cursor-pointer"
             onClick={() =>
               history.push(
-                `/donation/add?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}`
+                `/${redirectTo}/add?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}`
               )
             }
           />
@@ -94,8 +90,8 @@ export default function AddSubscribedUser() {
           initialValues={{
             name: "",
             mobile: "",
-            countryCode: "",
-            dialCode: "",
+            countryCode: "in",
+            dialCode: "91",
             email: "",
           }}
           validationSchema={schema}

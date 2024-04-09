@@ -13,10 +13,7 @@ import { toast } from "react-toastify";
 import { Button, Col, Modal, ModalBody, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
 import * as Yup from "yup";
-import {
-  getAllTrustPrefeces,
-  getAllTrustType,
-} from "../../api/profileApi";
+import { getAllTrustPrefeces, getAllTrustType } from "../../api/profileApi";
 import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
 import defaultAvtar from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import pdfIcon from "../../assets/images/icons/iconPDF.svg";
@@ -30,6 +27,7 @@ import CustomTextField from "../partials/customTextField";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import ImageUpload from "../partials/imageUpload";
 import RichTextField from "../partials/richTextEditorField";
+import useTimeStampAndImageExtension from "../../utility/hooks/useTimeStampAndImageExtension";
 
 const ProfileFormWrapper = styled.div`
   .existLabel {
@@ -362,10 +360,14 @@ export default function ProfileForm({
   const [deletedDocuments, setDeletedDocuments] = useState([]);
   const [documentSpinner, setDocumentSpinner] = useState(false);
 
-  const handleUpload = (acceptedFiles, uploadType) => {
+  const handleUpload = (acceptedFiles, uploadType, formik) => {
     setDocumentSpinner(true);
+    const { extension, unixTimestampSeconds } =
+      useTimeStampAndImageExtension(acceptedFiles);
     Storage.put(
-      `temp/${randomNumber}_${acceptedFiles?.name.split(" ").join("-")}`,
+      `temp/${
+        uploadType == "document" ? "Documents" : "FacilitiesImage"
+      }_${randomNumber}_${unixTimestampSeconds}.${extension}`,
       acceptedFiles,
       {
         contentType: acceptedFiles?.type,
@@ -375,9 +377,19 @@ export default function ProfileForm({
         setDocumentSpinner(false);
         if (uploadType === "document") {
           const uploadedDocumentName = res.key.split("temp/")[1];
-
           setFiles([...files, { name: uploadedDocumentName }]);
+          formik.setFieldValue("documents", [
+            ...formik.values.documents,
+            {
+              name: `Documents_${randomNumber}_${unixTimestampSeconds}.${extension}`,
+            },
+          ]);
         } else if (uploadType === "facility") {
+          formik.setFieldValue(
+            "imageName",
+            `FacilitiesImage_${randomNumber}_${unixTimestampSeconds}.${extension}`
+          );
+          formik.setFieldValue("preview", URL.createObjectURL(acceptedFiles));
           setFacilitiesFiles(
             Object.assign(acceptedFiles, {
               // preview: URL.createObjectURL(acceptedFiles),
@@ -567,6 +579,7 @@ export default function ProfileForm({
                         bg_plus={defaultAvtar}
                         profileImage
                         acceptFile="image/*"
+                        imageName="TrustProfileImage"
                         svgNotSupported
                         editTrue="edit"
                         imageSpinner={imageSpinner}
@@ -578,12 +591,9 @@ export default function ProfileForm({
                         }
                         randomNumber={randomNumber}
                         fileName={(file, type) => {
-                          formik.setFieldValue(
-                            "profileImage",
-                            `${randomNumber}_${file}`
-                          );
+                          formik.setFieldValue("profileImage", `${file}`);
                           formik.setFieldValue("type", type);
-                          setProfileName(`${randomNumber}_${file}`);
+                          setProfileName(`${file}`);
                         }}
                         removeFile={(fileName) => {
                           formik.setFieldValue("profileImage", "");
@@ -1038,6 +1048,7 @@ export default function ProfileForm({
                           <ImageUpload
                             multiple
                             type={editImage}
+                            imageName="TrustImage"
                             imageSpinner={imageSpinner}
                             acceptFile="image/*"
                             svgNotSupported
@@ -1054,7 +1065,7 @@ export default function ProfileForm({
                             fileName={(file, type) => {
                               formik.setFieldValue("images", [
                                 ...formik?.values?.images,
-                                `${randomNumber}_${file}`,
+                                `${file}`,
                               ]);
                               formik.setFieldValue("type", type);
                             }}
@@ -1093,16 +1104,11 @@ export default function ProfileForm({
                               accept=""
                               onChange={(e) => {
                                 if (e.target.files?.length) {
-                                  handleUpload(e.target.files[0], "document");
-                                  // handleUpload(e.target.files[0]).then((e)=>formik.setFieldValue('documents',e.target.files[0].name));
-                                  formik.setFieldValue("documents", [
-                                    ...formik.values.documents,
-                                    {
-                                      name: `${randomNumber}_${e.target?.files[0]?.name
-                                        .split(" ")
-                                        .join("-")}`,
-                                    },
-                                  ]);
+                                  handleUpload(
+                                    e.target.files[0],
+                                    "document",
+                                    formik
+                                  );
                                 }
                               }}
                             />
@@ -1342,17 +1348,10 @@ export default function ProfileForm({
                                 toast.error("File type SVG is not supported.");
                                 formik?.setFieldValue("imageName", "");
                               } else {
-                                handleUpload(e.target.files[0], "facility");
-                                // handleUpload(e.target.files[0]).then((e)=>formik.setFieldValue('templeImage',e.target.files[0].name));
-                                formik.setFieldValue(
-                                  "imageName",
-                                  `${randomNumber}_${e.target.files[0]?.name
-                                    .split(" ")
-                                    .join("-")}`
-                                );
-                                formik.setFieldValue(
-                                  "preview",
-                                  URL.createObjectURL(e.target.files[0])
+                                handleUpload(
+                                  e.target.files[0],
+                                  "facility",
+                                  formik
                                 );
                               }
                             }}
