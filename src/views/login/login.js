@@ -108,7 +108,7 @@ const LoginCover = () => {
               localStorage.setItem("trustId", TrustsList?.results[0]?.id);
               if (res?.tokens?.access?.token && res?.tokens?.refresh?.token) {
                 window.location.replace(
-                  `https://${TrustsList?.results[0]?.subDomain}${subdomainChange}/login`
+                  `${process.env.REACT_APP_INTERNET_PROTOCOL}://${TrustsList?.results[0]?.subDomain}${subdomainChange}/login`
                   // `http://${TrustsList?.results[0]?.subDomain}-dev.localhost:5001/login`
                 );
               }

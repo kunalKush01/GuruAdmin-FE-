@@ -5,11 +5,11 @@ export const subHeaderContent = [
     activeTab: "/dashboard",
   },
 
-  // {
-  //   name: "cattles_management",
-  //   url: "/cattle/dashboard",
-  //   activeTab: "/cattle",
-  // },
+  {
+    name: "cattles_management",
+    url: "/cattle/dashboard",
+    activeTab: "/cattle",
+  },
 
   {
     name: "donation",
