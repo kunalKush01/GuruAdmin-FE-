@@ -210,7 +210,7 @@ const NavbarUser = (props) => {
 
   // const subDomainName = location.hostname.replace(subdomainChange, "");
   let subDomainName;
-  if (hostname !== adminUrl) {
+  if (hostname !== process.env.REACT_APP_ADMIN_URL) {
     subDomainName = hostname.replace(subdomainChange, "");
   } else {
     subDomainName = hostname.replace(
