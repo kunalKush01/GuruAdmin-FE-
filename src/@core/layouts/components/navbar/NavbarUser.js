@@ -188,6 +188,7 @@ const NavbarUser = (props) => {
   const userDetails = useSelector((state) => state.auth.userDetail);
   const refreshToken = useSelector((state) => state.auth.tokens.refreshToken);
   const searchBarValue = useSelector((state) => state.auth.LocalSearch);
+  const hostname = location.hostname;
 
   const dispatch = useDispatch();
   const { t, i18n } = useTranslation();
@@ -210,9 +211,9 @@ const NavbarUser = (props) => {
   // const subDomainName = location.hostname.replace(subdomainChange, "");
   let subDomainName;
   if (hostname !== adminUrl) {
-    subDomainName = location.hostname.replace(subdomainChange, "");
+    subDomainName = hostname.replace(subdomainChange, "");
   } else {
-    subDomainName = location.hostname.replace(
+    subDomainName = hostname.replace(
       process.env.REACT_APP_GENERIC_ADMIN_SUBDOMAIN_REPLACE_URL,
       ""
     );
