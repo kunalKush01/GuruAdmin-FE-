@@ -1,5 +1,5 @@
 // ** React Imports
-import { Fragment, useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useLayoutEffect, useMemo, useState } from "react";
 
 // ** Dropdowns Imports
 import UserDropdown from "./UserDropdown";
@@ -189,6 +189,13 @@ const NavbarUser = (props) => {
   const refreshToken = useSelector((state) => state.auth.tokens.refreshToken);
   const searchBarValue = useSelector((state) => state.auth.LocalSearch);
   const hostname = location.hostname;
+
+  useLayoutEffect(() => {
+    if (hostname == process.env.REACT_APP_ADMIN_URL) {
+      dispatch(logOut());
+      localStorage.setItem("trustId", "");
+    }
+  }, []);
 
   const dispatch = useDispatch();
   const { t, i18n } = useTranslation();
