@@ -95,7 +95,6 @@ const AddSuppliesForm = ({
                       loadOptions={nameLoadOption}
                       label={t("name")}
                       onChange={(e) => {
-                        console.log("e", e);
                         formik.setFieldValue("name", e);
                         formik.setFieldValue("itemId", e);
                         formik.setFieldValue("unit", {

@@ -17,9 +17,10 @@ const Usage = ({
   pagination,
   setPagination,
   dropDownName,
+  allPermissions,
+  subPermission,
   searchParams,
 }) => {
-  console.log("list", list);
   const history = useHistory();
   const { t } = useTranslation();
 
@@ -55,6 +56,8 @@ const Usage = ({
                 currentFilter={dropDownName}
                 currentPage={pagination.page}
                 height="160px"
+                allPermissions={allPermissions}
+                subPermission={subPermission}
                 // maxHeight="220px"
                 // allPermissions={allPermissions}
                 // subPermission={subPermission}

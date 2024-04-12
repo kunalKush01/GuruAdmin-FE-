@@ -209,7 +209,6 @@ export default function DonationListTable(
               width={35}
               className={financeReport ? "d-none" : "cursor-pointer "}
               onClick={() => {
-                console.log("rowdsads", item);
                 financeReport ? "" : toggle(item);
               }}
             />

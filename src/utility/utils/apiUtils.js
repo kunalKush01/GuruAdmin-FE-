@@ -1,6 +1,5 @@
 import { toast } from "react-toastify";
 
-
 const TOASTSLIDE = {
   toastId: "apnaMandirSuperAdminError",
 };
@@ -26,7 +25,7 @@ export const extractDataFromResponse = ({
     return data;
   }
   if (showErrorToast) {
-    toast.error(response.data.message,{ ...TOASTSLIDE });
+    toast.error(response.data.message, { ...TOASTSLIDE });
   }
   data.error = true;
   return data;
@@ -38,12 +37,14 @@ export const parseApiErrorResponse = ({ error, showToast = true }) => {
     const data = response?.data?.data ?? {};
     data.error = true;
     if (showToast) {
-      toast.error(response.data.message,{ ...TOASTSLIDE });
+      toast.error(response.data.message, { ...TOASTSLIDE });
     }
     return data;
   }
   if (showToast) {
-    toast.error("Something went wrong, Please try again later.",{ ...TOASTSLIDE });
+    toast.error("Something went wrong, Please try again later.", {
+      ...TOASTSLIDE,
+    });
   }
   return { error: true };
 };

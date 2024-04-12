@@ -49,6 +49,7 @@ const Routes = [
     exact: true,
     type: "cattle-dashboard",
     subPermission: READ,
+    isGaushala: "Gaushala",
   },
   {
     path: "/cattle/info",
@@ -58,6 +59,7 @@ const Routes = [
     exact: true,
     type: "cattle-info",
     subPermission: READ,
+    isGaushala: "Gaushala",
   },
 
   {
@@ -68,6 +70,7 @@ const Routes = [
     exact: true,
     type: "cattle-info",
     subPermission: WRITE,
+    isGaushala: "Gaushala",
   },
 
   {
@@ -78,6 +81,7 @@ const Routes = [
     exact: true,
     type: "cattle-info",
     subPermission: WRITE,
+    isGaushala: "Gaushala",
   },
 
   {
@@ -88,6 +92,7 @@ const Routes = [
     exact: true,
     type: "cattle-medical",
     subPermission: READ,
+    isGaushala: "Gaushala",
   },
 
   {
@@ -98,6 +103,7 @@ const Routes = [
     exact: true,
     type: "cattle-medical",
     subPermission: WRITE,
+    isGaushala: "Gaushala",
   },
 
   {
@@ -108,6 +114,7 @@ const Routes = [
     exact: true,
     type: "cattle-medical",
     subPermission: WRITE,
+    isGaushala: "Gaushala",
   },
 
   {
@@ -118,6 +125,7 @@ const Routes = [
     exact: true,
     type: "cattle-pregnancy",
     subPermission: READ,
+    isGaushala: "Gaushala",
   },
 
   {
@@ -128,6 +136,7 @@ const Routes = [
     exact: true,
     type: "cattle-pregnancy",
     subPermission: WRITE,
+    isGaushala: "Gaushala",
   },
 
   {
@@ -138,6 +147,7 @@ const Routes = [
     exact: true,
     type: "cattle-pregnancy",
     subPermission: WRITE,
+    isGaushala: "Gaushala",
   },
 
   {
@@ -148,6 +158,7 @@ const Routes = [
     exact: true,
     type: "cattle-expense",
     subPermission: READ,
+    isGaushala: "Gaushala",
   },
 
   {
@@ -158,6 +169,7 @@ const Routes = [
     exact: true,
     type: "cattle-expense",
     subPermission: WRITE,
+    isGaushala: "Gaushala",
   },
 
   {
@@ -168,6 +180,7 @@ const Routes = [
     exact: true,
     type: "cattle-stock",
     subPermission: WRITE,
+    isGaushala: "Gaushala",
   },
 
   {
@@ -178,6 +191,7 @@ const Routes = [
     exact: true,
     type: "cattle-supplies",
     subPermission: READ,
+    isGaushala: "Gaushala",
   },
   {
     path: "/cattle/management/supplies/add",
@@ -189,6 +203,7 @@ const Routes = [
     exact: true,
     type: "cattle-supplies",
     subPermission: WRITE,
+    isGaushala: "Gaushala",
   },
 
   {
@@ -201,20 +216,22 @@ const Routes = [
     exact: true,
     type: "cattle-supplies",
     subPermission: WRITE,
+    isGaushala: "Gaushala",
   },
 
   {
-    path: "/cattle/management/items",
+    path: "/cattle/management/item",
     component: lazy(() =>
       import("../../views/cattles-management/stock-management/index.js")
     ),
     exact: true,
     type: "cattle-item",
     subPermission: READ,
+    isGaushala: "Gaushala",
   },
 
   {
-    path: "/cattle/management/items/add",
+    path: "/cattle/management/item/add",
     component: lazy(() =>
       import(
         "../../views/cattles-management/stock-management/items/add/index.js"
@@ -223,10 +240,11 @@ const Routes = [
     exact: true,
     type: "cattle-item",
     subPermission: WRITE,
+    isGaushala: "Gaushala",
   },
 
   {
-    path: "/cattle/management/items/:itemId",
+    path: "/cattle/management/item/:itemId",
     component: lazy(() =>
       import(
         "../../views/cattles-management/stock-management/items/edit/index.js"
@@ -235,6 +253,7 @@ const Routes = [
     exact: true,
     type: "cattle-item",
     subPermission: WRITE,
+    isGaushala: "Gaushala",
   },
 
   {
@@ -245,6 +264,7 @@ const Routes = [
     exact: true,
     type: "cattle-usage",
     subPermission: READ,
+    isGaushala: "Gaushala",
   },
 
   {
@@ -257,6 +277,7 @@ const Routes = [
     exact: true,
     type: "cattle-usage",
     subPermission: WRITE,
+    isGaushala: "Gaushala",
   },
 
   {
@@ -269,6 +290,7 @@ const Routes = [
     exact: true,
     type: "cattle-usage",
     subPermission: WRITE,
+    isGaushala: "Gaushala",
   },
   {
     path: "/events/about/:eventId",
@@ -490,25 +512,27 @@ const Routes = [
     subPermission: READ,
   },
 
-  // {
-  //   path: "/configuration/cattle-breed",
-  //   component: lazy(() =>
-  //     import("../../views/cattles-management/cattle-breed/index.js")
-  //   ),
-  //   exact: true,
-  //   type: "configuration",
-  //   subPermission: READ,
-  // },
+  {
+    path: "/configuration/cattle-breed",
+    component: lazy(() =>
+      import("../../views/cattles-management/cattle-breed/index.js")
+    ),
+    exact: true,
+    type: "configuration",
+    subPermission: READ,
+    isGaushala: "Gaushala",
+  },
 
-  // {
-  //   path: "/configuration/cattle-category",
-  //   component: lazy(() =>
-  //     import("../../views/cattles-management/cattle-category/index.js")
-  //   ),
-  //   exact: true,
-  //   type: "configuration",
-  //   subPermission: READ,
-  // },
+  {
+    path: "/configuration/cattle-category",
+    component: lazy(() =>
+      import("../../views/cattles-management/cattle-category/index.js")
+    ),
+    exact: true,
+    type: "configuration",
+    subPermission: READ,
+    isGaushala: "Gaushala",
+  },
 
   {
     path: "/internal_expenses",

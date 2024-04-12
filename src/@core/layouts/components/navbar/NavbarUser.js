@@ -199,6 +199,7 @@ const NavbarUser = (props) => {
 
   const dispatch = useDispatch();
   const { t, i18n } = useTranslation();
+
   const handleLogOut = async () => {
     try {
       const res = await authApiInstance.post("auth/logout", { refreshToken });
@@ -225,13 +226,27 @@ const NavbarUser = (props) => {
       ""
     );
   }
+  // const loginPageQuery = useQuery(
+  //   [subDomainName],
+  //   async () => await loginPage(subDomainName)
+  // );
+
+  // console.log("loginPageQuery", loginPageQuery);
+
+  // const loginPageData = useMemo(() => {
+  //   dispatch(handleTrustDetail(loginPageQuery?.data?.result));
+  //   console.log("loginPageQuery?.data?.result", loginPageQuery?.data?.result);
+  //   return loginPageQuery?.data?.result;
+  // }, [loginPageQuery]);
+
   const loginPageQuery = useQuery([subDomainName], () =>
     loginPage(subDomainName)
   );
 
   const loginPageData = useMemo(
-    () => loginPageQuery?.data?.result,
-    dispatch(handleTrustDetail(loginPageQuery?.data?.result))[loginPageQuery]
+    () => loginPageQuery?.data?.result ?? {},
+    dispatch(handleTrustDetail(loginPageQuery?.data?.result)),
+    [loginPageQuery]
   );
 
   const notificationQuery = useQuery(

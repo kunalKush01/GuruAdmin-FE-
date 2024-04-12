@@ -64,7 +64,6 @@ const EditMedicalInfo = () => {
     //   languageId: getLangId(langArray, langSelection),
     // })
   );
-  console.log("medicalInfoDetailQuery", medicalInfoDetailQuery?.data?.result);
   const handleMedicalInfoUpdate = async (payload) => {
     return updateMedicalInfo({
       ...payload,

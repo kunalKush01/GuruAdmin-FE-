@@ -291,7 +291,6 @@ export default function EventForm({
   };
 
   const [imageOnGlobalEvent, setImageOnGlobalEvent] = useState(defaultImages);
-  console.log("imageOnGlobalEvent", defaultImages);
   const [tagCharInput, setTagCharInput] = useState("");
   const langToast = {
     toastId: "langError",

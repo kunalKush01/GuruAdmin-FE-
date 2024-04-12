@@ -15,6 +15,8 @@ const Supplies = ({
   list,
   query,
   pagination,
+  allPermissions,
+  subPermission,
   setPagination,
   dropDownName,
   searchParams,
@@ -52,6 +54,8 @@ const Supplies = ({
               <SuppliesTable
                 data={list}
                 // maxHeight="220px"
+                allPermissions={allPermissions}
+                subPermission={subPermission}
                 height="160px"
                 currentPage={pagination.page}
                 currentFilter={dropDownName}
