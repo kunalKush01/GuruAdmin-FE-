@@ -29,8 +29,7 @@ const AddMedicalInfoForm = ({
   const [showPrompt, setShowPrompt] = useState(true);
   const [phoneNumber, setPhoneNumber] = useState(getMobile ?? "");
   const [loading, setLoading] = useState(false);
-  console.log("phoneNumber", phoneNumber);
-  
+
   const loadOption = async (tagId) => {
     const res = await findAllCattle({ cattleId: tagId });
     return res.results;

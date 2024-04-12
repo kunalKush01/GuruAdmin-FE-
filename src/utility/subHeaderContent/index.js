@@ -9,6 +9,18 @@ export const subHeaderContent = [
     name: "cattles_management",
     url: "/cattle/dashboard",
     activeTab: "/cattle",
+    isCattle: "Gaushala",
+    innerPermissions: [
+      "cattle-dashboard",
+      "cattle-medical",
+      "cattle-pregnancy",
+      "cattle-stock",
+      "cattle-supplies",
+      "cattle-item",
+      "cattle-usage",
+      "cattle-category",
+      "cattle-breed",
+    ],
   },
 
   {
@@ -76,11 +88,12 @@ export const subHeaderContentResponsive = [
     activeTab: "/dashboard",
   },
 
-  // {
-  //   name: "cattles_management",
-  //   url: "/cattle/dashboard",
-  //   activeTab: "/cattle",
-  // },
+  {
+    name: "cattles_management",
+    url: "/cattle/dashboard",
+    activeTab: "/cattle",
+    isCattle: "Gaushala",
+  },
 
   {
     name: "donation",

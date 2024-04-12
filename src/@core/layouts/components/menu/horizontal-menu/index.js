@@ -41,8 +41,12 @@ const BtnContentWraper = styled.div`
     }
   }
 `;
-function BtnContent({ setClosePopover }) {
+function BtnContent({ setClosePopover, permissionsKey }) {
   const history = useHistory();
+
+  const trustType = useSelector(
+    (state) => state?.auth?.trustDetail?.typeId?.name
+  );
 
   return (
     <BtnContentWraper>
@@ -58,27 +62,31 @@ function BtnContent({ setClosePopover }) {
           <Trans i18nKey={"category"} />
         </Col>
 
-        {/* <Col
-          xs={12}
-          className="col-item"
-          onClick={() => {
-            setClosePopover(false);
-            history.push(`/configuration/cattle-breed`);
-          }}
-        >
-          <Trans i18nKey={"cattles"} /> <Trans i18nKey={"cattle_breed"} />
-        </Col>
+        {trustType == "Gaushala" && (
+          <Col
+            xs={12}
+            className="col-item"
+            onClick={() => {
+              setClosePopover(false);
+              history.push(`/configuration/cattle-breed`);
+            }}
+          >
+            <Trans i18nKey={"cattles"} /> <Trans i18nKey={"cattle_breed"} />
+          </Col>
+        )}
 
-        <Col
-          xs={12}
-          className="col-item"
-          onClick={() => {
-            setClosePopover(false);
-            history.push(`/configuration/cattle-category`);
-          }}
-        >
-          <Trans i18nKey={"cattles"} /> <Trans i18nKey={"category"} />
-        </Col> */}
+        {trustType == "Gaushala" && (
+          <Col
+            xs={12}
+            className="col-item"
+            onClick={() => {
+              setClosePopover(false);
+              history.push(`/configuration/cattle-category`);
+            }}
+          >
+            <Trans i18nKey={"cattles"} /> <Trans i18nKey={"category"} />
+          </Col>
+        )}
 
         <Col
           xs={12}
@@ -105,6 +113,45 @@ function BtnContent({ setClosePopover }) {
   );
 }
 
+const MenuItem = ({
+  item,
+  history,
+  active,
+  closePopover,
+  setClosePopover,
+  permissionsKey,
+}) => {
+  return (
+    <div>
+      <SubHeaderWarraper>
+        <div
+          id={item.name}
+          onClick={() => {
+            item.url != "/configuration" ? history.push(item.url) : "";
+            //  setActive(item)
+          }}
+          className={`text-light ${
+            active?.startsWith(item.activeTab) ? "activeTab" : ""
+          } `}
+        >
+          <Trans i18nKey={item.name} />
+        </div>
+        {item.name === "configuration" && closePopover && (
+          <BtnPopover
+            target={item.name}
+            content={
+              <BtnContent
+                setClosePopover={setClosePopover}
+                permissionsKey={permissionsKey}
+              />
+            }
+          />
+        )}
+      </SubHeaderWarraper>
+    </div>
+  );
+};
+
 const HorizontalMenu = ({ menuData, currentActiveItem, routerProps }) => {
   const history = useHistory();
   const [closePopover, setClosePopover] = useState(true);
@@ -116,6 +163,11 @@ const HorizontalMenu = ({ menuData, currentActiveItem, routerProps }) => {
   const permissions = useSelector(
     (state) => state.auth.userDetail?.permissions
   );
+
+  const trustType = useSelector(
+    (state) => state.auth.trustDetail?.typeId?.name
+  );
+
   const [active, setActive] = useState();
   const permissionsKey = permissions?.map((item) => item?.name);
 
@@ -135,42 +187,86 @@ const HorizontalMenu = ({ menuData, currentActiveItem, routerProps }) => {
           id="main-menu-navigation"
         >
           {menuData.map((item, idx) => {
+            const hasAllPermission = permissionsKey?.includes("all");
+            const hasItemPermission = permissionsKey?.includes(item?.name);
+            const hasCattleItemPermission = item?.innerPermissions?.some(
+              (item) => permissionsKey?.includes(item)
+            );
+            const isGaushala =
+              item?.isCattle?.toLowerCase() == trustType?.toLowerCase();
+
             if (
-              permissionsKey?.includes("all") ||
-              permissionsKey?.includes(item?.name)
+              (hasAllPermission && isGaushala) ||
+              hasCattleItemPermission ||
+              (hasItemPermission && isGaushala)
             ) {
               return (
-                <div key={idx}>
-                  <SubHeaderWarraper>
-                    <div
-                      id={item.name}
-                      onClick={() => {
-                        item.url != "/configuration"
-                          ? history.push(item.url)
-                          : "";
-                        //  setActive(item)
-                      }}
-                      key={idx}
-                      className={`text-light ${
-                        active?.startsWith(item.activeTab) ? "activeTab" : ""
-                      } `}
-                    >
-                      <Trans i18nKey={item.name} />
-                    </div>
-                    {item.name === "configuration" && closePopover && (
-                      <BtnPopover
-                        target={item.name}
-                        content={
-                          <BtnContent setClosePopover={setClosePopover} />
-                        }
-                      />
-                    )}
-                  </SubHeaderWarraper>
-                </div>
+                <MenuItem
+                  key={idx}
+                  item={item}
+                  history={history}
+                  active={active}
+                  closePopover={closePopover}
+                  setClosePopover={setClosePopover}
+                  permissionsKey={permissionsKey}
+                />
               );
-            } else {
-              return null;
             }
+
+            if (
+              (hasAllPermission && item.name !== "cattles_management") ||
+              (hasItemPermission && item.name !== "cattles_management")
+            ) {
+              return (
+                <MenuItem
+                  key={idx}
+                  item={item}
+                  history={history}
+                  active={active}
+                  closePopover={closePopover}
+                  permissionsKey={permissionsKey}
+                  setClosePopover={setClosePopover}
+                />
+              );
+            }
+
+            return null;
+            // if (
+            //   permissionsKey?.includes("all") ||
+            //   permissionsKey?.includes(item?.name)
+            // ) {
+            //   return (
+            //     <div key={idx}>
+            //       <SubHeaderWarraper>
+            //         <div
+            //           id={item.name}
+            //           onClick={() => {
+            //             item.url != "/configuration"
+            //               ? history.push(item.url)
+            //               : "";
+            //             //  setActive(item)
+            //           }}
+            //           key={idx}
+            //           className={`text-light ${
+            //             active?.startsWith(item.activeTab) ? "activeTab" : ""
+            //           } `}
+            //         >
+            //           <Trans i18nKey={item.name} />
+            //         </div>
+            //         {item.name === "configuration" && closePopover && (
+            //           <BtnPopover
+            //             target={item.name}
+            //             content={
+            //               <BtnContent setClosePopover={setClosePopover} />
+            //             }
+            //           />
+            //         )}
+            //       </SubHeaderWarraper>
+            //     </div>
+            //   );
+            // } else {
+            //   return null;
+            // }
           })}
         </ul>
       </div>

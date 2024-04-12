@@ -144,7 +144,6 @@ const ResetPassWord = () => {
   const searchParams = new URLSearchParams(history?.location?.search);
 
   const currentToken = searchParams.get("token");
-  console.log("currentToken", currentToken);
 
   const hostname = location.hostname;
   const subdomainChange = process.env.REACT_APP_ADMIN_SUBDOMAIN_REPLACE_URL;

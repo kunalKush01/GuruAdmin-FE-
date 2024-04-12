@@ -21,6 +21,7 @@ import Stocks from "./stock";
 import Supplies from "./supplies";
 import Usage from "./usage";
 import { Helmet } from "react-helmet";
+import { WRITE } from "../../../utility/permissionsVariable";
 
 const StockManagementWrapper = styled.div`
   color: #583703;
@@ -100,7 +101,7 @@ const StockManagement = () => {
             endDate: filterEndDate,
             languageId: selectedLang.id,
           })
-        : active == "/cattle/management/items"
+        : active == "/cattle/management/item"
         ? getCattlesItemsList({
             ...pagination,
             search: searchBarValue,
@@ -131,6 +132,27 @@ const StockManagement = () => {
     [cattleStockManagementList]
   );
 
+  // PERMISSSIONS
+  const permissions = useSelector(
+    (state) => state.auth.userDetail?.permissions
+  );
+  const allPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "all"
+  );
+  const subPermissions = permissions?.find((permissionName) => {
+    if (active === "/cattle/management/item") {
+      permissionName.name == "cattle-item";
+    } else if (active === "/cattle/management/supplies") {
+      permissionName.name == "cattle-supplies";
+    } else if (active === "/cattle/management/usage") {
+      permissionName.name == "cattle-usage";
+    } else return false;
+  });
+
+  const subPermission = subPermissions?.subpermissions?.map(
+    (item) => item.name
+  );
+
   return (
     <StockManagementWrapper>
       <Helmet>
@@ -146,23 +168,31 @@ const StockManagement = () => {
               tabs={[
                 {
                   name: "Stock",
-                  url: "/cattle/management/stock",
+                  url: "/cattle/management",
                   active: "/cattle/management/stock",
+                  permissionKey: ["cattle-stock"],
+                  isManagment: true,
                 },
                 {
                   name: "Supplies",
-                  url: "/cattle/management/supplies",
+                  url: "/cattle/management",
                   active: "/cattle/management/supplies",
+                  permissionKey: ["cattle-supplies"],
+                  isManagment: true,
                 },
                 {
                   name: "Usage",
-                  url: "/cattle/management/usage",
+                  url: "/cattle/management",
                   active: "/cattle/management/usage",
+                  permissionKey: ["cattle-usage"],
+                  isManagment: true,
                 },
                 {
                   name: "Items",
-                  url: "/cattle/management/items",
-                  active: "/cattle/management/items",
+                  url: "/cattle/management",
+                  active: "/cattle/management/item",
+                  permissionKey: ["cattle-item"],
+                  isManagment: true,
                 },
               ]}
               active={active}
@@ -180,8 +210,8 @@ const StockManagement = () => {
                     `/${
                       active == "/cattle/management/stock"
                         ? "cattle/management/stock"
-                        : active == "/cattle/management/items"
-                        ? "cattle/management/items"
+                        : active == "/cattle/management/item"
+                        ? "cattle/management/item"
                         : active == "/cattle/management/supplies"
                         ? "cattle/management/supplies"
                         : active == "/cattle/management/usage"
@@ -191,49 +221,51 @@ const StockManagement = () => {
                   );
                 }}
               />
-              {/* {allPermissions?.name === "all" ||
-            subPermission?.includes(WRITE) ? ( */}
-              {active == "/cattle/management/stock" ? (
-                ""
+              {/* { ? ():("")} */}
+
+              {allPermissions?.name === "all" ||
+              subPermission?.includes(WRITE) ? (
+                active == "/cattle/management/stock" ? (
+                  ""
+                ) : (
+                  <Button
+                    color="primary"
+                    onClick={() =>
+                      active == "/cattle/management/supplies"
+                        ? history.push(
+                            `/cattle/management/supplies/add?page=${pagination.page}&filter=${dropDownName}`
+                          )
+                        : active == "/cattle/management/item"
+                        ? history.push(
+                            `/cattle/management/item/add?page=${pagination.page}&filter=${dropDownName}`
+                          )
+                        : active == "/cattle/management/usage"
+                        ? history.push(
+                            `/cattle/management/usage/add?page=${pagination.page}&filter=${dropDownName}`
+                          )
+                        : "/not-found"
+                    }
+                  >
+                    <span>
+                      <Plus className="" size={15} strokeWidth={4} />
+                    </span>
+                    <span>
+                      <Trans
+                        i18nKey={
+                          active == "/cattle/management/supplies"
+                            ? "cattle_supplies_add"
+                            : active == "/cattle/management/item"
+                            ? "cattle_items_add"
+                            : active == "/cattle/management/usage" &&
+                              "cattle_usage_add"
+                        }
+                      />
+                    </span>
+                  </Button>
+                )
               ) : (
-                <Button
-                  color="primary"
-                  onClick={() =>
-                    active == "/cattle/management/supplies"
-                      ? history.push(
-                          `/cattle/management/supplies/add?page=${pagination.page}&filter=${dropDownName}`
-                        )
-                      : active == "/cattle/management/items"
-                      ? history.push(
-                          `/cattle/management/items/add?page=${pagination.page}&filter=${dropDownName}`
-                        )
-                      : active == "/cattle/management/usage"
-                      ? history.push(
-                          `/cattle/management/usage/add?page=${pagination.page}&filter=${dropDownName}`
-                        )
-                      : "/not-found"
-                  }
-                >
-                  <span>
-                    <Plus className="" size={15} strokeWidth={4} />
-                  </span>
-                  <span>
-                    <Trans
-                      i18nKey={
-                        active == "/cattle/management/supplies"
-                          ? "cattle_supplies_add"
-                          : active == "/cattle/management/items"
-                          ? "cattle_items_add"
-                          : active == "/cattle/management/usage" &&
-                            "cattle_usage_add"
-                      }
-                    />
-                  </span>
-                </Button>
+                ""
               )}
-              {/* ) : (
-              ""
-            )} */}
             </div>
           </div>
           <hr />
@@ -248,10 +280,12 @@ const StockManagement = () => {
             query={cattleStockManagementList}
             searchParams={searchParams}
           />
-        ) : active == "/cattle/management/items" ? (
+        ) : active == "/cattle/management/item" ? (
           <Items
             pagination={pagination}
             setPagination={setPagination}
+            allPermissions={allPermissions}
+            subPermission={subPermission}
             dropDownName={dropDownName}
             searchParams={searchParams}
             list={cattleStockManagementListData}
@@ -263,6 +297,8 @@ const StockManagement = () => {
             setPagination={setPagination}
             dropDownName={dropDownName}
             list={cattleStockManagementListData}
+            allPermissions={allPermissions}
+            subPermission={subPermission}
             query={cattleStockManagementList}
             searchParams={searchParams}
           />
@@ -273,6 +309,8 @@ const StockManagement = () => {
               setPagination={setPagination}
               dropDownName={dropDownName}
               list={cattleStockManagementListData}
+              allPermissions={allPermissions}
+              subPermission={subPermission}
               query={cattleStockManagementList}
               searchParams={searchParams}
             />
