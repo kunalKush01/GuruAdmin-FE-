@@ -136,9 +136,11 @@ const StockManagement = () => {
   const permissions = useSelector(
     (state) => state.auth.userDetail?.permissions
   );
+
   const allPermissions = permissions?.find(
     (permissionName) => permissionName.name === "all"
   );
+  console.log("allPermissions", allPermissions);
   const subPermissions = permissions?.find((permissionName) => {
     if (active === "/cattle/management/item") {
       permissionName.name == "cattle-item";
@@ -168,28 +170,43 @@ const StockManagement = () => {
               tabs={[
                 {
                   name: "Stock",
-                  url: "/cattle/management",
+                  url:
+                    allPermissions?.name === "all"
+                      ? "/cattle/management/stock"
+                      : "/cattle/management",
                   active: "/cattle/management/stock",
                   permissionKey: ["cattle-stock"],
                   isManagment: true,
                 },
                 {
                   name: "Supplies",
-                  url: "/cattle/management",
+                  url:
+                    allPermissions?.name === "all"
+                      ? "/cattle/management/supplies"
+                      : "/cattle/management",
+
                   active: "/cattle/management/supplies",
                   permissionKey: ["cattle-supplies"],
                   isManagment: true,
                 },
                 {
                   name: "Usage",
-                  url: "/cattle/management",
+                  url:
+                    allPermissions?.name === "all"
+                      ? "/cattle/management/usage"
+                      : "/cattle/management",
+
                   active: "/cattle/management/usage",
                   permissionKey: ["cattle-usage"],
                   isManagment: true,
                 },
                 {
                   name: "Items",
-                  url: "/cattle/management",
+                  url:
+                    allPermissions?.name === "all"
+                      ? "/cattle/management/item"
+                      : "/cattle/management",
+
                   active: "/cattle/management/item",
                   permissionKey: ["cattle-item"],
                   isManagment: true,

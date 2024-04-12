@@ -52,8 +52,12 @@ const CattleTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
                 <NavLink
                   active={active?.includes(item?.active)}
                   onClick={() => {
-                    console.log("item?.isManagment", item?.isManagment);
-                    item?.isManagment
+                    console.log(
+                      "item?.isManagment",
+                      item?.isManagment,
+                      permissionsKey
+                    );
+                    item?.isManagment && !permissionsKey?.includes("all")
                       ? history.push(`${item?.url}/${url[0]?.split("-")[1]}`)
                       : history.push(item?.url);
                   }}
