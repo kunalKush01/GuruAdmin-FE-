@@ -143,17 +143,18 @@ const StockManagement = () => {
   console.log("allPermissions", allPermissions);
   const subPermissions = permissions?.find((permissionName) => {
     if (active === "/cattle/management/item") {
-      permissionName.name == "cattle-item";
+      return permissionName.name == "cattle-item";
     } else if (active === "/cattle/management/supplies") {
-      permissionName.name == "cattle-supplies";
+      return permissionName.name == "cattle-supplies";
     } else if (active === "/cattle/management/usage") {
-      permissionName.name == "cattle-usage";
+      return permissionName.name == "cattle-usage";
     } else return false;
   });
 
   const subPermission = subPermissions?.subpermissions?.map(
     (item) => item.name
   );
+  console.log("subPermission", permissions);
 
   return (
     <StockManagementWrapper>
