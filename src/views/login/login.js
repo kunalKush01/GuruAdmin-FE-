@@ -275,8 +275,8 @@ const LoginCover = () => {
         loginPath[0]?.startsWith("cattle") &&
         subDomainName !== genericSubDomain
       ) {
-        const redirectTo = cattleHeader?.find((item) =>
-          item.permissionKey?.includes(loginPath[0])
+        const redirectTo = cattleHeader()?.find((item) =>
+          item?.permissionKey?.includes(loginPath[0])
         );
         localStorage.setItem("trustModal", false);
         history.push(redirectTo?.url);
