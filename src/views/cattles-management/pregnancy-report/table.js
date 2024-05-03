@@ -92,7 +92,7 @@ const PregnancyReportTable = ({
         deliveryDate: item?.deliveryDate
           ? moment(item?.deliveryDate).format("DD MMM YYYY")
           : "N/A",
-        pregnancyStatus: item?.status,
+        pregnancyStatus: item?.status === "NO" ? "Inactive" : "Active",
         edit:
           allPermissions?.name === "all" || subPermission?.includes(EDIT) ? (
             <img
