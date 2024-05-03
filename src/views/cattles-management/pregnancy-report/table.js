@@ -11,7 +11,7 @@ import deleteIcon from "../../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../../assets/images/icons/category/editIcon.svg";
 import confirmationIcon from "../../../assets/images/icons/news/conformationIcon.svg";
 import CustomDataTable from "../../../components/partials/CustomDataTable";
-import { DELETE } from "../../../utility/permissionsVariable";
+import { DELETE, EDIT } from "../../../utility/permissionsVariable";
 
 const PregnancyTableWrapper = styled.div`
   color: #583703 !important;
@@ -93,54 +93,56 @@ const PregnancyReportTable = ({
           ? moment(item?.deliveryDate).format("DD MMM YYYY")
           : "N/A",
         pregnancyStatus: item?.status,
-        edit: (
-          <img
-            src={editIcon}
-            width={35}
-            className="cursor-pointer "
-            onClick={() => {
-              history.push(
-                `/cattle/pregnancy-reports/${item?.id}?page=${currentPage}&status=${currentPregnancyStatus}&filter=${currentFilter}`
-              );
-            }}
-          />
-        ),
-        delete: (
-          // allPermissions?.name === "all" || subPermission?.includes(DELETE) ? (
-          <img
-            src={deleteIcon}
-            width={35}
-            className="cursor-pointer "
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              Swal.fire({
-                title: `<img src="${confirmationIcon}"/>`,
-                html: `
+        edit:
+          allPermissions?.name === "all" || subPermission?.includes(EDIT) ? (
+            <img
+              src={editIcon}
+              width={35}
+              className="cursor-pointer "
+              onClick={() => {
+                history.push(
+                  `/cattle/pregnancy-reports/${item?.id}?page=${currentPage}&status=${currentPregnancyStatus}&filter=${currentFilter}`
+                );
+              }}
+            />
+          ) : (
+            ""
+          ),
+        delete:
+          allPermissions?.name === "all" || subPermission?.includes(DELETE) ? (
+            <img
+              src={deleteIcon}
+              width={35}
+              className="cursor-pointer "
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                Swal.fire({
+                  title: `<img src="${confirmationIcon}"/>`,
+                  html: `
                                       <h3 class="swal-heading mt-1">${t(
                                         "cattle_pregnancy_delete"
                                       )}</h3>
                                       <p>${t("cattle_pregnancy_sure")}</p>
                                       `,
-                showCloseButton: false,
-                showCancelButton: true,
-                focusConfirm: true,
-                cancelButtonText: ` ${t("cancel")}`,
-                cancelButtonAriaLabel: ` ${t("cancel")}`,
+                  showCloseButton: false,
+                  showCancelButton: true,
+                  focusConfirm: true,
+                  cancelButtonText: ` ${t("cancel")}`,
+                  cancelButtonAriaLabel: ` ${t("cancel")}`,
 
-                confirmButtonText: ` ${t("confirm")}`,
-                confirmButtonAriaLabel: "Confirm",
-              }).then(async (result) => {
-                if (result.isConfirmed) {
-                  deleteMutation.mutate(item.id);
-                }
-              });
-            }}
-          />
-        ),
-        // ) : (
-        //   ""
-        // ),
+                  confirmButtonText: ` ${t("confirm")}`,
+                  confirmButtonAriaLabel: "Confirm",
+                }).then(async (result) => {
+                  if (result.isConfirmed) {
+                    deleteMutation.mutate(item.id);
+                  }
+                });
+              }}
+            />
+          ) : (
+            ""
+          ),
       };
     });
   }, [data]);

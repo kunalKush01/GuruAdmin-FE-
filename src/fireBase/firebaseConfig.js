@@ -23,7 +23,7 @@ export const requestForToken = () => {
   })
     .then((currentToken) => {
       if (currentToken) {
-        console.log("currentToken",currentToken);
+        console.log("currentToken", currentToken);
         localStorage.setItem("fcm_token", currentToken);
         // Perform any other neccessary action with the token
       } else {

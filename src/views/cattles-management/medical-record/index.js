@@ -15,6 +15,7 @@ import { ChangePeriodDropDown } from "../../../components/partials/changePeriodD
 import NoContent from "../../../components/partials/noContent";
 import MedicalReportTable from "./table";
 import { Helmet } from "react-helmet";
+import { WRITE } from "../../../utility/permissionsVariable";
 
 const MedicalWrapper = styled.div`
   color: #583703;
@@ -94,6 +95,21 @@ const CattlesMedical = () => {
     [cattleMedicalList]
   );
 
+  // PERMISSSIONS
+  const permissions = useSelector(
+    (state) => state.auth.userDetail?.permissions
+  );
+  const allPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "all"
+  );
+  const subPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "cattle-medical"
+  );
+
+  const subPermission = subPermissions?.subpermissions?.map(
+    (item) => item.name
+  );
+
   return (
     <MedicalWrapper>
       <Helmet>
@@ -116,26 +132,26 @@ const CattlesMedical = () => {
                 );
               }}
             />
-            {/* {allPermissions?.name === "all" ||
-            subPermission?.includes(WRITE) ? ( */}
-            <Button
-              color="primary"
-              onClick={() =>
-                history.push(
-                  `/cattle/medical-info/add?page=${pagination.page}&filter=${dropDownName}`
-                )
-              }
-            >
-              <span>
-                <Plus className="" size={15} strokeWidth={4} />
-              </span>
-              <span>
-                <Trans i18nKey={"cattle_medical_add"} />
-              </span>
-            </Button>
-            {/* ) : (
+            {allPermissions?.name === "all" ||
+            subPermission?.includes(WRITE) ? (
+              <Button
+                color="primary"
+                onClick={() =>
+                  history.push(
+                    `/cattle/medical-info/add?page=${pagination.page}&filter=${dropDownName}`
+                  )
+                }
+              >
+                <span>
+                  <Plus className="" size={15} strokeWidth={4} />
+                </span>
+                <span>
+                  <Trans i18nKey={"cattle_medical_add"} />
+                </span>
+              </Button>
+            ) : (
               ""
-            )} */}
+            )}
           </div>
         </div>
         <div style={{ height: "10px" }}>
@@ -166,8 +182,8 @@ const CattlesMedical = () => {
               <Then>
                 <MedicalReportTable
                   data={cattleMedicalListData}
-                  // allPermissions={allPermissions}
-                  // subPermission={subPermission}
+                  allPermissions={allPermissions}
+                  subPermission={subPermission}
                   // maxHeight="160px"
                   height="160px"
                   currentFilter={dropDownName}

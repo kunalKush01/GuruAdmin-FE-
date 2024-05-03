@@ -1,5 +1,5 @@
 // ** React Imports
-import { Fragment, useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useLayoutEffect, useMemo, useState } from "react";
 
 // ** Dropdowns Imports
 import UserDropdown from "./UserDropdown";
@@ -188,9 +188,18 @@ const NavbarUser = (props) => {
   const userDetails = useSelector((state) => state.auth.userDetail);
   const refreshToken = useSelector((state) => state.auth.tokens.refreshToken);
   const searchBarValue = useSelector((state) => state.auth.LocalSearch);
+  const hostname = location.hostname;
+
+  useLayoutEffect(() => {
+    if (hostname == process.env.REACT_APP_ADMIN_URL) {
+      dispatch(logOut());
+      localStorage.setItem("trustId", "");
+    }
+  }, []);
 
   const dispatch = useDispatch();
   const { t, i18n } = useTranslation();
+
   const handleLogOut = async () => {
     try {
       const res = await authApiInstance.post("auth/logout", { refreshToken });
@@ -207,15 +216,37 @@ const NavbarUser = (props) => {
   });
   const subdomainChange = process.env.REACT_APP_ADMIN_SUBDOMAIN_REPLACE_URL;
 
-  const subDomainName = location.hostname.replace(subdomainChange, "");
-  // const subDomainName = location.hostname.replace("-dev.localhost", "");
+  // const subDomainName = location.hostname.replace(subdomainChange, "");
+  let subDomainName;
+  if (hostname !== process.env.REACT_APP_ADMIN_URL) {
+    subDomainName = hostname.replace(subdomainChange, "");
+  } else {
+    subDomainName = hostname.replace(
+      process.env.REACT_APP_GENERIC_ADMIN_SUBDOMAIN_REPLACE_URL,
+      ""
+    );
+  }
+  // const loginPageQuery = useQuery(
+  //   [subDomainName],
+  //   async () => await loginPage(subDomainName)
+  // );
+
+  // console.log("loginPageQuery", loginPageQuery);
+
+  // const loginPageData = useMemo(() => {
+  //   dispatch(handleTrustDetail(loginPageQuery?.data?.result));
+  //   console.log("loginPageQuery?.data?.result", loginPageQuery?.data?.result);
+  //   return loginPageQuery?.data?.result;
+  // }, [loginPageQuery]);
+
   const loginPageQuery = useQuery([subDomainName], () =>
     loginPage(subDomainName)
   );
 
   const loginPageData = useMemo(
-    () => loginPageQuery?.data?.result,
-    dispatch(handleTrustDetail(loginPageQuery?.data?.result))[loginPageQuery]
+    () => loginPageQuery?.data?.result ?? {},
+    dispatch(handleTrustDetail(loginPageQuery?.data?.result)),
+    [loginPageQuery]
   );
 
   const notificationQuery = useQuery(

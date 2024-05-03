@@ -13,6 +13,7 @@ import avtarIcon from "../../../assets/images/icons/dashBoard/defaultAvatar.svg"
 import confirmationIcon from "../../../assets/images/icons/news/conformationIcon.svg";
 import CustomDataTable from "../../../components/partials/CustomDataTable";
 import { ConverFirstLatterToCapital } from "../../../utility/formater";
+import { DELETE, EDIT } from "../../../utility/permissionsVariable";
 
 const CattleInfoTableWrapper = styled.div`
   color: #583703 !important;
@@ -35,6 +36,8 @@ const CattleInfoTable = ({
   currentFilter,
   // currentBreed,
   currentStatus,
+  allPermissions,
+  subPermission,
   currentPage,
 }) => {
   const { t } = useTranslation();
@@ -183,51 +186,57 @@ const CattleInfoTable = ({
           ? moment(item?.pregnancyDate).format(" DD MMM YYYY")
           : "N/A",
         milkQuantity: item?.milkQuantity ?? "N/A",
-        edit: (
-          <img
-            src={editIcon}
-            width={35}
-            className="cursor-pointer "
-            onClick={() => {
-              history.push(
-                `/cattle/info/${item?._id}?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
-              );
-            }}
-          />
-        ),
-        delete: (
-          // allPermissions?.name === "all" || subPermission?.includes(DELETE) ? (
-          <img
-            src={deleteIcon}
-            width={35}
-            className="cursor-pointer "
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              Swal.fire({
-                title: `<img src="${confirmationIcon}"/>`,
-                html: `
+
+        edit:
+          allPermissions?.name === "all" || subPermission?.includes(EDIT) ? (
+            <img
+              src={editIcon}
+              width={35}
+              className="cursor-pointer "
+              onClick={() => {
+                history.push(
+                  `/cattle/info/${item?._id}?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
+                );
+              }}
+            />
+          ) : (
+            ""
+          ),
+        delete:
+          allPermissions?.name === "all" || subPermission?.includes(DELETE) ? (
+            <img
+              src={deleteIcon}
+              width={35}
+              className="cursor-pointer "
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                Swal.fire({
+                  title: `<img src="${confirmationIcon}"/>`,
+                  html: `
                                       <h3 class="swal-heading mt-1">${t(
                                         "cattle_cattle_delete"
                                       )}</h3>
                                       <p>${t("cattle_cattle_sure")}</p>
                                       `,
-                showCloseButton: false,
-                showCancelButton: true,
-                focusConfirm: true,
-                cancelButtonText: ` ${t("cancel")}`,
-                cancelButtonAriaLabel: ` ${t("cancel")}`,
+                  showCloseButton: false,
+                  showCancelButton: true,
+                  focusConfirm: true,
+                  cancelButtonText: ` ${t("cancel")}`,
+                  cancelButtonAriaLabel: ` ${t("cancel")}`,
 
-                confirmButtonText: ` ${t("confirm")}`,
-                confirmButtonAriaLabel: "Confirm",
-              }).then(async (result) => {
-                if (result.isConfirmed) {
-                  deleteMutation.mutate(item._id);
-                }
-              });
-            }}
-          />
-        ),
+                  confirmButtonText: ` ${t("confirm")}`,
+                  confirmButtonAriaLabel: "Confirm",
+                }).then(async (result) => {
+                  if (result.isConfirmed) {
+                    deleteMutation.mutate(item._id);
+                  }
+                });
+              }}
+            />
+          ) : (
+            ""
+          ),
       };
     });
   }, [data]);

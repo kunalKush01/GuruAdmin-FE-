@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-const Permission = ({ subPermission, type, ...props }) => {
+const Permission = ({ subPermission, type, isGaushala = "", ...props }) => {
   const permissions = useSelector((state) => state.auth.userDetail.permissions);
 
   const permissionRoute = permissions?.find(
@@ -20,11 +20,27 @@ const Permission = ({ subPermission, type, ...props }) => {
     item?.name ? item?.name : ""
   );
   const history = useHistory();
-  // if (permissionRoute?.name === "all" || (!!permissionRoute && subPermissionArr?.name === "")) {
   const trustsModal = localStorage.getItem("trustsModal");
+  const trustType = localStorage.getItem("trustType");
+
   if (
-    permissionRoute?.name === "all" ||
-    (!!permissionRoute && subPermissionRoute.includes(subPermission))
+    (trustType?.toLowerCase() == isGaushala?.toLowerCase() &&
+      permissionRoute?.name === "all") ||
+    (trustType?.toLowerCase() == isGaushala?.toLowerCase() &&
+      !!permissionRoute &&
+      subPermissionRoute.includes(subPermission))
+  ) {
+    if (!trustsModal) {
+      return props.children;
+    } else {
+      history.push("/not-found");
+    }
+  } else if (
+    (permissionRoute?.name === "all" &&
+      !trustType?.toLowerCase() == isGaushala?.toLowerCase()) ||
+    (!!permissionRoute &&
+      subPermissionRoute.includes(subPermission) &&
+      !trustType?.toLowerCase() == isGaushala?.toLowerCase())
   ) {
     if (!trustsModal) {
       return props.children;

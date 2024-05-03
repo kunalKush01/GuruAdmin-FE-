@@ -102,7 +102,7 @@ const EditItem = () => {
             className="me-2  cursor-pointer"
             onClick={() =>
               history.push(
-                `/cattle/management/items?page=${currentPage}&filter=${currentFilter}`
+                `/cattle/management/item?page=${currentPage}&filter=${currentFilter}`
               )
             }
           />

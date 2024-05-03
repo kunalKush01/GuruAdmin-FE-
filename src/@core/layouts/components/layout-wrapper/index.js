@@ -64,6 +64,11 @@ const LayoutWrapper = (props) => {
     return () => cleanUp();
   }, []);
 
+  const permissions = useSelector(
+    (state) => state.auth.userDetail?.permissions
+  );
+  const permissionsKey = permissions?.map((item) => item?.name);
+
   return (
     <div
       className={classnames("app-content content overflow-hidden", {
@@ -73,7 +78,7 @@ const LayoutWrapper = (props) => {
     >
       {location.pathname.startsWith("/cattle") && (
         <CattleTabBar
-          tabs={cattleHeader}
+          tabs={cattleHeader(permissionsKey)}
           active={active}
           setActive={setActive}
         />
