@@ -116,15 +116,15 @@ const AddPregnancyForm = ({
                           name="pregnancyStatus"
                           id="pregnancyStatus1"
                           value="YES"
-                          label="yes"
+                          label="Active"
                         />
                       </Col>
-                      <Col md={3}>
+                      <Col md={5}>
                         <CustomRadioButton
                           name="pregnancyStatus"
                           id="pregnancyStatus2"
                           value="NO"
-                          label="no"
+                          label="Inactive"
                           customOnChange={() =>
                             formik.setFieldValue("deathReason", "")
                           }
