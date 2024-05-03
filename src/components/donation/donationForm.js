@@ -89,7 +89,7 @@ export default function DonationForm({
   });
   const [showPrompt, setShowPrompt] = useState(true);
   const [toggleState, setToggleState] = useState(false);
-  console.log("toggleState", toggleState);
+
   return (
     <FormWrapper className="FormikWrapper">
       {!masterloadOptionQuery.isLoading && (

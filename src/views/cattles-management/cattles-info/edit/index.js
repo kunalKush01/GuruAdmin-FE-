@@ -62,7 +62,7 @@ const EditCattle = () => {
     ["cattleDetails", cattleId, langSelection, selectedLang.id],
     async () => getCattleInfoDetail(cattleId)
   );
-  console.log(cattleDetails);
+
   const handleCattleUpdate = async (payload) => {
     return updateCattleInfo({
       ...payload,

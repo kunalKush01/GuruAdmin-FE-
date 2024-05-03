@@ -23,8 +23,6 @@ const AddStockItemForm = ({
   const [showPrompt, setShowPrompt] = useState(true);
   const [loading, setLoading] = useState(false);
 
-  console.log(loading);
-
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -33,7 +31,7 @@ const AddStockItemForm = ({
       if (!data?.error) {
         queryClient.invalidateQueries(["cattleStockManagementList"]);
         setLoading(false);
-        history.push("/cattle/management/items");
+        history.push("/cattle/management/item");
       } else if (data?.error || data === undefined) {
         setLoading(false);
       }

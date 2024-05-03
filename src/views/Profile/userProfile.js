@@ -93,7 +93,6 @@ export default function AddProfile() {
     });
   };
 
-  // console.log("files Api -----> ",profileDetail?.data?.result?.documents);
   const initialValues = useMemo(() => {
     const documentName = profileDetail?.data?.result?.documents?.map(
       (item) => item?.name

@@ -1,4 +1,5 @@
 import React from "react";
+import { Helmet } from "react-helmet";
 import { useTranslation } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton from "react-loading-skeleton";
@@ -7,13 +8,14 @@ import { useHistory } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import NoContent from "../../../../components/partials/noContent";
 import StockManagementItemTable from "./table";
-import { Helmet } from "react-helmet";
 
 const Items = ({
   list,
   query,
   pagination,
   setPagination,
+  allPermissions,
+  subPermission,
   dropDownName,
   searchParams,
 }) => {
@@ -49,8 +51,8 @@ const Items = ({
             <Then>
               <StockManagementItemTable
                 data={list}
-                // allPermissions={allPermissions}
-                // subPermission={subPermission}
+                allPermissions={allPermissions}
+                subPermission={subPermission}
                 currentFilter={dropDownName}
                 // maxHeight="220px"
                 height="160px"
@@ -95,7 +97,7 @@ const Items = ({
                   onPageChange={(page) => {
                     setPagination({ ...pagination, page: page.selected + 1 });
                     history.push(
-                      `/cattle/management/items?page=${
+                      `/cattle/management/item?page=${
                         page.selected + 1
                       }&filter=${dropDownName}`
                     );

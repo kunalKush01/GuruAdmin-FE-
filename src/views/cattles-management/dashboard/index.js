@@ -56,13 +56,10 @@ const CattlesDashboard = () => {
       getAllChartData({ startDate: filterStartDate, endDate: filterEndDate })
   );
 
-  console.log("dashboardData", dashboardData, chartData);
-
   const series = [
     {
       name: t("cattles"),
       data: chartData?.data?.cattleArr?.map((item) => {
-        console.log("item?.", item);
         return {
           x: item?.month,
           y: item?.data,

@@ -11,10 +11,8 @@ import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
 import { getCattlesExpenseList } from "../../../api/cattle/cattleExpense";
-import CattleTabBar from "../../../components/cattleTabBar";
 import { ChangePeriodDropDown } from "../../../components/partials/changePeriodDropDown";
 import NoContent from "../../../components/partials/noContent";
-import { cattleHeader } from "../../../utility/subHeaderContent/cattleHeader";
 import ExpenseTable from "./table";
 
 const ExpenseManagementWrapper = styled.div`

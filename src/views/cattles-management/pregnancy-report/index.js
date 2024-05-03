@@ -16,6 +16,7 @@ import NoContent from "../../../components/partials/noContent";
 import PregnancyReportTable from "./table";
 import { ChangeCategoryType } from "../../../components/partials/categoryDropdown";
 import { Helmet } from "react-helmet";
+import { WRITE } from "../../../utility/permissionsVariable";
 
 const PregnancyReportWrapper = styled.div`
   color: #583703;
@@ -99,6 +100,22 @@ const PregnancyReport = () => {
     () => cattlePregnancyList?.data?.results ?? [],
     [cattlePregnancyList]
   );
+
+  // PERMISSSIONS
+  const permissions = useSelector(
+    (state) => state.auth.userDetail?.permissions
+  );
+  const allPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "all"
+  );
+  const subPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "cattle-pregnancy"
+  );
+
+  const subPermission = subPermissions?.subpermissions?.map(
+    (item) => item.name
+  );
+
   return (
     <PregnancyReportWrapper>
       <Helmet>
@@ -138,7 +155,6 @@ const PregnancyReport = () => {
                 );
               }}
             />
-
             <ChangePeriodDropDown
               className={"me-1"}
               dropDownName={dropDownName}
@@ -152,26 +168,26 @@ const PregnancyReport = () => {
                 );
               }}
             />
-            {/* {allPermissions?.name === "all" ||
-            subPermission?.includes(WRITE) ? ( */}
-            <Button
-              color="primary"
-              onClick={() =>
-                history.push(
-                  `/cattle/pregnancy-reports/add?page=${pagination.page}&status=${pregnancyStatus}&filter=${dropDownName}`
-                )
-              }
-            >
-              <span>
-                <Plus className="" size={15} strokeWidth={4} />
-              </span>
-              <span>
-                <Trans i18nKey={"cattle_pregnancy_report_add"} />
-              </span>
-            </Button>
-            {/* ) : (
+            {allPermissions?.name === "all" ||
+            subPermission?.includes(WRITE) ? (
+              <Button
+                color="primary"
+                onClick={() =>
+                  history.push(
+                    `/cattle/pregnancy-reports/add?page=${pagination.page}&status=${pregnancyStatus}&filter=${dropDownName}`
+                  )
+                }
+              >
+                <span>
+                  <Plus className="" size={15} strokeWidth={4} />
+                </span>
+                <span>
+                  <Trans i18nKey={"cattle_pregnancy_report_add"} />
+                </span>
+              </Button>
+            ) : (
               ""
-            )} */}
+            )}
           </div>
         </div>
         <div style={{ height: "10px" }}>
@@ -207,8 +223,8 @@ const PregnancyReport = () => {
                   // maxHeight="220px"
                   height="160px"
                   currentPage={pagination.page}
-                  // allPermissions={allPermissions}
-                  // subPermission={subPermission}
+                  allPermissions={allPermissions}
+                  subPermission={subPermission}
                 />
               </Then>
               <Else>

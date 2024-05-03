@@ -25,6 +25,7 @@ import { exportCattleJson, exportCattleJsonSample } from "./exportableJsonData";
 import CattleInfoTable from "./table";
 import { ChangeCategoryType } from "../../../components/partials/categoryDropdown";
 import { Helmet } from "react-helmet";
+import { WRITE } from "../../../utility/permissionsVariable";
 
 const CattleInfo = styled.div`
   color: #583703;
@@ -144,6 +145,21 @@ const CattlesInfo = () => {
     }
   };
 
+  // PERMISSSIONS
+  const permissions = useSelector(
+    (state) => state.auth.userDetail?.permissions
+  );
+  const allPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "all"
+  );
+  const subPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "cattle-info"
+  );
+
+  const subPermission = subPermissions?.subpermissions?.map(
+    (item) => item.name
+  );
+
   return (
     <CattleInfo>
       <Helmet>
@@ -182,35 +198,6 @@ const CattlesInfo = () => {
                 );
               }}
             />
-
-            {/* <ChangeCategoryType
-              className={"me-1"}
-              categoryTypeArray={[
-                {
-                  id: 1,
-                  name: t("all"),
-                },
-                {
-                  id: 2,
-                  name: t("cattle_dead"),
-                },
-                {
-                  id: 3,
-                  name: t("cattle_alive"),
-                },
-              ]}
-              typeName={cattleBreed}
-              setTypeName={(e) => {
-                setCattleBreed(e.target.name);
-                setPagination({ page: 1 });
-                history.push(
-                  `/cattle/info?page=${1}&status=${isDeadAlive}&breed=${
-                    e.target.name
-                  }&filter=${dropDownName}`
-                );
-              }}
-            /> */}
-
             <ChangePeriodDropDown
               className={"me-1"}
               dropDownName={dropDownName}
@@ -224,25 +211,27 @@ const CattlesInfo = () => {
                 );
               }}
             />
-
-            {/* {allPermissions?.name === "all" ||
-            subPermission?.includes(WRITE) ? ( */}
-            <Button
-              className="me-1"
-              color="primary"
-              onClick={() =>
-                history.push(
-                  `/cattle/info/add?page=${pagination.page}&status=${isDeadAlive}&filter=${dropDownName}`
-                )
-              }
-            >
-              <span>
-                <Plus className="" size={15} strokeWidth={4} />
-              </span>
-              <span>
-                <Trans i18nKey={"cattle_add"} />
-              </span>
-            </Button>
+            {allPermissions?.name === "all" ||
+            subPermission?.includes(WRITE) ? (
+              <Button
+                className="me-1"
+                color="primary"
+                onClick={() =>
+                  history.push(
+                    `/cattle/info/add?page=${pagination.page}&status=${isDeadAlive}&filter=${dropDownName}`
+                  )
+                }
+              >
+                <span>
+                  <Plus className="" size={15} strokeWidth={4} />
+                </span>
+                <span>
+                  <Trans i18nKey={"cattle_add"} />
+                </span>
+              </Button>
+            ) : (
+              ""
+            )}
 
             <Button
               className="me-1"
@@ -251,6 +240,7 @@ const CattlesInfo = () => {
             >
               Import File
             </Button>
+
             {/* <Button
               color="primary"
               className="me-1"
@@ -264,6 +254,7 @@ const CattlesInfo = () => {
             >
               Sample File
             </Button> */}
+
             <Button
               color="primary"
               onClick={() =>
@@ -279,7 +270,6 @@ const CattlesInfo = () => {
               <Trans i18nKey={"export_report"} />
               <img src={exportIcon} width={15} className="ms-2" />
             </Button>
-
             <input
               type="file"
               ref={importFileRef}
@@ -287,9 +277,6 @@ const CattlesInfo = () => {
               className="d-none"
               onChange={handleImportFile}
             />
-            {/* ) : (
-              ""
-            )} */}
           </div>
         </div>
         <div style={{ height: "10px" }}>
@@ -321,8 +308,8 @@ const CattlesInfo = () => {
                   currentPage={routPagination}
                   // currentBreed={routeBreed}
                   currentStatus={routeStatus}
-                  // allPermissions={allPermissions}
-                  // subPermission={subPermission}
+                  allPermissions={allPermissions}
+                  subPermission={subPermission}
                 />
               </Then>
               <Else>

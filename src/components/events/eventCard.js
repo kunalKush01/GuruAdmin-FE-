@@ -6,7 +6,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Card, CardBody, Col, Row } from "reactstrap";
-import styled from "styled-components";
+import styled from "styled-components"; 
 import Swal from "sweetalert2";
 import { deleteEventDetail } from "../../api/eventApi";
 import { deleteNewsDetail } from "../../api/newsApi";
