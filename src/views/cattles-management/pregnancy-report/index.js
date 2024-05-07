@@ -120,7 +120,7 @@ const PregnancyReport = () => {
     <PregnancyReportWrapper>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharam Admin | Cattles Pregnancy Records</title>
+        <title>Apna Dharm Admin | Cattles Pregnancy Records</title>
       </Helmet>
       {/* <CattleTabBar tabs={cattleHeader} active={active} setActive={setActive} /> */}
       <div>

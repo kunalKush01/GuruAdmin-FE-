@@ -22,6 +22,11 @@ export const subHeaderContent = [
       "cattle-breed",
     ],
   },
+  {
+    name: "dharmshala_management",
+    url: "/dharmshala/dashboard",
+    activeTab: "/dharmshala",
+  },
 
   {
     name: "donation",

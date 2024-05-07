@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "animate.css/animate.css";
 import CattleTabBar from "../../../../components/cattleTabBar";
 import { cattleHeader } from "../../../../utility/subHeaderContent/cattleHeader";
+import { dharmshalaHeader } from "../../../../utility/subHeaderContent/dharmshalaHeader";
 
 const LayoutWrapper = (props) => {
   // ** Props
@@ -79,6 +80,14 @@ const LayoutWrapper = (props) => {
       {location.pathname.startsWith("/cattle") && (
         <CattleTabBar
           tabs={cattleHeader(permissionsKey)}
+          active={active}
+          setActive={setActive}
+        />
+      )}
+      {(location.pathname.startsWith("/dharmshala") ||
+        location.pathname.startsWith("/roomtype")) && (
+        <CattleTabBar
+          tabs={dharmshalaHeader}
           active={active}
           setActive={setActive}
         />

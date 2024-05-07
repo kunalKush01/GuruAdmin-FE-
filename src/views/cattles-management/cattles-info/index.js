@@ -164,7 +164,7 @@ const CattlesInfo = () => {
     <CattleInfo>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharam Admin | Cattles</title>
+        <title>Apna Dharm Admin | Cattles</title>
       </Helmet>
       <div>
         <div className="d-sm-flex mb-1 justify-content-between align-items-center ">

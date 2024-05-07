@@ -28,7 +28,7 @@ const Usage = ({
     <>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharam Admin | Cattles Stock Management | Usage </title>
+        <title>Apna Dharm Admin | Cattles Stock Management | Usage </title>
       </Helmet>
 
       <div style={{ height: "10px" }}>

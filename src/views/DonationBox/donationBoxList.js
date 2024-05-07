@@ -161,7 +161,7 @@ export default function Expenses() {
     <NewsWarper>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharam Admin | Donation Box</title>
+        <title>Apna Dharm Admin | Donation Box</title>
       </Helmet>
       <div className="window nav statusBar body "></div>
 
@@ -240,7 +240,7 @@ export default function Expenses() {
             </Then>
           </If>
         </div>
-        <div className="newsContent  ">
+        <div className="newsContent">
           <Row>
             <If condition={boxCollectionQuery.isLoading} disableMemo>
               <Then>

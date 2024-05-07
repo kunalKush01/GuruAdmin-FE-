@@ -171,7 +171,7 @@ export default function NoticeList() {
     <NoticeWarper>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharam Admin | Notices</title>
+        <title>Apna Dharm Admin | Notices</title>
       </Helmet>
       <div className="window nav statusBar body "></div>
       <div>

@@ -239,6 +239,8 @@ const NavbarUser = (props) => {
   //   return loginPageQuery?.data?.result;
   // }, [loginPageQuery]);
 
+  //const subDomainName = location.hostname.replace(subdomainChange, "");
+  subDomainName = location.hostname.replace("-dev.localhost", "");
   const loginPageQuery = useQuery([subDomainName], () =>
     loginPage(subDomainName)
   );
