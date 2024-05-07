@@ -150,7 +150,7 @@ export default function Punyarjak() {
     <PunyarjakWrapper>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharam Admin | Punyarjak</title>
+        <title>Apna Dharm Admin | Punyarjak</title>
       </Helmet>
       <div className="window nav statusBar body "></div>
 

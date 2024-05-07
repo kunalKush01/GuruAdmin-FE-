@@ -42,77 +42,6 @@ import {
   refreshTokenRequest,
 } from "../../utility/utils/callApi";
 import TrustListModal from "./TrustListModal";
-import { cattleHeader } from "../../utility/subHeaderContent/cattleHeader";
-const LoginWarraper = styled.div`
-  .errorMassage {
-    /* color: #583703 !important; */
-    font: normal normal bold 14px/20px noto sans;
-  }
-  .defaultFontColor {
-    color: #583703;
-  }
-  .an_account {
-    font: normal normal normal 16px/25px noto sans;
-  }
-  .fw-bold {
-    font-weight: 800 !important;
-    font-size: 35px;
-    font-family: noto sans;
-  }
-  .signInEnterUserNAme {
-    font: normal normal normal 18px/25px noto sans;
-  }
-  .forgetPassword {
-    padding: 1rem 0rem;
-    text-align: end;
-    margin-bottom: 20px;
-  }
-  .forgetPassword > span {
-    font: normal normal bold 16px/20px noto sans;
-  }
-  .signInIcons {
-    width: 30px;
-    height: 30px;
-    margin-right: 10px;
-    cursor: pointer;
-  }
-  .signInputField {
-    color: #583703;
-    font: normal normal bold 16px/33px noto sans;
-    &::-webkit-input-placeholder {
-      /* padding-left: 1rem !important; */
-      opacity: 0.3;
-      font: normal normal bold 16px/33px noto sans;
-      color: #583703 !important;
-    }
-  }
-  .text-end {
-    font: normal normal bold 18px/80px noto sans;
-  }
-  .px-5 {
-    font: normal normal bold 20px/20px noto sans;
-  }
-  .signUp {
-    font: normal normal bold 18px/25px noto sans;
-  }
-  .brand-text {
-    color: #583703;
-    font: normal normal bold 30px/44px noto sans;
-  }
-  .brand-logo {
-    width: fit-content;
-  }
-  .templeName {
-    font: normal normal 600 23px/43px Noto Sans;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-  }
-  .loginBackground {
-    background: #fff7e8;
-  }
-`;
-
 const LoginCover = () => {
   const { isLogged, userDetail, trustDetail } = useSelector(
     (state) => state.auth
@@ -142,19 +71,21 @@ const LoginCover = () => {
       .unwrap()
       .then(async (res) => {
         if (hostname === adminUrl) {
+          // if (hostname === `localhost`) {
           const TrustsList = await checkUserTrust({ userId: res?.result?.id });
           setUserTrustList(TrustsList?.results);
-
           if (res?.tokens?.access?.token && res?.tokens?.refresh?.token) {
             setCookieWithMainDomain(
               "refreshToken",
               res?.tokens?.refresh?.token,
               mainDomain
+              // ".localhost"
             );
             setCookieWithMainDomain(
               "accessToken",
               res?.tokens?.access?.token,
               mainDomain
+              // ".localhost"
             );
             if (
               TrustsList?.results?.length > 1 &&
@@ -174,14 +105,11 @@ const LoginCover = () => {
             ) {
               dispatch(handleTrustDetail(TrustsList?.results[0]));
               localStorage.setItem("trustId", TrustsList?.results[0]?.id);
-              localStorage.setItem(
-                "trustType",
-                TrustsList?.results[0]?.typeId?.name
-              );
 
               if (res?.tokens?.access?.token && res?.tokens?.refresh?.token) {
                 window.location.replace(
-                  `${process.env.REACT_APP_INTERNET_PROTOCOL}://${TrustsList?.results[0]?.subDomain}${subdomainChange}/login`
+                  //`https://${TrustsList?.results[0]?.subDomain}${subdomainChange}/login`
+                  `http://${TrustsList?.results[0]?.subDomain}-dev.localhost:6001/login`
                 );
               }
             }
@@ -217,22 +145,129 @@ const LoginCover = () => {
   const forgetPasswordSchema = Yup.object().shape({
     email: Yup.string().required("Email is required.").min(5),
   });
-
+  const LoginWarraper = styled.div`
+    .errorMassage {
+      /* color: #583703 !important; */
+      font: normal normal bold 14px/20px noto sans;
+    }
+    .defaultFontColor {
+      color: #583703;
+    }
+    .an_account {
+      font: normal normal normal 16px/25px noto sans;
+    }
+    .fw-bold {
+      font-weight: 800 !important;
+      font-size: 35px;
+      font-family: noto sans;
+    }
+    .signInEnterUserNAme {
+      font: normal normal normal 18px/25px noto sans;
+    }
+    .forgetPassword {
+      padding: 1rem 0rem;
+      text-align: end;
+      margin-bottom: 20px;
+    }
+    .forgetPassword > span {
+      font: normal normal bold 16px/20px noto sans;
+    }
+    .signInIcons {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+    .signInputField {
+      color: #583703;
+      font: normal normal bold 16px/33px noto sans;
+      &::-webkit-input-placeholder {
+        /* padding-left: 1rem !important; */
+        opacity: 0.3;
+        font: normal normal bold 16px/33px noto sans;
+        color: #583703 !important;
+      }
+    }
+    .text-end {
+      font: normal normal bold 18px/80px noto sans;
+    }
+    .px-5 {
+      font: normal normal bold 20px/20px noto sans;
+    }
+    .signUp {
+      font: normal normal bold 18px/25px noto sans;
+    }
+    .brand-text {
+      color: #583703;
+      font: normal normal bold 30px/44px noto sans;
+    }
+    .brand-logo {
+      width: fit-content;
+    }
+    .templeName {
+      font: normal normal 600 23px/43px Noto Sans;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .loginBackground {
+      background: #fff7e8;
+    }
+  `;
   const permissions = useSelector(
     (state) => state.auth?.userDetail?.permissions
   );
 
   const loginPath = permissions?.map((item) => item?.name);
-  console.log("loginPath", loginPath);
-  let subDomainName;
-  if (hostname !== adminUrl) {
-    subDomainName = hostname.replace(subdomainChange, "");
-  } else {
-    subDomainName = hostname.replace(
-      process.env.REACT_APP_GENERIC_ADMIN_SUBDOMAIN_REPLACE_URL,
-      ""
-    );
-  }
+
+  // useEffect(async () => {
+  //   if (userDetail?.id) {
+  //     const trustList = );
+  //     console.log("trustList", trustList);
+  //     setModal(true)
+  //   }
+  // });
+  // const handleLoginAsTemple = () => {
+  //   if (isLogged && loginPath?.includes("all")) {
+  //     history.push("/dashboard");
+  //   } else if (
+  //     isLogged &&
+  //     loginPath?.length &&
+  //     loginPath[0] === "configuration"
+  //   ) {
+  //     history.push(`/configuration/categories`);
+  //   } else if (isLogged || loginPath?.length) {
+  //     history.push(`/${loginPath[0]}`);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   if (TrustQuery?.data?.results?.length > 1) {
+  //     setModal(true);
+  //     localStorage.setItem("trustsModal", true);
+  //   } else if (
+  //     isLogged &&
+  //     loginPath?.includes("all") &&
+  //     TrustQuery?.data?.results?.length === 1
+  //   ) {
+  //     history.push("/dashboard");
+  //   } else if (
+  //     TrustQuery?.data?.results?.length === 1 &&
+  //     isLogged &&
+  //     loginPath?.length &&
+  //     loginPath[0] === "configuration"
+  //   ) {
+  //     history.push(`/configuration/categories`);
+  //   } else if (
+  //     (isLogged || loginPath?.length) &&
+  //     TrustQuery?.data?.results?.length === 1
+  //   ) {
+  //     history.push(`/${loginPath[0]}`);
+  //   }
+  // }, [isLogged, loginPath, TrustQuery]);
+
+  const subDomainName = hostname.replace(subdomainChange, "");
+  // const subDomainName = hostname.replace("-admin-dev.localhost", "");
 
   const refreshToken = getCookie("refreshToken");
   const accessToken = getCookie("accessToken");

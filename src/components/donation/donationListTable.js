@@ -701,7 +701,7 @@ export default function DonationListTable(
                 This is system generated receipt/ यह कंप्यूटर के द्वारा बनाई गई
                 रसीद है
               </span>
-              <span>Powered by apnadharam.com</span>
+              <span>Powered by apnaDharm.com</span>
             </div>
           </div>
         </div>

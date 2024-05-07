@@ -281,7 +281,7 @@ export default function Commitment() {
     <CommitmentWrapper>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharam Admin | Commitment</title>
+        <title>Apna Dharm Admin | Commitment</title>
       </Helmet>
       <div className="window nav statusBar body "></div>
 

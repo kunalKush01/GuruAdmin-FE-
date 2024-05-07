@@ -176,3 +176,107 @@ export const callApi = async ({
   }
   return { error: true };
 };
+
+export const callDharmshalaApi = async ({
+  requestFunction,
+  successCode = 200,
+  showToastOnSuccess = true,
+  showToastOnError = true,
+  callRefreshTokenOnAuthError = true,
+  refreshSuccessRestFail = false,
+  authErrorCode = 401,
+}) => {
+  const accessToken = selectAccessToken(store.getState());
+
+  const trustId = localStorage.getItem("trustId");
+
+  const headers = {
+    ...defaultHeaders,
+    // 'Content-Type': 'application/json',
+    Authorization: `Bearer ${accessToken}`,
+    "x-dharmshala-id": trustId,
+  };
+  const axiosInstance = axios.create({
+    baseURL: "http://localhost:3000/",
+    headers,
+    responseType: "json",
+    timeout: 10000,
+  });
+
+  if (requestFunction) {
+    try {
+      const response = await requestFunction(axiosInstance);
+      console.log("response gs", response);
+
+      return extractDataFromResponse({
+        response,
+        successCode,
+        showSuccessToast: showToastOnSuccess,
+        showErrorToast: showToastOnError,
+      });
+    } catch (error) {
+      console.log("gs logs-------->", error);
+
+      if (error.code === "ECONNABORTED") {
+        toast.error("Please check your internet connection.", {
+          ...ApiTimeOutToast,
+        });
+      }
+      if (error.response) {
+        if (
+          error.response.status === authErrorCode ||
+          error.response.data.code === authErrorCode
+        ) {
+          if (callRefreshTokenOnAuthError) {
+            const refreshToken = selectRefreshToken(store.getState());
+
+            const refreshTokenResponseData = await refreshTokenRequest({
+              axiosInstance,
+              refreshToken,
+            });
+            if (refreshTokenResponseData.error) {
+              store.dispatch(logOut());
+              return { error: true };
+            }
+            const newAccessToken =
+              refreshTokenResponseData?.tokens?.access?.token;
+            const newRefreshToken =
+              refreshTokenResponseData?.tokens?.refresh?.token;
+            if (newAccessToken && newRefreshToken) {
+              store.dispatch(
+                setTokens({
+                  accessToken: newAccessToken,
+                  refreshToken: newRefreshToken,
+                })
+              );
+
+              return callApi({
+                requestFunction,
+                successCode,
+                showToastOnSuccess,
+                showToastOnError,
+                callRefreshTokenOnAuthError: false,
+                refreshSuccessRestFail:
+                  newAccessToken &&
+                  newRefreshToken &&
+                  error?.response?.data?.code === 401,
+              });
+            }
+
+            return { error: true };
+          } else if (refreshSuccessRestFail) {
+            store.dispatch(logOut());
+            return { error: true };
+          }
+          return { error: true };
+        }
+
+        return parseApiErrorResponse({
+          error,
+          showToast: showToastOnError,
+        });
+      }
+    }
+  }
+  return { error: true };
+};

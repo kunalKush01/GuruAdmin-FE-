@@ -168,12 +168,11 @@ export default function Category() {
     (item) => item.name
   );
 
-
   return (
     <CategoryListWrapper>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharam Admin | Category</title>
+        <title>Apna Dharm Admin | Category</title>
       </Helmet>
       <div className="window nav statusBar body "></div>
 
