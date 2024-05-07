@@ -687,8 +687,8 @@ const Routes = [
     component: lazy(() =>
       import("../../views/dharmshala-management/dashboard/index.js")
     ),
-    exact: true,
-    type: "dharmshala-dashboard",
+    //exact: true,
+    type: "punyarjak",
     subPermission: READ,
   },
   {
@@ -696,8 +696,8 @@ const Routes = [
     component: lazy(() =>
       import("../../views/dharmshala-management/dharmshala-info/index.js")
     ),
-    exact: true,
-    type: "dharmshala-info",
+    //exact: true,
+    type: "punyarjak",
     subPermission: READ,
   },
   {
@@ -705,7 +705,7 @@ const Routes = [
     component: lazy(() =>
       import("../../views/dharmshala-management/dharmshala-info/add/index.js")
     ),
-    exact: true,
+    //exact: true,
     type: "dharmshala-info",
     subPermission: WRITE,
   },
