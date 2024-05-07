@@ -160,7 +160,7 @@ const StockManagement = () => {
     <StockManagementWrapper>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharam Admin | Cattles Stock Management | Stock </title>
+        <title>Apna Dharm Admin | Cattles Stock Management | Stock </title>
       </Helmet>
 
       <div>

@@ -227,7 +227,7 @@ export default function Donation() {
     <DonationWrapper>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharam Admin | Donations</title>
+        <title>Apna Dharm Admin | Donations</title>
       </Helmet>
       <div className="window nav statusBar body "></div>
 
@@ -263,7 +263,7 @@ export default function Donation() {
                 );
               }}
             />
-            
+
             <ChangeCategoryType
               className={"me-1"}
               categoryTypeArray={subCategoryTypes}

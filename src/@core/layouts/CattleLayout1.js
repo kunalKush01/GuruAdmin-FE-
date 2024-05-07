@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import CattleTabBar from "../../components/cattleTabBar";
 import { cattleHeader } from "../../utility/subHeaderContent/cattleHeader";
 
-const CattleLayout = ({ children }) => {
+const CattleLayout1 = ({ children }) => {
   const [active, setActive] = useState(location.pathname);
 
   return (
@@ -19,4 +19,4 @@ const CattleLayout = ({ children }) => {
   );
 };
 
-export default CattleLayout;
+export default CattleLayout1;

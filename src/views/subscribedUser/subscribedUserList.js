@@ -128,7 +128,7 @@ export default function SubscribedUser() {
     <SubscribedUserWarper>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharam Admin | Subscribed User</title>
+        <title>Apna Dharm Admin | Subscribed User</title>
       </Helmet>
       <div className="window nav statusBar body "></div>
 

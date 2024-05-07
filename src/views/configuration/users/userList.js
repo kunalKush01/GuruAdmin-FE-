@@ -156,7 +156,6 @@ export default function User() {
     [userRoleQuery]
   );
 
-
   const userItems = useMemo(() => userQuery?.data?.results ?? [], [userQuery]);
 
   const masterloadOptionQuery = useQuery(
@@ -184,7 +183,7 @@ export default function User() {
     <NewsWarper>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharam Admin | Users</title>
+        <title>Apna Dharm Admin | Users</title>
       </Helmet>
       <div className="window nav statusBar body "></div>
 
@@ -211,16 +210,17 @@ export default function User() {
                 color="primary"
                 className="addNews-btn"
                 onClick={() =>
-                  userRolesItems?.length > 0 ? 
-                  history.push(
-                    `/configuration/users/add?page=${pagination.page}`
-                  ) : Swal.fire({
-                    icon: 'info',
-                    title: 'Sorry',
-                    text: "It seems that the Super admin hasn't assigned any Roles for the Sub-user, which is why you're unable to add them.",
-                    showConfirmButton:false,
-                    timer:2000
-                  })
+                  userRolesItems?.length > 0
+                    ? history.push(
+                        `/configuration/users/add?page=${pagination.page}`
+                      )
+                    : Swal.fire({
+                        icon: "info",
+                        title: "Sorry",
+                        text: "It seems that the Super admin hasn't assigned any Roles for the Sub-user, which is why you're unable to add them.",
+                        showConfirmButton: false,
+                        timer: 2000,
+                      })
                 }
               >
                 <span>

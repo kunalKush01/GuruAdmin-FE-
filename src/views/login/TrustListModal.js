@@ -37,7 +37,13 @@ const TrustListModal = ({ trustArray, modal, setModal, rToken, aToken }) => {
   const subdomainChange = process.env.REACT_APP_ADMIN_SUBDOMAIN_REPLACE_URL;
 
   const redirectTrust = (subDomain, rtoken, atoken) => {
-    window.location.replace(`https://${subDomain}${subdomainChange}/login`);
+    //window.location.replace(`https://${subDomain}${subdomainChange}/login`);
+    // console.log("rtoken", rtoken);
+    // setCookieWithMainDomain("refreshToken", rtoken, ".paridhan.app");
+    // setCookieWithMainDomain("accessToken", atoken, ".paridhan.app");
+
+    //window.location.replace(`https://${subDomain}${subdomainChange}/login`);
+    window.location.replace(`http://${subDomain}-dev.localhost:6001/login`);
   };
 
   return (

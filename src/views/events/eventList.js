@@ -182,7 +182,7 @@ export default function EventList() {
     <EventWrapper>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharam Admin | Events</title>
+        <title>Apna Dharm Admin | Events</title>
       </Helmet>
       <div className="window nav statusBar body "></div>
 
