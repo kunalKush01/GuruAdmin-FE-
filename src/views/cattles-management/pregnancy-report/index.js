@@ -17,6 +17,7 @@ import PregnancyReportTable from "./table";
 import { ChangeCategoryType } from "../../../components/partials/categoryDropdown";
 import { Helmet } from "react-helmet";
 import { WRITE } from "../../../utility/permissionsVariable";
+import { ConverFirstLatterToCapital } from "../../../utility/formater";
 
 const PregnancyReportWrapper = styled.div`
   color: #583703;
@@ -91,10 +92,11 @@ const PregnancyReport = () => {
         search: searchBarValue,
         startDate: filterStartDate,
         endDate: filterEndDate,
-        status: pregnancyStatus?.toUpperCase(),
+        status: pregnancyStatus == "inactive" ? "NO" : active ? "YES" : "ALL",
         languageId: selectedLang.id,
       })
   );
+  console.log("pregnancyStatus", pregnancyStatus);
 
   const cattlePregnancyListData = useMemo(
     () => cattlePregnancyList?.data?.results ?? [],
@@ -134,17 +136,20 @@ const PregnancyReport = () => {
                 {
                   id: 1,
                   name: t("all"),
+                  value: "ALL",
                 },
                 {
                   id: 2,
-                  name: t("yes"),
+                  name: t("active"),
+                  value: "YES",
                 },
                 {
                   id: 2,
-                  name: t("no"),
+                  name: t("inactive"),
+                  value: "NO",
                 },
               ]}
-              typeName={pregnancyStatus}
+              typeName={ConverFirstLatterToCapital(pregnancyStatus)}
               setTypeName={(e) => {
                 setPregnancyStatus(e.target.name);
                 setPagination({ page: 1 });
