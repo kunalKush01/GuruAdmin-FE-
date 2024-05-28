@@ -6,7 +6,7 @@ export const hindiContent = {
   all: "सभी",
   dashboard: "डैशबोर्ड",
   donation: "दान",
-  commitment: "boli",
+  commitment: "बोली",
   hundi: "दान पेटी संग्रह",
   financial_reports: "वित्तीय रिपोर्ट",
   internal_expenses: "आंतरिक खर्चे",
