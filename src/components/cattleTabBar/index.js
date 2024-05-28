@@ -38,13 +38,13 @@ const CattleTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
           const url = item?.permissionKey?.filter((item) =>
             permissionsKey?.includes(item)
           );
-          console.log(
-            "permissionTabs",
-            url[0]?.split("-")[1],
-            item?.permissionKey,
-            permissionsKey,
-            permissionTabs
-          );
+          //   console.log(
+          //     "permissionTabs",
+          //     url[0]?.split("-")[1],
+          //     item?.permissionKey,
+          //     permissionsKey,
+          //     permissionTabs
+          //   );
 
           if (permissionTabs || permissionsKey?.includes("all")) {
             return (
