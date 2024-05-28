@@ -182,7 +182,6 @@ const AddCattleForm = ({
                       label={t("cattle_mother_id")}
                       placeholder={t("placeholder_cattle_mother_id")}
                       defaultOptions
-                      required
                     />
                   </Col>
                   <Col xs={12} md={4}>
