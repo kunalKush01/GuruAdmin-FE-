@@ -126,7 +126,7 @@
   },
   "scripts": {
     "start": "craco start",
-    "start:debug": "NODE_OPTIONS='--inspect' craco start",
+    "start:debug": "NODE_OPTIONS='--inspect' env-cmd -f .env.dev craco start",
     "start:dev": "env-cmd -f .env.dev craco start",
     "start:staging": "env-cmd -f .env.staging craco start",
     "start:production": "env-cmd -f .env.production craco start",
