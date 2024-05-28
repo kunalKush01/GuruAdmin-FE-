@@ -46,7 +46,8 @@ export const tamilContent = {
   no: "இல்லை",
   yes: "ஆம்",
   tags_limit: "குறிச்சொற்களின் வரம்பு மீறப்பட்டது",
-  end_time_less: "முடிவின் நேரம் தொடங்கும் நேரத்தை விட பெரியதாக இருக்க வேண்டும்",
+  end_time_less:
+    "முடிவின் நேரம் தொடங்கும் நேரத்தை விட பெரியதாக இருக்க வேண்டும்",
   publish_now: "இப்போதே வெளியீடு செய்க",
   already_publish: "செய்தி ஏற்கனவே வெளியிடப்பட்டுள்ளது.",
   already_publish_notice: "அறிவிப்பு ஏற்கனவே வெளியிடப்பட்டுள்ளது.",
@@ -56,7 +57,8 @@ export const tamilContent = {
   publish: "வெளியீடு செய்க",
   published: "வெளியிடப்பட்டது",
   invalid_amount: "தவறான மதிப்பு",
-  tagsChar_limit: "குறிச்சொல் களத்தில் 20 எழுத்துகளின் வரம்பு உள்ளது மற்றும் அதற்கு மேல் ஏற்க முடியாது.",
+  tagsChar_limit:
+    "குறிச்சொல் களத்தில் 20 எழுத்துகளின் வரம்பு உள்ளது மற்றும் அதற்கு மேல் ஏற்க முடியாது.",
   // All static content of Dashboard
   dashboard_donationReceived: "தானம் பெறப்பட்டது",
   dashboard_donationPending: "நிலுவையிலுள்ள தானம்",
@@ -110,7 +112,8 @@ export const tamilContent = {
   news_delete: "செய்தி நீக்கு",
   news_sure: "இந்த செய்தியை நிரந்தரமாக நீக்க விரும்புகிறீர்களா?",
   news_not_found: "செய்தி இல்லை",
-  news_not_click_add_news: "புதிய செய்தி கட்டுரையைச் சேர்க்க 'செய்தி சேர்க்கவும்' என்பதை கிளிக் செய்க.",
+  news_not_click_add_news:
+    "புதிய செய்தி கட்டுரையைச் சேர்க்க 'செய்தி சேர்க்கவும்' என்பதை கிளிக் செய்க.",
 
   // All static content of Events
   same_time: "முடிவின் நேரம் தொடங்கும் நேரத்தைப் போல இருக்க முடியாது",
@@ -128,7 +131,8 @@ export const tamilContent = {
   events_delete: "நிகழ்வு நீக்கு",
   events_sure: "இந்த நிகழ்வை நிரந்தரமாக நீக்க விரும்புகிறீர்களா?",
   events_not_found: "நிகழ்வுகள் இல்லை",
-  events_not_click_add_events: "புதிய நிகழ்வைச் சேர்க்க 'நிகழ்வு சேர்க்கவும்' என்பதை கிளிக் செய்க.",
+  events_not_click_add_events:
+    "புதிய நிகழ்வைச் சேர்க்க 'நிகழ்வு சேர்க்கவும்' என்பதை கிளிக் செய்க.",
 
   // All static content of Pashudhan
   cattles_management: "கோசாலை",
@@ -154,7 +158,6 @@ export const tamilContent = {
   cattle_expense: "செலவுகள் மேலாண்மை",
   cattle_stock: "பங்கு மேலாண்மை",
   cattle_usage: "பயன்பாடு மேலாண்மை",
-
 
   cattle_revenueHeading: "தினசரி பதிவுப் பதிவு",
   recent_registered_cattles: "சமீபத்தில் பதிவுசெய்யப்பட்ட பசுபொருள்",
@@ -291,7 +294,8 @@ export const tamilContent = {
   notices_delete: "அறிவிப்பை நீக்கு",
   notices_sure: "இந்த அறிவிப்பை நிரந்தரமாக நீக்க விரும்புகிறீர்களா?",
   notices_not_found: "அறிவிப்புகள் இல்லை",
-  notices_not_click_add_notices: "புதிய அறிவிப்பை சேர்க்க 'அறிவிப்பு சேர்க்கவும்' என்பதை கிளிக் செய்க.",
+  notices_not_click_add_notices:
+    "புதிய அறிவிப்பை சேர்க்க 'அறிவிப்பு சேர்க்கவும்' என்பதை கிளிக் செய்க.",
 
   // All static content of Categories
   only_letters: "உப வகை எழுத்து எழுத்துகளை மட்டுமே கொண்டிருக்கும்",
@@ -317,12 +321,13 @@ export const tamilContent = {
   subCategory_required: "உப வகையைத் தேர்ந்தெடுக்கவும்",
   commitmentID_required: "உறுதி ஐடியைத் தேர்ந்தெடுக்கவும்",
   amount_required: "தொகை தேவை",
-  
+
   category_delete: "வகையை நீக்கு",
   category_sure: "இந்த வகையை நிரந்தரமாக நீக்க விரும்புகிறீர்களா?",
   category_not_found: "வகைகள் கிடைக்கவில்லை",
-  category_not_click_add_category: "புதிய வகையை அறிமுகப்படுத்த 'வகையைச் சேர்க்கவும்' என்பதைக் கிளிக் செய்க.",
-  
+  category_not_click_add_category:
+    "புதிய வகையை அறிமுகப்படுத்த 'வகையைச் சேர்க்கவும்' என்பதைக் கிளிக் செய்க.",
+
   // All static content of Users
   users_AddUser: "உப நிர்வாகியைச் சேர்க்கவும்",
   users_latest_User: "உப நிர்வாகி",
@@ -332,8 +337,9 @@ export const tamilContent = {
   mobile_number_limit: "மொபைல் எண் 10 இலக்கங்கள் இருக்க வேண்டும்",
   users_email_required: "மின்னஞ்சல் தேவை",
   users_not_found: "உப நிர்வாகிகள் கிடைக்கவில்லை",
-  users_not_click_add_users: "புதிய உப நிர்வாகியைச் சேர்க்க 'உப நிர்வாகியைச் சேர்க்கவும்' என்பதைக் கிளிக் செய்க.",
-  
+  users_not_click_add_users:
+    "புதிய உப நிர்வாகியைச் சேர்க்க 'உப நிர்வாகியைச் சேர்க்கவும்' என்பதைக் கிளிக் செய்க.",
+
   // All static content of Internal Expense
   expenses_AddExpenses: "செலவுகளைச் சேர்க்கவும்",
   price_per_item: "ஒரு பொருளின் விலை",
@@ -348,12 +354,13 @@ export const tamilContent = {
   added_by: "உருவாக்கியவர்",
   expenses_desc_required: "விளக்கம் தேவை",
   expence_amount_required: "தொகை தேவை",
-  
+
   expence_delete: "செலவுகளை நீக்கு",
   expence_sure: "இந்த செலவுகளை நிரந்தரமாக நீக்க விரும்புகிறீர்களா?",
   expence_not_found: "செலவுகள் கிடைக்கவில்லை",
-  expence_not_click_add_expence: "புதிய செலவுகளை பதிவுசெய்ய 'செலவுகளைச் சேர்க்கவும்' என்பதைக் கிளிக் செய்க.",
-  
+  expence_not_click_add_expence:
+    "புதிய செலவுகளை பதிவுசெய்ய 'செலவுகளைச் சேர்க்கவும்' என்பதைக் கிளிக் செய்க.",
+
   // All static content of Financial Report
   report_AddReport: "நிதி அறிக்கைகள்",
   report_expences: "செலவுகள்",
@@ -361,9 +368,10 @@ export const tamilContent = {
   report_commitment: "உறுதி",
   reports_not_found: "அறிக்கை மற்றும் முரண்பாடு இல்லை",
   report_donation_box: "தானப்பெட்டி சேகரிப்புகள்",
-  finance_report_no_found: "தேர்ந்தெடுத்த காலவரிசைக்கு எந்த நிதி அறிக்கையும் கிடைக்கவில்லை",
+  finance_report_no_found:
+    "தேர்ந்தெடுத்த காலவரிசைக்கு எந்த நிதி அறிக்கையும் கிடைக்கவில்லை",
   financial_not_found: "நிதி இல்லை",
-  
+
   // All static content of Donation
   donation_Donation: "தானம்",
   start_Time: "தொடக்க நேரம்",
@@ -374,15 +382,17 @@ export const tamilContent = {
   estimate_amount: "மதிப்பீடு தொகை",
   donation_select_date_time: "தேதியைத் தேர்ந்தெடுக்கவும்",
   donation_select_date: "தேதியைத் தேர்ந்தெடுக்கவும்",
-  donation_donar_name_only_letters: "தான நபரின் பெயர் எழுத்துகளை மட்டுமே கொண்டிருக்க வேண்டும்",
+  donation_donar_name_only_letters:
+    "தான நபரின் பெயர் எழுத்துகளை மட்டுமே கொண்டிருக்க வேண்டும்",
   add_user_donation: "பயனர் கிடைக்கவில்லை, இங்கே கிளிக் செய்க",
   donation_delete: "தானத்தை நீக்கு",
   donation_sure: "இந்த தானத்தை நிரந்தரமாக நீக்க விரும்புகிறீர்களா?",
   donation_not_found: "தானம் கிடைக்கவில்லை",
   add_user: "பயனர் சேர்க்கவும்",
   donation_paid_not_found: "செலுத்திய தானங்கள் கிடைக்கவில்லை",
-  donation_not_click_add_donation: 'தானத்தைச் சேர்க்க "தானம் சேர்க்கவும்" என்பதைக் கிளிக் செய்க.',
-  
+  donation_not_click_add_donation:
+    'தானத்தைச் சேர்க்க "தானம் சேர்க்கவும்" என்பதைக் கிளிக் செய்க.',
+
   // All static content of Donation Box
   DonationBox_total_collection: "மொத்த சேகரிப்பு:",
   DonationBox_DonationBox: "தானப்பெட்டி சேகரிப்புகள்",
@@ -398,16 +408,17 @@ export const tamilContent = {
   DonationBox_AddDonationBox: "தானப்பெட்டியைச் சேர்க்கவும்",
   donation_box_desc_required: "விளக்கம் தேவை",
   donation_box_amount_required: "தொகை தேவை",
-  
+
   logData_editedBy: "திருத்தியவர்",
   logData_createdBy: "உருவாக்கியவர்",
   logData_timeDate: "நேரம் & தேதி",
   logData_createdAmount: "உருவாக்கிய தொகை",
   logData_editedAmount: "திருத்திய தொகை",
-  
+
   donation_box_not_found: "தானப்பெட்டிகள் காணவில்லை",
-  donation_box_not_click_add_donation_box: "புதிய தானப்பெட்டியை அறிமுகப்படுத்த 'சேகரிப்பைச் சேர்க்கவும்' என்பதைக் கிளிக் செய்க.",
-  
+  donation_box_not_click_add_donation_box:
+    "புதிய தானப்பெட்டியை அறிமுகப்படுத்த 'சேகரிப்பைச் சேர்க்கவும்' என்பதைக் கிளிக் செய்க.",
+
   // All Commitment Data
   notify_user: "பயனரை அறிவிக்கவும்",
   notify_user_content: "பயனரை மெல்ல அவிழ்க்கச் சோதனை பெட்டியைச் சரிபார்க்கவும்",
@@ -419,14 +430,15 @@ export const tamilContent = {
   commitment_select_commitment_id: "உறுதி ஐடியைத் தேர்ந்தெடுக்கவும்",
   commitment_select_start_date: "தொடக்க தேதியைத் தேர்ந்தெடுக்கவும்",
   commitment_select_end_date: "முடிவு தேதியைத் தேர்ந்தெடுக்கவும்",
-  
+
   commitment_delete: "உறுதியை நீக்கு",
   commitment_sure: "இந்த உறுதியை நிரந்தரமாக நீக்க விரும்புகிறீர்களா?",
   commitment_not_found: "உறுதிகள் கிடைக்கவில்லை",
-  commitment_not_click_add_commitment: "புதிய உறுதியைச் செய்ய 'உறுதியைச் சேர்க்கவும்' என்பதைக் கிளிக் செய்க.",
+  commitment_not_click_add_commitment:
+    "புதிய உறுதியைச் செய்ய 'உறுதியைச் சேர்க்கவும்' என்பதைக் கிளிக் செய்க.",
   commitment_complete: "நிறைவு",
   commitment_partial: "பகுதி",
-  
+
   // All subscribed user static data
   subscribed_user_add_user: "சந்தா பயனர் சேர்க்கவும்",
   subscribed_user_name: "பயனர் பெயர்",
@@ -436,8 +448,9 @@ export const tamilContent = {
   subscribed_user_address: "முகவரி",
   user_name: "பயனர் பெயர்",
   subscribed_not_found: "சந்தா பயனர் கிடைக்கவில்லை",
-  subscribed_not_click_add: 'சந்தா பயனர் சேர்க்க "சந்தா பயனர் சேர்க்கவும்" என்பதைக் கிளிக் செய்க.',
-  
+  subscribed_not_click_add:
+    'சந்தா பயனர் சேர்க்க "சந்தா பயனர் சேர்க்கவும்" என்பதைக் கிளிக் செய்க.',
+
   // All report & dispute static data
   report_report_against: "பெயர்",
   report_mobile: "மொபைல் எண்",
@@ -445,15 +458,13 @@ export const tamilContent = {
   report_Transaction_IDs: "பரிமாற்ற ஐடிக்கள்",
   report_panding: "நிலுவையில்",
   report_re_solved: "மீண்டும் தீர்க்கப்பட்டது",
-  report_dispute_not
-  
-  _found: "அறிக்கைகள் மற்றும் முரண்பாடுகள் இல்லை",
-  
+  report_dispute_not_found: "அறிக்கைகள் மற்றும் முரண்பாடுகள் இல்லை",
+
   // All notification static data
   notifications: "அறிவிப்புகள்",
   notifications_Notify_Users: "பயனர்களை அறிவிக்கவும்",
   notifications_not_found: "அறிவிப்புகள் கிடைக்கவில்லை",
-  
+
   // All user Profile static Data
   about_trust: "எங்களை பற்றி",
   trust_address: "முகவரி",
@@ -473,7 +484,8 @@ export const tamilContent = {
   userProfile: "சுயவிவரம்",
   user_editUser: "பயனரைத் திருத்து",
   user_userRoleRequired: "பயனர் பங்கு தேவை",
-  minimum_one_role_required: "குறைந்தபட்சம் ஒரு பயனர் பங்கு தேர்வு செய்யப்பட வேண்டும்",
+  minimum_one_role_required:
+    "குறைந்தபட்சம் ஒரு பயனர் பங்கு தேர்வு செய்யப்பட வேண்டும்",
   password_required: "கடவுச்சொல் தேவை",
   userProfile_phone_number: "தொலைபேசி எண்",
   trust_trustType: "அறக்கட்டளை வகை",
@@ -510,7 +522,7 @@ export const tamilContent = {
   start_time_required: "தொடக்க நேரம் தேவை",
   end_time: "முடிவு நேரம்",
   end_time_required: "முடிவு நேரம் தேவை",
-  
+
   email_invalid: "தவறான மின்னஞ்சல்",
   email_required: "மின்னஞ்சல் தேவை",
   number_type: "அது தொலைபேசி எண் போல தோன்றவில்லை",
@@ -520,7 +532,7 @@ export const tamilContent = {
   address_required: "முகவரி தேவை",
   Temple_name_required: "கோவில் பெயர் தேவை",
   doc_required: "கோவில் ஆவணம் தேவை",
-  
+
   // punyarjak
   punyarjak: "புண்யார்ஜாக்",
   add_punyarjak: "புண்யார்ஜாக் சேர்க்கவும்",
@@ -533,8 +545,9 @@ export const tamilContent = {
   username: "பயனர் பெயர் எழுத்துகளை மட்டுமே கொண்டிருக்க வேண்டும்",
   punyarjak_sure: "இந்த புண்யார்ஜாக் நிரந்தரமாக நீக்க விரும்புகிறீர்களா?",
   punyarjak_not_found: "புண்யார்ஜாக் பயனர்கள் கிடைக்கவில்லை",
-  punyarjak_not_click_add: "புதிய புண்யார்ஜாக் பயனரைச் சேர்க்க 'புண்யார்ஜாக் சேர்க்கவும்' என்பதைக் கிளிக் செய்க.",
-  
+  punyarjak_not_click_add:
+    "புதிய புண்யார்ஜாக் பயனரைச் சேர்க்க 'புண்யார்ஜாக் சேர்க்கவும்' என்பதைக் கிளிக் செய்க.",
+
   // all place holder images
   placeHolder_donar_name: "தான நபரின் பெயரை உள்ளிடுக",
   placeHolder_price_per_item: "ஒரு பொருளின் விலையை உள்ளிடுக",
@@ -587,7 +600,7 @@ export const tamilContent = {
   placeHolder_cattle_sold_price: "விற்கும் விலையை உள்ளிடுக",
   placeHolder_cattle_milk_quantity: "பாலின் அளவை லிட்டரில் உள்ளிடுக",
   placeHolder_expense_type: "செலவின் வகையைத் தேர்ந்தெடுக்கவும்",
-  
+
   // All search static keys
   search_notification: "அனைத்து அறிவிப்புகளையும் தேடுக",
   search_subscribe_user: "அனைத்து சந்தா பயனர்களையும் தேடுக",
@@ -603,5 +616,4 @@ export const tamilContent = {
   search_punyarjak: "அனைத்து புண்யார்ஜாக் பயனர்களையும் தேடுக",
   search_donation_box_collection: "அனைத்து தானப்பெட்டி சேகரிப்புகளையும் தேடுக",
   search_commitment: "அனைத்து உறுதிகளையும் தேடுக",
-  
 };
