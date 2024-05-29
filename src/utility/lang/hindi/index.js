@@ -162,6 +162,10 @@ export const hindiContent = {
   category_sure: "क्या आप वाकई इस श्रेणी को स्थायी रूप से हटाना चाहते हैं?",
   category_not_found: "श्रेणियाँ अनुपलब्ध",
   category_not_click_add_category: "",
+  cattle_stock: "भंडार",
+  cattle_supplies: "आपूर्ति",
+  cattle_usage: "प्रयोग",
+  cattle_items: "सामान",
 
   // All static content of Users
 
