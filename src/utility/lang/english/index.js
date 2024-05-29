@@ -153,7 +153,7 @@ export const englishContent = {
   cattle_medical_record: "Medical Records",
   cattle_pregnancy_record: "Pregnancy Records",
   cattle_expense: "Expense Management",
-  cattle_stock: "Stock Management",
+  cattle_stock_management: "Stock Management",
   cattle_usage: "Usage Management",
   cattle_revenueHeading: "Daily Registration Report ",
   recent_registered_cattles: "Recent Registered Cattles",
