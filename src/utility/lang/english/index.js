@@ -220,6 +220,10 @@ export const englishContent = {
   cattle_edit_usage: "Edit Usage",
   cattle_category_edit: "Edit Category",
   cattle_category_add: "Add Category",
+  cattle_stock: "Stock",
+  cattle_supplies: "Supplies",
+  cattle_usage: "Usage",
+  cattle_items: "Items",
 
   // cattle validation messages
   cattle_itemID_required: "Item ID is required",

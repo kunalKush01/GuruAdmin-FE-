@@ -170,7 +170,7 @@ const StockManagement = () => {
             <CattleTabBar
               tabs={[
                 {
-                  name: "Stock",
+                  name: "cattle_stock",
                   url:
                     allPermissions?.name === "all"
                       ? "/cattle/management/stock"
@@ -180,7 +180,7 @@ const StockManagement = () => {
                   isManagment: true,
                 },
                 {
-                  name: "Supplies",
+                  name: "cattle_supplies",
                   url:
                     allPermissions?.name === "all"
                       ? "/cattle/management/supplies"
@@ -191,7 +191,7 @@ const StockManagement = () => {
                   isManagment: true,
                 },
                 {
-                  name: "Usage",
+                  name: "cattle_usage",
                   url:
                     allPermissions?.name === "all"
                       ? "/cattle/management/usage"
@@ -202,7 +202,7 @@ const StockManagement = () => {
                   isManagment: true,
                 },
                 {
-                  name: "Items",
+                  name: "cattle_items",
                   url:
                     allPermissions?.name === "all"
                       ? "/cattle/management/item"
