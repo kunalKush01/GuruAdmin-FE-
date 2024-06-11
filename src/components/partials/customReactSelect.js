@@ -94,7 +94,7 @@ export const CustomReactSelect = ({
       ...provided,
       padding: "0px 8px",
       flexWrap: "nowrap",
-      overflow:"auto",
+      overflow: "auto",
       // overflow: "hidden",
       "::-webkit-scrollbar": {
         height: " 5px",
@@ -137,7 +137,7 @@ export const CustomReactSelect = ({
         ...styles,
         color: "#583703",
         textOverflow: "ellipsis",
-        padding:"0px",
+        padding: "0px",
         overflow: "hidden",
       };
     },
