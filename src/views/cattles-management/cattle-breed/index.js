@@ -41,6 +41,7 @@ const CattleBreed = () => {
     addBreed: false,
     breedId: "",
     name: "",
+    cattleCategoryId: null,
   });
 
   const toggle = (row) => {
@@ -49,6 +50,7 @@ const CattleBreed = () => {
       addBreed: row?.addBreed,
       breedId: row?._id ?? "",
       name: row?.name ?? "",
+      cattleCategoryId: row?.cattleCategoryId,
     });
   };
 
