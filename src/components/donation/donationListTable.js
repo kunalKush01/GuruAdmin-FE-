@@ -385,13 +385,13 @@ export default function DonationListTable(
             >
               <img
                 width="80px"
-                src={receiptLogo}
+                src="https://2.bp.blogspot.com/_mVYMJS6_Jrs/TKcSEfuroZI/AAAAAAAAAIE/lcseX2-TplM/s1600/jain_prateek_chinha.jpg"
                 style={{ mixBlendMode: "color-burn" }}
               />
               <h1 style={{ color: "#583703" }}>{loggedTemple?.name}</h1>
               <img
                 width="80px"
-                src={receiptLogo}
+                src="https://2.bp.blogspot.com/_mVYMJS6_Jrs/TKcSEfuroZI/AAAAAAAAAIE/lcseX2-TplM/s1600/jain_prateek_chinha.jpg"
                 style={{ mixBlendMode: "color-burn" }}
               />
             </div>
@@ -417,8 +417,7 @@ export default function DonationListTable(
 
             <div
               style={{
-                background: "#ff8744",
-                color: "#fff",
+                color: "#ff8744",
                 fontWeight: "bold",
                 fontSize: "20px",
                 textAlign: "center",
