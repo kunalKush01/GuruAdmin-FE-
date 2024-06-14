@@ -14,6 +14,7 @@ import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import donationReceiptIcon from "../../assets/images/icons/donationReceipt.svg";
 import receiptIcon from "../../assets/images/icons/receiptIcon.svg";
+import whatsappIcon from "../../assets/images/icons/whatsappIcon.svg";
 import templeImage from "../../assets/images/pages/login-v2.png";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { EDIT } from "../../utility/permissionsVariable";
@@ -61,7 +62,7 @@ export default function DonationListTable(
       estimateAmount: row?.amount,
     });
   };
-
+  
   const columns = [
     {
       name: t("commitment_Username"),
@@ -127,6 +128,10 @@ export default function DonationListTable(
     {
       name: t("dashboard_Recent_DonorReceipt"),
       selector: (row) => row.receipt,
+    },
+    {
+      name: "WhatsApp Receipt",
+      selector: (row) => row.whatsapp,
     },
     {
       name: "",
@@ -199,6 +204,21 @@ export default function DonationListTable(
             }}
           />
         ),
+        whatsapp: (
+          <img
+            src={whatsappIcon}
+            width={25}
+            className="cursor-pointer"
+            onClick={() => {
+              const message = `Hello ${item.donarName}, thank you for your donation of ₹${item.amount.toLocaleString("en-IN")} to ${loggedTemple?.name}. ${
+                item.receiptLink ? `Here is your receipt: https://docs.google.com/gview?url=${item.receiptLink}` : "Unfortunately, we could not generate your receipt at this time."
+              }`;
+              const phoneNumber = `${item.user?.countryCode?.replace("+", "") || ""}${item.user?.mobileNumber || ""}`;
+              window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+            }}
+          />
+        ),
+        
         edit:
           item?.isArticle &&
           (allPermissions?.name === "all" ||
