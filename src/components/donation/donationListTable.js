@@ -5,14 +5,12 @@ import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import ReactToPdf from "react-to-pdf";
 import ReactToPrint from "react-to-print";
-import { Button, Input, Modal, ModalBody, ModalFooter } from "reactstrap";
+import { Spinner } from "reactstrap";
 import styled from "styled-components";
-import Swal from "sweetalert2";
+import { donationDownloadReceiptApi } from "../../api/donationApi";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
-import donationReceiptIcon from "../../assets/images/icons/donationReceipt.svg";
 import receiptIcon from "../../assets/images/icons/receiptIcon.svg";
 import whatsappIcon from "../../assets/images/icons/whatsappIcon.svg";
 import templeImage from "../../assets/images/pages/login-v2.png";
@@ -20,7 +18,6 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { EDIT } from "../../utility/permissionsVariable";
 import CustomDataTable from "../partials/CustomDataTable";
 import EditDonation from "./editDonation";
-import receiptLogo from "./png-transparent-orange-illustration-jainism-jain-symbols-jain-temple-ahimsa-jainism-angle-white-text-removebg-preview.png";
 
 const RecentDonationTableWarper = styled.div`
   color: #583703 !important;
@@ -40,6 +37,8 @@ export default function DonationListTable(
 ) {
   const { t } = useTranslation();
   const history = useHistory();
+  const [isLoading, setIsLoading] = useState(false);
+  console.log("isLoading", isLoading);
   const ref = useRef();
   const pdfRef = useRef();
   const options = {
@@ -47,6 +46,19 @@ export default function DonationListTable(
     unit: "in",
     format: [5, 7],
   };
+
+  const downloadReceipt = useMutation({
+    mutationFn: donationDownloadReceiptApi,
+    onSuccess: (data) => {
+      if (!data.error) {
+        setIsLoading(false);
+        window.open(
+          `https://docs.google.com/gview?url=${data?.result}`,
+          "_blank"
+        );
+      }
+    },
+  });
 
   const loggedTemple = useSelector((state) => state.auth.trustDetail);
   const [receipt, setReceipt] = useState();
@@ -234,7 +246,7 @@ export default function DonationListTable(
           ),
       };
     });
-  }, [data]);
+  }, [data, isLoading]);
 
   const inWordsNumber = numberToWords
     .toWords(parseInt(receipt?.amount ?? 0))
