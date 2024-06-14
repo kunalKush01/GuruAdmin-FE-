@@ -129,12 +129,9 @@ export default function DonationListTable(
       name: t("dashboard_Recent_DonorReceipt"),
       selector: (row) => row.receipt,
     },
+
     {
-      name: "WhatsApp Receipt",
-      selector: (row) => row.whatsapp,
-    },
-    {
-      name: "",
+      name: "Action",
       selector: (row) => row.edit,
     },
   ];
@@ -192,10 +189,11 @@ export default function DonationListTable(
           : "_",
         createdBy: ConverFirstLatterToCapital(item?.createdBy?.name ?? "-"),
         receipt: (
+        <div className="d-flex align-items-center">
           <img
             src={receiptIcon}
             width={25}
-            className="cursor-pointer"
+            className="cursor-pointer me-2"
             onClick={() => {
               setReceipt(item);
               setTimeout(() => {
@@ -203,8 +201,6 @@ export default function DonationListTable(
               }, 100);
             }}
           />
-        ),
-        whatsapp: (
           <img
             src={whatsappIcon}
             width={25}
@@ -217,7 +213,8 @@ export default function DonationListTable(
               window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
             }}
           />
-        ),
+        </div>
+      ),
         
         edit:
           item?.isArticle &&
