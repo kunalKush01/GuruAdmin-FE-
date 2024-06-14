@@ -12,6 +12,8 @@ import { donationDownloadReceiptApi } from "../../api/donationApi";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import receiptIcon from "../../assets/images/icons/receiptIcon.svg";
+import whatsappIcon from "../../assets/images/icons/whatsappIcon.svg";
+import templeImage from "../../assets/images/pages/login-v2.png";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { EDIT } from "../../utility/permissionsVariable";
 import CustomDataTable from "../partials/CustomDataTable";
@@ -72,7 +74,7 @@ export default function DonationListTable(
       estimateAmount: row?.amount,
     });
   };
-
+  
   const columns = [
     {
       name: t("commitment_Username"),
@@ -139,8 +141,9 @@ export default function DonationListTable(
       name: t("dashboard_Recent_DonorReceipt"),
       selector: (row) => row.receipt,
     },
+
     {
-      name: "",
+      name: "Action",
       selector: (row) => row.edit,
     },
   ];
@@ -197,36 +200,34 @@ export default function DonationListTable(
             : `${item.commitmentId}`
           : "_",
         createdBy: ConverFirstLatterToCapital(item?.createdBy?.name ?? "-"),
-        receipt:
-          // <a
-          //   href={`https://docs.google.com/gview?url=${item.receiptLink}`}
-          //   target="_blank"
-          // >
-          isLoading == item?._id ? (
-            <Spinner color="success" />
-          ) : (
-            <img
-              src={receiptIcon}
-              width={25}
-              className="cursor-pointer"
-              onClick={() => {
-                if (!item.receiptLink) {
-                  setIsLoading(item?._id);
-                  downloadReceipt.mutate(item?._id);
-                } else {
-                  window.open(
-                    `https://docs.google.com/gview?url=${item.receiptLink}`,
-                    "_blank"
-                  );
-                }
-                // setReceipt(item);
-                // setTimeout(() => {
-                //   pdfRef.current.click();
-                // }, 100);
-              }}
-            />
-          ),
-        // </a>
+        receipt: (
+        <div className="d-flex align-items-center">
+          <img
+            src={receiptIcon}
+            width={25}
+            className="cursor-pointer me-2"
+            onClick={() => {
+              setReceipt(item);
+              setTimeout(() => {
+                pdfRef.current.click();
+              }, 100);
+            }}
+          />
+          <img
+            src={whatsappIcon}
+            width={25}
+            className="cursor-pointer"
+            onClick={() => {
+              const message = `Hello ${item.donarName}, thank you for your donation of ₹${item.amount.toLocaleString("en-IN")} to ${loggedTemple?.name}. ${
+                item.receiptLink ? `Here is your receipt: https://docs.google.com/gview?url=${item.receiptLink}` : "Unfortunately, we could not generate your receipt at this time."
+              }`;
+              const phoneNumber = `${item.user?.countryCode?.replace("+", "") || ""}${item.user?.mobileNumber || ""}`;
+              window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+            }}
+          />
+        </div>
+      ),
+        
         edit:
           item?.isArticle &&
           (allPermissions?.name === "all" ||
