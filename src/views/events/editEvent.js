@@ -42,6 +42,7 @@ const schema = Yup.object().shape({
   startTime: Yup.mixed().required("events_startTime_required"),
   endTime: Yup.mixed().required("events_endTime_required"),
   SelectedEvent: Yup.mixed(),
+  location: Yup.mixed().required("events_location_required"),
   // tagsInit:Yup.array().max(15 ,"tags_limit"),
 });
 
@@ -108,6 +109,11 @@ export default function EditEvent() {
       },
       startTime: eventDetailQuery?.data?.result?.startTime,
       endTime: eventDetailQuery?.data?.result?.endTime,
+      location: eventDetailQuery?.data?.result?.location,
+      city: eventDetailQuery?.data?.result?.city,
+      state: eventDetailQuery?.data?.result?.state,
+      latitude: eventDetailQuery?.data?.result?.longitude,
+      longitude: eventDetailQuery?.data?.result?.latitude,
     };
   }, [eventDetailQuery]);
 
