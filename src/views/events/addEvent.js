@@ -39,6 +39,7 @@ const schema = Yup.object().shape({
   startTime: Yup.mixed().required("events_startTime_required"),
   endTime: Yup.mixed().required("events_endTime_required"),
   SelectedEvent: Yup.mixed(),
+  location: Yup.mixed().required("events_location_required"),
 });
 
 const initialValues = {
@@ -48,6 +49,11 @@ const initialValues = {
   images: [],
   tagsInit: [],
   Body: "",
+  location: "",
+  city: "",
+  state: "",
+  latitude: "",
+  longitude: "",
   DateTime: { start: new Date(), end: null },
   startTime: moment(new Date(), ["HH:mm"]).format("HH:mm"),
   endTime: "23:59",
