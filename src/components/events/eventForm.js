@@ -489,7 +489,7 @@ export default function EventForm({
                     {!AddLanguage ? (
                       <>
                         <label>
-                          <Trans i18nKey={"events_location"} />
+                          <Trans i18nKey={"location"} />
                         </label>
                         <CustomLocationField
                           setFieldValue={formik.setFieldValue}
@@ -514,29 +514,33 @@ export default function EventForm({
                       </>
                     ) : (
                       <CustomTextField
-                        label={t("events_location")}
+                        label={t("location")}
                         name="location"
-                        placeholder={t("placeholder_location")}
+                        placeholder={t("placeHolder_location")}
                         required
                       />
                     )}
                   </Col>
-                  <Col xs={12} md={4} className="opacity-75">
-                    <CustomTextField
-                      label={t("City")}
-                      placeholder={t("placeHolder_city")}
-                      name="city"
-                      disabled
-                    />
-                  </Col>
-                  <Col xs={12} md={4} className="opacity-75">
-                    <CustomTextField
-                      label={t("State")}
-                      placeholder={t("placeHolder_state")}
-                      name="state"
-                      disabled
-                    />
-                  </Col>
+                  {!AddLanguage && (
+                    <>
+                      <Col xs={12} md={4} className="opacity-75">
+                        <CustomTextField
+                          label={t("City")}
+                          placeholder={t("placeHolder_city")}
+                          name="city"
+                          disabled
+                        />
+                      </Col>
+                      <Col xs={12} md={4} className="opacity-75">
+                        <CustomTextField
+                          label={t("State")}
+                          placeholder={t("placeHolder_state")}
+                          name="state"
+                          disabled
+                        />
+                      </Col>
+                    </>
+                  )}
                 </Row>
                 {!AddLanguage && (
                   <Row>
