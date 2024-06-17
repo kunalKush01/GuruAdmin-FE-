@@ -486,19 +486,40 @@ export default function EventForm({
                 </Row>
                 <Row>
                   <Col xs={12} md={6}>
-                    <label>
-                      <Trans i18nKey={"location"} />*
-                    </label>
-                    <CustomLocationField
-                      setFieldValue={formik.setFieldValue}
-                      error={formik}
-                      values={formik?.values}
-                    />
-                    {formik.errors.location && formik.touched.location ? (
-                      <div style={{ fontSize: "11px", color: "red" }}>
-                        <Trans i18nKey={formik.errors.location} />
-                      </div>
-                    ) : null}
+                    {!AddLanguage ? (
+                      <>
+                        <label>
+                          <Trans i18nKey={"events_location"} />
+                        </label>
+                        <CustomLocationField
+                          setFieldValue={formik.setFieldValue}
+                          error={formik}
+                          values={formik?.values}
+                        />
+                        {formik.errors.location && (
+                          <div
+                            style={{
+                              height: "20px",
+                              font: "normal normal bold 11px/33px Noto Sans",
+                            }}
+                          >
+                            {formik.errors.location &&
+                              formik.touched.location && (
+                                <div className="text-danger">
+                                  <Trans i18nKey={formik.errors.location} />
+                                </div>
+                              )}
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <CustomTextField
+                        label={t("events_location")}
+                        name="location"
+                        placeholder={t("placeholder_location")}
+                        required
+                      />
+                    )}
                   </Col>
                   <Col xs={12} md={4} className="opacity-75">
                     <CustomTextField
