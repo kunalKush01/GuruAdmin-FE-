@@ -412,7 +412,7 @@ export default function EventForm({
                       name="Title"
                       required
                       onInput={(e) =>
-                        (e.target.value = e.target.value.slice(0, 30))
+                        (e.target.value = e.target.value.slice(0, 128))
                       }
                       autoFocus
                     />
