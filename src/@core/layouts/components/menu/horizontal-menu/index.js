@@ -197,7 +197,7 @@ const HorizontalMenu = ({ menuData, currentActiveItem, routerProps }) => {
 
             if (
               (hasAllPermission && isGaushala) ||
-              hasCattleItemPermission ||
+              (hasCattleItemPermission && isGaushala) ||
               (hasItemPermission && isGaushala)
             ) {
               return (
@@ -214,8 +214,8 @@ const HorizontalMenu = ({ menuData, currentActiveItem, routerProps }) => {
             }
 
             if (
-              (hasAllPermission && item.name !== "cattles_management") ||
-              (hasItemPermission && item.name !== "cattles_management")
+              (hasAllPermission && item?.name !== "cattles_management") ||
+              (hasItemPermission && item?.name !== "cattles_management")
             ) {
               return (
                 <MenuItem
