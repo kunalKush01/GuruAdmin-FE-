@@ -18,6 +18,7 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { EDIT } from "../../utility/permissionsVariable";
 import CustomDataTable from "../partials/CustomDataTable";
 import EditDonation from "./editDonation";
+import { toast } from 'react-toastify';
 
 const RecentDonationTableWarper = styled.div`
   color: #583703 !important;
@@ -201,33 +202,43 @@ export default function DonationListTable(
           : "_",
         createdBy: ConverFirstLatterToCapital(item?.createdBy?.name ?? "-"),
         receipt: (
-        <div className="d-flex align-items-center">
-          <img
-            src={receiptIcon}
-            width={25}
-            className="cursor-pointer me-2"
-            onClick={() => {
-              setReceipt(item);
-              setTimeout(() => {
-                pdfRef.current.click();
-              }, 100);
-            }}
-          />
-          <img
-            src={whatsappIcon}
-            width={25}
-            className="cursor-pointer"
-            onClick={() => {
-              const message = `Hello ${item.donarName}, thank you for your donation of ₹${item.amount.toLocaleString("en-IN")} to ${loggedTemple?.name}. ${
-                item.receiptLink ? `Here is your receipt: https://docs.google.com/gview?url=${item.receiptLink}` : "Unfortunately, we could not generate your receipt at this time."
-              }`;
-              const phoneNumber = `${item.user?.countryCode?.replace("+", "") || ""}${item.user?.mobileNumber || ""}`;
-              window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
-            }}
-          />
-        </div>
-      ),
-        
+          <div className="d-flex align-items-center">
+            {isLoading === item?._id ? (
+              <Spinner color="success" />
+            ) : (
+              <img
+                src={receiptIcon}
+                width={25}
+                className="cursor-pointer me-2"
+                onClick={() => {
+                  if (!item.receiptLink) {
+                    setIsLoading(item?._id);
+                    downloadReceipt.mutate(item?._id);
+                  } else {
+                    window.open(
+                      `https://docs.google.com/gview?url=${item.receiptLink}`,
+                      "_blank"
+                    );
+                  }
+                }}
+              />
+            )}
+            <img
+              src={whatsappIcon}
+              width={25}
+              className="cursor-pointer"
+              onClick={() => {
+                if (!item.receiptLink) {
+                  toast.error("Receipt link not available at this moment");
+                } else {
+                  const message = `Hello ${item.donarName}, thank you for your donation of ₹${item.amount.toLocaleString("en-IN")} to ${loggedTemple?.name}. Here is your receipt: https://docs.google.com/gview?url=${item.receiptLink}`;
+                  const phoneNumber = `${item.user?.countryCode?.replace("+", "") || ""}${item.user?.mobileNumber || ""}`;
+                  window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+                }
+              }}
+            />
+          </div>
+        ),
         edit:
           item?.isArticle &&
           (allPermissions?.name === "all" ||
