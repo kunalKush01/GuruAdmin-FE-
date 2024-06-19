@@ -18,6 +18,7 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { EDIT } from "../../utility/permissionsVariable";
 import CustomDataTable from "../partials/CustomDataTable";
 import EditDonation from "./editDonation";
+import { toast } from 'react-toastify';
 
 const RecentDonationTableWarper = styled.div`
   color: #583703 !important;
@@ -227,11 +228,13 @@ export default function DonationListTable(
               width={25}
               className="cursor-pointer"
               onClick={() => {
-                const message = `Hello ${item.donarName}, thank you for your donation of ₹${item.amount.toLocaleString("en-IN")} to ${loggedTemple?.name}. ${
-                  item.receiptLink ? `Here is your receipt: https://docs.google.com/gview?url=${item.receiptLink}` : "Unfortunately, we could not generate your receipt at this time."
-                }`;
-                const phoneNumber = `${item.user?.countryCode?.replace("+", "") || ""}${item.user?.mobileNumber || ""}`;
-                window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+                if (!item.receiptLink) {
+                  toast.error("Receipt link not available at this moment");
+                } else {
+                  const message = `Hello ${item.donarName}, thank you for your donation of ₹${item.amount.toLocaleString("en-IN")} to ${loggedTemple?.name}. Here is your receipt: https://docs.google.com/gview?url=${item.receiptLink}`;
+                  const phoneNumber = `${item.user?.countryCode?.replace("+", "") || ""}${item.user?.mobileNumber || ""}`;
+                  window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+                }
               }}
             />
           </div>
