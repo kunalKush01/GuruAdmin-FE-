@@ -491,6 +491,7 @@ export default function EventForm({
                         <label>
                           <Trans i18nKey={"location"} />
                         </label>
+                        *
                         <CustomLocationField
                           setFieldValue={formik.setFieldValue}
                           error={formik}
