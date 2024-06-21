@@ -35,6 +35,8 @@ export const jsonDataDonation = ({ data }) => {
         : `${item.commitmentId}`
       : "_",
     createdBy: ConverFirstLatterToCapital(item?.createdBy?.name ?? ""),
+    panNumber: item?.user?.pan,
+    address: item?.user?.address,
   }));
 };
 
@@ -67,4 +69,3 @@ export const jsonDataDonationBox = ({ data }) => {
     createdBy: ConverFirstLatterToCapital(item?.createdBy?.name),
   }));
 };
-
