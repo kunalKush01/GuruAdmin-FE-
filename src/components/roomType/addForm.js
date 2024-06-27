@@ -6,6 +6,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { Prompt, useHistory } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
+<<<<<<< Updated upstream
 
 // import {
 //   findAllCattle,
@@ -13,8 +14,9 @@ import styled from "styled-components";
 //   findAllCattleCategory,
 // } from "../../api/cattle/cattleMedical";
 
+=======
+>>>>>>> Stashed changes
 import CustomTextField from "../partials/customTextField";
-//import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 const FormikWrapper = styled.div`
   font: normal normal bold 15px/33px Noto Sans;
@@ -74,7 +76,10 @@ const AddRoomTypeForm = ({
       if (!data?.error) {
         queryClient.invalidateQueries(["roomTypeList"]);
         setLoading(false);
+<<<<<<< Updated upstream
         history.push("/roomtype/info");
+=======
+>>>>>>> Stashed changes
       } else if (data?.error || data === undefined) {
         setLoading(false);
       }
@@ -87,6 +92,7 @@ const AddRoomTypeForm = ({
         enableReinitialize
         initialValues={initialValues}
         validationSchema={validationSchema}
+<<<<<<< Updated upstream
         onSubmit={(values) => {
           setLoading(true);
           setShowPrompt(false);
@@ -96,6 +102,9 @@ const AddRoomTypeForm = ({
           };
           mutation.mutate(data);
         }}
+=======
+        onSubmit={handleFormSubmit}
+>>>>>>> Stashed changes
       >
         {(formik) => (
           <Form>
@@ -137,7 +146,11 @@ const AddRoomTypeForm = ({
                       required
                       autoFocus
                       onInput={(e) =>
+<<<<<<< Updated upstream
                         (e.target.value = e.target.value.slice(0, 30))
+=======
+                        (e.target.value = e.target.value.slice(0, 256))
+>>>>>>> Stashed changes
                       }
                     />
                   </Col>

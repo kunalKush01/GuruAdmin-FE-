@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 // ** Styles
 import "animate.css/animate.css";
 import CattleTabBar from "../../../../components/cattleTabBar";
+import DharmshalaTabBar from "../../../../components/dharmshalaTabBar";
 import { cattleHeader } from "../../../../utility/subHeaderContent/cattleHeader";
 import { dharmshalaHeader } from "../../../../utility/subHeaderContent/dharmshalaHeader";
 
@@ -85,8 +86,12 @@ const LayoutWrapper = (props) => {
         />
       )}
       {(location.pathname.startsWith("/dharmshala") ||
-        location.pathname.startsWith("/roomtype")) && (
-        <CattleTabBar
+        location.pathname.startsWith("/roomtype") || 
+        location.pathname.startsWith("/booking")||
+        location.pathname.startsWith("/feedback")||
+        location.pathname.startsWith("/floors")||
+        location.pathname.startsWith("/room")) && (
+        <DharmshalaTabBar
           tabs={dharmshalaHeader}
           active={active}
           setActive={setActive}

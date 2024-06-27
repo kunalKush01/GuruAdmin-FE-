@@ -5,6 +5,7 @@ import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { Prompt, useHistory } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
+<<<<<<< Updated upstream
 import styled from "styled-components";
 
 // import {
@@ -15,14 +16,13 @@ import styled from "styled-components";
 
 import CustomTextField from "../partials/customTextField";
 //import { ConverFirstLatterToCapital } from "../../utility/formater";
+=======
+import {FormikWrapper} from "../../views/dharmshala-management/dharmshalaStyles";
 
-const FormikWrapper = styled.div`
-  font: normal normal bold 15px/33px Noto Sans;
+import CustomTextField from "../partials/customTextField";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+>>>>>>> Stashed changes
 
-  .animated-height {
-    transition: height 0.5s;
-  }
-`;
 
 const AddDharmshalaFloorForm = ({
   initialValues,
@@ -81,6 +81,22 @@ const AddDharmshalaFloorForm = ({
     },
   });
 
+<<<<<<< Updated upstream
+=======
+  const URLParams = useParams();
+  const handleFormSubmit = (values) => {
+    setLoading(true);
+    setShowPrompt(false);
+    const { ...formValues } = values;
+    const data = {
+      ...formValues,
+    };
+    mutation.mutate(data);
+    history.push(`/floors/${URLParams.buildingId}?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
+  )
+  };
+
+>>>>>>> Stashed changes
   return (
     <FormikWrapper>
       <Formik
@@ -137,7 +153,11 @@ const AddDharmshalaFloorForm = ({
                       required
                       autoFocus
                       onInput={(e) =>
+<<<<<<< Updated upstream
                         (e.target.value = e.target.value.slice(0, 30))
+=======
+                        (e.target.value = e.target.value.slice(0, 256))
+>>>>>>> Stashed changes
                       }
                     />
                   </Col>

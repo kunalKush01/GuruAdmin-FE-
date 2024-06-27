@@ -5,7 +5,6 @@ export const englishContent = {
   all: "All",
   dashboard: "Dashboard",
   dharmshala: "Dharmshala",
-  dharmshala_floors_registered: "Floors",
   donation: "Donation",
   commitment: "Commitment",
   hundi: "Donation Box Collections",
@@ -134,8 +133,21 @@ export const englishContent = {
   events_not_click_add_events: "To introduce a new event, click 'Add Event'",
 
   // All static content of Dharmshala
+  dharmshala_floors_registered: "Floors",
+  dharmshala_bookings_registered: "Registered Bookings",
+  dharmshala_bookings_requested:"Requests",
+  dharmshala_booking_delete: "Delete Booking",
+  dharmshala_booking_delete_sure:"Are you sure you want to delete this Booking?",
+  roomtypes_available:"Room Types Available",
+  total_rooms_available:"Total Rooms Available",
+  total_bookings:"Total Bookings",
   dharmshala_management: "Dharmshala",
+<<<<<<< Updated upstream
   dharmshala_registered: "Registered Dharmshala",
+=======
+  dharmshala_registered: "Registered Dharmshalas",
+  building_registered: "Buildings",
+>>>>>>> Stashed changes
   roomtype: "Room Type",
   capacity: "Capacity",
   price: "Price",
@@ -164,14 +176,42 @@ export const englishContent = {
   dharmshala_edit_dharmshala: "Edit Dharmshala",
   dharmshala_delete: "Delete Dharmshala",
   dharmshala_delete_sure: "Are you sure you want to delete this Dharmshala?",
+<<<<<<< Updated upstream
   dharmshala_floor_add: "Add Dharmshala Floor",
+=======
+  dharmshala_building_delete: "Delete Building",
+  dharmshala_building_delete_sure: "Are you sure you want to delete this Building?",
+  dharmshala_booking_add: "Book",
+  dharmshala_booking_calendar: "Booking Calendar",
+  dharmshala_floor_add: "Add Floor",
+>>>>>>> Stashed changes
   dharmshala_floor_name: "Name",
   dharmshala_floor_description: "Description",
   dharmshala_floor_location: "Location",
-  dharmshala_floor_edit_dharmshala: "Edit Dharmshala Floor",
-  dharmshala_floor_delete: "Delete Dharmshala Floor",
+  dharmshala_floor_edit_dharmshala: "Edit Floor",
+  dharmshala_floor_delete: "Delete Floor",
   dharmshala_floor_delete_sure: "Are you sure you want to delete this Floor?",
 
+<<<<<<< Updated upstream
+=======
+  dharmshala_booking_id: "Booking ID",
+  dharmshala_booking_start_date: "Booking Start Date",
+  dharmshala_booking_end_date: "Booking End Date",
+  dharmshala_booking_count: "Count",
+  dharmshala_booking_status: "Status",
+  dharmshala_booking_early_check_in: "Early Check In",
+  dharmshala_booking_late_check_out: "Late Check Out",
+
+  dharmshala_rooms_registered: "Rooms",
+  dharmshala_room_add: "Add Room",
+  dharmshala_room_number: "Room Number",
+  dharmshala_room_room_type:"Select Room Type", 
+  dharmshala_room_description: "Description",
+  dharmshala_room_location: "Location",
+  dharmshala_room_edit: "Edit Room",
+  dharmshala_room_delete: "Delete Room",
+  dharmshala_room_delete_sure: "Are you sure you want to delete this Room?",
+>>>>>>> Stashed changes
   // All static content of Cattles
   cattles_management: "Gowshala",
   cattle_expense_type_assets: "Assets",
@@ -269,7 +309,7 @@ export const englishContent = {
   dharmshala_floor_name_required: "Dharmshala floor name is required",
   dharmshala_floor_description_required:
     "Dharmshala floor description is required",
-  dharmshala_floor_number: "Dharmshala Floor Number",
+  dharmshala_floor_number: "Floor Number",
   dharmshala_floor_number_required: "Dharmshala floor number is required",
   // cattle validation messages
   cattle_itemID_required: "Item ID is required",
@@ -658,10 +698,27 @@ export const englishContent = {
   placeHolder_dharmshala_name: "Enter Dharmshala Name",
   placeHolder_dharmshala_description: "Enter Dharmshala Description",
   placeHolder_dharmshala_location: "Enter Dharmshala Location",
+<<<<<<< Updated upstream
   placeHolder_dharmshala_floor_name: "Enter Dharmshala Floor Name",
+=======
+
+  placeHolder_building_name: "Enter Building Name",
+  placeHolder_building_description: "Enter Building Description",
+  placeHolder_building_location: "Enter Building Location",
+
+  placeHolder_dharmshala_floor_name: "Enter Floor Name",
+>>>>>>> Stashed changes
   placeHolder_dharmshala_floor_description:
-    "Enter Dharmshala Floor Description",
-  placeHolder_dharmshala_floor_number: "Enter Dharmshala Floor Number",
+    "Enter Floor Description",
+  placeHolder_dharmshala_floor_number: "Enter Floor Number",
+
+  placeHolder_booking_id: "Enter Booking ID",
+  placeHolder_booking_start_date: "Enter Booking Start Date",
+  placeHolder_booking_end_date: "Enter Booking End Date",
+  placeHolder_booking_count:"Enter Count",
+  placeHolder_booking_status:"Enter Booking Status",
+  placeHolder_early_check_in:"Early Check In Required?",
+  placeHolder_late_check_out:"Late Check Out Required?",
 
   // All search static keys
   search_notification: "Search All Notifications",

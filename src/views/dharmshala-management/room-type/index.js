@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import { Plus } from "react-feather";
@@ -10,26 +9,17 @@ import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
-import styled from "styled-components";
 
 import { getRoomTypeList } from "../../../api/dharmshala/dharmshalaInfo";
 import exportIcon from "../../../assets/images/icons/exportIcon.svg";
 import { ChangePeriodDropDown } from "../../../components/partials/changePeriodDropDown";
 import NoContent from "../../../components/partials/noContent";
 import { handleExport } from "../../../utility/utils/exportTabele";
-import { exportCattleJson, exportCattleJsonSample } from "./exportableJsonData";
 import RoomTypeInfoTable from "./table";
 import { ChangeCategoryType } from "../../../components/partials/categoryDropdown";
 import { Helmet } from "react-helmet";
+import {RoomTypeInfo} from "../dharmshalaStyles"
 
-const RoomTypeInfo = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-
-  .btn {
-    font-weight: bold;
-  }
-`;
 
 const RoomTypesInfo = () => {
   const history = useHistory();
@@ -37,9 +27,6 @@ const RoomTypesInfo = () => {
   const importFileRef = useRef();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
-  //const [isDeadAlive, setIsDeadAlive] = useState("All");
-  // const [cattleBreed, setCattleBreed] = useState(t("all"));
-
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 10,
@@ -53,8 +40,11 @@ const RoomTypesInfo = () => {
 
   const routPagination = pagination.page;
   const routFilter = dropDownName;
+<<<<<<< Updated upstream
   //const routeStatus = isDeadAlive;
   // const routeBreed = cattleBreed;
+=======
+>>>>>>> Stashed changes
 
   useEffect(() => {
     if (currentPage || currentFilter || currentStatus) {
@@ -110,6 +100,11 @@ const RoomTypesInfo = () => {
         //deadStatus: isDeadAlive,
         // breed: cattleBreed,
         languageId: selectedLang.id,
+<<<<<<< Updated upstream
+=======
+      }).then(data => {
+        return data;
+>>>>>>> Stashed changes
       })
   );
 
@@ -118,6 +113,7 @@ const RoomTypesInfo = () => {
     [roomTypeList]
   );
 
+<<<<<<< Updated upstream
   //   const exportDataQuery = useQuery([], () =>
   //     exportData({
   //       limit: dharmshalaList?.data?.totalResults,
@@ -128,17 +124,11 @@ const RoomTypesInfo = () => {
   //     })
   //   );
 
+=======
+>>>>>>> Stashed changes
   const queryClient = useQueryClient();
 
-  //   const handleImportFile = async (event) => {
-  //     const file = event.target.files[0];
-  //     if (file) {
-  //       const formData = new FormData();
-  //       formData.append("file", file);
-  //       await importFile(formData);
-  //       queryClient.invalidateQueries(["roomTypeList"]);
-  //     }
-  //   };
+  const isMobileView = window.innerWidth <= 784;
 
   return (
     <RoomTypeInfo>
@@ -149,6 +139,7 @@ const RoomTypesInfo = () => {
       <div>
         <div className="d-sm-flex mb-1 justify-content-between align-items-center ">
           <Trans i18nKey="dharmshala_roomtypes" />
+<<<<<<< Updated upstream
 
           <div className="d-flex mt-1 mt-sm-0 justify-content-between">
             {/*<ChangeCategoryType
@@ -223,6 +214,9 @@ const RoomTypesInfo = () => {
 
             {/* {allPermissions?.name === "all" ||
             subPermission?.includes(WRITE) ? ( */}
+=======
+          <div className="d-flex mt-1 mt-sm-0 justify-content-between">
+>>>>>>> Stashed changes
             <Button
               className="me-1"
               color="primary"
@@ -315,10 +309,14 @@ const RoomTypesInfo = () => {
                   height="160px"
                   currentFilter={routFilter}
                   currentPage={routPagination}
+<<<<<<< Updated upstream
                   // currentBreed={routeBreed}
                   //currentStatus={routeStatus}
                   // allPermissions={allPermissions}
                   // subPermission={subPermission}
+=======
+                  isMobileView={isMobileView}
+>>>>>>> Stashed changes
                 />
               </Then>
               <Else>

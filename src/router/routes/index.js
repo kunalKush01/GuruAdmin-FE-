@@ -685,7 +685,11 @@ const Routes = [
   {
     path: "/dharmshala/dashboard",
     component: lazy(() =>
+<<<<<<< Updated upstream
       import("../../views/dharmshala-management/dashboard/index.js")
+=======
+      import("../../views/dharmshala-management/dashboard/index.js") //originally import("../../views/dharmshala-management/dashboard/index.js")
+>>>>>>> Stashed changes
     ),
     //exact: true,
     type: "punyarjak",
@@ -752,17 +756,70 @@ const Routes = [
     component: lazy(() =>
       import("../../views/dharmshala-management/dharmshala-floor/index.js")
     ),
+<<<<<<< Updated upstream
+=======
+    //exact: true,
+    type: "punyarjak",
+    subPermission: READ,
+  },
+  {
+    path: "/room/:floorId/:buildingId",
+    component: lazy(() =>
+      import("../../views/dharmshala-management/dharmshala-room/index.js")
+    ),
+    //exact: true,
+    type: "punyarjak",
+    subPermission: READ,
+  },
+  // {
+  //   path: "/dharmshala/info/:buildingId/floor",
+  //   component: lazy(() =>
+  //     import("../../views/dharmshala-management/dharmshala-floor/index.js")
+  //   ),
+  //   exact: true,
+  //   type: "dharmshala-floor",
+  //   subPermission: READ,
+  // },
+  {
+    path: "/floor/add/:buildingId",
+    component: lazy(() =>
+      import("../../views/dharmshala-management/dharmshala-floor/add/index.js")
+    ),
+    //exact: true,
+    type: "punyarjak",
+    subPermission: READ,
+  },
+  {
+    path: "/rooms/add/:floorId/:buildingId",
+    component: lazy(() =>
+      import("../../views/dharmshala-management/dharmshala-room/add/index.js")
+    ),
+    //exact: true,
+    type: "punyarjak",
+    subPermission: READ,
+  },
+
+  {
+    path: "/floor/edit/:floorId/:buildingId", 
+    component: lazy(() =>
+      import("../../views/dharmshala-management/dharmshala-floor/edit/index.js")
+    ),
+>>>>>>> Stashed changes
     exact: true,
     type: "dharmshala-floor",
     subPermission: READ,
   },
   {
+<<<<<<< Updated upstream
     path: "/dharmshala/info/:buildingId/floor/add",
+=======
+    path: "/rooms/edit/:roomId/:floorId/:buildingId",
+>>>>>>> Stashed changes
     component: lazy(() =>
       import("../../views/dharmshala-management/dharmshala-floor/add/index.js")
     ),
     exact: true,
-    type: "dharmshala-floor",
+    type: "dharmshala-room",
     subPermission: READ,
   },
   {
@@ -774,6 +831,49 @@ const Routes = [
     type: "dharmshala-floor",
     subPermission: READ,
   },
+
+  //Booking Routes
+  {
+    path: "/booking/info",
+    component: lazy(() =>
+      import("../../views/dharmshala-management/dharmshala-booking/index.js")
+    ),
+    exact: true,
+    type: "booking-info",
+    subPermission: READ,
+  },
+  {
+    path: "/booking/add",
+    component: lazy(() =>
+      import("../../views/dharmshala-management/dharmshala-booking/add/index.js")
+    ),
+    exact: true,
+    type: "booking-info",
+    subPermission: WRITE,
+  },
+
+
+  {
+    path: "/booking/edit/:bookingId",
+    component: lazy(() =>
+      import("../../views/dharmshala-management/dharmshala-booking/edit/index.js")
+    ),
+    exact: true,
+    type: "booking-info",
+    subPermission: WRITE,
+  },
+
+  {
+    path: "/booking/calendar",
+    component: lazy(() =>
+      import("../../views/dharmshala-management/dharmshala-booking/calendar/index.js")
+    ),
+    exact: true,
+    type: "booking-info",
+    subPermission: WRITE,
+  },
+
+
 ];
 
 export { DefaultRoute, Routes, TemplateTitle };
