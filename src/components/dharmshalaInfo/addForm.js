@@ -5,7 +5,7 @@ import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { Prompt, useHistory } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
-import styled from "styled-components";
+import {FormikWrapper} from "../../views/dharmshala-management/dharmshalaStyles";
 
 // import {
 //   findAllCattle,
@@ -14,15 +14,7 @@ import styled from "styled-components";
 // } from "../../api/cattle/cattleMedical";
 
 import CustomTextField from "../partials/customTextField";
-//import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-const FormikWrapper = styled.div`
-  font: normal normal bold 15px/33px Noto Sans;
-
-  .animated-height {
-    transition: height 0.5s;
-  }
-`;
 
 const AddDharmshalaForm = ({
   initialValues,
@@ -74,7 +66,11 @@ const AddDharmshalaForm = ({
       if (!data?.error) {
         queryClient.invalidateQueries(["dharmshalaList"]);
         setLoading(false);
+<<<<<<< Updated upstream
         history.push("/dharmshala/info");
+=======
+        isCorrect(true);
+>>>>>>> Stashed changes
       } else if (data?.error || data === undefined) {
         setLoading(false);
       }
@@ -135,7 +131,11 @@ const AddDharmshalaForm = ({
                       required
                       autoFocus
                       onInput={(e) =>
+<<<<<<< Updated upstream
                         (e.target.value = e.target.value.slice(0, 30))
+=======
+                        (e.target.value = e.target.value.slice(0, 256))
+>>>>>>> Stashed changes
                       }
                     />
                   </Col>

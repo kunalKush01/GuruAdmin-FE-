@@ -1,23 +1,39 @@
-import React, { useState } from "react";
-
-import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
+import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import { useTranslation } from "react-i18next";
-import Skeleton from "react-loading-skeleton";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { Col, Row } from "reactstrap";
+import SpinnerComponent from "../../../@core/components/spinner/Fallback-spinner"
+
 import {
   getAllChartData,
   getAllDashboardData,
+<<<<<<< Updated upstream
 } from "../../../api/cattle/dashboard";
 import CattleDashboardCard from "../../../components/cattleDashboardCard";
+=======
+  getAllRecentDonationList,
+  getAllTopDonor,
+} from "../../../api/dashboard";
+import custcardImage3 from "../../../assets/images/icons/dashBoard/Group 24887.svg";
+import RecentDonationTable from "../../../components/dashboard/recentDonationTable";
+import { TopDonerList } from "../../../components/dashboard/topDonerList";
+>>>>>>> Stashed changes
 import { ChangePeriodDropDown } from "../../../components/partials/changePeriodDropDown";
+import CustomCard from "../../../components/partials/customCard";
+import { setCookieWithMainDomain } from "../../../utility/formater";
 import { RevenueChart } from "../../../utility/revenueChart";
-import RecentRegisteredCattlesTable from "./recentRegisteredCattle";
-import { Helmet } from "react-helmet";
-
-const DharmshalaDashboard = () => {
-  const { t } = useTranslation();
-
+import OrdersReceived from "../../../utility/ui-elements/cards/statistics/OrdersReceived";
+const Home = () => {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
+  const [dashboardData, setDashboardData] = useState();
+  const [topDonorData, setTopDonorData] = useState();
+  const [recentDonationData, setRecentDonationData] = useState();
+  const [chartData, setChart] = useState();
+
+  const { t } = useTranslation();
   const periodDropDown = () => {
     switch (dropDownName) {
       case "dashboard_monthly":
@@ -31,7 +47,6 @@ const DharmshalaDashboard = () => {
         return "month";
     }
   };
-
   let filterStartDate = moment()
     .startOf(periodDropDown())
     .utcOffset(0, true)
@@ -41,77 +56,47 @@ const DharmshalaDashboard = () => {
     .utcOffset(0, true)
     .toISOString();
 
-  const dashboardData = useQuery(
-    ["dashboardData", filterStartDate, filterEndDate, dropDownName],
-    () =>
-      getAllDashboardData({
-        startDate: filterStartDate,
-        endDate: filterEndDate,
-      })
-  );
+  const history = useHistory();
 
-  const chartData = useQuery(
-    ["dashboardChartData", filterStartDate, filterEndDate, dropDownName],
-    () =>
-      getAllChartData({ startDate: filterStartDate, endDate: filterEndDate })
-  );
+  useEffect(() => {
+    const dashboardInfo = async () => {
+      const res = await getAllDashboardData({
+        startDate: dropDownName === "dashboard_all" ? "" : filterStartDate,
+        endDate: dropDownName === "dashboard_all" ? "" : filterEndDate,
+      });
+      setDashboardData(res);
+    };
+    dashboardInfo();
+  }, [filterStartDate, filterEndDate, dropDownName]);
 
-  console.log("dashboardData", dashboardData, chartData);
+  useEffect(() => {
+    const chartInfo = async () => {
+      const chartRes = await getAllChartData();
+      setChart(chartRes);
+    };
+    chartInfo();
+  }, []);
 
-  const series = [
-    {
-      name: t("cattles"),
-      data: chartData?.data?.cattleArr?.map((item) => {
-        console.log("item?.", item);
-        return {
-          x: item?.month,
-          y: item?.data,
-        };
-      }),
-    },
+  useEffect(() => {
+    const topDonorInfo = async () => {
+      const topDonorRes = await getAllTopDonor();
 
-    {
-      name: t("cattles_feed"),
-      data: chartData?.data?.feedArr?.map((item) => {
-        return {
-          x: item?.month,
-          y: item.quantity,
-        };
-      }),
-    },
+      setTopDonorData(topDonorRes);
+    };
+    topDonorInfo();
+  }, []);
 
-    {
-      name: t("cattles_medical"),
-      data: chartData?.data?.cattleMedicalArr?.map((item) => {
-        return {
-          x: item?.month,
-          y: item.data,
-        };
-      }),
-    },
+  useEffect(() => {
+    const recentDonationInfo = async () => {
+      const recentDonationRes = await getAllRecentDonationList();
 
-    {
-      name: t("cattles_death"),
-      data: chartData?.data?.cattleDeathArr?.map((item) => {
-        return {
-          x: item?.month,
-          y: item?.data,
-        };
-      }),
-    },
-
-    // {
-    //   name: t("report_expences"),
-    //   data: chartData?.data?.expenseArr?.map((item) => {
-    //     return {
-    //       x: item?.month,
-    //       y: item?.amount,
-    //     };
-    //   }),
-    // },
-  ];
+      setRecentDonationData(recentDonationRes);
+    };
+    recentDonationInfo();
+  }, []);
 
   return (
+<<<<<<< Updated upstream
     <div>
       <Helmet>
         <meta charSet="utf-8" />
@@ -190,7 +175,78 @@ const DharmshalaDashboard = () => {
 
       {/* <RecentRegisteredCattlesTable data={[]} /> */}
     </div>
+=======
+    <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Apna Dharm | Dharmshala Dashboard</title>
+      </Helmet>
+      {dashboardData && chartData && topDonorData && recentDonationData ? (
+        <div className="pb-4">
+          <ChangePeriodDropDown
+            allFilter
+            dropDownName={dropDownName}
+            setdropDownName={(e) => setdropDownName(e.target.name)}
+          />
+          <div className="d-flex flex-wrap gap-1 justify-content-between mt-1 mb-lg-3">
+            <OrdersReceived
+              statTitle={t("total_rooms_available")}
+              stats={parseInt(
+                dashboardData?.donationReceived === undefined
+                  ? 0
+                  : dashboardData?.donationReceived
+              )}
+              warning={"primary"}
+              data={dashboardData?.donationReceivedArr}
+              SeriesName={"Donation Received"}
+            />
+            <OrdersReceived
+              statTitle={t("roomtypes_available")}
+              stats={parseInt(
+                dashboardData?.donationPending === undefined
+                  ? 0
+                  : dashboardData?.donationPending
+              )}
+              warning={"primary"}
+              data={dashboardData?.donationPendingArr}
+              SeriesName={"Donation Pending"}
+            />
+            <OrdersReceived
+              statTitle={t("total_bookings")}
+              stats={parseInt(
+                dashboardData?.totalExpenses === undefined
+                  ? 0
+                  : dashboardData?.totalExpenses
+              )}
+              warning={"primary"}
+              data={dashboardData?.totalExpensesArr}
+              SeriesName={"Total Expenses"}
+            />
+            <div
+              className="cursor-pointer"
+              onClick={() => history.push("/dharmshala/info")}
+            >
+              <CustomCard
+                cardTitle={t("buildings_registered")}
+                cardNumber={parseInt(
+                  dashboardData?.subscribedUsers === undefined
+                    ? 0
+                    : dashboardData?.subscribedUsers
+                )}
+                cardImage={custcardImage3}
+              />
+            </div>
+          </div>
+
+          
+          
+        </div>
+      ) : (
+        <SpinnerComponent />
+      )}
+    </>
+>>>>>>> Stashed changes
   );
 };
 
-export default DharmshalaDashboard;
+export default Home;

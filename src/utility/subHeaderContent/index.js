@@ -99,7 +99,11 @@ export const subHeaderContentResponsive = [
     activeTab: "/cattle",
     isCattle: "Gaushala",
   },
-
+  {
+    name: "dharmshala_management",
+    url:"/dharmshala/dashboard",
+    activeTab: "/dharmshala",
+  },
   {
     name: "donation",
     url: "/donation",

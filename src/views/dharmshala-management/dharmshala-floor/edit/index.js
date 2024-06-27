@@ -6,19 +6,24 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { Col, Row } from "reactstrap";
-import styled from "styled-components";
 import * as Yup from "yup";
-
 import moment from "moment";
+<<<<<<< Updated upstream
 import {
   getDharmshalaInfoDetail,
   updateDharmshalaInfo,
 } from "../../../../api/dharmshala/dharmshalaInfo";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddDharmshalaForm from "../../../../components/dharmshalaInfo/addForm";
+=======
+import {getFloorDetail, updateFloor} from "../../../../api/dharmshala/dharmshalaInfo";
+import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
+import AddDharmshalaFloorForm from "../../../../components/dharmshalaFloor/addForm";
+>>>>>>> Stashed changes
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
-//import { DharmshalaSource, dharmshalaType } from "../add";
+import { DharmshalaFloorAddWrapper } from "../../dharmshalaStyles";
 
+<<<<<<< Updated upstream
 const DharmshalaAddWraper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -31,6 +36,8 @@ const DharmshalaAddWraper = styled.div`
     align-items: center;
   }
 `;
+=======
+>>>>>>> Stashed changes
 
 const getLangId = (langArray, langSelection) => {
   let languageId;
@@ -83,10 +90,20 @@ const EditDharmshala = () => {
       description: dharmshalaDetails?.data?.result?.description ?? "",
       location: dharmshalaDetails?.data?.result?.location ?? "",
     };
+<<<<<<< Updated upstream
   }, [dharmshalaDetails]);
 
   return (
     <DharmshalaAddWraper>
+=======
+  }, [floorDetails]);
+
+  const URLParams = useParams("");
+  
+
+  return (
+    <DharmshalaFloorAddWrapper>
+>>>>>>> Stashed changes
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -94,7 +111,11 @@ const EditDharmshala = () => {
             className="me-2  cursor-pointer"
             onClick={() =>
               history.push(
+<<<<<<< Updated upstream
                 `/dharmshala/info?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
+=======
+                `/floors/${URLParams.buildingId}?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
+>>>>>>> Stashed changes
               )
             }
           />
@@ -168,7 +189,11 @@ const EditDharmshala = () => {
           )}
         </Else>
       </If>
+<<<<<<< Updated upstream
     </DharmshalaAddWraper>
+=======
+    </DharmshalaFloorAddWrapper>
+>>>>>>> Stashed changes
   );
 };
 

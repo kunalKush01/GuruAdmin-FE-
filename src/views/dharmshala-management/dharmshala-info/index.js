@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import { Plus } from "react-feather";
@@ -10,26 +9,11 @@ import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
-import styled from "styled-components";
-
 import { getDharmshalaList } from "../../../api/dharmshala/dharmshalaInfo";
-import exportIcon from "../../../assets/images/icons/exportIcon.svg";
-import { ChangePeriodDropDown } from "../../../components/partials/changePeriodDropDown";
 import NoContent from "../../../components/partials/noContent";
-import { handleExport } from "../../../utility/utils/exportTabele";
-import { exportCattleJson, exportCattleJsonSample } from "./exportableJsonData";
 import DharmshalaInfoTable from "./table";
-import { ChangeCategoryType } from "../../../components/partials/categoryDropdown";
 import { Helmet } from "react-helmet";
-
-const DharmshalaInfo = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-
-  .btn {
-    font-weight: bold;
-  }
-`;
+import { DharmshalaInfo } from "../dharmshalaStyles";
 
 const DharmshalasInfo = () => {
   const history = useHistory();
@@ -37,9 +21,12 @@ const DharmshalasInfo = () => {
   const importFileRef = useRef();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
+<<<<<<< Updated upstream
   //const [isDeadAlive, setIsDeadAlive] = useState("All");
   // const [cattleBreed, setCattleBreed] = useState(t("all"));
 
+=======
+>>>>>>> Stashed changes
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 10,
@@ -51,11 +38,14 @@ const DharmshalasInfo = () => {
   // const currentBreed = searchParams.get("breed");
   const currentFilter = searchParams.get("filter");
 
+<<<<<<< Updated upstream
   const routPagination = pagination.page;
   const routFilter = dropDownName;
   //const routeStatus = isDeadAlive;
   // const routeBreed = cattleBreed;
 
+=======
+>>>>>>> Stashed changes
   useEffect(() => {
     if (currentPage || currentFilter || currentStatus) {
       // setCattleBreed(currentBreed);
@@ -73,30 +63,23 @@ const DharmshalasInfo = () => {
         return "year";
       case "dashboard_weekly":
         return "week";
-
       default:
         return "month";
     }
   };
-
-  let filterStartDate = moment()
-    .startOf(periodDropDown())
-    .utcOffset(0, true)
-    .toISOString();
-  let filterEndDate = moment()
-    .endOf(periodDropDown())
-    .utcOffset(0, true)
-    .toISOString();
 
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
 
   const dharmshalaList = useQuery(
     [
       "dharmshalaList",
+<<<<<<< Updated upstream
       //filterStartDate,
       //filterEndDate,
       //isDeadAlive,
       // cattleBreed,
+=======
+>>>>>>> Stashed changes
       pagination?.page,
       selectedLang.id,
       searchBarValue,
@@ -105,10 +88,13 @@ const DharmshalasInfo = () => {
       getDharmshalaList({
         ...pagination,
         search: searchBarValue,
+<<<<<<< Updated upstream
         //startDate: filterStartDate,
         //endDate: filterEndDate,
         //deadStatus: isDeadAlive,
         // breed: cattleBreed,
+=======
+>>>>>>> Stashed changes
         languageId: selectedLang.id,
       })
   );
@@ -118,6 +104,7 @@ const DharmshalasInfo = () => {
     [dharmshalaList]
   );
 
+<<<<<<< Updated upstream
   //   const exportDataQuery = useQuery([], () =>
   //     exportData({
   //       limit: dharmshalaList?.data?.totalResults,
@@ -128,6 +115,8 @@ const DharmshalasInfo = () => {
   //     })
   //   );
 
+=======
+>>>>>>> Stashed changes
   const queryClient = useQueryClient();
 
   const handleImportFile = async (event) => {
@@ -140,6 +129,8 @@ const DharmshalasInfo = () => {
     }
   };
 
+  const isMobileView = window.innerWidth <= 784;
+
   return (
     <DharmshalaInfo>
       <Helmet>
@@ -148,6 +139,7 @@ const DharmshalasInfo = () => {
       </Helmet>
       <div>
         <div className="d-sm-flex mb-1 justify-content-between align-items-center ">
+<<<<<<< Updated upstream
           <Trans i18nKey="dharmshala_registered" />
 
           <div className="d-flex mt-1 mt-sm-0 justify-content-between">
@@ -223,6 +215,10 @@ const DharmshalasInfo = () => {
 
             {/* {allPermissions?.name === "all" ||
             subPermission?.includes(WRITE) ? ( */}
+=======
+          <Trans i18nKey="building_registered" />
+          <div className="d-flex mt-1 mt-sm-0 justify-content-between">
+>>>>>>> Stashed changes
             <Button
               className="me-1"
               color="primary"
@@ -239,6 +235,7 @@ const DharmshalasInfo = () => {
                 <Trans i18nKey={"dharmshala_add"} />
               </span>
             </Button>
+<<<<<<< Updated upstream
 
             {/*<Button
               className="me-1"
@@ -286,6 +283,8 @@ const DharmshalasInfo = () => {
             {/* ) : (
               ""
             )} */}
+=======
+>>>>>>> Stashed changes
           </div>
         </div>
         <div style={{ height: "10px" }}>
@@ -301,6 +300,7 @@ const DharmshalasInfo = () => {
         </div>
         <div className="newsContent">
           <Row>
+<<<<<<< Updated upstream
             <If
               condition={
                 !dharmshalaList.isLoading &&
@@ -376,10 +376,90 @@ const DharmshalasInfo = () => {
                     containerClassName={
                       "pagination react-paginate justify-content-end p-1"
                     }
+=======
+            <div className="table-container-style">
+              <If
+                condition={
+                  !dharmshalaList.isLoading &&
+                  dharmshalaListData.length !== 0 &&
+                  !dharmshalaList.isFetching
+                }
+                disableMemo
+              >
+                <Then>
+                  <DharmshalaInfoTable
+                    data={dharmshalaListData}
+                    height="160px"
+                    currentFilter={dropDownName}
+                    currentPage={pagination.page}
+                    isMobileView={isMobileView}
+>>>>>>> Stashed changes
                   />
-                </Col>
-              </Then>
-            </If>
+                </Then>
+                <Else>
+                  <If
+                    condition={
+                      !dharmshalaList.isLoading &&
+                      dharmshalaListData.length === 0
+                    }
+                    disableMemo
+                  >
+                    <Then>
+                      <NoContent
+                        headingNotfound={t("no_data_found")}
+                        para={t("no_data_found_add_data")}
+                      />
+                    </Then>
+                  </If>
+                </Else>
+              </If>
+              <If
+                condition={
+                  !dharmshalaList.isFetching &&
+                  dharmshalaList?.data?.totalPages > 1
+                }
+              >
+                <Then>
+                  <Col xs={12} className=" d-flex justify-content-center">
+                    <ReactPaginate
+                      nextLabel=""
+                      forcePage={pagination.page - 1}
+                      breakLabel="..."
+                      previousLabel=""
+                      pageCount={dharmshalaList?.data?.totalPages || 0}
+                      activeClassName="active"
+                      initialPage={
+                        parseInt(searchParams.get("page"))
+                          ? parseInt(searchParams.get("page")) - 1
+                          : pagination.page - 1
+                      }
+                      breakClassName="page-item"
+                      pageClassName={"page-item"}
+                      breakLinkClassName="page-link"
+                      nextLinkClassName={"page-link"}
+                      pageLinkClassName={"page-link"}
+                      nextClassName={"page-item next"}
+                      previousLinkClassName={"page-link"}
+                      previousClassName={"page-item prev"}
+                      onPageChange={(page) => {
+                        setPagination({
+                          ...pagination,
+                          page: page.selected + 1,
+                        });
+                        history.push(
+                          `/dharmshala/info?page=${
+                            page.selected + 1
+                          }&status=${currentStatus}&filter=${dropDownName}`
+                        );
+                      }}
+                      containerClassName={
+                        "pagination react-paginate justify-content-end p-1"
+                      }
+                    />
+                  </Col>
+                </Then>
+              </If>
+            </div>
           </Row>
         </div>
       </div>
