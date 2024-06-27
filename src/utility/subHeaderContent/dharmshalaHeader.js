@@ -5,7 +5,16 @@ export const dharmshalaHeader = [
     active: "/dharmshala/dashboard",
   },
   {
+<<<<<<< Updated upstream
     name: "dharmshala",
+=======
+    name: "Bookings",
+    url: "/booking/info",
+    active: "/booking/info",
+  },
+  {
+    name: "Buildings",
+>>>>>>> Stashed changes
     url: "/dharmshala/info",
     active: "/dharmshala/info",
   },
@@ -14,6 +23,7 @@ export const dharmshalaHeader = [
     url: "/roomtype/info",
     active: "/roomtype/info",
   },
+<<<<<<< Updated upstream
   //   {
   //     name: "cattle_medical_record",
   //     url: "/cattle/medical-info",
@@ -37,4 +47,11 @@ export const dharmshalaHeader = [
   //   name: "cattle_usage",
   //   url: "/cattle/usage",
   // },
+=======
+  {
+    name: "Feedback",
+    url: "/feedback",
+    active: "/feedback",
+  }
+>>>>>>> Stashed changes
 ];

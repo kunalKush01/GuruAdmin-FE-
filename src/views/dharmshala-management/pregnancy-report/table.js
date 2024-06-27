@@ -1,16 +1,22 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Swal from "sweetalert2";
+<<<<<<< Updated upstream:src/views/dharmshala-management/pregnancy-report/table.js
 
 import { deletePregnancy } from "../../../api/cattle/cattlePregnancy";
+=======
+import { Button } from "reactstrap";
+import { deleteRoom, getRoomTypeList} from "../../../api/dharmshala/dharmshalaInfo";
+>>>>>>> Stashed changes:src/views/dharmshala-management/dharmshala-room/table.js
 import deleteIcon from "../../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../../assets/images/icons/category/editIcon.svg";
 import confirmationIcon from "../../../assets/images/icons/news/conformationIcon.svg";
 import CustomDataTable from "../../../components/partials/CustomDataTable";
+<<<<<<< Updated upstream:src/views/dharmshala-management/pregnancy-report/table.js
 import { DELETE } from "../../../utility/permissionsVariable";
 
 const PregnancyTableWrapper = styled.div`
@@ -24,6 +30,13 @@ const PregnancyTableWrapper = styled.div`
     margin-bottom: 0;
   }
 `;
+=======
+import { ConverFirstLatterToCapital } from "../../../utility/formater";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { DharmshalaRoomTableWrapper } from "../dharmshalaStyles";
+import "../dharmshala_css/dharmshalaroom.css"; 
+
+>>>>>>> Stashed changes:src/views/dharmshala-management/dharmshala-room/table.js
 
 const PregnancyReportTable = ({
   data = [],
@@ -34,6 +47,15 @@ const PregnancyReportTable = ({
   currentPregnancyStatus,
   maxHeight,
   height,
+<<<<<<< Updated upstream:src/views/dharmshala-management/pregnancy-report/table.js
+=======
+  currentFilter,
+  currentStatus,
+  currentPage,
+  buildingID,
+  floorID,
+  isMobileView,
+>>>>>>> Stashed changes:src/views/dharmshala-management/dharmshala-room/table.js
 }) => {
   const { t } = useTranslation();
   const history = useHistory();
@@ -53,6 +75,7 @@ const PregnancyReportTable = ({
 
   const columns = [
     {
+<<<<<<< Updated upstream:src/views/dharmshala-management/pregnancy-report/table.js
       name: t("cattle_id"),
       selector: (row) => row?.cattleId,
       width: "200px",
@@ -61,6 +84,21 @@ const PregnancyReportTable = ({
       name: t("cattle_conceiving_date"),
       selector: (row) => row?.conceivingDate,
       width: "200px",
+=======
+      name: t("Room Number"),
+      selector: (row) => row.roomNumber,
+      width: "150px",
+    },
+    {
+      name: t("Direct Booking Available"),
+      selector: (row) => (row.directBookingAvailable ? "Yes" : "No"),
+      width: "250px",
+    },
+    {
+      name: t("Room Type Id"),
+      selector: (row) => (row.roomTypeId),
+      width: "250px",
+>>>>>>> Stashed changes:src/views/dharmshala-management/dharmshala-room/table.js
     },
     {
       name: t("cattle_delivery_date"),
@@ -83,6 +121,7 @@ const PregnancyReportTable = ({
     },
   ];
 
+<<<<<<< Updated upstream:src/views/dharmshala-management/pregnancy-report/table.js
   const pregnancyData = useMemo(() => {
     return data?.map((item, idx) => {
       return {
@@ -93,6 +132,22 @@ const PregnancyReportTable = ({
           ? moment(item?.deliveryDate).format("DD MMM YYYY")
           : "N/A",
         pregnancyStatus: item?.status,
+=======
+
+
+  const DharmshalasRoom = useMemo(() => {
+    const {floorId} = useParams()
+    const {buildingId} = useParams()
+    const URLParams = useParams("");
+
+
+    return data?.map((item, idx) => {
+      return {
+        id: idx + 1,
+        roomNumber: item?.roomNumber,
+        directBookingAvailable: item?.directBookingAvailable,
+        roomTypeId: item?.roomTypeId,
+>>>>>>> Stashed changes:src/views/dharmshala-management/dharmshala-room/table.js
         edit: (
           <img
             src={editIcon}
@@ -100,7 +155,11 @@ const PregnancyReportTable = ({
             className="cursor-pointer "
             onClick={() => {
               history.push(
+<<<<<<< Updated upstream:src/views/dharmshala-management/pregnancy-report/table.js
                 `/cattle/pregnancy-reports/${item?.id}?page=${currentPage}&status=${currentPregnancyStatus}&filter=${currentFilter}`
+=======
+                `/rooms/edit/${item?._id}/${URLParams.floorId}/${URLParams.buildingId}?page=${currentPage}&filter=${currentFilter}&number=${item?.roomNumber}&directBookingAvailable=${item?.directBookingAvailable}`
+>>>>>>> Stashed changes:src/views/dharmshala-management/dharmshala-room/table.js
               );
             }}
           />
@@ -146,15 +205,48 @@ const PregnancyReportTable = ({
   }, [data]);
 
   return (
+<<<<<<< Updated upstream:src/views/dharmshala-management/pregnancy-report/table.js
     <PregnancyTableWrapper>
+=======
+    <DharmshalaRoomTableWrapper>
+      {isMobileView ? (
+        <div className="card-container">
+          {DharmshalasRoom.map((item, index) => (
+            <div key={index} className="card">
+              <div className="card-body">
+                <div className="card-content">
+                  <h5 className="card-title">{item.roomNumber}</h5>
+                  <p className="card-text">{item.directBookingAvailable}</p>
+                  <p className="card-text">{item.roomTypeId}</p>
+                </div>
+                <div className="card-icons">
+                  {item.edit}
+                  {item.delete}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+>>>>>>> Stashed changes:src/views/dharmshala-management/dharmshala-room/table.js
       <CustomDataTable
         maxHeight={maxHeight}
         columns={columns}
         height={height}
         data={pregnancyData}
       />
+<<<<<<< Updated upstream:src/views/dharmshala-management/pregnancy-report/table.js
     </PregnancyTableWrapper>
   );
 };
 
 export default PregnancyReportTable;
+=======
+      )}
+    </DharmshalaRoomTableWrapper>
+  );
+};
+
+export default DharmshalaRoomTable;
+
+>>>>>>> Stashed changes:src/views/dharmshala-management/dharmshala-room/table.js

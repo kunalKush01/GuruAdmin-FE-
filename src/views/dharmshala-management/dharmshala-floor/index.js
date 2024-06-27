@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import { Plus } from "react-feather";
@@ -10,9 +9,7 @@ import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
-import styled from "styled-components";
 import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
-
 import { getDharmshalaFloorList } from "../../../api/dharmshala/dharmshalaInfo";
 import exportIcon from "../../../assets/images/icons/exportIcon.svg";
 import { ChangePeriodDropDown } from "../../../components/partials/changePeriodDropDown";
@@ -23,32 +20,30 @@ import DharmshalaFloorTable from "./table";
 import { ChangeCategoryType } from "../../../components/partials/categoryDropdown";
 import { Helmet } from "react-helmet";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
-
-const DharmshalaFloorInfo = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-
-  .btn {
-    font-weight: bold;
-  }
-`;
+import { DharmshalaFloorInfo } from "../dharmshalaStyles";
+import "../dharmshala_css/dharmshalafloors.css";
 
 const DharmshalaFloors = () => {
   const history = useHistory();
   const { buildingId } = useParams();
+<<<<<<< Updated upstream
   console.log(buildingId);
+=======
+>>>>>>> Stashed changes
   const { t } = useTranslation();
   const importFileRef = useRef();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
+<<<<<<< Updated upstream
   //const [isDeadAlive, setIsDeadAlive] = useState("All");
   // const [cattleBreed, setCattleBreed] = useState(t("all"));
 
+=======
+>>>>>>> Stashed changes
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 10,
   });
-
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
   const currentStatus = searchParams.get("status");
@@ -57,8 +52,11 @@ const DharmshalaFloors = () => {
 
   const routPagination = pagination.page;
   const routFilter = dropDownName;
+<<<<<<< Updated upstream
   //const routeStatus = isDeadAlive;
   // const routeBreed = cattleBreed;
+=======
+>>>>>>> Stashed changes
 
   useEffect(() => {
     if (currentPage || currentFilter || currentStatus) {
@@ -110,7 +108,11 @@ const DharmshalaFloors = () => {
     [dharmshalaFloorList]
   );
 
+<<<<<<< Updated upstream
   const queryClient = useQueryClient();
+=======
+  const isMobileView = window.innerWidth <= 784;
+>>>>>>> Stashed changes
 
   return (
     <DharmshalaFloorInfo>
@@ -119,8 +121,8 @@ const DharmshalaFloors = () => {
         <title>Apna Dharm Admin | Dharmshala Floors</title>
       </Helmet>
       <div>
-        <div className="d-sm-flex mb-1 justify-content-between align-items-center ">
-          <div className="d-flex justify-content-between align-items-center ">
+        <div className="d-sm-flex mb-1 justify-content-between align-items-center header-container">
+          <div className="d-flex align-items-center left-container">
             <img
               src={arrowLeft}
               className="me-2 cursor-pointer"
@@ -134,6 +136,7 @@ const DharmshalaFloors = () => {
               <Trans i18nKey={"dharmshala_floors_registered"} />
             </div>
           </div>
+<<<<<<< Updated upstream
           <div className="d-flex mt-1 mt-sm-0 justify-content-between">
             {/*<ChangeCategoryType
               className={"me-1"}
@@ -207,6 +210,9 @@ const DharmshalaFloors = () => {
 
             {/* {allPermissions?.name === "all" ||
             subPermission?.includes(WRITE) ? ( */}
+=======
+          <div className="d-flex mt-1 mt-sm-0 right-container">
+>>>>>>> Stashed changes
             <Button
               className="me-1"
               color="primary"
@@ -303,10 +309,14 @@ const DharmshalaFloors = () => {
                   height="160px"
                   currentFilter={routFilter}
                   currentPage={routPagination}
+<<<<<<< Updated upstream
                   // currentBreed={routeBreed}
                   //currentStatus={routeStatus}
                   // allPermissions={allPermissions}
                   // subPermission={subPermission}
+=======
+                  isMobileView={isMobileView}
+>>>>>>> Stashed changes
                 />
               </Then>
               <Else>

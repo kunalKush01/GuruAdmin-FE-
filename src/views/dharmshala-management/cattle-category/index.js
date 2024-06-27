@@ -1,4 +1,9 @@
+<<<<<<< Updated upstream:src/views/dharmshala-management/cattle-category/index.js
 import { useQuery } from "@tanstack/react-query";
+=======
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+>>>>>>> Stashed changes:src/views/dharmshala-management/dharmshala-room/index.js
 import moment from "moment";
 import React, { useEffect, useMemo, useState } from "react";
 import { Plus } from "react-feather";
@@ -9,6 +14,7 @@ import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
+<<<<<<< Updated upstream:src/views/dharmshala-management/cattle-category/index.js
 import styled from "styled-components";
 import { getCattlesCategoryList } from "../../../api/cattle/cattleCategory";
 import { ChangePeriodDropDown } from "../../../components/partials/changePeriodDropDown";
@@ -24,9 +30,27 @@ const CattleCategoryWrapper = styled.div`
     font-weight: bold;
   }
 `;
+=======
+import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
+import { getAllRooms, getAllRoomsByFloorId } from "../../../api/dharmshala/dharmshalaInfo";
+import exportIcon from "../../../assets/images/icons/exportIcon.svg";
+import { ChangePeriodDropDown } from "../../../components/partials/changePeriodDropDown";
+import NoContent from "../../../components/partials/noContent";
+import { handleExport } from "../../../utility/utils/exportTabele";
+import DharmshalaRoomTable from "./table";
+import { ChangeCategoryType } from "../../../components/partials/categoryDropdown";
+import { Helmet } from "react-helmet";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { DharmshalaRoomInfo } from "../dharmshalaStyles";
+>>>>>>> Stashed changes:src/views/dharmshala-management/dharmshala-room/index.js
 
 const CattleCategory = () => {
   const history = useHistory();
+<<<<<<< Updated upstream:src/views/dharmshala-management/cattle-category/index.js
+=======
+  const { floorId } = useParams();
+  const { buildingId } = useParams();
+>>>>>>> Stashed changes:src/views/dharmshala-management/dharmshala-room/index.js
   const { t } = useTranslation();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
@@ -35,6 +59,7 @@ const CattleCategory = () => {
     page: 1,
     limit: 10,
   });
+<<<<<<< Updated upstream:src/views/dharmshala-management/cattle-category/index.js
 
   const [modal, setModal] = useState({
     modal: false,
@@ -52,6 +77,8 @@ const CattleCategory = () => {
     });
   };
 
+=======
+>>>>>>> Stashed changes:src/views/dharmshala-management/dharmshala-room/index.js
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
   const currentFilter = searchParams.get("filter");
@@ -94,7 +121,9 @@ const CattleCategory = () => {
       pagination?.page,
       selectedLang.id,
       searchBarValue,
+      floorId
     ],
+<<<<<<< Updated upstream:src/views/dharmshala-management/cattle-category/index.js
     () =>
       getCattlesCategoryList({
         ...pagination,
@@ -109,6 +138,21 @@ const CattleCategory = () => {
     () => cattleCategoryList?.data?.results ?? [],
     [cattleCategoryList]
   );
+=======
+    () => getAllRoomsByFloorId(floorId),
+  );
+
+  const dharmshalaRoomListData = useMemo(
+    () => dharmshalaRoomList?.data?.results ?? [],
+    [dharmshalaRoomList]
+  );
+
+  const URLParams = useParams("");
+
+  const queryClient = useQueryClient();
+>>>>>>> Stashed changes:src/views/dharmshala-management/dharmshala-room/index.js
+
+  const isMobileView = window.innerWidth <= 784;
 
   return (
     <CattleCategoryWrapper>
@@ -123,11 +167,17 @@ const CattleCategory = () => {
                 setdropDownName(e.target.name);
                 setPagination({ page: 1 });
                 history.push(
+<<<<<<< Updated upstream:src/views/dharmshala-management/cattle-category/index.js
                   `/configuration/cattle-category?page=${1}&filter=${
                     e.target.name
                   }`
                 );
               }}
+=======
+                  `/floors/${URLParams.buildingId}?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
+                )
+              }
+>>>>>>> Stashed changes:src/views/dharmshala-management/dharmshala-room/index.js
             />
 
             {/* {allPermissions?.name === "all" ||
@@ -135,7 +185,15 @@ const CattleCategory = () => {
             <Button
               className="me-1"
               color="primary"
+<<<<<<< Updated upstream:src/views/dharmshala-management/cattle-category/index.js
               onClick={() => toggle({ addCattleCategory: true })}
+=======
+              onClick={() =>
+                history.push(
+                  `/rooms/add/${floorId}/${URLParams.buildingId}?page=${pagination.page}&filter=${dropDownName}`
+                )
+              }
+>>>>>>> Stashed changes:src/views/dharmshala-management/dharmshala-room/index.js
             >
               <span>
                 <Plus className="" size={15} strokeWidth={4} />
@@ -176,9 +234,15 @@ const CattleCategory = () => {
                 <CattleBreedTable
                   data={cattleCategoryData}
                   height="160px"
+<<<<<<< Updated upstream:src/views/dharmshala-management/cattle-category/index.js
                   toggle={toggle}
                   // allPermissions={allPermissions}
                   // subPermission={subPermission}
+=======
+                  currentFilter={routFilter}
+                  currentPage={routPagination}
+                  isMobileView={isMobileView}
+>>>>>>> Stashed changes:src/views/dharmshala-management/dharmshala-room/index.js
                 />
               </Then>
               <Else>
