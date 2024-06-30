@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "../axiosApi/authApiInstans";
+import { API_AUTH_URL, API_BASE_URL } from "../axiosApi/authApiInstans";
 import { callApi } from "../utility/utils/callApi";
 
 export const createDonation = (payload) =>
@@ -6,6 +6,14 @@ export const createDonation = (payload) =>
     requestFunction: (axios) =>
       axios.post(`${API_BASE_URL}donation/create`, payload),
     successCode: 200,
+  });
+
+export const donationDownloadReceiptApi = (payload) =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.get(`${API_AUTH_URL}public/donation-pdf/${payload}`),
+    showToastOnSuccess: false,
+    showToastOnError: false,
   });
 
 export const getAllDonation = (payload) =>

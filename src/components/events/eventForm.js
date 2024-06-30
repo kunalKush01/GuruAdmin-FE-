@@ -22,6 +22,7 @@ import AsyncSelectField from "../partials/asyncSelectField";
 import CustomTextField from "../partials/customTextField";
 import ImageUpload from "../partials/imageUpload";
 import RichTextField from "../partials/richTextEditorField";
+import CustomLocationField from "../partials/CustomLocationField";
 const FormWrapper = styled.div`
   .FormikWrapper {
     padding: 40px;
@@ -316,6 +317,11 @@ export default function EventForm({
             title: e.Title,
             tags: e?.tagsInit?.map((tag) => tag.text),
             deletedTags,
+            location: e?.location,
+            city: e?.city,
+            state: e?.state,
+            latitude: e?.longitude,
+            longitude: e?.latitude,
             startTime: moment(e?.startTime, ["HH:mm"]).format("HH:mm"),
             endTime: e?.endTime,
             body: e.Body,
@@ -412,7 +418,7 @@ export default function EventForm({
                       name="Title"
                       required
                       onInput={(e) =>
-                        (e.target.value = e.target.value.slice(0, 30))
+                        (e.target.value = e.target.value.slice(0, 128))
                       }
                       autoFocus
                     />
@@ -477,6 +483,65 @@ export default function EventForm({
                       name="Body"
                     />
                   </Col>
+                </Row>
+                <Row>
+                  <Col xs={12} md={6}>
+                    {!AddLanguage ? (
+                      <>
+                        <label>
+                          <Trans i18nKey={"location"} />
+                        </label>
+                        *
+                        <CustomLocationField
+                          setFieldValue={formik.setFieldValue}
+                          error={formik}
+                          values={formik?.values}
+                        />
+                        {formik.errors.location && (
+                          <div
+                            style={{
+                              height: "20px",
+                              font: "normal normal bold 11px/33px Noto Sans",
+                            }}
+                          >
+                            {formik.errors.location &&
+                              formik.touched.location && (
+                                <div className="text-danger">
+                                  <Trans i18nKey={formik.errors.location} />
+                                </div>
+                              )}
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <CustomTextField
+                        label={t("location")}
+                        name="location"
+                        placeholder={t("placeHolder_location")}
+                        required
+                      />
+                    )}
+                  </Col>
+                  {!AddLanguage && (
+                    <>
+                      <Col xs={12} md={4} className="opacity-75">
+                        <CustomTextField
+                          label={t("City")}
+                          placeholder={t("placeHolder_city")}
+                          name="city"
+                          disabled
+                        />
+                      </Col>
+                      <Col xs={12} md={4} className="opacity-75">
+                        <CustomTextField
+                          label={t("State")}
+                          placeholder={t("placeHolder_state")}
+                          name="state"
+                          disabled
+                        />
+                      </Col>
+                    </>
+                  )}
                 </Row>
                 {!AddLanguage && (
                   <Row>
