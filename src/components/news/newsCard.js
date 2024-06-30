@@ -307,57 +307,57 @@ export default function NewsCard({
             src={data?.images[0]?.presignedUrl ?? placeHolder}
           />
           <div className=" position-absolute imgContent  w-100 ">
-            {allPermissions?.name === "all" ||
-              (subPermission?.includes(PUBLISHER) && (
-                <div className="text-end">
-                  <ButtonGroup>
-                    <UncontrolledDropdown>
-                      <DropdownToggle color="primary" size="sm" caret>
-                        {data?.isPublished ? (
-                          <Trans i18nKey={"published"} />
+            {(allPermissions?.name === "all" ||
+              subPermission?.includes(PUBLISHER)) && (
+              <div className="text-end">
+                <ButtonGroup>
+                  <UncontrolledDropdown>
+                    <DropdownToggle color="primary" size="sm" caret>
+                      {data?.isPublished ? (
+                        <Trans i18nKey={"published"} />
+                      ) : (
+                        <Trans i18nKey={"publish"} />
+                      )}
+                    </DropdownToggle>
+                    <DropdownMenu className="publishMenu">
+                      <DropdownItem
+                        className="py-0 w-100"
+                        onClick={() => {
+                          data?.isPublished
+                            ? Swal.fire({
+                                // title: "News is already published",
+                                html: `<h3>${t("already_publish")}</h3>`,
+                                icon: "info",
+                                showConfirmButton: false,
+                                showCloseButton: false,
+                                showCancelButton: false,
+                                focusConfirm: false,
+                                timer: 1500,
+                              })
+                            : toggle();
+                        }}
+                      >
+                        {data?.isScheduled ? (
+                          <Trans i18nKey={"reSchedule"} />
                         ) : (
-                          <Trans i18nKey={"publish"} />
+                          <Trans i18nKey={"schedule"} />
                         )}
-                      </DropdownToggle>
-                      <DropdownMenu className="publishMenu">
-                        <DropdownItem
-                          className="py-0 w-100"
-                          onClick={() => {
-                            data?.isPublished
-                              ? Swal.fire({
-                                  // title: "News is already published",
-                                  html: `<h3>${t("already_publish")}</h3>`,
-                                  icon: "info",
-                                  showConfirmButton: false,
-                                  showCloseButton: false,
-                                  showCancelButton: false,
-                                  focusConfirm: false,
-                                  timer: 1500,
-                                })
-                              : toggle();
-                          }}
-                        >
-                          {data?.isScheduled ? (
-                            <Trans i18nKey={"reSchedule"} />
-                          ) : (
-                            <Trans i18nKey={"schedule"} />
-                          )}
-                        </DropdownItem>
-                        <DropdownItem
-                          className="py-0 w-100"
-                          onClick={() => publishMutation.mutate(data.id)}
-                        >
-                          {data?.isPublished ? (
-                            <Trans i18nKey={"unPublish"} />
-                          ) : (
-                            <Trans i18nKey={"publish_now"} />
-                          )}
-                        </DropdownItem>
-                      </DropdownMenu>
-                    </UncontrolledDropdown>
-                  </ButtonGroup>
-                </div>
-              ))}
+                      </DropdownItem>
+                      <DropdownItem
+                        className="py-0 w-100"
+                        onClick={() => publishMutation.mutate(data.id)}
+                      >
+                        {data?.isPublished ? (
+                          <Trans i18nKey={"unPublish"} />
+                        ) : (
+                          <Trans i18nKey={"publish_now"} />
+                        )}
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </UncontrolledDropdown>
+                </ButtonGroup>
+              </div>
+            )}
           </div>
         </div>
 

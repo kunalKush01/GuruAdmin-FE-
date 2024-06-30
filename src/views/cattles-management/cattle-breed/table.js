@@ -46,7 +46,12 @@ const CattleBreedTable = ({ data = [], maxHeight, height, toggle }) => {
     {
       name: t("name"),
       selector: (row) => row.name,
-      width: "87%",
+      width: "20%",
+    },
+    {
+      name: t("category"),
+      selector: (row) => row.category,
+      width: "67%",
     },
     {
       name: t(""),
@@ -65,6 +70,9 @@ const CattleBreedTable = ({ data = [], maxHeight, height, toggle }) => {
       return {
         id: idx + 1,
         name: ConverFirstLatterToCapital(item?.name ?? ""),
+        category: ConverFirstLatterToCapital(
+          item?.cattleCategoryId?.name ?? " - "
+        ),
         edit: (
           <img
             src={editIcon}
