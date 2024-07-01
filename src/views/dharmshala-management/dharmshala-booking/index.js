@@ -64,10 +64,10 @@ const DharmshalaBookings = () => {
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
 
 
-  const fetchProducts = async () => {
-    const response = await axios.get(apiUrl);
-    return response?.data;
-};
+//   const fetchProducts = async () => {
+//     const response = await axios.get(apiUrl);
+//     return response?.data;
+// };
 
   const dharmshalaBookingList = useQuery(
     ["dharmshalaBookingList", pagination.page, selectedLang.id, searchBarValue],

@@ -6,13 +6,6 @@ import { Trans, useTranslation } from "react-i18next";
 import { Prompt, useHistory } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import {FormikWrapper} from "../../views/dharmshala-management/dharmshalaStyles";
-
-// import {
-//   findAllCattle,
-//   findAllCattleBreed,
-//   findAllCattleCategory,
-// } from "../../api/cattle/cattleMedical";
-
 import CustomTextField from "../partials/customTextField";
 
 
@@ -27,38 +20,11 @@ const AddDharmshalaForm = ({
   const { t } = useTranslation();
   const [showPrompt, setShowPrompt] = useState(true);
   const [loading, setLoading] = useState(false);
-  //   const [cattleImageName, setCattleImageName] = useState(props.cattleImageName);
-  //   const [ownerImageName, setOwnerImageName] = useState(props.ownerImageName);
-
-  //   const [phoneNumber, setPhoneNumber] = useState(getMobile ?? "");
-  //   const [purchaserNumber, setPurchaserNumber] = useState(
-  //    getPurchaserMobile ?? ""
-  //  );
-
-  //   const [imageSpinner, setImageSpinner] = useState(false);
-  //   const [ownerImageUploading, setOwnerImageUploading] = useState(false);
-
-  //   const randomNumber = Math.floor(100000000000 + Math.random() * 900000000000);
-
-  //   const loadOption = async (tagId) => {
-  //     const res = await findAllCattle({ cattleId: tagId });
-  //     return res.results;
-  //   };
-
-  //   const categoriesLoadOption = async (category) => {
-  //     const res = await findAllCattleCategory({ name: category });
-  //     return res.results?.map((item) => {
-  //       return { ...item, name: ConverFirstLatterToCapital(item?.name ?? "") };
-  //     });
-  //   };
-
-  //   const breedLoadOption = async (breed) => {
-  //     const res = await findAllCattleBreed({ name: breed });
-  //     return res.results?.map((item) => {
-  //       return { ...item, name: ConverFirstLatterToCapital(item?.name ?? "") };
-  //     });
-  //   };
-
+  const searchParams = new URLSearchParams(history.location.search);
+  const currentPage = searchParams.get("page");
+  const currentStatus = searchParams.get("status");
+  const currentFilter = searchParams.get("filter");
+  const [correct, isCorrect] = useState(false)
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: handleSubmit,
@@ -66,16 +32,23 @@ const AddDharmshalaForm = ({
       if (!data?.error) {
         queryClient.invalidateQueries(["dharmshalaList"]);
         setLoading(false);
-<<<<<<< Updated upstream
-        history.push("/dharmshala/info");
-=======
         isCorrect(true);
->>>>>>> Stashed changes
       } else if (data?.error || data === undefined) {
         setLoading(false);
       }
     },
   });
+
+  const handleFormSubmit = (values) => {
+    setLoading(true);
+    setShowPrompt(false);
+    const { ...formValues } = values;
+    const data = {
+      ...formValues,
+    };
+    mutation.mutate(data);
+    history.push(`/dharmshala/info?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`)
+  };
 
   return (
     <FormikWrapper>
@@ -83,15 +56,8 @@ const AddDharmshalaForm = ({
         enableReinitialize
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(values) => {
-          setLoading(true);
-          setShowPrompt(false);
-          const { ...formValues } = values;
-          const data = {
-            ...formValues,
-          };
-          mutation.mutate(data);
-        }}
+        onSubmit={handleFormSubmit}
+
       >
         {(formik) => (
           <Form>
@@ -113,8 +79,8 @@ const AddDharmshalaForm = ({
                 <Row>
                   <Col xs={12} md={4}>
                     <CustomTextField
-                      label={t("dharmshala_name")}
-                      placeholder={t("placeHolder_dharmshala_name")}
+                      label={t("building_name")}
+                      placeholder={t("placeHolder_building_name")}
                       name="name"
                       required
                       autoFocus
@@ -125,24 +91,20 @@ const AddDharmshalaForm = ({
                   </Col>
                   <Col xs={12} md={4}>
                     <CustomTextField
-                      label={t("dharmshala_description")}
-                      placeholder={t("placeHolder_dharmshala_description")}
+                      label={t("building_description")}
+                      placeholder={t("placeHolder_building_description")}
                       name="description"
                       required
                       autoFocus
                       onInput={(e) =>
-<<<<<<< Updated upstream
-                        (e.target.value = e.target.value.slice(0, 30))
-=======
                         (e.target.value = e.target.value.slice(0, 256))
->>>>>>> Stashed changes
                       }
                     />
                   </Col>
                   <Col xs={12} md={4}>
                     <CustomTextField
-                      label={t("dharmshala_location")}
-                      placeholder={t("placeHolder_dharmshala_location")}
+                      label={t("building_location")}
+                      placeholder={t("placeHolder_building_location")}
                       name="location"
                       required
                       autoFocus
