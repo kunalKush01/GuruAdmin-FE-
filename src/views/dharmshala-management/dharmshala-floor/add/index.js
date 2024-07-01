@@ -1,28 +1,17 @@
 import React from "react";
 import { Trans } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import styled from "styled-components";
 import * as Yup from "yup";
-
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { createDharmshalaFloor } from "../../../../api/dharmshala/dharmshalaInfo";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddDharmshalaFloorForm from "../../../../components/dharmshalaFloor/addForm";
-
-const DharmshalaFloorAddWraper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addEvent {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import { DharmshalaFloorAddWrapper } from "../../dharmshalaStyles";
 
 const AddDharmshalaFloor = () => {
   const history = useHistory();
+  const { buildingId } = useParams();
+  const trustId = localStorage.getItem("trustId");
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
   const currentStatus = searchParams.get("status");
@@ -36,16 +25,22 @@ const AddDharmshalaFloor = () => {
     name: Yup.string().required("dharmshala_floor_name_required"),
     description: Yup.mixed().required("dharmshala_floor_description_required"),
     number: Yup.mixed().required("dharmshala_floor_number_required"),
+    buildingId: Yup.mixed().required("dharmshala_floor_number_required"),
+    dharmshalaId: Yup.mixed().required("dharmshala_floor_number_required")
   });
 
   const initialValues = {
     name: "",
     description: "",
     number: "",
+    buildingId: buildingId,
+    dharmshalaId: trustId,
   };
 
+  const URLParams = useParams("");
+  
   return (
-    <DharmshalaFloorAddWraper>
+    <DharmshalaFloorAddWrapper>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -53,7 +48,7 @@ const AddDharmshalaFloor = () => {
             className="me-2  cursor-pointer"
             onClick={() =>
               history.push(
-                `/dharmshala/info?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
+                `/floors/${URLParams.buildingId}?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
               )
             }
           />
@@ -70,7 +65,7 @@ const AddDharmshalaFloor = () => {
           buttonName="dharmshala_floor_add"
         />
       </div>
-    </DharmshalaFloorAddWraper>
+    </DharmshalaFloorAddWrapper>
   );
 };
 

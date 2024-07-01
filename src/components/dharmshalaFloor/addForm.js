@@ -5,24 +5,10 @@ import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { Prompt, useHistory } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
-import styled from "styled-components";
-
-// import {
-//   findAllCattle,
-//   findAllCattleBreed,
-//   findAllCattleCategory,
-// } from "../../api/cattle/cattleMedical";
-
+import {FormikWrapper} from "../../views/dharmshala-management/dharmshalaStyles";
 import CustomTextField from "../partials/customTextField";
-//import { ConverFirstLatterToCapital } from "../../utility/formater";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
-const FormikWrapper = styled.div`
-  font: normal normal bold 15px/33px Noto Sans;
-
-  .animated-height {
-    transition: height 0.5s;
-  }
-`;
 
 const AddDharmshalaFloorForm = ({
   initialValues,
@@ -35,38 +21,11 @@ const AddDharmshalaFloorForm = ({
   const { t } = useTranslation();
   const [showPrompt, setShowPrompt] = useState(true);
   const [loading, setLoading] = useState(false);
-  //   const [cattleImageName, setCattleImageName] = useState(props.cattleImageName);
-  //   const [ownerImageName, setOwnerImageName] = useState(props.ownerImageName);
-
-  //   const [phoneNumber, setPhoneNumber] = useState(getMobile ?? "");
-  //   const [purchaserNumber, setPurchaserNumber] = useState(
-  //    getPurchaserMobile ?? ""
-  //  );
-
-  //   const [imageSpinner, setImageSpinner] = useState(false);
-  //   const [ownerImageUploading, setOwnerImageUploading] = useState(false);
-
-  //   const randomNumber = Math.floor(100000000000 + Math.random() * 900000000000);
-
-  //   const loadOption = async (tagId) => {
-  //     const res = await findAllCattle({ cattleId: tagId });
-  //     return res.results;
-  //   };
-
-  //   const categoriesLoadOption = async (category) => {
-  //     const res = await findAllCattleCategory({ name: category });
-  //     return res.results?.map((item) => {
-  //       return { ...item, name: ConverFirstLatterToCapital(item?.name ?? "") };
-  //     });
-  //   };
-
-  //   const breedLoadOption = async (breed) => {
-  //     const res = await findAllCattleBreed({ name: breed });
-  //     return res.results?.map((item) => {
-  //       return { ...item, name: ConverFirstLatterToCapital(item?.name ?? "") };
-  //     });
-  //   };
-
+  const searchParams = new URLSearchParams(history.location.search);
+  console.log(searchParams)
+  const currentPage = searchParams.get("page");
+  const currentStatus = searchParams.get("status");
+  const currentFilter = searchParams.get("filter");
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: handleSubmit,
@@ -74,12 +33,25 @@ const AddDharmshalaFloorForm = ({
       if (!data?.error) {
         queryClient.invalidateQueries(["dharmshalaFloorList"]);
         setLoading(false);
-        history.push("/dharmshala/info");
       } else if (data?.error || data === undefined) {
         setLoading(false);
       }
     },
   });
+
+
+  const URLParams = useParams();
+  const handleFormSubmit = (values) => {
+    setLoading(true);
+    setShowPrompt(false);
+    const { ...formValues } = values;
+    const data = {
+      ...formValues,
+    };
+    mutation.mutate(data);
+    history.push(`/floors/${URLParams.buildingId}?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
+  )
+  };
 
   return (
     <FormikWrapper>
@@ -87,15 +59,8 @@ const AddDharmshalaFloorForm = ({
         enableReinitialize
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(values) => {
-          setLoading(true);
-          setShowPrompt(false);
-          const { ...formValues } = values;
-          const data = {
-            ...formValues,
-          };
-          mutation.mutate(data);
-        }}
+        onSubmit={handleFormSubmit}
+
       >
         {(formik) => (
           <Form>
@@ -137,7 +102,7 @@ const AddDharmshalaFloorForm = ({
                       required
                       autoFocus
                       onInput={(e) =>
-                        (e.target.value = e.target.value.slice(0, 30))
+                        (e.target.value = e.target.value.slice(0, 256))
                       }
                     />
                   </Col>
@@ -145,7 +110,7 @@ const AddDharmshalaFloorForm = ({
                     <CustomTextField
                       label={t("dharmshala_floor_number")}
                       placeholder={t("placeHolder_dharmshala_floor_number")}
-                      name="location"
+                      name="number"
                       required
                       autoFocus
                       onInput={(e) =>

@@ -17,20 +17,7 @@ import {
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddDharmshalaForm from "../../../../components/dharmshalaInfo/addForm";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
-//import { DharmshalaSource, dharmshalaType } from "../add";
-
-const DharmshalaAddWraper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addEvent {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import {DharmshalaAddWrapper} from "../../dharmshalaStyles";
 
 const getLangId = (langArray, langSelection) => {
   let languageId;
@@ -51,7 +38,6 @@ const EditDharmshala = () => {
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
   const currentStatus = searchParams.get("status");
-  // const currentBreed = searchParams.get("breed");
   const currentFilter = searchParams.get("filter");
 
   const [langSelection, setLangSelection] = useState(
@@ -72,9 +58,9 @@ const EditDharmshala = () => {
   };
 
   const schema = Yup.object().shape({
-    name: Yup.string().required("dharmshala_name_required"),
-    description: Yup.mixed().required("dharmshala_description_required"),
-    location: Yup.mixed().required("dharmshala_location_required"),
+    name: Yup.string().required("building_name_required"),
+    description: Yup.mixed().required("building_description_required"),
+    location: Yup.mixed().required("building_location_required"),
   });
 
   const initialValues = useMemo(() => {
@@ -86,7 +72,7 @@ const EditDharmshala = () => {
   }, [dharmshalaDetails]);
 
   return (
-    <DharmshalaAddWraper>
+    <DharmshalaAddWrapper>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -99,25 +85,9 @@ const EditDharmshala = () => {
             }
           />
           <div className="editEvent">
-            <Trans i18nKey={"dharmshala_edit_dharmshala"} />
+          <Trans i18nKey={"dharmshala_edit_building"} />
           </div>
         </div>
-        {/* <div className="editEvent">
-          <div className="d-none d-sm-block">
-            <Trans i18nKey={"news_InputIn"} />
-          </div>
-          <CustomDropDown
-            ItemListArray={DharmshalaDetails?.data?.result?.languages}
-            className={"ms-1"}
-            defaultDropDownName={ConverFirstLatterToCapital(
-              langSelection ?? ""
-            )}
-            handleDropDownClick={(e) =>
-              setLangSelection(ConverFirstLatterToCapital(e.target.name))
-            }
-            // disabled
-          />
-        </div> */}
       </div>
 
       <If
@@ -161,14 +131,12 @@ const EditDharmshala = () => {
                 validationSchema={schema}
                 editThumbnail
                 buttonName="save_changes"
-                /*DharmshalaType={DharmshalaType}
-                DharmshalaSource={DharmshalaSource} */
               />
             </div>
           )}
         </Else>
       </If>
-    </DharmshalaAddWraper>
+    </DharmshalaAddWrapper>
   );
 };
 
