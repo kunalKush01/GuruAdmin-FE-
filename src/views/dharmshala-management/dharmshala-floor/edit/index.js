@@ -6,31 +6,14 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { Col, Row } from "reactstrap";
-import styled from "styled-components";
 import * as Yup from "yup";
-
 import moment from "moment";
-import {
-  getDharmshalaInfoDetail,
-  updateDharmshalaInfo,
-} from "../../../../api/dharmshala/dharmshalaInfo";
+import {getFloorDetail, updateFloor} from "../../../../api/dharmshala/dharmshalaInfo";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
-import AddDharmshalaForm from "../../../../components/dharmshalaInfo/addForm";
+import AddDharmshalaFloorForm from "../../../../components/dharmshalaFloor/addForm";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
-//import { DharmshalaSource, dharmshalaType } from "../add";
+import { DharmshalaFloorAddWrapper } from "../../dharmshalaStyles";
 
-const DharmshalaAddWraper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addEvent {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
 
 const getLangId = (langArray, langSelection) => {
   let languageId;
@@ -42,51 +25,58 @@ const getLangId = (langArray, langSelection) => {
   return languageId;
 };
 
-const EditDharmshala = () => {
+const EditFloor = () => {
   const history = useHistory();
-  const { buildingId } = useParams();
+  const { floorId } = useParams();
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
   const searchParams = new URLSearchParams(history.location.search);
+  console.log(searchParams);
+  const name = searchParams.get("name")
+  const number = searchParams.get("number")
+  const description = searchParams.get("description")
+
   const currentPage = searchParams.get("page");
   const currentStatus = searchParams.get("status");
-  // const currentBreed = searchParams.get("breed");
   const currentFilter = searchParams.get("filter");
 
   const [langSelection, setLangSelection] = useState(
     ConverFirstLatterToCapital(selectedLang.name)
   );
 
-  const dharmshalaDetails = useQuery(
-    ["dharmshalaDetails", buildingId, langSelection, selectedLang.id],
-    async () => getDharmshalaInfoDetail(buildingId)
+  const floorDetails = useQuery(
+    ["floorDetails", floorId, langSelection, selectedLang.id],
+    async () => getFloorDetail(floorId)
   );
 
-  const handleDharmshalaUpdate = async (payload) => {
-    return updateDharmshalaInfo({
-      buildingId: buildingId,
+  const handleDharmshalaFloorUpdate = async (payload) => {
+    return updateFloor({
+      floorId: floorId,
       ...payload,
       languageId: getLangId(langArray, langSelection),
     });
   };
 
   const schema = Yup.object().shape({
-    name: Yup.string().required("dharmshala_name_required"),
-    description: Yup.mixed().required("dharmshala_description_required"),
-    location: Yup.mixed().required("dharmshala_location_required"),
+    name: Yup.string().required("dharmshala_floor_name_required"),
+    description: Yup.mixed().required("dharmshala_floor_description_required"),
+    number: Yup.mixed().required("dharmshala_floor_number_required"),
   });
 
   const initialValues = useMemo(() => {
     return {
-      name: dharmshalaDetails?.data?.result?.name ?? "",
-      description: dharmshalaDetails?.data?.result?.description ?? "",
-      location: dharmshalaDetails?.data?.result?.location ?? "",
+      name: name,
+      description: description,
+      number: number,
     };
-  }, [dharmshalaDetails]);
+  }, [floorDetails]);
+
+  const URLParams = useParams("");
+  
 
   return (
-    <DharmshalaAddWraper>
+    <DharmshalaFloorAddWrapper>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -94,12 +84,12 @@ const EditDharmshala = () => {
             className="me-2  cursor-pointer"
             onClick={() =>
               history.push(
-                `/dharmshala/info?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
+                `/floors/${URLParams.buildingId}?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
               )
             }
           />
           <div className="editEvent">
-            <Trans i18nKey={"dharmshala_edit_dharmshala"} />
+          <Trans i18nKey={"dharmshala_floor_edit_dharmshala"} />
           </div>
         </div>
         {/* <div className="editEvent">
@@ -121,7 +111,7 @@ const EditDharmshala = () => {
       </div>
 
       <If
-        condition={dharmshalaDetails.isLoading || dharmshalaDetails.isFetching}
+        condition={floorDetails.isLoading || floorDetails.isFetching}
         disableMemo
       >
         <Then>
@@ -153,10 +143,10 @@ const EditDharmshala = () => {
           </Row>
         </Then>
         <Else>
-          {!dharmshalaDetails.isFetching && (
+        {!floorDetails.isFetching && (
             <div className="ms-sm-3 mt-1">
-              <AddDharmshalaForm
-                handleSubmit={handleDharmshalaUpdate}
+              <AddDharmshalaFloorForm
+                handleSubmit={handleDharmshalaFloorUpdate}
                 initialValues={initialValues}
                 validationSchema={schema}
                 editThumbnail
@@ -168,8 +158,9 @@ const EditDharmshala = () => {
           )}
         </Else>
       </If>
-    </DharmshalaAddWraper>
+    </DharmshalaFloorAddWrapper>
   );
 };
 
-export default EditDharmshala;
+export default EditFloor;
+

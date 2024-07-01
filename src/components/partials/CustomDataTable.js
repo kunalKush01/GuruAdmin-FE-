@@ -9,7 +9,7 @@ const conditionStyle = {
   },
 };
 
-const DataTableWarraper = styled.div`
+const DataTableWrapper = styled.div`
   .data-table-extensions-filter {
     display: none !important;
   }
@@ -86,7 +86,7 @@ function CustomDataTable({
 
   return (
     <>
-      <DataTableWarraper
+      <DataTableWrapper
         minWidth={minWidth}
         maxHeight={maxHeight ?? "  270px"}
         height={height}
@@ -103,7 +103,7 @@ function CustomDataTable({
           selectableRowSelected={selectableRowSelected}
           data={data}
         />
-      </DataTableWarraper>
+      </DataTableWrapper>
     </>
   );
 }

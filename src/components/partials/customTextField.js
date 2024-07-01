@@ -13,7 +13,6 @@ const CustomTextFieldWarper = styled.div`
     margin: ${(props) => props.margin ?? "auto"} !important;
   }
   label {
-    /* margin-bottom: 0px; */
     font: normal normal bold 15px/33px Noto Sans;
   }
   input::placeholder {
@@ -27,12 +26,43 @@ const CustomTextFieldWarper = styled.div`
     background-color: #fff7e8 !important;
     font: normal normal normal 13px/20px Noto Sans;
     border-radius: 20px;
+    height: 38px; /* Adjust height to match form controls */
+    padding-right: 30px; /* Space for the arrow */
   }
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
     display: none;
   }
+  select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    color: #583703 !important;
+    border: none !important;
+    background-color: #fff7e8 !important;
+    font: normal normal normal 13px/20px Noto Sans;
+    border-radius: 20px;
+    height: 38px;
+    width: 100%; /* Ensure the dropdown stretches to full width */
+    padding-right: 30px; /* Space for the arrow */
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23583703" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>'); /* Arrow icon */
+    background-repeat: no-repeat;
+    background-position: right 8px center; /* Position the arrow */
+    cursor: pointer; /* Show pointer cursor on hover */
+    outline: none; /* Remove default focus outline */
+    padding: 10px 20px; /* Padding inside the select box */
+  }
+  select:hover {
+    background-color: #e07a00; /* Background color when hovered */
+  }
+  select option {
+    background-color: #fff7e8; /* Background color of options */
+    padding: 10px 20px; /* Padding inside the options */
+    cursor: pointer; /* Show pointer cursor on options */
+  }
 `;
+
+
 
 export default function CustomTextField({
   required = false,
@@ -56,14 +86,25 @@ export default function CustomTextField({
           </label>
         )}
         <InputGroup>
-          <input
-            type={type}
-            className={"form-control"}
-            placeholder={placeholder}
-            value={field.value}
-            {...field}
-            {...props}
-          />
+          {type === "select" ? (
+            <select
+              className="form-control"
+              value={field.value}
+              {...field}
+              {...props}
+            >
+              {props.children} 
+            </select>
+          ) : (
+            <input
+              type={type}
+              className={"form-control"}
+              placeholder={placeholder}
+              value={field.value}
+              {...field}
+              {...props}
+            />
+          )}
         </InputGroup>
         <div style={{ height: "20px" }}>
           {meta.error && meta.touched && (

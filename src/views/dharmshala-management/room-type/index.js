@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import { Plus } from "react-feather";
@@ -10,26 +9,17 @@ import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
-import styled from "styled-components";
 
 import { getRoomTypeList } from "../../../api/dharmshala/dharmshalaInfo";
 import exportIcon from "../../../assets/images/icons/exportIcon.svg";
 import { ChangePeriodDropDown } from "../../../components/partials/changePeriodDropDown";
 import NoContent from "../../../components/partials/noContent";
 import { handleExport } from "../../../utility/utils/exportTabele";
-import { exportCattleJson, exportCattleJsonSample } from "./exportableJsonData";
 import RoomTypeInfoTable from "./table";
 import { ChangeCategoryType } from "../../../components/partials/categoryDropdown";
 import { Helmet } from "react-helmet";
+import {RoomTypeInfo} from "../dharmshalaStyles"
 
-const RoomTypeInfo = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-
-  .btn {
-    font-weight: bold;
-  }
-`;
 
 const RoomTypesInfo = () => {
   const history = useHistory();
@@ -37,9 +27,6 @@ const RoomTypesInfo = () => {
   const importFileRef = useRef();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
-  //const [isDeadAlive, setIsDeadAlive] = useState("All");
-  // const [cattleBreed, setCattleBreed] = useState(t("all"));
-
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 10,
@@ -48,19 +35,13 @@ const RoomTypesInfo = () => {
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
   const currentStatus = searchParams.get("status");
-  // const currentBreed = searchParams.get("breed");
   const currentFilter = searchParams.get("filter");
-
   const routPagination = pagination.page;
   const routFilter = dropDownName;
-  //const routeStatus = isDeadAlive;
-  // const routeBreed = cattleBreed;
 
   useEffect(() => {
     if (currentPage || currentFilter || currentStatus) {
-      // setCattleBreed(currentBreed);
       setdropDownName(currentFilter);
-      //setIsDeadAlive(currentStatus);
       setPagination({ ...pagination, page: parseInt(currentPage) });
     }
   }, []);
@@ -93,10 +74,6 @@ const RoomTypesInfo = () => {
   const roomTypeList = useQuery(
     [
       "roomTypeList",
-      //filterStartDate,
-      //filterEndDate,
-      //isDeadAlive,
-      // cattleBreed,
       pagination?.page,
       selectedLang.id,
       searchBarValue,
@@ -105,11 +82,9 @@ const RoomTypesInfo = () => {
       getRoomTypeList({
         ...pagination,
         search: searchBarValue,
-        //startDate: filterStartDate,
-        //endDate: filterEndDate,
-        //deadStatus: isDeadAlive,
-        // breed: cattleBreed,
         languageId: selectedLang.id,
+      }).then(data => {
+        return data;
       })
   );
 
@@ -118,27 +93,9 @@ const RoomTypesInfo = () => {
     [roomTypeList]
   );
 
-  //   const exportDataQuery = useQuery([], () =>
-  //     exportData({
-  //       limit: dharmshalaList?.data?.totalResults,
-  //       startDate: filterStartDate,
-  //       deadStatus: isDeadAlive,
-  //       endDate: filterEndDate,
-  //       languageId: selectedLang.id,
-  //     })
-  //   );
-
   const queryClient = useQueryClient();
 
-  //   const handleImportFile = async (event) => {
-  //     const file = event.target.files[0];
-  //     if (file) {
-  //       const formData = new FormData();
-  //       formData.append("file", file);
-  //       await importFile(formData);
-  //       queryClient.invalidateQueries(["roomTypeList"]);
-  //     }
-  //   };
+  const isMobileView = window.innerWidth <= 784;
 
   return (
     <RoomTypeInfo>
@@ -149,80 +106,7 @@ const RoomTypesInfo = () => {
       <div>
         <div className="d-sm-flex mb-1 justify-content-between align-items-center ">
           <Trans i18nKey="dharmshala_roomtypes" />
-
           <div className="d-flex mt-1 mt-sm-0 justify-content-between">
-            {/*<ChangeCategoryType
-              className={"me-1"}
-              categoryTypeArray={[
-                {
-                  id: 1,
-                  name: t("all"),
-                },
-                {
-                  id: 2,
-                  name: t("cattle_dead"),
-                },
-                {
-                  id: 3,
-                  name: t("cattle_alive"),
-                },
-              ]}
-              typeName={isDeadAlive}
-              setTypeName={(e) => {
-                setIsDeadAlive(e.target.name);
-                setPagination({ page: 1 });
-                history.push(
-                  `/cattle/info?page=${1}&status=${
-                    e.target.name
-                  }&filter=${dropDownName}`
-                );
-              }}
-            />
-
-            {/* <ChangeCategoryType
-              className={"me-1"}
-              categoryTypeArray={[
-                {
-                  id: 1,
-                  name: t("all"),
-                },
-                {
-                  id: 2,
-                  name: t("cattle_dead"),
-                },
-                {
-                  id: 3,
-                  name: t("cattle_alive"),
-                },
-              ]}
-              typeName={cattleBreed}
-              setTypeName={(e) => {
-                setCattleBreed(e.target.name);
-                setPagination({ page: 1 });
-                history.push(
-                  `/cattle/info?page=${1}&status=${isDeadAlive}&breed=${
-                    e.target.name
-                  }&filter=${dropDownName}`
-                );
-              }}
-            /> */}
-
-            {/*<ChangePeriodDropDown
-              className={"me-1"}
-              dropDownName={dropDownName}
-              setdropDownName={(e) => {
-                setdropDownName(e.target.name);
-                setPagination({ page: 1 });
-                history.push(
-                  `/cattle/info?page=${1}&status=${isDeadAlive}&filter=${
-                    e.target.name
-                  }`
-                );
-              }}
-            />*/}
-
-            {/* {allPermissions?.name === "all" ||
-            subPermission?.includes(WRITE) ? ( */}
             <Button
               className="me-1"
               color="primary"
@@ -240,52 +124,7 @@ const RoomTypesInfo = () => {
               </span>
             </Button>
 
-            {/*<Button
-              className="me-1"
-              color="primary"
-              onClick={() => importFileRef.current.click()}
-            >
-              Import File
-            </Button>
-            {/* <Button
-              color="primary"
-              className="me-1"
-              onClick={() =>
-                handleExport({
-                  dataName: exportCattleJsonSample([]),
-                  fileName: "Sample Cattles List",
-                  sheetName: "Sample Cattles List",
-                })
-              }
-            >
-              Sample File
-            </Button> }
-            <Button
-              color="primary"
-              onClick={() =>
-                handleExport({
-                  dataName: exportCattleJson(
-                    exportDataQuery?.data.results ?? []
-                  ),
-                  fileName: "Cattles List",
-                  sheetName: "Cattles List",
-                })
-              }
-            >
-              <Trans i18nKey={"export_report"} />
-              <img src={exportIcon} width={15} className="ms-2" />
-            </Button>
-
-            <input
-              type="file"
-              ref={importFileRef}
-              accept=""
-              className="d-none"
-              onChange={handleImportFile}
-            />
-            {/* ) : (
-              ""
-            )} */}
+            
           </div>
         </div>
         <div style={{ height: "10px" }}>
@@ -315,10 +154,7 @@ const RoomTypesInfo = () => {
                   height="160px"
                   currentFilter={routFilter}
                   currentPage={routPagination}
-                  // currentBreed={routeBreed}
-                  //currentStatus={routeStatus}
-                  // allPermissions={allPermissions}
-                  // subPermission={subPermission}
+                  isMobileView={isMobileView}
                 />
               </Then>
               <Else>
