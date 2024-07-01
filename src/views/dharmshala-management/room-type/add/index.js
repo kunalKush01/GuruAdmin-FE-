@@ -9,63 +9,12 @@ import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddRoomTypeForm from "../../../../components/roomType/addForm";
 import {RoomTypeAddWrapper} from "../../dharmshalaStyles";
 
-// const RoomTypeAddWrapper = styled.div`
-//   color: #583703;
-//   font: normal normal bold 20px/33px Noto Sans;
-//   .ImagesVideos {
-//     font: normal normal bold 15px/33px Noto Sans;
-//   }
-//   .addEvent {
-//     color: #583703;
-//     display: flex;
-//     align-items: center;
-//   }
-// `;
-
-// export const cattleType = [
-//   {
-//     label: "Cow",
-//     value: "cow",
-//   },
-//   {
-//     label: "Bull",
-//     value: "bull",
-//   },
-//   {
-//     label: "Calf",
-//     value: "calf",
-//   },
-//   {
-//     label: "Other",
-//     value: "other",
-//   },
-// ];
-
-// export const cattleSource = [
-//   {
-//     label: "Owner",
-//     value: "owner",
-//   },
-//   {
-//     label: "Gaurakshak",
-//     value: "gaurakshak",
-//   },
-//   {
-//     label: "Police",
-//     value: "police",
-//   },
-//   {
-//     label: "Other",
-//     value: "other",
-//   },
-// ];
 
 const AddRoomType = () => {
   const history = useHistory();
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
   const currentStatus = searchParams.get("status");
-  // const currentBreed = searchParams.get("breed");
   const currentFilter = searchParams.get("filter");
 
   const handleCreateRoomType = async (payload) => {
@@ -112,8 +61,6 @@ const AddRoomType = () => {
           initialValues={initialValues}
           validationSchema={schema}
           buttonName="dharmshala_roomtype_add"
-          //          cattleType={cattleType}
-          //          cattleSource={cattleSource}
         />
       </div>
     </RoomTypeAddWrapper>

@@ -2,7 +2,7 @@ import React from "react";
 import { Trans } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
-
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { createDharmshalaFloor } from "../../../../api/dharmshala/dharmshalaInfo";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddDharmshalaFloorForm from "../../../../components/dharmshalaFloor/addForm";
@@ -10,11 +10,8 @@ import { DharmshalaFloorAddWrapper } from "../../dharmshalaStyles";
 
 const AddDharmshalaFloor = () => {
   const history = useHistory();
-<<<<<<< Updated upstream
-=======
   const { buildingId } = useParams();
   const trustId = localStorage.getItem("trustId");
->>>>>>> Stashed changes
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
   const currentStatus = searchParams.get("status");
@@ -28,23 +25,20 @@ const AddDharmshalaFloor = () => {
     name: Yup.string().required("dharmshala_floor_name_required"),
     description: Yup.mixed().required("dharmshala_floor_description_required"),
     number: Yup.mixed().required("dharmshala_floor_number_required"),
+    buildingId: Yup.mixed().required("dharmshala_floor_number_required"),
+    dharmshalaId: Yup.mixed().required("dharmshala_floor_number_required")
   });
 
   const initialValues = {
     name: "",
     description: "",
     number: "",
-<<<<<<< Updated upstream
-  };
-
-=======
     buildingId: buildingId,
     dharmshalaId: trustId,
   };
 
   const URLParams = useParams("");
   
->>>>>>> Stashed changes
   return (
     <DharmshalaFloorAddWrapper>
       <div className="d-flex justify-content-between align-items-center ">
@@ -54,11 +48,7 @@ const AddDharmshalaFloor = () => {
             className="me-2  cursor-pointer"
             onClick={() =>
               history.push(
-<<<<<<< Updated upstream
-                `/dharmshala/info?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
-=======
                 `/floors/${URLParams.buildingId}?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
->>>>>>> Stashed changes
               )
             }
           />

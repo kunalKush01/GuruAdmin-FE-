@@ -88,17 +88,16 @@ export const DharmshalaRoomInfo = styled.div`
 `;
 
 export const DharmshalaRoomTableWrapper = styled.div`
-  color: #583703 !important;
-  margin-bottom: 1rem;
-  font: normal normal bold 15px/23px Noto Sans;
-
-  .modal-body {
-    max-height: 600px !important;
-    overflow: auto !important;
-  }
-  .tableDes p {
-    margin-bottom: 0;
-  }
+color: #583703 !important;
+margin-bottom: 1rem;
+font: normal normal bold 15px/23px Noto Sans;
+.modal-body {
+  max-height: 600px !important;
+  overflow: auto !important;
+}
+.tableDes p {
+  margin-bottom: 0;
+}
 `;
 
 export const DharmshalaRoomAddWrapper = styled.div`

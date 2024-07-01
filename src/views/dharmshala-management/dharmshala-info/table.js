@@ -18,7 +18,6 @@ const DharmshalaInfoTable = ({
   maxHeight,
   height,
   currentFilter,
-  // currentBreed,
   currentStatus,
   currentPage,
   isMobileView,
@@ -73,62 +72,6 @@ const DharmshalaInfoTable = ({
   ];
 
   const DharmshalasInfo = useMemo(() => {
-<<<<<<< Updated upstream
-    return data?.map((item, idx) => {
-      return {
-        id: idx + 1,
-        name: item?.name,
-        description: item?.description,
-        location: item?.location,
-        floorCount: (
-          <div
-            style={{ fontWeight: "bold", cursor: "pointer" }}
-            onClick={() =>
-              history.push(`/dharmshala/info/${item._id}/floor`, item._id)
-            }
-          >
-            {item?.floorCount === 0 ? (
-              <Button size="lg" color="primary" className="px-1 py-0">
-                {" "}
-                +{" "}
-              </Button>
-            ) : item?.floorCount > 1 ? (
-              `${item?.floorCount} ${t("Floors")}`
-            ) : (
-              `${item?.floorCount} ${t("Floor")}`
-            )}
-          </div>
-        ),
-        edit: (
-          <img
-            src={editIcon}
-            width={35}
-            className="cursor-pointer "
-            onClick={() => {
-              history.push(
-                `/dharmshala/info/${item?._id}?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
-              );
-            }}
-          />
-        ),
-        delete: (
-          // allPermissions?.name === "all" || subPermission?.includes(DELETE) ? (
-          <img
-            src={deleteIcon}
-            width={35}
-            className="cursor-pointer "
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              Swal.fire({
-                title: `<img src="${confirmationIcon}"/>`,
-                html: `
-                                      <h3 class="swal-heading mt-1">${t(
-                                        "dharmshala_delete"
-                                      )}</h3>
-                                      <p>${t("dharmshala_delete_sure")}</p>
-                                      `,
-=======
     return data?.map((item, idx) => ({
       id: idx + 1,
       name: item?.name,
@@ -202,7 +145,6 @@ const DharmshalaInfoTable = ({
                   )}</h3>
                   <p>${t("dharmshala_building_delete_sure")}</p>
                 `,
->>>>>>> Stashed changes
                 showCloseButton: false,
                 showCancelButton: true,
                 focusConfirm: true,

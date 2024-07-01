@@ -105,9 +105,9 @@ const AddRoomForm = ({
                       isError={isRoomTypesError}
                     >
                       {isRoomTypesLoading ? (
-                        <option>Loading...</option>
+                        <option>{t("loading")}...</option>
                       ) : isRoomTypesError ? (
-                        <option>Error loading room types</option>
+                        <option>{t("error_loading_room_types")}</option>
                       ) : (
                         roomTypes.map((roomType) => (
                           <option key={roomType._id} value={roomType._id}>

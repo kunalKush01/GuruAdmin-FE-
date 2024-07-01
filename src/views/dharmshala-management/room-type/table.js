@@ -38,65 +38,6 @@ const RoomTypeInfoTable = ({
   });
 
   const RoomTypesInfo = useMemo(() => {
-<<<<<<< Updated upstream
-    return data?.map((item, idx) => {
-      return {
-        id: idx + 1,
-        name: item?.name,
-        description: item?.description,
-        location: item?.location,
-        capacity: item?.capacity,
-        price: item?.price,
-        edit: (
-          <img
-            src={editIcon}
-            width={35}
-            className="cursor-pointer "
-            onClick={() => {
-              history.push(
-                `/roomtype/info/${item?._id}?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
-              );
-            }}
-          />
-        ),
-        delete: (
-          // allPermissions?.name === "all" || subPermission?.includes(DELETE) ? (
-          <img
-            src={deleteIcon}
-            width={35}
-            className="cursor-pointer "
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              Swal.fire({
-                title: `<img src="${confirmationIcon}"/>`,
-                html: `
-                                      <h3 class="swal-heading mt-1">${t(
-                                        "dharmshala_roomtype_delete"
-                                      )}</h3>
-                                      <p>${t(
-                                        "dharmshala_roomtype_delete_sure"
-                                      )}</p>
-                                      `,
-                showCloseButton: false,
-                showCancelButton: true,
-                focusConfirm: true,
-                cancelButtonText: ` ${t("cancel")}`,
-                cancelButtonAriaLabel: ` ${t("cancel")}`,
-
-                confirmButtonText: ` ${t("confirm")}`,
-                confirmButtonAriaLabel: "Confirm",
-              }).then(async (result) => {
-                if (result.isConfirmed) {
-                  deleteMutation.mutate(item._id);
-                }
-              });
-            }}
-          />
-        ),
-      };
-    });
-=======
     return data?.map((item, idx) => ({
       id: idx + 1,
       name: item?.name,
@@ -139,7 +80,6 @@ const RoomTypeInfoTable = ({
         />
       ),
     }));
->>>>>>> Stashed changes
   }, [data]);
 
   return (

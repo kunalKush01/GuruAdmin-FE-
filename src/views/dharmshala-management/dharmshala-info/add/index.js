@@ -9,63 +9,12 @@ import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddDharmshalaForm from "../../../../components/dharmshalaInfo/addForm";
 import {DharmshalaAddWrapper} from "../../dharmshalaStyles";
 
-// const DharmshalaAddWrapper = styled.div`
-//   color: #583703;
-//   font: normal normal bold 20px/33px Noto Sans;
-//   .ImagesVideos {
-//     font: normal normal bold 15px/33px Noto Sans;
-//   }
-//   .addEvent {
-//     color: #583703;
-//     display: flex;
-//     align-items: center;
-//   }
-// `;
-
-// export const cattleType = [
-//   {
-//     label: "Cow",
-//     value: "cow",
-//   },
-//   {
-//     label: "Bull",
-//     value: "bull",
-//   },
-//   {
-//     label: "Calf",
-//     value: "calf",
-//   },
-//   {
-//     label: "Other",
-//     value: "other",
-//   },
-// ];
-
-// export const cattleSource = [
-//   {
-//     label: "Owner",
-//     value: "owner",
-//   },
-//   {
-//     label: "Gaurakshak",
-//     value: "gaurakshak",
-//   },
-//   {
-//     label: "Police",
-//     value: "police",
-//   },
-//   {
-//     label: "Other",
-//     value: "other",
-//   },
-// ];
 
 const AddDharmshala = () => {
   const history = useHistory();
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
   const currentStatus = searchParams.get("status");
-  // const currentBreed = searchParams.get("breed");
   const currentFilter = searchParams.get("filter");
 
   const handleCreateDharmshala = async (payload) => {
@@ -73,9 +22,9 @@ const AddDharmshala = () => {
   };
 
   const schema = Yup.object().shape({
-    name: Yup.string().required("dharmshala_name_required"),
-    description: Yup.mixed().required("dharmshala_description_required"),
-    location: Yup.mixed().required("dharmshala_location_required"),
+    name: Yup.string().required("building_name_required"),
+    description: Yup.mixed().required("building_description_required"),
+    location: Yup.mixed().required("building_location_required"),
   });
 
   const initialValues = {
@@ -98,7 +47,7 @@ const AddDharmshala = () => {
             }
           />
           <div className="addEvent">
-            <Trans i18nKey={"dharmshala_add"} />
+          <Trans i18nKey={"building_add"} />
           </div>
         </div>
       </div>
@@ -107,9 +56,7 @@ const AddDharmshala = () => {
           handleSubmit={handleCreateDharmshala}
           initialValues={initialValues}
           validationSchema={schema}
-          buttonName="dharmshala_add"
-          //          cattleType={cattleType}
-          //          cattleSource={cattleSource}
+          buttonName="building_add"
         />
       </div>
     </DharmshalaAddWrapper>
