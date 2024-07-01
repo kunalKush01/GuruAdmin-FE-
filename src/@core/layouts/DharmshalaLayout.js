@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import CattleTabBar from "../../components/cattleTabBar";
+import DharmshalaTabBar from "../../components/dharmshalaTabBar";
 import { dharmshalaHeader } from "../../utility/subHeaderContent/dharmshalaHeader";
+
 
 const DharmshalaLayout = ({ children }) => {
   const [active, setActive] = useState(location.pathname);
 
   return (
     <div className="bg-danger " style={{ height: "calc(100dvh - 155px)" }}>
-      <CattleTabBar
+      <DharmshalaTabBar
         tabs={dharmshalaHeader}
         active={active}
         setActive={setActive}

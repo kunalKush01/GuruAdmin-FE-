@@ -701,7 +701,16 @@ const Routes = [
     subPermission: READ,
   },
   {
-    path: "/dharmshala/info/add",
+    path: "/building/edit/:buildingId",
+    component: lazy(() =>
+      import("../../views/dharmshala-management/dharmshala-info/edit/index.js")
+    ),
+    //exact: true,
+    type: "punyarjak",
+    subPermission: READ,
+  },
+  {
+    path: "/building/info/add",
     component: lazy(() =>
       import("../../views/dharmshala-management/dharmshala-info/add/index.js")
     ),
@@ -709,7 +718,7 @@ const Routes = [
     type: "dharmshala-info",
     subPermission: WRITE,
   },
-
+  
   {
     path: "/dharmshala/info/:buildingId",
     component: lazy(() =>
@@ -748,25 +757,52 @@ const Routes = [
     subPermission: WRITE,
   },
   {
-    path: "/dharmshala/info/:buildingId/floor",
+    path: "/floors/:buildingId",
     component: lazy(() =>
       import("../../views/dharmshala-management/dharmshala-floor/index.js")
     ),
-    exact: true,
-    type: "dharmshala-floor",
+    //exact: true,
+    type: "punyarjak",
     subPermission: READ,
   },
   {
-    path: "/dharmshala/info/:buildingId/floor/add",
+    path: "/room/:floorId/:buildingId",
+    component: lazy(() =>
+      import("../../views/dharmshala-management/dharmshala-room/index.js")
+    ),
+    //exact: true,
+    type: "punyarjak",
+    subPermission: READ,
+  },
+  // {
+  //   path: "/dharmshala/info/:buildingId/floor",
+  //   component: lazy(() =>
+  //     import("../../views/dharmshala-management/dharmshala-floor/index.js")
+  //   ),
+  //   exact: true,
+  //   type: "dharmshala-floor",
+  //   subPermission: READ,
+  // },
+  {
+    path: "/floor/add/:buildingId",
     component: lazy(() =>
       import("../../views/dharmshala-management/dharmshala-floor/add/index.js")
     ),
-    exact: true,
-    type: "dharmshala-floor",
+    //exact: true,
+    type: "punyarjak",
     subPermission: READ,
   },
   {
-    path: "/dharmshala/info/:buildingId/floor/:floorId",
+    path: "/rooms/add/:floorId/:buildingId",
+    component: lazy(() =>
+      import("../../views/dharmshala-management/dharmshala-room/add/index.js")
+    ),
+    //exact: true,
+    type: "punyarjak",
+    subPermission: READ,
+  },
+  {
+    path: "/floor/edit/:floorId/:buildingId", //originally /dharmshala/info/:buildingId/floor/:floorId
     component: lazy(() =>
       import("../../views/dharmshala-management/dharmshala-floor/edit/index.js")
     ),
@@ -774,6 +810,68 @@ const Routes = [
     type: "dharmshala-floor",
     subPermission: READ,
   },
+
+  {
+    path: "/rooms/edit/:roomId/:floorId/:buildingId",
+    component: lazy(() =>
+      import("../../views/dharmshala-management/dharmshala-room/edit/index.js")
+    ),
+    exact: true,
+    type: "dharmshala-room",
+    subPermission: READ,
+  },
+  {
+    path: "/feedback",
+    component: lazy(() =>
+      import("../../views/dharmshala-management/feedback/index.js")
+    ),
+    exact: true,
+    type: "dharmshala-floor",
+    subPermission: READ,
+  },
+
+  //Booking Routes
+  {
+    path: "/booking/info",
+    component: lazy(() =>
+      import("../../views/dharmshala-management/dharmshala-booking/index.js")
+    ),
+    exact: true,
+    type: "booking-info",
+    subPermission: READ,
+  },
+  {
+    path: "/booking/add",
+    component: lazy(() =>
+      import("../../views/dharmshala-management/dharmshala-booking/add/index.js")
+    ),
+    exact: true,
+    type: "booking-info",
+    subPermission: WRITE,
+  },
+
+
+  {
+    path: "/booking/edit/:bookingId",
+    component: lazy(() =>
+      import("../../views/dharmshala-management/dharmshala-booking/edit/index.js")
+    ),
+    exact: true,
+    type: "booking-info",
+    subPermission: WRITE,
+  },
+
+  {
+    path: "/booking/calendar",
+    component: lazy(() =>
+      import("../../views/dharmshala-management/dharmshala-booking/calendar/index.js")
+    ),
+    exact: true,
+    type: "booking-info",
+    subPermission: WRITE,
+  },
+
+
 ];
 
 export { DefaultRoute, Routes, TemplateTitle };

@@ -17,20 +17,7 @@ import {
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddRoomTypeForm from "../../../../components/roomType/addForm";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
-//import { DharmshalaSource, dharmshalaType } from "../add";
-
-const RoomTypeAddWraper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addEvent {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import {RoomTypeAddWrapper} from "../../dharmshalaStyles";
 
 const getLangId = (langArray, langSelection) => {
   let languageId;
@@ -49,9 +36,12 @@ const EditRoomType = () => {
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
   const searchParams = new URLSearchParams(history.location.search);
+  const name = searchParams.get("name")
+  const description = searchParams.get("description")
+  const capacity = searchParams.get("capacity")
+  const price = searchParams.get("price")
   const currentPage = searchParams.get("page");
   const currentStatus = searchParams.get("status");
-  // const currentBreed = searchParams.get("breed");
   const currentFilter = searchParams.get("filter");
 
   const [langSelection, setLangSelection] = useState(
@@ -82,15 +72,15 @@ const EditRoomType = () => {
 
   const initialValues = useMemo(() => {
     return {
-      name: roomTypeDetails?.data?.result?.name ?? "",
-      description: roomTypeDetails?.data?.result?.description ?? "",
-      capacity: roomTypeDetails?.data?.result?.capacity ?? "",
-      price: roomTypeDetails?.data?.result?.price ?? "",
+      name: name,
+      description: description,
+      capacity: capacity,
+      price: price,
     };
   }, [roomTypeDetails]);
 
   return (
-    <RoomTypeAddWraper>
+    <RoomTypeAddWrapper>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -172,7 +162,7 @@ const EditRoomType = () => {
           )}
         </Else>
       </If>
-    </RoomTypeAddWraper>
+    </RoomTypeAddWrapper>
   );
 };
 

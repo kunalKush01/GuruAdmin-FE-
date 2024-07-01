@@ -6,15 +6,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { Prompt, useHistory } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
-
-// import {
-//   findAllCattle,
-//   findAllCattleBreed,
-//   findAllCattleCategory,
-// } from "../../api/cattle/cattleMedical";
-
 import CustomTextField from "../partials/customTextField";
-//import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 const FormikWrapper = styled.div`
   font: normal normal bold 15px/33px Noto Sans;
@@ -35,37 +27,12 @@ const AddRoomTypeForm = ({
   const { t } = useTranslation();
   const [showPrompt, setShowPrompt] = useState(true);
   const [loading, setLoading] = useState(false);
-  //   const [cattleImageName, setCattleImageName] = useState(props.cattleImageName);
-  //   const [ownerImageName, setOwnerImageName] = useState(props.ownerImageName);
 
-  //   const [phoneNumber, setPhoneNumber] = useState(getMobile ?? "");
-  //   const [purchaserNumber, setPurchaserNumber] = useState(
-  //    getPurchaserMobile ?? ""
-  //  );
-
-  //   const [imageSpinner, setImageSpinner] = useState(false);
-  //   const [ownerImageUploading, setOwnerImageUploading] = useState(false);
-
-  //   const randomNumber = Math.floor(100000000000 + Math.random() * 900000000000);
-
-  //   const loadOption = async (tagId) => {
-  //     const res = await findAllCattle({ cattleId: tagId });
-  //     return res.results;
-  //   };
-
-  //   const categoriesLoadOption = async (category) => {
-  //     const res = await findAllCattleCategory({ name: category });
-  //     return res.results?.map((item) => {
-  //       return { ...item, name: ConverFirstLatterToCapital(item?.name ?? "") };
-  //     });
-  //   };
-
-  //   const breedLoadOption = async (breed) => {
-  //     const res = await findAllCattleBreed({ name: breed });
-  //     return res.results?.map((item) => {
-  //       return { ...item, name: ConverFirstLatterToCapital(item?.name ?? "") };
-  //     });
-  //   };
+  const searchParams = new URLSearchParams(history.location.search);
+  console.log(searchParams)
+  const currentPage = searchParams.get("page");
+  const currentStatus = searchParams.get("status");
+  const currentFilter = searchParams.get("filter");
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
@@ -74,12 +41,23 @@ const AddRoomTypeForm = ({
       if (!data?.error) {
         queryClient.invalidateQueries(["roomTypeList"]);
         setLoading(false);
-        history.push("/roomtype/info");
       } else if (data?.error || data === undefined) {
         setLoading(false);
       }
     },
   });
+
+  const handleFormSubmit = (values) => {
+    setLoading(true);
+    setShowPrompt(false);
+    const { ...formValues } = values;
+    const data = {
+      ...formValues,
+    };
+    mutation.mutate(data);
+    history.push(`/roomtype/info?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
+  )
+  };
 
   return (
     <FormikWrapper>
@@ -87,15 +65,7 @@ const AddRoomTypeForm = ({
         enableReinitialize
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(values) => {
-          setLoading(true);
-          setShowPrompt(false);
-          const { ...formValues } = values;
-          const data = {
-            ...formValues,
-          };
-          mutation.mutate(data);
-        }}
+        onSubmit={handleFormSubmit}
       >
         {(formik) => (
           <Form>
@@ -137,7 +107,7 @@ const AddRoomTypeForm = ({
                       required
                       autoFocus
                       onInput={(e) =>
-                        (e.target.value = e.target.value.slice(0, 30))
+                        (e.target.value = e.target.value.slice(0, 256))
                       }
                     />
                   </Col>
