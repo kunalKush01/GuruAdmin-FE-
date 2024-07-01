@@ -15,7 +15,6 @@ import exportIcon from "../../../assets/images/icons/exportIcon.svg";
 import { ChangePeriodDropDown } from "../../../components/partials/changePeriodDropDown";
 import NoContent from "../../../components/partials/noContent";
 import { handleExport } from "../../../utility/utils/exportTabele";
-import { exportCattleJson, exportCattleJsonSample } from "./exportableJsonData";
 import DharmshalaFloorTable from "./table";
 import { ChangeCategoryType } from "../../../components/partials/categoryDropdown";
 import { Helmet } from "react-helmet";
@@ -26,20 +25,10 @@ import "../dharmshala_css/dharmshalafloors.css";
 const DharmshalaFloors = () => {
   const history = useHistory();
   const { buildingId } = useParams();
-<<<<<<< Updated upstream
-  console.log(buildingId);
-=======
->>>>>>> Stashed changes
   const { t } = useTranslation();
   const importFileRef = useRef();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
-<<<<<<< Updated upstream
-  //const [isDeadAlive, setIsDeadAlive] = useState("All");
-  // const [cattleBreed, setCattleBreed] = useState(t("all"));
-
-=======
->>>>>>> Stashed changes
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 10,
@@ -47,22 +36,14 @@ const DharmshalaFloors = () => {
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
   const currentStatus = searchParams.get("status");
-  // const currentBreed = searchParams.get("breed");
   const currentFilter = searchParams.get("filter");
 
   const routPagination = pagination.page;
   const routFilter = dropDownName;
-<<<<<<< Updated upstream
-  //const routeStatus = isDeadAlive;
-  // const routeBreed = cattleBreed;
-=======
->>>>>>> Stashed changes
 
   useEffect(() => {
     if (currentPage || currentFilter || currentStatus) {
-      // setCattleBreed(currentBreed);
       setdropDownName(currentFilter);
-      //setIsDeadAlive(currentStatus);
       setPagination({ ...pagination, page: parseInt(currentPage) });
     }
   }, []);
@@ -108,11 +89,7 @@ const DharmshalaFloors = () => {
     [dharmshalaFloorList]
   );
 
-<<<<<<< Updated upstream
-  const queryClient = useQueryClient();
-=======
   const isMobileView = window.innerWidth <= 784;
->>>>>>> Stashed changes
 
   return (
     <DharmshalaFloorInfo>
@@ -136,89 +113,13 @@ const DharmshalaFloors = () => {
               <Trans i18nKey={"dharmshala_floors_registered"} />
             </div>
           </div>
-<<<<<<< Updated upstream
-          <div className="d-flex mt-1 mt-sm-0 justify-content-between">
-            {/*<ChangeCategoryType
-              className={"me-1"}
-              categoryTypeArray={[
-                {
-                  id: 1,
-                  name: t("all"),
-                },
-                {
-                  id: 2,
-                  name: t("cattle_dead"),
-                },
-                {
-                  id: 3,
-                  name: t("cattle_alive"),
-                },
-              ]}
-              typeName={isDeadAlive}
-              setTypeName={(e) => {
-                setIsDeadAlive(e.target.name);
-                setPagination({ page: 1 });
-                history.push(
-                  `/cattle/info?page=${1}&status=${
-                    e.target.name
-                  }&filter=${dropDownName}`
-                );
-              }}
-            />
-
-            {/* <ChangeCategoryType
-              className={"me-1"}
-              categoryTypeArray={[
-                {
-                  id: 1,
-                  name: t("all"),
-                },
-                {
-                  id: 2,
-                  name: t("cattle_dead"),
-                },
-                {
-                  id: 3,
-                  name: t("cattle_alive"),
-                },
-              ]}
-              typeName={cattleBreed}
-              setTypeName={(e) => {
-                setCattleBreed(e.target.name);
-                setPagination({ page: 1 });
-                history.push(
-                  `/cattle/info?page=${1}&status=${isDeadAlive}&breed=${
-                    e.target.name
-                  }&filter=${dropDownName}`
-                );
-              }}
-            /> */}
-
-            {/*<ChangePeriodDropDown
-              className={"me-1"}
-              dropDownName={dropDownName}
-              setdropDownName={(e) => {
-                setdropDownName(e.target.name);
-                setPagination({ page: 1 });
-                history.push(
-                  `/cattle/info?page=${1}&status=${isDeadAlive}&filter=${
-                    e.target.name
-                  }`
-                );
-              }}
-            />*/}
-
-            {/* {allPermissions?.name === "all" ||
-            subPermission?.includes(WRITE) ? ( */}
-=======
           <div className="d-flex mt-1 mt-sm-0 right-container">
->>>>>>> Stashed changes
             <Button
               className="me-1"
               color="primary"
               onClick={() =>
                 history.push(
-                  `/dharmshala/info/${buildingId}/floor/add?page=${pagination.page}&filter=${dropDownName}`
+                  `/floor/add/${buildingId}/add?page=${pagination.page}&filter=${dropDownName}`
                 )
               }
             >
@@ -229,53 +130,6 @@ const DharmshalaFloors = () => {
                 <Trans i18nKey={"dharmshala_floor_add"} />
               </span>
             </Button>
-
-            {/*<Button
-              className="me-1"
-              color="primary"
-              onClick={() => importFileRef.current.click()}
-            >
-              Import File
-            </Button>
-            {/* <Button
-              color="primary"
-              className="me-1"
-              onClick={() =>
-                handleExport({
-                  dataName: exportCattleJsonSample([]),
-                  fileName: "Sample Cattles List",
-                  sheetName: "Sample Cattles List",
-                })
-              }
-            >
-              Sample File
-            </Button> }
-            <Button
-              color="primary"
-              onClick={() =>
-                handleExport({
-                  dataName: exportCattleJson(
-                    exportDataQuery?.data.results ?? []
-                  ),
-                  fileName: "Cattles List",
-                  sheetName: "Cattles List",
-                })
-              }
-            >
-              <Trans i18nKey={"export_report"} />
-              <img src={exportIcon} width={15} className="ms-2" />
-            </Button>
-
-            <input
-              type="file"
-              ref={importFileRef}
-              accept=""
-              className="d-none"
-              onChange={handleImportFile}
-            />
-            {/* ) : (
-              ""
-            )} */}
           </div>
         </div>
         <div style={{ height: "10px" }}>
@@ -309,14 +163,7 @@ const DharmshalaFloors = () => {
                   height="160px"
                   currentFilter={routFilter}
                   currentPage={routPagination}
-<<<<<<< Updated upstream
-                  // currentBreed={routeBreed}
-                  //currentStatus={routeStatus}
-                  // allPermissions={allPermissions}
-                  // subPermission={subPermission}
-=======
                   isMobileView={isMobileView}
->>>>>>> Stashed changes
                 />
               </Then>
               <Else>

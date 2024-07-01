@@ -35,22 +35,13 @@ const RoomTypesInfo = () => {
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
   const currentStatus = searchParams.get("status");
-  // const currentBreed = searchParams.get("breed");
   const currentFilter = searchParams.get("filter");
-
   const routPagination = pagination.page;
   const routFilter = dropDownName;
-<<<<<<< Updated upstream
-  //const routeStatus = isDeadAlive;
-  // const routeBreed = cattleBreed;
-=======
->>>>>>> Stashed changes
 
   useEffect(() => {
     if (currentPage || currentFilter || currentStatus) {
-      // setCattleBreed(currentBreed);
       setdropDownName(currentFilter);
-      //setIsDeadAlive(currentStatus);
       setPagination({ ...pagination, page: parseInt(currentPage) });
     }
   }, []);
@@ -83,10 +74,6 @@ const RoomTypesInfo = () => {
   const roomTypeList = useQuery(
     [
       "roomTypeList",
-      //filterStartDate,
-      //filterEndDate,
-      //isDeadAlive,
-      // cattleBreed,
       pagination?.page,
       selectedLang.id,
       searchBarValue,
@@ -95,16 +82,9 @@ const RoomTypesInfo = () => {
       getRoomTypeList({
         ...pagination,
         search: searchBarValue,
-        //startDate: filterStartDate,
-        //endDate: filterEndDate,
-        //deadStatus: isDeadAlive,
-        // breed: cattleBreed,
         languageId: selectedLang.id,
-<<<<<<< Updated upstream
-=======
       }).then(data => {
         return data;
->>>>>>> Stashed changes
       })
   );
 
@@ -113,19 +93,6 @@ const RoomTypesInfo = () => {
     [roomTypeList]
   );
 
-<<<<<<< Updated upstream
-  //   const exportDataQuery = useQuery([], () =>
-  //     exportData({
-  //       limit: dharmshalaList?.data?.totalResults,
-  //       startDate: filterStartDate,
-  //       deadStatus: isDeadAlive,
-  //       endDate: filterEndDate,
-  //       languageId: selectedLang.id,
-  //     })
-  //   );
-
-=======
->>>>>>> Stashed changes
   const queryClient = useQueryClient();
 
   const isMobileView = window.innerWidth <= 784;
@@ -139,84 +106,7 @@ const RoomTypesInfo = () => {
       <div>
         <div className="d-sm-flex mb-1 justify-content-between align-items-center ">
           <Trans i18nKey="dharmshala_roomtypes" />
-<<<<<<< Updated upstream
-
           <div className="d-flex mt-1 mt-sm-0 justify-content-between">
-            {/*<ChangeCategoryType
-              className={"me-1"}
-              categoryTypeArray={[
-                {
-                  id: 1,
-                  name: t("all"),
-                },
-                {
-                  id: 2,
-                  name: t("cattle_dead"),
-                },
-                {
-                  id: 3,
-                  name: t("cattle_alive"),
-                },
-              ]}
-              typeName={isDeadAlive}
-              setTypeName={(e) => {
-                setIsDeadAlive(e.target.name);
-                setPagination({ page: 1 });
-                history.push(
-                  `/cattle/info?page=${1}&status=${
-                    e.target.name
-                  }&filter=${dropDownName}`
-                );
-              }}
-            />
-
-            {/* <ChangeCategoryType
-              className={"me-1"}
-              categoryTypeArray={[
-                {
-                  id: 1,
-                  name: t("all"),
-                },
-                {
-                  id: 2,
-                  name: t("cattle_dead"),
-                },
-                {
-                  id: 3,
-                  name: t("cattle_alive"),
-                },
-              ]}
-              typeName={cattleBreed}
-              setTypeName={(e) => {
-                setCattleBreed(e.target.name);
-                setPagination({ page: 1 });
-                history.push(
-                  `/cattle/info?page=${1}&status=${isDeadAlive}&breed=${
-                    e.target.name
-                  }&filter=${dropDownName}`
-                );
-              }}
-            /> */}
-
-            {/*<ChangePeriodDropDown
-              className={"me-1"}
-              dropDownName={dropDownName}
-              setdropDownName={(e) => {
-                setdropDownName(e.target.name);
-                setPagination({ page: 1 });
-                history.push(
-                  `/cattle/info?page=${1}&status=${isDeadAlive}&filter=${
-                    e.target.name
-                  }`
-                );
-              }}
-            />*/}
-
-            {/* {allPermissions?.name === "all" ||
-            subPermission?.includes(WRITE) ? ( */}
-=======
-          <div className="d-flex mt-1 mt-sm-0 justify-content-between">
->>>>>>> Stashed changes
             <Button
               className="me-1"
               color="primary"
@@ -234,52 +124,7 @@ const RoomTypesInfo = () => {
               </span>
             </Button>
 
-            {/*<Button
-              className="me-1"
-              color="primary"
-              onClick={() => importFileRef.current.click()}
-            >
-              Import File
-            </Button>
-            {/* <Button
-              color="primary"
-              className="me-1"
-              onClick={() =>
-                handleExport({
-                  dataName: exportCattleJsonSample([]),
-                  fileName: "Sample Cattles List",
-                  sheetName: "Sample Cattles List",
-                })
-              }
-            >
-              Sample File
-            </Button> }
-            <Button
-              color="primary"
-              onClick={() =>
-                handleExport({
-                  dataName: exportCattleJson(
-                    exportDataQuery?.data.results ?? []
-                  ),
-                  fileName: "Cattles List",
-                  sheetName: "Cattles List",
-                })
-              }
-            >
-              <Trans i18nKey={"export_report"} />
-              <img src={exportIcon} width={15} className="ms-2" />
-            </Button>
-
-            <input
-              type="file"
-              ref={importFileRef}
-              accept=""
-              className="d-none"
-              onChange={handleImportFile}
-            />
-            {/* ) : (
-              ""
-            )} */}
+            
           </div>
         </div>
         <div style={{ height: "10px" }}>
@@ -309,14 +154,7 @@ const RoomTypesInfo = () => {
                   height="160px"
                   currentFilter={routFilter}
                   currentPage={routPagination}
-<<<<<<< Updated upstream
-                  // currentBreed={routeBreed}
-                  //currentStatus={routeStatus}
-                  // allPermissions={allPermissions}
-                  // subPermission={subPermission}
-=======
                   isMobileView={isMobileView}
->>>>>>> Stashed changes
                 />
               </Then>
               <Else>

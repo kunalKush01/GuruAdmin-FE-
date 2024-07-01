@@ -1,12 +1,5 @@
 import { callApi, callDharmshalaApi } from "../../utility/utils/callApi";
 
-export const getDharmshalaList = (payload) =>
-  callDharmshalaApi({
-    requestFunction: (axios) => axios.get(`buildings/`),
-    showToastOnSuccess: false,
-    showToastOnError: false,
-  });
-
 export const importFile = (payload) =>
   callDharmshalaApi({
     requestFunction: (axios) => axios.post(`dharmshala/import-file`, payload),
@@ -18,6 +11,15 @@ export const exportData = (payload) =>
     showToastOnSuccess: false,
     showToastOnError: false,
   });
+
+  //Buildings 
+
+  export const getDharmshalaList = (payload) =>
+    callDharmshalaApi({
+      requestFunction: (axios) => axios.get(`buildings/`),
+      showToastOnSuccess: false,
+      showToastOnError: false,
+    });
 
 export const createBuilding = (payload) =>
   callDharmshalaApi({
@@ -41,6 +43,9 @@ export const updateDharmshalaInfo = (payload) =>
     requestFunction: (axios) =>
       axios.put(`buildings/${payload.buildingId}`, payload),
   });
+
+  //Roomtypes 
+
 export const createRoomType = (payload) =>
   callDharmshalaApi({
     requestFunction: (axios) => axios.post(`roomTypes/`, payload),
@@ -71,6 +76,8 @@ export const getRoomTypeDetail = (payload) =>
     showToastOnError: false,
   });
 
+  //Floors
+  
 export const getDharmshalaFloorList = (payload) =>
   callDharmshalaApi({
     requestFunction: (axios) => axios.get(`buildings/${payload}/floors`),
@@ -82,8 +89,6 @@ export const createDharmshalaFloor = (payload) =>
     requestFunction: (axios) => axios.post(`floors/`, payload),
     successCode: 201,
   });
-<<<<<<< Updated upstream
-=======
 
 export const deleteDharmshalaFloor = (payload) =>
   callDharmshalaApi({
@@ -300,4 +305,3 @@ export const getDharmshalaBookingList = () =>
       callDharmshalaApi({
         requestFunction: (axios) => axios.delete(`dharmshalas/${dharmshalaId}`),
       });
->>>>>>> Stashed changes

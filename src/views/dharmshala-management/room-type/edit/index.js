@@ -18,20 +18,6 @@ import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddRoomTypeForm from "../../../../components/roomType/addForm";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
 import {RoomTypeAddWrapper} from "../../dharmshalaStyles";
-//import { DharmshalaSource, dharmshalaType } from "../add";
-
-// const RoomTypeAddWrapper = styled.div`
-//   color: #583703;
-//   font: normal normal bold 20px/33px Noto Sans;
-//   .ImagesVideos {
-//     font: normal normal bold 15px/33px Noto Sans;
-//   }
-//   .addEvent {
-//     color: #583703;
-//     display: flex;
-//     align-items: center;
-//   }
-// `;
 
 const getLangId = (langArray, langSelection) => {
   let languageId;
@@ -50,9 +36,12 @@ const EditRoomType = () => {
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
   const searchParams = new URLSearchParams(history.location.search);
+  const name = searchParams.get("name")
+  const description = searchParams.get("description")
+  const capacity = searchParams.get("capacity")
+  const price = searchParams.get("price")
   const currentPage = searchParams.get("page");
   const currentStatus = searchParams.get("status");
-  // const currentBreed = searchParams.get("breed");
   const currentFilter = searchParams.get("filter");
 
   const [langSelection, setLangSelection] = useState(
@@ -83,10 +72,10 @@ const EditRoomType = () => {
 
   const initialValues = useMemo(() => {
     return {
-      name: roomTypeDetails?.data?.result?.name ?? "",
-      description: roomTypeDetails?.data?.result?.description ?? "",
-      capacity: roomTypeDetails?.data?.result?.capacity ?? "",
-      price: roomTypeDetails?.data?.result?.price ?? "",
+      name: name,
+      description: description,
+      capacity: capacity,
+      price: price,
     };
   }, [roomTypeDetails]);
 
