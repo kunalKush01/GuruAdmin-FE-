@@ -157,6 +157,12 @@ const DharmshalaInfoTable = ({
                   deleteMutation.mutate(item._id);
                 }
               });
+            } else {
+              Swal.fire({
+                icon: "warning",
+                title: t("cannot_delete_building"),
+                text: t("cannot_delete_building"),
+              });
             }
           }}
         />
