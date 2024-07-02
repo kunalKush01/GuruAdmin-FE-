@@ -1,19 +1,15 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import moment from "moment";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory, useParams } from "react-router-dom";
-import styled from "styled-components";
 import Swal from "sweetalert2";
 import { Button } from "reactstrap";
 import { deleteDharmshalaFloor } from "../../../api/dharmshala/dharmshalaInfo";
 import deleteDisableIcon from "../../../assets/images/icons/category/deleteDisableIcon.svg";
 import deleteIcon from "../../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../../assets/images/icons/category/editIcon.svg";
-import avtarIcon from "../../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import confirmationIcon from "../../../assets/images/icons/news/conformationIcon.svg";
 import CustomDataTable from "../../../components/partials/CustomDataTable";
-import { ConverFirstLatterToCapital } from "../../../utility/formater";
 import { DharmshalaFloorTableWrapper } from "../dharmshalaStyles";
 import "../dharmshala_css/dharmshalafloors.css";
 
@@ -68,11 +64,13 @@ const DharmshalaFloorTable = ({
       name: t(""),
       selector: (row) => row.edit,
       width: "80px",
+      right: true,
     },
     {
       name: t(""),
       selector: (row) => row.delete,
       width: "80px",
+      right: true,
     },
   ];
 
@@ -169,12 +167,19 @@ const DharmshalaFloorTable = ({
           <img
             src={deleteDisableIcon}
             width={35}
-            className="cursor-pointer disabled"
+            className="cursor-pointer"
+            onClick={() => {
+              Swal.fire({
+                icon: "warning",
+                title: t("cannot_delete_floor"),
+                text: t("cannot_delete_floor_non_zero_rooms"),
+              });
+            }}
           />
         )
       ),
     }));
-  }, [data, buildingID]);
+  }, [data, buildingID, currentPage, currentStatus, currentFilter, deleteMutation, t, history]);
 
   return (
     <DharmshalaFloorTableWrapper>
