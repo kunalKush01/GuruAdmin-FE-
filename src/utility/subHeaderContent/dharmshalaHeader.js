@@ -15,7 +15,7 @@ export const dharmshalaHeader = [
     active: "/dharmshala/info",
   },
   {
-    name: "roomtype",
+    name: "Room Types",
     url: "/roomtype/info",
     active: "/roomtype/info",
   },
