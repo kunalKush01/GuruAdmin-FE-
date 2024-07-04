@@ -145,7 +145,7 @@ export default function FormWithoutFormikForDonation({
 
   useEffect(() => {
     if (mobileNumberFromURL) {
-      const dialCode = countryFlag?.dialCode || "+91"; // Default to +1 if countryFlag is not set
+      const dialCode = countryFlag?.dialCode || "+91"; 
       const mobile = mobileNumberFromURL;
       setPhoneNumber(mobileNumberFromURL);
       formik.setFieldValue("countryCode", countryFlag?.countryCode);
