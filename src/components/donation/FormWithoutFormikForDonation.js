@@ -76,6 +76,8 @@ export default function FormWithoutFormikForDonation({
   }, [SelectedUser?.userId]);
   const [phoneNumber, setPhoneNumber] = useState(getCommitmentMobile ?? "");
 
+ 
+
   useUpdateEffect(() => {
     if (formik?.values?.Mobile?.toString().length == 10) {
       const results = async () => {
@@ -139,6 +141,18 @@ export default function FormWithoutFormikForDonation({
   const currentCategory = searchParams.get("category");
   const currentSubCategory = searchParams.get("subCategory");
   const currentFilter = searchParams.get("filter");
+  const mobileNumberFromURL = searchParams.get("mobileNumber");
+
+  useEffect(() => {
+    if (mobileNumberFromURL) {
+      const dialCode = countryFlag?.dialCode || "+91"; // Default to +1 if countryFlag is not set
+      const mobile = mobileNumberFromURL;
+      setPhoneNumber(mobileNumberFromURL);
+      formik.setFieldValue("countryCode", countryFlag?.countryCode);
+      formik.setFieldValue("dialCode", dialCode);
+      formik.setFieldValue("Mobile", mobile);
+    }
+  }, [mobileNumberFromURL]);
 
   return (
     <Form>

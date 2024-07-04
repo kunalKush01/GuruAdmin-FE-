@@ -63,7 +63,7 @@ export default function AddSubscribedUser() {
             className="me-2 cursor-pointer"
             onClick={() =>
               history.push(
-                `/${redirectTo}/add?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}`
+                `/${redirectTo}/add?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}&mobileNumber=${mobileNumber}`
               )
             }
           />
