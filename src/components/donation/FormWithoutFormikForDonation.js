@@ -144,7 +144,11 @@ export default function FormWithoutFormikForDonation({
     <Form>
       {showPrompt && (
         <Prompt
-          when={!!Object.values(formik?.values).find((val) => !!val)}
+          when={
+            !!Object.values(formik?.values).find(
+              (val, key) => !!val && key !== 'Mobile'
+            )
+          }
           message={(location) =>
             `Are you sure you want to leave this page & visit ${location.pathname.replace(
               "/",
@@ -213,7 +217,7 @@ export default function FormWithoutFormikForDonation({
                     className="cursor-pointer"
                     onClick={() =>
                       history.push(
-                        `/add-user?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}&redirect=donation`
+                        `/add-user?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}&redirect=donation&mobileNumber=${formik.values.dialCode}${formik.values.Mobile}`
                       )
                     }
                   >
