@@ -86,7 +86,7 @@ export default function SubscribedUserForm({
     <FormWrapper className="FormikWrapper">
       <Formik
         // enableReinitialize
-        initialValues={{ ...initialValues }}
+        initialValues={{ ...initialValues,mobile: getNumber || initialValues.mobile, }}
         onSubmit={(e) => {
           setShowPrompt(false);
           setLoading(true);
