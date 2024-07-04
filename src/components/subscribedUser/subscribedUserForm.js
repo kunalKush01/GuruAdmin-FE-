@@ -71,7 +71,7 @@ export default function SubscribedUserForm({
         setLoading(false);
         addDonationUser
           ? history.push(
-              `/${redirectTo}/add?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}`
+              `/${redirectTo}/add?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}&mobileNumber=${getNumber}`
             )
           : history.push("/subscribed-user");
       } else if (data?.error) {
