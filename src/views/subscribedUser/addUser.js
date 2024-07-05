@@ -52,7 +52,10 @@ export default function AddSubscribedUser() {
   const currentSubCategory = searchParams.get("subCategory");
   const currentFilter = searchParams.get("filter");
   const redirectTo = searchParams.get("redirect");
+  const dialCode = searchParams.get('dialCode');
   const mobileNumber = searchParams.get('mobileNumber');
+
+  const phoneNumber = `${dialCode}${mobileNumber}`; 
 
   return (
     <NoticeWraper>
@@ -63,7 +66,7 @@ export default function AddSubscribedUser() {
             className="me-2 cursor-pointer"
             onClick={() =>
               history.push(
-                `/${redirectTo}/add?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}&mobileNumber=${mobileNumber}`
+                `/${redirectTo}/add?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}&dialCode=${dialCode}&mobileNumber=${mobileNumber}`
               )
             }
           />
@@ -95,7 +98,7 @@ export default function AddSubscribedUser() {
           }}
           validationSchema={schema}
           buttonName={"add_user"}
-          getNumber={mobileNumber}
+          getNumber={phoneNumber}
         />
       </div>
     </NoticeWraper>
