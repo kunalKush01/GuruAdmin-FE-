@@ -6,11 +6,16 @@ import {
   createBooking,
   updateBooking,
 } from "../../api/bookings";
+import {
+  getDharmshalaBookingList,
+  createDharmshalaBooking,
+  updateDharmshalaBooking,
+} from "../../api/dharmshala/dharmshalaInfo";
 import { fetchProperties, fetchPropertyTypes } from "../../api/properties";
 import "./Calendar.css";
 import "./bookingModal.css";
 import guestIcon from "../../assets/images/icons/guestIcon.png";
-import Switch from "react-ios-switch";
+import Switch from "react-toggle-switch";
 import Swal from "sweetalert2";
 
 const BookingModal = ({
@@ -343,6 +348,7 @@ const Calendar = () => {
         ? fromDate.getMonth() + 1
         : new Date().getMonth() + 1;
       const data = await fetchBookings(year, month);
+      //const data = await getDharmshalaBookingList();
       if (window.matchMedia("(max-width: 768px)").matches) {
         const formattedDays = weekDays.map((day) => ({
           date: new Date(day.date).toISOString().split("T")[0],

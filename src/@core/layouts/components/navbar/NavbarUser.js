@@ -288,10 +288,12 @@ const NavbarUser = (props) => {
                 <img src={logo} alt="logo" className="logo" />
                 {/* <div><img /></div> */}
               </div>
-              <div className="date d-none d-xl-block">
+              
+              {/* <div className="date d-none d-xl-block">
                 <Trans i18nKey={"last_login"} />:{" "}
                 {moment().format("DD MMM YYYY,h:mm a")}
-              </div>
+              </div> */}
+
               {/* <h2 className='brand-text mb-0'>{themeConfig.app.appName}</h2> */}
             </NavLink>
           </NavItem>
