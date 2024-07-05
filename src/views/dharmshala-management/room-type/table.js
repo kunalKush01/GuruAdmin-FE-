@@ -8,7 +8,7 @@ import { Button } from "reactstrap";
 import { deleteRoomTypeInfo } from "../../../api/dharmshala/dharmshalaInfo";
 import deleteIcon from "../../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../../assets/images/icons/category/editIcon.svg";
-import CustomDataTable from "../../../components/partials/CustomDataTable";
+import CustomDharmshalaTable from "../../../components/partials/CustomDharmshalaTable";
 import { RoomTypeInfoTableWrapper } from "../dharmshalaStyles";
 import "../dharmshala_css/roomtypetable.css";
 
@@ -104,7 +104,7 @@ const RoomTypeInfoTable = ({
           ))}
         </div>
       ) : (
-        <CustomDataTable
+        <CustomDharmshalaTable
           maxHeight={maxHeight}
           height={height}
           columns={[
@@ -127,6 +127,10 @@ const RoomTypeInfoTable = ({
               name: t("price"),
               selector: (row) => row.price,
               width: "200px",
+            },
+            {
+              name: t(""),
+              width: "800px",
             },
             {
               name: t(""),

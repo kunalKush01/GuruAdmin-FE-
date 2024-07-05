@@ -202,6 +202,8 @@ export const englishContent = {
   dharmshala_booking_status: "Status",
   dharmshala_booking_early_check_in: "Early Check In",
   dharmshala_booking_late_check_out: "Late Check Out",
+  view_past_requests: "View Past Requests",
+  view_upcoming_requests: "View Upcoming Requests",
 
   dharmshala_rooms_registered: "Rooms",
   dharmshala_room_add: "Add Room",

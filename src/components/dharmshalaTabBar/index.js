@@ -38,7 +38,7 @@ const DharmshalaTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
         return <img src={BookingIcon} alt="booking" className="tab-icon" />;
       case 'feedback':
         return <img src={FeedbackIcon} alt="feedback" className="tab-icon" />;
-      case 'roomtype':
+      case 'room types':
         return <img src={RoomTypeIcon} alt="roomtype" className="tab-icon" />;
       default:
         return name.charAt(0);
