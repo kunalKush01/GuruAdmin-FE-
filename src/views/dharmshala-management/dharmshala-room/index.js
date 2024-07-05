@@ -84,6 +84,8 @@ const DharmshalaRooms = () => {
     [dharmshalaRoomList]
   );
 
+  const isMobileView = window.innerWidth <= 784;
+
   console.log("dharmshala room list", dharmshalaRoomListData);
   const URLParams = useParams("");
   const queryClient = useQueryClient();
@@ -159,6 +161,7 @@ const DharmshalaRooms = () => {
                   height="160px"
                   currentFilter={routFilter}
                   currentPage={routPagination}
+                  isMobileView={isMobileView}
                 />
               </Then>
               <Else>

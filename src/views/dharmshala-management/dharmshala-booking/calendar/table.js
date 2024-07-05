@@ -1,110 +1,110 @@
-import React, { useMemo } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Button } from "reactstrap";
-import { deleteDharmshalaInfo } from "../../../api/dharmshala/dharmshalaInfo";
-import deleteIcon from "../../../assets/images/icons/category/deleteIcon.svg";
+import { deleteDharmshalaFloor } from "../../../api/dharmshala/dharmshalaInfo";
 import deleteDisableIcon from "../../../assets/images/icons/category/deleteDisableIcon.svg";
+import deleteIcon from "../../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../../assets/images/icons/category/editIcon.svg";
-import CustomDharmshalaTable from "../../../components/partials/CustomDharmshalaTable";
 import confirmationIcon from "../../../assets/images/icons/news/conformationIcon.svg";
-import { DharmshalaInfoTableWrapper } from "../dharmshalaStyles";
-import "../dharmshala_css/dharmshalainfotable.css"; 
+import CustomDataTable from "../../../components/partials/CustomDataTable";
+import { DharmshalaFloorTableWrapper } from "../dharmshalaStyles";
+import "../dharmshala_css/dharmshalafloors.css";
 
-const DharmshalaInfoTable = ({
+const DharmshalaFloorTable = ({
   data = [],
   maxHeight,
   height,
   currentFilter,
   currentStatus,
   currentPage,
+  buildingID,
   isMobileView,
 }) => {
   const { t } = useTranslation();
   const history = useHistory();
-  const handleDeleteDharmshala = async (payload) => {
-    return deleteDharmshalaInfo(payload);
+  const handleDeleteDharmshalaFloor = async (payload) => {
+    return deleteDharmshalaFloor(payload);
   };
 
   const queryClient = useQueryClient();
   const deleteMutation = useMutation({
-    mutationFn: handleDeleteDharmshala,
+    mutationFn: handleDeleteDharmshalaFloor,
     onSuccess: (data) => {
       if (!data.error) {
-        queryClient.invalidateQueries(["dharmshalaList"]);
+        queryClient.invalidateQueries(["dharmshalaFloorList"]);
       }
     },
   });
 
   const columns = [
     {
-      name: t("name"),
+      name: t("Name"),
       selector: (row) => row.name,
       width: "200px",
     },
     {
-      name: t("description"),
-      selector: (row) => row.description,
+      name: t("Number"),
+      selector: (row) => row.number,
       width: "300px",
     },
     {
-      name: t("location"),
-      selector: (row) => row.location,
+      name: t("description"),
+      selector: (row) => row.description,
       width: "200px",
     },
     {
-      name: t("Floor Count"),
-      selector: (row) => row.floorCount,
+      name: t("Room Count"),
+      selector: (row) => row.roomCount,
       width: "200px",
-    },
-    {
-      name: t(""),
-      width: "800px",
     },
     {
       name: t(""),
       selector: (row) => row.edit,
       width: "80px",
+      right: true,
     },
     {
       name: t(""),
       selector: (row) => row.delete,
       width: "80px",
+      right: true,
     },
   ];
 
-  const DharmshalasInfo = useMemo(() => {
+  const DharmshalasFloor = useMemo(() => {
+    const { buildingId } = useParams();
     return data?.map((item, idx) => ({
       id: idx + 1,
       name: item?.name,
+      number: item?.number,
       description: item?.description,
-      location: item?.location,
-      floorCount: (
+      roomCount: (
         <div style={{ fontWeight: "bold", cursor: "pointer" }}>
-          {item?.floorCount === 0 ? (
+          {item?.roomCount === 0 ? (
             <Button
               size="lg"
               color="primary"
               className="px-1 py-0"
               onClick={() =>
-                history.push(`/floor/add/${item._id}`, item._id)
+                history.push(`/rooms/add/${item._id}/${buildingId}`, item._id)
               }
             >
               {" "}
               +{" "}
             </Button>
-          ) : item?.floorCount > 1 ? (
+          ) : item?.roomCount > 1 ? (
             <Button
               size="lg"
               color="primary"
               className="px-1 py-0"
               onClick={() =>
-                history.push(`/floors/${item._id}`, item._id)
+                history.push(`/room/${item._id}/${buildingId}`, item._id)
               }
             >
-              {item?.floorCount} {t("Floors")}
+              {item?.roomCount} {t("Rooms")}
             </Button>
           ) : (
             <Button
@@ -112,10 +112,10 @@ const DharmshalaInfoTable = ({
               color="primary"
               className="px-1 py-0"
               onClick={() =>
-                history.push(`/floors/${item._id}`, item._id)
+                history.push(`/room/${item._id}/${buildingId}`, item._id)
               }
             >
-              {item?.floorCount} {t("Floor")}
+              {item?.roomCount} {t("Room")}
             </Button>
           )}
         </div>
@@ -127,27 +127,27 @@ const DharmshalaInfoTable = ({
           className="cursor-pointer"
           onClick={() => {
             history.push(
-              `/building/edit/${item?._id}?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
+              `/floor/edit/${item?._id}/${item?.buildingId}/?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}&name=${item?.name}&number=${item?.number}&description=${item?.description}`
             );
           }}
         />
       ),
       delete: (
-        <img
-          src={item?.floorCount === 0 ? deleteIcon : deleteDisableIcon}
-          width={35}
-          className={`cursor-pointer ${item?.floorCount !== 0 ? 'disabled' : ''}`}
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            if (item?.floorCount === 0) {
+        item?.roomCount === 0 ? (
+          <img
+            src={deleteIcon}
+            width={35}
+            className="cursor-pointer"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
               Swal.fire({
                 title: `<img src="${confirmationIcon}"/>`,
                 html: `
                   <h3 class="swal-heading mt-1">${t(
-                    "dharmshala_building_delete"
+                    "dharmshala_floor_delete"
                   )}</h3>
-                  <p>${t("dharmshala_building_delete_sure")}</p>
+                  <p>${t("dharmshala_floor_delete_sure")}</p>
                 `,
                 showCloseButton: false,
                 showCancelButton: true,
@@ -161,31 +161,38 @@ const DharmshalaInfoTable = ({
                   deleteMutation.mutate(item._id);
                 }
               });
-            } else {
+            }}
+          />
+        ) : (
+          <img
+            src={deleteDisableIcon}
+            width={35}
+            className="cursor-pointer"
+            onClick={() => {
               Swal.fire({
                 icon: "warning",
-                title: t("cannot_delete_building"),
-                text: t("cannot_delete_building"),
+                title: t("cannot_delete_floor"),
+                text: t("cannot_delete_floor_non_zero_rooms"),
               });
-            }
-          }}
-        />
+            }}
+          />
+        )
       ),
     }));
-  }, [data]);
+  }, [data, buildingID, currentPage, currentStatus, currentFilter, deleteMutation, t, history]);
 
   return (
-    <DharmshalaInfoTableWrapper>
+    <DharmshalaFloorTableWrapper>
       {isMobileView ? (
         <div className="card-container">
-          {DharmshalasInfo.map((item, index) => (
+          {DharmshalasFloor.map((item, index) => (
             <div key={index} className="card">
               <div className="card-body">
                 <div className="card-content">
                   <h5 className="card-title">{item.name}</h5>
+                  <p className="card-text">{item.number}</p>
                   <p className="card-text">{item.description}</p>
-                  <p className="card-text">{item.location}</p>
-                  <p className="card-text">{item.floorCount}</p>
+                  <p className="card-text">{item.roomCount}</p>
                 </div>
                 <div className="card-icons">
                   {item.edit}
@@ -196,15 +203,15 @@ const DharmshalaInfoTable = ({
           ))}
         </div>
       ) : (
-        <CustomDharmshalaTable
+        <CustomDataTable
           maxHeight={maxHeight}
           height={height}
           columns={columns}
-          data={DharmshalasInfo}
+          data={DharmshalasFloor}
         />
       )}
-    </DharmshalaInfoTableWrapper>
+    </DharmshalaFloorTableWrapper>
   );
 };
 
-export default DharmshalaInfoTable;
+export default DharmshalaFloorTable;
