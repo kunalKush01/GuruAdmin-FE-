@@ -682,6 +682,24 @@ const Routes = [
     type: "punyarjak",
     subPermission: EDIT,
   },
+  {
+    path: "/configuration/masters",
+    component: lazy(() =>
+      import("../../views/configuration/Masters/mastersList.js")
+    ),
+    exact: true,
+    type: "configuration",
+    subPermission: READ,
+  },
+  {
+    path: "/configuration/masters/info/:masterId",
+    component: lazy(() =>
+      import("../../views/configuration/Masters/masterDataList.js")
+    ),
+    exact: true,
+    type: "configuration",
+    subPermission: READ,
+  },
 ];
 
 export { DefaultRoute, Routes, TemplateTitle };
