@@ -155,6 +155,10 @@ export const subHeaderContentResponsive = [
         url: "/configuration/categories",
       },
       {
+        name: "masters",
+        url: "/configuration/masters",
+      },
+      {
         name: "user",
         url: "/configuration/users",
       },

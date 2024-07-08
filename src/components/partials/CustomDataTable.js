@@ -78,6 +78,7 @@ function CustomDataTable({
   onSelectedRowsChange,
   noDataComponent,
   height,
+  masterPagination,
 }) {
   // const tableData = {
   //     columns,
@@ -88,7 +89,7 @@ function CustomDataTable({
     <>
       <DataTableWarraper
         minWidth={minWidth}
-        maxHeight={maxHeight ?? "  270px"}
+        maxHeight={maxHeight ?? "100%"}
         height={height}
       >
         <DataTable
@@ -102,6 +103,7 @@ function CustomDataTable({
           selectableRowsHighlight={selectableRowsHighlight} // highlight selected rows
           selectableRowSelected={selectableRowSelected}
           data={data}
+          pagination={masterPagination && true}
         />
       </DataTableWarraper>
     </>
