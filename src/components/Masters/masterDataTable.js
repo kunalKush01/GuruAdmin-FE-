@@ -14,35 +14,42 @@ const MasterDataWrapper = styled.div`
   font: normal normal bold 15px/23px Noto Sans;
 `;
 
-export function MasterDataTable({ data }) {
-  console.log(data);
+export function MasterDataTable({ data, loadingRow }) {
   const queryClient = useQueryClient();
   const [editingRowId, setEditingRowId] = useState(null);
   const [editedValues, setEditedValues] = useState({});
+  const [validationMessages, setValidationMessages] = useState({});
 
   const handleEditStart = (rowId) => {
     setEditingRowId(rowId);
-    const row = data.list.find((item) => item._id === rowId);
+    const row = data.list.find((item, index) => index + 1 == rowId);
     setEditedValues({ ...row });
   };
-
   const handleEditCancel = () => {
     setEditingRowId(null);
     setEditedValues({});
+    setValidationMessages({});
   };
   const handleEditSave = async () => {
     try {
       // Validate required fields
-      const requiredFields = Object.values(data.schema).filter((field) => field.required);
-      const missingFields = requiredFields.filter((field) => !editedValues[field.name]);
-  
+      const requiredFields = Object.values(data.schema).filter(
+        (field) => field.required
+      );
+      const missingFields = requiredFields.filter(
+        (field) => !editedValues[field.name]
+      );
+
       if (missingFields.length > 0) {
         // If any required field is empty, show error message
-        const missingFieldNames = missingFields.map((field) => field.name).join(', ');
-        Swal.fire("Error", `Please fill in required fields: ${missingFieldNames}`, "error");
+        const newValidationMessages = {};
+        missingFields.forEach((field) => {
+          newValidationMessages[field.name] = "Required";
+        });
+        setValidationMessages(newValidationMessages);
         return;
       }
-  
+
       // Proceed with update if all required fields are filled
       const updatedList = data.list.map((item, index) => {
         if (index + 1 === editingRowId) {
@@ -50,27 +57,28 @@ export function MasterDataTable({ data }) {
         }
         return item;
       });
-  
+
       const values = {};
       Object.values(data.schema).forEach((field) => {
         values[field.name] = updatedList.map((item) => item[field.name]);
       });
-  
+
       const updates = {
         name: data.name,
         schema: data.schema,
         values: values,
       };
-  
+
       const response = await updateMasterData(data._id, updates);
       if (!response) {
         Swal.fire("Error", "Failed to update master data", "error");
       } else {
         setEditingRowId(null);
         setEditedValues({});
-  
+        setValidationMessages({});
+
         queryClient.invalidateQueries(["Masters-Data"]);
-  
+
         Swal.fire({
           icon: "success",
           title: "Updated Successfully",
@@ -80,10 +88,26 @@ export function MasterDataTable({ data }) {
       }
     } catch (error) {
       console.error("Failed to update master data", error);
-      Swal.fire("Error", error.message || "Failed to update master data", "error");
+      Swal.fire(
+        "Error",
+        error.message || "Failed to update master data",
+        "error"
+      );
     }
   };
-
+  const handleInputBlur = (field) => {
+    if (field.required && !editedValues[field.name]) {
+      setValidationMessages((prevMessages) => ({
+        ...prevMessages,
+        [field.name]: "Required",
+      }));
+    } else {
+      setValidationMessages((prevMessages) => ({
+        ...prevMessages,
+        [field.name]: "",
+      }));
+    }
+  };
   const handleDelete = async (rowId) => {
     const confirmDelete = await Swal.fire({
       title: "Are you sure?",
@@ -119,16 +143,20 @@ export function MasterDataTable({ data }) {
     if (!data || !data.schema || !data.list) return []; // Handle initial data loading or undefined states
 
     return [
-      {
-        name: "Serial No.",
-        selector: (row, index) => index + 1,
-        width: "80px",
-      },
+      // {
+      //   name: "Serial No.",
+      //   selector: (row, index) =>  row.id,
+      //   width: "120px",
+      // },
       ...Object.values(data.schema).map((field) => ({
         name: (
           <>
             {field.name}
-            {field.required==true && <span className="text-danger" style={{marginBottom:"5px"}}>*</span>}
+            {field.required == true && (
+              <span className="text-danger" style={{ marginBottom: "5px" }}>
+                *
+              </span>
+            )}
           </>
         ),
         selector: field.name,
@@ -140,7 +168,14 @@ export function MasterDataTable({ data }) {
             type == "boolean" ? (
               <select
                 className="form-control"
-                style={{ height: "35px" }}
+                style={{
+                  height: "35px",
+                  borderColor:
+                    validationMessages[field.name] &&
+                    validationMessages[field.name] == "Required"
+                      ? "#ff8744"
+                      : "",
+                }}
                 value={editedValues[field.name] || ""}
                 onChange={(e) =>
                   setEditedValues({
@@ -148,16 +183,20 @@ export function MasterDataTable({ data }) {
                     [field.name]: e.target.value,
                   })
                 }
+                onBlur={() => handleInputBlur(field)}
               >
                 <option value="">Select</option>
-                <option value="true">True</option>
-                <option value="false">False</option>
+                <option value="True">True</option>
+                <option value="False">False</option>
               </select>
             ) : (
               <input
                 type={type == "string" ? "text" : "number"}
                 className="form-control"
-                style={{ height: "35px" }}
+                style={{
+                  height: "35px",
+                  borderColor: validationMessages[field.name] ? "#ff8744" : "",
+                }}
                 value={editedValues[field.name] || ""}
                 placeholder={type == "string" ? "" : "123"}
                 onChange={(e) =>
@@ -166,6 +205,7 @@ export function MasterDataTable({ data }) {
                     [field.name]: e.target.value,
                   })
                 }
+                onBlur={() => handleInputBlur(field)}
               />
             )
           ) : (
@@ -212,14 +252,15 @@ export function MasterDataTable({ data }) {
         width: "120px",
       },
     ];
-  }, [data.schema, editingRowId, editedValues]);
-  
+  }, [data.schema, editingRowId, editedValues, validationMessages, loadingRow]);
+
   const formattedData = useMemo(() => {
     return data?.list?.map((item, idx) => ({
       ...item,
       id: idx + 1, // Adjust if your API expects a specific serial number format
     }));
-  }, [data]);
+  }, [data, loadingRow]);
+  // console.log(formattedData)
   return (
     <MasterDataWrapper>
       <CustomDataTable

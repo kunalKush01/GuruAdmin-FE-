@@ -79,42 +79,6 @@ export default function Master() {
               </div>
             </div>
           </div>
-          {/* <div className="addCategory justify-content-between">
-            <ChangeCategoryType
-              className={"me-1"}
-              categoryTypeArray={newTypes}
-              typeName={ConverFirstLatterToCapital(dropDownName)}
-              setTypeName={(e) => {
-                setCategoryId(e.target.id);
-                setdropDownName(e.target.name);
-                setPagination({ page: 1 });
-                history.push(
-                  `/configuration/categories?page=${1}&filter=${e.target.name}`
-                );
-              }}
-            />
-            {allPermissions?.name === "all" ||
-            subPermission?.includes(WRITE) ? (
-              <Button
-                color="primary"
-                className="addCategory-btn"
-                onClick={() =>
-                  history.push(
-                    `/configuration/categories/add?page=${pagination.page}&filter=${dropDownName}`
-                  )
-                }
-              >
-                <span>
-                  <Plus className="" size={15} strokeWidth={4} />
-                </span>
-                <span>
-                  <Trans i18nKey={"masters_list"} />
-                </span>
-              </Button>
-            ) : (
-              ""
-            )}
-          </div> */}
         </div>
         <div style={{ height: "10px" }}>
           <If condition={masterQuery.isFetching}>

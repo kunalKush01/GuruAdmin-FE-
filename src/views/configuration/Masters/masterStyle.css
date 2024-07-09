@@ -1,0 +1,10 @@
+.btn.btn-secondary {
+  background-color: #ff8744 !important;
+  border: none;
+}
+#cancel{
+    background-color: #FF5733 !important;
+}
+#submit{
+    background-color: #2ECC71 !important;
+}
