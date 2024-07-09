@@ -36,14 +36,14 @@ export function MasterListTable({
   const history = useHistory();
 
   const columns = [
-    {
-      name: "Serial Number",
-      selector: (row) => row.id,
-      width: "200px",
-      style: {
-        font: "normal normal 700 13px/20px noto sans !important ",
-      },
-    },
+    // {
+    //   name: "Serial Number",
+    //   selector: (row) => row.id,
+    //   width: "200px",
+    //   style: {
+    //     font: "normal normal 700 13px/20px noto sans !important ",
+    //   },
+    // },
     {
       name: t("Names"),
       selector: (row) => row.name,

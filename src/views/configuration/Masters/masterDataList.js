@@ -1,31 +1,21 @@
-import React, { useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
+import React, { useMemo, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Helmet } from "react-helmet";
 import { Trans, useTranslation } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import { Col, Row } from "reactstrap";
+import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
 import NoContent from "../../../components/partials/noContent";
 import { getMasterDataById } from "../../../api/masterApi";
 import { useParams } from "react-router-dom";
 import { MasterDataTable } from "../../../components/Masters/masterDataTable";
-
+import './masterStyle.css'
+import AddMaster from "./addMaster";
+import { Plus } from "react-feather";
 const MasterDataWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
-
-  .addCategory {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-
-  .addCategory-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: normal normal bold 15px/20px noto sans;
-  }
   .categoryContent {
     margin-top: 1rem;
     ::-webkit-scrollbar {
@@ -36,9 +26,16 @@ const MasterDataWrapper = styled.div`
 
 export default function Master() {
   const { masterId } = useParams();
-
+  
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [loadingData, setLoadingData] = useState(false)
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
 
+  const handleRowSuccess = (load) => {
+    setLoadingData(load);
+    queryClient.invalidateQueries(["Masters-Data"]); // Invalidate query after success
+  };
   const masterDataQuery = useQuery(
     ["Masters-Data", masterId],
     () => getMasterDataById(masterId),
@@ -49,8 +46,16 @@ export default function Master() {
 
   const masterItem = useMemo(
     () => masterDataQuery?.data ?? [],
-    [masterDataQuery]
+    [masterDataQuery,setLoadingData]
   );
+  // console.log(masterItem)
+
+  const toggleForm = () => setIsFormOpen(!isFormOpen);
+
+  const handleFormSubmit = (data) => {
+    // Handle form submission
+    console.log('Form submitted:', data);
+  };
 
   return (
     <MasterDataWrapper>
@@ -62,13 +67,12 @@ export default function Master() {
 
       <div>
         <div className="d-sm-flex justify-content-between align-items-center ">
-          <div className="d-flex align-items-center mb-2 mb-sm-0">
-            <div className="addCategory">
-              <div className="">
-                <div>
-                  <Trans i18nKey={"masters_list"} />
-                </div>
-              </div>
+          <div className="d-flex w-100 justify-content-between align-items-center">
+            <div>
+              <Trans i18nKey={"masters_list"} />
+            </div>
+            <div>
+            <Button className=""  onClick={toggleForm} ><Plus className="" size={15} strokeWidth={4} style={{marginRight:"5px"}} />Add</Button>
             </div>
           </div>
         </div>
@@ -103,6 +107,7 @@ export default function Master() {
                     <div className="mb-2">
                       <MasterDataTable
                         data={masterItem}
+                        loadingRow={loadingData}
                         // page={pagination}
                         // allPermissions={allPermissions}
                         // subPermission={subPermission}
@@ -162,6 +167,17 @@ export default function Master() {
           </Row>
         </div>
       </div>
+      <AddMaster
+        schema={Object.values(masterDataQuery.data?.schema || {})}
+        isOpen={isFormOpen}
+        toggle={toggleForm}
+        onSubmit={handleFormSubmit}
+        masterId={masterId}
+        // masterName={masterItem.name}
+        // masterkey={masterItem.key}
+        masterItem={masterItem}
+        onSuccess={handleRowSuccess}
+      />
     </MasterDataWrapper>
   );
 }

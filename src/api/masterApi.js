@@ -30,3 +30,10 @@ export const deleteMasterData = (masterId, rowId) =>
     showToastOnSuccess: false,
     showToastOnError: false,
   });
+  export const addMasterInRow = (masterId,newRowData) =>
+    callApi({
+      requestFunction: (axios) =>
+        axios.post(`${API_BASE_URL}/master/addnewRow-masters/${masterId}`,newRowData),
+      showToastOnSuccess: false,
+      showToastOnError: false,
+    });
