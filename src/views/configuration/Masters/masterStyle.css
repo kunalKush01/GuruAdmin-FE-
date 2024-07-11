@@ -1,10 +1,72 @@
-.btn.btn-secondary {
+#addBtn {
   background-color: #ff8744 !important;
   border: none;
 }
-#cancel{
-    background-color: #FF5733 !important;
+#cancel {
+  background-color: #ff5733 !important;
 }
-#submit{
-    background-color: #2ECC71 !important;
+#submit {
+  background-color: #2ecc71 !important;
+}
+.btn-close {
+  display: none;
+}
+.modal-title {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.cancleIcon {
+  cursor: pointer;
+}
+.swal2-actions {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+/* [dir=ltr] [data-column-id="sticky-column"] {
+  position: sticky;
+  right: 0;
+  background-color: white;
+  z-index: 1;
+  box-shadow: -2px 0 5px -2px rgba(0, 0, 0, 0.2);
+} */
+.swal2-confirm {
+  margin-right: 10px;
+}
+.swal2-cancel {
+  margin-right: 10px;
+}
+.ant-table {
+  border: 2px solid #ff8744;
+  border-radius: 10px;
+}
+.ant-table-container {
+}
+.ant-table-body {
+  scrollbar-width: none;
+  padding: 10px !important;
+}
+.ant-table-header {
+  padding: 0px 10px !important;
+  /* top: 50px !important; */
+}
+.ant-table-row .ant-table-cell {
+  padding: 0px 10px !important;
+  font-weight: 500;
+  /* padding: 10px !important */
+}
+.ant-table-thead .ant-table-cell {
+  padding: 10px 10px !important;
+  font-weight: 500;
+  background-color: white;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1)  
+}
+
+.ant-table-row {
+  /* height: 20px !important; */
+}
+.ant-table-row:nth-child(even) .ant-table-cell {
+  background-color: #fff7e8; /* Background color for last child cells in even rows */
 }
