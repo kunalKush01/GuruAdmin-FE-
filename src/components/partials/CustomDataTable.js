@@ -40,7 +40,9 @@ const DataTableWarraper = styled.div`
       font: normal normal normal 13px/20px noto sans;
       /* justify-content: center; */
     }
-
+    ::-webkit-scrollbar {
+        display: none;
+      }
     .rdt_TableHeadRow {
       border: 0px !important;
       .rdt_TableCol {
@@ -58,7 +60,7 @@ const DataTableWarraper = styled.div`
     .rdt_TableBody {
       max-height: ${(props) => props.maxHeight ?? ""};
       height: ${(props) => props.height ?? ""};
-      overflow: auto;
+      ${"" /* overflow: auto; */}
       ::-webkit-scrollbar {
         display: block;
       }
@@ -89,7 +91,7 @@ function CustomDataTable({
     <>
       <DataTableWarraper
         minWidth={minWidth}
-        maxHeight={maxHeight ?? "100%"}
+        maxHeight={maxHeight ? "100%" : "400px"}
         height={height}
       >
         <DataTable
@@ -104,6 +106,7 @@ function CustomDataTable({
           selectableRowSelected={selectableRowSelected}
           data={data}
           pagination={masterPagination && true}
+          // fixedHeader={masterPagination && true}
         />
       </DataTableWarraper>
     </>
