@@ -87,10 +87,10 @@ const AddMaster = ({
             payload.values[fieldName] = "";
             break;
           case "number":
-            payload.values[fieldName] = null; // or any default value for number fields
+            payload.values[fieldName] = null;
             break;
           default:
-            payload.values[fieldName] = null; // Handle other types as needed
+            payload.values[fieldName] = null;
             break;
         }
       }

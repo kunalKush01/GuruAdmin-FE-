@@ -80,6 +80,7 @@ function CustomDataTable({
   onSelectedRowsChange,
   noDataComponent,
   height,
+  masterListPagination,
   masterPagination,
 }) {
   // const tableData = {
@@ -105,7 +106,7 @@ function CustomDataTable({
           selectableRowsHighlight={selectableRowsHighlight} // highlight selected rows
           selectableRowSelected={selectableRowSelected}
           data={data}
-          pagination={masterPagination && true}
+          pagination={(masterPagination||masterListPagination) && true}
           // fixedHeader={masterPagination && true}
         />
       </DataTableWarraper>

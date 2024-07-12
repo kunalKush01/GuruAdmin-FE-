@@ -34,10 +34,10 @@ const MasterDataWrapper = styled.div`
     }
     .rdt_TableHead {
       position: sticky;
-      top: 0; /* Stick the header to the top */
-      z-index: 1000; /* Ensure the header is above other elements */
-      background-color: white; /* Set a background color for the header */
-      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for depth */
+      top: 0; 
+      z-index: 1000; 
+      background-color: white; 
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
     }
     .rdt_TableHeadRow {
       border: 0px !important;
@@ -61,9 +61,6 @@ const MasterDataWrapper = styled.div`
         box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
       }
     }
-    ${'' /* .rdt_TableBody {
-      overflow: auto;
-    } */}
     .rdt_TableRow {
       color: #583703 !important;
       border: 0px !important;
@@ -84,10 +81,10 @@ const MasterDataWrapper = styled.div`
       }
     }
     .rdt_TableRow:nth-child(odd) .rdt_TableCell:last-child {
-      background-color: #fff7e8; /* Background color for last child cells in even rows */
+      background-color: #fff7e8; 
     }
     .rdt_TableRow:nth-child(odd) .rdt_TableCell:first-child {
-      background-color: #fff7e8; /* Background color for last child cells in even rows */
+      background-color: #fff7e8;
     }
 
     @media screen and (max-width: 768px) {
@@ -141,7 +138,6 @@ export function MasterDataTable({ data, loadingRow }) {
   };
   const handleEditSave = async () => {
     try {
-      // Validate required fields
       const requiredFields = Object.values(data.schema).filter(
         (field) => field.required
       );
@@ -150,7 +146,6 @@ export function MasterDataTable({ data, loadingRow }) {
       );
 
       if (missingFields.length > 0) {
-        // If any required field is empty, show error message
         const newValidationMessages = {};
         missingFields.forEach((field) => {
           newValidationMessages[field.name] = "Required";
@@ -159,7 +154,6 @@ export function MasterDataTable({ data, loadingRow }) {
         return;
       }
 
-      // Proceed with update if all required fields are filled
       const updatedList = data.list.map((item, index) => {
         if (index + 1 === editingRowId) {
           return { ...item, ...editedValues };
@@ -220,7 +214,6 @@ export function MasterDataTable({ data, loadingRow }) {
   const handleDelete = async (rowId) => {
     const confirmDelete = await Swal.fire({
       title: "Are you sure?",
-      // text: 'You will not be able to recover this row!',
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes, delete it!",
@@ -249,14 +242,9 @@ export function MasterDataTable({ data, loadingRow }) {
     }
   };
   const columns = useMemo(() => {
-    if (!data || !data.schema || !data.list) return []; // Handle initial data loading or undefined states
+    if (!data || !data.schema || !data.list) return []; 
 
     return [
-      // {
-      //   name: "Serial No.",
-      //   selector: (row, index) =>  row.id,
-      //   width: "120px",
-      // },
       ...Object.values(data.schema).map((field) => ({
         name: (
           <>
@@ -367,10 +355,9 @@ export function MasterDataTable({ data, loadingRow }) {
   const formattedData = useMemo(() => {
     return data?.list?.map((item, idx) => ({
       ...item,
-      id: idx + 1, // Adjust if your API expects a specific serial number format
+      id: idx + 1, 
     }));
   }, [data, loadingRow]);
-  // console.log(formattedData)
   return (
     <MasterDataWrapper>
       <CustomDataTable
