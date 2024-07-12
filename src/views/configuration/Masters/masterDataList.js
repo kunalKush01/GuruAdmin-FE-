@@ -154,7 +154,7 @@ export default function Master() {
                 <If condition={masterItem.length != 0} disableMemo>
                   <Then>
                     <div className="mt-3">
-                      <MasterDataTable
+                      {/* <MasterDataTable
                         data={masterItem}
                         loadingRow={loadingData}
                         // page={pagination}
@@ -162,11 +162,11 @@ export default function Master() {
                         // subPermission={subPermission}
                         // currentFilter={routFilter}
                         // currentPage={routPagination}
-                      />
-                      {/* <MasterANTDTable
+                      /> */}
+                      <MasterANTDTable
                         data={masterItem}
                         loadingRow={loadingData}
-                      /> */}
+                      />
                     </div>
                   </Then>
                   <Else>
