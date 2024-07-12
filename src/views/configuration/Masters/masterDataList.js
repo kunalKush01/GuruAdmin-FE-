@@ -9,7 +9,6 @@ import styled from "styled-components";
 import NoContent from "../../../components/partials/noContent";
 import { getMasterDataById } from "../../../api/masterApi";
 import { useParams, useHistory } from "react-router-dom";
-import { MasterDataTable } from "../../../components/Masters/masterDataTable";
 import "./masterStyle.css";
 import AddMaster from "./addMaster";
 import { Plus } from "react-feather";
@@ -70,7 +69,7 @@ export default function Master() {
   const history = useHistory();
   const handleRowSuccess = (load) => {
     setLoadingData(load);
-    queryClient.invalidateQueries(["Masters-Data"]); // Invalidate query after success
+    queryClient.invalidateQueries(["Masters-Data"]);
   };
   const masterDataQuery = useQuery(
     ["Masters-Data", masterId],
@@ -84,12 +83,10 @@ export default function Master() {
     () => masterDataQuery?.data ?? [],
     [masterDataQuery, setLoadingData]
   );
-  // console.log(masterItem)
 
   const toggleForm = () => setIsFormOpen(!isFormOpen);
 
   const handleFormSubmit = (data) => {
-    // Handle form submission
     console.log("Form submitted:", data);
   };
 
@@ -172,51 +169,11 @@ export default function Master() {
                   <Else>
                     <NoContent
                       headingNotfound={t("masters_not_found")}
-                      //   para={t("category_not_click_add_category")}
                     />
                   </Else>
                 </If>
               </Else>
             </If>
-
-            {/* <If condition={masterItem.length > 1}>
-              <Then>
-                <Col xs={12} className="d-flex justify-content-center">
-                  <ReactPaginate
-                    nextLabel=""
-                    forcePage={pagination.page - 1}
-                    breakLabel="..."
-                    previousLabel=""
-                    // pageCount={masterQuery?.data?.totalPages || 0}
-                    activeClassName="active"
-                    // initialPage={
-                    //   parseInt(searchParams.get("page"))
-                    //     ? parseInt(searchParams.get("page")) - 1
-                    //     : pagination.page - 1
-                    // }
-                    breakClassName="page-item"
-                    pageClassName={"page-item"}
-                    breakLinkClassName="page-link"
-                    nextLinkClassName={"page-link"}
-                    pageLinkClassName={"page-link"}
-                    nextClassName={"page-item next"}
-                    previousLinkClassName={"page-link"}
-                    previousClassName={"page-item prev"}
-                    // onPageChange={(page) => {
-                    //   setPagination({ ...pagination, page: page.selected + 1 });
-                    //   history.push(
-                    //     `/configuration/categories?page=${
-                    //       page.selected + 1
-                    //     }&filter=${dropDownName}`
-                    //   );
-                    // }}
-                    containerClassName={
-                      "pagination react-paginate justify-content-end p-1"
-                    }
-                  />
-                </Col>
-              </Then>
-            </If> */}
           </Row>
         </div>
       </div>
@@ -226,8 +183,6 @@ export default function Master() {
         toggle={toggleForm}
         onSubmit={handleFormSubmit}
         masterId={masterId}
-        // masterName={masterItem.name}
-        // masterkey={masterItem.key}
         masterItem={masterItem}
         onSuccess={handleRowSuccess}
       />
