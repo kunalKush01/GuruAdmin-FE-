@@ -92,7 +92,7 @@ const LayoutWrapper = (props) => {
         location.pathname.startsWith("/floors")||
         location.pathname.startsWith("/room")) && (
         <DharmshalaTabBar
-          tabs={dharmshalaHeader}
+          tabs={dharmshalaHeader(permissionsKey)}
           active={active}
           setActive={setActive}
         />
