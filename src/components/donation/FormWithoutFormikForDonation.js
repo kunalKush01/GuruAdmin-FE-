@@ -26,6 +26,8 @@ import AsyncSelectField from "../partials/asyncSelectField";
 import CustomRadioButton from "../partials/customRadioButton";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
+import CustomDatePicker from "../partials/customDatePicker";
+import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 
 export default function FormWithoutFormikForDonation({
   formik,
@@ -39,6 +41,7 @@ export default function FormWithoutFormikForDonation({
   article,
   setArticle,
   showPrompt,
+  customFieldsList,
   ...props
 }) {
   const { t } = useTranslation();
@@ -311,6 +314,110 @@ export default function FormWithoutFormikForDonation({
                     required
                   />
                 </Col>
+                {/* <Col xs={12} sm={6} lg={4}></Col> */}
+                {/* {customFieldsList.map((field) => {
+                  const isSelectField =
+                    field.masterValues && field.masterValues.length > 0;
+
+                  return (
+                    <Col xs={12} sm={6} lg={4} className="pb-1" key={field._id}>
+                      {isSelectField ? (
+                        <FormikCustomReactSelect
+                          labelName={field.fieldName}
+                          // name={field.fieldName}
+                          name={`customFields.${field.fieldName}`}
+                          // options={field.masterValues.map((value) => ({
+                          //   label: value.trim(),
+                          //   value: value.trim(),
+                          // }))}
+                          loadOptions={
+                            field.masterValues &&
+                            field.masterValues.map((item) => ({
+                              value: item, // Assuming you want the value to be the item itself
+                              label: ConverFirstLatterToCapital(item), // Use your utility function here
+                            }))
+                          }
+                          required={field.isRequired}
+                          width
+                          placeholder={`Select ${field.fieldName}`}
+                        />
+                      ) : (
+                        <CustomTextField
+                          label={field.fieldName}
+                          // name={field.fieldName}
+                          name={`customFields.${field.fieldName}`}
+                          type={
+                            field.fieldType === "String"
+                              ? "text"
+                              : field.fieldType.toLowerCase() // Ensure the correct type is used
+                          }
+                          required={field.isRequired}
+                          placeholder={`Enter ${field.fieldName}`}
+                        />
+                      )}
+                    </Col>
+                  );
+                })} */}
+                {customFieldsList.map((field) => {
+                  const isSelectField =
+                    field.masterValues && field.masterValues.length > 0;
+
+                  return (
+                    <Col xs={12} sm={6} lg={4} className="pb-1" key={field._id}>
+                      {field.fieldType === "Boolean" ? (
+                        <FormikCustomReactSelect
+                          labelName={field.fieldName}
+                          name={`customFields.${field.fieldName}`}
+                          loadOptions={[
+                            { value: "", label: "Select Option" },
+                            { value: true, label: "True" },
+                            { value: false, label: "False" },
+                          ]}
+                          required={field.isRequired}
+                          width
+                          placeholder={`Select ${field.fieldName}`}
+                        />
+                      ) : field.fieldType === "Date" ? (
+                        <FormikCustomDatePicker
+                          name={`customFields.${field.fieldName}`}
+                          label={field.fieldName}
+                          selected={formik.values[field.fieldName]}
+                          onChange={(date) =>
+                            formik.setFieldValue(`customFields.${field.fieldName}`, date)
+                          }
+                          pastDateNotAllowed
+                          required={field.isRequired}
+                          minDate={new Date()}
+                        />
+                      ) : isSelectField ? (
+                        <FormikCustomReactSelect
+                          labelName={field.fieldName}
+                          name={`customFields.${field.fieldName}`}
+                          loadOptions={field.masterValues.map((item) => ({
+                            value: item.trim(),
+                            label: ConverFirstLatterToCapital(item).trim(),
+                          }))}
+                          width
+                          required={field.isRequired}
+                          placeholder={`Select ${field.fieldName}`}
+                        />
+                      ) : (
+                        <CustomTextField
+                          label={field.fieldName}
+                          name={`customFields.${field.fieldName}`}
+                          type={
+                            field.fieldType === "String"
+                              ? "text"
+                              : field.fieldType.toLowerCase()
+                          }
+                          required={field.isRequired}
+                          placeholder={`Enter ${field.fieldName}`}
+                        />
+                      )}
+                    </Col>
+                  );
+                })}
+
                 {!payDonation && (
                   <Col xs={12} sm={6} lg={5} className="mb-3">
                     <Row>

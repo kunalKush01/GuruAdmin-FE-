@@ -1,0 +1,36 @@
+#addCustomFieldBtn {
+  background-color: #ff8744 !important;
+  border: none;
+}
+
+.ant-table {
+  /* border: 2px solid #ff8744; */
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 10px;
+}
+
+.ant-table-body {
+  scrollbar-width: none;
+}
+.ant-table-tbody > tr > td {
+  padding: 0 16px !important;
+}
+.ant-table-thead > tr > th {
+  padding: 10px 16px !important;
+}
+.ant-table-row .ant-table-cell {
+  color: #57350b !important;
+  font-weight: 400;
+  height: 35px;
+}
+.ant-table-thead .ant-table-cell {
+  /* padding: 0px 16px 0px 16px !important; */
+  /* height: 35px;
+  font-weight: 500; */
+  color: #57350b !important;
+  background-color: white;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+.ant-table-row:nth-child(even) .ant-table-cell {
+  background-color: #fff7e8; /* Background color for last child cells in even rows */
+}
