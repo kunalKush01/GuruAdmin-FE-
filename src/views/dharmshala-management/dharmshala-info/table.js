@@ -8,7 +8,7 @@ import { deleteDharmshalaInfo } from "../../../api/dharmshala/dharmshalaInfo";
 import deleteIcon from "../../../assets/images/icons/category/deleteIcon.svg";
 import deleteDisableIcon from "../../../assets/images/icons/category/deleteDisableIcon.svg";
 import editIcon from "../../../assets/images/icons/category/editIcon.svg";
-import CustomDataTable from "../../../components/partials/CustomDataTable";
+import CustomDharmshalaTable from "../../../components/partials/CustomDharmshalaTable";
 import confirmationIcon from "../../../assets/images/icons/news/conformationIcon.svg";
 import { DharmshalaInfoTableWrapper } from "../dharmshalaStyles";
 import "../dharmshala_css/dharmshalainfotable.css"; 
@@ -33,7 +33,7 @@ const DharmshalaInfoTable = ({
     mutationFn: handleDeleteDharmshala,
     onSuccess: (data) => {
       if (!data.error) {
-        queryClient.invalidateQueries(["DharmshalaList"]);
+        queryClient.invalidateQueries(["dharmshalaList"]);
       }
     },
   });
@@ -58,6 +58,10 @@ const DharmshalaInfoTable = ({
       name: t("Floor Count"),
       selector: (row) => row.floorCount,
       width: "200px",
+    },
+    {
+      name: t(""),
+      width: "800px",
     },
     {
       name: t(""),
@@ -192,7 +196,7 @@ const DharmshalaInfoTable = ({
           ))}
         </div>
       ) : (
-        <CustomDataTable
+        <CustomDharmshalaTable
           maxHeight={maxHeight}
           height={height}
           columns={columns}

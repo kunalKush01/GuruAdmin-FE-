@@ -57,7 +57,7 @@ const AddBookingForm = ({
     };
   
     mutation.mutate(data);
-    history.push(`/booking/info?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`);
+    history.push(`/bookings/info?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`);
   };
 
   return (

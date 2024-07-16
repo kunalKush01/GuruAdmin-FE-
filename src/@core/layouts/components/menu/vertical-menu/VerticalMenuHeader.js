@@ -72,7 +72,7 @@ const VerticalMenuHeader = (props) => {
             <Toggler />
             <X
               onClick={() => setMenuVisibility(false)}
-              className="toggle-icon icon-x d-block d-xl-none"
+              className="toggle-icon icon-x d-block"
               size={20}
             />
           </div>

@@ -22,6 +22,12 @@ const serchablepath = [
   "/cattle/management/supplies",
   "/cattle/management/usage",
   "/cattle/management/item",
+  "/dharmshala/dashboard",
+  "/bookings/info",
+  "/dharmshala/info",
+  "/roomtype/info",
+  "/feedback"
+
 ];
 export const isSerchable = () => {
   const pathName = useLocation().pathname;
@@ -74,6 +80,16 @@ export const setPlaceholderSerchbar = () => {
       return "search_cattles_usage";
     case "/cattle/management/item":
       return "search_cattles_items";
+    case "/dharmshala/dashboard":
+      return "search_dharmshala";
+    case "/bookings/info":
+      return "search_bookings";
+    case "/dharmshala/info":
+      return "search_buildings";
+    case "/roomtype/info":
+      return "search_roomtypes"
+    case "/feedback":
+      return "search_feedback"
     default:
       return "Search";
   }

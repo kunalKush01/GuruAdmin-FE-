@@ -15,6 +15,7 @@ import CustomDharmshalaTable from "../../../components/partials/CustomDharmshala
 import { ConverFirstLatterToCapital } from "../../../utility/formater";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { DharmshalaRoomTableWrapper } from "../dharmshalaStyles";
+import "../dharmshala_css/dharmshalaroom.css";
 
 const DharmshalaRoomTable = ({
   data = [],
@@ -24,6 +25,7 @@ const DharmshalaRoomTable = ({
   currentStatus,
   currentPage,
   floorID,
+  isMobileView,
 }) => {
   const { t } = useTranslation();
   const history = useHistory();
@@ -55,6 +57,10 @@ const DharmshalaRoomTable = ({
       name: t("room_type"),
       selector: (row) => row.roomTypeName,
       width: "250px",
+    },
+    {
+      name: t(""),
+      width: "985px",
     },
     {
       name: t(""),
@@ -126,12 +132,32 @@ const DharmshalaRoomTable = ({
   }, [data, floorID]);
   return (
     <DharmshalaRoomTableWrapper>
+      {isMobileView ? (
+        <div className="card-container">
+          {DharmshalasRoom.map((item, index) => (
+            <div key={index} className="card">
+              <div className="card-body">
+                <div className="card-content">
+                  <h5 className="card-title">{item.roomNumber}</h5>
+                  <p className="card-text">{item.directBookingAvailable}</p>
+                  <p className="card-text">{item.roomTypeName}</p>
+                </div>
+                <div className="card-icons">
+                  {item.edit}
+                  {item.delete}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
       <CustomDharmshalaTable
         maxHeight={maxHeight}
         height={height}
         columns={columns}
         data={DharmshalasRoom}
       />
+      )}
     </DharmshalaRoomTableWrapper>
   );
 };
