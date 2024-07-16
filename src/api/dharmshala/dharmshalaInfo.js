@@ -52,7 +52,7 @@ export const createRoomType = (payload) =>
     successCode: 201,
   });
 
-export const getRoomTypeList = (payload) =>
+export const getRoomTypeList = () =>
   callDharmshalaApi({
     requestFunction: (axios) => axios.get(`roomTypes/`),
     showToastOnSuccess: false,

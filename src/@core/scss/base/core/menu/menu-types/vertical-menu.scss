@@ -209,6 +209,7 @@
 }
 
 // Initially menu & content width for lg and up screen
+
 @include media-breakpoint-up(lg) {
   .vertical-layout {
     &.vertical-menu-modern {
@@ -220,16 +221,18 @@
 }
 
 // Initially menu & content width for md and down screen
+
 @include media-breakpoint-down(xl) {
   .vertical-layout {
+    
     &.vertical-menu-modern {
       // not using this class in below < 992
       .main-menu {
-        width: 0;
+        width: $menu-expanded-width;
       }
       .navbar {
         .navbar-header {
-          width: 0;
+          width: $menu-expanded-width;
         }
       }
       .content,

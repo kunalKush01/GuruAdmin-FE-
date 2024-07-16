@@ -98,7 +98,7 @@ const lateCheckout = searchParams.get("lateCheckout");
             className="me-2  cursor-pointer"
             onClick={() =>
               history.push(
-                `/booking/info/?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
+                `/bookings/info/?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
               )
             }
           />

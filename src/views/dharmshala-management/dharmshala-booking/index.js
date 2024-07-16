@@ -9,7 +9,7 @@ import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
-import { getDharmshalaBookingList } from "../../../api/dharmshala/dharmshalaInfo";
+import { getDharmshalaBookingList, getDharmshalaBookingDetail } from "../../../api/dharmshala/dharmshalaInfo";
 import NoContent from "../../../components/partials/noContent";
 import DharmshalaBookingTable from "./table";
 import { Helmet } from "react-helmet";
@@ -20,6 +20,7 @@ const DharmshalaBookings = () => {
   const { t } = useTranslation();
   const importFileRef = useRef();
   const selectedLang = useSelector((state) => state.auth.selectLang);
+  const searchBarValue = useSelector((state) => state.search.LocalSearch);
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const [showPastRequests, setShowPastRequests] = useState(false);
 
@@ -62,8 +63,6 @@ const DharmshalaBookings = () => {
     .utcOffset(0, true)
     .toISOString();
 
-  const searchBarValue = useSelector((state) => state.search.LocalSearch);
-
   const dharmshalaBookingList = useQuery(
     ["dharmshalaBookingList", pagination.page, selectedLang.id, searchBarValue],
     () => getDharmshalaBookingList()
@@ -94,15 +93,23 @@ const DharmshalaBookings = () => {
 
   const filteredBookingListData = useMemo(() => {
     const currentDate = moment();
+    let filteredData = dharmshalaBookingListData;
     if (showPastRequests) {
-      return dharmshalaBookingListData.filter((item) =>
+      filteredData = filteredData.filter((item) =>
         moment(item.startDate).isBefore(currentDate)
       );
+    } else {
+      filteredData = filteredData.filter((item) =>
+        moment(item.startDate).isAfter(currentDate)
+      );
     }
-    return dharmshalaBookingListData.filter((item) =>
-      moment(item.startDate).isAfter(currentDate)
-    );
-  }, [dharmshalaBookingListData, showPastRequests]);
+    if (searchBarValue && searchBarValue.length >= 3) {
+      filteredData = filteredData.filter((item) =>
+        item.bookingId.toLowerCase().startsWith(searchBarValue.toLowerCase().slice(0, 3))
+      );
+    }
+    return filteredData;
+  }, [dharmshalaBookingListData, showPastRequests, searchBarValue]);
 
   return (
     <DharmshalaBookingInfo>
@@ -206,8 +213,7 @@ const DharmshalaBookings = () => {
                       nextLinkClassName={"page-link"}
                       pageLinkClassName={"page-link"}
                       nextClassName={"page-item next"}
-                      previousLinkClassName={"page-link"}
-                      previousClassName={"page-item prev"}
+                      previousLinkClassName={"page-item prev"}
                       onPageChange={(page) => {
                         setPagination({ ...pagination, page: page.selected + 1 });
                         history.push(`/dharmshala/info?page=${page.selected + 1}&status=${currentStatus}&filter=${dropDownName}`);

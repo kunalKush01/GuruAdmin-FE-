@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -28,6 +28,8 @@ const DharmshalaBookingTable = ({
 }) => {
   const { t } = useTranslation();
   const history = useHistory();
+  const [selectedBookings, setSelectedBookings] = useState([]);
+  
   const handleDeleteDharmshalaBooking = async (payload) => {
     return deleteDharmshalaBooking(payload);
   };
@@ -42,25 +44,49 @@ const DharmshalaBookingTable = ({
     },
   });
 
+  const handleCheckboxChange = (bookingId) => {
+    setSelectedBookings((prevSelected) =>
+      prevSelected.includes(bookingId)
+        ? prevSelected.filter((id) => id !== bookingId)
+        : [...prevSelected, bookingId]
+    );
+  };
+
   const columns = [
+    {
+      name: "",
+      selector: (row) => (
+        <input
+          type="checkbox"
+          checked={selectedBookings.includes(row.bookingId)}
+          onChange={() => handleCheckboxChange(row.bookingId)}
+        />
+      ),
+      width: "50px",
+    },
     {
       name: t("Booking ID"),
       selector: (row) => row.bookingId,
-      width: "200px",
+      width: "150px",
     },
     {
       name: t("Start Date"),
       selector: (row) => row.startDate,
-      width: "300px",
+      width: "150px",
     },
     {
       name: t("End Date"),
       selector: (row) => row.endDate,
-      width: "200px",
+      width: "150px",
     },
     {
       name: t("Count"),
       selector: (row) => row.count,
+      width: "100px",
+    },
+    {
+      name: t("Room Number"),
+      selector: (row) => row.roomNumber,
       width: "200px",
     },
     {
@@ -71,16 +97,16 @@ const DharmshalaBookingTable = ({
     {
       name: t("Early Check In"),
       selector: (row) => (row.earlyCheckIn ? "Yes" : "No"),
-      width: "200px",
+      width: "150px",
     },
     {
       name: t("Late Checkout"),
       selector: (row) => (row.lateCheckout ? "Yes" : "No"),
-      width: "200px",
+      width: "150px",
     },
     {
       name: t(""),
-      width: "200px",
+      width: "400px",
     },
     {
       name: t(""),
@@ -108,6 +134,7 @@ const DharmshalaBookingTable = ({
         startDate: moment(item?.startDate).format("DD MMM YYYY"),
         endDate: moment(item?.endDate).format("DD MMM YYYY"),
         count: item?.count,
+        roomNumber: item?.roomId?.roomNumber,
         status: item?.status,
         earlyCheckIn: item?.earlyCheckIn,
         lateCheckout: item?.lateCheckout,
@@ -115,7 +142,7 @@ const DharmshalaBookingTable = ({
           <img
             src={editIcon}
             width={35}
-            className="cursor-pointer "
+            className="cursor-pointer"
             onClick={() => {
               history.push(
                 `/booking/edit/${item?._id}/?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}&bookingId=${item?.bookingId}&startDate=${item?.startDate}&endDate=${item?.endDate}&count=${item?.count}&earlyCheckIn=${item?.earlyCheckIn}&lateCheckout=${item?.lateCheckout}`
@@ -127,7 +154,7 @@ const DharmshalaBookingTable = ({
           <img
             src={deleteIcon}
             width={35}
-            className="cursor-pointer "
+            className="cursor-pointer"
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();

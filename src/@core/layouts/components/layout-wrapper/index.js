@@ -72,7 +72,7 @@ const LayoutWrapper = (props) => {
   const permissionsKey = permissions?.map((item) => item?.name);
 
   return (
-    <div
+    <div 
       className={classnames("app-content content overflow-hidden", {
         [wrapperClass]: wrapperClass,
         "show-overlay": navbarStore.query.length,
