@@ -18,6 +18,7 @@ const DataTableWrapper = styled.div`
   .download {
     color: red !important;
   }
+  
   .DonetionList {
     ::-webkit-scrollbar {
       height: 8px;
@@ -27,7 +28,7 @@ const DataTableWrapper = styled.div`
       border-radius: 25px;
       width: 10px !important;
     }
-    border: 2px solid #ff8744;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     border-radius: 8px;
     .rdt_TableCell {
       color: #583703 !important;
@@ -35,8 +36,9 @@ const DataTableWrapper = styled.div`
     }
     .rdt_TableHeadRow {
       border: 0px !important;
+      background-color: #ff8744 !important;
       .rdt_TableCol {
-        color: #583703 !important;
+        color: #ffffff !important;
         border: 0px !important;
         font: normal normal bold 14px/23px Noto Sans;
       }
@@ -54,6 +56,29 @@ const DataTableWrapper = styled.div`
         display: block;
       }
     }
+
+    .pagination {
+      display: flex;
+      color: #ff8744;
+      list-style-type: none;
+      padding: 0;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .pagination li {
+      margin: 0 5px;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+
+    .pagination li.active {
+      background-color: #ff8744;
+      color: #fff;
+      border-color: #ff8744;
+    }
   }
 `;
 
@@ -68,22 +93,23 @@ function CustomDharmshalaTable({
   noDataComponent,
 }) {
   return (
-    <>
-      <DataTableWrapper>
-        <DataTable
-          conditionalRowStyles={[conditionStyle]}
-          className="DonetionList"
-          columns={columns}
-          noDataComponent={noDataComponent}
-          selectableRows={selectableRows}
-          onSelectedRowsChange={onSelectedRowsChange}
-          selectableRowDisabled={selectableRowDisabled}
-          selectableRowsHighlight={selectableRowsHighlight}
-          selectableRowSelected={selectableRowSelected}
-          data={data}
-        />
-      </DataTableWrapper>
-    </>
+    <DataTableWrapper>
+      <DataTable
+        conditionalRowStyles={[conditionStyle]}
+        className="DonetionList"
+        columns={columns}
+        noDataComponent={noDataComponent}
+        selectableRows={selectableRows}
+        onSelectedRowsChange={onSelectedRowsChange}
+        selectableRowDisabled={selectableRowDisabled}
+        selectableRowsHighlight={selectableRowsHighlight}
+        selectableRowSelected={selectableRowSelected}
+        data={data}
+        pagination
+        paginationPerPage={10}
+        paginationRowsPerPageOptions={[10, 20, 30]}
+      />
+    </DataTableWrapper>
   );
 }
 

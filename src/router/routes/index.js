@@ -832,7 +832,7 @@ const Routes = [
 
   //Booking Routes
   {
-    path: "/booking/info",
+    path: "/bookings/info",
     component: lazy(() =>
       import("../../views/dharmshala-management/dharmshala-booking/index.js")
     ),
@@ -861,10 +861,21 @@ const Routes = [
     subPermission: WRITE,
   },
 
+  // {
+  //   path: "/booking/calendar",
+  //   component: lazy(() =>
+  //     import("../../views/dharmshala-management/dharmshala-booking/calendar/index.js")
+    
+  //   ),
+  //   exact: true,
+  //   type: "booking-info",
+  //   subPermission: WRITE,
+  // },
   {
     path: "/booking/calendar",
     component: lazy(() =>
-      import("../../views/dharmshala-management/dharmshala-booking/calendar/index.js")
+      import("../../components/dharmshalaBooking/Calendar.js")
+    
     ),
     exact: true,
     type: "dharmshala-dashboard",

@@ -87,6 +87,17 @@ const DharmshalasInfo = () => {
 
   const isMobileView = window.innerWidth <= 784;
 
+  const filtereddharmshalaListData = useMemo(() => {
+    const currentDate = moment();
+    let filteredData = dharmshalaListData;
+    if (searchBarValue && searchBarValue.length >= 3) {
+      filteredData = filteredData.filter((item) =>
+        item.name.toLowerCase().startsWith(searchBarValue.toLowerCase().slice(0, 3))
+      );
+    }
+    return filteredData;
+  }, [dharmshalaListData, searchBarValue]);
+
   return (
     <DharmshalaInfo>
       <Helmet>
@@ -133,13 +144,14 @@ const DharmshalasInfo = () => {
                 condition={
                   !dharmshalaList.isLoading &&
                   dharmshalaListData.length !== 0 &&
+                  filtereddharmshalaListData.length!==0&&
                   !dharmshalaList.isFetching
                 }
                 disableMemo
               >
                 <Then>
                   <DharmshalaInfoTable
-                    data={dharmshalaListData}
+                    data={filtereddharmshalaListData}
                     height="160px"
                     currentFilter={dropDownName}
                     currentPage={pagination.page}
@@ -149,8 +161,9 @@ const DharmshalasInfo = () => {
                 <Else>
                   <If
                     condition={
-                      !dharmshalaList.isLoading &&
-                      dharmshalaListData.length === 0
+                      !dharmshalaList.isLoading ||
+                      dharmshalaListData.length === 0 ||
+                      filtereddharmshalaListData.length === 0
                     }
                     disableMemo
                   >

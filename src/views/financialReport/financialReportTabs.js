@@ -60,8 +60,7 @@ const FinancialReportTabs = ({ setActive, active,setPagination }) => {
               className={`tabName ${
                 active?.name == item.name ? "activeTab" : ""
               }`}
-              onClick={() => {
-                
+              onClick={() => {                
                 setActive(item);
               }}
             >

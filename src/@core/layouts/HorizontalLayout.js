@@ -1,45 +1,34 @@
-// ** React Imports
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-
-// ** Store & Actions
-import { handleContentWidth, handleMenuHidden } from "@store/layout";
 import { useDispatch, useSelector } from "react-redux";
-
-// ** Third Party Components
 import classnames from "classnames";
 import { ArrowUp } from "react-feather";
-
-// ** Reactstrap Imports
 import { Button, Navbar } from "reactstrap";
-
-// ** Configs
 import themeConfig from "@configs/themeConfig";
-
-// ** Custom Components
 import Customizer from "@components/customizer";
 import ScrollToTop from "@components/scrolltop";
 import FooterComponent from "./components/footer";
 import MenuComponent from "./components/menu/horizontal-menu";
 import NavbarComponent from "./components/navbar";
-
-// ** Custom Hooks
+import { handleContentWidth, handleMenuHidden } from "@store/layout";
 import { useFooterType } from "@hooks/useFooterType";
 import { useNavbarColor } from "@hooks/useNavbarColor";
 import { useNavbarType } from "@hooks/useNavbarType";
 import { useRTL } from "@hooks/useRTL";
 import { useSkin } from "@hooks/useSkin";
-
-// ** Styles
 import "@styles/base/core/menu/menu-types/horizontal-menu.scss";
 import { subHeaderContent } from "../../utility/subHeaderContent";
+
 const HorizontalLayout = (props) => {
   const history = useHistory();
   const { isLogged } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    !isLogged && history.push("/login");
-  }, [isLogged]);
+    if (!isLogged) {
+      history.push("/login");
+    }
+  }, [isLogged, history]);
+
   // ** Props
   const {
     children,
@@ -63,6 +52,7 @@ const HorizontalLayout = (props) => {
   const [isMounted, setIsMounted] = useState(false);
   const [active, setActive] = useState(location.pathname);
   const [navbarScrolled, setNavbarScrolled] = useState(false);
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   // ** Store Vars
   const dispatch = useDispatch();
@@ -75,7 +65,7 @@ const HorizontalLayout = (props) => {
   // ** Handles Content Width
   const setContentWidth = (val) => dispatch(handleContentWidth(val));
 
-  // ** Handles Content Width
+  // ** Handles Menu Hidden
   const setIsHidden = (val) => dispatch(handleMenuHidden(val));
 
   // ** UseEffect Cleanup
@@ -87,16 +77,20 @@ const HorizontalLayout = (props) => {
   //** ComponentDidMount
   useEffect(() => {
     setIsMounted(true);
-    window.addEventListener("scroll", function () {
-      if (window.pageYOffset > 65 && navbarScrolled === false) {
+    const handleScroll = () => {
+      if (window.pageYOffset > 65 && !navbarScrolled) {
         setNavbarScrolled(true);
-      }
-      if (window.pageYOffset < 65) {
+      } else if (window.pageYOffset < 65) {
         setNavbarScrolled(false);
       }
-    });
-    return () => cleanup();
-  }, []);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      cleanup();
+    };
+  }, [navbarScrolled]);
 
   // ** Vars
   const footerClasses = {
@@ -138,14 +132,14 @@ const HorizontalLayout = (props) => {
         container={false}
         style={{ background: "#fff" }}
         className={classnames(
-          "header-navbar navbar-fixed align-items-center navbar-shadow navbar-brand-center   ",
+          "header-navbar navbar-fixed align-items-center navbar-shadow navbar-brand-center",
           {
             "navbar-scrolled": navbarScrolled,
           }
         )}
       >
         <div className="navbar-container d-flex content">
-          {navbar ? navbar : <NavbarComponent skin={skin} setSkin={setSkin} />}
+          {navbar ? navbar : <NavbarComponent skin={skin} setSkin={setSkin} setMenuVisibility={setIsMenuVisible} />}
         </div>
       </Navbar>
       {!isHidden ? (
@@ -169,13 +163,11 @@ const HorizontalLayout = (props) => {
             {menu ? (
               menu
             ) : (
-              <>
-                <MenuComponent
-                  menuData={subHeaderContent}
-                  routerProps={routerProps}
-                  currentActiveItem={currentActiveItem}
-                />
-              </>
+              <MenuComponent
+                menuData={subHeaderContent}
+                routerProps={routerProps}
+                currentActiveItem={currentActiveItem}
+              />
             )}
           </Navbar>
         </div>
@@ -234,4 +226,5 @@ const HorizontalLayout = (props) => {
     </div>
   );
 };
+
 export default HorizontalLayout;

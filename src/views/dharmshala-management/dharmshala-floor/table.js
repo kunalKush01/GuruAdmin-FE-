@@ -9,6 +9,7 @@ import deleteDisableIcon from "../../../assets/images/icons/category/deleteDisab
 import deleteIcon from "../../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../../assets/images/icons/category/editIcon.svg";
 import confirmationIcon from "../../../assets/images/icons/news/conformationIcon.svg";
+import CustomDharmshalaTable from "../../../components/partials/CustomDharmshalaTable";
 import CustomDataTable from "../../../components/partials/CustomDataTable";
 import { DharmshalaFloorTableWrapper } from "../dharmshalaStyles";
 import "../dharmshala_css/dharmshalafloors.css";
@@ -59,6 +60,10 @@ const DharmshalaFloorTable = ({
       name: t("Room Count"),
       selector: (row) => row.roomCount,
       width: "200px",
+    },
+    {
+      name: t(""),
+      width: "800px",
     },
     {
       name: t(""),
@@ -203,7 +208,7 @@ const DharmshalaFloorTable = ({
           ))}
         </div>
       ) : (
-        <CustomDataTable
+        <CustomDharmshalaTable
           maxHeight={maxHeight}
           height={height}
           columns={columns}

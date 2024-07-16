@@ -9,7 +9,7 @@ import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
-import { getDharmshalaBookingList } from "../../../api/dharmshala/dharmshalaInfo";
+import { getDharmshalaBookingList, getDharmshalaBookingDetail } from "../../../api/dharmshala/dharmshalaInfo";
 import NoContent from "../../../components/partials/noContent";
 import DharmshalaBookingTable from "./table";
 import { Helmet } from "react-helmet";
@@ -20,7 +20,9 @@ const DharmshalaBookings = () => {
   const { t } = useTranslation();
   const importFileRef = useRef();
   const selectedLang = useSelector((state) => state.auth.selectLang);
+  const searchBarValue = useSelector((state) => state.search.LocalSearch);
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
+  const [showPastRequests, setShowPastRequests] = useState(false);
 
   const [pagination, setPagination] = useState({
     page: 1,
@@ -61,25 +63,15 @@ const DharmshalaBookings = () => {
     .utcOffset(0, true)
     .toISOString();
 
-  const searchBarValue = useSelector((state) => state.search.LocalSearch);
-
-
-//   const fetchProducts = async () => {
-//     const response = await axios.get(apiUrl);
-//     return response?.data;
-// };
-
   const dharmshalaBookingList = useQuery(
     ["dharmshalaBookingList", pagination.page, selectedLang.id, searchBarValue],
-    () =>
-      getDharmshalaBookingList(),
+    () => getDharmshalaBookingList()
   );
-  
+
   const dharmshalaBookingListData = useMemo(
     () => dharmshalaBookingList.data?.results ?? [],
     [dharmshalaBookingList.data]
   );
-
 
   const queryClient = useQueryClient();
 
@@ -95,6 +87,30 @@ const DharmshalaBookings = () => {
 
   const isMobileView = window.innerWidth <= 784;
 
+  const togglePastRequests = () => {
+    setShowPastRequests(!showPastRequests);
+  };
+
+  const filteredBookingListData = useMemo(() => {
+    const currentDate = moment();
+    let filteredData = dharmshalaBookingListData;
+    if (showPastRequests) {
+      filteredData = filteredData.filter((item) =>
+        moment(item.startDate).isBefore(currentDate)
+      );
+    } else {
+      filteredData = filteredData.filter((item) =>
+        moment(item.startDate).isAfter(currentDate)
+      );
+    }
+    if (searchBarValue && searchBarValue.length >= 3) {
+      filteredData = filteredData.filter((item) =>
+        item.bookingId.toLowerCase().startsWith(searchBarValue.toLowerCase().slice(0, 3))
+      );
+    }
+    return filteredData;
+  }, [dharmshalaBookingListData, showPastRequests, searchBarValue]);
+
   return (
     <DharmshalaBookingInfo>
       <Helmet>
@@ -104,7 +120,6 @@ const DharmshalaBookings = () => {
       <div>
         <div className="d-sm-flex mb-1 justify-content-between align-items-center ">
           <Trans i18nKey={"dharmshala_bookings_requested"} />
-          <div className="d-flex mt-1 mt-sm-0 justify-content-between">
           <div className="d-flex mt-1 mt-sm-0 justify-content-between">
             <Button
               className="me-1"
@@ -120,7 +135,6 @@ const DharmshalaBookings = () => {
                 <Trans i18nKey={"dharmshala_booking_add"} />
               </span>
             </Button>
-          </div>
             <Button
               className="me-1"
               color="primary"
@@ -130,6 +144,15 @@ const DharmshalaBookings = () => {
             >
               <span>
                 <Trans i18nKey={"dharmshala_booking_calendar"} />
+              </span>
+            </Button>
+            <Button className="me-1" color="primary" onClick={togglePastRequests}>
+              <span>
+                {showPastRequests ? (
+                  <Trans i18nKey={"view_upcoming_requests"} />
+                ) : (
+                  <Trans i18nKey={"view_past_requests"} />
+                )}
               </span>
             </Button>
           </div>
@@ -147,14 +170,14 @@ const DharmshalaBookings = () => {
               <If
                 condition={
                   !dharmshalaBookingList.isLoading &&
-                  dharmshalaBookingListData.length > 0 &&
+                  filteredBookingListData.length > 0 &&
                   !dharmshalaBookingList.isFetching
                 }
                 disableMemo
               >
                 <Then>
                   <DharmshalaBookingTable
-                    data={dharmshalaBookingListData}
+                    data={filteredBookingListData}
                     height="160px"
                     currentFilter={dropDownName}
                     currentPage={pagination.page}
@@ -162,7 +185,7 @@ const DharmshalaBookings = () => {
                   />
                 </Then>
                 <Else>
-                  <If condition={!dharmshalaBookingList.isLoading && dharmshalaBookingListData.length === 0} disableMemo>
+                  <If condition={!dharmshalaBookingList.isLoading && filteredBookingListData.length === 0} disableMemo>
                     <Then>
                       <NoContent headingNotfound={t("no_data_found")} para={t("no_data_found_add_data")} />
                     </Then>
@@ -190,8 +213,7 @@ const DharmshalaBookings = () => {
                       nextLinkClassName={"page-link"}
                       pageLinkClassName={"page-link"}
                       nextClassName={"page-item next"}
-                      previousLinkClassName={"page-link"}
-                      previousClassName={"page-item prev"}
+                      previousLinkClassName={"page-item prev"}
                       onPageChange={(page) => {
                         setPagination({ ...pagination, page: page.selected + 1 });
                         history.push(`/dharmshala/info?page=${page.selected + 1}&status=${currentStatus}&filter=${dropDownName}`);
