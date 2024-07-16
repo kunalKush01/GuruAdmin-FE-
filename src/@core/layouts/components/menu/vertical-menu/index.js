@@ -1,16 +1,12 @@
-// ** React Imports
-import { Fragment, useRef, useState } from "react";
-
-// ** Third Party Components
+import React, { Fragment, useRef, useState } from "react";
 import classnames from "classnames";
 import PerfectScrollbar from "react-perfect-scrollbar";
-
-// ** Vertical Menu Components
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import moment from "moment";
 import logOutIcon from "../../../../../assets/images/icons/dashBoard/Group 5995.svg";
 import confirmationIcon from "../../../../../assets/images/icons/news/conformationIcon.svg";
 import { authApiInstance } from "../../../../../axiosApi/authApiInstans";
@@ -20,7 +16,6 @@ import VerticalMenuHeader from "./VerticalMenuHeader";
 import VerticalNavMenuItems from "./VerticalNavMenuItems";
 
 const Sidebar = (props) => {
-  // ** Props
   const {
     menuCollapsed,
     routerProps,
@@ -31,24 +26,18 @@ const Sidebar = (props) => {
   } = props;
   const verticalBarData = subHeaderContentResponsive;
 
-  // ** States
   const [groupOpen, setGroupOpen] = useState([]);
   const [groupActive, setGroupActive] = useState([]);
   const [currentActiveGroup, setCurrentActiveGroup] = useState([]);
   const [activeItem, setActiveItem] = useState(null);
-
-  // ** Menu Hover State
   const [menuHover, setMenuHover] = useState(false);
 
-  // ** Ref
   const shadowRef = useRef(null);
 
-  // ** Function to handle Mouse Enter
   const onMouseEnter = () => {
     setMenuHover(true);
   };
 
-  // ** Scroll Menu
   const scrollMenu = (container) => {
     if (shadowRef && container.scrollTop > 0) {
       if (!shadowRef.current.classList.contains("d-block")) {
@@ -64,6 +53,8 @@ const Sidebar = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const refreshToken = useSelector((state) => state.auth.tokens.refreshToken);
+  const userDetails = useSelector((state) => state.auth.userDetail);
+
   const handleLogOut = async () => {
     try {
       const res = await authApiInstance.post("auth/logout", { refreshToken });
@@ -72,6 +63,7 @@ const Sidebar = (props) => {
       history.push("/login");
     } catch (error) {}
   };
+
   const { t, i18n } = useTranslation();
 
   return (
@@ -92,15 +84,12 @@ const Sidebar = (props) => {
           menu
         ) : (
           <Fragment>
-            {/* Vertical Menu Header */}
             <VerticalMenuHeader
               setGroupOpen={setGroupOpen}
               menuHover={menuHover}
               {...props}
             />
-            {/* Vertical Menu Header Shadow */}
             <div className="shadow-bottom" ref={shadowRef}></div>
-            {/* Perfect Scrollbar */}
             <PerfectScrollbar
               className="main-menu-content"
               options={{ wheelPropagation: false }}
@@ -123,10 +112,10 @@ const Sidebar = (props) => {
                   setCurrentActiveGroup={setCurrentActiveGroup}
                   currentActiveItem={currentActiveItem}
                 />
-                <li className="nav-item " style={{ marginTop: "5rem" }}>
+                <li className="nav-item" style={{ marginTop: "5rem" }}>
                   <div
                     className="d-flex align-items-center"
-                    style={{ paddingLeft: "30px" }}
+                    style={{ paddingLeft: "20px", paddingRight: "20px" }}
                   >
                     <img src={logOutIcon} width={25} height={25} />
                     <a
@@ -134,15 +123,13 @@ const Sidebar = (props) => {
                         Swal.fire({
                           title: `<img src="${confirmationIcon}"/>`,
                           html: `
-                                    
-                  <h3 class="swal-heading mt-1">${t("logout_msg")}</h3>
-                                    `,
+                            <h3 class="swal-heading mt-1">${t("logout_msg")}</h3>
+                          `,
                           showCloseButton: false,
                           showCancelButton: true,
                           focusConfirm: true,
                           cancelButtonText: ` ${t("no")}`,
                           cancelButtonAriaLabel: ` ${t("cencel")}`,
-
                           confirmButtonText: ` ${t("yes")}`,
                           confirmButtonAriaLabel: "Confirm",
                         }).then(async (result) => {
@@ -151,9 +138,22 @@ const Sidebar = (props) => {
                           }
                         });
                       }}
+                      style={{ marginLeft: "10px", cursor: "pointer" }}
                     >
                       Logout
                     </a>
+                  </div>
+                  <div
+                    className="last-login"
+                    style={{
+                      paddingLeft: "20px",
+                      paddingRight: "20px",
+                      marginTop: "10px",
+                      wordWrap: "break-word"
+                    }}
+                  >
+                    <strong>Last Login:</strong><br />
+                    {moment(userDetails?.lastLogin).format("DD MMM YYYY, h:mm a")}
                   </div>
                 </li>
               </ul>

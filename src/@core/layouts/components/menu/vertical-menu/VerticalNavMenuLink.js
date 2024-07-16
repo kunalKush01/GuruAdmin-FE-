@@ -13,7 +13,7 @@ const VerticalNavMenuLink = ({
   item,
   activeItem,
   setActiveItem,
-  currentActiveItem
+  currentActiveItem,
 }) => {
   // ** Conditional Link Tag, if item has newTab or externalLink props use <a> tag else use NavLink
   const LinkTag = item.externalLink ? 'a' : NavLink
@@ -60,9 +60,10 @@ const VerticalNavMenuLink = ({
               }
             })}
       >
-        {/* {item.icon} */}
-        <span className='menu-item text-truncate'><Trans i18nKey={item?.name}/></span>
-
+        <span className='menu-item text-truncate d-flex align-items-center'>
+          <img src={item.icon} height={20} width={20} style={{ marginLeft: '0px', marginRight: '10px'}} />
+          <Trans i18nKey={item?.name}/>
+        </span>
         {item.badge && item.badgeText ? (
           <Badge className='ms-auto me-1' color={item.badge} pill>
             {item.badgeText}

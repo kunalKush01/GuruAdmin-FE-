@@ -1,6 +1,7 @@
 /* Styles for card container */
 .card-container {
   display: block;
+  overflow: auto;
 }
 
 /* Styles for each card */
