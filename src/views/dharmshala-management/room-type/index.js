@@ -97,6 +97,18 @@ const RoomTypesInfo = () => {
 
   const isMobileView = window.innerWidth <= 784;
 
+  const filteredroomTypeListData = useMemo(() => {
+    const currentDate = moment();
+    let filteredData = roomTypeListData;
+    if (searchBarValue && searchBarValue.length >= 3) {
+      filteredData = filteredData.filter((item) =>
+        item.name.toLowerCase().startsWith(searchBarValue.toLowerCase().slice(0, 3))
+      );
+    }
+    return filteredData;
+    
+  }, [roomTypeListData, searchBarValue]);
+
   return (
     <RoomTypeInfo>
       <Helmet>
@@ -143,6 +155,7 @@ const RoomTypesInfo = () => {
             <If
               condition={
                 !roomTypeList.isLoading &&
+                filteredroomTypeListData.length>0 &&
                 roomTypeListData.length != 0 &&
                 !roomTypeList.isFetching
               }
@@ -150,7 +163,7 @@ const RoomTypesInfo = () => {
             >
               <Then>
                 <RoomTypeInfoTable
-                  data={roomTypeListData}
+                  data={filteredroomTypeListData}
                   height="160px"
                   currentFilter={routFilter}
                   currentPage={routPagination}
@@ -160,7 +173,7 @@ const RoomTypesInfo = () => {
               <Else>
                 <If
                   condition={
-                    !roomTypeList.isLoading && roomTypeListData.length == 0
+                    !roomTypeList.isLoading || filteredroomTypeListData.length===0 || roomTypeListData.length == 0
                   }
                   disableMemo
                 >
