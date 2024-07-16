@@ -47,6 +47,13 @@ export const subHeaderContent = [
     name: "dharmshala_management",
     url: "/dharmshala/dashboard",
     activeTab: "/dharmshala",
+    innerPermissions: [
+      "dharmshala-dashboard",
+      "dharmshala-bookings",
+      "dharmshala-buildings",
+      "dharmshala-roomtypes",
+      "dharmshala-feedback",
+    ],
   },
 
   {
