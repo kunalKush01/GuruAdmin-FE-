@@ -130,7 +130,7 @@ export const subHeaderContentResponsive = [
     children: [
       {
         name: "Bookings",
-        url: "/booking/info",
+        url: "/bookings/info",
         icon:BookingIcon,
       },
       {

@@ -6,8 +6,8 @@ export const dharmshalaHeader = [
   },
   {
     name: "Bookings",
-    url: "/booking/info",
-    active: "/booking/info",
+    url: "/bookings/info",
+    active: "/bookings/info",
   },
   {
     name: "Buildings",

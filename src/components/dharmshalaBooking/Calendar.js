@@ -6,17 +6,15 @@ import {
   createBooking,
   updateBooking,
 } from "../../api/bookings";
-import {
-  getDharmshalaBookingList,
-  createDharmshalaBooking,
-  updateDharmshalaBooking,
-} from "../../api/dharmshala/dharmshalaInfo";
 import { fetchProperties, fetchPropertyTypes } from "../../api/properties";
 import "./Calendar.css";
 import "./bookingModal.css";
 import guestIcon from "../../assets/images/icons/guestIcon.png";
 import Switch from "react-toggle-switch";
+//import "react-toggle-switch/dist/css/switch.min.css"; 
 import Swal from "sweetalert2";
+import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import { useHistory } from "react-router-dom";
 
 const BookingModal = ({
   isOpen,
@@ -32,7 +30,7 @@ const BookingModal = ({
   onEditBooking,
   selectedCheckOutDate,
   selectedCheckInDate,
-  onSuccess,
+
 }) => {
   const [guestName, setGuestName] = useState("");
   const [phone, setPhone] = useState(null);
@@ -43,6 +41,7 @@ const BookingModal = ({
       ? new Date(initialDate.getTime() + 24 * 60 * 60 * 1000)
       : new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
   );
+  const [success,onSuccess] = useState(false);
 
   useEffect(() => {
     if (editEvent) {
@@ -64,7 +63,7 @@ const BookingModal = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     const bookingData = {
-      propertyId: property.id,
+      propertyId: property._id,
       checkIn,
       checkOut,
       title: guestName,
@@ -91,7 +90,7 @@ const BookingModal = ({
           text: "The booking has been successfully created.",
           confirmButtonColor: "#3f51b5",
         });
-        // onSuccess(true)
+        onSuccess(true)
       }
       onClose();
     } catch (error) {
@@ -108,6 +107,7 @@ const BookingModal = ({
   if (!isOpen || !property) return null;
 
   return (
+
     <div
       className={`modal fade ${isOpen ? "show" : ""}`}
       style={{ display: isOpen ? "block" : "none" }}
@@ -295,6 +295,7 @@ const PlaceholderRows = ({ numRows, numCells }) => {
 };
 
 const Calendar = () => {
+  const history = useHistory();
   const [events, setEvents] = useState([]);
   const [days, setDays] = useState([]);
   const [properties, setProperties] = useState([]);
@@ -325,18 +326,19 @@ const Calendar = () => {
       return [];
     }
     const filteredData = events.filter((item) => {
-      const checkInDate = new Date(item.checkIn);
-      const checkOutDate = new Date(item.checkOut);
+      const checkInDate = new Date(item.startDate);
+      const checkOutDate = new Date(item.endDate);
 
       const adjustedCheckIn = new Date(Math.max(checkInDate, fromDate));
       const adjustedCheckOut = new Date(Math.min(checkOutDate, toDate));
 
       const isInDateRange = adjustedCheckIn <= adjustedCheckOut;
-
       return isInDateRange;
     });
     return filteredData;
   }, [events, fromDate, toDate, days]);
+
+
   useEffect(() => {
     setFilterEventDataDay(filteredEvents);
   }, [fromDate, toDate, filteredEvents]);
@@ -348,7 +350,6 @@ const Calendar = () => {
         ? fromDate.getMonth() + 1
         : new Date().getMonth() + 1;
       const data = await fetchBookings(year, month);
-      //const data = await getDharmshalaBookingList();
       if (window.matchMedia("(max-width: 768px)").matches) {
         const formattedDays = weekDays.map((day) => ({
           date: new Date(day.date).toISOString().split("T")[0],
@@ -357,7 +358,7 @@ const Calendar = () => {
 
         const filteredData = data.filter((item) => {
           const matchingDate = formattedDays.find(
-            (day) => day.date === item.checkIn
+            (day) => day.date === item.startDate
           );
           return !!matchingDate;
         });
@@ -418,6 +419,7 @@ const Calendar = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, [fromDate, toDate, properties.length, propertyTypes.length]);
+
   useEffect(() => {
     const startDate = fromDate ? new Date(fromDate) : new Date();
     if (!fromDate) {
@@ -448,11 +450,12 @@ const Calendar = () => {
   };
   const getTotalBookingsForDate = (date) => {
     return events.filter((event) => {
-      const checkIn = new Date(event.checkIn);
-      const checkOut = new Date(event.checkOut);
+      const checkIn = new Date(event.startDate);
+      const checkOut = new Date(event.endDate);
       return date >= checkIn && date < checkOut;
     }).length;
   };
+
 
   const handleFromDateChange = (date) => {
     if (window.matchMedia("(max-width: 768px)").matches) {
@@ -499,9 +502,10 @@ const Calendar = () => {
     setSelectedRoomType(event.target.value);
   };
 
-  const getRandomColor = (seed) => {
+  const getRandomColor = () => {
     const colors = ["#4D9DE0", "#E15554", "#E1BC29", "#3BB273", "#7768AE"];
-    return colors[seed % colors.length];
+    const color=colors[Math.floor(Math.random()*colors.length)];
+    return color;
   };
 
   const roundToDay = (date) => {
@@ -513,21 +517,24 @@ const Calendar = () => {
   const filteredProperties =
     selectedRoomType === "All"
       ? properties
-      : properties.filter((property) => property.roomType === selectedRoomType);
+      : properties.filter((property) => property.roomTypeName === selectedRoomType);
 
   //**filter events */
   const filterEvents = events.filter((item) => {
-    const filteredIds = filteredProperties.map((property) => property.id);
-    return filteredIds.includes(item.propertyId);
+    const filteredIds = filteredProperties.map((property) => property._id);
+    return filteredIds.includes(item.roomId._id);
+
   });
+
   const getTotalGuestsForDate = (date) => {
     const eventsOnDate = filterEvents.filter((event) => {
-      const checkIn = new Date(event.checkIn);
-      const checkOut = new Date(event.checkOut);
+      const checkIn = new Date(event.startDate);
+      const checkOut = new Date(event.endDate);
       return date >= checkIn && date < checkOut;
     });
 
     const totalGuests = eventsOnDate.reduce((total, event) => {
+      console.log("event guests", event.guests)
       return total + event.guests;
     }, 0);
     return totalGuests;
@@ -545,13 +552,15 @@ const Calendar = () => {
     phone,
     guests,
     eventId,
-    checkOut,
-    checkIn
+    //checkOut,
+    //checkIn
+    startDate,
+    endDate
   ) => {
     setIsEditModalOpen(true);
     setSelectedDate(date);
-    setSelectedCheckoutDate(checkOut);
-    setSelectedCheckInDate(checkIn);
+    setSelectedCheckoutDate(endDate);
+    setSelectedCheckInDate(startDate);
     setSelectedProperty(property);
     setEventPhone(phone);
     setEventTitle(title);
@@ -607,6 +616,7 @@ const Calendar = () => {
     }
     return lastIndex;
   }, -1);
+  
   //**Extend Your booking */
   const handleSuccess = (success) => {
     console.log(success);
@@ -736,6 +746,18 @@ const Calendar = () => {
   return (
     <div className="calendar-container">
       <div className="calendar-filters">
+      <div className="d-flex justify-content-between align-items-center">
+        <img
+          src={arrowLeft}
+          className="me-2 cursor-pointer"
+          onClick={() =>
+            history.push(
+              `/bookings/info/`
+            )
+          }
+        />
+        
+      </div>
         <div
           className="calendar-filter"
           style={{
@@ -746,53 +768,51 @@ const Calendar = () => {
                 : "flex",
           }}
         >
-          <div className="fromDate">
-            <label htmlFor="from-date">From Date:</label>
-            <DatePicker
-              id="from-date"
-              selected={fromDate}
-              onChange={handleFromDateChange}
-              dateFormat="MM/dd/yyyy"
-              placeholderText="Select a date"
-              className="custom-datepicker"
-            />
+          
+          <div className="date-picker-container">
+            <div className="fromDate">
+              <label htmlFor="from-date">From Date:</label>
+              <DatePicker
+                id="from-date"
+                selected={fromDate}
+                onChange={handleFromDateChange}
+                dateFormat="MM/dd/yyyy"
+                placeholderText="Select a date"
+                className="custom-datepicker"
+              />
+            </div>
+            <div className="toDate">
+              <label htmlFor="to-date">To Date:</label>
+              <DatePicker
+                id="to-date"
+                selected={toDate}
+                onChange={handleToDateChange}
+                dateFormat="MM/dd/yyyy"
+                placeholderText="Select a date"
+                className="custom-datepicker"
+              />
+            </div>
+            
           </div>
-          <div className="toDate">
-            <label htmlFor="to-date">To Date:</label>
-            <DatePicker
-              id="to-date"
-              selected={toDate}
-              onChange={handleToDateChange}
-              dateFormat="MM/dd/yyyy"
-              placeholderText="Select a date"
-              className="custom-datepicker"
-            />
-          </div>
-        </div>
-        <div
-          className="calendar-filter"
-          style={{
-            display:
-              window.matchMedia("(max-width: 768px)").matches &&
-              (isModalOpen || iseditModalOpen)
-                ? "none"
-                : "flex",
-          }}
-        >
-          <div id="select_div">
-            <label htmlFor="room-type">Room Type:</label>
-            <select
-              id="room-type"
-              value={selectedRoomType}
-              onChange={handleRoomTypeChange}
-              className="custom-select"
-            >
-              {propertyTypes.map((type) => (
-                <option key={type} value={type}>
-                  {type}
-                </option>
-              ))}
-            </select>
+
+          <div className="calendar-filter" style={{
+            display: window.matchMedia("(max-width: 768px)").matches && (isModalOpen || iseditModalOpen) ? "none" : "flex",
+          }}>
+            <div id="select_div" className="select-container">
+              <label htmlFor="room-type">Room Type:</label>
+              <select
+                id="room-type"
+                value={selectedRoomType}
+                onChange={handleRoomTypeChange}
+                className="custom-select"
+              >
+                {propertyTypes.map((type) => (
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
       </div>
@@ -833,7 +853,7 @@ const Calendar = () => {
           )}
           {filteredProperties.length > 0 ? (
             filteredProperties.map((property) => (
-              <div key={property.id} className="calendar-property-row">
+              <div key={property._id} className="calendar-property-row">
                 <div className="property-cell sticky">
                   {property.roomNumber}
                 </div>
@@ -848,19 +868,19 @@ const Calendar = () => {
 
                     const eventsForDay = events.filter(
                       (event) =>
-                        event.propertyId === property.id &&
-                        new Date(event.checkIn).setHours(0, 0, 0, 0) <=
+                        event.propertyId === property._id &&
+                        new Date(event.startDate).setHours(0, 0, 0, 0) <=
                           dayEnd &&
-                        new Date(event.checkOut).setHours(0, 0, 0, 0) >=
+                        new Date(event.endDate).setHours(0, 0, 0, 0) >=
                           dayStart
                     );
                     const hasEvents = eventsForDay.length > 0;
                     const backgroundColor = hasEvents
-                      ? getRandomColor(eventsForDay[0].id)
+                      ? getRandomColor(eventsForDay[0]._id)
                       : "";
                     const isCheckInDate = eventsForDay.some(
                       (event) =>
-                        new Date(event.checkIn).setHours(0, 0, 0, 0) ===
+                        new Date(event.startDate).setHours(0, 0, 0, 0) ===
                         dayStart
                     );
                     const isLastPastDay = index === lastPastDayIndex;
@@ -959,116 +979,136 @@ const Calendar = () => {
                     );
                   })}
                   {/* Render events in desktop view */}
-                  {(window.matchMedia("(max-width: 768px)").matches
-                    ? []
-                    : fromDate && toDate
-                    ? filterEventDataDay
-                    : events
-                  )
-                    .filter((event) => event.propertyId === property.id)
-                    .filter((event) => {
-                      const checkIn = new Date(event.checkIn);
-                      const checkOut = new Date(event.checkOut);
-                      const today = new Date();
-                      const cutoffDate = new Date(today);
-                      cutoffDate.setDate(today.getDate() - 7);
+                  {
+  (window.matchMedia("(max-width: 768px)").matches
+    ? []
+    : fromDate && toDate
+    ? filterEventDataDay
+    : events
+  )
+    .filter((event) => {
+      return event.roomId._id === property._id;
+    })
+    .filter((event) => {
+      const checkIn = new Date(event.startDate);
+      const checkOut = new Date(event.endDate);
+      const today = new Date();
+      const cutoffDate = new Date(today);
+      cutoffDate.setDate(today.getDate() - 7);
 
-                      const isWithinDateRange =
-                        (checkIn >= new Date(fromDate) ||
-                          checkOut >= new Date(fromDate)) &&
-                        (!toDate || checkIn <= new Date(toDate));
-                      const isAfterCutoff =
-                        checkIn >= cutoffDate || checkOut >= cutoffDate;
-                      if (fromDate) {
-                        return isWithinDateRange;
-                      } else {
-                        return isAfterCutoff;
-                      }
-                    })
-                    .map((event) => {
-                      const checkIn = roundToDay(new Date(event.checkIn));
-                      const checkOut = roundToDay(new Date(event.checkOut));
-                      const startOffset =
-                        Math.max(
-                          0,
-                          (checkIn - roundToDay(days[0].date)) /
-                            (24 * 60 * 60 * 1000)
-                        ) + 0.5;
-                      const endOffset =
-                        Math.min(
-                          days.length,
-                          (checkOut - roundToDay(days[0].date)) /
-                            (24 * 60 * 60 * 1000)
-                        ) + 0.5;
-                      const duration = endOffset - startOffset;
-                      return (
-                        <div
-                          key={event.id}
-                          style={{
-                            display: "flex",
-                            position: "absolute",
-                            left: `${startOffset * 120}px`,
-                            width: `${duration * 120}px`,
-                            backgroundColor: getRandomColor(event.id),
-                            transition: "opacity 0.3s ease",
-                            height: "40px",
-                            margin: 0,
-                            marginTop: "-9px",
-                            padding: "0 10px",
-                            boxSizing: "border-box",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            pointerEvents: "auto",
-                          }}
-                          onMouseOver={(e) => {
-                            e.currentTarget.style.opacity = 0.7;
-                          }}
-                          onMouseOut={(e) => {
-                            e.currentTarget.style.opacity = 1.0;
-                          }}
-                          className="event"
-                          onMouseDown={() => startResizing(event, property)}
-                          onMouseUp={endResizing}
-                        >
-                          <span
-                            style={{
-                              fontSize:
-                                !window.matchMedia("(max-width: 768px)")
-                                  .matches && "13px",
-                              fontWeight:
-                                !window.matchMedia("(max-width: 768px)")
-                                  .matches && "600",
-                              flex: "1",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                            }}
-                          >
-                            {event.title}
-                          </span>
-                          <span
-                            style={{
-                              marginLeft: "10px",
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                            }}
-                          >
-                            <img
-                              src={guestIcon}
-                              alt="Guests"
-                              className="guest-icon"
-                            />
-                            <span
-                              style={{
-                                fontSize:
-                                  !window.matchMedia("(max-width: 768px)")
-                                    .matches && "16px",
-                              }}
-                            >{` ${event.guests}`}</span>
-                          </span>
-                        </div>
-                      );
-                    })}
+      
+      const isWithinDateRange =
+        (checkIn >= new Date(fromDate) ||
+          checkOut >= new Date(fromDate)) &&
+        (!toDate || checkIn <= new Date(toDate));
+      const isAfterCutoff =
+        checkIn >= cutoffDate || checkOut >= cutoffDate;
+
+        // console.log("Filtering based on date range...");
+        // console.log("Event:", event);
+        // console.log("Check-in Date:", checkIn);
+        // console.log("Check-out Date:", checkOut);
+        // console.log("Is within date range:", isWithinDateRange);
+        // console.log("Is after cutoff:", isAfterCutoff);
+
+      if (fromDate) {
+        return isWithinDateRange;
+      } else {
+        return isAfterCutoff;
+      }
+    })
+    .map((event) => {
+      const checkIn = roundToDay(new Date(event.startDate));
+      const checkOut = roundToDay(new Date(event.endDate));
+      const startOffset =
+        Math.max(
+          0,
+          (checkIn - roundToDay(days[0].date)) /
+            (24 * 60 * 60 * 1000)
+        ) + 0.5;
+      const endOffset =
+        Math.min(
+          days.length,
+          (checkOut - roundToDay(days[0].date)) /
+            (24 * 60 * 60 * 1000)
+        ) + 0.5;
+      const duration = endOffset - startOffset;
+
+      // console.log("Mapping events to UI...");
+      // console.log("Event ID:", event._id);
+      // console.log("Check-in (rounded):", checkIn);
+      // console.log("Check-out (rounded):", checkOut);
+      // console.log("Start Offset:", startOffset);
+      // console.log("End Offset:", endOffset);
+      // console.log("Duration:", duration);
+
+      return (
+        <div
+          key={event._id}
+          style={{
+            display: "flex",
+            position: "absolute",
+            left: `${startOffset * 120}px`,
+            width: `${duration * 120}px`,
+            backgroundColor: getRandomColor(),
+            transition: "opacity 0.3s ease",
+            height: "40px",
+            margin: 0,
+            marginTop: "-9px",
+            padding: "0 10px",
+            boxSizing: "border-box",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            pointerEvents: "auto",
+          }}
+          onMouseOver={(e) => {
+            e.currentTarget.style.opacity = 0.7;
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.opacity = 1.0;
+          }}
+          className="event"
+          onMouseDown={() => startResizing(event, property)}
+          onMouseUp={endResizing}
+        >
+          <span
+            style={{
+              fontSize:
+                !window.matchMedia("(max-width: 768px)").matches && "13px",
+              fontWeight:
+                !window.matchMedia("(max-width: 768px)").matches && "600",
+              flex: "1",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {event.bookingId}
+          </span>
+          <span
+            style={{
+              marginLeft: "10px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <img
+              src={guestIcon}
+              alt="Guests"
+              className="guest-icon"
+            />
+            <span
+              style={{
+                fontSize:
+                  !window.matchMedia("(max-width: 768px)").matches && "16px",
+              }}
+            >{` ${event.count}`}</span>
+          </span>
+        </div>
+      );
+    })}
+
+
                 </div>
               </div>
             ))
@@ -1080,14 +1120,15 @@ const Calendar = () => {
           )}
 
           {/* Render empty rows for all properties */}
+          
           {properties.map((property) => {
             const isFiltered = filteredProperties.some(
-              (fp) => fp.id === property.id
+              (fp) => fp._id === property._id
             );
             if (!isFiltered) {
               return (
                 <div
-                  key={property.id}
+                  key={property._id}
                   style={{
                     display: window.matchMedia("(max-width: 768px)").matches
                       ? "none"
@@ -1133,6 +1174,7 @@ const Calendar = () => {
             }
           })}
           <div className="calendar-footer">
+            
             <div className="footer-total-properties sticky d-flex justify-content-between align-items-center">
               <div>Total rooms: {filteredProperties.length}</div>
               <div
