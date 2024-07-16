@@ -1004,12 +1004,7 @@ const Calendar = () => {
       const isAfterCutoff =
         checkIn >= cutoffDate || checkOut >= cutoffDate;
 
-        // console.log("Filtering based on date range...");
-        // console.log("Event:", event);
-        // console.log("Check-in Date:", checkIn);
-        // console.log("Check-out Date:", checkOut);
-        // console.log("Is within date range:", isWithinDateRange);
-        // console.log("Is after cutoff:", isAfterCutoff);
+       
 
       if (fromDate) {
         return isWithinDateRange;
@@ -1034,13 +1029,7 @@ const Calendar = () => {
         ) + 0.5;
       const duration = endOffset - startOffset;
 
-      // console.log("Mapping events to UI...");
-      // console.log("Event ID:", event._id);
-      // console.log("Check-in (rounded):", checkIn);
-      // console.log("Check-out (rounded):", checkOut);
-      // console.log("Start Offset:", startOffset);
-      // console.log("End Offset:", endOffset);
-      // console.log("Duration:", duration);
+    
 
       return (
         <div
