@@ -34,6 +34,7 @@ export const englishContent = {
   user: "Sub Admin",
   report_Dispute: "Report & Dispute",
   masters:"Masters",
+  custom_field:"Custom Field",
   masters_list: "Master List",
   cancel: "Cancel",
   confirm: "Confirm Delete",

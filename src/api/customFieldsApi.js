@@ -1,0 +1,17 @@
+import { API_BASE_URL } from "../axiosApi/authApiInstans";
+import { callApi } from "../utility/utils/callApi";
+
+export const getDonationCustomFields = () =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.get(`${API_BASE_URL}/donation/info/custom-fields`),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+export const createDonationCustomFields = (data) =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}/donation/create-custom-field`, data),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });

@@ -700,6 +700,15 @@ const Routes = [
     type: "configuration",
     subPermission: READ,
   },
+  {
+    path: "/configuration/custom-fields",
+    component: lazy(() =>
+      import("../../views/configuration/Custom-Fields/customFieldsView.js")
+    ),
+    exact: true,
+    type: "configuration",
+    subPermission: READ,
+  },
 ];
 
 export { DefaultRoute, Routes, TemplateTitle };

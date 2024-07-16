@@ -10,6 +10,8 @@ import { createDonation } from "../../api/donationApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import DonationForm from "../../components/donation/donationForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
+import { useQuery } from "@tanstack/react-query";
+import { getDonationCustomFields } from "../../api/customFieldsApi";
 const DonationWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
@@ -22,25 +24,6 @@ const DonationWrapper = styled.div`
     align-items: center;
   }
 `;
-
-const handleCreateDonation = async (payload) => {
-  return createDonation(payload);
-};
-const schema = Yup.object().shape({
-  Mobile: Yup.string().required("expenses_mobile_required"),
-  SelectedUser: Yup.mixed().required("user_select_required"),
-  donarName: Yup.string()
-    .matches(
-      /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
-      "donation_donar_name_only_letters"
-    )
-    .trim(),
-  SelectedMasterCategory: Yup.mixed().required("masterCategory_required"),
-  Amount: Yup.string()
-    .matches(/^[1-9][0-9]*$/, "invalid_amount")
-    .required("amount_required"),
-});
-
 export default function AddDonation() {
   const history = useHistory();
   // const langArray = useSelector((state) => state.auth.availableLang);
@@ -52,6 +35,45 @@ export default function AddDonation() {
   const currentSubCategory = searchParams.get("subCategory");
   const currentFilter = searchParams.get("filter");
 
+  const handleCreateDonation = async (payload) => {
+    // console.log(payload)
+    // return
+    return createDonation(payload);
+  };
+
+  const customFieldsQuery = useQuery(
+    ["custom-fields"],
+    async () => await getDonationCustomFields(),
+    {
+      keepPreviousData: true,
+    }
+  );
+
+  const customFieldsList = customFieldsQuery?.data?.customFields ?? [];
+  const schema = Yup.object().shape({
+    Mobile: Yup.string().required("expenses_mobile_required"),
+    SelectedUser: Yup.mixed().required("user_select_required"),
+    donarName: Yup.string()
+      .matches(
+        /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+        "donation_donar_name_only_letters"
+      )
+      .trim(),
+    SelectedMasterCategory: Yup.mixed().required("masterCategory_required"),
+    Amount: Yup.string()
+      .matches(/^[1-9][0-9]*$/, "invalid_amount")
+      .required("amount_required"),
+    // customFields: Yup.object().shape(
+    //   customFieldsList.reduce((acc, field) => {
+    //     if (field.isRequired) {
+    //       acc[field.fieldName] = Yup.string().required(
+    //         `${field.fieldName} is required`
+    //       );
+    //     }
+    //     return acc;
+    //   }, {})
+    // ),
+  });
   const initialValues = {
     Mobile: "",
     countryCode: "in",
@@ -64,6 +86,10 @@ export default function AddDonation() {
     Amount: "",
     isGovernment: "NO",
     createdBy: ConverFirstLatterToCapital(loggedInUser),
+    customFields: customFieldsList.reduce((acc, field) => {
+      acc[field.fieldName] = "";
+      return acc;
+    }, {}),
   };
   return (
     <DonationWrapper>
@@ -90,6 +116,7 @@ export default function AddDonation() {
           validationSchema={schema}
           showTimeInput
           buttonName="donation_Adddonation"
+          customFieldsList={customFieldsList}
         />
       </div>
     </DonationWrapper>
