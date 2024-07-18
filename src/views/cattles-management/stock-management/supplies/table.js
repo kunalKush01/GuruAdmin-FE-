@@ -14,17 +14,8 @@ import CustomDataTable from "../../../../components/partials/CustomDataTable";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
 import { DELETE, EDIT } from "../../../../utility/permissionsVariable";
 
-const SuppliesTableWrapper = styled.div`
-  color: #583703 !important;
-  font: normal normal bold 15px/23px Noto Sans;
-  .modal-body {
-    max-height: 600px !important;
-    overflow: auto !important;
-  }
-  .tableDes p {
-    margin-bottom: 0;
-  }
-`;
+import '../../../../styles/viewCommon.scss';;
+;
 
 const SuppliesTable = ({
   data = [],
@@ -153,14 +144,14 @@ const SuppliesTable = ({
   });
 
   return (
-    <SuppliesTableWrapper>
+    <div className="suppliestablewrapper">
       <CustomDataTable
         maxHeight={maxHeight}
         height={height}
         columns={columns}
         data={SupplyData}
       />
-    </SuppliesTableWrapper>
+    </div>
   );
 };
 

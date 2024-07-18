@@ -16,28 +16,8 @@ import { useSelector } from "react-redux";
 import { getAllReporDisputeList } from "../../../api/reportDisputeApi";
 import { Helmet } from "react-helmet";
 
-const ReportDisputWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-
-  .table_upper_row {
-    margin-bottom: 2rem;
-  }
-  .addEvent {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-  .category_heading {
-    font-size: 20px;
-    font-weight: bold;
-    color: #583703;
-  }
-  .filterPeriod {
-    color: #ff8744;
-    font: normal normal bold 13px/20px noto sans;
-  }
-`;
+import '../../../styles/viewCommon.scss';;
+;
 
 const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 const ReportList = () => {
@@ -91,7 +71,7 @@ const ReportList = () => {
   );
 
   return (
-    <ReportDisputWrapper>
+    <div className="reportdisputwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Reports & Disputes</title>
@@ -186,7 +166,7 @@ const ReportList = () => {
           </If>
         </Row>
       </div>
-    </ReportDisputWrapper>
+    </div>
   );
 };
 

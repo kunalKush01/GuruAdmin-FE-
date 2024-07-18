@@ -20,18 +20,8 @@ import AddStockItemForm from "../../../../../components/cattleStockManagment/Ite
 import AddSuppliesForm from "../../../../../components/cattleStockManagment/supplies/addForm";
 import { ConverFirstLatterToCapital } from "../../../../../utility/formater";
 
-const StockAddWraper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addEvent {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import '../../../../../styles/viewCommon.scss';
+;
 
 const getLangId = (langArray, langSelection) => {
   let languageId;
@@ -94,7 +84,7 @@ const EditSupply = () => {
   }, [supplyDetailQuery]);
 
   return (
-    <StockAddWraper>
+    <div className="stockaddwraper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -174,7 +164,7 @@ const EditSupply = () => {
           )}
         </Else>
       </If>
-    </StockAddWraper>
+    </div>
   );
 };
 

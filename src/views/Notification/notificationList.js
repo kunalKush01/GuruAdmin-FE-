@@ -17,39 +17,7 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import NotificationList from "../../components/Notification/notificationList";
 import NoContent from "../../components/partials/noContent";
 import '../../../src/styles/common.scss';
-const NotificationWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addNotification {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-
-  .FormikWraper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addNotification-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .notificationContent {
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: #ff8744;
-    font: normal normal bold 13px/5px noto sans;
-  }
-`;
+;
 
 export default function Notification() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
@@ -160,7 +128,7 @@ export default function Notification() {
   );
 
   return (
-    <NotificationWrapper>
+    <div className="notificationwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Notifications</title>
@@ -272,6 +240,6 @@ export default function Notification() {
           </Row>
         </div>
       </div>
-    </NotificationWrapper>
+    </div>
   );
 }

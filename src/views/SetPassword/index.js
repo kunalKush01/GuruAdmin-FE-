@@ -14,6 +14,7 @@ import passwordEyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-e
 import backIconIcon from "../../assets/images/icons/signInIcon/backIcon.svg";
 import hidePassIcon from "../../assets/images/icons/signInIcon/hidePassIcon.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
+import '../../styles/viewCommon.scss';
 
 const SetPassword = () => {
   const history = useHistory();
@@ -45,75 +46,7 @@ const SetPassword = () => {
       .oneOf([Yup.ref("password"), null], "Passwords must match")
       .required("Confirm Password is required"),
   });
-  const SetPasswordWrapper = styled.div`
-    .errorMassage {
-      /* color: #583703 !important; */
-      font: normal normal bold 14px/20px noto sans;
-    }
-    .defaultFontColor {
-      color: #583703;
-    }
-    .an_account {
-      font: normal normal normal 16px/25px noto sans;
-    }
-    .fw-bold {
-      font-weight: 800 !important;
-      font-size: 35px;
-      font-family: noto sans;
-    }
-    .signInEnterUserNAme {
-      font: normal normal normal 18px/25px noto sans;
-    }
-    .forgetPassword {
-      padding: 1rem 0rem;
-      text-align: end;
-      margin-bottom: 20px;
-    }
-    .forgetPassword > span {
-      font: normal normal bold 16px/20px noto sans;
-    }
-    .signInIcons {
-      width: 30px;
-      height: 30px;
-      margin-right: 10px;
-      cursor: pointer;
-    }
-    .signInputField {
-      color: #583703;
-      font: normal normal bold 16px/33px noto sans;
-      &::-webkit-input-placeholder {
-        /* padding-left: 1rem !important; */
-        opacity: 0.3;
-        font: normal normal bold 16px/33px noto sans;
-        color: #583703 !important;
-      }
-    }
-    .text-end {
-      font: normal normal bold 18px/80px noto sans;
-    }
-    .px-5 {
-      font: normal normal bold 20px/20px noto sans;
-    }
-    .signUp {
-      font: normal normal bold 18px/25px noto sans;
-    }
-    .brand-text {
-      color: #583703;
-      font: normal normal bold 30px/44px noto sans;
-    }
-    .brand-logo {
-      width: fit-content;
-    }
-    .loginBackground {
-      background: #fff7e8;
-    }
-    .templeName {
-      font: normal normal 600 23px/43px Noto Sans;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
-    }
-  `;
+;
 
   const { skin } = useSkin();
 
@@ -139,7 +72,7 @@ const SetPassword = () => {
     [loginPageQuery]
   );
   return (
-    <SetPasswordWrapper className="auth-wrapper auth-cover ">
+    <div className="setpasswordwrapper auth-wrapper auth-cover">
       <Row className="auth-inner m-0 defaultFontColor">
         {/* <Link
           className=" d-inline brand-logo"
@@ -281,7 +214,7 @@ const SetPassword = () => {
           </Col>
         </Col>
       </Row>
-    </SetPasswordWrapper>
+    </div>
   );
 };
 

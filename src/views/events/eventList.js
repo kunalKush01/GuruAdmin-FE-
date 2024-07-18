@@ -22,50 +22,8 @@ import CustomDatePicker from "../../components/partials/customDatePicker";
 import FormikCustomDatePicker from "../../components/partials/formikCustomDatePicker";
 import NoContent from "../../components/partials/noContent";
 import { WRITE } from "../../utility/permissionsVariable";
-const EventWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addEvent {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-
-  .FormikWraper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addEvent-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .eventContent {
-    margin-top: 1rem;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: #ff8744;
-    margin-top: 0.5rem;
-    font: normal normal bold 13px/5px noto sans;
-  }
-  .noContent {
-    margin-left: 30rem;
-  }
-
-  @media only screen and (max-width: 1150px) {
-    .noContent {
-      margin-left: 0;
-    }
-  }
-`;
+import '../../styles/viewCommon.scss';
+;
 
 const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
@@ -179,7 +137,7 @@ export default function EventList() {
     (item) => item.name
   );
   return (
-    <EventWrapper>
+    <div className="eventwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Events</title>
@@ -362,6 +320,6 @@ export default function EventList() {
           </Row>
         </div>
       </div>
-    </EventWrapper>
+    </div>
   );
 }

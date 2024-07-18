@@ -5,17 +5,8 @@ import styled from "styled-components";
 import CustomDataTable from "../../../../components/partials/CustomDataTable";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
 
-const StockManagementTableWrapper = styled.div`
-  color: #583703 !important;
-  font: normal normal bold 15px/23px Noto Sans;
-  .modal-body {
-    max-height: 600px !important;
-    overflow: auto !important;
-  }
-  .tableDes p {
-    margin-bottom: 0;
-  }
-`;
+import '../../../../styles/viewCommon.scss';;
+;
 
 const StockManagementTable = ({ data = [], maxHeight, height }) => {
   const { t } = useTranslation();
@@ -63,14 +54,14 @@ const StockManagementTable = ({ data = [], maxHeight, height }) => {
   });
 
   return (
-    <StockManagementTableWrapper>
+    <div className="stockmanagementtablewrapper">
       <CustomDataTable
         maxHeight={maxHeight}
         height={height}
         columns={columns}
         data={StockData}
       />
-    </StockManagementTableWrapper>
+    </div>
   );
 };
 

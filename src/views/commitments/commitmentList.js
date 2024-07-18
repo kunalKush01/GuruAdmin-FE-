@@ -38,41 +38,8 @@ import NoContent from "../../components/partials/noContent";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { WRITE } from "../../utility/permissionsVariable";
 
-const CommitmentWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  // .ImagesVideos {
-  //   font: normal normal bold 15px/33px Noto Sans;
-  // }
-  .addCommitment {
-    color: #583703;
-    /* display: flex; */
-    align-items: center;
-  }
-
-  // .FormikWraper {
-  //   padding: 40px;
-  // }
-  // .btn-Published {
-  //   text-align: center;
-  // }
-  .addCommitment-btn {
-    padding: 8px 20px;
-    /* margin-left: 10px; */
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .commitmentContent {
-    margin-top: 1rem;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  // .filterPeriod {
-  //   color: #ff8744;
-  //   margin-top: 0.5rem;
-  //   font: normal normal bold 13px/5px noto sans;
-  // }
-`;
+import '../../styles/viewCommon.scss';
+;
 
 export default function Commitment() {
   const importFileRef = useRef();
@@ -278,7 +245,7 @@ export default function Commitment() {
   };
 
   return (
-    <CommitmentWrapper>
+    <div className="commitmentwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Commitment</title>
@@ -543,6 +510,6 @@ export default function Commitment() {
           </Row>
         </div>
       </div>
-    </CommitmentWrapper>
+    </div>
   );
 }

@@ -1253,7 +1253,7 @@ $font-size-large: 20px;
   }
 .wrapper {
   label {
-    font: $font-weight-bold $font-size-medium/33px $font-family;
+    font: $font-weight-bold $font-size-medium $font-family;
   }
   input::placeholder {
     color: $font-color !important;
@@ -1790,7 +1790,7 @@ $font-size-large: 20px;
     font: $font-weight-bold $font-size-medium/$font-family;
   }
   .error {
-    font: $font-weight-bold  $font-size-small/$font-family;
+    font: $font-weight-bold  $font-size-small $font-family;
   }
   textarea::placeholder {
     color: $font-color !important;

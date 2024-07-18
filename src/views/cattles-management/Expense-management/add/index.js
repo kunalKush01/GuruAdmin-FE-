@@ -5,19 +5,8 @@ import styled from "styled-components";
 import { createCattleExpenses } from "../../../../api/cattle/cattleExpense";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddExpenseForm from "../../../../components/cattleExpenses/addform";
-
-const ExpenseAddWraper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addEvent {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import '../../../../styles/viewCommon.scss';
+;
 
 const AddExpenses = () => {
   const history = useHistory();
@@ -58,7 +47,7 @@ const AddExpenses = () => {
   };
 
   return (
-    <ExpenseAddWraper>
+    <div className="expenseaddwraper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -83,7 +72,7 @@ const AddExpenses = () => {
           buttonName="cattle_record_add"
         />
       </div>
-    </ExpenseAddWraper>
+    </div>
   );
 };
 

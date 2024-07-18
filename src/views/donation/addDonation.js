@@ -10,18 +10,8 @@ import { createDonation } from "../../api/donationApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import DonationForm from "../../components/donation/donationForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-const DonationWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addDonation {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import '../../styles/viewCommon.scss';
+;
 
 const handleCreateDonation = async (payload) => {
   return createDonation(payload);
@@ -66,7 +56,7 @@ export default function AddDonation() {
     createdBy: ConverFirstLatterToCapital(loggedInUser),
   };
   return (
-    <DonationWrapper>
+    <div className="donationwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -92,6 +82,6 @@ export default function AddDonation() {
           buttonName="donation_Adddonation"
         />
       </div>
-    </DonationWrapper>
+    </div>
   );
 }

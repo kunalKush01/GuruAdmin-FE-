@@ -8,18 +8,8 @@ import { createSubscribedUser } from "../../api/subscribedUser.js";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import SubscribedUserForm from "../../components/subscribedUser/subscribedUserForm.js";
 
-const NoticeWraper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addNotice {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import '../../styles/viewCommon.scss';
+;
 
 const handleCreateUser = async (payload) => {
   return createSubscribedUser(payload);
@@ -53,7 +43,7 @@ export default function AddSubscribedUser() {
   const redirectTo = searchParams.get("redirect");
 
   return (
-    <NoticeWraper>
+    <div className="noticewraper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -98,6 +88,6 @@ export default function AddSubscribedUser() {
           buttonName={"add_user"}
         />
       </div>
-    </NoticeWraper>
+    </div>
   );
 }

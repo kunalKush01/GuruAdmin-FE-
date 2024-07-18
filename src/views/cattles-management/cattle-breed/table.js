@@ -10,20 +10,8 @@ import editIcon from "../../../assets/images/icons/category/editIcon.svg";
 import CustomDataTable from "../../../components/partials/CustomDataTable";
 import { ConverFirstLatterToCapital } from "../../../utility/formater";
 import Swal from "sweetalert2";
-
-const CattleBreedTableWrapper = styled.div`
-  color: #583703 !important;
-  margin-bottom: 1rem;
-  font: normal normal bold 15px/23px Noto Sans;
-
-  .modal-body {
-    max-height: 600px !important;
-    overflow: auto !important;
-  }
-  .tableDes p {
-    margin-bottom: 0;
-  }
-`;
+import '../../../styles/viewCommon.scss';
+;
 
 const CattleBreedTable = ({ data = [], maxHeight, height, toggle }) => {
   const { t } = useTranslation();
@@ -119,14 +107,14 @@ const CattleBreedTable = ({ data = [], maxHeight, height, toggle }) => {
   }, [data]);
 
   return (
-    <CattleBreedTableWrapper>
+    <div className="cattlebreedtablewrapper">
       <CustomDataTable
         maxHeight={maxHeight}
         height={height}
         columns={columns}
         data={BreedList}
       />
-    </CattleBreedTableWrapper>
+    </div>
   );
 };
 

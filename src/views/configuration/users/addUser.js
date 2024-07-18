@@ -9,18 +9,8 @@ import { createSubAdmin, getAllUserRoles } from "../../../api/userApi.js";
 import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
 import UserForm from "../../../components/users/userForm.js";
 
-const NoticeWraper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addNotice {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import '../../../styles/viewCommon.scss';;
+;
 
 const handleCreateUser = async (payload) => {
   return createSubAdmin(payload);
@@ -59,7 +49,7 @@ export default function AddCategory() {
   const currentPage = searchParams.get("page");
 
   return (
-    <NoticeWraper>
+    <div className="noticewraper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -97,6 +87,6 @@ export default function AddCategory() {
       {/* ) : ( */}
       {/* "" */}
       {/* )} */}
-    </NoticeWraper>
+    </div>
   );
 }

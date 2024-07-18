@@ -13,17 +13,8 @@ import confirmationIcon from "../../../assets/images/icons/news/conformationIcon
 import CustomDataTable from "../../../components/partials/CustomDataTable";
 import { DELETE, EDIT } from "../../../utility/permissionsVariable";
 
-const PregnancyTableWrapper = styled.div`
-  color: #583703 !important;
-  font: normal normal bold 15px/23px Noto Sans;
-  .modal-body {
-    max-height: 600px !important;
-    overflow: auto !important;
-  }
-  .tableDes p {
-    margin-bottom: 0;
-  }
-`;
+import '../../../styles/viewCommon.scss';;
+;
 
 const PregnancyReportTable = ({
   data = [],
@@ -148,14 +139,14 @@ const PregnancyReportTable = ({
   }, [data]);
 
   return (
-    <PregnancyTableWrapper>
+    <div className="pregnancytablewrapper">
       <CustomDataTable
         maxHeight={maxHeight}
         columns={columns}
         height={height}
         data={pregnancyData}
       />
-    </PregnancyTableWrapper>
+    </div>
   );
 };
 

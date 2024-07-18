@@ -15,15 +15,8 @@ import Skeleton from "react-loading-skeleton";
 import NoContent from "../../../components/partials/noContent";
 import ReactPaginate from "react-paginate";
 import BreedModal from "./breedModal";
-
-const BreedWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-
-  .btn {
-    font-weight: bold;
-  }
-`;
+import '../../../styles/viewCommon.scss';
+;
 
 const CattleBreed = () => {
   const history = useHistory();
@@ -113,7 +106,7 @@ const CattleBreed = () => {
   );
 
   return (
-    <BreedWrapper>
+    <div className="breedwrapper">
       <div>
         <div className="d-sm-flex mb-1 justify-content-between align-items-center ">
           <Trans i18nKey="cattles" /> <Trans i18nKey="cattle_breed" />
@@ -250,7 +243,7 @@ const CattleBreed = () => {
         data={modal}
         addBreed={modal?.addBreed}
       />
-    </BreedWrapper>
+    </div>
   );
 };
 

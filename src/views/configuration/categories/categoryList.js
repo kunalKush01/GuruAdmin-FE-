@@ -23,40 +23,8 @@ import { CustomReactSelect } from "../../../components/partials/customReactSelec
 import NoContent from "../../../components/partials/noContent";
 import { ConverFirstLatterToCapital } from "../../../utility/formater";
 import { WRITE } from "../../../utility/permissionsVariable";
-const CategoryListWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  // .ImagesVideos {
-  //   font: normal normal bold 15px/33px Noto Sans;
-  // }
-  .addCategory {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-
-  // .FormikWraper {
-  //   padding: 40px;
-  // }
-  // .btn-Published {
-  //   text-align: center;
-  // }
-  .addCategory-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .categoryContent {
-    margin-top: 1rem;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  // .filterPeriod {
-  //   color: #ff8744;
-  //   font: normal normal bold 13px/5px noto sans;
-  // }
-`;
+import '../../../styles/viewCommon.scss';;
+;
 
 export default function Category() {
   const [dropDownName, setdropDownName] = useState("All");
@@ -170,7 +138,7 @@ export default function Category() {
 
 
   return (
-    <CategoryListWrapper>
+    <div className="categorylistwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Category</title>
@@ -320,6 +288,6 @@ export default function Category() {
           </Row>
         </div>
       </div>
-    </CategoryListWrapper>
+    </div>
   );
 }

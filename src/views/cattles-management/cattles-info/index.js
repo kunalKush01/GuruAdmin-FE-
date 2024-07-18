@@ -26,15 +26,8 @@ import CattleInfoTable from "./table";
 import { ChangeCategoryType } from "../../../components/partials/categoryDropdown";
 import { Helmet } from "react-helmet";
 import { WRITE } from "../../../utility/permissionsVariable";
-
-const CattleInfo = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-
-  .btn {
-    font-weight: bold;
-  }
-`;
+import '../../../styles/viewCommon.scss';
+;
 
 const CattlesInfo = () => {
   const history = useHistory();
@@ -161,7 +154,7 @@ const CattlesInfo = () => {
   );
 
   return (
-    <CattleInfo>
+    <div className="cattleinfo">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Cattles</title>
@@ -301,7 +294,7 @@ const CattlesInfo = () => {
               disableMemo
             >
               <Then>
-                <CattleInfoTable
+                <div className="cattleinfo"Table
                   data={cattleListData}
                   height="160px"
                   currentFilter={routFilter}
@@ -373,7 +366,7 @@ const CattlesInfo = () => {
           </Row>
         </div>
       </div>
-    </CattleInfo>
+    </div>
   );
 };
 
