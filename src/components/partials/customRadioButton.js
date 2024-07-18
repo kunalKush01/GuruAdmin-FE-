@@ -4,7 +4,7 @@ import { Trans } from "react-i18next";
 import styled from "styled-components";
 import '../../../src/styles/common.scss';
 
-const RadioButtonWrapper = styled.div``;
+;
 ;
 const CustomRadioButton = ({ label, heading, customOnChange, ...props }) => {
   const [field, meta, helper] = useField(props);

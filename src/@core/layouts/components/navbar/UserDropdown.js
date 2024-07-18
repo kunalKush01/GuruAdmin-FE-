@@ -35,7 +35,7 @@ import editProfileIcon from "../../../../assets/images/icons/dashBoard/icon_awes
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 
-const AvatarWarraper = styled.div`
+const AvatarWrapper = styled.div`
   .imgClassName {
     width: 50px !important;
     height: 50px !important;
@@ -82,7 +82,7 @@ const UserDropdown = () => {
           <span className='user-status'>{(userData && userData.role) || 'Admin'}</span>
         </div> */}
 
-        <AvatarWarraper>
+        <AvatarWrapper>
           <Avatar
             img={userAvatar}
             // imgHeight="50"
@@ -91,7 +91,7 @@ const UserDropdown = () => {
             imgClassName={"imgClassName"}
             editProfileIcon={editProfileIcon}
           />
-        </AvatarWarraper>
+        </AvatarWrapper>
       </DropdownToggle>
       {/* <DropdownMenu end>
         <DropdownItem tag='a' href='/pages/profile' onClick={e => e.preventDefault()}>

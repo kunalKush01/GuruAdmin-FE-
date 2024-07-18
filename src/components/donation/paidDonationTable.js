@@ -154,7 +154,7 @@ export default function DonationListTable({ data, topdf }, args) {
     });
   }, [data]);
 
-  const RecentDonationTableWrapper = styled.div``;
+;
   const inWordsNumber = numberToWords
     .toWords(parseInt(receipt?.amount ?? 0))
     .toUpperCase();

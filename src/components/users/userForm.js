@@ -19,7 +19,7 @@ import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import ImageUpload from "../partials/imageUpload";
 import '../../../src/styles/common.scss';
 
-const FormWrapper = styled.div``;
+;
 ;
 
 export default function UserForm({

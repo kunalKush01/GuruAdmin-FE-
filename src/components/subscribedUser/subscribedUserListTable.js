@@ -110,7 +110,7 @@ export default function SubscribedUSerListTable({ data }) {
   //       }
   //     })
   //   },[data])
-  const SubscribedUSerTableWrapper = styled.div``;
+;
   return (
     <div className="subscribedusertablewrapper">
       <CustomDataTable

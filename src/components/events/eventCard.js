@@ -18,7 +18,7 @@ import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 import BtnPopover from "../partials/btnPopover";
 import '../../../src/styles/common.scss';
 
-const EventCardWrapper = styled.div``;
+;
 ;
 function BtnContent({
   eventId,
@@ -29,7 +29,7 @@ function BtnContent({
   allPermissions,
 }) {
   const history = useHistory();
-  const BtnContentWraper = styled.div``;
+;
 ;
 
   const handleDeleteEvent = async (payload) => {

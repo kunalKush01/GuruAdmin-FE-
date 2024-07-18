@@ -23,11 +23,11 @@ import cardThreeDotIcon from "../../assets/images/icons/news/threeDotIcon.svg";
 import BtnPopover from "../partials/btnPopover";
 // import { CustomDropDown } from "../partials/customDropDown";
 
-const CategoryCardWrapper = styled.div``;
+;
 ;
 function BtnContent({ newsId }) {
   const history = useHistory();
-  const BtnContentWraper = styled.div``;
+;
 ;
 
   const handleDeleteCategory = async (payload) => {

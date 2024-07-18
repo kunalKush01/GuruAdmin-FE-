@@ -5,7 +5,7 @@ import "react-datepicker/dist/react-datepicker-cssmodules.css";
 import styled from "styled-components";
 import '../../../src/styles/common.scss';
 
-const CustomDatePickerWraper = styled.div``;
+;
 ;
 
 export default function CustomDatePicker({ ...props }) {

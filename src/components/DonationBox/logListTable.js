@@ -47,7 +47,7 @@ export default function LogListTable({ data }) {
     });
   });
 
-  const LogListTableWrapper = styled.div``;
+;
   return (
     <div className="loglisttablewrapper">
       <CustomDataTable columns={columns} maxHeight="350px" data={logData} />

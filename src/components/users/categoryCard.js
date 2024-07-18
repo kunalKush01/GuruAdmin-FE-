@@ -30,10 +30,10 @@ import BtnPopover from "../partials/btnPopover";
 import { CustomDropDown } from "../partials/customDropDown";
 import "../../../src/styles/common.scss";
 
-const NewsCardWrapper = styled.div``;
+;
 function BtnContent({ newsId }) {
   const history = useHistory();
-  const BtnContentWraper = styled.div``;
+;
   const handleDeleteNews = async (payload) => {
     return deleteNewsDetail(payload);
   };

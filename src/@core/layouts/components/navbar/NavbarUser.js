@@ -31,7 +31,7 @@ import logo from "../../../../assets/images/pages/main-logo.png";
 import CustomSearchBar from "../../../../components/partials/customSearchBar";
 import { isSerchable } from "../../../../utility/localSerachBar";
 
-const NavbarUserWarraper = styled.div`
+const NavbarUserWrapper = styled.div`
   color: #583703 !important ;
   .brand-logo div {
     font: normal normal bold 25px/44px noto sans;
@@ -278,7 +278,7 @@ const NavbarUser = (props) => {
 
   return (
     <Fragment>
-      <NavbarUserWarraper className="d-flex justify-content-between w-100 align-items-center  ">
+      <NavbarUserWrapper className="d-flex justify-content-between w-100 align-items-center  ">
         <div className="bookmark-wrapper d-flex align-items-center">
           <NavItem className="d-none d-lg-block">
             <NavLink to="/" className="navbar-brand">
@@ -394,7 +394,7 @@ const NavbarUser = (props) => {
             </div>
           </ul>
         </div>
-      </NavbarUserWarraper>
+      </NavbarUserWrapper>
       <LangModel
         langSelection={langSelection}
         setlangSelection={setlangSelection}

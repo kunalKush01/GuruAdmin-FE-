@@ -64,7 +64,7 @@ const ResetPassWord = () => {
   const forgetPasswordSchema = Yup.object().shape({
     email: Yup.string().required().min(5),
   });
-  const LoginWarraper = styled.div`
+  const LoginWrapper = styled.div`
     .errorMassage {
       /* color: #583703 !important; */
       font: normal normal bold 14px/20px noto sans;
@@ -160,7 +160,7 @@ const ResetPassWord = () => {
   );
 
   return (
-    <LoginWarraper className="auth-wrapper auth-cover ">
+    <LoginWrapper className="auth-wrapper auth-cover ">
       <Row className="auth-inner m-0 defaultFontColor">
         {/* <Link
           className=" d-inline brand-logo"
@@ -452,7 +452,7 @@ const ResetPassWord = () => {
           )} */}
         </Col>
       </Row>
-    </LoginWarraper>
+    </LoginWrapper>
   );
 };
 

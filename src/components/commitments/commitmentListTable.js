@@ -25,7 +25,7 @@ import { DELETE, EDIT } from "../../utility/permissionsVariable";
 import CustomDataTable from "../partials/CustomDataTable";
 import "../../../src/styles/common.scss";
 
-const CommitmentTableWrapper = styled.div``;
+;
 export default function CommitmentListTable(
   {
     data,

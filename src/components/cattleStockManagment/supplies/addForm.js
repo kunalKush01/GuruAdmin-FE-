@@ -14,7 +14,7 @@ import AsyncSelectField from "../../partials/asyncSelectField";
 import CustomTextField from "../../partials/customTextField";
 import FormikCustomReactSelect from "../../partials/formikCustomReactSelect";
 
-const FormikWrapper = styled.div``;
+;
 
 const AddSuppliesForm = ({
   initialValues,

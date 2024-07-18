@@ -11,7 +11,7 @@ import editIcon from "../../assets/images/icons/donationBox/editIcon.svg";
 import { EDIT } from "../../utility/permissionsVariable";
 import '../../../src/styles/common.scss';
 
-const DonationBoxWrapper = styled.div``;
+;
 ;
 
 export default function BoxListCard({

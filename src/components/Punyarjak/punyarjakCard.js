@@ -36,7 +36,7 @@ import BtnPopover from "../partials/btnPopover";
 import { CustomDropDown } from "../partials/customDropDown";
 import '../../../src/styles/common.scss';
 
-const PunyarjakCardWrapper = styled.div``;
+;
 ;
 function BtnContent({
   punyarjakId,
@@ -48,7 +48,7 @@ function BtnContent({
 }) {
   const { t } = useTranslation();
   const history = useHistory();
-  const BtnContentWraper = styled.div``;
+;
 ;
 
   const handleDeletePunyarjak = async (payload) => {

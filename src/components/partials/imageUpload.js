@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import useTimeStampAndImageExtension from "../../utility/hooks/useTimeStampAndImageExtension";
 import '../../../src/styles/common.scss';
 
-const WraperImageField = styled.div``;
+;
 ;
 
 const thumbStyles = {

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import noNewsIcon from "../../assets/images/icons/news/noNewsIcon.svg"
 import '../../../src/styles/common.scss';
 
-const NoEventWraper = styled.div``;
+;
  
 export default function NoEvent() {
   return (

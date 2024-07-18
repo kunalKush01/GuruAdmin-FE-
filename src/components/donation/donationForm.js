@@ -8,7 +8,7 @@ import { getAllMasterCategories } from "../../api/expenseApi";
 import FormWithoutFormikForDonation from "./FormWithoutFormikForDonation";
 import '../../../src/styles/common.scss';
 
-const FormWrapper = styled.div``;
+;
 ;
 
 export default function DonationForm({

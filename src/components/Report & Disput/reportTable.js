@@ -9,7 +9,7 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomDataTable from "../partials/CustomDataTable";
 import '../../../src/styles/common.scss';
 
-const ReportWrapper = styled.div``;
+;
 ;
 const ReportTable = ({ data }) => {
   const { t } = useTranslation();

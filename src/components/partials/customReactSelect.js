@@ -5,7 +5,7 @@ import { useField } from "formik";
 import styled from "styled-components";
 import "../../../src/styles/common.scss";
 
-const ReactSelectWrapper = styled.div``;
+;
 export const CustomReactSelect = ({
   required = false,
   label,

@@ -20,7 +20,7 @@ import RichTextField from "../partials/richTextEditorField";
 import '../../../src/styles/common.scss';
 
 
-const FormWrapper = styled.div``;
+;
 ;
 
 export default function CategoryForm({

@@ -20,7 +20,7 @@ import RichTextField from "../partials/richTextEditorField";
 import LogListTable from "./logListTable";
 import '../../../src/styles/common.scss';
 
-const FormWrapper = styled.div``;
+;
 ;
 
 export default function DonationBoxForm({

@@ -24,7 +24,7 @@ import ImageUpload from "../partials/imageUpload";
 import RichTextField from "../partials/richTextEditorField";
 import CustomLocationField from "../partials/CustomLocationField";
 import '../../../src/styles/common.scss';
-const FormWrapper = styled.div``;
+;
 ;
 
 export default function EventForm({

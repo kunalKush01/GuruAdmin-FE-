@@ -183,7 +183,7 @@ export default function PunyarjakTable({
     });
   });
 
-  const PunyarjakUSerTableWrapper = styled.div``;
+;
   return (
     <div className="punyarjakusertablewrapper">
       <CustomDataTable maxHeight={""} columns={columns} data={punyarjak_user} />

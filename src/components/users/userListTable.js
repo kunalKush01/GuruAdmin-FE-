@@ -148,7 +148,7 @@ export function SubAdminUserListTable({
     }));
   }, [data]);
 
-  const UserTableWrapper = styled.div``;
+;
 ;
 
   return (

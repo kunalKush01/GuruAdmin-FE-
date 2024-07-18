@@ -15,7 +15,7 @@ import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 import CustomDataTable from "../partials/CustomDataTable";
 import "../../../src/styles/common.scss";
 
-const CategoryTableWrapper = styled.div``;
+;
 export function CategoryListTable({
   data,
   page,

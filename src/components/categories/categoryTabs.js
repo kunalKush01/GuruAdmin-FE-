@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import '../../../src/styles/common.scss';
 
-const CategoryTabsWrapper = styled.div``;
+;
 ;
 const CategoryTabs = ({ setActive, active, setPagination }) => {
   const { t } = useTranslation();

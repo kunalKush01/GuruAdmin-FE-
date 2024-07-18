@@ -43,7 +43,7 @@ import {
 } from "../../utility/utils/callApi";
 import TrustListModal from "./TrustListModal";
 import { cattleHeader } from "../../utility/subHeaderContent/cattleHeader";
-const LoginWarraper = styled.div`
+const LoginWrapper = styled.div`
   .errorMassage {
     /* color: #583703 !important; */
     font: normal normal bold 14px/20px noto sans;
@@ -315,7 +315,7 @@ const LoginCover = () => {
   const [loading, setLoading] = useState(false);
 
   return (
-    <LoginWarraper className="auth-wrapper auth-cover ">
+    <LoginWrapper className="auth-wrapper auth-cover ">
       <Row className="auth-inner m-0 defaultFontColor">
         <Col
           className="d-none  d-lg-flex pe-0 ps-0 align-items-center  h-100 "
@@ -542,7 +542,7 @@ const LoginCover = () => {
         aToken={accessToken}
       />
       {/* )} */}
-    </LoginWarraper>
+    </LoginWrapper>
   );
 };
 

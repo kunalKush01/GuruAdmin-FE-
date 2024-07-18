@@ -46,7 +46,7 @@ import { CustomDropDown } from "../partials/customDropDown";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import '../../../src/styles/common.scss';
 
-const NewsCardWrapper = styled.div``;
+;
 ;
 function BtnContent({
   newsId,
@@ -59,7 +59,7 @@ function BtnContent({
 }) {
   const { t } = useTranslation();
   const history = useHistory();
-  const BtnContentWraper = styled.div``;
+;
 ;
 
   const handleDeleteNews = async (payload) => {

@@ -13,7 +13,7 @@ import styled from "styled-components";
 import { X } from "react-feather";
 import "../../../src/styles/common.scss";
 
-const SearchBarWrapper = styled.div``;
+;
 export default function CustomSearchBar({ searchBarState, setSearchBarState }) {
   const searchBarValue = useSelector((state) => state?.search?.LocalSearch);
   const dispatch = useDispatch();

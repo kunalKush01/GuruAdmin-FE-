@@ -26,7 +26,7 @@ export const CustomDropDown = ({
   width,
   ...props
 }) => {
-  const DropDownWrapper = styled.div``;
+;
   const { t } = useTranslation();
   const selectedLang = useSelector((state) => state.auth.selectLangCode);
   const [dropdownOpen, setDropdownOpen] = useState(false);

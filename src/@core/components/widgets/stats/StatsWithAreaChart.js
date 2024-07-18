@@ -14,7 +14,7 @@ import { areaChartOptions } from './ChartOptions'
 import styled from 'styled-components'
 import { numberWithCommas } from '../../../../utility/formater'
 
-  const ChartCardWarraper = styled.div`
+  const ChartCardWrapper = styled.div`
       
       font: normal normal bold 25px/20px Noto Sans;
       .chartCard{
@@ -35,7 +35,7 @@ const StatsWithAreaChart = props => {
 
   const sta=numberWithCommas(stats)
   return (
-    <ChartCardWarraper>
+    <ChartCardWrapper>
     <Card {...rest} className="chartCard mb-0" >
       <CardBody
         className={classnames('pb-0', {
@@ -52,7 +52,7 @@ const StatsWithAreaChart = props => {
       </CardBody>
       <Chart options={options}  series={series} type={type} height={height ? height : 100}  />
     </Card>
-    </ChartCardWarraper>
+    </ChartCardWrapper>
   )
 }
 

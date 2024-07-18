@@ -9,7 +9,7 @@ import { getAllMasterCategories } from "../../api/expenseApi";
 import FormWithoutFormikForCommitment from "./FormWithoutFormikforCommitment";
 import '../../../src/styles/common.scss';
 
-const FormWraper = styled.div``;
+;
 ;
 
 export default function CommitmentForm({

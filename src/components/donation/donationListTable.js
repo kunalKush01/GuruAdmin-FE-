@@ -21,7 +21,7 @@ import EditDonation from "./editDonation";
 import { toast } from "react-toastify";
 import "../../../src/styles/common.scss";
 
-const RecentDonationTableWrapper = styled.div``;
+;
 export default function DonationListTable(
   { data, topdf, allPermissions, subPermission, financeReport },
   args
