@@ -2,19 +2,15 @@ import React from "react";
 import { Col, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
 import defaultIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
-import he from "he"
-import {
-  ConverFirstLatterToCapital,
-} from "../../utility/formater";
+import he from "he";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 import moment from "moment";
 import { ConvertToString } from "../financeReport/reportJsonExport";
 
-const NotificationWarapper = styled.div``;
-;
-
+const NotificationWrapper = styled.div``;
 const NotificationList = ({ data }) => {
   return (
-    <div className="notificationwarapper">
+    <div className="notificationwrapper">
       <Row className="mt-2">
         {/*<Col xs={1} className="align-items-center d-flex" >*/}
         {/*  <img src={defaultIcon} className="m-auto" />*/}

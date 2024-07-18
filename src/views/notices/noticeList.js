@@ -21,7 +21,7 @@ import NoContent from "../../components/partials/noContent";
 import { useSelector } from "react-redux";
 import { WRITE } from "../../utility/permissionsVariable";
 import { Helmet } from "react-helmet";
-const NoticeWarper = styled.div`
+const NoticeWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
@@ -168,7 +168,7 @@ export default function NoticeList() {
   );
 
   return (
-    <NoticeWarper>
+    <NoticeWrapper>
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Notices</title>
@@ -359,6 +359,6 @@ export default function NoticeList() {
           </Row>
         </div>
       </div>
-    </NoticeWarper>
+    </NoticeWrapper>
   );
 }

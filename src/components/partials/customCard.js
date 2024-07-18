@@ -1,21 +1,19 @@
 import React from "react";
 import { Card } from "reactstrap";
 import styled from "styled-components";
-import '../../../src/styles/common.scss';
+import "../../../src/styles/common.scss";
 
 const CustomCard = ({ cardTitle, cardNumber, cardImage }) => {
-  const CustomCardWaraper = styled.div``;
-;
-
+  const CustomCardWrapper = styled.div``;
   return (
-    <div className="customcardwaraper">
-      <Card
-        className="customCard"
-      >
+    <div className="customcardwrapper">
+      <Card className="customCard">
         <div className="d-flex ">
           <div className="">
             <div className="cardtitle">{cardTitle}</div>
-            <div className="cardnumber" title={cardNumber}>{cardNumber}</div>
+            <div className="cardnumber" title={cardNumber}>
+              {cardNumber}
+            </div>
           </div>
           <div className="cardimage">
             <img src={cardImage} width={80} height={80} />

@@ -9,7 +9,7 @@ import { deleteExpensesDetail } from "../../api/expenseApi";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomDataTable from "../partials/CustomDataTable";
-import '../../../src/styles/common.scss';
+import "../../../src/styles/common.scss";
 
 export default function DonationBoxListTable({ data, financeReport }) {
   // const handleDeleteDonationBox = async (payload) => {
@@ -84,11 +84,9 @@ export default function DonationBoxListTable({ data, financeReport }) {
     }));
   }, [data]);
 
-  const RecentDonationTableWarper = styled.div``;
-;
-
+  const RecentDonationTableWrapper = styled.div``;
   return (
-    <div className="recentdonationtablewarper">
+    <div className="recentdonationtablewrapper">
       <CustomDataTable maxHeight={""} columns={columns} data={donatioBoxList} />
     </div>
   );

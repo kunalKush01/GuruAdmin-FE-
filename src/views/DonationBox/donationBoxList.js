@@ -19,7 +19,7 @@ import { getAllBoxCollection } from "../../api/donationBoxCollectionApi";
 import BoxListCard from "../../components/DonationBox/BoxListCard.js";
 import NoContent from "../../components/partials/noContent";
 import { WRITE } from "../../utility/permissionsVariable";
-const NewsWarper = styled.div`
+const NewsWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
@@ -158,7 +158,7 @@ export default function Expenses() {
   );
 
   return (
-    <NewsWarper>
+    <NewsWrapper>
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Donation Box</title>
@@ -326,6 +326,6 @@ export default function Expenses() {
           </Row>
         </div>
       </div>
-    </NewsWarper>
+    </NewsWrapper>
   );
 }

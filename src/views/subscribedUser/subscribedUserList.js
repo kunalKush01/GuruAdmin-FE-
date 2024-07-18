@@ -19,7 +19,7 @@ import NoContent from "../../components/partials/noContent";
 import SubscribedUSerListTable from "../../components/subscribedUser/subscribedUserListTable";
 import { WRITE } from "../../utility/permissionsVariable";
 
-const SubscribedUserWarper = styled.div`
+const SubscribedUserWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .addSubscribeUser {
@@ -125,7 +125,7 @@ export default function SubscribedUser() {
   );
 
   return (
-    <SubscribedUserWarper>
+    <SubscribedUserWrapper>
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Subscribed User</title>
@@ -248,6 +248,6 @@ export default function SubscribedUser() {
           </Row>
         </div>
       </div>
-    </SubscribedUserWarper>
+    </SubscribedUserWrapper>
   );
 }

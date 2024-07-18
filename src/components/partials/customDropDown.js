@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-import '../../../src/styles/common.scss';
+import "../../../src/styles/common.scss";
 
 export const CustomDropDown = ({
   i18nKeyDropDownItemArray,
@@ -26,17 +26,14 @@ export const CustomDropDown = ({
   width,
   ...props
 }) => {
-  const DropDownWarper = styled.div``;
-;
+  const DropDownWrapper = styled.div``;
   const { t } = useTranslation();
   const selectedLang = useSelector((state) => state.auth.selectLangCode);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const toggle = () => setDropdownOpen((prevState) => !prevState);
 
-  
-
   return (
-    <div className="dropdownwarper" width={width} >
+    <div className="dropdownwrapper" width={width}>
       {i18nKeyDropDownItemArray && (
         <Dropdown
           className="textRight"
@@ -52,7 +49,7 @@ export const CustomDropDown = ({
             {i18nKeyDropDownItemArray.map((item, idx) => {
               return (
                 <DropdownItem
-                  onClick={(e)=>handleDropDownClick(e)}
+                  onClick={(e) => handleDropDownClick(e)}
                   key={idx}
                   name={item.key}
                 >
@@ -71,7 +68,9 @@ export const CustomDropDown = ({
           direction={"down"}
           {...props}
         >
-          <DropdownToggle caret><span className="buttonText">{defaultDropDownName}</span></DropdownToggle>
+          <DropdownToggle caret>
+            <span className="buttonText">{defaultDropDownName}</span>
+          </DropdownToggle>
           <DropdownMenu>
             {ItemListArray.map((item, idx) => {
               return (

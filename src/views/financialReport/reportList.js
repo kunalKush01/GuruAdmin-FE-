@@ -36,7 +36,7 @@ import FormikCustomDatePicker from "../../components/partials/formikCustomDatePi
 import NoContent from "../../components/partials/noContent";
 import { handleExport } from "../../utility/utils/exportTabele";
 import FinancialReportTabs from "./financialReportTabs";
-const NewsWarper = styled.div`
+const NewsWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
@@ -381,7 +381,7 @@ export default function FinancialReport() {
   };
 
   return (
-    <NewsWarper>
+    <NewsWrapper>
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Financial Report</title>
@@ -566,6 +566,6 @@ export default function FinancialReport() {
           </Row>
         </div>
       </div>
-    </NewsWarper>
+    </NewsWrapper>
   );
 }

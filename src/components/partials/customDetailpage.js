@@ -10,11 +10,9 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import cardClockIcon from "../../assets/images/icons/news/clockIcon.svg";
 import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-import '../../../src/styles/common.scss';
+import "../../../src/styles/common.scss";
 
-const TrustWarapper = styled.div``;
-;
-
+const TrustWrapper = styled.div``;
 export default function DetailPage({
   tags,
   title,
@@ -73,7 +71,7 @@ export default function DetailPage({
   };
 
   return (
-    <div className="trustwarapper">
+    <div className="trustwrapper">
       <div className="window nav statusBar body "></div>
       <div>
         <div className="d-sm-flex justify-content-between align-items-center ">

@@ -5,11 +5,9 @@ import PlacesAutocomplete, {
 } from "react-places-autocomplete";
 import { Input } from "reactstrap";
 import styled from "styled-components";
-import '../../../src/styles/common.scss';
+import "../../../src/styles/common.scss";
 
-const LocationWaraper = styled.div``;
-;
-
+const LocationWrapper = styled.div``;
 const CustomLocationField = (props) => {
   const handleChange = (address) => {
     props.setFieldValue("location", address);
@@ -75,7 +73,7 @@ const CustomLocationField = (props) => {
   };
 
   return (
-    <div className="locationwaraper">
+    <div className="locationwrapper">
       <PlacesAutocomplete
         value={props?.values?.location}
         onChange={handleChange}
