@@ -50,6 +50,7 @@ export default function AddDonation() {
   );
 
   const customFieldsList = customFieldsQuery?.data?.customFields ?? [];
+  // console.log(customFieldsList)
   const schema = Yup.object().shape({
     Mobile: Yup.string().required("expenses_mobile_required"),
     SelectedUser: Yup.mixed().required("user_select_required"),
@@ -63,16 +64,16 @@ export default function AddDonation() {
     Amount: Yup.string()
       .matches(/^[1-9][0-9]*$/, "invalid_amount")
       .required("amount_required"),
-    // customFields: Yup.object().shape(
-    //   customFieldsList.reduce((acc, field) => {
-    //     if (field.isRequired) {
-    //       acc[field.fieldName] = Yup.string().required(
-    //         `${field.fieldName} is required`
-    //       );
-    //     }
-    //     return acc;
-    //   }, {})
-    // ),
+    customFields: Yup.object().shape(
+      customFieldsList.reduce((acc, field) => {
+        if (field.isRequired) {
+          acc[field.fieldName] = Yup.mixed().required(
+            `${field.fieldName} is required`
+          );
+        }
+        return acc;
+      }, {})
+    ),
   });
   const initialValues = {
     Mobile: "",

@@ -33,7 +33,7 @@ const DataTableWarraper = styled.div`
     //cursor: all-scroll;
     /* max-width: 70rem; */
     border: 2px solid #ff8744;
-    /* overflow: auto; */
+    overflow: auto; 
     border-radius: 8px;
     .rdt_TableCell {
       color: #583703 !important;
@@ -43,6 +43,13 @@ const DataTableWarraper = styled.div`
     ::-webkit-scrollbar {
         display: none;
       }
+      .rdt_TableHead {
+      position: sticky;
+      top: 0; 
+      z-index: 1000; 
+      background-color: white; 
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    }
     .rdt_TableHeadRow {
       border: 0px !important;
       .rdt_TableCol {

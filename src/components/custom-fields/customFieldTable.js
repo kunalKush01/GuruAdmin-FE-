@@ -51,12 +51,14 @@ const CustomFieldTable = ({  }) => {
   return (
     <Table
       columns={columns}
-      dataSource={donation_custom_fields.customFields || []}
+      dataSource={donation_custom_fields.customFields}
       scroll={{
         x: 1500,
         y: 400,
       }}
+      pagination={{ pageSize: 11 }}
       bordered
+
     />
   );
 };
