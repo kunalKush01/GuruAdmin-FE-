@@ -14,7 +14,7 @@ import { CustomDropDown } from "../../components/partials/customDropDown";
 import { addFacility, handleProfileUpdate } from "../../redux/authSlice";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-const ProfileWarper = styled.div`
+const ProfileWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
@@ -78,7 +78,7 @@ export default function AddProfile() {
   };
 
   return (
-    <ProfileWarper>
+    <ProfileWrapper>
       <div className="d-flex justify-content-between align-items-center mb-2">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -101,6 +101,6 @@ export default function AddProfile() {
         </div>
       </div>
       <ProfileForm />
-    </ProfileWarper>
+    </ProfileWrapper>
   );
 }

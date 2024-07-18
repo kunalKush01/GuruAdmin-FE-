@@ -19,7 +19,7 @@ import SubscribedUSerListTable from "../../components/subscribedUser/subscribedU
 import LogListTable from "../../components/DonationBox/logListTable";
 import { getAllBoxCollectionLogs } from "../../api/donationBoxCollectionApi";
 
-const HundiLogWarapper = styled.div`
+const HundiLogWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
@@ -95,12 +95,7 @@ export default function HundiLog() {
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
 
   const hundiLogQuery = useQuery(
-    [
-      "hundiLogs",
-      pagination.page,
-      searchBarValue,
-      collectionId,
-    ],
+    ["hundiLogs", pagination.page, searchBarValue, collectionId],
     () =>
       getAllBoxCollectionLogs({
         ...pagination,
@@ -118,7 +113,7 @@ export default function HundiLog() {
   );
 
   return (
-    <HundiLogWarapper>
+    <HundiLogWrapper>
       <div className="window nav statusBar body "></div>
 
       <div>
@@ -209,6 +204,6 @@ export default function HundiLog() {
           </Row>
         </div>
       </div>
-    </HundiLogWarapper>
+    </HundiLogWrapper>
   );
 }

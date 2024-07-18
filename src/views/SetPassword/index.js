@@ -45,7 +45,7 @@ const SetPassword = () => {
       .oneOf([Yup.ref("password"), null], "Passwords must match")
       .required("Confirm Password is required"),
   });
-  const SetPasswordWarapper = styled.div`
+  const SetPasswordWrapper = styled.div`
     .errorMassage {
       /* color: #583703 !important; */
       font: normal normal bold 14px/20px noto sans;
@@ -139,7 +139,7 @@ const SetPassword = () => {
     [loginPageQuery]
   );
   return (
-    <SetPasswordWarapper className="auth-wrapper auth-cover ">
+    <SetPasswordWrapper className="auth-wrapper auth-cover ">
       <Row className="auth-inner m-0 defaultFontColor">
         {/* <Link
           className=" d-inline brand-logo"
@@ -281,7 +281,7 @@ const SetPassword = () => {
           </Col>
         </Col>
       </Row>
-    </SetPasswordWarapper>
+    </SetPasswordWrapper>
   );
 };
 

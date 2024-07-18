@@ -1,7 +1,7 @@
 import React from "react";
 import DataTable from "react-data-table-component";
 import "react-data-table-component-extensions/dist/index.css";
-import '../../styles/common.scss';
+import "../../styles/common.scss";
 
 const conditionStyle = {
   when: (row) => row.id % 2 !== 0,
@@ -24,12 +24,12 @@ function CustomDataTable({
   height,
 }) {
   return (
-    <div 
-      className="datatablewarraper"
+    <div
+      className="datatablewrapper"
       style={{
-        minWidth: minWidth || 'auto',
-        maxHeight: maxHeight || '270px',
-        height: height || 'auto'
+        minWidth: minWidth || "auto",
+        maxHeight: maxHeight || "270px",
+        height: height || "auto",
       }}
     >
       <DataTable

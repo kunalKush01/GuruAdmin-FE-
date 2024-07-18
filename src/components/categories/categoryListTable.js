@@ -13,11 +13,9 @@ import confirmationIcon from "../../assets/images/icons/news/conformationIcon.sv
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 import CustomDataTable from "../partials/CustomDataTable";
-import '../../../src/styles/common.scss';
+import "../../../src/styles/common.scss";
 
-const CategoryTableWarapper = styled.div``;
-;
-
+const CategoryTableWrapper = styled.div``;
 export function CategoryListTable({
   data,
   page,
@@ -172,7 +170,7 @@ export function CategoryListTable({
   }, [data]);
 
   return (
-    <div className="categorytablewarapper">
+    <div className="categorytablewrapper">
       <CustomDataTable
         // minWidth="fit-content"
         maxHeight={""}
