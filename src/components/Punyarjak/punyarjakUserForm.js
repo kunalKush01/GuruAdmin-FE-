@@ -12,31 +12,10 @@ import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import ImageUpload from "../partials/imageUpload";
 import RichTextField from "../partials/richTextEditorField";
+import '../../../src/styles/common.scss';
 
-const FormWrapper = styled.div`
-  .FormikWrapper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  // .addNews-btn {
-  //   padding: 8px 20px;
-  //   margin-left: 10px;
-  //   font: normal normal bold 15px/20px noto sans;
-  // }
-  // .newsContent {
-  //   height: 350px;
-  //   overflow: auto;
-  //   ::-webkit-scrollbar {
-  //     display: none;
-  //   }
-  // }
-  // .filterPeriod {
-  //   color: #ff8744;
-  //   font: normal normal bold 13px/5px noto sans;
-  // }
-`;
+const FormWrapper = styled.div``;
+;
 
 export default function PunyarjakForm({
   plusIconDisable = false,
@@ -86,7 +65,7 @@ export default function PunyarjakForm({
     toastId: "langError",
   };
   return (
-    <FormWrapper className="FormikWrapper">
+    <div className="formwrapper FormikWrapper">
       <Formik
         enableReinitialize
         initialValues={initialValues}
@@ -267,6 +246,6 @@ export default function PunyarjakForm({
           </Form>
         )}
       </Formik>
-    </FormWrapper>
+    </div>
   );
 }

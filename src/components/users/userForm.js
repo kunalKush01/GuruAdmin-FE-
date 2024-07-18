@@ -17,76 +17,10 @@ import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import ImageUpload from "../partials/imageUpload";
+import '../../../src/styles/common.scss';
 
-const FormWrapper = styled.div`
-  .FormikWrapper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addNotice-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    /* margin-top: 5rem; */
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .newsContent {
-    margin-top: 1rem;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: #ff8744;
-    font: normal normal bold 13px/5px noto sans;
-  }
-  .signInIconsIserAdminPassword {
-    width: 30px;
-    height: 30px;
-    margin-right: 10px;
-    cursor: pointer;
-  }
-  label {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .input-group-merge {
-    background-color: #fff7e8 !important;
-  }
-  #login-password {
-    color: #583703 !important;
-    padding-left: 14px;
-    border: none !important;
-    background-color: #fff7e8 !important;
-    font: normal normal normal 13px/20px Noto Sans;
-    border-radius: 20px;
-    ::placeholder {
-      color: transparent;
-    }
-  }
-  .input-group-text {
-    background-color: #fff7e8 !important;
-    border-bottom: 0 !important;
-  }
-  .checkBoxBorderBox {
-    border: 2px solid #ff8744;
-    padding: 1rem 2rem;
-    border-radius: 10px;
-  }
-  .labelCheckBox {
-    color: #ff8744 !important;
-    font: normal normal bold 13px/26px Noto Sans;
-  }
-  .checkBoxInput {
-    border-color: #ff8744;
-    cursor: pointer;
-  }
-  input::placeholder {
-    color: #583703 !important;
-    opacity: 60% !important;
-    font: normal normal bold 13px/20px Noto Sans !important;
-  }
-`;
+const FormWrapper = styled.div``;
+;
 
 export default function UserForm({
   plusIconDisable = false,
@@ -142,7 +76,7 @@ export default function UserForm({
   const [phoneNumber, setPhoneNumber] = useState(getUserMobile ?? "");
 
   return (
-    <FormWrapper className="FormikWrapper">
+    <div className="formwrapper FormikWrapper">
       <Formik
         enableReinitialize
         initialValues={initialValues}
@@ -447,6 +381,6 @@ export default function UserForm({
           </Form>
         )}
       </Formik>
-    </FormWrapper>
+    </div>
   );
 }

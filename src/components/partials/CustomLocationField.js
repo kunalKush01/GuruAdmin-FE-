@@ -5,50 +5,10 @@ import PlacesAutocomplete, {
 } from "react-places-autocomplete";
 import { Input } from "reactstrap";
 import styled from "styled-components";
+import '../../../src/styles/common.scss';
 
-const LocationWaraper = styled.div`
-  input::placeholder {
-    color: #583703 !important;
-    opacity: 60% !important;
-    font: normal normal bold 13px/20px Noto Sans !important;
-  }
-  input {
-    color: #583703 !important;
-    border: none !important;
-    background-color: #fff7e8 !important;
-    font: normal normal normal 13px/20px Noto Sans;
-    border-radius: 20px;
-  }
-  /* map css */
-  .autocomplete-dropdown-container {
-    border: none;
-    background-color: #fff7e8 !important;
-    z-index: 100;
-    border-radius: 3px;
-    margin-top: 2px;
-    width: 100%;
-    max-height: 150px;
-    overflow-y: scroll;
-    position: absolute;
-    /* padding: 1rem; */
-    font: normal normal bold 13px/20px noto sans;
-    box-shadow: 2px 4px 14px 0 rgba(34, 41, 47, 0.4);
-    ::focus {
-      background-color: #fff7e8 !important;
-    }
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .suggestion-item {
-    border: none;
-    background-color: #fff7e8 !important;
-    box-shadow: none;
-    :hover {
-      border: none !important;
-    }
-  }
-`;
+const LocationWaraper = styled.div``;
+;
 
 const CustomLocationField = (props) => {
   const handleChange = (address) => {
@@ -115,7 +75,7 @@ const CustomLocationField = (props) => {
   };
 
   return (
-    <LocationWaraper>
+    <div className="locationwaraper">
       <PlacesAutocomplete
         value={props?.values?.location}
         onChange={handleChange}
@@ -173,7 +133,7 @@ const CustomLocationField = (props) => {
           </div>
         )}
       </PlacesAutocomplete>
-    </LocationWaraper>
+    </div>
   );
 };
 

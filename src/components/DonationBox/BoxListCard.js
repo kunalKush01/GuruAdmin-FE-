@@ -9,55 +9,10 @@ import donationBoxDesIcon from "../../assets/images/icons/donationBox/donationBo
 import donationBoxIcon from "../../assets/images/icons/donationBox/donationBoxIcon.png";
 import editIcon from "../../assets/images/icons/donationBox/editIcon.svg";
 import { EDIT } from "../../utility/permissionsVariable";
+import '../../../src/styles/common.scss';
 
-const DonationBoxWrapper = styled.div`
-  .card-footer {
-    border: none !important;
-    padding: 0%;
-    div {
-      font: normal normal bold 13px/27px Noto Sans !important ;
-      text-align: center;
-      color: #ff8744;
-      border: 1px solid #ff8744;
-      border-radius: 50px;
-    }
-  }
-  .card-body,
-  .card {
-    border-radius: 20px;
-    background-color: #fff7e8;
-  }
-  .date {
-    font: normal normal 600 10px/20px Noto Sans;
-    span {
-      color: #ff8744;
-    }
-  }
-  .time {
-    p {
-      margin: 0;
-    }
-    font: normal normal 600 10px/20px Noto Sans;
-    img {
-      width: 15px;
-      margin-right: 5px;
-    }
-    span {
-      color: #ff8744;
-    }
-  }
-  .remarks {
-    margin-top: 0.5rem;
-    margin-bottom: 1.5rem;
-  }
-  .text-with-dots {
-    max-height: 20px;
-    max-width: 100px;
-    white-space: nowrap;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-  }
-`;
+const DonationBoxWrapper = styled.div``;
+;
 
 export default function BoxListCard({
   data = "",
@@ -71,7 +26,7 @@ export default function BoxListCard({
   };
   const history = useHistory();
   return (
-    <DonationBoxWrapper>
+    <div className="donationboxwrapper">
       <Card>
         <CardBody>
           <Row className=" d-flex justify-content-between w-100 m-0">
@@ -156,6 +111,6 @@ export default function BoxListCard({
           </Row>
         </CardBody>
       </Card>
-    </DonationBoxWrapper>
+    </div>
   );
 }

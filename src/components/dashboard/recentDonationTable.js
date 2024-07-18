@@ -8,6 +8,7 @@ import { deleteExpensesDetail } from "../../api/expenseApi";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomDataTable from "../partials/CustomDataTable";
+import '../../../src/styles/common.scss';
 
 export default function RecentDonationTable({ data }) {
   // const handleDeleteExpenses = async (payload) => {
@@ -116,21 +117,11 @@ export default function RecentDonationTable({ data }) {
     });
   }, [data]);
 
-  const RecentDonationTableWrapper = styled.div`
-    color: #583703 !important;
-    margin-right: 20px;
-    font: normal normal bold 20px/23px Noto Sans !important;
-    .DonationViewAll {
-      color: #ff8744;
-      cursor: pointer;
-    }
-    .recentDonationHeading {
-      font: normal normal bold 20px/23px Noto Sans;
-    }
-  `;
+  const RecentDonationTableWrapper = styled.div``;
+;
 
   return (
-    <RecentDonationTableWrapper>
+    <div className="recentdonationtablewrapper">
       <div className="d-flex listHeading justify-content-between">
         <p className="recentDonationHeading">
           <Trans i18nKey={"dashboard_Recent_DonationCommitment"} />
@@ -147,6 +138,6 @@ export default function RecentDonationTable({ data }) {
         columns={columns}
         data={recent_Donation}
       />
-    </RecentDonationTableWrapper>
+    </div>
   );
 }
