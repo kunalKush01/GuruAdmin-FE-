@@ -17,7 +17,7 @@ import placeHolderTable from "../../assets/images/placeholderImages/placeHolderT
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 import CustomDataTable from "../partials/CustomDataTable";
-import '../../../src/styles/common.scss';
+import "../../../src/styles/common.scss";
 
 export default function PunyarjakTable({
   data,
@@ -183,11 +183,9 @@ export default function PunyarjakTable({
     });
   });
 
-  const PunyarjakUSerTableWarper = styled.div``;
-;
-
+  const PunyarjakUSerTableWrapper = styled.div``;
   return (
-    <div className="punyarjakusertablewarper">
+    <div className="punyarjakusertablewrapper">
       <CustomDataTable maxHeight={""} columns={columns} data={punyarjak_user} />
     </div>
   );

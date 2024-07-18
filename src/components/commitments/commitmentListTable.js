@@ -23,11 +23,9 @@ import receiptIcon from "../../assets/images/icons/receiptIcon.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { DELETE, EDIT } from "../../utility/permissionsVariable";
 import CustomDataTable from "../partials/CustomDataTable";
-import '../../../src/styles/common.scss';
+import "../../../src/styles/common.scss";
 
-const CommitmentTableWarper = styled.div``;
-;
-
+const CommitmentTableWrapper = styled.div``;
 export default function CommitmentListTable(
   {
     data,
@@ -367,7 +365,7 @@ export default function CommitmentListTable(
     .toUpperCase();
 
   return (
-    <div className="commitmenttablewarper">
+    <div className="commitmenttablewrapper">
       <CustomDataTable
         maxHeight={""}
         columns={columns}

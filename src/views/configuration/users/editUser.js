@@ -12,7 +12,7 @@ import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
 
 import { getSubAdminDetail, updateSubAdminUser } from "../../../api/userApi";
 import UserForm from "../../../components/users/userForm";
-const SubAdminUserWarapper = styled.div`
+const SubAdminUserWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
@@ -87,7 +87,7 @@ export default function EditSubAdmin() {
   }, [subAdminUserDetailQuery]);
 
   return (
-    <SubAdminUserWarapper>
+    <SubAdminUserWrapper>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -160,6 +160,6 @@ export default function EditSubAdmin() {
           )}
         </Else>
       </If>
-    </SubAdminUserWarapper>
+    </SubAdminUserWrapper>
   );
 }

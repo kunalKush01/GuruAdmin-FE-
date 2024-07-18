@@ -1,14 +1,13 @@
 import { useField } from "formik";
 import { Trans } from "react-i18next";
 import styled from "styled-components";
-import '../../../src/styles/common.scss';
+import "../../../src/styles/common.scss";
 
-const WaraperTextArea = styled.div``;
-;
+const WrapperTextArea = styled.div``;
 const TextArea = ({ label, ...props }) => {
   const [field, meta] = useField(props);
   return (
-    <div className="warapertextarea">
+    <div className="wrappertextarea">
       <label htmlFor={props.id || props.name}>{label}</label>
       <textarea className="text-area" {...field} {...props} />
       {meta.touched && meta.error ? (

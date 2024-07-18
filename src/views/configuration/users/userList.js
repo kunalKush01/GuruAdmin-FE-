@@ -34,7 +34,7 @@ import { WRITE } from "../../../utility/permissionsVariable";
 import { Helmet } from "react-helmet";
 import Swal from "sweetalert2";
 import { timers } from "jquery";
-const NewsWarper = styled.div`
+const NewsWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
@@ -156,7 +156,6 @@ export default function User() {
     [userRoleQuery]
   );
 
-
   const userItems = useMemo(() => userQuery?.data?.results ?? [], [userQuery]);
 
   const masterloadOptionQuery = useQuery(
@@ -181,7 +180,7 @@ export default function User() {
     (item) => item.name
   );
   return (
-    <NewsWarper>
+    <NewsWrapper>
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Users</title>
@@ -211,16 +210,17 @@ export default function User() {
                 color="primary"
                 className="addNews-btn"
                 onClick={() =>
-                  userRolesItems?.length > 0 ? 
-                  history.push(
-                    `/configuration/users/add?page=${pagination.page}`
-                  ) : Swal.fire({
-                    icon: 'info',
-                    title: 'Sorry',
-                    text: "It seems that the Super admin hasn't assigned any Roles for the Sub-user, which is why you're unable to add them.",
-                    showConfirmButton:false,
-                    timer:2000
-                  })
+                  userRolesItems?.length > 0
+                    ? history.push(
+                        `/configuration/users/add?page=${pagination.page}`
+                      )
+                    : Swal.fire({
+                        icon: "info",
+                        title: "Sorry",
+                        text: "It seems that the Super admin hasn't assigned any Roles for the Sub-user, which is why you're unable to add them.",
+                        showConfirmButton: false,
+                        timer: 2000,
+                      })
                 }
               >
                 <span>
@@ -320,6 +320,6 @@ export default function User() {
           </Row>
         </div>
       </div>
-    </NewsWarper>
+    </NewsWrapper>
   );
 }

@@ -5,10 +5,9 @@ import styled from "styled-components";
 import SunEditor, { buttonList } from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css";
 import icon from "../../assets/images/icons/resizeField.png";
-import '../../../src/styles/common.scss';
+import "../../../src/styles/common.scss";
 
-const RichTextFieldWarper = styled.div``;
-;
+const RichTextFieldWrapper = styled.div``;
 export default function RichTextField({
   label,
   type = "text",
@@ -23,7 +22,7 @@ export default function RichTextField({
   const { t } = useTranslation();
 
   return (
-    <div className="richtextfieldwarper mb-2" key={field.name}>
+    <div className="richtextfieldwrapper mb-2" key={field.name}>
       <label style={{ margin: "0px 0px 10px 0px " }}>{`${label}*`}</label>
       <SunEditor
         onChange={(value) => helpers.setValue(value)}

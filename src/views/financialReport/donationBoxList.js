@@ -13,7 +13,7 @@ import styled from "styled-components";
 import { getAllBoxCollection } from "../../api/donationBoxCollectionApi";
 import DonationBoxListTable from "../../components/DonationBox/donationBoxListTable";
 import NoContent from "../../components/partials/noContent";
-const DonationBoxListWarper = styled.div`
+const DonationBoxListWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
@@ -49,12 +49,10 @@ const DonationBoxListWarper = styled.div`
   }
 `;
 
-
-
 export default function Expenses() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const selectedLang = useSelector((state) => state.auth.selectLang);
-  const searchBarValue = useSelector((state) => state.search.LocalSearch  );
+  const searchBarValue = useSelector((state) => state.search.LocalSearch);
 
   const periodDropDown = () => {
     switch (dropDownName) {
@@ -91,15 +89,21 @@ export default function Expenses() {
   let endDate = moment(filterEndDate).utcOffset(0).format("D MMM YYYY");
 
   const boxCollectionQuery = useQuery(
-    ["Collections", pagination.page, selectedLang.id,filterEndDate,filterStartDate,searchBarValue],
+    [
+      "Collections",
+      pagination.page,
+      selectedLang.id,
+      filterEndDate,
+      filterStartDate,
+      searchBarValue,
+    ],
     () =>
       getAllBoxCollection({
         ...pagination,
         startDate: filterStartDate,
         endDate: filterEndDate,
         languageId: selectedLang.id,
-        search:searchBarValue
-        
+        search: searchBarValue,
       }),
     {
       keepPreviousData: true,
@@ -111,10 +115,8 @@ export default function Expenses() {
     [boxCollectionQuery]
   );
 
-  
-
   return (
-    <DonationBoxListWarper>
+    <DonationBoxListWrapper>
       <div className="window nav statusBar body "></div>
 
       <div>
@@ -149,10 +151,10 @@ export default function Expenses() {
                     <DonationBoxListTable data={categoryItems} />
                   </Then>
                   <Else>
-                    <NoContent 
+                    <NoContent
                       headingNotfound={t("donation_box_not_found")}
                       para={t("donation_box_not_click_add_donation_box")}
-                  />
+                    />
                   </Else>
                 </If>
               </Else>
@@ -189,6 +191,6 @@ export default function Expenses() {
           </Row>
         </div>
       </div>
-    </DonationBoxListWarper>
+    </DonationBoxListWrapper>
   );
 }

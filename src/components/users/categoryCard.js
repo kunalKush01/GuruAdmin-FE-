@@ -28,15 +28,12 @@ import cardThreeDotIcon from "../../assets/images/icons/news/threeDotIcon.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import BtnPopover from "../partials/btnPopover";
 import { CustomDropDown } from "../partials/customDropDown";
-import '../../../src/styles/common.scss';
+import "../../../src/styles/common.scss";
 
-const NewsCardWaraper = styled.div``;
-;
+const NewsCardWrapper = styled.div``;
 function BtnContent({ newsId }) {
   const history = useHistory();
   const BtnContentWraper = styled.div``;
-;
-
   const handleDeleteNews = async (payload) => {
     return deleteNewsDetail(payload);
   };
@@ -107,7 +104,7 @@ function BtnContent({ newsId }) {
 
 export default function CategoryCard({ data }) {
   return (
-    <div className="newscardwaraper">
+    <div className="newscardwrapper">
       <Card
         style={{
           width: "300px",

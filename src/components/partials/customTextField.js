@@ -3,11 +3,9 @@ import React from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { FormGroup, InputGroup } from "reactstrap";
 import styled from "styled-components";
-import '../../../src/styles/common.scss';
+import "../../../src/styles/common.scss";
 
-const CustomTextFieldWarper = styled.div``;
-;
-
+const CustomTextFieldWrapper = styled.div``;
 export default function CustomTextField({
   required = false,
   label,
@@ -21,7 +19,7 @@ export default function CustomTextField({
   const [field, meta, helpers] = useField(props);
 
   return (
-    <div className="customtextfieldwarper" width={width}>
+    <div className="customtextfieldwrapper" width={width}>
       <FormGroup className="formGroup">
         {label && (
           <label>

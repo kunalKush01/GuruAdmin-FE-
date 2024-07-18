@@ -5,7 +5,7 @@ import { X } from "react-feather";
 import styled from "styled-components";
 import bellIcon from "../assets/images/icons/dashBoard/Group 5996.svg";
 import { useQueryClient } from "@tanstack/react-query";
-const NotifyPopUpWarapper = styled.div`
+const NotifyPopUpWrapper = styled.div`
   font: normal normal normal 12px/20px noto Sans;
   .notifyContentBox {
     border-right: 1px solid black;
@@ -17,12 +17,12 @@ const NotifyPopUpWarapper = styled.div`
     min-width: 300px;
   }
   .notificationContent {
-   display: -webkit-box;
-   max-width: 220px;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    display: -webkit-box;
+    max-width: 220px;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 `;
 
@@ -33,7 +33,7 @@ const Notification = () => {
 
   function ToastDisplay(props) {
     return (
-      <NotifyPopUpWarapper>
+      <NotifyPopUpWrapper>
         <div className="d-flex justify-content-between align-items-center notification-container">
           <div>
             <img src={bellIcon} className="me-1" width={30} />
@@ -42,13 +42,16 @@ const Notification = () => {
             <div className="notificationTitle">{notification?.title}</div>
             <div className="notificationContent">{notification?.body}</div>
           </div>
-          <X className="ms-1 cursor-pointer" onClick={() => toast.dismiss(props.t.id)} />
+          <X
+            className="ms-1 cursor-pointer"
+            onClick={() => toast.dismiss(props.t.id)}
+          />
         </div>
-      </NotifyPopUpWarapper>
+      </NotifyPopUpWrapper>
     );
   }
 
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (notification?.title) {
@@ -60,7 +63,7 @@ const Notification = () => {
 
   onMessageListener()
     .then((payload) => {
-      queryClient.invalidateQueries(["notificationMessagePing"])
+      queryClient.invalidateQueries(["notificationMessagePing"]);
       setNotification({
         title: payload?.notification?.title,
         body: payload?.notification?.body,
