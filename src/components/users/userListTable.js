@@ -15,6 +15,7 @@ import placeHolderTable from "../../assets/images/placeholderImages/placeHolderT
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { DELETE, EDIT } from "../../utility/permissionsVariable";
 import CustomDataTable from "../partials/CustomDataTable";
+import '../../../src/styles/common.scss';
 
 export function SubAdminUserListTable({
   data,
@@ -147,15 +148,12 @@ export function SubAdminUserListTable({
     }));
   }, [data]);
 
-  const UserTableWrapper = styled.div`
-    color: #583703 !important;
-    margin-right: 20px;
-    font: normal normal bold 15px/23px Noto Sans;
-  `;
+  const UserTableWrapper = styled.div``;
+;
 
   return (
-    <UserTableWrapper>
+    <div className="usertablewrapper">
       <CustomDataTable maxHeight={""} columns={columns} data={categoriesList} />
-    </UserTableWrapper>
+    </div>
   );
 }

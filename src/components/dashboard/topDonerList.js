@@ -21,6 +21,7 @@ import rank3 from "../../assets/images/icons/dashBoard/rank3.svg";
 import rank4 from "../../assets/images/icons/dashBoard/rank4.svg";
 import rank5 from "../../assets/images/icons/dashBoard/rank5.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
+import '../../../src/styles/common.scss';
 
 export const TopDonerList = ({ data }) => {
   const { t } = useTranslation();
@@ -31,32 +32,8 @@ export const TopDonerList = ({ data }) => {
 
   const [toggleState, setToggleState] = useState(showTopDonor ?? false);
 
-  const TopDonerWarpper = styled.div`
-    height: auto;
-    .listHeading {
-      color: #583703;
-      font: normal normal bold 20px/23px Noto Sans;
-    }
-
-    span {
-      font: normal normal bold 12px/23px Noto Sans;
-    }
-    .listContainer {
-      border: 2px solid #ff8744;
-      height: 100%;
-      border-radius: 10px;
-      color: #583703;
-    }
-    font: normal normal normal 13px/20px Noto Sans;
-
-    .headName {
-      font: normal normal bold 15px/20px Noto Sans;
-    }
-    .card {
-      background-color: #fff7e8;
-      margin: 5px 10px;
-    }
-  `;
+  const TopDonerWarpper = styled.div``;
+;
   const getRank = (idx) => {
     switch (idx + 1) {
       case 1:
@@ -74,7 +51,7 @@ export const TopDonerList = ({ data }) => {
     }
   };
   return (
-    <TopDonerWarpper>
+    <div className="topdonerwarpper">
       <div className="d-flex listHeading justify-content-between">
         <p>
           <Trans i18nKey={"dashboard_top"} />
@@ -127,6 +104,6 @@ export const TopDonerList = ({ data }) => {
           </Card>
         ))}
       </div>
-    </TopDonerWarpper>
+    </div>
   );
 };

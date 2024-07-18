@@ -10,107 +10,10 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import cardClockIcon from "../../assets/images/icons/news/clockIcon.svg";
 import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
+import '../../../src/styles/common.scss';
 
-const TrustWarapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addTrust {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-
-  .FormikWraper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addTrust-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .trustContent {
-    margin-bottom: 5rem;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: #ff8744;
-    font: normal normal bold 13px/5px noto sans;
-  }
-  .btn-outline-primary {
-    border: 2px solid #ff8744 !important;
-    font: normal normal bold 14px/15px Noto Sans;
-    padding: 5px 10px;
-    border-radius: 20px;
-    margin-right: 10px;
-  }
-  .about-temple-name {
-    font: normal normal bold 18px/33px Noto Sans;
-  }
-  .long-let_tude {
-    font: normal normal normal 15px/33px Noto Sans;
-  }
-  .clockImage {
-    width: 15px;
-    margin-right: 5px;
-  }
-  .postDate {
-    font: normal normal bold 10px/15px Noto sans;
-  }
-  .detail-title {
-    font: normal normal bold 23px/43px Noto Sans;
-  }
-  .detail-content {
-    font: normal normal normal 17px/28px Noto Sans;
-  }
-  .detailImage {
-    width: 100%;
-    height: 350px;
-    border-radius: 10px;
-  }
-  .imageDiv {
-    width: 35%;
-    height: 150px;
-  }
-  .tags {
-    word-break: break-all;
-    font: normal normal normal 14px/25px Noto Sans;
-  }
-  ul.slick-dots {
-    padding-left: 0rem !important;
-  }
-  .slick-dots li {
-    width: 5px;
-    color: #fff;
-  }
-  .slick-dots li.slick-active button:before {
-    color: #ff8744;
-    opacity: 1;
-    font-size: 10px;
-    line-height: 21px;
-  }
-  .slick-next:before {
-    color: #ff8744 !important;
-    font-size: 25px;
-  }
-  .slick-prev:before {
-    color: #ff8744 !important;
-    font-size: 25px;
-  }
-  .slick-slide {
-    padding: 0.5rem;
-  }
-  //  media query
-  @media only screen and (max-width: 578px) {
-  }
-`;
+const TrustWarapper = styled.div``;
+;
 
 export default function DetailPage({
   tags,
@@ -170,7 +73,7 @@ export default function DetailPage({
   };
 
   return (
-    <TrustWarapper>
+    <div className="trustwarapper">
       <div className="window nav statusBar body "></div>
       <div>
         <div className="d-sm-flex justify-content-between align-items-center ">
@@ -272,6 +175,6 @@ export default function DetailPage({
           </Col>
         </Row>
       </div>
-    </TrustWarapper>
+    </div>
   );
 }

@@ -16,6 +16,7 @@ import { getAllNotification, readNotification } from "../../api/notification";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import NotificationList from "../../components/Notification/notificationList";
 import NoContent from "../../components/partials/noContent";
+import '../../../src/styles/common.scss';
 const NotificationWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;

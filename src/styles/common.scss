@@ -1,0 +1,2895 @@
+
+.categorycardwrapper {
+  .imgContainer {
+    border-radius: 10px 10px 0px 0px;
+    img {
+      border-radius: 10px 10px 0px 0px;
+    }
+  }
+  .card-title {
+    font: normal normal bold 13px/16px Noto Sans;
+    margin-bottom: 10px !important;
+  }
+  .card-text {
+    font: normal normal normal 12px/16px Noto Sans;
+    height: 50px;
+    overflow: hidden;
+  }
+  .card-body {
+    background: #fff7e8;
+    padding: 10px;
+  }
+  .btn-outline-primary {
+    border: 2px solid #ff8744 !important;
+    font: normal normal bold 14px/15px Noto Sans;
+    padding: 5px 10px;
+    border-radius: 20px;
+    margin-right: 10px;
+  }
+
+  .card-footer {
+    font: normal normal bold 10px/15px Noto sans;
+    border: none !important;
+    padding: 16px 0px 10px 0px;
+    div > div > img {
+      width: 15px;
+      margin-right: 5px;
+    }
+    img {
+      width: 30px;
+    }
+  }
+  .imgContent {
+    top: 80%;
+    color: #fff;
+    padding: 0px 5px;
+    font: normal normal bold 12px/30px noto sans;
+  }
+}
+.btncontentwraper {
+    color: #583703;
+    font: normal normal normal 15px/20px noto sans;
+    
+    .col-item {
+      cursor: pointer;
+      :hover {
+        background-color: #ff8744;
+        color: #fff;
+      }
+    }
+  }
+.formwrapper {
+  .FormikWrapper {
+    padding: 40px;
+  }
+  .btn-Published {
+    text-align: center;
+  }
+}
+.categorytablewarapper {
+  color: #583703 !important;
+  font: normal normal bold 15px/23px Noto Sans;
+}
+.categorytabswrapper {
+  .tabName {
+    font: normal normal bold 18px/28px Noto Sans;
+    padding-left: 1rem;
+    color: #583703;
+    opacity: 70%;
+    padding-right: 1rem;
+    white-space: nowrap;
+    cursor: pointer;
+    padding-bottom: 0.2rem;
+  }
+  hr {
+    margin-top: -0.52rem;
+    height: 1.5px;
+    color: #583703;
+    opacity: 25%;
+    z-index: 1;
+  }
+  .allTabBox {
+    margin-left: 2.3rem;
+    overflow-x: scroll;
+    ::-webkit-scrollbar {
+      height: 5px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: gray;
+      border-radius: 25px;
+    }
+  }
+  .activeTab {
+    z-index: 2;
+    border-bottom: 5px solid;
+    border-color: #ff8744;
+    border-radius: 5px;
+    color: #583703;
+    opacity: 100%;
+    font-weight: bold;
+  }
+}
+.cattledashboardcardwrapper {
+  width: 100%;
+  height: 150px;
+  .customCard {
+    background-color: #fff7e8;
+    padding: 1.5rem;
+    width: 400px;
+    height: 100%;
+    border-radius: 5px;
+  }
+  .cardTitle {
+    font-size: 17px;
+    font-family: Noto Sans;
+    color: #583703;
+  }
+  .cardNumber {
+    font-size: 25px;
+    width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: bold;
+    color: #583703;
+  }
+  .sub-heading {
+    font-weight: bold;
+    color: #583703;
+    margin: 0.5rem 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 50%;
+  }
+  .count {
+    font-weight: normal;
+    color: #583703;
+  }
+}
+.formikwrapper {
+  label {
+    /* margin-bottom: 0px; */
+    color: #583703;
+    font: normal normal bold 15px/33px Noto Sans;
+  }
+  input {
+    color: #583703 !important;
+    border: none !important;
+    height: 36px;
+    width: 100%;
+    padding-top: 9px;
+    padding-left: 5px;
+    /* text-align: center; */
+    background-color: #fff7e8 !important;
+    font: normal normal normal 13px/20px Noto Sans;
+    border-radius: 5px;
+  }
+  input[type="file"]::file-selector-button {
+    display: none;
+  }
+}
+.formikwrapper {
+  font: normal normal bold 15px/33px Noto Sans;
+
+  .animated-height {
+    transition: height 0.5s;
+  }
+}
+.formikwrapper {
+  font: normal normal bold 15px/33px Noto Sans;
+}
+.formwraper {
+  .FormikWrapper {
+    padding: 40px;
+  }
+  .addUser {
+    font-size: 13px;
+  }
+  .addUser > span {
+    text-decoration: underline;
+    color: #ff8744;
+  }
+  
+}
+.commitmenttablewarper {
+  color: #583703 !important;
+  font: normal normal bold 15px/23px Noto Sans;
+  .payDonation {
+    font: normal normal bold 15px/33px Noto Sans;
+    color: #ff8744;
+  }
+}
+.recentdonationtablewrapper {
+    color: #583703 !important;
+    margin-right: 20px;
+    font: normal normal bold 20px/23px Noto Sans !important;
+    .DonationViewAll {
+      color: #ff8744;
+      cursor: pointer;
+    }
+    .recentDonationHeading {
+      font: normal normal bold 20px/23px Noto Sans;
+    }
+  }
+.topdonerwarpper {
+    height: auto;
+    .listHeading {
+      color: #583703;
+      font: normal normal bold 20px/23px Noto Sans;
+    }
+
+    span {
+      font: normal normal bold 12px/23px Noto Sans;
+    }
+    .listContainer {
+      border: 2px solid #ff8744;
+      height: 100%;
+      border-radius: 10px;
+      color: #583703;
+    }
+    font: normal normal normal 13px/20px Noto Sans;
+
+    .headName {
+      font: normal normal bold 15px/20px Noto Sans;
+    }
+    .card {
+      background-color: #fff7e8;
+      margin: 5px 10px;
+    }
+  }
+.formwrapper {
+  .FormikWrapper {
+    padding: 40px;
+  }
+  .btn-Published {
+    text-align: center;
+  }
+  .addDonation-btn {
+    padding: 8px 20px;
+    margin-left: 10px;
+    font: normal normal bold 15px/20px noto sans;
+  }
+  .donationContent {
+    height: 350px;
+    overflow: auto;
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .filterPeriod {
+    color: #ff8744;
+
+    font: normal normal bold 13px/5px noto sans;
+  }
+  .btn-secondary {
+    background-color: #fff7e8 !important;
+    color: #583703 !important ;
+    border: none;
+    font: normal normal bold 20px/20px noto sans !important ;
+    box-shadow: none !important ;
+    :hover {
+      color: #fff !important;
+      background-color: #ff8744 !important;
+    }
+    .secondary.active {
+      color: #fff !important;
+    }
+  }
+  .addUser {
+    font-size: 13px;
+  }
+  .addUser > span {
+    text-decoration: underline;
+    color: #ff8744;
+  }
+}
+.recentdonationtablewarper {
+  color: #583703 !important;
+  font: normal normal bold 15px/23px Noto Sans;
+  .modal-body {
+    max-height: 600px !important;
+    overflow: auto !important;
+  }
+  .tableDes p {
+    margin-bottom: 0;
+  }
+}
+.recentdonationtablewarper {
+    color: #583703 !important;
+    font: normal normal bold 15px/23px Noto Sans;
+    .modal-body {
+      max-height: 600px !important;
+      overflow: auto !important;
+    }
+    .tableDes p {
+      margin-bottom: 0;
+    }
+  }
+.donationboxwrapper {
+  .card-footer {
+    border: none !important;
+    padding: 0%;
+    div {
+      font: normal normal bold 13px/27px Noto Sans !important ;
+      text-align: center;
+      color: #ff8744;
+      border: 1px solid #ff8744;
+      border-radius: 50px;
+    }
+  }
+  .card-body,
+  .card {
+    border-radius: 20px;
+    background-color: #fff7e8;
+  }
+  .date {
+    font: normal normal 600 10px/20px Noto Sans;
+    span {
+      color: #ff8744;
+    }
+  }
+  .time {
+    p {
+      margin: 0;
+    }
+    font: normal normal 600 10px/20px Noto Sans;
+    img {
+      width: 15px;
+      margin-right: 5px;
+    }
+    span {
+      color: #ff8744;
+    }
+  }
+  .remarks {
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .text-with-dots {
+    max-height: 20px;
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+}
+.formwrapper {
+  .FormikWrapper {
+    padding: 40px;
+  }
+  .btn-Published {
+    text-align: center;
+  }
+  .addNews-btn {
+    padding: 8px 20px;
+    margin-left: 10px;
+    font: normal normal bold 15px/20px noto sans;
+  }
+  .newsContent {
+    height: 350px;
+    overflow: auto;
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .filterPeriod {
+    color: #ff8744;
+
+    font: normal normal bold 13px/5px noto sans;
+  }
+  .btn-secondary {
+    background-color: #fff7e8 !important;
+    color: #583703 !important ;
+    border: none;
+    font: normal normal bold 20px/20px noto sans !important ;
+    box-shadow: none !important ;
+    :hover {
+      color: #fff !important;
+      background-color: #ff8744 !important;
+    }
+    .secondary.active {
+      color: #fff !important;
+    }
+  }
+}
+.recentdonationtablewarper {
+    color: #583703 !important;
+    /* margin-right: 20px; */
+    font: normal normal bold 15px/23px Noto Sans;
+    .tableDes p {
+      margin-bottom: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .tableDes {
+      max-height: 1.7rem;
+    }
+    .viewLogs {
+      font: normal normal bold 15px/33px Noto Sans;
+      color: #ff8744;
+    }
+  }
+.loglisttablewarper {
+    color: #583703 !important;
+    font: normal normal bold 15px/23px Noto Sans;
+  }
+.eventcardwrapper {
+  .card1 {
+    font: normal normal bold 13px/16px Noto Sans;
+    margin-bottom: 0.5rem !important;
+  }
+  .card-text {
+    font: normal normal normal 12px/16px Noto Sans;
+    max-height: 18px;
+    max-width: 350px;
+    overflow: hidden;
+    /* text-overflow: ellipsis; */
+    text-align: start;
+    white-space: nowrap;
+    /* margin-bottom: 0.5rem !important; */
+  }
+  .card-text > p,
+  div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .card-Date {
+    font: normal normal normal 12px/16px Noto Sans;
+    color: #9c9c9c;
+    max-height: 18px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: start;
+    white-space: nowrap;
+    p {
+      margin: 0;
+    }
+  }
+  .card-body {
+    background: #fff7e8;
+    border-radius: 10px;
+    padding: 0px;
+    max-height: 122px;
+  }
+  .cardLangScroll {
+    display: flex;
+    /* background-color: red; */
+    margin-top: 0.7rem;
+    min-width: 230px;
+    overflow-x: scroll !important;
+    ::-webkit-scrollbar {
+      width: 10px;
+      display: block;
+    }
+  }
+  .btn-outline-primary {
+    border: 2px solid #ff8744 !important;
+    font: normal normal bold 14px/15px Noto Sans;
+    padding: 5px 10px;
+    border-radius: 20px;
+    margin-right: 10px;
+  }
+  img {
+    color: #583703;
+    font: 15px Noto Sans;
+  }
+
+  @media only screen and (max-width: 1200px) {
+    .card-body {
+      max-height: 100%;
+      padding: 1rem;
+    }
+  }
+  @media only screen and (max-width: 992px) {
+    .card-body {
+      max-height: 100%;
+      padding: 0rem 1rem 1rem 1rem;
+    }
+    .eventImage {
+      height: 250px !important;
+      object-position: center center !important;
+    }
+  }
+  @media only screen and (max-width: 576px) {
+    .card-body {
+      max-height: 100%;
+      padding: 0rem 1rem 1rem 1rem;
+    }
+    .eventImage {
+      height: 200px !important;
+    }
+  }
+}
+.btncontentwraper {
+    color: #583703;
+    font: normal normal normal 15px/20px noto sans;
+    .MainContainer {
+    }
+    .col-item {
+      cursor: pointer;
+      :hover {
+        background-color: #ff8744;
+        color: #fff;
+      }
+      .col-item-disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+    }
+  }
+.formwrapper {
+  .FormikWrapper {
+    padding: 40px;
+  }
+  .btn-Published {
+    text-align: center;
+  }
+  .addNews-btn {
+    padding: 8px 20px;
+    margin-left: 10px;
+    font: normal normal bold 15px/20px noto sans;
+  }
+  .newsContent {
+    height: 350px;
+    overflow: auto;
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .filterPeriod {
+    color: #ff8744;
+    font: normal normal bold 13px/5px noto sans;
+  }
+
+  label {
+    /* margin-bottom: 0px; */
+    font: normal normal bold 15px/33px Noto Sans;
+  }
+
+  /* input tags  css start */
+  .ReactTags__tagInput {
+    color: #583703 !important;
+    height: 36px;
+    border: none !important;
+    background-color: #fff7e8 !important;
+    font: normal normal normal 13px/20px Noto Sans;
+    border-radius: 5px;
+  }
+  .ReactTags__tagInput input.ReactTags__tagInputField {
+    color: #583703 !important;
+    border: none !important;
+    background-color: #fff7e8 !important;
+    font: normal normal normal 13px/20px Noto Sans;
+    border-radius: 5px;
+    outline: none;
+    width: 100%;
+    height: inherit;
+    padding-left: 0.5rem;
+    ::placeholder {
+      color: #fff7e8;
+    }
+  }
+  .ReactTags__tagInput input.ReactTags__tagInputField::placeholder {
+    color: #583703 !important;
+    font: normal normal bold 13px/20px Noto Sans;
+    opacity: 60%;
+  }
+  .ReactTags__tagInput > input.ReactTags__tagInputField:focus-within {
+    box-shadow: 0 3px 10px 0 rgba(34, 41, 47, 0.1);
+  }
+  /* added tags  */
+  .ReactTags__selected {
+    width: 100%;
+    display: flex;
+    overflow-x: scroll !important;
+    ::-webkit-scrollbar {
+      height: 8px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #c9c6c5 !important;
+      border-radius: 25px;
+      width: 10px !important;
+    }
+  }
+  .ReactTags__tag {
+    margin-bottom: 0.5rem;
+  }
+  /* Styles for suggestions */
+  .ReactTags__suggestions {
+    position: absolute;
+  }
+  .ReactTags__suggestions ul {
+    list-style-type: none;
+    box-shadow: 0.05em 0.01em 0.5em rgba(0, 0, 0, 0.2);
+    background-color: #fff7e8 !important;
+    width: 200px;
+  }
+  .ReactTags__suggestions li {
+    border-bottom: 1px solid #ddd;
+    padding: 5px 10px;
+    margin: 0;
+  }
+  .ReactTags__suggestions li mark {
+    text-decoration: underline;
+    background: none;
+    font-weight: 600;
+  }
+  /* .ReactTags__suggestions ul li.ReactTags__activeSuggestion {
+  background: #b7cfe0;
+  cursor: pointer;
+} */
+  .ReactTags__selected span.ReactTags__tag {
+    padding: 4px 10px;
+    font: normal normal bold 13px/20px Noto Sans;
+    border-radius: 10px;
+    border: 2px solid #583703;
+    display: flex;
+    margin-left: 3px;
+    align-items: center;
+    margin-top: 0.5rem;
+  }
+  .ReactTags__remove {
+    font-size: 20px;
+    font-weight: 900;
+    border: none;
+    vertical-align: middle;
+    line-height: 0px;
+    cursor: pointer;
+  }
+  /* input tags  css start */
+
+  /* time picker css */
+  .react-time-picker__wrapper {
+    border: none !important;
+  }
+  .react-time-picker {
+    width: 100%;
+  }
+  .react-time-picker__inputGroup {
+    color: #583703 !important;
+    border: none !important;
+    background-color: #fff7e8 !important;
+    font: normal normal normal 13px/20px Noto Sans;
+    width: 100%;
+    padding: 0rem 0.5rem !important;
+    border-radius: 5px;
+    line-height: 30px;
+  }
+  .react-time-picker__inputGroup__input:invalid {
+    background: #fff7e8 !important;
+  }
+  input:focus {
+    outline: none !important;
+  }
+  input:focus-visible {
+    outline-offset: none;
+    outline: none;
+  }
+
+  @media only screen and (max-width: 768px) and (min-width: 320px) {
+    .thumbnail_image {
+      width: 100px;
+      height: 100px;
+    }
+  }
+}
+.noeventwraper {
+
+img{
+    width: 90px;
+    margin: 20px;
+
+}
+.noEvent{
+    color: #FF8744;
+    font:  normal normal bold 25px/20px noto sans;
+}
+.noEventMass{
+   
+    font:  normal normal normal 13px/30px noto sans;
+}
+
+}
+.formwrapper {
+  .FormikWraper {
+    padding: 40px;
+  }
+  .btn-Published {
+    text-align: center;
+  }
+  .addNews-btn {
+    padding: 8px 20px;
+    margin-left: 10px;
+    font: normal normal bold 15px/20px noto sans;
+  }
+  .newsContent {
+    height: 350px;
+    overflow: auto;
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .filterPeriod {
+    color: #ff8744;
+
+    font: normal normal bold 13px/5px noto sans;
+  }
+  .btn-secondary {
+    background-color: #fff7e8 !important;
+    color: #583703 !important ;
+    border: none;
+    font: normal normal bold 20px/20px noto sans !important ;
+    box-shadow: none !important ;
+    :hover {
+      color: #fff !important;
+      background-color: #ff8744 !important;
+    }
+    .secondary.active {
+      color: #fff !important;
+    }
+  }
+  .upload-invoice {
+    color: #583703 !important;
+    border: none !important;
+    height: 36px;
+    width: 100%;
+    padding-top: 9px;
+    padding-left: 5px;
+    /* text-align: center; */
+    background-color: #fff7e8 !important;
+    font: normal normal normal 13px/20px Noto Sans;
+    border-radius: 5px;
+  }
+  .upload-invoice[type="file"]::file-selector-button {
+    display: none;
+  }
+  label {
+    /* margin-bottom: 0px; */
+    color: #583703;
+    font: normal normal bold 15px/33px Noto Sans;
+  }
+}
+.recentdonationtablewarper {
+    color: #583703 !important;
+    /* margin-right: 20px; */
+    font: normal normal bold 15px/23px Noto Sans;
+    .tableDes p {
+      margin-bottom: 0;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    .tableDes {
+      max-height: 1.7rem;
+    }
+    .viewLogs {
+      font: normal normal bold 15px/33px Noto Sans;
+      color: #ff8744;
+    }
+  }
+.newscardwrapper {
+  .imgContainer {
+    background-color: #fff7e8;
+    border-bottom: 1px solid rgb(255, 135, 68);
+    img {
+      border-radius: 10px 10px 0px 0px;
+    }
+  }
+  .card-title {
+    font: normal normal bold 13px/16px Noto Sans;
+    margin-bottom: 10px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .card-text {
+    font: normal normal normal 12px/16px Noto Sans;
+    height: 50px;
+    overflow: hidden;
+  }
+  .card-body {
+    background: #fff7e8;
+    padding: 10px;
+  }
+  .btn-outline-primary {
+    border: 2px solid #ff8744 !important;
+    font: normal normal bold 14px/15px Noto Sans;
+    padding: 5px 10px;
+    border-radius: 20px;
+    margin-right: 10px;
+  }
+
+  .card-footer {
+    font: normal normal bold 10px/15px Noto sans;
+    border: none !important;
+    padding: 16px 0px 10px 0px;
+    div > div > img {
+      width: 15px;
+      margin-right: 5px;
+    }
+    img {
+      width: 30px;
+    }
+  }
+  .imgContent {
+    top: 5%;
+    color: #fff;
+    padding: 0px 5px;
+    font: normal normal bold 12px/30px noto sans;
+  }
+  div.cardLangScroll {
+    /* height: 45px; */
+    display: flex;
+    min-width: 230px;
+    overflow-x: scroll !important;
+    ::-webkit-scrollbar {
+      width: 10px;
+      display: block;
+    }
+  }
+  .publishMenu {
+    background-color: #fff7e8;
+  }
+  img {
+    color: #583703;
+    font: 15px Noto Sans;
+  }
+}
+.btncontentwraper {
+    color: #583703;
+    font: normal normal normal 15px/20px noto sans;
+
+    .col-item {
+      cursor: pointer;
+      :hover {
+        background-color: #ff8744;
+        color: #fff;
+      }
+      .col-item-disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+    }
+  }
+.formwrapper {
+  .FormikWrapper {
+    padding: 40px;
+  }
+  .btn-Published {
+    text-align: center;
+  }
+  .addNews-btn {
+    padding: 8px 20px;
+    margin-left: 10px;
+    font: normal normal bold 15px/20px noto sans;
+  }
+  .newsContent {
+    height: 350px;
+    overflow: auto;
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .filterPeriod {
+    color: #ff8744;
+    font: normal normal bold 13px/5px noto sans;
+  }
+
+  label {
+    /* margin-bottom: 0px; */
+    font: normal normal bold 15px/33px Noto Sans;
+  }
+
+  /* input tags  css start */
+  .ReactTags__tagInput {
+    color: #583703 !important;
+    height: 36px;
+    border: none !important;
+    background-color: #fff7e8 !important;
+    font: normal normal normal 13px/20px Noto Sans;
+    border-radius: 5px;
+  }
+  .ReactTags__tagInput input.ReactTags__tagInputField {
+    color: #583703 !important;
+    border: none !important;
+    background-color: #fff7e8 !important;
+    font: normal normal normal 13px/20px Noto Sans;
+    border-radius: 5px;
+    outline: none;
+    width: 100%;
+    height: inherit;
+    padding-left: 0.5rem;
+    ::placeholder {
+      color: #fff7e8;
+    }
+  }
+  .ReactTags__tagInput input.ReactTags__tagInputField::placeholder {
+    color: #583703 !important;
+    font: normal normal bold 13px/20px Noto Sans;
+    opacity: 60%;
+  }
+  .ReactTags__tagInput > input.ReactTags__tagInputField:focus-within {
+    box-shadow: 0 3px 10px 0 rgba(34, 41, 47, 0.1);
+  }
+  /* added tags  */
+  .ReactTags__selected {
+    width: 100%;
+    display: flex;
+    overflow-x: scroll !important;
+    ::-webkit-scrollbar {
+      height: 8px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #c9c6c5 !important;
+      border-radius: 25px;
+      width: 10px !important;
+    }
+  }
+  .ReactTags__tag {
+    margin-bottom: 0.5rem;
+  }
+
+  /* Styles for suggestions */
+  .ReactTags__suggestions {
+    position: absolute;
+  }
+  .ReactTags__suggestions ul {
+    list-style-type: none;
+    box-shadow: 0.05em 0.01em 0.5em rgba(0, 0, 0, 0.2);
+    background-color: #fff7e8 !important;
+    width: 200px;
+  }
+  .ReactTags__suggestions li {
+    border-bottom: 1px solid #ddd;
+    padding: 5px 10px;
+    margin: 0;
+  }
+  .ReactTags__suggestions li mark {
+    text-decoration: underline;
+    background: none;
+    font-weight: 600;
+  }
+  /* .ReactTags__suggestions ul li.ReactTags__activeSuggestion {
+  background: #b7cfe0;
+  cursor: pointer;
+} */
+  .ReactTags__selected span.ReactTags__tag {
+    padding: 4px 10px;
+    font: normal normal bold 13px/20px Noto Sans;
+    border-radius: 10px;
+    border: 2px solid #583703;
+    display: flex;
+    margin-left: 3px;
+    align-items: center;
+    margin-top: 0.5rem;
+  }
+  .ReactTags__remove {
+    font-size: 20px;
+    font-weight: 900;
+    border: none;
+    vertical-align: middle;
+    line-height: 0px;
+    cursor: pointer;
+  }
+  /* input tags  css start */
+  @media only screen and (max-width: 768px) and (min-width: 320px) {
+    .thumbnail_image {
+      width: 100px;
+      height: 100px;
+    }
+  }
+}
+.noeventwraper {
+
+img{
+    width: 90px;
+    margin: 20px;
+
+}
+.noEvent{
+    color: #FF8744;
+    font:  normal normal bold 25px/20px noto sans;
+}
+.noEventMass{
+   
+    font:  normal normal normal 13px/30px noto sans;
+}
+
+}
+.noticecardwrapper {
+  .card1 {
+    font: normal normal bold 13px/16px Noto Sans;
+    margin-bottom: 0.5rem !important;
+  }
+  .card-text {
+    font: normal normal normal 12px/16px Noto Sans;
+    max-height: 18px;
+    max-width: 400px;
+    overflow: hidden;
+    /* text-overflow: ellipsis; */
+    text-align: start;
+    white-space: nowrap;
+    /* margin-bottom: 0.5rem !important; */
+  }
+  .card-text > p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .card-text > div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .card-Date {
+    font: normal normal normal 12px/16px Noto Sans;
+    color: #9c9c9c;
+    max-height: 18px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: start;
+    white-space: nowrap;
+    p {
+      margin: 0;
+    }
+  }
+  .card-body {
+    background: #fff7e8;
+    border-radius: 10px;
+    padding: 0px;
+    max-height: 122px;
+  }
+  .cardLangScroll {
+    display: flex;
+    /* background-color: red; */
+    margin-top: 0.7rem;
+    min-width: 230px;
+    overflow-x: scroll !important;
+    ::-webkit-scrollbar {
+      width: 10px;
+      display: block;
+    }
+  }
+  .btn-outline-primary {
+    border: 2px solid #ff8744 !important;
+    font: normal normal bold 14px/15px Noto Sans;
+    padding: 5px 10px;
+    border-radius: 20px;
+    margin-right: 10px;
+  }
+  .publishMenu {
+    background-color: #fff7e8;
+  }
+  img {
+    color: #583703;
+    font: 15px Noto Sans;
+  }
+  @media only screen and (max-width: 1200px) {
+    .card-body {
+      max-height: 100%;
+      padding: 1rem;
+    }
+  }
+  @media only screen and (max-width: 600px) {
+    .card-body {
+      max-height: 100%;
+      padding: 1rem;
+    }
+  }
+}
+.btncontentwraper {
+    color: #583703;
+    font: normal normal normal 15px/20px noto sans;
+   
+    .col-item {
+      cursor: pointer;
+      :hover {
+        background-color: #ff8744;
+        color: #fff;
+      }
+      .col-item-disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+    }
+  }
+.formwrapper {
+  .FormikWrapper {
+    padding: 40px;
+  }
+  .btn-Published {
+    text-align: center;
+  }
+  .addNotice-btn {
+    padding: 8px 20px;
+    margin-left: 10px;
+    font: normal normal bold 15px/20px noto sans;
+  }
+  .noticeContent {
+    height: 350px;
+    overflow: auto;
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .filterPeriod {
+    color: #ff8744;
+    font: normal normal bold 13px/5px noto sans;
+  }
+
+  label {
+    /* margin-bottom: 0px; */
+    font: normal normal bold 15px/33px Noto Sans;
+  }
+
+  /* input tags  css start */
+  .ReactTags__tagInput {
+    color: #583703 !important;
+    height: 36px;
+    border: none !important;
+    background-color: #fff7e8 !important;
+    font: normal normal normal 13px/20px Noto Sans;
+    border-radius: 5px;
+  }
+  .ReactTags__tagInput input.ReactTags__tagInputField {
+    color: #583703 !important;
+    border: none !important;
+    background-color: #fff7e8 !important;
+    font: normal normal normal 13px/20px Noto Sans;
+    border-radius: 5px;
+    outline: none;
+    width: 100%;
+    height: inherit;
+    padding-left: 0.5rem;
+    ::placeholder {
+      color: #fff7e8;
+    }
+  }
+  /* added tags  */
+  .ReactTags__selected {
+    width: 100%;
+    display: flex;
+    overflow-x: scroll !important;
+    ::-webkit-scrollbar {
+      height: 8px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #c9c6c5 !important;
+      border-radius: 25px;
+      width: 10px !important;
+    }
+  }
+  .ReactTags__tag {
+    margin-bottom: 0.5rem;
+  }
+
+  /* Styles for suggestions */
+  .ReactTags__suggestions {
+    position: absolute;
+  }
+  .ReactTags__suggestions ul {
+    list-style-type: none;
+    box-shadow: 0.05em 0.01em 0.5em rgba(0, 0, 0, 0.2);
+    background-color: #fff7e8 !important;
+    width: 200px;
+  }
+  .ReactTags__suggestions li {
+    border-bottom: 1px solid #ddd;
+    padding: 5px 10px;
+    margin: 0;
+  }
+  .ReactTags__suggestions li mark {
+    text-decoration: underline;
+    background: none;
+    font-weight: 600;
+  }
+  /* .ReactTags__suggestions ul li.ReactTags__activeSuggestion {
+  background: #b7cfe0;
+  cursor: pointer;
+} */
+  .ReactTags__selected span.ReactTags__tag {
+    padding: 4px 10px;
+    font: normal normal bold 13px/20px Noto Sans;
+    border-radius: 10px;
+    border: 2px solid #583703;
+    display: flex;
+    margin-left: 3px;
+    align-items: center;
+    margin-top: 0.5rem;
+  }
+  .ReactTags__remove {
+    font-size: 20px;
+    font-weight: 900;
+    border: none;
+    vertical-align: middle;
+    line-height: 0px;
+    cursor: pointer;
+  }
+  /* input tags  css start */
+
+  @media only screen and (max-width: 768px) and (min-width: 320px) {
+    .thumbnail_image {
+      width: 100px;
+      height: 100px;
+    }
+  }
+}
+.notificationwarapper {
+  .dateTime {
+    color: #909090;
+    font: normal normal bold 16px/27px Noto Sans;
+  }
+  .heading {
+    font: normal normal bold 20px/38px Noto Sans;
+  }
+  .notificationPara {
+    font: normal normal normal 14px/27px Noto Sans;
+  }
+}
+.customcardwaraper {
+  width: 100%;
+  height: 100%;
+    .customCard {
+      background-color: #fff7e8;
+      padding: 1.5rem;
+      width: 100%;
+      height: 100%;
+      
+    }
+    .cardtitle {
+      font-size: 22px;
+      font-family: Noto Sans;
+      font-weight: bold;
+      color: #583703;
+    }
+    .cardnumber {
+      font-family: Noto Sans;
+      font-weight: bold;
+      color: #583703;
+      overflow: hidden;
+    text-overflow: ellipsis;
+    white-space:nowrap;
+    max-width: 180px;
+      font-size: 30px;
+      line-height: 75px;
+    }
+    .cardimage {
+      margin-top: 3rem;
+    }
+  }
+.warapper {
+  label {
+    /* margin-bottom: 0px; */
+    font: normal normal bold 15px/33px Noto Sans;
+  }
+  input::placeholder {
+    color: #583703 !important;
+    opacity: 60% !important;
+    font: normal normal bold 13px/20px Noto Sans !important;
+  }
+  .react-tel-input {
+    color: #583703 !important;
+    border: none !important;
+    background-color: #fff7e8 !important;
+    font: normal normal normal 13px/20px Noto Sans;
+    border-radius: 5px;
+  }
+  .react-tel-input .form-control {
+    width: inherit;
+  }
+  input {
+    color: #583703 !important;
+    border: none !important;
+    background-color: #fff7e8 !important;
+    font: normal normal normal 13px/20px Noto Sans;
+    border-radius: 5px;
+  }
+  .react-tel-input .flag-dropdown {
+    background-color: #fff7e8 !important;
+    border: none !important;
+    border-right: 1px solid black !important;
+  }
+  .react-tel-input .selected-flag:hover {
+    background-color: #fff7e8 !important;
+  }
+  .react-tel-input .flag-dropdown.open .selected-flag {
+    background-color: #fff7e8 !important;
+  }
+  .country-list {
+    background-color: #fff7e8 !important;
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #ff8744 !important;
+      border-radius: 5px;
+      height: 50px;
+      width: 10px !important;
+    }
+  }
+  .react-tel-input .country-list .country:hover {
+    background-color: #ff8744 !important;
+    color: #fff;
+  }
+  .react-tel-input .country-list .country:hover .dial-code {
+    color: #fff !important;
+  }
+  .dial-code {
+    color: #583703 !important;
+  }
+  .react-tel-input .country-list .country.highlight {
+    background-color: #ff8744 !important;
+  }
+  .react-tel-input .country-list .country.highlight > span {
+    font: normal normal bold 13px/20px Noto Sans;
+    color: #ffffff !important;
+  }
+  .react-tel-input .country-list .search {
+    padding: 0.5rem 1.5rem 0.5rem 0rem;
+  }
+  .react-tel-input .country-list .search-box {
+    width: 100%;
+  }
+}
+.datatablewarraper {
+  .data-table-extensions-filter {
+    display: none !important;
+  }
+
+  .download {
+    color: red !important;
+  }
+  .DonetionList {
+    ::-webkit-scrollbar {
+      height: 8px;
+    }
+    /* ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+  } */
+    ::-webkit-scrollbar-thumb {
+      background-color: #c9c6c5 !important;
+      border-radius: 25px;
+      width: 10px !important;
+    }
+
+    /* max-width: 70rem; */
+    border: 2px solid #ff8744;
+    /* overflow: auto; */
+    border-radius: 8px;
+    .rdt_TableCell {
+      color: #583703 !important;
+      font: normal normal normal 13px/20px noto sans;
+      /* justify-content: center; */
+    }
+
+    .rdt_TableHeadRow {
+      border: 0px !important;
+      .rdt_TableCol {
+        color: #583703 !important;
+        border: 0px !important;
+        font: normal normal bold 14px/23px Noto Sans;
+        /* min-width: fit-content; */
+      }
+    }
+    .rdt_TableRow {
+      color: #583703 !important;
+      border: 0px !important;
+      text-align: center !important;
+    }
+    .rdt_TableBody {
+      max-height: 600px;
+      height: 300px;
+      overflow: auto;
+      ::-webkit-scrollbar {
+        display: block;
+      }
+    }
+  }
+}
+
+.customdatepickerwraper {
+  .react-datepicker__day--outside-month {
+    color: #9c9c9c !important;
+    /* color: #DFD3BE !important; */
+    pointer-events: none;
+  }
+
+  label {
+    color: #583703;
+    font: normal normal bold 15px/33px Noto Sans !important;
+  }
+  .react-datepicker {
+    border: none !important ;
+    color: #583703;
+    background: #fff7e8 !important;
+    border-radius: 10px !important;
+    font-size: 14px;
+    float: right;
+    height: 320px;
+     width:"80%";
+    .react-datepicker__month-container {
+      width: "100%"; 
+      border-radius: 10px !important;
+    }
+    .react-datepicker__input-time-container {
+      border-top: 1px solid #ff8744;
+      padding: 10px 10px;
+      width: -webkit-fill-available;
+      text-align: center;
+      font: normal normal bold 13px/20px Noto Sans !important  ;
+      .react-datepicker-time__input {
+        border: none;
+        width: 100%;
+        border-radius: 10px;
+        text-align: center;
+        color: #ff8744 !important;
+        width: 150px;
+        font: normal normal bold 15px/30px Noto Sans !important  ;
+      }
+    }
+
+    .react-datepicker__navigation {
+      top: 16px;
+    }
+    .react-datepicker__month-read-view {
+      display: flex;
+      justify-content: space-between;
+    }
+    .react-datepicker__month-read-view--down-arrow {
+      top: 10px;
+    }
+    .react-datepicker__year-read-view--down-arrow {
+      top: 10px;
+    }
+    .react-datepicker__day-name {
+      color: #583703 !important;
+      font: normal normal bold 13px/20px Noto Sans;
+    }
+    .react-datepicker__day--keyboard-selected,
+    .react-datepicker__day--selected {
+      background: #ff8744 !important;
+      border-radius: 50%;
+      color: #fff7e8 !important;
+    }
+    .react-datepicker__day--keyboard-highlighted,
+    .react-datepicker__day--highlighted {
+      background: #ff8744 !important;
+      border-radius: 5px;
+      color: #fff7e8 !important;
+      :hover {
+        background: #ff8744 !important;
+        border-radius: 5px !important;
+        color: #fff7e8 !important;
+      }
+    }
+    .react-datepicker__week{
+      display: flex;
+      margin: 1.2rem 0rem;
+      justify-content: space-around;
+    }
+    .react-datepicker__day {
+      color: #583703;
+      font: normal normal bold 12px/20px Noto Sans;
+      &:hover {
+        border-radius: 50%;
+      }
+    }
+      .react-datepicker__day-names{
+      display: flex;
+      justify-content: space-around;
+    }
+    
+    .react-datepicker__month-dropdown {
+      border: none !important;
+      /* color: #ff8744; */
+      background-color: #fff7e8;
+      box-shadow: 2px 2px 10px 2px gray;
+      max-height: 250px;
+      overflow: auto;
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      .react-datepicker__month-option:hover {
+        background-color: #ff8744;
+        color: #fff;
+      }
+    }
+    .react-datepicker__year-dropdown {
+      border: none !important;
+      /* color: #ff8744; */
+      background-color: #fff7e8;
+      box-shadow: 0px 0px 7px 0px gray;
+      max-height: 250px;
+      overflow: auto;
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      .react-datepicker__year-option:hover {
+        background-color: #ff8744;
+        color: #fff;
+      }
+    }
+
+    .react-datepicker__header {
+      border: none !important ;
+      background: #fff7e8 !important;
+      color: #583703 !important ;
+      border-radius: 10px !important;
+
+      .react-datepicker__current-month {
+        color: #583703 !important ;
+        font: normal normal bold 15px/20px Noto Sans !important;
+        display: none;
+      }
+    }
+    .react-datepicker__header__dropdown {
+      display: flex;
+      justify-content: space-evenly;
+    }
+
+    .react-datepicker-time__header {
+      border: none !important ;
+      background: #fff7e8 !important;
+      color: #583703 !important ;
+      border-radius: 10px !important;
+      font: normal normal bold 15px/20px Noto Sans !important;
+    }
+    .react-datepicker__time-list {
+      background-color: #fff7e8;
+      font: normal normal bold 11px/20px Noto Sans !important;
+
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    }
+    .react-datepicker__time-list-item--selected {
+      color: #fff !important;
+      background-color: #ff8744 !important;
+    }
+    .react-datepicker__time-container {
+      border-left: 2px solid #583703;
+    }
+
+    input[type="time"]::-webkit-calendar-picker-indicator {
+      display: none;
+    }
+  }
+   @media only screen and (max-width: 1200px) {
+   }
+    .react-datepicker {
+       width:  "100%"; }}
+   
+.trustwarapper {
+  color: #583703;
+  font: normal normal bold 20px/33px Noto Sans;
+  .ImagesVideos {
+    font: normal normal bold 15px/33px Noto Sans;
+  }
+  .addTrust {
+    color: #583703;
+    display: flex;
+    align-items: center;
+  }
+
+  .FormikWraper {
+    padding: 40px;
+  }
+  .btn-Published {
+    text-align: center;
+  }
+  .addTrust-btn {
+    padding: 8px 20px;
+    margin-left: 10px;
+    font: normal normal bold 15px/20px noto sans;
+  }
+  .trustContent {
+    margin-bottom: 5rem;
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .filterPeriod {
+    color: #ff8744;
+    font: normal normal bold 13px/5px noto sans;
+  }
+  .btn-outline-primary {
+    border: 2px solid #ff8744 !important;
+    font: normal normal bold 14px/15px Noto Sans;
+    padding: 5px 10px;
+    border-radius: 20px;
+    margin-right: 10px;
+  }
+  .about-temple-name {
+    font: normal normal bold 18px/33px Noto Sans;
+  }
+  .long-let_tude {
+    font: normal normal normal 15px/33px Noto Sans;
+  }
+  .clockImage {
+    width: 15px;
+    margin-right: 5px;
+  }
+  .postDate {
+    font: normal normal bold 10px/15px Noto sans;
+  }
+  .detail-title {
+    font: normal normal bold 23px/43px Noto Sans;
+  }
+  .detail-content {
+    font: normal normal normal 17px/28px Noto Sans;
+  }
+  .detailImage {
+    width: 100%;
+    height: 350px;
+    border-radius: 10px;
+  }
+  .imageDiv {
+    width: 35%;
+    height: 150px;
+  }
+  .tags {
+    word-break: break-all;
+    font: normal normal normal 14px/25px Noto Sans;
+  }
+  ul.slick-dots {
+    padding-left: 0rem !important;
+  }
+  .slick-dots li {
+    width: 5px;
+    color: #fff;
+  }
+  .slick-dots li.slick-active button:before {
+    color: #ff8744;
+    opacity: 1;
+    font-size: 10px;
+    line-height: 21px;
+  }
+  .slick-next:before {
+    color: #ff8744 !important;
+    font-size: 25px;
+  }
+  .slick-prev:before {
+    color: #ff8744 !important;
+    font-size: 25px;
+  }
+  .slick-slide {
+    padding: 0.5rem;
+  }
+
+  @media only screen and (max-width: 578px) {
+  }
+}
+.dropdownwarper {
+  
+    .btn-secondary {
+      background-color: white !important;
+      border: 1px solid #ff8744 !important ;
+      color: #ff8744 !important;
+      font: normal normal bold 15px/20px noto sans !important;
+      //  width: ${(prop)=>prop.width??"150px"}; 
+      width:150px;
+      text-align: left;
+      padding: 8px 10px;
+      position: relative;
+    }
+    .btn-secondary:focus {
+      background-color: white !important;
+      border: 1px solid #ff8744 !important ;
+      color: #ff8744 !important;
+      font: normal normal bold 15px/20px noto sans !important;
+      
+      text-align: left;
+      padding: 8px 10px;
+    }
+    .dropdown-toggle{
+      display: flex;  
+    }
+    .dropdown-toggle::after {
+      border: none !important;
+      background-image: url("../assets/images/icons/dashBoard/dropDownIcon.svg");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 25px;
+
+      /* margin-left: 40px; */
+      position: absolute;
+      right: 10px;
+      top: 40%;
+      left: inherit;
+    }
+    .dropdown-menu {
+      min-width: 150px;
+      background: #fff7e8;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      max-height: 150px;
+      ::-webkit-scrollbar{
+          width: 5px;
+        }
+        ::-webkit-scrollbar-thumb{
+          background-color: #ff8744;
+          border-radius: 10px;
+          height: 1rem;
+        }
+      .dropdown-item {
+        color: #583703;
+        width: 100%;
+        font: normal normal normal 15px/20px noto sans;
+        padding: 8px 10px;
+        :hover {
+          color: #fff;
+          background: #ff8744;
+        }
+      }
+    }
+    .buttonText{
+      overflow: hidden;
+      width: 80%;
+    }
+    .textRight{
+      text-align: -webkit-right;
+    }
+  }
+.locationwaraper {
+  input::placeholder {
+    color: #583703 !important;
+    opacity: 60% !important;
+    font: normal normal bold 13px/20px Noto Sans !important;
+  }
+  input {
+    color: #583703 !important;
+    border: none !important;
+    background-color: #fff7e8 !important;
+    font: normal normal normal 13px/20px Noto Sans;
+    border-radius: 20px;
+  }
+  /* map css */
+  .autocomplete-dropdown-container {
+    border: none;
+    background-color: #fff7e8 !important;
+    z-index: 100;
+    border-radius: 3px;
+    margin-top: 2px;
+    width: 100%;
+    max-height: 150px;
+    overflow-y: scroll;
+    position: absolute;
+    /* padding: 1rem; */
+    font: normal normal bold 13px/20px noto sans;
+    box-shadow: 2px 4px 14px 0 rgba(34, 41, 47, 0.4);
+    ::focus {
+      background-color: #fff7e8 !important;
+    }
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .suggestion-item {
+    border: none;
+    background-color: #fff7e8 !important;
+    box-shadow: none;
+    :hover {
+      border: none !important;
+    }
+  }
+}
+.radiobuttonwrapper {
+  label {
+    /* margin-bottom: 0px; */
+    font: normal normal bold 15px/33px Noto Sans;
+  }
+  .form-check {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+}
+.reactselectwarapper {
+  /* margin-bottom: 10px; */
+  font: normal normal bold 15px/33px Noto Sans;
+}
+.searchbarwarapper {
+  .searbarSize {
+    height: 40px;
+  }
+
+  .bgNone {
+    background-color: transparent;
+  }
+
+  @media only screen and (max-width: 576px) {
+    .searbarSize {
+      height: 35px;
+    }
+    /* width: 300px !important; */
+  }
+}
+.warapertextarea {
+  label {
+    /* margin-bottom: 10px; */
+    font: normal normal bold 15px/33px Noto Sans;
+  }
+  .error {
+    font: normal normal bold 11px/33px Noto Sans;
+  }
+  textarea::placeholder {
+    color: #583703 !important;
+    opacity: 60% !important;
+    font: normal normal bold 13px/20px Noto Sans !important;
+  }
+  .text-area {
+    border: none !important;
+    background-color: #fff7e8 !important;
+    color: #583703 !important;
+    font: normal normal normal 13px/20px Noto Sans;
+    width: 100%;
+    padding: 0.5rem 0.5rem;
+    box-shadow: none;
+    :focus-visible {
+      outline: none;
+    }
+  }
+}
+.customtextfieldwarper {
+  color: #583703 !important;
+  font: normal normal bold 11px/33px Noto Sans;
+
+   .formGroup {
+     width: "auto";
+    margin: "auto"; 
+  } 
+  label {
+    /* margin-bottom: 0px; */
+    font: normal normal bold 15px/33px Noto Sans;
+  }
+  input::placeholder {
+    color: #583703 !important;
+    opacity: 60% !important;
+    font: normal normal bold 13px/20px Noto Sans !important;
+  }
+  input {
+    color: #583703 !important;
+    border: none !important;
+    background-color: #fff7e8 !important;
+    font: normal normal normal 13px/20px Noto Sans;
+    border-radius: 20px;
+  }
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    display: none;
+  }
+}
+
+.formikcustomdatepickerwraper {
+  .react-datepicker__day--outside-month {
+    color: #9c9c9c !important;
+    /* color: #DFD3BE !important; */
+    pointer-events: none;
+  }
+
+  /* 
+              .react-datepicker__day--disabled{
+      color: #9c9c9c !important;
+    } */
+
+  label {
+    color: #583703;
+    font: normal normal bold 15px/33px Noto Sans !important;
+  }
+  .react-datepicker {
+    border: none !important ;
+    color: #583703;
+    background: #fff7e8 !important;
+    border-radius: 10px !important;
+    .react-datepicker__month-container {
+      width: 270px !important;
+      border-radius: 10px !important;
+    }
+    .react-datepicker__input-time-container {
+      border-top: 1px solid #ff8744;
+      padding: 10px 10px;
+      width: -webkit-fill-available;
+      text-align: center;
+      font: normal normal bold 13px/20px Noto Sans !important  ;
+      .react-datepicker-time__input {
+        border: none;
+        width: 100%;
+        border-radius: 10px;
+        text-align: center;
+        color: #ff8744 !important;
+        width: 150px;
+        font: normal normal bold 15px/30px Noto Sans !important  ;
+      }
+    }
+
+    .react-datepicker__navigation {
+      top: 16px;
+    }
+    .react-datepicker__month-read-view--down-arrow {
+      top: 10px;
+    }
+    .react-datepicker__year-read-view--down-arrow {
+      top: 10px;
+    }
+    .react-datepicker__day-name {
+      color: #583703 !important;
+      font: normal normal bold 12px/20px Noto Sans;
+    }
+    .react-datepicker__day--keyboard-selected,
+    .react-datepicker__day--selected {
+      background: #ff8744 !important;
+      /* border-radius: 50%; */
+      color: #fff7e8 !important;
+    }
+    .react-datepicker__day {
+      color: #583703;
+      font: normal normal bold 10px/20px Noto Sans;
+      &:hover {
+        border-radius: 50%;
+      }
+    }
+    .react-datepicker__month-dropdown {
+      border: none !important;
+      /* color: #ff8744; */
+      background-color: #fff7e8;
+      box-shadow: 2px 2px 10px 2px gray;
+      max-height: 250px;
+      overflow: auto;
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      .react-datepicker__month-option:hover {
+        background-color: #ff8744;
+        color: #fff;
+      }
+    }
+    .react-datepicker__year-dropdown {
+      border: none !important;
+      /* color: #ff8744; */
+      background-color: #fff7e8;
+      box-shadow: 0px 0px 7px 0px gray;
+      max-height: 250px;
+      overflow: auto;
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      .react-datepicker__year-option:hover {
+        background-color: #ff8744;
+        color: #fff;
+      }
+    }
+
+    .react-datepicker__header {
+      border: none !important ;
+      background: #fff7e8 !important;
+      color: #583703 !important ;
+      border-radius: 10px !important;
+
+      .react-datepicker__current-month {
+        color: #583703 !important ;
+        font: normal normal bold 15px/20px Noto Sans !important;
+        display: none;
+      }
+    }
+    .react-datepicker__header__dropdown {
+      .react-datepicker__month-dropdown-container {
+        margin-right: 50px;
+      }
+    }
+
+    .react-datepicker-time__header {
+      border: none !important ;
+      background: #fff7e8 !important;
+      color: #583703 !important ;
+      border-radius: 10px !important;
+      font: normal normal bold 15px/20px Noto Sans !important;
+    }
+    .react-datepicker__time-list {
+      background-color: #fff7e8;
+      font: normal normal bold 11px/20px Noto Sans !important;
+
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    }
+    .react-datepicker__time-list-item--selected {
+      color: #fff !important;
+      background-color: #ff8744 !important;
+    }
+    .react-datepicker__time-container {
+      border-left: 2px solid #583703;
+    }
+
+    input[type="time"]::-webkit-calendar-picker-indicator {
+      display: none;
+    }
+  }
+
+  .react-datepicker__input-container > input {
+    color: #583703 !important;
+    width: 100%;
+    height: 35.97px;
+    border: none !important;
+    background-color: #fff7e8 !important;
+    font: normal normal normal 13px/20px Noto Sans;
+    border-radius: 5px;
+  }
+  .react-datepicker__input-container > input:focus-visible {
+    outline: none;
+  }
+}
+.formikcustomdatepickerwraper {
+
+
+.react-datepicker__day--outside-month {
+    color: #9c9c9c !important;
+                /* color: #DFD3BE !important; */
+                pointer-events: none;
+              }
+
+              /* .react-datepicker__day--disabled{
+      color: #9c9c9c !important;
+    } */
+
+
+
+  label {
+    color: #583703;
+    font: normal normal bold 15px/33px Noto Sans !important;
+  }
+  .react-datepicker {
+    border: none !important ;
+    color: #583703;
+    background: #fff7e8 !important;
+    border-radius: 10px !important;
+    .react-datepicker__month-container {
+      width: 270px !important;
+      border-radius: 10px !important;
+    }
+    .react-datepicker__input-time-container {
+      border-top: 1px solid #ff8744;
+      padding: 10px 10px;
+      width: -webkit-fill-available;
+      text-align: center;
+      font: normal normal bold 13px/20px Noto Sans !important  ;
+      .react-datepicker-time__input {
+        border: none;
+        width: 100%;
+        border-radius: 10px;
+        text-align: center;
+        color: #ff8744 !important;
+        width: 150px;
+        font: normal normal bold 15px/30px Noto Sans !important  ;
+      }
+    }
+
+    .react-datepicker__navigation {
+      top: 16px;
+    }
+    .react-datepicker__month-read-view--down-arrow {
+      top: 10px;
+    }
+    .react-datepicker__year-read-view--down-arrow {
+      top: 10px;
+    }
+    .react-datepicker__day-name {
+      color: #583703 !important;
+      font: normal normal bold 12px/20px Noto Sans;
+    }
+    .react-datepicker__day--keyboard-selected,
+    .react-datepicker__day--selected {
+      background: #ff8744 !important;
+      /* border-radius: 50%; */
+      color: #fff7e8 !important;
+      opacity: 1 !important;
+      
+    }
+    .react-datepicker__day {
+      color: #583703;
+      font: normal normal bold 10px/20px Noto Sans;
+      &:hover {
+        border-radius: 50%;
+      }
+    }
+    .react-datepicker__month-dropdown {
+      border: none !important;
+      /* color: #ff8744; */
+      background-color: #fff7e8;
+      box-shadow: 2px 2px 10px 2px gray;
+      max-height: 250px;
+      overflow: auto;
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      .react-datepicker__month-option:hover {
+        background-color: #ff8744;
+        color: #fff;
+      }
+    }
+    .react-datepicker__year-dropdown {
+      border: none !important;
+      /* color: #ff8744; */
+      background-color: #fff7e8;
+      box-shadow: 0px 0px 7px 0px gray;
+      max-height: 250px;
+      overflow: auto;
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      .react-datepicker__year-option:hover {
+        background-color: #ff8744;
+        color: #fff;
+      }
+    }
+
+    .react-datepicker__header {
+      border: none !important ;
+      background: #fff7e8 !important;
+      color: #583703 !important ;
+      border-radius: 10px !important;
+
+      .react-datepicker__current-month {
+        color: #583703 !important ;
+        font: normal normal bold 15px/20px Noto Sans !important;
+        display: none;
+      }
+    }
+    .react-datepicker__header__dropdown {
+      .react-datepicker__month-dropdown-container {
+        margin-right: 50px;
+      }
+    }
+
+    .react-datepicker-time__header {
+      border: none !important ;
+      background: #fff7e8 !important;
+      color: #583703 !important ;
+      border-radius: 10px !important;
+      font: normal normal bold 15px/20px Noto Sans !important;
+    }
+    .react-datepicker__time-list {
+      background-color: #fff7e8;
+      font: normal normal bold 11px/20px Noto Sans !important;
+
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    }
+    .react-datepicker__time-list-item--selected {
+      color: #fff !important;
+      background-color: #ff8744 !important;
+    }
+    .react-datepicker__time-container {
+      border-left: 2px solid #583703;
+    }
+
+    input[type="time"]::-webkit-calendar-picker-indicator {
+      display: none;
+    }
+  }
+  
+  .react-datepicker__day--in-range{
+    background-color: inherit   !important;
+    color: #ff8744 !important;
+    /* opacity: 0.5 !important;  */
+    }
+    .react-datepicker__day--range-start{
+    background: #ff8744 !important;
+      /* border-radius: 50% !important ; */
+      color: #fff7e8 !important;
+      opacity: 1 !important;
+  }
+  /* .react-datepicker__input-container {
+
+  } */
+  .react-datepicker__input-container > input{
+    border: none;
+    outline: none;
+    font-size: 16px;
+    margin-top: .4rem;
+    text-align: center;
+    width: 100%;
+    color: #ff8744;
+    font-weight:bold;
+  }
+  .react-datepicker__input-container > input:focus{
+    outline: none;
+  }
+}
+.wraperimagefield {
+  .image_text {
+    font: normal normal medium 22px/30px Kanit;
+  }
+  .removeImageButton {
+    position: absolute;
+    display: none;
+    padding: 0.5rem;
+    border: none;
+    background-color: transparent !important;
+    font: normal normal bold 17px/20px Noto Sans;
+    border-color: none !important ;
+    color: #ff8744 !important;
+    right: 15px;
+    z-index: 10;
+    top: 6px;
+  }
+  .dropZone_Box {
+    height: 328px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .image_text strong {
+    color: #ff8341;
+  }
+  .dropZone_Box svg {
+    width: 56px;
+    height: 56px;
+  }
+  .dropImageBx {
+    display: inline-flex;
+    border-radius: 5px;
+    width: 130px;
+    height: 130px;
+    margin-bottom: 8px;
+    margin-right: 8px;
+    padding: 4px;
+    box-sizing: border-box;
+  }
+  /* .mainImageDiv:hover .profileImageBackground {
+    background-color: #000000;
+  } */
+  .mainImageDiv:hover .hoverImageBackground {
+    border-radius: 10px;
+    background-color: #000000;
+  }
+  .mainImageDiv:hover img {
+    opacity: 50%;
+    /* background: rgba(0 , 0 , 0 , 0.5); */
+    transition: opacity 1s;
+  }
+  .mainImageDiv:hover .editImageText {
+    display: block;
+  }
+  .mainImageDiv:hover .removeImageButton {
+    display: block;
+  }
+  /* 
+  .editImageText {
+    display: none;
+    width: fit-content;
+    z-index: 10;
+    position: absolute;
+    top: 40%;
+    color: #ffffff;
+    left: 35%; */
+
+  @media screen and (max-width: 1199px) and (min-width: 992px) {
+    .preview_box li {
+      width: 80px;
+      height: 80px;
+    }
+  }
+  @media screen and (max-width: 991px) {
+    .preview_box li {
+      width: 60px;
+      height: 60px;
+      background-size: 35px;
+    }
+    .dropZone_Box {
+      height: 40vh;
+    }
+    .image_text {
+      font: normal normal 500 14px/16px Kanit;
+    }
+    .dropZone_Box svg {
+      width: 45px;
+      height: 45px;
+    }
+  }
+  @media screen and (max-width: 767px) {
+    .preview_box li {
+      width: 60px;
+      height: 60px;
+      background-size: 30px;
+    }
+    .dropZone_Box {
+      height: 30vh;
+    }
+    .image_text {
+      font: normal normal 500 14px/16px Kanit;
+    }
+    .dropZone_Box svg {
+      width: 45px;
+      height: 45px;
+    }
+  }
+}
+.nocontentwraper {
+
+img{
+    width: 90px;
+    margin: 20px;
+
+}
+.noNews{
+    color: #FF8744;
+    font:  normal normal bold 25px/20px noto sans;
+}
+.noNewsMass{
+   
+    font:  normal normal normal 13px/30px noto sans;
+}
+
+}
+.richtextfieldwarper {
+  font: normal normal bold 11px/20px noto sans;
+  .text-danger {
+    height: 20px;
+  }
+  label {
+    color: #583703;
+    font: normal normal bold 15px/20px noto sans !important;
+    margin: 15px 0px;
+  }
+  .se-container {
+    display: flex !important ;
+    flex-direction: column-reverse;
+  }
+
+  .sun-editor {
+    border: none !important;
+    border-radius: 20px !important ;
+    .se-navigation {
+      display: none;
+    }
+    .se-resizing-bar {
+      display: block !important;
+      width: 15px !important;
+      height: 15px !important;
+      background-size: 12px;
+      background-repeat: no-repeat;
+      background-color: #fbe6cf !important;
+      border-radius: 0px 0px 5px 0px;
+      position: absolute;
+      /* background-color: red !important; */
+      background-image: url("../assets/images/icons/resizeField.png");
+      z-index: 10;
+      background-position: bottom right;
+      bottom: 5px;
+      right: 5px;
+      border-top: none !important;
+    }
+    .sun-editor-editable {
+      background-color: #fdf7e8 !important;
+      border-radius: 20px 20px 0px 0px !important ;
+    }
+    .se-dialog-content {
+      top: 30% !important;
+    }
+  }
+  .se-placeholder {
+    color: #583703 !important;
+    opacity: 60% !important;
+    font: normal normal bold 13px/20px Noto Sans !important;
+  }
+  .se-toolbar {
+    outline: none !important;
+    border-radius: 0px 0px 20px 20px;
+    background-color: #fbe6cf !important ;
+    color: #583703 !important;
+  }
+  .se-btn {
+    color: #583703 !important;
+    font: normal normal bold 15px/20px noto sans;
+  }
+  .se-wrapper {
+    z-index: 0 !important;
+  }
+  .se-toolbar-sticky-dummy {
+    display: none !important;
+    height: 0px !important;
+  }
+  .sun-editor .se-toolbar.se-toolbar-sticky {
+    position: inherit;
+  }
+  @media only screen and (max-width: 576px) {
+    label {
+      font: normal normal bold 13px/20px noto sans !important;
+    }
+  }
+}
+
+.profileformwrapper {
+  .existLabel {
+    margin-bottom: 10px;
+    font: normal normal bold 15px/33px Noto Sans;
+  }
+  .FormikWraper {
+    padding: 40px;
+  }
+  .Upload-btn {
+    padding: 8px 32px;
+    font: normal normal bold 15px/20px noto sans;
+  }
+  .thumbnail_image {
+    cursor: pointer;
+  }
+  .imagesBox {
+    margin: 10px;
+  }
+  .filterPeriod {
+    color: #ff8744;
+    font: normal normal bold 13px/5px noto sans;
+  }
+  .facility_button {
+    width: 60%;
+    /* height: 170px; */
+    border: 1px solid #9c9c9c;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    padding: 2rem 2rem;
+  }
+  .facility_button svg {
+    width: 100px;
+    height: 100px;
+    color: #9c9c9c !important;
+  }
+  .facility_add {
+    font: normal normal 800 13px/45px Noto Sans;
+    /* color: #583703; */
+    text-decoration: none;
+  }
+  .heading_div hr {
+    border: 3px solid #583703;
+    opacity: 1;
+    margin: 0;
+    border-radius: 10px;
+  }
+  .facilityCol:hover .removeImageButton {
+    display: block;
+  }
+  .facilityCol:hover {
+    transition: background 1s;
+    background: #434343;
+    color: #ffffff;
+    opacity: 75%;
+    border-radius: 10px;
+  }
+  .facilityCol:hover img {
+    opacity: 50%;
+  }
+  .facilityCol:hover .editFacilityImageText {
+    display: block;
+  }
+  .removeImageButton {
+    position: absolute;
+    padding: 0.5rem;
+    display: none;
+    border: none;
+    background-color: transparent !important;
+    font: normal normal bold 17px/20px Noto Sans;
+    border-color: none !important ;
+    color: #ff8744 !important;
+    right: 10px;
+    z-index: 10000000;
+    top: 10px;
+  }
+  .editFacilityImageText {
+    display: none;
+    width: fit-content;
+    z-index: 10;
+    position: absolute;
+    top: 45%;
+    color: #ffffff;
+    left: 45%;
+  }
+  /* map css */
+  .css-yk16xz-control {
+    border: none;
+    background-color: #fff7e8 !important;
+    ::focus {
+      background-color: #fff7e8 !important;
+    }
+  }
+  .css-1pahdxg-control {
+    border: none;
+    background-color: #fff7e8 !important;
+    box-shadow: none;
+    :hover {
+      border: none !important;
+    }
+  }
+  .css-1wa3eu0-placeholder {
+    opacity: 60%;
+    color: #583703;
+    font: normal normal bold 13px/20px Noto Sans;
+  }
+  .css-1wy0on6 {
+    display: none;
+  }
+  label {
+    /* margin-bottom: 0px; */
+    color: #583703;
+    font: normal normal bold 15px/33px Noto Sans;
+  }
+  input {
+    color: #583703 !important;
+    border: none !important;
+    height: 36px;
+    width: 100%;
+    padding-top: 9px;
+    padding-left: 5px;
+    /* text-align: center; */
+    background-color: #fff7e8 !important;
+    font: normal normal normal 13px/20px Noto Sans;
+    border-radius: 5px;
+  }
+  input[type="file"]::file-selector-button {
+    display: none;
+  }
+  /* PAssword  */
+  .input-group-merge {
+    background-color: #fff7e8 !important;
+  }
+  .login-password > input {
+    color: #583703 !important;
+    padding-left: 2px;
+    border: none !important;
+    background-color: #fff7e8 !important;
+    font: normal normal normal 13px/20px Noto Sans;
+    border-radius: 20px;
+    ::placeholder {
+      color: transparent;
+    }
+  }
+  .signInIconsIserAdminPassword {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  .input-group-text {
+    background-color: #fff7e8 !important;
+    border-bottom: 0 !important;
+  }
+  .trust_img {
+    overflow: hidden;
+    height: 163px;
+  }
+  .trust_img img {
+    border-radius: 10px;
+    background-color: #fff7e8;
+    width: 100%;
+    height: 100%;
+  }
+  .pdfDiv {
+    text-align: center;
+    font: normal normal bold 13px/20px Noto Sans;
+  }
+  .pdfDiv:hover .removePDFButton {
+    display: block;
+  }
+  .css-1973rmx-singleValue {
+    padding: 5px;
+  }
+  .css-j4765i-control:hover {
+    border: none !important;
+  }
+  .removePDFButton {
+    position: absolute;
+    padding: 0.5rem;
+    display: none;
+    border: none;
+    background-color: transparent !important;
+    font: normal normal bold 17px/20px Noto Sans;
+    border-color: none !important ;
+    color: #ff8744 !important;
+    right: 0px;
+    top: -15px;
+  }
+  .currentFile {
+    color: #583703;
+    word-break: break-word;
+    margin-top: 0.5rem;
+  }
+  .css-1hwfws3 {
+    height: 40px;
+  }
+  /* time picker css */
+  .react-time-picker__wrapper {
+    border: none !important;
+  }
+  .react-time-picker {
+    width: 100%;
+  }
+  .react-time-picker__inputGroup {
+    color: #583703 !important;
+    border: none !important;
+    background-color: #fff7e8 !important;
+    font: normal normal normal 13px/20px Noto Sans;
+    width: 100%;
+    padding: 0rem 0.5rem !important;
+    border-radius: 5px;
+    line-height: 30px;
+  }
+  .react-time-picker__inputGroup__input:invalid {
+    background: #fff7e8 !important;
+  }
+  .react-time-picker__inputGroup__input--hasLeadingZero {
+    margin-left: 0 !important;
+    padding-left: 0px !important;
+  }
+  input:focus {
+    outline: none !important;
+  }
+  input:focus-visible {
+    outline-offset: none;
+    outline: none;
+  }
+}
+.punyarjakcardwrapper {
+  .imgContainer {
+    background-color: #fff7e8;
+    border-bottom: 1px solid rgb(255, 135, 68);
+    img {
+      border-radius: 10px 10px 0px 0px;
+    }
+  }
+  .card-title {
+    font: normal normal bold 13px/16px Noto Sans;
+    margin-bottom: 10px !important;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  .card-text {
+    font: normal normal normal 12px/16px Noto Sans;
+    height: 50px;
+    overflow: hidden;
+  }
+  .card-body {
+    background: #fff7e8;
+    padding: 10px;
+  }
+  .btn-outline-primary {
+    border: 2px solid #ff8744 !important;
+    font: normal normal bold 14px/15px Noto Sans;
+    padding: 5px 10px;
+    border-radius: 20px;
+    margin-right: 10px;
+  }
+
+  .card-footer {
+    font: normal normal bold 10px/15px Noto sans;
+    border: none !important;
+    padding: 16px 0px 10px 0px;
+    div > div > img {
+      width: 15px;
+      margin-right: 5px;
+    }
+    img {
+      width: 30px;
+    }
+  }
+  .imgContent {
+    top: 5%;
+    color: #fff;
+    padding: 0px 5px;
+    font: normal normal bold 12px/30px noto sans;
+  }
+  img {
+    color: #583703;
+    font: 15px Noto Sans;
+  }
+  div.cardLangScroll {
+    /* height: 45px; */
+    display: flex;
+    min-width: 230px;
+    overflow-x: scroll !important;
+    ::-webkit-scrollbar {
+      width: 10px;
+      display: block;
+    }
+  }
+}
+.btncontentwraper {
+    color: #583703;
+    font: normal normal normal 15px/20px noto sans;
+    
+    .col-item {
+      cursor: pointer;
+      :hover {
+        background-color: #ff8744;
+        color: #fff;
+      }
+      .col-item-disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+    }
+  }
+.formwrapper {
+  .FormikWrapperr {
+    padding: 40px;
+  }
+  .btn-Published {
+    text-align: center;
+  }
+}
+.punyarjakusertablewarper {
+    color: #583703 !important;
+    margin-right: 20px;
+    font: normal normal bold 15px/23px Noto Sans;
+
+    .tableDes p {
+      margin-bottom: 0;
+    }
+    .tableDes {
+      max-height: 1.7rem;
+    }
+  }
+.reportwrapper {
+  color: #583703 !important;
+  /* margin-right: 20px; */
+  font: normal normal bold 15px/23px Noto Sans;
+  .pending {
+    color: #f8450d;
+    font: normal normal bold 13px/23px Noto Sans;
+  }
+  .reSolved {
+    color: #24c444;
+    font: normal normal bold 13px/23px Noto Sans;
+  }
+}
+.formwrapper {
+  .FormikWrapper {
+    padding: 40px;
+  }
+  .btn-Published {
+    text-align: center;
+  }
+
+  .filterPeriod {
+    color: #ff8744;
+    font: normal normal bold 13px/5px noto sans;
+  }
+}
+.subscribedusertablewarper {
+    color: #583703 !important;
+    margin-right: 20px;
+    font: normal normal bold 15px/23px Noto Sans;
+  }
+.newscardwaraper {
+  .imgContainer {
+    border-radius: 10px 10px 0px 0px;
+    img {
+      border-radius: 10px 10px 0px 0px;
+    }
+  }
+  .card-title {
+    font: normal normal bold 13px/16px Noto Sans;
+    margin-bottom: 10px !important;
+  }
+  .card-text {
+    font: normal normal normal 12px/16px Noto Sans;
+    height: 50px;
+    overflow: hidden;
+  }
+  .card-body {
+    background: #fff7e8;
+    padding: 10px;
+  }
+  .btn-outline-primary {
+    border: 2px solid #ff8744 !important;
+    font: normal normal bold 14px/15px Noto Sans;
+    padding: 5px 10px;
+    border-radius: 20px;
+    margin-right: 10px;
+  }
+
+  .card-footer {
+    font: normal normal bold 10px/15px Noto sans;
+    border: none !important;
+    padding: 16px 0px 10px 0px;
+    div > div > img {
+      width: 15px;
+      margin-right: 5px;
+    }
+    img {
+      width: 30px;
+    }
+  }
+  .imgContent {
+    top: 80%;
+    color: #fff;
+    padding: 0px 5px;
+    font: normal normal bold 12px/30px noto sans;
+  }
+}
+.btncontentwraper {
+    color: #583703;
+    font: normal normal normal 15px/20px noto sans;
+    .MainContainer {
+    }
+    .col-item {
+      cursor: pointer;
+      :hover {
+        background-color: #ff8744;
+        color: #fff;
+      }
+    }
+  }
+.formwrapper {
+  .FormikWrapper {
+    padding: 40px;
+  }
+  .btn-Published {
+    text-align: center;
+  }
+  .addNotice-btn {
+    padding: 8px 20px;
+    margin-left: 10px;
+    /* margin-top: 5rem; */
+    font: normal normal bold 15px/20px noto sans;
+  }
+  .newsContent {
+    margin-top: 1rem;
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .filterPeriod {
+    color: #ff8744;
+    font: normal normal bold 13px/5px noto sans;
+  }
+  .signInIconsIserAdminPassword {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  label {
+    font: normal normal bold 15px/33px Noto Sans;
+  }
+  .input-group-merge {
+    background-color: #fff7e8 !important;
+  }
+  #login-password {
+    color: #583703 !important;
+    padding-left: 14px;
+    border: none !important;
+    background-color: #fff7e8 !important;
+    font: normal normal normal 13px/20px Noto Sans;
+    border-radius: 20px;
+    ::placeholder {
+      color: transparent;
+    }
+  }
+  .input-group-text {
+    background-color: #fff7e8 !important;
+    border-bottom: 0 !important;
+  }
+  .checkBoxBorderBox {
+    border: 2px solid #ff8744;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+  }
+  .labelCheckBox {
+    color: #ff8744 !important;
+    font: normal normal bold 13px/26px Noto Sans;
+  }
+  .checkBoxInput {
+    border-color: #ff8744;
+    cursor: pointer;
+  }
+  input::placeholder {
+    color: #583703 !important;
+    opacity: 60% !important;
+    font: normal normal bold 13px/20px Noto Sans !important;
+  }
+}
+.usertablewrapper {
+    color: #583703 !important;
+    margin-right: 20px;
+    font: normal normal bold 15px/23px Noto Sans;
+  }

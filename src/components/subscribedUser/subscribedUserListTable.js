@@ -7,6 +7,7 @@ import styled from "styled-components";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomDataTable from "../partials/CustomDataTable";
+import '../../../src/styles/common.scss';
 export default function SubscribedUSerListTable({ data }) {
   const { t } = useTranslation();
 
@@ -109,19 +110,16 @@ export default function SubscribedUSerListTable({ data }) {
   //       }
   //     })
   //   },[data])
-  const SubscribedUSerTableWarper = styled.div`
-    color: #583703 !important;
-    margin-right: 20px;
-    font: normal normal bold 15px/23px Noto Sans;
-  `;
+  const SubscribedUSerTableWarper = styled.div``;
+;
 
   return (
-    <SubscribedUSerTableWarper>
+    <div className="subscribedusertablewarper">
       <CustomDataTable
         maxHeight={""}
         columns={columns}
         data={subscribed_user}
       />
-    </SubscribedUSerTableWarper>
+    </div>
   );
 }

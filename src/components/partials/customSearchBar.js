@@ -11,23 +11,10 @@ import { useTranslation } from "react-i18next";
 import { setSearchbarValue } from "../../redux/searchBar";
 import styled from "styled-components";
 import { X } from "react-feather";
+import '../../../src/styles/common.scss';
 
-const SearchBarWarapper = styled.div`
-  .searbarSize {
-    height: 40px;
-  }
-
-  .bgNone {
-    background-color: transparent;
-  }
-
-  @media only screen and (max-width: 576px) {
-    .searbarSize {
-      height: 35px;
-    }
-    /* width: 300px !important; */
-  }
-`;
+const SearchBarWarapper = styled.div``;
+;
 
 export default function CustomSearchBar({ searchBarState, setSearchBarState }) {
   const searchBarValue = useSelector((state) => state?.search?.LocalSearch);
@@ -35,7 +22,7 @@ export default function CustomSearchBar({ searchBarState, setSearchBarState }) {
   const { t, i18n } = useTranslation();
 
   return (
-    <SearchBarWarapper className="w-100">
+    <div className="searchbarwarapper w-100">
       <div className="d-flex align-items-center">
         <InputGroup
           className={`searbarSize ${
@@ -78,6 +65,6 @@ export default function CustomSearchBar({ searchBarState, setSearchBarState }) {
           </div>
         )}
       </div>
-    </SearchBarWarapper>
+    </div>
   );
 }

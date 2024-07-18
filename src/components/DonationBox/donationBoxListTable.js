@@ -9,6 +9,7 @@ import { deleteExpensesDetail } from "../../api/expenseApi";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomDataTable from "../partials/CustomDataTable";
+import '../../../src/styles/common.scss';
 
 export default function DonationBoxListTable({ data, financeReport }) {
   // const handleDeleteDonationBox = async (payload) => {
@@ -83,27 +84,12 @@ export default function DonationBoxListTable({ data, financeReport }) {
     }));
   }, [data]);
 
-  const RecentDonationTableWarper = styled.div`
-    color: #583703 !important;
-    /* margin-right: 20px; */
-    font: normal normal bold 15px/23px Noto Sans;
-    .tableDes p {
-      margin-bottom: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .tableDes {
-      max-height: 1.7rem;
-    }
-    .viewLogs {
-      font: normal normal bold 15px/33px Noto Sans;
-      color: #ff8744;
-    }
-  `;
+  const RecentDonationTableWarper = styled.div``;
+;
 
   return (
-    <RecentDonationTableWarper>
+    <div className="recentdonationtablewarper">
       <CustomDataTable maxHeight={""} columns={columns} data={donatioBoxList} />
-    </RecentDonationTableWarper>
+    </div>
   );
 }

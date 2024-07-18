@@ -9,22 +9,12 @@ import {
 import moment from "moment";
 import { ConvertToString } from "../financeReport/reportJsonExport";
 
-const NotificationWarapper = styled.div`
-  .dateTime {
-    color: #909090;
-    font: normal normal bold 16px/27px Noto Sans;
-  }
-  .heading {
-    font: normal normal bold 20px/38px Noto Sans;
-  }
-  .notificationPara {
-    font: normal normal normal 14px/27px Noto Sans;
-  }
-`;
+const NotificationWarapper = styled.div``;
+;
 
 const NotificationList = ({ data }) => {
   return (
-    <NotificationWarapper>
+    <div className="notificationwarapper">
       <Row className="mt-2">
         {/*<Col xs={1} className="align-items-center d-flex" >*/}
         {/*  <img src={defaultIcon} className="m-auto" />*/}
@@ -53,7 +43,7 @@ const NotificationList = ({ data }) => {
           </>
         ))}
       </Row>
-    </NotificationWarapper>
+    </div>
   );
 };
 

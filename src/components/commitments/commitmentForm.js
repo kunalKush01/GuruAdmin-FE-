@@ -7,52 +7,10 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { getAllMasterCategories } from "../../api/expenseApi";
 import FormWithoutFormikForCommitment from "./FormWithoutFormikforCommitment";
+import '../../../src/styles/common.scss';
 
-const FormWraper = styled.div`
-  .FormikWrapper {
-    padding: 40px;
-  }
-  .addUser {
-    font-size: 13px;
-  }
-  .addUser > span {
-    text-decoration: underline;
-    color: #ff8744;
-  }
-  // .btn-Published {
-  //   text-align: center;
-  // }
-  // .addCommitment-btn {
-  //   padding: 8px 20px;
-  //   margin-left: 10px;
-  //   font: normal normal bold 15px/20px noto sans;
-  // }
-  // .commitmentContent {
-  //   height: 350px;
-  //   overflow: auto;
-  //   ::-webkit-scrollbar {
-  //     display: none;
-  //   }
-  // }
-  // .filterPeriod {
-  //   color: #ff8744;
-  //   font: normal normal bold 13px/5px noto sans;
-  // }
-  // .btn-secondary {
-  //   background-color: #fff7e8 !important;
-  //   color: #583703 !important ;
-  //   border: none;
-  //   font: normal normal bold 20px/20px noto sans !important ;
-  //   box-shadow: none !important ;
-  //   :hover {
-  //     color: #fff !important;
-  //     background-color: #ff8744 !important;
-  //   }
-    // .secondary.active {
-    //   color: #fff !important;
-    // }
-  }
-`;
+const FormWraper = styled.div``;
+;
 
 export default function CommitmentForm({
   plusIconDisable = false,
@@ -91,7 +49,7 @@ export default function CommitmentForm({
   const [showPrompt, setShowPrompt] = useState(true);
 
   return (
-    <FormWraper className="FormikWrapper">
+    <div className="formwraper FormikWrapper">
       {!masterloadOptionQuery.isLoading && (
         <Formik
           initialValues={{
@@ -132,6 +90,6 @@ export default function CommitmentForm({
           )}
         </Formik>
       )}
-    </FormWraper>
+    </div>
   );
 }

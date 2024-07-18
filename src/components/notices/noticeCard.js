@@ -36,86 +36,10 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 import BtnPopover from "../partials/btnPopover";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
+import '../../../src/styles/common.scss';
 
-const NoticeCardWrapper = styled.div`
-  .card1 {
-    font: normal normal bold 13px/16px Noto Sans;
-    margin-bottom: 0.5rem !important;
-  }
-  .card-text {
-    font: normal normal normal 12px/16px Noto Sans;
-    max-height: 18px;
-    max-width: 400px;
-    overflow: hidden;
-    /* text-overflow: ellipsis; */
-    text-align: start;
-    white-space: nowrap;
-    /* margin-bottom: 0.5rem !important; */
-  }
-  .card-text > p {
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .card-text > div {
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .card-Date {
-    font: normal normal normal 12px/16px Noto Sans;
-    color: #9c9c9c;
-    max-height: 18px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-align: start;
-    white-space: nowrap;
-    p {
-      margin: 0;
-    }
-  }
-  .card-body {
-    background: #fff7e8;
-    border-radius: 10px;
-    padding: 0px;
-    max-height: 122px;
-  }
-  .cardLangScroll {
-    display: flex;
-    /* background-color: red; */
-    margin-top: 0.7rem;
-    min-width: 230px;
-    overflow-x: scroll !important;
-    ::-webkit-scrollbar {
-      width: 10px;
-      display: block;
-    }
-  }
-  .btn-outline-primary {
-    border: 2px solid #ff8744 !important;
-    font: normal normal bold 14px/15px Noto Sans;
-    padding: 5px 10px;
-    border-radius: 20px;
-    margin-right: 10px;
-  }
-  .publishMenu {
-    background-color: #fff7e8;
-  }
-  img {
-    color: #583703;
-    font: 15px Noto Sans;
-  }
-  @media only screen and (max-width: 1200px) {
-    .card-body {
-      max-height: 100%;
-      padding: 1rem;
-    }
-  }
-  @media only screen and (max-width: 600px) {
-    .card-body {
-      max-height: 100%;
-      padding: 1rem;
-    }
-  }
-`;
+const NoticeCardWrapper = styled.div``;
+;
 function BtnContent({
   noticeId,
   totalAvailableLanguage,
@@ -126,23 +50,8 @@ function BtnContent({
 }) {
   const { t } = useTranslation();
   const history = useHistory();
-  const BtnContentWraper = styled.div`
-    color: #583703;
-    font: normal normal normal 15px/20px noto sans;
-    .MainContainer {
-    }
-    .col-item {
-      cursor: pointer;
-      :hover {
-        background-color: #ff8744;
-        color: #fff;
-      }
-      .col-item-disabled {
-        cursor: not-allowed;
-        opacity: 0.5;
-      }
-    }
-  `;
+  const BtnContentWraper = styled.div``;
+;
 
   const handleDeleteNotice = async (payload) => {
     return deleteNoticeDetail(payload);
@@ -159,7 +68,7 @@ function BtnContent({
   const langList = useSelector((state) => state.auth.availableLang);
 
   return (
-    <BtnContentWraper>
+    <div className="btncontentwraper">
       <Row className="MainContainer d-block ">
         {allPermissions?.name === "all" || subPermission?.includes(EDIT) ? (
           <Col
@@ -233,7 +142,7 @@ function BtnContent({
           ""
         )}
       </Row>
-    </BtnContentWraper>
+    </div>
   );
 }
 
@@ -278,7 +187,7 @@ export default function NoticeCard({
   });
 
   return (
-    <NoticeCardWrapper key={data.id}>
+    <div className="noticecardwrapper" key={data.id}>
       <div>
         <Card
           style={{
@@ -566,6 +475,6 @@ export default function NoticeCard({
           </Row>
         </ModalBody>
       </Modal>
-    </NoticeCardWrapper>
+    </div>
   );
 }

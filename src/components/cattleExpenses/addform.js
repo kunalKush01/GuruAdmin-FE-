@@ -16,29 +16,10 @@ import AsyncSelectField from "../partials/asyncSelectField";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
+import '../../../src/styles/common.scss';
 
-const FormikWrapper = styled.div`
-  label {
-    /* margin-bottom: 0px; */
-    color: #583703;
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  input {
-    color: #583703 !important;
-    border: none !important;
-    height: 36px;
-    width: 100%;
-    padding-top: 9px;
-    padding-left: 5px;
-    /* text-align: center; */
-    background-color: #fff7e8 !important;
-    font: normal normal normal 13px/20px Noto Sans;
-    border-radius: 5px;
-  }
-  input[type="file"]::file-selector-button {
-    display: none;
-  }
-`;
+const FormikWrapper = styled.div``;
+;
 
 const AddExpenseForm = ({
   initialValues,
@@ -96,7 +77,7 @@ const AddExpenseForm = ({
   });
 
   return (
-    <FormikWrapper>
+    <div className="formikwrapper">
       <Formik
         enableReinitialize
         initialValues={initialValues}
@@ -338,7 +319,7 @@ const AddExpenseForm = ({
           </Form>
         )}
       </Formik>
-    </FormikWrapper>
+    </div>
   );
 };
 

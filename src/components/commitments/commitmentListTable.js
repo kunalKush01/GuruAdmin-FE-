@@ -23,19 +23,10 @@ import receiptIcon from "../../assets/images/icons/receiptIcon.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { DELETE, EDIT } from "../../utility/permissionsVariable";
 import CustomDataTable from "../partials/CustomDataTable";
+import '../../../src/styles/common.scss';
 
-const CommitmentTableWarper = styled.div`
-  color: #583703 !important;
-  font: normal normal bold 15px/23px Noto Sans;
-  .payDonation {
-    font: normal normal bold 15px/33px Noto Sans;
-    color: #ff8744;
-  }
-  // .model > .my {
-  //   max-height: 600px;
-  //   overflow: auto;
-  // }
-`;
+const CommitmentTableWarper = styled.div``;
+;
 
 export default function CommitmentListTable(
   {
@@ -376,7 +367,7 @@ export default function CommitmentListTable(
     .toUpperCase();
 
   return (
-    <CommitmentTableWarper>
+    <div className="commitmenttablewarper">
       <CustomDataTable
         maxHeight={""}
         columns={columns}
@@ -532,6 +523,6 @@ export default function CommitmentListTable(
           ))}
         </div>
       </div>
-    </CommitmentTableWarper>
+    </div>
   );
 }

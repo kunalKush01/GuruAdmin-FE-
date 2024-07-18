@@ -5,84 +5,10 @@ import styled from "styled-components";
 import SunEditor, { buttonList } from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css";
 import icon from "../../assets/images/icons/resizeField.png";
+import '../../../src/styles/common.scss';
 
-const RichTextFieldWarper = styled.div`
-  font: normal normal bold 11px/20px noto sans;
-  .text-danger {
-    height: 20px;
-  }
-  label {
-    color: #583703;
-    font: normal normal bold 15px/20px noto sans !important;
-    margin: 15px 0px;
-  }
-  .se-container {
-    display: flex !important ;
-    flex-direction: column-reverse;
-  }
-
-  .sun-editor {
-    border: none !important;
-    border-radius: 20px !important ;
-    .se-navigation {
-      display: none;
-    }
-    .se-resizing-bar {
-      display: block !important;
-      width: 15px !important;
-      height: 15px !important;
-      background-size: 12px;
-      background-repeat: no-repeat;
-      background-color: #fbe6cf !important;
-      border-radius: 0px 0px 5px 0px;
-      position: absolute;
-      /* background-color: red !important; */
-      background-image: url("${icon}");
-      z-index: 10;
-      background-position: bottom right;
-      bottom: 5px;
-      right: 5px;
-      border-top: none !important;
-    }
-    .sun-editor-editable {
-      background-color: #fdf7e8 !important;
-      border-radius: 20px 20px 0px 0px !important ;
-    }
-    .se-dialog-content {
-      top: 30% !important;
-    }
-  }
-  .se-placeholder {
-    color: #583703 !important;
-    opacity: 60% !important;
-    font: normal normal bold 13px/20px Noto Sans !important;
-  }
-  .se-toolbar {
-    outline: none !important;
-    border-radius: 0px 0px 20px 20px;
-    background-color: #fbe6cf !important ;
-    color: #583703 !important;
-  }
-  .se-btn {
-    color: #583703 !important;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .se-wrapper {
-    z-index: 0 !important;
-  }
-  .se-toolbar-sticky-dummy {
-    display: none !important;
-    height: 0px !important;
-  }
-  .sun-editor .se-toolbar.se-toolbar-sticky {
-    position: inherit;
-  }
-  @media only screen and (max-width: 576px) {
-    label {
-      font: normal normal bold 13px/20px noto sans !important;
-    }
-  }
-`;
+const RichTextFieldWarper = styled.div``;
+;
 export default function RichTextField({
   label,
   type = "text",
@@ -97,7 +23,7 @@ export default function RichTextField({
   const { t } = useTranslation();
 
   return (
-    <RichTextFieldWarper key={field.name} className="mb-2">
+    <div className="richtextfieldwarper mb-2" key={field.name}>
       <label style={{ margin: "0px 0px 10px 0px " }}>{`${label}*`}</label>
       <SunEditor
         onChange={(value) => helpers.setValue(value)}
@@ -151,6 +77,6 @@ export default function RichTextField({
       <div className="text-danger mt-1">
         {meta.error && meta.touched && <Trans i18nKey={meta.error} />}
       </div>
-    </RichTextFieldWarper>
+    </div>
   );
 }

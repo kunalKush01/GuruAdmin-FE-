@@ -19,18 +19,10 @@ import { EDIT } from "../../utility/permissionsVariable";
 import CustomDataTable from "../partials/CustomDataTable";
 import EditDonation from "./editDonation";
 import { toast } from 'react-toastify';
+import '../../../src/styles/common.scss';
 
-const RecentDonationTableWarper = styled.div`
-  color: #583703 !important;
-  font: normal normal bold 15px/23px Noto Sans;
-  .modal-body {
-    max-height: 600px !important;
-    overflow: auto !important;
-  }
-  .tableDes p {
-    margin-bottom: 0;
-  }
-`;
+const RecentDonationTableWarper = styled.div``;
+;
 
 export default function DonationListTable(
   { data, topdf, allPermissions, subPermission, financeReport },
@@ -264,7 +256,7 @@ export default function DonationListTable(
     .toUpperCase();
 
   return (
-    <RecentDonationTableWarper>
+    <div className="recentdonationtablewarper">
       <CustomDataTable maxHeight={""} columns={columns} data={Donatio_data} />
       <ReactToPrint
         trigger={() => (
@@ -751,6 +743,6 @@ export default function DonationListTable(
         donationId={modal?.donationId}
         estimateAmount={modal?.estimateAmount}
       />
-    </RecentDonationTableWarper>
+    </div>
   );
 }

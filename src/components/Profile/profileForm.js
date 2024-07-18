@@ -28,236 +28,10 @@ import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import ImageUpload from "../partials/imageUpload";
 import RichTextField from "../partials/richTextEditorField";
 import useTimeStampAndImageExtension from "../../utility/hooks/useTimeStampAndImageExtension";
+import '../../../src/styles/common.scss';
 
-const ProfileFormWrapper = styled.div`
-  .existLabel {
-    margin-bottom: 10px;
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .FormikWraper {
-    padding: 40px;
-  }
-  .Upload-btn {
-    padding: 8px 32px;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .thumbnail_image {
-    cursor: pointer;
-  }
-  .imagesBox {
-    margin: 10px;
-  }
-  .filterPeriod {
-    color: #ff8744;
-    font: normal normal bold 13px/5px noto sans;
-  }
-  .facility_button {
-    width: 60%;
-    /* height: 170px; */
-    border: 1px solid #9c9c9c;
-    border-radius: 10px;
-    cursor: pointer;
-    text-align: center;
-    padding: 2rem 2rem;
-  }
-  .facility_button svg {
-    width: 100px;
-    height: 100px;
-    color: #9c9c9c !important;
-  }
-  .facility_add {
-    font: normal normal 800 13px/45px Noto Sans;
-    /* color: #583703; */
-    text-decoration: none;
-  }
-  .heading_div hr {
-    border: 3px solid #583703;
-    opacity: 1;
-    margin: 0;
-    border-radius: 10px;
-  }
-  .facilityCol:hover .removeImageButton {
-    display: block;
-  }
-  .facilityCol:hover {
-    transition: background 1s;
-    background: #434343;
-    color: #ffffff;
-    opacity: 75%;
-    border-radius: 10px;
-  }
-  .facilityCol:hover img {
-    opacity: 50%;
-  }
-  .facilityCol:hover .editFacilityImageText {
-    display: block;
-  }
-  .removeImageButton {
-    position: absolute;
-    padding: 0.5rem;
-    display: none;
-    border: none;
-    background-color: transparent !important;
-    font: normal normal bold 17px/20px Noto Sans;
-    border-color: none !important ;
-    color: #ff8744 !important;
-    right: 10px;
-    z-index: 10000000;
-    top: 10px;
-  }
-  .editFacilityImageText {
-    display: none;
-    width: fit-content;
-    z-index: 10;
-    position: absolute;
-    top: 45%;
-    color: #ffffff;
-    left: 45%;
-  }
-  /* map css */
-  .css-yk16xz-control {
-    border: none;
-    background-color: #fff7e8 !important;
-    ::focus {
-      background-color: #fff7e8 !important;
-    }
-  }
-  .css-1pahdxg-control {
-    border: none;
-    background-color: #fff7e8 !important;
-    box-shadow: none;
-    :hover {
-      border: none !important;
-    }
-  }
-  .css-1wa3eu0-placeholder {
-    opacity: 60%;
-    color: #583703;
-    font: normal normal bold 13px/20px Noto Sans;
-  }
-  .css-1wy0on6 {
-    display: none;
-  }
-  label {
-    /* margin-bottom: 0px; */
-    color: #583703;
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  input {
-    color: #583703 !important;
-    border: none !important;
-    height: 36px;
-    width: 100%;
-    padding-top: 9px;
-    padding-left: 5px;
-    /* text-align: center; */
-    background-color: #fff7e8 !important;
-    font: normal normal normal 13px/20px Noto Sans;
-    border-radius: 5px;
-  }
-  input[type="file"]::file-selector-button {
-    display: none;
-  }
-  /* PAssword  */
-  .input-group-merge {
-    background-color: #fff7e8 !important;
-  }
-  .login-password > input {
-    color: #583703 !important;
-    padding-left: 2px;
-    border: none !important;
-    background-color: #fff7e8 !important;
-    font: normal normal normal 13px/20px Noto Sans;
-    border-radius: 20px;
-    ::placeholder {
-      color: transparent;
-    }
-  }
-  .signInIconsIserAdminPassword {
-    width: 30px;
-    height: 30px;
-    margin-right: 10px;
-    cursor: pointer;
-  }
-  .input-group-text {
-    background-color: #fff7e8 !important;
-    border-bottom: 0 !important;
-  }
-  .trust_img {
-    overflow: hidden;
-    height: 163px;
-  }
-  .trust_img img {
-    border-radius: 10px;
-    background-color: #fff7e8;
-    width: 100%;
-    height: 100%;
-  }
-  .pdfDiv {
-    text-align: center;
-    font: normal normal bold 13px/20px Noto Sans;
-  }
-  .pdfDiv:hover .removePDFButton {
-    display: block;
-  }
-  .css-1973rmx-singleValue {
-    padding: 5px;
-  }
-  .css-j4765i-control:hover {
-    border: none !important;
-  }
-  .removePDFButton {
-    position: absolute;
-    padding: 0.5rem;
-    display: none;
-    border: none;
-    background-color: transparent !important;
-    font: normal normal bold 17px/20px Noto Sans;
-    border-color: none !important ;
-    color: #ff8744 !important;
-    right: 0px;
-    top: -15px;
-  }
-  .currentFile {
-    color: #583703;
-    word-break: break-word;
-    margin-top: 0.5rem;
-  }
-  .css-1hwfws3 {
-    height: 40px;
-  }
-  /* time picker css */
-  .react-time-picker__wrapper {
-    border: none !important;
-  }
-  .react-time-picker {
-    width: 100%;
-  }
-  .react-time-picker__inputGroup {
-    color: #583703 !important;
-    border: none !important;
-    background-color: #fff7e8 !important;
-    font: normal normal normal 13px/20px Noto Sans;
-    width: 100%;
-    padding: 0rem 0.5rem !important;
-    border-radius: 5px;
-    line-height: 30px;
-  }
-  .react-time-picker__inputGroup__input:invalid {
-    background: #fff7e8 !important;
-  }
-  .react-time-picker__inputGroup__input--hasLeadingZero {
-    margin-left: 0 !important;
-    padding-left: 0px !important;
-  }
-  input:focus {
-    outline: none !important;
-  }
-  input:focus-visible {
-    outline-offset: none;
-    outline: none;
-  }
-`;
+const ProfileFormWrapper = styled.div``;
+;
 
 export default function ProfileForm({
   handleSubmit,
@@ -476,7 +250,7 @@ export default function ProfileForm({
     toastId: "langError",
   };
   return (
-    <ProfileFormWrapper className="FormikWraper">
+    <div className="profileformwrapper FormikWraper">
       <Formik
         enableReinitialize
         initialValues={initialValues}
@@ -1295,7 +1069,7 @@ export default function ProfileForm({
       >
         {/* <ModalHeader toggle={toggle}>Modal title</ModalHeader> */}
         <ModalBody>
-          <ProfileFormWrapper>
+          <div className="profileformwrapper">
             <Formik
               initialValues={facilityIntialValues}
               onSubmit={(values) => {
@@ -1523,9 +1297,9 @@ export default function ProfileForm({
                 );
               }}
             </Formik>
-          </ProfileFormWrapper>
+          </div>
         </ModalBody>
       </Modal>
-    </ProfileFormWrapper>
+    </div>
   );
 }
