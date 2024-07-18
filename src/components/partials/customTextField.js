@@ -5,7 +5,7 @@ import { FormGroup, InputGroup } from "reactstrap";
 import styled from "styled-components";
 import "../../../src/styles/common.scss";
 
-const CustomTextFieldWrapper = styled.div``;
+;
 export default function CustomTextField({
   required = false,
   label,

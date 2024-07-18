@@ -23,7 +23,7 @@ import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import ImageUpload from "../partials/imageUpload";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-const FormikWrapper = styled.div``;
+;
 ;
 
 const AddCattleForm = ({

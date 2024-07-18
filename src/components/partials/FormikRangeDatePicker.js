@@ -5,7 +5,7 @@ import "react-datepicker/dist/react-datepicker-cssmodules.css";
 import styled from "styled-components";
 import { Trans } from "react-i18next";
 import { useField } from "formik";
-const FormikCustomDatePickerWraper = styled.div``;
+;
 import '../../../src/styles/common.scss';
 ;
 

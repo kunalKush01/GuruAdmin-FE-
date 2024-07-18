@@ -7,7 +7,7 @@ import { Input } from "reactstrap";
 import styled from "styled-components";
 import "../../../src/styles/common.scss";
 
-const LocationWrapper = styled.div``;
+;
 const CustomLocationField = (props) => {
   const handleChange = (address) => {
     props.setFieldValue("location", address);

@@ -7,7 +7,7 @@ import "suneditor/dist/css/suneditor.min.css";
 import icon from "../../assets/images/icons/resizeField.png";
 import "../../../src/styles/common.scss";
 
-const RichTextFieldWrapper = styled.div``;
+;
 export default function RichTextField({
   label,
   type = "text",

@@ -7,7 +7,7 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import moment from "moment";
 import { ConvertToString } from "../financeReport/reportJsonExport";
 
-const NotificationWrapper = styled.div``;
+;
 const NotificationList = ({ data }) => {
   return (
     <div className="notificationwrapper">

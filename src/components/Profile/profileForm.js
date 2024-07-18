@@ -30,7 +30,7 @@ import RichTextField from "../partials/richTextEditorField";
 import useTimeStampAndImageExtension from "../../utility/hooks/useTimeStampAndImageExtension";
 import '../../../src/styles/common.scss';
 
-const ProfileFormWrapper = styled.div``;
+;
 ;
 
 export default function ProfileForm({

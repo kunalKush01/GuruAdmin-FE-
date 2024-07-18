@@ -12,7 +12,7 @@ import CustomRadioButton from "../partials/customRadioButton";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import '../../../src/styles/common.scss';
 
-const FormikWrapper = styled.div``;
+;
 ;
 
 const AddPregnancyForm = ({

@@ -84,7 +84,7 @@ export default function DonationBoxListTable({ data, financeReport }) {
     }));
   }, [data]);
 
-  const RecentDonationTableWrapper = styled.div``;
+;
   return (
     <div className="recentdonationtablewrapper">
       <CustomDataTable maxHeight={""} columns={columns} data={donatioBoxList} />

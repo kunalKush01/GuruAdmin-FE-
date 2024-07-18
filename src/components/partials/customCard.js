@@ -4,7 +4,7 @@ import styled from "styled-components";
 import "../../../src/styles/common.scss";
 
 const CustomCard = ({ cardTitle, cardNumber, cardImage }) => {
-  const CustomCardWrapper = styled.div``;
+;
   return (
     <div className="customcardwrapper">
       <Card className="customCard">

@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import '../../src/styles/common.scss';
 
-const CattleDashboardCardWrapper = styled.div``;
+;
 ;
 
 const CattleDashboardCard = ({

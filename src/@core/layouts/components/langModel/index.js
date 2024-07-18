@@ -19,7 +19,7 @@ import { setlang } from "../../../../redux/authSlice";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
 import { langOption } from "./langCardContent";
 
-  const ModelWarraper = styled.div`
+  const ModelWrapper = styled.div`
     color: #583703;
     padding: 25px;
 
@@ -74,7 +74,7 @@ function LangModel({ setlangSelection, langSelection }) {
 
   return (
     <Modal isOpen={langSelection}>
-      <ModelWarraper>
+      <ModelWrapper>
         <ModalHeader className="bg-white w-100 p-0 py-1 ">
           <div className="language_heading">Language Preference</div>
           <div onClick={() => setlangSelection(false)} className="cancel">
@@ -108,7 +108,7 @@ function LangModel({ setlangSelection, langSelection }) {
             })}
           </Row>
         </ModalBody>
-      </ModelWarraper>
+      </ModelWrapper>
     </Modal>
   );
 }

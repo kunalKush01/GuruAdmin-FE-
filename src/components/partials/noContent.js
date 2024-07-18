@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import noNewsIcon from "../../assets/images/icons/news/noNewsIcon.svg"
 import '../../../src/styles/common.scss';
 
-const NoContentWraper = styled.div``;
+;
  
 export default function NoContent({headingNotfound,para}) {
   return (

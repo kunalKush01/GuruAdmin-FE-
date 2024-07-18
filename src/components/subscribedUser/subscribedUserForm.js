@@ -12,7 +12,7 @@ import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import '../../../src/styles/common.scss';
 
-const FormWrapper = styled.div``;
+;
 ;
 
 export default function SubscribedUserForm({

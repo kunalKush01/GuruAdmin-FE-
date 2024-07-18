@@ -18,7 +18,7 @@ import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import '../../../src/styles/common.scss';
 
-const FormikWrapper = styled.div``;
+;
 ;
 
 const AddExpenseForm = ({

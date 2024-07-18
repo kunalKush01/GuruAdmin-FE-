@@ -12,7 +12,7 @@ import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import "../../../src/styles/common.scss";
 
-const TrustWrapper = styled.div``;
+;
 export default function DetailPage({
   tags,
   title,

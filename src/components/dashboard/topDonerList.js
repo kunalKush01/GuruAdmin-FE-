@@ -32,7 +32,7 @@ export const TopDonerList = ({ data }) => {
 
   const [toggleState, setToggleState] = useState(showTopDonor ?? false);
 
-  const TopDonerWarpper = styled.div``;
+;
 ;
   const getRank = (idx) => {
     switch (idx + 1) {

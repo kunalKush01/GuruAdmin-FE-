@@ -177,7 +177,7 @@ export function ExpensesListTable({
     }));
   }, [data]);
 
-  const RecentDonationTableWrapper = styled.div``;
+;
   return (
     <div className="recentdonationtablewrapper">
       <CustomDataTable maxHeight={""} columns={columns} data={categoriesList} />

@@ -38,7 +38,7 @@ import BtnPopover from "../partials/btnPopover";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import '../../../src/styles/common.scss';
 
-const NoticeCardWrapper = styled.div``;
+;
 ;
 function BtnContent({
   noticeId,
@@ -50,7 +50,7 @@ function BtnContent({
 }) {
   const { t } = useTranslation();
   const history = useHistory();
-  const BtnContentWraper = styled.div``;
+;
 ;
 
   const handleDeleteNotice = async (payload) => {

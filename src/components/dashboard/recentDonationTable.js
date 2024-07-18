@@ -117,7 +117,7 @@ export default function RecentDonationTable({ data }) {
     });
   }, [data]);
 
-  const RecentDonationTableWrapper = styled.div``;
+;
 ;
 
   return (

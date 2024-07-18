@@ -20,7 +20,7 @@ import {
 import { Storage } from "aws-amplify";
 import '../../../src/styles/common.scss';
 
-const FormWrapper = styled.div``;
+;
 ;
 
 export default function ExpensesForm({

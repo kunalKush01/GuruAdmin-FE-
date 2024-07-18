@@ -13,7 +13,7 @@ import confirmationIcon from "../../../../../assets/images/icons/news/conformati
 import BtnPopover from "../../../../../components/partials/btnPopover";
 import HorizontalNavMenuItems from "./HorizontalNavMenuItems";
 
-const SubHeaderWarraper = styled.div`
+const SubHeaderWrapper = styled.div`
   font: normal normal normal 15px/20px noto sans;
   cursor: pointer;
 
@@ -123,7 +123,7 @@ const MenuItem = ({
 }) => {
   return (
     <div>
-      <SubHeaderWarraper>
+      <SubHeaderWrapper>
         <div
           id={item.name}
           onClick={() => {
@@ -147,7 +147,7 @@ const MenuItem = ({
             }
           />
         )}
-      </SubHeaderWarraper>
+      </SubHeaderWrapper>
     </div>
   );
 };
@@ -237,7 +237,7 @@ const HorizontalMenu = ({ menuData, currentActiveItem, routerProps }) => {
             // ) {
             //   return (
             //     <div key={idx}>
-            //       <SubHeaderWarraper>
+            //       <SubHeaderWrapper>
             //         <div
             //           id={item.name}
             //           onClick={() => {
@@ -261,7 +261,7 @@ const HorizontalMenu = ({ menuData, currentActiveItem, routerProps }) => {
             //             }
             //           />
             //         )}
-            //       </SubHeaderWarraper>
+            //       </SubHeaderWrapper>
             //     </div>
             //   );
             // } else {

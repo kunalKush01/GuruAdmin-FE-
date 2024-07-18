@@ -7,7 +7,7 @@ import { Trans } from "react-i18next";
 import styled from "styled-components";
 import { calculateAge } from "../../utility/formater";
 import '../../../src/styles/common.scss';
-const FormikCustomDatePickerWraper = styled.div``;
+;
 ;
 
 export default function FormikCustomDatePicker({
