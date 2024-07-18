@@ -22,7 +22,7 @@ import { getNoticeDetail, updateNoticeDetail } from "../../api/noticeApi";
 import CategoryForm from "../../components/categories/categoryForm";
 import NoticeForm from "../../components/notices/noticeForm";
 
-const NoticeWarper = styled.div`
+const NoticeWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
@@ -88,7 +88,7 @@ export default function EditReportDispute() {
   }, [noticeDetailQuery]);
 
   return (
-    <NoticeWarper>
+    <NoticeWrapper>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -159,6 +159,6 @@ export default function EditReportDispute() {
           )}
         </Else>
       </If>
-    </NoticeWarper>
+    </NoticeWrapper>
   );
 }

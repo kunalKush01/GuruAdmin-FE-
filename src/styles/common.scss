@@ -66,7 +66,7 @@
     text-align: center;
   }
 }
-.categorytablewarapper {
+.categorytablewrapper {
   color: #583703 !important;
   font: normal normal bold 15px/23px Noto Sans;
 }
@@ -191,7 +191,7 @@
   }
   
 }
-.commitmenttablewarper {
+.commitmenttablewrapper {
   color: #583703 !important;
   font: normal normal bold 15px/23px Noto Sans;
   .payDonation {
@@ -283,7 +283,7 @@
     color: #ff8744;
   }
 }
-.recentdonationtablewarper {
+.recentdonationtablewrapper {
   color: #583703 !important;
   font: normal normal bold 15px/23px Noto Sans;
   .modal-body {
@@ -294,7 +294,7 @@
     margin-bottom: 0;
   }
 }
-.recentdonationtablewarper {
+.recentdonationtablewrapper {
     color: #583703 !important;
     font: normal normal bold 15px/23px Noto Sans;
     .modal-body {
@@ -392,7 +392,7 @@
     }
   }
 }
-.recentdonationtablewarper {
+.recentdonationtablewrapper {
     color: #583703 !important;
     /* margin-right: 20px; */
     font: normal normal bold 15px/23px Noto Sans;
@@ -409,7 +409,7 @@
       color: #ff8744;
     }
   }
-.loglisttablewarper {
+.loglisttablewrapper {
     color: #583703 !important;
     font: normal normal bold 15px/23px Noto Sans;
   }
@@ -749,7 +749,7 @@ img{
     font: normal normal bold 15px/33px Noto Sans;
   }
 }
-.recentdonationtablewarper {
+.recentdonationtablewrapper {
     color: #583703 !important;
     /* margin-right: 20px; */
     font: normal normal bold 15px/23px Noto Sans;
@@ -1211,7 +1211,7 @@ img{
     }
   }
 }
-.notificationwarapper {
+.notificationwrapper {
   .dateTime {
     color: #909090;
     font: normal normal bold 16px/27px Noto Sans;
@@ -1223,7 +1223,7 @@ img{
     font: normal normal normal 14px/27px Noto Sans;
   }
 }
-.customcardwaraper {
+.customcardwrapper {
   width: 100%;
   height: 100%;
     .customCard {
@@ -1254,7 +1254,7 @@ img{
       margin-top: 3rem;
     }
   }
-.warapper {
+.wrapper {
   label {
     /* margin-bottom: 0px; */
     font: normal normal bold 15px/33px Noto Sans;
@@ -1328,7 +1328,7 @@ img{
     width: 100%;
   }
 }
-.datatablewarraper {
+.datatablewrapper {
   .data-table-extensions-filter {
     display: none !important;
   }
@@ -1557,7 +1557,7 @@ img{
     .react-datepicker {
        width:  "100%"; }}
    
-.trustwarapper {
+.trustwrapper {
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
@@ -1657,7 +1657,7 @@ img{
   @media only screen and (max-width: 578px) {
   }
 }
-.dropdownwarper {
+.dropdownwrapper {
   
     .btn-secondary {
       background-color: white !important;
@@ -1728,7 +1728,7 @@ img{
       text-align: -webkit-right;
     }
   }
-.locationwaraper {
+.locationwrapper {
   input::placeholder {
     color: #583703 !important;
     opacity: 60% !important;
@@ -1782,11 +1782,11 @@ img{
     gap: 0.8rem;
   }
 }
-.reactselectwarapper {
+.reactselectwrapper {
   /* margin-bottom: 10px; */
   font: normal normal bold 15px/33px Noto Sans;
 }
-.searchbarwarapper {
+.searchbarwrapper {
   .searbarSize {
     height: 40px;
   }
@@ -1802,7 +1802,7 @@ img{
     /* width: 300px !important; */
   }
 }
-.warapertextarea {
+.wrappertextarea {
   label {
     /* margin-bottom: 10px; */
     font: normal normal bold 15px/33px Noto Sans;
@@ -1828,7 +1828,7 @@ img{
     }
   }
 }
-.customtextfieldwarper {
+.customtextfieldwrapper {
   color: #583703 !important;
   font: normal normal bold 11px/33px Noto Sans;
 
@@ -2320,7 +2320,7 @@ img{
 }
 
 }
-.richtextfieldwarper {
+.richtextfieldwrapper {
   font: normal normal bold 11px/20px noto sans;
   .text-danger {
     height: 20px;
@@ -2716,7 +2716,7 @@ img{
     text-align: center;
   }
 }
-.punyarjakusertablewarper {
+.punyarjakusertablewrapper {
     color: #583703 !important;
     margin-right: 20px;
     font: normal normal bold 15px/23px Noto Sans;
@@ -2754,12 +2754,12 @@ img{
     font: normal normal bold 13px/5px noto sans;
   }
 }
-.subscribedusertablewarper {
+.subscribedusertablewrapper {
     color: #583703 !important;
     margin-right: 20px;
     font: normal normal bold 15px/23px Noto Sans;
   }
-.newscardwaraper {
+.newscardwrapper {
   .imgContainer {
     border-radius: 10px 10px 0px 0px;
     img {

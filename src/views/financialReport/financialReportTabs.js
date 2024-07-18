@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
-const FinancialReportTabsWarapper = styled.div`
+const FinancialReportTabsWrapper = styled.div`
   .tabName {
     font: normal normal bold 18px/28px Noto Sans;
     padding-left: 1rem;
@@ -23,14 +23,13 @@ const FinancialReportTabsWarapper = styled.div`
   .allTabBox {
     margin-left: 2.3rem;
     overflow-x: scroll;
-    ::-webkit-scrollbar{
+    ::-webkit-scrollbar {
       height: 5px;
     }
-    ::-webkit-scrollbar-thumb{
+    ::-webkit-scrollbar-thumb {
       background-color: gray;
       border-radius: 25px;
     }
-
   }
   .activeTab {
     z-index: 2;
@@ -42,7 +41,7 @@ const FinancialReportTabsWarapper = styled.div`
     font-weight: bold;
   }
 `;
-const FinancialReportTabs = ({ setActive, active,setPagination }) => {
+const FinancialReportTabs = ({ setActive, active, setPagination }) => {
   const { t } = useTranslation();
   const FinancialTabs = [
     { id: 1, name: t("report_expences") },
@@ -51,17 +50,16 @@ const FinancialReportTabs = ({ setActive, active,setPagination }) => {
     { id: 4, name: t("report_donation_box") },
   ];
   return (
-    <FinancialReportTabsWarapper>
+    <FinancialReportTabsWrapper>
       <div className="d-flex flex-lg-wrap  gap-3 mt-2 allTabBox ">
-        {FinancialTabs.map((item,idx) => {
+        {FinancialTabs.map((item, idx) => {
           return (
             <div
-            key={idx}
+              key={idx}
               className={`tabName ${
                 active?.name == item.name ? "activeTab" : ""
               }`}
               onClick={() => {
-                
                 setActive(item);
               }}
             >
@@ -74,7 +72,7 @@ const FinancialReportTabs = ({ setActive, active,setPagination }) => {
         {" "}
         <hr />{" "}
       </div>
-    </FinancialReportTabsWarapper>
+    </FinancialReportTabsWrapper>
   );
 };
 

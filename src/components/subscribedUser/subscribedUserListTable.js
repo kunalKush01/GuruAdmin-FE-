@@ -7,7 +7,7 @@ import styled from "styled-components";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomDataTable from "../partials/CustomDataTable";
-import '../../../src/styles/common.scss';
+import "../../../src/styles/common.scss";
 export default function SubscribedUSerListTable({ data }) {
   const { t } = useTranslation();
 
@@ -110,11 +110,9 @@ export default function SubscribedUSerListTable({ data }) {
   //       }
   //     })
   //   },[data])
-  const SubscribedUSerTableWarper = styled.div``;
-;
-
+  const SubscribedUSerTableWrapper = styled.div``;
   return (
-    <div className="subscribedusertablewarper">
+    <div className="subscribedusertablewrapper">
       <CustomDataTable
         maxHeight={""}
         columns={columns}

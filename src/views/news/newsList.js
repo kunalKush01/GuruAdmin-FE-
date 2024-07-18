@@ -17,7 +17,7 @@ import { ChangePeriodDropDown } from "../../components/partials/changePeriodDrop
 import NoContent from "../../components/partials/noContent";
 import { WRITE } from "../../utility/permissionsVariable";
 import { Helmet } from "react-helmet";
-const NewsWarper = styled.div`
+const NewsWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
   .ImagesVideos {
@@ -148,7 +148,7 @@ export default function News() {
   );
 
   return (
-    <NewsWarper>
+    <NewsWrapper>
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | News</title>
@@ -313,6 +313,6 @@ export default function News() {
           </Row>
         </div>
       </div>
-    </NewsWarper>
+    </NewsWrapper>
   );
 }

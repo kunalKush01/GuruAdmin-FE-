@@ -16,7 +16,7 @@ import { useSelector } from "react-redux";
 import { getAllReporDisputeList } from "../../../api/reportDisputeApi";
 import { Helmet } from "react-helmet";
 
-const ReportDisputWaraper = styled.div`
+const ReportDisputWrapper = styled.div`
   color: #583703;
   font: normal normal bold 20px/33px Noto Sans;
 
@@ -91,7 +91,7 @@ const ReportList = () => {
   );
 
   return (
-    <ReportDisputWaraper>
+    <ReportDisputWrapper>
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Reports & Disputes</title>
@@ -186,7 +186,7 @@ const ReportList = () => {
           </If>
         </Row>
       </div>
-    </ReportDisputWaraper>
+    </ReportDisputWrapper>
   );
 };
 
