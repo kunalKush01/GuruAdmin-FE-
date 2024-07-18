@@ -18,7 +18,7 @@ import {
   findAllItemId,
 } from "../../api/cattle/cattleExpense";
 import { Storage } from "aws-amplify";
-import '../../../src/styles/common.scss';e
+import '../../../src/styles/common.scss';
 
 const FormWrapper = styled.div``;
 ;
