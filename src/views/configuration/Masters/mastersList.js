@@ -1,15 +1,18 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Helmet } from "react-helmet";
 import { Trans, useTranslation } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import { Col, Row } from "reactstrap";
+import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
 import NoContent from "../../../components/partials/noContent";
 import { getAllMasters } from "../../../api/masterApi";
 import { MasterListTable } from "../../../components/Masters/mastersListTable";
+import { Plus } from "react-feather";
+import "./masterStyle.css";
+import AddMasterForm from "./addMasterForm";
 
 const CategoryListWrapper = styled.div`
   color: #583703;
@@ -35,7 +38,7 @@ const CategoryListWrapper = styled.div`
 
 export default function Master() {
   const { t } = useTranslation();
-
+  const [isFormOpen, setIsFormOpen] = useState(false);
   const masterQuery = useQuery(["Masters"], () => getAllMasters(), {
     keepPreviousData: true,
   });
@@ -44,7 +47,11 @@ export default function Master() {
     () => masterQuery?.data?.masterNames ?? [],
     [masterQuery]
   );
-
+  const queryClient = useQueryClient();
+  const toggleForm = () => setIsFormOpen(!isFormOpen);
+  const handleFormSuccess = () => {
+    queryClient.invalidateQueries(["Masters"]);
+  };
   return (
     <CategoryListWrapper>
       <Helmet>
@@ -54,14 +61,21 @@ export default function Master() {
       <div className="window nav statusBar body "></div>
 
       <div>
-        <div className="d-sm-flex justify-content-between align-items-center ">
-          <div className="d-flex align-items-center mb-2 mb-sm-0">
-            <div className="addCategory">
-              <div className="">
-                <div>
-                  <Trans i18nKey={"masters_list"} />
-                </div>
-              </div>
+        <div className="sticky-header d-sm-flex justify-content-between align-items-center ">
+          <div className="d-flex w-100 justify-content-between align-items-center">
+            <div>
+              <Trans i18nKey={"masters_list"} />
+            </div>
+            <div>
+              <Button className="" id="addBtn" onClick={toggleForm}>
+                <Plus
+                  className=""
+                  size={15}
+                  strokeWidth={4}
+                  style={{ marginRight: "5px" }}
+                />
+                Add
+              </Button>
             </div>
           </div>
         </div>
@@ -94,15 +108,11 @@ export default function Master() {
                 <If condition={masterItem.length != 0} disableMemo>
                   <Then>
                     <div className="mb-2">
-                      <MasterListTable
-                        data={masterItem}
-                      />
+                      <MasterListTable data={masterItem} />
                     </div>
                   </Then>
                   <Else>
-                    <NoContent
-                      headingNotfound={t("masters_not_found")}
-                    />
+                    <NoContent headingNotfound={t("masters_not_found")} />
                   </Else>
                 </If>
               </Else>
@@ -110,6 +120,11 @@ export default function Master() {
           </Row>
         </div>
       </div>
+      <AddMasterForm
+        isOpen={isFormOpen}
+        toggle={toggleForm}
+        onSuccess={handleFormSuccess}
+      />
     </CategoryListWrapper>
   );
 }

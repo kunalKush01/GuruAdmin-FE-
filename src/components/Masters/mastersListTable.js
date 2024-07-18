@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import CustomDataTable from "../partials/CustomDataTable";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-
+import ANTDcustometable from "../partials/antdReactTable";
+// import '../../views/configuration/Masters/masterStyle.css'
 const MasterTableWarapper = styled.div`
   color: #583703 !important;
   font: normal normal bold 15px/23px Noto Sans;
@@ -12,11 +13,18 @@ const MasterTableWarapper = styled.div`
 
 export function MasterListTable({ data }) {
   const { t } = useTranslation();
+  // const columns = [
+  //   {
+  //     name: t("Names"),
+  //     selector: (row) => row.name,
+  //     width: "220px",
+  //   },
+  // ];
   const columns = [
     {
-      name: t("Names"),
-      selector: (row) => row.name,
-      width: "220px",
+      title: t("Names"), // Assuming `t` is used for translation
+      dataIndex: "name",
+      width: 220,
     },
   ];
   const masterList = useMemo(() => {
@@ -34,12 +42,13 @@ export function MasterListTable({ data }) {
 
   return (
     <MasterTableWarapper>
-      <CustomDataTable
+      <ANTDcustometable columns={columns} data={masterList} />
+      {/* <CustomDataTable
         maxHeight={""}
         columns={columns}
         data={masterList}
         masterListPagination={data.length > 10 && true}
-      />
+      /> */}
     </MasterTableWarapper>
   );
 }

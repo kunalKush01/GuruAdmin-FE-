@@ -13,6 +13,7 @@ function ANTDcustometable({ columns, data }) {
       sticky={{
         offsetHeader: 64,
       }}
+      pagination={{pageSize:11}}
       bordered
     />
   );

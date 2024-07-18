@@ -27,7 +27,7 @@ const customFieldsView = () => {
       children: (
         <>
           <div>
-            <div className="d-flex justify-content-end w-100 mb-1">
+            <div className="d-flex justify-content-end w-100" style={{marginBottom:"10px"}}>
               <Button className="" id="addCustomFieldBtn" onClick={toggleForm}>
                 <Plus
                   className=""

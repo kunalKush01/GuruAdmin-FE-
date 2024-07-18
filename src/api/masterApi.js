@@ -1,6 +1,12 @@
 import { API_BASE_URL } from "../axiosApi/authApiInstans";
 import { callApi } from "../utility/utils/callApi";
-
+export const createMaster = (payload) =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}/master/create-masters`,payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
 export const getAllMasters = () =>
   callApi({
     requestFunction: (axios) =>

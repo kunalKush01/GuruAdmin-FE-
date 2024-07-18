@@ -28,7 +28,8 @@ import CustomTextField from "../partials/customTextField";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import CustomDatePicker from "../partials/customDatePicker";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
-
+import { DatePicker } from "antd";
+import "./donationStyle.css";
 export default function FormWithoutFormikForDonation({
   formik,
   masterloadOptionQuery,
@@ -378,7 +379,50 @@ export default function FormWithoutFormikForDonation({
                           placeholder={`Select ${field.fieldName}`}
                         />
                       ) : field.fieldType === "Date" ? (
-                        <FormikCustomDatePicker
+                        <>
+                          <label style={{ fontSize: "15px" }}>
+                            {field.fieldName}
+                            {field.isRequired && "*"}
+                          </label>
+                          <DatePicker
+                            id="datePickerANTD"
+                            format="YYYY-MM-DD"
+                            onChange={(date) => {
+                              if (date) {
+                                formik.setFieldValue(
+                                  `customFields.${field.fieldName}`,
+                                  date.format("YYYY-MM-DD")
+                                );
+                              } else {
+                                formik.setFieldValue(
+                                  `customFields.${field.fieldName}`,
+                                  null
+                                );
+                              }
+                            }}
+                            needConfirm
+                            // required={field.isRequired}
+                          />
+                          {formik.errors.customFields &&
+                            formik.errors.customFields[field.fieldName] && (
+                              <div
+                                style={{
+                                  height: "20px",
+                                  font: "normal normal bold 11px/33px Noto Sans",
+                                }}
+                              >
+                                <div className="text-danger">
+                                  <Trans
+                                    i18nKey={
+                                      formik.errors.customFields[
+                                        field.fieldName
+                                      ]
+                                    }
+                                  />
+                                </div>
+                              </div>
+                            )}
+                          {/* <FormikCustomDatePicker
                           name={`customFields.${field.fieldName}`}
                           label={field.fieldName}
                           selected={formik.values[field.fieldName]}
@@ -388,18 +432,24 @@ export default function FormWithoutFormikForDonation({
                           pastDateNotAllowed
                           required={field.isRequired}
                           minDate={new Date()}
-                        />
+                        /> */}
+                        </>
                       ) : isSelectField ? (
                         <FormikCustomReactSelect
                           labelName={field.fieldName}
                           name={`customFields.${field.fieldName}`}
-                          loadOptions={field.masterValues.map((item) => ({
-                            value: item.trim(),
-                            label: ConverFirstLatterToCapital(item).trim(),
-                          }))}
+                          loadOptions={
+                            field.masterValues &&
+                            field.masterValues.map((item) => ({
+                              value: item.value, // Assuming 'value' is the property containing the actual value
+                              label: item.value, // Assuming 'value' is also used as the label
+                            }))
+                          }
                           width
                           required={field.isRequired}
                           placeholder={`Select ${field.fieldName}`}
+                          valueKey="value"
+                          labelKey="label"
                         />
                       ) : (
                         <CustomTextField
@@ -417,7 +467,7 @@ export default function FormWithoutFormikForDonation({
                     </Col>
                   );
                 })}
-
+                {/* {console.log(customFieldsList)} */}
                 {!payDonation && (
                   <Col xs={12} sm={6} lg={5} className="mb-3">
                     <Row>

@@ -159,6 +159,10 @@ export const subHeaderContentResponsive = [
         url: "/configuration/masters",
       },
       {
+        name: "custom_field",
+        url: "/configuration/custom-fields",
+      },
+      {
         name: "user",
         url: "/configuration/users",
       },

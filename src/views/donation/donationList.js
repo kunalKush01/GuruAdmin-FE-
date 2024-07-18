@@ -23,6 +23,7 @@ import { ChangePeriodDropDown } from "../../components/partials/changePeriodDrop
 import NoContent from "../../components/partials/noContent";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { WRITE } from "../../utility/permissionsVariable";
+import DonationANTDListTable from "../../components/donation/donationAntdListTable";
 
 const DonationWrapper = styled.div`
   color: #583703;
@@ -51,6 +52,9 @@ const DonationWrapper = styled.div`
     margin-top: 1rem;
     ::-webkit-scrollbar {
       display: none;
+    }
+    .pagination{
+      margin-top:20px
     }
   }
   .filterPeriod {
@@ -343,7 +347,7 @@ export default function Donation() {
             </Then>
           </If>
         </div>
-        <div className="donationContent  ">
+        <div className="donationContent">
           <Row>
             <If condition={donationQuery.isLoading} disableMemo>
               <Then>
@@ -360,7 +364,12 @@ export default function Donation() {
               <Else>
                 <If condition={donationItems.length != 0} disableMemo>
                   <Then>
-                    <DonationListTable
+                    {/* <DonationListTable
+                      data={donationItems}
+                      allPermissions={allPermissions}
+                      subPermission={subPermission}
+                    /> */}
+                    <DonationANTDListTable
                       data={donationItems}
                       allPermissions={allPermissions}
                       subPermission={subPermission}
@@ -376,7 +385,7 @@ export default function Donation() {
               </Else>
             </If>
 
-            <If condition={donationQuery?.data?.totalPages > 1}>
+            <If condition={donationQuery?.data?.totalPages > 0}>
               <Then>
                 <Col xs={12} className="d-flex justify-content-center">
                   <ReactPaginate

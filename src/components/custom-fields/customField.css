@@ -34,3 +34,10 @@
 .ant-table-row:nth-child(even) .ant-table-cell {
   background-color: #fff7e8; /* Background color for last child cells in even rows */
 }
+.ant-table-container{
+  height: 416px !important;
+  max-height: 500px !important;
+}
+.ant-tabs-top >.ant-tabs-nav{
+  margin: 0 0 5px 0 !important
+}
