@@ -14,38 +14,8 @@ import { CustomDropDown } from "../../components/partials/customDropDown";
 import { addFacility, handleProfileUpdate } from "../../redux/authSlice";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-const ProfileWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addProfile {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-
-  label {
-    /* margin-bottom: 0px; */
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  input {
-    color: #583703 !important;
-    border: none !important;
-    height: 36px;
-    width: 100%;
-    padding-top: 9px;
-    padding-left: 5px;
-    /* text-align: center; */
-    background-color: #fff7e8 !important;
-    font: normal normal normal 13px/20px Noto Sans;
-    border-radius: 5px;
-  }
-  input[type="file"]::file-selector-button {
-    display: none;
-  }
-`;
+import '../../../styles/viewCommon.scss';;
+;
 
 const getLangId = (langArray, langSelection) => {
   let languageId;
@@ -78,7 +48,7 @@ export default function AddProfile() {
   };
 
   return (
-    <ProfileWrapper>
+    <div className="profilewrapper">
       <div className="d-flex justify-content-between align-items-center mb-2">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -101,6 +71,6 @@ export default function AddProfile() {
         </div>
       </div>
       <ProfileForm />
-    </ProfileWrapper>
+    </div>
   );
 }

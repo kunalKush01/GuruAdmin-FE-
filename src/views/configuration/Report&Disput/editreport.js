@@ -22,18 +22,8 @@ import { getNoticeDetail, updateNoticeDetail } from "../../api/noticeApi";
 import CategoryForm from "../../components/categories/categoryForm";
 import NoticeForm from "../../components/notices/noticeForm";
 
-const NoticeWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .editReportDispute {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import '../../../styles/viewCommon.scss';;
+;
 
 const schema = Yup.object().shape({
   Title: Yup.string().required("notices_title_required"),
@@ -88,7 +78,7 @@ export default function EditReportDispute() {
   }, [noticeDetailQuery]);
 
   return (
-    <NoticeWrapper>
+    <div className="noticewrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -159,6 +149,6 @@ export default function EditReportDispute() {
           )}
         </Else>
       </If>
-    </NoticeWrapper>
+    </div>
   );
 }

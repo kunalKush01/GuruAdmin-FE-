@@ -13,41 +13,8 @@ import styled from "styled-components";
 import { getAllBoxCollection } from "../../api/donationBoxCollectionApi";
 import DonationBoxListTable from "../../components/DonationBox/donationBoxListTable";
 import NoContent from "../../components/partials/noContent";
-const DonationBoxListWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addNews {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-
-  .FormikWraper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addNews-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .newsContent {
-    height: 350px;
-    overflow: auto;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: #ff8744;
-    font: normal normal bold 13px/5px noto sans;
-  }
-`;
+import '../../../styles/viewCommon.scss';;
+;
 
 export default function Expenses() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
@@ -116,7 +83,7 @@ export default function Expenses() {
   );
 
   return (
-    <DonationBoxListWrapper>
+    <div className="donationboxlistwrapper">
       <div className="window nav statusBar body "></div>
 
       <div>
@@ -191,6 +158,6 @@ export default function Expenses() {
           </Row>
         </div>
       </div>
-    </DonationBoxListWrapper>
+    </div>
   );
 }

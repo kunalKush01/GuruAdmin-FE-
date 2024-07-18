@@ -18,19 +18,8 @@ import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddMedicalInfoForm from "../../../../components/cattleMedicalInfo/addForm";
 import { CustomDropDown } from "../../../../components/partials/customDropDown";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
-
-const MedicalInfoAddWraper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addEvent {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import '../../../../styles/viewCommon.scss';
+;
 
 const getLangId = (langArray, langSelection) => {
   let languageId;
@@ -102,7 +91,7 @@ const EditMedicalInfo = () => {
   }, [medicalInfoDetailQuery]);
 
   return (
-    <MedicalInfoAddWraper>
+    <div className="medicalinfoaddwraper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -188,7 +177,7 @@ const EditMedicalInfo = () => {
           )}
         </Else>
       </If>
-    </MedicalInfoAddWraper>
+    </div>
   );
 };
 

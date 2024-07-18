@@ -19,18 +19,8 @@ import CommitmentForm from "../../components/commitments/commitmentForm";
 import DonationForm from "../../components/donation/donationForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-const PayDonationWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .editCommitment {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import '../../styles/viewCommon.scss';
+;
 
 const schema = Yup.object().shape({
   Mobile: Yup.string().required("expenses_mobile_required"),
@@ -114,7 +104,7 @@ export default function PayDonation() {
   }, [commitmentDetailQuery]);
 
   return (
-    <PayDonationWrapper>
+    <div className="paydonationwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -181,6 +171,6 @@ export default function PayDonation() {
           )}
         </Else>
       </If>
-    </PayDonationWrapper>
+    </div>
   );
 }

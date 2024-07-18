@@ -13,17 +13,8 @@ import CustomDataTable from "../../../../components/partials/CustomDataTable";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
 import { DELETE, EDIT } from "../../../../utility/permissionsVariable";
 
-const StockManagementItemTableWrapper = styled.div`
-  color: #583703 !important;
-  font: normal normal bold 15px/23px Noto Sans;
-  .modal-body {
-    max-height: 600px !important;
-    overflow: auto !important;
-  }
-  .tableDes p {
-    margin-bottom: 0;
-  }
-`;
+import '../../../../styles/viewCommon.scss';;
+;
 
 const StockManagementItemTable = ({
   data = [],
@@ -148,14 +139,14 @@ const StockManagementItemTable = ({
   }, [data]);
 
   return (
-    <StockManagementItemTableWrapper>
+    <div className="stockmanagementitemtablewrapper">
       <CustomDataTable
         maxHeight={maxHeight}
         columns={columns}
         height={height}
         data={ItemData}
       />
-    </StockManagementItemTableWrapper>
+    </div>
   );
 };
 

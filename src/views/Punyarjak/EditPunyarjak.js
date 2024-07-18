@@ -15,18 +15,8 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import PunyarjakForm from "../../components/Punyarjak/punyarjakUserForm";
 import { CustomDropDown } from "../../components/partials/customDropDown";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-const PunyarjakWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .editPunyarjak {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import '../../styles/viewCommon.scss';
+;
 const schema = Yup.object().shape({
   description: Yup.string().required("punyarjak_desc_required").trim(),
   title: Yup.string()
@@ -85,7 +75,7 @@ export default function EditSubAdmin() {
   }, [punyarjakDetailQuery]);
 
   return (
-    <PunyarjakWrapper>
+    <div className="punyarjakwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex align-items-center ">
           <img
@@ -167,6 +157,6 @@ export default function EditSubAdmin() {
           )}
         </Else>
       </If>
-    </PunyarjakWrapper>
+    </div>
   );
 }

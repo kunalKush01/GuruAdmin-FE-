@@ -19,14 +19,8 @@ import { Helmet } from "react-helmet";
 import { WRITE } from "../../../utility/permissionsVariable";
 import { ConverFirstLatterToCapital } from "../../../utility/formater";
 
-const PregnancyReportWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-
-  .btn {
-    font-weight: bold;
-  }
-`;
+import '../../../styles/viewCommon.scss';;
+;
 
 const PregnancyReport = () => {
   const history = useHistory();
@@ -119,7 +113,7 @@ const PregnancyReport = () => {
   );
 
   return (
-    <PregnancyReportWrapper>
+    <div className="pregnancyreportwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Cattles Pregnancy Records</title>
@@ -291,7 +285,7 @@ const PregnancyReport = () => {
           </Row>
         </div>
       </div>
-    </PregnancyReportWrapper>
+    </div>
   );
 };
 

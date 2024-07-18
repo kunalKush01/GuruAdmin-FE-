@@ -7,19 +7,8 @@ import * as Yup from "yup";
 import { createPregnancyReport } from "../../../../api/cattle/cattlePregnancy";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddPregnancyForm from "../../../../components/cattlePregnancy/addForm";
-
-const PregnancyAddWraper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addEvent {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import '../../../../styles/viewCommon.scss';
+;
 
 const AddPregnancy = () => {
   const history = useHistory();
@@ -47,7 +36,7 @@ const AddPregnancy = () => {
   };
 
   return (
-    <PregnancyAddWraper>
+    <div className="pregnancyaddwraper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -72,7 +61,7 @@ const AddPregnancy = () => {
           buttonName="cattle_record_add"
         />
       </div>
-    </PregnancyAddWraper>
+    </div>
   );
 };
 

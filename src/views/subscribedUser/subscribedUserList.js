@@ -19,33 +19,8 @@ import NoContent from "../../components/partials/noContent";
 import SubscribedUSerListTable from "../../components/subscribedUser/subscribedUserListTable";
 import { WRITE } from "../../utility/permissionsVariable";
 
-const SubscribedUserWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .addSubscribeUser {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-
-  .FormikWraper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addSubscribeUser-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .subscribeUserContent {
-    margin-top: 1rem;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-`;
+import '../../styles/viewCommon.scss';
+;
 
 export default function SubscribedUser() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
@@ -125,7 +100,7 @@ export default function SubscribedUser() {
   );
 
   return (
-    <SubscribedUserWrapper>
+    <div className="subscribeduserwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Subscribed User</title>
@@ -248,6 +223,6 @@ export default function SubscribedUser() {
           </Row>
         </div>
       </div>
-    </SubscribedUserWrapper>
+    </div>
   );
 }

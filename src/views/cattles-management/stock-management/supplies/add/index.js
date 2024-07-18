@@ -9,18 +9,8 @@ import { createSupplyItem } from "../../../../../api/cattle/cattleStock";
 import arrowLeft from "../../../../../assets/images/icons/arrow-left.svg";
 import AddSuppliesForm from "../../../../../components/cattleStockManagment/supplies/addForm";
 
-const StockAddWraper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addEvent {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import '../../../../../styles/viewCommon.scss';
+;
 
 const AddSupplies = () => {
   const history = useHistory();
@@ -47,7 +37,7 @@ const AddSupplies = () => {
   };
 
   return (
-    <StockAddWraper>
+    <div className="stockaddwraper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -72,7 +62,7 @@ const AddSupplies = () => {
           buttonName="cattle_record_add"
         />
       </div>
-    </StockAddWraper>
+    </div>
   );
 };
 

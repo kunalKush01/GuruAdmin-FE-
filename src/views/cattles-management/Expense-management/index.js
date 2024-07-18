@@ -14,15 +14,8 @@ import { getCattlesExpenseList } from "../../../api/cattle/cattleExpense";
 import { ChangePeriodDropDown } from "../../../components/partials/changePeriodDropDown";
 import NoContent from "../../../components/partials/noContent";
 import ExpenseTable from "./table";
-
-const ExpenseManagementWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-
-  .btn {
-    font-weight: bold;
-  }
-`;
+import '../../../styles/viewCommon.scss';
+;
 
 const ExpenseManagement = () => {
   const history = useHistory();
@@ -94,7 +87,7 @@ const ExpenseManagement = () => {
   );
 
   return (
-    <ExpenseManagementWrapper>
+    <div className="expensemanagementwrapper">
       <div>
         <div className="d-sm-flex mb-1 justify-content-between align-items-center ">
           <Trans i18nKey="cattle_expense" />
@@ -224,7 +217,7 @@ const ExpenseManagement = () => {
           </Row>
         </div>
       </div>
-    </ExpenseManagementWrapper>
+    </div>
   );
 };
 

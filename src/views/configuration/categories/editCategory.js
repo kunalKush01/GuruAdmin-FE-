@@ -19,18 +19,8 @@ import {
 } from "../../../api/categoryApi";
 import CategoryForm from "../../../components/categories/categoryForm";
 
-const CategoryEditWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  // .ImagesVideos {
-  //   font: normal normal bold 15px/33px Noto Sans;
-  // }
-  .editCategory {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import '../../../styles/viewCommon.scss';;
+;
 
 const schema = Yup.object().shape({
   MasterCategory: Yup.mixed().required("categories_category_required"),
@@ -89,7 +79,7 @@ export default function EditCategory() {
   };
 
   return (
-    <CategoryEditWrapper>
+    <div className="categoryeditwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -181,6 +171,6 @@ export default function EditCategory() {
             )}
         </Else>
       </If>
-    </CategoryEditWrapper>
+    </div>
   );
 }

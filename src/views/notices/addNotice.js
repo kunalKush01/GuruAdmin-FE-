@@ -8,18 +8,8 @@ import { createNotice } from "../../api/noticeApi.js";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import NoticeForm from "../../components/notices/noticeForm";
 
-const NoticeWraper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addNotice {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import '../../styles/viewCommon.scss';
+;
 
 const handleCreateNotice = async (payload) => {
   return createNotice(payload);
@@ -56,7 +46,7 @@ export default function AddNotice() {
   const currentFilter = searchParams.get("filter");
 
   return (
-    <NoticeWraper>
+    <div className="noticewraper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -93,6 +83,6 @@ export default function AddNotice() {
           buttonName="notices_AddNotice"
         />
       </div>
-    </NoticeWraper>
+    </div>
   );
 }

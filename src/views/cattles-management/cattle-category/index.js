@@ -15,15 +15,8 @@ import { ChangePeriodDropDown } from "../../../components/partials/changePeriodD
 import NoContent from "../../../components/partials/noContent";
 import CattleCategoryModal from "./categoryModal";
 import CattleBreedTable from "./table";
-
-const CattleCategoryWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-
-  .btn {
-    font-weight: bold;
-  }
-`;
+import '../../../styles/viewCommon.scss';
+;
 
 const CattleCategory = () => {
   const history = useHistory();
@@ -111,7 +104,7 @@ const CattleCategory = () => {
   );
 
   return (
-    <CattleCategoryWrapper>
+    <div className="cattlecategorywrapper">
       <div>
         <div className="d-sm-flex mb-1 justify-content-between align-items-center ">
           <Trans i18nKey="cattles" /> <Trans i18nKey="category" />
@@ -251,7 +244,7 @@ const CattleCategory = () => {
         data={modal}
         addCattleCategory={modal?.addCattleCategory}
       />
-    </CattleCategoryWrapper>
+    </div>
   );
 };
 

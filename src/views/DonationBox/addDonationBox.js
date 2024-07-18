@@ -9,18 +9,8 @@ import { createExpense } from "../../api/expenseApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import DonationBoxForm from "../../components/DonationBox/donationBoxForm";
 
-const NewsWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addNews {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import '../../styles/viewCommon.scss';
+;
 
 const handleCollectionBox = async (payload) => {
   return createBoxCollection(payload);
@@ -52,7 +42,7 @@ export default function AddNews() {
   };
 
   return (
-    <NewsWrapper>
+    <div className="newswrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -85,6 +75,6 @@ export default function AddNews() {
           buttonName="DonationBox_AddCollectionBox"
         />
       </div>
-    </NewsWrapper>
+    </div>
   );
 }

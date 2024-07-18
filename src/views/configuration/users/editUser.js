@@ -12,18 +12,8 @@ import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
 
 import { getSubAdminDetail, updateSubAdminUser } from "../../../api/userApi";
 import UserForm from "../../../components/users/userForm";
-const SubAdminUserWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .editNotice {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import '../../../styles/viewCommon.scss';;
+;
 const schema = Yup.object().shape({
   name: Yup.string()
     .matches(
@@ -87,7 +77,7 @@ export default function EditSubAdmin() {
   }, [subAdminUserDetailQuery]);
 
   return (
-    <SubAdminUserWrapper>
+    <div className="subadminuserwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -160,6 +150,6 @@ export default function EditSubAdmin() {
           )}
         </Else>
       </If>
-    </SubAdminUserWrapper>
+    </div>
   );
 }

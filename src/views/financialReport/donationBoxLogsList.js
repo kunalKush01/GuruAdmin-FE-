@@ -19,41 +19,8 @@ import SubscribedUSerListTable from "../../components/subscribedUser/subscribedU
 import LogListTable from "../../components/DonationBox/logListTable";
 import { getAllBoxCollectionLogs } from "../../api/donationBoxCollectionApi";
 
-const HundiLogWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addNews {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-
-  .FormikWraper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addNews-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .newsContent {
-    margin-top: 1rem;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: #ff8744;
-    margin-top: 0.5rem;
-    font: normal normal bold 13px/5px noto sans;
-  }
-`;
+import '../../../styles/viewCommon.scss';;
+;
 
 export default function HundiLog() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
@@ -113,7 +80,7 @@ export default function HundiLog() {
   );
 
   return (
-    <HundiLogWrapper>
+    <div className="hundilogwrapper">
       <div className="window nav statusBar body "></div>
 
       <div>
@@ -204,6 +171,6 @@ export default function HundiLog() {
           </Row>
         </div>
       </div>
-    </HundiLogWrapper>
+    </div>
   );
 }

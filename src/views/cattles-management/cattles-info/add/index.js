@@ -7,19 +7,8 @@ import * as Yup from "yup";
 import { createCattleInfo } from "../../../../api/cattle/cattleInfo";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddCattleForm from "../../../../components/cattleInfo/addForm";
-
-const CattleAddWraper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addEvent {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import '../../../../styles/viewCommon.scss';
+;
 
 export const cattleType = [
   {
@@ -150,7 +139,7 @@ const AddCattle = () => {
   };
 
   return (
-    <CattleAddWraper>
+    <div className="cattleaddwraper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -177,7 +166,7 @@ const AddCattle = () => {
           cattleSource={cattleSource}
         />
       </div>
-    </CattleAddWraper>
+    </div>
   );
 };
 

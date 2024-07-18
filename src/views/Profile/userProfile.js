@@ -14,18 +14,8 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import ProfileForm from "../../components/Profile/profileForm";
 import { CustomDropDown } from "../../components/partials/customDropDown";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-const ProfileWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addProfile {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import '../../styles/viewCommon.scss';
+;
 
 const schema = Yup.object().shape({
   trustName: Yup.string()
@@ -153,7 +143,7 @@ export default function AddProfile() {
   ]);
 
   return (
-    <ProfileWrapper>
+    <div className="profilewrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Profile</title>
@@ -223,6 +213,6 @@ export default function AddProfile() {
           />
         )}
       </div>
-    </ProfileWrapper>
+    </div>
   );
 }

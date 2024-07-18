@@ -2,18 +2,8 @@ import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import CustomDataTable from "../../../components/partials/CustomDataTable";
-
-const ExpenseTableWrapper = styled.div`
-  color: #583703 !important;
-  font: normal normal bold 15px/23px Noto Sans;
-  .modal-body {
-    max-height: 600px !important;
-    overflow: auto !important;
-  }
-  .tableDes p {
-    margin-bottom: 0;
-  }
-`;
+import '../../../styles/viewCommon.scss';
+;
 
 const ExpenseTable = ({ data = [] }) => {
   const { t } = useTranslation();
@@ -62,9 +52,9 @@ const ExpenseTable = ({ data = [] }) => {
   },[data]);
 
   return (
-    <ExpenseTableWrapper>
+    <div className="expensetablewrapper">
       <CustomDataTable maxHeight={""} columns={columns} data={expenseData} />
-    </ExpenseTableWrapper>
+    </div>
   );
 };
 

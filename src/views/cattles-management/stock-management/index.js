@@ -23,19 +23,8 @@ import Usage from "./usage";
 import { Helmet } from "react-helmet";
 import { WRITE } from "../../../utility/permissionsVariable";
 
-const StockManagementWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-
-  .btn {
-    font-weight: bold;
-  }
-
-  hr {
-    height: 1px;
-    margin-top: 0;
-  }
-`;
+import '../../../styles/viewCommon.scss';;
+;
 
 const StockManagement = () => {
   const [active, setActive] = useState(location.pathname);
@@ -157,7 +146,7 @@ const StockManagement = () => {
   console.log("subPermission", permissions);
 
   return (
-    <StockManagementWrapper>
+    <div className="stockmanagementwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Cattles Stock Management | Stock </title>
@@ -335,7 +324,7 @@ const StockManagement = () => {
           )
         )}
       </div>
-    </StockManagementWrapper>
+    </div>
   );
 };
 
