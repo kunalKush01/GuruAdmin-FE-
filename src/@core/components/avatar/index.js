@@ -79,7 +79,7 @@ const Avatar = forwardRef((props, ref) => {
         />
       )}
       {status ? (
-                <img src={editProfileIcon}  className="editProfileIcon    position-absolute  " />
+                <img src={editProfileIcon}  className="editProfileIcon position-absolute" style={{ width: "min-content" }}/>
 
       ) : null}
     </Tag>
