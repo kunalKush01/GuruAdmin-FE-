@@ -1290,6 +1290,8 @@ $font-size-large: 20px;
 
 .navbar-user-wrapper {
   color: $font-color !important;
+  bottom: -10px;
+
   
   .brand-logo div {
     font: $font-weight-bold $font-size-large $font-family;
@@ -1311,9 +1313,6 @@ $font-size-large: 20px;
     }
   }
   
-  img {
-    width: 35px;
-  }
   
   .icon {
     margin-inline-start: 15px;
