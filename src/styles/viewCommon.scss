@@ -1290,8 +1290,6 @@ $font-size-large: 20px;
 
 .navbar-user-wrapper {
   color: $font-color !important;
-  bottom: -10px;
-
   
   .brand-logo div {
     font: $font-weight-bold $font-size-large $font-family;
@@ -1312,8 +1310,7 @@ $font-size-large: 20px;
       cursor: pointer;
     }
   }
-  
-  
+
   .icon {
     margin-inline-start: 15px;
     cursor: pointer;
@@ -1441,4 +1438,7 @@ $font-size-large: 20px;
     fill: $font-color !important;
     font: $font-weight-bold 11px/24px $font-family;
   }
+}
+.editProfileIcon {
+    bottom: -10px;
 }
