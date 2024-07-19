@@ -12,9 +12,8 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import ExpensesForm from "../../components/internalExpenses/expensesForm";
 import { ExpenseType } from "./addExpenses";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-
 import '../../styles/viewCommon.scss';
-;
+
 
 const handleCreateExpense = async (payload) => {
   return updateExpensesDetail(payload);

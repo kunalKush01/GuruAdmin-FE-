@@ -11,48 +11,28 @@ import { Card, CardBody } from 'reactstrap'
 
 // ** Default Options
 import { areaChartOptions } from './ChartOptions'
-import styled from 'styled-components'
 import { numberWithCommas } from '../../../../utility/formater'
+import '../../../../styles/viewCommon.scss';
 
-  const ChartCardWrapper = styled.div`
-      
-      font: normal normal bold 25px/20px Noto Sans;
-      .chartCard{
-        background-color: #FFF7E8;
-        width: auto;
-        height: auto;
-        color: #583703;
-      }
-      
-      .card-text{
-        font: normal normal normal 16px/20px Noto Sans
-      }
-  
-  `;
 const StatsWithAreaChart = props => {
   // ** Props
   const { icon, color, stats, statTitle, series, options, type, height, className, ...rest } = props
 
-  const sta=numberWithCommas(stats)
+  const sta = numberWithCommas(stats)
   return (
-    <ChartCardWrapper>
-    <Card {...rest} className="chartCard mb-0" >
-      <CardBody
-        className={classnames('pb-0', {
-          [className]: className
-        })}
-      >
-        {/* <Avatar className='avatar-stats p-50 m-0' color={`light-${color}`} icon={icon} /> */}
-        <p className='card-text'>{statTitle}</p>
-        <p className='fw-bolder mt-1  overflow-hidden' title={`₹ ${sta}`} style={{
-            textOverflow:' ellipsis',
-            whiteSpace:'nowrap',
-            maxWidth:'250px',
-        }} >₹{sta}</p>
-      </CardBody>
-      <Chart options={options}  series={series} type={type} height={height ? height : 100}  />
-    </Card>
-    </ChartCardWrapper>
+    <div className="chart-card-wrapper">
+      <Card {...rest} className="chart-card mb-0">
+        <CardBody
+          className={classnames('pb-0', {
+            [className]: className
+          })}
+        >
+          <p className='card-text'>{statTitle}</p>
+          <p className='fw-bolder mt-1 overflow-hidden' title={`₹ ${sta}`}>₹{sta}</p>
+        </CardBody>
+        <Chart options={options} series={series} type={type} height={height ? height : 100} />
+      </Card>
+    </div>
   )
 }
 
