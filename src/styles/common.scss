@@ -1269,11 +1269,10 @@ $font-size-large: 20px;
   }
   .react-tel-input .form-control {
     width: inherit;
+    background-color: $secondary-color !important;
   }
   input {
     color: $font-color !important;
-    border: none !important;
-    background-color: $secondary-color !important;
     font: $font-weight-normal $font-size-small $font-family;
     border-radius: 5px;
   }
