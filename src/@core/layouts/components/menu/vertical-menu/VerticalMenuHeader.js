@@ -3,19 +3,8 @@ import { useEffect } from "react";
 
 // ** Icons Imports
 import { Circle, Disc, X } from "react-feather";
-import styled from "styled-components";
 import logo from "../../../../../assets/images/pages/main-logo.png";
-
-const NavbarImageLogoWrapper = styled.div`
-  .logo {
-    width: 125px !important;
-    height: 35px !important;
-    object-fit: contain !important;
-    object-position: center !important;
-  }
-`;
-
-// ** Config
+import '../../../../../styles/viewCommon.scss';
 
 const VerticalMenuHeader = (props) => {
   // ** Props
@@ -59,13 +48,11 @@ const VerticalMenuHeader = (props) => {
     <div className="navbar-header">
       <ul className="nav navbar-nav flex-row">
         <li className="nav-item me-auto d-flex align-items-center">
-          {/* <NavLink to="/" className="navbar-brand"> */}
-          <NavbarImageLogoWrapper>
+          <div className="navbar-image-logo-wrapper">
             <div className="brand-logo">
               <img src={logo} alt="logo" className="logo" />
             </div>
-          </NavbarImageLogoWrapper>
-          {/* </NavLink> */}
+          </div>
         </li>
         <li className="nav-item nav-toggle">
           <div className="nav-link modern-nav-toggle cursor-pointer">
