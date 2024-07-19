@@ -19,7 +19,7 @@ import { EDIT } from "../../utility/permissionsVariable";
 import CustomDataTable from "../partials/CustomDataTable";
 import EditDonation from "./editDonation";
 import { toast } from "react-toastify";
-import { Table } from "antd";
+import { Table, Pagination } from "antd";
 import "./donationStyle.css";
 import { getDonationCustomFields } from "../../api/customFieldsApi";
 const RecentDonationTableWarper = styled.div`
@@ -32,16 +32,32 @@ const RecentDonationTableWarper = styled.div`
   .tableDes p {
     margin-bottom: 0;
   }
-
-  .ant-table-wrapper .ant-table.ant-table-bordered > .ant-table-container {
-    height: 395px !important;
-  }
+  .ant-table-body {
+      max-height: 400px;
+      height: 353px;
+      overflow: auto;
+      ::-webkit-scrollbar {
+        display: block;
+      }
+    }
 `;
 
 export default function DonationANTDListTable(
-  { data, topdf, allPermissions, subPermission, financeReport },
+  {
+    data,
+    topdf,
+    allPermissions,
+    subPermission,
+    financeReport,
+    totalItems,
+    currentPage,
+    pageSize,
+    onChangePage,
+    onChangePageSize,
+  },
   args
 ) {
+  // console.log(data)
   const { t } = useTranslation();
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
@@ -211,14 +227,14 @@ export default function DonationANTDListTable(
       fixed: "right",
       width: 120,
     },
-    {
-      title: "Action",
-      dataIndex: "edit",
-      key: "edit",
-      render: (text) => text,
-      fixed: "right",
-      width: 120,
-    },
+    // {
+    //   title: "Action",
+    //   dataIndex: "edit",
+    //   key: "edit",
+    //   render: (text) => text,
+    //   fixed: "right",
+    //   width: 120,
+    // },
   ];
 
   const formatDate = (dateString) => {
@@ -391,9 +407,23 @@ export default function DonationANTDListTable(
         sticky={{
           offsetHeader: 64,
         }}
-        pagination={false}
+        pagination={{
+          current: currentPage,
+          pageSize: pageSize,
+          total: totalItems,
+          onChange: onChangePage,
+          onShowSizeChange: (current, size) => onChangePageSize(size),
+          showSizeChanger: true,
+        }}
         bordered
       />
+      {/* <Pagination
+        current={currentPage}
+        pageSize={pageSize}
+        total={totalItems}
+        onChange={onChangePage}
+        onShowSizeChange={(current, size) => onChangePageSize(size)}
+      /> */}
       <ReactToPrint
         trigger={() => (
           <span id="AllDonations" ref={pdfRef} style={{ display: "none" }}>

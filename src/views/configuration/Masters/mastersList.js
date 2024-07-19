@@ -39,14 +39,50 @@ const CategoryListWrapper = styled.div`
 export default function Master() {
   const { t } = useTranslation();
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const masterQuery = useQuery(["Masters"], () => getAllMasters(), {
-    keepPreviousData: true,
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+    total: 0,
   });
+
+  const masterQuery = useQuery(
+    ["Masters", pagination.current, pagination.pageSize],
+    () =>
+      getAllMasters({
+        current: pagination.current,
+        pageSize: pagination.pageSize,
+      }),
+    {
+      keepPreviousData: true,
+      onSuccess: (data) => {
+        // Ensure data format matches this
+        setPagination((prev) => ({
+          ...prev,
+          total: data.pagination.total,
+        }));
+      },
+    }
+  );
 
   const masterItem = useMemo(
     () => masterQuery?.data?.masterNames ?? [],
     [masterQuery]
   );
+  const handlePageChange = (page) => {
+    setPagination((prev) => ({
+      ...prev,
+      current: page,
+    }));
+  };
+
+  const handlePageSizeChange = (pageSize) => {
+    setPagination((prev) => ({
+      ...prev,
+      pageSize,
+      current: 1, // Reset to first page when page size changes
+    }));
+  };
+  // console.log(masterQuery);
   const queryClient = useQueryClient();
   const toggleForm = () => setIsFormOpen(!isFormOpen);
   const handleFormSuccess = () => {
@@ -108,7 +144,12 @@ export default function Master() {
                 <If condition={masterItem.length != 0} disableMemo>
                   <Then>
                     <div className="mb-2">
-                      <MasterListTable data={masterItem} />
+                      <MasterListTable
+                        data={masterItem}
+                        pagination={pagination}
+                        onChangePage={handlePageChange}
+                        onChangePageSize={handlePageSizeChange}
+                      />
                     </div>
                   </Then>
                   <Else>

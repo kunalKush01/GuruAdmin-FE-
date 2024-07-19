@@ -56,7 +56,7 @@ const CustomFieldTable = ({  }) => {
         x: 1500,
         y: 400,
       }}
-      pagination={{ pageSize: 11 }}
+      pagination={{ pageSize: 10 }}
       bordered
 
     />

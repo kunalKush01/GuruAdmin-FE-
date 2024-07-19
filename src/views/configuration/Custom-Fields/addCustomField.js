@@ -51,7 +51,7 @@ const AddCustomField = ({ trustId, isOpen, toggle ,onSuccess}) => {
     () => masterDataQuery?.data ?? [],
     [masterDataQuery]
   );
-  console.log(masterDataItem);
+  // console.log(masterDataItem);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;

@@ -223,7 +223,7 @@ const LoginCover = () => {
   );
 
   const loginPath = permissions?.map((item) => item?.name);
-  console.log("loginPath", loginPath);
+  // console.log("loginPath", loginPath);
   let subDomainName;
   if (hostname !== adminUrl) {
     subDomainName = hostname.replace(subdomainChange, "");

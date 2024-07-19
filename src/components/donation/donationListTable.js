@@ -39,7 +39,7 @@ export default function DonationListTable(
   const { t } = useTranslation();
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
-  console.log("isLoading", isLoading);
+  // console.log("isLoading", isLoading);
   const ref = useRef();
   const pdfRef = useRef();
   const options = {

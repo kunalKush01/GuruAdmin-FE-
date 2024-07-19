@@ -467,7 +467,6 @@ export default function FormWithoutFormikForDonation({
                     </Col>
                   );
                 })}
-                {/* {console.log(customFieldsList)} */}
                 {!payDonation && (
                   <Col xs={12} sm={6} lg={5} className="mb-3">
                     <Row>
