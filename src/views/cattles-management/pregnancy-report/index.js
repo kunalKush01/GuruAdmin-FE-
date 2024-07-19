@@ -96,7 +96,7 @@ const PregnancyReport = () => {
         languageId: selectedLang.id,
       })
   );
-  console.log("pregnancyStatus", pregnancyStatus);
+  // console.log("pregnancyStatus", pregnancyStatus);
 
   const cattlePregnancyListData = useMemo(
     () => cattlePregnancyList?.data?.results ?? [],

@@ -11,7 +11,7 @@ import CustomTextField from "../../../components/partials/customTextField";
 
 const BreedModal = ({ addBreed, isOpen, toggle, data }) => {
   const { t } = useTranslation();
-  console.log("data========>", data);
+  // console.log("data========>", data);
 
   const loadOption = async (tagId) => {
     const res = await findAllCattleCategory({ search: tagId });

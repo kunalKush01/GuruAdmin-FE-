@@ -13,7 +13,7 @@ const customFieldsView = () => {
   const queryClient = useQueryClient();
 
   const onChange = (key) => {
-    console.log(key);
+    // console.log(key);
   };
   const handleRowSuccess = () => {
     queryClient.invalidateQueries(["getDonationFields"]);

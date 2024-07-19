@@ -11,7 +11,12 @@ const MasterTableWarapper = styled.div`
   font: normal normal bold 15px/23px Noto Sans;
 `;
 
-export function MasterListTable({ data }) {
+export function MasterListTable({
+  data,
+  pagination,
+  onChangePage,
+  onChangePageSize,
+}) {
   const { t } = useTranslation();
   // const columns = [
   //   {
@@ -42,7 +47,13 @@ export function MasterListTable({ data }) {
 
   return (
     <MasterTableWarapper>
-      <ANTDcustometable columns={columns} data={masterList} />
+      <ANTDcustometable
+        columns={columns}
+        data={masterList}
+        pagination={pagination}
+        onChangePage={onChangePage}
+        onChangePageSize={onChangePageSize}
+      />
       {/* <CustomDataTable
         maxHeight={""}
         columns={columns}

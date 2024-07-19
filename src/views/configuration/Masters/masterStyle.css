@@ -46,10 +46,6 @@
   border-radius: 10px;
   /* height: 415px; */
 }
-
-.ant-table-body {
-  scrollbar-width: none;
-}
 .ant-table-tbody > tr > td {
   padding: 0 16px !important;
 }
@@ -82,7 +78,12 @@
 .ant-table-row:nth-child(even) .ant-table-cell {
   background-color: #fff7e8; /* Background color for last child cells in even rows */
 }
-.ant-table-container{
-  height: 427px !important;
-  max-height: 500px !important;
+.ant-table-body {
+  scrollbar-width: none;
+  max-height: 410px !important;
+  height: 410px ;
+  overflow: auto;
+  ::-webkit-scrollbar {
+    display: block;
+  }
 }

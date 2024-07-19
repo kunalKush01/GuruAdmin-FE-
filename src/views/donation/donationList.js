@@ -53,8 +53,8 @@ const DonationWrapper = styled.div`
     ::-webkit-scrollbar {
       display: none;
     }
-    .pagination{
-      margin-top:20px
+    .pagination {
+      margin-top: 20px;
     }
   }
   .filterPeriod {
@@ -86,7 +86,10 @@ export default function Donation() {
   };
   const { t } = useTranslation();
   const history = useHistory();
-
+  // const [pagination, setPagination] = useState({
+  //   page: 1,
+  //   limit: 10,
+  // });
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 10,
@@ -104,7 +107,10 @@ export default function Donation() {
       setCategoryTypeName(currentCategory);
       setSubCategoryTypeName(currentSubCategory);
       setdropDownName(currentFilter);
-      setPagination({ ...pagination, page: parseInt(currentPage) });
+      setPagination((prev) => ({
+        ...prev,
+        page: parseInt(currentPage) || prev.page,
+      }));
     }
   }, []);
 
@@ -173,6 +179,7 @@ export default function Donation() {
     [
       "donations",
       pagination.page,
+      pagination.limit,
       selectedLang.id,
       newId,
       subCategoryId,
@@ -200,6 +207,8 @@ export default function Donation() {
     [donationQuery]
   );
 
+  const totalItems = donationQuery.data?.totalResults ?? 0;
+  const totalPages = donationQuery.data?.totalPages ?? 1;
   const queryClient = useQueryClient();
 
   const handleImportFile = async (event) => {
@@ -267,7 +276,7 @@ export default function Donation() {
                 );
               }}
             />
-            
+
             <ChangeCategoryType
               className={"me-1"}
               categoryTypeArray={subCategoryTypes}
@@ -373,6 +382,19 @@ export default function Donation() {
                       data={donationItems}
                       allPermissions={allPermissions}
                       subPermission={subPermission}
+                      totalItems={totalItems}
+                      currentPage={pagination.page}
+                      pageSize={pagination.limit}
+                      onChangePage={(page) =>
+                        setPagination((prev) => ({ ...prev, page }))
+                      }
+                      onChangePageSize={(pageSize) =>
+                        setPagination((prev) => ({
+                          ...prev,
+                          limit: pageSize, // Update this to limit
+                          page: 1, // Optionally reset to page 1
+                        }))
+                      }
                     />
                   </Then>
                   <Else>
@@ -385,7 +407,7 @@ export default function Donation() {
               </Else>
             </If>
 
-            <If condition={donationQuery?.data?.totalPages > 0}>
+            {/* <If condition={donationQuery?.data?.totalPages > 0}>
               <Then>
                 <Col xs={12} className="d-flex justify-content-center">
                   <ReactPaginate
@@ -422,7 +444,7 @@ export default function Donation() {
                   />
                 </Col>
               </Then>
-            </If>
+            </If> */}
           </Row>
         </div>
       </div>
