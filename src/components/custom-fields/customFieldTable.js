@@ -38,13 +38,6 @@ const CustomFieldTable = ({  }) => {
         width: 100,
         render: (isRequired) => (isRequired ? "Yes" : "No"), // Render as "Yes" or "No"
       },
-      // {
-      //   title: "Action",
-      //   key: "operation",
-      //   fixed: "right",
-      //   width: 100,
-      //   render: () => <a>action</a>,
-      // },
     ];
   }, []);
 

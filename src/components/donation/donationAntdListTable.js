@@ -112,16 +112,6 @@ export default function DonationANTDListTable(
     ...new Set(donation_custom_fields.map((field) => field.fieldName)),
   ];
 
-  //   const customFieldsValues = data.map((item) => {
-  //     const customFields = item.customFields || [];
-  //     return customFieldNames.reduce((acc, fieldName, index) => {
-  //       const customField = customFields.find(
-  //         (field) => field.fieldName === fieldName
-  //       );
-  //       acc[fieldName] = customField ? customField.value : "-";
-  //       return acc;
-  //     }, {});
-  //   });
   const customColumns = customFieldNames.map((fieldName) => {
     const titleLength = fieldName.length;
     const calculatedWidth = Math.max(150, titleLength * 10); // Adjust the multiplier as needed
@@ -227,14 +217,6 @@ export default function DonationANTDListTable(
       fixed: "right",
       width: 120,
     },
-    // {
-    //   title: "Action",
-    //   dataIndex: "edit",
-    //   key: "edit",
-    //   render: (text) => text,
-    //   fixed: "right",
-    //   width: 120,
-    // },
   ];
 
   const formatDate = (dateString) => {
@@ -264,11 +246,9 @@ export default function DonationANTDListTable(
         } else {
           acc[fieldName] = "-";
         }
-        // acc[fieldName] = customField ? customField.value : "-";
         return acc;
       }, {});
       return {
-        // customFields: item.customFields || [],
         id: idx + 1,
         username: (
           <div className="d-flex align-items-center">
@@ -417,13 +397,6 @@ export default function DonationANTDListTable(
         }}
         bordered
       />
-      {/* <Pagination
-        current={currentPage}
-        pageSize={pageSize}
-        total={totalItems}
-        onChange={onChangePage}
-        onShowSizeChange={(current, size) => onChangePageSize(size)}
-      /> */}
       <ReactToPrint
         trigger={() => (
           <span id="AllDonations" ref={pdfRef} style={{ display: "none" }}>

@@ -41,10 +41,6 @@ const AddMasterForm = ({ isOpen, toggle, onSuccess }) => {
     updatedFields[index].Required = !updatedFields[index].Required;
     setFormData({ ...formData, fields: updatedFields });
   };
-  // const handleCheckboxChange = () => {
-  //   setFormData((prevData) => ({ ...prevData, Required: !prevData.Required }));
-  // };
-
   const handleInputBlur = (field) => {
     if (!formData[field]) {
       setValidationMessages((prevMessages) => ({
@@ -94,7 +90,6 @@ const AddMasterForm = ({ isOpen, toggle, onSuccess }) => {
     }));
   };
   const handleRemoveField = (index) => {
-    // console.log(index);
     if (index !== 0) {
       const updatedFields = formData.fields.filter((_, i) => i !== index);
       setFormData({ ...formData, fields: updatedFields });
@@ -116,10 +111,6 @@ const AddMasterForm = ({ isOpen, toggle, onSuccess }) => {
         required: field.Required,
       })),
     };
-
-    // Handle form submission here (e.g., API call)
-    // console.log("Payload:", payload); // Debugging purpose
-    // return
     createMaster(payload)
       .then((res) => {
         Swal.fire({
@@ -323,82 +314,6 @@ const AddMasterForm = ({ isOpen, toggle, onSuccess }) => {
           <Button color="primary" onClick={handleAddField}>
             Add Another Field
           </Button>
-
-          {/* <Row>
-            <Col xs={12} sm={6} lg={6}>
-              <FormGroup>
-                <Label
-                  for="FieldName"
-                  style={{ fontSize: "13px", fontWeight: "500" }}
-                >
-                  Field Name <span className="text-danger">*</span>
-                </Label>
-                <Input
-                  type="text"
-                  name="FieldName"
-                  id="FieldName"
-                  value={formData.FieldName}
-                  onChange={handleChange}
-                  onBlur={() => handleInputBlur("FieldName")}
-                  style={{
-                    border: validationMessages.FieldName
-                      ? "1px solid #ff8744"
-                      : "",
-                  }}
-                />
-                {validationMessages.FieldName && (
-                  <div style={{ color: "#ff8744", fontSize: "12px" }}>
-                    {validationMessages.FieldName}
-                  </div>
-                )}
-              </FormGroup>
-            </Col>
-            <Col xs={12} sm={6} lg={6}>
-              <FormGroup>
-                <Label
-                  for="FieldType"
-                  style={{ fontSize: "13px", fontWeight: "500" }}
-                >
-                  Field Type <span className="text-danger">*</span>
-                </Label>
-                <Input
-                  type="select"
-                  name="FieldType"
-                  id="FieldType"
-                  value={formData.FieldType}
-                  onChange={handleChange}
-                  onBlur={() => handleInputBlur("FieldType")}
-                  style={{
-                    border: validationMessages.FieldType
-                      ? "1px solid #ff8744"
-                      : "",
-                  }}
-                >
-                  <option value="">Select Type</option>
-                  <option value="string">String</option>
-                  <option value="number">Number</option>
-                  <option value="boolean">Boolean</option>
-                  <option value="other">Other</option>
-                </Input>
-                {validationMessages.FieldType && (
-                  <div style={{ color: "#ff8744", fontSize: "12px" }}>
-                    {validationMessages.FieldType}
-                  </div>
-                )}
-              </FormGroup>
-            </Col>
-          </Row> */}
-
-          {/* <FormGroup check>
-            <Label check>
-              <Input
-                type="checkbox"
-                checked={formData.Required}
-                onChange={handleCheckboxChange}
-              />{" "}
-              Required
-            </Label>
-          </FormGroup> */}
         </Form>
       </ModalBody>
       <ModalFooter>

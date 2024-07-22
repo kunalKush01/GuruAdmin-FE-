@@ -26,7 +26,6 @@ const DonationWrapper = styled.div`
 `;
 export default function AddDonation() {
   const history = useHistory();
-  // const langArray = useSelector((state) => state.auth.availableLang);
   const loggedInUser = useSelector((state) => state.auth.userDetail.name);
 
   const searchParams = new URLSearchParams(history.location.search);
@@ -36,8 +35,6 @@ export default function AddDonation() {
   const currentFilter = searchParams.get("filter");
 
   const handleCreateDonation = async (payload) => {
-    // console.log(payload)
-    // return
     return createDonation(payload);
   };
 
@@ -50,7 +47,6 @@ export default function AddDonation() {
   );
 
   const customFieldsList = customFieldsQuery?.data?.customFields ?? [];
-  // console.log(customFieldsList)
   const schema = Yup.object().shape({
     Mobile: Yup.string().required("expenses_mobile_required"),
     SelectedUser: Yup.mixed().required("user_select_required"),

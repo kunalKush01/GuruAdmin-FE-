@@ -14,10 +14,9 @@ export function MasterANTDTable({ data, loadingRow }) {
   const [editingRowId, setEditingRowId] = useState(null);
   const [editedValues, setEditedValues] = useState({});
   const [validationMessages, setValidationMessages] = useState({});
-
   const handleEditStart = (rowId) => {
     setEditingRowId(rowId);
-    const row = data.list.find((item, index) => index + 1 == rowId);
+    const row =data&& data.list.find((item, index) => index + 1 == rowId);
     setEditedValues({ ...row });
   };
   const handleEditCancel = () => {
