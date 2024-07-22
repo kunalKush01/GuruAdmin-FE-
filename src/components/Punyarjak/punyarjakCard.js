@@ -34,72 +34,8 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 import BtnPopover from "../partials/btnPopover";
 import { CustomDropDown } from "../partials/customDropDown";
+import "../../assets/scss/common.scss";
 
-const PunyarjakCardWrapper = styled.div`
-  .imgContainer {
-    background-color: #fff7e8;
-    border-bottom: 1px solid rgb(255, 135, 68);
-    img {
-      border-radius: 10px 10px 0px 0px;
-    }
-  }
-  .card-title {
-    font: normal normal bold 13px/16px Noto Sans;
-    margin-bottom: 10px !important;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-  }
-  .card-text {
-    font: normal normal normal 12px/16px Noto Sans;
-    height: 50px;
-    overflow: hidden;
-  }
-  .card-body {
-    background: #fff7e8;
-    padding: 10px;
-  }
-  .btn-outline-primary {
-    border: 2px solid #ff8744 !important;
-    font: normal normal bold 14px/15px Noto Sans;
-    padding: 5px 10px;
-    border-radius: 20px;
-    margin-right: 10px;
-  }
-
-  .card-footer {
-    font: normal normal bold 10px/15px Noto sans;
-    border: none !important;
-    padding: 16px 0px 10px 0px;
-    div > div > img {
-      width: 15px;
-      margin-right: 5px;
-    }
-    img {
-      width: 30px;
-    }
-  }
-  .imgContent {
-    top: 5%;
-    color: #fff;
-    padding: 0px 5px;
-    font: normal normal bold 12px/30px noto sans;
-  }
-  img {
-    color: #583703;
-    font: 15px Noto Sans;
-  }
-  div.cardLangScroll {
-    /* height: 45px; */
-    display: flex;
-    min-width: 230px;
-    overflow-x: scroll !important;
-    ::-webkit-scrollbar {
-      width: 10px;
-      display: block;
-    }
-  }
-`;
 function BtnContent({
   punyarjakId,
   currentPage,
@@ -110,24 +46,6 @@ function BtnContent({
 }) {
   const { t } = useTranslation();
   const history = useHistory();
-  const BtnContentWraper = styled.div`
-    color: #583703;
-    font: normal normal normal 15px/20px noto sans;
-    .MainContainer {
-    }
-    .col-item {
-      cursor: pointer;
-      :hover {
-        background-color: #ff8744;
-        color: #fff;
-      }
-      .col-item-disabled {
-        cursor: not-allowed;
-        opacity: 0.5;
-      }
-    }
-  `;
-
   const handleDeletePunyarjak = async (payload) => {
     return deletePunyarjak(payload);
   };
@@ -144,7 +62,7 @@ function BtnContent({
 
   const langList = useSelector((state) => state.auth.availableLang);
   return (
-    <BtnContentWraper>
+    <div className="btncontentwraper">
       <Row className="MainContainer d-block">
         {allPermissions?.name === "all" || subPermission?.includes(EDIT) ? (
           <Col
@@ -222,7 +140,7 @@ function BtnContent({
           ""
         )}
       </Row>
-    </BtnContentWraper>
+    </div>
   );
 }
 
@@ -234,7 +152,7 @@ export default function PunyarjakCard({
   allPermissions,
 }) {
   return (
-    <PunyarjakCardWrapper>
+    <div className="punyarjakcardwrapper">
       <Card
         style={{
           width: "100%",
@@ -310,6 +228,6 @@ export default function PunyarjakCard({
           />
         }
       />
-    </PunyarjakCardWrapper>
+    </div>
   );
 }

@@ -18,19 +18,8 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { EDIT } from "../../utility/permissionsVariable";
 import CustomDataTable from "../partials/CustomDataTable";
 import EditDonation from "./editDonation";
-import { toast } from 'react-toastify';
-
-const RecentDonationTableWarper = styled.div`
-  color: #583703 !important;
-  font: normal normal bold 15px/23px Noto Sans;
-  .modal-body {
-    max-height: 600px !important;
-    overflow: auto !important;
-  }
-  .tableDes p {
-    margin-bottom: 0;
-  }
-`;
+import { toast } from "react-toastify";
+import "../../assets/scss/common.scss";
 
 export default function DonationListTable(
   { data, topdf, allPermissions, subPermission, financeReport },
@@ -74,7 +63,7 @@ export default function DonationListTable(
       estimateAmount: row?.amount,
     });
   };
-  
+
   const columns = [
     {
       name: t("commitment_Username"),
@@ -229,9 +218,24 @@ export default function DonationListTable(
                 if (!item.receiptLink) {
                   toast.error("Receipt link not available at this moment");
                 } else {
-                  const message = `Hello ${item.donarName}, thank you for your donation of ₹${item.amount.toLocaleString("en-IN")} to ${loggedTemple?.name}. Here is your receipt: https://docs.google.com/gview?url=${item.receiptLink}`;
-                  const phoneNumber = `${item.user?.countryCode?.replace("+", "") || ""}${item.user?.mobileNumber || ""}`;
-                  window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+                  const message = `Hello ${
+                    item.donarName
+                  }, thank you for your donation of ₹${item.amount.toLocaleString(
+                    "en-IN"
+                  )} to ${
+                    loggedTemple?.name
+                  }. Here is your receipt: https://docs.google.com/gview?url=${
+                    item.receiptLink
+                  }`;
+                  const phoneNumber = `${
+                    item.user?.countryCode?.replace("+", "") || ""
+                  }${item.user?.mobileNumber || ""}`;
+                  window.open(
+                    `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+                      message
+                    )}`,
+                    "_blank"
+                  );
                 }
               }}
             />
@@ -262,7 +266,7 @@ export default function DonationListTable(
     .toUpperCase();
 
   return (
-    <RecentDonationTableWarper>
+    <div className="recentdonationtablewrapper">
       <CustomDataTable maxHeight={""} columns={columns} data={Donatio_data} />
       <ReactToPrint
         trigger={() => (
@@ -554,6 +558,6 @@ export default function DonationListTable(
         donationId={modal?.donationId}
         estimateAmount={modal?.estimateAmount}
       />
-    </RecentDonationTableWarper>
+    </div>
   );
 }

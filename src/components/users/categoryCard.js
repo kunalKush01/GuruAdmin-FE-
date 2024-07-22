@@ -28,70 +28,10 @@ import cardThreeDotIcon from "../../assets/images/icons/news/threeDotIcon.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import BtnPopover from "../partials/btnPopover";
 import { CustomDropDown } from "../partials/customDropDown";
+import "../../assets/scss/common.scss";
 
-const NewsCardWaraper = styled.div`
-  .imgContainer {
-    border-radius: 10px 10px 0px 0px;
-    img {
-      border-radius: 10px 10px 0px 0px;
-    }
-  }
-  .card-title {
-    font: normal normal bold 13px/16px Noto Sans;
-    margin-bottom: 10px !important;
-  }
-  .card-text {
-    font: normal normal normal 12px/16px Noto Sans;
-    height: 50px;
-    overflow: hidden;
-  }
-  .card-body {
-    background: #fff7e8;
-    padding: 10px;
-  }
-  .btn-outline-primary {
-    border: 2px solid #ff8744 !important;
-    font: normal normal bold 14px/15px Noto Sans;
-    padding: 5px 10px;
-    border-radius: 20px;
-    margin-right: 10px;
-  }
-
-  .card-footer {
-    font: normal normal bold 10px/15px Noto sans;
-    border: none !important;
-    padding: 16px 0px 10px 0px;
-    div > div > img {
-      width: 15px;
-      margin-right: 5px;
-    }
-    img {
-      width: 30px;
-    }
-  }
-  .imgContent {
-    top: 80%;
-    color: #fff;
-    padding: 0px 5px;
-    font: normal normal bold 12px/30px noto sans;
-  }
-`;
 function BtnContent({ newsId }) {
   const history = useHistory();
-  const BtnContentWraper = styled.div`
-    color: #583703;
-    font: normal normal normal 15px/20px noto sans;
-    .MainContainer {
-    }
-    .col-item {
-      cursor: pointer;
-      :hover {
-        background-color: #ff8744;
-        color: #fff;
-      }
-    }
-  `;
-
   const handleDeleteNews = async (payload) => {
     return deleteNewsDetail(payload);
   };
@@ -106,7 +46,7 @@ function BtnContent({ newsId }) {
   });
 
   return (
-    <BtnContentWraper>
+    <div className="btncontentwraper">
       <Row className="MainContainer">
         <Col
           xs={12}
@@ -156,13 +96,13 @@ function BtnContent({ newsId }) {
           <Trans i18nKey={"news_popOver_Delete"} />
         </Col>
       </Row>
-    </BtnContentWraper>
+    </div>
   );
 }
 
 export default function CategoryCard({ data }) {
   return (
-    <NewsCardWaraper>
+    <div className="newscardwrapper">
       <Card
         style={{
           width: "300px",
@@ -221,6 +161,6 @@ export default function CategoryCard({ data }) {
         target={`popover-${data.id}`}
         content={<BtnContent newsId={data.id} />}
       />
-    </NewsCardWaraper>
+    </div>
   );
 }

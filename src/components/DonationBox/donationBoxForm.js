@@ -18,46 +18,7 @@ import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import RichTextField from "../partials/richTextEditorField";
 import LogListTable from "./logListTable";
-
-const FormWrapper = styled.div`
-  .FormikWrapper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addNews-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .newsContent {
-    height: 350px;
-    overflow: auto;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: #ff8744;
-
-    font: normal normal bold 13px/5px noto sans;
-  }
-  .btn-secondary {
-    background-color: #fff7e8 !important;
-    color: #583703 !important ;
-    border: none;
-    font: normal normal bold 20px/20px noto sans !important ;
-    box-shadow: none !important ;
-    :hover {
-      color: #fff !important;
-      background-color: #ff8744 !important;
-    }
-    .secondary.active {
-      color: #fff !important;
-    }
-  }
-`;
+import "../../assets/scss/common.scss";
 
 export default function DonationBoxForm({
   plusIconDisable = false,
@@ -107,7 +68,7 @@ export default function DonationBoxForm({
   const [showPrompt, setShowPrompt] = useState(true);
 
   return (
-    <FormWrapper className="FormikWrapper">
+    <div className="formwrapper FormikWrapper">
       <Formik
         // enableReinitialize
         initialValues={{ ...initialValues }}
@@ -208,7 +169,7 @@ export default function DonationBoxForm({
               ) : (
                 <Button
                   color="primary"
-                  className="addNotice-btn "
+                  className="addAction-btn "
                   type="submit"
                 >
                   {plusIconDisable && (
@@ -225,6 +186,6 @@ export default function DonationBoxForm({
           </Form>
         )}
       </Formik>
-    </FormWrapper>
+    </div>
   );
 }

@@ -14,21 +14,7 @@ import confirmationIcon from "../../../assets/images/icons/news/conformationIcon
 import CustomDataTable from "../../../components/partials/CustomDataTable";
 import { ConverFirstLatterToCapital } from "../../../utility/formater";
 import { DELETE, EDIT } from "../../../utility/permissionsVariable";
-
-const CattleInfoTableWrapper = styled.div`
-  color: #583703 !important;
-  margin-bottom: 1rem;
-  font: normal normal bold 15px/23px Noto Sans;
-
-  .modal-body {
-    max-height: 600px !important;
-    overflow: auto !important;
-  }
-  .tableDes p {
-    margin-bottom: 0;
-  }
-`;
-
+import "../../../assets/scss/viewCommon.scss";
 const CattleInfoTable = ({
   data = [],
   maxHeight,
@@ -242,14 +228,14 @@ const CattleInfoTable = ({
   }, [data]);
 
   return (
-    <CattleInfoTableWrapper>
+    <div className="cattleinfotablewrapper">
       <CustomDataTable
         maxHeight={maxHeight}
         height={height}
         columns={columns}
         data={CattlesInfo}
       />
-    </CattleInfoTableWrapper>
+    </div>
   );
 };
 

@@ -8,26 +8,13 @@ import { createPunyarjak } from "../../api/punarjakApi.js";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import PunyarjakForm from "../../components/Punyarjak/punyarjakUserForm.js";
 
-const PunyarjakWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addPunyarjak {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
-
+import "../../assets/scss/viewCommon.scss";
 const handleCreatePunyarjak = async (payload) => {
   return createPunyarjak(payload);
 };
 const schema = Yup.object().shape({
   description: Yup.string().required("punyarjak_desc_required").trim(),
-  title: Yup
-    .string()
+  title: Yup.string()
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
     .required("news_title_required")
     .trim(),
@@ -50,7 +37,7 @@ export default function AddPunyarjak() {
   };
 
   return (
-    <PunyarjakWrapper>
+    <div className="addviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -81,6 +68,6 @@ export default function AddPunyarjak() {
           buttonName={"add_punyarjak"}
         />
       </div>
-    </PunyarjakWrapper>
+    </div>
   );
 }

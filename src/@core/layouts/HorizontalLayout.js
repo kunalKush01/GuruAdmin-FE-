@@ -153,11 +153,11 @@ const HorizontalLayout = (props) => {
           <Navbar
             tag="div"
             expand="sm"
-            style={{ background: "#FF8744", top: "85px" }}
+            // style={{ background: "#53f0b4", top: "85px" }}
             light={skin !== "dark"}
             dark={skin === "dark" || bgColorCondition}
             className={classnames(
-              `p-1 navbar-horizontal navbar-shadow menu-border`,
+              `p-1 navbar-horizontal navbar-shadow menu-border custom-navbar`,
               {
                 [navbarClasses[navbarType]]: navbarType !== "static",
                 "floating-nav":

@@ -16,23 +16,10 @@ import {
 import CategoryForm from "../../../components/categories/categoryForm";
 import { ConverFirstLatterToCapital } from "../../../utility/formater";
 
-const CategoryLangWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  // .ImagesVideos {
-  //   font: normal normal bold 15px/33px Noto Sans;
-  // }
-  .categoryAddLang {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
-
+import "../../../assets/scss/viewCommon.scss";
 const schema = Yup.object().shape({
   MasterCategory: Yup.mixed().required("categories_category_required"),
-  SubCategory: Yup
-    .string()
+  SubCategory: Yup.string()
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
     .required("categories_sub_category_required")
     .trim(),
@@ -95,7 +82,7 @@ export default function AddLanguageCategory() {
   ]);
 
   return (
-    <CategoryLangWrapper>
+    <div className="categorylangwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -150,6 +137,6 @@ export default function AddLanguageCategory() {
       ) : (
         ""
       )}
-    </CategoryLangWrapper>
+    </div>
   );
 }

@@ -11,18 +11,7 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import NewsForm from "../../components/news/newsForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-const NewsWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addNews {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import "../../assets/scss/viewCommon.scss";
 
 const handleCreateNews = async (payload) => {
   return createNews(payload);
@@ -70,7 +59,7 @@ export default function AddNews() {
     DateTime: new Date(),
   };
   return (
-    <NewsWrapper>
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex align-items-center ">
           <img
@@ -80,7 +69,7 @@ export default function AddNews() {
               history.push(`/news?page=${currentPage}&filter=${currentFilter}`)
             }
           />
-          <div className="addNews">
+          <div className="addAction">
             <Trans i18nKey={"news_AddNews"} />
           </div>
         </div>
@@ -95,6 +84,6 @@ export default function AddNews() {
           buttonName={"news_button_Publish"}
         />
       </div>
-    </NewsWrapper>
+    </div>
   );
 }

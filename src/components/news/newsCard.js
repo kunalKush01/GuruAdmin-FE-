@@ -44,75 +44,8 @@ import {
 import BtnPopover from "../partials/btnPopover";
 import { CustomDropDown } from "../partials/customDropDown";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
+import "../../assets/scss/common.scss";
 
-const NewsCardWrapper = styled.div`
-  .imgContainer {
-    background-color: #fff7e8;
-    border-bottom: 1px solid rgb(255, 135, 68);
-    img {
-      border-radius: 10px 10px 0px 0px;
-    }
-  }
-  .card-title {
-    font: normal normal bold 13px/16px Noto Sans;
-    margin-bottom: 10px !important;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .card-text {
-    font: normal normal normal 12px/16px Noto Sans;
-    height: 50px;
-    overflow: hidden;
-  }
-  .card-body {
-    background: #fff7e8;
-    padding: 10px;
-  }
-  .btn-outline-primary {
-    border: 2px solid #ff8744 !important;
-    font: normal normal bold 14px/15px Noto Sans;
-    padding: 5px 10px;
-    border-radius: 20px;
-    margin-right: 10px;
-  }
-
-  .card-footer {
-    font: normal normal bold 10px/15px Noto sans;
-    border: none !important;
-    padding: 16px 0px 10px 0px;
-    div > div > img {
-      width: 15px;
-      margin-right: 5px;
-    }
-    img {
-      width: 30px;
-    }
-  }
-  .imgContent {
-    top: 5%;
-    color: #fff;
-    padding: 0px 5px;
-    font: normal normal bold 12px/30px noto sans;
-  }
-  div.cardLangScroll {
-    /* height: 45px; */
-    display: flex;
-    min-width: 230px;
-    overflow-x: scroll !important;
-    ::-webkit-scrollbar {
-      width: 10px;
-      display: block;
-    }
-  }
-  .publishMenu {
-    background-color: #fff7e8;
-  }
-  img {
-    color: #583703;
-    font: 15px Noto Sans;
-  }
-`;
 function BtnContent({
   newsId,
   currentPage,
@@ -124,24 +57,6 @@ function BtnContent({
 }) {
   const { t } = useTranslation();
   const history = useHistory();
-  const BtnContentWraper = styled.div`
-    color: #583703;
-    font: normal normal normal 15px/20px noto sans;
-    .MainContainer {
-    }
-    .col-item {
-      cursor: pointer;
-      :hover {
-        background-color: #ff8744;
-        color: #fff;
-      }
-      .col-item-disabled {
-        cursor: not-allowed;
-        opacity: 0.5;
-      }
-    }
-  `;
-
   const handleDeleteNews = async (payload) => {
     return deleteNewsDetail(payload);
   };
@@ -158,7 +73,7 @@ function BtnContent({
 
   const langList = useSelector((state) => state.auth.availableLang);
   return (
-    <BtnContentWraper>
+    <div className="listviewwrapper">
       <Row className="MainContainer d-block ">
         {(allPermissions?.name === "all" ||
           subPermission?.includes(EDIT) ||
@@ -239,7 +154,7 @@ function BtnContent({
           ""
         )}
       </Row>
-    </BtnContentWraper>
+    </div>
   );
 }
 
@@ -284,7 +199,7 @@ export default function NewsCard({
     },
   });
   return (
-    <NewsCardWrapper>
+    <div className="newscardwrapper">
       <Card
         style={{
           width: "100%",
@@ -293,7 +208,7 @@ export default function NewsCard({
           overflow: "hidden",
         }}
       >
-        <div className="position-relative cursor-pointer imgContainer ">
+        <div className="position-relative cursor-pointer imgContainer">
           <img
             onClick={() => history.push(`/news/about/${data?.id}`, data.id)}
             alt="News Image"
@@ -306,7 +221,7 @@ export default function NewsCard({
             }}
             src={data?.images[0]?.presignedUrl ?? placeHolder}
           />
-          <div className=" position-absolute imgContent  w-100 ">
+          <div className="position-absolute imgContent  w-100">
             {(allPermissions?.name === "all" ||
               subPermission?.includes(PUBLISHER)) && (
               <div className="text-end">
@@ -454,6 +369,6 @@ export default function NewsCard({
           </Row>
         </ModalBody>
       </Modal>
-    </NewsCardWrapper>
+    </div>
   );
 }

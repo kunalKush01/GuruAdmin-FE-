@@ -8,6 +8,7 @@
 	Author: PIXINVENT
 	Author URL: http://www.themeforest.net/user/pixinvent
 ==========================================================================================*/
+@use '../../../../../../assets/scss/variables/variables' as vars;
 
 @import '../../../bootstrap-extended/include'; // Bootstrap includes
 @import '../../../components/include'; // Components includes
@@ -38,6 +39,14 @@
   .horizontal-menu-wrapper {
     .header-navbar {
       min-height: $horizontal-menu-height;
+      background: #313c50;
+    }
+  }
+
+  .horizontal-menu-wrapper {
+    .custom-navbar {
+      background: vars.$primary-color;
+      top: 85px;
     }
   }
 

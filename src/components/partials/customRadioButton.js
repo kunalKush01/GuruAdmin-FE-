@@ -2,18 +2,8 @@ import { useField } from "formik";
 import React from "react";
 import { Trans } from "react-i18next";
 import styled from "styled-components";
+import "../../assets/scss/common.scss";
 
-const RadioButtonWrapper = styled.div`
-  label {
-    /* margin-bottom: 0px; */
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .form-check {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-  }
-`;
 const CustomRadioButton = ({ label, heading, customOnChange, ...props }) => {
   const [field, meta, helper] = useField(props);
   const handleChange = (e) => {
@@ -26,7 +16,7 @@ const CustomRadioButton = ({ label, heading, customOnChange, ...props }) => {
     }
   };
   return (
-    <RadioButtonWrapper>
+    <div className="radiobuttonwrapper">
       <div className="form-check">
         <input
           className="form-check-input"
@@ -43,7 +33,7 @@ const CustomRadioButton = ({ label, heading, customOnChange, ...props }) => {
           </label>
         )}
       </div>
-    </RadioButtonWrapper>
+    </div>
   );
 };
 

@@ -1,43 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-
-const CattleDashboardCardWrapper = styled.div`
-  width: 100%;
-  height: 150px;
-  .customCard {
-    background-color: #fff7e8;
-    padding: 1.5rem;
-    width: 400px;
-    height: 100%;
-    border-radius: 5px;
-  }
-  .cardTitle {
-    font-size: 17px;
-    font-family: Noto Sans;
-    color: #583703;
-  }
-  .cardNumber {
-    font-size: 25px;
-    width: 300px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-weight: bold;
-    color: #583703;
-  }
-  .sub-heading {
-    font-weight: bold;
-    color: #583703;
-    margin: 0.5rem 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 50%;
-  }
-  .count {
-    font-weight: normal;
-    color: #583703;
-  }
-`;
+import "../assets/scss/common.scss";
 
 const CattleDashboardCard = ({
   showRupeesSymbol = false,
@@ -47,7 +10,7 @@ const CattleDashboardCard = ({
   data,
 }) => {
   return (
-    <CattleDashboardCardWrapper>
+    <div className="cattledashboardcardwrapper">
       <div className="customCard">
         <p className="cardTitle">{title}</p>
         <h2
@@ -143,7 +106,7 @@ const CattleDashboardCard = ({
           </div>
         )} */}
       </div>
-    </CattleDashboardCardWrapper>
+    </div>
   );
 };
 

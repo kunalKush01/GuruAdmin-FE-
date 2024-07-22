@@ -3,11 +3,7 @@ import ReactSelect from "react-select";
 import { Trans } from "react-i18next";
 import { useField } from "formik";
 import styled from "styled-components";
-
-const ReactSelectWarapper = styled.div`
-  /* margin-bottom: 10px; */
-  font: normal normal bold 15px/33px Noto Sans;
-`;
+import "../../assets/scss/common.scss";
 
 export const CustomReactSelect = ({
   required = false,
@@ -151,7 +147,7 @@ export const CustomReactSelect = ({
   };
   // const [field, meta, helpers] = useField(props);
   return (
-    <ReactSelectWarapper>
+    <div className="reactselectwrapper">
       {props.labelName && (
         <div style={{ font: "normal normal bold 15px/33px Noto Sans" }}>
           {`${props.labelName}`}
@@ -172,6 +168,6 @@ export const CustomReactSelect = ({
         styles={customStyles}
         {...props}
       />
-    </ReactSelectWarapper>
+    </div>
   );
 };

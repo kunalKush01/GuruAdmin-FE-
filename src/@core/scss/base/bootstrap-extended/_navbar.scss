@@ -7,6 +7,7 @@
     Author: PIXINVENT
     Author URL: http://www.themeforest.net/user/pixinvent
 ================================================================================================*/
+@use '../../../../assets/scss/variables/variables' as vars;
 
 @function set-navbar-text-color($color) {
   @if (lightness($color) > 50) {

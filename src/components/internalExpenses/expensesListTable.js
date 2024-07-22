@@ -15,6 +15,7 @@ import confirmationIcon from "../../assets/images/icons/news/conformationIcon.sv
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 import CustomDataTable from "../partials/CustomDataTable";
+import "../../assets/scss/common.scss";
 
 export function ExpensesListTable({
   data,
@@ -176,27 +177,9 @@ export function ExpensesListTable({
     }));
   }, [data]);
 
-  const RecentDonationTableWarper = styled.div`
-    color: #583703 !important;
-    /* margin-right: 20px; */
-    font: normal normal bold 15px/23px Noto Sans;
-    .tableDes p {
-      margin-bottom: 0;
-      text-overflow: ellipsis;
-      overflow: hidden;
-    }
-    .tableDes {
-      max-height: 1.7rem;
-    }
-    .viewLogs {
-      font: normal normal bold 15px/33px Noto Sans;
-      color: #ff8744;
-    }
-  `;
-
   return (
-    <RecentDonationTableWarper>
+    <div className="recentdonationtablewrapper">
       <CustomDataTable maxHeight={""} columns={columns} data={categoriesList} />
-    </RecentDonationTableWarper>
+    </div>
   );
 }
