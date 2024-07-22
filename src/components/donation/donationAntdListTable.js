@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import numberToWords from "number-to-words";
 import { useMemo, useRef, useState } from "react";
@@ -18,8 +18,10 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { EDIT } from "../../utility/permissionsVariable";
 import CustomDataTable from "../partials/CustomDataTable";
 import EditDonation from "./editDonation";
-import { toast } from 'react-toastify';
-
+import { toast } from "react-toastify";
+import { Table, Pagination } from "antd";
+import "./donationStyle.css";
+import { getDonationCustomFields } from "../../api/customFieldsApi";
 const RecentDonationTableWarper = styled.div`
   color: #583703 !important;
   font: normal normal bold 15px/23px Noto Sans;
@@ -30,12 +32,32 @@ const RecentDonationTableWarper = styled.div`
   .tableDes p {
     margin-bottom: 0;
   }
+  .ant-table-body {
+      max-height: 400px;
+      height: 353px;
+      overflow: auto;
+      ::-webkit-scrollbar {
+        display: block;
+      }
+    }
 `;
 
-export default function DonationListTable(
-  { data, topdf, allPermissions, subPermission, financeReport },
+export default function DonationANTDListTable(
+  {
+    data,
+    topdf,
+    allPermissions,
+    subPermission,
+    financeReport,
+    totalItems,
+    currentPage,
+    pageSize,
+    onChangePage,
+    onChangePageSize,
+  },
   args
 ) {
+  // console.log(data)
   const { t } = useTranslation();
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
@@ -74,82 +96,158 @@ export default function DonationListTable(
       estimateAmount: row?.amount,
     });
   };
-  
+  const query = useQuery(
+    ["getDonationFields"],
+    () => getDonationCustomFields(),
+    {
+      keepPreviousData: true,
+    }
+  );
+
+  const donation_custom_fields = useMemo(
+    () => query?.data?.customFields ?? [],
+    [query]
+  );
+  const customFieldNames = [
+    ...new Set(donation_custom_fields.map((field) => field.fieldName)),
+  ];
+
+  const customColumns = customFieldNames.map((fieldName) => {
+    const titleLength = fieldName.length;
+    const calculatedWidth = Math.max(150, titleLength * 10); // Adjust the multiplier as needed
+
+    return {
+      title: fieldName,
+      dataIndex: fieldName,
+      key: fieldName,
+      width: calculatedWidth,
+      render: (text) => text || "-",
+    };
+  });
+
   const columns = [
     {
-      name: t("commitment_Username"),
-      selector: (row) => row.username,
-      cellExport: (row) => row.username,
-      style: {
-        font: "normal normal 700 13px/20px Noto Sans !important",
-      },
+      title: t("commitment_Username"),
+      dataIndex: "username",
+      key: "username",
+      render: (text) => text,
+      onCell: () => ({
+        style: {
+          font: "normal normal 700 13px/20px Noto Sans !important",
+        },
+      }),
+      width: 200,
+      fixed: "left",
+    },
+    {
+      title: t("dashboard_Recent_DonorNumber"),
+      dataIndex: "mobileNumber",
+      key: "mobileNumber",
+      render: (text) => text,
       width: "150px",
+      width: 150,
     },
     {
-      name: t("dashboard_Recent_DonorNumber"),
-      selector: (row) => row.mobileNumber,
-      cellExport: (row) => row.mobileNumber,
-      width: "150px",
+      title: t("dashboard_Recent_DonorName"),
+      dataIndex: "donarName",
+      key: "donarName",
+      render: (text) => text,
+      width: 150,
     },
     {
-      name: t("dashboard_Recent_DonorName"),
-      selector: (row) => row.donarName,
-      cellExport: (row) => row.donarName,
-    },
-
-    {
-      name: t("category"),
-      selector: (row) => row.category,
-      cellExport: (row) => row.category,
+      title: t("category"),
+      dataIndex: "category",
+      key: "category",
+      render: (text) => text,
       width: "120px",
+      width: 150,
     },
     {
-      name: t("categories_sub_category"),
-      selector: (row) => row.subCategory,
-      cellExport: (row) => row.subCategory,
+      title: t("categories_sub_category"),
+      dataIndex: "subCategory",
+      key: "subCategory",
+      render: (text) => text,
+      width: 150,
     },
     {
-      name: t("dashboard_Recent_DonorDate"),
-      selector: (row) => row.dateTime,
+      title: t("dashboard_Recent_DonorDate"),
+      dataIndex: "dateTime",
+      key: "dateTime",
+      render: (text) => text,
       width: "150px",
-      cellExport: (row) => row.dateTime,
+      width: 180,
     },
     {
-      name: t("original_amount"),
-      width: "180px",
-      selector: (row) => row.originalAmount,
-      cellExport: (row) => row.originalAmount,
+      title: t("original_amount"),
+      dataIndex: "originalAmount",
+      key: "originalAmount",
+      render: (text) => text,
+      //   width: "180px",
+      width: 150,
     },
     {
-      name: t("estimate_amount"),
-      width: "180px",
-      selector: (row) => row.amount,
-      cellExport: (row) => row.amount,
+      title: t("estimate_amount"),
+      dataIndex: "amount",
+      key: "amount",
+      render: (text) => text,
+      //   width: "180px",
+      width: 150,
     },
     {
-      name: t("dashboard_Recent_DonorCommitId"),
-      selector: (row) => row.commitmentID,
-      width: "180px",
-      cellExport: (row) => row.commitmentID,
+      title: t("dashboard_Recent_DonorCommitId"),
+      dataIndex: "commitmentID",
+      key: "commitmentID",
+      render: (text) => text,
+      //   width: "180px",
+      width: 150,
     },
     {
-      name: t("created_by"),
-      selector: (row) => row.createdBy,
-      cellExport: (row) => row.createdBy,
+      title: t("created_by"),
+      dataIndex: "createdBy",
+      key: "createdBy",
+      render: (text) => text,
+      width: 150,
     },
+    ...customColumns,
     {
-      name: t("dashboard_Recent_DonorReceipt"),
-      selector: (row) => row.receipt,
-    },
-
-    {
-      name: "Action",
-      selector: (row) => row.edit,
+      title: t("dashboard_Recent_DonorReceipt"),
+      dataIndex: "receipt",
+      key: "receipt",
+      render: (text) => text,
+      fixed: "right",
+      width: 120,
     },
   ];
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    }).format(date);
+  };
   const Donatio_data = useMemo(() => {
     return data.map((item, idx) => {
+      const customFields = item.customFields || {};
+      const customFieldData = customFieldNames.reduce((acc, fieldName) => {
+        const customField = customFields.find(
+          (field) => field.fieldName === fieldName
+        );
+        if (customField) {
+          const value = customField.value;
+          if (typeof value === "boolean") {
+            acc[fieldName] = value ? "True" : "False";
+          } else if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+            acc[fieldName] = formatDate(value);
+          } else {
+            acc[fieldName] = value;
+          }
+        } else {
+          acc[fieldName] = "-";
+        }
+        return acc;
+      }, {});
       return {
         id: idx + 1,
         username: (
@@ -162,8 +260,8 @@ export default function DonationListTable(
               }
               style={{
                 marginRight: "5px",
-                width: "30px",
-                height: "30px",
+                width: "25px",
+                height: "25px",
               }}
               className="rounded-circle"
             />
@@ -179,6 +277,7 @@ export default function DonationListTable(
         category: (
           <div>
             {ConverFirstLatterToCapital(item?.masterCategory?.name ?? "-")}
+            {/* {item?.subCategory && `(${item?.subCategory?.name ?? ""})`} */}
           </div>
         ),
         subCategory: ConverFirstLatterToCapital(item?.category?.name ?? "-"),
@@ -229,9 +328,24 @@ export default function DonationListTable(
                 if (!item.receiptLink) {
                   toast.error("Receipt link not available at this moment");
                 } else {
-                  const message = `Hello ${item.donarName}, thank you for your donation of ₹${item.amount.toLocaleString("en-IN")} to ${loggedTemple?.name}. Here is your receipt: https://docs.google.com/gview?url=${item.receiptLink}`;
-                  const phoneNumber = `${item.user?.countryCode?.replace("+", "") || ""}${item.user?.mobileNumber || ""}`;
-                  window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+                  const message = `Hello ${
+                    item.donarName
+                  }, thank you for your donation of ₹${item.amount.toLocaleString(
+                    "en-IN"
+                  )} to ${
+                    loggedTemple?.name
+                  }. Here is your receipt: https://docs.google.com/gview?url=${
+                    item.receiptLink
+                  }`;
+                  const phoneNumber = `${
+                    item.user?.countryCode?.replace("+", "") || ""
+                  }${item.user?.mobileNumber || ""}`;
+                  window.open(
+                    `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+                      message
+                    )}`,
+                    "_blank"
+                  );
                 }
               }}
             />
@@ -253,17 +367,36 @@ export default function DonationListTable(
           ) : (
             ""
           ),
+        ...customFieldData,
       };
     });
-  }, [data, isLoading]);
+  }, [data, isLoading, donation_custom_fields]);
 
   const inWordsNumber = numberToWords
     .toWords(parseInt(receipt?.amount ?? 0))
     .toUpperCase();
-
   return (
     <RecentDonationTableWarper>
-      <CustomDataTable maxHeight={""} columns={columns} data={Donatio_data} />
+      <Table
+        columns={columns}
+        dataSource={Donatio_data}
+        scroll={{
+          x: 1500,
+          y: 400,
+        }}
+        sticky={{
+          offsetHeader: 64,
+        }}
+        pagination={{
+          current: currentPage,
+          pageSize: pageSize,
+          total: totalItems,
+          onChange: onChangePage,
+          onShowSizeChange: (current, size) => onChangePageSize(size),
+          showSizeChanger: true,
+        }}
+        bordered
+      />
       <ReactToPrint
         trigger={() => (
           <span id="AllDonations" ref={pdfRef} style={{ display: "none" }}>
@@ -431,6 +564,7 @@ export default function DonationListTable(
                 </div>
               </div>
             </div>
+
             <div
               style={{
                 display: "flex",
@@ -513,6 +647,7 @@ export default function DonationListTable(
                 {receipt?.masterCategory?.name} / {receipt?.category?.name}
               </div>
             </div>
+
             <div
               style={{
                 display: "flex",

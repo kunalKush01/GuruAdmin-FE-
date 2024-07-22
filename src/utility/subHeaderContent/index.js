@@ -155,6 +155,14 @@ export const subHeaderContentResponsive = [
         url: "/configuration/categories",
       },
       {
+        name: "masters",
+        url: "/configuration/masters",
+      },
+      {
+        name: "custom_field",
+        url: "/configuration/custom-fields",
+      },
+      {
         name: "user",
         url: "/configuration/users",
       },

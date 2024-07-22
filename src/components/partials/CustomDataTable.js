@@ -33,14 +33,23 @@ const DataTableWarraper = styled.div`
     //cursor: all-scroll;
     /* max-width: 70rem; */
     border: 2px solid #ff8744;
-    /* overflow: auto; */
+    overflow: auto; 
     border-radius: 8px;
     .rdt_TableCell {
       color: #583703 !important;
       font: normal normal normal 13px/20px noto sans;
       /* justify-content: center; */
     }
-
+    ::-webkit-scrollbar {
+        display: none;
+      }
+      .rdt_TableHead {
+      position: sticky;
+      top: 0; 
+      z-index: 1000; 
+      background-color: white; 
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    }
     .rdt_TableHeadRow {
       border: 0px !important;
       .rdt_TableCol {
@@ -58,7 +67,7 @@ const DataTableWarraper = styled.div`
     .rdt_TableBody {
       max-height: ${(props) => props.maxHeight ?? ""};
       height: ${(props) => props.height ?? ""};
-      overflow: auto;
+      ${"" /* overflow: auto; */}
       ::-webkit-scrollbar {
         display: block;
       }
@@ -78,6 +87,8 @@ function CustomDataTable({
   onSelectedRowsChange,
   noDataComponent,
   height,
+  masterListPagination,
+  masterPagination,
 }) {
   // const tableData = {
   //     columns,
@@ -88,7 +99,7 @@ function CustomDataTable({
     <>
       <DataTableWarraper
         minWidth={minWidth}
-        maxHeight={maxHeight ?? "  270px"}
+        maxHeight={maxHeight ? "100%" : "400px"}
         height={height}
       >
         <DataTable
@@ -102,6 +113,8 @@ function CustomDataTable({
           selectableRowsHighlight={selectableRowsHighlight} // highlight selected rows
           selectableRowSelected={selectableRowSelected}
           data={data}
+          pagination={(masterPagination||masterListPagination) && true}
+          // fixedHeader={masterPagination && true}
         />
       </DataTableWarraper>
     </>

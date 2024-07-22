@@ -33,6 +33,9 @@ export const englishContent = {
   category: "Category",
   user: "Sub Admin",
   report_Dispute: "Report & Dispute",
+  masters:"Masters",
+  custom_field:"Custom Field",
+  masters_list: "Master List",
   cancel: "Cancel",
   confirm: "Confirm Delete",
   save_changes: "Save Changes",
@@ -328,8 +331,9 @@ export const englishContent = {
   category_sure: "Are you sure you want to permanently delete this category ? ",
   category_not_found: "Categories Unavailable  ",
   category_not_click_add_category:
-    "To introduce a new category, click on 'Add Category'.",
-
+  "To introduce a new category, click on 'Add Category'.",
+  masters_not_found: "Master List Unavailable",
+  
   // All static content of Users
   users_AddUser: "Add Sub Admin ",
   users_latest_User: "Sub Admin ",
