@@ -6,7 +6,6 @@ import { Helmet } from "react-helmet";
 import { Trans, useTranslation } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
@@ -16,13 +15,12 @@ import {
   getAllMasterCategories,
 } from "../../api/categoryApi";
 import { getAllDonation, importDonationFile } from "../../api/donationApi";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import DonationListTable from "../../components/donation/donationListTable";
 import { ChangeCategoryType } from "../../components/partials/categoryDropdown";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
 import NoContent from "../../components/partials/noContent";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { WRITE } from "../../utility/permissionsVariable";
+import DonationANTDListTable from "../../components/donation/donationAntdListTable";
 
 const DonationWrapper = styled.div`
   color: #583703;
@@ -32,7 +30,6 @@ const DonationWrapper = styled.div`
   // }
   .addDonation {
     color: #583703;
-    /* display: flex; */
     align-items: center;
   }
 
@@ -44,13 +41,15 @@ const DonationWrapper = styled.div`
   }
   .addDonation-btn {
     padding: 8px 20px;
-    /* margin-left: 10px; */
     font: normal normal bold 15px/20px noto sans;
   }
   .donationContent {
     margin-top: 1rem;
     ::-webkit-scrollbar {
       display: none;
+    }
+    .pagination {
+      margin-top: 20px;
     }
   }
   .filterPeriod {
@@ -82,7 +81,6 @@ export default function Donation() {
   };
   const { t } = useTranslation();
   const history = useHistory();
-
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 10,
@@ -100,7 +98,10 @@ export default function Donation() {
       setCategoryTypeName(currentCategory);
       setSubCategoryTypeName(currentSubCategory);
       setdropDownName(currentFilter);
-      setPagination({ ...pagination, page: parseInt(currentPage) });
+      setPagination((prev) => ({
+        ...prev,
+        page: parseInt(currentPage) || prev.page,
+      }));
     }
   }, []);
 
@@ -137,7 +138,6 @@ export default function Donation() {
   });
   const [categoryId, setCategoryId] = useState();
 
-  // sub category
   const subCategoryTypeQuery = useQuery(
     ["subCategoryTypes", newId],
     () =>
@@ -169,6 +169,7 @@ export default function Donation() {
     [
       "donations",
       pagination.page,
+      pagination.limit,
       selectedLang.id,
       newId,
       subCategoryId,
@@ -196,6 +197,8 @@ export default function Donation() {
     [donationQuery]
   );
 
+  const totalItems = donationQuery.data?.totalResults ?? 0;
+  const totalPages = donationQuery.data?.totalPages ?? 1;
   const queryClient = useQueryClient();
 
   const handleImportFile = async (event) => {
@@ -234,11 +237,6 @@ export default function Donation() {
       <div>
         <div className="d-lg-flex justify-content-between align-items-center ">
           <div className="d-flex align-items-center mb-2 mb-lg-0">
-            {/* <img
-              src={arrowLeft}
-              className="me-2 cursor-pointer align-self-center"
-              onClick={() => history.push("/")}
-            /> */}
             <div className="addDonation d-flex">
               <div className="">
                 <div>
@@ -263,7 +261,7 @@ export default function Donation() {
                 );
               }}
             />
-            
+
             <ChangeCategoryType
               className={"me-1"}
               categoryTypeArray={subCategoryTypes}
@@ -343,7 +341,7 @@ export default function Donation() {
             </Then>
           </If>
         </div>
-        <div className="donationContent  ">
+        <div className="donationContent">
           <Row>
             <If condition={donationQuery.isLoading} disableMemo>
               <Then>
@@ -360,10 +358,23 @@ export default function Donation() {
               <Else>
                 <If condition={donationItems.length != 0} disableMemo>
                   <Then>
-                    <DonationListTable
+                    <DonationANTDListTable
                       data={donationItems}
                       allPermissions={allPermissions}
                       subPermission={subPermission}
+                      totalItems={totalItems}
+                      currentPage={pagination.page}
+                      pageSize={pagination.limit}
+                      onChangePage={(page) =>
+                        setPagination((prev) => ({ ...prev, page }))
+                      }
+                      onChangePageSize={(pageSize) =>
+                        setPagination((prev) => ({
+                          ...prev,
+                          limit: pageSize, 
+                          page: 1,
+                        }))
+                      }
                     />
                   </Then>
                   <Else>
@@ -374,45 +385,6 @@ export default function Donation() {
                   </Else>
                 </If>
               </Else>
-            </If>
-
-            <If condition={donationQuery?.data?.totalPages > 1}>
-              <Then>
-                <Col xs={12} className="d-flex justify-content-center">
-                  <ReactPaginate
-                    nextLabel=""
-                    forcePage={pagination.page - 1}
-                    breakLabel="..."
-                    previousLabel=""
-                    pageCount={donationQuery?.data?.totalPages || 0}
-                    activeClassName="active"
-                    initialPage={
-                      parseInt(searchParams.get("page"))
-                        ? parseInt(searchParams.get("page")) - 1
-                        : pagination.page - 1
-                    }
-                    breakClassName="page-item"
-                    pageClassName={"page-item"}
-                    breakLinkClassName="page-link"
-                    nextLinkClassName={"page-link"}
-                    pageLinkClassName={"page-link"}
-                    nextClassName={"page-item next"}
-                    previousLinkClassName={"page-link"}
-                    previousClassName={"page-item prev"}
-                    onPageChange={(page) => {
-                      setPagination({ ...pagination, page: page.selected + 1 });
-                      history.push(
-                        `/donation?page=${
-                          page.selected + 1
-                        }&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}`
-                      );
-                    }}
-                    containerClassName={
-                      "pagination react-paginate justify-content-end p-1"
-                    }
-                  />
-                </Col>
-              </Then>
             </If>
           </Row>
         </div>

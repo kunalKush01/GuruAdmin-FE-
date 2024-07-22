@@ -61,6 +61,26 @@ function BtnContent({ setClosePopover, permissionsKey }) {
         >
           <Trans i18nKey={"category"} />
         </Col>
+        <Col
+          xs={12}
+          className="col-item"
+          onClick={() => {
+            setClosePopover(false);
+            history.push(`/configuration/masters`);
+          }}
+        >
+          <Trans i18nKey={"masters"} />
+        </Col>
+        <Col
+          xs={12}
+          className="col-item"
+          onClick={() => {
+            setClosePopover(false);
+            history.push(`/configuration/custom-fields`);
+          }}
+        >
+          <Trans i18nKey={"custom_field"} />
+        </Col>
 
         {trustType == "Gaushala" && (
           <Col

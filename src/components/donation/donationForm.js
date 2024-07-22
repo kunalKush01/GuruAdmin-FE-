@@ -63,11 +63,14 @@ export default function DonationForm({
   validationSchema,
   initialValues,
   showTimeInput,
+  customFieldsList,
 }) {
   const history = useHistory();
   const donationQueryClient = useQueryClient();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const [loading, setLoading] = useState(false);
+  const trustId = localStorage.getItem("trustId");
+
   const masterloadOptionQuery = useQuery(
     ["MasterCategory", selectedLang.id],
     async () =>
@@ -100,6 +103,23 @@ export default function DonationForm({
           onSubmit={(e) => {
             setShowPrompt(false);
             setLoading(true);
+            const transformedCustomFields = Object.entries(e.customFields).map(
+              ([key, field]) => ({
+                fieldName: key,
+                fieldType:
+                  typeof field.value === "boolean"
+                    ? "Boolean"
+                    : typeof field.value === "number"
+                    ? "Number"
+                    : typeof field.value === "string" &&
+                      !isNaN(Date.parse(field.value))
+                    ? "Date"
+                    : "String", // Default to String for other types
+                isRequired: false,
+                value: field.value !== undefined ? field.value : field,
+                trustId: trustId,
+              })
+            );
             donationMutation.mutate({
               categoryId: e?.SelectedSubCategory?.id,
               amount: e?.Amount,
@@ -118,6 +138,7 @@ export default function DonationForm({
               isArticle: toggleState,
               isGovernment:
                 !payDonation && e?.isGovernment === "YES" ? true : false,
+              customFields: transformedCustomFields,
             });
           }}
           validationSchema={validationSchema}
@@ -136,6 +157,7 @@ export default function DonationForm({
               plusIconDisable
               showPrompt={showPrompt}
               buttonName={buttonName}
+              customFieldsList={customFieldsList}
             />
           )}
         </Formik>
