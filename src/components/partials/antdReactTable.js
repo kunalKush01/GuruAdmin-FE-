@@ -7,8 +7,8 @@ function ANTDcustometable({
   pagination,
   onChangePage,
   onChangePageSize,
+  masterPagination,
 }) {
-  // console.log(pagination);
   return (
     <Table
       columns={columns}
@@ -21,14 +21,16 @@ function ANTDcustometable({
         offsetHeader: 64,
       }}
       // pagination={{pageSize:10,showSizeChanger:true}}
-      pagination={{
-        current: pagination.current,
-        pageSize: pagination.pageSize,
-        total: pagination.total, // Ensure `pagination.total` is provided
-        onChange: onChangePage,
-        onShowSizeChange: (current, size) => onChangePageSize(size),
-        showSizeChanger: true,
-      }}
+      pagination={
+        !masterPagination ? {
+          current: pagination.current,
+          pageSize: pagination.pageSize,
+          total: pagination.total, // Ensure `pagination.total` is provided
+          onChange: onChangePage,
+          onShowSizeChange: (current, size) => onChangePageSize(size),
+          showSizeChanger: true,
+        }:undefined
+      }
       bordered
     />
   );

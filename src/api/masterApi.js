@@ -3,14 +3,19 @@ import { callApi } from "../utility/utils/callApi";
 export const createMaster = (payload) =>
   callApi({
     requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}/master/create-masters`,payload),
+      axios.post(`${API_BASE_URL}/master/create-masters`, payload),
     showToastOnSuccess: false,
     showToastOnError: false,
   });
-export const getAllMasters = () =>
+export const getAllMasters = ({ current, pageSize }) =>
   callApi({
     requestFunction: (axios) =>
-      axios.get(`${API_BASE_URL}/master/get-mastersList`),
+      axios.get(`${API_BASE_URL}/master/get-mastersList`, {
+        params: {
+          page: current,
+          limit: pageSize,
+        },
+      }),
     showToastOnSuccess: false,
     showToastOnError: false,
   });
@@ -36,10 +41,13 @@ export const deleteMasterData = (masterId, rowId) =>
     showToastOnSuccess: false,
     showToastOnError: false,
   });
-  export const addMasterInRow = (masterId,newRowData) =>
-    callApi({
-      requestFunction: (axios) =>
-        axios.post(`${API_BASE_URL}/master/addnewRow-masters/${masterId}`,newRowData),
-      showToastOnSuccess: false,
-      showToastOnError: false,
-    });
+export const addMasterInRow = (masterId, newRowData) =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.post(
+        `${API_BASE_URL}/master/addnewRow-masters/${masterId}`,
+        newRowData
+      ),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
