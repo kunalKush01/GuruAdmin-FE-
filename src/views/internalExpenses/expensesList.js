@@ -20,8 +20,7 @@ import NoContent from "../../components/partials/noContent";
 import { WRITE } from "../../utility/permissionsVariable";
 import { ChangeCategoryType } from "../../components/partials/categoryDropdown";
 
-import '../../styles/viewCommon.scss';
-;
+import "../../assets/scss/viewCommon.scss";
 
 export default function Expenses() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
@@ -139,10 +138,10 @@ export default function Expenses() {
     (item) => item.name
   );
   return (
-    <div className="expensewrapper">
+    <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharam Admin | Expenses</title>
+        <title>Apna Dharm Admin | Expenses</title>
       </Helmet>
       <div className="window nav statusBar body "></div>
 
@@ -154,7 +153,7 @@ export default function Expenses() {
               className="me-2  cursor-pointer align-self-center"
               onClick={() => history.push("/")}
             /> */}
-            <div className="addExpense">
+            <div className="addAction">
               <div className="">
                 <div>
                   <Trans i18nKey={"expenses_latest_Expenses"} />
@@ -162,7 +161,7 @@ export default function Expenses() {
               </div>
             </div>
           </div>
-          <div className="addExpense">
+          <div className="addAction">
             <ChangeCategoryType
               className={"me-1"}
               categoryTypeArray={ExpenseType}
@@ -196,7 +195,7 @@ export default function Expenses() {
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
-                className="addExpense-btn"
+                className="addAction-btn"
                 onClick={() =>
                   history.push(
                     `/internal_expenses/add?page=${pagination.page}&expenseType=${expenseType}&filter=${dropDownName}`

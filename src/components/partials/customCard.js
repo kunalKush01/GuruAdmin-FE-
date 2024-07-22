@@ -1,10 +1,9 @@
 import React from "react";
 import { Card } from "reactstrap";
 import styled from "styled-components";
-import "../../../src/styles/common.scss";
+import "../../assets/scss/common.scss";
 
 const CustomCard = ({ cardTitle, cardNumber, cardImage }) => {
-;
   return (
     <div className="customcardwrapper">
       <Card className="customCard">

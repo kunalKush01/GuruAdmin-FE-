@@ -6,10 +6,7 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { getAllMasterCategories } from "../../api/expenseApi";
 import FormWithoutFormikForDonation from "./FormWithoutFormikForDonation";
-import '../../../src/styles/common.scss';
-
-;
-;
+import "../../assets/scss/common.scss";
 
 export default function DonationForm({
   plusIconDisable = false,

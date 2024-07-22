@@ -1,7 +1,7 @@
 import React from "react";
 import DataTable from "react-data-table-component";
 import "react-data-table-component-extensions/dist/index.css";
-import "../../styles/common.scss";
+import "../../assets/scss/common.scss";
 
 const conditionStyle = {
   when: (row) => row.id % 2 !== 0,

@@ -4,7 +4,7 @@ import { onMessageListener, requestForToken } from "./firebaseConfig";
 import { X } from "react-feather";
 import bellIcon from "../assets/images/icons/dashBoard/Group 5996.svg";
 import { useQueryClient } from "@tanstack/react-query";
-import '../styles/viewCommon.scss';
+import "../assets/scss/viewCommon.scss";
 
 const Notification = () => {
   const [notification, setNotification] = useState({ title: "", body: "" });

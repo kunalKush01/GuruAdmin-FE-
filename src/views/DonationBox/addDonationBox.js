@@ -9,9 +9,7 @@ import { createExpense } from "../../api/expenseApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import DonationBoxForm from "../../components/DonationBox/donationBoxForm";
 
-import '../../styles/viewCommon.scss';
-;
-
+import "../../assets/scss/viewCommon.scss";
 const handleCollectionBox = async (payload) => {
   return createBoxCollection(payload);
 };
@@ -42,7 +40,7 @@ export default function AddNews() {
   };
 
   return (
-    <div className="newswrapper">
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img

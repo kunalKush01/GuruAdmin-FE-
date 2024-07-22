@@ -9,8 +9,7 @@ import { createCommitment } from "../../api/commitmentApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import CommitmentForm from "../../components/commitments/commitmentForm";
 
-import '../../styles/viewCommon.scss';
-;
+import "../../assets/scss/viewCommon.scss";
 
 const handleCreateCommitment = async (payload) => {
   return createCommitment(payload);
@@ -57,7 +56,7 @@ export default function AddCommitment() {
     endDate: moment(new Date()).endOf("month").toDate(),
   };
   return (
-    <div className="commitmentwrapper">
+    <div className="addviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img

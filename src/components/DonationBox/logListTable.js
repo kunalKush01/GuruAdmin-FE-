@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import CustomDataTable from "../partials/CustomDataTable";
-import "../../../src/styles/common.scss";
+import "../../assets/scss/common.scss";
 export default function LogListTable({ data }) {
   const { t } = useTranslation();
 
@@ -47,7 +47,6 @@ export default function LogListTable({ data }) {
     });
   });
 
-;
   return (
     <div className="loglisttablewrapper">
       <CustomDataTable columns={columns} maxHeight="350px" data={logData} />

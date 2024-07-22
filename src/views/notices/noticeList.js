@@ -21,8 +21,7 @@ import NoContent from "../../components/partials/noContent";
 import { useSelector } from "react-redux";
 import { WRITE } from "../../utility/permissionsVariable";
 import { Helmet } from "react-helmet";
-import '../../styles/viewCommon.scss';
-;
+import "../../assets/scss/viewCommon.scss";
 
 const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
@@ -127,7 +126,7 @@ export default function NoticeList() {
   );
 
   return (
-    <div className="noticewrapper">
+    <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Notices</title>
@@ -141,7 +140,7 @@ export default function NoticeList() {
               className="me-2  cursor-pointer align-self-center"
               onClick={() => history.push("/")}
             /> */}
-            <div className="addNotice">
+            <div className="addAction">
               <div className="">
                 <div>
                   <Trans i18nKey={"notices_latest_Notice"} />
@@ -154,7 +153,7 @@ export default function NoticeList() {
               </div>
             </div>
           </div>
-          <div className="addNotice justify-content-between">
+          <div className="addAction justify-content-between">
             <ChangePeriodDropDown
               dropDownName={dropDownName}
               setdropDownName={(e) => {
@@ -167,7 +166,7 @@ export default function NoticeList() {
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
-                className="addNotice-btn"
+                className="addAction-btn"
                 onClick={() =>
                   history.push(
                     `/notices/add?page=${pagination.page}&filter=${dropDownName}`

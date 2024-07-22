@@ -14,7 +14,7 @@ import passwordEyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-e
 import backIconIcon from "../../assets/images/icons/signInIcon/backIcon.svg";
 import hidePassIcon from "../../assets/images/icons/signInIcon/hidePassIcon.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-import '../../styles/viewCommon.scss';
+import "../../assets/scss/viewCommon.scss";
 
 const SetPassword = () => {
   const history = useHistory();
@@ -46,8 +46,6 @@ const SetPassword = () => {
       .oneOf([Yup.ref("password"), null], "Passwords must match")
       .required("Confirm Password is required"),
   });
-;
-
   const { skin } = useSkin();
 
   const illustration = skin === "dark" ? "login-v2-dark.svg" : "main-logo.png",

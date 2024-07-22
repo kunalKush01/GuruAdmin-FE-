@@ -15,9 +15,7 @@ import Skeleton from "react-loading-skeleton";
 import NoContent from "../../../components/partials/noContent";
 import ReactPaginate from "react-paginate";
 import BreedModal from "./breedModal";
-import '../../../styles/viewCommon.scss';
-;
-
+import "../../../assets/scss/viewCommon.scss";
 const CattleBreed = () => {
   const history = useHistory();
   const { t } = useTranslation();

@@ -15,9 +15,7 @@ import { ChangePeriodDropDown } from "../../../components/partials/changePeriodD
 import NoContent from "../../../components/partials/noContent";
 import CattleCategoryModal from "./categoryModal";
 import CattleBreedTable from "./table";
-import '../../../styles/viewCommon.scss';
-;
-
+import "../../../assets/scss/viewCommon.scss";
 const CattleCategory = () => {
   const history = useHistory();
   const { t } = useTranslation();

@@ -8,8 +8,7 @@ import { createSubscribedUser } from "../../api/subscribedUser.js";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import SubscribedUserForm from "../../components/subscribedUser/subscribedUserForm.js";
 
-import '../../styles/viewCommon.scss';
-;
+import "../../assets/scss/viewCommon.scss";
 
 const handleCreateUser = async (payload) => {
   return createSubscribedUser(payload);
@@ -17,13 +16,11 @@ const handleCreateUser = async (payload) => {
 const schema = Yup.object().shape({
   // name: Yup.string().required("users_title_required"),
   mobile: Yup.string().required("users_mobile_required"),
-  email: Yup
-    .string()
+  email: Yup.string()
     .email("email_invalid")
     .required("users_email_required")
     .trim(),
-  name: Yup
-    .string()
+  name: Yup.string()
     .matches(
       /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
       "user_only_letters"
@@ -38,7 +35,7 @@ export default function AddSubscribedUser() {
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
   return (
-    <div className="noticewraper">
+    <div className="addviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -46,11 +43,11 @@ export default function AddSubscribedUser() {
             className="me-2 cursor-pointer"
             onClick={() => history.push("/subscribed-user")}
           />
-          <div className="addNotice">
+          <div className="addAction">
             <Trans i18nKey={"subscribed_user_add_user"} />
           </div>
         </div>
-        {/* <div className="addNotice">
+        {/* <div className="addAction">
           <Trans i18nKey={"news_InputIn"} />
           <CustomDropDown
             ItemListArray={langArray}

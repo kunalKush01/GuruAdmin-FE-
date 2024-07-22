@@ -10,10 +10,7 @@ import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumbe
 import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
-import '../../../src/styles/common.scss';
-
-;
-;
+import "../../assets/scss/common.scss";
 
 export default function SubscribedUserForm({
   plusIconDisable = false,
@@ -181,7 +178,7 @@ export default function SubscribedUserForm({
               ) : (
                 <Button
                   color="primary"
-                  className="addNotice-btn "
+                  className="addAction-btn "
                   type="submit"
                 >
                   {plusIconDisable && (

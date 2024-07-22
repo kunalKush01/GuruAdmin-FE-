@@ -28,10 +28,7 @@ import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import ImageUpload from "../partials/imageUpload";
 import RichTextField from "../partials/richTextEditorField";
 import useTimeStampAndImageExtension from "../../utility/hooks/useTimeStampAndImageExtension";
-import '../../../src/styles/common.scss';
-
-;
-;
+import "../../assets/scss/common.scss";
 
 export default function ProfileForm({
   handleSubmit,
@@ -889,7 +886,7 @@ export default function ProfileForm({
                             ) : (
                               <Button
                                 color="primary"
-                                className="addEvent-btn"
+                                className="addAction-btn"
                                 onClick={() => uploadDocuments.current.click()}
                               >
                                 <Trans i18nKey={"browse"} />
@@ -1050,7 +1047,7 @@ export default function ProfileForm({
                 <Button
                   disabled={imageSpinner}
                   color="primary"
-                  className="addEvent-btn"
+                  className="addAction-btn"
                   type="submit"
                 >
                   <span>

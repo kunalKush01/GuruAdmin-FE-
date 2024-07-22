@@ -36,8 +36,7 @@ import FormikCustomDatePicker from "../../components/partials/formikCustomDatePi
 import NoContent from "../../components/partials/noContent";
 import { handleExport } from "../../utility/utils/exportTabele";
 import FinancialReportTabs from "./financialReportTabs";
-import '../../styles/viewCommon.scss';
-;
+import "../../assets/scss/viewCommon.scss";
 
 export default function FinancialReport() {
   const [reportStartDate, setReportStartDate] = useState(
@@ -325,10 +324,10 @@ export default function FinancialReport() {
   };
 
   return (
-    <div className="newswrapper">
+    <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharam Admin | Financial Report</title>
+        <title>Apna Dharm Admin | Financial Report</title>
       </Helmet>
       <div className="window nav statusBar body "></div>
 
@@ -340,7 +339,7 @@ export default function FinancialReport() {
               className="me-2  cursor-pointer align-self-center"
               onClick={() => history.push("/")}
             /> */}
-            <div className="addNews d-flex">
+            <div className="addAction d-flex">
               <div className="">
                 <div>
                   <Trans i18nKey={"report_AddReport"} />
@@ -348,7 +347,7 @@ export default function FinancialReport() {
               </div>
             </div>
           </div>
-          <div className="addNews d-flex flex-wrap gap-2 gap-md-0">
+          <div className="addAction d-flex flex-wrap gap-2 gap-md-0">
             <div className="total_collection me-2 d-flex justify-content-center align-items-center ">
               {/* <Trans i18nKey={"DonationBox_total_collection"} /> */}
               <div>{`Total ${activeReportTab.name} :`}</div>
@@ -400,7 +399,7 @@ export default function FinancialReport() {
             <div>
               <Button
                 color="primary"
-                className="exportBtn"
+                className="secondaryAction-btn"
                 onClick={handleClickExport}
               >
                 <span className="d-flex align-items-center">

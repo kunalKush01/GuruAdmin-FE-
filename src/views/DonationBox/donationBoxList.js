@@ -19,9 +19,7 @@ import { getAllBoxCollection } from "../../api/donationBoxCollectionApi";
 import BoxListCard from "../../components/DonationBox/BoxListCard.js";
 import NoContent from "../../components/partials/noContent";
 import { WRITE } from "../../utility/permissionsVariable";
-import '../../styles/viewCommon.scss';
-;
-
+import "../../assets/scss/viewCommon.scss";
 export default function Expenses() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -118,10 +116,10 @@ export default function Expenses() {
   );
 
   return (
-    <div className="newswrapper">
+    <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharam Admin | Donation Box</title>
+        <title>Apna Dharm Admin | Donation Box</title>
       </Helmet>
       <div className="window nav statusBar body "></div>
 
@@ -133,7 +131,7 @@ export default function Expenses() {
               className="me-2  cursor-pointer align-self-center"
               onClick={() => history.push("/")}
             /> */}
-            <div className="addNews d-flex">
+            <div className="addAction d-flex">
               <div className="">
                 <div>
                   <Trans i18nKey={"DonationBox_DonationBox"} />
@@ -146,7 +144,7 @@ export default function Expenses() {
               </div>
             </div>
           </div>
-          <div className="addNews  d-flex flex-wrap gap-2 gap-md-0">
+          <div className="addAction  d-flex flex-wrap gap-2 gap-md-0">
             <div className="total_collection me-2 d-flex justify-content-center align-items-center ">
               <Trans i18nKey={"DonationBox_total_collection"} />
               &nbsp;
@@ -170,7 +168,7 @@ export default function Expenses() {
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
-                className="addNews-btn "
+                className="addAction-btn "
                 onClick={() =>
                   history.push(
                     `/hundi/add?page=${pagination.page}&filter=${dropDownName}`

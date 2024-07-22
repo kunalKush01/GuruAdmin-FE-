@@ -16,9 +16,7 @@ import { getAllNotification, readNotification } from "../../api/notification";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import NotificationList from "../../components/Notification/notificationList";
 import NoContent from "../../components/partials/noContent";
-import '../../../src/styles/common.scss';
-;
-
+import "../../assets/scss/common.scss";
 export default function Notification() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -128,7 +126,7 @@ export default function Notification() {
   );
 
   return (
-    <div className="notificationwrapper">
+    <div className="addviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Notifications</title>

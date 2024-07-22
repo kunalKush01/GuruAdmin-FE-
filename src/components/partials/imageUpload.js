@@ -8,10 +8,7 @@ import { Button, Spinner } from "reactstrap";
 import { X } from "react-feather";
 import { toast } from "react-toastify";
 import useTimeStampAndImageExtension from "../../utility/hooks/useTimeStampAndImageExtension";
-import '../../../src/styles/common.scss';
-
-;
-;
+import "../../assets/scss/common.scss";
 
 const thumbStyles = {
   display: "flex",

@@ -23,8 +23,7 @@ import { ChangePeriodDropDown } from "../../components/partials/changePeriodDrop
 import NoContent from "../../components/partials/noContent";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-import '../../styles/viewCommon.scss';
-;
+import "../../assets/scss/viewCommon.scss";
 
 export default function PaidDonationList() {
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -56,7 +55,7 @@ export default function PaidDonationList() {
     [paidDonationListQuery]
   );
   return (
-    <div className="donationwrapper">
+    <div className="listviewwrapper">
       <div className="window nav statusBar body "></div>
 
       <div>
@@ -71,7 +70,7 @@ export default function PaidDonationList() {
                 )
               }
             />
-            <div className="addDonation">
+            <div className="addAction">
               <div className="">
                 <div>
                   <Trans i18nKey={"donation_Donation"} />

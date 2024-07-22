@@ -17,9 +17,7 @@ import PunyarjakForm from "../../components/Punyarjak/punyarjakUserForm";
 import { CustomDropDown } from "../../components/partials/customDropDown";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-import '../../styles/viewCommon.scss';
-;
-
+import "../../assets/scss/viewCommon.scss";
 const schema = Yup.object().shape({
   description: Yup.string().required("punyarjak_desc_required").trim(),
   title: Yup.string()
@@ -98,7 +96,7 @@ export default function AddLanguagePunyarjak() {
   }, [punyarjakDetailQuery]);
 
   return (
-    <div className="punyarjakwrapper">
+    <div className="addviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img

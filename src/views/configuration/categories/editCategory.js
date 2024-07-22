@@ -19,9 +19,7 @@ import {
 } from "../../../api/categoryApi";
 import CategoryForm from "../../../components/categories/categoryForm";
 
-import '../../../styles/viewCommon.scss';;
-;
-
+import "../../../assets/scss/viewCommon.scss";
 const schema = Yup.object().shape({
   MasterCategory: Yup.mixed().required("categories_category_required"),
   SubCategory: Yup.string()

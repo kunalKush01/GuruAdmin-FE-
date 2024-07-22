@@ -36,10 +36,8 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 import BtnPopover from "../partials/btnPopover";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
-import '../../../src/styles/common.scss';
+import "../../assets/scss/common.scss";
 
-;
-;
 function BtnContent({
   noticeId,
   totalAvailableLanguage,
@@ -50,9 +48,6 @@ function BtnContent({
 }) {
   const { t } = useTranslation();
   const history = useHistory();
-;
-;
-
   const handleDeleteNotice = async (payload) => {
     return deleteNoticeDetail(payload);
   };

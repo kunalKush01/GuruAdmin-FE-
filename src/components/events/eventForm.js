@@ -23,10 +23,7 @@ import CustomTextField from "../partials/customTextField";
 import ImageUpload from "../partials/imageUpload";
 import RichTextField from "../partials/richTextEditorField";
 import CustomLocationField from "../partials/CustomLocationField";
-import '../../../src/styles/common.scss';
-;
-;
-
+import "../../assets/scss/common.scss";
 export default function EventForm({
   buttonName = "",
   AddLanguage,
@@ -644,7 +641,7 @@ export default function EventForm({
               ) : (
                 <Button
                   color="primary"
-                  className="addEvent-btn "
+                  className="addAction-btn "
                   type="submit"
                   disabled={
                     imageSpinner ||

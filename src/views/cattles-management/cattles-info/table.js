@@ -14,9 +14,7 @@ import confirmationIcon from "../../../assets/images/icons/news/conformationIcon
 import CustomDataTable from "../../../components/partials/CustomDataTable";
 import { ConverFirstLatterToCapital } from "../../../utility/formater";
 import { DELETE, EDIT } from "../../../utility/permissionsVariable";
-import '../../../styles/viewCommon.scss';
-;
-
+import "../../../assets/scss/viewCommon.scss";
 const CattleInfoTable = ({
   data = [],
   maxHeight,

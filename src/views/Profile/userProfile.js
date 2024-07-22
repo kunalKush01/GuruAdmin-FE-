@@ -14,9 +14,7 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import ProfileForm from "../../components/Profile/profileForm";
 import { CustomDropDown } from "../../components/partials/customDropDown";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-import '../../styles/viewCommon.scss';
-;
-
+import "../../assets/scss/viewCommon.scss";
 const schema = Yup.object().shape({
   trustName: Yup.string()
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
@@ -143,7 +141,7 @@ export default function AddProfile() {
   ]);
 
   return (
-    <div className="profilewrapper">
+    <div className="addviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Profile</title>

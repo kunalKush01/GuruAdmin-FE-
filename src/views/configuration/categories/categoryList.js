@@ -23,9 +23,7 @@ import { CustomReactSelect } from "../../../components/partials/customReactSelec
 import NoContent from "../../../components/partials/noContent";
 import { ConverFirstLatterToCapital } from "../../../utility/formater";
 import { WRITE } from "../../../utility/permissionsVariable";
-import '../../../styles/viewCommon.scss';;
-;
-
+import "../../../assets/scss/viewCommon.scss";
 export default function Category() {
   const [dropDownName, setdropDownName] = useState("All");
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -136,9 +134,8 @@ export default function Category() {
     (item) => item.name
   );
 
-
   return (
-    <div className="categorylistwrapper">
+    <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Category</title>
@@ -153,7 +150,7 @@ export default function Category() {
               className="me-2  cursor-pointer"
               onClick={() => history.push("/")}
             /> */}
-            <div className="addCategory">
+            <div className="addAction">
               <div className="">
                 <div>
                   <Trans i18nKey={"categories_latest_Category"} />
@@ -161,7 +158,7 @@ export default function Category() {
               </div>
             </div>
           </div>
-          <div className="addCategory justify-content-between">
+          <div className="addAction justify-content-between">
             <ChangeCategoryType
               className={"me-1"}
               categoryTypeArray={newTypes}
@@ -179,7 +176,7 @@ export default function Category() {
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
-                className="addCategory-btn"
+                className="addAction-btn"
                 onClick={() =>
                   history.push(
                     `/configuration/categories/add?page=${pagination.page}&filter=${dropDownName}`

@@ -5,9 +5,7 @@ import styled from "styled-components";
 import CustomDataTable from "../../../../components/partials/CustomDataTable";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
 
-import '../../../../styles/viewCommon.scss';;
-;
-
+import "../../../../assets/scss/viewCommon.scss";
 const StockManagementTable = ({ data = [], maxHeight, height }) => {
   const { t } = useTranslation();
   const columns = [

@@ -1,26 +1,4 @@
-// Color variables
-$primary-color: #F08C53;
-$secondary-color: #FCF5E7;
-$font-color: #533810;
-$screen-background-color : #FAFAFA;
-$white: #FFFFFF;
-$green: #79BB43;
-$light-green : #79BB43;
-$red: #EC5B52;
-$light-red: #FCEBEA;
-$blue :#5EC4F4;
-$light-blue:#E9F8FD;
-$yellow: #F3B64B;
-$light-yellow:#FEF6E7;
-$purple: #5F69E6;
-$light-purple: #EDEDFE;
-$font-family: 'Noto Sans', sans-serif;
-$font-weight-bold: bold;
-$font-weight-normal: normal;
-$font-size-small: 13px;
-$font-size-medium: 15px;
-$font-size-large: 20px;
-
+@use './variables/variables' as *;
 
 .categorycardwrapper {
   .imgContainer {
@@ -73,7 +51,7 @@ $font-size-large: 20px;
 .btncontentwraper {
   color: $font-color;
   font: $font-weight-normal $font-size-medium/20px $font-family;
-  
+
   .col-item {
     cursor: pointer;
     :hover {
@@ -89,6 +67,7 @@ $font-size-large: 20px;
   }
   .btn-Published {
     text-align: center;
+
   }
 }
 
@@ -689,7 +668,7 @@ $font-size-large: 20px;
   }
 }
 
-.noeventwraper {
+.nolistviewwrapper {
   img {
     width: 90px;
     margin: 20px;
@@ -837,7 +816,7 @@ $font-size-large: 20px;
     }
   }
   .publishMenu {
-    background-color: $secondary-color;
+    background-color: $primary-color;
   }
   img {
     color: $font-color;
@@ -986,7 +965,7 @@ $font-size-large: 20px;
   }
 }
 
-.noeventwraper {
+.nolistviewwrapper {
   img {
     width: 90px;
     margin: 20px;
@@ -1208,7 +1187,7 @@ $font-size-large: 20px;
     }
   }
 }
-.notificationwrapper {
+.addviewwrapper {
   .dateTime {
     color: #909090;
     font: $font-weight-bold 16px/27px $font-family;
@@ -1702,7 +1681,7 @@ $font-size-large: 20px;
   }
   .dropdown-toggle::after {
     border: none !important;
-    background-image: url("../assets/images/icons/dashBoard/dropDownIcon.svg");
+    background-image: url("../images/icons/dashBoard/dropDownIcon.svg");
     background-repeat: no-repeat;
     background-position: center;
     background-size: 25px;
@@ -2351,7 +2330,7 @@ $font-size-large: 20px;
       background-color: $secondary-color !important;
       border-radius: 0px 0px 5px 0px;
       position: absolute;
-      background-image: url("../assets/images/icons/resizeField.png");
+      background-image: url("../images/icons/resizeField.png");
       z-index: 10;
       background-position: bottom right;
       bottom: 5px;

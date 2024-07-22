@@ -28,12 +28,10 @@ import cardThreeDotIcon from "../../assets/images/icons/news/threeDotIcon.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import BtnPopover from "../partials/btnPopover";
 import { CustomDropDown } from "../partials/customDropDown";
-import "../../../src/styles/common.scss";
+import "../../assets/scss/common.scss";
 
-;
 function BtnContent({ newsId }) {
   const history = useHistory();
-;
   const handleDeleteNews = async (payload) => {
     return deleteNewsDetail(payload);
   };

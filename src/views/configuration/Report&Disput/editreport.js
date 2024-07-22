@@ -22,9 +22,7 @@ import { getNoticeDetail, updateNoticeDetail } from "../../api/noticeApi";
 import CategoryForm from "../../components/categories/categoryForm";
 import NoticeForm from "../../components/notices/noticeForm";
 
-import '../../../styles/viewCommon.scss';;
-;
-
+import "../../../assets/scss/viewCommon.scss";
 const schema = Yup.object().shape({
   Title: Yup.string().required("notices_title_required"),
   Body: Yup.string().required("notices_desc_required"),
@@ -78,7 +76,7 @@ export default function EditReportDispute() {
   }, [noticeDetailQuery]);
 
   return (
-    <div className="noticewrapper">
+    <div className="addviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img

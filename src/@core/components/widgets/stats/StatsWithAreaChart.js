@@ -1,42 +1,60 @@
 // ** Custom Components
-import Avatar from '@components/avatar'
+import Avatar from "@components/avatar";
 
 // ** Third Party Components
-import PropTypes from 'prop-types'
-import classnames from 'classnames'
-import Chart from 'react-apexcharts'
+import PropTypes from "prop-types";
+import classnames from "classnames";
+import Chart from "react-apexcharts";
 
 // ** Reactstrap Imports
-import { Card, CardBody } from 'reactstrap'
+import { Card, CardBody } from "reactstrap";
 
 // ** Default Options
-import { areaChartOptions } from './ChartOptions'
-import { numberWithCommas } from '../../../../utility/formater'
-import '../../../../styles/viewCommon.scss';
+import { areaChartOptions } from "./ChartOptions";
+import { numberWithCommas } from "../../../../utility/formater";
+import "../../../../assets/scss/viewCommon.scss";
 
-const StatsWithAreaChart = props => {
+const StatsWithAreaChart = (props) => {
   // ** Props
-  const { icon, color, stats, statTitle, series, options, type, height, className, ...rest } = props
+  const {
+    icon,
+    color,
+    stats,
+    statTitle,
+    series,
+    options,
+    type,
+    height,
+    className,
+    ...rest
+  } = props;
 
-  const sta = numberWithCommas(stats)
+  const sta = numberWithCommas(stats);
   return (
     <div className="chart-card-wrapper">
       <Card {...rest} className="chart-card mb-0">
         <CardBody
-          className={classnames('pb-0', {
-            [className]: className
+          className={classnames("pb-0", {
+            [className]: className,
           })}
         >
-          <p className='card-text'>{statTitle}</p>
-          <p className='fw-bolder mt-1 overflow-hidden' title={`₹ ${sta}`}>₹{sta}</p>
+          <p className="card-text">{statTitle}</p>
+          <p className="fw-bolder mt-1 overflow-hidden" title={`₹ ${sta}`}>
+            ₹{sta}
+          </p>
         </CardBody>
-        <Chart options={options} series={series} type={type} height={height ? height : 100} />
+        <Chart
+          options={options}
+          series={series}
+          type={type}
+          height={height ? height : 100}
+        />
       </Card>
     </div>
-  )
-}
+  );
+};
 
-export default StatsWithAreaChart
+export default StatsWithAreaChart;
 
 // ** PropTypes
 StatsWithAreaChart.propTypes = {
@@ -48,11 +66,11 @@ StatsWithAreaChart.propTypes = {
   color: PropTypes.string.isRequired,
   stats: PropTypes.string.isRequired,
   series: PropTypes.array.isRequired,
-  statTitle: PropTypes.string.isRequired
-}
+  statTitle: PropTypes.string.isRequired,
+};
 
 // ** Default Props
 StatsWithAreaChart.defaultProps = {
-  color: 'primary',
-  options: areaChartOptions
-}
+  color: "primary",
+  options: areaChartOptions,
+};

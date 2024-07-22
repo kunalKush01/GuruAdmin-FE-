@@ -19,8 +19,7 @@ import NoContent from "../../components/partials/noContent";
 import SubscribedUSerListTable from "../../components/subscribedUser/subscribedUserListTable";
 import { WRITE } from "../../utility/permissionsVariable";
 
-import '../../styles/viewCommon.scss';
-;
+import "../../assets/scss/viewCommon.scss";
 
 export default function SubscribedUser() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
@@ -100,7 +99,7 @@ export default function SubscribedUser() {
   );
 
   return (
-    <div className="subscribeduserwrapper">
+    <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Subscribed User</title>
@@ -129,7 +128,7 @@ export default function SubscribedUser() {
               dropDownName={dropDownName}
               setdropDownName={(e) => setdropDownName(e.target.name)}
             />
-            {allPermissions?.name === "all" ||
+            {/* {allPermissions?.name === "all" ||
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
@@ -145,7 +144,7 @@ export default function SubscribedUser() {
               </Button>
             ) : (
               ""
-            )}
+            )} */}
           </div>
         </div>
         <div style={{ height: "10px" }}>

@@ -6,10 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Trans } from "react-i18next";
 import styled from "styled-components";
 import { calculateAge } from "../../utility/formater";
-import '../../../src/styles/common.scss';
-;
-;
-
+import "../../assets/scss/common.scss";
 export default function FormikCustomDatePicker({
   label,
   futureDateNotAllowed,

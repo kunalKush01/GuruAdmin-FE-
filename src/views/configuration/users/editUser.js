@@ -12,8 +12,7 @@ import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
 
 import { getSubAdminDetail, updateSubAdminUser } from "../../../api/userApi";
 import UserForm from "../../../components/users/userForm";
-import '../../../styles/viewCommon.scss';;
-;
+import "../../../assets/scss/viewCommon.scss";
 const schema = Yup.object().shape({
   name: Yup.string()
     .matches(
@@ -28,7 +27,7 @@ const schema = Yup.object().shape({
     .email("email_invalid")
     .required("users_email_required")
     .trim(),
-  userRoleChacked: Yup.array()
+  userRoleChecked: Yup.array()
     .min(1, "minimum_one_role_required")
     .required("user_userRoleRequired"),
 });
@@ -69,7 +68,7 @@ export default function EditSubAdmin() {
       mobile: subAdminUserDetailQuery?.data?.result?.mobileNumber,
       countryCode: subAdminUserDetailQuery?.data?.result?.countryName ?? "",
       dialCode: subAdminUserDetailQuery?.data?.result?.countryCode ?? "",
-      userRoleChacked: subAdminUserDetailQuery?.data?.result?.roles,
+      userRoleChecked: subAdminUserDetailQuery?.data?.result?.roles,
       email: subAdminUserDetailQuery?.data?.result?.email,
       password: "",
       file: subAdminUserDetailQuery?.data?.result?.profilePhoto,

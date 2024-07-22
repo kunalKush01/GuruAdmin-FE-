@@ -6,7 +6,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Card, CardBody, Col, Row } from "reactstrap";
-import styled from "styled-components"; 
+import styled from "styled-components";
 import Swal from "sweetalert2";
 import { deleteEventDetail } from "../../api/eventApi";
 import { deleteNewsDetail } from "../../api/newsApi";
@@ -16,10 +16,8 @@ import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 import BtnPopover from "../partials/btnPopover";
-import '../../../src/styles/common.scss';
+import "../../assets/scss/common.scss";
 
-;
-;
 function BtnContent({
   eventId,
   currentPage,
@@ -29,9 +27,6 @@ function BtnContent({
   allPermissions,
 }) {
   const history = useHistory();
-;
-;
-
   const handleDeleteEvent = async (payload) => {
     return deleteEventDetail(payload);
   };

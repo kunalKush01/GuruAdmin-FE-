@@ -10,9 +10,7 @@ import editIcon from "../../../assets/images/icons/category/editIcon.svg";
 import CustomDataTable from "../../../components/partials/CustomDataTable";
 import { ConverFirstLatterToCapital } from "../../../utility/formater";
 import Swal from "sweetalert2";
-import '../../../styles/viewCommon.scss';
-;
-
+import "../../../assets/scss/viewCommon.scss";
 const CattleBreedTable = ({ data = [], maxHeight, height, toggle }) => {
   const { t } = useTranslation();
 

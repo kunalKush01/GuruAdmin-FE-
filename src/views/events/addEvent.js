@@ -9,8 +9,7 @@ import { createEvent } from "../../api/eventApi.js";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import EventForm from "../../components/events/eventForm";
 
-import '../../styles/viewCommon.scss';
-;
+import "../../assets/scss/viewCommon.scss";
 
 const handleCreateEvent = async (payload) => {
   return createEvent(payload);
@@ -57,7 +56,7 @@ export default function AddEvent() {
   const currentPage = searchParams.get("page");
   const currentFilter = searchParams.get("filter");
   return (
-    <div className="eventwraper">
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -69,7 +68,7 @@ export default function AddEvent() {
               )
             }
           />
-          <div className="addEvent">
+          <div className="addAction">
             <Trans i18nKey={"events_AddEvent"} />
           </div>
         </div>

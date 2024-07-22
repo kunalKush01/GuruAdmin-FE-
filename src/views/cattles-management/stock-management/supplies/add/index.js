@@ -9,9 +9,7 @@ import { createSupplyItem } from "../../../../../api/cattle/cattleStock";
 import arrowLeft from "../../../../../assets/images/icons/arrow-left.svg";
 import AddSuppliesForm from "../../../../../components/cattleStockManagment/supplies/addForm";
 
-import '../../../../../styles/viewCommon.scss';
-;
-
+import "../../../../../assets/scss/viewCommon.scss";
 const AddSupplies = () => {
   const history = useHistory();
   const searchParams = new URLSearchParams(history.location.search);
@@ -37,7 +35,7 @@ const AddSupplies = () => {
   };
 
   return (
-    <div className="stockaddwraper">
+    <div className="addviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -49,7 +47,7 @@ const AddSupplies = () => {
               )
             }
           />
-          <div className="addEvent">
+          <div className="addAction">
             <Trans i18nKey={"cattle_supplies_add"} />
           </div>
         </div>

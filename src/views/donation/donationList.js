@@ -24,8 +24,7 @@ import NoContent from "../../components/partials/noContent";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { WRITE } from "../../utility/permissionsVariable";
 
-import '../../styles/viewCommon.scss';
-;
+import "../../assets/scss/viewCommon.scss";
 
 export default function Donation() {
   const importFileRef = useRef();
@@ -191,7 +190,7 @@ export default function Donation() {
   );
 
   return (
-    <div className="donationwrapper">
+    <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Donations</title>
@@ -206,7 +205,7 @@ export default function Donation() {
               className="me-2 cursor-pointer align-self-center"
               onClick={() => history.push("/")}
             /> */}
-            <div className="addDonation d-flex">
+            <div className="addAction d-flex">
               <div className="">
                 <div>
                   <Trans i18nKey={"donation_Donation"} />
@@ -214,7 +213,7 @@ export default function Donation() {
               </div>
             </div>
           </div>
-          <div className="addDonation d-flex flex-wrap gap-2 gap-md-0">
+          <div className="addAction d-flex flex-wrap gap-2 gap-md-0">
             <ChangeCategoryType
               className={"me-1"}
               categoryTypeArray={newTypes}
@@ -230,7 +229,7 @@ export default function Donation() {
                 );
               }}
             />
-            
+
             <ChangeCategoryType
               className={"me-1"}
               categoryTypeArray={subCategoryTypes}
@@ -261,7 +260,7 @@ export default function Donation() {
             />
 
             <Button
-              className="me-1"
+              className={`secondaryAction-btn me-1`}
               color="primary"
               onClick={() => importFileRef.current.click()}
             >
@@ -280,7 +279,7 @@ export default function Donation() {
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
-                className={`addDonation-btn`}
+                className={`addAction-btn`}
                 onClick={() =>
                   history.push(
                     `/donation/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}`

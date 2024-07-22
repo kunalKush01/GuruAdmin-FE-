@@ -1,9 +1,8 @@
 import { useField } from "formik";
 import { Trans } from "react-i18next";
 import styled from "styled-components";
-import "../../../src/styles/common.scss";
+import "../../assets/scss/common.scss";
 
-;
 const TextArea = ({ label, ...props }) => {
   const [field, meta] = useField(props);
   return (

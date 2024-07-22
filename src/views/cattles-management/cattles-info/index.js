@@ -26,9 +26,7 @@ import CattleInfoTable from "./table";
 import { ChangeCategoryType } from "../../../components/partials/categoryDropdown";
 import { Helmet } from "react-helmet";
 import { WRITE } from "../../../utility/permissionsVariable";
-import '../../../styles/viewCommon.scss';
-;
-
+import "../../../assets/scss/viewCommon.scss";
 const CattlesInfo = () => {
   const history = useHistory();
   const { t } = useTranslation();
@@ -294,7 +292,9 @@ const CattlesInfo = () => {
               disableMemo
             >
               <Then>
-                <div className="cattleinfo"Table
+                <div
+                  className="cattleinfo"
+                  Table
                   data={cattleListData}
                   height="160px"
                   currentFilter={routFilter}

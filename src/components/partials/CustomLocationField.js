@@ -5,9 +5,8 @@ import PlacesAutocomplete, {
 } from "react-places-autocomplete";
 import { Input } from "reactstrap";
 import styled from "styled-components";
-import "../../../src/styles/common.scss";
+import "../../assets/scss/common.scss";
 
-;
 const CustomLocationField = (props) => {
   const handleChange = (address) => {
     props.setFieldValue("location", address);

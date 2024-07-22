@@ -454,7 +454,7 @@ export default function FormWithoutFormikForDonation({
             <Spinner size="md" />
           </Button>
         ) : (
-          <Button color="primary" className="addNotice-btn " type="submit">
+          <Button color="primary" className="addAction-btn " type="submit">
             {!props.plusIconDisable && (
               <span>
                 <Plus className="" size={15} strokeWidth={4} />

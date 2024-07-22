@@ -10,8 +10,7 @@ import { createDonation } from "../../api/donationApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import DonationForm from "../../components/donation/donationForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-import '../../styles/viewCommon.scss';
-;
+import "../../assets/scss/viewCommon.scss";
 
 const handleCreateDonation = async (payload) => {
   return createDonation(payload);
@@ -56,7 +55,7 @@ export default function AddDonation() {
     createdBy: ConverFirstLatterToCapital(loggedInUser),
   };
   return (
-    <div className="donationwrapper">
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -68,7 +67,7 @@ export default function AddDonation() {
               )
             }
           />
-          <div className="addDonation">
+          <div className="addAction">
             <Trans i18nKey={"donation_Adddonation"} />
           </div>
         </div>

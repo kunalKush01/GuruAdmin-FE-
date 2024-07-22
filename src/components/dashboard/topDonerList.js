@@ -21,7 +21,7 @@ import rank3 from "../../assets/images/icons/dashBoard/rank3.svg";
 import rank4 from "../../assets/images/icons/dashBoard/rank4.svg";
 import rank5 from "../../assets/images/icons/dashBoard/rank5.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-import '../../../src/styles/common.scss';
+import "../../assets/scss/common.scss";
 
 export const TopDonerList = ({ data }) => {
   const { t } = useTranslation();
@@ -32,8 +32,6 @@ export const TopDonerList = ({ data }) => {
 
   const [toggleState, setToggleState] = useState(showTopDonor ?? false);
 
-;
-;
   const getRank = (idx) => {
     switch (idx + 1) {
       case 1:

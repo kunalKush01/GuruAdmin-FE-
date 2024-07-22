@@ -1,8 +1,7 @@
 import React from "react";
 import TimeInput from "react-time-input";
 import styled from "styled-components";
-;
-import "../../../src/styles/common.scss";
+import "../../assets/scss/common.scss";
 
 function CustomTimeInput() {
   return (

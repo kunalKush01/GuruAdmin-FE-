@@ -11,9 +11,8 @@ import { useTranslation } from "react-i18next";
 import { setSearchbarValue } from "../../redux/searchBar";
 import styled from "styled-components";
 import { X } from "react-feather";
-import "../../../src/styles/common.scss";
+import "../../assets/scss/common.scss";
 
-;
 export default function CustomSearchBar({ searchBarState, setSearchBarState }) {
   const searchBarValue = useSelector((state) => state?.search?.LocalSearch);
   const dispatch = useDispatch();

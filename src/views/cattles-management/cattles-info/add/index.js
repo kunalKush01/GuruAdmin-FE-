@@ -7,9 +7,7 @@ import * as Yup from "yup";
 import { createCattleInfo } from "../../../../api/cattle/cattleInfo";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddCattleForm from "../../../../components/cattleInfo/addForm";
-import '../../../../styles/viewCommon.scss';
-;
-
+import "../../../../assets/scss/viewCommon.scss";
 export const cattleType = [
   {
     label: "Cow",
@@ -151,7 +149,7 @@ const AddCattle = () => {
               )
             }
           />
-          <div className="addEvent">
+          <div className="addAction">
             <Trans i18nKey={"cattle_add"} />
           </div>
         </div>

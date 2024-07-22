@@ -19,9 +19,7 @@ import { Helmet } from "react-helmet";
 import { WRITE } from "../../../utility/permissionsVariable";
 import { ConverFirstLatterToCapital } from "../../../utility/formater";
 
-import '../../../styles/viewCommon.scss';;
-;
-
+import "../../../assets/scss/viewCommon.scss";
 const PregnancyReport = () => {
   const history = useHistory();
   const { t } = useTranslation();

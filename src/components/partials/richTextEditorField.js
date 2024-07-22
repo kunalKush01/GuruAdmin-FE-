@@ -5,9 +5,8 @@ import styled from "styled-components";
 import SunEditor, { buttonList } from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css";
 import icon from "../../assets/images/icons/resizeField.png";
-import "../../../src/styles/common.scss";
+import "../../assets/scss/common.scss";
 
-;
 export default function RichTextField({
   label,
   type = "text",

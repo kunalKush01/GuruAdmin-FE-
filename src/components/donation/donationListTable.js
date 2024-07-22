@@ -19,9 +19,8 @@ import { EDIT } from "../../utility/permissionsVariable";
 import CustomDataTable from "../partials/CustomDataTable";
 import EditDonation from "./editDonation";
 import { toast } from "react-toastify";
-import "../../../src/styles/common.scss";
+import "../../assets/scss/common.scss";
 
-;
 export default function DonationListTable(
   { data, topdf, allPermissions, subPermission, financeReport },
   args

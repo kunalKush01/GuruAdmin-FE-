@@ -2,9 +2,7 @@ import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import CustomDataTable from "../../../components/partials/CustomDataTable";
-import '../../../styles/viewCommon.scss';
-;
-
+import "../../../assets/scss/viewCommon.scss";
 const ExpenseTable = ({ data = [] }) => {
   const { t } = useTranslation();
   const columns = [
@@ -49,7 +47,7 @@ const ExpenseTable = ({ data = [] }) => {
         ),
       };
     });
-  },[data]);
+  }, [data]);
 
   return (
     <div className="expensetablewrapper">
