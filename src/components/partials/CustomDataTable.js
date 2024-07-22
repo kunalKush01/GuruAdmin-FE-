@@ -27,10 +27,13 @@ function CustomDataTable({
 }) {
   return (
     <>
-      <DataTableWarraper
-        minWidth={minWidth}
-        maxHeight={maxHeight ? "100%" : "400px"}
-        height={height}
+      <div
+        className="datatablewrapper"
+        style={{
+          minWidth: minWidth || "auto",
+          maxHeight: maxHeight || "270px",
+          height: height || "auto",
+        }}
       >
         <DataTable
           conditionalRowStyles={[conditionStyle]}
@@ -46,7 +49,7 @@ function CustomDataTable({
           pagination={(masterPagination || masterListPagination) && true}
           // fixedHeader={masterPagination && true}
         />
-      </DataTableWarraper>
+      </div>
     </>
   );
 }
