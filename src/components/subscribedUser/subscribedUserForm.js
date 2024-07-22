@@ -10,31 +10,7 @@ import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumbe
 import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
-
-const FormWrapper = styled.div`
-  .FormikWrapper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  // .addNews-btn {
-  //   padding: 8px 20px;
-  //   margin-left: 10px;
-  //   font: normal normal bold 15px/20px noto sans;
-  // }
-  // .newsContent {
-  //   height: 350px;
-  //   overflow: auto;
-  //   ::-webkit-scrollbar {
-  //     display: none;
-  //   }
-  // }
-  .filterPeriod {
-    color: #ff8744;
-    font: normal normal bold 13px/5px noto sans;
-  }
-`;
+import "../../assets/scss/common.scss";
 
 export default function SubscribedUserForm({
   plusIconDisable = false,
@@ -83,7 +59,7 @@ export default function SubscribedUserForm({
   const [phoneNumber, setPhoneNumber] = useState(getNumber ?? "");
 
   return (
-    <FormWrapper className="FormikWrapper">
+    <div className="formwrapper FormikWrapper">
       <Formik
         // enableReinitialize
         initialValues={{ ...initialValues }}
@@ -202,7 +178,7 @@ export default function SubscribedUserForm({
               ) : (
                 <Button
                   color="primary"
-                  className="addNotice-btn "
+                  className="addAction-btn "
                   type="submit"
                 >
                   {plusIconDisable && (
@@ -219,6 +195,6 @@ export default function SubscribedUserForm({
           </Form>
         )}
       </Formik>
-    </FormWrapper>
+    </div>
   );
 }

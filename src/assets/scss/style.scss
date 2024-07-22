@@ -9,6 +9,7 @@ NOTE:
 ------
 PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER STYLESHEETS.
 WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
+@use '../../assets/scss/variables/variables' as vars;
 
 body {
   padding-right: 0px !important;
@@ -125,10 +126,10 @@ body::-webkit-scrollbar {
 }
 .languageButton {
   cursor: default !important;
-  border: 2px solid #ff8744 !important;
+  border: 2px solid vars.$primary-color !important;
   font: normal normal bold 14px/15px Noto Sans;
   padding: 5px 10px;
-  color: #ff8744;
+  color: vars.$primary-color;
   border-radius: 20px;
   margin-right: 10px;
 }

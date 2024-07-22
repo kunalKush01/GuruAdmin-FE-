@@ -23,41 +23,7 @@ import { ChangePeriodDropDown } from "../../components/partials/changePeriodDrop
 import NoContent from "../../components/partials/noContent";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-const DonationWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addDonation {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-
-  .FormikWraper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addDonation-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .donationContent {
-    margin-top: 1rem;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: #ff8744;
-    margin-top: 0.5rem;
-    font: normal normal bold 13px/5px noto sans;
-  }
-`;
+import "../../assets/scss/viewCommon.scss";
 
 export default function PaidDonationList() {
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -89,7 +55,7 @@ export default function PaidDonationList() {
     [paidDonationListQuery]
   );
   return (
-    <DonationWrapper>
+    <div className="listviewwrapper">
       <div className="window nav statusBar body "></div>
 
       <div>
@@ -104,7 +70,7 @@ export default function PaidDonationList() {
                 )
               }
             />
-            <div className="addDonation">
+            <div className="addAction">
               <div className="">
                 <div>
                   <Trans i18nKey={"donation_Donation"} />
@@ -192,6 +158,6 @@ export default function PaidDonationList() {
           </Row>
         </div>
       </div>
-    </DonationWrapper>
+    </div>
   );
 }

@@ -16,6 +16,7 @@ import receiptIcon from "../../assets/images/icons/receiptIcon.svg";
 import templeImage from "../../assets/images/pages/login-v2.png";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomDataTable from "../partials/CustomDataTable";
+import "../../assets/scss/common.scss";
 
 export default function DonationListTable({ data, topdf }, args) {
   const { t } = useTranslation();
@@ -153,24 +154,12 @@ export default function DonationListTable({ data, topdf }, args) {
     });
   }, [data]);
 
-  const RecentDonationTableWarper = styled.div`
-    color: #583703 !important;
-    font: normal normal bold 15px/23px Noto Sans;
-    .modal-body {
-      max-height: 600px !important;
-      overflow: auto !important;
-    }
-    .tableDes p {
-      margin-bottom: 0;
-    }
-  `;
-
   const inWordsNumber = numberToWords
     .toWords(parseInt(receipt?.amount ?? 0))
     .toUpperCase();
 
   return (
-    <RecentDonationTableWarper>
+    <div className="recentdonationtablewrapper">
       <CustomDataTable maxHeight={""} columns={columns} data={Donatio_data} />
       <ReactToPrint
         trigger={() => (
@@ -340,6 +329,6 @@ export default function DonationListTable({ data, topdf }, args) {
           </Button>
         </ModalFooter>
       </Modal> */}
-    </RecentDonationTableWarper>
+    </div>
   );
 }

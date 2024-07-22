@@ -6,7 +6,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Card, CardBody, Col, Row } from "reactstrap";
-import styled from "styled-components"; 
+import styled from "styled-components";
 import Swal from "sweetalert2";
 import { deleteEventDetail } from "../../api/eventApi";
 import { deleteNewsDetail } from "../../api/newsApi";
@@ -16,94 +16,8 @@ import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 import BtnPopover from "../partials/btnPopover";
+import "../../assets/scss/common.scss";
 
-const EventCardWrapper = styled.div`
-  .card1 {
-    font: normal normal bold 13px/16px Noto Sans;
-    margin-bottom: 0.5rem !important;
-  }
-  .card-text {
-    font: normal normal normal 12px/16px Noto Sans;
-    max-height: 18px;
-    max-width: 350px;
-    overflow: hidden;
-    /* text-overflow: ellipsis; */
-    text-align: start;
-    white-space: nowrap;
-    /* margin-bottom: 0.5rem !important; */
-  }
-  .card-text > p,
-  div {
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .card-Date {
-    font: normal normal normal 12px/16px Noto Sans;
-    color: #9c9c9c;
-    max-height: 18px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-align: start;
-    white-space: nowrap;
-    p {
-      margin: 0;
-    }
-  }
-  .card-body {
-    background: #fff7e8;
-    border-radius: 10px;
-    padding: 0px;
-    max-height: 122px;
-  }
-  .cardLangScroll {
-    display: flex;
-    /* background-color: red; */
-    margin-top: 0.7rem;
-    min-width: 230px;
-    overflow-x: scroll !important;
-    ::-webkit-scrollbar {
-      width: 10px;
-      display: block;
-    }
-  }
-  .btn-outline-primary {
-    border: 2px solid #ff8744 !important;
-    font: normal normal bold 14px/15px Noto Sans;
-    padding: 5px 10px;
-    border-radius: 20px;
-    margin-right: 10px;
-  }
-  img {
-    color: #583703;
-    font: 15px Noto Sans;
-  }
-
-  @media only screen and (max-width: 1200px) {
-    .card-body {
-      max-height: 100%;
-      padding: 1rem;
-    }
-  }
-  @media only screen and (max-width: 992px) {
-    .card-body {
-      max-height: 100%;
-      padding: 0rem 1rem 1rem 1rem;
-    }
-    .eventImage {
-      height: 250px !important;
-      object-position: center center !important;
-    }
-  }
-  @media only screen and (max-width: 576px) {
-    .card-body {
-      max-height: 100%;
-      padding: 0rem 1rem 1rem 1rem;
-    }
-    .eventImage {
-      height: 200px !important;
-    }
-  }
-`;
 function BtnContent({
   eventId,
   currentPage,
@@ -113,24 +27,6 @@ function BtnContent({
   allPermissions,
 }) {
   const history = useHistory();
-  const BtnContentWraper = styled.div`
-    color: #583703;
-    font: normal normal normal 15px/20px noto sans;
-    .MainContainer {
-    }
-    .col-item {
-      cursor: pointer;
-      :hover {
-        background-color: #ff8744;
-        color: #fff;
-      }
-      .col-item-disabled {
-        cursor: not-allowed;
-        opacity: 0.5;
-      }
-    }
-  `;
-
   const handleDeleteEvent = async (payload) => {
     return deleteEventDetail(payload);
   };
@@ -148,7 +44,7 @@ function BtnContent({
   const langList = useSelector((state) => state.auth.availableLang);
 
   return (
-    <BtnContentWraper>
+    <div className="btncontentwraper">
       <Row className="MainContainer d-block ">
         {allPermissions?.name === "all" || subPermission?.includes(EDIT) ? (
           <Col
@@ -222,7 +118,7 @@ function BtnContent({
           ""
         )}
       </Row>
-    </BtnContentWraper>
+    </div>
   );
 }
 
@@ -235,7 +131,7 @@ export default function EventCard({
 }) {
   const history = useHistory();
   return (
-    <EventCardWrapper>
+    <div className="eventcardwrapper">
       <div>
         <Card
           style={{
@@ -349,6 +245,6 @@ export default function EventCard({
           />
         }
       />
-    </EventCardWrapper>
+    </div>
   );
 }

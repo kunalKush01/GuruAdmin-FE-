@@ -34,41 +34,7 @@ import { WRITE } from "../../../utility/permissionsVariable";
 import { Helmet } from "react-helmet";
 import Swal from "sweetalert2";
 import { timers } from "jquery";
-const NewsWarper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addNews {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-
-  .FormikWraper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addNews-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .newsContent {
-    margin-top: 1rem;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: #ff8744;
-    font: normal normal bold 13px/5px noto sans;
-  }
-`;
-
+import "../../../assets/scss/viewCommon.scss";
 const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 export default function User() {
@@ -156,7 +122,6 @@ export default function User() {
     [userRoleQuery]
   );
 
-
   const userItems = useMemo(() => userQuery?.data?.results ?? [], [userQuery]);
 
   const masterloadOptionQuery = useQuery(
@@ -181,7 +146,7 @@ export default function User() {
     (item) => item.name
   );
   return (
-    <NewsWarper>
+    <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Users</title>
@@ -211,16 +176,17 @@ export default function User() {
                 color="primary"
                 className="addNews-btn"
                 onClick={() =>
-                  userRolesItems?.length > 0 ? 
-                  history.push(
-                    `/configuration/users/add?page=${pagination.page}`
-                  ) : Swal.fire({
-                    icon: 'info',
-                    title: 'Sorry',
-                    text: "It seems that the Super admin hasn't assigned any Roles for the Sub-user, which is why you're unable to add them.",
-                    showConfirmButton:false,
-                    timer:2000
-                  })
+                  userRolesItems?.length > 0
+                    ? history.push(
+                        `/configuration/users/add?page=${pagination.page}`
+                      )
+                    : Swal.fire({
+                        icon: "info",
+                        title: "Sorry",
+                        text: "It seems that the Super admin hasn't assigned any Roles for the Sub-user, which is why you're unable to add them.",
+                        showConfirmButton: false,
+                        timer: 2000,
+                      })
                 }
               >
                 <span>
@@ -320,6 +286,6 @@ export default function User() {
           </Row>
         </div>
       </div>
-    </NewsWarper>
+    </div>
   );
 }

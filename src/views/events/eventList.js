@@ -22,50 +22,7 @@ import CustomDatePicker from "../../components/partials/customDatePicker";
 import FormikCustomDatePicker from "../../components/partials/formikCustomDatePicker";
 import NoContent from "../../components/partials/noContent";
 import { WRITE } from "../../utility/permissionsVariable";
-const EventWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addEvent {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-
-  .FormikWraper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addEvent-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .eventContent {
-    margin-top: 1rem;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: #ff8744;
-    margin-top: 0.5rem;
-    font: normal normal bold 13px/5px noto sans;
-  }
-  .noContent {
-    margin-left: 30rem;
-  }
-
-  @media only screen and (max-width: 1150px) {
-    .noContent {
-      margin-left: 0;
-    }
-  }
-`;
+import "../../assets/scss/viewCommon.scss";
 
 const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
@@ -179,7 +136,7 @@ export default function EventList() {
     (item) => item.name
   );
   return (
-    <EventWrapper>
+    <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Events</title>
@@ -187,14 +144,14 @@ export default function EventList() {
       <div className="window nav statusBar body "></div>
 
       <div>
-        <div className="d-sm-flex justify-content-between align-items-center">
+        <div className="d-sm-flex mb-1 justify-content-between align-items-center">
           <div className="d-flex align-items-center mb-2 mb-lg-0">
             {/* <img
               src={arrowLeft}
               className="me-1 me-sm-2  cursor-pointer align-self-center"
               onClick={() => history.push("/")}
             /> */}
-            <div className="addEvent">
+            <div className="addAction">
               <div className="">
                 <div>
                   <Trans i18nKey={"events"} />
@@ -202,7 +159,7 @@ export default function EventList() {
               </div>
             </div>
           </div>
-          <div className="addEvent justify-content-between">
+          <div className="addAction justify-content-between">
             <ChangePeriodDropDown
               dropDownName={dropDownName}
               setdropDownName={(e) => {
@@ -215,7 +172,7 @@ export default function EventList() {
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
-                className="addEvent-btn"
+                className="addAction-btn"
                 onClick={() =>
                   history.push(
                     `/events/add?page=${pagination.page}&filter=${dropDownName}`
@@ -247,7 +204,7 @@ export default function EventList() {
         </div>
         <div>
           <Row className="w-100 m-0">
-            <Col xs={12} md={9} className="eventContent ps-0">
+            <Col xs={12} md={9} className="listviewContent ps-0">
               <If condition={eventQuery.isLoading} disableMemo>
                 <Then>
                   <SkeletonTheme
@@ -362,6 +319,6 @@ export default function EventList() {
           </Row>
         </div>
       </div>
-    </EventWrapper>
+    </div>
   );
 }

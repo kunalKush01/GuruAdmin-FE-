@@ -10,6 +10,7 @@ import { createDonation } from "../../api/donationApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import DonationForm from "../../components/donation/donationForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
+import "../../assets/scss/viewCommon.scss";
 import { useQuery } from "@tanstack/react-query";
 import { getDonationCustomFields } from "../../api/customFieldsApi";
 const DonationWrapper = styled.div`
@@ -89,7 +90,7 @@ export default function AddDonation() {
     }, {}),
   };
   return (
-    <DonationWrapper>
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -101,7 +102,7 @@ export default function AddDonation() {
               )
             }
           />
-          <div className="addDonation">
+          <div className="addAction">
             <Trans i18nKey={"donation_Adddonation"} />
           </div>
         </div>
@@ -116,6 +117,6 @@ export default function AddDonation() {
           customFieldsList={customFieldsList}
         />
       </div>
-    </DonationWrapper>
+    </div>
   );
 }

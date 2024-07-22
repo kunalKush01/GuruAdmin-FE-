@@ -13,19 +13,7 @@ import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
 import CategoryForm from "../../../components/categories/categoryForm";
 import { CustomDropDown } from "../../../components/partials/customDropDown";
 
-const CategoryAddWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  // .ImagesVideos {
-  //   font: normal normal bold 15px/33px Noto Sans;
-  // }
-  .addCategory {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
-
+import "../../../assets/scss/viewCommon.scss";
 const handleCreateSubCategory = async (payload) => {
   return createSubCategory(payload);
 };
@@ -54,7 +42,7 @@ export default function AddCategory() {
       })
   );
   return (
-    <CategoryAddWrapper>
+    <div className="addviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -66,11 +54,11 @@ export default function AddCategory() {
               )
             }
           />
-          <div className="addCategory">
+          <div className="addAction">
             <Trans i18nKey={"categories_AddCategory"} />
           </div>
         </div>
-        <div className="addCategory">
+        <div className="addAction">
           <div className="d-none d-sm-block">
             <Trans i18nKey={"news_InputIn"} />
           </div>
@@ -101,6 +89,6 @@ export default function AddCategory() {
       ) : (
         ""
       )}
-    </CategoryAddWrapper>
+    </div>
   );
 }

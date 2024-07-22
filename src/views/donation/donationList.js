@@ -22,42 +22,7 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { WRITE } from "../../utility/permissionsVariable";
 import DonationANTDListTable from "../../components/donation/donationAntdListTable";
 
-const DonationWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  // .ImagesVideos {
-  //   font: normal normal bold 15px/33px Noto Sans;
-  // }
-  .addDonation {
-    color: #583703;
-    align-items: center;
-  }
-
-  .FormikWraper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addDonation-btn {
-    padding: 8px 20px;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .donationContent {
-    margin-top: 1rem;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-    .pagination {
-      margin-top: 20px;
-    }
-  }
-  .filterPeriod {
-    color: #ff8744;
-    margin-top: 0.5rem;
-    font: normal normal bold 13px/5px noto sans;
-  }
-`;
+import "../../assets/scss/viewCommon.scss";
 
 export default function Donation() {
   const importFileRef = useRef();
@@ -227,7 +192,7 @@ export default function Donation() {
   );
 
   return (
-    <DonationWrapper>
+    <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Donations</title>
@@ -237,7 +202,12 @@ export default function Donation() {
       <div>
         <div className="d-lg-flex justify-content-between align-items-center ">
           <div className="d-flex align-items-center mb-2 mb-lg-0">
-            <div className="addDonation d-flex">
+            {/* <img
+              src={arrowLeft}
+              className="me-2 cursor-pointer align-self-center"
+              onClick={() => history.push("/")}
+            /> */}
+            <div className="addAction d-flex">
               <div className="">
                 <div>
                   <Trans i18nKey={"donation_Donation"} />
@@ -245,7 +215,7 @@ export default function Donation() {
               </div>
             </div>
           </div>
-          <div className="addDonation d-flex flex-wrap gap-2 gap-md-0">
+          <div className="addAction d-flex flex-wrap gap-2 gap-md-0">
             <ChangeCategoryType
               className={"me-1"}
               categoryTypeArray={newTypes}
@@ -292,7 +262,7 @@ export default function Donation() {
             />
 
             <Button
-              className="me-1"
+              className={`secondaryAction-btn me-1`}
               color="primary"
               onClick={() => importFileRef.current.click()}
             >
@@ -311,7 +281,7 @@ export default function Donation() {
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
-                className={`addDonation-btn`}
+                className={`addAction-btn`}
                 onClick={() =>
                   history.push(
                     `/donation/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}`
@@ -371,7 +341,7 @@ export default function Donation() {
                       onChangePageSize={(pageSize) =>
                         setPagination((prev) => ({
                           ...prev,
-                          limit: pageSize, 
+                          limit: pageSize,
                           page: 1,
                         }))
                       }
@@ -389,6 +359,6 @@ export default function Donation() {
           </Row>
         </div>
       </div>
-    </DonationWrapper>
+    </div>
   );
 }

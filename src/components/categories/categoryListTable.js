@@ -13,11 +13,7 @@ import confirmationIcon from "../../assets/images/icons/news/conformationIcon.sv
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 import CustomDataTable from "../partials/CustomDataTable";
-
-const CategoryTableWarapper = styled.div`
-  color: #583703 !important;
-  font: normal normal bold 15px/23px Noto Sans;
-`;
+import "../../assets/scss/common.scss";
 
 export function CategoryListTable({
   data,
@@ -173,13 +169,13 @@ export function CategoryListTable({
   }, [data]);
 
   return (
-    <CategoryTableWarapper>
+    <div className="categorytablewrapper">
       <CustomDataTable
         // minWidth="fit-content"
         maxHeight={""}
         columns={columns}
         data={categoriesList}
       />
-    </CategoryTableWarapper>
+    </div>
   );
 }

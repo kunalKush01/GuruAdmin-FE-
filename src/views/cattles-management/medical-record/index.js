@@ -16,16 +16,7 @@ import NoContent from "../../../components/partials/noContent";
 import MedicalReportTable from "./table";
 import { Helmet } from "react-helmet";
 import { WRITE } from "../../../utility/permissionsVariable";
-
-const MedicalWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-
-  .btn {
-    font-weight: bold;
-  }
-`;
-
+import "../../../assets/scss/viewCommon.scss";
 const CattlesMedical = () => {
   const history = useHistory();
   const { t } = useTranslation();
@@ -111,7 +102,7 @@ const CattlesMedical = () => {
   );
 
   return (
-    <MedicalWrapper>
+    <div className="medicalwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Cattles Medical Records</title>
@@ -249,7 +240,7 @@ const CattlesMedical = () => {
           </Row>
         </div>
       </div>
-    </MedicalWrapper>
+    </div>
   );
 };
 
