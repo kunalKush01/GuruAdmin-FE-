@@ -31,7 +31,7 @@ function CustomDataTable({
         className="datatablewrapper"
         style={{
           minWidth: minWidth || "auto",
-          maxHeight: maxHeight || "270px",
+          maxHeight: maxHeight ? "100%" : "400px",
           height: height || "auto",
         }}
       >
