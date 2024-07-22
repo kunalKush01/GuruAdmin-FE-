@@ -9,6 +9,16 @@ import ANTDcustometable from "../partials/antdReactTable";
 const MasterTableWarapper = styled.div`
   color: #583703 !important;
   font: normal normal bold 15px/23px Noto Sans;
+  .ant-table-body {
+  scrollbar-width: none;
+  max-height: 410px !important;
+  height: 352px ;
+  overflow: auto;
+  ::-webkit-scrollbar {
+    display: block;
+  }
+}
+
 `;
 
 export function MasterListTable({
