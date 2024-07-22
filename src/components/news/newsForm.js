@@ -23,10 +23,7 @@ import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import ImageUpload from "../partials/imageUpload";
 import RichTextField from "../partials/richTextEditorField";
-import '../../../src/styles/common.scss';
-
-;
-;
+import "../../assets/scss/common.scss";
 
 export default function NewsForm({
   plusIconDisable = false,

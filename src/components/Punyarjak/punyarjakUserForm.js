@@ -12,10 +12,7 @@ import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import ImageUpload from "../partials/imageUpload";
 import RichTextField from "../partials/richTextEditorField";
-import '../../../src/styles/common.scss';
-
-;
-;
+import "../../assets/scss/common.scss";
 
 export default function PunyarjakForm({
   plusIconDisable = false,
@@ -228,7 +225,7 @@ export default function PunyarjakForm({
               ) : (
                 <Button
                   color="primary"
-                  className="addNotice-btn "
+                  className="addAction-btn "
                   type="submit"
                   disabled={imageSpinner}
                 >

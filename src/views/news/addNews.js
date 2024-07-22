@@ -11,8 +11,7 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import NewsForm from "../../components/news/newsForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-import '../../styles/viewCommon.scss';
-;
+import "../../assets/scss/viewCommon.scss";
 
 const handleCreateNews = async (payload) => {
   return createNews(payload);
@@ -60,7 +59,7 @@ export default function AddNews() {
     DateTime: new Date(),
   };
   return (
-    <div className="newswrapper">
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex align-items-center ">
           <img
@@ -70,7 +69,7 @@ export default function AddNews() {
               history.push(`/news?page=${currentPage}&filter=${currentFilter}`)
             }
           />
-          <div className="addNews">
+          <div className="addAction">
             <Trans i18nKey={"news_AddNews"} />
           </div>
         </div>

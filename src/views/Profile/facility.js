@@ -14,9 +14,7 @@ import { CustomDropDown } from "../../components/partials/customDropDown";
 import { addFacility, handleProfileUpdate } from "../../redux/authSlice";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-import '../../../styles/viewCommon.scss';;
-;
-
+import "../../../assets/scss/viewCommon.scss";
 const getLangId = (langArray, langSelection) => {
   let languageId;
   langArray.map(async (Item) => {
@@ -48,7 +46,7 @@ export default function AddProfile() {
   };
 
   return (
-    <div className="profilewrapper">
+    <div className="addviewwrapper">
       <div className="d-flex justify-content-between align-items-center mb-2">
         <div className="d-flex justify-content-between align-items-center ">
           <img

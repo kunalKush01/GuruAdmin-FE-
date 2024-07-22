@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-import "../../../src/styles/common.scss";
+import "../../assets/scss/common.scss";
 
 export const CustomDropDown = ({
   i18nKeyDropDownItemArray,
@@ -26,7 +26,6 @@ export const CustomDropDown = ({
   width,
   ...props
 }) => {
-;
   const { t } = useTranslation();
   const selectedLang = useSelector((state) => state.auth.selectLangCode);
   const [dropdownOpen, setDropdownOpen] = useState(false);

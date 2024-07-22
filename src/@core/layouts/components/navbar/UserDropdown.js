@@ -30,7 +30,7 @@ import defaultAvatar from "../../../../assets/images/icons/dashBoard/defaultAvat
 import editProfileIcon from "../../../../assets/images/icons/dashBoard/icon_awesome_edit.svg";
 
 import { useSelector } from "react-redux";
-import '../../../../styles/viewCommon.scss';
+import "../../../../assets/scss/viewCommon.scss";
 
 const UserDropdown = () => {
   // ** State

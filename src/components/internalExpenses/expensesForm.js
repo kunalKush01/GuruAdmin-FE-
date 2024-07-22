@@ -18,10 +18,7 @@ import {
   findAllItemId,
 } from "../../api/cattle/cattleExpense";
 import { Storage } from "aws-amplify";
-import '../../../src/styles/common.scss';
-
-;
-;
+import "../../assets/scss/common.scss";
 
 export default function ExpensesForm({
   plusIconDisable = false,
@@ -377,7 +374,7 @@ export default function ExpensesForm({
               ) : (
                 <Button
                   color="primary"
-                  className="addNotice-btn "
+                  className="addAction-btn "
                   type="submit"
                 >
                   {plusIconDisable && (

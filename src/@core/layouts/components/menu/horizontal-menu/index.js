@@ -11,7 +11,7 @@ import Swal from "sweetalert2";
 import confirmationIcon from "../../../../../assets/images/icons/news/conformationIcon.svg";
 import BtnPopover from "../../../../../components/partials/btnPopover";
 import HorizontalNavMenuItems from "./HorizontalNavMenuItems";
-import '../../../../../styles/viewCommon.scss';
+import "../../../../../assets/scss/viewCommon.scss";
 
 function BtnContent({ setClosePopover, permissionsKey }) {
   const history = useHistory();

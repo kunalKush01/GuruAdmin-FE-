@@ -13,9 +13,8 @@ import confirmationIcon from "../../assets/images/icons/news/conformationIcon.sv
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 import CustomDataTable from "../partials/CustomDataTable";
-import "../../../src/styles/common.scss";
+import "../../assets/scss/common.scss";
 
-;
 export function CategoryListTable({
   data,
   page,

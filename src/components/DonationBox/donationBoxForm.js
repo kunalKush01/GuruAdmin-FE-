@@ -18,10 +18,7 @@ import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import RichTextField from "../partials/richTextEditorField";
 import LogListTable from "./logListTable";
-import '../../../src/styles/common.scss';
-
-;
-;
+import "../../assets/scss/common.scss";
 
 export default function DonationBoxForm({
   plusIconDisable = false,
@@ -172,7 +169,7 @@ export default function DonationBoxForm({
               ) : (
                 <Button
                   color="primary"
-                  className="addNotice-btn "
+                  className="addAction-btn "
                   type="submit"
                 >
                   {plusIconDisable && (

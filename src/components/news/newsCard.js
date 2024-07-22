@@ -44,10 +44,8 @@ import {
 import BtnPopover from "../partials/btnPopover";
 import { CustomDropDown } from "../partials/customDropDown";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
-import '../../../src/styles/common.scss';
+import "../../assets/scss/common.scss";
 
-;
-;
 function BtnContent({
   newsId,
   currentPage,
@@ -59,9 +57,6 @@ function BtnContent({
 }) {
   const { t } = useTranslation();
   const history = useHistory();
-;
-;
-
   const handleDeleteNews = async (payload) => {
     return deleteNewsDetail(payload);
   };
@@ -78,7 +73,7 @@ function BtnContent({
 
   const langList = useSelector((state) => state.auth.availableLang);
   return (
-    <div className="btncontentwraper">
+    <div className="listviewwrapper">
       <Row className="MainContainer d-block ">
         {(allPermissions?.name === "all" ||
           subPermission?.includes(EDIT) ||
@@ -213,7 +208,7 @@ export default function NewsCard({
           overflow: "hidden",
         }}
       >
-        <div className="position-relative cursor-pointer imgContainer ">
+        <div className="position-relative cursor-pointer imgContainer">
           <img
             onClick={() => history.push(`/news/about/${data?.id}`, data.id)}
             alt="News Image"
@@ -226,7 +221,7 @@ export default function NewsCard({
             }}
             src={data?.images[0]?.presignedUrl ?? placeHolder}
           />
-          <div className=" position-absolute imgContent  w-100 ">
+          <div className="position-absolute imgContent  w-100">
             {(allPermissions?.name === "all" ||
               subPermission?.includes(PUBLISHER)) && (
               <div className="text-end">

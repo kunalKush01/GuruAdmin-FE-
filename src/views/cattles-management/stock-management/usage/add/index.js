@@ -8,9 +8,7 @@ import { createItemUsage } from "../../../../../api/cattle/cattleUsage";
 import arrowLeft from "../../../../../assets/images/icons/arrow-left.svg";
 import AddItemUsageForm from "../../../../../components/cattleUsage/addForm";
 
-import '../../../../../styles/viewCommon.scss';
-;
-
+import "../../../../../assets/scss/viewCommon.scss";
 const AddItemUsage = () => {
   const history = useHistory();
   const searchParams = new URLSearchParams(history.location.search);
@@ -51,7 +49,7 @@ const AddItemUsage = () => {
               )
             }
           />
-          <div className="addEvent">
+          <div className="addAction">
             <Trans i18nKey={"cattle_usage_add"} />
           </div>
         </div>

@@ -7,7 +7,7 @@ import styled from "styled-components";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomDataTable from "../partials/CustomDataTable";
-import "../../../src/styles/common.scss";
+import "../../assets/scss/common.scss";
 export default function SubscribedUSerListTable({ data }) {
   const { t } = useTranslation();
 
@@ -110,7 +110,6 @@ export default function SubscribedUSerListTable({ data }) {
   //       }
   //     })
   //   },[data])
-;
   return (
     <div className="subscribedusertablewrapper">
       <CustomDataTable

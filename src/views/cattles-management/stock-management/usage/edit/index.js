@@ -18,8 +18,7 @@ import arrowLeft from "../../../../../assets/images/icons/arrow-left.svg";
 import AddItemUsageForm from "../../../../../components/cattleUsage/addForm";
 import { ConverFirstLatterToCapital } from "../../../../../utility/formater";
 
-import '../../../../../styles/viewCommon.scss';
-;
+import "../../../../../assets/scss/viewCommon.scss";
 
 const getLangId = (langArray, langSelection) => {
   let languageId;

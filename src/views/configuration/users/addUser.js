@@ -9,9 +9,7 @@ import { createSubAdmin, getAllUserRoles } from "../../../api/userApi.js";
 import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
 import UserForm from "../../../components/users/userForm.js";
 
-import '../../../styles/viewCommon.scss';;
-;
-
+import "../../../assets/scss/viewCommon.scss";
 const handleCreateUser = async (payload) => {
   return createSubAdmin(payload);
 };
@@ -35,7 +33,7 @@ const schema = Yup.object().shape({
     )
     .min(8, "Password is too short - should be 8 chars minimum.")
     .trim(),
-  userRoleChacked: Yup.array()
+  userRoleChecked: Yup.array()
     .min(1, "minimum_one_role_required")
     .required("user_userRoleRequired"),
 });
@@ -49,7 +47,7 @@ export default function AddCategory() {
   const currentPage = searchParams.get("page");
 
   return (
-    <div className="noticewraper">
+    <div className="">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -59,7 +57,7 @@ export default function AddCategory() {
               history.push(`/configuration/users?page=${currentPage}`)
             }
           />
-          <div className="addNotice">
+          <div className="addAction">
             <Trans i18nKey={"users_AddUser"} />
           </div>
         </div>
@@ -78,7 +76,7 @@ export default function AddCategory() {
             email: "",
             password: "",
             file: "",
-            userRoleChacked: [],
+            userRoleChecked: [],
           }}
           validationSchema={schema}
           buttonName={"users_AddUser"}

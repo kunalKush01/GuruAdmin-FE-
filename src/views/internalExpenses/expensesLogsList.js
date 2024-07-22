@@ -20,9 +20,7 @@ import { ChangePeriodDropDown } from "../../components/partials/changePeriodDrop
 import NoContent from "../../components/partials/noContent";
 import SubscribedUSerListTable from "../../components/subscribedUser/subscribedUserListTable";
 
-import '../../../styles/viewCommon.scss';;
-;
-
+import "../../../assets/scss/viewCommon.scss";
 export default function ExpensesLog() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const selectedLang = useSelector((state) => state.auth.selectLang);

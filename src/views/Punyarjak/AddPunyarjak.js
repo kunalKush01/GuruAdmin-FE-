@@ -8,16 +8,13 @@ import { createPunyarjak } from "../../api/punarjakApi.js";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import PunyarjakForm from "../../components/Punyarjak/punyarjakUserForm.js";
 
-import '../../styles/viewCommon.scss';
-;
-
+import "../../assets/scss/viewCommon.scss";
 const handleCreatePunyarjak = async (payload) => {
   return createPunyarjak(payload);
 };
 const schema = Yup.object().shape({
   description: Yup.string().required("punyarjak_desc_required").trim(),
-  title: Yup
-    .string()
+  title: Yup.string()
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
     .required("news_title_required")
     .trim(),
@@ -40,7 +37,7 @@ export default function AddPunyarjak() {
   };
 
   return (
-    <div className="punyarjakwrapper">
+    <div className="addviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img

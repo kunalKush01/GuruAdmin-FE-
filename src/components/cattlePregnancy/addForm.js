@@ -10,10 +10,7 @@ import { findAllCattle } from "../../api/cattle/cattleMedical";
 import AsyncSelectField from "../partials/asyncSelectField";
 import CustomRadioButton from "../partials/customRadioButton";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
-import '../../../src/styles/common.scss';
-
-;
-;
+import "../../assets/scss/common.scss";
 
 const AddPregnancyForm = ({
   initialValues,

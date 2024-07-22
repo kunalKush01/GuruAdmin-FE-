@@ -7,9 +7,7 @@ import * as Yup from "yup";
 import { createPregnancyReport } from "../../../../api/cattle/cattlePregnancy";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddPregnancyForm from "../../../../components/cattlePregnancy/addForm";
-import '../../../../styles/viewCommon.scss';
-;
-
+import "../../../../assets/scss/viewCommon.scss";
 const AddPregnancy = () => {
   const history = useHistory();
 
@@ -48,7 +46,7 @@ const AddPregnancy = () => {
               )
             }
           />
-          <div className="addEvent">
+          <div className="addAction">
             <Trans i18nKey={"cattle_pregnancy_report_add"} />
           </div>
         </div>

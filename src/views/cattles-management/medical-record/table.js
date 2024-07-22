@@ -11,9 +11,7 @@ import editIcon from "../../../assets/images/icons/category/editIcon.svg";
 import confirmationIcon from "../../../assets/images/icons/news/conformationIcon.svg";
 import CustomDataTable from "../../../components/partials/CustomDataTable";
 import { DELETE, EDIT } from "../../../utility/permissionsVariable";
-import '../../../styles/viewCommon.scss';
-;
-
+import "../../../assets/scss/viewCommon.scss";
 const MedicalReportTable = ({
   data = [],
   allPermissions,

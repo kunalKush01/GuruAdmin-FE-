@@ -1,13 +1,25 @@
 import ReactApexChart from "react-apexcharts";
 import { Trans, useTranslation } from "react-i18next";
-import '../../styles/viewCommon.scss';
+import "../../assets/scss/viewCommon.scss";
+
+const getCssVariableValue = (variable) => {
+  return getComputedStyle(document.documentElement)
+    .getPropertyValue(variable)
+    .trim();
+};
+
+const barColors = [
+  getCssVariableValue("--blue"),
+  getCssVariableValue("--yellow"),
+  getCssVariableValue("--purple"),
+];
 
 export const RevenueChart = ({
   DonationData = [],
   CommitmentData = [],
   chartHeading,
   cattleSeries,
-  barColors = ["#FF8744", "#FFDEB8", "#FF0700"],
+  barColors,
 }) => {
   const { t } = useTranslation();
 

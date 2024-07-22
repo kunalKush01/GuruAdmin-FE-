@@ -43,9 +43,7 @@ import {
 } from "../../utility/utils/callApi";
 import TrustListModal from "./TrustListModal";
 import { cattleHeader } from "../../utility/subHeaderContent/cattleHeader";
-import '../../styles/viewCommon.scss';;
-;
-
+import "../../assets/scss/viewCommon.scss";
 const LoginCover = () => {
   const { isLogged, userDetail, trustDetail } = useSelector(
     (state) => state.auth

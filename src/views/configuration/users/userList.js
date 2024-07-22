@@ -34,9 +34,7 @@ import { WRITE } from "../../../utility/permissionsVariable";
 import { Helmet } from "react-helmet";
 import Swal from "sweetalert2";
 import { timers } from "jquery";
-import '../../../styles/viewCommon.scss';;
-;
-
+import "../../../assets/scss/viewCommon.scss";
 const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 export default function User() {
@@ -148,7 +146,7 @@ export default function User() {
     (item) => item.name
   );
   return (
-    <div className="newswrapper">
+    <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Users</title>

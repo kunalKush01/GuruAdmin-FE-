@@ -14,8 +14,7 @@ import { getCattlesExpenseList } from "../../../api/cattle/cattleExpense";
 import { ChangePeriodDropDown } from "../../../components/partials/changePeriodDropDown";
 import NoContent from "../../../components/partials/noContent";
 import ExpenseTable from "./table";
-import '../../../styles/viewCommon.scss';
-;
+import "../../../assets/scss/viewCommon.scss";
 
 const ExpenseManagement = () => {
   const history = useHistory();

@@ -23,8 +23,8 @@ import ProfileForm from "../../components/Profile/profileForm";
 import NoticeForm from "../../components/notices/noticeForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-import '../../styles/viewCommon.scss';
-;
+import "../../assets/scss/viewCommon.scss";
+
 const schema = Yup.object().shape({
   trustName: Yup.string().required("name_required"),
   trustType: Yup.mixed().required("trust_type_required"),
@@ -133,7 +133,7 @@ export default function AddLanguageProfile() {
   const [loading, setLoading] = useState(false);
 
   return (
-    <div className="profilewrapper">
+    <div className="addviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img

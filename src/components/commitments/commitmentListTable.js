@@ -23,9 +23,8 @@ import receiptIcon from "../../assets/images/icons/receiptIcon.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { DELETE, EDIT } from "../../utility/permissionsVariable";
 import CustomDataTable from "../partials/CustomDataTable";
-import "../../../src/styles/common.scss";
+import "../../assets/scss/common.scss";
 
-;
 export default function CommitmentListTable(
   {
     data,

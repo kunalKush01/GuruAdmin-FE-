@@ -19,9 +19,7 @@ import SubscribedUSerListTable from "../../components/subscribedUser/subscribedU
 import LogListTable from "../../components/DonationBox/logListTable";
 import { getAllBoxCollectionLogs } from "../../api/donationBoxCollectionApi";
 
-import '../../../styles/viewCommon.scss';;
-;
-
+import "../../../assets/scss/viewCommon.scss";
 export default function HundiLog() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -80,7 +78,7 @@ export default function HundiLog() {
   );
 
   return (
-    <div className="hundilogwrapper">
+    <div className="listviewwrapper">
       <div className="window nav statusBar body "></div>
 
       <div>

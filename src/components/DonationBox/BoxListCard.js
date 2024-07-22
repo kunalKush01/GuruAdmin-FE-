@@ -9,10 +9,7 @@ import donationBoxDesIcon from "../../assets/images/icons/donationBox/donationBo
 import donationBoxIcon from "../../assets/images/icons/donationBox/donationBoxIcon.png";
 import editIcon from "../../assets/images/icons/donationBox/editIcon.svg";
 import { EDIT } from "../../utility/permissionsVariable";
-import '../../../src/styles/common.scss';
-
-;
-;
+import "../../assets/scss/common.scss";
 
 export default function BoxListCard({
   data = "",

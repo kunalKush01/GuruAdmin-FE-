@@ -4,8 +4,7 @@ import { Modal, ModalBody } from "reactstrap";
 import styled from "styled-components";
 import { setCookieWithMainDomain } from "../../utility/formater";
 
-import '../../styles/viewCommon.scss';
-;
+import "../../assets/scss/viewCommon.scss";
 
 const TrustListModal = ({ trustArray, modal, setModal, rToken, aToken }) => {
   const subdomainChange = process.env.REACT_APP_ADMIN_SUBDOMAIN_REPLACE_URL;

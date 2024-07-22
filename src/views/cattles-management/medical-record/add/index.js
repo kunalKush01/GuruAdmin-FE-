@@ -7,9 +7,7 @@ import * as Yup from "yup";
 import { createCattleMedicalRecord } from "../../../../api/cattle/cattleMedical";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddMedicalInfoForm from "../../../../components/cattleMedicalInfo/addForm";
-import '../../../../styles/viewCommon.scss';
-;
-
+import "../../../../assets/scss/viewCommon.scss";
 const AddMedicalInfo = () => {
   const history = useHistory();
   const searchParams = new URLSearchParams(history.location.search);
@@ -20,17 +18,17 @@ const AddMedicalInfo = () => {
     return createCattleMedicalRecord(payload);
   };
 
-    const schema = Yup.object().shape({
-      cattleCalfId: Yup.mixed().required("cattle_id_required"),
-      treatmentMedicine: Yup.string().required(
-        "cattle_treatment_medicine_required"
-      ),
-      dosage: Yup.string().required("cattle_dosage_required"),
-      DrName: Yup.string().required("cattle_DrName_required"),
-      Mobile: Yup.string().required("expenses_mobile_required"),
-      price: Yup.number().required("cattle_price_required"),
-      cattleSymptoms: Yup.string().required("cattle_symptoms_required"),
-    });
+  const schema = Yup.object().shape({
+    cattleCalfId: Yup.mixed().required("cattle_id_required"),
+    treatmentMedicine: Yup.string().required(
+      "cattle_treatment_medicine_required"
+    ),
+    dosage: Yup.string().required("cattle_dosage_required"),
+    DrName: Yup.string().required("cattle_DrName_required"),
+    Mobile: Yup.string().required("expenses_mobile_required"),
+    price: Yup.number().required("cattle_price_required"),
+    cattleSymptoms: Yup.string().required("cattle_symptoms_required"),
+  });
 
   const initialValues = {
     cattleCalfId: "",
@@ -58,7 +56,7 @@ const AddMedicalInfo = () => {
               )
             }
           />
-          <div className="addEvent">
+          <div className="addAction">
             <Trans i18nKey={"cattle_medical_add"} />
           </div>
         </div>

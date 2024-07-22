@@ -31,7 +31,7 @@ import emailInputIcon from "../../assets/images/icons/signInIcon/email.svg";
 import hidePassIcon from "../../assets/images/icons/signInIcon/hidePassIcon.svg";
 import { login } from "../../redux/authSlice";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-import '../../styles/viewCommon.scss';
+import "../../assets/scss/viewCommon.scss";
 const ResetPassWord = () => {
   const history = useHistory();
 
@@ -65,8 +65,6 @@ const ResetPassWord = () => {
   const forgetPasswordSchema = Yup.object().shape({
     email: Yup.string().required().min(5),
   });
-
-;
 
   const { skin } = useSkin();
 

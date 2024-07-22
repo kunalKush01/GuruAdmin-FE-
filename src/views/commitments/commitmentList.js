@@ -38,8 +38,7 @@ import NoContent from "../../components/partials/noContent";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { WRITE } from "../../utility/permissionsVariable";
 
-import '../../styles/viewCommon.scss';
-;
+import "../../assets/scss/viewCommon.scss";
 
 export default function Commitment() {
   const importFileRef = useRef();
@@ -245,10 +244,10 @@ export default function Commitment() {
   };
 
   return (
-    <div className="commitmentwrapper">
+    <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharam Admin | Commitment</title>
+        <title>Apna Dharm Admin | Pledge</title>
       </Helmet>
       <div className="window nav statusBar body "></div>
 
@@ -260,7 +259,7 @@ export default function Commitment() {
               className="me-2  cursor-pointer align-self-center"
               onClick={() => history.push("/")}
             /> */}
-            <div className="addCommitment d-flex">
+            <div className="addAction d-flex">
               <div className="">
                 <div>
                   <Trans i18nKey={"commitment"} />
@@ -268,7 +267,7 @@ export default function Commitment() {
               </div>
             </div>
           </div>
-          <div className="addCommitment d-flex flex-wrap gap-2 gap-md-0">
+          <div className="addAction d-flex flex-wrap gap-2 gap-md-0">
             <ChangeCategoryType
               className={"me-1"}
               categoryTypeArray={newTypes}
@@ -326,7 +325,7 @@ export default function Commitment() {
               }}
             />
             <Button
-              className="me-1"
+              className={`secondaryAction-btn me-1`}
               color="primary"
               onClick={() => importFileRef.current.click()}
             >
@@ -344,7 +343,7 @@ export default function Commitment() {
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
-                className={`addCommitment-btn mt-md-1 mt-lg-0`}
+                className={`addAction-btn mt-md-1 mt-lg-0`}
                 onClick={() =>
                   history.push(
                     `/commitment/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${dropDownName}`
@@ -366,7 +365,7 @@ export default function Commitment() {
               color="success"
               onMouseEnter={onHover}
               onMouseLeave={onHoverLeave}
-              className={`addCommitment ms-1 ${
+              className={`addAction ms-1 ${
                 notifyIds?.length > 0 ? "opacity-100" : "opacity-50"
               }`}
               onClick={() => {

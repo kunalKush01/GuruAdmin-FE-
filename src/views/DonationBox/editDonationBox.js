@@ -18,8 +18,7 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import DonationBoxForm from "../../components/DonationBox/donationBoxForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-import '../../styles/viewCommon.scss';
-;
+import "../../assets/scss/viewCommon.scss";
 const schema = Yup.object().shape({
   // CreatedBy: Yup.string().required("news_tags_required"),
   Amount: Yup.string()
@@ -83,7 +82,7 @@ export default function EditDonationBox() {
   }, [collectionBoxDetailQuery]);
 
   return (
-    <div className="newswrapper">
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img

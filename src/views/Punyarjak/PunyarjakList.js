@@ -22,8 +22,7 @@ import NoContent from "../../components/partials/noContent";
 import SubscribedUSerListTable from "../../components/subscribedUser/subscribedUserListTable";
 import { WRITE } from "../../utility/permissionsVariable";
 
-import '../../styles/viewCommon.scss';
-;
+import "../../assets/scss/viewCommon.scss";
 
 export default function Punyarjak() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
@@ -114,7 +113,7 @@ export default function Punyarjak() {
   );
 
   return (
-    <div className="punyarjakwrapper">
+    <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Punyarjak</title>
@@ -142,7 +141,7 @@ export default function Punyarjak() {
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
-                className="addPunyarjak-btn"
+                className="addAction-btn"
                 onClick={() =>
                   history.push(`/punyarjak/add?page=${pagination.page}`)
                 }

@@ -27,7 +27,7 @@ import { getAllNotification } from "../../../../api/notification";
 import logo from "../../../../assets/images/pages/main-logo.png";
 import CustomSearchBar from "../../../../components/partials/customSearchBar";
 import { isSerchable } from "../../../../utility/localSerachBar";
-import '../../../../styles/viewCommon.scss';
+import "../../../../assets/scss/viewCommon.scss";
 
 const NavbarUser = (props) => {
   const history = useHistory();

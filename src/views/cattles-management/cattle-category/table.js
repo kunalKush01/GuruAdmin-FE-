@@ -9,9 +9,7 @@ import editIcon from "../../../assets/images/icons/category/editIcon.svg";
 import confirmationIcon from "../../../assets/images/icons/news/conformationIcon.svg";
 import CustomDataTable from "../../../components/partials/CustomDataTable";
 import { ConverFirstLatterToCapital } from "../../../utility/formater";
-import '../../../styles/viewCommon.scss';
-;
-
+import "../../../assets/scss/viewCommon.scss";
 const CattleCategoryTable = ({ data = [], maxHeight, height, toggle }) => {
   const { t } = useTranslation();
 

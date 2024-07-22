@@ -3,9 +3,8 @@ import React from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { FormGroup, InputGroup } from "reactstrap";
 import styled from "styled-components";
-import "../../../src/styles/common.scss";
+import "../../assets/scss/common.scss";
 
-;
 export default function CustomTextField({
   required = false,
   label,

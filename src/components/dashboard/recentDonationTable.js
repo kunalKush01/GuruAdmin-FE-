@@ -8,7 +8,7 @@ import { deleteExpensesDetail } from "../../api/expenseApi";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomDataTable from "../partials/CustomDataTable";
-import '../../../src/styles/common.scss';
+import "../../assets/scss/common.scss";
 
 export default function RecentDonationTable({ data }) {
   // const handleDeleteExpenses = async (payload) => {
@@ -116,9 +116,6 @@ export default function RecentDonationTable({ data }) {
       };
     });
   }, [data]);
-
-;
-;
 
   return (
     <div className="recentdonationtablewrapper">

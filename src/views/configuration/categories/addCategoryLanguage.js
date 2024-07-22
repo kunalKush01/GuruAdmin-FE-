@@ -16,13 +16,10 @@ import {
 import CategoryForm from "../../../components/categories/categoryForm";
 import { ConverFirstLatterToCapital } from "../../../utility/formater";
 
-import '../../../styles/viewCommon.scss';;
-;
-
+import "../../../assets/scss/viewCommon.scss";
 const schema = Yup.object().shape({
   MasterCategory: Yup.mixed().required("categories_category_required"),
-  SubCategory: Yup
-    .string()
+  SubCategory: Yup.string()
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
     .required("categories_sub_category_required")
     .trim(),

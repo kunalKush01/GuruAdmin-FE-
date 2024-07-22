@@ -34,10 +34,8 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 import BtnPopover from "../partials/btnPopover";
 import { CustomDropDown } from "../partials/customDropDown";
-import '../../../src/styles/common.scss';
+import "../../assets/scss/common.scss";
 
-;
-;
 function BtnContent({
   punyarjakId,
   currentPage,
@@ -48,9 +46,6 @@ function BtnContent({
 }) {
   const { t } = useTranslation();
   const history = useHistory();
-;
-;
-
   const handleDeletePunyarjak = async (payload) => {
     return deletePunyarjak(payload);
   };

@@ -5,8 +5,7 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useField } from "formik";
 import { Trans } from "react-i18next";
-import "../../../src/styles/common.scss";
-;
+import "../../assets/scss/common.scss";
 const CustomCountryMobileNumberField = ({
   label,
   placeholder,

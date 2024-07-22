@@ -6,9 +6,7 @@ import styled from "styled-components";
 import avtarIcon from "../../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import CustomDataTable from "../../../components/partials/CustomDataTable";
 import { ConverFirstLatterToCapital } from "../../../utility/formater";
-import '../../../styles/viewCommon.scss';
-;
-
+import "../../../assets/scss/viewCommon.scss";
 export default function RecentRegisteredCattlesTable({ data }) {
   // const handleDeleteExpenses = async (payload) => {
   //   return deleteExpensesDetail(payload);

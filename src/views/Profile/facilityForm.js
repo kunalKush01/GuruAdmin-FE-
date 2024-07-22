@@ -10,9 +10,7 @@ import CustomTextField from "../../components/partials/customTextField";
 import { addFacility } from "../../redux/authSlice";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 
-import '../../../styles/viewCommon.scss';;
-;
-
+import "../../../assets/scss/viewCommon.scss";
 const FacilityForm = () => {
   const history = useHistory();
   const { t } = useTranslation();

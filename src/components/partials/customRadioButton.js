@@ -2,10 +2,8 @@ import { useField } from "formik";
 import React from "react";
 import { Trans } from "react-i18next";
 import styled from "styled-components";
-import '../../../src/styles/common.scss';
+import "../../assets/scss/common.scss";
 
-;
-;
 const CustomRadioButton = ({ label, heading, customOnChange, ...props }) => {
   const [field, meta, helper] = useField(props);
   const handleChange = (e) => {

@@ -17,10 +17,7 @@ import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import ImageUpload from "../partials/imageUpload";
-import '../../../src/styles/common.scss';
-
-;
-;
+import "../../assets/scss/common.scss";
 
 export default function UserForm({
   plusIconDisable = false,
@@ -89,7 +86,7 @@ export default function UserForm({
             mobileNumber: e.mobile.toString(),
             countryCode: e?.dialCode,
             countryName: e?.countryCode,
-            roles: e?.userRoleChacked,
+            roles: e?.userRoleChecked,
             name: e.name,
             password: e?.password,
             profilePhoto: editProfile ? imageName : e?.file,
@@ -264,10 +261,10 @@ export default function UserForm({
                           font: "normal normal bold 11px/15px Noto Sans",
                         }}
                       >
-                        {formik.errors.userRoleChacked &&
-                          formik.touched.userRoleChacked && (
+                        {formik.errors.userRoleChecked &&
+                          formik.touched.userRoleChecked && (
                             <div className="text-danger">
-                              <Trans i18nKey={formik.errors.userRoleChacked} />
+                              <Trans i18nKey={formik.errors.userRoleChecked} />
                             </div>
                           )}
                       </div>
@@ -286,17 +283,17 @@ export default function UserForm({
                                 type="checkbox"
                                 checked={
                                   userRoleIds?.length ===
-                                  formik?.values?.userRoleChacked?.length
+                                  formik?.values?.userRoleChecked?.length
                                 }
                                 className="me-1 checkBoxInput"
                                 onChange={(e) =>
                                   e.target.checked
                                     ? formik.setFieldValue(
-                                        "userRoleChacked",
+                                        "userRoleChecked",
                                         userRoleIds
                                       )
                                     : formik.setFieldValue(
-                                        "userRoleChacked",
+                                        "userRoleChecked",
                                         []
                                       )
                                 }
@@ -321,7 +318,7 @@ export default function UserForm({
                                 >
                                   <Input
                                     id={item?._id}
-                                    name="userRoleChacked"
+                                    name="userRoleChecked"
                                     tag={Field}
                                     type="checkbox"
                                     className="me-1 checkBoxInput"
@@ -345,7 +342,7 @@ export default function UserForm({
                 </Row>
               </Col>
             </Row>
-            <div className="btn-Published ">
+            <div className="btn-Published">
               {loading ? (
                 <Button
                   color="primary"
@@ -363,7 +360,7 @@ export default function UserForm({
               ) : (
                 <Button
                   color="primary"
-                  className="addNotice-btn"
+                  className="addAction-btn"
                   type="submit"
                   disabled={imageSpinner}
                 >

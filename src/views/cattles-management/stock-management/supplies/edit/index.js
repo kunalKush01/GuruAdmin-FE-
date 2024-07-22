@@ -20,9 +20,7 @@ import AddStockItemForm from "../../../../../components/cattleStockManagment/Ite
 import AddSuppliesForm from "../../../../../components/cattleStockManagment/supplies/addForm";
 import { ConverFirstLatterToCapital } from "../../../../../utility/formater";
 
-import '../../../../../styles/viewCommon.scss';
-;
-
+import "../../../../../assets/scss/viewCommon.scss";
 const getLangId = (langArray, langSelection) => {
   let languageId;
   langArray.map(async (Item) => {
@@ -84,7 +82,7 @@ const EditSupply = () => {
   }, [supplyDetailQuery]);
 
   return (
-    <div className="stockaddwraper">
+    <div className="addviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img

@@ -8,8 +8,7 @@ import { createSubscribedUser } from "../../api/subscribedUser.js";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import SubscribedUserForm from "../../components/subscribedUser/subscribedUserForm.js";
 
-import '../../styles/viewCommon.scss';
-;
+import "../../assets/scss/viewCommon.scss";
 
 const handleCreateUser = async (payload) => {
   return createSubscribedUser(payload);
@@ -43,7 +42,7 @@ export default function AddSubscribedUser() {
   const redirectTo = searchParams.get("redirect");
 
   return (
-    <div className="noticewraper">
+    <div className="addviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -55,11 +54,11 @@ export default function AddSubscribedUser() {
               )
             }
           />
-          <div className="addNotice">
+          <div className="addAction">
             <Trans i18nKey={"add_user"} />
           </div>
         </div>
-        {/* <div className="addNotice">
+        {/* <div className="addAction">
           <Trans i18nKey={"news_InputIn"} />
           <CustomDropDown
             ItemListArray={langArray}

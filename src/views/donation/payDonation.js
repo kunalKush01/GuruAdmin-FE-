@@ -19,8 +19,7 @@ import CommitmentForm from "../../components/commitments/commitmentForm";
 import DonationForm from "../../components/donation/donationForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-import '../../styles/viewCommon.scss';
-;
+import "../../assets/scss/viewCommon.scss";
 
 const schema = Yup.object().shape({
   Mobile: Yup.string().required("expenses_mobile_required"),
@@ -104,7 +103,7 @@ export default function PayDonation() {
   }, [commitmentDetailQuery]);
 
   return (
-    <div className="paydonationwrapper">
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img

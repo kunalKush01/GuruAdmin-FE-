@@ -15,8 +15,7 @@ import NewsForm from "../../components/news/newsForm";
 import { CustomDropDown } from "../../components/partials/customDropDown";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-import '../../styles/viewCommon.scss';
-;
+import "../../assets/scss/viewCommon.scss";
 
 const schema = Yup.object().shape({
   Title: Yup.string()
@@ -117,7 +116,7 @@ export default function AddLanguageNews() {
   }, [newsDetailQuery]);
 
   return (
-    <div className="newswrapper">
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img

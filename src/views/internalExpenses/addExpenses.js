@@ -8,8 +8,7 @@ import { createExpense } from "../../api/expenseApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import ExpensesForm from "../../components/internalExpenses/expensesForm";
 
-import '../../styles/viewCommon.scss';
-;
+import "../../assets/scss/viewCommon.scss";
 
 export const ExpenseType = [
   {

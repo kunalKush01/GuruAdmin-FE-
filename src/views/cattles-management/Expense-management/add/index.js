@@ -5,9 +5,7 @@ import styled from "styled-components";
 import { createCattleExpenses } from "../../../../api/cattle/cattleExpense";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddExpenseForm from "../../../../components/cattleExpenses/addform";
-import '../../../../styles/viewCommon.scss';
-;
-
+import "../../../../assets/scss/viewCommon.scss";
 const AddExpenses = () => {
   const history = useHistory();
   const searchParams = new URLSearchParams(history.location.search);
@@ -47,7 +45,7 @@ const AddExpenses = () => {
   };
 
   return (
-    <div className="expenseaddwraper">
+    <div className="addviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -59,7 +57,7 @@ const AddExpenses = () => {
               )
             }
           />
-          <div className="addEvent">
+          <div className="addAction">
             <Trans i18nKey={"cattle_expense_add"} />
           </div>
         </div>

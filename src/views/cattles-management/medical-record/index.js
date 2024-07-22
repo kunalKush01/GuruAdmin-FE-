@@ -16,9 +16,7 @@ import NoContent from "../../../components/partials/noContent";
 import MedicalReportTable from "./table";
 import { Helmet } from "react-helmet";
 import { WRITE } from "../../../utility/permissionsVariable";
-import '../../../styles/viewCommon.scss';
-;
-
+import "../../../assets/scss/viewCommon.scss";
 const CattlesMedical = () => {
   const history = useHistory();
   const { t } = useTranslation();

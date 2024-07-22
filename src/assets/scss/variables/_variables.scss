@@ -1,7 +1,54 @@
 //  ================================================================================================
 //  ? TIP:  It is recommended to use this file for overriding bootstrap variables.
 //  ================================================================================================
-$primary: #FF8744; // Changing primary color
+$primary: #72d6a9; // Changing primary color
 $font-family-sans-serif: 'Noto Sans',sans-serif !default;
-$body-bg:#ffffff !default;
-// $font-family-monospace: 'Montserrat', Helvetica, Arial, serif !default;
+$body-bg:#fafafa !default;
+
+// Color variables
+$primary-color: #{$primary};
+$secondary-color: #FCF5E7;
+$font-color: #533810;
+$screen-background-color : #{$body-bg};
+$white: #FFFFFF;
+$green: #79BB43;
+$light-green : #79BB43;
+$red: #EC5B52;
+$light-red: #FCEBEA;
+$blue :#5EC4F4;
+$light-blue:#E9F8FD;
+$yellow: #F3B64B;
+$light-yellow:#FEF6E7;
+$purple: #5F69E6;
+$light-purple: #EDEDFE;
+$font-family: 'Noto Sans', sans-serif;
+$font-weight-bold: bold;
+$font-weight-normal: normal;
+$font-size-small: 13px;
+$font-size-medium: 15px;
+$font-size-large: 20px;
+
+// CSS Custom Properties
+:root {
+    --primary-color: #{$primary};
+    --secondary-color: #{$secondary-color};
+    --font-color: #{$font-color};
+    --screen-background-color: #{$screen-background-color};
+    --white: #{$white};
+    --green: #{$green};
+    --light-green: #{$light-green};
+    --red: #{$red};
+    --light-red: #{$light-red};
+    --blue: #{$blue};
+    --light-blue: #{$light-blue};
+    --yellow: #{$yellow};
+    --light-yellow: #{$light-yellow};
+    --purple: #{$purple};
+    --light-purple: #{$light-purple};
+    --font-family: #{$font-family};
+    --font-weight-bold: #{$font-weight-bold};
+    --font-weight-normal: #{$font-weight-normal};
+    --font-size-small: #{$font-size-small};
+    --font-size-medium: #{$font-size-medium};
+    --font-size-large: #{$font-size-large};
+  }

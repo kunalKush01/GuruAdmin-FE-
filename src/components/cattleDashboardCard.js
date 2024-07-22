@@ -1,9 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import '../../src/styles/common.scss';
-
-;
-;
+import "../assets/scss/common.scss";
 
 const CattleDashboardCard = ({
   showRupeesSymbol = false,

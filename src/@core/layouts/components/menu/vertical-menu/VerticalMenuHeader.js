@@ -4,7 +4,7 @@ import { useEffect } from "react";
 // ** Icons Imports
 import { Circle, Disc, X } from "react-feather";
 import logo from "../../../../../assets/images/pages/main-logo.png";
-import '../../../../../styles/viewCommon.scss';
+import "../../../../../assets/scss/viewCommon.scss";
 
 const VerticalMenuHeader = (props) => {
   // ** Props

@@ -10,9 +10,8 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import cardClockIcon from "../../assets/images/icons/news/clockIcon.svg";
 import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-import "../../../src/styles/common.scss";
+import "../../assets/scss/common.scss";
 
-;
 export default function DetailPage({
   tags,
   title,

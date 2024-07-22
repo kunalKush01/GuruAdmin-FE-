@@ -13,9 +13,7 @@ import styled from "styled-components";
 import { getAllBoxCollection } from "../../api/donationBoxCollectionApi";
 import DonationBoxListTable from "../../components/DonationBox/donationBoxListTable";
 import NoContent from "../../components/partials/noContent";
-import '../../../styles/viewCommon.scss';;
-;
-
+import "../../../assets/scss/viewCommon.scss";
 export default function Expenses() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -83,7 +81,7 @@ export default function Expenses() {
   );
 
   return (
-    <div className="donationboxlistwrapper">
+    <div className="listviewwrapper">
       <div className="window nav statusBar body "></div>
 
       <div>

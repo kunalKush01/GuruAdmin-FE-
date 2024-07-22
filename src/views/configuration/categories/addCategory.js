@@ -13,9 +13,7 @@ import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
 import CategoryForm from "../../../components/categories/categoryForm";
 import { CustomDropDown } from "../../../components/partials/customDropDown";
 
-import '../../../styles/viewCommon.scss';;
-;
-
+import "../../../assets/scss/viewCommon.scss";
 const handleCreateSubCategory = async (payload) => {
   return createSubCategory(payload);
 };
@@ -44,7 +42,7 @@ export default function AddCategory() {
       })
   );
   return (
-    <div className="categoryaddwrapper">
+    <div className="addviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -56,11 +54,11 @@ export default function AddCategory() {
               )
             }
           />
-          <div className="addCategory">
+          <div className="addAction">
             <Trans i18nKey={"categories_AddCategory"} />
           </div>
         </div>
-        <div className="addCategory">
+        <div className="addAction">
           <div className="d-none d-sm-block">
             <Trans i18nKey={"news_InputIn"} />
           </div>

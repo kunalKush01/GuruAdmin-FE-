@@ -23,9 +23,7 @@ import Usage from "./usage";
 import { Helmet } from "react-helmet";
 import { WRITE } from "../../../utility/permissionsVariable";
 
-import '../../../styles/viewCommon.scss';;
-;
-
+import "../../../assets/scss/viewCommon.scss";
 const StockManagement = () => {
   const [active, setActive] = useState(location.pathname);
   const history = useHistory();

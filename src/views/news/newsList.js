@@ -17,8 +17,7 @@ import { ChangePeriodDropDown } from "../../components/partials/changePeriodDrop
 import NoContent from "../../components/partials/noContent";
 import { WRITE } from "../../utility/permissionsVariable";
 import { Helmet } from "react-helmet";
-import '../../styles/viewCommon.scss';
-;
+import "../../assets/scss/viewCommon.scss";
 
 const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
@@ -115,7 +114,7 @@ export default function News() {
   );
 
   return (
-    <div className="newswrapper">
+    <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | News</title>
@@ -130,7 +129,7 @@ export default function News() {
               className="me-2  cursor-pointer align-self-center"
               onClick={() => history.push("/")}
             /> */}
-            <div className="addNews">
+            <div className="addAction">
               <div className="">
                 <div>
                   <Trans i18nKey={"news_latest_news"} />
@@ -143,7 +142,7 @@ export default function News() {
               </div>
             </div>
           </div>
-          <div className="addNews mt-1 mt-sm-0 justify-content-between">
+          <div className="addAction justify-content-between">
             <ChangePeriodDropDown
               className={"me-1"}
               dropDownName={dropDownName}
@@ -157,7 +156,7 @@ export default function News() {
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
-                className="addNews-btn"
+                className="addAction-btn"
                 onClick={() =>
                   history.push(
                     `/news/add?page=${pagination.page}&filter=${dropDownName}`
