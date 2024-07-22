@@ -103,16 +103,6 @@ export default function DonationForm({
           onSubmit={(e) => {
             setShowPrompt(false);
             setLoading(true);
-            // const transformedCustomFields = Object.entries(
-            //   e.customFields
-            // ).reduce((acc, [key, field]) => {
-            //   if (field && field.value !== undefined) {
-            //     acc[key] = field.value;
-            //   } else {
-            //     acc[key] = field;
-            //   }
-            //   return acc;
-            // }, {});
             const transformedCustomFields = Object.entries(e.customFields).map(
               ([key, field]) => ({
                 fieldName: key,
@@ -128,10 +118,8 @@ export default function DonationForm({
                 isRequired: false,
                 value: field.value !== undefined ? field.value : field,
                 trustId: trustId,
-                // masterValues:null,
               })
             );
-            // console.log(transformedCustomFields);
             donationMutation.mutate({
               categoryId: e?.SelectedSubCategory?.id,
               amount: e?.Amount,

@@ -26,8 +26,6 @@ import AsyncSelectField from "../partials/asyncSelectField";
 import CustomRadioButton from "../partials/customRadioButton";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
-import CustomDatePicker from "../partials/customDatePicker";
-import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import { DatePicker } from "antd";
 import "./donationStyle.css";
 export default function FormWithoutFormikForDonation({
@@ -315,50 +313,6 @@ export default function FormWithoutFormikForDonation({
                     required
                   />
                 </Col>
-                {/* <Col xs={12} sm={6} lg={4}></Col> */}
-                {/* {customFieldsList.map((field) => {
-                  const isSelectField =
-                    field.masterValues && field.masterValues.length > 0;
-
-                  return (
-                    <Col xs={12} sm={6} lg={4} className="pb-1" key={field._id}>
-                      {isSelectField ? (
-                        <FormikCustomReactSelect
-                          labelName={field.fieldName}
-                          // name={field.fieldName}
-                          name={`customFields.${field.fieldName}`}
-                          // options={field.masterValues.map((value) => ({
-                          //   label: value.trim(),
-                          //   value: value.trim(),
-                          // }))}
-                          loadOptions={
-                            field.masterValues &&
-                            field.masterValues.map((item) => ({
-                              value: item, // Assuming you want the value to be the item itself
-                              label: ConverFirstLatterToCapital(item), // Use your utility function here
-                            }))
-                          }
-                          required={field.isRequired}
-                          width
-                          placeholder={`Select ${field.fieldName}`}
-                        />
-                      ) : (
-                        <CustomTextField
-                          label={field.fieldName}
-                          // name={field.fieldName}
-                          name={`customFields.${field.fieldName}`}
-                          type={
-                            field.fieldType === "String"
-                              ? "text"
-                              : field.fieldType.toLowerCase() // Ensure the correct type is used
-                          }
-                          required={field.isRequired}
-                          placeholder={`Enter ${field.fieldName}`}
-                        />
-                      )}
-                    </Col>
-                  );
-                })} */}
                 {customFieldsList.map((field) => {
                   const isSelectField =
                     field.masterValues && field.masterValues.length > 0;
@@ -401,7 +355,6 @@ export default function FormWithoutFormikForDonation({
                               }
                             }}
                             needConfirm
-                            // required={field.isRequired}
                           />
                           {formik.errors.customFields &&
                             formik.errors.customFields[field.fieldName] && (
@@ -422,17 +375,6 @@ export default function FormWithoutFormikForDonation({
                                 </div>
                               </div>
                             )}
-                          {/* <FormikCustomDatePicker
-                          name={`customFields.${field.fieldName}`}
-                          label={field.fieldName}
-                          selected={formik.values[field.fieldName]}
-                          onChange={(date) =>
-                            formik.setFieldValue(`customFields.${field.fieldName}`, date)
-                          }
-                          pastDateNotAllowed
-                          required={field.isRequired}
-                          minDate={new Date()}
-                        /> */}
                         </>
                       ) : isSelectField ? (
                         <FormikCustomReactSelect
@@ -441,8 +383,8 @@ export default function FormWithoutFormikForDonation({
                           loadOptions={
                             field.masterValues &&
                             field.masterValues.map((item) => ({
-                              value: item.value, // Assuming 'value' is the property containing the actual value
-                              label: item.value, // Assuming 'value' is also used as the label
+                              value: item.value, 
+                              label: item.value,
                             }))
                           }
                           width
@@ -495,7 +437,6 @@ export default function FormWithoutFormikForDonation({
               </Row>
             </Col>
           </Row>
-          {/* article dan Row */}
           {!location.pathname.includes("/pay-donation") && (
             <>
               <Row>
@@ -508,10 +449,8 @@ export default function FormWithoutFormikForDonation({
                         checked={article}
                         role="switch"
                         onChange={(e) => {
-                          // setTimeout(async () => {
                           formik.setFieldValue("SelectedCommitmentId", "");
                           setArticle(!article);
-                          // }, 500);
                         }}
                       />
                       <UncontrolledTooltip placement="top" target="articleDaan">
