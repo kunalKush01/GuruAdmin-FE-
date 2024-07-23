@@ -46,7 +46,7 @@ function BtnContent({ newsId }) {
   });
 
   return (
-    <div className="btncontentwraper">
+    <div className="btncontentwrapper">
       <Row className="MainContainer">
         <Col
           xs={12}

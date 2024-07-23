@@ -63,7 +63,7 @@ function BtnContent({
   const langList = useSelector((state) => state.auth.availableLang);
 
   return (
-    <div className="btncontentwraper">
+    <div className="btncontentwrapper">
       <Row className="MainContainer d-block ">
         {allPermissions?.name === "all" || subPermission?.includes(EDIT) ? (
           <Col

@@ -48,18 +48,27 @@
   }
 }
 
-.btncontentwraper {
-  color: $font-color;
-  font: $font-weight-normal $font-size-medium/20px $font-family;
-
-  .col-item {
-    cursor: pointer;
-    :hover {
-      background-color: $primary-color;
-      color: $white;
+.btncontentwrapper {
+    color: $font-color;
+    font: $font-weight-normal $font-size-medium/20px $font-family;
+  
+    .col-item {
+      cursor: pointer;
+      :hover {
+        background-color: $primary-color;
+        color: $white;
+      }
+      &:hover {
+        background-color: $primary-color;
+        color: $white;
+      }
+      .col-item-disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
     }
   }
-}
+  
 
 .categorytablewrapper {
   color: $font-color !important;
@@ -196,7 +205,7 @@
   }
 }
 
-.topdonerwarpper {
+.topdonorwrapper {
   height: auto;
   .listHeading {
     color: $font-color;
@@ -391,23 +400,6 @@
   }
 }
 
-.btncontentwraper {
-  color: $font-color;
-  font: $font-weight-normal $font-size-medium $font-family;
-  .MainContainer {
-  }
-  .col-item {
-    cursor: pointer;
-    &:hover {
-      background-color: $primary-color;
-      color: $white;
-    }
-    .col-item-disabled {
-      cursor: not-allowed;
-      opacity: 0.5;
-    }
-  }
-}
 
 .nolistviewwrapper {
   img {
@@ -509,23 +501,6 @@
   }
 }
 
-.btncontentwraper {
-  color: $font-color;
-  font: $font-weight-normal $font-size-medium $font-family;
-
-  .col-item {
-    cursor: pointer;
-    &:hover {
-      background-color: $primary-color;
-      color: $white;
-    }
-    .col-item-disabled {
-      cursor: not-allowed;
-      opacity: 0.5;
-    }
-  }
-}
-
 .nolistviewwrapper {
   img {
     width: 90px;
@@ -616,22 +591,7 @@
     }
   }
 }
-.btncontentwraper {
-    color: $font-color;
-    font: $font-weight-normal $font-size-medium/20px $font-family;
-   
-    .col-item {
-      cursor: pointer;
-      :hover {
-        background-color: $primary-color;
-        color: $white;
-      }
-      .col-item-disabled {
-        cursor: not-allowed;
-        opacity: 0.5;
-      }
-    }
-  }
+
     .formwrapper {
         .FormikWrapper {
           padding: 10px;
@@ -2065,22 +2025,7 @@
     }
   }
 }
-.btncontentwraper {
-    color: $font-color;
-    font: $font-weight-normal $font-size-medium/20px $font-family;
-    
-    .col-item {
-      cursor: pointer;
-      :hover {
-        background-color: $primary-color;
-        color: $white;
-      }
-      .col-item-disabled {
-        cursor: not-allowed;
-        opacity: 0.5;
-      }
-    }
-  }
+
 
 .punyarjakusertablewrapper {
     color: $font-color !important;
@@ -2159,15 +2104,5 @@
     font: $font-weight-bold 12px/30px $font-family;
   }
 }
-.btncontentwraper {
-    color: $font-color;
-    font: $font-weight-normal $font-size-medium/20px $font-family;
-    .col-item {
-      cursor: pointer;
-      :hover {
-        background-color: $primary-color;
-        color: $white;
-      }
-    }
-  }
+
   
