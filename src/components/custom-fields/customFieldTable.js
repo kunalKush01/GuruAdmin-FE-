@@ -1,21 +1,7 @@
 import React, { useMemo } from "react";
 import { Table } from "antd";
-import { useQuery } from "@tanstack/react-query";
-import { getDonationCustomFields } from "../../api/customFieldsApi";
-const CustomFieldTable = ({  }) => {
-  const query = useQuery(
-    ["getDonationFields"],
-    () => getDonationCustomFields(),
-    {
-      keepPreviousData: true,
-    }
-  );
 
-  const donation_custom_fields = useMemo(
-    () => query?.data ?? [],
-    [query]
-  );
-
+const CustomFieldTable = ({ customFields }) => {
   const columns = useMemo(() => {
     return [
       {
@@ -36,7 +22,7 @@ const CustomFieldTable = ({  }) => {
         dataIndex: "isRequired",
         key: "isRequired",
         width: 100,
-        render: (isRequired) => (isRequired ? "Yes" : "No"), // Render as "Yes" or "No"
+        render: (isRequired) => (isRequired ? "Yes" : "No"),
       },
     ];
   }, []);
@@ -44,14 +30,13 @@ const CustomFieldTable = ({  }) => {
   return (
     <Table
       columns={columns}
-      dataSource={donation_custom_fields.customFields}
+      dataSource={customFields.customFields}
       scroll={{
         x: 1500,
         y: 400,
       }}
-      pagination={{ pageSize: 10 }}
+      pagination={{ pageSize: 10}}
       bordered
-
     />
   );
 };

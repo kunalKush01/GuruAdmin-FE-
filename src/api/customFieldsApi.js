@@ -15,3 +15,17 @@ export const createDonationCustomFields = (data) =>
     showToastOnSuccess: false,
     showToastOnError: false,
   });
+export const getPledgeCustomFields = () =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.get(`${API_BASE_URL}/commitment/info/custom-fields`),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+export const createPledgeCustomFields = (data) =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}/commitment/create-custom-field`, data),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
