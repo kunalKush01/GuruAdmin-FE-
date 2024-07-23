@@ -1,7 +1,7 @@
 import moment from "moment";
 import React from "react";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
+import DatePicker from "react-datepicker";
 import styled from "styled-components";
 import "../../assets/scss/common.scss";
 
