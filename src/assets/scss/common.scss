@@ -61,16 +61,6 @@
   }
 }
 
-.formwrapper {
-  .FormikWrapper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-
-  }
-}
-
 .categorytablewrapper {
   color: $font-color !important;
   font: $font-weight-bold $font-size-medium/23px $font-family;
@@ -183,18 +173,6 @@
   }
 }
 
-.formwraper {
-  .FormikWrapper {
-    padding: 40px;
-  }
-  .addUser {
-    font-size: $font-size-small;
-  }
-  .addUser > span {
-    text-decoration: underline;
-    color: $primary-color;
-  }
-}
 
 .commitmenttablewrapper {
   color: $font-color !important;
@@ -242,52 +220,6 @@
   .card {
     background-color: $secondary-color;
     margin: 5px 10px;
-  }
-}
-
-.formwrapper {
-  .FormikWrapper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addDonation-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: $font-weight-bold $font-size-medium/20px $font-family;
-  }
-  .donationContent {
-    height: 350px;
-    overflow: auto;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: $primary-color;
-    font: $font-weight-bold $font-size-small/5px $font-family;
-  }
-  .btn-secondary {
-    background-color: $secondary-color !important;
-    color: $font-color !important;
-    border: none;
-    font: $font-weight-bold $font-size-large/20px $font-family !important;
-    box-shadow: none !important;
-    :hover {
-      color: $white !important;
-      background-color: $primary-color !important;
-    }
-    .secondary.active {
-      color: $white !important;
-    }
-  }
-  .addUser {
-    font-size: $font-size-small;
-  }
-  .addUser > span {
-    text-decoration: underline;
-    color: $primary-color;
   }
 }
 
@@ -349,45 +281,6 @@
     white-space: nowrap;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
-  }
-}
-
-.formwrapper {
-  .FormikWrapper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addNews-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: $font-weight-bold $font-size-medium/20px $font-family;
-  }
-  .newsContent {
-    height: 350px;
-    overflow: auto;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: $primary-color;
-    font: $font-weight-bold $font-size-small/5px $font-family;
-  }
-  .btn-secondary {
-    background-color: $secondary-color !important;
-    color: $font-color !important;
-    border: none;
-    font: $font-weight-bold $font-size-large/20px $font-family !important;
-    box-shadow: none !important;
-    :hover {
-      color: $white !important;
-      background-color: $primary-color !important;
-    }
-    .secondary.active {
-      color: $white !important;
-    }
   }
 }
 
@@ -516,158 +409,6 @@
   }
 }
 
-.formwrapper {
-  .FormikWrapper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addNews-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: $font-weight-bold $font-size-medium $font-family;
-  }
-  .newsContent {
-    height: 350px;
-    overflow: auto;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: $primary-color;
-    font: $font-weight-bold $font-size-small/5px $font-family;
-  }
-
-  label {
-    font: $font-weight-bold $font-size-medium/33px $font-family;
-  }
-
-  /* input tags css start */
-  .ReactTags__tagInput {
-    color: $font-color !important;
-    height: 36px;
-    border: none !important;
-    background-color: $secondary-color !important;
-    font: $font-weight-normal $font-size-small $font-family;
-    border-radius: 5px;
-  }
-  .ReactTags__tagInput input.ReactTags__tagInputField {
-    color: $font-color !important;
-    border: none !important;
-    background-color: $secondary-color !important;
-    font: $font-weight-normal $font-size-small $font-family;
-    border-radius: 5px;
-    outline: none;
-    width: 100%;
-    height: inherit;
-    padding-left: 0.5rem;
-    &::placeholder {
-      color: $secondary-color;
-    }
-  }
-  .ReactTags__tagInput input.ReactTags__tagInputField::placeholder {
-    color: $font-color !important;
-    font: $font-weight-bold $font-size-small $font-family;
-    opacity: 60%;
-  }
-  .ReactTags__tagInput > input.ReactTags__tagInputField:focus-within {
-    box-shadow: 0 3px 10px 0 rgba(34, 41, 47, 0.1);
-  }
-  /* added tags */
-  .ReactTags__selected {
-    width: 100%;
-    display: flex;
-    overflow-x: scroll !important;
-    &::-webkit-scrollbar {
-      height: 8px;
-    }
-    &::-webkit-scrollbar-thumb {
-      background-color: #c9c6c5 !important;
-      border-radius: 25px;
-      width: 10px !important;
-    }
-  }
-  .ReactTags__tag {
-    margin-bottom: 0.5rem;
-  }
-  /* Styles for suggestions */
-  .ReactTags__suggestions {
-    position: absolute;
-  }
-  .ReactTags__suggestions ul {
-    list-style-type: none;
-    box-shadow: 0.05em 0.01em 0.5em rgba(0, 0, 0, 0.2);
-    background-color: $secondary-color !important;
-    width: 200px;
-  }
-  .ReactTags__suggestions li {
-    border-bottom: 1px solid #ddd;
-    padding: 5px 10px;
-    margin: 0;
-  }
-  .ReactTags__suggestions li mark {
-    text-decoration: underline;
-    background: none;
-    font-weight: 600;
-  }
-  .ReactTags__selected span.ReactTags__tag {
-    padding: 4px 10px;
-    font: $font-weight-bold $font-size-small $font-family;
-    border-radius: 10px;
-    border: 2px solid $font-color;
-    display: flex;
-    margin-left: 3px;
-    align-items: center;
-    margin-top: 0.5rem;
-  }
-  .ReactTags__remove {
-    font-size: $font-size-large;
-    font-weight: 900;
-    border: none;
-    vertical-align: middle;
-    line-height: 0px;
-    cursor: pointer;
-  }
-  /* input tags css end */
-
-  /* time picker css */
-  .react-time-picker__wrapper {
-    border: none !important;
-  }
-  .react-time-picker {
-    width: 100%;
-  }
-  .react-time-picker__inputGroup {
-    color: $font-color !important;
-    border: none !important;
-    background-color: $secondary-color !important;
-    font: $font-weight-normal $font-size-small $font-family;
-    width: 100%;
-    padding: 0rem 0.5rem !important;
-    border-radius: 5px;
-    line-height: 30px;
-  }
-  .react-time-picker__inputGroup__input:invalid {
-    background: $secondary-color !important;
-  }
-  input:focus {
-    outline: none !important;
-  }
-  input:focus-visible {
-    outline-offset: none;
-    outline: none;
-  }
-
-  @media only screen and (max-width: 768px) and (min-width: 320px) {
-    .thumbnail_image {
-      width: 100px;
-      height: 100px;
-    }
-  }
-}
-
 .nolistviewwrapper {
   img {
     width: 90px;
@@ -682,62 +423,6 @@
   }
 }
 
-.formwrapper {
-  .FormikWraper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addNews-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: $font-weight-bold $font-size-medium $font-family;
-  }
-  .newsContent {
-    height: 350px;
-    overflow: auto;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: $primary-color;
-    font: $font-weight-bold $font-size-small/5px $font-family;
-  }
-  .btn-secondary {
-    background-color: $secondary-color !important;
-    color: $font-color !important;
-    border: none;
-    font: $font-weight-bold $font-size-large $font-family !important;
-    box-shadow: none !important;
-    &:hover {
-      color: $white !important;
-      background-color: $primary-color !important;
-    }
-    .secondary.active {
-      color: $white !important;
-    }
-  }
-  .upload-invoice {
-    color: $font-color !important;
-    border: none !important;
-    height: 36px;
-    width: 100%;
-    padding-top: 9px;
-    padding-left: 5px;
-    background-color: $secondary-color !important;
-    font: $font-weight-normal $font-size-small $font-family;
-    border-radius: 5px;
-  }
-  .upload-invoice[type="file"]::file-selector-button {
-    display: none;
-  }
-  label {
-    color: $font-color;
-    font: $font-weight-bold $font-size-medium/33px $font-family;
-  }
-}
 
 .recentdonationtablewrapper {
   color: $font-color !important;
@@ -837,130 +522,6 @@
     .col-item-disabled {
       cursor: not-allowed;
       opacity: 0.5;
-    }
-  }
-}
-
-.formwrapper {
-  .FormikWrapper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addNews-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: $font-weight-bold $font-size-medium $font-family;
-  }
-  .newsContent {
-    height: 350px;
-    overflow: auto;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: $primary-color;
-    font: $font-weight-bold $font-size-small/5px $font-family;
-  }
-
-  label {
-    font: $font-weight-bold $font-size-medium/33px $font-family;
-  }
-
-  /* input tags css start */
-  .ReactTags__tagInput {
-    color: $font-color !important;
-    height: 36px;
-    border: none !important;
-    background-color: $secondary-color !important;
-    font: $font-weight-normal $font-size-small $font-family;
-    border-radius: 5px;
-  }
-  .ReactTags__tagInput input.ReactTags__tagInputField {
-    color: $font-color !important;
-    border: none !important;
-    background-color: $secondary-color !important;
-    font: $font-weight-normal $font-size-small $font-family;
-    border-radius: 5px;
-    outline: none;
-    width: 100%;
-    height: inherit;
-    padding-left: 0.5rem;
-    &::placeholder {
-      color: $secondary-color;
-    }
-  }
-  .ReactTags__tagInput input.ReactTags__tagInputField::placeholder {
-    color: $font-color !important;
-    font: $font-weight-bold $font-size-small $font-family;
-    opacity: 60%;
-  }
-  .ReactTags__tagInput > input.ReactTags__tagInputField:focus-within {
-    box-shadow: 0 3px 10px 0 rgba(34, 41, 47, 0.1);
-  }
-  /* added tags */
-  .ReactTags__selected {
-    width: 100%;
-    display: flex;
-    overflow-x: scroll !important;
-    &::-webkit-scrollbar {
-      height: 8px;
-    }
-    &::-webkit-scrollbar-thumb {
-      background-color: #c9c6c5 !important;
-      border-radius: 25px;
-      width: 10px !important;
-    }
-  }
-  .ReactTags__tag {
-    margin-bottom: 0.5rem;
-  }
-
-  /* Styles for suggestions */
-  .ReactTags__suggestions {
-    position: absolute;
-  }
-  .ReactTags__suggestions ul {
-    list-style-type: none;
-    box-shadow: 0.05em 0.01em 0.5em rgba(0, 0, 0, 0.2);
-    background-color: $secondary-color !important;
-    width: 200px;
-  }
-  .ReactTags__suggestions li {
-    border-bottom: 1px solid #ddd;
-    padding: 5px 10px;
-    margin: 0;
-  }
-  .ReactTags__suggestions li mark {
-    text-decoration: underline;
-    background: none;
-    font-weight: 600;
-  }
-  .ReactTags__selected span.ReactTags__tag {
-    padding: 4px 10px;
-    font: $font-weight-bold $font-size-small $font-family;
-    border-radius: 10px;
-    border: 2px solid $font-color;
-    display: flex;
-    margin-left: 3px;
-    align-items: center;
-    margin-top: 0.5rem;
-  }
-  .ReactTags__remove {
-    font-size: $font-size-large;
-    font-weight: 900;
-    border: none;
-    vertical-align: middle;
-    line-height: 0px;
-    cursor: pointer;
-  }
-  /* input tags css end */
-  @media only screen and (max-width: 768px) and (min-width: 320px) {
-    .thumbnail_image {
-      width: 100px;
-      height: 100px;
     }
   }
 }
@@ -1071,122 +632,155 @@
       }
     }
   }
-.formwrapper {
-  .FormikWrapper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addNotice-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: $font-weight-bold $font-size-medium/20px $font-family;
-  }
-  .noticeContent {
-    height: 350px;
-    overflow: auto;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: $primary-color;
-    font: $font-weight-bold $font-size-small/5px $font-family;
-  }
-
-  label {
-    font: $font-weight-bold $font-size-medium/33px $font-family;
-  }
-
-  /* input tags  css start */
-  .ReactTags__tagInput {
-    color: $font-color !important;
-    height: 36px;
-    border: none !important;
-    background-color: $secondary-color !important;
-    font: $font-weight-normal $font-size-small/20px $font-family;
-    border-radius: 5px;
-  }
-  .ReactTags__tagInput input.ReactTags__tagInputField {
-    color: $font-color !important;
-    border: none !important;
-    background-color: $secondary-color !important;
-    font: $font-weight-normal $font-size-small/20px $font-family;
-    border-radius: 5px;
-    outline: none;
-    width: 100%;
-    height: inherit;
-    padding-left: 0.5rem;
-    ::placeholder {
-      color: $secondary-color;
-    }
-  }
-  /* added tags  */
-  .ReactTags__selected {
-    width: 100%;
-    display: flex;
-    overflow-x: scroll !important;
-    ::-webkit-scrollbar {
-      height: 8px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background-color: #c9c6c5 !important;
-      border-radius: 25px;
-      width: 10px !important;
-    }
-  }
-  .ReactTags__tag {
-    margin-bottom: 0.5rem;
-  }
-
-  /* Styles for suggestions */
-  .ReactTags__suggestions {
-    position: absolute;
-  }
-  .ReactTags__suggestions ul {
-    list-style-type: none;
-    box-shadow: 0.05em 0.01em 0.5em rgba(0, 0, 0, 0.2);
-    background-color: $secondary-color !important;
-    width: 200px;
-  }
-  .ReactTags__suggestions li {
-    border-bottom: 1px solid #ddd;
-    padding: 5px 10px;
-    margin: 0;
-  }
-  .ReactTags__suggestions li mark {
-    text-decoration: underline;
-    background: none;
-    font-weight: 600;
-  }
-  .ReactTags__selected span.ReactTags__tag {
-    padding: 4px 10px;
-    font: $font-weight-bold $font-size-small/20px $font-family;
-    border-radius: 10px;
-    border: 2px solid $font-color;
-    display: flex;
-    margin-left: 3px;
-    align-items: center;
-    margin-top: 0.5rem;
-  }
-  .ReactTags__remove {
-    font-size: 20px;
-    font-weight: 900;
-    border: none;
-    vertical-align: middle;
-    line-height: 0px;
-    cursor: pointer;
-  }
-  /* input tags  css start */
-
-  @media only screen and (max-width: 768px) and (min-width: 320px) {
-    .thumbnail_image {
-      width: 100px;
-      height: 100px;
-    }
-  }
-}
+    .formwrapper {
+        .FormikWrapper {
+          padding: 10px;
+        }
+        .btn-Published {
+          text-align: center;
+        }
+        .addNotice-btn {
+          padding: 8px 20px;
+          margin-left: 10px;
+          font: $font-weight-bold $font-size-medium $font-size-large $font-family;
+        }
+    .addNews-btn {
+        padding: 8px 20px;
+        margin-left: 10px;
+        font: $font-weight-bold $font-size-medium $font-family;
+      }
+    .addDonation-btn {
+        padding: 8px 20px;
+        margin-left: 10px;
+        font: $font-weight-bold $font-size-medium/20px $font-family;
+      }
+      .addNews-btn {
+        padding: 8px 20px;
+        margin-left: 10px;
+        font: $font-weight-bold $font-size-medium/20px $font-family;
+      }
+    .donationContent {
+        height: 350px;
+        overflow: auto;
+        ::-webkit-scrollbar {
+          display: none;
+        }
+      }
+        .newsContent {
+     height: 350px;
+        overflow: auto;
+          margin-top: 1rem;
+          ::-webkit-scrollbar {
+            display: none;
+          }
+        }
+        .filterPeriod {
+          color: $primary-color;
+          font: $font-weight-bold $font-size-small $font-family;
+        }
+        .signInIconsIserAdminPassword {
+          width: 30px;
+          height: 30px;
+          margin-right: 10px;
+          cursor: pointer;
+        }
+        label {
+        color: $font-color;
+          font: $font-weight-bold $font-size-medium $font-family;
+        }
+        .input-group-merge {
+          background-color: $secondary-color !important;
+        }
+        #login-password {
+          color: $font-color !important;
+          padding-left: 14px;
+          border: none !important;
+          background-color: $secondary-color !important;
+          font: $font-weight-normal $font-size-small  $font-family;
+          border-radius: 20px;
+          ::placeholder {
+            color: transparent;
+          }
+        }
+        .input-group-text {
+          background-color: $secondary-color !important;
+          border-bottom: 0 !important;
+        }
+        .checkBoxBorderBox {
+          border: 2px solid $primary-color;
+          padding: 1rem 2rem;
+          border-radius: 10px;
+        }
+        .labelCheckBox {
+          color: $primary-color !important;
+          font: $font-weight-bold $font-size-small $font-family;
+        }
+        .checkBoxInput {
+          border-color: $primary-color;
+          cursor: pointer;
+        }
+        input::placeholder {
+          color: $font-color !important;
+          opacity: 60% !important;
+          font: $font-weight-bold $font-size-small $font-family !important;
+        }
+      }
+      .usertablewrapper {
+        color: $font-color !important;
+        margin-right: 20px;
+        font: $font-weight-bold $font-size-medium $font-family;
+      }
+    .btn-secondary {
+        background-color: $secondary-color !important;
+        color: $font-color !important;
+        border: none;
+        font: $font-weight-bold $font-size-large/20px $font-family !important;
+        box-shadow: none !important;
+        :hover {
+          color: $white !important;
+          background-color: $primary-color !important;
+        }
+        .secondary.active {
+          color: $white !important;
+        }
+      }
+     
+      .addUser {
+        font-size: $font-size-small;
+      }
+      .addUser > span {
+        text-decoration: underline;
+        color: $primary-color;
+      }
+    input:focus {
+        outline: none !important;
+      }
+      input:focus-visible {
+        outline-offset: none;
+        outline: none;
+      }
+    .upload-invoice {
+        color: $font-color !important;
+        border: none !important;
+        height: 36px;
+        width: 100%;
+        padding-top: 9px;
+        padding-left: 5px;
+        background-color: $secondary-color !important;
+        font: $font-weight-normal $font-size-small $font-family;
+        border-radius: 5px;
+      }
+      .upload-invoice[type="file"]::file-selector-button {
+        display: none;
+      }
+      
+    
+      @media only screen and (max-width: 768px) and (min-width: 320px) {
+        .thumbnail_image {
+          width: 100px;
+          height: 100px;
+        }
+      }
 .addviewwrapper {
   .dateTime {
     color: #909090;
@@ -2013,184 +1607,7 @@
     outline: none;
   }
 }
-// .formikcustomdatepickerwraper {
 
-
-// .react-datepicker__day--outside-month {
-//     color: #9c9c9c !important;
-//                 /* color: #DFD3BE !important; */
-//                 pointer-events: none;
-//               }
-
-//               /* .react-datepicker__day--disabled{
-//       color: #9c9c9c !important;
-//     } */
-
-
-
-//   label {
-//     color: #583703;
-//     font: normal normal bold 15px/33px Noto Sans !important;
-//   }
-//   .react-datepicker {
-//     border: none !important ;
-//     color: #583703;
-//     background: #fff7e8 !important;
-//     border-radius: 10px !important;
-//     .react-datepicker__month-container {
-//       width: 270px !important;
-//       border-radius: 10px !important;
-//     }
-//     .react-datepicker__input-time-container {
-//       border-top: 1px solid #ff8744;
-//       padding: 10px 10px;
-//       width: -webkit-fill-available;
-//       text-align: center;
-//       font: normal normal bold 13px/20px Noto Sans !important  ;
-//       .react-datepicker-time__input {
-//         border: none;
-//         width: 100%;
-//         border-radius: 10px;
-//         text-align: center;
-//         color: #ff8744 !important;
-//         width: 150px;
-//         font: normal normal bold 15px/30px Noto Sans !important  ;
-//       }
-//     }
-
-//     .react-datepicker__navigation {
-//       top: 16px;
-//     }
-//     .react-datepicker__month-read-view--down-arrow {
-//       top: 10px;
-//     }
-//     .react-datepicker__year-read-view--down-arrow {
-//       top: 10px;
-//     }
-//     .react-datepicker__day-name {
-//       color: #583703 !important;
-//       font: normal normal bold 12px/20px Noto Sans;
-//     }
-//     .react-datepicker__day--keyboard-selected,
-//     .react-datepicker__day--selected {
-//       background: #ff8744 !important;
-//       /* border-radius: 50%; */
-//       color: #fff7e8 !important;
-//       opacity: 1 !important;
-      
-//     }
-//     .react-datepicker__day {
-//       color: #583703;
-//       font: normal normal bold 10px/20px Noto Sans;
-//       &:hover {
-//         border-radius: 50%;
-//       }
-//     }
-//     .react-datepicker__month-dropdown {
-//       border: none !important;
-//       /* color: #ff8744; */
-//       background-color: #fff7e8;
-//       box-shadow: 2px 2px 10px 2px gray;
-//       max-height: 250px;
-//       overflow: auto;
-//       ::-webkit-scrollbar {
-//         display: none;
-//       }
-//       .react-datepicker__month-option:hover {
-//         background-color: #ff8744;
-//         color: #fff;
-//       }
-//     }
-//     .react-datepicker__year-dropdown {
-//       border: none !important;
-//       /* color: #ff8744; */
-//       background-color: #fff7e8;
-//       box-shadow: 0px 0px 7px 0px gray;
-//       max-height: 250px;
-//       overflow: auto;
-//       ::-webkit-scrollbar {
-//         display: none;
-//       }
-//       .react-datepicker__year-option:hover {
-//         background-color: #ff8744;
-//         color: #fff;
-//       }
-//     }
-
-//     .react-datepicker__header {
-//       border: none !important ;
-//       background: #fff7e8 !important;
-//       color: #583703 !important ;
-//       border-radius: 10px !important;
-
-//       .react-datepicker__current-month {
-//         color: #583703 !important ;
-//         font: normal normal bold 15px/20px Noto Sans !important;
-//         display: none;
-//       }
-//     }
-//     .react-datepicker__header__dropdown {
-//       .react-datepicker__month-dropdown-container {
-//         margin-right: 50px;
-//       }
-//     }
-
-//     .react-datepicker-time__header {
-//       border: none !important ;
-//       background: #fff7e8 !important;
-//       color: #583703 !important ;
-//       border-radius: 10px !important;
-//       font: normal normal bold 15px/20px Noto Sans !important;
-//     }
-//     .react-datepicker__time-list {
-//       background-color: #fff7e8;
-//       font: normal normal bold 11px/20px Noto Sans !important;
-
-//       ::-webkit-scrollbar {
-//         display: none;
-//       }
-//     }
-//     .react-datepicker__time-list-item--selected {
-//       color: #fff !important;
-//       background-color: #ff8744 !important;
-//     }
-//     .react-datepicker__time-container {
-//       border-left: 2px solid #583703;
-//     }
-
-//     input[type="time"]::-webkit-calendar-picker-indicator {
-//       display: none;
-//     }
-//   }
-  
-//   .react-datepicker__day--in-range{
-//     background-color: inherit   !important;
-//     color: #ff8744 !important;
-//     /* opacity: 0.5 !important;  */
-//     }
-//     .react-datepicker__day--range-start{
-//     background: #ff8744 !important;
-//       /* border-radius: 50% !important ; */
-//       color: #fff7e8 !important;
-//       opacity: 1 !important;
-//   }
-//   /* .react-datepicker__input-container {
-
-//   } */
-//   .react-datepicker__input-container > input{
-//     border: none;
-//     outline: none;
-//     font-size: 16px;
-//     margin-top: .4rem;
-//     text-align: center;
-//     width: 100%;
-//     color: #ff8744;
-//     font-weight:bold;
-//   }
-//   .react-datepicker__input-container > input:focus{
-//     outline: none;
-//   }
-// }
 .wraperimagefield {
   .image_text {
     font: $font-weight-normal medium 22px/30px Kanit;
@@ -2684,14 +2101,7 @@
       }
     }
   }
-.formwrapper {
-  .FormikWrapperr {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-}
+
 .punyarjakusertablewrapper {
     color: $font-color !important;
     margin-right: 20px;
@@ -2716,19 +2126,7 @@
     font: $font-weight-bold $font-size-small/23px $font-family;
   }
 }
-.formwrapper {
-  .FormikWrapper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
 
-  .filterPeriod {
-    color: $primary-color;
-    font: $font-weight-bold $font-size-small/5px $font-family;
-  }
-}
 .subscribedusertablewrapper {
     color: $font-color !important;
     margin-right: 20px;
@@ -2792,76 +2190,4 @@
       }
     }
   }
-  .formwrapper {
-    .FormikWrapper {
-      padding: 40px;
-    }
-    .btn-Published {
-      text-align: center;
-    }
-    .addNotice-btn {
-      padding: 8px 20px;
-      margin-left: 10px;
-      font: $font-weight-bold $font-size-medium $font-size-large $font-family;
-    }
-    .newsContent {
-      margin-top: 1rem;
-      ::-webkit-scrollbar {
-        display: none;
-      }
-    }
-    .filterPeriod {
-      color: $primary-color;
-      font: $font-weight-bold $font-size-small $font-family;
-    }
-    .signInIconsIserAdminPassword {
-      width: 30px;
-      height: 30px;
-      margin-right: 10px;
-      cursor: pointer;
-    }
-    label {
-      font: $font-weight-bold $font-size-medium $font-family;
-    }
-    .input-group-merge {
-      background-color: $secondary-color !important;
-    }
-    #login-password {
-      color: $font-color !important;
-      padding-left: 14px;
-      border: none !important;
-      background-color: $secondary-color !important;
-      font: $font-weight-normal $font-size-small  $font-family;
-      border-radius: 20px;
-      ::placeholder {
-        color: transparent;
-      }
-    }
-    .input-group-text {
-      background-color: $secondary-color !important;
-      border-bottom: 0 !important;
-    }
-    .checkBoxBorderBox {
-      border: 2px solid $primary-color;
-      padding: 1rem 2rem;
-      border-radius: 10px;
-    }
-    .labelCheckBox {
-      color: $primary-color !important;
-      font: $font-weight-bold $font-size-small $font-family;
-    }
-    .checkBoxInput {
-      border-color: $primary-color;
-      cursor: pointer;
-    }
-    input::placeholder {
-      color: $font-color !important;
-      opacity: 60% !important;
-      font: $font-weight-bold $font-size-small $font-family !important;
-    }
-  }
-  .usertablewrapper {
-    color: $font-color !important;
-    margin-right: 20px;
-    font: $font-weight-bold $font-size-medium $font-family;
-  }
+  

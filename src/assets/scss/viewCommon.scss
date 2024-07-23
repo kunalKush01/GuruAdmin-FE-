@@ -96,18 +96,6 @@
   }
 }
 
-// .expenseaddwraper {
-//   color: $font-color;
-//   font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
-//   .ImagesVideos {
-//     font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-large*1.65 $font-family;
-//   }
-//   .addAction {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-// }
 
 .expensemanagementwrapper {
   color: $font-color;
@@ -212,19 +200,6 @@
   }
 }
 
-// .stockitemaddwraper {
-//   color: $font-color;
-//   font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
-//   .ImagesVideos {
-//     font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-large*1.65 $font-family;
-//   }
-//   .addAction {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-// }
-
 .itemeditwrapper {
   color: $font-color;
   font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
@@ -249,19 +224,6 @@
     margin-bottom: 0;
   }
 }
-
-// .stockaddwraper {
-//   color: $font-color;
-//   font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
-//   .ImagesVideos {
-//     font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-large*1.65 $font-family;
-//   }
-//   .addAction {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-// }
 
 .stockmanagementtablewrapper {
   color: $font-color !important;
@@ -312,30 +274,6 @@
   }
 }
 
-// .commitmentwrapper {
-//   color: $font-color;
-//   font:  $font-weight-bold $font-size-large $font-family;
-//   .addCommitment {
-//     color: $font-color;
-//     align-items: center;
-//   }
-//   .addCommitment-btn {
-//     padding: 8px 20px;
-//     font:  $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .commitmentContent {
-//     margin-top: 1rem;
-//     ::-webkit-scrollbar {
-//       display: none;
-//     }
-//   }
-//   .editCommitment {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-// }
-
 .categoryaddwrapper {
   color: $font-color;
   font: $font-weight-bold $font-size-large $font-family;
@@ -356,29 +294,6 @@
   }
 }
 
-// .categorylistwrapper {
-//   color: $font-color;
-//   font: $font-weight-bold $font-size-large $font-family;
-
-//   .addCategory {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-
-//   .addCategory-btn {
-//     padding: 8px 20px;
-//     margin-left: 10px;
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .categoryContent {
-//     margin-top: 1rem;
-//     ::-webkit-scrollbar {
-//       display: none;
-//     }
-//   }
-// }
-
 .categoryeditwrapper {
   color: $font-color;
   font: $font-weight-bold $font-size-large $font-family;
@@ -388,19 +303,6 @@
     align-items: center;
   }
 }
-
-// .addviewwrapper {
-//   color: $font-color;
-//   font: $font-weight-bold $font-size-large $font-family;
-//   .ImagesVideos {
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .editReportDispute {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-// }
 
 .reportdisputwrapper {
   color: $font-color;
@@ -425,19 +327,6 @@
   }
 }
 
-// .addviewwrapper {
-//   color: $font-color;
-//   font: $font-weight-bold $font-size-large $font-family;
-//   .ImagesVideos {
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .addNotice {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-// }
-
 .subadminuserwrapper {
   color: $font-color;
   font: $font-weight-bold $font-size-large $font-family;
@@ -450,139 +339,6 @@
     align-items: center;
   }
 }
-
-// .newswrapper {
-//   color: $font-color;
-//   font: $font-weight-bold $font-size-large $font-family;
-//   .ImagesVideos {
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .addNews {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-
-//   .FormikWraper {
-//     padding: 40px;
-//   }
-//   .btn-Published {
-//     text-align: center;
-//   }
-//   .addNews-btn {
-//     padding: 8px 20px;
-//     margin-left: 10px;
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .newsContent {
-//     margin-top: 1rem;
-//     ::-webkit-scrollbar {
-//       display: none;
-//     }
-//   }
-//   .filterPeriod {
-//     color: $primary-color;
-//     font: $font-weight-bold $font-size-small/5px $font-family;
-//   }
-// }
-
-// .donationwrapper {
-//   color: $font-color;
-//   font: $font-weight-bold $font-size-large $font-family;
-//   .ImagesVideos {
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .addDonation {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-
-//   .FormikWraper {
-//     padding: 40px;
-//   }
-//   .btn-Published {
-//     text-align: center;
-//   }
-//   .addDonation-btn {
-//     padding: 8px 20px;
-//     font: $font-weight-bold $font-size-medium $font-family;
-//     border-color: $primary-color !important; 
-//     background-color: $primary-color !important;
-//   }
-//   .importFile-btn {
-//     padding: 8px 20px;
-//     font: $font-weight-bold $font-size-medium $font-family;
-//     border-color: $primary-color !important; 
-//     background-color: $primary-color !important;
-//   }
-//   .donationContent {
-//     margin-top: 1rem;
-//     ::-webkit-scrollbar {
-//       display: none;
-//     }
-//   }
-//   .filterPeriod {
-//     color: $primary-color;
-//     margin-top: 0.5rem;
-//     font: $font-weight-bold $font-size-small/5px $font-family;
-//   }
-// }
-
-// .paydonationwrapper {
-//   color: $font-color;
-//   font: $font-weight-bold $font-size-large $font-family;
-//   .ImagesVideos {
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .editCommitment {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-// }
-
-// .newswrapper {
-//   color: $font-color;
-//   font: $font-weight-bold $font-size-large $font-family;
-//   .ImagesVideos {
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .addNews {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-
-//   .FormikWraper {
-//     padding: 40px;
-//   }
-//   .btn-Published {
-//     text-align: center;
-//   }
-//   .addNews-btn {
-//     padding: 8px 20px;
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .newsContent {
-//     margin-top: 1rem;
-//     ::-webkit-scrollbar {
-//       display: none;
-//     }
-//   }
-//   .filterPeriod {
-//     color: $primary-color;
-//     margin-top: 0.5rem;
-//     font: $font-weight-bold $font-size-small/5px $font-family;
-//   }
-//   .total_collection {
-//     border: 1px solid $primary-color;
-//     color: $primary-color;
-//     font: $font-weight-bold $font-size-medium $font-family;
-//     padding: 0.5rem 2rem;
-//     border-radius: 5px;
-//   }
-// }
 
 .listviewwrapper {
   color: $font-color;
@@ -637,219 +393,6 @@
     }
   }
 }
-
-// .donationboxlistwrapper {
-//   color: $font-color;
-//   font: $font-weight-bold $font-size-large $font-family;
-//   .ImagesVideos {
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .addNews {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-
-//   .FormikWraper {
-//     padding: 40px;
-//   }
-//   .btn-Published {
-//     text-align: center;
-//   }
-//   .addNews-btn {
-//     padding: 8px 20px;
-//     margin-left: 10px;
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .newsContent {
-//     height: 350px;
-//     overflow: auto;
-//     ::-webkit-scrollbar {
-//       display: none;
-//     }
-//   }
-//   .filterPeriod {
-//     color: $primary-color;
-//     font: $font-weight-bold $font-size-small/5px $font-family;
-//   }
-// }
-
-// .hundilogwrapper {
-//   color: $font-color;
-//   font: $font-weight-bold $font-size-large $font-family;
-//   .ImagesVideos {
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .addNews {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-
-//   .FormikWraper {
-//     padding: 40px;
-//   }
-//   .btn-Published {
-//     text-align: center;
-//   }
-//   .addNews-btn {
-//     padding: 8px 20px;
-//     margin-left: 10px;
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .newsContent {
-//     margin-top: 1rem;
-//     ::-webkit-scrollbar {
-//       display: none;
-//     }
-//   }
-//   .filterPeriod {
-//     color: $primary-color;
-//     margin-top: 0.5rem;
-//     font: $font-weight-bold $font-size-small/5px $font-family;
-//   }
-// }
-
-// .financialreporttabswrapper {
-//   .tabName {
-//     font: $font-weight-bold $font-size-medium/$font-size-large $font-family;
-//     padding-left: 1rem;
-//     color: $font-color;
-//     opacity: 70%;
-//     padding-right: 1rem;
-//     white-space: nowrap;
-//     cursor: pointer;
-//     padding-bottom: 0.2rem;
-//   }
-//   hr {
-//     margin-top: -0.52rem;
-//     height: 1.5px;
-//     color: $font-color;
-//     opacity: 25%;
-//     z-index: 1;
-//   }
-//   .allTabBox {
-//     margin-left: 2.3rem;
-//     // overflow-x: scroll;
-//     ::-webkit-scrollbar {
-//       height: 5px;
-//     }
-//     ::-webkit-scrollbar-thumb {
-//       background-color: gray;
-//       border-radius: 25px;
-//     }
-//   }
-//   .activeTab {
-//     z-index: 2;
-//     border-bottom: 5px solid;
-//     border-color: $primary-color;
-//     border-radius: 5px;
-//     color: $font-color;
-//     opacity: 100%;
-//     font-weight: $font-weight-bold;
-//   }
-// }
-
-// .newswrapper {
-//   color: $font-color;
-//   font: $font-weight-bold $font-size-large $font-family;
-//   .ImagesVideos {
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .addNews {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-
-//   .FormikWraper {
-//     padding: 40px;
-//   }
-//   .btn-Published {
-//     text-align: center;
-//   }
-//   .exportBtn {
-//     padding: 10px 20px;
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .newsContent {
-//     ::-webkit-scrollbar {
-//       display: none;
-//     }
-//   }
-//   .filterPeriod {
-//     color: $primary-color;
-//     margin-top: 0.5rem;
-//     font: $font-weight-bold $font-size-small $font-family;
-//   }
-//   .dateChooserReport .react-datepicker__input-container {
-//     width: 158px;
-//   }
-//   .dateChooserReport .react-datepicker__input-container > input:focus-within {
-//     outline: none !important;
-//     outline-offset: 0px;
-//   }
-//   .dateChooserReport .react-datepicker__input-container > input {
-//     border: 1px solid $primary-color !important;
-//     text-align: center;
-//     color: $primary-color;
-//     width: 100%;
-//     font: $font-weight-bold $font-size-medium $font-family;
-//     padding: 10px 20px;
-//     border-radius: 7px;
-//   }
-//   .total_collection {
-//     border: 1px solid $primary-color;
-//     color: $primary-color;
-//     font: $font-weight-bold $font-size-medium $font-family;
-//     padding: 10px 20px;
-//     border-radius: 5px;
-//   }
-// }
-
-// .expensewrapper {
-//   color: $font-color;
-//   font: $font-weight-bold $font-size-large $font-family;
-//   .ImagesVideos {
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .addExpense {
-//     color: $font-color;
-//     display: flex;
-//     justify-content: space-between;
-//     align-items: center;
-//   }
-//   .addExpense-btn {
-//     padding: 8px 20px;
-//     margin-left: 10px;
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .expenseContent {
-//     margin-top: 1rem;
-//     ::-webkit-scrollbar {
-//       display: none;
-//     }
-//   }
-// }
-
-// .expenselogwrapper {
-//   color: $font-color;
-//   font: $font-weight-bold $font-size-large $font-family;
-//   .ImagesVideos {
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .addExpense {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-//   .expenseContent {
-//     margin-top: 1rem;
-//     ::-webkit-scrollbar {
-//       display: none;
-//     }
-//   }
-// }
 
 .loginwrapper {
   .errorMassage {
@@ -947,42 +490,6 @@
     font-size: 14px !important;
   }
 }
-
-// .newswrapper {
-//   color: $font-color;
-//   font: $font-weight-bold $font-size-large $font-family;
-//   .ImagesVideos {
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .addNews, .editNews {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-
-//   .FormikWraper {
-//     padding: 40px;
-//   }
-//   .btn-Published {
-//     text-align: center;
-//   }
-//   .addNews-btn {
-//     padding: 8px 20px;
-//     margin-left: 10px;
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .newsContent {
-//     margin-top: 1rem;
-//     ::-webkit-scrollbar {
-//       display: none;
-//     }
-//   }
-//   .filterPeriod {
-//     color: $primary-color;
-//     margin-top: 0.5rem;
-//     font: $font-weight-bold $font-size-small/5px $font-family;
-//   }
-// }
 
 .addviewwrapper{
   color: $font-color;
@@ -1142,41 +649,6 @@
   }
 }
 
-// .subscribeduserwrapper {
-//   color: $font-color;
-//   font: $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
-  
-//   .addSubscribeUser {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-
-//   .FormikWraper {
-//     padding: 40px;
-//   }
-  
-//   .btn-Published {
-//     text-align: center;
-//   }
-  
-//   .addSubscribeUser-btn {
-//     padding: 8px 20px;
-//     margin-left: 10px;
-//     font: $font-weight-bold $font-size-medium/$font-size-medium $font-family;
-//   }
-  
-//   .subscribeUserContent {
-//     margin-top: 1rem;
-//     ::-webkit-scrollbar {
-//       display: none;
-//     }
-//   }
-// }
-
-
-
-
 .chart-card-wrapper {
   font: $font-weight-bold $font-size-large $font-family;
   
@@ -1255,7 +727,7 @@
   }
 
   .active-tab {
-    font-weight: 900;
+    font-weight: $font-weight-bold;
     opacity: 100%;
   }
 }
