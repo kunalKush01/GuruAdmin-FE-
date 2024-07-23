@@ -49,7 +49,7 @@ export const TopDonerList = ({ data }) => {
     }
   };
   return (
-    <div className="topdonerwarpper">
+    <div className="topdonorwrapper">
       <div className="d-flex listHeading justify-content-between">
         <p>
           <Trans i18nKey={"dashboard_top"} />
