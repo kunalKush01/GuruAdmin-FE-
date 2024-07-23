@@ -192,19 +192,6 @@
   }
 }
 
-.recentdonationtablewrapper {
-  color: $font-color !important;
-  margin-right: 20px;
-  font: $font-weight-bold $font-size-large/23px $font-family !important;
-  .DonationViewAll {
-    color: $primary-color;
-    cursor: pointer;
-  }
-  .recentDonationHeading {
-    font: $font-weight-bold $font-size-large $font-family;
-  }
-}
-
 .topdonorwrapper {
   height: auto;
   .listHeading {
@@ -234,13 +221,30 @@
 
 .recentdonationtablewrapper {
   color: $font-color !important;
-  font: $font-weight-bold $font-size-medium/23px $font-family;
+  margin-right: 20px;
+  font: $font-weight-bold $font-size-large/23px $font-family !important;
+  .DonationViewAll {
+    color: $primary-color;
+    cursor: pointer;
+  }
+  .recentDonationHeading {
+    font: $font-weight-bold $font-size-large $font-family;
+  }
   .modal-body {
     max-height: 600px !important;
     overflow: auto !important;
   }
   .tableDes p {
     margin-bottom: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .tableDes {
+    max-height: 1.7rem;
+  }
+  .viewLogs {
+    font: $font-weight-bold $font-size-medium/33px $font-family;
+    color: $primary-color;
   }
 }
 
@@ -293,22 +297,6 @@
   }
 }
 
-.recentdonationtablewrapper {
-  color: $font-color !important;
-  font: $font-weight-bold $font-size-medium/23px $font-family;
-  .tableDes p {
-    margin-bottom: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .tableDes {
-    max-height: 1.7rem;
-  }
-  .viewLogs {
-    font: $font-weight-bold $font-size-medium/33px $font-family;
-    color: $primary-color;
-  }
-}
 
 .loglisttablewrapper {
   color: $font-color !important;
@@ -400,38 +388,6 @@
   }
 }
 
-
-.nolistviewwrapper {
-  img {
-    width: 90px;
-    margin: 20px;
-  }
-  .noEvent {
-    color: $primary-color;
-    font: $font-weight-bold 25px $font-family;
-  }
-  .noEventMass {
-    font: $font-weight-normal $font-size-small/30px $font-family;
-  }
-}
-
-
-.recentdonationtablewrapper {
-  color: $font-color !important;
-  font: $font-weight-bold $font-size-medium/23px $font-family;
-  .tableDes p {
-    margin-bottom: 0;
-    text-overflow: ellipsis;
-    overflow: hidden;
-  }
-  .tableDes {
-    max-height: 1.7rem;
-  }
-  .viewLogs {
-    font: $font-weight-bold $font-size-medium/33px $font-family;
-    color: $primary-color;
-  }
-}
 
 .newscardwrapper {
   .imgContainer {
@@ -592,7 +548,7 @@
   }
 }
 
-    .formwrapper {
+.formwrapper {
         .FormikWrapper {
           padding: 10px;
         }
@@ -664,7 +620,6 @@
           opacity: 60% !important;
           font: $font-weight-bold $font-size-small $font-family !important;
         }
-      }
       .usertablewrapper {
         color: $font-color !important;
         margin-right: 20px;
@@ -721,6 +676,7 @@
           height: 100px;
         }
       }
+}
 .addviewwrapper {
   .dateTime {
     color: #909090;
