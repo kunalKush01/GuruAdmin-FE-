@@ -247,7 +247,7 @@ export default function ProfileForm({
     toastId: "langError",
   };
   return (
-    <div className="profileformwrapper FormikWraper">
+    <div className="profileformwrapper FormikWrapper">
       <Formik
         enableReinitialize
         initialValues={initialValues}
