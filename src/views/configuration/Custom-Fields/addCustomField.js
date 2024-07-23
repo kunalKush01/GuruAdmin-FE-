@@ -13,11 +13,14 @@ import {
 import Swal from "sweetalert2";
 import { X } from "react-feather";
 import "../Masters/masterStyle.css";
-import { createDonationCustomFields } from "../../../api/customFieldsApi";
-import { getAllMasters, getMasterDataById } from "../../../api/masterApi";
+import {
+  createDonationCustomFields,
+  createPledgeCustomFields,
+} from "../../../api/customFieldsApi";
+import { getAllMasters, getAllMastersWithoutPagination, getMasterDataById } from "../../../api/masterApi";
 import { useQuery } from "@tanstack/react-query";
 
-const AddCustomField = ({ trustId, isOpen, toggle ,onSuccess}) => {
+const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
   const initialFormData = {
     fieldName: "",
     fieldType: "String",
@@ -26,10 +29,10 @@ const AddCustomField = ({ trustId, isOpen, toggle ,onSuccess}) => {
     master: "",
     masterData: "",
   };
-
+  // console.log(activeTab);
   const [formData, setFormData] = useState(initialFormData);
   const [validationMessages, setValidationMessages] = useState({});
-  const masterQuery = useQuery(["Masters"], () => getAllMasters(), {
+  const masterQuery = useQuery(["Masters"], () => getAllMastersWithoutPagination(), {
     keepPreviousData: true,
   });
 
@@ -49,9 +52,9 @@ const AddCustomField = ({ trustId, isOpen, toggle ,onSuccess}) => {
 
   const masterDataItem = useMemo(
     () => masterDataQuery?.data ?? [],
-    [masterDataQuery]
+    [masterDataQuery,activeTab]
   );
-  // console.log(masterDataItem);
+  console.log(masterQuery);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -96,8 +99,8 @@ const AddCustomField = ({ trustId, isOpen, toggle ,onSuccess}) => {
 
     const payload = {
       trustId,
-      masterId:formData.master,
-      masterSchema:formData.masterData,
+      masterId: formData.master,
+      masterSchema: formData.masterData,
       customFields: [
         {
           fieldName: formData.fieldName,
@@ -107,26 +110,50 @@ const AddCustomField = ({ trustId, isOpen, toggle ,onSuccess}) => {
         },
       ],
     };
-    createDonationCustomFields(payload)
-      .then(() => {
-        Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: "Custom field added successfully.",
+    if (activeTab == "Donation") {
+      console.log(payload)
+      createDonationCustomFields(payload)
+        .then(() => {
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "Custom field added successfully.",
+          });
+          onSuccess(true);
+          setFormData(initialFormData);
+          toggle();
+        })
+        .catch((error) => {
+          onSuccess(false);
+          console.error("Error adding custom field:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Failed to add custom field.",
+          });
         });
-        onSuccess(true);
-        setFormData(initialFormData);
-        toggle();
-      })
-      .catch((error) => {
-        onSuccess(false);
-        console.error("Error adding custom field:", error);
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Failed to add custom field.",
+    } else if (activeTab == "Pledge") {
+      createPledgeCustomFields(payload)
+        .then(() => {
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "Custom field added successfully.",
+          });
+          onSuccess(true);
+          setFormData(initialFormData);
+          toggle();
+        })
+        .catch((error) => {
+          onSuccess(false);
+          console.error("Error adding custom field:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Failed to add custom field.",
+          });
         });
-      });
+    }
   };
 
   return (

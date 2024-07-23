@@ -63,7 +63,7 @@ export default function Master() {
       },
     }
   );
-
+console.log(masterQuery)
   const masterItem = useMemo(
     () => masterQuery?.data?.masterNames ?? [],
     [masterQuery]
