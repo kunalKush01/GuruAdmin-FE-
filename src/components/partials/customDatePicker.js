@@ -7,7 +7,7 @@ import "../../assets/scss/common.scss";
 
 export default function CustomDatePicker({ ...props }) {
   return (
-    <div className="customdatepickerwraper">
+    <div className="customdatepickerwrapper">
       <DatePicker
         yearDropdownItemNumber={50}
         showYearDropdown
