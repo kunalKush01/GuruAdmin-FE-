@@ -69,7 +69,6 @@
     }
   }
   
-
 .categorytablewrapper {
   color: $font-color !important;
   font: $font-weight-bold $font-size-medium/23px $font-family;
@@ -181,7 +180,6 @@
     transition: height 0.5s;
   }
 }
-
 
 .commitmenttablewrapper {
   color: $font-color !important;
@@ -388,9 +386,9 @@
   }
 }
 
-
 .newscardwrapper {
-  .imgContainer {
+  
+.imgContainer {
     background-color: $secondary-color;
     border-bottom: 1px solid $primary-color;
     img {
@@ -1600,7 +1598,7 @@
     }
   }
 }
-.nocontentwraper {
+.nocontentwrapper {
   img {
     width: 90px;
     margin: 20px;
@@ -1689,8 +1687,6 @@
     }
   }
 }
-
-
 
 .profileformwrapper {
   .existLabel {
@@ -1982,7 +1978,6 @@
   }
 }
 
-
 .punyarjakusertablewrapper {
     color: $font-color !important;
     margin-right: 20px;
@@ -1994,7 +1989,7 @@
     .tableDes {
       max-height: 1.7rem;
     }
-  }
+}
 .reportwrapper {
   color: $font-color !important;
   font: $font-weight-bold $font-size-medium/23px $font-family;
@@ -2013,52 +2008,3 @@
     margin-right: 20px;
     font: $font-weight-bold $font-size-medium/23px $font-family;
   }
-.newscardwrapper {
-  .imgContainer {
-    border-radius: 10px 10px 0px 0px;
-    img {
-      border-radius: 10px 10px 0px 0px;
-    }
-  }
-  .card-title {
-    font: $font-weight-bold $font-size-small/16px $font-family;
-    margin-bottom: 10px !important;
-  }
-  .card-text {
-    font: $font-weight-normal 12px/16px $font-family;
-    height: 50px;
-    overflow: hidden;
-  }
-  .card-body {
-    background: $secondary-color;
-    padding: 10px;
-  }
-  .btn-outline-primary {
-    border: 2px solid $primary-color !important;
-    font: $font-weight-bold 14px/15px $font-family;
-    padding: 5px 10px;
-    border-radius: 20px;
-    margin-right: 10px;
-  }
-
-  .card-footer {
-    font: $font-weight-bold 10px/15px $font-family;
-    border: none !important;
-    padding: 16px 0px 10px 0px;
-    div > div > img {
-      width: 15px;
-      margin-right: 5px;
-    }
-    img {
-      width: 30px;
-    }
-  }
-  .imgContent {
-    top: 80%;
-    color: $white;
-    padding: 0px 5px;
-    font: $font-weight-bold 12px/30px $font-family;
-  }
-}
-
-  
