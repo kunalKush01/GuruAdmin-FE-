@@ -1,19 +1,16 @@
 // ** Router Import
-import Router from "./router/Router";
-import { useTranslation, Trans } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import "react-loading-skeleton/dist/skeleton.css";
+import { useDispatch, useSelector } from "react-redux";
+import configureAmplify from "./AWS/awsPool";
 import { authApiInstance } from "./axiosApi/authApiInstans";
 import { setAvailableLang } from "./redux/authSlice";
-import "react-loading-skeleton/dist/skeleton.css";
-import { isSerchable } from "./utility/localSerachBar";
-import configureAmplify from "./AWS/awsPool";
-import * as serviceWorker from "./serviceWorker";
-import Notification from "./fireBase/Notification";
+import Router from "./router/Router";
 import { disableInspect } from "./utility/removeContextMenu";
 
 const App = () => {
-  if (process.env.REACT_APP_ENVIRMENT !== "development") {
+  if (process.env.REACT_APP_ENVIRMENT === "production") {
     disableInspect();
   }
 
