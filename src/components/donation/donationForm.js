@@ -3,10 +3,9 @@ import { Formik } from "formik";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import styled from "styled-components";
 import { getAllMasterCategories } from "../../api/expenseApi";
-import FormWithoutFormikForDonation from "./FormWithoutFormikForDonation";
 import "../../assets/scss/common.scss";
+import FormWithoutFormikForDonation from "./FormWithoutFormikForDonation";
 
 export default function DonationForm({
   plusIconDisable = false,
@@ -48,7 +47,7 @@ export default function DonationForm({
   const [toggleState, setToggleState] = useState(false);
 
   return (
-    <div className="formwrapper FormikWrapper">
+    <div className="FormikWrapper">
       {!masterloadOptionQuery.isLoading && (
         <Formik
           initialValues={{

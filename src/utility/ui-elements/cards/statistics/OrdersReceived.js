@@ -1,14 +1,11 @@
+import "../../../../assets/scss/variables/_variables.scss";
+
 // ** React Imports
-import { useEffect, useState } from "react";
 
 // ** Third Party Components
-import axios from "axios";
-import { Package } from "react-feather";
 
 // ** Custom Components
 import StatsWithAreaChart from "@components/widgets/stats/StatsWithAreaChart";
-
-import "../../../../assets/scss/variables/_variables.scss";
 
 const getCssVariableValue = (variable) => {
   return getComputedStyle(document.documentElement)
@@ -94,7 +91,7 @@ const OrdersReceived = ({ statTitle, stats, SeriesName = "", data = [] }) => {
   return (
     <StatsWithAreaChart
       // icon={<Package size={21} />}
-      color="warning"
+      //color="warning"
       stats={stats}
       statTitle={statTitle}
       options={options}
