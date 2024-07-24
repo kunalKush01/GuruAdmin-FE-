@@ -92,7 +92,7 @@ export default function CommitmentForm({
   const [showPrompt, setShowPrompt] = useState(true);
 
   return (
-    <FormWraper className="FormikWrapper">
+    <div className="formwrapper FormikWrapper">
       {!masterloadOptionQuery.isLoading && (
         <Formik
           initialValues={{
@@ -152,6 +152,6 @@ export default function CommitmentForm({
           )}
         </Formik>
       )}
-    </FormWraper>
+    </div>
   );
 }

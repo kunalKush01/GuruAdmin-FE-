@@ -174,7 +174,7 @@ export default function User() {
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
-                className="addNews-btn"
+                className="addAction-btn"
                 onClick={() =>
                   userRolesItems?.length > 0
                     ? history.push(

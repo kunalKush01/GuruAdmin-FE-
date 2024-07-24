@@ -13,18 +13,7 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import "../../assets/scss/viewCommon.scss";
 import { useQuery } from "@tanstack/react-query";
 import { getDonationCustomFields } from "../../api/customFieldsApi";
-const DonationWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addDonation {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+
 export default function AddDonation() {
   const history = useHistory();
   const loggedInUser = useSelector((state) => state.auth.userDetail.name);

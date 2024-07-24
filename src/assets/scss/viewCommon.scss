@@ -1,1444 +1,1033 @@
 @use './variables/variables' as *;
 
 .breedwrapper {
-  color: $font-color;
-  font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
+    color: $font-color;
+    font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
 
-  .btn {
-    font-weight: $font-weight-bold;
-  }
+    .btn {
+        font-weight: $font-weight-bold;
+    }
 }
 
 .cattlebreedtablewrapper {
-  color: $font-color !important;
-  margin-bottom: 1rem;
-  font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-medium*1.53 $font-family;
+    color: $font-color !important;
+    margin-bottom: 1rem;
+    font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-medium*1.53 $font-family;
 
-  .modal-body {
-    max-height: 600px !important;
-    overflow: auto !important;
-  }
-  .tableDes p {
-    margin-bottom: 0;
-  }
+    .modal-body {
+        max-height: 600px !important;
+        overflow: auto !important;
+    }
+
+    .tableDes p {
+        margin-bottom: 0;
+    }
 }
 
 .cattlecategorywrapper {
-  color: $font-color;
-  font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
+    color: $font-color;
+    font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
 
-  .btn {
-    font-weight: $font-weight-bold;
-  }
+    .btn {
+        font-weight: $font-weight-bold;
+    }
 }
 
 .cattlecategorytablewrapper {
-  color: $font-color !important;
-  margin-bottom: 1rem;
-  font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-medium*1.53 $font-family;
+    color: $font-color !important;
+    margin-bottom: 1rem;
+    font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-medium*1.53 $font-family;
 
-  .modal-body {
-    max-height: 600px !important;
-    overflow: auto !important;
-  }
-  .tableDes p {
-    margin-bottom: 0;
-  }
+    .modal-body {
+        max-height: 600px !important;
+        overflow: auto !important;
+    }
+
+    .tableDes p {
+        margin-bottom: 0;
+    }
 }
 
 .cattleaddwraper {
-  color: $font-color;
-  font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
-  .ImagesVideos {
-    font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-large*1.65 $font-family;
-  }
-  .addAction {
     color: $font-color;
-    display: flex;
-    align-items: center;
-  }
+    font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
+
+    .ImagesVideos {
+        font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-large*1.65 $font-family;
+    }
+
+    .addAction {
+        color: $font-color;
+        display: flex;
+        align-items: center;
+    }
 }
 
 .cattleinfo {
-  color: $font-color;
-  font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
+    color: $font-color;
+    font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
 
-  .btn {
-    font-weight: $font-weight-bold;
-  }
+    .btn {
+        font-weight: $font-weight-bold;
+    }
 }
 
 .cattleinfotablewrapper {
-  color: $font-color !important;
-  margin-bottom: 1rem;
-  font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-medium*1.53 $font-family;
+    color: $font-color !important;
+    margin-bottom: 1rem;
+    font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-medium*1.53 $font-family;
 
-  .modal-body {
-    max-height: 600px !important;
-    overflow: auto !important;
-  }
-  .tableDes p {
-    margin-bottom: 0;
-  }
+    .modal-body {
+        max-height: 600px !important;
+        overflow: auto !important;
+    }
+
+    .tableDes p {
+        margin-bottom: 0;
+    }
 }
 
 .recentregisteredcattletablewrapper {
-  color: $font-color !important;
-  margin-right: 20px;
-  margin: 1rem 0;
-  font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-medium*1.15 $font-family !important;
-  .DonationViewAll {
-    color: $primary-color;
-    cursor: pointer;
-  }
-  .recentDonationHeading {
-    font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-medium*1.15 $font-family;
-  }
+    color: $font-color !important;
+    margin-right: 20px;
+    margin: 1rem 0;
+    font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-medium*1.15 $font-family !important;
+
+    .DonationViewAll {
+        color: $primary-color;
+        cursor: pointer;
+    }
+
+    .recentDonationHeading {
+        font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-medium*1.15 $font-family;
+    }
 }
 
-// .expenseaddwraper {
-//   color: $font-color;
-//   font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
-//   .ImagesVideos {
-//     font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-large*1.65 $font-family;
-//   }
-//   .addAction {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-// }
 
 .expensemanagementwrapper {
-  color: $font-color;
-  font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
+    color: $font-color;
+    font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
 
-  .btn {
-    font-weight: $font-weight-bold;
-  }
+    .btn {
+        font-weight: $font-weight-bold;
+    }
 }
 
 .expensetablewrapper {
-  color: $font-color !important;
-  font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-medium*1.53 $font-family;
-  .modal-body {
-    max-height: 600px !important;
-    overflow: auto !important;
-  }
-  .tableDes p {
-    margin-bottom: 0;
-  }
+    color: $font-color !important;
+    font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-medium*1.53 $font-family;
+
+    .modal-body {
+        max-height: 600px !important;
+        overflow: auto !important;
+    }
+
+    .tableDes p {
+        margin-bottom: 0;
+    }
 }
 
 .medicalinfoaddwraper {
-  color: $font-color;
-  font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
-  .ImagesVideos {
-    font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-large*1.65 $font-family;
-  }
-  .addAction {
     color: $font-color;
-    display: flex;
-    align-items: center;
-  }
+    font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
+
+    .ImagesVideos {
+        font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-large*1.65 $font-family;
+    }
+
+    .addAction {
+        color: $font-color;
+        display: flex;
+        align-items: center;
+    }
 }
 
 .medicalwrapper {
-  color: $font-color;
-  font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
+    color: $font-color;
+    font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
 
-  .btn {
-    font-weight: $font-weight-bold;
-  }
+    .btn {
+        font-weight: $font-weight-bold;
+    }
 }
 
 .medicaltablewrapper {
-  color: $font-color !important;
-  font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-medium*1.53 $font-family;
-  .modal-body {
-    max-height: 600px !important;
-    overflow: auto !important;
-  }
-  .tableDes p {
-    margin-bottom: 0;
-  }
+    color: $font-color !important;
+    font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-medium*1.53 $font-family;
+
+    .modal-body {
+        max-height: 600px !important;
+        overflow: auto !important;
+    }
+
+    .tableDes p {
+        margin-bottom: 0;
+    }
 }
 
 .pregnancyaddwraper {
-  color: $font-color;
-  font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
-  .ImagesVideos {
-    font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-large*1.65 $font-family;
-  }
-  .addAction {
     color: $font-color;
-    display: flex;
-    align-items: center;
-  }
+    font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
+
+    .ImagesVideos {
+        font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-large*1.65 $font-family;
+    }
+
+    .addAction {
+        color: $font-color;
+        display: flex;
+        align-items: center;
+    }
 }
 
 .pregnancyreportwrapper {
-  color: $font-color;
-  font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
+    color: $font-color;
+    font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
 
-  .btn {
-    font-weight: $font-weight-bold;
-  }
+    .btn {
+        font-weight: $font-weight-bold;
+    }
 }
 
 .pregnancytablewrapper {
-  color: $font-color !important;
-  font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-medium*1.53 $font-family;
-  .modal-body {
-    max-height: 600px !important;
-    overflow: auto !important;
-  }
-  .tableDes p {
-    margin-bottom: 0;
-  }
+    color: $font-color !important;
+    font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-medium*1.53 $font-family;
+
+    .modal-body {
+        max-height: 600px !important;
+        overflow: auto !important;
+    }
+
+    .tableDes p {
+        margin-bottom: 0;
+    }
 }
 
 .stockmanagementwrapper {
-  color: $font-color;
-  font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
+    color: $font-color;
+    font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
 
-  .btn {
-    font-weight: $font-weight-bold;
-  }
+    .btn {
+        font-weight: $font-weight-bold;
+    }
 
-  hr {
-    height: 1px;
-    margin-top: 0;
-  }
+    hr {
+        height: 1px;
+        margin-top: 0;
+    }
 }
 
-// .stockitemaddwraper {
-//   color: $font-color;
-//   font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
-//   .ImagesVideos {
-//     font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-large*1.65 $font-family;
-//   }
-//   .addAction {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-// }
-
 .itemeditwrapper {
-  color: $font-color;
-  font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
-  .ImagesVideos {
-    font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-large*1.65 $font-family;
-  }
-  .addAction {
     color: $font-color;
-    display: flex;
-    align-items: center;
-  }
+    font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
+
+    .ImagesVideos {
+        font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-large*1.65 $font-family;
+    }
+
+    .addAction {
+        color: $font-color;
+        display: flex;
+        align-items: center;
+    }
 }
 
 .stockmanagementitemtablewrapper {
-  color: $font-color !important;
-  font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-medium*1.53 $font-family;
-  .modal-body {
-    max-height: 600px !important;
-    overflow: auto !important;
-  }
-  .tableDes p {
-    margin-bottom: 0;
-  }
+    color: $font-color !important;
+    font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-medium*1.53 $font-family;
+
+    .modal-body {
+        max-height: 600px !important;
+        overflow: auto !important;
+    }
+
+    .tableDes p {
+        margin-bottom: 0;
+    }
 }
 
-// .stockaddwraper {
-//   color: $font-color;
-//   font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
-//   .ImagesVideos {
-//     font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-large*1.65 $font-family;
-//   }
-//   .addAction {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-// }
-
 .stockmanagementtablewrapper {
-  color: $font-color !important;
-  font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-medium*1.53 $font-family;
-  .modal-body {
-    max-height: 600px !important;
-    overflow: auto !important;
-  }
-  .tableDes p {
-    margin-bottom: 0;
-  }
+    color: $font-color !important;
+    font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-medium*1.53 $font-family;
+
+    .modal-body {
+        max-height: 600px !important;
+        overflow: auto !important;
+    }
+
+    .tableDes p {
+        margin-bottom: 0;
+    }
 }
 
 .suppliestablewrapper {
-  color: $font-color !important;
-  font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-medium*1.53 $font-family;
-  .modal-body {
-    max-height: 600px !important;
-    overflow: auto !important;
-  }
-  .tableDes p {
-    margin-bottom: 0;
-  }
+    color: $font-color !important;
+    font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-medium*1.53 $font-family;
+
+    .modal-body {
+        max-height: 600px !important;
+        overflow: auto !important;
+    }
+
+    .tableDes p {
+        margin-bottom: 0;
+    }
 }
 
 .itemusageaddwraper {
-  color: $font-color;
-  font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
-  .ImagesVideos {
-    font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-large*1.65 $font-family;
-  }
-  .addAction {
     color: $font-color;
-    display: flex;
-    align-items: center;
-  }
+    font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
+
+    .ImagesVideos {
+        font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-large*1.65 $font-family;
+    }
+
+    .addAction {
+        color: $font-color;
+        display: flex;
+        align-items: center;
+    }
 }
 
 .usagemanagementtablewrapper {
-  color: $font-color !important;
-  font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-medium*1.53 $font-family;
-  .modal-body {
-    max-height: 600px !important;
-    overflow: auto !important;
-  }
-  .tableDes p {
-    margin-bottom: 0;
-  }
+    color: $font-color !important;
+    font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-medium*1.53 $font-family;
+
+    .modal-body {
+        max-height: 600px !important;
+        overflow: auto !important;
+    }
+
+    .tableDes p {
+        margin-bottom: 0;
+    }
 }
 
-// .commitmentwrapper {
-//   color: $font-color;
-//   font:  $font-weight-bold $font-size-large $font-family;
-//   .addCommitment {
-//     color: $font-color;
-//     align-items: center;
-//   }
-//   .addCommitment-btn {
-//     padding: 8px 20px;
-//     font:  $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .commitmentContent {
-//     margin-top: 1rem;
-//     ::-webkit-scrollbar {
-//       display: none;
-//     }
-//   }
-//   .editCommitment {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-// }
-
 .categoryaddwrapper {
-  color: $font-color;
-  font: $font-weight-bold $font-size-large $font-family;
-  .addCategory {
     color: $font-color;
-    display: flex;
-    align-items: center;
-  }
+    font: $font-weight-bold $font-size-large $font-family;
+
+    .addCategory {
+        color: $font-color;
+        display: flex;
+        align-items: center;
+    }
 }
 
 .categorylangwrapper {
-  color: $font-color;
-  font: $font-weight-bold $font-size-large $font-family;
-  .categoryAddLang {
     color: $font-color;
-    display: flex;
-    align-items: center;
-  }
+    font: $font-weight-bold $font-size-large $font-family;
+
+    .categoryAddLang {
+        color: $font-color;
+        display: flex;
+        align-items: center;
+    }
 }
-
-// .categorylistwrapper {
-//   color: $font-color;
-//   font: $font-weight-bold $font-size-large $font-family;
-
-//   .addCategory {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-
-//   .addCategory-btn {
-//     padding: 8px 20px;
-//     margin-left: 10px;
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .categoryContent {
-//     margin-top: 1rem;
-//     ::-webkit-scrollbar {
-//       display: none;
-//     }
-//   }
-// }
 
 .categoryeditwrapper {
-  color: $font-color;
-  font: $font-weight-bold $font-size-large $font-family;
-  .editCategory {
     color: $font-color;
-    display: flex;
-    align-items: center;
-  }
-}
+    font: $font-weight-bold $font-size-large $font-family;
 
-// .addviewwrapper {
-//   color: $font-color;
-//   font: $font-weight-bold $font-size-large $font-family;
-//   .ImagesVideos {
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .editReportDispute {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-// }
+    .editCategory {
+        color: $font-color;
+        display: flex;
+        align-items: center;
+    }
+}
 
 .reportdisputwrapper {
-  color: $font-color;
-  font: $font-weight-bold $font-size-large $font-family;
+    color: $font-color;
+    font: $font-weight-bold $font-size-large $font-family;
 
-  .table_upper_row {
-    margin-bottom: 2rem;
-  }
-  .addAction {
-    color: $font-color;
-    display: flex;
-    align-items: center;
-  }
-  .category_heading {
-    font-size: $font-size-large;
-    font-weight: $font-weight-bold;
-    color: $font-color;
-  }
-  .filterPeriod {
-    color: $primary-color;
-    font: $font-weight-bold $font-size-small $font-family;
-  }
+    .table_upper_row {
+        margin-bottom: 2rem;
+    }
+
+    .addAction {
+        color: $font-color;
+        display: flex;
+        align-items: center;
+    }
+
+    .category_heading {
+        font-size: $font-size-large;
+        font-weight: $font-weight-bold;
+        color: $font-color;
+    }
+
+    .filterPeriod {
+        color: $primary-color;
+        font: $font-weight-bold $font-size-small $font-family;
+    }
 }
-
-// .addviewwrapper {
-//   color: $font-color;
-//   font: $font-weight-bold $font-size-large $font-family;
-//   .ImagesVideos {
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .addNotice {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-// }
 
 .subadminuserwrapper {
-  color: $font-color;
-  font: $font-weight-bold $font-size-large $font-family;
-  .ImagesVideos {
-    font: $font-weight-bold $font-size-medium $font-family;
-  }
-  .editNotice {
     color: $font-color;
-    display: flex;
-    align-items: center;
-  }
+    font: $font-weight-bold $font-size-large $font-family;
+
+    .ImagesVideos {
+        font: $font-weight-bold $font-size-medium $font-family;
+    }
+
+    .editNotice {
+        color: $font-color;
+        display: flex;
+        align-items: center;
+    }
 }
-
-// .newswrapper {
-//   color: $font-color;
-//   font: $font-weight-bold $font-size-large $font-family;
-//   .ImagesVideos {
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .addNews {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-
-//   .FormikWraper {
-//     padding: 40px;
-//   }
-//   .btn-Published {
-//     text-align: center;
-//   }
-//   .addNews-btn {
-//     padding: 8px 20px;
-//     margin-left: 10px;
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .newsContent {
-//     margin-top: 1rem;
-//     ::-webkit-scrollbar {
-//       display: none;
-//     }
-//   }
-//   .filterPeriod {
-//     color: $primary-color;
-//     font: $font-weight-bold $font-size-small/5px $font-family;
-//   }
-// }
-
-// .donationwrapper {
-//   color: $font-color;
-//   font: $font-weight-bold $font-size-large $font-family;
-//   .ImagesVideos {
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .addDonation {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-
-//   .FormikWraper {
-//     padding: 40px;
-//   }
-//   .btn-Published {
-//     text-align: center;
-//   }
-//   .addDonation-btn {
-//     padding: 8px 20px;
-//     font: $font-weight-bold $font-size-medium $font-family;
-//     border-color: $primary-color !important; 
-//     background-color: $primary-color !important;
-//   }
-//   .importFile-btn {
-//     padding: 8px 20px;
-//     font: $font-weight-bold $font-size-medium $font-family;
-//     border-color: $primary-color !important; 
-//     background-color: $primary-color !important;
-//   }
-//   .donationContent {
-//     margin-top: 1rem;
-//     ::-webkit-scrollbar {
-//       display: none;
-//     }
-//   }
-//   .filterPeriod {
-//     color: $primary-color;
-//     margin-top: 0.5rem;
-//     font: $font-weight-bold $font-size-small/5px $font-family;
-//   }
-// }
-
-// .paydonationwrapper {
-//   color: $font-color;
-//   font: $font-weight-bold $font-size-large $font-family;
-//   .ImagesVideos {
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .editCommitment {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-// }
-
-// .newswrapper {
-//   color: $font-color;
-//   font: $font-weight-bold $font-size-large $font-family;
-//   .ImagesVideos {
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .addNews {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-
-//   .FormikWraper {
-//     padding: 40px;
-//   }
-//   .btn-Published {
-//     text-align: center;
-//   }
-//   .addNews-btn {
-//     padding: 8px 20px;
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .newsContent {
-//     margin-top: 1rem;
-//     ::-webkit-scrollbar {
-//       display: none;
-//     }
-//   }
-//   .filterPeriod {
-//     color: $primary-color;
-//     margin-top: 0.5rem;
-//     font: $font-weight-bold $font-size-small/5px $font-family;
-//   }
-//   .total_collection {
-//     border: 1px solid $primary-color;
-//     color: $primary-color;
-//     font: $font-weight-bold $font-size-medium $font-family;
-//     padding: 0.5rem 2rem;
-//     border-radius: 5px;
-//   }
-// }
 
 .listviewwrapper {
-  color: $font-color;
-  font: $font-weight-bold $font-size-large $font-family;
-  .ImagesVideos {
-    font: $font-weight-bold $font-size-medium $font-family;
-  }
-  .addAction, .editAction, .secondaryAction {
     color: $font-color;
-    display: flex;
-    align-items: center;
-  }
+    font: $font-weight-bold $font-size-large $font-family;
 
-  .FormikWraper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addAction-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: $font-weight-bold $font-size-medium $font-family;
-    border-color: $primary-color !important; 
-    background-color: $primary-color !important;
-  }
-  .secondaryAction-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: $font-weight-bold $font-size-medium $font-family;
-    border-color: $primary-color !important; 
-    background-color: $primary-color !important;
-  }
-  .listviewContent {
-    margin-top: 1rem;
-    ::-webkit-scrollbar {
-      display: none;
+    .ImagesVideos {
+        font: $font-weight-bold $font-size-medium $font-family;
     }
-  }
-  .filterPeriod {
-    color: $primary-color;
-    margin-top: 0.5rem;
-    font: $font-weight-bold $font-size-small/5px $font-family;
-  }
-  .noContent {
-    margin-left: 30rem;
-  }
 
-  @media only screen and (max-width: 1150px) {
+    .addAction,
+    .editAction,
+    .secondaryAction {
+        color: $font-color;
+        display: flex;
+        align-items: center;
+    }
+
+    .FormikWrapper {
+        padding: 5px;
+    }
+
+    .btn-Published {
+        text-align: center;
+    }
+
+    .addAction-btn {
+        padding: 8px 20px;
+        margin-left: 10px;
+        font: $font-weight-bold $font-size-medium $font-family;
+        border-color: $primary-color !important;
+        background-color: $primary-color !important;
+    }
+
+    .secondaryAction-btn {
+        padding: 8px 20px;
+        margin-left: 10px;
+        font: $font-weight-bold $font-size-medium $font-family;
+        border-color: $primary-color !important;
+        background-color: $primary-color !important;
+    }
+
+    .listviewContent {
+        margin-top: 1rem;
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    .filterPeriod {
+        color: $primary-color;
+        margin-top: 0.5rem;
+        font: $font-weight-bold $font-size-small/5px $font-family;
+    }
+
     .noContent {
-      margin-left: 0;
+        margin-left: 30rem;
     }
-  }
+
+    .react-time-picker__wrapper {
+        border: none !important;
+    }
+
+    .react-time-picker {
+        width: 100%;
+    }
+
+    .react-time-picker__inputGroup {
+        color: $font-color !important;
+        border: none !important;
+        background-color: $secondary-color !important;
+        font: $font-weight-normal $font-size-small/20px $font-family;
+        width: 100%;
+        padding: 0rem 0.5rem !important;
+        border-radius: 5px;
+        line-height: 30px;
+    }
+
+    .react-time-picker__inputGroup__input:invalid {
+        background: $secondary-color !important;
+    }
+
+    .react-time-picker__inputGroup__input--hasLeadingZero {
+        margin-left: 0 !important;
+        padding-left: 0px !important;
+    }
+
+    @media only screen and (max-width: 1150px) {
+        .noContent {
+            margin-left: 0;
+        }
+    }
 }
 
-// .donationboxlistwrapper {
-//   color: $font-color;
-//   font: $font-weight-bold $font-size-large $font-family;
-//   .ImagesVideos {
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .addNews {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-
-//   .FormikWraper {
-//     padding: 40px;
-//   }
-//   .btn-Published {
-//     text-align: center;
-//   }
-//   .addNews-btn {
-//     padding: 8px 20px;
-//     margin-left: 10px;
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .newsContent {
-//     height: 350px;
-//     overflow: auto;
-//     ::-webkit-scrollbar {
-//       display: none;
-//     }
-//   }
-//   .filterPeriod {
-//     color: $primary-color;
-//     font: $font-weight-bold $font-size-small/5px $font-family;
-//   }
-// }
-
-// .hundilogwrapper {
-//   color: $font-color;
-//   font: $font-weight-bold $font-size-large $font-family;
-//   .ImagesVideos {
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .addNews {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-
-//   .FormikWraper {
-//     padding: 40px;
-//   }
-//   .btn-Published {
-//     text-align: center;
-//   }
-//   .addNews-btn {
-//     padding: 8px 20px;
-//     margin-left: 10px;
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .newsContent {
-//     margin-top: 1rem;
-//     ::-webkit-scrollbar {
-//       display: none;
-//     }
-//   }
-//   .filterPeriod {
-//     color: $primary-color;
-//     margin-top: 0.5rem;
-//     font: $font-weight-bold $font-size-small/5px $font-family;
-//   }
-// }
-
-// .financialreporttabswrapper {
-//   .tabName {
-//     font: $font-weight-bold $font-size-medium/$font-size-large $font-family;
-//     padding-left: 1rem;
-//     color: $font-color;
-//     opacity: 70%;
-//     padding-right: 1rem;
-//     white-space: nowrap;
-//     cursor: pointer;
-//     padding-bottom: 0.2rem;
-//   }
-//   hr {
-//     margin-top: -0.52rem;
-//     height: 1.5px;
-//     color: $font-color;
-//     opacity: 25%;
-//     z-index: 1;
-//   }
-//   .allTabBox {
-//     margin-left: 2.3rem;
-//     // overflow-x: scroll;
-//     ::-webkit-scrollbar {
-//       height: 5px;
-//     }
-//     ::-webkit-scrollbar-thumb {
-//       background-color: gray;
-//       border-radius: 25px;
-//     }
-//   }
-//   .activeTab {
-//     z-index: 2;
-//     border-bottom: 5px solid;
-//     border-color: $primary-color;
-//     border-radius: 5px;
-//     color: $font-color;
-//     opacity: 100%;
-//     font-weight: $font-weight-bold;
-//   }
-// }
-
-// .newswrapper {
-//   color: $font-color;
-//   font: $font-weight-bold $font-size-large $font-family;
-//   .ImagesVideos {
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .addNews {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-
-//   .FormikWraper {
-//     padding: 40px;
-//   }
-//   .btn-Published {
-//     text-align: center;
-//   }
-//   .exportBtn {
-//     padding: 10px 20px;
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .newsContent {
-//     ::-webkit-scrollbar {
-//       display: none;
-//     }
-//   }
-//   .filterPeriod {
-//     color: $primary-color;
-//     margin-top: 0.5rem;
-//     font: $font-weight-bold $font-size-small $font-family;
-//   }
-//   .dateChooserReport .react-datepicker__input-container {
-//     width: 158px;
-//   }
-//   .dateChooserReport .react-datepicker__input-container > input:focus-within {
-//     outline: none !important;
-//     outline-offset: 0px;
-//   }
-//   .dateChooserReport .react-datepicker__input-container > input {
-//     border: 1px solid $primary-color !important;
-//     text-align: center;
-//     color: $primary-color;
-//     width: 100%;
-//     font: $font-weight-bold $font-size-medium $font-family;
-//     padding: 10px 20px;
-//     border-radius: 7px;
-//   }
-//   .total_collection {
-//     border: 1px solid $primary-color;
-//     color: $primary-color;
-//     font: $font-weight-bold $font-size-medium $font-family;
-//     padding: 10px 20px;
-//     border-radius: 5px;
-//   }
-// }
-
-// .expensewrapper {
-//   color: $font-color;
-//   font: $font-weight-bold $font-size-large $font-family;
-//   .ImagesVideos {
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .addExpense {
-//     color: $font-color;
-//     display: flex;
-//     justify-content: space-between;
-//     align-items: center;
-//   }
-//   .addExpense-btn {
-//     padding: 8px 20px;
-//     margin-left: 10px;
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .expenseContent {
-//     margin-top: 1rem;
-//     ::-webkit-scrollbar {
-//       display: none;
-//     }
-//   }
-// }
-
-// .expenselogwrapper {
-//   color: $font-color;
-//   font: $font-weight-bold $font-size-large $font-family;
-//   .ImagesVideos {
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .addExpense {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-//   .expenseContent {
-//     margin-top: 1rem;
-//     ::-webkit-scrollbar {
-//       display: none;
-//     }
-//   }
-// }
-
 .loginwrapper {
-  .errorMassage {
-    font: $font-weight-bold 14px $font-family;
-  }
-  .defaultFontColor {
-    color: $font-color;
-  }
-  .an_account {
-    font: $font-weight-normal 16px $font-family;
-  }
-  .fw-bold {
-    font-weight: 800 !important;
-    font-size: 35px;
-    font-family: $font-family;
-  }
-  .signInEnterUserNAme {
-    font: $font-weight-normal 18px $font-family;
-  }
-  .forgetPassword {
-    padding: 1rem 0rem;
-    text-align: end;
-    margin-bottom: 20px;
-  }
-  .forgetPassword > span {
-    font: $font-weight-bold 16px/20px $font-family;
-  }
-  .signInIcons {
-    width: 30px;
-    height: 30px;
-    margin-right: 10px;
-    cursor: pointer;
-  }
-  .signInputField {
-    color: $font-color;
-    font: $font-weight-bold 16px/33px $font-family;
-    &::-webkit-input-placeholder {
-      opacity: 0.3;
-      font: $font-weight-bold 16px/33px $font-family;
-      color: $font-color !important;
+    .errorMassage {
+        font: $font-weight-bold 14px $font-family;
     }
-  }
-  .text-end {
-    font: $font-weight-bold 18px/80px $font-family;
-  }
-  .px-5 {
-    font: $font-weight-bold $font-size-large $font-family;
-  }
-  .signUp {
-    font: $font-weight-bold 18px/25px $font-family;
-  }
-  .brand-text {
-    color: $font-color;
-    font: $font-weight-bold 30px/44px $font-family;
-  }
-  .brand-logo {
-    width: fit-content;
-  }
-  .templeName {
-    font: 600 23px/43px $font-family;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-  }
-  .loginBackground {
-    background: $secondary-color;
-  }
+
+    .defaultFontColor {
+        color: $font-color;
+    }
+
+    .an_account {
+        font: $font-weight-normal 16px $font-family;
+    }
+
+    .fw-bold {
+        font-weight: 800 !important;
+        font-size: 35px;
+        font-family: $font-family;
+    }
+
+    .signInEnterUserNAme {
+        font: $font-weight-normal 18px $font-family;
+    }
+
+    .forgetPassword {
+        padding: 1rem 0rem;
+        text-align: end;
+        margin-bottom: 20px;
+    }
+
+    .forgetPassword>span {
+        font: $font-weight-bold 16px/20px $font-family;
+    }
+
+    .signInIcons {
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+    .signInputField {
+        color: $font-color;
+        font: $font-weight-bold 16px/33px $font-family;
+
+        &::-webkit-input-placeholder {
+            opacity: 0.3;
+            font: $font-weight-bold 16px/33px $font-family;
+            color: $font-color !important;
+        }
+    }
+
+    .text-end {
+        font: $font-weight-bold 18px/80px $font-family;
+    }
+
+    .px-5 {
+        font: $font-weight-bold $font-size-large $font-family;
+    }
+
+    .signUp {
+        font: $font-weight-bold 18px/25px $font-family;
+    }
+
+    .brand-text {
+        color: $font-color;
+        font: $font-weight-bold 30px/44px $font-family;
+    }
+
+    .brand-logo {
+        width: fit-content;
+    }
+
+    .templeName {
+        font: 600 23px/43px $font-family;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .loginBackground {
+        background: $secondary-color;
+    }
 }
 
 .trustmodalwrapper {
-  .trustItem,
-  .notApproved {
-    color: $font-color;
-    font-size: 17px;
-    margin: 0px;
-    padding: 0.5rem;
-    font-weight: 400;
-    line-height: 25px;
-  }
-  p {
-    margin: 0px;
-  }
-  .hoverItem:hover {
-    background: $primary-color;
-    cursor: pointer;
-    color: $white !important;
-  }
-  .notApproved {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .notApproved > span {
-    color: $red;
-    font-size: 14px !important;
-  }
+
+    .trustItem,
+    .notApproved {
+        color: $font-color;
+        font-size: 17px;
+        margin: 0px;
+        padding: 0.5rem;
+        font-weight: 400;
+        line-height: 25px;
+    }
+
+    p {
+        margin: 0px;
+    }
+
+    .hoverItem:hover {
+        background: $primary-color;
+        cursor: pointer;
+        color: $white !important;
+    }
+
+    .notApproved {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .notApproved>span {
+        color: $red;
+        font-size: 14px !important;
+    }
 }
 
-// .newswrapper {
-//   color: $font-color;
-//   font: $font-weight-bold $font-size-large $font-family;
-//   .ImagesVideos {
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .addNews, .editNews {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-
-//   .FormikWraper {
-//     padding: 40px;
-//   }
-//   .btn-Published {
-//     text-align: center;
-//   }
-//   .addNews-btn {
-//     padding: 8px 20px;
-//     margin-left: 10px;
-//     font: $font-weight-bold $font-size-medium $font-family;
-//   }
-//   .newsContent {
-//     margin-top: 1rem;
-//     ::-webkit-scrollbar {
-//       display: none;
-//     }
-//   }
-//   .filterPeriod {
-//     color: $primary-color;
-//     margin-top: 0.5rem;
-//     font: $font-weight-bold $font-size-small/5px $font-family;
-//   }
-// }
-
-.addviewwrapper{
-  color: $font-color;
-  font: $font-weight-bold $font-size-large $font-family;
-  
-  .ImagesVideos {
-    font: $font-weight-bold $font-size-medium $font-family;
-  }
-  
-  .addNotice, .editNotice, .addNotification, .addProfile, .addPunyarjak, .editPunyarjak {
+.addviewwrapper {
     color: $font-color;
-    display: flex;
-    align-items: center;
-  }
+    font: $font-weight-bold $font-size-large $font-family;
 
-  .FormikWraper {
-    padding: 40px;
-  }
-  
-  .btn-Published {
-    text-align: center;
-  }
-  
-  .addNotice-btn, .addNotification-btn, .addPunyarjak-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: $font-weight-bold $font-size-medium/$font-size-medium $font-family;
-  }
-  
-  .noticeContent, .notificationContent, .punyarjakContent {
-    margin-top: 1rem;
-    ::-webkit-scrollbar {
-      display: none;
+    .ImagesVideos {
+        font: $font-weight-bold $font-size-medium $font-family;
     }
-  }
-  
-  .filterPeriod {
-    color: $primary-color;
-    margin-top: 0.5rem;
-    font: $font-weight-bold $font-size-small/5px $font-family;
-  }
-  
-  .noContent {
-    margin-left: 30rem;
-  }
-  
-  @media only screen and (max-width: 1150px) {
+
+    .addNotice,
+    .editNotice,
+    .addNotification,
+    .addProfile,
+    .addPunyarjak,
+    .editPunyarjak {
+        color: $font-color;
+        display: flex;
+        align-items: center;
+    }
+
+    .FormikWrapper {
+        padding: 5px;
+    }
+
+    .btn-Published {
+        text-align: center;
+    }
+
+    .addNotification-btn,
+    .addPunyarjak-btn {
+        padding: 8px 20px;
+        margin-left: 10px;
+        font: $font-weight-bold $font-size-medium/$font-size-medium $font-family;
+    }
+
+    .noticeContent,
+    .notificationContent,
+    .punyarjakContent {
+        margin-top: 1rem;
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    .filterPeriod {
+        color: $primary-color;
+        margin-top: 0.5rem;
+        font: $font-weight-bold $font-size-small/5px $font-family;
+    }
+
     .noContent {
-      margin-left: 0;
+        margin-left: 30rem;
     }
-  }
+
+    @media only screen and (max-width: 1150px) {
+        .noContent {
+            margin-left: 0;
+        }
+    }
 }
 
-.addviewwrapper, .wrapfacility {
-  label {
-    font: $font-weight-bold $font-size-medium/$font-size-large*1.65 $font-family;
-  }
-  
-  input {
-    color: $font-color !important;
-    border: none !important;
-    height: 36px;
-    width: 100%;
-    padding-top: 9px;
-    padding-left: 5px;
-    background-color: $secondary-color !important;
-    font: $font-weight-normal $font-size-small/$font-size-medium $font-family;
-    border-radius: 5px;
-    
-    &[type="file"]::file-selector-button {
-      display: none;
+.addviewwrapper,
+.wrapfacility {
+    label {
+        font: $font-weight-bold $font-size-medium/$font-size-large*1.65 $font-family;
     }
-  }
+
+    input {
+        color: $font-color !important;
+        border: none !important;
+        height: 36px;
+        width: 100%;
+        padding-top: 9px;
+        padding-left: 5px;
+        background-color: $secondary-color !important;
+        font: $font-weight-normal $font-size-small/$font-size-medium $font-family;
+        border-radius: 5px;
+
+        &[type="file"]::file-selector-button {
+            display: none;
+        }
+    }
 }
 
-.loginwrapper, .setpasswordwrapper {
-  .errorMassage {
-    font: $font-weight-bold 14px/20px $font-family;
-  }
-  
-  .defaultFontColor {
-    color: $font-color;
-  }
-  
-  .an_account {
-    font: $font-weight-normal 16px/25px $font-family;
-  }
-  
-  .fw-bold {
-    font-weight: 800 !important;
-    font-size: 35px;
-    font-family: $font-family;
-  }
-  
-  .signInEnterUserNAme {
-    font: $font-weight-normal 18px/25px $font-family;
-  }
-  
-  .forgetPassword {
-    padding: 1rem 0rem;
-    text-align: end;
-    margin-bottom: 20px;
-    
-    > span {
-      font: $font-weight-bold 16px/20px $font-family;
+.loginwrapper,
+.setpasswordwrapper {
+    .errorMassage {
+        font: $font-weight-bold 14px/20px $font-family;
     }
-  }
-  
-  .signInIcons {
-    width: 30px;
-    height: 30px;
-    margin-right: 10px;
-    cursor: pointer;
-  }
-  
-  .signInputField {
-    color: $font-color;
-    font: $font-weight-bold 16px/33px $font-family;
-    
-    &::-webkit-input-placeholder {
-      opacity: 0.3;
-      font: $font-weight-bold 16px/33px $font-family;
-      color: $font-color !important;
+
+    .defaultFontColor {
+        color: $font-color;
     }
-  }
-  
-  .text-end {
-    font: $font-weight-bold 18px/80px $font-family;
-  }
-  
-  .px-5 {
-    font: $font-weight-bold $font-size-large/$font-size-large $font-family;
-  }
-  
-  .signUp {
-    font: $font-weight-bold 18px/25px $font-family;
-  }
-  
-  .brand-text {
-    color: $font-color;
-    font: $font-weight-bold 30px/44px $font-family;
-  }
-  
-  .brand-logo {
-    width: fit-content;
-  }
-  
-  .loginBackground {
-    background: $secondary-color;
-  }
-  
-  .templeName {
-    font: $font-weight-bold 23px/43px $font-family;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-  }
+
+    .an_account {
+        font: $font-weight-normal 16px/25px $font-family;
+    }
+
+    .fw-bold {
+        font-weight: 800 !important;
+        font-size: 35px;
+        font-family: $font-family;
+    }
+
+    .signInEnterUserNAme {
+        font: $font-weight-normal 18px/25px $font-family;
+    }
+
+    .forgetPassword {
+        padding: 1rem 0rem;
+        text-align: end;
+        margin-bottom: 20px;
+
+        >span {
+            font: $font-weight-bold 16px/20px $font-family;
+        }
+    }
+
+    .signInIcons {
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+    .signInputField {
+        color: $font-color;
+        font: $font-weight-bold 16px/33px $font-family;
+
+        &::-webkit-input-placeholder {
+            opacity: 0.3;
+            font: $font-weight-bold 16px/33px $font-family;
+            color: $font-color !important;
+        }
+    }
+
+    .text-end {
+        font: $font-weight-bold 18px/80px $font-family;
+    }
+
+    .px-5 {
+        font: $font-weight-bold $font-size-large/$font-size-large $font-family;
+    }
+
+    .signUp {
+        font: $font-weight-bold 18px/25px $font-family;
+    }
+
+    .brand-text {
+        color: $font-color;
+        font: $font-weight-bold 30px/44px $font-family;
+    }
+
+    .brand-logo {
+        width: fit-content;
+    }
+
+    .loginBackground {
+        background: $secondary-color;
+    }
+
+    .templeName {
+        font: $font-weight-bold 23px/43px $font-family;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
 }
-
-// .subscribeduserwrapper {
-//   color: $font-color;
-//   font: $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
-  
-//   .addSubscribeUser {
-//     color: $font-color;
-//     display: flex;
-//     align-items: center;
-//   }
-
-//   .FormikWraper {
-//     padding: 40px;
-//   }
-  
-//   .btn-Published {
-//     text-align: center;
-//   }
-  
-//   .addSubscribeUser-btn {
-//     padding: 8px 20px;
-//     margin-left: 10px;
-//     font: $font-weight-bold $font-size-medium/$font-size-medium $font-family;
-//   }
-  
-//   .subscribeUserContent {
-//     margin-top: 1rem;
-//     ::-webkit-scrollbar {
-//       display: none;
-//     }
-//   }
-// }
-
-
-
 
 .chart-card-wrapper {
-  font: $font-weight-bold $font-size-large $font-family;
-  
-  .chart-card {
-    background-color: $secondary-color;
-    width: auto;
-    height: auto;
-    color: $font-color;
-  }
-  
-  .card-text {
-    font: $font-weight-normal 16px/20px $font-family;
-  }
+    font: $font-weight-bold $font-size-large $font-family;
 
-  .fw-bolder {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 250px;
-  }
+    .chart-card {
+        background-color: $secondary-color;
+        width: auto;
+        height: auto;
+        color: $font-color;
+    }
+
+    .card-text {
+        font: $font-weight-normal 16px/20px $font-family;
+    }
+
+    .fw-bolder {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 250px;
+    }
 }
 
 .model-wrapper {
-  color: $font-color;
-  padding: 25px;
-
-  .modal-title {
-    display: flex !important;
-    width: 100%;
-    justify-content: space-between;
     color: $font-color;
-    font: $font-weight-bold 14px/30px $font-family;
-    
-    .cancel {
-      cursor: pointer;
-      color: $primary-color;
+    padding: 25px;
+
+    .modal-title {
+        display: flex !important;
+        width: 100%;
+        justify-content: space-between;
+        color: $font-color;
+        font: $font-weight-bold 14px/30px $font-family;
+
+        .cancel {
+            cursor: pointer;
+            color: $primary-color;
+        }
     }
-  }
 
-  .langButton {
-    align-items: center;
-    background: $secondary-color;
-    display: flex;
-    padding: 1rem;
-    border-radius: 10px;
-    cursor: pointer;
-  }
-
-  .changeBG {
-    background-color: $primary-color;
-    color: $secondary-color;
-  }
-
-  .form-check-input {
-    background: inherit;
-    border: 3px solid #70707070;
-    width: 1rem;
-    height: 1rem;
-    margin-right: 10px;
-    
-    &:checked {
-      border: 3px solid $white;
+    .langButton {
+        align-items: center;
+        background: $secondary-color;
+        display: flex;
+        padding: 1rem;
+        border-radius: 10px;
+        cursor: pointer;
     }
-  }
 
-  .language_heading {
-    font-size: 18px;
-  }
+    .changeBG {
+        background-color: $primary-color;
+        color: $secondary-color;
+    }
+
+    .form-check-input {
+        background: inherit;
+        border: 3px solid #70707070;
+        width: 1rem;
+        height: 1rem;
+        margin-right: 10px;
+
+        &:checked {
+            border: 3px solid $white;
+        }
+    }
+
+    .language_heading {
+        font-size: 18px;
+    }
 }
 
 .sub-header-wrapper {
-  font: $font-weight-normal $font-size-medium $font-family;
-  cursor: pointer;
+    font: $font-weight-normal $font-size-medium $font-family;
+    cursor: pointer;
 
-  .text-light {
-    color: $white !important;
-  }
+    .text-light {
+        color: $white !important;
+    }
 
-  .active-tab {
-    font-weight: 900;
-    opacity: 100%;
-  }
+    .active-tab {
+        font-weight: $font-weight-bold;
+        opacity: 100%;
+    }
 }
 
 .btn-content-wrapper {
-  color: $font-color;
-  font: $font-weight-normal $font-size-medium $font-family;
+    color: $font-color;
+    font: $font-weight-normal $font-size-medium $font-family;
 
-  .col-item {
-    cursor: pointer;
-    margin-top: 0.3rem;
-    
-    &:hover {
-      background-color: $primary-color;
-      color: $white;
+    .col-item {
+        cursor: pointer;
+        margin-top: 0.3rem;
+
+        &:hover {
+            background-color: $primary-color;
+            color: $white;
+        }
     }
-  }
 }
 
 .navbar-image-logo-wrapper {
-  .logo {
-    width: 125px !important;
-    height: 35px !important;
-    object-fit: contain !important;
-    object-position: center !important;
-  }
+    .logo {
+        width: 125px !important;
+        height: 35px !important;
+        object-fit: contain !important;
+        object-position: center !important;
+    }
 }
 
 .navbar-user-wrapper {
-  color: $font-color !important;
-  
-  .brand-logo div {
-    font: $font-weight-bold $font-size-large $font-family;
-    margin-right: 80px;
-    cursor: pointer;
-  }
-  
-  .searchinput {
-    background: $screen-background-color !important;
-    &.sInput {
-      border-end-end-radius: 0% !important;
-      border-start-end-radius: 0% !important;
-      font: $font-weight-normal 16px/20px $font-family;
-    }
-    &.sIconsBox {
-      border-start-start-radius: 0% !important;
-      border-end-start-radius: 0% !important;
-      cursor: pointer;
-    }
-  }
+    color: $font-color !important;
 
-  img {
-    width: 35px;
-  }
-
-  .icon {
-    margin-inline-start: 15px;
-    cursor: pointer;
-  }
-  
-  .nave-para {
-    width: max-content;
-    margin: 10px;
-    cursor: pointer;
-  }
-  
-  .temple-name {
-    font: $font-weight-bold 16px/30px $font-family;
-  }
-  
-  .date {
-    font: $font-weight-normal 10px/20px $font-family;
-  }
-  
-  .notification-number {
-    background: $red;
-    width: 1.5rem;
-    height: 1.5rem;
-    border-radius: 50%;
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    color: $white;
-    font-size: 10px;
-    font-weight: 900;
-    position: absolute;
-    right: 0;
-    bottom: 20px;
-    left: 35px;
-  }
-  
-  .shake-bell {
-    animation: ring 4s 0.7s ease-in-out infinite;
-    transform-origin: 50% 4px;
-  }
-
-  .logo {
-    width: 125px;
-    height: 35px;
-    object-fit: contain;
-    object-position: center;
-  }
-
-  @keyframes ring {
-    // (keyframes remain unchanged)
-  }
-  
-  @media only screen and (max-width: 576px) {
-    .display-block {
-      display: block !important;
+    .brand-logo div {
+        font: $font-weight-bold $font-size-large $font-family;
+        margin-right: 80px;
+        cursor: pointer;
     }
-    .display-none {
-      display: none !important;
+
+    .searchinput {
+        background: $screen-background-color !important;
+
+        &.sInput {
+            border-end-end-radius: 0% !important;
+            border-start-end-radius: 0% !important;
+            font: $font-weight-normal 16px/20px $font-family;
+        }
+
+        &.sIconsBox {
+            border-start-start-radius: 0% !important;
+            border-end-start-radius: 0% !important;
+            cursor: pointer;
+        }
     }
-  }
+
+    img {
+        width: 35px;
+    }
+
+    .icon {
+        margin-inline-start: 15px;
+        cursor: pointer;
+    }
+
+    .nave-para {
+        width: max-content;
+        margin: 10px;
+        cursor: pointer;
+    }
+
+    .temple-name {
+        font: $font-weight-bold 16px/30px $font-family;
+    }
+
+    .date {
+        font: $font-weight-normal 10px/20px $font-family;
+    }
+
+    .notification-number {
+        background: $red;
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 50%;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        color: $white;
+        font-size: 10px;
+        font-weight: 900;
+        position: absolute;
+        right: 0;
+        bottom: 20px;
+        left: 35px;
+    }
+
+    .shake-bell {
+        animation: ring 4s 0.7s ease-in-out infinite;
+        transform-origin: 50% 4px;
+    }
+
+    .logo {
+        width: 125px;
+        height: 35px;
+        object-fit: contain;
+        object-position: center;
+    }
+
+    @keyframes ring {
+        // (keyframes remain unchanged)
+    }
+
+    @media only screen and (max-width: 576px) {
+        .display-block {
+            display: block !important;
+        }
+
+        .display-none {
+            display: none !important;
+        }
+    }
 }
 
 .avatar-wrapper {
-  .img-class-name {
-    width: 50px !important;
-    height: 50px !important;
-    object-fit: cover;
-    object-position: top center;
-  }
-  
-  .edit-profile-icon {
-    width: 16px;
-    border-radius: 0% !important;
-    box-shadow: none !important;
-    bottom: 2px;
-    right: -2px;
-  }
+    .img-class-name {
+        width: 50px !important;
+        height: 50px !important;
+        object-fit: cover;
+        object-position: top center;
+    }
+
+    .edit-profile-icon {
+        width: 16px;
+        border-radius: 0% !important;
+        box-shadow: none !important;
+        bottom: 2px;
+        right: -2px;
+    }
 }
 
 .notify-pop-up-wrapper {
-  font: $font-weight-normal $font-size-small $font-family;
-  
-  .notify-content-box {
-    border-right: 1px solid black;
-  }
-  
-  .notification-title {
-    font: 600 16px/33px $font-family;
-  }
-  
-  .notification-container {
-    min-width: 300px;
-  }
-  
-  .notification-content {
-    display: -webkit-box;
-    max-width: 220px;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+    font: $font-weight-normal $font-size-small $font-family;
+
+    .notify-content-box {
+        border-right: 1px solid black;
+    }
+
+    .notification-title {
+        font: 600 16px/33px $font-family;
+    }
+
+    .notification-container {
+        min-width: 300px;
+    }
+
+    .notification-content {
+        display: -webkit-box;
+        max-width: 220px;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
 
 .revenue-chart-wrapper {
-  .apexcharts-toolbar {
-    display: none;
-  }
-  .apexcharts-legend {
-    position: relative !important;
-    justify-content: end !important;
-  }
-  p {
-    color: $font-color;
-    font: $font-weight-bold $font-size-large $font-family;
-  }
-  .apexcharts-legend-text {
-    color: $font-color !important;
-  }
-  .apexcharts-xaxis-label {
-    fill: $font-color !important;
-    font: $font-weight-bold 11px/24px $font-family;
-  }
-  .apexcharts-yaxis-label {
-    fill: $font-color !important;
-    font: $font-weight-bold 11px/24px $font-family;
-  }
+    .apexcharts-toolbar {
+        display: none;
+    }
+
+    .apexcharts-legend {
+        position: relative !important;
+        justify-content: end !important;
+    }
+
+    p {
+        color: $font-color;
+        font: $font-weight-bold $font-size-large $font-family;
+    }
+
+    .apexcharts-legend-text {
+        color: $font-color !important;
+    }
+
+    .apexcharts-xaxis-label {
+        fill: $font-color !important;
+        font: $font-weight-bold 11px/24px $font-family;
+    }
+
+    .apexcharts-yaxis-label {
+        fill: $font-color !important;
+        font: $font-weight-bold 11px/24px $font-family;
+    }
 }
+
 .editProfileIcon {
     bottom: -10px;
     width: min-content;
