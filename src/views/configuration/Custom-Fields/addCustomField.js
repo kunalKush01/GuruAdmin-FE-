@@ -14,6 +14,7 @@ import Swal from "sweetalert2";
 import { X } from "react-feather";
 import "../Masters/masterStyle.css";
 import {
+  createDonationBoxCustomFields,
   createDonationCustomFields,
   createPledgeCustomFields,
 } from "../../../api/customFieldsApi";
@@ -134,6 +135,28 @@ const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
         });
     } else if (activeTab == "Pledge") {
       createPledgeCustomFields(payload)
+        .then(() => {
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "Custom field added successfully.",
+          });
+          onSuccess(true);
+          setFormData(initialFormData);
+          toggle();
+        })
+        .catch((error) => {
+          onSuccess(false);
+          console.error("Error adding custom field:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Failed to add custom field.",
+          });
+        });
+    }
+    else if (activeTab == "Donation Box") {
+      createDonationBoxCustomFields(payload)
         .then(() => {
           Swal.fire({
             icon: "success",

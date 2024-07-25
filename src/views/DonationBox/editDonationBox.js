@@ -19,26 +19,45 @@ import DonationBoxForm from "../../components/DonationBox/donationBoxForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 import "../../assets/scss/viewCommon.scss";
-const schema = Yup.object().shape({
-  // CreatedBy: Yup.string().required("news_tags_required"),
-  Amount: Yup.string()
-    .matches(/^[1-9][0-9]*$/, "invalid_amount")
-    .required("amount_required"),
-  Body: Yup.string().required("donation_box_desc_required").trim(),
-  DateTime: Yup.string(),
-});
-
-const getLangId = (langArray, langSelection) => {
-  let languageId;
-  langArray.map(async (Item) => {
-    if (Item.name == langSelection.toLowerCase()) {
-      languageId = Item.id;
-    }
-  });
-  return languageId;
-};
-
+import { getDonationBoxCustomFields } from "../../api/customFieldsApi";
 export default function EditDonationBox() {
+  const customFieldsQuery = useQuery(
+    ["custom-fields"],
+    async () => await getDonationBoxCustomFields(),
+    {
+      keepPreviousData: true,
+    }
+  );
+  const customFieldsList = customFieldsQuery?.data?.customFields ?? [];
+  const schema = Yup.object().shape({
+    // CreatedBy: Yup.string().required("news_tags_required"),
+    Amount: Yup.string()
+      .matches(/^[1-9][0-9]*$/, "invalid_amount")
+      .required("amount_required"),
+    Body: Yup.string().required("donation_box_desc_required").trim(),
+    DateTime: Yup.string(),
+    customFields: Yup.object().shape(
+      customFieldsList.reduce((acc, field) => {
+        if (field.isRequired) {
+          acc[field.fieldName] = Yup.mixed().required(
+            `${field.fieldName} is required`
+          );
+        }
+        return acc;
+      }, {})
+    ),
+  });
+
+  const getLangId = (langArray, langSelection) => {
+    let languageId;
+    langArray.map(async (Item) => {
+      if (Item.name == langSelection.toLowerCase()) {
+        languageId = Item.id;
+      }
+    });
+    return languageId;
+  };
+
   const history = useHistory();
 
   const { donationBoxId } = useParams();
@@ -78,6 +97,10 @@ export default function EditDonationBox() {
       DateTime: moment(collectionBoxDetailQuery?.data?.result?.collectionDate)
         .utcOffset("+0530")
         .toDate(),
+        customFields: customFieldsList.reduce((acc, field) => {
+          acc[field.fieldName] = "";
+          return acc;
+        }, {}),
     };
   }, [collectionBoxDetailQuery]);
 
@@ -143,6 +166,7 @@ export default function EditDonationBox() {
                 initialValues={initialValues}
                 showTimeInput
                 handleSubmit={handleUpdate}
+                customFieldsList={customFieldsList}
               />
             </div>
           )}

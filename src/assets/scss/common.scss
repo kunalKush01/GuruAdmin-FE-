@@ -2427,3 +2427,59 @@
     margin-right: 20px;
     font: $font-weight-bold $font-size-medium/23px $font-family;
 }
+// Antd Date Picker css
+.ant-picker {
+    /* margin-top: 32px !important; */
+    display: flex !important;
+    height: 39px !important;
+  }
+  .ant-picker-outlined {
+    background: #fff7e8;
+    border: none !important;
+  }
+  .ant-picker .ant-picker-input > input::placeholder {
+    font-weight: 600 !important;
+    color: #9b845f !important;
+  }
+  .ant-picker .ant-picker-input > input {
+    font-weight: 700 !important;
+    color: #583703 !important;
+  }
+  .ant-picker-suffix {
+    color: #9b845f !important;
+  }
+  /* .ant-pagination {
+    display: none !important;
+  } */
+  .ant-picker-header-view {
+    color: #583703 !important;
+  }
+  .ant-picker-date-panel .ant-picker-content th {
+    color: #583703 !important;
+    font-weight: 500 !important;
+  }
+  .ant-picker-dropdown .ant-picker-content td {
+    color: #583703 !important;
+  }
+  .ant-picker-now-btn {
+    color: #583703 !important;
+  }
+  .ant-picker-dropdown
+    .ant-picker-cell-in-view.ant-picker-cell-selected:not(
+      .ant-picker-cell-disabled
+    )
+    .ant-picker-cell-inner {
+    background-color: #ff8744;
+  }
+  .ant-picker-dropdown
+    .ant-picker-cell-in-view.ant-picker-cell-today
+    .ant-picker-cell-inner::before {
+    border: 1px solid #583703;
+  }
+  .ant-btn-primary {
+    background-color: #ff8744 !important;
+    color: white !important ;
+    border: none !important;
+    border-radius: 5px !important;
+  }
+  

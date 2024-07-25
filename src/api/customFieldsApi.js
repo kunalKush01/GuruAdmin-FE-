@@ -29,3 +29,17 @@ export const createPledgeCustomFields = (data) =>
     showToastOnSuccess: false,
     showToastOnError: false,
   });
+export const getDonationBoxCustomFields = () =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.get(`${API_BASE_URL}/donation-box/info/custom-fields`),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+export const createDonationBoxCustomFields = (data) =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}/donation-box/create-custom-field`, data),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
