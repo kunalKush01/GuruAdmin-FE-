@@ -109,7 +109,7 @@ const SiderLayout = (props) => {
         label: (
           <div
             onClick={() => {
-              !item.children && history.push(item.name);
+              !item.children && history.push(item.url);
             }}
             className={`menu-item-label ${
               active?.startsWith(item.activeTab) ? "active-tab" : ""
