@@ -5,14 +5,17 @@ import { Trans } from "react-i18next";
 
 export default function FormikCustomReactSelect({ loadOptions, ...props }) {
   const [field, meta, helpers] = useField(props);
-
+  const selectedOption = loadOptions.find(
+    (option) => option.value === field.value
+  );
   return (
     <div>
       <CustomReactSelect
         loadOptions={loadOptions}
         onChange={(data) => helpers.setValue(data)}
         placeholder={props.placeholder}
-        value={field.value}
+        value={selectedOption ||field.value}
+        // value={field.value}
         {...props}
       />
       <div style={{ height: "20px", fontSize: "11px" }}>

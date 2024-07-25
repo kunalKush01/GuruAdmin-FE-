@@ -15,6 +15,7 @@ import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import { DatePicker } from "antd";
 import "../../../src/assets/scss/common.scss";
+import moment from "moment";
 export default function FormWithoutFormikForCommitment({
   formik,
   masterloadOptionQuery,
@@ -28,6 +29,7 @@ export default function FormWithoutFormikForCommitment({
   customFieldsList,
   ...props
 }) {
+  // console.log(formik)
   const { t } = useTranslation();
   const history = useHistory();
 
@@ -278,7 +280,6 @@ export default function FormWithoutFormikForCommitment({
         {customFieldsList.map((field) => {
           const isSelectField =
             field.masterValues && field.masterValues.length > 0;
-
           return (
             <Col xs={12} sm={6} lg={4} key={field._id}>
               {field.fieldType === "Boolean" ? (
@@ -364,7 +365,7 @@ export default function FormWithoutFormikForCommitment({
                   }
                   required={field.isRequired}
                   placeholder={`Enter ${field.fieldName}`}
-                />
+                  />
               )}
             </Col>
           );
