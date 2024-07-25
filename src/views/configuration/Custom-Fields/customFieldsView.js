@@ -7,6 +7,7 @@ import "../../../components/custom-fields/customField.css";
 import AddCustomField from "./addCustomField";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  getDonationBoxCustomFields,
   getDonationCustomFields,
   getPledgeCustomFields,
 } from "../../../api/customFieldsApi";
@@ -31,6 +32,13 @@ const customFieldsView = () => {
       keepPreviousData: true,
     }
   );
+  const donation_box_query = useQuery(
+    ["getDonationBoxFields"],
+    () => getDonationBoxCustomFields(),
+    {
+      keepPreviousData: true,
+    }
+  );
 
   const donation_custom_fields = useMemo(
     () => donation_query?.data ?? [],
@@ -40,12 +48,18 @@ const customFieldsView = () => {
     () => pledge_query?.data ?? [],
     [pledge_query]
   );
+  const donation_box_custom_fields = useMemo(
+    () => donation_box_query?.data ?? [],
+    [donation_box_query]
+  );
 
   const handleRowSuccess = () => {
     if (activeTab === "Donation") {
       queryClient.invalidateQueries(["getDonationFields"]);
     } else if (activeTab === "Pledge") {
       queryClient.invalidateQueries(["getPledgeFields"]);
+    } else if (activeTab === "Donation Box") {
+      queryClient.invalidateQueries(["getDonationBoxFields"]);
     }
   };
   const trustId = localStorage.getItem("trustId");
@@ -120,7 +134,35 @@ const customFieldsView = () => {
     {
       key: "Donation Box",
       label: "Donation Box",
-      children: "Content of Tab Pane 3",
+      children: (
+        <>
+          <div>
+            <div
+              className="d-flex justify-content-end w-100"
+              style={{ marginBottom: "10px" }}
+            >
+              <Button className="" id="addCustomFieldBtn" onClick={toggleForm}>
+                <Plus
+                  className=""
+                  size={15}
+                  strokeWidth={4}
+                  style={{ marginRight: "5px" }}
+                />
+                Add
+              </Button>
+            </div>
+            <CustomFieldTable customFields={donation_box_custom_fields} />
+          </div>
+          <AddCustomField
+            trustId={trustId}
+            isOpen={isFormOpen}
+            toggle={toggleForm}
+            // onSubmit={handleFormSubmit}
+            onSuccess={handleRowSuccess}
+            activeTab={activeTab}
+          />
+        </>
+      ),
     },
   ];
   const handleTabChange = (key) => {

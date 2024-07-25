@@ -39,6 +39,7 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { WRITE } from "../../utility/permissionsVariable";
 
 import "../../assets/scss/viewCommon.scss";
+import CommitmentAntdListTable from "../../components/commitments/commitmentAntdListTable";
 
 export default function Commitment() {
   const importFileRef = useRef();
@@ -95,10 +96,15 @@ export default function Commitment() {
       setdropDownName(currentFilter);
       setSubCategoryTypeName(currentSubCategory);
       setCommitmentStatus(currentStatus);
-      setPagination({ ...pagination, page: parseInt(currentPage) });
+      // setPagination({ ...pagination, page: parseInt(currentPage) });
+      setPagination((prev) => ({
+        ...prev,
+        page: parseInt(currentPage) || prev.page,
+      }));
     }
   }, []);
 
+  console.log(pagination);
   let filterStartDate = moment()
     .startOf(periodDropDown())
     .utcOffset(0, true)
@@ -175,6 +181,7 @@ export default function Commitment() {
     [
       "Commitments",
       pagination.page,
+      pagination.limit,
       selectedLang.id,
       filterEndDate,
       newId,
@@ -204,6 +211,8 @@ export default function Commitment() {
     () => commitmentQuery?.data?.results ?? [],
     [commitmentQuery]
   );
+  const totalItems = commitmentQuery.data?.totalResults ?? 0;
+  const totalPages = commitmentQuery.data?.totalPages ?? 1;
   const queryClient = useQueryClient();
 
   const handleImportFile = async (event) => {
@@ -434,7 +443,7 @@ export default function Commitment() {
                   disableMemo
                 >
                   <Then>
-                    <CommitmentListTable
+                    {/* <CommitmentListTable
                       data={commitmentItems}
                       currentFilter={routFilter}
                       currentPage={routPagination}
@@ -446,6 +455,34 @@ export default function Commitment() {
                       currentSubCategory={routSubCategory}
                       allPermissions={allPermissions}
                       subPermission={subPermission}
+                    /> */}
+                    <CommitmentAntdListTable
+                      data={commitmentItems}
+                      currentFilter={routFilter}
+                      currentPage={routPagination}
+                      selectedRows={selectedRows}
+                      notifyIds={notifyIds}
+                      setSelectedRows={setSelectedRows}
+                      currentCategory={routCategory}
+                      currentStatus={routStatus}
+                      currentSubCategory={routSubCategory}
+                      allPermissions={allPermissions}
+                      subPermission={subPermission}
+                      totalItems={totalItems}
+                      pageSize={pagination.limit}
+                      onChangePage={(page) => {
+                        setPagination((prev) => ({ ...prev, page }));
+                        history.push(
+                          `/commitment?page=${page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${dropDownName}`
+                        );
+                      }}
+                      onChangePageSize={(pageSize) => {
+                        setPagination((prev) => ({
+                          ...prev,
+                          limit: pageSize,
+                          page: 1, // Reset to the first page when page size changes
+                        }));
+                      }}
                     />
                   </Then>
                   <Else>

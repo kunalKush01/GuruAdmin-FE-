@@ -20,6 +20,7 @@ import BoxListCard from "../../components/DonationBox/BoxListCard.js";
 import NoContent from "../../components/partials/noContent";
 import { WRITE } from "../../utility/permissionsVariable";
 import "../../assets/scss/viewCommon.scss";
+import { getDonationBoxCustomFields } from "../../api/customFieldsApi.js";
 export default function Expenses() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -114,7 +115,18 @@ export default function Expenses() {
   const subPermission = subPermissions?.subpermissions?.map(
     (item) => item.name
   );
+  // const donation_box_query = useQuery(
+  //   ["getDonationBoxFields"],
+  //   () => getDonationBoxCustomFields(),
+  //   {
+  //     keepPreviousData: true,
+  //   }
+  // );
 
+  // const donation_box_custom_fields = useMemo(
+  //   () => donation_box_query?.data?.customFields ?? [],
+  //   [donation_box_query]
+  // );
   return (
     <div className="listviewwrapper">
       <Helmet>

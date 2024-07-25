@@ -68,6 +68,8 @@ export default function CommitmentForm({
   const commitmentQueryClient = useQueryClient();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const [loading, setLoading] = useState(false);
+  const trustId = localStorage.getItem("trustId");
+
   const masterloadOptionQuery = useQuery(
     ["MasterCategory", selectedLang.id],
     async () =>
