@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Button,
   Form,
@@ -55,8 +55,12 @@ const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
     () => masterDataQuery?.data ?? [],
     [masterDataQuery,activeTab]
   );
-  console.log(masterQuery);
-
+  // console.log(masterQuery);
+  useEffect(() => {
+    // Reset form data when activeTab changes
+    setFormData(initialFormData);
+    setValidationMessages({});
+  }, [activeTab]);
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({

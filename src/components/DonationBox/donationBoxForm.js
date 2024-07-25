@@ -21,6 +21,7 @@ import LogListTable from "./logListTable";
 import "../../assets/scss/common.scss";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import { DatePicker } from "antd";
+import moment from "moment";
 
 export default function DonationBoxForm({
   plusIconDisable = false,
@@ -121,7 +122,7 @@ export default function DonationBoxForm({
             )}
             <div className="paddingForm">
               <Row>
-                <Col xs={12} md={7}>
+                <Col xs={12} md={12}>
                   <Row>
                     <Col xs={12}>
                       <TextArea
@@ -133,7 +134,7 @@ export default function DonationBoxForm({
                     </Col>
                   </Row>
                   <Row>
-                    <Col xs={12} md={6} className="">
+                    <Col xs={12} md={4} lg={4} className="">
                       <CustomTextField
                         type="number"
                         label={t("categories_select_amount")}
@@ -142,12 +143,33 @@ export default function DonationBoxForm({
                         name="Amount"
                       />
                     </Col>
-                    <Col xs={12} md={6} className="opacity-75">
+                    <Col xs={12} md={4} lg={4} className="opacity-75">
                       <CustomTextField
                         label={t("added_by")}
                         name="CreatedBy"
                         disabled
                       />
+                    </Col>
+                    <Col xs={12} md={4} lg={4}>
+                      {/* <FormikCustomDatePicker
+                        label={t("donation_select_date")}
+                        futureDateNotAllowed
+                        name="DateTime"
+                      /> */}
+                      <label style={{ fontSize: "15px" }}>
+                        {t("donation_select_date")}
+                      </label>
+                      <DatePicker
+                        id="datePickerANTD"
+                        format="YYYY-MM-DD"
+                        // needConfirm
+                        onChange={(date) =>
+                          formik.setFieldValue(
+                            "DateTime",
+                            date ? date.format("YYYY-MM-DD") : null
+                          )
+                        }
+                        />
                     </Col>
                     {customFieldsList.map((field) => {
                       const isSelectField =
@@ -157,6 +179,8 @@ export default function DonationBoxForm({
                         <Col
                           xs={12}
                           sm={6}
+                          lg={4}
+                          md={4}
                           className="pb-1"
                           key={field._id}
                         >
@@ -250,17 +274,6 @@ export default function DonationBoxForm({
                         </Col>
                       );
                     })}
-                  </Row>
-                </Col>
-                <Col>
-                  <Row>
-                    <Col xs={12}>
-                      <FormikCustomDatePicker
-                        label={t("donation_select_date")}
-                        futureDateNotAllowed
-                        name="DateTime"
-                      />
-                    </Col>
                   </Row>
                 </Col>
               </Row>

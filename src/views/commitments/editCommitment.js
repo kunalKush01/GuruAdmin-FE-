@@ -95,7 +95,7 @@ export default function EditCommitment() {
         languageId: getLangId(langArray, langSelection),
       })
   );
-
+// console.log(commitmentDetailQuery)
   const handleCommitmentUpdate = async (payload) => {
     return updateCommitmentDetail({
       ...payload,
@@ -124,8 +124,12 @@ export default function EditCommitment() {
       )
         .utcOffset("+0530")
         .toDate(),
-      customFields: customFieldsList.reduce((acc, field) => {
-        acc[field.fieldName] = "";
+      // customFields: customFieldsList.reduce((acc, field) => {
+      //   acc[field.fieldName] = "";
+      //   return acc;
+      // }, {}),
+      customFields: commitmentDetailQuery?.data?.result?.customFields.reduce((acc, field) => {
+        acc[field.fieldName] = field.value ?? "";
         return acc;
       }, {}),
     };

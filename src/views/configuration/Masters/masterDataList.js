@@ -87,7 +87,7 @@ export default function Master() {
   const toggleForm = () => setIsFormOpen(!isFormOpen);
 
   const handleFormSubmit = (data) => {
-    console.log("Form submitted:", data);
+    // console.log("Form submitted:", data);
   };
 
   return (

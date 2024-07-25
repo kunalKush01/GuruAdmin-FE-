@@ -104,7 +104,7 @@ export default function Commitment() {
     }
   }, []);
 
-  console.log(pagination);
+  // console.log(pagination);
   let filterStartDate = moment()
     .startOf(periodDropDown())
     .utcOffset(0, true)
@@ -499,7 +499,7 @@ export default function Commitment() {
               </Else>
             </If>
 
-            <If
+            {/* <If
               condition={
                 commitmentQuery?.data?.totalPages > 1 &&
                 !commitmentQuery.isFetching &&
@@ -542,7 +542,7 @@ export default function Commitment() {
                   />
                 </Col>
               </Then>
-            </If>
+            </If> */}
           </Row>
         </div>
       </div>

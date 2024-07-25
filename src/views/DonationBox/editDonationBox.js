@@ -97,10 +97,13 @@ export default function EditDonationBox() {
       DateTime: moment(collectionBoxDetailQuery?.data?.result?.collectionDate)
         .utcOffset("+0530")
         .toDate(),
-        customFields: customFieldsList.reduce((acc, field) => {
-          acc[field.fieldName] = "";
+      customFields: collectionBoxDetailQuery?.data?.result?.customFields.reduce(
+        (acc, field) => {
+          acc[field.fieldName] = field.value ?? "";
           return acc;
-        }, {}),
+        },
+        {}
+      ),
     };
   }, [collectionBoxDetailQuery]);
 
