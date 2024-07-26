@@ -6,22 +6,13 @@ import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { Prompt, useHistory } from "react-router-dom";
 import { Button, ButtonGroup, Col, Row, Spinner } from "reactstrap";
-import styled from "styled-components";
-import * as Yup from "yup";
 import { getAllBoxCollectionLogs } from "../../api/donationBoxCollectionApi";
-import { createNews } from "../../api/newsApi";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { setlang } from "../../redux/authSlice";
 import { TextArea } from "../partials/CustomTextArea";
-import { CustomDropDown } from "../partials/customDropDown";
 import CustomTextField from "../partials/customTextField";
-import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
-import RichTextField from "../partials/richTextEditorField";
 import LogListTable from "./logListTable";
 import "../../assets/scss/common.scss";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import { DatePicker } from "antd";
-import moment from "moment";
 
 export default function DonationBoxForm({
   plusIconDisable = false,
@@ -126,7 +117,7 @@ export default function DonationBoxForm({
                   <Row>
                     <Col xs={12}>
                       <TextArea
-                        rows="8"
+                        rows="4"
                         label={t("news_label_Description")}
                         name="Body"
                         autoFocus
@@ -288,7 +279,7 @@ export default function DonationBoxForm({
                 </Row>
               )}
             </div>
-            <div className="btn-Published mb-2 mt-lg-2">
+            <div className="d-flex justify-content-center mt-lg">
               {loading ? (
                 <Button
                   color="primary"
