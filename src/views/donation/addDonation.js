@@ -1,13 +1,14 @@
+import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { Trans } from "react-i18next";
-import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import styled from "styled-components";
 import * as Yup from "yup";
+import { getDonationCustomFields } from "../../api/customFieldsApi";
 import { createDonation } from "../../api/donationApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import "../../assets/scss/viewCommon.scss";
 import DonationForm from "../../components/donation/donationForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import "../../assets/scss/viewCommon.scss";
