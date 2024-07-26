@@ -1563,9 +1563,12 @@
 }
 
 .searchbarwrapper {
-    .searbarSize {
-        height: 40px;
-    }
+  .searbarSize {
+    height: 40px;
+    width: 600px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
 
     .bgNone {
         background-color: transparent;
