@@ -24,6 +24,7 @@ import "../../assets/scss/common.scss";
 import { Table } from "antd";
 import { getPledgeCustomFields } from "../../api/customFieldsApi";
 import "../donation/donationStyle.css";
+import classNames from "classnames";
 
 export default function CommitmentAntdListTable(
   {
@@ -252,7 +253,6 @@ export default function CommitmentAntdListTable(
       const serializedCustomFieldData = encodeURIComponent(
         JSON.stringify(customFieldData)
       );
-
       return {
         id: idx + 1,
         notifyUserId: item?._id,
@@ -375,11 +375,17 @@ export default function CommitmentAntdListTable(
           <div className="actions-column">
             {(allPermissions?.name === "all" ||
               subPermission?.includes("EDIT") ||
-              financeReport )&&(item.paidStatus=="pending"||item.paidStatus=="partial") && (
+              financeReport) && (
               <img
                 src={editIcon}
                 width={35}
-                className={financeReport ? "d-none" : "cursor-pointer"}
+                // className={financeReport ? "d-none" : "cursor-pointer"}
+                className={classNames({
+                  "d-none": financeReport, // Hide if financeReport is true
+                  "cursor-pointer": !financeReport, // Show cursor pointer if financeReport is false
+                  "opacity-50": item.paidStatus === "completed",
+                  "pointer-events-none": item.paidStatus === "completed",
+                })}
                 onClick={() => {
                   if (!financeReport) {
                     history.push(
@@ -392,11 +398,17 @@ export default function CommitmentAntdListTable(
             )}
             {(allPermissions?.name === "all" ||
               subPermission?.includes("DELETE") ||
-              financeReport)&&(item.paidStatus=="pending"||item.paidStatus=="partial")&& (
+              financeReport) && (
               <img
                 src={deleteIcon}
                 width={35}
-                className={financeReport ? "d-none" : "cursor-pointer"}
+                // className={financeReport ? "d-none" : "cursor-pointer"}
+                className={classNames({
+                  "d-none": financeReport, // Hide if financeReport is true
+                  "cursor-pointer": !financeReport, // Show cursor pointer if financeReport is false
+                  "opacity-50": item.paidStatus === "completed",
+                  "pointer-events-none": item.paidStatus === "completed",
+                })}
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();

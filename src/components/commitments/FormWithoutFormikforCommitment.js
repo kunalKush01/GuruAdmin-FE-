@@ -154,6 +154,7 @@ export default function FormWithoutFormikForCommitment({
             placeholder={t("categories_select_user_name")}
             defaultOptions
             required
+            disabled
           />
           {noUserFound && (
             <div className="addUser">
