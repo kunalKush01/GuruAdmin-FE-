@@ -17,17 +17,14 @@ import { Button, FloatButton, Tag } from "antd";
 export default function AddDonation() {
   const history = useHistory();
   const loggedInUser = useSelector((state) => state.auth.userDetail.name);
-
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
   const currentCategory = searchParams.get("category");
   const currentSubCategory = searchParams.get("subCategory");
   const currentFilter = searchParams.get("filter");
-
   const handleCreateDonation = async (payload) => {
     return createDonation(payload);
   };
-
   const customFieldsQuery = useQuery(
     ["custom-fields"],
     async () => await getDonationCustomFields(),
@@ -35,7 +32,6 @@ export default function AddDonation() {
       keepPreviousData: true,
     }
   );
-
   const customFieldsList = customFieldsQuery?.data?.customFields ?? [];
   const schema = Yup.object().shape({
     Mobile: Yup.string().required("expenses_mobile_required"),
