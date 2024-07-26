@@ -1,27 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import moment from "moment";
-import React, { useEffect, useMemo, useState } from "react";
-import { Plus } from "react-feather";
+import React, { useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-import { Button, Col, Row } from "reactstrap";
-import styled from "styled-components";
-import {
-  getAllCategories,
-  getAllMasterCategories,
-} from "../../api/categoryApi";
-import { getAllDonation, getAllPaidDonations } from "../../api/donationApi";
+import { Col, Row } from "reactstrap";
+import { getAllPaidDonations } from "../../api/donationApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import DonationListTable from "../../components/donation/donationListTable";
 import PaidDonationTable from "../../components/donation/paidDonationTable";
-import { ChangeCategoryType } from "../../components/partials/categoryDropdown";
-import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
 import NoContent from "../../components/partials/noContent";
-import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 import "../../assets/scss/viewCommon.scss";
 
