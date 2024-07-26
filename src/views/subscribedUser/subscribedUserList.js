@@ -19,33 +19,7 @@ import NoContent from "../../components/partials/noContent";
 import SubscribedUSerListTable from "../../components/subscribedUser/subscribedUserListTable";
 import { WRITE } from "../../utility/permissionsVariable";
 
-const SubscribedUserWarper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .addSubscribeUser {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-
-  .FormikWraper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addSubscribeUser-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .subscribeUserContent {
-    margin-top: 1rem;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-`;
+import "../../assets/scss/viewCommon.scss";
 
 export default function SubscribedUser() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
@@ -125,7 +99,7 @@ export default function SubscribedUser() {
   );
 
   return (
-    <SubscribedUserWarper>
+    <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Subscribed User</title>
@@ -154,7 +128,7 @@ export default function SubscribedUser() {
               dropDownName={dropDownName}
               setdropDownName={(e) => setdropDownName(e.target.name)}
             />
-            {allPermissions?.name === "all" ||
+            {/* {allPermissions?.name === "all" ||
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
@@ -170,7 +144,7 @@ export default function SubscribedUser() {
               </Button>
             ) : (
               ""
-            )}
+            )} */}
           </div>
         </div>
         <div style={{ height: "10px" }}>
@@ -248,6 +222,6 @@ export default function SubscribedUser() {
           </Row>
         </div>
       </div>
-    </SubscribedUserWarper>
+    </div>
   );
 }

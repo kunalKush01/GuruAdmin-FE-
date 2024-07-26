@@ -13,48 +13,11 @@ import styled from "styled-components";
 import { getAllBoxCollection } from "../../api/donationBoxCollectionApi";
 import DonationBoxListTable from "../../components/DonationBox/donationBoxListTable";
 import NoContent from "../../components/partials/noContent";
-const DonationBoxListWarper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addNews {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-
-  .FormikWraper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addNews-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .newsContent {
-    height: 350px;
-    overflow: auto;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: #ff8744;
-    font: normal normal bold 13px/5px noto sans;
-  }
-`;
-
-
-
+import "../../../assets/scss/viewCommon.scss";
 export default function Expenses() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const selectedLang = useSelector((state) => state.auth.selectLang);
-  const searchBarValue = useSelector((state) => state.search.LocalSearch  );
+  const searchBarValue = useSelector((state) => state.search.LocalSearch);
 
   const periodDropDown = () => {
     switch (dropDownName) {
@@ -91,15 +54,21 @@ export default function Expenses() {
   let endDate = moment(filterEndDate).utcOffset(0).format("D MMM YYYY");
 
   const boxCollectionQuery = useQuery(
-    ["Collections", pagination.page, selectedLang.id,filterEndDate,filterStartDate,searchBarValue],
+    [
+      "Collections",
+      pagination.page,
+      selectedLang.id,
+      filterEndDate,
+      filterStartDate,
+      searchBarValue,
+    ],
     () =>
       getAllBoxCollection({
         ...pagination,
         startDate: filterStartDate,
         endDate: filterEndDate,
         languageId: selectedLang.id,
-        search:searchBarValue
-        
+        search: searchBarValue,
       }),
     {
       keepPreviousData: true,
@@ -111,10 +80,8 @@ export default function Expenses() {
     [boxCollectionQuery]
   );
 
-  
-
   return (
-    <DonationBoxListWarper>
+    <div className="listviewwrapper">
       <div className="window nav statusBar body "></div>
 
       <div>
@@ -149,10 +116,10 @@ export default function Expenses() {
                     <DonationBoxListTable data={categoryItems} />
                   </Then>
                   <Else>
-                    <NoContent 
+                    <NoContent
                       headingNotfound={t("donation_box_not_found")}
                       para={t("donation_box_not_click_add_donation_box")}
-                  />
+                    />
                   </Else>
                 </If>
               </Else>
@@ -189,6 +156,6 @@ export default function Expenses() {
           </Row>
         </div>
       </div>
-    </DonationBoxListWarper>
+    </div>
   );
 }

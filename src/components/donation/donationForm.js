@@ -3,56 +3,9 @@ import { Formik } from "formik";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import styled from "styled-components";
 import { getAllMasterCategories } from "../../api/expenseApi";
+import "../../assets/scss/common.scss";
 import FormWithoutFormikForDonation from "./FormWithoutFormikForDonation";
-
-const FormWrapper = styled.div`
-  .FormikWrapper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addDonation-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .donationContent {
-    height: 350px;
-    overflow: auto;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: #ff8744;
-
-    font: normal normal bold 13px/5px noto sans;
-  }
-  .btn-secondary {
-    background-color: #fff7e8 !important;
-    color: #583703 !important ;
-    border: none;
-    font: normal normal bold 20px/20px noto sans !important ;
-    box-shadow: none !important ;
-    :hover {
-      color: #fff !important;
-      background-color: #ff8744 !important;
-    }
-    .secondary.active {
-      color: #fff !important;
-    }
-  }
-  .addUser {
-    font-size: 13px;
-  }
-  .addUser > span {
-    text-decoration: underline;
-    color: #ff8744;
-  }
-`;
 
 export default function DonationForm({
   plusIconDisable = false,
@@ -63,11 +16,14 @@ export default function DonationForm({
   validationSchema,
   initialValues,
   showTimeInput,
+  customFieldsList,
 }) {
   const history = useHistory();
   const donationQueryClient = useQueryClient();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const [loading, setLoading] = useState(false);
+  const trustId = localStorage.getItem("trustId");
+
   const masterloadOptionQuery = useQuery(
     ["MasterCategory", selectedLang.id],
     async () =>
@@ -91,7 +47,7 @@ export default function DonationForm({
   const [toggleState, setToggleState] = useState(false);
 
   return (
-    <FormWrapper className="FormikWrapper">
+    <div className="FormikWrapper">
       {!masterloadOptionQuery.isLoading && (
         <Formik
           initialValues={{
@@ -100,6 +56,23 @@ export default function DonationForm({
           onSubmit={(e) => {
             setShowPrompt(false);
             setLoading(true);
+            const transformedCustomFields = Object.entries(e.customFields).map(
+              ([key, field]) => ({
+                fieldName: key,
+                fieldType:
+                  typeof field.value === "boolean"
+                    ? "Boolean"
+                    : typeof field.value === "number"
+                    ? "Number"
+                    : typeof field.value === "string" &&
+                      !isNaN(Date.parse(field.value))
+                    ? "Date"
+                    : "String", // Default to String for other types
+                isRequired: false,
+                value: field.value !== undefined ? field.value : field,
+                trustId: trustId,
+              })
+            );
             donationMutation.mutate({
               categoryId: e?.SelectedSubCategory?.id,
               amount: e?.Amount,
@@ -118,6 +91,7 @@ export default function DonationForm({
               isArticle: toggleState,
               isGovernment:
                 !payDonation && e?.isGovernment === "YES" ? true : false,
+              customFields: transformedCustomFields,
             });
           }}
           validationSchema={validationSchema}
@@ -136,10 +110,11 @@ export default function DonationForm({
               plusIconDisable
               showPrompt={showPrompt}
               buttonName={buttonName}
+              customFieldsList={customFieldsList}
             />
           )}
         </Formik>
       )}
-    </FormWrapper>
+    </div>
   );
 }

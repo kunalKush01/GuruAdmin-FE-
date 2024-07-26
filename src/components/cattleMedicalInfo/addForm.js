@@ -13,7 +13,7 @@ import AsyncSelectField from "../partials/asyncSelectField";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 
-const FormikWrapper = styled.div``;
+;
 
 const AddMedicalInfoForm = ({
   initialValues,

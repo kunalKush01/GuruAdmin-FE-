@@ -1,3 +1,5 @@
+@use '../../../assets/scss/variables/variables' as vars;
+
 .fallback-spinner {
   height: 100%;
   display: flex;
@@ -27,7 +29,7 @@
       height: 55px;
       border-radius: 50%;
       border: 3px solid transparent;
-      border-left: 3px solid rgb(255, 135, 68);
+      border-left: 3px solid vars.$primary-color;
       -webkit-box-sizing: border-box;
       box-sizing: border-box;
     }

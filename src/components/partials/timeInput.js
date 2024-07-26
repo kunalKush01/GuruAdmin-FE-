@@ -1,19 +1,15 @@
 import React from "react";
 import TimeInput from "react-time-input";
 import styled from "styled-components";
-const CustomTimeInputWarper = styled.div`
+import "../../assets/scss/common.scss";
 
-`
 function CustomTimeInput() {
-
- 
   return (
-    <CustomTimeInputWarper>
-    <input
-    // type={"time"}
-    
-    />
-    </CustomTimeInputWarper>
+    <div className="customtimeinputwrapper">
+      <input
+      // type={"time"}
+      />
+    </div>
   );
 }
 

@@ -2,6 +2,53 @@
 //  ? TIP:  It is recommended to use this file for overriding bootstrap variables.
 //  ================================================================================================
 $primary: #FF8744; // Changing primary color
-$font-family-sans-serif: 'Noto Sans',sans-serif !default;
-$body-bg:#ffffff !default;
-// $font-family-monospace: 'Montserrat', Helvetica, Arial, serif !default;
+$font-family-sans-serif: 'Noto Sans', sans-serif !default;
+$body-bg: #fafafa !default;
+
+// Color variables
+$primary-color: #{$primary};
+$secondary-color: #FCF5E7;
+$font-color: #533810;
+$screen-background-color : #{$body-bg};
+$white: #FFFFFF;
+$green: #79BB43;
+$light-green : #79BB43;
+$red: #EC5B52;
+$light-red: #FCEBEA;
+$blue :#5EC4F4;
+$light-blue: #E9F8FD;
+$yellow: #F3B64B;
+$light-yellow: #FEF6E7;
+$purple: #5F69E6;
+$light-purple: #EDEDFE;
+$font-family: 'Noto Sans', sans-serif;
+$font-weight-bold: bold;
+$font-weight-normal: normal;
+$font-size-small: 13px;
+$font-size-medium: 15px;
+$font-size-large: 20px;
+
+// CSS Custom Properties
+:root {
+    --primary-color: #{$primary} !important;
+    --secondary-color: #{$secondary-color} !important;
+    --font-color: #{$font-color} !important;
+    --screen-background-color: #{$screen-background-color} !important;
+    --white: #{$white} !important;
+    --green: #{$green} !important;
+    --light-green: #{$light-green} !important;
+    --red: #{$red} !important;
+    --light-red: #{$light-red} !important;
+    --blue: #{$blue} !important;
+    --light-blue: #{$light-blue} !important;
+    --yellow: #{$yellow} !important;
+    --light-yellow: #{$light-yellow} !important;
+    --purple: #{$purple} !important;
+    --light-purple: #{$light-purple} !important;
+    --font-family: #{$font-family} !important;
+    --font-weight-bold: #{$font-weight-bold} !important;
+    --font-weight-normal: #{$font-weight-normal} !important;
+    --font-size-small: #{$font-size-small} !important;
+    --font-size-medium: #{$font-size-medium} !important;
+    --font-size-large: #{$font-size-large} !important;
+}

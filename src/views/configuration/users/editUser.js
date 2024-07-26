@@ -12,18 +12,7 @@ import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
 
 import { getSubAdminDetail, updateSubAdminUser } from "../../../api/userApi";
 import UserForm from "../../../components/users/userForm";
-const SubAdminUserWarapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .editNotice {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import "../../../assets/scss/viewCommon.scss";
 const schema = Yup.object().shape({
   name: Yup.string()
     .matches(
@@ -38,7 +27,7 @@ const schema = Yup.object().shape({
     .email("email_invalid")
     .required("users_email_required")
     .trim(),
-  userRoleChacked: Yup.array()
+  userRoleChecked: Yup.array()
     .min(1, "minimum_one_role_required")
     .required("user_userRoleRequired"),
 });
@@ -79,7 +68,7 @@ export default function EditSubAdmin() {
       mobile: subAdminUserDetailQuery?.data?.result?.mobileNumber,
       countryCode: subAdminUserDetailQuery?.data?.result?.countryName ?? "",
       dialCode: subAdminUserDetailQuery?.data?.result?.countryCode ?? "",
-      userRoleChacked: subAdminUserDetailQuery?.data?.result?.roles,
+      userRoleChecked: subAdminUserDetailQuery?.data?.result?.roles,
       email: subAdminUserDetailQuery?.data?.result?.email,
       password: "",
       file: subAdminUserDetailQuery?.data?.result?.profilePhoto,
@@ -87,7 +76,7 @@ export default function EditSubAdmin() {
   }, [subAdminUserDetailQuery]);
 
   return (
-    <SubAdminUserWarapper>
+    <div className="subadminuserwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -160,6 +149,6 @@ export default function EditSubAdmin() {
           )}
         </Else>
       </If>
-    </SubAdminUserWarapper>
+    </div>
   );
 }

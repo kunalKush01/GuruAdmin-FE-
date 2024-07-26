@@ -15,7 +15,7 @@ import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 
-const FormikWrapper = styled.div``;
+;
 
 const AddItemUsageForm = ({
   initialValues,

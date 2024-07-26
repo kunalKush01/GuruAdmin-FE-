@@ -18,20 +18,7 @@ import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddCattleForm from "../../../../components/cattleInfo/addForm";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
 import { cattleSource, cattleType } from "../add";
-
-const CattleAddWraper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addEvent {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
-
+import "../../../../assets/scss/viewCommon.scss";
 const getLangId = (langArray, langSelection) => {
   let languageId;
   langArray.map(async (Item) => {
@@ -141,7 +128,7 @@ const EditCattle = () => {
   }, [cattleDetails]);
 
   return (
-    <CattleAddWraper>
+    <div className="cattleaddwraper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -233,7 +220,7 @@ const EditCattle = () => {
           )}
         </Else>
       </If>
-    </CattleAddWraper>
+    </div>
   );
 };
 

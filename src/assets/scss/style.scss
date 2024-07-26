@@ -9,163 +9,186 @@ NOTE:
 ------
 PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER STYLESHEETS.
 WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
+@use '../../assets/scss/variables/variables' as vars;
 
 body {
-  padding-right: 0px !important;
+    padding-right: 0px !important;
 }
 
 body::-webkit-scrollbar {
-  display: none !important;
+    display: none !important;
 }
-.swal2-actions {
-  flex-direction: row-reverse !important;
-  width: 100% !important;
-  justify-content: space-between !important;
-  align-items: center !important;
-  button {
-    width: 150px !important;
-    font: normal normal bold 13px/20px noto sans !important ;
-  }
-  .swal2-confirm {
-    background-color: #ff8744 !important;
-  }
-  .swal2-cancel {
-    // background-color: inherit !important;
-    background-color:#dcdcde !important;
-    color: #ff8744 !important;
-  }
-}
-.swal2-close:focus {
-  outline: none;
-  box-shadow: none !important;
-}
-.swal2-modal {
-  padding: 10px 55px 30px 55px;
 
-  .swal2-title {
-    padding: 0px;
-    img {
-      width: 60px;
+.swal2-actions {
+    flex-direction: row-reverse !important;
+    width: 100% !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+
+    button {
+        width: 150px !important;
+        font: normal normal bold 13px/20px noto sans !important;
     }
-  }
-  .swal2-html-container {
-    .swal-heading {
-      color: #ff8744 !important ;
-      font: normal normal bold 20px/20px noto sans !important ;
+
+    .swal2-confirm {
+        background-color: #ff8744 !important;
     }
-    p {
-      color: #583703;
-      font: normal normal bold 11px/15px noto sans;
+
+    .swal2-cancel {
+        // background-color: inherit !important;
+        background-color: #dcdcde !important;
+        color: #ff8744 !important;
     }
-  }
+}
+
+.swal2-close:focus {
+    outline: none;
+    box-shadow: none !important;
+}
+
+.swal2-modal {
+    padding: 10px 55px 30px 55px;
+
+    .swal2-title {
+        padding: 0px;
+
+        img {
+            width: 60px;
+        }
+    }
+
+    .swal2-html-container {
+        .swal-heading {
+            color: #ff8744 !important;
+            font: normal normal bold 20px/20px noto sans !important;
+        }
+
+        p {
+            color: #583703;
+            font: normal normal bold 11px/15px noto sans;
+        }
+    }
 }
 
 .descriptionBoxSwal {
-  height: 70px !important;
-  color: #583703;
-  margin-top: 0.5rem;
-  // scroll-behavior: smooth !important;
-  overflow-y: scroll !important;
-  font: normal normal normal 13px/20px noto sans !important ;
-  // background:red !important;
+    height: 70px !important;
+    color: #583703;
+    margin-top: 0.5rem;
+    // scroll-behavior: smooth !important;
+    overflow-y: scroll !important;
+    font: normal normal normal 13px/20px noto sans !important;
+    // background:red !important;
 }
+
 .descriptionBoxSwal::-webkit-scrollbar {
-  width: 10px !important;
-  behavior: smooth;
+    width: 10px !important;
+    behavior: smooth;
 }
+
 .swal2-backdrop-show {
-  backdrop-filter: blur(10px);
-  background: rgba(0, 0, 0, 0.2) !important;
+    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.2) !important;
 }
+
 .allPaidDonationsModel {
-  max-width: 37.8rem;
+    max-width: 37.8rem;
 }
+
 .my::-webkit-scrollbar {
-  width: 8px;
+    width: 8px;
 }
+
 .my::-webkit-scrollbar-thumb {
-  background: #ff8744;
-  border-radius: 10px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
+    background: #ff8744;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
 }
+
 .my {
-  max-height: 600px;
-  overflow: auto;
+    max-height: 600px;
+    overflow: auto;
 }
 
 .popover {
-  z-index: 1;
-  background: #fff7e8;
+    z-index: 1;
+    background: #fff7e8;
 }
 
 .btn-Published {
-  z-index: 5000000000000000;
-  position: fixed;
-  bottom: 0.5rem;
-  left: 0%;
-  bottom: 0%;
-  width: 100%;
-  //height: 80px;
-  padding: 20px;
-  background: white;
-  text-align: center;
-  box-shadow: -1px -1px 20px 1px gray;
-  margin: 0px !important;
+    z-index: 5000000000000000;
+    position: fixed;
+    bottom: 0.5rem;
+    left: 0%;
+    bottom: 0%;
+    width: 100%;
+    //height: 80px;
+    padding: 20px;
+    background: white;
+    text-align: center;
+    box-shadow: -1px -1px 20px 1px gray;
+    margin: 0px !important;
 }
+
 .paddingForm {
-  padding-bottom: 7rem;
+    padding-bottom: 1 rem;
 }
+
 .ReactTags__tagInput input.ReactTags__tagInputField::placeholder {
-  color: #583703 !important;
-  font: normal normal bold 13px/20px Noto Sans;
-  opacity: 60%;
+    color: #583703 !important;
+    font: normal normal bold 13px/20px Noto Sans;
+    opacity: 60%;
 }
+
 .languageButton {
-  cursor: default !important;
-  border: 2px solid #ff8744 !important;
-  font: normal normal bold 14px/15px Noto Sans;
-  padding: 5px 10px;
-  color: #ff8744;
-  border-radius: 20px;
-  margin-right: 10px;
+    cursor: default !important;
+    border: 2px solid vars.$primary-color !important;
+    font: normal normal bold 14px/15px Noto Sans;
+    padding: 5px 10px;
+    color: vars.$primary-color;
+    border-radius: 20px;
+    margin-right: 10px;
 }
-.notifyUserPOP{
-  width: 10px !important;
+
+.notifyUserPOP {
+    width: 10px !important;
 }
+
 input:-webkit-autofill,
 input:-webkit-autofill:focus {
-  transition: background-color 600000s 0s, color 600000s 0s;
-  -webkit-transition: background-color 600000s 0s, color 600000s 0s;
-  -moz-transition: background-color 600000s 0s, color 600000s 0s;
-  -ms-transition: background-color 600000s 0s, color 600000s 0s;
-  -o-transition: background-color 600000s 0s, color 600000s 0s;
+    transition: background-color 600000s 0s, color 600000s 0s;
+    -webkit-transition: background-color 600000s 0s, color 600000s 0s;
+    -moz-transition: background-color 600000s 0s, color 600000s 0s;
+    -ms-transition: background-color 600000s 0s, color 600000s 0s;
+    -o-transition: background-color 600000s 0s, color 600000s 0s;
 }
 
 @media all {
-  .page-break {
-    display: none;
-  }
+    .page-break {
+        display: none;
+    }
 }
 
 @media print {
-  html, body {
-    height: initial !important;
-    overflow: initial !important;
-    -webkit-print-color-adjust: exact;
-  }
+
+    html,
+    body {
+        height: initial !important;
+        overflow: initial !important;
+        -webkit-print-color-adjust: exact;
+    }
 }
 
 @media print {
-  .page-break {
-    margin-top: 1rem;
-    display: block;
-    page-break-before: auto;
-  }
+    .page-break {
+        margin-top: 1rem;
+        display: block;
+        page-break-before: auto;
+    }
 }
 
 @page {
-  size: portrait;
+    size: portrait;
 }

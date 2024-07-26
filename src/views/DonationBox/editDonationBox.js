@@ -18,18 +18,7 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import DonationBoxForm from "../../components/DonationBox/donationBoxForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-const NewsWarper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .editNews {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import "../../assets/scss/viewCommon.scss";
 const schema = Yup.object().shape({
   // CreatedBy: Yup.string().required("news_tags_required"),
   Amount: Yup.string()
@@ -93,7 +82,7 @@ export default function EditDonationBox() {
   }, [collectionBoxDetailQuery]);
 
   return (
-    <NewsWarper>
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -159,6 +148,6 @@ export default function EditDonationBox() {
           )}
         </Else>
       </If>
-    </NewsWarper>
+    </div>
   );
 }

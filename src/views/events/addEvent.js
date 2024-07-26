@@ -9,18 +9,7 @@ import { createEvent } from "../../api/eventApi.js";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import EventForm from "../../components/events/eventForm";
 
-const EventWraper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addEvent {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import "../../assets/scss/viewCommon.scss";
 
 const handleCreateEvent = async (payload) => {
   return createEvent(payload);
@@ -67,7 +56,7 @@ export default function AddEvent() {
   const currentPage = searchParams.get("page");
   const currentFilter = searchParams.get("filter");
   return (
-    <EventWraper>
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -79,7 +68,7 @@ export default function AddEvent() {
               )
             }
           />
-          <div className="addEvent">
+          <div className="addAction">
             <Trans i18nKey={"events_AddEvent"} />
           </div>
         </div>
@@ -93,6 +82,6 @@ export default function AddEvent() {
           buttonName="events_AddEvent"
         />
       </div>
-    </EventWraper>
+    </div>
   );
 }

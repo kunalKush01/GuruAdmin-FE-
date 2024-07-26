@@ -19,49 +19,7 @@ import { getAllBoxCollection } from "../../api/donationBoxCollectionApi";
 import BoxListCard from "../../components/DonationBox/BoxListCard.js";
 import NoContent from "../../components/partials/noContent";
 import { WRITE } from "../../utility/permissionsVariable";
-const NewsWarper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addNews {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-
-  .FormikWraper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addNews-btn {
-    padding: 8px 20px;
-    /* margin-left: 10px; */
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .newsContent {
-    margin-top: 1rem;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: #ff8744;
-    margin-top: 0.5rem;
-    font: normal normal bold 13px/5px noto sans;
-  }
-  .total_collection {
-    border: 1px solid #ff8744;
-    color: #ff8744;
-    font: normal normal bold 15px/20px noto sans;
-    padding: 0.5rem 2rem;
-    border-radius: 5px;
-  }
-`;
-
+import "../../assets/scss/viewCommon.scss";
 export default function Expenses() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -158,10 +116,10 @@ export default function Expenses() {
   );
 
   return (
-    <NewsWarper>
+    <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharam Admin | Donation Box</title>
+        <title>Apna Dharm Admin | Donation Box</title>
       </Helmet>
       <div className="window nav statusBar body "></div>
 
@@ -173,7 +131,7 @@ export default function Expenses() {
               className="me-2  cursor-pointer align-self-center"
               onClick={() => history.push("/")}
             /> */}
-            <div className="addNews d-flex">
+            <div className="addAction d-flex">
               <div className="">
                 <div>
                   <Trans i18nKey={"DonationBox_DonationBox"} />
@@ -186,7 +144,7 @@ export default function Expenses() {
               </div>
             </div>
           </div>
-          <div className="addNews  d-flex flex-wrap gap-2 gap-md-0">
+          <div className="addAction  d-flex flex-wrap gap-2 gap-md-0">
             <div className="total_collection me-2 d-flex justify-content-center align-items-center ">
               <Trans i18nKey={"DonationBox_total_collection"} />
               &nbsp;
@@ -210,7 +168,7 @@ export default function Expenses() {
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
-                className="addNews-btn "
+                className="addAction-btn "
                 onClick={() =>
                   history.push(
                     `/hundi/add?page=${pagination.page}&filter=${dropDownName}`
@@ -326,6 +284,6 @@ export default function Expenses() {
           </Row>
         </div>
       </div>
-    </NewsWarper>
+    </div>
   );
 }

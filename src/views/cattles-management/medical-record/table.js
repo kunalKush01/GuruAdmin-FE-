@@ -11,19 +11,7 @@ import editIcon from "../../../assets/images/icons/category/editIcon.svg";
 import confirmationIcon from "../../../assets/images/icons/news/conformationIcon.svg";
 import CustomDataTable from "../../../components/partials/CustomDataTable";
 import { DELETE, EDIT } from "../../../utility/permissionsVariable";
-
-const MedicalTableWrapper = styled.div`
-  color: #583703 !important;
-  font: normal normal bold 15px/23px Noto Sans;
-  .modal-body {
-    max-height: 600px !important;
-    overflow: auto !important;
-  }
-  .tableDes p {
-    margin-bottom: 0;
-  }
-`;
-
+import "../../../assets/scss/viewCommon.scss";
 const MedicalReportTable = ({
   data = [],
   allPermissions,
@@ -171,14 +159,14 @@ const MedicalReportTable = ({
   }, [data]);
 
   return (
-    <MedicalTableWrapper>
+    <div className="medicaltablewrapper">
       <CustomDataTable
         maxHeight={maxHeight}
         columns={columns}
         height={height}
         data={MedicalReportData}
       />
-    </MedicalTableWrapper>
+    </div>
   );
 };
 

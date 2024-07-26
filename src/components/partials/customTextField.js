@@ -3,36 +3,7 @@ import React from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { FormGroup, InputGroup } from "reactstrap";
 import styled from "styled-components";
-
-const CustomTextFieldWarper = styled.div`
-  color: #583703 !important;
-  font: normal normal bold 11px/33px Noto Sans;
-
-  .formGroup {
-    width: ${(props) => props.width ?? "auto"};
-    margin: ${(props) => props.margin ?? "auto"} !important;
-  }
-  label {
-    /* margin-bottom: 0px; */
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  input::placeholder {
-    color: #583703 !important;
-    opacity: 60% !important;
-    font: normal normal bold 13px/20px Noto Sans !important;
-  }
-  input {
-    color: #583703 !important;
-    border: none !important;
-    background-color: #fff7e8 !important;
-    font: normal normal normal 13px/20px Noto Sans;
-    border-radius: 20px;
-  }
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    display: none;
-  }
-`;
+import "../../assets/scss/common.scss";
 
 export default function CustomTextField({
   required = false,
@@ -47,7 +18,7 @@ export default function CustomTextField({
   const [field, meta, helpers] = useField(props);
 
   return (
-    <CustomTextFieldWarper width={width}>
+    <div className="customtextfieldwrapper" width={width}>
       <FormGroup className="formGroup">
         {label && (
           <label>
@@ -73,6 +44,6 @@ export default function CustomTextField({
           )}
         </div>
       </FormGroup>
-    </CustomTextFieldWarper>
+    </div>
   );
 }
