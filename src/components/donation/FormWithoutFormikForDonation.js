@@ -26,6 +26,7 @@ import AsyncSelectField from "../partials/asyncSelectField";
 import CustomRadioButton from "../partials/customRadioButton";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
+import FormikCardDropdown from "../partials/FormikCardDropdown";
 import { DatePicker } from "antd";
 import '../../../src/assets/scss/common.scss'
 export default function FormWithoutFormikForDonation({
@@ -332,17 +333,16 @@ export default function FormWithoutFormikForDonation({
               />
             </Col>
             <Col xs={12} sm={6} lg={4}>
-              <FormikCustomReactSelect
+              <FormikCardDropdown
                 labelName={t("dashboard_Recent_DonorCommitId")}
-                loadOptions={commitmentIdByUser}
+                options={commitmentIdByUser}
                 placeholder={t("commitment_select_commitment_id")}
                 name={"SelectedCommitmentId"}
                 disabled={
                   payDonation || commitmentIdByUser?.length == 0 || article
                 }
-                valueKey={"id"}
-                getOptionLabel={(option) => `${option.commitmentId}`}
-                width
+                getOptionValue={(option) => option._id}
+                width="100%"
               />
             </Col>
           </Row>
