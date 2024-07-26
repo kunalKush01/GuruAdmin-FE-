@@ -19,7 +19,7 @@ import { ChangePeriodDropDown } from "../../components/partials/changePeriodDrop
 import CustomCard from "../../components/partials/customCard";
 import { setCookieWithMainDomain } from "../../utility/formater";
 import { RevenueChart } from "../../utility/revenueChart";
-import OrdersReceived from "../../utility/ui-elements/cards/statistics/OrdersReceived";
+import DashboardStatsCard from "../../utility/ui-elements/cards/statistics/DashboardStatsCard";
 const Home = () => {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const [dashboardData, setDashboardData] = useState();
@@ -96,14 +96,14 @@ const Home = () => {
         <title>Apna Dharam Admin | Dashboard</title>
       </Helmet>
       {dashboardData && chartData && topDonorData && recentDonationData ? (
-        <div className="pb-4">
+        <div>
           <ChangePeriodDropDown
             allFilter
             dropDownName={dropDownName}
             setdropDownName={(e) => setdropDownName(e.target.name)}
           />
           <div className="d-flex gap-1 justify-content-between mt-1 mb-lg-1">
-            <OrdersReceived
+            <DashboardStatsCard
               statTitle={t("dashboard_donationReceived")}
               stats={parseInt(
                 dashboardData?.donationReceived === undefined
@@ -114,7 +114,7 @@ const Home = () => {
               data={dashboardData?.donationReceivedArr}
               SeriesName={"Donation Received"}
             />
-            <OrdersReceived
+            <DashboardStatsCard
               statTitle={t("dashboard_donationPending")}
               stats={parseInt(
                 dashboardData?.donationPending === undefined
@@ -125,7 +125,7 @@ const Home = () => {
               data={dashboardData?.donationPendingArr}
               SeriesName={"Donation Pending"}
             />
-            <OrdersReceived
+            <DashboardStatsCard
               statTitle={t("dashboard_totalExpenses")}
               stats={parseInt(
                 dashboardData?.totalExpenses === undefined

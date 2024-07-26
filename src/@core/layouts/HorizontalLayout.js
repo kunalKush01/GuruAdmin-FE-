@@ -18,7 +18,7 @@ import "../../assets/scss/viewCommon.scss";
 import "../../assets/scss/variables/_variables.scss";
 
 import bigLogo from "../../assets/images/pages/main-logo.png";
-import smallLogo from "../../assets/images/pages/main-logo.png";
+import smallLogo from "../../assets/images/pages/main-logo-small.png";
 import UserDropdown from "./components/navbar/";
 
 const { Header, Sider, Content } = Layout;
@@ -29,8 +29,13 @@ const SiderLayout = (props) => {
   const dispatch = useDispatch();
   const { isLogged } = useSelector((state) => state.auth);
   const layoutStore = useSelector((state) => state.layout);
-  const permissions = useSelector((state) => state.auth.userDetail?.permissions);
-  const trustType = useSelector((state) => state.auth.trustDetail?.typeId?.name);
+
+  const permissions = useSelector(
+    (state) => state.auth.userDetail?.permissions
+  );
+  const trustType = useSelector(
+    (state) => state.auth.trustDetail?.typeId?.name
+  );
 
   const [collapsed, setCollapsed] = useState(false);
   const [active, setActive] = useState(location.pathname);
@@ -46,6 +51,7 @@ const SiderLayout = (props) => {
   const { navbarColor, setNavbarColor } = useNavbarColor();
 
   const [isMounted, setIsMounted] = useState(false);
+  const [hoveredItem, setHoveredItem] = useState(null);
 
   const contentWidth = layoutStore.contentWidth;
   const isHidden = layoutStore.menuHidden;
@@ -65,7 +71,7 @@ const SiderLayout = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log('Active path:', location.pathname);
+    console.log("Active path:", location.pathname);
     setActive(location.pathname);
   }, [location.pathname]);
 
@@ -85,10 +91,11 @@ const SiderLayout = (props) => {
   const getMenuItem = (item) => {
     const hasAllPermission = permissionsKey?.includes("all");
     const hasItemPermission = permissionsKey?.includes(item?.name);
-    const hasCattleItemPermission = item?.innerPermissions?.some(
-      (perm) => permissionsKey?.includes(perm)
+    const hasCattleItemPermission = item?.innerPermissions?.some((perm) =>
+      permissionsKey?.includes(perm)
     );
-    const isGaushala = item?.isCattle?.toLowerCase() === trustType?.toLowerCase();
+    const isGaushala =
+      item?.isCattle?.toLowerCase() === trustType?.toLowerCase();
 
     if (
       (hasAllPermission && isGaushala) ||
@@ -97,11 +104,14 @@ const SiderLayout = (props) => {
       (hasAllPermission && item?.name !== "cattles_management") ||
       (hasItemPermission && item?.name !== "cattles_management")
     ) {
+      const isActive = active.startsWith(item.activeTab);
+      const isHovered = hoveredItem === item.name;
+
       return {
         key: item.name,
         icon: item.icon ? (
           <img
-            src={item.icon}
+            src={isActive || isHovered ? item.activeIcon : item.icon}
             alt={item.name}
             style={{ width: "16px", height: "16px" }}
           />
@@ -133,15 +143,23 @@ const SiderLayout = (props) => {
       theme={{
         components: {
           Menu: {
-            itemSelectedBg: 'var(--primary-color)',
-            itemSelectedColor: 'white',
+            itemSelectedBg: "var(--primary-color)",
+            itemSelectedColor: "white",
           },
         },
       }}
     >
       <Layout>
-        <Sider trigger={null} collapsible collapsed={collapsed} className="custom-sider">
-          <div className="logo-container" style={{ padding: "16px 16px 16px 24px", textAlign: "left" }}>
+        <Sider
+          trigger={null}
+          collapsible
+          collapsed={collapsed}
+          className="custom-sider"
+        >
+          <div
+            className="logo-container"
+            style={{ padding: "16px 16px 16px 24px", textAlign: "left" }}
+          >
             <img
               src={collapsed ? smallLogo : bigLogo}
               alt="Logo"
@@ -154,7 +172,7 @@ const SiderLayout = (props) => {
           </div>
           <Menu
             mode="inline"
-            selectedKeys={[active.split('/')[1] || '']}
+            selectedKeys={[active.split("/")[1] || ""]}
             items={subHeaderContentResponsive.map(getMenuItem).filter(Boolean)}
             style={{ paddingLeft: 0 }}
           />
@@ -186,8 +204,8 @@ const SiderLayout = (props) => {
           <Content
             style={{
               padding: 24,
-              minHeight: 'calc(100vh - 64px)',
-              background: 'FAFAFA',
+              minHeight: "calc(100vh - 64px)",
+              background: "FAFAFA",
               borderRadius: borderRadiusLG,
             }}
           >

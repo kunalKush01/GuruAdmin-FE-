@@ -758,20 +758,20 @@
 }
 
 .chart-card-wrapper {
-  font: $font-weight-bold $font-size-large $font-family;
-  
-  .chart-card {
-    flex: 1 1 20%;
-    background-color: $secondary-color;
-    width: 100% !important;
-    height: auto;
-    color: $font-color;
-    // max-width: 300;
-  }
-  
-  .card-text {
-    font: $font-weight-normal 16px/20px $font-family;
-  }
+    font: $font-weight-bold $font-size-large $font-family;
+
+    .chart-card {
+        flex: 1 1 20%;
+        background-color: $secondary-color;
+        width: 100% !important;
+        height: auto;
+        color: $font-color;
+        // max-width: 300;
+    }
+
+    .card-text {
+        font: $font-weight-normal 16px/20px $font-family;
+    }
 
     .fw-bolder {
         text-overflow: ellipsis;
@@ -1001,6 +1001,12 @@
 }
 
 .revenue-chart-wrapper {
+    box-shadow: $box-shadow;
+    background: $white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-left: 1px;
+
     .apexcharts-toolbar {
         display: none;
     }
@@ -1039,154 +1045,159 @@
 
 .card-dropdown {
     &__control {
-      background-color: $secondary-color;
-      border-color: $font-color;
-      &:hover, &--is-focused {
-        border-color: $primary-color;
-        box-shadow: 0 0 0 1px $primary-color;
-      }
+        background-color: $secondary-color;
+        border-color: $font-color;
+
+        &:hover,
+        &--is-focused {
+            border-color: $primary-color;
+            box-shadow: 0 0 0 1px $primary-color;
+        }
     }
-  
+
     &__menu {
-      background-color: transparent;
-      box-shadow: none;
-      border: none;
-      max-height: 300px;
-      overflow-y: auto;
-    }
-  
-    &__menu-list {
-      padding: 0;
-      max-height: 300px;
-      overflow-y: auto;
-    }
-  
-    &__option {
-      padding: 4px;
-      background-color: transparent;
-      color: $font-color;
-  
-      &:hover {
         background-color: transparent;
-      }
+        box-shadow: none;
+        border: none;
+        max-height: 300px;
+        overflow-y: auto;
     }
-  
+
+    &__menu-list {
+        padding: 0;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    &__option {
+        padding: 4px;
+        background-color: transparent;
+        color: $font-color;
+
+        &:hover {
+            background-color: transparent;
+        }
+    }
+
     &__single-value {
-      color: $font-color;
-      font: $font-weight-bold $font-size-medium $font-family;
+        color: $font-color;
+        font: $font-weight-bold $font-size-medium $font-family;
     }
-  }
-  
-  .card-option {
+}
+
+.card-option {
     padding: 12px;
     border: 1px $secondary-color;
     border-radius: 8px;
     background-color: $secondary-color;
     box-shadow: 0 2px 4px $font-color;
     transition: all 0.3s ease;
-  
+
     &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px $font-color;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px $font-color;
     }
-  }
-  
-  .card-row {
+}
+
+.card-row {
     // display: flex;
     justify-content: space-between;
     margin-bottom: 8px;
-  
+
     &:last-child {
-      margin-bottom: 0;
+        margin-bottom: 0;
     }
-  }
-  
-  .card-label {
+}
+
+.card-label {
     font-weight: 700;
     color: $font-color;
     font-size: 0.9em;
     margin-right: 8px;
     min-width: 100px;
     text-align: left;
-  }
-  
-  .card-title, .card-description, .commitment-id, .amount {
+}
+
+.card-title,
+.card-description,
+.commitment-id,
+.amount {
     flex: 1;
     text-align: right;
-  }
-  
-  .card-title {
+}
+
+.card-title {
     font-weight: 700;
     font-size: 1em;
     color: $font-color;
-  }
-  
-  .card-description {
+}
+
+.card-description {
     color: $font-color;
     opacity: 0.8;
     font-size: 0.9em;
-  }
-  
-  .commitment-id {
+}
+
+.commitment-id {
     font-family: monospace;
     padding: 2px 4px;
     border-radius: 4px;
     color: $font-color;
     font-size: $font-size-small;
-  }
-  
-  .amount {
+}
+
+.amount {
     font-weight: 600;
     color: $green;
     font-size: 0.9em;
-  }
-  
+}
+
 // ===========================================Dropdown Card Css=============================================== //
 
 // ===================================================SiderLayout CSS=================================================== //
 
 .custom-sider {
-  background-color: $white !important;
+    background-color: $white !important;
 
-  .ant-menu {
-    background-color: $white;
+    .ant-menu {
+        background-color: $white;
 
-    .ant-menu-item,
-    .ant-menu-submenu-title {
-      font-size: 16px; 
-    }
-
-    &.ant-menu-inline {
-      .ant-menu-item-selected {
-        background-color: $primary-color !important;
-        color: $white !important;
-      }
-
-      .ant-menu-submenu-selected {
-        > .ant-menu-submenu-title {
-          color: $primary-color !important;
+        .ant-menu-item,
+        .ant-menu-submenu-title {
+            font-size: 14px;
         }
-      }
-    }
 
-    .ant-menu-item,
-    .ant-menu-submenu-title {
-      font-weight: bold !important;
+        &.ant-menu-inline {
+            .ant-menu-item-selected {
+                background-color: $primary-color !important;
+                color: $white !important;
+            }
 
-      &:hover,
-      &:active {
-        background-color: $primary-color !important;
-        color: $white!important;
-      }
+            .ant-menu-submenu-selected {
+                >.ant-menu-submenu-title {
+                    color: $primary-color !important;
+                }
+            }
+        }
+
+        .ant-menu-item,
+        .ant-menu-submenu-title {
+            font-weight: 400 !important;
+
+            &:hover,
+            &:active {
+                background-color: $primary-color !important;
+                color: $white !important;
+            }
+        }
     }
-  }
 }
 
 // ===================================================SiderLayout CSS=================================================== //
-.editCommitment{
-        color: #583703;
-        display: flex;
-        align-items: center;
-        font: normal normal bold 20px / 33px Noto Sans;
+.editCommitment {
+    color: #583703;
+    display: flex;
+    align-items: center;
+    font: normal normal bold 20px / 33px Noto Sans;
 
 }
