@@ -3,7 +3,6 @@ import moment from "moment";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { Card, CardBody, CardFooter, Col, Row } from "reactstrap";
-import styled from "styled-components";
 import Swal from "sweetalert2";
 import donationBoxDesIcon from "../../assets/images/icons/donationBox/donationBoxDesIcon.png";
 import donationBoxIcon from "../../assets/images/icons/donationBox/donationBoxIcon.png";
@@ -55,6 +54,14 @@ export default function BoxListCard({
                                                   )}
                                                   </span> 
                                                 </div>
+                                                  ${data.customFields
+                                                    .map(
+                                                      (field) => `
+                                                      <div>
+                                                        ${field.fieldName}: <span class='customFieldBoxSwal'>${field.value}</span>
+                                                      </div>`
+                                                    )
+                                                    .join("")}
                                             </div>
                                               `,
                     showCloseButton: false,
@@ -82,6 +89,17 @@ export default function BoxListCard({
                     }}
                   />
                 </div>
+                {data.customFields.map((field) => (
+                  <div
+                    className="donationBox_customField"
+                    key={field.fieldName}
+                  >
+                    <span className="donationBox_field">
+                      {field.fieldName}:
+                    </span>
+                    <span className="donationBox_field">{field.value}</span>
+                  </div>
+                ))}
                 <CardFooter className="w-100">
                   <div>₹{data?.amount.toLocaleString("en-IN")}</div>
                 </CardFooter>

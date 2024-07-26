@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Switch, Table } from "antd";
-import "../../views/configuration/Masters/masterStyle.css";
+import React from "react";
+import { Table } from "antd";
+import "../../assets/scss/common.scss";
 function ANTDcustometable({
   columns,
   data,
@@ -11,6 +11,7 @@ function ANTDcustometable({
 }) {
   return (
     <Table
+      className="masterTable"
       columns={columns}
       dataSource={data}
       scroll={{
@@ -20,16 +21,17 @@ function ANTDcustometable({
       sticky={{
         offsetHeader: 64,
       }}
-      // pagination={{pageSize:10,showSizeChanger:true}}
       pagination={
-        !masterPagination ? {
-          current: pagination.current,
-          pageSize: pagination.pageSize,
-          total: pagination.total, // Ensure `pagination.total` is provided
-          onChange: onChangePage,
-          onShowSizeChange: (current, size) => onChangePageSize(size),
-          showSizeChanger: true,
-        }:undefined
+        !masterPagination
+          ? {
+              current: pagination.current,
+              pageSize: pagination.pageSize,
+              total: pagination.total,
+              onChange: onChangePage,
+              onShowSizeChange: (current, size) => onChangePageSize(size),
+              showSizeChanger: true,
+            }
+          : undefined
       }
       bordered
     />

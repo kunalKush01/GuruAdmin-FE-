@@ -5,9 +5,8 @@ import { Trans } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams,useLocation } from "react-router-dom";
 import { Col, Row } from "reactstrap";
-import styled from "styled-components";
 import * as Yup from "yup";
 import {
   getCommitmentDetail,
@@ -18,33 +17,16 @@ import CommitmentForm from "../../components/commitments/commitmentForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 import "../../assets/scss/viewCommon.scss";
-
-const schema = Yup.object().shape({
-  Mobile: Yup.string().required("expenses_mobile_required"),
-  SelectedUser: Yup.mixed().required("user_select_required"),
-  donarName: Yup.string()
-    .matches(
-      /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
-      "donation_donar_name_only_letters"
-    )
-    .trim(),
-  SelectedMasterCategory: Yup.mixed().required("masterCategory_required"),
-  SelectedSubCategory: Yup.mixed(),
-  Amount: Yup.string()
-    .matches(/^[1-9][0-9]*$/, "invalid_amount")
-    .required("amount_required"),
-});
-const getLangId = (langArray, langSelection) => {
-  let languageId;
-  langArray.map(async (Item) => {
-    if (Item.name == langSelection.toLowerCase()) {
-      languageId = Item.id;
-    }
-  });
-  return languageId;
-};
+import { getPledgeCustomFields } from "../../api/customFieldsApi";
 
 export default function EditCommitment() {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const customFieldDataString = queryParams.get("customFieldData");
+  const customFieldData = customFieldDataString
+    ? JSON.parse(decodeURIComponent(customFieldDataString))
+    : {};
+
   const history = useHistory();
   const { commitmentId } = useParams();
   const langArray = useSelector((state) => state.auth.availableLang);
@@ -61,6 +43,48 @@ export default function EditCommitment() {
     ConverFirstLatterToCapital(selectedLang.name)
   );
 
+  const customFieldsQuery = useQuery(
+    ["custom-fields"],
+    async () => await getPledgeCustomFields(),
+    {
+      keepPreviousData: true,
+    }
+  );
+  const customFieldsList = customFieldsQuery?.data?.customFields ?? [];
+  const schema = Yup.object().shape({
+    Mobile: Yup.string().required("expenses_mobile_required"),
+    SelectedUser: Yup.mixed().required("user_select_required"),
+    donarName: Yup.string()
+      .matches(
+        /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+        "donation_donar_name_only_letters"
+      )
+      .trim(),
+    SelectedMasterCategory: Yup.mixed().required("masterCategory_required"),
+    SelectedSubCategory: Yup.mixed(),
+    Amount: Yup.string()
+      .matches(/^[1-9][0-9]*$/, "invalid_amount")
+      .required("amount_required"),
+    customFields: Yup.object().shape(
+      customFieldsList.reduce((acc, field) => {
+        if (field.isRequired) {
+          acc[field.fieldName] = Yup.mixed().required(
+            `${field.fieldName} is required`
+          );
+        }
+        return acc;
+      }, {})
+    ),
+  });
+  const getLangId = (langArray, langSelection) => {
+    let languageId;
+    langArray.map(async (Item) => {
+      if (Item.name == langSelection.toLowerCase()) {
+        languageId = Item.id;
+      }
+    });
+    return languageId;
+  };
   const commitmentDetailQuery = useQuery(
     ["CommitmentDetail", commitmentId, langSelection, selectedLang.id],
     async () =>
@@ -69,7 +93,6 @@ export default function EditCommitment() {
         languageId: getLangId(langArray, langSelection),
       })
   );
-
   const handleCommitmentUpdate = async (payload) => {
     return updateCommitmentDetail({
       ...payload,
@@ -98,6 +121,10 @@ export default function EditCommitment() {
       )
         .utcOffset("+0530")
         .toDate(),
+      customFields: commitmentDetailQuery?.data?.result?.customFields.reduce((acc, field) => {
+        acc[field.fieldName] = field.value ?? "";
+        return acc;
+      }, {}),
     };
   }, [commitmentDetailQuery]);
 
@@ -162,6 +189,8 @@ export default function EditCommitment() {
                 showTimeInput
                 handleSubmit={handleCommitmentUpdate}
                 buttonName={"save_changes"}
+                customFieldsList={customFieldsList}
+                paidAmount={commitmentDetailQuery?.data?.result?.paidAmount}
               />
             </div>
           )}

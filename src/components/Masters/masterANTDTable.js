@@ -6,7 +6,6 @@ import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import save from "../../assets/images/icons/category/save.png";
 import cancel from "../../assets/images/icons/category/cancel.png";
 import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
-import "../../views/configuration/Masters/masterStyle.css";
 import ANTDcustometable from "../partials/antdReactTable";
 
 export function MasterANTDTable({ data, loadingRow }) {
