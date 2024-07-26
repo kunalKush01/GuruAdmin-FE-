@@ -23,13 +23,8 @@ import cardThreeDotIcon from "../../assets/images/icons/news/threeDotIcon.svg";
 import BtnPopover from "../partials/btnPopover";
 // import { CustomDropDown } from "../partials/customDropDown";
 
-;
-;
 function BtnContent({ newsId }) {
   const history = useHistory();
-;
-;
-
   const handleDeleteCategory = async (payload) => {
     return deleteNewsDetail(payload);
   };
@@ -45,7 +40,7 @@ function BtnContent({ newsId }) {
   });
 
   return (
-    <div className="btncontentwraper">
+    <div className="btncontentwrapper">
       <Row className="MainContainer">
         <Col
           xs={12}

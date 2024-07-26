@@ -1,22 +1,15 @@
-import { useMutation } from "@tanstack/react-query";
 import moment from "moment";
 import numberToWords from "number-to-words";
 import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import ReactToPdf from "react-to-pdf";
 import ReactToPrint from "react-to-print";
-import { Button, Modal, ModalBody, ModalFooter } from "reactstrap";
-import styled from "styled-components";
-import Swal from "sweetalert2";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
-import donationReceiptIcon from "../../assets/images/icons/donationReceipt.svg";
 import receiptIcon from "../../assets/images/icons/receiptIcon.svg";
-import templeImage from "../../assets/images/pages/login-v2.png";
+import "../../assets/scss/common.scss";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomDataTable from "../partials/CustomDataTable";
-import "../../assets/scss/common.scss";
 
 export default function DonationListTable({ data, topdf }, args) {
   const { t } = useTranslation();

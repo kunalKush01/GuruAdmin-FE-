@@ -121,7 +121,7 @@ const MenuItem = ({
         }}
         className={`text-light ${
           active?.startsWith(item.activeTab) ? "active-tab" : ""
-        } `}
+        }`}
       >
         <Trans i18nKey={item.name} />
       </div>
