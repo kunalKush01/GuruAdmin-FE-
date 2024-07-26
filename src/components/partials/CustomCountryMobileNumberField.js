@@ -16,7 +16,7 @@ const CustomCountryMobileNumberField = ({
   ...props
 }) => {
   return (
-    <div className="wrapper">
+    <div className="phonewrapper">
       {label && (
         <label>
           {`${label}`}
