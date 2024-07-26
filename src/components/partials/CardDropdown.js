@@ -1,124 +1,71 @@
 import React from "react";
 import { CustomReactSelect } from "./customReactSelect";
-import styled from "styled-components";
+import '../../assets/scss/viewCommon.scss';
+import "../../assets/scss/variables/_variables.scss";
 
-const CardOption = styled.div`
-  padding: 12px;
-  border: 1px solid #E1DFEC;
-  border-radius: 8px;
-  background-color: #FFFFFF;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  }
-`;
-
-const CardRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-`;
-
-const CardLabel = styled.span`
-  font-weight: 600;
-  color: #583703;
-  font-size: 0.9em;
-`;
-
-const CardValue = styled.span`
-  color: #583703;
-  text-align: right;
-  font-size: 0.9em;
-`;
-
-const CardTitle = styled(CardValue)`
-  font-weight: 700;
-  font-size: 1em;
-`;
-
-const CardDescription = styled(CardValue)`
-  opacity: 0.8;
-`;
-
-const CommitmentId = styled(CardValue)`
-  font-family: monospace;
-  background-color: #F0F0F0;
-  padding: 2px 4px;
-  border-radius: 4px;
-`;
-
-const Amount = styled(CardValue)`
-  font-weight: 600;
-  color: #28a745;
-`;
-
-export const CardDropdown = ({ options, backgroundColor = "#FCF5E7", ...props }) => {
+export const CardDropdown = ({ options, backgroundColor = 'var(--secondary-color)', ...props }) => {
   const customStyles = {
-    ...props.styles,
     control: (provided, state) => ({
       ...provided,
       backgroundColor: backgroundColor,
-      borderColor: state.isFocused ? "#FF8744" : "#FCF5E7",
-      boxShadow: state.isFocused ? "0 0 0 1px #FF8744" : "none",
-      "&:hover": {
-        borderColor: "#FF8744",
-      },
+      minHeight: '38px',
+      height: '38px',
     }),
-    option: (provided, state) => ({
+    valueContainer: (provided) => ({
       ...provided,
-      padding: "4px",
-      backgroundColor: "transparent",
-      color: "#583703",
-      "&:hover": {
-        backgroundColor: "transparent",
-      },
+      height: '38px',
+      padding: '0 6px',
     }),
-    singleValue: (provided) => ({
+    input: (provided) => ({
       ...provided,
-      color: "#583703",
-      font: "normal normal bold 13px/20px Noto Sans",
+      margin: '0px',
     }),
+    indicatorSeparator: () => ({
+      display: 'none',
+    }),
+    indicatorsContainer: (provided) => ({
+      ...provided,
+      height: '38px',
+    }),
+    option: () => ({}),
     menu: (provided) => ({
       ...provided,
-      backgroundColor: "transparent",
-      boxShadow: "none",
-      border: "none",
+      maxHeight: '300px',
+      overflowY: 'auto',
     }),
     menuList: (provided) => ({
       ...provided,
-      padding: 0,
+      maxHeight: '300px',
+      overflowY: 'auto',
     }),
+    placeholder: (provided) => ({
+        ...provided,
+        color: 'var(--font-color)',
+        opacity:'60%'
+      }),
   };
 
   const formatOptionLabel = (option, { context }) => {
     if (context === 'menu') {
       return (
-        <CardOption> 
-          <CardRow>
-            <CardLabel>Category:</CardLabel>
-            <CardTitle>{option.masterCategoryId.name}</CardTitle>
-          </CardRow>
-          <CardRow>
-            <CardLabel>Subcategory:</CardLabel>
-            <CardDescription>{option.categoryId.name}</CardDescription>
-          </CardRow>
-          <CardRow>
-            <CardLabel>Commitment ID:</CardLabel>
-            <CommitmentId>{option.commitmentId}</CommitmentId>
-          </CardRow>
-          <CardRow>
-            <CardLabel>Amount:</CardLabel>
-            <Amount>₹{option.amount}</Amount>
-          </CardRow>
-        </CardOption>
+        <div className="card-option"> 
+          <div className="card-row">
+            <span className="card-label">Commitment ID:</span>
+            <span className="commitment-id">{option.commitmentId}</span>
+          </div>
+          <div className="card-row">
+            <span className="card-label">Category:</span>
+            <span className="card-title">{option.masterCategoryId.name}</span>
+          </div>
+          <div className="card-row">
+            <span className="card-label">Subcategory:</span>
+            <span className="card-description">{option.categoryId.name}</span>
+          </div>
+          <div className="card-row">
+            <span className="card-label">Amount:</span>
+            <span className="amount">₹{option.amount}</span>
+          </div>
+        </div>
       );
     }
     return option.commitmentId;
@@ -130,6 +77,8 @@ export const CardDropdown = ({ options, backgroundColor = "#FCF5E7", ...props })
       options={options}
       styles={customStyles}
       formatOptionLabel={formatOptionLabel}
+      classNamePrefix="card-dropdown"
+      maxMenuHeight={300}
     />
   );
 };
