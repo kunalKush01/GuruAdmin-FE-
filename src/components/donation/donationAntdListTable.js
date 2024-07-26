@@ -199,7 +199,7 @@ export default function DonationANTDListTable(
       key: "commitmentID",
       render: (text) => text,
       //   width: "180px",
-      width: 150,
+      width: 180,
     },
     {
       title: t("created_by"),
