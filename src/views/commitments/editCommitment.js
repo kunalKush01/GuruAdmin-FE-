@@ -7,7 +7,6 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useSelector } from "react-redux";
 import { useHistory, useParams,useLocation } from "react-router-dom";
 import { Col, Row } from "reactstrap";
-import styled from "styled-components";
 import * as Yup from "yup";
 import {
   getCommitmentDetail,
@@ -28,7 +27,6 @@ export default function EditCommitment() {
     ? JSON.parse(decodeURIComponent(customFieldDataString))
     : {};
 
-  // console.log(customFieldData); // Use the customFieldData as needed
   const history = useHistory();
   const { commitmentId } = useParams();
   const langArray = useSelector((state) => state.auth.availableLang);
@@ -95,7 +93,6 @@ export default function EditCommitment() {
         languageId: getLangId(langArray, langSelection),
       })
   );
-// console.log(commitmentDetailQuery)
   const handleCommitmentUpdate = async (payload) => {
     return updateCommitmentDetail({
       ...payload,
@@ -124,10 +121,6 @@ export default function EditCommitment() {
       )
         .utcOffset("+0530")
         .toDate(),
-      // customFields: customFieldsList.reduce((acc, field) => {
-      //   acc[field.fieldName] = "";
-      //   return acc;
-      // }, {}),
       customFields: commitmentDetailQuery?.data?.result?.customFields.reduce((acc, field) => {
         acc[field.fieldName] = field.value ?? "";
         return acc;

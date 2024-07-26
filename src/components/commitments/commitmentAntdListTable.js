@@ -18,12 +18,10 @@ import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import confirmationIcon from "../../assets/images/icons/news/conformationIcon.svg";
 import receiptIcon from "../../assets/images/icons/receiptIcon.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-import { DELETE, EDIT } from "../../utility/permissionsVariable";
-import CustomDataTable from "../partials/CustomDataTable";
 import "../../assets/scss/common.scss";
 import { Table } from "antd";
 import { getPledgeCustomFields } from "../../api/customFieldsApi";
-import "../donation/donationStyle.css";
+import "../../assets/scss/common.scss";
 import classNames from "classnames";
 
 export default function CommitmentAntdListTable(
@@ -111,7 +109,7 @@ export default function CommitmentAntdListTable(
 
   const customColumns = customFieldNames.map((fieldName) => {
     const titleLength = fieldName.length;
-    const calculatedWidth = Math.max(150, titleLength * 10); // Adjust the multiplier as needed
+    const calculatedWidth = Math.max(150, titleLength * 10);
 
     return {
       title: fieldName,
@@ -288,7 +286,6 @@ export default function CommitmentAntdListTable(
         category: (
           <div>
             {ConverFirstLatterToCapital(item?.masterCategory?.name ?? "-")}{" "}
-            {/* {item?.category && `(${item?.category?.name})`} */}
           </div>
         ),
         subCategory: ConverFirstLatterToCapital(item?.category?.name ?? "-"),
@@ -379,10 +376,9 @@ export default function CommitmentAntdListTable(
               <img
                 src={editIcon}
                 width={35}
-                // className={financeReport ? "d-none" : "cursor-pointer"}
                 className={classNames({
-                  "d-none": financeReport, // Hide if financeReport is true
-                  "cursor-pointer": !financeReport, // Show cursor pointer if financeReport is false
+                  "d-none": financeReport,
+                  "cursor-pointer": !financeReport,
                   "opacity-50": item.paidStatus === "completed",
                   "pointer-events-none": item.paidStatus === "completed",
                 })}
@@ -402,10 +398,9 @@ export default function CommitmentAntdListTable(
               <img
                 src={deleteIcon}
                 width={35}
-                // className={financeReport ? "d-none" : "cursor-pointer"}
                 className={classNames({
-                  "d-none": financeReport, // Hide if financeReport is true
-                  "cursor-pointer": !financeReport, // Show cursor pointer if financeReport is false
+                  "d-none": financeReport,
+                  "cursor-pointer": !financeReport,
                   "opacity-50": item.paidStatus === "completed",
                   "pointer-events-none": item.paidStatus === "completed",
                 })}
@@ -455,6 +450,7 @@ export default function CommitmentAntdListTable(
   return (
     <>
       <Table
+        className="commitmentListTable"
         columns={columns}
         dataSource={commitment_Data}
         scroll={{
@@ -474,14 +470,7 @@ export default function CommitmentAntdListTable(
         }}
         bordered
       />
-      {/* <CustomDataTable
-        maxHeight={""}
-        columns={columns}
-        data={commitment_Data}
-        selectableRows={!financeReport}
-        selectableRowDisabled={DisableSelectRow}
-        onSelectedRowsChange={handleChange}
-      /> */}
+
       <ReactToPrint
         trigger={() => (
           <span id="AllCommitment" ref={pdfRef} style={{ display: "none" }}>
@@ -505,10 +494,7 @@ export default function CommitmentAntdListTable(
                 <div className="row">
                   <div className="col-12">
                     <div className="row justify-content-center">
-                      <div
-                        className="col-10"
-                        // style={{margin:'auto'}}
-                      >
+                      <div className="col-10">
                         <img
                           src={loggedTemple?.profilePhoto ?? ""}
                           style={{

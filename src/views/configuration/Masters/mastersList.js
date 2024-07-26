@@ -11,30 +11,9 @@ import NoContent from "../../../components/partials/noContent";
 import { getAllMasters } from "../../../api/masterApi";
 import { MasterListTable } from "../../../components/Masters/mastersListTable";
 import { Plus } from "react-feather";
-import "./masterStyle.css";
 import AddMasterForm from "./addMasterForm";
+import '../../../assets/scss/common.scss'
 
-const CategoryListWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .addCategory {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-
-  .addCategory-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .categoryContent {
-    margin-top: 1rem;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-`;
 
 export default function Master() {
   const { t } = useTranslation();
@@ -55,7 +34,6 @@ export default function Master() {
     {
       keepPreviousData: true,
       onSuccess: (data) => {
-        // Ensure data format matches this
         setPagination((prev) => ({
           ...prev,
           total: data.pagination.total,
@@ -63,7 +41,6 @@ export default function Master() {
       },
     }
   );
-// console.log(masterQuery)
   const masterItem = useMemo(
     () => masterQuery?.data?.masterNames ?? [],
     [masterQuery]
@@ -79,17 +56,16 @@ export default function Master() {
     setPagination((prev) => ({
       ...prev,
       pageSize,
-      current: 1, // Reset to first page when page size changes
+      current: 1, 
     }));
   };
-  // console.log(masterQuery);
   const queryClient = useQueryClient();
   const toggleForm = () => setIsFormOpen(!isFormOpen);
   const handleFormSuccess = () => {
     queryClient.invalidateQueries(["Masters"]);
   };
   return (
-    <CategoryListWrapper>
+    <div className="masterlistTableContainer">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Masters</title>
@@ -143,7 +119,7 @@ export default function Master() {
               <Else>
                 <If condition={masterItem.length != 0} disableMemo>
                   <Then>
-                    <div className="mb-2">
+                    <div className="mb-2 masterListAntdTable">
                       <MasterListTable
                         data={masterItem}
                         pagination={pagination}
@@ -166,6 +142,6 @@ export default function Master() {
         toggle={toggleForm}
         onSuccess={handleFormSuccess}
       />
-    </CategoryListWrapper>
+    </div>
   );
 }

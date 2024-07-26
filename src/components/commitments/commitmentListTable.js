@@ -44,7 +44,6 @@ export default function CommitmentListTable(
   },
   args
 ) {
-  console.log(data)
   const handleDeleteCommitment = async (payload) => {
     return deleteCommitment(payload);
   };

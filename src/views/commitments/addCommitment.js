@@ -3,26 +3,14 @@ import React from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import styled from "styled-components";
 import * as Yup from "yup";
 import { createCommitment } from "../../api/commitmentApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import CommitmentForm from "../../components/commitments/commitmentForm";
 import { useQuery } from "@tanstack/react-query";
 import { getPledgeCustomFields } from "../../api/customFieldsApi";
+import '../../../src/assets/scss/common.scss'
 
-const CommitmentWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  // .ImagesVideos {
-  //   font: normal normal bold 15px/33px Noto Sans;
-  // }
-  .addCommitment {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
 export default function AddCommitment() {
   const handleCreateCommitment = async (payload) => {
     return createCommitment(payload);
@@ -90,7 +78,7 @@ export default function AddCommitment() {
     }, {}),
   };
   return (
-    <CommitmentWrapper>
+    <div>
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -117,6 +105,6 @@ export default function AddCommitment() {
           customFieldsList={customFieldsList}
         />
       </div>
-    </CommitmentWrapper>
+    </div>
   );
 }

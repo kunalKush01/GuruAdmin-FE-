@@ -27,7 +27,6 @@ import CustomRadioButton from "../partials/customRadioButton";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import { DatePicker } from "antd";
-// import "./donationStyle.css";
 import '../../../src/assets/scss/common.scss'
 export default function FormWithoutFormikForDonation({
   formik,

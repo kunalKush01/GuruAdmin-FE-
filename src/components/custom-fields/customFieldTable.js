@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { Table } from "antd";
-
+import '../../assets/scss/common.scss'
 const CustomFieldTable = ({ customFields }) => {
   const columns = useMemo(() => {
     return [
@@ -37,6 +37,7 @@ const CustomFieldTable = ({ customFields }) => {
       }}
       pagination={{ pageSize: 10}}
       bordered
+      className="customFieldTable"
     />
   );
 };

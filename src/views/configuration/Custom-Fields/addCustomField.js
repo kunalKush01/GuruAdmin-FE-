@@ -12,13 +12,13 @@ import {
 } from "reactstrap";
 import Swal from "sweetalert2";
 import { X } from "react-feather";
-import "../Masters/masterStyle.css";
+import '../../../assets/scss/common.scss'
 import {
   createDonationBoxCustomFields,
   createDonationCustomFields,
   createPledgeCustomFields,
 } from "../../../api/customFieldsApi";
-import { getAllMasters, getAllMastersWithoutPagination, getMasterDataById } from "../../../api/masterApi";
+import { getAllMastersWithoutPagination, getMasterDataById } from "../../../api/masterApi";
 import { useQuery } from "@tanstack/react-query";
 
 const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
@@ -30,7 +30,6 @@ const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
     master: "",
     masterData: "",
   };
-  // console.log(activeTab);
   const [formData, setFormData] = useState(initialFormData);
   const [validationMessages, setValidationMessages] = useState({});
   const masterQuery = useQuery(["Masters"], () => getAllMastersWithoutPagination(), {
@@ -55,9 +54,7 @@ const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
     () => masterDataQuery?.data ?? [],
     [masterDataQuery,activeTab]
   );
-  // console.log(masterQuery);
   useEffect(() => {
-    // Reset form data when activeTab changes
     setFormData(initialFormData);
     setValidationMessages({});
   }, [activeTab]);
@@ -184,7 +181,7 @@ const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
   };
 
   return (
-    <Modal isOpen={isOpen} toggle={toggle} centered>
+    <Modal isOpen={isOpen} toggle={toggle} centered id="addCustomFieldForm">
       <ModalHeader toggle={toggle}>
         Add New Custom Field
         <div>
