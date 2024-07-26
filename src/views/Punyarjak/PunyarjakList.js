@@ -22,41 +22,7 @@ import NoContent from "../../components/partials/noContent";
 import SubscribedUSerListTable from "../../components/subscribedUser/subscribedUserListTable";
 import { WRITE } from "../../utility/permissionsVariable";
 
-const PunyarjakWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addPunyarjak {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-
-  // .FormikWraper {
-  //   padding: 40px;
-  // }
-  // .btn-Published {
-  //   text-align: center;
-  // }
-  .addPunyarjak-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .punyarjakContent {
-    margin-top: 1rem;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  // .filterPeriod {
-  //   color: #ff8744;
-  //   margin-top: 0.5rem;
-  //   font: normal normal bold 13px/5px noto sans;
-  // }
-`;
+import "../../assets/scss/viewCommon.scss";
 
 export default function Punyarjak() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
@@ -147,7 +113,7 @@ export default function Punyarjak() {
   );
 
   return (
-    <PunyarjakWrapper>
+    <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Punyarjak</title>
@@ -175,7 +141,7 @@ export default function Punyarjak() {
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
-                className="addPunyarjak-btn"
+                className="addAction-btn"
                 onClick={() =>
                   history.push(`/punyarjak/add?page=${pagination.page}`)
                 }
@@ -280,6 +246,6 @@ export default function Punyarjak() {
           </Row>
         </div>
       </div>
-    </PunyarjakWrapper>
+    </div>
   );
 }

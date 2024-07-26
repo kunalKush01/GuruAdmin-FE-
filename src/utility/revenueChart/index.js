@@ -1,74 +1,50 @@
 import ReactApexChart from "react-apexcharts";
 import { Trans, useTranslation } from "react-i18next";
-import styled from "styled-components";
-const RevenueChartWarrper = styled.div`
-  .apexcharts-toolbar {
-    display: none;
-  }
-  .apexcharts-legend {
-    position: relative !important;
-    justify-content: end !important;
-  }
-  p {
-    color: #583703;
-    font: normal normal bold 25px/50px Noto Sans;
-  }
-  .apexcharts-legend-text {
-    color: #583703 !important;
-  }
-  .apexcharts-xaxis-label {
-    fill: #583703 !important;
-    font: normal normal bold 11px/24px Noto Sans;
-  }
-  .apexcharts-yaxis-label {
-    fill: #583703 !important;
-    font: normal normal bold 11px/24px Noto Sans;
-  }
-`;
+import "../../assets/scss/viewCommon.scss";
+
+const getCssVariableValue = (variable) => {
+  return getComputedStyle(document.documentElement)
+    .getPropertyValue(variable)
+    .trim();
+};
+
+const barColors = [
+  getCssVariableValue("--blue"),
+  getCssVariableValue("--yellow"),
+  getCssVariableValue("--purple"),
+];
+
 export const RevenueChart = ({
   DonationData = [],
   CommitmentData = [],
   chartHeading,
   cattleSeries,
-  barColors = ["#FF8744", "#FFDEB8", "#FF0700"],
+  barColors,
 }) => {
   const { t } = useTranslation();
 
   const series = [
     {
       name: t("donation_hundi"),
-      data: DonationData?.map((item) => {
-        return {
-          x: item.month,
-          y: item?.amount,
-        };
-      }),
+      data: DonationData?.map((item) => ({
+        x: item.month,
+        y: item?.amount,
+      })),
     },
     {
       name: t("commitment"),
-      data: CommitmentData?.map((item) => {
-        return {
-          x: item.month,
-          y: item.amount,
-        };
-      }),
+      data: CommitmentData?.map((item) => ({
+        x: item.month,
+        y: item.amount,
+      })),
     },
-    // {
-    //   name: t("dashboard_totalExpenses"),
-    //   data: TotalExpensesData?.map((item) => {
-    //     return {
-    //       x: item.month,
-    //       y: item.amount,
-    //     };
-    //   }),
-    // },
   ];
 
   const options = {
     chart: {
       type: "bar",
       height: 350,
-      fontFamily: " Noto Sans",
+      fontFamily: "Noto Sans",
       fontColors: "#583703",
     },
     plotOptions: {
@@ -82,22 +58,15 @@ export const RevenueChart = ({
       enabled: false,
     },
     colors: barColors,
-
     stroke: {
       show: true,
       width: 2,
       colors: ["transparent"],
     },
-    // xaxis: {
-    //   type: "category",
-    // },
     yaxis: {
       labels: {
         formatter: function (value) {
-          // Customize the label value based on your requirements
-          // const formattedValue = value.toFixed(2).replace(/\d(?=(\d{2})+\d{3})/g, '$&,');
-          // return `₹${formattedValue}`;
-          return `₹${value.toLocaleString("en-IN")}`; // Add a dollar sign to the label value
+          return `₹${value.toLocaleString("en-IN")}`;
         },
       },
     },
@@ -107,14 +76,14 @@ export const RevenueChart = ({
     tooltip: {
       y: {
         formatter: (val) => {
-          return !cattleSeries ? "₹" + val.toLocaleString("en-IN")  : val;
+          return !cattleSeries ? "₹" + val.toLocaleString("en-IN") : val;
         },
       },
     },
   };
 
   return (
-    <RevenueChartWarrper id="chart">
+    <div className="revenue-chart-wrapper" id="chart">
       <p>
         <Trans i18nKey={chartHeading} />
       </p>
@@ -124,6 +93,6 @@ export const RevenueChart = ({
         type="bar"
         height={"450"}
       />
-    </RevenueChartWarrper>
+    </div>
   );
 };

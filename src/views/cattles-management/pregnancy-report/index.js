@@ -19,15 +19,7 @@ import { Helmet } from "react-helmet";
 import { WRITE } from "../../../utility/permissionsVariable";
 import { ConverFirstLatterToCapital } from "../../../utility/formater";
 
-const PregnancyReportWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-
-  .btn {
-    font-weight: bold;
-  }
-`;
-
+import "../../../assets/scss/viewCommon.scss";
 const PregnancyReport = () => {
   const history = useHistory();
   const { t } = useTranslation();
@@ -96,7 +88,6 @@ const PregnancyReport = () => {
         languageId: selectedLang.id,
       })
   );
-  console.log("pregnancyStatus", pregnancyStatus);
 
   const cattlePregnancyListData = useMemo(
     () => cattlePregnancyList?.data?.results ?? [],
@@ -119,12 +110,11 @@ const PregnancyReport = () => {
   );
 
   return (
-    <PregnancyReportWrapper>
+    <div className="pregnancyreportwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Cattles Pregnancy Records</title>
       </Helmet>
-      {/* <CattleTabBar tabs={cattleHeader} active={active} setActive={setActive} /> */}
       <div>
         <div className="d-sm-flex mb-1 justify-content-between align-items-center ">
           <Trans i18nKey="cattle_pregnancy_report" />
@@ -291,7 +281,7 @@ const PregnancyReport = () => {
           </Row>
         </div>
       </div>
-    </PregnancyReportWrapper>
+    </div>
   );
 };
 

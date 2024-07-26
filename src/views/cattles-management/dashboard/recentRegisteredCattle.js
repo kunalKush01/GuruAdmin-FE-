@@ -6,21 +6,7 @@ import styled from "styled-components";
 import avtarIcon from "../../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import CustomDataTable from "../../../components/partials/CustomDataTable";
 import { ConverFirstLatterToCapital } from "../../../utility/formater";
-
-const RecentRegisteredCattleTableWrapper = styled.div`
-  color: #583703 !important;
-  margin-right: 20px;
-  margin: 1rem 0;
-  font: normal normal bold 20px/23px Noto Sans !important;
-  .DonationViewAll {
-    color: #ff8744;
-    cursor: pointer;
-  }
-  .recentDonationHeading {
-    font: normal normal bold 20px/23px Noto Sans;
-  }
-`;
-
+import "../../../assets/scss/viewCommon.scss";
 export default function RecentRegisteredCattlesTable({ data }) {
   // const handleDeleteExpenses = async (payload) => {
   //   return deleteExpensesDetail(payload);
@@ -142,7 +128,7 @@ export default function RecentRegisteredCattlesTable({ data }) {
   }, [data]);
 
   return (
-    <RecentRegisteredCattleTableWrapper>
+    <div className="recentregisteredcattletablewrapper">
       <div className="d-flex listHeading justify-content-between">
         <p className="recentDonationHeading">
           <Trans i18nKey={"recent_registered_cattles"} />
@@ -155,6 +141,6 @@ export default function RecentRegisteredCattlesTable({ data }) {
         </p>
       </div>
       <CustomDataTable maxHeight={100} columns={columns} data={CattlesInfo} />
-    </RecentRegisteredCattleTableWrapper>
+    </div>
   );
 }

@@ -18,19 +18,8 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { EDIT } from "../../utility/permissionsVariable";
 import CustomDataTable from "../partials/CustomDataTable";
 import EditDonation from "./editDonation";
-import { toast } from 'react-toastify';
-
-const RecentDonationTableWarper = styled.div`
-  color: #583703 !important;
-  font: normal normal bold 15px/23px Noto Sans;
-  .modal-body {
-    max-height: 600px !important;
-    overflow: auto !important;
-  }
-  .tableDes p {
-    margin-bottom: 0;
-  }
-`;
+import { toast } from "react-toastify";
+import "../../assets/scss/common.scss";
 
 export default function DonationListTable(
   { data, topdf, allPermissions, subPermission, financeReport },
@@ -39,7 +28,6 @@ export default function DonationListTable(
   const { t } = useTranslation();
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
-  console.log("isLoading", isLoading);
   const ref = useRef();
   const pdfRef = useRef();
   const options = {
@@ -75,7 +63,7 @@ export default function DonationListTable(
       estimateAmount: row?.amount,
     });
   };
-  
+
   const columns = [
     {
       name: t("commitment_Username"),
@@ -180,7 +168,6 @@ export default function DonationListTable(
         category: (
           <div>
             {ConverFirstLatterToCapital(item?.masterCategory?.name ?? "-")}
-            {/* {item?.subCategory && `(${item?.subCategory?.name ?? ""})`} */}
           </div>
         ),
         subCategory: ConverFirstLatterToCapital(item?.category?.name ?? "-"),
@@ -231,9 +218,24 @@ export default function DonationListTable(
                 if (!item.receiptLink) {
                   toast.error("Receipt link not available at this moment");
                 } else {
-                  const message = `Hello ${item.donarName}, thank you for your donation of ₹${item.amount.toLocaleString("en-IN")} to ${loggedTemple?.name}. Here is your receipt: https://docs.google.com/gview?url=${item.receiptLink}`;
-                  const phoneNumber = `${item.user?.countryCode?.replace("+", "") || ""}${item.user?.mobileNumber || ""}`;
-                  window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+                  const message = `Hello ${
+                    item.donarName
+                  }, thank you for your donation of ₹${item.amount.toLocaleString(
+                    "en-IN"
+                  )} to ${
+                    loggedTemple?.name
+                  }. Here is your receipt: https://docs.google.com/gview?url=${
+                    item.receiptLink
+                  }`;
+                  const phoneNumber = `${
+                    item.user?.countryCode?.replace("+", "") || ""
+                  }${item.user?.mobileNumber || ""}`;
+                  window.open(
+                    `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+                      message
+                    )}`,
+                    "_blank"
+                  );
                 }
               }}
             />
@@ -264,7 +266,7 @@ export default function DonationListTable(
     .toUpperCase();
 
   return (
-    <RecentDonationTableWarper>
+    <div className="recentdonationtablewrapper">
       <CustomDataTable maxHeight={""} columns={columns} data={Donatio_data} />
       <ReactToPrint
         trigger={() => (
@@ -275,136 +277,6 @@ export default function DonationListTable(
         content={() => ref.current}
         documentTitle={`Donation-Receipt.pdf`}
       />
-      {/* <div className="d-none">
-        <div ref={ref}>
-          <div
-            className="container"
-            style={{
-              font: "normal normal normal 18px/45px noto sans",
-              color: "#000000",
-            }}
-          >
-            <div className="row">
-              <div className="col-12">
-                <div className="row justify-content-center">
-                  <div
-                    className="col-10"
-                    // style={{margin:'auto'}}
-                  >
-                    <img
-                      src={loggedTemple?.profilePhoto ?? ""}
-                      style={{
-                        width: "100%",
-                        marginTop: "1rem",
-                        height: "250px",
-                        objectFit: "cover",
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-1"></div>
-                  <div className="col-5">Receipt No/रसीद क्रमांक</div>
-                  <div className="col-5">{receipt?.receiptNo ?? "-"}</div>
-                </div>
-                <div className="row">
-                  <div className="col-1"></div>
-                  <div className="col-5">Date/दिनांक</div>
-                  <div className="col-5">
-                    {moment(receipt?.createdAt ?? receipt?.updatedAt).format(
-                      " DD MMM YYYY"
-                    )}
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-1"></div>
-                  <div className="col-5">Name/नाम &nbsp;</div>
-                  <div className="col-5">
-                    {ConverFirstLatterToCapital(
-                      receipt?.donarName || receipt?.user?.name || ""
-                    )}
-                  </div>
-                </div>
-                <div className="row ">
-                  <div className="col-1"></div>
-                  <div className="col-5">Pan/पैन</div>
-                  <div className="col-5">{receipt?.user?.panNumber ?? "-"}</div>
-                </div>
-                <div className="row">
-                  <div className="col-1"></div>
-                  <div className="col-5">Mobile/मोबाइल</div>
-                  <div className="col-5">
-                    {receipt?.user?.countryCode} {receipt?.user?.mobileNumber}
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-1"></div>
-                  <div className="col-5">Address/पता</div>
-                  <div className="col-5">{receipt?.user?.address ?? "-"}</div>
-                </div>
-                <div className="row">
-                  <div className="col-1"></div>
-                  <div className="col-5">Mode of Payment/भुगतान माध्यम</div>
-                  <div className="col-5">
-                    {ConverFirstLatterToCapital(
-                      receipt?.paymentMethod ?? "None"
-                    )}
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-1"></div>
-                  <div className="col-5">Remarks/विवरण </div>
-                  <div className="col-5">{receipt?.remarks ?? "-"}</div>
-                </div>
-                <div
-                  className="row"
-                  style={{
-                    font: "normal normal bold 18px/45px noto sans",
-                  }}
-                >
-                  <div className="col-1"></div>
-                  <div className="col-5">Amount/राशि</div>
-                  <div className="col-5">
-                    ₹{receipt?.amount?.toLocaleString("en-In")}
-                  </div>
-                </div>
-                <div
-                  className="row"
-                  style={{
-                    font: "normal normal bold 18px/45px noto sans",
-                  }}
-                >
-                  <div className="col-1"></div>
-                  <div className="col-5">In Words(शब्दों में)</div>
-                  <div className="col-5">{inWordsNumber} ONLY</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <hr style={{ height: "3px" }} />
-          <div
-            className="container"
-            style={{
-              font: "normal normal normal 18px/33px noto sans",
-              color: "#000000",
-            }}
-          >
-            <div className="row">
-              <div className="col-1"></div>
-              <div
-                className="col-5"
-                // style={{background:'blue'}}
-              >
-                This is system generated receipt/ यह कंप्यूटर के द्वारा बनाई गई
-                रसीद है
-              </div>
-              <div className="col-5" style={{ textAlign: "end" }}>
-                (Logo) Powered by apnamandir.com
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
       <div className="d-none">
         <div ref={ref}>
           <div
@@ -563,33 +435,6 @@ export default function DonationListTable(
                 </div>
               </div>
             </div>
-
-            {/* <div
-              style={{
-                width: "100%",
-                margin: "1.5rem 0rem",
-                justifyContent: "end",
-                display: "flex",
-              }}
-            >
-              <div style={{ width: "65%", display: "flex" }}>
-                <div style={{ display: "grid" }}>
-                  <span style={{ fontSize: "20px" }}>राशि: </span>
-                  <span>(Amount)</span>
-                </div>
-                <div
-                  style={{
-                    border: "1px solid red",
-                    marginLeft: ".5rem",
-                    width: "100%",
-                    padding: "1rem",
-                  }}
-                >
-                  ₹{receipt?.amount?.toLocaleString("en-In")}
-                </div>
-              </div>
-            </div> */}
-
             <div
               style={{
                 display: "flex",
@@ -672,28 +517,6 @@ export default function DonationListTable(
                 {receipt?.masterCategory?.name} / {receipt?.category?.name}
               </div>
             </div>
-
-            {/* <div
-              style={{
-                margin: "1.5rem 0rem",
-                fontSize: "20px",
-                fontWeight: "bold",
-              }}
-            >
-              <span>To DONATE:</span>
-              <span></span>
-            </div> */}
-
-            {/* <div
-              style={{
-                margin: "1.5rem 0rem",
-                fontSize: "20px",
-              }}
-            >
-              <span>UPI:</span>
-              <span></span>
-            </div> */}
-
             <div
               style={{
                 display: "flex",
@@ -702,22 +525,6 @@ export default function DonationListTable(
                 margin: "2rem 0rem",
               }}
             >
-              {/* <div style={{ width: "50%", display: "grid" }}>
-                <span>Bank Details:</span>
-                <div>
-                  <span>A/c no.</span>
-                  <span>{loggedTemple?.accountNumber}</span>
-                </div>
-                <div>
-                  <span>IFSC Code: </span>
-                  <span>{loggedTemple?.ifsc_code}</span>
-                </div>
-                <div>
-                  <span>Branch: </span>
-                  <span>{loggedTemple?.branch}</span>
-                </div>
-              </div> */}
-
               <div
                 style={{
                   width: "50%",
@@ -751,6 +558,6 @@ export default function DonationListTable(
         donationId={modal?.donationId}
         estimateAmount={modal?.estimateAmount}
       />
-    </RecentDonationTableWarper>
+    </div>
   );
 }

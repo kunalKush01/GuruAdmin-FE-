@@ -17,18 +17,7 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import CommitmentForm from "../../components/commitments/commitmentForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-const CommitmentWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  // .ImagesVideos {
-  //   font: normal normal bold 15px/33px Noto Sans;
-  // }
-  .editCommitment {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import "../../assets/scss/viewCommon.scss";
 
 const schema = Yup.object().shape({
   Mobile: Yup.string().required("expenses_mobile_required"),
@@ -113,7 +102,7 @@ export default function EditCommitment() {
   }, [commitmentDetailQuery]);
 
   return (
-    <CommitmentWrapper>
+    <div className="commitmentwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -178,6 +167,6 @@ export default function EditCommitment() {
           )}
         </Else>
       </If>
-    </CommitmentWrapper>
+    </div>
   );
 }

@@ -23,20 +23,7 @@ import Usage from "./usage";
 import { Helmet } from "react-helmet";
 import { WRITE } from "../../../utility/permissionsVariable";
 
-const StockManagementWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-
-  .btn {
-    font-weight: bold;
-  }
-
-  hr {
-    height: 1px;
-    margin-top: 0;
-  }
-`;
-
+import "../../../assets/scss/viewCommon.scss";
 const StockManagement = () => {
   const [active, setActive] = useState(location.pathname);
   const history = useHistory();
@@ -140,7 +127,7 @@ const StockManagement = () => {
   const allPermissions = permissions?.find(
     (permissionName) => permissionName.name === "all"
   );
-  console.log("allPermissions", allPermissions);
+  // console.log("allPermissions", allPermissions);
   const subPermissions = permissions?.find((permissionName) => {
     if (active === "/cattle/management/item") {
       return permissionName.name == "cattle-item";
@@ -154,10 +141,10 @@ const StockManagement = () => {
   const subPermission = subPermissions?.subpermissions?.map(
     (item) => item.name
   );
-  console.log("subPermission", permissions);
+  // console.log("subPermission", permissions);
 
   return (
-    <StockManagementWrapper>
+    <div className="stockmanagementwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Cattles Stock Management | Stock </title>
@@ -335,7 +322,7 @@ const StockManagement = () => {
           )
         )}
       </div>
-    </StockManagementWrapper>
+    </div>
   );
 };
 

@@ -10,35 +10,7 @@ import CustomTextField from "../../components/partials/customTextField";
 import { addFacility } from "../../redux/authSlice";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 
-const WrapFacility = styled.div`
-  .addProfile {
-    font: normal normal bold 20px/33px Noto Sans;
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-
-  label {
-    /* margin-bottom: 0px; */
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  input {
-    color: #583703 !important;
-    border: none !important;
-    height: 36px;
-    width: 100%;
-    padding-top: 9px;
-    padding-left: 5px;
-    /* text-align: center; */
-    background-color: #fff7e8 !important;
-    font: normal normal normal 13px/20px Noto Sans;
-    border-radius: 5px;
-  }
-  input[type="file"]::file-selector-button {
-    display: none;
-  }
-`;
-
+import "../../../assets/scss/viewCommon.scss";
 const FacilityForm = () => {
   const history = useHistory();
   const { t } = useTranslation();
@@ -71,7 +43,7 @@ const FacilityForm = () => {
   };
 
   return (
-    <WrapFacility>
+    <div className="wrapfacility">
       <Formik
         initialValues={{
           name: "",
@@ -176,7 +148,7 @@ const FacilityForm = () => {
           );
         }}
       </Formik>
-    </WrapFacility>
+    </div>
   );
 };
 

@@ -7,30 +7,14 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { Col, Row } from "reactstrap";
-import styled from "styled-components";
 import * as Yup from "yup";
-import {
-  getCommitmentDetail,
-  updateCommitmentDetail,
-} from "../../api/commitmentApi";
+import { getCommitmentDetail } from "../../api/commitmentApi";
 import { createDonation } from "../../api/donationApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import CommitmentForm from "../../components/commitments/commitmentForm";
 import DonationForm from "../../components/donation/donationForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-const PayDonationWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .editCommitment {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import "../../assets/scss/viewCommon.scss";
 
 const schema = Yup.object().shape({
   Mobile: Yup.string().required("expenses_mobile_required"),
@@ -114,12 +98,18 @@ export default function PayDonation() {
   }, [commitmentDetailQuery]);
 
   return (
-    <PayDonationWrapper>
-      <div className="d-flex justify-content-between align-items-center ">
-        <div className="d-flex justify-content-between align-items-center ">
+    <div className="listviewwrapper" style={{ padding: 0 }}>
+      <div
+        className="d-flex justify-content-between align-items-center"
+        style={{ padding: 0, margin: 0 }}
+      >
+        <div
+          className="d-flex justify-content-between align-items-center"
+          style={{ padding: 0, margin: 0 }}
+        >
           <img
             src={arrowLeft}
-            className="me-2  cursor-pointer"
+            className="me-2 cursor-pointer"
             onClick={() =>
               currentCategory === null
                 ? history.push("/commitment")
@@ -128,43 +118,46 @@ export default function PayDonation() {
                   )
             }
           />
-          <div className="editCommitment">
+          <div className="editCommitment" style={{ padding: 0, margin: 0 }}>
             <Trans i18nKey={"pay_donation"} />
           </div>
         </div>
       </div>
       <If condition={commitmentDetailQuery.isLoading} diableMemo>
         <Then>
-          <Row>
+          <Row style={{ padding: 0, margin: 0 }}>
             <SkeletonTheme
               baseColor="#FFF7E8"
               highlightColor="#fff"
               borderRadius={"10px"}
             >
-              <Col xs={7} className="me-1">
-                <Row className="my-1">
-                  <Col xs={6}>
+              <Col xs={7} className="me-1" style={{ padding: 0, margin: 0 }}>
+                <Row className="my-1" style={{ padding: 0, margin: 0 }}>
+                  <Col xs={6} style={{ padding: 0, margin: 0 }}>
                     <Skeleton height={"36px"} />
                   </Col>
-                  <Col xs={6}>
+                  <Col xs={6} style={{ padding: 0, margin: 0 }}>
                     <Skeleton height={"36px"} />
                   </Col>
                 </Row>
-                <Row className="mt-4">
-                  <Col>
-                    <Skeleton height={"150px"} />
+                <Row className="mt-4" style={{ padding: 0, margin: 0 }}>
+                  <Col style={{ padding: 0, margin: 0 }}>
+                    <Skeleton height={"36px"} />
                   </Col>
                 </Row>
               </Col>
-              <Col className="mt-1">
-                <Skeleton height={"318px"} width={"270px"} />
+              <Col className="mt-1" style={{ padding: 0, margin: 0 }}>
+                <Skeleton height={"36px"} width={"270px"} />
               </Col>
             </SkeletonTheme>
           </Row>
         </Then>
         <Else>
           {!commitmentDetailQuery?.isLoading && (
-            <div className="ms-md-3 mt-1 mb-3">
+            <div
+              className="ms-md-3 mt-1 mb-3"
+              style={{ padding: 0, margin: 0 }}
+            >
               <DonationForm
                 validationSchema={schema}
                 initialValues={initialValues}
@@ -181,6 +174,6 @@ export default function PayDonation() {
           )}
         </Else>
       </If>
-    </PayDonationWrapper>
+    </div>
   );
 }

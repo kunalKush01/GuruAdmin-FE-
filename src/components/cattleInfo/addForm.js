@@ -6,6 +6,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { Prompt, useHistory } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
+import "../../assets/scss/common.scss";
 
 import {
   findAllCattle,
@@ -21,14 +22,6 @@ import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import ImageUpload from "../partials/imageUpload";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-
-const FormikWrapper = styled.div`
-  font: normal normal bold 15px/33px Noto Sans;
-
-  .animated-height {
-    transition: height 0.5s;
-  }
-`;
 
 const AddCattleForm = ({
   initialValues,
@@ -101,7 +94,7 @@ const AddCattleForm = ({
   });
 
   return (
-    <FormikWrapper>
+    <div className="formikwrapper">
       <Formik
         enableReinitialize
         initialValues={initialValues}
@@ -695,7 +688,7 @@ const AddCattleForm = ({
           </Form>
         )}
       </Formik>
-    </FormikWrapper>
+    </div>
   );
 };
 

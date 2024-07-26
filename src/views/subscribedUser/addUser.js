@@ -8,18 +8,7 @@ import { createSubscribedUser } from "../../api/subscribedUser.js";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import SubscribedUserForm from "../../components/subscribedUser/subscribedUserForm.js";
 
-const NoticeWraper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addNotice {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import "../../assets/scss/viewCommon.scss";
 
 const handleCreateUser = async (payload) => {
   return createSubscribedUser(payload);
@@ -58,7 +47,7 @@ export default function AddSubscribedUser() {
   const phoneNumber = `${dialCode}${mobileNumber}`; 
 
   return (
-    <NoticeWraper>
+    <div className="addviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -70,11 +59,11 @@ export default function AddSubscribedUser() {
               )
             }
           />
-          <div className="addNotice">
+          <div className="addAction">
             <Trans i18nKey={"add_user"} />
           </div>
         </div>
-        {/* <div className="addNotice">
+        {/* <div className="addAction">
           <Trans i18nKey={"news_InputIn"} />
           <CustomDropDown
             ItemListArray={langArray}
@@ -101,6 +90,6 @@ export default function AddSubscribedUser() {
           getNumber={phoneNumber}
         />
       </div>
-    </NoticeWraper>
+    </div>
   );
 }

@@ -1,10 +1,9 @@
 // ** React Imports
-import { useEffect, useState } from "react";
+import { useEffect, useState, useLayoutEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import styled from "styled-components";
+
 // ** Horizontal Menu Components
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useLayoutEffect } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Col, Row } from "reactstrap";
@@ -12,45 +11,17 @@ import Swal from "sweetalert2";
 import confirmationIcon from "../../../../../assets/images/icons/news/conformationIcon.svg";
 import BtnPopover from "../../../../../components/partials/btnPopover";
 import HorizontalNavMenuItems from "./HorizontalNavMenuItems";
+import "../../../../../assets/scss/viewCommon.scss";
 
-const SubHeaderWarraper = styled.div`
-  font: normal normal normal 15px/20px noto sans;
-  cursor: pointer;
-
-  .navTabs {
-    color: white !important;
-  }
-
-  .activeTab {
-    font-weight: 900;
-    opacity: 100%;
-  }
-`;
-
-const BtnContentWraper = styled.div`
-  color: #583703;
-  font: normal normal normal 15px/20px noto sans;
-  .MainContainer {
-  }
-  .col-item {
-    cursor: pointer;
-    margin-top: 0.3rem;
-    :hover {
-      background-color: #ff8744;
-      color: #fff;
-    }
-  }
-`;
 function BtnContent({ setClosePopover, permissionsKey }) {
   const history = useHistory();
-
   const trustType = useSelector(
     (state) => state?.auth?.trustDetail?.typeId?.name
   );
 
   return (
-    <BtnContentWraper>
-      <Row className="MainContainer d-block px-1">
+    <div className="btn-content-wrapper">
+      <Row className="main-container d-block px-1">
         <Col
           xs={12}
           className="col-item"
@@ -60,6 +31,26 @@ function BtnContent({ setClosePopover, permissionsKey }) {
           }}
         >
           <Trans i18nKey={"category"} />
+        </Col>
+        <Col
+          xs={12}
+          className="col-item"
+          onClick={() => {
+            setClosePopover(false);
+            history.push(`/configuration/masters`);
+          }}
+        >
+          <Trans i18nKey={"masters"} />
+        </Col>
+        <Col
+          xs={12}
+          className="col-item"
+          onClick={() => {
+            setClosePopover(false);
+            history.push(`/configuration/custom-fields`);
+          }}
+        >
+          <Trans i18nKey={"custom_field"} />
         </Col>
 
         {trustType == "Gaushala" && (
@@ -109,7 +100,7 @@ function BtnContent({ setClosePopover, permissionsKey }) {
           <Trans i18nKey={"report_Dispute"} />
         </Col>
       </Row>
-    </BtnContentWraper>
+    </div>
   );
 }
 
@@ -122,32 +113,29 @@ const MenuItem = ({
   permissionsKey,
 }) => {
   return (
-    <div>
-      <SubHeaderWarraper>
-        <div
-          id={item.name}
-          onClick={() => {
-            item.url != "/configuration" ? history.push(item.url) : "";
-            //  setActive(item)
-          }}
-          className={`text-light ${
-            active?.startsWith(item.activeTab) ? "activeTab" : ""
-          } `}
-        >
-          <Trans i18nKey={item.name} />
-        </div>
-        {item.name === "configuration" && closePopover && (
-          <BtnPopover
-            target={item.name}
-            content={
-              <BtnContent
-                setClosePopover={setClosePopover}
-                permissionsKey={permissionsKey}
-              />
-            }
-          />
-        )}
-      </SubHeaderWarraper>
+    <div className="sub-header-wrapper">
+      <div
+        id={item.name}
+        onClick={() => {
+          item.url != "/configuration" ? history.push(item.url) : "";
+        }}
+        className={`text-light ${
+          active?.startsWith(item.activeTab) ? "active-tab" : ""
+        }`}
+      >
+        <Trans i18nKey={item.name} />
+      </div>
+      {item.name === "configuration" && closePopover && (
+        <BtnPopover
+          target={item.name}
+          content={
+            <BtnContent
+              setClosePopover={setClosePopover}
+              permissionsKey={permissionsKey}
+            />
+          }
+        />
+      )}
     </div>
   );
 };
@@ -231,42 +219,6 @@ const HorizontalMenu = ({ menuData, currentActiveItem, routerProps }) => {
             }
 
             return null;
-            // if (
-            //   permissionsKey?.includes("all") ||
-            //   permissionsKey?.includes(item?.name)
-            // ) {
-            //   return (
-            //     <div key={idx}>
-            //       <SubHeaderWarraper>
-            //         <div
-            //           id={item.name}
-            //           onClick={() => {
-            //             item.url != "/configuration"
-            //               ? history.push(item.url)
-            //               : "";
-            //             //  setActive(item)
-            //           }}
-            //           key={idx}
-            //           className={`text-light ${
-            //             active?.startsWith(item.activeTab) ? "activeTab" : ""
-            //           } `}
-            //         >
-            //           <Trans i18nKey={item.name} />
-            //         </div>
-            //         {item.name === "configuration" && closePopover && (
-            //           <BtnPopover
-            //             target={item.name}
-            //             content={
-            //               <BtnContent setClosePopover={setClosePopover} />
-            //             }
-            //           />
-            //         )}
-            //       </SubHeaderWarraper>
-            //     </div>
-            //   );
-            // } else {
-            //   return null;
-            // }
           })}
         </ul>
       </div>

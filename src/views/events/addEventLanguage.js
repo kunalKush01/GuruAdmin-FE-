@@ -15,16 +15,7 @@ import { addLangEventDetail, getEventDetail } from "../../api/eventApi";
 import EventForm from "../../components/events/eventForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-const EventWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-
-  .editEvent {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import "../../assets/scss/viewCommon.scss";
 
 const schema = Yup.object().shape({
   Title: Yup.string()
@@ -124,7 +115,7 @@ export default function AddLanguageEvent() {
   }, [eventDetailQuery]);
 
   return (
-    <EventWrapper>
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -173,6 +164,6 @@ export default function AddLanguageEvent() {
       ) : (
         ""
       )}
-    </EventWrapper>
+    </div>
   );
 }

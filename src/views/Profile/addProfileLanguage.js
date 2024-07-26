@@ -23,18 +23,8 @@ import ProfileForm from "../../components/Profile/profileForm";
 import NoticeForm from "../../components/notices/noticeForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-const ProfileWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addProfile {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import "../../assets/scss/viewCommon.scss";
+
 const schema = Yup.object().shape({
   trustName: Yup.string().required("name_required"),
   trustType: Yup.mixed().required("trust_type_required"),
@@ -143,7 +133,7 @@ export default function AddLanguageProfile() {
   const [loading, setLoading] = useState(false);
 
   return (
-    <ProfileWrapper>
+    <div className="addviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -194,6 +184,6 @@ export default function AddLanguageProfile() {
       ) : (
         ""
       )}
-    </ProfileWrapper>
+    </div>
   );
 }

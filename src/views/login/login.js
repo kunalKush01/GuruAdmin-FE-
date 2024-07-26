@@ -43,76 +43,7 @@ import {
 } from "../../utility/utils/callApi";
 import TrustListModal from "./TrustListModal";
 import { cattleHeader } from "../../utility/subHeaderContent/cattleHeader";
-const LoginWarraper = styled.div`
-  .errorMassage {
-    /* color: #583703 !important; */
-    font: normal normal bold 14px/20px noto sans;
-  }
-  .defaultFontColor {
-    color: #583703;
-  }
-  .an_account {
-    font: normal normal normal 16px/25px noto sans;
-  }
-  .fw-bold {
-    font-weight: 800 !important;
-    font-size: 35px;
-    font-family: noto sans;
-  }
-  .signInEnterUserNAme {
-    font: normal normal normal 18px/25px noto sans;
-  }
-  .forgetPassword {
-    padding: 1rem 0rem;
-    text-align: end;
-    margin-bottom: 20px;
-  }
-  .forgetPassword > span {
-    font: normal normal bold 16px/20px noto sans;
-  }
-  .signInIcons {
-    width: 30px;
-    height: 30px;
-    margin-right: 10px;
-    cursor: pointer;
-  }
-  .signInputField {
-    color: #583703;
-    font: normal normal bold 16px/33px noto sans;
-    &::-webkit-input-placeholder {
-      /* padding-left: 1rem !important; */
-      opacity: 0.3;
-      font: normal normal bold 16px/33px noto sans;
-      color: #583703 !important;
-    }
-  }
-  .text-end {
-    font: normal normal bold 18px/80px noto sans;
-  }
-  .px-5 {
-    font: normal normal bold 20px/20px noto sans;
-  }
-  .signUp {
-    font: normal normal bold 18px/25px noto sans;
-  }
-  .brand-text {
-    color: #583703;
-    font: normal normal bold 30px/44px noto sans;
-  }
-  .brand-logo {
-    width: fit-content;
-  }
-  .templeName {
-    font: normal normal 600 23px/43px Noto Sans;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-  }
-  .loginBackground {
-    background: #fff7e8;
-  }
-`;
-
+import "../../assets/scss/viewCommon.scss";
 const LoginCover = () => {
   const { isLogged, userDetail, trustDetail } = useSelector(
     (state) => state.auth
@@ -223,7 +154,6 @@ const LoginCover = () => {
   );
 
   const loginPath = permissions?.map((item) => item?.name);
-  console.log("loginPath", loginPath);
   let subDomainName;
   if (hostname !== adminUrl) {
     subDomainName = hostname.replace(subdomainChange, "");
@@ -315,7 +245,7 @@ const LoginCover = () => {
   const [loading, setLoading] = useState(false);
 
   return (
-    <LoginWarraper className="auth-wrapper auth-cover ">
+    <div className="loginwrapper auth-wrapper auth-cover">
       <Row className="auth-inner m-0 defaultFontColor">
         <Col
           className="d-none  d-lg-flex pe-0 ps-0 align-items-center  h-100 "
@@ -452,16 +382,6 @@ const LoginCover = () => {
                   </Form>
                 )}
               </Formik>
-              {/* <p className="text-center mt-5 ">
-               {/* <p className="text-center mt-5 ">
-                <span className="me-25  an_account ">
-                  Don't have an account ?{" "}
-                </span>
-
-                <span className="text-primary signUp cursor-pointer">
-                  <a href="https://apnadharm.com/#home">Sign Up</a>
-                </span>
-              </p> */}
             </Col>
           ) : (
             <Col className="px-xl-2 mx-auto " sm="8" md="6" lg="12">
@@ -533,7 +453,6 @@ const LoginCover = () => {
           )}
         </Col>
       </Row>
-      {/* {refreshToken && accessToken && ( */}
       <TrustListModal
         modal={modal}
         setModal={setModal}
@@ -542,7 +461,7 @@ const LoginCover = () => {
         aToken={accessToken}
       />
       {/* )} */}
-    </LoginWarraper>
+    </div>
   );
 };
 

@@ -1,11 +1,10 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import { useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import styled from "styled-components";
-import { deleteExpensesDetail } from "../../api/expenseApi";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
+import "../../assets/scss/common.scss";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomDataTable from "../partials/CustomDataTable";
 
@@ -116,21 +115,8 @@ export default function RecentDonationTable({ data }) {
     });
   }, [data]);
 
-  const RecentDonationTableWrapper = styled.div`
-    color: #583703 !important;
-    margin-right: 20px;
-    font: normal normal bold 20px/23px Noto Sans !important;
-    .DonationViewAll {
-      color: #ff8744;
-      cursor: pointer;
-    }
-    .recentDonationHeading {
-      font: normal normal bold 20px/23px Noto Sans;
-    }
-  `;
-
   return (
-    <RecentDonationTableWrapper>
+    <div className="recentdonationtablewrapper">
       <div className="d-flex listHeading justify-content-between">
         <p className="recentDonationHeading">
           <Trans i18nKey={"dashboard_Recent_DonationCommitment"} />
@@ -147,6 +133,6 @@ export default function RecentDonationTable({ data }) {
         columns={columns}
         data={recent_Donation}
       />
-    </RecentDonationTableWrapper>
+    </div>
   );
 }

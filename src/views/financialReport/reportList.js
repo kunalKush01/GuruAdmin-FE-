@@ -36,64 +36,7 @@ import FormikCustomDatePicker from "../../components/partials/formikCustomDatePi
 import NoContent from "../../components/partials/noContent";
 import { handleExport } from "../../utility/utils/exportTabele";
 import FinancialReportTabs from "./financialReportTabs";
-const NewsWarper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addNews {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-
-  .FormikWraper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .exportBtn {
-    padding: 10px 20px;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .newsContent {
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: #ff8744;
-    margin-top: 0.5rem;
-    font: normal normal bold 13px/5px noto sans;
-  }
-  .dateChooserReport .react-datepicker__input-container {
-    width: 158px;
-  }
-  .dateChooserReport .react-datepicker__input-container > input:focus-within {
-    outline: none !important;
-    /* border: none; */
-    outline-offset: 0px;
-  }
-  .dateChooserReport .react-datepicker__input-container > input {
-    border: 1px solid #ff8744 !important;
-    text-align: center;
-    color: #ff8744;
-    width: 100%;
-    font: normal normal bold 15px/20px noto sans;
-    /* padding: .4rem 1rem .4rem 2rem ; */
-    padding: 10px 20px;
-    border-radius: 7px;
-  }
-  .total_collection {
-    border: 1px solid #ff8744;
-    color: #ff8744;
-    font: normal normal bold 15px/20px noto sans;
-    padding: 10px 20px;
-    border-radius: 5px;
-  }
-`;
+import "../../assets/scss/viewCommon.scss";
 
 export default function FinancialReport() {
   const [reportStartDate, setReportStartDate] = useState(
@@ -381,10 +324,10 @@ export default function FinancialReport() {
   };
 
   return (
-    <NewsWarper>
+    <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharam Admin | Financial Report</title>
+        <title>Apna Dharm Admin | Financial Report</title>
       </Helmet>
       <div className="window nav statusBar body "></div>
 
@@ -396,7 +339,7 @@ export default function FinancialReport() {
               className="me-2  cursor-pointer align-self-center"
               onClick={() => history.push("/")}
             /> */}
-            <div className="addNews d-flex">
+            <div className="addAction d-flex">
               <div className="">
                 <div>
                   <Trans i18nKey={"report_AddReport"} />
@@ -404,7 +347,7 @@ export default function FinancialReport() {
               </div>
             </div>
           </div>
-          <div className="addNews d-flex flex-wrap gap-2 gap-md-0">
+          <div className="addAction d-flex flex-wrap gap-2 gap-md-0">
             <div className="total_collection me-2 d-flex justify-content-center align-items-center ">
               {/* <Trans i18nKey={"DonationBox_total_collection"} /> */}
               <div>{`Total ${activeReportTab.name} :`}</div>
@@ -456,7 +399,7 @@ export default function FinancialReport() {
             <div>
               <Button
                 color="primary"
-                className="exportBtn"
+                className="secondaryAction-btn"
                 onClick={handleClickExport}
               >
                 <span className="d-flex align-items-center">
@@ -566,6 +509,6 @@ export default function FinancialReport() {
           </Row>
         </div>
       </div>
-    </NewsWarper>
+    </div>
   );
 }
