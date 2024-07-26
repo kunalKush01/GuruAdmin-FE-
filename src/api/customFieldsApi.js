@@ -4,7 +4,7 @@ import { callApi } from "../utility/utils/callApi";
 export const getDonationCustomFields = () =>
   callApi({
     requestFunction: (axios) =>
-      axios.get(`${API_BASE_URL}/donation/info/custom-fields`),
+      axios.get(`${API_BASE_URL}/donation/custom-fields`),
     showToastOnSuccess: false,
     showToastOnError: false,
   });
@@ -18,7 +18,7 @@ export const createDonationCustomFields = (data) =>
 export const getPledgeCustomFields = () =>
   callApi({
     requestFunction: (axios) =>
-      axios.get(`${API_BASE_URL}/commitment/info/custom-fields`),
+      axios.get(`${API_BASE_URL}/commitment/custom-fields`),
     showToastOnSuccess: false,
     showToastOnError: false,
   });
@@ -32,7 +32,7 @@ export const createPledgeCustomFields = (data) =>
 export const getDonationBoxCustomFields = () =>
   callApi({
     requestFunction: (axios) =>
-      axios.get(`${API_BASE_URL}/donation-box/info/custom-fields`),
+      axios.get(`${API_BASE_URL}/donation-box/custom/custom-fields`),
     showToastOnSuccess: false,
     showToastOnError: false,
   });
