@@ -13,6 +13,7 @@ export default function CustomTextField({
   placeholder,
   roundDigits,
   width,
+  min,
   ...props
 }) {
   const [field, meta, helpers] = useField(props);
@@ -32,6 +33,7 @@ export default function CustomTextField({
             className={"form-control"}
             placeholder={placeholder}
             value={field.value}
+            min={min}
             {...field}
             {...props}
           />
