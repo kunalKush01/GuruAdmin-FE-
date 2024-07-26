@@ -78,6 +78,8 @@ export default function FormWithoutFormikForDonation({
   }, [SelectedUser?.userId]);
   const [phoneNumber, setPhoneNumber] = useState(getCommitmentMobile ?? "");
 
+ 
+
   useUpdateEffect(() => {
     if (formik?.values?.Mobile?.toString().length == 10) {
       const results = async () => {
@@ -141,12 +143,64 @@ export default function FormWithoutFormikForDonation({
   const currentCategory = searchParams.get("category");
   const currentSubCategory = searchParams.get("subCategory");
   const currentFilter = searchParams.get("filter");
+  const dialCodeFromURL = searchParams.get("dialCode");
+  const mobileNumberFromURL = searchParams.get("mobileNumber");
+  const name = searchParams.get("name");
+
+  useEffect(() => {
+    if (mobileNumberFromURL && dialCodeFromURL) {
+      const fullPhoneNumber = `${dialCodeFromURL}${mobileNumberFromURL}`;
+      setPhoneNumber(fullPhoneNumber);
+      formik.setFieldValue("countryCode", dialCodeFromURL.replace('+', ''));
+      formik.setFieldValue("dialCode", dialCodeFromURL);
+      formik.setFieldValue("Mobile", mobileNumberFromURL);
+  
+      const fetchUserDetails = async () => {
+        try {
+          const res = await findAllUsersByNumber({
+            mobileNumber: fullPhoneNumber,
+          });
+          if (res.result) {
+            const userMobileNumberWithoutDialCode = res.result.mobileNumber.replace(dialCodeFromURL, '');
+            res.result.mobileNumber = userMobileNumberWithoutDialCode;
+            formik.setFieldValue("SelectedUser", res.result);
+            formik.setFieldValue("donarName", res.result.name);
+          } else {
+            setNoUserFound(true);
+            if (name) {
+              formik.setFieldValue("donarName", decodeURIComponent(name));
+            }
+          }
+        } catch (error) {
+          console.error("Error fetching user details:", error);
+          setNoUserFound(true);
+          if (name) {
+            formik.setFieldValue("donarName", decodeURIComponent(name));
+          }
+        }
+      };
+  
+      fetchUserDetails();
+    } else {
+      console.log("Mobile number or dial code missing from URL");
+    }
+  }, [mobileNumberFromURL, dialCodeFromURL, name]);
+
+  useEffect(() => {
+    if (name) {
+      formik.setFieldValue("donarName", decodeURIComponent(name));
+    }
+  }, [name]);
 
   return (
     <Form>
       {showPrompt && (
         <Prompt
-          when={!!Object.values(formik?.values).find((val) => !!val)}
+          when={
+            !!Object.values(formik?.values).find(
+              (val, key) => !!val && key !== 'Mobile'
+            )
+          }
           message={(location) =>
             `Are you sure you want to leave this page & visit ${location.pathname.replace(
               "/",
@@ -215,7 +269,7 @@ export default function FormWithoutFormikForDonation({
                     className="cursor-pointer"
                     onClick={() =>
                       history.push(
-                        `/add-user?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}&redirect=donation`
+                        `/add-user?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}&redirect=donation&dialCode=${formik.values.dialCode}&mobileNumber=${formik.values.Mobile}`
                       )
                     }
                   >
@@ -225,11 +279,14 @@ export default function FormWithoutFormikForDonation({
               )}
             </Col>
             <Col xs={12} sm={6} lg={4} className=" pb-1">
-              <CustomTextField
+            <CustomTextField
                 label={t("dashboard_Recent_DonorName")}
                 placeholder={t("placeHolder_donar_name")}
                 name="donarName"
-                onInput={(e) => (e.target.value = e.target.value.slice(0, 30))}
+                value={formik.values.donarName}
+                onChange={(e) => {
+                  formik.setFieldValue("donarName", e.target.value.slice(0, 30));
+                }}
               />
             </Col>
             <Col xs={12} sm={6} lg={4} className=" pb-1">
