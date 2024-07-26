@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from "react";
-
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import { Plus } from "react-feather";
@@ -10,10 +9,7 @@ import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
-import styled from "styled-components";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
-
 import { Helmet } from "react-helmet";
 import { getAllBoxCollection } from "../../api/donationBoxCollectionApi";
 import BoxListCard from "../../components/DonationBox/BoxListCard.js";
@@ -114,7 +110,6 @@ export default function Expenses() {
   const subPermission = subPermissions?.subpermissions?.map(
     (item) => item.name
   );
-
   return (
     <div className="listviewwrapper">
       <Helmet>
@@ -126,21 +121,11 @@ export default function Expenses() {
       <div>
         <div className="d-lg-flex justify-content-between align-items-center ">
           <div className="d-flex align-items-center mb-2 mb-lg-0">
-            {/* <img
-              src={arrowLeft}
-              className="me-2  cursor-pointer align-self-center"
-              onClick={() => history.push("/")}
-            /> */}
             <div className="addAction d-flex">
               <div className="">
                 <div>
                   <Trans i18nKey={"DonationBox_DonationBox"} />
                 </div>
-                {/* <div className="filterPeriod">
-                  <span>
-                    {startDate} - {endDate}
-                  </span>
-                </div> */}
               </div>
             </div>
           </div>
@@ -273,7 +258,6 @@ export default function Expenses() {
                         }&filter=${dropDownName}`
                       );
                     }}
-                    // forcePage={pagination.page !== 0 ? pagination.page - 1 : 0}
                     containerClassName={
                       "pagination react-paginate justify-content-end p-1"
                     }

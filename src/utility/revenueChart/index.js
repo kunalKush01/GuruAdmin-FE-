@@ -46,6 +46,7 @@ export const RevenueChart = ({
       height: 350,
       fontFamily: "Noto Sans",
       fontColors: "#583703",
+      background: "#FFFFFF",
     },
     plotOptions: {
       bar: {

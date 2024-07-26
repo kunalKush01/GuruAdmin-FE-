@@ -191,8 +191,8 @@ export default function Punyarjak() {
                         <Col
                           xs={12}
                           md={6}
-                          lg={3}
-                          className="pe-sm-3 pe-0"
+                          lg={4}
+                          className="pe-sm-3 pe-0" style={{ paddingTop: '3rem' }}
                           key={item.id}
                         >
                           <PunyarjakCard
