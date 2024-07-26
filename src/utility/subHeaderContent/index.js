@@ -1,25 +1,41 @@
-import HomeIcon from '../../assets/images/icons/home.svg';
-import PunyarjakIcon from '../../assets/images/icons/punyarjak.svg';
-import GowshalaIcon from '../../assets/images/icons/gowshala.svg';
-import DonationIcon from '../../assets/images/icons/donation.svg';
-import DonationBoxIcon from '../../assets/images/icons/donationbox.svg';
-import CommitmentIcon from '../../assets/images/icons/commitment.svg';
-import FinancialReportsIcon from '../../assets/images/icons/financialreport.svg';
-import ExpensesIcon from '../../assets/images/icons/expenses.svg';
-import EventsIcon from '../../assets/images/icons/event.svg';
-import NewsIcon from '../../assets/images/icons/news.svg';
-import NoticeIcon from '../../assets/images/icons/notice.svg';
-import CategoryIcon from '../../assets/images/icons/configuration.svg';
-import SubadminIcon from '../../assets/images/icons/subadmin.svg';
-import ReportDisputeIcon from '../../assets/images/icons/reportdispute.svg';
-import ConfigurationIcon from '../../assets/images/icons/configuration.svg';
+import HomeIcon from "../../assets/images/icons/home.svg";
+import HomeActiveIcon from "../../assets/images/icons/home-active.svg";
+import PunyarjakIcon from "../../assets/images/icons/punyarjak.svg";
+import PunyarjakIconActive from "../../assets/images/icons/punyarjak-active.svg";
+import GowshalaIcon from "../../assets/images/icons/gowshala.svg";
+import GowshalaIconActive from "../../assets/images/icons/gowshala-active.svg";
+import DonationIcon from "../../assets/images/icons/donation.svg";
+import DonationIconActive from "../../assets/images/icons/donation-active.svg";
+import DonationBoxIcon from "../../assets/images/icons/donationbox.svg";
+import DonationBoxIconActive from "../../assets/images/icons/donationbox-active.svg";
+import CommitmentIcon from "../../assets/images/icons/commitment.svg";
+import CommitmentIconActive from "../../assets/images/icons/commitment-active.svg";
+import FinancialReportsIcon from "../../assets/images/icons/financialreport.svg";
+import FinancialReportsIconActive from "../../assets/images/icons/financialreport-active.svg";
+import ExpensesIcon from "../../assets/images/icons/expenses.svg";
+import ExpensesIconActive from "../../assets/images/icons/expenses-active.svg";
+import EventsIcon from "../../assets/images/icons/event.svg";
+import EventsIconActive from "../../assets/images/icons/event-active.svg";
+import NewsIcon from "../../assets/images/icons/news.svg";
+import NewsIconActive from "../../assets/images/icons/news-active.svg";
+import NoticeIcon from "../../assets/images/icons/notice.svg";
+import NoticeIconActive from "../../assets/images/icons/notice-active.svg";
+import CategoryIcon from "../../assets/images/icons/configuration.svg";
+import CategoryIconActive from "../../assets/images/icons/configuration-active.svg";
+import SubadminIcon from "../../assets/images/icons/subadmin.svg";
+import SubadminIconActive from "../../assets/images/icons/subadmin-active.svg";
+import ReportDisputeIcon from "../../assets/images/icons/reportdispute.svg";
+import ReportDisputeIconActive from "../../assets/images/icons/reportdispute-active.svg";
+import ConfigurationIcon from "../../assets/images/icons/configuration.svg";
+import ConfigurationIconActive from "../../assets/images/icons/configuration-active.svg";
 
 export const subHeaderContent = [
   {
     name: "dashboard",
     url: "/dashboard",
     activeTab: "/dashboard",
-    icon:HomeIcon,
+    icon: HomeIcon,
+    activeIcon: HomeActiveIcon,
   },
 
   {
@@ -43,67 +59,67 @@ export const subHeaderContent = [
     name: "donation",
     url: "/donation",
     activeTab: "/donation",
-    icon:DonationIcon,
+    icon: DonationIcon,
   },
 
   {
     name: "commitment",
     url: "/commitment",
     activeTab: "/commitment",
-    icon:CommitmentIcon,
+    icon: CommitmentIcon,
   },
   {
     name: "hundi",
     url: "/hundi",
     activeTab: "/hundi",
-    icon:DonationBoxIcon,
+    icon: DonationBoxIcon,
   },
 
   {
     name: "financial_reports",
     url: "/financial_reports",
     activeTab: "/financial_reports",
-    icon:FinancialReportsIcon,
+    icon: FinancialReportsIcon,
   },
 
   {
     name: "internal_expenses",
     url: "/internal_expenses",
     activeTab: "/internal_expenses",
-    icon:ExpensesIcon,
+    icon: ExpensesIcon,
   },
 
   {
     name: "events",
     url: "/events",
     activeTab: "/events",
-    icon:EventsIcon,
+    icon: EventsIcon,
   },
 
   {
     name: "news",
     url: "/news",
     activeTab: "/news",
-    icon:NewsIcon,
+    icon: NewsIcon,
   },
 
   {
     name: "notices",
     url: "/notices",
     activeTab: "/notices",
-    icon:NoticeIcon,
+    icon: NoticeIcon,
   },
   {
     name: "punyarjak",
     url: "/punyarjak",
     activeTab: "/punyarjak",
-    icon:PunyarjakIcon,
+    icon: PunyarjakIcon,
   },
   {
     name: "configuration",
     url: "/configuration",
     activeTab: "/configuration",
-    icon:ConfigurationIcon,
+    icon: ConfigurationIcon,
   },
 ];
 
@@ -112,7 +128,8 @@ export const subHeaderContentResponsive = [
     name: "dashboard",
     url: "/dashboard",
     activeTab: "/dashboard",
-    icon:HomeIcon,
+    icon: HomeIcon,
+    activeIcon: HomeActiveIcon,
   },
 
   {
@@ -120,90 +137,103 @@ export const subHeaderContentResponsive = [
     url: "/cattle/dashboard",
     activeTab: "/cattle",
     isCattle: "Gaushala",
-    icon:GowshalaIcon,
+    icon: GowshalaIcon,
+    activeIcon: GowshalaIconActive,
   },
   {
     name: "donation",
     url: "/donation",
     activeTab: "/donation",
-    icon:DonationIcon,
+    icon: DonationIcon,
+    activeIcon: DonationIconActive,
   },
 
   {
     name: "commitment",
     url: "/commitment",
     activeTab: "/commitment",
-    icon:CommitmentIcon,
+    icon: CommitmentIcon,
+    activeIcon: CommitmentIconActive,
   },
   {
     name: "hundi",
     url: "/hundi",
     activeTab: "/hundi",
-    icon:DonationBoxIcon,
+    icon: DonationBoxIcon,
+    activeIcon: DonationBoxIconActive,
   },
 
   {
     name: "financial_reports",
     url: "/financial_reports",
     activeTab: "/financial_reports",
-    icon:FinancialReportsIcon,
+    icon: FinancialReportsIcon,
+    activeIcon: FinancialReportsIconActive,
   },
 
   {
     name: "internal_expenses",
     url: "/internal_expenses",
     activeTab: "/internal_expenses",
-    icon:ExpensesIcon,
+    icon: ExpensesIcon,
+    activeIcon: ExpensesIconActive,
   },
 
   {
     name: "events",
     url: "/events",
     activeTab: "/events",
-    icon:EventsIcon,
+    icon: EventsIcon,
+    activeIcon: EventsIconActive,
   },
 
   {
     name: "news",
     url: "/news",
     activeTab: "/news",
-    icon:NewsIcon,
+    icon: NewsIcon,
+    activeIcon: NewsIconActive,
   },
 
   {
     name: "notices",
     url: "/notices",
     activeTab: "/notices",
-    icon:NoticeIcon,
+    icon: NoticeIcon,
+    activeIcon: NoticeIconActive,
   },
   {
     name: "punyarjak",
     url: "/punyarjak",
     activeTab: "/punyarjak",
-    icon:PunyarjakIcon,
+    icon: PunyarjakIcon,
+    activeIcon: PunyarjakIconActive,
   },
   {
     name: "configuration",
     activeTab: "/configuration",
-    icon:ConfigurationIcon,
+    icon: ConfigurationIcon,
+    activeIcon: ConfigurationIcon,
     children: [
       {
         name: "category",
         url: "/configuration/categories",
-        icon:CategoryIcon,
+        icon: CategoryIcon,
+        activeIcon: CategoryIconActive,
       },
       {
         name: "user",
         url: "/configuration/users",
-        icon:SubadminIcon,
+        icon: SubadminIcon,
+        activeIcon: SubadminIconActive,
       },
       {
         name: "report_Dispute",
         url: "/configuration/reportDispute",
-        icon:ReportDisputeIcon,
+        icon: ReportDisputeIcon,
+        activeIcon: ReportDisputeIconActive,
       },
     ],
     // url: "/configuration",
   },
 ];
-
