@@ -1611,6 +1611,7 @@
 .customtextfieldwrapper {
     color: $font-color !important;
     font: $font-weight-bold $font-size-small $font-family;
+    padding-top: 12px;
 
     .formGroup {
         width: "auto";
