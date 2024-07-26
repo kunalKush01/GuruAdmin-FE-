@@ -27,9 +27,9 @@ export default function FormWithoutFormikForCommitment({
   getCommitmentMobile,
   showPrompt,
   customFieldsList,
+  paidAmount,
   ...props
 }) {
-  // console.log(formik)
   const { t } = useTranslation();
   const history = useHistory();
 
@@ -272,6 +272,7 @@ export default function FormWithoutFormikForCommitment({
             placeholder={t("enter_price_manually")}
             name="Amount"
             required
+            min={paidAmount}
           />
         </Col>
         <Col xs={12} sm={6} lg={4} className="opacity-75">

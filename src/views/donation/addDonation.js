@@ -13,7 +13,7 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import "../../assets/scss/viewCommon.scss";
 import { useQuery } from "@tanstack/react-query";
 import { getDonationCustomFields } from "../../api/customFieldsApi";
-
+import { Button, FloatButton, Tag } from "antd";
 export default function AddDonation() {
   const history = useHistory();
   const loggedInUser = useSelector((state) => state.auth.userDetail.name);
@@ -94,6 +94,20 @@ export default function AddDonation() {
           <div className="addAction">
             <Trans i18nKey={"donation_Adddonation"} />
           </div>
+        </div>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
+            <p style={{fontSize:"15px",marginBottom:"0"}}>Current User :</p>
+            <Tag
+              color="#ff8744"
+              style={{
+                marginLeft: "8px",
+                borderRadius: "5px",
+                backgroundColor: "#ff8744",
+                color: "white",
+              }}
+            >
+              {loggedInUser}
+            </Tag>
         </div>
       </div>
       <div className="ms-md-3 mt-1">

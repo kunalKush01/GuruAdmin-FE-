@@ -24,26 +24,7 @@ import "../../assets/scss/common.scss";
 import { Table } from "antd";
 import { getPledgeCustomFields } from "../../api/customFieldsApi";
 import "../donation/donationStyle.css";
-import styled from "styled-components";
-const RecentCommitmentTableWarper = styled.div`
-  color: #583703 !important;
-  font: normal normal bold 15px/23px Noto Sans;
-  .modal-body {
-    max-height: 600px !important;
-    overflow: auto !important;
-  }
-  .tableDes p {
-    margin-bottom: 0;
-  }
-  .ant-table-body {
-    max-height: 400px;
-    height: 353px;
-    overflow: auto;
-    ::-webkit-scrollbar {
-      display: block;
-    }
-  }
-`;
+
 export default function CommitmentAntdListTable(
   {
     data,
@@ -268,7 +249,10 @@ export default function CommitmentAntdListTable(
         }
         return acc;
       }, {});
-      const serializedCustomFieldData = encodeURIComponent(JSON.stringify(customFieldData));
+      const serializedCustomFieldData = encodeURIComponent(
+        JSON.stringify(customFieldData)
+      );
+
       return {
         id: idx + 1,
         notifyUserId: item?._id,
@@ -391,7 +375,7 @@ export default function CommitmentAntdListTable(
           <div className="actions-column">
             {(allPermissions?.name === "all" ||
               subPermission?.includes("EDIT") ||
-              financeReport) && (
+              financeReport )&&(item.paidStatus=="pending"||item.paidStatus=="partial") && (
               <img
                 src={editIcon}
                 width={35}
@@ -408,7 +392,7 @@ export default function CommitmentAntdListTable(
             )}
             {(allPermissions?.name === "all" ||
               subPermission?.includes("DELETE") ||
-              financeReport) && (
+              financeReport)&&(item.paidStatus=="pending"||item.paidStatus=="partial")&& (
               <img
                 src={deleteIcon}
                 width={35}
@@ -457,7 +441,7 @@ export default function CommitmentAntdListTable(
     .toUpperCase();
 
   return (
-    <RecentCommitmentTableWarper>
+    <>
       <Table
         columns={columns}
         dataSource={commitment_Data}
@@ -633,6 +617,6 @@ export default function CommitmentAntdListTable(
           ))}
         </div>
       </div>
-    </RecentCommitmentTableWarper>
+    </>
   );
 }

@@ -2482,4 +2482,12 @@
     border: none !important;
     border-radius: 5px !important;
   }
-  
+// Antd table css
+  .ant-table-body {
+    max-height: 400px;
+    height: 360px;
+    overflow: auto;
+    ::-webkit-scrollbar {
+      display: block;
+    }}
+    

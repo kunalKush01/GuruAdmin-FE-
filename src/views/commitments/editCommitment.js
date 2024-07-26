@@ -197,6 +197,7 @@ export default function EditCommitment() {
                 handleSubmit={handleCommitmentUpdate}
                 buttonName={"save_changes"}
                 customFieldsList={customFieldsList}
+                paidAmount={commitmentDetailQuery?.data?.result?.paidAmount}
               />
             </div>
           )}
