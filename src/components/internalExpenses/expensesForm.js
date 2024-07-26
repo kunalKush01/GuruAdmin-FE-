@@ -104,7 +104,7 @@ export default function ExpensesForm({
   const [showPrompt, setShowPrompt] = useState(true);
 
   return (
-    <div className="formwrapper FormikWraper">
+    <div className="formwrapper FormikWrapper">
       <Formik
         // enableReinitialize
         initialValues={{ ...initialValues }}

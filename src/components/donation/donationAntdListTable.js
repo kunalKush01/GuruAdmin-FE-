@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { Table } from "antd";
 import moment from "moment";
 import numberToWords from "number-to-words";
 import { useMemo, useRef, useState } from "react";
@@ -6,22 +7,19 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import ReactToPrint from "react-to-print";
+import { toast } from "react-toastify";
 import { Spinner } from "reactstrap";
 import styled from "styled-components";
+import { getDonationCustomFields } from "../../api/customFieldsApi";
 import { donationDownloadReceiptApi } from "../../api/donationApi";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import receiptIcon from "../../assets/images/icons/receiptIcon.svg";
 import whatsappIcon from "../../assets/images/icons/whatsappIcon.svg";
-import templeImage from "../../assets/images/pages/login-v2.png";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { EDIT } from "../../utility/permissionsVariable";
-import CustomDataTable from "../partials/CustomDataTable";
-import EditDonation from "./editDonation";
-import { toast } from "react-toastify";
-import { Table, Pagination } from "antd";
 import "./donationStyle.css";
-import { getDonationCustomFields } from "../../api/customFieldsApi";
+import EditDonation from "./editDonation";
 const RecentDonationTableWarper = styled.div`
   color: #583703 !important;
   font: normal normal bold 15px/23px Noto Sans;
@@ -33,13 +31,13 @@ const RecentDonationTableWarper = styled.div`
     margin-bottom: 0;
   }
   .ant-table-body {
-      max-height: 400px;
-      height: 353px;
-      overflow: auto;
-      ::-webkit-scrollbar {
-        display: block;
-      }
+    max-height: 400px;
+    height: 353px;
+    overflow: auto;
+    ::-webkit-scrollbar {
+      display: block;
     }
+  }
 `;
 
 export default function DonationANTDListTable(

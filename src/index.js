@@ -1,6 +1,9 @@
 // ** React Imports
 import { Suspense, lazy } from "react";
 import ReactDOM from "react-dom";
+import "./assets/scss/variables/_variables.scss";
+
+import "./assets/scss/style.scss";
 
 // ** Redux Imports
 import { Provider } from "react-redux";
@@ -30,7 +33,6 @@ import "@styles/react/libs/toastify/toastify.scss";
 // ** Core styles
 import "./@core/assets/fonts/feather/iconfont.css";
 import "./@core/scss/core.scss";
-import "./assets/scss/style.scss";
 import { PersistGate } from "redux-persist/integration/react";
 // ** Service Worker
 import * as serviceWorker from "./serviceWorker";

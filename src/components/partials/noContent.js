@@ -5,7 +5,7 @@ import "../../assets/scss/common.scss";
 
 export default function NoContent({ headingNotfound, para }) {
   return (
-    <div className="nocontentwraper">
+    <div className="nocontentwrapper">
       <div className="d-flex flex-column justify-content-center align-items-center w-100">
         <img src={noNewsIcon} />
         <div className="noNews">{headingNotfound}</div>

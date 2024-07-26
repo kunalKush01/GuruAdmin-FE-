@@ -16,7 +16,7 @@ export default function FormikRangeDatePicker({
   const [field, meta, helpers] = useField(props.name);
 
   return (
-    <div className="formikcustomdatepickerwraper">
+    <div className="formikcustomdatepickerwrapper">
       {/* <label >
         <Trans i18nKey={"news_label_Date"} />
       </label>

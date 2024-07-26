@@ -1,18 +1,13 @@
 import { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import {
   Card,
   CardBody,
-  CardImg,
   FormGroup,
   Input,
-  Label,
-  Tooltip,
   UncontrolledTooltip,
 } from "reactstrap";
-import styled from "styled-components";
 import { showInAppTopDonors } from "../../api/dashboard";
 import palceHolderIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import rank1 from "../../assets/images/icons/dashBoard/rank1.svg";
@@ -20,8 +15,8 @@ import rank2 from "../../assets/images/icons/dashBoard/rank2.svg";
 import rank3 from "../../assets/images/icons/dashBoard/rank3.svg";
 import rank4 from "../../assets/images/icons/dashBoard/rank4.svg";
 import rank5 from "../../assets/images/icons/dashBoard/rank5.svg";
-import { ConverFirstLatterToCapital } from "../../utility/formater";
 import "../../assets/scss/common.scss";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 export const TopDonerList = ({ data }) => {
   const { t } = useTranslation();
@@ -49,7 +44,7 @@ export const TopDonerList = ({ data }) => {
     }
   };
   return (
-    <div className="topdonerwarpper">
+    <div className="topdonorwrapper">
       <div className="d-flex listHeading justify-content-between">
         <p>
           <Trans i18nKey={"dashboard_top"} />
