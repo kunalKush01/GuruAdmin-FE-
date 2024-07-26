@@ -1035,6 +1035,114 @@
     width: min-content;
 }
 
+// ===========================================Dropdown Card Css=============================================== //
+
+.card-dropdown {
+    &__control {
+      background-color: $secondary-color;
+      border-color: $font-color;
+      &:hover, &--is-focused {
+        border-color: $primary-color;
+        box-shadow: 0 0 0 1px $primary-color;
+      }
+    }
+  
+    &__menu {
+      background-color: transparent;
+      box-shadow: none;
+      border: none;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+  
+    &__menu-list {
+      padding: 0;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+  
+    &__option {
+      padding: 4px;
+      background-color: transparent;
+      color: $font-color;
+  
+      &:hover {
+        background-color: transparent;
+      }
+    }
+  
+    &__single-value {
+      color: $font-color;
+      font: $font-weight-bold $font-size-medium $font-family;
+    }
+  }
+  
+  .card-option {
+    padding: 12px;
+    border: 1px $secondary-color;
+    border-radius: 8px;
+    background-color: $secondary-color;
+    box-shadow: 0 2px 4px $font-color;
+    transition: all 0.3s ease;
+  
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px $font-color;
+    }
+  }
+  
+  .card-row {
+    // display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  .card-label {
+    font-weight: 700;
+    color: $font-color;
+    font-size: 0.9em;
+    margin-right: 8px;
+    min-width: 100px;
+    text-align: left;
+  }
+  
+  .card-title, .card-description, .commitment-id, .amount {
+    flex: 1;
+    text-align: right;
+  }
+  
+  .card-title {
+    font-weight: 700;
+    font-size: 1em;
+    color: $font-color;
+  }
+  
+  .card-description {
+    color: $font-color;
+    opacity: 0.8;
+    font-size: 0.9em;
+  }
+  
+  .commitment-id {
+    font-family: monospace;
+    padding: 2px 4px;
+    border-radius: 4px;
+    color: $font-color;
+    font-size: $font-size-small;
+  }
+  
+  .amount {
+    font-weight: 600;
+    color: $green;
+    font-size: 0.9em;
+  }
+  
+// ===========================================Dropdown Card Css=============================================== //
+
 // ===================================================SiderLayout CSS=================================================== //
 
 .custom-sider {
