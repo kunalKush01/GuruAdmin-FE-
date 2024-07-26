@@ -102,7 +102,7 @@ const Home = () => {
             dropDownName={dropDownName}
             setdropDownName={(e) => setdropDownName(e.target.name)}
           />
-          <div className="d-flex flex-wrap gap-1 justify-content-between mt-1 mb-lg-3">
+          <div className="d-flex gap-1 justify-content-between mt-1 mb-lg-1">
             <OrdersReceived
               statTitle={t("dashboard_donationReceived")}
               stats={parseInt(
@@ -160,10 +160,10 @@ const Home = () => {
           />
 
           <Row>
-            <Col xs={12} md={7} lg={9}>
+            {/* <Col xs={12} md={7} lg={9}>
               <RecentDonationTable data={recentDonationData?.results} />
-            </Col>
-            <Col xs={12} md={5} lg={3} className="mt-3 mt-md-0">
+            </Col> */}
+            <Col xs={12} md={5} lg={12} className="mt-3 mt-md-0">
               {topDonorData?.results?.length > 0 ? (
                 <TopDonerList data={topDonorData?.results} />
               ) : (
