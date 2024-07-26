@@ -34,6 +34,8 @@ export default function SubscribedUserForm({
   const currentSubCategory = searchParams.get("subCategory");
   const currentFilter = searchParams.get("filter");
   const redirectTo = searchParams.get("redirect");
+  const dialCodeFromUrl = searchParams.get('dialCode');
+  const mobileNumberFromUrl = searchParams.get('mobileNumber');
 
   const categoryQueryClient = useQueryClient();
 
@@ -47,7 +49,7 @@ export default function SubscribedUserForm({
         setLoading(false);
         addDonationUser
           ? history.push(
-              `/${redirectTo}/add?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}`
+              `/${redirectTo}/add?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}}&dialCode=${encodeURIComponent(dialCode)}&mobileNumber=${encodeURIComponent(mobileNumber)}&name=${encodeURIComponent(name)}`
             )
           : history.push("/subscribed-user");
       } else if (data?.error) {
@@ -57,12 +59,15 @@ export default function SubscribedUserForm({
   });
   const [showPrompt, setShowPrompt] = useState(true);
   const [phoneNumber, setPhoneNumber] = useState(getNumber ?? "");
+  const [dialCode, setDialCode] = useState(dialCodeFromUrl || "");
+  const [mobileNumber, setMobileNumber] = useState(mobileNumberFromUrl || "");
+  const [name, setName] = useState('');
 
   return (
     <div className="formwrapper FormikWrapper">
       <Formik
         // enableReinitialize
-        initialValues={{ ...initialValues }}
+        initialValues={{ ...initialValues,mobile: getNumber || initialValues.mobile, }}
         onSubmit={(e) => {
           setShowPrompt(false);
           setLoading(true);
@@ -98,9 +103,10 @@ export default function SubscribedUserForm({
                       placeholder={t("placeHolder_user_name")}
                       name="name"
                       required
-                      onInput={(e) =>
-                        (e.target.value = e.target.value.slice(0, 30))
-                      }
+                      onInput={(e) => {
+                        e.target.value = e.target.value.slice(0, 30);
+                        setName(e.target.value);
+                      }}
                       autoFocus
                     />
                   </Col>
@@ -112,15 +118,11 @@ export default function SubscribedUserForm({
                       placeholder={t("placeHolder_mobile_number")}
                       onChange={(phone, country) => {
                         setPhoneNumber(phone);
-                        formik.setFieldValue(
-                          "countryCode",
-                          country?.countryCode
-                        );
+                        setDialCode(country?.dialCode);
+                        setMobileNumber(phone?.replace(country?.dialCode, ""));
+                        formik.setFieldValue("countryCode", country?.countryCode);
                         formik.setFieldValue("dialCode", country?.dialCode);
-                        formik.setFieldValue(
-                          "mobile",
-                          phone?.replace(country?.dialCode, "")
-                        );
+                        formik.setFieldValue("mobile", phone?.replace(country?.dialCode, ""));
                       }}
                       required
                     />

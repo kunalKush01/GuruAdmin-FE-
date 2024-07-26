@@ -6,7 +6,7 @@ export const englishContent = {
   dashboard: "Dashboard",
   donation: "Donation",
   commitment: "Pledge",
-  hundi: "Donation Box Collections",
+  hundi: "Donation Box",
   financial_reports: "Financial Reports",
   internal_expenses: "Expenses",
   total_donation: "Total Donation :",
@@ -374,7 +374,7 @@ export const englishContent = {
   remarks_financial_donationBox: "Remarks",
   report_commitment: "Commitment",
   reports_not_found: "Report & Disput Not Found",
-  report_donation_box: "Donation Box Collections",
+  report_donation_box: "Donation Box",
   finance_report_no_found:
     "No Financial Report Available for Selected Timeline",
   financial_not_found: "No Financial Found",
@@ -402,7 +402,7 @@ export const englishContent = {
 
   // All static content of Donation Box
   DonationBox_total_collection: "Total Collection:",
-  DonationBox_DonationBox: "Donation Box Collections",
+  DonationBox_DonationBox: "Donation Box",
   DonationBox_AddCollectionBox: "Add Collection ",
   DonationBox_EditCollectionBox: "Edit Collection ",
   created_by: "Created By",
@@ -430,8 +430,8 @@ export const englishContent = {
   notify_user: "Notify User",
   notify_user_content: "Please check the check box for nudge the user",
   commitment_Username: "Username",
-  add_commitment: "Add Commitment",
-  edit_commitment: "Edit Commitment",
+  add_commitment: "Add Pledge",
+  edit_commitment: "Edit Pledge",
   commitment_end_Date: "End Date ",
   commitment_Amount_Due: "Amount Due",
   commitment_select_commitment_id: "Select Commitment ID",
@@ -626,6 +626,6 @@ export const englishContent = {
   search_financial_reports: "Search All Financial Reports",
   search_donation: "Search All Donations",
   search_punyarjak: "Search All Punyarjak",
-  search_donation_box_collection: "Search All Donation Box Collection",
+  search_donation_box_collection: "Search All Donation Box",
   search_commitment: "Search All Commitments",
 };

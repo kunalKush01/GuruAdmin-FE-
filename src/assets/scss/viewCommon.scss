@@ -758,18 +758,20 @@
 }
 
 .chart-card-wrapper {
-    font: $font-weight-bold $font-size-large $font-family;
-
-    .chart-card {
-        background-color: $secondary-color;
-        width: auto;
-        height: auto;
-        color: $font-color;
-    }
-
-    .card-text {
-        font: $font-weight-normal 16px/20px $font-family;
-    }
+  font: $font-weight-bold $font-size-large $font-family;
+  
+  .chart-card {
+    flex: 1 1 20%;
+    background-color: $secondary-color;
+    width: 100% !important;
+    height: auto;
+    color: $font-color;
+    // max-width: 300;
+  }
+  
+  .card-text {
+    font: $font-weight-normal 16px/20px $font-family;
+  }
 
     .fw-bolder {
         text-overflow: ellipsis;
@@ -1031,4 +1033,52 @@
 .editProfileIcon {
     bottom: -10px;
     width: min-content;
+}
+
+// ===================================================SiderLayout CSS=================================================== //
+
+.custom-sider {
+  background-color: $white !important;
+
+  .ant-menu {
+    background-color: $white;
+
+    .ant-menu-item,
+    .ant-menu-submenu-title {
+      font-size: 16px; 
+    }
+
+    &.ant-menu-inline {
+      .ant-menu-item-selected {
+        background-color: $primary-color !important;
+        color: $white !important;
+      }
+
+      .ant-menu-submenu-selected {
+        > .ant-menu-submenu-title {
+          color: $primary-color !important;
+        }
+      }
+    }
+
+    .ant-menu-item,
+    .ant-menu-submenu-title {
+      font-weight: bold !important;
+
+      &:hover,
+      &:active {
+        background-color: $primary-color !important;
+        color: $white!important;
+      }
+    }
+  }
+}
+
+// ===================================================SiderLayout CSS=================================================== //
+.editCommitment{
+        color: #583703;
+        display: flex;
+        align-items: center;
+        font: normal normal bold 20px / 33px Noto Sans;
+
 }

@@ -1,14 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Formik } from "formik";
-import { flatMap } from "lodash";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import styled from "styled-components";
 import { getAllMasterCategories } from "../../api/expenseApi";
 import FormWithoutFormikForCommitment from "./FormWithoutFormikforCommitment";
-import "../../assets/scss/common.scss";
-
+import '../../../src/assets/scss/common.scss'
 export default function CommitmentForm({
   plusIconDisable = false,
   buttonName = "",
@@ -17,11 +14,15 @@ export default function CommitmentForm({
   validationSchema,
   initialValues,
   getCommitmentMobile,
+  customFieldsList,
+  paidAmount,
 }) {
   const history = useHistory();
   const commitmentQueryClient = useQueryClient();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const [loading, setLoading] = useState(false);
+  const trustId = localStorage.getItem("trustId");
+
   const masterloadOptionQuery = useQuery(
     ["MasterCategory", selectedLang.id],
     async () =>
@@ -55,6 +56,23 @@ export default function CommitmentForm({
           onSubmit={(e) => {
             setShowPrompt(false);
             setLoading(true);
+            const transformedCustomFields = Object.entries(e.customFields).map(
+              ([key, field]) => ({
+                fieldName: key,
+                fieldType:
+                  typeof field.value === "boolean"
+                    ? "Boolean"
+                    : typeof field.value === "number"
+                    ? "Number"
+                    : typeof field.value === "string" &&
+                      !isNaN(Date.parse(field.value))
+                    ? "Date"
+                    : "String", 
+                isRequired: false,
+                value: field.value !== undefined ? field.value : field,
+                trustId: trustId,
+              })
+            );
             commitmentMutation.mutate({
               donarName: e?.donarName,
               commitmentId: e.Id,
@@ -66,6 +84,7 @@ export default function CommitmentForm({
               countryName: e?.countryCode,
               commitmentStartDate: e?.startDate,
               commitmentEndDate: e.endDate,
+              customFields: transformedCustomFields,
             });
           }}
           validationSchema={validationSchema}
@@ -82,6 +101,8 @@ export default function CommitmentForm({
                 getCommitmentMobile={getCommitmentMobile}
                 showPrompt={showPrompt}
                 buttonName={buttonName}
+                customFieldsList={customFieldsList}
+                paidAmount={paidAmount}
               />
             </>
           )}

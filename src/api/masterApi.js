@@ -19,6 +19,13 @@ export const getAllMasters = ({ current, pageSize }) =>
     showToastOnSuccess: false,
     showToastOnError: false,
   });
+export const getAllMastersWithoutPagination = () =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.get(`${API_BASE_URL}/master/get-only-mastersList`),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
 
 export const getMasterDataById = (id) =>
   callApi({
