@@ -11,21 +11,19 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import "../../assets/scss/viewCommon.scss";
 import DonationForm from "../../components/donation/donationForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-
+import "../../assets/scss/viewCommon.scss";
+import { Tag } from "antd";
 export default function AddDonation() {
   const history = useHistory();
   const loggedInUser = useSelector((state) => state.auth.userDetail.name);
-
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
   const currentCategory = searchParams.get("category");
   const currentSubCategory = searchParams.get("subCategory");
   const currentFilter = searchParams.get("filter");
-
   const handleCreateDonation = async (payload) => {
     return createDonation(payload);
   };
-
   const customFieldsQuery = useQuery(
     ["custom-fields"],
     async () => await getDonationCustomFields(),
@@ -33,7 +31,6 @@ export default function AddDonation() {
       keepPreviousData: true,
     }
   );
-
   const customFieldsList = customFieldsQuery?.data?.customFields ?? [];
   const schema = Yup.object().shape({
     Mobile: Yup.string().required("expenses_mobile_required"),
@@ -92,6 +89,20 @@ export default function AddDonation() {
           <div className="addAction">
             <Trans i18nKey={"donation_Adddonation"} />
           </div>
+        </div>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
+            <p style={{fontSize:"15px",marginBottom:"0"}}>Current User :</p>
+            <Tag
+              color="#ff8744"
+              style={{
+                marginLeft: "8px",
+                borderRadius: "5px",
+                backgroundColor: "#ff8744",
+                color: "white",
+              }}
+            >
+              {loggedInUser}
+            </Tag>
         </div>
       </div>
       <div className="ms-md-3 mt-1">

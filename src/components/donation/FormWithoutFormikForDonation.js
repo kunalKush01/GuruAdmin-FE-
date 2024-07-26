@@ -28,7 +28,7 @@ import CustomTextField from "../partials/customTextField";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import FormikCardDropdown from "../partials/FormikCardDropdown";
 import { DatePicker } from "antd";
-import "./donationStyle.css";
+import '../../../src/assets/scss/common.scss'
 export default function FormWithoutFormikForDonation({
   formik,
   masterloadOptionQuery,
@@ -350,7 +350,7 @@ export default function FormWithoutFormikForDonation({
           <Row>
             <Col>
               <Row>
-                <Col xs={12} sm={6} lg={4} className=" opacity-75 pb-1">
+                <Col xs={12} sm={6} lg={4} className=" opacity-75 pb-1" style={{display:"none"}}>
                   <CustomTextField
                     label={t("created_by")}
                     name="createdBy"
@@ -411,7 +411,7 @@ export default function FormWithoutFormikForDonation({
                                 );
                               }
                             }}
-                            needConfirm
+                            // needConfirm
                           />
                           {formik.errors.customFields &&
                             formik.errors.customFields[field.fieldName] && (

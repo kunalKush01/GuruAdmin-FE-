@@ -113,7 +113,7 @@ const NavbarUser = (props) => {
   return (
     <Fragment>
       <div className="navbar-user-wrapper d-flex justify-content-between w-100 align-items-center">
-        <div className="bookmark-wrapper d-flex align-items-center">
+        {/* <div className="bookmark-wrapper d-flex align-items-center">
           <NavItem className="d-none d-lg-block">
             <NavLink to="/" className="navbar-brand">
               <div className="brand-logo">
@@ -125,7 +125,7 @@ const NavbarUser = (props) => {
               </div>
             </NavLink>
           </NavItem>
-        </div>
+        </div> */}
         {isSerchable() && (
           <CustomSearchBar
             setSearchBarState={setSearchBarState}
@@ -189,7 +189,7 @@ const NavbarUser = (props) => {
             />
           </div>
           <ul className="nav navbar-nav align-items-center ">
-            <div className="d-flex align-items-center">
+            <div className="d-flex align-items-center" style={{ marginRight: '26px' }}>
               <div className="nave-para">
                 <div
                   className="temple-name text-end d-none d-xl-block text-truncate "
