@@ -3,7 +3,7 @@ import { Tabs } from "antd";
 import CustomFieldTable from "../../../components/custom-fields/customFieldTable";
 import { Button } from "reactstrap";
 import { Plus } from "react-feather";
-import "../../../components/custom-fields/customField.css";
+import '../../../assets/scss/common.scss'
 import AddCustomField from "./addCustomField";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -172,6 +172,7 @@ const customFieldsView = () => {
     <>
       <Tabs
         defaultActiveKey="Donation"
+        className="customFieldView"
         items={items}
         onChange={handleTabChange}
       />
