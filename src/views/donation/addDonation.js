@@ -12,9 +12,7 @@ import "../../assets/scss/viewCommon.scss";
 import DonationForm from "../../components/donation/donationForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import "../../assets/scss/viewCommon.scss";
-import { useQuery } from "@tanstack/react-query";
-import { getDonationCustomFields } from "../../api/customFieldsApi";
-import { Button, FloatButton, Tag } from "antd";
+import { Tag } from "antd";
 export default function AddDonation() {
   const history = useHistory();
   const loggedInUser = useSelector((state) => state.auth.userDetail.name);
