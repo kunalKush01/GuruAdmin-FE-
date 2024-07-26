@@ -189,7 +189,7 @@ const NavbarUser = (props) => {
             />
           </div>
           <ul className="nav navbar-nav align-items-center ">
-            <div className="d-flex align-items-center">
+            <div className="d-flex align-items-center" style={{ marginRight: '26px' }}>
               <div className="nave-para">
                 <div
                   className="temple-name text-end d-none d-xl-block text-truncate "
