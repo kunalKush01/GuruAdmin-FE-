@@ -18,12 +18,8 @@ import receiptIcon from "../../assets/images/icons/receiptIcon.svg";
 import whatsappIcon from "../../assets/images/icons/whatsappIcon.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { EDIT } from "../../utility/permissionsVariable";
-import "./donationStyle.css";
 import EditDonation from "./editDonation";
-import { toast } from "react-toastify";
-import { Table, Pagination } from "antd";
 import '../../assets/scss/common.scss'
-import { getDonationCustomFields } from "../../api/customFieldsApi";
 
 export default function DonationANTDListTable(
   {
