@@ -10,6 +10,22 @@ import donationBoxIcon from "../../assets/images/icons/donationBox/donationBoxIc
 import editIcon from "../../assets/images/icons/donationBox/editIcon.svg";
 import { EDIT } from "../../utility/permissionsVariable";
 import "../../assets/scss/common.scss";
+const CustomField = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px; /* Adjust margin as needed */
+  align-items: center; /* Align items vertically center */
+`;
+
+// Field name styling
+const Field = styled.span`
+  font-size: 10px;
+  font-weight: 600;
+  margin-right: 5px; /* Adjust margin as needed */
+  white-space: nowrap; /* Prevent text from wrapping */
+  overflow: hidden; /* Hide overflow text */
+  text-overflow: ellipsis; /* Show ellipsis (...) for overflow text */
+`;
 
 export default function BoxListCard({
   data = "",
@@ -55,6 +71,14 @@ export default function BoxListCard({
                                                   )}
                                                   </span> 
                                                 </div>
+                                                  ${data.customFields
+                                                    .map(
+                                                      (field) => `
+                                                      <div>
+                                                        ${field.fieldName}: <span class='customFieldBoxSwal'>${field.value}</span>
+                                                      </div>`
+                                                    )
+                                                    .join("")}
                                             </div>
                                               `,
                     showCloseButton: false,
@@ -82,6 +106,12 @@ export default function BoxListCard({
                     }}
                   />
                 </div>
+                {data.customFields.map((field) => (
+                  <CustomField key={field.fieldName}>
+                    <Field>{field.fieldName}:</Field>
+                    <Field>{field.value}</Field>
+                  </CustomField>
+                ))}
                 <CardFooter className="w-100">
                   <div>₹{data?.amount.toLocaleString("en-IN")}</div>
                 </CardFooter>

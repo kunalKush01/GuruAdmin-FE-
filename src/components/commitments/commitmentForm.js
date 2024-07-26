@@ -63,6 +63,7 @@ export default function CommitmentForm({
   initialValues,
   getCommitmentMobile,
   customFieldsList,
+  paidAmount
 }) {
   const history = useHistory();
   const commitmentQueryClient = useQueryClient();
@@ -149,6 +150,7 @@ export default function CommitmentForm({
                 showPrompt={showPrompt}
                 buttonName={buttonName}
                 customFieldsList={customFieldsList}
+                paidAmount={paidAmount}
               />
             </>
           )}
