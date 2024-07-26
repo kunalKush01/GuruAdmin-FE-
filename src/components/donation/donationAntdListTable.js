@@ -20,25 +20,10 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { EDIT } from "../../utility/permissionsVariable";
 import "./donationStyle.css";
 import EditDonation from "./editDonation";
-const RecentDonationTableWarper = styled.div`
-  color: #583703 !important;
-  font: normal normal bold 15px/23px Noto Sans;
-  .modal-body {
-    max-height: 600px !important;
-    overflow: auto !important;
-  }
-  .tableDes p {
-    margin-bottom: 0;
-  }
-  .ant-table-body {
-    max-height: 400px;
-    height: 353px;
-    overflow: auto;
-    ::-webkit-scrollbar {
-      display: block;
-    }
-  }
-`;
+import { toast } from "react-toastify";
+import { Table, Pagination } from "antd";
+import '../../assets/scss/common.scss'
+import { getDonationCustomFields } from "../../api/customFieldsApi";
 
 export default function DonationANTDListTable(
   {
@@ -197,7 +182,7 @@ export default function DonationANTDListTable(
       key: "commitmentID",
       render: (text) => text,
       //   width: "180px",
-      width: 150,
+      width: 180,
     },
     {
       title: t("created_by"),
@@ -374,8 +359,9 @@ export default function DonationANTDListTable(
     .toWords(parseInt(receipt?.amount ?? 0))
     .toUpperCase();
   return (
-    <RecentDonationTableWarper>
+    <div>
       <Table
+      className="donationListTable"
         columns={columns}
         dataSource={Donatio_data}
         scroll={{
@@ -687,6 +673,6 @@ export default function DonationANTDListTable(
         donationId={modal?.donationId}
         estimateAmount={modal?.estimateAmount}
       />
-    </RecentDonationTableWarper>
+    </div>
   );
 }

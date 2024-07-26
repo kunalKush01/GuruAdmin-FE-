@@ -6,7 +6,6 @@ import { Helmet } from "react-helmet";
 import { Trans, useTranslation } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
@@ -17,21 +16,17 @@ import {
   PopoverHeader,
   Row,
 } from "reactstrap";
-import styled from "styled-components";
-import Swal from "sweetalert2";
+
 import {
   getAllCategories,
   getAllMasterCategories,
 } from "../../api/categoryApi";
 import {
   getAllCommitments,
-  getAllPaidDonationsReceipts,
   importCommitmentFile,
   nudgeUserApi,
 } from "../../api/commitmentApi";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { ChangeStatus } from "../../components/Report & Disput/changeStatus";
-import CommitmentListTable from "../../components/commitments/commitmentListTable";
 import { ChangeCategoryType } from "../../components/partials/categoryDropdown";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
 import NoContent from "../../components/partials/noContent";
@@ -39,6 +34,7 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { WRITE } from "../../utility/permissionsVariable";
 
 import "../../assets/scss/viewCommon.scss";
+import CommitmentAntdListTable from "../../components/commitments/commitmentAntdListTable";
 
 export default function Commitment() {
   const importFileRef = useRef();
@@ -95,7 +91,10 @@ export default function Commitment() {
       setdropDownName(currentFilter);
       setSubCategoryTypeName(currentSubCategory);
       setCommitmentStatus(currentStatus);
-      setPagination({ ...pagination, page: parseInt(currentPage) });
+      setPagination((prev) => ({
+        ...prev,
+        page: parseInt(currentPage) || prev.page,
+      }));
     }
   }, []);
 
@@ -175,6 +174,7 @@ export default function Commitment() {
     [
       "Commitments",
       pagination.page,
+      pagination.limit,
       selectedLang.id,
       filterEndDate,
       newId,
@@ -204,6 +204,8 @@ export default function Commitment() {
     () => commitmentQuery?.data?.results ?? [],
     [commitmentQuery]
   );
+  const totalItems = commitmentQuery.data?.totalResults ?? 0;
+  const totalPages = commitmentQuery.data?.totalPages ?? 1;
   const queryClient = useQueryClient();
 
   const handleImportFile = async (event) => {
@@ -254,11 +256,6 @@ export default function Commitment() {
       <div>
         <div className="d-lg-flex justify-content-between align-items-center">
           <div className="d-flex align-items-center mb-2 mb-lg-0">
-            {/* <img
-              src={arrowLeft}
-              className="me-2  cursor-pointer align-self-center"
-              onClick={() => history.push("/")}
-            /> */}
             <div className="addAction d-flex">
               <div className="">
                 <div>
@@ -434,7 +431,7 @@ export default function Commitment() {
                   disableMemo
                 >
                   <Then>
-                    <CommitmentListTable
+                    <CommitmentAntdListTable
                       data={commitmentItems}
                       currentFilter={routFilter}
                       currentPage={routPagination}
@@ -446,6 +443,21 @@ export default function Commitment() {
                       currentSubCategory={routSubCategory}
                       allPermissions={allPermissions}
                       subPermission={subPermission}
+                      totalItems={totalItems}
+                      pageSize={pagination.limit}
+                      onChangePage={(page) => {
+                        setPagination((prev) => ({ ...prev, page }));
+                        history.push(
+                          `/commitment?page=${page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${dropDownName}`
+                        );
+                      }}
+                      onChangePageSize={(pageSize) => {
+                        setPagination((prev) => ({
+                          ...prev,
+                          limit: pageSize,
+                          page: 1,
+                        }));
+                      }}
                     />
                   </Then>
                   <Else>
@@ -460,51 +472,6 @@ export default function Commitment() {
                   </Else>
                 </If>
               </Else>
-            </If>
-
-            <If
-              condition={
-                commitmentQuery?.data?.totalPages > 1 &&
-                !commitmentQuery.isFetching &&
-                !commitmentQuery.isLoading
-              }
-            >
-              <Then>
-                <Col xs={12} className="d-flex justify-content-center">
-                  <ReactPaginate
-                    nextLabel=""
-                    forcePage={pagination.page - 1}
-                    breakLabel="..."
-                    previousLabel=""
-                    pageCount={commitmentQuery?.data?.totalPages || 0}
-                    activeClassName="active"
-                    initialPage={
-                      parseInt(searchParams.get("page"))
-                        ? parseInt(searchParams.get("page")) - 1
-                        : pagination.page - 1
-                    }
-                    breakClassName="page-item"
-                    pageClassName={"page-item"}
-                    breakLinkClassName="page-link"
-                    nextLinkClassName={"page-link"}
-                    pageLinkClassName={"page-link"}
-                    nextClassName={"page-item next"}
-                    previousLinkClassName={"page-link"}
-                    previousClassName={"page-item prev"}
-                    onPageChange={(page) => {
-                      setPagination({ ...pagination, page: page.selected + 1 });
-                      history.push(
-                        `/commitment?page=${
-                          page.selected + 1
-                        }&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${dropDownName}`
-                      );
-                    }}
-                    containerClassName={
-                      "pagination react-paginate justify-content-end p-1"
-                    }
-                  />
-                </Col>
-              </Then>
             </If>
           </Row>
         </div>
