@@ -5,59 +5,14 @@ import { Trans, useTranslation } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { Button, Col, Row } from "reactstrap";
-import styled from "styled-components";
 import NoContent from "../../../components/partials/noContent";
 import { getMasterDataById } from "../../../api/masterApi";
 import { useParams, useHistory } from "react-router-dom";
-import "./masterStyle.css";
 import AddMaster from "./addMaster";
 import { Plus } from "react-feather";
 import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
 import { MasterANTDTable } from "../../../components/Masters/masterANTDTable";
-
-const MasterDataWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .masterContent {
-    margin-top: 1rem;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .sticky-header {
-    position: fixed;
-    top: 130px !important;
-    left: 0 !important;
-    width: 100%;
-    background-color: white;
-    z-index: 1000;
-    padding: 20px 50px 10px 30px;
-    @media (max-width: 768px) {
-      top: 75px !important;
-      left: 0 !important;
-      width: 100% !important;
-      padding: 15px 30px;
-    }
-    @media (max-width: 480px) {
-      top: 75px !important;
-      left: 0 !important;
-      width: 100% !important;
-      padding: 15px 30px;
-    }
-    @media (max-width: 1024px) and (min-width: 768px) {
-      top: 75px !important;
-      left: 0 !important;
-      width: 100% !important;
-      padding: 15px 30px;
-    }
-    @media (max-width: 1200px) and (min-width: 768px) {
-      top: 75px !important;
-      left: 0 !important;
-      width: 100% !important;
-      padding: 15px 40px;
-    }
-  }
-`;
+import "../../../assets/scss/common.scss";
 
 export default function Master() {
   const { masterId } = useParams();
@@ -86,12 +41,10 @@ export default function Master() {
 
   const toggleForm = () => setIsFormOpen(!isFormOpen);
 
-  const handleFormSubmit = (data) => {
-    console.log("Form submitted:", data);
-  };
+  const handleFormSubmit = (data) => {};
 
   return (
-    <MasterDataWrapper>
+    <div className="masterContent">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Masters</title>
@@ -99,7 +52,7 @@ export default function Master() {
       <div className="window nav statusBar body "></div>
 
       <div>
-        <div className="sticky-header d-sm-flex justify-content-between align-items-center ">
+        <div className="masterDataList_sticky-header  d-sm-flex justify-content-between align-items-center ">
           <div className="d-flex w-100 justify-content-between align-items-center">
             <div>
               <img
@@ -150,16 +103,7 @@ export default function Master() {
               <Else>
                 <If condition={masterItem.length != 0} disableMemo>
                   <Then>
-                    <div className="mt-3">
-                      {/* <MasterDataTable
-                        data={masterItem}
-                        loadingRow={loadingData}
-                        // page={pagination}
-                        // allPermissions={allPermissions}
-                        // subPermission={subPermission}
-                        // currentFilter={routFilter}
-                        // currentPage={routPagination}
-                      /> */}
+                    <div className="mt-3 masterDataListAntdTable">
                       <MasterANTDTable
                         data={masterItem}
                         loadingRow={loadingData}
@@ -167,9 +111,7 @@ export default function Master() {
                     </div>
                   </Then>
                   <Else>
-                    <NoContent
-                      headingNotfound={t("masters_not_found")}
-                    />
+                    <NoContent headingNotfound={t("masters_not_found")} />
                   </Else>
                 </If>
               </Else>
@@ -186,6 +128,6 @@ export default function Master() {
         masterItem={masterItem}
         onSuccess={handleRowSuccess}
       />
-    </MasterDataWrapper>
+    </div>
   );
 }

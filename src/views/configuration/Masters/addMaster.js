@@ -12,7 +12,7 @@ import {
 } from "reactstrap";
 import { addMasterInRow } from "../../../api/masterApi";
 import Swal from "sweetalert2";
-import "./masterStyle.css";
+import "../../../assets/scss/common.scss";
 import { X } from "react-feather";
 const AddMaster = ({
   schema,
@@ -118,7 +118,7 @@ const AddMaster = ({
   };
 
   return (
-    <Modal isOpen={isOpen} toggle={toggle} centered>
+    <Modal isOpen={isOpen} toggle={toggle} centered id="addMasterForm">
       <ModalHeader  toggle={toggle}>Add New Entry<div><X className="cancleIcon" onClick={toggle} size={15} strokeWidth={4} style={{marginRight:"5px"}} /></div></ModalHeader>
       <ModalBody>
         <Form className="row">
