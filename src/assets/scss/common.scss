@@ -236,6 +236,7 @@
 
     .react-tel-input .form-control {
         width: inherit;
+        height: 38px;
     }
 
     input {
@@ -270,7 +271,7 @@
         ::-webkit-scrollbar-thumb {
             background-color: #ff8744 !important;
             border-radius: 5px;
-            height: 50px;
+            height: 30px;
             width: 10px !important;
         }
     }
@@ -843,7 +844,7 @@
     }
 
     .addUser {
-        font-size: $font-size-small;
+        font-size: bold 12px Noto Sans;
     }
 
     .addUser>span {
@@ -1122,9 +1123,9 @@
         color: $white !important;
     }
 
-    .react-tel-input .country-list .search {
-        padding: 0.5rem 1.5rem 0.5rem 0rem;
-    }
+    // .react-tel-input .country-list .search {
+    //     padding: 0.5rem 1.5rem 0.5rem 0rem;
+    // }
 
     .react-tel-input .country-list .search-box {
         width: 100%;
@@ -1660,6 +1661,7 @@
 
 .reactselectwrapper {
     font: $font-weight-bold $font-size-small $font-family;
+
 }
 
 .searchbarwrapper {
@@ -1714,15 +1716,19 @@
 .customtextfieldwrapper {
     color: $font-color !important;
     font: $font-weight-bold $font-size-small $font-family;
-    padding-top: 12px;
+    padding-top: 7px;
 
-    .formGroup {
-        width: "auto";
-        margin: "auto";
+    //.formGroup {
+    //width: "auto";
+    //margin: "auto";
+    //}
+
+    .textbox {
+        height: 38px
     }
 
     label {
-        font: $font-weight-normal $font-weight-bold $font-size-medium $font-family;
+        font: $font-weight-bold $font-size-medium $font-family;
     }
 
     input::placeholder {

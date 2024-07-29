@@ -15,7 +15,7 @@ export default function FormikCardDropdown({ loadOptions, ...props }) {
         value={field.value}
         {...props}
       />
-      <div style={{ height: "20px", fontSize: "11px" }}>
+      <div style={{ height: "12px", fontSize: "11px" }}>
         {meta.error && meta.touched && (
           <div className="text-danger">
             <Trans i18nKey={meta.error} />

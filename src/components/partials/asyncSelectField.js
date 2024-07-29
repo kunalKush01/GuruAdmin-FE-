@@ -47,7 +47,7 @@ export default function AsyncSelectField({
         zIndex: 999999,
         color: "#583703",
         maxHeight: "150px",
-        font: "normal normal normal 15px/20px Noto Sans",
+        font: "bold 15px Noto Sans sans-serif",
         "::-webkit-scrollbar": {
           display: "none",
         },
@@ -64,7 +64,7 @@ export default function AsyncSelectField({
         ...provided,
 
         color: "grey",
-        border: "1px solid white",
+        //border: "1px solid white",
         backgroundColor: "#FFF7E8",
         boxShadow: "none",
         "&:hover": {
@@ -103,7 +103,7 @@ export default function AsyncSelectField({
         style={{
           color: "#583703",
           marginBottom: "0px",
-          font: "normal normal bold 15px/28px Noto Sans",
+          font: "bold 15px Noto Sans",
         }}
       >
         {label}

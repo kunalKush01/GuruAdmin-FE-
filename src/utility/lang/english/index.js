@@ -110,7 +110,7 @@ export const englishContent = {
   news_popOver_AddLang: "Add Language",
   news_popOver_Edit: "Edit",
   news_popOver_Delete: "Delete",
-
+  article_donation: "Article Donation",
   news_delete: "Delete News",
   news_sure: "Are you sure you want to permanently delete this news?",
   news_not_found: "News Absent  ",
@@ -313,10 +313,10 @@ export const englishContent = {
   categories_latest_Category: "Categories",
   categories_title_required: "Category Name is required",
   categories_EditCategory: "Edit Category",
-  categories_select_category: "Select Category",
-  categories_select_amount: "Enter Amount",
-  category_select_sub_category: "Select Sub Category",
-  categories_select_user_name: "Select Username",
+  categories_select_category: "Category",
+  categories_select_amount: "Amount",
+  category_select_sub_category: "Sub Category",
+  categories_select_user_name: "Username",
   category_select: "Select",
   categories_select_master_category: "Select Master Category",
   donar_name_required: "Donor name is Required",
@@ -434,7 +434,7 @@ export const englishContent = {
   edit_commitment: "Edit Pledge",
   commitment_end_Date: "End Date ",
   commitment_Amount_Due: "Amount Due",
-  commitment_select_commitment_id: "Select Commitment ID",
+  commitment_select_commitment_id: "Select Pledge ID",
   commitment_select_start_date: "Select Start Date",
   commitment_select_end_date: "Select End Date",
 
@@ -562,7 +562,7 @@ export const englishContent = {
 
   // all place holder images
 
-  placeHolder_donar_name: "Enter Doner Name",
+  placeHolder_donar_name: "Enter Donor Name",
   placeHolder_price_per_item: "Enter price per item",
   placeHolder_mobile_number: "Enter Mobile Number",
   placeHolder_phone_number: "Enter Contact Number",
