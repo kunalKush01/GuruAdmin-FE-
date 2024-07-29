@@ -381,6 +381,7 @@
     color: $font-color;
     font: $font-weight-bold $font-size-large $font-family;
 
+
     .ImagesVideos {
         font: $font-weight-bold $font-size-medium $font-family;
     }
@@ -397,6 +398,20 @@
         padding: 10px;
         background: $white;
         border-radius: 8px;
+    }
+
+    .reactselectlabel {
+        font: $font-weight-normal 12px $font-family;
+    }
+
+    .addUser {
+        font: bold 14px Noto Sans;
+        padding-bottom: 5px;
+    }
+
+    .addUser>span {
+        text-decoration: underline;
+        color: $primary-color;
     }
 
     .btn-Published {
@@ -1048,11 +1063,11 @@
 .card-dropdown {
     &__control {
         background-color: $secondary-color;
-        border-color: $font-color;
+        //border-color: $font-color;
 
         &:hover,
         &--is-focused {
-            border-color: $primary-color;
+            //border-color: $primary-color;
             box-shadow: 0 0 0 1px $primary-color;
         }
     }

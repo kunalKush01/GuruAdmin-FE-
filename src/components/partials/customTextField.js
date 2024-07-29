@@ -20,32 +20,30 @@ export default function CustomTextField({
 
   return (
     <div className="customtextfieldwrapper" width={width}>
-      <FormGroup className="formGroup">
-        {label && (
-          <label>
-            {`${label}`}
-            {required && "*"}
-          </label>
+      {label && (
+        <label>
+          {`${label}`}
+          {required && "*"}
+        </label>
+      )}
+      <InputGroup>
+        <input
+          type={type}
+          className={"form-control textbox"}
+          placeholder={placeholder}
+          value={field.value}
+          min={min}
+          {...field}
+          {...props}
+        />
+      </InputGroup>
+      <div style={{ height: "20px" }}>
+        {meta.error && meta.touched && (
+          <div className="text-danger">
+            <Trans i18nKey={meta.error} />
+          </div>
         )}
-        <InputGroup>
-          <input
-            type={type}
-            className={"form-control"}
-            placeholder={placeholder}
-            value={field.value}
-            min={min}
-            {...field}
-            {...props}
-          />
-        </InputGroup>
-        <div style={{ height: "20px" }}>
-          {meta.error && meta.touched && (
-            <div className="text-danger">
-              <Trans i18nKey={meta.error} />
-            </div>
-          )}
-        </div>
-      </FormGroup>
+      </div>
     </div>
   );
 }
