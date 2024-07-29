@@ -72,8 +72,8 @@ export const TopDonerList = ({ data }) => {
       </div>
       <div className="listContainer d-flex justify-content-between flex-column">
         {data?.map((item, idx) => (
-          <Card key={item.id} className="  rounded-3">
-            <CardBody className="d-flex p-1 justify-content-between align-items-center   ">
+          <Card key={item.id} className="rounded-3">
+            <CardBody className="d-flex p-1 justify-content-between align-items-center">
               <div className="d-flex align-items-center">
                 <img
                   src={
