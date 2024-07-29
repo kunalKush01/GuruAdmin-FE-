@@ -2573,7 +2573,7 @@
 }
 
 .ant-picker-dropdown .ant-picker-content td {
-    color: $font-colorolorolor !important;
+    color: $font-color !important;
 }
 
 .ant-picker-now-btn {
@@ -2581,7 +2581,7 @@
 }
 
 .ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-selected:not(.ant-picker-cell-disabled) .ant-picker-cell-inner {
-    background-color: #ff8744;
+    background-color: $primary-color;
 }
 
 .ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
@@ -2589,7 +2589,7 @@
 }
 
 .ant-btn-primary {
-    background-color: #ff8744 !important;
+    background-color: $primary-color !important;
     color: white !important;
     border: none !important;
     border-radius: 5px !important;
