@@ -221,13 +221,13 @@
     }
 
     input::placeholder {
-        color: #583703 !important;
+        color: $font-color !important;
         opacity: 60% !important;
         font: normal normal bold 13px/20px Noto Sans !important;
     }
 
     .react-tel-input {
-        color: #583703 !important;
+        color: $font-color !important;
         border: none !important;
         background-color: #fff7e8 !important;
         font: normal normal normal 13px/20px Noto Sans;
@@ -239,7 +239,7 @@
     }
 
     input {
-        color: #583703 !important;
+        color: $font-color !important;
         border: none !important;
         background-color: #fff7e8 !important;
         font: normal normal normal 13px/20px Noto Sans;
@@ -285,7 +285,7 @@
     }
 
     .dial-code {
-        color: #583703 !important;
+        color: $font-color !important;
     }
 
     .react-tel-input .country-list .country.highlight {
@@ -886,7 +886,7 @@
 
     /* input tags  css start */
     .ReactTags__tagInput {
-        color: #583703 !important;
+        color: $font-color !important;
         height: 36px;
         border: none !important;
         background-color: #fff7e8 !important;
@@ -895,7 +895,7 @@
     }
 
     .ReactTags__tagInput input.ReactTags__tagInputField {
-        color: #583703 !important;
+        color: $font-color !important;
         border: none !important;
         background-color: #fff7e8 !important;
         font: normal normal normal 13px/20px Noto Sans;
@@ -911,7 +911,7 @@
     }
 
     .ReactTags__tagInput input.ReactTags__tagInputField::placeholder {
-        color: #583703 !important;
+        color: $font-color !important;
         font: normal normal bold 13px/20px Noto Sans;
         opacity: 60%;
     }
@@ -973,7 +973,7 @@
         padding: 4px 10px;
         font: normal normal bold 13px/20px Noto Sans;
         border-radius: 10px;
-        border: 2px solid #583703;
+        border: 2px solid $font-color;
         display: flex;
         margin-left: 3px;
         align-items: center;
@@ -2553,7 +2553,7 @@
 
 .ant-picker .ant-picker-input>input {
     font-weight: 700 !important;
-    color: #583703 !important;
+    color: $font-color !important;
 }
 
 .ant-picker-suffix {
@@ -2564,20 +2564,20 @@
     display: none !important;
   } */
 .ant-picker-header-view {
-    color: #583703 !important;
+    color: $font-color !important;
 }
 
 .ant-picker-date-panel .ant-picker-content th {
-    color: #583703 !important;
+    color: $font-color !important;
     font-weight: 500 !important;
 }
 
 .ant-picker-dropdown .ant-picker-content td {
-    color: #583703 !important;
+    color: $font-colorolorolor !important;
 }
 
 .ant-picker-now-btn {
-    color: #583703 !important;
+    color: $font-color !important;
 }
 
 .ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-selected:not(.ant-picker-cell-disabled) .ant-picker-cell-inner {
@@ -2585,7 +2585,7 @@
 }
 
 .ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
-    border: 1px solid #583703;
+    border: 1px solid $font-color;
 }
 
 .ant-btn-primary {
@@ -2623,7 +2623,7 @@
 }
 
 .addCommitment {
-    color: #583703;
+    color: $font-color;
     display: flex;
     align-items: center;
     font: normal normal bold 20px/33px Noto Sans;
@@ -2631,7 +2631,7 @@
 
 .masterContent,
 .masterlistTableContainer {
-    color: #583703;
+    color: $font-color;
     font: normal normal bold 20px/33px Noto Sans;
 
     // margin-top: 1rem;
