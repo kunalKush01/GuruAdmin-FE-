@@ -47,9 +47,9 @@ export default function AddCategory() {
   const currentPage = searchParams.get("page");
 
   return (
-    <div className="">
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
-        <div className="d-flex justify-content-between align-items-center ">
+        <div className="d-flex justify-content-between align-items-center">
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
