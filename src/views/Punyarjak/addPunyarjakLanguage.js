@@ -96,7 +96,7 @@ export default function AddLanguagePunyarjak() {
   }, [punyarjakDetailQuery]);
 
   return (
-    <div className="addviewwrapper">
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -127,7 +127,7 @@ export default function AddLanguagePunyarjak() {
       </div>
 
       {!punyarjakDetailQuery.isLoading ? (
-        <div className="mt-1 ms-md-3">
+        <div className="mt-1">
           <PunyarjakForm
             editThumbnail
             AddLanguage

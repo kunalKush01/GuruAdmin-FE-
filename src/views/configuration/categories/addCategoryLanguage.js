@@ -117,7 +117,7 @@ export default function AddLanguageCategory() {
       </div>
 
       {!subCategoryDetailQuery.isLoading ? (
-        <div className="ms-sm-3 mt-1">
+        <div className="mt-1">
           <CategoryForm
             loadOptions={[subCategoryDetailQuery?.data?.result?.masterCategory]}
             langSelectionValue={langSelection}

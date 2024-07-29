@@ -44,12 +44,12 @@ export default function AddNotice() {
   const currentFilter = searchParams.get("filter");
 
   return (
-    <div className="addviewwrapper">
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
             src={arrowLeft}
-            className="me-2  cursor-pointer"
+            className="me-2 cursor-pointer"
             onClick={() =>
               history.push(
                 `/notices?page=${currentPage}&filter=${currentFilter}`
@@ -72,7 +72,7 @@ export default function AddNotice() {
           />
         </div> */}
       </div>
-      <div className="ms-sm-3 mt-1">
+      <div className="mt-1">
         <NoticeForm
           handleSubmit={handleCreateNotice}
           initialValues={initialValues}

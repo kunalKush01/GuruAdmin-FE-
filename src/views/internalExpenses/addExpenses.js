@@ -86,7 +86,7 @@ export default function AddNews() {
   };
 
   return (
-    <div className="expensewrapper">
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -103,7 +103,7 @@ export default function AddNews() {
           </div>
         </div>
       </div>
-      <div className="ms-md-3 mt-1">
+      <div className="mt-1">
         <ExpensesForm
           handleSubmit={handleCreateExpense}
           initialValues={initialValues}

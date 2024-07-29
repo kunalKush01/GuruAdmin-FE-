@@ -90,22 +90,28 @@ export default function AddDonation() {
             <Trans i18nKey={"donation_Adddonation"} />
           </div>
         </div>
-        <div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
-            <p style={{fontSize:"15px",marginBottom:"0"}}>Current User :</p>
-            <Tag
-              color="#ff8744"
-              style={{
-                marginLeft: "8px",
-                borderRadius: "5px",
-                backgroundColor: "#ff8744",
-                color: "white",
-              }}
-            >
-              {loggedInUser}
-            </Tag>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <p style={{ fontSize: "15px", marginBottom: "0" }}>Current User :</p>
+          <Tag
+            color="#ff8744"
+            style={{
+              marginLeft: "8px",
+              borderRadius: "5px",
+              backgroundColor: "#ff8744",
+              color: "white",
+            }}
+          >
+            {loggedInUser}
+          </Tag>
         </div>
       </div>
-      <div className="ms-md-3 mt-1">
+      <div className="mt-1">
         <DonationForm
           handleSubmit={handleCreateDonation}
           initialValues={initialValues}

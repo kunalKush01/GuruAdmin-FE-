@@ -41,13 +41,13 @@ export default function AddSubscribedUser() {
   const currentSubCategory = searchParams.get("subCategory");
   const currentFilter = searchParams.get("filter");
   const redirectTo = searchParams.get("redirect");
-  const dialCode = searchParams.get('dialCode');
-  const mobileNumber = searchParams.get('mobileNumber');
+  const dialCode = searchParams.get("dialCode");
+  const mobileNumber = searchParams.get("mobileNumber");
 
-  const phoneNumber = `${dialCode}${mobileNumber}`; 
+  const phoneNumber = `${dialCode}${mobileNumber}`;
 
   return (
-    <div className="addviewwrapper">
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
