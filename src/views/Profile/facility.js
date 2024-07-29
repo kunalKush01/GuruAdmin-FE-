@@ -46,7 +46,7 @@ export default function AddProfile() {
   };
 
   return (
-    <div className="addviewwrapper">
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center mb-2">
         <div className="d-flex justify-content-between align-items-center ">
           <img

@@ -37,7 +37,7 @@ export default function AddPunyarjak() {
   };
 
   return (
-    <div className="addviewwrapper">
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -60,7 +60,7 @@ export default function AddPunyarjak() {
         </div> */}
       </div>
 
-      <div className="ms-sm-3 mt-1 ms-1">
+      <div className="mt-1">
         <PunyarjakForm
           handleSubmit={handleCreatePunyarjak}
           initialValues={initialValues}

@@ -141,7 +141,7 @@ export default function AddProfile() {
   ]);
 
   return (
-    <div className="addviewwrapper">
+    <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharam Admin | Profile</title>

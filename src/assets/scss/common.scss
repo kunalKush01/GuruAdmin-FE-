@@ -638,6 +638,8 @@
 .formwrapper {
     .FormikWrapper {
         padding: 10px;
+        background: $white !important;
+        border-radius: 8px;
     }
 
     .btn-Published {
@@ -895,20 +897,20 @@
     }
 }
 
-.addviewwrapper {
-    .dateTime {
-        color: #909090;
-        font: $font-weight-bold 16px/27px $font-family;
-    }
+// .addviewwrapper {
+//     .dateTime {
+//         color: #909090;
+//         font: $font-weight-bold 16px/27px $font-family;
+//     }
 
-    .heading {
-        font: $font-weight-bold $font-size-large/38px $font-family;
-    }
+//     .heading {
+//         font: $font-weight-bold $font-size-large/38px $font-family;
+//     }
 
-    .notificationPara {
-        font: $font-weight-normal 14px/27px $font-family;
-    }
-}
+//     .notificationPara {
+//         font: $font-weight-normal 14px/27px $font-family;
+//     }
+// }
 
 .customcardwrapper {
     width: 100%;
@@ -2722,4 +2724,8 @@
     ::-webkit-scrollbar {
         display: block;
     }
+}
+
+.ant-layout-content {
+    padding: 5px !important
 }

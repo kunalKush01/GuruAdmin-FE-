@@ -88,7 +88,7 @@ export default function AddNews() {
           />
         </div> */}
       </div>
-      <div className="ms-md-3 mt-1">
+      <div className="mt-1">
         <DonationBoxForm
           handleSubmit={handleCollectionBox}
           initialValues={initialValues}
@@ -96,7 +96,6 @@ export default function AddNews() {
           showTimeInput
           buttonName="DonationBox_AddCollectionBox"
           customFieldsList={customFieldsList}
-
         />
       </div>
     </div>

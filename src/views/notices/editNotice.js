@@ -86,7 +86,7 @@ export default function EditNotice() {
   }, [noticeDetailQuery]);
 
   return (
-    <div className="addviewwrapper">
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -154,7 +154,7 @@ export default function EditNotice() {
         </Then>
         <Else>
           {!!noticeDetailQuery?.data?.result && (
-            <div className="ms-sm-3 mt-1">
+            <div className="mt-1">
               <NoticeForm
                 initialValues={initialValues}
                 editThumbnail

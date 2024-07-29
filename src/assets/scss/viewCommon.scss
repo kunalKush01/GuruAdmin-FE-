@@ -394,7 +394,9 @@
     }
 
     .FormikWrapper {
-        padding: 5px;
+        padding: 10px;
+        background: $white;
+        border-radius: 8px;
     }
 
     .btn-Published {
@@ -588,68 +590,68 @@
     }
 }
 
-.addviewwrapper {
-    color: $font-color;
-    font: $font-weight-bold $font-size-large $font-family;
+// .addviewwrapper {
+//     color: $font-color;
+//     font: $font-weight-bold $font-size-large $font-family;
 
-    .ImagesVideos {
-        font: $font-weight-bold $font-size-medium $font-family;
-    }
+//     .ImagesVideos {
+//         font: $font-weight-bold $font-size-medium $font-family;
+//     }
 
-    .addNotice,
-    .editNotice,
-    .addNotification,
-    .addProfile,
-    .addPunyarjak,
-    .editPunyarjak {
-        color: $font-color;
-        display: flex;
-        align-items: center;
-    }
+//     .addNotice,
+//     .editNotice,
+//     .addNotification,
+//     .addProfile,
+//     .addPunyarjak,
+//     .editPunyarjak {
+//         color: $font-color;
+//         display: flex;
+//         align-items: center;
+//     }
 
-    .FormikWrapper {
-        padding: 5px;
-    }
+//     .FormikWrapper {
+//         padding: 5px;
+//     }
 
-    .btn-Published {
-        text-align: center;
-    }
+//     .btn-Published {
+//         text-align: center;
+//     }
 
-    .addNotification-btn,
-    .addPunyarjak-btn {
-        padding: 8px 20px;
-        margin-left: 10px;
-        font: $font-weight-bold $font-size-medium/$font-size-medium $font-family;
-    }
+//     .addNotification-btn,
+//     .addPunyarjak-btn {
+//         padding: 8px 20px;
+//         margin-left: 10px;
+//         font: $font-weight-bold $font-size-medium/$font-size-medium $font-family;
+//     }
 
-    .noticeContent,
-    .notificationContent,
-    .punyarjakContent {
-        margin-top: 1rem;
+//     .noticeContent,
+//     .notificationContent,
+//     .punyarjakContent {
+//         margin-top: 1rem;
 
-        ::-webkit-scrollbar {
-            display: none;
-        }
-    }
+//         ::-webkit-scrollbar {
+//             display: none;
+//         }
+//     }
 
-    .filterPeriod {
-        color: $primary-color;
-        margin-top: 0.5rem;
-        font: $font-weight-bold $font-size-small/5px $font-family;
-    }
+//     .filterPeriod {
+//         color: $primary-color;
+//         margin-top: 0.5rem;
+//         font: $font-weight-bold $font-size-small/5px $font-family;
+//     }
 
-    .noContent {
-        margin-left: 30rem;
-    }
+//     .noContent {
+//         margin-left: 30rem;
+//     }
 
-    @media only screen and (max-width: 1150px) {
-        .noContent {
-            margin-left: 0;
-        }
-    }
-}
+//     @media only screen and (max-width: 1150px) {
+//         .noContent {
+//             margin-left: 0;
+//         }
+//     }
+// }
 
-.addviewwrapper,
+//.addviewwrapper,
 .wrapfacility {
     label {
         font: $font-weight-bold $font-size-medium/$font-size-large*1.65 $font-family;

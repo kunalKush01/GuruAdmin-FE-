@@ -109,7 +109,7 @@ export default function AddExpense() {
       </div>
 
       {!ExpensesDetailQuery.isLoading ? (
-        <div className="ms-md-3 mt-1">
+        <div className="mt-1">
           <ExpensesForm
             handleSubmit={handleCreateExpense}
             editLogs
