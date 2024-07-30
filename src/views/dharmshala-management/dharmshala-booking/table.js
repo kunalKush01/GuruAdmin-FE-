@@ -52,6 +52,39 @@ const DharmshalaBookingTable = ({
     );
   };
 
+  const handleEditClick = (item) => {
+    const {
+      _id,
+      bookingId,
+      startDate,
+      endDate,
+      roomId,
+      roomTypeId,
+      count,
+      earlyCheckIn,
+      lateCheckout,
+      status,
+      guestCount
+    } = item;
+  
+    history.push({
+      pathname: `/booking/edit/${_id}`,
+      state: {
+        _id,
+        bookingId,
+        startDate,
+        endDate,
+        roomId,
+        roomTypeId,
+        count,
+        earlyCheckIn,
+        lateCheckout,
+        status,
+        guestCount
+      },
+    });
+  };
+
   const columns = [
     {
       name: "",
@@ -143,12 +176,8 @@ const DharmshalaBookingTable = ({
             src={editIcon}
             width={35}
             className="cursor-pointer"
-            onClick={() => {
-              history.push(
-                `/booking/edit/${item?._id}/?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}&bookingId=${item?.bookingId}&startDate=${item?.startDate}&endDate=${item?.endDate}&count=${item?.count}&earlyCheckIn=${item?.earlyCheckIn}&lateCheckout=${item?.lateCheckout}`
-              );
-            }}
-          />
+            onClick={() => handleEditClick(item, currentPage, currentStatus, currentFilter)}
+            />
         ),
         delete: (
           <img
