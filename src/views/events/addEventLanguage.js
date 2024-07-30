@@ -148,7 +148,7 @@ export default function AddLanguageEvent() {
       </div>
 
       {!eventDetailQuery.isLoading ? (
-        <div className="ms-sm-3 mt-1">
+        <div className="mt-1">
           <EventForm
             AddLanguage
             editImage="edit"

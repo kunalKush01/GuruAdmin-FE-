@@ -19,6 +19,7 @@
   // For desktop only
   @include media-breakpoint-up(lg) {
     vertical-align: top;
+    display: block;
   }
 }
 .sidebar-fixed {

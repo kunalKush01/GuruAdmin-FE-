@@ -175,7 +175,7 @@ export default function EditEvent() {
         </Then>
         <Else>
           {!eventDetailQuery.isFetching && (
-            <div className="ms-sm-3 mt-1">
+            <div className="mt-1">
               <EventForm
                 editImage="edit"
                 defaultImages={eventDetailQuery?.data?.result?.images}

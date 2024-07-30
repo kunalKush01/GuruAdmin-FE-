@@ -76,7 +76,7 @@ export default function EditReportDispute() {
   }, [noticeDetailQuery]);
 
   return (
-    <div className="addviewwrapper">
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img

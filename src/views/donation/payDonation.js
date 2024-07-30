@@ -154,10 +154,7 @@ export default function PayDonation() {
         </Then>
         <Else>
           {!commitmentDetailQuery?.isLoading && (
-            <div
-              className="ms-md-3 mt-1 mb-3"
-              style={{ padding: 0, margin: 0 }}
-            >
+            <div className="mt-1 mb-3" style={{ padding: 0, margin: 0 }}>
               <DonationForm
                 validationSchema={schema}
                 initialValues={initialValues}

@@ -3,7 +3,7 @@ import ReactSelect from "react-select";
 import { Trans } from "react-i18next";
 import { useField } from "formik";
 import styled from "styled-components";
-import "../../assets/scss/common.scss";
+import "../../assets/scss/viewCommon.scss";
 
 export const CustomReactSelect = ({
   required = false,
@@ -41,7 +41,7 @@ export const CustomReactSelect = ({
         // width: "fit-content"  ,
         maxHeight: "150px",
         zIndex: "50000000000000010000",
-        font: "normal normal normal 15px/20px Noto Sans",
+        font: "bold 15px Noto Sans, sans-serif",
         "::-webkit-scrollbar": {
           display: "none",
         },
@@ -149,10 +149,10 @@ export const CustomReactSelect = ({
   return (
     <div className="reactselectwrapper">
       {props.labelName && (
-        <div style={{ font: "normal normal bold 15px/33px Noto Sans" }}>
+        <label style={{ font: "bold 15px Noto Sans" }}>
           {`${props.labelName}`}
           {required && "*"}
-        </div>
+        </label>
       )}
       <ReactSelect
         isDisabled={props.disabled}

@@ -72,7 +72,7 @@ const ReportList = () => {
     <div className="reportdisputwrapper">
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharam Admin | Reports & Disputes</title>
+        <title>Apna Dharm Admin | Reports & Disputes</title>
       </Helmet>
       <div className="d-flex justify-content-between align-items-center table_upper_row">
         <div className="d-flex justify-content-between align-items-center ">

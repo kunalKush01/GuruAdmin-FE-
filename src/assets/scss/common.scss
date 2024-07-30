@@ -233,6 +233,99 @@
     }
 }
 
+.phonewrapper {
+    label {
+        /* margin-bottom: 0px; */
+        font: bold 15px Noto Sans;
+    }
+
+    input::placeholder {
+        color: $font-color !important;
+        opacity: 60% !important;
+        font: normal normal bold 13px/20px Noto Sans !important;
+    }
+
+    .react-tel-input {
+        color: $font-color !important;
+        border: none !important;
+        background-color: #fff7e8 !important;
+        font: normal normal normal 13px/20px Noto Sans;
+        border-radius: 5px;
+    }
+
+    .react-tel-input .form-control {
+        width: inherit;
+        height: 38px;
+    }
+
+    input {
+        color: $font-color !important;
+        border: none !important;
+        background-color: #fff7e8 !important;
+        font: normal normal normal 13px/20px Noto Sans;
+        border-radius: 5px;
+    }
+
+    .react-tel-input .flag-dropdown {
+        background-color: #fff7e8 !important;
+        border: none !important;
+        border-right: 1px solid hsl(0, 0%, 80%) !important;
+    }
+
+    .react-tel-input .selected-flag:hover {
+        background-color: #fff7e8 !important;
+    }
+
+    .react-tel-input .flag-dropdown.open .selected-flag {
+        background-color: #fff7e8 !important;
+    }
+
+    .country-list {
+        background-color: #fff7e8 !important;
+
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #ff8744 !important;
+            border-radius: 5px;
+            height: 30px;
+            width: 10px !important;
+        }
+    }
+
+    .react-tel-input .country-list .country:hover {
+        background-color: #ff8744 !important;
+        color: #fff;
+    }
+
+    .react-tel-input .country-list .country:hover .dial-code {
+        color: #fff !important;
+    }
+
+    .dial-code {
+        color: $font-color !important;
+    }
+
+    .react-tel-input .country-list .country.highlight {
+        background-color: #ff8744 !important;
+    }
+
+    .react-tel-input .country-list .country.highlight>span {
+        font: normal normal bold 13px/20px Noto Sans;
+        color: #ffffff !important;
+    }
+
+    .react-tel-input .country-list .search {
+        padding: 0.5rem 1.5rem 0.5rem 0rem;
+    }
+
+    .react-tel-input .country-list .search-box {
+        width: 100%;
+    }
+}
+
 .topdonorwrapper {
     margin-top: 25px;
     height: auto;
@@ -251,7 +344,7 @@
     }
 
     .listContainer {
-        border: 2px solid $primary-color;
+        //border: 2px solid $primary-color;
         height: 100%;
         border-radius: 10px;
         color: $font-color;
@@ -266,6 +359,7 @@
     .card {
         background-color: $secondary-color;
         margin: 5px 10px;
+        box-shadow: none;
     }
 }
 
@@ -671,6 +765,8 @@
 .formwrapper {
     .FormikWrapper {
         padding: 10px;
+        background: $white !important;
+        border-radius: 8px;
     }
 
     .btn-Published {
@@ -781,7 +877,7 @@
     }
 
     .addUser {
-        font-size: $font-size-small;
+        font-size: bold 12px Noto Sans;
     }
 
     .addUser>span {
@@ -824,7 +920,7 @@
 
     /* input tags  css start */
     .ReactTags__tagInput {
-        color: #583703 !important;
+        color: $font-color !important;
         height: 36px;
         border: none !important;
         background-color: #fff7e8 !important;
@@ -833,7 +929,7 @@
     }
 
     .ReactTags__tagInput input.ReactTags__tagInputField {
-        color: #583703 !important;
+        color: $font-color !important;
         border: none !important;
         background-color: #fff7e8 !important;
         font: normal normal normal 13px/20px Noto Sans;
@@ -849,7 +945,7 @@
     }
 
     .ReactTags__tagInput input.ReactTags__tagInputField::placeholder {
-        color: #583703 !important;
+        color: $font-color !important;
         font: normal normal bold 13px/20px Noto Sans;
         opacity: 60%;
     }
@@ -911,7 +1007,7 @@
         padding: 4px 10px;
         font: normal normal bold 13px/20px Noto Sans;
         border-radius: 10px;
-        border: 2px solid #583703;
+        border: 2px solid $font-color;
         display: flex;
         margin-left: 3px;
         align-items: center;
@@ -928,20 +1024,20 @@
     }
 }
 
-.addviewwrapper {
-    .dateTime {
-        color: #909090;
-        font: $font-weight-bold 16px/27px $font-family;
-    }
+// .addviewwrapper {
+//     .dateTime {
+//         color: #909090;
+//         font: $font-weight-bold 16px/27px $font-family;
+//     }
 
-    .heading {
-        font: $font-weight-bold $font-size-large/38px $font-family;
-    }
+//     .heading {
+//         font: $font-weight-bold $font-size-large/38px $font-family;
+//     }
 
-    .notificationPara {
-        font: $font-weight-normal 14px/27px $font-family;
-    }
-}
+//     .notificationPara {
+//         font: $font-weight-normal 14px/27px $font-family;
+//     }
+// }
 
 .customcardwrapper {
     width: 100%;
@@ -1012,7 +1108,7 @@
     .react-tel-input .flag-dropdown {
         background-color: $secondary-color !important;
         border: none !important;
-        border-right: 1px solid black !important;
+        border-right: 1px solid hsl(0, 0%, 80%) !important;
     }
 
     .react-tel-input .selected-flag:hover {
@@ -1060,9 +1156,9 @@
         color: $white !important;
     }
 
-    .react-tel-input .country-list .search {
-        padding: 0.5rem 1.5rem 0.5rem 0rem;
-    }
+    // .react-tel-input .country-list .search {
+    //     padding: 0.5rem 1.5rem 0.5rem 0rem;
+    // }
 
     .react-tel-input .country-list .search-box {
         width: 100%;
@@ -1598,6 +1694,7 @@
 
 .reactselectwrapper {
     font: $font-weight-bold $font-size-small $font-family;
+
 }
 
 .searchbarwrapper {
@@ -1652,15 +1749,19 @@
 .customtextfieldwrapper {
     color: $font-color !important;
     font: $font-weight-bold $font-size-small $font-family;
-    padding-top: 12px;
+    padding-top: 7px;
 
-    .formGroup {
-        width: "auto";
-        margin: "auto";
+    //.formGroup {
+    //width: "auto";
+    //margin: "auto";
+    //}
+
+    .textbox {
+        height: 38px
     }
 
     label {
-        font: $font-weight-normal $font-weight-bold $font-size-medium $font-family;
+        font: $font-weight-bold $font-size-medium $font-family;
     }
 
     input::placeholder {
@@ -1868,6 +1969,8 @@
 }
 
 .wraperimagefield {
+    padding-left: 5px;
+
     .image_text {
         font: $font-weight-normal medium 22px/30px Kanit;
     }
@@ -2490,7 +2593,7 @@
 
 .ant-picker .ant-picker-input>input {
     font-weight: 700 !important;
-    color: #583703 !important;
+    color: $font-color !important;
 }
 
 .ant-picker-suffix {
@@ -2501,32 +2604,32 @@
     display: none !important;
   } */
 .ant-picker-header-view {
-    color: #583703 !important;
+    color: $font-color !important;
 }
 
 .ant-picker-date-panel .ant-picker-content th {
-    color: #583703 !important;
+    color: $font-color !important;
     font-weight: 500 !important;
 }
 
 .ant-picker-dropdown .ant-picker-content td {
-    color: #583703 !important;
+    color: $font-color !important;
 }
 
 .ant-picker-now-btn {
-    color: #583703 !important;
+    color: $font-color !important;
 }
 
 .ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-selected:not(.ant-picker-cell-disabled) .ant-picker-cell-inner {
-    background-color: #ff8744;
+    background-color: $primary-color;
 }
 
 .ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
-    border: 1px solid #583703;
+    border: 1px solid $font-color;
 }
 
 .ant-btn-primary {
-    background-color: #ff8744 !important;
+    background-color: $primary-color !important;
     color: white !important;
     border: none !important;
     border-radius: 5px !important;
@@ -2560,7 +2663,7 @@
 }
 
 .addCommitment {
-    color: #583703;
+    color: $font-color;
     display: flex;
     align-items: center;
     font: normal normal bold 20px/33px Noto Sans;
@@ -2568,7 +2671,7 @@
 
 .masterContent,
 .masterlistTableContainer {
-    color: #583703;
+    color: $font-color;
     font: normal normal bold 20px/33px Noto Sans;
 
     // margin-top: 1rem;
@@ -2756,4 +2859,8 @@
     ::-webkit-scrollbar {
         display: block;
     }
+}
+
+.ant-layout-content {
+    padding: 5px !important
 }

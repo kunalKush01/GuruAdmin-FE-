@@ -73,7 +73,7 @@ export default function AddEvent() {
           </div>
         </div>
       </div>
-      <div className="ms-sm-3 mt-1">
+      <div className="mt-1">
         <EventForm
           handleSubmit={handleCreateEvent}
           initialValues={initialValues}

@@ -74,7 +74,7 @@ export default function AddNews() {
           </div>
         </div>
       </div>
-      <div className="mt-1 ms-sm-3 ms-1">
+      <div className="mt-1">
         <NewsForm
           handleSubmit={handleCreateNews}
           initialValues={initialValues}

@@ -28,7 +28,7 @@ import CustomTextField from "../partials/customTextField";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import FormikCardDropdown from "../partials/FormikCardDropdown";
 import { DatePicker } from "antd";
-import '../../../src/assets/scss/common.scss'
+import "../../../src/assets/scss/common.scss";
 export default function FormWithoutFormikForDonation({
   formik,
   masterloadOptionQuery,
@@ -78,8 +78,6 @@ export default function FormWithoutFormikForDonation({
     SelectedUser && res();
   }, [SelectedUser?.userId]);
   const [phoneNumber, setPhoneNumber] = useState(getCommitmentMobile ?? "");
-
- 
 
   useUpdateEffect(() => {
     if (formik?.values?.Mobile?.toString().length == 10) {
@@ -152,17 +150,18 @@ export default function FormWithoutFormikForDonation({
     if (mobileNumberFromURL && dialCodeFromURL) {
       const fullPhoneNumber = `${dialCodeFromURL}${mobileNumberFromURL}`;
       setPhoneNumber(fullPhoneNumber);
-      formik.setFieldValue("countryCode", dialCodeFromURL.replace('+', ''));
+      formik.setFieldValue("countryCode", dialCodeFromURL.replace("+", ""));
       formik.setFieldValue("dialCode", dialCodeFromURL);
       formik.setFieldValue("Mobile", mobileNumberFromURL);
-  
+
       const fetchUserDetails = async () => {
         try {
           const res = await findAllUsersByNumber({
             mobileNumber: fullPhoneNumber,
           });
           if (res.result) {
-            const userMobileNumberWithoutDialCode = res.result.mobileNumber.replace(dialCodeFromURL, '');
+            const userMobileNumberWithoutDialCode =
+              res.result.mobileNumber.replace(dialCodeFromURL, "");
             res.result.mobileNumber = userMobileNumberWithoutDialCode;
             formik.setFieldValue("SelectedUser", res.result);
             formik.setFieldValue("donarName", res.result.name);
@@ -180,7 +179,7 @@ export default function FormWithoutFormikForDonation({
           }
         }
       };
-  
+
       fetchUserDetails();
     } else {
       console.log("Mobile number or dial code missing from URL");
@@ -199,7 +198,7 @@ export default function FormWithoutFormikForDonation({
         <Prompt
           when={
             !!Object.values(formik?.values).find(
-              (val, key) => !!val && key !== 'Mobile'
+              (val, key) => !!val && key !== "Mobile"
             )
           }
           message={(location) =>
@@ -210,47 +209,43 @@ export default function FormWithoutFormikForDonation({
           }
         />
       )}
-      <Row className="paddingForm">
+      <Row>
         <Col xs={12}>
           <Row>
-            <Col xs={12} sm={6} lg={4} className=" pb-1">
-              <Row>
-                <Col xs={12} className="align-self-center">
-                  <CustomCountryMobileNumberField
-                    value={phoneNumber}
-                    disabled={payDonation}
-                    defaultCountry={countryFlag}
-                    label={t("dashboard_Recent_DonorNumber")}
-                    placeholder={t("placeHolder_mobile_number")}
-                    onChange={(phone, country) => {
-                      setPhoneNumber(phone);
-                      formik.setFieldValue("countryCode", country?.countryCode);
-                      formik.setFieldValue("dialCode", country?.dialCode);
-                      formik.setFieldValue(
-                        "Mobile",
-                        phone?.replace(country?.dialCode, "")
-                      );
-                    }}
-                    required
-                  />
+            <Col xs={12} sm={6} lg={4} className="pb-0">
+              <CustomCountryMobileNumberField
+                value={phoneNumber}
+                disabled={payDonation}
+                defaultCountry={countryFlag}
+                label={t("dashboard_Recent_DonorNumber")}
+                placeholder={t("placeHolder_mobile_number")}
+                onChange={(phone, country) => {
+                  setPhoneNumber(phone);
+                  formik.setFieldValue("countryCode", country?.countryCode);
+                  formik.setFieldValue("dialCode", country?.dialCode);
+                  formik.setFieldValue(
+                    "Mobile",
+                    phone?.replace(country?.dialCode, "")
+                  );
+                }}
+                required
+              />
+              {formik.errors.Mobile && (
+                <div
+                  style={{
+                    height: "20px",
+                    font: "normal normal bold 11px Noto Sans",
+                  }}
+                >
                   {formik.errors.Mobile && (
-                    <div
-                      style={{
-                        height: "20px",
-                        font: "normal normal bold 11px/33px Noto Sans",
-                      }}
-                    >
-                      {formik.errors.Mobile && (
-                        <div className="text-danger">
-                          <Trans i18nKey={formik.errors.Mobile} />
-                        </div>
-                      )}
+                    <div className="text-danger">
+                      <Trans i18nKey={formik.errors.Mobile} />
                     </div>
                   )}
-                </Col>
-              </Row>
+                </div>
+              )}
             </Col>
-            <Col xs={12} sm={6} lg={4} className=" pb-1">
+            <Col xs={12} sm={6} lg={4}>
               <AsyncSelectField
                 name="SelectedUser"
                 required
@@ -279,18 +274,21 @@ export default function FormWithoutFormikForDonation({
                 </div>
               )}
             </Col>
-            <Col xs={12} sm={6} lg={4} className=" pb-1">
-            <CustomTextField
+            <Col xs={12} sm={6} lg={4}>
+              <CustomTextField
                 label={t("dashboard_Recent_DonorName")}
                 placeholder={t("placeHolder_donar_name")}
                 name="donarName"
                 value={formik.values.donarName}
                 onChange={(e) => {
-                  formik.setFieldValue("donarName", e.target.value.slice(0, 30));
+                  formik.setFieldValue(
+                    "donarName",
+                    e.target.value.slice(0, 30)
+                  );
                 }}
               />
             </Col>
-            <Col xs={12} sm={6} lg={4} className=" pb-1">
+            <Col xs={12} sm={6} lg={4}>
               <FormikCustomReactSelect
                 labelName={t("categories_select_category")}
                 name={"SelectedMasterCategory"}
@@ -313,7 +311,7 @@ export default function FormWithoutFormikForDonation({
                 }
               />
             </Col>
-            <Col xs={12} sm={6} lg={4} className=" pb-1">
+            <Col xs={12} sm={6} lg={4}>
               <FormikCustomReactSelect
                 labelName={t("category_select_sub_category")}
                 loadOptions={subLoadOption?.map((cate) => {
@@ -350,7 +348,13 @@ export default function FormWithoutFormikForDonation({
           <Row>
             <Col>
               <Row>
-                <Col xs={12} sm={6} lg={4} className=" opacity-75 pb-1" style={{display:"none"}}>
+                <Col
+                  xs={12}
+                  sm={6}
+                  lg={4}
+                  className=" opacity-75"
+                  style={{ display: "none" }}
+                >
                   <CustomTextField
                     label={t("created_by")}
                     name="createdBy"
@@ -440,7 +444,7 @@ export default function FormWithoutFormikForDonation({
                           loadOptions={
                             field.masterValues &&
                             field.masterValues.map((item) => ({
-                              value: item.value, 
+                              value: item.value,
                               label: item.value,
                             }))
                           }
@@ -466,7 +470,7 @@ export default function FormWithoutFormikForDonation({
                     </Col>
                   );
                 })}
-                {!payDonation && (
+                {/* {!payDonation && (
                   <Col xs={12} sm={6} lg={5} className="mb-3">
                     <Row>
                       <label style={{ fontSize: "15px" }}>
@@ -490,7 +494,7 @@ export default function FormWithoutFormikForDonation({
                       </Col>
                     </Row>
                   </Col>
-                )}
+                )}*/}
               </Row>
             </Col>
           </Row>
@@ -499,7 +503,7 @@ export default function FormWithoutFormikForDonation({
               <Row>
                 <Col xs={12}>
                   <div className="d-flex align-items-center gap-1">
-                    Article Daan
+                    <Trans i18nKey="article_donation" />
                     <FormGroup switch id="articleDaan">
                       <Input
                         type="switch"
