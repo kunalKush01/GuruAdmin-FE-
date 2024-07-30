@@ -87,7 +87,10 @@ export const englishContent = {
   dashboard_Recent_DonorReceipt: "Receipt",
   dashboard_viewAll: "View All",
   dashboard_top: "Top 5 Donor's",
-
+  label_state:"State",
+  label_country:"Country",
+  label_city:"City",
+  label_pin:"PIN",
   // All static content of News
 
   news_AddNews: "Add News",
@@ -571,9 +574,12 @@ export const englishContent = {
   placeHolder_tags: "Enter Tags",
   placeHolder_name: "Enter Name",
   placeHolder_user_name: "Enter Username",
+  placeHolder_address: "Enter Address",
   placeHolder_email: "Enter Email",
   placeHolder_password: "Enter Password",
   placeHolder_sub_category: "Enter Sub Category",
+  placeHolder_country: "Enter Country",
+  placeHolder_pan: "Enter PAN",
   placeHolder_city: "Enter City",
   placeHolder_state: "Enter State",
   placeHolder_location: "Enter Location",
