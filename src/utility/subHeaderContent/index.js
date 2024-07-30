@@ -139,6 +139,27 @@ export const subHeaderContent = [
     url: "/configuration",
     activeTab: "/configuration",
     icon: ConfigurationIcon,
+    children: [
+      {
+        name: "category",
+        url: "/configuration/categories",
+        icon: CategoryIcon,
+        icon: CategoryIconActive,
+      },
+      {
+        name: "user",
+        url: "/configuration/users",
+        icon: SubadminIcon,
+        icon: SubadminIconActive,
+      },
+      
+    ],
+  },
+  {
+    name: "report_Dispute",
+    url: "/configuration/reportDispute",
+    icon: ReportDisputeIcon,
+    icon: ReportDisputeIconActive,
   },
 ];
 
@@ -274,13 +295,14 @@ export const subHeaderContentResponsive = [
         icon: SubadminIcon,
         activeIcon: SubadminIconActive,
       },
-      {
-        name: "report_Dispute",
-        url: "/configuration/reportDispute",
-        icon: ReportDisputeIcon,
-        activeIcon: ReportDisputeIconActive,
-      },
+      
     ],
     // url: "/configuration",
+  },
+  {
+    name: "report_Dispute",
+    url: "/configuration/reportDispute",
+    icon: ReportDisputeIcon,
+    activeIcon: ReportDisputeIconActive,
   },
 ];

@@ -186,7 +186,7 @@ export default function News() {
             </Then>
           </If>
         </div>
-        <div className="newsContent  ">
+        <div className="punyarjakContent">
           <Row>
             <If condition={newsQuery.isLoading} disableMemo>
               <Then>
@@ -197,8 +197,8 @@ export default function News() {
                 >
                   {randomArray.map((itm, idx) => {
                     return (
-                      <Col xs={3} key={idx}>
-                        <Skeleton height={"335px"} width={"300px"} />
+                      <Col>
+                        <Skeleton height={"335px"} width={"100%"} />
                       </Col>
                     );
                   })}
@@ -212,8 +212,8 @@ export default function News() {
                         <Col
                           xs={12}
                           md={6}
-                          lg={3}
-                          className="pe-sm-3 pe-0"
+                          lg={4}
+                          className="pe-sm-3 pe-0" style={{ paddingTop: '3rem' }}
                           key={item.id}
                         >
                           <NewsCard
