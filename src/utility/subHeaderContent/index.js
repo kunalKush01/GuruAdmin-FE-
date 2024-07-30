@@ -72,6 +72,7 @@ export const subHeaderContent = [
       "dharmshala-roomtypes",
       "dharmshala-feedback",
     ],
+    icon: DharmshalaIcon,
   },
 
   {
@@ -152,7 +153,6 @@ export const subHeaderContent = [
         icon: SubadminIcon,
         icon: SubadminIconActive,
       },
-      
     ],
   },
   {
@@ -182,29 +182,40 @@ export const subHeaderContentResponsive = [
   },
   {
     name: "dharmshala_management",
-    //url:"/dharmshala/dashboard",
-    activeTab: "/dharmshala",
-    //icon:DharmshalaIcon,
+    //url: "/dharmshala/dashboard",
+    //activeTab: "/dharmshala",
+    icon: DharmshalaIcon,
+    activeIcon: DharmshalaIcon,
     children: [
+      {
+        name: "Overview",
+        url: "/dharmshala/dashboard",
+        icon: DharmshalaIcon,
+        activeIcon: DharmshalaIcon,
+      },
       {
         name: "Bookings",
         url: "/booking/info",
         icon: BookingIcon,
+        activeIcon: BookingIcon,
       },
       {
         name: "Buildings",
         url: "/dharmshala/info",
         icon: BuildingIcon,
+        activeIcon: BuildingIcon,
       },
       {
         name: "Room Types",
         url: "/roomtype/info",
         icon: RoomTypeIcon,
+        activeIcon: RoomTypeIcon,
       },
       {
         name: "Feedback",
         url: "/feedback",
         icon: FeedbackIcon,
+        activeIcon: FeedbackIcon,
       },
     ],
   },
@@ -295,7 +306,6 @@ export const subHeaderContentResponsive = [
         icon: SubadminIcon,
         activeIcon: SubadminIconActive,
       },
-      
     ],
     // url: "/configuration",
   },
