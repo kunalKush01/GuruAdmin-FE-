@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Col, Row } from "reactstrap";
-import SpinnerComponent from "../../../@core/components/spinner/Fallback-spinner"
+import SpinnerComponent from "../../../@core/components/spinner/Fallback-spinner";
 
 import {
   getAllChartData,
@@ -20,7 +20,7 @@ import { ChangePeriodDropDown } from "../../../components/partials/changePeriodD
 import CustomCard from "../../../components/partials/customCard";
 import { setCookieWithMainDomain } from "../../../utility/formater";
 import { RevenueChart } from "../../../utility/revenueChart";
-import OrdersReceived from "../../../utility/ui-elements/cards/statistics/OrdersReceived";
+import StatsCard from "../../../utility/ui-elements/cards/statistics/StatsCard";
 const Home = () => {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const [dashboardData, setDashboardData] = useState();
@@ -104,7 +104,7 @@ const Home = () => {
             setdropDownName={(e) => setdropDownName(e.target.name)}
           />
           <div className="d-flex flex-wrap gap-1 justify-content-between mt-1 mb-lg-3">
-            <OrdersReceived
+            <StatsCard
               statTitle={t("total_rooms_available")}
               stats={parseInt(
                 dashboardData?.donationReceived === undefined
@@ -115,7 +115,7 @@ const Home = () => {
               data={dashboardData?.donationReceivedArr}
               SeriesName={"Donation Received"}
             />
-            <OrdersReceived
+            <StatsCard
               statTitle={t("roomtypes_available")}
               stats={parseInt(
                 dashboardData?.donationPending === undefined
@@ -126,7 +126,7 @@ const Home = () => {
               data={dashboardData?.donationPendingArr}
               SeriesName={"Donation Pending"}
             />
-            <OrdersReceived
+            <StatsCard
               statTitle={t("total_bookings")}
               stats={parseInt(
                 dashboardData?.totalExpenses === undefined
@@ -152,9 +152,6 @@ const Home = () => {
               />
             </div>
           </div>
-
-          
-          
         </div>
       ) : (
         <SpinnerComponent />
