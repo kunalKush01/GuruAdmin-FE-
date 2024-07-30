@@ -832,7 +832,7 @@ const Routes = [
 
   //Booking Routes
   {
-    path: "/bookings/info",
+    path: "/booking/info",
     component: lazy(() =>
       import("../../views/dharmshala-management/dharmshala-booking/index.js")
     ),
