@@ -9,7 +9,7 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import CommitmentForm from "../../components/commitments/commitmentForm";
 import { useQuery } from "@tanstack/react-query";
 import { getPledgeCustomFields } from "../../api/customFieldsApi";
-import '../../../src/assets/scss/common.scss'
+import "../../../src/assets/scss/common.scss";
 
 export default function AddCommitment() {
   const handleCreateCommitment = async (payload) => {
@@ -78,7 +78,7 @@ export default function AddCommitment() {
     }, {}),
   };
   return (
-    <div>
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -95,7 +95,7 @@ export default function AddCommitment() {
           </div>
         </div>
       </div>
-      <div className="ms-md-3 mt-1 mb-3">
+      <div className="mt-1 mb-3">
         <CommitmentForm
           handleSubmit={handleCreateCommitment}
           initialValues={initialValues}

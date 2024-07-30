@@ -126,10 +126,10 @@ export default function Notification() {
   );
 
   return (
-    <div className="addviewwrapper">
+    <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharam Admin | Notifications</title>
+        <title>Apna Dharm Admin | Notifications</title>
       </Helmet>
       <div className="window nav statusBar body "></div>
 

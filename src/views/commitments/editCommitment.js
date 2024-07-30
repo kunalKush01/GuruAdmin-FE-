@@ -5,7 +5,7 @@ import { Trans } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useSelector } from "react-redux";
-import { useHistory, useParams,useLocation } from "react-router-dom";
+import { useHistory, useParams, useLocation } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import * as Yup from "yup";
 import {
@@ -121,10 +121,13 @@ export default function EditCommitment() {
       )
         .utcOffset("+0530")
         .toDate(),
-      customFields: commitmentDetailQuery?.data?.result?.customFields.reduce((acc, field) => {
-        acc[field.fieldName] = field.value ?? "";
-        return acc;
-      }, {}),
+      customFields: commitmentDetailQuery?.data?.result?.customFields.reduce(
+        (acc, field) => {
+          acc[field.fieldName] = field.value ?? "";
+          return acc;
+        },
+        {}
+      ),
     };
   }, [commitmentDetailQuery]);
 
@@ -177,7 +180,7 @@ export default function EditCommitment() {
         </Then>
         <Else>
           {!commitmentDetailQuery?.isLoading && (
-            <div className="ms-md-3 mt-1 mb-3">
+            <div className="mt-1 mb-3">
               <CommitmentForm
                 validationSchema={schema}
                 disableOnEdit

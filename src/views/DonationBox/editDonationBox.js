@@ -160,7 +160,7 @@ export default function EditDonationBox() {
         </Then>
         <Else>
           {!collectionBoxDetailQuery.isFetching && (
-            <div className="ms-md-3 mt-1">
+            <div className="mt-1">
               <DonationBoxForm
                 buttonName={"save_changes"}
                 editLogs

@@ -58,8 +58,8 @@ const SetPassword = () => {
   const hostname = location.hostname;
 
   const subdomainChange = process.env.REACT_APP_ADMIN_SUBDOMAIN_REPLACE_URL;
-  const subDomainName = hostname.replace(subdomainChange, "");
-  // const subDomainName = hostname.replace("-dev.localhost", "");
+  //const subDomainName = hostname.replace(subdomainChange, "");
+  const subDomainName = hostname.replace("-dev.localhost", "");
 
   const loginPageQuery = useQuery([subDomainName], () =>
     loginPage(subDomainName)

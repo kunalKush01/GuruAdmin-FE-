@@ -29,6 +29,12 @@ import ReportDisputeIconActive from "../../assets/images/icons/reportdispute-act
 import ConfigurationIcon from "../../assets/images/icons/configuration.svg";
 import ConfigurationIconActive from "../../assets/images/icons/configuration-active.svg";
 
+import BookingIcon from "../../assets/images/icons/dharmshala/booking.svg";
+import BuildingIcon from "../../assets/images/icons/dharmshala/building.svg";
+import DharmshalaIcon from "../../assets/images/icons/dharmshala/dharmshala.svg";
+import FeedbackIcon from "../../assets/images/icons/dharmshala/feedback.svg";
+import RoomTypeIcon from "../../assets/images/icons/dharmshala/roomtype.svg";
+
 export const subHeaderContent = [
   {
     name: "dashboard",
@@ -55,6 +61,19 @@ export const subHeaderContent = [
       "cattle-breed",
     ],
   },
+  {
+    name: "dharmshala_management",
+    url: "/dharmshala/dashboard",
+    activeTab: "/dharmshala",
+    innerPermissions: [
+      "dharmshala-dashboard",
+      "dharmshala-bookings",
+      "dharmshala-buildings",
+      "dharmshala-roomtypes",
+      "dharmshala-feedback",
+    ],
+  },
+
   {
     name: "donation",
     url: "/donation",
@@ -160,6 +179,34 @@ export const subHeaderContentResponsive = [
     isCattle: "Gaushala",
     icon: GowshalaIcon,
     activeIcon: GowshalaIconActive,
+  },
+  {
+    name: "dharmshala_management",
+    //url:"/dharmshala/dashboard",
+    activeTab: "/dharmshala",
+    //icon:DharmshalaIcon,
+    children: [
+      {
+        name: "Bookings",
+        url: "/booking/info",
+        icon: BookingIcon,
+      },
+      {
+        name: "Buildings",
+        url: "/dharmshala/info",
+        icon: BuildingIcon,
+      },
+      {
+        name: "Room Types",
+        url: "/roomtype/info",
+        icon: RoomTypeIcon,
+      },
+      {
+        name: "Feedback",
+        url: "/feedback",
+        icon: FeedbackIcon,
+      },
+    ],
   },
   {
     name: "donation",

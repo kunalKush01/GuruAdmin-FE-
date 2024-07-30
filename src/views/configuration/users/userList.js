@@ -149,7 +149,7 @@ export default function User() {
     <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharam Admin | Users</title>
+        <title>Apna Dharm Admin | Users</title>
       </Helmet>
       <div className="window nav statusBar body "></div>
 
