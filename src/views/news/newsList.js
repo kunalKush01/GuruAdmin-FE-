@@ -17,41 +17,7 @@ import { ChangePeriodDropDown } from "../../components/partials/changePeriodDrop
 import NoContent from "../../components/partials/noContent";
 import { WRITE } from "../../utility/permissionsVariable";
 import { Helmet } from "react-helmet";
-const NewsWarper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addNews {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-
-  .FormikWraper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addNews-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .newsContent {
-    margin-top: 1rem;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: #ff8744;
-    margin-top: 0.5rem;
-    font: normal normal bold 13px/5px noto sans;
-  }
-`;
+import "../../assets/scss/viewCommon.scss";
 
 const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
@@ -148,7 +114,7 @@ export default function News() {
   );
 
   return (
-    <NewsWarper>
+    <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharm Admin | News</title>
@@ -163,7 +129,7 @@ export default function News() {
               className="me-2  cursor-pointer align-self-center"
               onClick={() => history.push("/")}
             /> */}
-            <div className="addNews">
+            <div className="addAction">
               <div className="">
                 <div>
                   <Trans i18nKey={"news_latest_news"} />
@@ -176,7 +142,7 @@ export default function News() {
               </div>
             </div>
           </div>
-          <div className="addNews mt-1 mt-sm-0 justify-content-between">
+          <div className="addAction justify-content-between">
             <ChangePeriodDropDown
               className={"me-1"}
               dropDownName={dropDownName}
@@ -190,7 +156,7 @@ export default function News() {
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
-                className="addNews-btn"
+                className="addAction-btn"
                 onClick={() =>
                   history.push(
                     `/news/add?page=${pagination.page}&filter=${dropDownName}`
@@ -313,6 +279,6 @@ export default function News() {
           </Row>
         </div>
       </div>
-    </NewsWarper>
+    </div>
   );
 }

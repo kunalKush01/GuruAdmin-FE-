@@ -9,21 +9,7 @@ import editIcon from "../../../assets/images/icons/category/editIcon.svg";
 import confirmationIcon from "../../../assets/images/icons/news/conformationIcon.svg";
 import CustomDataTable from "../../../components/partials/CustomDataTable";
 import { ConverFirstLatterToCapital } from "../../../utility/formater";
-
-const CattleCategoryTableWrapper = styled.div`
-  color: #583703 !important;
-  margin-bottom: 1rem;
-  font: normal normal bold 15px/23px Noto Sans;
-
-  .modal-body {
-    max-height: 600px !important;
-    overflow: auto !important;
-  }
-  .tableDes p {
-    margin-bottom: 0;
-  }
-`;
-
+import "../../../assets/scss/viewCommon.scss";
 const CattleCategoryTable = ({ data = [], maxHeight, height, toggle }) => {
   const { t } = useTranslation();
 
@@ -110,14 +96,14 @@ const CattleCategoryTable = ({ data = [], maxHeight, height, toggle }) => {
   }, [data]);
 
   return (
-    <CattleCategoryTableWrapper>
+    <div className="cattlecategorytablewrapper">
       <CustomDataTable
         maxHeight={maxHeight}
         height={height}
         columns={columns}
         data={CattleCategoryList}
       />
-    </CattleCategoryTableWrapper>
+    </div>
   );
 };
 

@@ -9,18 +9,7 @@ import { createEvent } from "../../api/eventApi.js";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import EventForm from "../../components/events/eventForm";
 
-const EventWraper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addEvent {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import "../../assets/scss/viewCommon.scss";
 
 const handleCreateEvent = async (payload) => {
   return createEvent(payload);
@@ -39,6 +28,7 @@ const schema = Yup.object().shape({
   startTime: Yup.mixed().required("events_startTime_required"),
   endTime: Yup.mixed().required("events_endTime_required"),
   SelectedEvent: Yup.mixed(),
+  location: Yup.mixed().required("events_location_required"),
 });
 
 const initialValues = {
@@ -48,6 +38,11 @@ const initialValues = {
   images: [],
   tagsInit: [],
   Body: "",
+  location: "",
+  city: "",
+  state: "",
+  latitude: "",
+  longitude: "",
   DateTime: { start: new Date(), end: null },
   startTime: moment(new Date(), ["HH:mm"]).format("HH:mm"),
   endTime: "23:59",
@@ -61,7 +56,7 @@ export default function AddEvent() {
   const currentPage = searchParams.get("page");
   const currentFilter = searchParams.get("filter");
   return (
-    <EventWraper>
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -73,12 +68,12 @@ export default function AddEvent() {
               )
             }
           />
-          <div className="addEvent">
+          <div className="addAction">
             <Trans i18nKey={"events_AddEvent"} />
           </div>
         </div>
       </div>
-      <div className="ms-sm-3 mt-1">
+      <div className="mt-1">
         <EventForm
           handleSubmit={handleCreateEvent}
           initialValues={initialValues}
@@ -87,6 +82,6 @@ export default function AddEvent() {
           buttonName="events_AddEvent"
         />
       </div>
-    </EventWraper>
+    </div>
   );
 }

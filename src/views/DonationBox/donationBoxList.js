@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from "react";
-
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import { Plus } from "react-feather";
@@ -10,58 +9,13 @@ import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
-import styled from "styled-components";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
-
 import { Helmet } from "react-helmet";
 import { getAllBoxCollection } from "../../api/donationBoxCollectionApi";
 import BoxListCard from "../../components/DonationBox/BoxListCard.js";
 import NoContent from "../../components/partials/noContent";
 import { WRITE } from "../../utility/permissionsVariable";
-const NewsWarper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addNews {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-
-  .FormikWraper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addNews-btn {
-    padding: 8px 20px;
-    /* margin-left: 10px; */
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .newsContent {
-    margin-top: 1rem;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: #ff8744;
-    margin-top: 0.5rem;
-    font: normal normal bold 13px/5px noto sans;
-  }
-  .total_collection {
-    border: 1px solid #ff8744;
-    color: #ff8744;
-    font: normal normal bold 15px/20px noto sans;
-    padding: 0.5rem 2rem;
-    border-radius: 5px;
-  }
-`;
-
+import "../../assets/scss/viewCommon.scss";
 export default function Expenses() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -156,9 +110,8 @@ export default function Expenses() {
   const subPermission = subPermissions?.subpermissions?.map(
     (item) => item.name
   );
-
   return (
-    <NewsWarper>
+    <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharm Admin | Donation Box</title>
@@ -168,25 +121,15 @@ export default function Expenses() {
       <div>
         <div className="d-lg-flex justify-content-between align-items-center ">
           <div className="d-flex align-items-center mb-2 mb-lg-0">
-            {/* <img
-              src={arrowLeft}
-              className="me-2  cursor-pointer align-self-center"
-              onClick={() => history.push("/")}
-            /> */}
-            <div className="addNews d-flex">
+            <div className="addAction d-flex">
               <div className="">
                 <div>
                   <Trans i18nKey={"DonationBox_DonationBox"} />
                 </div>
-                {/* <div className="filterPeriod">
-                  <span>
-                    {startDate} - {endDate}
-                  </span>
-                </div> */}
               </div>
             </div>
           </div>
-          <div className="addNews  d-flex flex-wrap gap-2 gap-md-0">
+          <div className="addAction  d-flex flex-wrap gap-2 gap-md-0">
             <div className="total_collection me-2 d-flex justify-content-center align-items-center ">
               <Trans i18nKey={"DonationBox_total_collection"} />
               &nbsp;
@@ -210,7 +153,7 @@ export default function Expenses() {
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
-                className="addNews-btn "
+                className="addAction-btn "
                 onClick={() =>
                   history.push(
                     `/hundi/add?page=${pagination.page}&filter=${dropDownName}`
@@ -315,7 +258,6 @@ export default function Expenses() {
                         }&filter=${dropDownName}`
                       );
                     }}
-                    // forcePage={pagination.page !== 0 ? pagination.page - 1 : 0}
                     containerClassName={
                       "pagination react-paginate justify-content-end p-1"
                     }
@@ -326,6 +268,6 @@ export default function Expenses() {
           </Row>
         </div>
       </div>
-    </NewsWarper>
+    </div>
   );
 }

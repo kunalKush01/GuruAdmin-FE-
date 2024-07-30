@@ -17,76 +17,7 @@ import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import ImageUpload from "../partials/imageUpload";
-
-const FormWrapper = styled.div`
-  .FormikWrapper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addNotice-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    /* margin-top: 5rem; */
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .newsContent {
-    margin-top: 1rem;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: #ff8744;
-    font: normal normal bold 13px/5px noto sans;
-  }
-  .signInIconsIserAdminPassword {
-    width: 30px;
-    height: 30px;
-    margin-right: 10px;
-    cursor: pointer;
-  }
-  label {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .input-group-merge {
-    background-color: #fff7e8 !important;
-  }
-  #login-password {
-    color: #583703 !important;
-    padding-left: 14px;
-    border: none !important;
-    background-color: #fff7e8 !important;
-    font: normal normal normal 13px/20px Noto Sans;
-    border-radius: 20px;
-    ::placeholder {
-      color: transparent;
-    }
-  }
-  .input-group-text {
-    background-color: #fff7e8 !important;
-    border-bottom: 0 !important;
-  }
-  .checkBoxBorderBox {
-    border: 2px solid #ff8744;
-    padding: 1rem 2rem;
-    border-radius: 10px;
-  }
-  .labelCheckBox {
-    color: #ff8744 !important;
-    font: normal normal bold 13px/26px Noto Sans;
-  }
-  .checkBoxInput {
-    border-color: #ff8744;
-    cursor: pointer;
-  }
-  input::placeholder {
-    color: #583703 !important;
-    opacity: 60% !important;
-    font: normal normal bold 13px/20px Noto Sans !important;
-  }
-`;
+import "../../assets/scss/common.scss";
 
 export default function UserForm({
   plusIconDisable = false,
@@ -142,7 +73,7 @@ export default function UserForm({
   const [phoneNumber, setPhoneNumber] = useState(getUserMobile ?? "");
 
   return (
-    <FormWrapper className="FormikWrapper">
+    <div className="formwrapper FormikWrapper">
       <Formik
         enableReinitialize
         initialValues={initialValues}
@@ -155,7 +86,7 @@ export default function UserForm({
             mobileNumber: e.mobile.toString(),
             countryCode: e?.dialCode,
             countryName: e?.countryCode,
-            roles: e?.userRoleChacked,
+            roles: e?.userRoleChecked,
             name: e.name,
             password: e?.password,
             profilePhoto: editProfile ? imageName : e?.file,
@@ -330,16 +261,16 @@ export default function UserForm({
                           font: "normal normal bold 11px/15px Noto Sans",
                         }}
                       >
-                        {formik.errors.userRoleChacked &&
-                          formik.touched.userRoleChacked && (
+                        {formik.errors.userRoleChecked &&
+                          formik.touched.userRoleChecked && (
                             <div className="text-danger">
-                              <Trans i18nKey={formik.errors.userRoleChacked} />
+                              <Trans i18nKey={formik.errors.userRoleChecked} />
                             </div>
                           )}
                       </div>
                     </Col>
                     <Col xs={12} className="">
-                      <Row className="row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 ">
+                      <Row className="row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-4 ">
                         <Col className="">
                           <div className="checkBoxBorderBox mt-1">
                             <FormGroup
@@ -352,17 +283,17 @@ export default function UserForm({
                                 type="checkbox"
                                 checked={
                                   userRoleIds?.length ===
-                                  formik?.values?.userRoleChacked?.length
+                                  formik?.values?.userRoleChecked?.length
                                 }
                                 className="me-1 checkBoxInput"
                                 onChange={(e) =>
                                   e.target.checked
                                     ? formik.setFieldValue(
-                                        "userRoleChacked",
+                                        "userRoleChecked",
                                         userRoleIds
                                       )
                                     : formik.setFieldValue(
-                                        "userRoleChacked",
+                                        "userRoleChecked",
                                         []
                                       )
                                 }
@@ -387,7 +318,7 @@ export default function UserForm({
                                 >
                                   <Input
                                     id={item?._id}
-                                    name="userRoleChacked"
+                                    name="userRoleChecked"
                                     tag={Field}
                                     type="checkbox"
                                     className="me-1 checkBoxInput"
@@ -411,7 +342,7 @@ export default function UserForm({
                 </Row>
               </Col>
             </Row>
-            <div className="btn-Published ">
+            <div className="btn-Published">
               {loading ? (
                 <Button
                   color="primary"
@@ -429,7 +360,7 @@ export default function UserForm({
               ) : (
                 <Button
                   color="primary"
-                  className="addNotice-btn"
+                  className="addAction-btn"
                   type="submit"
                   disabled={imageSpinner}
                 >
@@ -447,6 +378,6 @@ export default function UserForm({
           </Form>
         )}
       </Formik>
-    </FormWrapper>
+    </div>
   );
 }

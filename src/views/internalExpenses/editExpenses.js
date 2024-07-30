@@ -12,19 +12,7 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import ExpensesForm from "../../components/internalExpenses/expensesForm";
 import { ExpenseType } from "./addExpenses";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-
-const ExpenseWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addExpense {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import "../../assets/scss/viewCommon.scss";
 
 const handleCreateExpense = async (payload) => {
   return updateExpensesDetail(payload);
@@ -102,7 +90,7 @@ export default function AddExpense() {
   };
 
   return (
-    <ExpenseWrapper>
+    <div className="expensewrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -121,7 +109,7 @@ export default function AddExpense() {
       </div>
 
       {!ExpensesDetailQuery.isLoading ? (
-        <div className="ms-md-3 mt-1">
+        <div className="mt-1">
           <ExpensesForm
             handleSubmit={handleCreateExpense}
             editLogs
@@ -136,6 +124,6 @@ export default function AddExpense() {
       ) : (
         ""
       )}
-    </ExpenseWrapper>
+    </div>
   );
 }

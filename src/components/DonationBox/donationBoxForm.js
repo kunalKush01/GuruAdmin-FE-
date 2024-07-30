@@ -6,58 +6,13 @@ import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { Prompt, useHistory } from "react-router-dom";
 import { Button, ButtonGroup, Col, Row, Spinner } from "reactstrap";
-import styled from "styled-components";
-import * as Yup from "yup";
 import { getAllBoxCollectionLogs } from "../../api/donationBoxCollectionApi";
-import { createNews } from "../../api/newsApi";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { setlang } from "../../redux/authSlice";
 import { TextArea } from "../partials/CustomTextArea";
-import { CustomDropDown } from "../partials/customDropDown";
 import CustomTextField from "../partials/customTextField";
-import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
-import RichTextField from "../partials/richTextEditorField";
 import LogListTable from "./logListTable";
-
-const FormWrapper = styled.div`
-  .FormikWrapper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addNews-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .newsContent {
-    height: 350px;
-    overflow: auto;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: #ff8744;
-
-    font: normal normal bold 13px/5px noto sans;
-  }
-  .btn-secondary {
-    background-color: #fff7e8 !important;
-    color: #583703 !important ;
-    border: none;
-    font: normal normal bold 20px/20px noto sans !important ;
-    box-shadow: none !important ;
-    :hover {
-      color: #fff !important;
-      background-color: #ff8744 !important;
-    }
-    .secondary.active {
-      color: #fff !important;
-    }
-  }
-`;
+import "../../assets/scss/common.scss";
+import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
+import { DatePicker } from "antd";
 
 export default function DonationBoxForm({
   plusIconDisable = false,
@@ -68,6 +23,7 @@ export default function DonationBoxForm({
   editLogs,
   initialValues,
   showTimeInput,
+  customFieldsList,
 }) {
   const history = useHistory();
   const { t } = useTranslation();
@@ -105,20 +61,39 @@ export default function DonationBoxForm({
     [hundiLogQuery]
   );
   const [showPrompt, setShowPrompt] = useState(true);
+  const trustId = localStorage.getItem("trustId");
 
   return (
-    <FormWrapper className="FormikWrapper">
+    <div className="formwrapper FormikWrapper">
       <Formik
         // enableReinitialize
         initialValues={{ ...initialValues }}
         onSubmit={(e) => {
           setShowPrompt(false);
           setLoading(true);
+          const transformedCustomFields = Object.entries(e.customFields).map(
+            ([key, field]) => ({
+              fieldName: key,
+              fieldType:
+                typeof field.value === "boolean"
+                  ? "Boolean"
+                  : typeof field.value === "number"
+                  ? "Number"
+                  : typeof field.value === "string" &&
+                    !isNaN(Date.parse(field.value))
+                  ? "Date"
+                  : "String", // Default to String for other types
+              isRequired: false,
+              value: field.value !== undefined ? field.value : field,
+              trustId: trustId,
+            })
+          );
           newsMutation.mutate({
             collectionId: e?.Id,
             amount: e?.Amount,
             remarks: e?.Body,
             collectionDate: e?.DateTime,
+            customFields: transformedCustomFields,
           });
         }}
         validationSchema={validationSchema}
@@ -138,11 +113,11 @@ export default function DonationBoxForm({
             )}
             <div className="paddingForm">
               <Row>
-                <Col xs={12} md={7}>
+                <Col xs={12} md={12}>
                   <Row>
                     <Col xs={12}>
                       <TextArea
-                        rows="8"
+                        rows="4"
                         label={t("news_label_Description")}
                         name="Body"
                         autoFocus
@@ -150,7 +125,7 @@ export default function DonationBoxForm({
                     </Col>
                   </Row>
                   <Row>
-                    <Col xs={12} md={6} className="">
+                    <Col xs={12} md={4} lg={4} className="">
                       <CustomTextField
                         type="number"
                         label={t("categories_select_amount")}
@@ -159,24 +134,137 @@ export default function DonationBoxForm({
                         name="Amount"
                       />
                     </Col>
-                    <Col xs={12} md={6} className="opacity-75">
+                    <Col xs={12} md={4} lg={4} className="opacity-75">
                       <CustomTextField
                         label={t("added_by")}
                         name="CreatedBy"
                         disabled
                       />
                     </Col>
-                  </Row>
-                </Col>
-                <Col>
-                  <Row>
-                    <Col xs={12}>
-                      <FormikCustomDatePicker
+                    <Col xs={12} md={4} lg={4}>
+                      {/* <FormikCustomDatePicker
                         label={t("donation_select_date")}
                         futureDateNotAllowed
                         name="DateTime"
-                      />
+                      /> */}
+                      <label style={{ fontSize: "15px" }}>
+                        {t("donation_select_date")}
+                      </label>
+                      <DatePicker
+                        id="datePickerANTD"
+                        format="YYYY-MM-DD"
+                        // needConfirm
+                        onChange={(date) =>
+                          formik.setFieldValue(
+                            "DateTime",
+                            date ? date.format("YYYY-MM-DD") : null
+                          )
+                        }
+                        />
                     </Col>
+                    {customFieldsList.map((field) => {
+                      const isSelectField =
+                        field.masterValues && field.masterValues.length > 0;
+
+                      return (
+                        <Col
+                          xs={12}
+                          sm={6}
+                          lg={4}
+                          md={4}
+                          className="pb-1"
+                          key={field._id}
+                        >
+                          {field.fieldType === "Boolean" ? (
+                            <FormikCustomReactSelect
+                              labelName={field.fieldName}
+                              name={`customFields.${field.fieldName}`}
+                              loadOptions={[
+                                { value: "", label: "Select Option" },
+                                { value: true, label: "True" },
+                                { value: false, label: "False" },
+                              ]}
+                              required={field.isRequired}
+                              width
+                              placeholder={`Select ${field.fieldName}`}
+                            />
+                          ) : field.fieldType === "Date" ? (
+                            <>
+                              <label style={{ fontSize: "15px" }}>
+                                {field.fieldName}
+                                {field.isRequired && "*"}
+                              </label>
+                              <DatePicker
+                                id="datePickerANTD"
+                                format="YYYY-MM-DD"
+                                onChange={(date) => {
+                                  if (date) {
+                                    formik.setFieldValue(
+                                      `customFields.${field.fieldName}`,
+                                      date.format("YYYY-MM-DD")
+                                    );
+                                  } else {
+                                    formik.setFieldValue(
+                                      `customFields.${field.fieldName}`,
+                                      null
+                                    );
+                                  }
+                                }}
+                                // needConfirm
+                              />
+                              {formik.errors.customFields &&
+                                formik.errors.customFields[field.fieldName] && (
+                                  <div
+                                    style={{
+                                      height: "20px",
+                                      font: "normal normal bold 11px/33px Noto Sans",
+                                    }}
+                                  >
+                                    <div className="text-danger">
+                                      <Trans
+                                        i18nKey={
+                                          formik.errors.customFields[
+                                            field.fieldName
+                                          ]
+                                        }
+                                      />
+                                    </div>
+                                  </div>
+                                )}
+                            </>
+                          ) : isSelectField ? (
+                            <FormikCustomReactSelect
+                              labelName={field.fieldName}
+                              name={`customFields.${field.fieldName}`}
+                              loadOptions={
+                                field.masterValues &&
+                                field.masterValues.map((item) => ({
+                                  value: item.value,
+                                  label: item.value,
+                                }))
+                              }
+                              width
+                              required={field.isRequired}
+                              placeholder={`Select ${field.fieldName}`}
+                              valueKey="value"
+                              labelKey="label"
+                            />
+                          ) : (
+                            <CustomTextField
+                              label={field.fieldName}
+                              name={`customFields.${field.fieldName}`}
+                              type={
+                                field.fieldType === "String"
+                                  ? "text"
+                                  : field.fieldType.toLowerCase()
+                              }
+                              required={field.isRequired}
+                              placeholder={`Enter ${field.fieldName}`}
+                            />
+                          )}
+                        </Col>
+                      );
+                    })}
                   </Row>
                 </Col>
               </Row>
@@ -191,7 +279,7 @@ export default function DonationBoxForm({
                 </Row>
               )}
             </div>
-            <div className="btn-Published mb-2 mt-lg-2">
+            <div className="d-flex justify-content-center mt-lg">
               {loading ? (
                 <Button
                   color="primary"
@@ -208,7 +296,7 @@ export default function DonationBoxForm({
               ) : (
                 <Button
                   color="primary"
-                  className="addNotice-btn "
+                  className="addAction-btn "
                   type="submit"
                 >
                   {plusIconDisable && (
@@ -225,6 +313,6 @@ export default function DonationBoxForm({
           </Form>
         )}
       </Formik>
-    </FormWrapper>
+    </div>
   );
 }

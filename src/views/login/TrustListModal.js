@@ -4,34 +4,7 @@ import { Modal, ModalBody } from "reactstrap";
 import styled from "styled-components";
 import { setCookieWithMainDomain } from "../../utility/formater";
 
-const TrustModalWrapper = styled.div`
-  .trustItem,
-  .notApproved {
-    color: #583703;
-    font-size: 17px;
-    margin: 0px;
-    padding: 0.5rem;
-    font-weight: 400;
-    line-height: 25px;
-  }
-  p {
-    margin: 0px;
-  }
-  .hoverItem:hover {
-    background: #ff8744;
-    cursor: pointer;
-    color: white !important;
-  }
-  .notApproved {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .notApproved > span {
-    color: red;
-    font-size: 14px !important;
-  }
-`;
+import "../../assets/scss/viewCommon.scss";
 
 const TrustListModal = ({ trustArray, modal, setModal, rToken, aToken }) => {
   const subdomainChange = process.env.REACT_APP_ADMIN_SUBDOMAIN_REPLACE_URL;
@@ -63,7 +36,7 @@ const TrustListModal = ({ trustArray, modal, setModal, rToken, aToken }) => {
           </h3>
           <hr />
           {trustArray?.map((item, idx) => (
-            <TrustModalWrapper>
+            <div className="trustmodalwrapper">
               {item?.isAproved === "approved" ? (
                 <div
                   className="trustItem hoverItem"
@@ -81,7 +54,7 @@ const TrustListModal = ({ trustArray, modal, setModal, rToken, aToken }) => {
                   <span>Not Approved</span>
                 </div>
               )}{" "}
-            </TrustModalWrapper>
+            </div>
           ))}
         </ModalBody>
       </Modal>

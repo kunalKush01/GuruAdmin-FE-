@@ -6,6 +6,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { Prompt, useHistory } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
+import "../../assets/scss/common.scss";
 
 import {
   findAllCattle,
@@ -21,14 +22,6 @@ import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import ImageUpload from "../partials/imageUpload";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-
-const FormikWrapper = styled.div`
-  font: normal normal bold 15px/33px Noto Sans;
-
-  .animated-height {
-    transition: height 0.5s;
-  }
-`;
 
 const AddCattleForm = ({
   initialValues,
@@ -57,6 +50,7 @@ const AddCattleForm = ({
 
   const [imageSpinner, setImageSpinner] = useState(false);
   const [ownerImageUploading, setOwnerImageUploading] = useState(false);
+  const [breedList, setBreedList] = useState([]);
 
   const randomNumber = Math.floor(100000000000 + Math.random() * 900000000000);
 
@@ -72,11 +66,17 @@ const AddCattleForm = ({
     });
   };
 
-  const breedLoadOption = async (breed) => {
-    const res = await findAllCattleBreed({ name: breed });
-    return res.results?.map((item) => {
-      return { ...item, name: ConverFirstLatterToCapital(item?.name ?? "") };
+  const breedLoadOption = async (breed, categoryId) => {
+    const res = await findAllCattleBreed({
+      cattleCategoryId: categoryId,
+      name: breed,
     });
+
+    setBreedList(
+      res.results?.map((item) => {
+        return { ...item, name: ConverFirstLatterToCapital(item?.name ?? "") };
+      })
+    );
   };
 
   const queryClient = useQueryClient();
@@ -94,7 +94,7 @@ const AddCattleForm = ({
   });
 
   return (
-    <FormikWrapper>
+    <div className="formikwrapper">
       <Formik
         enableReinitialize
         initialValues={initialValues}
@@ -182,7 +182,6 @@ const AddCattleForm = ({
                       label={t("cattle_mother_id")}
                       placeholder={t("placeholder_cattle_mother_id")}
                       defaultOptions
-                      required
                     />
                   </Col>
                   <Col xs={12} md={4}>
@@ -191,6 +190,10 @@ const AddCattleForm = ({
                       labelKey="name"
                       valueKey="_id"
                       loadOptions={categoriesLoadOption}
+                      onChange={async (e) => {
+                        formik.setFieldValue("type", e);
+                        await breedLoadOption("", e?._id);
+                      }}
                       label={t("categories_select_category")}
                       placeholder={t("placeholder_cattle_type")}
                       defaultOptions
@@ -198,15 +201,16 @@ const AddCattleForm = ({
                     />
                   </Col>
                   <Col xs={12} md={4}>
-                    <AsyncSelectField
+                    <FormikCustomReactSelect
                       name="breed"
+                      isSearchable
+                      loadOptions={breedList}
+                      required
                       labelKey="name"
                       valueKey="_id"
-                      loadOptions={breedLoadOption}
-                      label={t("cattle_breed")}
+                      labelName={t("cattle_breed")}
                       placeholder={t("placeHolder_cattle_breed")}
-                      defaultOptions
-                      required
+                      width="100%"
                     />
                   </Col>
                 </Row>
@@ -214,6 +218,7 @@ const AddCattleForm = ({
                 <Row>
                   <Col xs={12} md={4}>
                     <FormikCustomDatePicker
+                      futureDateNotAllowed
                       name="dob"
                       inline={false}
                       calculateAge
@@ -237,6 +242,7 @@ const AddCattleForm = ({
                   <Col xs={12} md={4}>
                     <FormikCustomDatePicker
                       name="purchaseDate"
+                      futureDateNotAllowed
                       inline={false}
                       label={t("cattle_date_purchased")}
                       dateFormat=" dd-MM-yyyy"
@@ -682,7 +688,7 @@ const AddCattleForm = ({
           </Form>
         )}
       </Formik>
-    </FormikWrapper>
+    </div>
   );
 };
 

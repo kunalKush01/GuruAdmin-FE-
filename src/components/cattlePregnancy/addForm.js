@@ -10,10 +10,7 @@ import { findAllCattle } from "../../api/cattle/cattleMedical";
 import AsyncSelectField from "../partials/asyncSelectField";
 import CustomRadioButton from "../partials/customRadioButton";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
-
-const FormikWrapper = styled.div`
-  font: normal normal bold 15px/33px Noto Sans;
-`;
+import "../../assets/scss/common.scss";
 
 const AddPregnancyForm = ({
   initialValues,
@@ -48,7 +45,7 @@ const AddPregnancyForm = ({
   });
 
   return (
-    <FormikWrapper>
+    <div className="formikwrapper">
       <Formik
         enableReinitialize
         initialValues={initialValues}
@@ -116,15 +113,15 @@ const AddPregnancyForm = ({
                           name="pregnancyStatus"
                           id="pregnancyStatus1"
                           value="YES"
-                          label="yes"
+                          label="Active"
                         />
                       </Col>
-                      <Col md={3}>
+                      <Col md={5}>
                         <CustomRadioButton
                           name="pregnancyStatus"
                           id="pregnancyStatus2"
                           value="NO"
-                          label="no"
+                          label="Inactive"
                           customOnChange={() =>
                             formik.setFieldValue("deathReason", "")
                           }
@@ -182,7 +179,7 @@ const AddPregnancyForm = ({
           </Form>
         )}
       </Formik>
-    </FormikWrapper>
+    </div>
   );
 };
 
