@@ -112,7 +112,7 @@ const CattlesDashboard = () => {
     <div>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharam Admin | Cattle Management Dashboard</title>
+        <title>Apna Dharm Admin | Gowshala Dashboard</title>
       </Helmet>
 
       <ChangePeriodDropDown

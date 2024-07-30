@@ -102,7 +102,7 @@ export default function SubscribedUser() {
     <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharam Admin | Subscribed User</title>
+        <title>Apna Dharm Admin | Subscribed User</title>
       </Helmet>
       <div className="window nav statusBar body "></div>
 

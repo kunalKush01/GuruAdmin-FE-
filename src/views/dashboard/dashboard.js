@@ -93,7 +93,7 @@ const Home = () => {
     <>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharam Admin | Dashboard</title>
+        <title>Apna Dharm Admin | Dashboard</title>
       </Helmet>
       {dashboardData && chartData && topDonorData && recentDonationData ? (
         <div>
