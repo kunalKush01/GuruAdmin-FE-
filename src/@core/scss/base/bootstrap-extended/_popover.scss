@@ -13,6 +13,7 @@
     border-top-color: $popover-bg;
     border-bottom-left-radius: $popover-border-radius;
     border-bottom-right-radius: $popover-border-radius;
+    background-color: $secondary-color;
   }
   // popover bottom arrow color like header
   &.bs-popover-bottom {
