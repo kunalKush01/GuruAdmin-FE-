@@ -9,11 +9,12 @@ import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
-import { getDharmshalaBookingList, getDharmshalaBookingDetail } from "../../../api/dharmshala/dharmshalaInfo";
+import { getDharmshalaBookingList } from "../../../api/dharmshala/dharmshalaInfo";
 import NoContent from "../../../components/partials/noContent";
 import DharmshalaBookingTable from "./table";
 import { Helmet } from "react-helmet";
 import { DharmshalaBookingInfo } from "../dharmshalaStyles";
+import { CustomDropDown } from "../../../components/partials/customDropDown";
 
 const DharmshalaBookings = () => {
   const history = useHistory();
@@ -23,6 +24,7 @@ const DharmshalaBookings = () => {
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const [showPastRequests, setShowPastRequests] = useState(false);
+  const [statusFilter, setStatusFilter] = useState("requested");
 
   const [pagination, setPagination] = useState({
     page: 1,
@@ -37,6 +39,7 @@ const DharmshalaBookings = () => {
   useEffect(() => {
     if (currentPage || currentFilter || currentStatus) {
       setdropDownName(currentFilter);
+      setStatusFilter(currentStatus || "requested");
       setPagination({ ...pagination, page: parseInt(currentPage) });
     }
   }, [currentPage, currentFilter, currentStatus]);
@@ -64,7 +67,7 @@ const DharmshalaBookings = () => {
     .toISOString();
 
   const dharmshalaBookingList = useQuery(
-    ["dharmshalaBookingList", pagination.page, selectedLang.id, searchBarValue],
+    ["dharmshalaBookingList", pagination.page, selectedLang.id, searchBarValue, statusFilter],
     () => getDharmshalaBookingList()
   );
 
@@ -91,6 +94,11 @@ const DharmshalaBookings = () => {
     setShowPastRequests(!showPastRequests);
   };
 
+  const handleStatusFilterChange = (e) => {
+    setStatusFilter(e.target.name);
+    history.push(`/booking/info?page=${pagination.page}&status=${e.target.name}&filter=${dropDownName}`);
+  };
+
   const filteredBookingListData = useMemo(() => {
     const currentDate = moment();
     let filteredData = dharmshalaBookingListData;
@@ -103,6 +111,11 @@ const DharmshalaBookings = () => {
         moment(item.startDate).isAfter(currentDate)
       );
     }
+    if (statusFilter) {
+      filteredData = filteredData.filter((item) =>
+        item.status === statusFilter
+      );
+    }
     if (searchBarValue && searchBarValue.length >= 3) {
       filteredData = filteredData.filter((item) =>
         item.bookingId.toLowerCase().startsWith(searchBarValue.toLowerCase().slice(0, 3))
@@ -110,6 +123,17 @@ const DharmshalaBookings = () => {
     }
     return filteredData;
   }, [dharmshalaBookingListData, showPastRequests, searchBarValue]);
+
+  const statusOptions = [
+    { key: "requested", label: t("requested") },
+    { key: "accepted", label: t("accepted") },
+    { key: "reserved", label: t("reserved") },
+    { key: "confirmed", label: t("confirmed") },
+    { key: "checkedIn", label: t("checked_in") },
+    { key: "completed", label: t("completed") },
+    { key: "cancelled", label: t("cancelled") },
+    { key: "maintenance", label: t("maintenance") }
+  ];
 
   return (
     <DharmshalaBookingInfo>
@@ -122,31 +146,33 @@ const DharmshalaBookings = () => {
           <Trans i18nKey={"dharmshala_bookings_requested"} />
           <div className="d-flex mt-1 mt-sm-0 justify-content-between">
             <Button
-              className="me-1"
+              className={`me-1 ${isMobileView ? 'btn-sm' : ''}`}
               color="primary"
               onClick={() =>
                 history.push(`/booking/add/?page=${pagination.page}&filter=${dropDownName}`)
               }
+              style={{ marginBottom: isMobileView ? "5px" : "0"}}
             >
               <span>
-                <Plus className="" size={15} strokeWidth={4} />
+                <Plus className="" size={15} strokeWidth={4} /> 
               </span>
               <span>
                 <Trans i18nKey={"dharmshala_booking_add"} />
               </span>
             </Button>
             <Button
-              className="me-1"
+              className={`me-1 ${isMobileView ? 'btn-sm' : ''}`}
               color="primary"
               onClick={() =>
                 history.push(`/booking/calendar/?page=${pagination.page}&filter=${dropDownName}`)
               }
+              style={{ marginBottom: isMobileView ? "5px" : "0"}}
             >
               <span>
                 <Trans i18nKey={"dharmshala_booking_calendar"} />
               </span>
             </Button>
-            <Button className="me-1" color="primary" onClick={togglePastRequests}>
+            <Button className={`me-1 ${isMobileView ? 'btn-sm' : ''}`}  color="primary" onClick={togglePastRequests} style={{ marginBottom: isMobileView ? "5px" : "0"}}>
               <span>
                 {showPastRequests ? (
                   <Trans i18nKey={"view_upcoming_requests"} />
@@ -155,6 +181,12 @@ const DharmshalaBookings = () => {
                 )}
               </span>
             </Button>
+            <CustomDropDown
+              i18nKeyDropDownItemArray={statusOptions}
+              defaultDropDownName={statusFilter}
+              handleDropDownClick={handleStatusFilterChange}
+              width={"120px"}
+            />
           </div>
         </div>
         <div style={{ height: "10px" }}>
