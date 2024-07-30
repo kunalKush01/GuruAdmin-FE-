@@ -1,13 +1,18 @@
 import React, { useState } from "react";
-import CattleTabBar from "../../components/cattleTabBar";
-import { cattleHeader } from "../../utility/subHeaderContent/cattleHeader";
+import DharmshalaTabBar from "../../components/dharmshalaTabBar";
+import { dharmshalaHeader } from "../../utility/subHeaderContent/dharmshalaHeader";
 
-const CattleLayout = ({ children }) => {
+
+const DharmshalaLayout = ({ children }) => {
   const [active, setActive] = useState(location.pathname);
 
   return (
     <div className="bg-danger " style={{ height: "calc(100dvh - 155px)" }}>
-      <CattleTabBar tabs={cattleHeader} active={active} setActive={setActive} />
+      <DharmshalaTabBar
+        tabs={dharmshalaHeader}
+        active={active}
+        setActive={setActive}
+      />
 
       <div
         className="overflow-auto bg-success"
@@ -19,4 +24,4 @@ const CattleLayout = ({ children }) => {
   );
 };
 
-export default CattleLayout;
+export default DharmshalaLayout;

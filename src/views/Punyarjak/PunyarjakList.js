@@ -116,7 +116,7 @@ export default function Punyarjak() {
     <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharam Admin | Punyarjak</title>
+        <title>Apna Dharm Admin | Punyarjak</title>
       </Helmet>
       <div className="window nav statusBar body "></div>
 

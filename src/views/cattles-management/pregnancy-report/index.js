@@ -113,7 +113,7 @@ const PregnancyReport = () => {
     <div className="pregnancyreportwrapper">
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharam Admin | Cattles Pregnancy Records</title>
+        <title>Apna Dharm Admin | Cattles Pregnancy Records</title>
       </Helmet>
       <div>
         <div className="d-sm-flex mb-1 justify-content-between align-items-center ">

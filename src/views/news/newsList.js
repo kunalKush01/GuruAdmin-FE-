@@ -117,7 +117,7 @@ export default function News() {
     <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharam Admin | News</title>
+        <title>Apna Dharm Admin | News</title>
       </Helmet>
       <div className="window nav statusBar body "></div>
 
