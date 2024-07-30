@@ -32,6 +32,7 @@ export default function AsyncSelectField({
         ...provided,
         color: isSelected && "#FF8744",
         backgroundColor: isFocused ? "#FF8744" : "#FFF7E8",
+        border: "none",
         color: isFocused ? "#fff" : "#583703",
         zIndex: 2,
         "&:hover": {
@@ -47,7 +48,7 @@ export default function AsyncSelectField({
         zIndex: 999999,
         color: "#583703",
         maxHeight: "150px",
-        font: "normal normal normal 15px/20px Noto Sans",
+        font: "bold 15px Noto Sans sans-serif",
         "::-webkit-scrollbar": {
           display: "none",
         },
@@ -64,7 +65,7 @@ export default function AsyncSelectField({
         ...provided,
 
         color: "grey",
-        border: "1px solid white",
+        //border: "1px solid white",
         backgroundColor: "#FFF7E8",
         boxShadow: "none",
         "&:hover": {
@@ -103,7 +104,7 @@ export default function AsyncSelectField({
         style={{
           color: "#583703",
           marginBottom: "0px",
-          font: "normal normal bold 15px/28px Noto Sans",
+          font: "bold 15px Noto Sans",
         }}
       >
         {label}
@@ -131,7 +132,7 @@ export default function AsyncSelectField({
         }}
         {...props}
       />
-      <div style={{ height: "20px", fontSize: "11px" }}>
+      <div style={{ height: "20px", fontSize: "12px" }}>
         {meta.error && meta.touched && (
           <div className="text-danger">
             <Trans i18nKey={meta.error} />

@@ -42,7 +42,7 @@ export default function AddCategory() {
       })
   );
   return (
-    <div className="addviewwrapper">
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -72,7 +72,7 @@ export default function AddCategory() {
       </div>
 
       {!masterloadOptionQuery.isLoading && !masterloadOptionQuery.isFetching ? (
-        <div className="ms-sm-3 mt-1">
+        <div className="mt-1">
           <CategoryForm
             loadOptions={masterloadOptionQuery?.data?.results}
             CategoryFormName={"MasterCategory"}

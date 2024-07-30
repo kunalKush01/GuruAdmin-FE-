@@ -149,7 +149,7 @@ export default function AddLanguageNews() {
       </div>
 
       {!newsDetailQuery.isLoading ? (
-        <div className="mt-1 ms-md-3">
+        <div className="mt-1">
           <NewsForm
             editImage="edit"
             AddLanguage

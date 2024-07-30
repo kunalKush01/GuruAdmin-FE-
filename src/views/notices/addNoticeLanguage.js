@@ -101,7 +101,7 @@ export default function AddLanguageNotice() {
   }, [noticeDetailQuery]);
 
   return (
-    <div className="addviewwrapper">
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -136,7 +136,7 @@ export default function AddLanguageNotice() {
       </div>
 
       {!noticeDetailQuery.isLoading ? (
-        <div className="ms-sm-3 mt-1">
+        <div className="mt-1">
           <NoticeForm
             editThumbnail
             thumbnailImageName={noticeDetailQuery?.data?.result?.imageName}

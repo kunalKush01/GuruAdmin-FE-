@@ -9,7 +9,7 @@ import { ConvertToString } from "../financeReport/reportJsonExport";
 
 const NotificationList = ({ data }) => {
   return (
-    <div className="addviewwrapper">
+    <div className="listviewwrapper">
       <Row className="mt-2">
         {/*<Col xs={1} className="align-items-center d-flex" >*/}
         {/*  <img src={defaultIcon} className="m-auto" />*/}

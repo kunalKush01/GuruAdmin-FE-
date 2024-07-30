@@ -72,6 +72,18 @@ const NavbarUser = (props) => {
       ""
     );
   }
+  // const loginPageQuery = useQuery(
+  //   [subDomainName],
+  //   async () => await loginPage(subDomainName)
+  // );
+
+  // console.log("loginPageQuery", loginPageQuery);
+
+  // const loginPageData = useMemo(() => {
+  //   dispatch(handleTrustDetail(loginPageQuery?.data?.result));
+  //   console.log("loginPageQuery?.data?.result", loginPageQuery?.data?.result);
+  //   return loginPageQuery?.data?.result;
+  // }, [loginPageQuery]);
 
   const loginPageQuery = useQuery([subDomainName], () =>
     loginPage(subDomainName)

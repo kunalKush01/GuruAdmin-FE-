@@ -35,7 +35,7 @@ export default function AddSubscribedUser() {
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
   return (
-    <div className="addviewwrapper">
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -58,7 +58,7 @@ export default function AddSubscribedUser() {
         </div> */}
       </div>
 
-      <div className="ms-md-3 mt-1">
+      <div className="mt-1">
         <SubscribedUserForm
           // loadOptions={masterloadOptionQuery?.data?.results}
           // placeholder={masterloadOptionQuery?.data?.results[0].name ?? "All"}

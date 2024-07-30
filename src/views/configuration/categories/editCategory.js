@@ -150,7 +150,7 @@ export default function EditCategory() {
         <Else>
           {!masterloadOptionQuery?.isLoading &&
             !subCategoryDetailQuery.isLoading && (
-              <div className="ms-sm-3 mt-1">
+              <div className="mt-1">
                 <CategoryForm
                   editDisableCategory
                   loadOptions={masterloadOptionQuery?.data?.results}
