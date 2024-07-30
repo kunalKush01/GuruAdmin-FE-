@@ -10,7 +10,7 @@ import styled from "styled-components";
 
 export default function BtnPopover({ target, title, content }) {
   return (
-    <div>
+    <div style={{backgroundColor:'#583703'}}>
       <UncontrolledPopover
         placement="bottom"
         target={target}
