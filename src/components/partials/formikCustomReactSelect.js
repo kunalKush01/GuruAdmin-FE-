@@ -6,9 +6,7 @@ import "../../assets/scss/viewCommon.scss";
 
 export default function FormikCustomReactSelect({ loadOptions, ...props }) {
   const [field, meta, helpers] = useField(props);
-  const selectedOption = loadOptions.find(
-    (option) => option.value === field.value
-  );
+
   return (
     <div>
       <CustomReactSelect
