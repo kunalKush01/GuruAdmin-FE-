@@ -20,6 +20,8 @@ import CustomCard from "../../components/partials/customCard";
 import { setCookieWithMainDomain } from "../../utility/formater";
 import { RevenueChart } from "../../utility/revenueChart";
 import DashboardStatsCard from "../../utility/ui-elements/cards/statistics/DashboardStatsCard";
+import '../../assets/scss/viewCommon.scss';
+
 const Home = () => {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const [dashboardData, setDashboardData] = useState();
@@ -28,6 +30,8 @@ const Home = () => {
   const [chartData, setChart] = useState();
 
   const { t } = useTranslation();
+  const history = useHistory();
+
   const periodDropDown = () => {
     switch (dropDownName) {
       case "dashboard_monthly":
@@ -36,11 +40,11 @@ const Home = () => {
         return "year";
       case "dashboard_weekly":
         return "week";
-
       default:
         return "month";
     }
   };
+
   let filterStartDate = moment()
     .startOf(periodDropDown())
     .utcOffset(0, true)
@@ -49,8 +53,6 @@ const Home = () => {
     .endOf(periodDropDown())
     .utcOffset(0, true)
     .toISOString();
-
-  const history = useHistory();
 
   useEffect(() => {
     const dashboardInfo = async () => {
@@ -74,7 +76,6 @@ const Home = () => {
   useEffect(() => {
     const topDonorInfo = async () => {
       const topDonorRes = await getAllTopDonor();
-
       setTopDonorData(topDonorRes);
     };
     topDonorInfo();
@@ -83,7 +84,6 @@ const Home = () => {
   useEffect(() => {
     const recentDonationInfo = async () => {
       const recentDonationRes = await getAllRecentDonationList();
-
       setRecentDonationData(recentDonationRes);
     };
     recentDonationInfo();
@@ -102,36 +102,24 @@ const Home = () => {
             dropDownName={dropDownName}
             setdropDownName={(e) => setdropDownName(e.target.name)}
           />
-          <div className="d-flex gap-1 justify-content-between mt-1 mb-lg-1">
+          <div className="d-flex flex-wrap gap-1 justify-content-between mt-1 mb-lg-1 dashboard-cards-wrapper">
             <DashboardStatsCard
               statTitle={t("dashboard_donationReceived")}
-              stats={parseInt(
-                dashboardData?.donationReceived === undefined
-                  ? 0
-                  : dashboardData?.donationReceived
-              )}
+              stats={parseInt(dashboardData?.donationReceived ?? 0)}
               warning={"primary"}
               data={dashboardData?.donationReceivedArr}
               SeriesName={"Donation Received"}
             />
             <DashboardStatsCard
               statTitle={t("dashboard_donationPending")}
-              stats={parseInt(
-                dashboardData?.donationPending === undefined
-                  ? 0
-                  : dashboardData?.donationPending
-              )}
+              stats={parseInt(dashboardData?.donationPending ?? 0)}
               warning={"primary"}
               data={dashboardData?.donationPendingArr}
               SeriesName={"Donation Pending"}
             />
             <DashboardStatsCard
               statTitle={t("dashboard_totalExpenses")}
-              stats={parseInt(
-                dashboardData?.totalExpenses === undefined
-                  ? 0
-                  : dashboardData?.totalExpenses
-              )}
+              stats={parseInt(dashboardData?.totalExpenses ?? 0)}
               warning={"primary"}
               data={dashboardData?.totalExpensesArr}
               SeriesName={"Total Expenses"}
@@ -142,32 +130,21 @@ const Home = () => {
             >
               <CustomCard
                 cardTitle={t("dashboard_card_title3")}
-                cardNumber={parseInt(
-                  dashboardData?.subscribedUsers === undefined
-                    ? 0
-                    : dashboardData?.subscribedUsers
-                )}
+                cardNumber={parseInt(dashboardData?.subscribedUsers ?? 0)}
                 cardImage={custcardImage3}
               />
             </div>
           </div>
-
           <RevenueChart
             CommitmentData={chartData?.totalCommitmentArr}
             DonationData={chartData?.donationAmountArr}
             chartHeading="dashboard_RevenueReport"
-            // TotalExpensesData={chartData?.expenseAmountArr}
           />
 
           <Row>
-            {/* <Col xs={12} md={7} lg={9}>
-              <RecentDonationTable data={recentDonationData?.results} />
-            </Col> */}
             <Col xs={12} md={5} lg={12} className="mt-3 mt-md-0">
-              {topDonorData?.results?.length > 0 ? (
+              {topDonorData?.results?.length > 0 && (
                 <TopDonerList data={topDonorData?.results} />
-              ) : (
-                ""
               )}
             </Col>
           </Row>

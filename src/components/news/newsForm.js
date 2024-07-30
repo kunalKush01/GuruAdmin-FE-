@@ -317,7 +317,7 @@ export default function NewsForm({
                 </Row>
               </Col>
             </Row>
-            <div className="btn-Published mb-2">
+            <div className="btn-Published mb-0">
               {loading ? (
                 <Button
                   color="primary"

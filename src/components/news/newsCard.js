@@ -73,7 +73,7 @@ function BtnContent({
 
   const langList = useSelector((state) => state.auth.availableLang);
   return (
-    <div className="listviewwrapper">
+    <div className="listviewwrapper" >
       <Row className="MainContainer d-block ">
         {(allPermissions?.name === "all" ||
           subPermission?.includes(EDIT) ||
@@ -81,7 +81,7 @@ function BtnContent({
         !isPublished ? (
           <Col
             xs={12}
-            className="col-item"
+            className=" btncontentwrapper col-item"
             onClick={() =>
               history.push(
                 `/news/edit/${newsId}?page=${currentPage}&filter=${currentFilter}`,
@@ -203,7 +203,7 @@ export default function NewsCard({
       <Card
         style={{
           width: "100%",
-          height: "337px",
+          height: "390px",
           borderRadius: "10px",
           overflow: "hidden",
         }}
@@ -213,7 +213,7 @@ export default function NewsCard({
             onClick={() => history.push(`/news/about/${data?.id}`, data.id)}
             alt="News Image"
             style={{
-              height: "150px",
+              height: "100%",
               position: "relative",
               objectFit: "cover",
               width: "100%",
