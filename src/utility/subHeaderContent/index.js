@@ -29,26 +29,11 @@ import ReportDisputeIconActive from "../../assets/images/icons/reportdispute-act
 import ConfigurationIcon from "../../assets/images/icons/configuration.svg";
 import ConfigurationIconActive from "../../assets/images/icons/configuration-active.svg";
 
-import BookingIcon from '../../assets/images/icons/dharmshala/booking.svg';
-import BuildingIcon from '../../assets/images/icons/dharmshala/building.svg';
-import DharmshalaIcon from '../../assets/images/icons/dharmshala/dharmshala.svg';
-import FeedbackIcon from '../../assets/images/icons/dharmshala/feedback.svg';
-import RoomTypeIcon from '../../assets/images/icons/dharmshala/roomtype.svg';
-import HomeIcon from '../../assets/images/icons/home.svg';
-import PunyarjakIcon from '../../assets/images/icons/punyarjak.svg';
-import GowshalaIcon from '../../assets/images/icons/gowshala.svg';
-import DonationIcon from '../../assets/images/icons/donation.svg';
-import DonationBoxIcon from '../../assets/images/icons/donationbox.svg';
-import CommitmentIcon from '../../assets/images/icons/commitment.svg';
-import FinancialReportsIcon from '../../assets/images/icons/financialreport.svg';
-import ExpensesIcon from '../../assets/images/icons/expenses.svg';
-import EventsIcon from '../../assets/images/icons/event.svg';
-import NewsIcon from '../../assets/images/icons/news.svg';
-import NoticeIcon from '../../assets/images/icons/notice.svg';
-import CategoryIcon from '../../assets/images/icons/configuration.svg';
-import SubadminIcon from '../../assets/images/icons/subadmin.svg';
-import ReportDisputeIcon from '../../assets/images/icons/reportdispute.svg';
-import ConfigurationIcon from '../../assets/images/icons/configuration.svg';
+import BookingIcon from "../../assets/images/icons/dharmshala/booking.svg";
+import BuildingIcon from "../../assets/images/icons/dharmshala/building.svg";
+import DharmshalaIcon from "../../assets/images/icons/dharmshala/dharmshala.svg";
+import FeedbackIcon from "../../assets/images/icons/dharmshala/feedback.svg";
+import RoomTypeIcon from "../../assets/images/icons/dharmshala/roomtype.svg";
 
 export const subHeaderContent = [
   {
@@ -183,26 +168,23 @@ export const subHeaderContentResponsive = [
       {
         name: "Bookings",
         url: "/booking/info",
-        icon:BookingIcon,
+        icon: BookingIcon,
       },
       {
         name: "Buildings",
         url: "/dharmshala/info",
-        icon:BuildingIcon,
-
+        icon: BuildingIcon,
       },
       {
         name: "Room Types",
         url: "/roomtype/info",
-        icon:RoomTypeIcon,
-
+        icon: RoomTypeIcon,
       },
       {
         name: "Feedback",
         url: "/feedback",
-        icon:FeedbackIcon,
-
-      }
+        icon: FeedbackIcon,
+      },
     ],
   },
   {
