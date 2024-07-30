@@ -195,7 +195,7 @@ export default function Donation() {
     <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharam Admin | Donations</title>
+        <title>Apna Dharm Admin | Donations</title>
       </Helmet>
       <div className="window nav statusBar body "></div>
 

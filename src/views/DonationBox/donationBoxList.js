@@ -183,7 +183,7 @@ export default function Expenses() {
             </Then>
           </If>
         </div>
-        <div className="newsContent  ">
+        <div className="newsContent">
           <Row>
             <If condition={boxCollectionQuery.isLoading} disableMemo>
               <Then>

@@ -28,7 +28,7 @@ const Supplies = ({
     <>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharam Admin | Cattles Stock Management | Supplies </title>
+        <title>Apna Dharm Admin | Cattles Stock Management | Supplies </title>
       </Helmet>
 
       <div style={{ height: "10px" }}>
