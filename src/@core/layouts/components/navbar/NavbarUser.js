@@ -125,20 +125,19 @@ const NavbarUser = (props) => {
   return (
     <Fragment>
       <div className="navbar-user-wrapper d-flex justify-content-between w-100 align-items-center">
-        {/* <div className="bookmark-wrapper d-flex align-items-center">
+        <div className="bookmark-wrapper d-flex align-items-center">
           <NavItem className="d-none d-lg-block">
             <NavLink to="/" className="navbar-brand">
-              <div className="brand-logo">
+              {/* <div className="brand-logo">
                 <img src={logo} alt="logo" className="logo" />
-              </div>
-              
+              </div> */}
               {/* <div className="date d-none d-xl-block">
                 <Trans i18nKey={"last_login"} />:{" "}
                 {moment().format("DD MMM YYYY,h:mm a")}
-              </div>
+              </div> */}
             </NavLink>
           </NavItem>
-        </div> */}
+        </div>
         {isSerchable() && (
           <CustomSearchBar
             setSearchBarState={setSearchBarState}
@@ -176,7 +175,7 @@ const NavbarUser = (props) => {
                 onClick={() => history.push("/notification")}
               />
             </div>
-            <img
+            {/* <img
               className="icon d-none d-xl-block"
               src={logOutIcon}
               onClick={() => {
@@ -199,7 +198,7 @@ const NavbarUser = (props) => {
                   }
                 });
               }}
-            />
+            /> */}
           </div>
           <ul className="nav navbar-nav align-items-center ">
             <div className="d-flex align-items-center" style={{ marginRight: '26px' }}>
