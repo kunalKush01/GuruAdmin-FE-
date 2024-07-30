@@ -6,19 +6,7 @@ import { createStock } from "../../../../../api/cattle/cattleStock";
 import arrowLeft from "../../../../../assets/images/icons/arrow-left.svg";
 import AddStockForm from "../../../../../components/cattleStockManagment/stocks/addForm";
 
-const StockAddWraper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addEvent {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
-
+import "../../../assets/scss/viewCommon.scss";
 const AddStock = () => {
   const history = useHistory();
   const searchParams = new URLSearchParams(history.location.search);
@@ -54,7 +42,7 @@ const AddStock = () => {
   };
 
   return (
-    <StockAddWraper>
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -66,7 +54,7 @@ const AddStock = () => {
               )
             }
           />
-          <div className="addEvent">
+          <div className="addAction">
             <Trans i18nKey={"cattle_stock_add"} />
           </div>
         </div>
@@ -79,7 +67,7 @@ const AddStock = () => {
           buttonName="cattle_record_add"
         />
       </div>
-    </StockAddWraper>
+    </div>
   );
 };
 

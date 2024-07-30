@@ -9,19 +9,7 @@ import { createSubAdmin, getAllUserRoles } from "../../../api/userApi.js";
 import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
 import UserForm from "../../../components/users/userForm.js";
 
-const NoticeWraper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addNotice {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
-
+import "../../../assets/scss/viewCommon.scss";
 const handleCreateUser = async (payload) => {
   return createSubAdmin(payload);
 };
@@ -45,7 +33,7 @@ const schema = Yup.object().shape({
     )
     .min(8, "Password is too short - should be 8 chars minimum.")
     .trim(),
-  userRoleChacked: Yup.array()
+  userRoleChecked: Yup.array()
     .min(1, "minimum_one_role_required")
     .required("user_userRoleRequired"),
 });
@@ -59,9 +47,9 @@ export default function AddCategory() {
   const currentPage = searchParams.get("page");
 
   return (
-    <NoticeWraper>
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
-        <div className="d-flex justify-content-between align-items-center ">
+        <div className="d-flex justify-content-between align-items-center">
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
@@ -69,7 +57,7 @@ export default function AddCategory() {
               history.push(`/configuration/users?page=${currentPage}`)
             }
           />
-          <div className="addNotice">
+          <div className="addAction">
             <Trans i18nKey={"users_AddUser"} />
           </div>
         </div>
@@ -88,7 +76,7 @@ export default function AddCategory() {
             email: "",
             password: "",
             file: "",
-            userRoleChacked: [],
+            userRoleChecked: [],
           }}
           validationSchema={schema}
           buttonName={"users_AddUser"}
@@ -97,6 +85,6 @@ export default function AddCategory() {
       {/* ) : ( */}
       {/* "" */}
       {/* )} */}
-    </NoticeWraper>
+    </div>
   );
 }

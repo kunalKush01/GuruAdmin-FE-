@@ -17,20 +17,7 @@ import {
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddPregnancyForm from "../../../../components/cattlePregnancy/addForm";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
-
-const PregnancyAddWraper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addEvent {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
-
+import "../../../../assets/scss/viewCommon.scss";
 const getLangId = (langArray, langSelection) => {
   let languageId;
   langArray.map(async (Item) => {
@@ -98,7 +85,7 @@ const EditPregnancyReport = () => {
   }, [PregnancyReportDetailQuery]);
 
   return (
-    <PregnancyAddWraper>
+    <div className="pregnancyaddwraper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -181,7 +168,7 @@ const EditPregnancyReport = () => {
           )}
         </Else>
       </If>
-    </PregnancyAddWraper>
+    </div>
   );
 };
 

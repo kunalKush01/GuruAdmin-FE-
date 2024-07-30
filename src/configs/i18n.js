@@ -3,7 +3,10 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
 import { englishContent } from "../utility/lang/english";
 import { hindiContent } from "../utility/lang/hindi";
-
+import { kannadaContent } from "../utility/lang/kannada";
+import { tamilContent } from "../utility/lang/tamil";
+import { marathiContent } from "../utility/lang/marathi";
+import { gujaratiContent } from "../utility/lang/gujarati";
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
@@ -15,6 +18,18 @@ i18n
       },
       hi: {
         translations: hindiContent,
+      },
+      gu: {
+        translations: gujaratiContent,
+      },
+      mr: {
+        translations: marathiContent,
+      },
+      ta: {
+        translations: tamilContent,
+      },
+      kn: {
+        translations: kannadaContent,
       },
     },
     fallbackLng: "english",

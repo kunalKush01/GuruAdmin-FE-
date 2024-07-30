@@ -1,55 +1,58 @@
-import { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import classnames from "classnames";
-import { ArrowUp } from "react-feather";
-import { Button, Navbar } from "reactstrap";
-import themeConfig from "@configs/themeConfig";
-import Customizer from "@components/customizer";
-import ScrollToTop from "@components/scrolltop";
-import FooterComponent from "./components/footer";
-import MenuComponent from "./components/menu/horizontal-menu";
-import NavbarComponent from "./components/navbar";
+import React, { useState, useEffect } from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { Layout, Menu, Button, theme, ConfigProvider } from "antd";
+import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
+import { Trans } from "react-i18next";
+
 import { handleContentWidth, handleMenuHidden } from "@store/layout";
+import Customizer from "@components/customizer";
 import { useFooterType } from "@hooks/useFooterType";
 import { useNavbarColor } from "@hooks/useNavbarColor";
 import { useNavbarType } from "@hooks/useNavbarType";
 import { useRTL } from "@hooks/useRTL";
 import { useSkin } from "@hooks/useSkin";
-import "@styles/base/core/menu/menu-types/horizontal-menu.scss";
-import { subHeaderContent } from "../../utility/subHeaderContent";
 
-const HorizontalLayout = (props) => {
+import { subHeaderContentResponsive } from "../../utility/subHeaderContent";
+import "../../assets/scss/viewCommon.scss";
+import "../../assets/scss/variables/_variables.scss";
+
+import bigLogo from "../../assets/images/pages/main-logo.png";
+import smallLogo from "../../assets/images/pages/main-logo-small.png";
+import UserDropdown from "./components/navbar/";
+
+const { Header, Sider, Content } = Layout;
+
+const SiderLayout = (props) => {
   const history = useHistory();
+  const location = useLocation();
+  const dispatch = useDispatch();
   const { isLogged } = useSelector((state) => state.auth);
+  const layoutStore = useSelector((state) => state.layout);
 
-  useEffect(() => {
-    if (!isLogged) {
-      history.push("/login");
-    }
-  }, [isLogged, history]);
+  const permissions = useSelector(
+    (state) => state.auth.userDetail?.permissions
+  );
+  const trustType = useSelector(
+    (state) => state.auth.trustDetail?.typeId?.name
+  );
 
-  // ** Props
+  const [collapsed, setCollapsed] = useState(false);
+  const [active, setActive] = useState(location.pathname);
+
   const {
-    children,
-    navbar,
-    menuData,
-    footer,
-    menu,
-    currentActiveItem,
-    routerProps,
-    setLastLayout,
-  } = props;
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken();
 
-  // ** Hooks
   const { skin, setSkin } = useSkin();
-  const [isRtl, setIsRtl] = useRTL();
+  const [isRtl] = useRTL();
   const { navbarType, setNavbarType } = useNavbarType();
   const { footerType, setFooterType } = useFooterType();
   const { navbarColor, setNavbarColor } = useNavbarColor();
 
-  // ** States
   const [isMounted, setIsMounted] = useState(false);
+  const [hoveredItem, setHoveredItem] = useState(null);
+
   const [active, setActive] = useState(location.pathname);
   const [navbarScrolled, setNavbarScrolled] = useState(false);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
@@ -62,118 +65,164 @@ const HorizontalLayout = (props) => {
   const contentWidth = layoutStore.contentWidth;
   const isHidden = layoutStore.menuHidden;
 
-  // ** Handles Content Width
   const setContentWidth = (val) => dispatch(handleContentWidth(val));
-
-  // ** Handles Menu Hidden
   const setIsHidden = (val) => dispatch(handleMenuHidden(val));
 
-  // ** UseEffect Cleanup
-  const cleanup = () => {
-    setIsMounted(false);
-    setNavbarScrolled(false);
-  };
+  useEffect(() => {
+    !isLogged && history.push("/login");
+  }, [isLogged, history]);
 
-  //** ComponentDidMount
   useEffect(() => {
     setIsMounted(true);
-    const handleScroll = () => {
-      if (window.pageYOffset > 65 && !navbarScrolled) {
-        setNavbarScrolled(true);
-      } else if (window.pageYOffset < 65) {
-        setNavbarScrolled(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      cleanup();
+      setIsMounted(false);
     };
-  }, [navbarScrolled]);
+  }, []);
 
-  // ** Vars
-  const footerClasses = {
-    static: "footer-static",
-    sticky: "footer-fixed",
-    hidden: "footer-hidden",
+  useEffect(() => {
+    console.log("Active path:", location.pathname);
+    setActive(location.pathname);
+  }, [location.pathname]);
+
+  const {
+    children,
+    navbar,
+    customizer,
+    setLastLayout,
+    setLayout,
+    transition,
+    setTransition,
+    themeConfig,
+  } = props;
+
+  const permissionsKey = permissions?.map((item) => item?.name);
+
+  const getMenuItem = (item) => {
+    const hasAllPermission = permissionsKey?.includes("all");
+    const hasItemPermission = permissionsKey?.includes(item?.name);
+    const hasCattleItemPermission = item?.innerPermissions?.some((perm) =>
+      permissionsKey?.includes(perm)
+    );
+    const isGaushala =
+      item?.isCattle?.toLowerCase() === trustType?.toLowerCase();
+
+    if (
+      (hasAllPermission && isGaushala) ||
+      (hasCattleItemPermission && isGaushala) ||
+      (hasItemPermission && isGaushala) ||
+      (hasAllPermission && item?.name !== "cattles_management") ||
+      (hasItemPermission && item?.name !== "cattles_management")
+    ) {
+      const isActive = active.startsWith(item.activeTab);
+      const isHovered = hoveredItem === item.name;
+
+      return {
+        key: item.name,
+        icon: item.icon ? (
+          <img
+            src={isActive || isHovered ? item.activeIcon : item.icon}
+            alt={item.name}
+            style={{ width: "16px", height: "16px" }}
+          />
+        ) : null,
+        label: (
+          <div
+            onClick={() => {
+              !item.children && history.push(item.url);
+            }}
+            className={`menu-item-label ${
+              active?.startsWith(item.activeTab) ? "active-tab" : ""
+            }`}
+          >
+            <Trans i18nKey={item.name} />
+          </div>
+        ),
+        children: item.children ? item.children.map(getMenuItem) : undefined,
+      };
+    }
+    return null;
   };
-
-  const navbarWrapperClasses = {
-    floating: "navbar-floating",
-    sticky: "navbar-sticky",
-    static: "navbar-static",
-  };
-
-  const navbarClasses = {
-    floating:
-      contentWidth === "boxed" ? "floating-nav container-xxl" : "floating-nav",
-    sticky: "fixed-top",
-  };
-
-  const bgColorCondition =
-    navbarColor !== "" && navbarColor !== "light" && navbarColor !== "white";
 
   if (!isMounted) {
     return null;
   }
 
   return (
-    <div
-      className={classnames(
-        `wrapper horizontal-layout horizontal-menu ${
-          navbarWrapperClasses[navbarType] || "navbar-floating"
-        } ${footerClasses[footerType] || "footer-static"} menu-expanded`
-      )}
-      {...(isHidden ? { "data-col": "1-column" } : {})}
+    <ConfigProvider
+      theme={{
+        components: {
+          Menu: {
+            itemSelectedBg: "var(--primary-color)",
+            itemSelectedColor: "white",
+          },
+        },
+      }}
     >
-      <Navbar
-        expand="lg"
-        container={false}
-        style={{ background: "#fff" }}
-        className={classnames(
-          "header-navbar navbar-fixed align-items-center navbar-shadow navbar-brand-center",
-          {
-            "navbar-scrolled": navbarScrolled,
-          }
-        )}
-      >
-        <div className="navbar-container d-flex content">
-          {navbar ? navbar : <NavbarComponent skin={skin} setSkin={setSkin} setMenuVisibility={setIsMenuVisible} />}
-        </div>
-      </Navbar>
-      {!isHidden ? (
-        <div className="horizontal-menu-wrapper">
-          <Navbar
-            tag="div"
-            expand="sm"
-            style={{ background: "#FF8744", top: "85px" }}
-            light={skin !== "dark"}
-            dark={skin === "dark" || bgColorCondition}
-            className={classnames(
-              `p-1 navbar-horizontal navbar-shadow menu-border`,
-              {
-                [navbarClasses[navbarType]]: navbarType !== "static",
-                "floating-nav":
-                  (!navbarClasses[navbarType] && navbarType !== "static") ||
-                  navbarType === "floating",
-              }
-            )}
+      <Layout>
+        <Sider
+          trigger={null}
+          collapsible
+          collapsed={collapsed}
+          className="custom-sider"
+        >
+          <div
+            className="logo-container"
+            style={{ padding: "16px 16px 16px 24px", textAlign: "left" }}
           >
-            {menu ? (
-              menu
-            ) : (
-              <MenuComponent
-                menuData={subHeaderContent}
-                routerProps={routerProps}
-                currentActiveItem={currentActiveItem}
-              />
-            )}
-          </Navbar>
-        </div>
-      ) : null}
-      {children}
-      {themeConfig.layout.customizer === true ? (
+            <img
+              src={collapsed ? smallLogo : bigLogo}
+              alt="Logo"
+              style={{
+                maxWidth: "100%",
+                height: "auto",
+                maxHeight: collapsed ? "32px" : "64px",
+              }}
+            />
+          </div>
+          <Menu
+            mode="inline"
+            selectedKeys={[active.split("/")[1] || ""]}
+            items={subHeaderContentResponsive.map(getMenuItem).filter(Boolean)}
+            style={{ paddingLeft: 0 }}
+          />
+        </Sider>
+        <Layout>
+          <Header
+            style={{
+              padding: 0,
+              background: colorBgContainer,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Button
+              type="text"
+              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+              onClick={() => setCollapsed(!collapsed)}
+              style={{
+                fontSize: "16px",
+                width: 64,
+                height: 64,
+              }}
+            />
+            <div style={{ display: "flex", alignItems: "center" }}>
+              {navbar ? navbar : <UserDropdown />}
+            </div>
+          </Header>
+          <Content
+            style={{
+              padding: 24,
+              minHeight: "calc(100vh - 64px)",
+              background: "FAFAFA",
+              borderRadius: borderRadiusLG,
+            }}
+          >
+            {children}
+          </Content>
+        </Layout>
+      </Layout>
+      {customizer && (
         <Customizer
           skin={skin}
           setSkin={setSkin}
@@ -184,47 +233,20 @@ const HorizontalLayout = (props) => {
           navbarColor={navbarColor}
           setNavbarColor={setNavbarColor}
           isRtl={isRtl}
-          setIsRtl={setIsRtl}
           layout={props.layout}
           setLastLayout={setLastLayout}
-          setLayout={props.setLayout}
+          setLayout={setLayout}
           isHidden={isHidden}
           setIsHidden={setIsHidden}
           contentWidth={contentWidth}
           setContentWidth={setContentWidth}
-          transition={props.transition}
-          setTransition={props.setTransition}
+          transition={transition}
+          setTransition={setTransition}
           themeConfig={themeConfig}
         />
-      ) : null}
-      <footer
-        className={classnames(
-          `footer footer-light ${footerClasses[footerType] || "footer-static"}`,
-          {
-            "d-none": footerType === "hidden",
-          }
-        )}
-      >
-        {!footer ? (
-          footer
-        ) : (
-          <FooterComponent
-            footerType={footerType}
-            footerClasses={footerClasses}
-          />
-        )}
-      </footer>
-      {themeConfig.layout.scrollTop === true ? (
-        <div className="scroll-to-top">
-          <ScrollToTop showOffset={300} className="scroll-top d-block">
-            <Button className="btn-icon" color="primary">
-              <ArrowUp size={14} />
-            </Button>
-          </ScrollToTop>
-        </div>
-      ) : null}
-    </div>
+      )}
+    </ConfigProvider>
   );
 };
 
-export default HorizontalLayout;
+export default SiderLayout;

@@ -1,18 +1,18 @@
 export const englishContent = {
   no_data_found: "No data found",
-  no_data_found_add_data: 'Click to "Add Button" to add data on screen ',
+  no_data_found_add_data: 'Click "Add Button" to add data on screen ',
   amount: "Amount",
   all: "All",
   dashboard: "Dashboard",
   dharmshala: "Dharmshala",
   donation: "Donation",
-  commitment: "Commitment",
-  hundi: "Donation Box Collections",
+  commitment: "Pledge",
+  hundi: "Donation Box",
   financial_reports: "Financial Reports",
   internal_expenses: "Expenses",
   total_donation: "Total Donation :",
   events: "Events",
-  total: "Total : ",
+  total: "Total :",
   Select: "Select",
   news: "News",
   notices: "Notices",
@@ -34,6 +34,9 @@ export const englishContent = {
   category: "Category",
   user: "Sub Admin",
   report_Dispute: "Report & Dispute",
+  masters: "Masters",
+  custom_field: "Custom Field",
+  masters_list: "Master List",
   cancel: "Cancel",
   confirm: "Confirm Delete",
   save_changes: "Save Changes",
@@ -43,11 +46,11 @@ export const englishContent = {
   payment: "Pay Now",
   paymentPaid: "Paid",
   injection_found: "Special characters are not supported",
-  logout_msg: "Are you sure you want to logout ?",
+  logout_msg: "Are you sure you want to logout?",
   no: "No",
   yes: "Yes",
   tags_limit: "Tags limit exceeded",
-  end_time_less: "The End time must be greater than the Start time",
+  end_time_less: "The End time must be greater than the start time",
   publish_now: "Publish Now",
   already_publish: "News is already published.",
   already_publish_notice: "Notice is already published.",
@@ -108,9 +111,9 @@ export const englishContent = {
   news_popOver_AddLang: "Add Language",
   news_popOver_Edit: "Edit",
   news_popOver_Delete: "Delete",
-
+  article_donation: "Article Donation",
   news_delete: "Delete News",
-  news_sure: "Are you sure you want to permanently delete this news ? ",
+  news_sure: "Are you sure you want to permanently delete this news?",
   news_not_found: "News Absent  ",
   news_not_click_add_news: "To add a new news article, click 'Add News'.",
 
@@ -128,7 +131,7 @@ export const englishContent = {
   events_startDate_required: "Start date is required",
   events_endDate_required: "End date is required",
   events_delete: "Delete Event",
-  events_sure: "Are you sure you want to permanently delete this event ? ",
+  events_sure: "Are you sure you want to permanently delete this event?",
   events_not_found: "Events Absent",
   events_not_click_add_events: "To introduce a new event, click 'Add Event'",
 
@@ -234,15 +237,15 @@ export const englishContent = {
   directBookingAvailable:"Direct Booking Available",
   room_type:"Room Type",
 
-  // All static content of Cattles
-  cattles_management: "Gowshala",
+  // All static content of Pashudhan
+  cattles_management: "Gaushala",
   cattle_expense_type_assets: "Assets",
   cattle_dead: "Dead",
   cattle_alive: "Alive",
   cattle_expense_type_consumable: "Consumable",
   cattle_expense_type_general: "General",
-  cattle_info: "Pashudhan",
-  cattle_photo: "Pashu Photo",
+  cattle_info: "Pashudhan Info",
+  cattle_photo: "Pashudhan's Photo",
   cattle_owner_photo: "Owner's Photo",
   cattle_owner_id: "Owner's ID",
   cattle_mother_id: "Mother Tag ID",
@@ -256,7 +259,7 @@ export const englishContent = {
   cattle_medical_record: "Medical Records",
   cattle_pregnancy_record: "Pregnancy Records",
   cattle_expense: "Expense Management",
-  cattle_stock: "Stock Management",
+  cattle_stock_management: "Stock Management",
   cattle_usage: "Usage Management",
   cattle_revenueHeading: "Daily Registration Report ",
   recent_registered_cattles: "Recent Registered Pashudhan",
@@ -323,6 +326,10 @@ export const englishContent = {
   cattle_edit_usage: "Edit Usage",
   cattle_category_edit: "Edit Category",
   cattle_category_add: "Add Category",
+  cattle_stock: "Stock",
+  cattle_supplies: "Supplies",
+  cattle_usage: "Usage",
+  cattle_items: "Items",
 
   //dharmshala validation messages
   dharmshala_name_required: "Dharmshala name is required",
@@ -368,7 +375,7 @@ export const englishContent = {
 
   // all cattle management delete messages
   cattle_cattle_delete: "Delete Pashudhan",
-  cattle_cattle_sure: "Are you sure you want to delete this Pashudhan?",
+  cattle_cattle_sure: "Are you sure you want to delete this pashudhan?",
   cattle_medical_delete: "Delete Medical Info",
   cattle_medical_sure: "Are you sure you want to delete this medical report?",
   cattle_pregnancy_delete: "Delete Pregnancy Report",
@@ -386,13 +393,13 @@ export const englishContent = {
   cattle_breed_sure: "Are you sure you want to delete this breed?",
 
   // All cattle search variable
-  search_cattles: "Search by Pashudhan ID, Type, Breed ",
+  search_cattles: "Search by PashudhanID, Type, Breed ",
   search_cattles_medical: "Search Pashudhan Medical Info",
   search_cattles_pregnancy: "Search Pashudhan Pregnancy Report",
   search_cattles_stock: "Search Stock",
   search_cattles_supplies: "Search Item Supplies",
   search_cattles_usage: "Search Item Usages",
-  search_cattles_items: "Search Item",
+  search_cattles_items: "Search Pashudhan Item",
   // All static content of Notices
 
   notices_AddNotice: "Add Notice",
@@ -422,10 +429,10 @@ export const englishContent = {
   categories_latest_Category: "Categories",
   categories_title_required: "Category Name is required",
   categories_EditCategory: "Edit Category",
-  categories_select_category: "Select Category",
-  categories_select_amount: "Enter Amount",
-  category_select_sub_category: "Select Sub Category",
-  categories_select_user_name: "Select Username",
+  categories_select_category: "Category",
+  categories_select_amount: "Amount",
+  category_select_sub_category: "Sub Category",
+  categories_select_user_name: "Username",
   category_select: "Select",
   categories_select_master_category: "Select Master Category",
   donar_name_required: "Donor name is Required",
@@ -441,6 +448,7 @@ export const englishContent = {
   category_not_found: "Categories Unavailable  ",
   category_not_click_add_category:
     "To introduce a new category, click on 'Add Category'.",
+  masters_not_found: "Master List Unavailable",
 
   // All static content of Users
   users_AddUser: "Add Sub Admin ",
@@ -482,7 +490,7 @@ export const englishContent = {
   remarks_financial_donationBox: "Remarks",
   report_commitment: "Commitment",
   reports_not_found: "Report & Disput Not Found",
-  report_donation_box: "Donation Box Collections",
+  report_donation_box: "Donation Box",
   finance_report_no_found:
     "No Financial Report Available for Selected Timeline",
   financial_not_found: "No Financial Found",
@@ -510,7 +518,7 @@ export const englishContent = {
 
   // All static content of Donation Box
   DonationBox_total_collection: "Total Collection:",
-  DonationBox_DonationBox: "Donation Box Collections",
+  DonationBox_DonationBox: "Donation Box",
   DonationBox_AddCollectionBox: "Add Collection ",
   DonationBox_EditCollectionBox: "Edit Collection ",
   created_by: "Created By",
@@ -538,11 +546,11 @@ export const englishContent = {
   notify_user: "Notify User",
   notify_user_content: "Please check the check box for nudge the user",
   commitment_Username: "Username",
-  add_commitment: "Add Commitment",
-  edit_commitment: "Edit Commitment",
+  add_commitment: "Add Pledge",
+  edit_commitment: "Edit Pledge",
   commitment_end_Date: "End Date ",
   commitment_Amount_Due: "Amount Due",
-  commitment_select_commitment_id: "Select Commitment ID",
+  commitment_select_commitment_id: "Select Pledge ID",
   commitment_select_start_date: "Select Start Date",
   commitment_select_end_date: "Select End Date",
 
@@ -670,7 +678,7 @@ export const englishContent = {
 
   // all place holder images
 
-  placeHolder_donar_name: "Enter Doner Name",
+  placeHolder_donar_name: "Enter Donor Name",
   placeHolder_price_per_item: "Enter price per item",
   placeHolder_mobile_number: "Enter Mobile Number",
   placeHolder_phone_number: "Enter Contact Number",
@@ -760,6 +768,6 @@ export const englishContent = {
   search_buildings:"Search All Buildings",
   search_feedback:"Search All Feedback",
   search_punyarjak: "Search All Punyarjak",
-  search_donation_box_collection: "Search All Donation Box Collection",
+  search_donation_box_collection: "Search All Donation Box",
   search_commitment: "Search All Commitments",
 };

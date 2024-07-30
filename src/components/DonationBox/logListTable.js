@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import CustomDataTable from "../partials/CustomDataTable";
+import "../../assets/scss/common.scss";
 export default function LogListTable({ data }) {
   const { t } = useTranslation();
 
@@ -46,14 +47,9 @@ export default function LogListTable({ data }) {
     });
   });
 
-  const LogListTableWarper = styled.div`
-    color: #583703 !important;
-    font: normal normal bold 15px/23px Noto Sans;
-  `;
-
   return (
-    <LogListTableWarper>
+    <div className="loglisttablewrapper">
       <CustomDataTable columns={columns} maxHeight="350px" data={logData} />
-    </LogListTableWarper>
+    </div>
   );
 }

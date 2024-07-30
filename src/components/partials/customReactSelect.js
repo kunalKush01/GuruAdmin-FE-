@@ -3,11 +3,7 @@ import ReactSelect from "react-select";
 import { Trans } from "react-i18next";
 import { useField } from "formik";
 import styled from "styled-components";
-
-const ReactSelectWarapper = styled.div`
-  /* margin-bottom: 10px; */
-  font: normal normal bold 15px/33px Noto Sans;
-`;
+import "../../assets/scss/viewCommon.scss";
 
 export const CustomReactSelect = ({
   required = false,
@@ -45,7 +41,7 @@ export const CustomReactSelect = ({
         // width: "fit-content"  ,
         maxHeight: "150px",
         zIndex: "50000000000000010000",
-        font: "normal normal normal 15px/20px Noto Sans",
+        font: "bold 15px Noto Sans, sans-serif",
         "::-webkit-scrollbar": {
           display: "none",
         },
@@ -94,7 +90,7 @@ export const CustomReactSelect = ({
       ...provided,
       padding: "0px 8px",
       flexWrap: "nowrap",
-      overflow:"auto",
+      overflow: "auto",
       // overflow: "hidden",
       "::-webkit-scrollbar": {
         height: " 5px",
@@ -137,7 +133,7 @@ export const CustomReactSelect = ({
         ...styles,
         color: "#583703",
         textOverflow: "ellipsis",
-        padding:"0px",
+        padding: "0px",
         overflow: "hidden",
       };
     },
@@ -151,12 +147,12 @@ export const CustomReactSelect = ({
   };
   // const [field, meta, helpers] = useField(props);
   return (
-    <ReactSelectWarapper>
+    <div className="reactselectwrapper">
       {props.labelName && (
-        <div style={{ font: "normal normal bold 15px/33px Noto Sans" }}>
+        <label style={{ font: "bold 15px Noto Sans" }}>
           {`${props.labelName}`}
           {required && "*"}
-        </div>
+        </label>
       )}
       <ReactSelect
         isDisabled={props.disabled}
@@ -172,6 +168,6 @@ export const CustomReactSelect = ({
         styles={customStyles}
         {...props}
       />
-    </ReactSelectWarapper>
+    </div>
   );
 };

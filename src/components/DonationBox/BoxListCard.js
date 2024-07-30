@@ -3,61 +3,12 @@ import moment from "moment";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { Card, CardBody, CardFooter, Col, Row } from "reactstrap";
-import styled from "styled-components";
 import Swal from "sweetalert2";
 import donationBoxDesIcon from "../../assets/images/icons/donationBox/donationBoxDesIcon.png";
 import donationBoxIcon from "../../assets/images/icons/donationBox/donationBoxIcon.png";
 import editIcon from "../../assets/images/icons/donationBox/editIcon.svg";
 import { EDIT } from "../../utility/permissionsVariable";
-
-const DonationBoxWrapper = styled.div`
-  .card-footer {
-    border: none !important;
-    padding: 0%;
-    div {
-      font: normal normal bold 13px/27px Noto Sans !important ;
-      text-align: center;
-      color: #ff8744;
-      border: 1px solid #ff8744;
-      border-radius: 50px;
-    }
-  }
-  .card-body,
-  .card {
-    border-radius: 20px;
-    background-color: #fff7e8;
-  }
-  .date {
-    font: normal normal 600 10px/20px Noto Sans;
-    span {
-      color: #ff8744;
-    }
-  }
-  .time {
-    p {
-      margin: 0;
-    }
-    font: normal normal 600 10px/20px Noto Sans;
-    img {
-      width: 15px;
-      margin-right: 5px;
-    }
-    span {
-      color: #ff8744;
-    }
-  }
-  .remarks {
-    margin-top: 0.5rem;
-    margin-bottom: 1.5rem;
-  }
-  .text-with-dots {
-    max-height: 20px;
-    max-width: 100px;
-    white-space: nowrap;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-  }
-`;
+import "../../assets/scss/common.scss";
 
 export default function BoxListCard({
   data = "",
@@ -71,7 +22,7 @@ export default function BoxListCard({
   };
   const history = useHistory();
   return (
-    <DonationBoxWrapper>
+    <div className="donationboxwrapper">
       <Card>
         <CardBody>
           <Row className=" d-flex justify-content-between w-100 m-0">
@@ -103,6 +54,14 @@ export default function BoxListCard({
                                                   )}
                                                   </span> 
                                                 </div>
+                                                  ${data.customFields
+                                                    .map(
+                                                      (field) => `
+                                                      <div>
+                                                        ${field.fieldName}: <span class='customFieldBoxSwal'>${field.value}</span>
+                                                      </div>`
+                                                    )
+                                                    .join("")}
                                             </div>
                                               `,
                     showCloseButton: false,
@@ -130,6 +89,17 @@ export default function BoxListCard({
                     }}
                   />
                 </div>
+                {data.customFields.map((field) => (
+                  <div
+                    className="donationBox_customField"
+                    key={field.fieldName}
+                  >
+                    <span className="donationBox_field">
+                      {field.fieldName}:
+                    </span>
+                    <span className="donationBox_field">{field.value}</span>
+                  </div>
+                ))}
                 <CardFooter className="w-100">
                   <div>₹{data?.amount.toLocaleString("en-IN")}</div>
                 </CardFooter>
@@ -156,6 +126,6 @@ export default function BoxListCard({
           </Row>
         </CardBody>
       </Card>
-    </DonationBoxWrapper>
+    </div>
   );
 }

@@ -7,20 +7,8 @@ import styled from "styled-components";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomDataTable from "../partials/CustomDataTable";
+import "../../assets/scss/common.scss";
 
-const ReportWrapper = styled.div`
-  color: #583703 !important;
-  /* margin-right: 20px; */
-  font: normal normal bold 15px/23px Noto Sans;
-  .pending {
-    color: #f8450d;
-    font: normal normal bold 13px/23px Noto Sans;
-  }
-  .reSolved {
-    color: #24c444;
-    font: normal normal bold 13px/23px Noto Sans;
-  }
-`;
 const ReportTable = ({ data }) => {
   const { t } = useTranslation();
 
@@ -97,9 +85,9 @@ const ReportTable = ({ data }) => {
     });
   });
   return (
-    <ReportWrapper>
+    <div className="reportwrapper">
       <CustomDataTable maxHeight={""} columns={column} data={reportData} />
-    </ReportWrapper>
+    </div>
   );
 };
 

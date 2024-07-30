@@ -34,41 +34,7 @@ import { WRITE } from "../../../utility/permissionsVariable";
 import { Helmet } from "react-helmet";
 import Swal from "sweetalert2";
 import { timers } from "jquery";
-const NewsWarper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addNews {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-
-  .FormikWraper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addNews-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .newsContent {
-    margin-top: 1rem;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: #ff8744;
-    font: normal normal bold 13px/5px noto sans;
-  }
-`;
-
+import "../../../assets/scss/viewCommon.scss";
 const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 export default function User() {
@@ -180,7 +146,7 @@ export default function User() {
     (item) => item.name
   );
   return (
-    <NewsWarper>
+    <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharm Admin | Users</title>
@@ -208,7 +174,7 @@ export default function User() {
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
-                className="addNews-btn"
+                className="addAction-btn"
                 onClick={() =>
                   userRolesItems?.length > 0
                     ? history.push(
@@ -320,6 +286,6 @@ export default function User() {
           </Row>
         </div>
       </div>
-    </NewsWarper>
+    </div>
   );
 }

@@ -10,21 +10,7 @@ import editIcon from "../../../assets/images/icons/category/editIcon.svg";
 import CustomDataTable from "../../../components/partials/CustomDataTable";
 import { ConverFirstLatterToCapital } from "../../../utility/formater";
 import Swal from "sweetalert2";
-
-const CattleBreedTableWrapper = styled.div`
-  color: #583703 !important;
-  margin-bottom: 1rem;
-  font: normal normal bold 15px/23px Noto Sans;
-
-  .modal-body {
-    max-height: 600px !important;
-    overflow: auto !important;
-  }
-  .tableDes p {
-    margin-bottom: 0;
-  }
-`;
-
+import "../../../assets/scss/viewCommon.scss";
 const CattleBreedTable = ({ data = [], maxHeight, height, toggle }) => {
   const { t } = useTranslation();
 
@@ -46,7 +32,12 @@ const CattleBreedTable = ({ data = [], maxHeight, height, toggle }) => {
     {
       name: t("name"),
       selector: (row) => row.name,
-      width: "87%",
+      width: "20%",
+    },
+    {
+      name: t("category"),
+      selector: (row) => row.category,
+      width: "67%",
     },
     {
       name: t(""),
@@ -65,6 +56,9 @@ const CattleBreedTable = ({ data = [], maxHeight, height, toggle }) => {
       return {
         id: idx + 1,
         name: ConverFirstLatterToCapital(item?.name ?? ""),
+        category: ConverFirstLatterToCapital(
+          item?.cattleCategoryId?.name ?? " - "
+        ),
         edit: (
           <img
             src={editIcon}
@@ -111,14 +105,14 @@ const CattleBreedTable = ({ data = [], maxHeight, height, toggle }) => {
   }, [data]);
 
   return (
-    <CattleBreedTableWrapper>
+    <div className="cattlebreedtablewrapper">
       <CustomDataTable
         maxHeight={maxHeight}
         height={height}
         columns={columns}
         data={BreedList}
       />
-    </CattleBreedTableWrapper>
+    </div>
   );
 };
 

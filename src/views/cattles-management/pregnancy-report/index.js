@@ -17,16 +17,9 @@ import PregnancyReportTable from "./table";
 import { ChangeCategoryType } from "../../../components/partials/categoryDropdown";
 import { Helmet } from "react-helmet";
 import { WRITE } from "../../../utility/permissionsVariable";
+import { ConverFirstLatterToCapital } from "../../../utility/formater";
 
-const PregnancyReportWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-
-  .btn {
-    font-weight: bold;
-  }
-`;
-
+import "../../../assets/scss/viewCommon.scss";
 const PregnancyReport = () => {
   const history = useHistory();
   const { t } = useTranslation();
@@ -91,7 +84,7 @@ const PregnancyReport = () => {
         search: searchBarValue,
         startDate: filterStartDate,
         endDate: filterEndDate,
-        status: pregnancyStatus?.toUpperCase(),
+        status: pregnancyStatus == "inactive" ? "NO" : active ? "YES" : "ALL",
         languageId: selectedLang.id,
       })
   );
@@ -117,12 +110,11 @@ const PregnancyReport = () => {
   );
 
   return (
-    <PregnancyReportWrapper>
+    <div className="pregnancyreportwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharm Admin | Cattles Pregnancy Records</title>
       </Helmet>
-      {/* <CattleTabBar tabs={cattleHeader} active={active} setActive={setActive} /> */}
       <div>
         <div className="d-sm-flex mb-1 justify-content-between align-items-center ">
           <Trans i18nKey="cattle_pregnancy_report" />
@@ -134,17 +126,20 @@ const PregnancyReport = () => {
                 {
                   id: 1,
                   name: t("all"),
+                  value: "ALL",
                 },
                 {
                   id: 2,
-                  name: t("yes"),
+                  name: t("active"),
+                  value: "YES",
                 },
                 {
                   id: 2,
-                  name: t("no"),
+                  name: t("inactive"),
+                  value: "NO",
                 },
               ]}
-              typeName={pregnancyStatus}
+              typeName={ConverFirstLatterToCapital(pregnancyStatus)}
               setTypeName={(e) => {
                 setPregnancyStatus(e.target.name);
                 setPagination({ page: 1 });
@@ -286,7 +281,7 @@ const PregnancyReport = () => {
           </Row>
         </div>
       </div>
-    </PregnancyReportWrapper>
+    </div>
   );
 };
 

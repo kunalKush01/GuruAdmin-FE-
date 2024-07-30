@@ -26,7 +26,9 @@ import AsyncSelectField from "../partials/asyncSelectField";
 import CustomRadioButton from "../partials/customRadioButton";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
-
+import FormikCardDropdown from "../partials/FormikCardDropdown";
+import { DatePicker } from "antd";
+import "../../../src/assets/scss/common.scss";
 export default function FormWithoutFormikForDonation({
   formik,
   masterloadOptionQuery,
@@ -39,6 +41,7 @@ export default function FormWithoutFormikForDonation({
   article,
   setArticle,
   showPrompt,
+  customFieldsList,
   ...props
 }) {
   const { t } = useTranslation();
@@ -139,12 +142,65 @@ export default function FormWithoutFormikForDonation({
   const currentCategory = searchParams.get("category");
   const currentSubCategory = searchParams.get("subCategory");
   const currentFilter = searchParams.get("filter");
+  const dialCodeFromURL = searchParams.get("dialCode");
+  const mobileNumberFromURL = searchParams.get("mobileNumber");
+  const name = searchParams.get("name");
+
+  useEffect(() => {
+    if (mobileNumberFromURL && dialCodeFromURL) {
+      const fullPhoneNumber = `${dialCodeFromURL}${mobileNumberFromURL}`;
+      setPhoneNumber(fullPhoneNumber);
+      formik.setFieldValue("countryCode", dialCodeFromURL.replace("+", ""));
+      formik.setFieldValue("dialCode", dialCodeFromURL);
+      formik.setFieldValue("Mobile", mobileNumberFromURL);
+
+      const fetchUserDetails = async () => {
+        try {
+          const res = await findAllUsersByNumber({
+            mobileNumber: fullPhoneNumber,
+          });
+          if (res.result) {
+            const userMobileNumberWithoutDialCode =
+              res.result.mobileNumber.replace(dialCodeFromURL, "");
+            res.result.mobileNumber = userMobileNumberWithoutDialCode;
+            formik.setFieldValue("SelectedUser", res.result);
+            formik.setFieldValue("donarName", res.result.name);
+          } else {
+            setNoUserFound(true);
+            if (name) {
+              formik.setFieldValue("donarName", decodeURIComponent(name));
+            }
+          }
+        } catch (error) {
+          console.error("Error fetching user details:", error);
+          setNoUserFound(true);
+          if (name) {
+            formik.setFieldValue("donarName", decodeURIComponent(name));
+          }
+        }
+      };
+
+      fetchUserDetails();
+    } else {
+      console.log("Mobile number or dial code missing from URL");
+    }
+  }, [mobileNumberFromURL, dialCodeFromURL, name]);
+
+  useEffect(() => {
+    if (name) {
+      formik.setFieldValue("donarName", decodeURIComponent(name));
+    }
+  }, [name]);
 
   return (
     <Form>
       {showPrompt && (
         <Prompt
-          when={!!Object.values(formik?.values).find((val) => !!val)}
+          when={
+            !!Object.values(formik?.values).find(
+              (val, key) => !!val && key !== "Mobile"
+            )
+          }
           message={(location) =>
             `Are you sure you want to leave this page & visit ${location.pathname.replace(
               "/",
@@ -153,47 +209,43 @@ export default function FormWithoutFormikForDonation({
           }
         />
       )}
-      <Row className="paddingForm">
+      <Row>
         <Col xs={12}>
           <Row>
-            <Col xs={12} sm={6} lg={4} className=" pb-1">
-              <Row>
-                <Col xs={12} className="align-self-center">
-                  <CustomCountryMobileNumberField
-                    value={phoneNumber}
-                    disabled={payDonation}
-                    defaultCountry={countryFlag}
-                    label={t("dashboard_Recent_DonorNumber")}
-                    placeholder={t("placeHolder_mobile_number")}
-                    onChange={(phone, country) => {
-                      setPhoneNumber(phone);
-                      formik.setFieldValue("countryCode", country?.countryCode);
-                      formik.setFieldValue("dialCode", country?.dialCode);
-                      formik.setFieldValue(
-                        "Mobile",
-                        phone?.replace(country?.dialCode, "")
-                      );
-                    }}
-                    required
-                  />
+            <Col xs={12} sm={6} lg={4} className="pb-0">
+              <CustomCountryMobileNumberField
+                value={phoneNumber}
+                disabled={payDonation}
+                defaultCountry={countryFlag}
+                label={t("dashboard_Recent_DonorNumber")}
+                placeholder={t("placeHolder_mobile_number")}
+                onChange={(phone, country) => {
+                  setPhoneNumber(phone);
+                  formik.setFieldValue("countryCode", country?.countryCode);
+                  formik.setFieldValue("dialCode", country?.dialCode);
+                  formik.setFieldValue(
+                    "Mobile",
+                    phone?.replace(country?.dialCode, "")
+                  );
+                }}
+                required
+              />
+              {formik.errors.Mobile && (
+                <div
+                  style={{
+                    height: "20px",
+                    font: "normal normal bold 11px Noto Sans",
+                  }}
+                >
                   {formik.errors.Mobile && (
-                    <div
-                      style={{
-                        height: "20px",
-                        font: "normal normal bold 11px/33px Noto Sans",
-                      }}
-                    >
-                      {formik.errors.Mobile && (
-                        <div className="text-danger">
-                          <Trans i18nKey={formik.errors.Mobile} />
-                        </div>
-                      )}
+                    <div className="text-danger">
+                      <Trans i18nKey={formik.errors.Mobile} />
                     </div>
                   )}
-                </Col>
-              </Row>
+                </div>
+              )}
             </Col>
-            <Col xs={12} sm={6} lg={4} className=" pb-1">
+            <Col xs={12} sm={6} lg={4}>
               <AsyncSelectField
                 name="SelectedUser"
                 required
@@ -213,7 +265,7 @@ export default function FormWithoutFormikForDonation({
                     className="cursor-pointer"
                     onClick={() =>
                       history.push(
-                        `/add-user?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}&redirect=donation`
+                        `/add-user?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}&redirect=donation&dialCode=${formik.values.dialCode}&mobileNumber=${formik.values.Mobile}`
                       )
                     }
                   >
@@ -222,15 +274,21 @@ export default function FormWithoutFormikForDonation({
                 </div>
               )}
             </Col>
-            <Col xs={12} sm={6} lg={4} className=" pb-1">
+            <Col xs={12} sm={6} lg={4}>
               <CustomTextField
                 label={t("dashboard_Recent_DonorName")}
                 placeholder={t("placeHolder_donar_name")}
                 name="donarName"
-                onInput={(e) => (e.target.value = e.target.value.slice(0, 30))}
+                value={formik.values.donarName}
+                onChange={(e) => {
+                  formik.setFieldValue(
+                    "donarName",
+                    e.target.value.slice(0, 30)
+                  );
+                }}
               />
             </Col>
-            <Col xs={12} sm={6} lg={4} className=" pb-1">
+            <Col xs={12} sm={6} lg={4}>
               <FormikCustomReactSelect
                 labelName={t("categories_select_category")}
                 name={"SelectedMasterCategory"}
@@ -253,7 +311,7 @@ export default function FormWithoutFormikForDonation({
                 }
               />
             </Col>
-            <Col xs={12} sm={6} lg={4} className=" pb-1">
+            <Col xs={12} sm={6} lg={4}>
               <FormikCustomReactSelect
                 labelName={t("category_select_sub_category")}
                 loadOptions={subLoadOption?.map((cate) => {
@@ -273,17 +331,16 @@ export default function FormWithoutFormikForDonation({
               />
             </Col>
             <Col xs={12} sm={6} lg={4}>
-              <FormikCustomReactSelect
+              <FormikCardDropdown
                 labelName={t("dashboard_Recent_DonorCommitId")}
-                loadOptions={commitmentIdByUser}
+                options={commitmentIdByUser}
                 placeholder={t("commitment_select_commitment_id")}
                 name={"SelectedCommitmentId"}
                 disabled={
                   payDonation || commitmentIdByUser?.length == 0 || article
                 }
-                valueKey={"id"}
-                getOptionLabel={(option) => `${option.commitmentId}`}
-                width
+                getOptionValue={(option) => option._id}
+                width="100%"
               />
             </Col>
           </Row>
@@ -291,7 +348,13 @@ export default function FormWithoutFormikForDonation({
           <Row>
             <Col>
               <Row>
-                <Col xs={12} sm={6} lg={4} className=" opacity-75 pb-1">
+                <Col
+                  xs={12}
+                  sm={6}
+                  lg={4}
+                  className=" opacity-75"
+                  style={{ display: "none" }}
+                >
                   <CustomTextField
                     label={t("created_by")}
                     name="createdBy"
@@ -311,7 +374,103 @@ export default function FormWithoutFormikForDonation({
                     required
                   />
                 </Col>
-                {!payDonation && (
+                {customFieldsList.map((field) => {
+                  const isSelectField =
+                    field.masterValues && field.masterValues.length > 0;
+
+                  return (
+                    <Col xs={12} sm={6} lg={4} className="pb-1" key={field._id}>
+                      {field.fieldType === "Boolean" ? (
+                        <FormikCustomReactSelect
+                          labelName={field.fieldName}
+                          name={`customFields.${field.fieldName}`}
+                          loadOptions={[
+                            { value: "", label: "Select Option" },
+                            { value: true, label: "True" },
+                            { value: false, label: "False" },
+                          ]}
+                          required={field.isRequired}
+                          width
+                          placeholder={`Select ${field.fieldName}`}
+                        />
+                      ) : field.fieldType === "Date" ? (
+                        <>
+                          <label style={{ fontSize: "15px" }}>
+                            {field.fieldName}
+                            {field.isRequired && "*"}
+                          </label>
+                          <DatePicker
+                            id="datePickerANTD"
+                            format="YYYY-MM-DD"
+                            onChange={(date) => {
+                              if (date) {
+                                formik.setFieldValue(
+                                  `customFields.${field.fieldName}`,
+                                  date.format("YYYY-MM-DD")
+                                );
+                              } else {
+                                formik.setFieldValue(
+                                  `customFields.${field.fieldName}`,
+                                  null
+                                );
+                              }
+                            }}
+                            // needConfirm
+                          />
+                          {formik.errors.customFields &&
+                            formik.errors.customFields[field.fieldName] && (
+                              <div
+                                style={{
+                                  height: "20px",
+                                  font: "normal normal bold 11px/33px Noto Sans",
+                                }}
+                              >
+                                <div className="text-danger">
+                                  <Trans
+                                    i18nKey={
+                                      formik.errors.customFields[
+                                        field.fieldName
+                                      ]
+                                    }
+                                  />
+                                </div>
+                              </div>
+                            )}
+                        </>
+                      ) : isSelectField ? (
+                        <FormikCustomReactSelect
+                          labelName={field.fieldName}
+                          name={`customFields.${field.fieldName}`}
+                          loadOptions={
+                            field.masterValues &&
+                            field.masterValues.map((item) => ({
+                              value: item.value,
+                              label: item.value,
+                            }))
+                          }
+                          width
+                          required={field.isRequired}
+                          placeholder={`Select ${field.fieldName}`}
+                          valueKey="value"
+                          labelKey="label"
+                        />
+                      ) : (
+                        <CustomTextField
+                          label={field.fieldName}
+                          name={`customFields.${field.fieldName}`}
+                          type={
+                            field.fieldType === "String"
+                              ? "text"
+                              : field.fieldType.toLowerCase()
+                          }
+                          required={field.isRequired}
+                          placeholder={`Enter ${field.fieldName}`}
+                        />
+                      )}
+                    </Col>
+                  );
+                })}
+                {/* {!payDonation && (
                   <Col xs={12} sm={6} lg={5} className="mb-3">
                     <Row>
                       <label style={{ fontSize: "15px" }}>
@@ -335,27 +494,24 @@ export default function FormWithoutFormikForDonation({
                       </Col>
                     </Row>
                   </Col>
-                )}
+                )}*/}
               </Row>
             </Col>
           </Row>
-          {/* article dan Row */}
           {!location.pathname.includes("/pay-donation") && (
             <>
               <Row>
                 <Col xs={12}>
                   <div className="d-flex align-items-center gap-1">
-                    Article Daan
+                    <Trans i18nKey="article_donation" />
                     <FormGroup switch id="articleDaan">
                       <Input
                         type="switch"
                         checked={article}
                         role="switch"
                         onChange={(e) => {
-                          // setTimeout(async () => {
                           formik.setFieldValue("SelectedCommitmentId", "");
                           setArticle(!article);
-                          // }, 500);
                         }}
                       />
                       <UncontrolledTooltip placement="top" target="articleDaan">
@@ -454,7 +610,7 @@ export default function FormWithoutFormikForDonation({
             <Spinner size="md" />
           </Button>
         ) : (
-          <Button color="primary" className="addNotice-btn " type="submit">
+          <Button color="primary" className="addAction-btn " type="submit">
             {!props.plusIconDisable && (
               <span>
                 <Plus className="" size={15} strokeWidth={4} />
