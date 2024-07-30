@@ -774,20 +774,20 @@
 }
 
 .chart-card-wrapper {
-  font: $font-weight-bold $font-size-large $font-family;
-  
-  .chart-card {
-    flex: 1 1 20%;
-    background-color: $secondary-color;
-    width: 100% !important;
-    height: auto;
-    color: $font-color;
-    // max-width: 300;
-  }
-  
-  .card-text {
-    font: $font-weight-normal 16px/20px $font-family;
-  }
+    font: $font-weight-bold $font-size-large $font-family;
+
+    .chart-card {
+        flex: 1 1 20%;
+        background-color: $secondary-color;
+        width: 100% !important;
+        height: auto;
+        color: $font-color;
+        // max-width: 300;
+    }
+
+    .card-text {
+        font: $font-weight-normal 16px/20px $font-family;
+    }
 
     .fw-bolder {
         text-overflow: ellipsis;
@@ -1055,206 +1055,212 @@
 
 .card-dropdown {
     &__control {
-      background-color: $secondary-color;
-      border-color: $font-color;
-      &:hover, &--is-focused {
-        border-color: $primary-color;
-        box-shadow: 0 0 0 1px $primary-color;
-      }
+        background-color: $secondary-color;
+        border-color: $font-color;
+
+        &:hover,
+        &--is-focused {
+            border-color: $primary-color;
+            box-shadow: 0 0 0 1px $primary-color;
+        }
     }
-  
+
     &__menu {
-      background-color: transparent;
-      box-shadow: none;
-      border: none;
-      max-height: 300px;
-      overflow-y: auto;
-    }
-  
-    &__menu-list {
-      padding: 0;
-      max-height: 300px;
-      overflow-y: auto;
-    }
-  
-    &__option {
-      padding: 4px;
-      background-color: transparent;
-      color: $font-color;
-  
-      &:hover {
         background-color: transparent;
-      }
+        box-shadow: none;
+        border: none;
+        max-height: 300px;
+        overflow-y: auto;
     }
-  
+
+    &__menu-list {
+        padding: 0;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    &__option {
+        padding: 4px;
+        background-color: transparent;
+        color: $font-color;
+
+        &:hover {
+            background-color: transparent;
+        }
+    }
+
     &__single-value {
-      color: $font-color;
-      font: $font-weight-bold $font-size-medium $font-family;
+        color: $font-color;
+        font: $font-weight-bold $font-size-medium $font-family;
     }
-  }
-  
-  .card-option {
+}
+
+.card-option {
     padding: 12px;
     border: 1px $secondary-color;
     border-radius: 8px;
     background-color: $secondary-color;
     box-shadow: 0 2px 4px $font-color;
     transition: all 0.3s ease;
-  
+
     &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px $font-color;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px $font-color;
     }
-  }
-  
-  .card-row {
+}
+
+.card-row {
     // display: flex;
     justify-content: space-between;
     margin-bottom: 8px;
-  
+
     &:last-child {
-      margin-bottom: 0;
+        margin-bottom: 0;
     }
-  }
-  
-  .card-label {
+}
+
+.card-label {
     font-weight: 700;
     color: $font-color;
     font-size: 0.9em;
     margin-right: 8px;
     min-width: 100px;
     text-align: left;
-  }
-  
-  .card-title, .card-description, .commitment-id, .amount {
+}
+
+.card-title,
+.card-description,
+.commitment-id,
+.amount {
     flex: 1;
     text-align: right;
-  }
-  
-  .card-title {
+}
+
+.card-title {
     font-weight: 700;
     font-size: 1em;
     color: $font-color;
-  }
-  
-  .card-description {
+}
+
+.card-description {
     color: $font-color;
     opacity: 0.8;
     font-size: 0.9em;
-  }
-  
-  .commitment-id {
+}
+
+.commitment-id {
     font-family: monospace;
     padding: 2px 4px;
     border-radius: 4px;
     color: $font-color;
     font-size: $font-size-small;
-  }
-  
-  .amount {
+}
+
+.amount {
     font-weight: 600;
     color: $green;
     font-size: 0.9em;
-  }
-  
+}
+
 // ===========================================Dropdown Card Css=============================================== //
 
 // ===================================================SiderLayout CSS=================================================== //
 
 .custom-sider {
     background-color: $white !important;
-  
+
     .sider-content {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-  
-      .logo-container {
-        padding: 16px;
-        background-color: $white;
-        text-align: left;
-      }
-  
-      .menu-container {
-        flex: 1;
-        overflow-y: auto;
-        overflow-x: hidden;
-  
-        &::-webkit-scrollbar {
-          display: none;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+
+        .logo-container {
+            padding: 4px;
+            background-color: $white;
+            text-align: left;
         }
-  
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-  
-        .ant-menu {
-          padding-left: 16px;
+
+        .menu-container {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
+
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+
+            .ant-menu {
+                padding-left: 16px;
+            }
         }
-      }
-  
-      .sider-footer {
-        border-top: 1px solid #f0f0f0;
-      }
+
+        .sider-footer {
+            border-top: 1px solid #f0f0f0;
+        }
     }
-  
+
     .ant-menu {
-      background-color: $white;
-  
-      .ant-menu-item,
-      .ant-menu-submenu-title {
-        font-size: 16px;
-        padding-left: 10px !important; 
-        margin: 4px 0 !important;
-  
-        &:hover,
-        &:active {
-          background-color: $primary-color !important;
-          color: $white !important;
+        background-color: $white;
+
+        .ant-menu-item,
+        .ant-menu-submenu-title {
+            font-size: 14px;
+            padding-left: 10px !important;
+            margin: 4px 0 !important;
+
+            &:hover,
+            &:active {
+                background-color: $primary-color !important;
+                color: $white !important;
+            }
         }
-      }
-  
-      &.ant-menu-inline {
-        .ant-menu-item-selected {
-          background-color: $primary-color !important;
-          color: $white !important;
+
+        &.ant-menu-inline {
+            .ant-menu-item-selected {
+                background-color: $primary-color !important;
+                color: $white !important;
+            }
+
+            .ant-menu-submenu-selected {
+                >.ant-menu-submenu-title {
+                    color: $primary-color !important;
+                }
+            }
         }
-  
-        .ant-menu-submenu-selected {
-          > .ant-menu-submenu-title {
-            color: $primary-color !important;
-          }
-        }
-      }
     }
-  
+
     .last-login {
-      padding: 16px;
-      color: $primary-color;
-      font-size: 12px;
-      text-align: center;
-      background-color: $white;
-    }
-  
-    &.ant-layout-sider-collapsed {
-      .ant-menu-item,
-      .ant-menu-submenu-title {
-        padding: 0 !important;
+        padding: 16px;
+        color: $primary-color;
+        font-size: 12px;
         text-align: center;
-  
-        .ant-menu-item-icon {
-          margin-right: 0;
-        }
-  
-        .ant-menu-title-content {
-          display: none;
-        }
-      }
+        background-color: $white;
     }
-  }
-  
-  .ant-layout {
+
+    &.ant-layout-sider-collapsed {
+
+        .ant-menu-item,
+        .ant-menu-submenu-title {
+            padding: 0 !important;
+            text-align: center;
+
+            .ant-menu-item-icon {
+                margin-right: 0;
+            }
+
+            .ant-menu-title-content {
+                display: none;
+            }
+        }
+    }
+}
+
+.ant-layout {
     transition: margin-left 0.2s;
-  }
+}
 
 // ===================================================SiderLayout CSS=================================================== //
 .editCommitment {
@@ -1270,22 +1276,21 @@
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-  }
-  
-  .dashboard-cards-wrapper > * {
-    flex: 1 1 calc(25% - 1rem); 
-    min-width: 200px; 
-  }
-  
-  @media (max-width: 1200px) {
-    .dashboard-cards-wrapper > * {
-      flex: 1 1 calc(50% - 1rem); 
+}
+
+.dashboard-cards-wrapper>* {
+    flex: 1 1 calc(25% - 1rem);
+    min-width: 200px;
+}
+
+@media (max-width: 1200px) {
+    .dashboard-cards-wrapper>* {
+        flex: 1 1 calc(50% - 1rem);
     }
-  }
-  
-  @media (max-width: 768px) {
-    .dashboard-cards-wrapper > * {
-      flex: 1 1 100%;
+}
+
+@media (max-width: 768px) {
+    .dashboard-cards-wrapper>* {
+        flex: 1 1 100%;
     }
-  }
-  
+}
