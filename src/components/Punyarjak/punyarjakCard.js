@@ -156,7 +156,7 @@ export default function PunyarjakCard({
       <Card
         style={{
           width: "100%",
-          height: "350px",
+          height: "390px",
           borderRadiuis: "10px",
           overflow: "hidden",
         }}
@@ -165,7 +165,7 @@ export default function PunyarjakCard({
           <img
             alt="Punyarjak Image"
             style={{
-              height: "150px",
+              height: "100%",
               position: "relative",
               objectFit: "cover",
               width: "100%",
@@ -189,7 +189,7 @@ export default function PunyarjakCard({
               />
             </CardText>
           </div>
-          <div className="cardLangScroll mt-1">
+          <div className="cardLangScroll mt-2">
             {data?.languages?.map((item) => {
               return (
                 <div key={item.id} className="languageButton">
