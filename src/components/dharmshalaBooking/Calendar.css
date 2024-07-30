@@ -368,6 +368,19 @@ html {
   z-index: 1000;
 }
 
+.availability-check{
+  color: #fff;
+  background-color: #ff8744;
+  font-weight: 700;
+  padding: 10px 15px;
+  font-size: 15px;
+  border: none;
+  width: 100%;
+  position: relative;
+  margin-left: 25px;
+  margin-top: 10px;
+}
+
 .modal-content {
   background-color: white;
   /* padding: 20px; */

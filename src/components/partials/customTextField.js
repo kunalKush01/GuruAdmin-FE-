@@ -33,6 +33,11 @@ const CustomTextFieldWarper = styled.div`
   input::-webkit-inner-spin-button {
     display: none;
   }
+
+  .address-input {
+    width: 500px !important;
+  }
+
   select {
     appearance: none;
     -webkit-appearance: none;
@@ -61,8 +66,6 @@ const CustomTextFieldWarper = styled.div`
     cursor: pointer; /* Show pointer cursor on options */
   }
 `;
-
-
 
 export default function CustomTextField({
   required = false,
@@ -93,14 +96,15 @@ export default function CustomTextField({
               {...field}
               {...props}
             >
-              {props.children} 
+              {props.children}
             </select>
           ) : (
             <input
               type={type}
-              className={"form-control"}
+              className={`form-control ${type === "address" ? "address-input" : ""}`}
               placeholder={placeholder}
               value={field.value}
+              style={type === "address" ? { width: "500px" } : {}}
               {...field}
               {...props}
             />

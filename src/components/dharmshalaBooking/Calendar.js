@@ -11,7 +11,7 @@ import "./Calendar.css";
 import "./bookingModal.css";
 import guestIcon from "../../assets/images/icons/guestIcon.png";
 import Switch from "react-toggle-switch";
-//import "react-toggle-switch/dist/css/switch.min.css"; 
+import "react-toggle-switch/dist/css/switch.min.css"; 
 import Swal from "sweetalert2";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { useHistory } from "react-router-dom";
@@ -319,6 +319,8 @@ const Calendar = () => {
   const [filterEventDataDay, setFilterEventDataDay] = useState([]);
   const [weekDays, setWeekDays] = useState([]);
   const [isBookingResizeSuccess, setIsBookingResizeSuccess] = useState(false);
+  const [showAvailableOnly, setShowAvailableOnly] = useState(false);
+
 
   //**filter event based on date selection */
   const filteredEvents = useMemo(() => {
@@ -514,10 +516,23 @@ const Calendar = () => {
     return roundedDate;
   };
 
-  const filteredProperties =
-    selectedRoomType === "All"
-      ? properties
-      : properties.filter((property) => property.roomTypeName === selectedRoomType);
+  const filteredProperties = useMemo(() => {
+    let filteredProps = properties;
+
+    if (selectedRoomType !== "All") {
+      filteredProps = filteredProps.filter(
+        (property) => property.roomTypeName === selectedRoomType
+      );
+    }
+
+    if (showAvailableOnly) {
+      filteredProps = filteredProps.filter(
+        (property) => !filteredEvents.some((event) => event.roomId._id === property._id)
+      );
+    }
+
+    return filteredProps;
+  }, [properties, selectedRoomType, showAvailableOnly, filteredEvents]);
 
   //**filter events */
   const filterEvents = events.filter((item) => {
@@ -540,11 +555,23 @@ const Calendar = () => {
     return totalGuests;
   };
 
-  const handleCellClick = (date, property) => {
-    setSelectedDate(date);
-    setSelectedProperty(property);
-    setIsModalOpen(true);
+  const handleShowAvailableOnly = () => {
+    setShowAvailableOnly(!showAvailableOnly);
   };
+
+  
+
+  // const handleCellClick = (date, property) => {
+  //   setSelectedDate(date);
+  //   setSelectedProperty(property);
+  //   setIsModalOpen(true);
+  // };
+
+  const handleCellClick = (date, property) => {
+    const formattedDate = date.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
+    history.push(`/booking/add?startDate=${formattedDate}&roomNumber=${property.roomNumber}&roomType=${property.roomTypeName}`);
+  };
+  
   const handleCellClickEdit = (
     date,
     property,
@@ -752,7 +779,7 @@ const Calendar = () => {
           className="me-2 cursor-pointer"
           onClick={() =>
             history.push(
-              `/bookings/info/`
+              `/booking/info/`
             )
           }
         />
@@ -813,6 +840,9 @@ const Calendar = () => {
                 ))}
               </select>
             </div>
+            <button className="availability-check" onClick={handleShowAvailableOnly}>
+                {showAvailableOnly ? "Show All" : "Show Available Only"}
+            </button>
           </div>
         </div>
       </div>
