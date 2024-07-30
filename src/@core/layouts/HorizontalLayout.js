@@ -53,13 +53,10 @@ const SiderLayout = (props) => {
   const [isMounted, setIsMounted] = useState(false);
   const [hoveredItem, setHoveredItem] = useState(null);
 
-  const [active, setActive] = useState(location.pathname);
   const [navbarScrolled, setNavbarScrolled] = useState(false);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   // ** Store Vars
-  const dispatch = useDispatch();
-  const layoutStore = useSelector((state) => state.layout);
 
   // ** Vars
   const contentWidth = layoutStore.contentWidth;
