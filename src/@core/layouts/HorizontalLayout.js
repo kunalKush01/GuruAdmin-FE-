@@ -3,7 +3,14 @@ import { useHistory, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Layout, Menu, Button, theme, ConfigProvider } from "antd";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
+import moment from "moment";
+import { toast } from "react-toastify";
+import Swal from "sweetalert2";
+import logOutIcon from "../../assets/images/icons/dashBoard/Group 5995.svg";
+import confirmationIcon from "../../assets/images/icons/news/conformationIcon.svg";
+import { authApiInstance } from "../../axiosApi/authApiInstans";
+import { handleTrustDetail, logOut } from "../../redux/authSlice";
 
 import { handleContentWidth, handleMenuHidden } from "@store/layout";
 import Customizer from "@components/customizer";
@@ -29,6 +36,7 @@ const SiderLayout = (props) => {
   const dispatch = useDispatch();
   const { isLogged } = useSelector((state) => state.auth);
   const layoutStore = useSelector((state) => state.layout);
+  const refreshToken = useSelector((state) => state.auth.tokens.refreshToken);
 
   const permissions = useSelector(
     (state) => state.auth.userDetail?.permissions
@@ -59,6 +67,8 @@ const SiderLayout = (props) => {
   const setContentWidth = (val) => dispatch(handleContentWidth(val));
   const setIsHidden = (val) => dispatch(handleMenuHidden(val));
 
+  const { t, i18n } = useTranslation();
+
   useEffect(() => {
     !isLogged && history.push("/login");
   }, [isLogged, history]);
@@ -71,7 +81,6 @@ const SiderLayout = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log("Active path:", location.pathname);
     setActive(location.pathname);
   }, [location.pathname]);
 
@@ -96,7 +105,7 @@ const SiderLayout = (props) => {
     );
     const isGaushala =
       item?.isCattle?.toLowerCase() === trustType?.toLowerCase();
-
+  
     if (
       (hasAllPermission && isGaushala) ||
       (hasCattleItemPermission && isGaushala) ||
@@ -104,34 +113,59 @@ const SiderLayout = (props) => {
       (hasAllPermission && item?.name !== "cattles_management") ||
       (hasItemPermission && item?.name !== "cattles_management")
     ) {
-      const isActive = active.startsWith(item.activeTab);
+      const isActive = active.startsWith(item.url);
       const isHovered = hoveredItem === item.name;
-
+  
       return {
-        key: item.name,
-        icon: item.icon ? (
+        key: item.url,
+        icon: (
           <img
             src={isActive || isHovered ? item.activeIcon : item.icon}
             alt={item.name}
             style={{ width: "16px", height: "16px" }}
           />
-        ) : null,
-        label: (
-          <div
-            onClick={() => {
-              !item.children && history.push(item.url);
-            }}
-            className={`menu-item-label ${
-              active?.startsWith(item.activeTab) ? "active-tab" : ""
-            }`}
-          >
-            <Trans i18nKey={item.name} />
-          </div>
         ),
+        label: !collapsed && <Trans i18nKey={item.name} />,
         children: item.children ? item.children.map(getMenuItem) : undefined,
+        onClick: () => {
+          !item.children && history.push(item.url);
+        },
       };
     }
     return null;
+  };
+
+  const handleLogOut = async () => {
+    try {
+      const res = await authApiInstance.post("auth/logout", { refreshToken });
+      toast.success(res.data.message);
+      dispatch(logOut());
+      localStorage.setItem("trustId", "");
+      history.push("/login");
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast.error("Failed to logout. Please try again.");
+    }
+  };
+
+  const confirmLogout = () => {
+    Swal.fire({
+      title: `<img src="${confirmationIcon}"/>`,
+      html: `
+        <h3 class="swal-heading mt-1">${t("logout_msg")}</h3>
+      `,
+      showCloseButton: false,
+      showCancelButton: true,
+      focusConfirm: true,
+      cancelButtonText: ` ${t("no")}`,
+      cancelButtonAriaLabel: ` ${t("cencel")}`,
+      confirmButtonText: ` ${t("yes")}`,
+      confirmButtonAriaLabel: "Confirm",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        handleLogOut();
+      }
+    });
   };
 
   if (!isMounted) {
@@ -149,39 +183,78 @@ const SiderLayout = (props) => {
         },
       }}
     >
-      <Layout>
+      <Layout className="sider-layout">
         <Sider
           trigger={null}
           collapsible
           collapsed={collapsed}
           className="custom-sider"
+          width={200}
+          style={{
+            overflow: 'hidden',
+            height: '100vh',
+            position: 'fixed',
+            left: 0,
+          }}
         >
-          <div
-            className="logo-container"
-            style={{ padding: "16px 16px 16px 24px", textAlign: "left" }}
-          >
-            <img
-              src={collapsed ? smallLogo : bigLogo}
-              alt="Logo"
-              style={{
-                maxWidth: "100%",
-                height: "auto",
-                maxHeight: collapsed ? "32px" : "64px",
-              }}
-            />
+          <div className="sider-content">
+            <div className="logo-container">
+              <img
+                src={collapsed ? smallLogo : bigLogo}
+                alt="Logo"
+                style={{
+                  maxWidth: "100%",
+                  height: "auto",
+                  maxHeight: collapsed ? "32px" : "64px",
+                  marginLeft: collapsed ? "50%" : "9px",
+                  transform: collapsed ? "translateX(-50%)" : "none",
+                }}
+              />
+            </div>
+            <div className="menu-container">
+              <Menu
+                mode="inline"
+                selectedKeys={[active]}
+                items={subHeaderContentResponsive.map(getMenuItem).filter(Boolean)}
+                style={{ borderRight: 0, paddingLeft: "7px" }}
+                inlineCollapsed={collapsed}
+              />
+            </div>
+            <div className="sider-footer">
+              <Menu
+                mode="inline"
+                selectable={false}
+                style={{ borderTop: '1px solid #f0f0f0', paddingLeft: "7px" }}
+                inlineCollapsed={collapsed}
+              >
+                <Menu.Item
+                  key="Logout"
+                  icon={<img src={logOutIcon} alt="Logout" style={{ width: '16px', height: '16px' }} />}
+                  onClick={confirmLogout}
+                  style={{ padding: collapsed ? '0' : '0 16px' }}
+                >
+                  {!collapsed && <Trans i18nKey="Logout" />}
+                </Menu.Item>
+              </Menu>
+              {!collapsed && (
+                <div className="last-login">
+                <div><Trans i18nKey={"last_login"} /></div>
+                <div>{moment().format("DD MMM YYYY, h:mm a")}</div>
+              </div>
+              
+              )}
+            </div>
           </div>
-          <Menu
-            mode="inline"
-            selectedKeys={[active.split("/")[1] || ""]}
-            items={subHeaderContentResponsive.map(getMenuItem).filter(Boolean)}
-            style={{ paddingLeft: 0 }}
-          />
         </Sider>
-        <Layout>
+        <Layout style={{ marginLeft: collapsed ? 80 : 200 }}>
           <Header
             style={{
               padding: 0,
               background: colorBgContainer,
+              position: 'sticky',
+              top: 0,
+              zIndex: 1,
+              width: '100%',
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
@@ -204,9 +277,10 @@ const SiderLayout = (props) => {
           <Content
             style={{
               padding: 24,
-              minHeight: "calc(100vh - 64px)",
+              minHeight: 'calc(100vh - 64px)',
               background: "FAFAFA",
               borderRadius: borderRadiusLG,
+              overflow: 'auto',
             }}
           >
             {children}

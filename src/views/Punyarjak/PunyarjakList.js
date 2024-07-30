@@ -169,7 +169,7 @@ export default function Punyarjak() {
             </Then>
           </If>
         </div>
-        <div className="punyarjakContent  ">
+        <div className="punyarjakContent">
           <Row>
             <If condition={punyarjakUsersQuery.isLoading} disableMemo>
               <Then>
