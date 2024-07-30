@@ -111,7 +111,7 @@ const SiderLayout = (props) => {
     );
     const isGaushala =
       item?.isCattle?.toLowerCase() === trustType?.toLowerCase();
-  
+
     if (
       (hasAllPermission && isGaushala) ||
       (hasCattleItemPermission && isGaushala) ||
@@ -121,7 +121,7 @@ const SiderLayout = (props) => {
     ) {
       const isActive = active.startsWith(item.url);
       const isHovered = hoveredItem === item.name;
-  
+
       return {
         key: item.url,
         icon: (
@@ -197,9 +197,9 @@ const SiderLayout = (props) => {
           className="custom-sider"
           width={200}
           style={{
-            overflow: 'hidden',
-            height: '100vh',
-            position: 'fixed',
+            overflow: "hidden",
+            height: "100vh",
+            position: "fixed",
             left: 0,
           }}
         >
@@ -211,7 +211,7 @@ const SiderLayout = (props) => {
                 style={{
                   maxWidth: "100%",
                   height: "auto",
-                  maxHeight: collapsed ? "32px" : "64px",
+                  maxHeight: collapsed ? "56px" : "64px",
                   marginLeft: collapsed ? "50%" : "9px",
                   transform: collapsed ? "translateX(-50%)" : "none",
                 }}
@@ -221,7 +221,9 @@ const SiderLayout = (props) => {
               <Menu
                 mode="inline"
                 selectedKeys={[active]}
-                items={subHeaderContentResponsive.map(getMenuItem).filter(Boolean)}
+                items={subHeaderContentResponsive
+                  .map(getMenuItem)
+                  .filter(Boolean)}
                 style={{ borderRight: 0, paddingLeft: "7px" }}
                 inlineCollapsed={collapsed}
               />
@@ -230,24 +232,31 @@ const SiderLayout = (props) => {
               <Menu
                 mode="inline"
                 selectable={false}
-                style={{ borderTop: '1px solid #f0f0f0', paddingLeft: "7px" }}
+                style={{ borderTop: "1px solid #f0f0f0", paddingLeft: "7px" }}
                 inlineCollapsed={collapsed}
               >
                 <Menu.Item
                   key="Logout"
-                  icon={<img src={logOutIcon} alt="Logout" style={{ width: '16px', height: '16px' }} />}
+                  icon={
+                    <img
+                      src={logOutIcon}
+                      alt="Logout"
+                      style={{ width: "16px", height: "16px" }}
+                    />
+                  }
                   onClick={confirmLogout}
-                  style={{ padding: collapsed ? '0' : '0 16px' }}
+                  style={{ padding: collapsed ? "0" : "0 16px" }}
                 >
                   {!collapsed && <Trans i18nKey="Logout" />}
                 </Menu.Item>
               </Menu>
               {!collapsed && (
                 <div className="last-login">
-                <div><Trans i18nKey={"last_login"} /></div>
-                <div>{moment().format("DD MMM YYYY, h:mm a")}</div>
-              </div>
-              
+                  <div>
+                    <Trans i18nKey={"last_login"} />
+                  </div>
+                  <div>{moment().format("DD MMM YYYY, h:mm a")}</div>
+                </div>
               )}
             </div>
           </div>
@@ -257,10 +266,10 @@ const SiderLayout = (props) => {
             style={{
               padding: 0,
               background: colorBgContainer,
-              position: 'sticky',
+              position: "sticky",
               top: 0,
               zIndex: 1,
-              width: '100%',
+              width: "100%",
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
@@ -283,10 +292,10 @@ const SiderLayout = (props) => {
           <Content
             style={{
               padding: 24,
-              minHeight: 'calc(100vh - 64px)',
+              minHeight: "calc(100vh - 64px)",
               background: "FAFAFA",
               borderRadius: borderRadiusLG,
-              overflow: 'auto',
+              overflow: "auto",
             }}
           >
             {children}
