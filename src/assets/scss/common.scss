@@ -250,7 +250,7 @@
     .react-tel-input .flag-dropdown {
         background-color: #fff7e8 !important;
         border: none !important;
-        border-right: 1px solid black !important;
+        border-right: 1px solid hsl(0, 0%, 80%) !important;
     }
 
     .react-tel-input .selected-flag:hover {
@@ -1075,7 +1075,7 @@
     .react-tel-input .flag-dropdown {
         background-color: $secondary-color !important;
         border: none !important;
-        border-right: 1px solid black !important;
+        border-right: 1px solid hsl(0, 0%, 80%) !important;
     }
 
     .react-tel-input .selected-flag:hover {
