@@ -16,7 +16,7 @@ const ThemeNavbar = (props) => {
 
   return (
     <Fragment>
-      <ul className="navbar-nav">
+      <ul className="navbar-nav d-xl-none">
         <NavItem className="mobile-menu me-auto d-flex align-items-center">
           <NavLink
             className="nav-menu-main menu-toggle hidden-xs is-active"
