@@ -2,7 +2,7 @@ import { Form } from "formik";
 import React, { useEffect, useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
-import { Prompt, useHistory } from "react-router-dom";
+import { Prompt, useHistory, useLocation } from "react-router-dom";
 import { useUpdateEffect } from "react-use";
 import {
   Button,
@@ -29,6 +29,10 @@ import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import FormikCardDropdown from "../partials/FormikCardDropdown";
 import { DatePicker } from "antd";
 import "../../../src/assets/scss/common.scss";
+import AddUserDrawerForm from "./addUserDrawerForm";
+import { createSubscribedUser } from "../../api/subscribedUser";
+import * as Yup from "yup";
+
 export default function FormWithoutFormikForDonation({
   formik,
   masterloadOptionQuery,
@@ -182,7 +186,7 @@ export default function FormWithoutFormikForDonation({
 
       fetchUserDetails();
     } else {
-      console.log("Mobile number or dial code missing from URL");
+      // console.log("Mobile number or dial code missing from URL");
     }
   }, [mobileNumberFromURL, dialCodeFromURL, name]);
 
@@ -192,6 +196,37 @@ export default function FormWithoutFormikForDonation({
     }
   }, [name]);
 
+  //**add user drawer form */
+
+  const handleCreateUser = async (payload) => {
+    console.log(payload)
+    return
+    return createSubscribedUser(payload);
+  };
+
+  const schema = Yup.object().shape({
+    mobile: Yup.string().required("users_mobile_required"),
+    email: Yup.string()
+      .email("email_invalid")
+      .required("users_email_required")
+      .trim(),
+    name: Yup.string()
+      .matches(
+        /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+        "user_only_letters"
+      )
+      .required("users_title_required")
+      .trim(),
+  });
+  const location = useLocation();
+  const phoneNum = `${formik.values.dialCode}${formik.values.Mobile}`;
+  const [open, setOpen] = useState(false);
+  const showDrawer = () => {
+    setOpen(true);
+  };
+  const onClose = () => {
+    setOpen(false);
+  };
   return (
     <Form>
       {showPrompt && (
@@ -212,7 +247,7 @@ export default function FormWithoutFormikForDonation({
       <Row>
         <Col xs={12}>
           <Row>
-            <Col xs={12} sm={6} lg={4} className="pb-0">
+            <Col xs={12} sm={6} lg={3}>
               <CustomCountryMobileNumberField
                 value={phoneNumber}
                 disabled={payDonation}
@@ -234,7 +269,7 @@ export default function FormWithoutFormikForDonation({
                 <div
                   style={{
                     height: "20px",
-                    font: "normal normal bold 11px Noto Sans",
+                    font: "normal normal bold 11px/33px Noto Sans",
                   }}
                 >
                   {formik.errors.Mobile && (
@@ -245,7 +280,7 @@ export default function FormWithoutFormikForDonation({
                 </div>
               )}
             </Col>
-            <Col xs={12} sm={6} lg={4}>
+            <Col xs={12} sm={6} lg={3}>
               <AsyncSelectField
                 name="SelectedUser"
                 required
@@ -263,18 +298,45 @@ export default function FormWithoutFormikForDonation({
                   <Trans i18nKey={"add_user_donation"} />{" "}
                   <span
                     className="cursor-pointer"
-                    onClick={() =>
-                      history.push(
-                        `/add-user?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}&redirect=donation&dialCode=${formik.values.dialCode}&mobileNumber=${formik.values.Mobile}`
-                      )
-                    }
+                    // onClick={() =>
+                    //   history.push(
+                    //     `/add-user?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}&redirect=donation&dialCode=${formik.values.dialCode}&mobileNumber=${formik.values.Mobile}`
+                    //   )
+                    // }
+                    onClick={showDrawer}
                   >
                     <Trans i18nKey={"add_user"} />
                   </span>
                 </div>
               )}
+              <AddUserDrawerForm
+                onClose={onClose}
+                open={open}
+                handleSubmit={handleCreateUser}
+                addDonationUser
+                initialValues={{
+                  name: "",
+                  mobile: formik.values.Mobile || "",
+                  countryCode: "in",
+                  dialCode: "91",
+                  email: "",
+                  pincode: "",
+                  searchType: "isPincode",
+                  panNum: "",
+                  addLine1: "",
+                  addLine2: "",
+                  city: "",
+                  district: "",
+                  state: "",
+                  country: "",
+                  pin: "",
+                }}
+                validationSchema={schema}
+                buttonName={"add_user"}
+                getNumber={phoneNum}
+              />
             </Col>
-            <Col xs={12} sm={6} lg={4}>
+            <Col xs={12} sm={6} lg={3}>
               <CustomTextField
                 label={t("dashboard_Recent_DonorName")}
                 placeholder={t("placeHolder_donar_name")}
@@ -288,7 +350,20 @@ export default function FormWithoutFormikForDonation({
                 }}
               />
             </Col>
-            <Col xs={12} sm={6} lg={4}>
+            <Col xs={12} sm={6} lg={3}>
+              <FormikCardDropdown
+                labelName={t("dashboard_Recent_DonorCommitId")}
+                options={commitmentIdByUser}
+                placeholder={t("commitment_select_commitment_id")}
+                name={"SelectedCommitmentId"}
+                disabled={
+                  payDonation || commitmentIdByUser?.length == 0 || article
+                }
+                getOptionValue={(option) => option._id}
+                width="100%"
+              />
+            </Col>
+            <Col xs={12} sm={6} lg={3}>
               <FormikCustomReactSelect
                 labelName={t("categories_select_category")}
                 name={"SelectedMasterCategory"}
@@ -311,7 +386,7 @@ export default function FormWithoutFormikForDonation({
                 }
               />
             </Col>
-            <Col xs={12} sm={6} lg={4}>
+            <Col xs={12} sm={6} lg={3}>
               <FormikCustomReactSelect
                 labelName={t("category_select_sub_category")}
                 loadOptions={subLoadOption?.map((cate) => {
@@ -330,174 +405,156 @@ export default function FormWithoutFormikForDonation({
                 width
               />
             </Col>
-            <Col xs={12} sm={6} lg={4}>
-              <FormikCardDropdown
-                labelName={t("dashboard_Recent_DonorCommitId")}
-                options={commitmentIdByUser}
-                placeholder={t("commitment_select_commitment_id")}
-                name={"SelectedCommitmentId"}
-                disabled={
-                  payDonation || commitmentIdByUser?.length == 0 || article
-                }
-                getOptionValue={(option) => option._id}
-                width="100%"
+            <Col
+              xs={12}
+              sm={6}
+              lg={3}
+              className=" opacity-75"
+              style={{ display: "none" }}
+            >
+              <CustomTextField
+                label={t("created_by")}
+                name="createdBy"
+                disabled
               />
             </Col>
-          </Row>
 
-          <Row>
-            <Col>
-              <Row>
-                <Col
-                  xs={12}
-                  sm={6}
-                  lg={4}
-                  className=" opacity-75"
-                  style={{ display: "none" }}
-                >
-                  <CustomTextField
-                    label={t("created_by")}
-                    name="createdBy"
-                    disabled
-                  />
-                </Col>
-
-                <Col xs={12} sm={6} lg={4}>
-                  <CustomTextField
-                    type="number"
-                    label={t("categories_select_amount")}
-                    placeholder={t("enter_price_manually")}
-                    name="Amount"
-                    onInput={(e) =>
-                      (e.target.value = e.target.value?.toLocaleString("en-IN"))
-                    }
-                    required
-                  />
-                </Col>
-                {customFieldsList.map((field) => {
-                  const isSelectField =
-                    field.masterValues && field.masterValues.length > 0;
-
-                  return (
-                    <Col xs={12} sm={6} lg={4} className="pb-1" key={field._id}>
-                      {field.fieldType === "Boolean" ? (
-                        <FormikCustomReactSelect
-                          labelName={field.fieldName}
-                          name={`customFields.${field.fieldName}`}
-                          loadOptions={[
-                            { value: "", label: "Select Option" },
-                            { value: true, label: "True" },
-                            { value: false, label: "False" },
-                          ]}
-                          required={field.isRequired}
-                          width
-                          placeholder={`Select ${field.fieldName}`}
-                        />
-                      ) : field.fieldType === "Date" ? (
-                        <>
-                          <label style={{ fontSize: "15px" }}>
-                            {field.fieldName}
-                            {field.isRequired && "*"}
-                          </label>
-                          <DatePicker
-                            id="datePickerANTD"
-                            format="YYYY-MM-DD"
-                            onChange={(date) => {
-                              if (date) {
-                                formik.setFieldValue(
-                                  `customFields.${field.fieldName}`,
-                                  date.format("YYYY-MM-DD")
-                                );
-                              } else {
-                                formik.setFieldValue(
-                                  `customFields.${field.fieldName}`,
-                                  null
-                                );
-                              }
-                            }}
-                            // needConfirm
-                          />
-                          {formik.errors.customFields &&
-                            formik.errors.customFields[field.fieldName] && (
-                              <div
-                                style={{
-                                  height: "20px",
-                                  font: "normal normal bold 11px/33px Noto Sans",
-                                }}
-                              >
-                                <div className="text-danger">
-                                  <Trans
-                                    i18nKey={
-                                      formik.errors.customFields[
-                                        field.fieldName
-                                      ]
-                                    }
-                                  />
-                                </div>
-                              </div>
-                            )}
-                        </>
-                      ) : isSelectField ? (
-                        <FormikCustomReactSelect
-                          labelName={field.fieldName}
-                          name={`customFields.${field.fieldName}`}
-                          loadOptions={
-                            field.masterValues &&
-                            field.masterValues.map((item) => ({
-                              value: item.value,
-                              label: item.value,
-                            }))
-                          }
-                          width
-                          required={field.isRequired}
-                          placeholder={`Select ${field.fieldName}`}
-                          valueKey="value"
-                          labelKey="label"
-                        />
-                      ) : (
-                        <CustomTextField
-                          label={field.fieldName}
-                          name={`customFields.${field.fieldName}`}
-                          type={
-                            field.fieldType === "String"
-                              ? "text"
-                              : field.fieldType.toLowerCase()
-                          }
-                          required={field.isRequired}
-                          placeholder={`Enter ${field.fieldName}`}
-                        />
-                      )}
-                    </Col>
-                  );
-                })}
-                {/* {!payDonation && (
-                  <Col xs={12} sm={6} lg={5} className="mb-3">
-                    <Row>
-                      <label style={{ fontSize: "15px" }}>
-                        <Trans i18nKey="is_government" />
-                      </label>
-                      <Col md={2}>
-                        <CustomRadioButton
-                          name="isGovernment"
-                          id="isGovernment1"
-                          value="YES"
-                          label="yes"
-                        />
-                      </Col>
-                      <Col md={2}>
-                        <CustomRadioButton
-                          name="isGovernment"
-                          id="isGovernment2"
-                          value="NO"
-                          label="no"
-                        />
-                      </Col>
-                    </Row>
-                  </Col>
-                )}*/}
-              </Row>
+            <Col xs={12} sm={6} lg={3}>
+              <CustomTextField
+                type="number"
+                label={t("categories_select_amount")}
+                placeholder={t("enter_price_manually")}
+                name="Amount"
+                onInput={(e) =>
+                  (e.target.value = e.target.value?.toLocaleString("en-IN"))
+                }
+                required
+              />
             </Col>
+            {customFieldsList.map((field) => {
+              const isSelectField =
+                field.masterValues && field.masterValues.length > 0;
+
+              return (
+                <Col xs={12} sm={6} lg={3} key={field._id}>
+                  {field.fieldType === "Boolean" ? (
+                    <FormikCustomReactSelect
+                      labelName={field.fieldName}
+                      name={`customFields.${field.fieldName}`}
+                      loadOptions={[
+                        { value: "", label: "Select Option" },
+                        { value: true, label: "True" },
+                        { value: false, label: "False" },
+                      ]}
+                      required={field.isRequired}
+                      width
+                      placeholder={`Select ${field.fieldName}`}
+                    />
+                  ) : field.fieldType === "Date" ? (
+                    <>
+                      <label style={{ fontSize: "15px" }}>
+                        {field.fieldName}
+                        {field.isRequired && "*"}
+                      </label>
+                      <DatePicker
+                        id="datePickerANTD"
+                        format="YYYY-MM-DD"
+                        onChange={(date) => {
+                          if (date) {
+                            formik.setFieldValue(
+                              `customFields.${field.fieldName}`,
+                              date.format("YYYY-MM-DD")
+                            );
+                          } else {
+                            formik.setFieldValue(
+                              `customFields.${field.fieldName}`,
+                              null
+                            );
+                          }
+                        }}
+                        // needConfirm
+                      />
+                      {formik.errors.customFields &&
+                        formik.errors.customFields[field.fieldName] && (
+                          <div
+                            style={{
+                              height: "20px",
+                              font: "normal normal bold 11px/33px Noto Sans",
+                            }}
+                          >
+                            <div className="text-danger">
+                              <Trans
+                                i18nKey={
+                                  formik.errors.customFields[field.fieldName]
+                                }
+                              />
+                            </div>
+                          </div>
+                        )}
+                    </>
+                  ) : isSelectField ? (
+                    <FormikCustomReactSelect
+                      labelName={field.fieldName}
+                      name={`customFields.${field.fieldName}`}
+                      loadOptions={
+                        field.masterValues &&
+                        field.masterValues.map((item) => ({
+                          value: item.value,
+                          label: item.value,
+                        }))
+                      }
+                      width
+                      required={field.isRequired}
+                      placeholder={`Select ${field.fieldName}`}
+                      valueKey="value"
+                      labelKey="label"
+                    />
+                  ) : (
+                    <CustomTextField
+                      label={field.fieldName}
+                      name={`customFields.${field.fieldName}`}
+                      type={
+                        field.fieldType === "String"
+                          ? "text"
+                          : field.fieldType.toLowerCase()
+                      }
+                      required={field.isRequired}
+                      placeholder={`Enter ${field.fieldName}`}
+                    />
+                  )}
+                </Col>
+              );
+            })}
           </Row>
+
+          {/* <Row>
+            {!payDonation && (
+              <Col xs={12} sm={6} lg={5}>
+                <Row>
+                  <label style={{ fontSize: "15px" }}>
+                    <Trans i18nKey="is_government" />
+                  </label>
+                  <Col md={2}>
+                    <CustomRadioButton
+                      name="isGovernment"
+                      id="isGovernment1"
+                      value="YES"
+                      label="yes"
+                    />
+                  </Col>
+                  <Col md={2}>
+                    <CustomRadioButton
+                      name="isGovernment"
+                      id="isGovernment2"
+                      value="NO"
+                      label="no"
+                    />
+                  </Col>
+                </Row>
+              </Col>
+            )}
+          </Row> */}
+
           {!location.pathname.includes("/pay-donation") && (
             <>
               <Row>
@@ -533,7 +590,7 @@ export default function FormWithoutFormikForDonation({
               </Row>
               {article && (
                 <Row>
-                  <Col xs={12} sm={6} lg={4}>
+                  <Col xs={12} sm={6} lg={3}>
                     <CustomTextField
                       label={t("Article Type")}
                       name="articleType"
@@ -542,21 +599,21 @@ export default function FormWithoutFormikForDonation({
                       )}
                     />
                   </Col>
-                  <Col xs={12} sm={6} lg={4}>
+                  <Col xs={12} sm={6} lg={3}>
                     <CustomTextField
                       label={t("Article Item")}
                       name="articleItem"
                       placeholder={t("Enter Article Item")}
                     />
                   </Col>
-                  <Col xs={12} sm={6} lg={4}>
+                  <Col xs={12} sm={6} lg={3}>
                     <CustomTextField
                       label={t("Article Weight")}
                       name="articleWeight"
                       placeholder={t("Enter Article Weight")}
                     />
                   </Col>
-                  <Col xs={12} sm={6} lg={4}>
+                  <Col xs={12} sm={6} lg={3}>
                     <FormikCustomReactSelect
                       labelName={t("Article Unit")}
                       name="articleUnit"
@@ -574,7 +631,7 @@ export default function FormWithoutFormikForDonation({
                       ]}
                     />
                   </Col>
-                  <Col xs={12} sm={6} lg={4}>
+                  <Col xs={12} sm={6} lg={3}>
                     <CustomTextField
                       label={t("Article Quantity")}
                       name="articleQuantity"
