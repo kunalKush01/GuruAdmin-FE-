@@ -21,49 +21,7 @@ import NoContent from "../../components/partials/noContent";
 import { useSelector } from "react-redux";
 import { WRITE } from "../../utility/permissionsVariable";
 import { Helmet } from "react-helmet";
-const NoticeWarper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addNotice {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-
-  .FormikWraper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addNotice-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .noticeContent {
-    margin-top: 1rem;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: #ff8744;
-    margin-top: 0.5rem;
-    font: normal normal bold 13px/5px noto sans;
-  }
-  .noContent {
-    margin-left: 30rem;
-  }
-  @media only screen and (max-width: 1150px) {
-    .noContent {
-      margin-left: 0;
-    }
-  }
-`;
+import "../../assets/scss/viewCommon.scss";
 
 const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
@@ -168,7 +126,7 @@ export default function NoticeList() {
   );
 
   return (
-    <NoticeWarper>
+    <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharm Admin | Notices</title>
@@ -182,7 +140,7 @@ export default function NoticeList() {
               className="me-2  cursor-pointer align-self-center"
               onClick={() => history.push("/")}
             /> */}
-            <div className="addNotice">
+            <div className="addAction">
               <div className="">
                 <div>
                   <Trans i18nKey={"notices_latest_Notice"} />
@@ -195,7 +153,7 @@ export default function NoticeList() {
               </div>
             </div>
           </div>
-          <div className="addNotice justify-content-between">
+          <div className="addAction justify-content-between">
             <ChangePeriodDropDown
               dropDownName={dropDownName}
               setdropDownName={(e) => {
@@ -208,7 +166,7 @@ export default function NoticeList() {
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
-                className="addNotice-btn"
+                className="addAction-btn"
                 onClick={() =>
                   history.push(
                     `/notices/add?page=${pagination.page}&filter=${dropDownName}`
@@ -359,6 +317,6 @@ export default function NoticeList() {
           </Row>
         </div>
       </div>
-    </NoticeWarper>
+    </div>
   );
 }

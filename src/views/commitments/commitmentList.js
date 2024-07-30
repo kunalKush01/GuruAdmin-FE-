@@ -6,7 +6,6 @@ import { Helmet } from "react-helmet";
 import { Trans, useTranslation } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
@@ -17,62 +16,25 @@ import {
   PopoverHeader,
   Row,
 } from "reactstrap";
-import styled from "styled-components";
-import Swal from "sweetalert2";
+
 import {
   getAllCategories,
   getAllMasterCategories,
 } from "../../api/categoryApi";
 import {
   getAllCommitments,
-  getAllPaidDonationsReceipts,
   importCommitmentFile,
   nudgeUserApi,
 } from "../../api/commitmentApi";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { ChangeStatus } from "../../components/Report & Disput/changeStatus";
-import CommitmentListTable from "../../components/commitments/commitmentListTable";
 import { ChangeCategoryType } from "../../components/partials/categoryDropdown";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
 import NoContent from "../../components/partials/noContent";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { WRITE } from "../../utility/permissionsVariable";
 
-const CommitmentWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  // .ImagesVideos {
-  //   font: normal normal bold 15px/33px Noto Sans;
-  // }
-  .addCommitment {
-    color: #583703;
-    /* display: flex; */
-    align-items: center;
-  }
-
-  // .FormikWraper {
-  //   padding: 40px;
-  // }
-  // .btn-Published {
-  //   text-align: center;
-  // }
-  .addCommitment-btn {
-    padding: 8px 20px;
-    /* margin-left: 10px; */
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .commitmentContent {
-    margin-top: 1rem;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  // .filterPeriod {
-  //   color: #ff8744;
-  //   margin-top: 0.5rem;
-  //   font: normal normal bold 13px/5px noto sans;
-  // }
-`;
+import "../../assets/scss/viewCommon.scss";
+import CommitmentAntdListTable from "../../components/commitments/commitmentAntdListTable";
 
 export default function Commitment() {
   const importFileRef = useRef();
@@ -129,7 +91,10 @@ export default function Commitment() {
       setdropDownName(currentFilter);
       setSubCategoryTypeName(currentSubCategory);
       setCommitmentStatus(currentStatus);
-      setPagination({ ...pagination, page: parseInt(currentPage) });
+      setPagination((prev) => ({
+        ...prev,
+        page: parseInt(currentPage) || prev.page,
+      }));
     }
   }, []);
 
@@ -209,6 +174,7 @@ export default function Commitment() {
     [
       "Commitments",
       pagination.page,
+      pagination.limit,
       selectedLang.id,
       filterEndDate,
       newId,
@@ -238,6 +204,8 @@ export default function Commitment() {
     () => commitmentQuery?.data?.results ?? [],
     [commitmentQuery]
   );
+  const totalItems = commitmentQuery.data?.totalResults ?? 0;
+  const totalPages = commitmentQuery.data?.totalPages ?? 1;
   const queryClient = useQueryClient();
 
   const handleImportFile = async (event) => {
@@ -278,22 +246,17 @@ export default function Commitment() {
   };
 
   return (
-    <CommitmentWrapper>
+    <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apna Dharm Admin | Commitment</title>
+        <title>Apna Dharm Admin | Pledge</title>
       </Helmet>
       <div className="window nav statusBar body "></div>
 
       <div>
         <div className="d-lg-flex justify-content-between align-items-center">
           <div className="d-flex align-items-center mb-2 mb-lg-0">
-            {/* <img
-              src={arrowLeft}
-              className="me-2  cursor-pointer align-self-center"
-              onClick={() => history.push("/")}
-            /> */}
-            <div className="addCommitment d-flex">
+            <div className="addAction d-flex">
               <div className="">
                 <div>
                   <Trans i18nKey={"commitment"} />
@@ -301,7 +264,7 @@ export default function Commitment() {
               </div>
             </div>
           </div>
-          <div className="addCommitment d-flex flex-wrap gap-2 gap-md-0">
+          <div className="addAction d-flex flex-wrap gap-2 gap-md-0">
             <ChangeCategoryType
               className={"me-1"}
               categoryTypeArray={newTypes}
@@ -359,7 +322,7 @@ export default function Commitment() {
               }}
             />
             <Button
-              className="me-1"
+              className={`secondaryAction-btn me-1`}
               color="primary"
               onClick={() => importFileRef.current.click()}
             >
@@ -377,7 +340,7 @@ export default function Commitment() {
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
-                className={`addCommitment-btn mt-md-1 mt-lg-0`}
+                className={`addAction-btn mt-md-1 mt-lg-0`}
                 onClick={() =>
                   history.push(
                     `/commitment/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${dropDownName}`
@@ -399,7 +362,7 @@ export default function Commitment() {
               color="success"
               onMouseEnter={onHover}
               onMouseLeave={onHoverLeave}
-              className={`addCommitment ms-1 ${
+              className={`addAction ms-1 ${
                 notifyIds?.length > 0 ? "opacity-100" : "opacity-50"
               }`}
               onClick={() => {
@@ -468,7 +431,7 @@ export default function Commitment() {
                   disableMemo
                 >
                   <Then>
-                    <CommitmentListTable
+                    <CommitmentAntdListTable
                       data={commitmentItems}
                       currentFilter={routFilter}
                       currentPage={routPagination}
@@ -480,6 +443,21 @@ export default function Commitment() {
                       currentSubCategory={routSubCategory}
                       allPermissions={allPermissions}
                       subPermission={subPermission}
+                      totalItems={totalItems}
+                      pageSize={pagination.limit}
+                      onChangePage={(page) => {
+                        setPagination((prev) => ({ ...prev, page }));
+                        history.push(
+                          `/commitment?page=${page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${dropDownName}`
+                        );
+                      }}
+                      onChangePageSize={(pageSize) => {
+                        setPagination((prev) => ({
+                          ...prev,
+                          limit: pageSize,
+                          page: 1,
+                        }));
+                      }}
                     />
                   </Then>
                   <Else>
@@ -495,54 +473,9 @@ export default function Commitment() {
                 </If>
               </Else>
             </If>
-
-            <If
-              condition={
-                commitmentQuery?.data?.totalPages > 1 &&
-                !commitmentQuery.isFetching &&
-                !commitmentQuery.isLoading
-              }
-            >
-              <Then>
-                <Col xs={12} className="d-flex justify-content-center">
-                  <ReactPaginate
-                    nextLabel=""
-                    forcePage={pagination.page - 1}
-                    breakLabel="..."
-                    previousLabel=""
-                    pageCount={commitmentQuery?.data?.totalPages || 0}
-                    activeClassName="active"
-                    initialPage={
-                      parseInt(searchParams.get("page"))
-                        ? parseInt(searchParams.get("page")) - 1
-                        : pagination.page - 1
-                    }
-                    breakClassName="page-item"
-                    pageClassName={"page-item"}
-                    breakLinkClassName="page-link"
-                    nextLinkClassName={"page-link"}
-                    pageLinkClassName={"page-link"}
-                    nextClassName={"page-item next"}
-                    previousLinkClassName={"page-link"}
-                    previousClassName={"page-item prev"}
-                    onPageChange={(page) => {
-                      setPagination({ ...pagination, page: page.selected + 1 });
-                      history.push(
-                        `/commitment?page=${
-                          page.selected + 1
-                        }&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${dropDownName}`
-                      );
-                    }}
-                    containerClassName={
-                      "pagination react-paginate justify-content-end p-1"
-                    }
-                  />
-                </Col>
-              </Then>
-            </If>
           </Row>
         </div>
       </div>
-    </CommitmentWrapper>
+    </div>
   );
 }

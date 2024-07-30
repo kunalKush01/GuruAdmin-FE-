@@ -1,31 +1,20 @@
 import React from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import * as Yup from "yup";
 import { createSubscribedUser } from "../../api/subscribedUser.js";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import SubscribedUserForm from "../../components/subscribedUser/subscribedUserForm.js";
 
-const NoticeWraper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addNotice {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import "../../assets/scss/viewCommon.scss";
 
 const handleCreateUser = async (payload) => {
   return createSubscribedUser(payload);
 };
+
 const schema = Yup.object().shape({
-  // name: Yup.string().required("users_title_required"),
   mobile: Yup.string().required("users_mobile_required"),
   email: Yup.string()
     .email("email_invalid")
@@ -42,18 +31,23 @@ const schema = Yup.object().shape({
 
 export default function AddSubscribedUser() {
   const history = useHistory();
+  const location = useLocation();
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
-  const searchParams = new URLSearchParams(history.location.search);
+  const searchParams = new URLSearchParams(location.search);
   const currentPage = searchParams.get("page");
   const currentCategory = searchParams.get("category");
   const currentSubCategory = searchParams.get("subCategory");
   const currentFilter = searchParams.get("filter");
   const redirectTo = searchParams.get("redirect");
+  const dialCode = searchParams.get("dialCode");
+  const mobileNumber = searchParams.get("mobileNumber");
+
+  const phoneNumber = `${dialCode}${mobileNumber}`;
 
   return (
-    <NoticeWraper>
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -61,15 +55,15 @@ export default function AddSubscribedUser() {
             className="me-2 cursor-pointer"
             onClick={() =>
               history.push(
-                `/${redirectTo}/add?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}`
+                `/${redirectTo}/add?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}&dialCode=${dialCode}&mobileNumber=${mobileNumber}`
               )
             }
           />
-          <div className="addNotice">
+          <div className="addAction">
             <Trans i18nKey={"add_user"} />
           </div>
         </div>
-        {/* <div className="addNotice">
+        {/* <div className="addAction">
           <Trans i18nKey={"news_InputIn"} />
           <CustomDropDown
             ItemListArray={langArray}
@@ -82,22 +76,20 @@ export default function AddSubscribedUser() {
 
       <div className="ms-3 mt-1">
         <SubscribedUserForm
-          // loadOptions={masterloadOptionQuery?.data?.results}
-          // placeholder={masterloadOptionQuery?.data?.results[0].name ?? "All"}
-          // CategoryFormName={"MasterCategory"}
           handleSubmit={handleCreateUser}
           addDonationUser
           initialValues={{
             name: "",
-            mobile: "",
+            mobile: mobileNumber || "",
             countryCode: "in",
             dialCode: "91",
             email: "",
           }}
           validationSchema={schema}
           buttonName={"add_user"}
+          getNumber={phoneNumber}
         />
       </div>
-    </NoticeWraper>
+    </div>
   );
 }

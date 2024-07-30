@@ -17,19 +17,7 @@ import PunyarjakForm from "../../components/Punyarjak/punyarjakUserForm";
 import { CustomDropDown } from "../../components/partials/customDropDown";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-const PunyarjakWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addPunyarjak {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
-
+import "../../assets/scss/viewCommon.scss";
 const schema = Yup.object().shape({
   description: Yup.string().required("punyarjak_desc_required").trim(),
   title: Yup.string()
@@ -108,7 +96,7 @@ export default function AddLanguagePunyarjak() {
   }, [punyarjakDetailQuery]);
 
   return (
-    <PunyarjakWrapper>
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -139,7 +127,7 @@ export default function AddLanguagePunyarjak() {
       </div>
 
       {!punyarjakDetailQuery.isLoading ? (
-        <div className="mt-1 ms-md-3">
+        <div className="mt-1">
           <PunyarjakForm
             editThumbnail
             AddLanguage
@@ -155,6 +143,6 @@ export default function AddLanguagePunyarjak() {
       ) : (
         ""
       )}
-    </PunyarjakWrapper>
+    </div>
   );
 }

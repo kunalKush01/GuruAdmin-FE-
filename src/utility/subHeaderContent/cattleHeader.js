@@ -29,7 +29,7 @@ export const cattleHeader = (permission) => {
     //   url: "/cattle/expenses",
     // },
     {
-      name: "cattle_stock",
+      name: "cattle_stock_management",
       url: permission?.includes("all")
         ? "/cattle/management/stock"
         : "/cattle/management",

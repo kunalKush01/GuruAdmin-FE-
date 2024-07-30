@@ -1,18 +1,13 @@
 import { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import {
   Card,
   CardBody,
-  CardImg,
   FormGroup,
   Input,
-  Label,
-  Tooltip,
   UncontrolledTooltip,
 } from "reactstrap";
-import styled from "styled-components";
 import { showInAppTopDonors } from "../../api/dashboard";
 import palceHolderIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import rank1 from "../../assets/images/icons/dashBoard/rank1.svg";
@@ -20,6 +15,7 @@ import rank2 from "../../assets/images/icons/dashBoard/rank2.svg";
 import rank3 from "../../assets/images/icons/dashBoard/rank3.svg";
 import rank4 from "../../assets/images/icons/dashBoard/rank4.svg";
 import rank5 from "../../assets/images/icons/dashBoard/rank5.svg";
+import "../../assets/scss/common.scss";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 export const TopDonerList = ({ data }) => {
@@ -31,32 +27,6 @@ export const TopDonerList = ({ data }) => {
 
   const [toggleState, setToggleState] = useState(showTopDonor ?? false);
 
-  const TopDonerWarpper = styled.div`
-    height: auto;
-    .listHeading {
-      color: #583703;
-      font: normal normal bold 20px/23px Noto Sans;
-    }
-
-    span {
-      font: normal normal bold 12px/23px Noto Sans;
-    }
-    .listContainer {
-      border: 2px solid #ff8744;
-      height: 100%;
-      border-radius: 10px;
-      color: #583703;
-    }
-    font: normal normal normal 13px/20px Noto Sans;
-
-    .headName {
-      font: normal normal bold 15px/20px Noto Sans;
-    }
-    .card {
-      background-color: #fff7e8;
-      margin: 5px 10px;
-    }
-  `;
   const getRank = (idx) => {
     switch (idx + 1) {
       case 1:
@@ -74,7 +44,7 @@ export const TopDonerList = ({ data }) => {
     }
   };
   return (
-    <TopDonerWarpper>
+    <div className="topdonorwrapper">
       <div className="d-flex listHeading justify-content-between">
         <p>
           <Trans i18nKey={"dashboard_top"} />
@@ -102,8 +72,8 @@ export const TopDonerList = ({ data }) => {
       </div>
       <div className="listContainer d-flex justify-content-between flex-column">
         {data?.map((item, idx) => (
-          <Card key={item.id} className="  rounded-3">
-            <CardBody className="d-flex p-1 justify-content-between align-items-center   ">
+          <Card key={item.id} className="rounded-3">
+            <CardBody className="d-flex p-1 justify-content-between align-items-center">
               <div className="d-flex align-items-center">
                 <img
                   src={
@@ -127,6 +97,6 @@ export const TopDonerList = ({ data }) => {
           </Card>
         ))}
       </div>
-    </TopDonerWarpper>
+    </div>
   );
 };

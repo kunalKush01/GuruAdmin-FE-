@@ -15,18 +15,7 @@ import { addLangNoticeDetail, getNoticeDetail } from "../../api/noticeApi";
 import NoticeForm from "../../components/notices/noticeForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-const NoticeWarper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .editNotice {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import "../../assets/scss/viewCommon.scss";
 
 const schema = Yup.object().shape({
   Title: Yup.string()
@@ -112,7 +101,7 @@ export default function AddLanguageNotice() {
   }, [noticeDetailQuery]);
 
   return (
-    <NoticeWarper>
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -147,7 +136,7 @@ export default function AddLanguageNotice() {
       </div>
 
       {!noticeDetailQuery.isLoading ? (
-        <div className="ms-sm-3 mt-1">
+        <div className="mt-1">
           <NoticeForm
             editThumbnail
             thumbnailImageName={noticeDetailQuery?.data?.result?.imageName}
@@ -163,6 +152,6 @@ export default function AddLanguageNotice() {
       ) : (
         ""
       )}
-    </NoticeWarper>
+    </div>
   );
 }

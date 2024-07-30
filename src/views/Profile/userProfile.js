@@ -14,19 +14,7 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import ProfileForm from "../../components/Profile/profileForm";
 import { CustomDropDown } from "../../components/partials/customDropDown";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-const ProfileWarper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addProfile {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
-
+import "../../assets/scss/viewCommon.scss";
 const schema = Yup.object().shape({
   trustName: Yup.string()
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
@@ -153,7 +141,7 @@ export default function AddProfile() {
   ]);
 
   return (
-    <ProfileWarper>
+    <div className="listviewwrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharm Admin | Profile</title>
@@ -223,6 +211,6 @@ export default function AddProfile() {
           />
         )}
       </div>
-    </ProfileWarper>
+    </div>
   );
 }

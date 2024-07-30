@@ -9,33 +9,14 @@ import { createExpense } from "../../api/expenseApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import DonationBoxForm from "../../components/DonationBox/donationBoxForm";
 
-const NewsWarper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addNews {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
-
-const handleCollectionBox = async (payload) => {
-  return createBoxCollection(payload);
-};
-const schema = Yup.object().shape({
-  // CreatedBy: Yup.string().required("news_tags_required"),
-  Amount: Yup
-    .string()
-    .matches(/^[1-9][0-9]*$/, "invalid_amount")
-    .required("amount_required"),
-  Body: Yup.string().required("donation_box_desc_required").trim(),
-  DateTime: Yup.string(),
-});
-
+import "../../assets/scss/viewCommon.scss";
+import { useQuery } from "@tanstack/react-query";
+import { getDonationBoxCustomFields } from "../../api/customFieldsApi";
 export default function AddNews() {
+  const handleCollectionBox = async (payload) => {
+    return createBoxCollection(payload);
+  };
+
   const history = useHistory();
   const langArray = useSelector((state) => state.auth.availableLang);
 
@@ -43,17 +24,47 @@ export default function AddNews() {
   const currentPage = searchParams.get("page");
   const currentFilter = searchParams.get("filter");
   const loggedInUser = useSelector((state) => state.auth.userDetail.name);
+  const customFieldsQuery = useQuery(
+    ["custom-fields"],
+    async () => await getDonationBoxCustomFields(),
+    {
+      keepPreviousData: true,
+    }
+  );
 
+  const customFieldsList = customFieldsQuery?.data?.customFields ?? [];
+  const schema = Yup.object().shape({
+    // CreatedBy: Yup.string().required("news_tags_required"),
+    Amount: Yup.string()
+      .matches(/^[1-9][0-9]*$/, "invalid_amount")
+      .required("amount_required"),
+    Body: Yup.string().required("donation_box_desc_required").trim(),
+    DateTime: Yup.string(),
+    customFields: Yup.object().shape(
+      customFieldsList.reduce((acc, field) => {
+        if (field.isRequired) {
+          acc[field.fieldName] = Yup.mixed().required(
+            `${field.fieldName} is required`
+          );
+        }
+        return acc;
+      }, {})
+    ),
+  });
   const initialValues = {
     Id: "",
     CreatedBy: loggedInUser,
     Body: "",
     Amount: "",
     DateTime: new Date(),
+    customFields: customFieldsList.reduce((acc, field) => {
+      acc[field.fieldName] = "";
+      return acc;
+    }, {}),
   };
 
   return (
-    <NewsWarper>
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -77,15 +88,16 @@ export default function AddNews() {
           />
         </div> */}
       </div>
-      <div className="ms-md-3 mt-1">
+      <div className="mt-1">
         <DonationBoxForm
           handleSubmit={handleCollectionBox}
           initialValues={initialValues}
           validationSchema={schema}
           showTimeInput
           buttonName="DonationBox_AddCollectionBox"
+          customFieldsList={customFieldsList}
         />
       </div>
-    </NewsWarper>
+    </div>
   );
 }

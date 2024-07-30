@@ -9,7 +9,7 @@ import styled from "styled-components";
 import CustomTextField from "../../partials/customTextField";
 import FormikCustomReactSelect from "../../partials/formikCustomReactSelect";
 
-const FormikWrapper = styled.div``;
+;
 
 const AddStockItemForm = ({
   initialValues,

@@ -22,164 +22,8 @@ import AsyncSelectField from "../partials/asyncSelectField";
 import CustomTextField from "../partials/customTextField";
 import ImageUpload from "../partials/imageUpload";
 import RichTextField from "../partials/richTextEditorField";
-const FormWrapper = styled.div`
-  .FormikWrapper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addNews-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .newsContent {
-    height: 350px;
-    overflow: auto;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: #ff8744;
-    font: normal normal bold 13px/5px noto sans;
-  }
-
-  label {
-    /* margin-bottom: 0px; */
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-
-  /* input tags  css start */
-  .ReactTags__tagInput {
-    color: #583703 !important;
-    height: 36px;
-    border: none !important;
-    background-color: #fff7e8 !important;
-    font: normal normal normal 13px/20px Noto Sans;
-    border-radius: 5px;
-  }
-  .ReactTags__tagInput input.ReactTags__tagInputField {
-    color: #583703 !important;
-    border: none !important;
-    background-color: #fff7e8 !important;
-    font: normal normal normal 13px/20px Noto Sans;
-    border-radius: 5px;
-    outline: none;
-    width: 100%;
-    height: inherit;
-    padding-left: 0.5rem;
-    ::placeholder {
-      color: #fff7e8;
-    }
-  }
-  .ReactTags__tagInput input.ReactTags__tagInputField::placeholder {
-    color: #583703 !important;
-    font: normal normal bold 13px/20px Noto Sans;
-    opacity: 60%;
-  }
-  .ReactTags__tagInput > input.ReactTags__tagInputField:focus-within {
-    box-shadow: 0 3px 10px 0 rgba(34, 41, 47, 0.1);
-  }
-  /* added tags  */
-  .ReactTags__selected {
-    width: 100%;
-    display: flex;
-    overflow-x: scroll !important;
-    ::-webkit-scrollbar {
-      height: 8px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background-color: #c9c6c5 !important;
-      border-radius: 25px;
-      width: 10px !important;
-    }
-  }
-  .ReactTags__tag {
-    margin-bottom: 0.5rem;
-  }
-  /* Styles for suggestions */
-  .ReactTags__suggestions {
-    position: absolute;
-  }
-  .ReactTags__suggestions ul {
-    list-style-type: none;
-    box-shadow: 0.05em 0.01em 0.5em rgba(0, 0, 0, 0.2);
-    background-color: #fff7e8 !important;
-    width: 200px;
-  }
-  .ReactTags__suggestions li {
-    border-bottom: 1px solid #ddd;
-    padding: 5px 10px;
-    margin: 0;
-  }
-  .ReactTags__suggestions li mark {
-    text-decoration: underline;
-    background: none;
-    font-weight: 600;
-  }
-  /* .ReactTags__suggestions ul li.ReactTags__activeSuggestion {
-  background: #b7cfe0;
-  cursor: pointer;
-} */
-  .ReactTags__selected span.ReactTags__tag {
-    padding: 4px 10px;
-    font: normal normal bold 13px/20px Noto Sans;
-    border-radius: 10px;
-    border: 2px solid #583703;
-    display: flex;
-    margin-left: 3px;
-    align-items: center;
-    margin-top: 0.5rem;
-  }
-  .ReactTags__remove {
-    font-size: 20px;
-    font-weight: 900;
-    border: none;
-    vertical-align: middle;
-    line-height: 0px;
-    cursor: pointer;
-  }
-  /* input tags  css start */
-
-  /* time picker css */
-  .react-time-picker__wrapper {
-    border: none !important;
-  }
-  .react-time-picker {
-    width: 100%;
-  }
-  .react-time-picker__inputGroup {
-    color: #583703 !important;
-    border: none !important;
-    background-color: #fff7e8 !important;
-    font: normal normal normal 13px/20px Noto Sans;
-    width: 100%;
-    padding: 0rem 0.5rem !important;
-    border-radius: 5px;
-    line-height: 30px;
-  }
-  .react-time-picker__inputGroup__input:invalid {
-    background: #fff7e8 !important;
-  }
-  input:focus {
-    outline: none !important;
-  }
-  input:focus-visible {
-    outline-offset: none;
-    outline: none;
-  }
-  //  media query
-
-  @media only screen and (max-width: 768px) and (min-width: 320px) {
-    .thumbnail_image {
-      width: 100px;
-      height: 100px;
-    }
-  }
-`;
-
+import CustomLocationField from "../partials/CustomLocationField";
+import "../../assets/scss/common.scss";
 export default function EventForm({
   buttonName = "",
   AddLanguage,
@@ -297,7 +141,7 @@ export default function EventForm({
   };
 
   return (
-    <FormWrapper className="FormikWrapper">
+    <div className="formwrapper FormikWrapper">
       <Formik
         enableReinitialize
         initialValues={initialValues}
@@ -316,6 +160,11 @@ export default function EventForm({
             title: e.Title,
             tags: e?.tagsInit?.map((tag) => tag.text),
             deletedTags,
+            location: e?.location,
+            city: e?.city,
+            state: e?.state,
+            latitude: e?.longitude,
+            longitude: e?.latitude,
             startTime: moment(e?.startTime, ["HH:mm"]).format("HH:mm"),
             endTime: e?.endTime,
             body: e.Body,
@@ -412,7 +261,7 @@ export default function EventForm({
                       name="Title"
                       required
                       onInput={(e) =>
-                        (e.target.value = e.target.value.slice(0, 30))
+                        (e.target.value = e.target.value.slice(0, 128))
                       }
                       autoFocus
                     />
@@ -477,6 +326,65 @@ export default function EventForm({
                       name="Body"
                     />
                   </Col>
+                </Row>
+                <Row>
+                  <Col xs={12} md={6}>
+                    {!AddLanguage ? (
+                      <>
+                        <label>
+                          <Trans i18nKey={"location"} />
+                        </label>
+                        *
+                        <CustomLocationField
+                          setFieldValue={formik.setFieldValue}
+                          error={formik}
+                          values={formik?.values}
+                        />
+                        {formik.errors.location && (
+                          <div
+                            style={{
+                              height: "20px",
+                              font: "normal normal bold 11px/33px Noto Sans",
+                            }}
+                          >
+                            {formik.errors.location &&
+                              formik.touched.location && (
+                                <div className="text-danger">
+                                  <Trans i18nKey={formik.errors.location} />
+                                </div>
+                              )}
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <CustomTextField
+                        label={t("location")}
+                        name="location"
+                        placeholder={t("placeHolder_location")}
+                        required
+                      />
+                    )}
+                  </Col>
+                  {!AddLanguage && (
+                    <>
+                      <Col xs={12} md={4} className="opacity-75">
+                        <CustomTextField
+                          label={t("City")}
+                          placeholder={t("placeHolder_city")}
+                          name="city"
+                          disabled
+                        />
+                      </Col>
+                      <Col xs={12} md={4} className="opacity-75">
+                        <CustomTextField
+                          label={t("State")}
+                          placeholder={t("placeHolder_state")}
+                          name="state"
+                          disabled
+                        />
+                      </Col>
+                    </>
+                  )}
                 </Row>
                 {!AddLanguage && (
                   <Row>
@@ -733,7 +641,7 @@ export default function EventForm({
               ) : (
                 <Button
                   color="primary"
-                  className="addEvent-btn "
+                  className="addAction-btn "
                   type="submit"
                   disabled={
                     imageSpinner ||
@@ -760,6 +668,6 @@ export default function EventForm({
           </Form>
         )}
       </Formik>
-    </FormWrapper>
+    </div>
   );
 }

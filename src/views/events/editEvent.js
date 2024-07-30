@@ -16,18 +16,7 @@ import EventForm from "../../components/events/eventForm";
 import { CustomDropDown } from "../../components/partials/customDropDown";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
-const EventWrapper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .editEvent {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import "../../assets/scss/viewCommon.scss";
 
 const schema = Yup.object().shape({
   Title: Yup.string()
@@ -42,6 +31,7 @@ const schema = Yup.object().shape({
   startTime: Yup.mixed().required("events_startTime_required"),
   endTime: Yup.mixed().required("events_endTime_required"),
   SelectedEvent: Yup.mixed(),
+  location: Yup.mixed().required("events_location_required"),
   // tagsInit:Yup.array().max(15 ,"tags_limit"),
 });
 
@@ -108,11 +98,16 @@ export default function EditEvent() {
       },
       startTime: eventDetailQuery?.data?.result?.startTime,
       endTime: eventDetailQuery?.data?.result?.endTime,
+      location: eventDetailQuery?.data?.result?.location,
+      city: eventDetailQuery?.data?.result?.city,
+      state: eventDetailQuery?.data?.result?.state,
+      latitude: eventDetailQuery?.data?.result?.longitude,
+      longitude: eventDetailQuery?.data?.result?.latitude,
     };
   }, [eventDetailQuery]);
 
   return (
-    <EventWrapper>
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -180,7 +175,7 @@ export default function EditEvent() {
         </Then>
         <Else>
           {!eventDetailQuery.isFetching && (
-            <div className="ms-sm-3 mt-1">
+            <div className="mt-1">
               <EventForm
                 editImage="edit"
                 defaultImages={eventDetailQuery?.data?.result?.images}
@@ -195,6 +190,6 @@ export default function EditEvent() {
           )}
         </Else>
       </If>
-    </EventWrapper>
+    </div>
   );
 }

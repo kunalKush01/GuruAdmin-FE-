@@ -683,6 +683,33 @@ const Routes = [
     subPermission: EDIT,
   },
   {
+    path: "/configuration/masters",
+    component: lazy(() =>
+      import("../../views/configuration/Masters/mastersList.js")
+    ),
+    exact: true,
+    type: "configuration",
+    subPermission: READ,
+  },
+  {
+    path: "/configuration/masters/info/:masterId",
+    component: lazy(() =>
+      import("../../views/configuration/Masters/masterDataList.js")
+    ),
+    exact: true,
+    type: "configuration",
+    subPermission: READ,
+  },
+  {
+    path: "/configuration/custom-fields",
+    component: lazy(() =>
+      import("../../views/configuration/Custom-Fields/customFieldsView.js")
+    ),
+    exact: true,
+    type: "configuration",
+    subPermission: READ,
+  },
+  {
     path: "/dharmshala/dashboard",
     component: lazy(() =>
       import("../../views/dharmshala-management/dashboard/index.js")

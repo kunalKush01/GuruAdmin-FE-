@@ -8,118 +8,7 @@ import { Button, Spinner } from "reactstrap";
 import { X } from "react-feather";
 import { toast } from "react-toastify";
 import useTimeStampAndImageExtension from "../../utility/hooks/useTimeStampAndImageExtension";
-
-const WraperImageField = styled.div`
-  .image_text {
-    font: normal normal medium 22px/30px Kanit;
-  }
-  .removeImageButton {
-    position: absolute;
-    display: none;
-    padding: 0.5rem;
-    border: none;
-    background-color: transparent !important;
-    font: normal normal bold 17px/20px Noto Sans;
-    border-color: none !important ;
-    color: #ff8744 !important;
-    right: 15px;
-    z-index: 10;
-    top: 6px;
-  }
-  .dropZone_Box {
-    height: 328px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    //border: 3px solid #707070;
-  }
-  .image_text strong {
-    color: #ff8341;
-  }
-  .dropZone_Box svg {
-    width: 56px;
-    height: 56px;
-  }
-  .dropImageBx {
-    display: inline-flex;
-    border-radius: 5px;
-    width: 130px;
-    height: 130px;
-    //border: 3px solid #707070;
-    margin-bottom: 8px;
-    margin-right: 8px;
-    padding: 4px;
-    box-sizing: border-box;
-  }
-  /* .mainImageDiv:hover .profileImageBackground {
-    background-color: #000000;
-  } */
-  .mainImageDiv:hover .hoverImageBackground {
-    border-radius: 10px;
-    background-color: #000000;
-  }
-  .mainImageDiv:hover img {
-    opacity: 50%;
-    /* background: rgba(0 , 0 , 0 , 0.5); */
-    transition: opacity 1s;
-  }
-  .mainImageDiv:hover .editImageText {
-    display: block;
-  }
-  .mainImageDiv:hover .removeImageButton {
-    display: block;
-  }
-  /* 
-  .editImageText {
-    display: none;
-    width: fit-content;
-    z-index: 10;
-    position: absolute;
-    top: 40%;
-    color: #ffffff;
-    left: 35%; */
-
-  @media screen and (max-width: 1199px) and (min-width: 992px) {
-    .preview_box li {
-      width: 80px;
-      height: 80px;
-    }
-  }
-  @media screen and (max-width: 991px) {
-    .preview_box li {
-      width: 60px;
-      height: 60px;
-      background-size: 35px;
-    }
-    .dropZone_Box {
-      height: 40vh;
-    }
-    .image_text {
-      font: normal normal 500 14px/16px Kanit;
-    }
-    .dropZone_Box svg {
-      width: 45px;
-      height: 45px;
-    }
-  }
-  @media screen and (max-width: 767px) {
-    .preview_box li {
-      width: 60px;
-      height: 60px;
-      background-size: 30px;
-    }
-    .dropZone_Box {
-      height: 30vh;
-    }
-    .image_text {
-      font: normal normal 500 14px/16px Kanit;
-    }
-    .dropZone_Box svg {
-      width: 45px;
-      height: 45px;
-    }
-  }
-`;
+import "../../assets/scss/common.scss";
 
 const thumbStyles = {
   display: "flex",
@@ -300,7 +189,7 @@ function ImageUpload(props) {
   );
   const ref = useRef();
   return (
-    <WraperImageField>
+    <div className="wraperimagefield">
       <div
         {...getRootProps({ className: "dropzone" })}
         onClick={(e) => e.stopPropagation}
@@ -466,7 +355,7 @@ function ImageUpload(props) {
           )}
         </div>
       </aside>
-    </WraperImageField>
+    </div>
   );
 }
 

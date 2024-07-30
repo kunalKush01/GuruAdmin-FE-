@@ -18,66 +18,7 @@ import {
   findAllItemId,
 } from "../../api/cattle/cattleExpense";
 import { Storage } from "aws-amplify";
-
-const FormWrapper = styled.div`
-  .FormikWraper {
-    padding: 40px;
-  }
-  .btn-Published {
-    text-align: center;
-  }
-  .addNews-btn {
-    padding: 8px 20px;
-    margin-left: 10px;
-    font: normal normal bold 15px/20px noto sans;
-  }
-  .newsContent {
-    height: 350px;
-    overflow: auto;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .filterPeriod {
-    color: #ff8744;
-
-    font: normal normal bold 13px/5px noto sans;
-  }
-  .btn-secondary {
-    background-color: #fff7e8 !important;
-    color: #583703 !important ;
-    border: none;
-    font: normal normal bold 20px/20px noto sans !important ;
-    box-shadow: none !important ;
-    :hover {
-      color: #fff !important;
-      background-color: #ff8744 !important;
-    }
-    .secondary.active {
-      color: #fff !important;
-    }
-  }
-  .upload-invoice {
-    color: #583703 !important;
-    border: none !important;
-    height: 36px;
-    width: 100%;
-    padding-top: 9px;
-    padding-left: 5px;
-    /* text-align: center; */
-    background-color: #fff7e8 !important;
-    font: normal normal normal 13px/20px Noto Sans;
-    border-radius: 5px;
-  }
-  .upload-invoice[type="file"]::file-selector-button {
-    display: none;
-  }
-  label {
-    /* margin-bottom: 0px; */
-    color: #583703;
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-`;
+import "../../assets/scss/common.scss";
 
 export default function ExpensesForm({
   plusIconDisable = false,
@@ -163,7 +104,7 @@ export default function ExpensesForm({
   const [showPrompt, setShowPrompt] = useState(true);
 
   return (
-    <FormWrapper className="FormikWraper">
+    <div className="formwrapper FormikWrapper">
       <Formik
         // enableReinitialize
         initialValues={{ ...initialValues }}
@@ -433,7 +374,7 @@ export default function ExpensesForm({
               ) : (
                 <Button
                   color="primary"
-                  className="addNotice-btn "
+                  className="addAction-btn "
                   type="submit"
                 >
                   {plusIconDisable && (
@@ -450,6 +391,6 @@ export default function ExpensesForm({
           </Form>
         )}
       </Formik>
-    </FormWrapper>
+    </div>
   );
 }

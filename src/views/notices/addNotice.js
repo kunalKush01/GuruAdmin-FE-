@@ -8,25 +8,13 @@ import { createNotice } from "../../api/noticeApi.js";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import NoticeForm from "../../components/notices/noticeForm";
 
-const NoticeWraper = styled.div`
-  color: #583703;
-  font: normal normal bold 20px/33px Noto Sans;
-  .ImagesVideos {
-    font: normal normal bold 15px/33px Noto Sans;
-  }
-  .addNotice {
-    color: #583703;
-    display: flex;
-    align-items: center;
-  }
-`;
+import "../../assets/scss/viewCommon.scss";
 
 const handleCreateNotice = async (payload) => {
   return createNotice(payload);
 };
 const schema = Yup.object().shape({
-  Title: Yup
-    .string()
+  Title: Yup.string()
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
     .required("notices_title_required")
     .trim(),
@@ -56,23 +44,23 @@ export default function AddNotice() {
   const currentFilter = searchParams.get("filter");
 
   return (
-    <NoticeWraper>
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
             src={arrowLeft}
-            className="me-2  cursor-pointer"
+            className="me-2 cursor-pointer"
             onClick={() =>
               history.push(
                 `/notices?page=${currentPage}&filter=${currentFilter}`
               )
             }
           />
-          <div className="addNotice">
+          <div className="addAction">
             <Trans i18nKey={"notices_AddNotice"} />
           </div>
         </div>
-        {/* <div className="addNotice">
+        {/* <div className="addAction">
           <div className="d-none d-sm-block">
             <Trans i18nKey={"news_InputIn"} />
           </div>
@@ -84,7 +72,7 @@ export default function AddNotice() {
           />
         </div> */}
       </div>
-      <div className="ms-sm-3 mt-1">
+      <div className="mt-1">
         <NoticeForm
           handleSubmit={handleCreateNotice}
           initialValues={initialValues}
@@ -93,6 +81,6 @@ export default function AddNotice() {
           buttonName="notices_AddNotice"
         />
       </div>
-    </NoticeWraper>
+    </div>
   );
 }
