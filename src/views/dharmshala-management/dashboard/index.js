@@ -142,7 +142,7 @@ const Home = () => {
               onClick={() => history.push("/dharmshala/info")}
             >
               <CustomCard
-                cardTitle={t("buildings_registered")}
+                cardTitle={t("building_registered")}
                 cardNumber={parseInt(
                   dashboardData?.subscribedUsers === undefined
                     ? 0

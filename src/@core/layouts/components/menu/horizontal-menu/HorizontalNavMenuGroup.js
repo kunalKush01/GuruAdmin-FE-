@@ -1,20 +1,20 @@
 // ** React Imports
-import { useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 // ** Third Party Components
-import classnames from 'classnames'
+import classnames from "classnames";
 
 // ** Reactstrap Imports
-import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap'
+import { Dropdown, DropdownMenu, DropdownToggle } from "reactstrap";
 
 // ** Utils
-import { hasActiveChild } from '@layouts/utils'
+import { hasActiveChild } from "@layouts/utils";
 
 // ** Horizontal Menu Items Component
-import HorizontalNavMenuItems from './HorizontalNavMenuItems'
+import HorizontalNavMenuItems from "./HorizontalNavMenuItems";
 
-const HorizontalNavMenuGroup = props => {
+const HorizontalNavMenuGroup = (props) => {
   // ** Props
   const {
     item,
@@ -28,88 +28,91 @@ const HorizontalNavMenuGroup = props => {
     setActiveItem,
     setGroupActive,
     setOpenDropdown,
-    currentActiveItem
-  } = props
+    currentActiveItem,
+  } = props;
 
   // ** Hooks
-  const location = useLocation()
+  const location = useLocation();
 
   // ** URL Var
-  const currentURL = useLocation().pathname
+  const currentURL = useLocation().pathname;
 
   useEffect(() => {
     if (hasActiveChild(item, currentURL)) {
-      if (!groupActive.includes(item.id)) groupActive.push(item.id)
+      if (!groupActive.includes(item.id)) groupActive.push(item.id);
     } else {
-      const index = groupActive.indexOf(item.id)
-      if (index > -1) groupActive.splice(index, 1)
+      const index = groupActive.indexOf(item.id);
+      if (index > -1) groupActive.splice(index, 1);
     }
-    setGroupActive([...groupActive])
-  }, [location])
+    setGroupActive([...groupActive]);
+  }, [location]);
 
   // ** Dropdown menu modifiers
   const menuModifiers = [
     {
       enabled: true,
-      phase: 'write',
-      name: 'setMaxHeight',
-      fn: data => {
+      phase: "write",
+      name: "setMaxHeight",
+      fn: (data) => {
         const pageHeight = window.innerHeight,
           popperEl = data.state.elements.popper,
           ddTop = popperEl.getBoundingClientRect().top,
-          ddHeight = popperEl.clientHeight
+          ddHeight = popperEl.clientHeight;
 
-        let maxHeight, stylesObj
+        let maxHeight, stylesObj;
 
         // ** Calculate and set height
         if (pageHeight - ddTop - ddHeight - 28 < 1) {
-          maxHeight = pageHeight - ddTop - 25
+          maxHeight = pageHeight - ddTop - 25;
           stylesObj = {
             maxHeight,
-            overflowY: 'auto'
-          }
+            overflowY: "auto",
+          };
         }
 
-        const ddRef = popperEl.getBoundingClientRect()
+        const ddRef = popperEl.getBoundingClientRect();
 
         // ** If there is not space left to open sub menu open it to the right
         if (ddRef.left + ddRef.width - (window.innerWidth - 16) >= 0) {
-          popperEl.closest('.dropdown').classList.add('openLeft')
+          popperEl.closest(".dropdown").classList.add("openLeft");
         }
 
-        data.state.styles.popper = { ...data.state.styles.popper, ...stylesObj }
-      }
-    }
-  ]
+        data.state.styles.popper = {
+          ...data.state.styles.popper,
+          ...stylesObj,
+        };
+      },
+    },
+  ];
   return (
     <Dropdown
-      tag='li'
+      tag="li"
       toggle={() => null}
       className={classnames({
-        'nav-item': submenu === false,
-        'dropdown-submenu': submenu === true,
-        'sidebar-group-active active': groupActive.includes(item.id)
+        "nav-item": submenu === false,
+        "dropdown-submenu": submenu === true,
+        "sidebar-group-active active": groupActive.includes(item.id),
       })}
       isOpen={openDropdown.includes(item.id)}
       onMouseEnter={() => onMouseEnter(item.id)}
       onMouseLeave={() => onMouseLeave(item.id)}
     >
       <DropdownToggle
-        to='/'
+        to="/"
         tag={Link}
-        onClick={e => e.preventDefault()}
-        className={classnames('dropdown-toggle d-flex align-items-center', {
-          'dropdown-item': submenu === true,
-          'nav-link': submenu === false
+        onClick={(e) => e.preventDefault()}
+        className={classnames("dropdown-toggle d-flex align-items-center", {
+          "dropdown-item": submenu === true,
+          "nav-link": submenu === false,
         })}
       >
-        {item.icon}
+        {/* {item.icon} */}
         <span>{item.title}</span>
       </DropdownToggle>
       <DropdownMenu
-        tag='ul'
+        tag="ul"
         modifiers={menuModifiers}
-        className={classnames({ 'first-level': submenu === false })}
+        className={classnames({ "first-level": submenu === false })}
       >
         <HorizontalNavMenuItems
           submenu={true}
@@ -129,7 +132,7 @@ const HorizontalNavMenuGroup = props => {
         />
       </DropdownMenu>
     </Dropdown>
-  )
-}
+  );
+};
 
-export default HorizontalNavMenuGroup
+export default HorizontalNavMenuGroup;
