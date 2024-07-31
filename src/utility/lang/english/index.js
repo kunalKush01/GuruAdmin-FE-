@@ -90,7 +90,12 @@ export const englishContent = {
   label_state:"State",
   label_country:"Country",
   label_city:"City",
+  label_district:"District",
   label_pin:"PIN",
+  label_pincode:"Pincode",
+  label_googlemap:"GoogleMap",
+  label_add1:"Address Line 1(House no)",
+  label_add2:"Address Line 2",
   // All static content of News
 
   news_AddNews: "Add News",

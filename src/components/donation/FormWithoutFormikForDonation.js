@@ -199,8 +199,8 @@ export default function FormWithoutFormikForDonation({
   //**add user drawer form */
 
   const handleCreateUser = async (payload) => {
-    console.log(payload)
-    return
+    // console.log(payload);
+    // return;
     return createSubscribedUser(payload);
   };
 
@@ -217,6 +217,11 @@ export default function FormWithoutFormikForDonation({
       )
       .required("users_title_required")
       .trim(),
+    pincode: Yup.string().when("searchType", {
+      is: "isPincode",
+      then: Yup.string().max(6, "Pincode not found"),
+      otherwise: Yup.string(),
+    }),
   });
   const location = useLocation();
   const phoneNum = `${formik.values.dialCode}${formik.values.Mobile}`;

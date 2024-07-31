@@ -15,6 +15,7 @@ import CustomRadioButton from "../partials/customRadioButton";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { Country, State, City } from "country-state-city";
+import CustomLocationField from "../partials/CustomLocationField";
 function AddUserDrawerForm({
   onClose,
   open,
@@ -71,7 +72,6 @@ function AddUserDrawerForm({
   const [dialCode, setDialCode] = useState(dialCodeFromUrl || "");
   const [mobileNumber, setMobileNumber] = useState(mobileNumberFromUrl || "");
   const [name, setName] = useState("");
-  const [addressData, setAddressData] = useState([]);
   const [states, setStates] = useState([]);
   const [country, setCountry] = useState([]);
   const [city, setCity] = useState([]);
@@ -82,8 +82,6 @@ function AddUserDrawerForm({
       name: country.name,
       id: country.isoCode,
     }));
-    const districtPincodes = pincodes.getPincodesByDistrict("Agra");
-    console.log(districtPincodes);
     setCountry(formattedCountry);
   }, []);
 
@@ -110,16 +108,49 @@ function AddUserDrawerForm({
               panNum: e.panNum,
               addLine1: e.addLine1,
               addLine2: e.addLine2,
-              city: e.city,
+              city: e.city.name,
               district: e.district,
-              state: e.state,
-              country: e.country,
-              pin: e.pin,
+              state: e.state.name,
+              country: e.country.name,
+              pin: e.pin.name,
             });
           }}
           validationSchema={validationSchema}
         >
           {(formik) => {
+            useEffect(() => {
+              if (formik.values.district) {
+                const districtPincodes = pincodes.getPincodesByDistrict(
+                  formik.values.district
+                );
+                if (
+                  Array.isArray(districtPincodes) &&
+                  districtPincodes.length > 0
+                ) {
+                  const uniquePincodes = districtPincodes.reduce(
+                    (acc, current) => {
+                      const isDuplicate = acc.find(
+                        (item) => item.pincode === current.pincode
+                      );
+                      if (!isDuplicate) {
+                        acc.push(current);
+                      }
+                      return acc;
+                    },
+                    []
+                  );
+
+                  const formattedPincodes = uniquePincodes.map((code) => ({
+                    name: code.pincode,
+                    id: code.pincode,
+                  }));
+                  setDistrictPincode(formattedPincodes);
+                } else {
+                  setDistrictPincode([]);
+                }
+              }
+            }, [formik.values.district]);
+
             useEffect(() => {
               if (formik.values.pincode) {
                 const details = pincodes.getPincodeDetails(
@@ -153,8 +184,8 @@ function AddUserDrawerForm({
                   const selectedState = states.find(
                     (c) => c.name === details.state
                   );
-                  const selectedCity = city.find(
-                    (c) => c.name === details.district
+                  const selectedCity = city.find((c) =>
+                    details.region.includes(c.name.trim())
                   );
                   const selectedPIN = formattedPincodes.find(
                     (c) => c.name === details.pincode
@@ -165,6 +196,12 @@ function AddUserDrawerForm({
                   formik.setFieldValue("country", selectedCountry || "");
                   formik.setFieldValue("pin", selectedPIN || "");
                   formik.setFieldValue("state", selectedState || "");
+                } else {
+                  formik.setFieldValue("city", "");
+                  formik.setFieldValue("district", "");
+                  formik.setFieldValue("country", "");
+                  formik.setFieldValue("pin", "");
+                  formik.setFieldValue("state", "");
                 }
               }
             }, [formik.values.pincode, country, pincodes, states, city]);
@@ -308,18 +345,18 @@ function AddUserDrawerForm({
                                   name="searchType"
                                   id="isPincode"
                                   value="isPincode"
-                                  label="Pincode"
+                                  label={t("label_pincode")}
                                 />
                               </Col>
                               <Col xs={12} sm={6} md={6}>
                                 <CustomRadioButton
+                                  label={t("label_googlemap")}
                                   name="searchType"
                                   id="isGoogleMap"
                                   value="isGoogleMap"
-                                  label="GoogleMap"
                                 />
                               </Col>
-                              {formik.values.searchType === "isPincode" && (
+                              {formik.values.searchType === "isPincode" ? (
                                 <Col xs={12} sm={6} md={6} className="pb-0">
                                   <CustomTextField
                                     name="pincode"
@@ -331,8 +368,16 @@ function AddUserDrawerForm({
                                         e.target.value
                                       );
                                     }}
+                                    required
                                   />
                                 </Col>
+                              ) : (
+                                <div className="mt-1">
+                                  <CustomLocationField
+                                  setFieldValue={formik.setFieldValue}
+                                  values={formik?.values}
+                                  />
+                                </div>
                               )}
                             </Row>
                           </div>
@@ -340,14 +385,14 @@ function AddUserDrawerForm({
                       </Col>
                       <Col xs={12} sm={6} md={6}>
                         <CustomTextField
-                          label="Address Line 1(House no)"
+                          label={t("label_add1")}
                           name="addLine1"
                           placeholder=""
                         />
                       </Col>{" "}
                       <Col xs={12} sm={6} md={6}>
                         <CustomTextField
-                          label="Address Line 2"
+                          label={t("label_add2")}
                           name="addLine2"
                           placeholder=""
                         />
@@ -365,6 +410,15 @@ function AddUserDrawerForm({
                           labelKey="name"
                           valueKey="id"
                           width
+                          onChange={(val) => {
+                            if (val) {
+                              formik.setFieldValue("country", val);
+                              formik.setFieldValue("pincode", "");
+                              formik.setFieldValue("pin", "");
+                              formik.setFieldValue("district", "");
+                              setDistrictPincode(null);
+                            }
+                          }}
                         />
                       </Col>
                       <Col xs={12} sm={6} md={6}>
@@ -381,6 +435,13 @@ function AddUserDrawerForm({
                           valueKey="id"
                           width
                           disabled={!formik.values.country}
+                          onChange={(val) => {
+                            if (val) {
+                              formik.setFieldValue("pincode", "");
+                              formik.setFieldValue("state", val);
+                              formik.setFieldValue("city", "");
+                            }
+                          }}
                         />
                       </Col>
                       <Col xs={12} sm={6} md={6}>
@@ -395,15 +456,29 @@ function AddUserDrawerForm({
                           name="city"
                           labelKey="name"
                           valueKey="id"
+                          onChange={(val) => {
+                            if (val) {
+                              formik.setFieldValue("pincode", "");
+                              formik.setFieldValue("city", val);
+                            }
+                          }}
                           disabled={!formik.values.state}
                           width
                         />
                       </Col>
                       <Col xs={12} sm={6} md={6}>
                         <CustomTextField
-                          label="District"
+                          label={t("label_district")}
                           name="district"
                           placeholder="Enter District"
+                          onChange={(e) => {
+                            formik.setFieldValue("pincode", "");
+                            formik.setFieldValue("district", e.target.value);
+                            formik.setFieldValue("pin", "");
+                            if (e.target.value == "") {
+                              setDistrictPincode([]);
+                            }
+                          }}
                         />
                       </Col>
                       <Col xs={12} sm={6} md={6}>
@@ -425,22 +500,22 @@ function AddUserDrawerForm({
                   </Col>
                 </Row>
                 <div className="d-flex justify-content-center">
-                <Button
-                      color="primary"
-                      className="addAction-btn "
-                      type="submit"
-                      style={{ width: "100%" }}
-                    >
-                      {plusIconDisable && (
-                        <span>
-                          <Plus className="" size={15} strokeWidth={4} />
-                        </span>
-                      )}
+                  {/* <Button
+                    color="primary"
+                    className="addAction-btn"
+                    type="submit"
+                    style={{ width: "100%" }}
+                  >
+                    {plusIconDisable && (
                       <span>
-                        <Trans i18nKey={`${buttonName}`} />
+                        <Plus className="" size={15} strokeWidth={4} />
                       </span>
-                    </Button>
-                  {/* {loading ? (
+                    )}
+                    <span>
+                      <Trans i18nKey={`${buttonName}`} />
+                    </span>
+                  </Button> */}
+                  {loading ? (
                     <Button
                       color="primary"
                       className="add-trust-btn"
@@ -469,7 +544,7 @@ function AddUserDrawerForm({
                         <Trans i18nKey={`${buttonName}`} />
                       </span>
                     </Button>
-                  )} */}
+                  )}
                 </div>
               </Form>
             );
