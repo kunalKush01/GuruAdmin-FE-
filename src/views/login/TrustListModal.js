@@ -15,8 +15,8 @@ const TrustListModal = ({ trustArray, modal, setModal, rToken, aToken }) => {
     // setCookieWithMainDomain("refreshToken", rtoken, ".paridhan.app");
     // setCookieWithMainDomain("accessToken", atoken, ".paridhan.app");
 
-    //window.location.replace(`https://${subDomain}${subdomainChange}/login`);
-    window.location.replace(`http://${subDomain}-dev.localhost:6001/login`);
+    window.location.replace(`https://${subDomain}${subdomainChange}/login`);
+    //window.location.replace(`http://${subDomain}-dev.localhost:6001/login`);
   };
 
   return (

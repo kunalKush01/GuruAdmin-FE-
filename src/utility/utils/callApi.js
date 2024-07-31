@@ -91,7 +91,7 @@ export const callApi = async ({
   };
   const axiosInstance = axios.create({
     baseURL: `${process.env.REACT_APP_BASEURL}${
-      // store.getState()?.auth?.trustDetail?.id
+      //store.getState()?.auth?.trustDetail?.id
       trustId
     }/`,
     headers,
@@ -197,7 +197,7 @@ export const callDharmshalaApi = async ({
     "x-dharmshala-id": trustId,
   };
   const axiosInstance = axios.create({
-    baseURL: "http://localhost:3000/",
+    baseURL: `${process.env.REACT_APP_DHARMSHALA_BASEURL}`,
     headers,
     responseType: "json",
     timeout: 10000,
