@@ -47,6 +47,7 @@ const SiderLayout = (props) => {
 
   const [collapsed, setCollapsed] = useState(false);
   const [active, setActive] = useState(location.pathname);
+  const [openKeys, setOpenKeys] = useState([]);
 
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -134,7 +135,9 @@ const SiderLayout = (props) => {
         label: !collapsed && <Trans i18nKey={item.name} />,
         children: item.children ? item.children.map(getMenuItem) : undefined,
         onClick: () => {
-          !item.children && history.push(item.url);
+          if (!item.children) {
+            history.push(item.url);
+          }
         },
       };
     }
@@ -177,6 +180,10 @@ const SiderLayout = (props) => {
   if (!isMounted) {
     return null;
   }
+
+  const handleMenuOpenChange = (keys) => {
+    setOpenKeys(keys);
+  };
 
   return (
     <ConfigProvider
@@ -221,6 +228,8 @@ const SiderLayout = (props) => {
               <Menu
                 mode="inline"
                 selectedKeys={[active]}
+                openKeys={openKeys}
+                onOpenChange={handleMenuOpenChange}
                 items={subHeaderContentResponsive
                   .map(getMenuItem)
                   .filter(Boolean)}
