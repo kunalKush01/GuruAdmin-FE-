@@ -1218,6 +1218,20 @@
             }
         }
 
+        .ant-menu-submenu {
+            > .ant-menu-submenu-title {
+                padding-left: 10px !important; 
+            }
+
+            
+            .ant-menu-sub {
+                .ant-menu-item,
+                .ant-menu-submenu-title {
+                    padding-left: 30px !important; 
+                }
+            }
+        }
+
         &.ant-menu-inline {
             .ant-menu-item-selected {
                 background-color: $primary-color !important;
