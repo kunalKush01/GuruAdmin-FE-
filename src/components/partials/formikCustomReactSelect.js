@@ -13,8 +13,8 @@ export default function FormikCustomReactSelect({ loadOptions, ...props }) {
         loadOptions={loadOptions}
         onChange={(data) => helpers.setValue(data)}
         placeholder={props.placeholder}
-        value={selectedOption || field.value}
-        // value={field.value}
+        //value={selectedOption || field.value}
+        value={field.value}
         {...props}
       />
       <div classname="reactselectlabel">

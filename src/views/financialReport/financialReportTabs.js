@@ -14,7 +14,7 @@ const FinancialReportTabs = ({ setActive, active, setPagination }) => {
   ];
   return (
     <div className="financialreporttabswrapper">
-      <div className="d-flex flex-lg-wrap  gap-3 mt-2 allTabBox ">
+      <div className="d-flex flex-lg-wrap gap-3 mt-2 allTabBox ">
         {FinancialTabs.map((item, idx) => {
           return (
             <div
