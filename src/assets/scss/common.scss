@@ -512,11 +512,11 @@
     //     overflow-y: scroll;
     //     scrollbar-width: none; /* For Firefox */
     // }
-    
+
     // .cardLangScroll::-webkit-scrollbar {
     //     display: none; /* For Chrome, Safari, and Edge */
     // }
-    
+
 
     .btn-outline-primary {
         border: 2px solid $primary-color !important;
@@ -562,15 +562,22 @@
     }
 }
 
-.newscardwrapper {
+.newscardwrapper,
+.punyarjakcardwrapper {
 
     .imgContainer {
         background-color: $secondary-color;
         border-bottom: 1px solid $primary-color;
 
+        height: 170px;
+
         img {
             border-radius: 10px 10px 0px 0px;
         }
+    }
+
+    .card {
+        height: 100px
     }
 
     .card-title {
@@ -664,11 +671,13 @@
     display: flex;
     margin-top: 0.7rem;
     min-width: 230px;
-    overflow-y: auto; /* Ensure content is scrollable */
+    overflow-y: auto;
+    /* Ensure content is scrollable */
 }
 
 .cardLangScroll::-webkit-scrollbar {
-    display: none; /* Hide scrollbar for WebKit-based browsers */
+    display: none;
+    /* Hide scrollbar for WebKit-based browsers */
 }
 
 
@@ -2462,82 +2471,82 @@
     }
 }
 
-.punyarjakcardwrapper {
-    .imgContainer {
-        background-color: $secondary-color;
-        border-bottom: 1px solid $primary-color;
+// .punyarjakcardwrapper {
+//     .imgContainer {
+//         background-color: $secondary-color;
+//         border-bottom: 1px solid $primary-color;
 
-        img {
-            border-radius: 10px 10px 0px 0px;
-        }
-    }
+//         img {
+//             border-radius: 10px 10px 0px 0px;
+//         }
+//     }
 
-    .card-title {
-        font: $font-weight-bold $font-size-small/16px $font-family;
-        margin-bottom: 10px !important;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        text-align: left;
-    }
+//     .card-title {
+//         font: $font-weight-bold $font-size-small/16px $font-family;
+//         margin-bottom: 10px !important;
+//         white-space: nowrap;
+//         text-overflow: ellipsis;
+//         overflow: hidden;
+//         text-align: left;
+//     }
 
-    .card-text {
-        font: $font-weight-normal 12px/16px $font-family;
-        height: 50px;
-        overflow: hidden;
-    }
+//     .card-text {
+//         font: $font-weight-normal 12px/16px $font-family;
+//         height: 50px;
+//         overflow: hidden;
+//     }
 
-    .card-body {
-        background: $secondary-color;
-        padding: 10px;
-    }
+//     .card-body {
+//         background: $secondary-color;
+//         padding: 10px;
+//     }
 
-    .btn-outline-primary {
-        border: 2px solid $primary-color !important;
-        font: $font-weight-bold 14px/15px $font-family;
-        padding: 5px 10px;
-        border-radius: 20px;
-        margin-right: 10px;
-    }
+//     .btn-outline-primary {
+//         border: 2px solid $primary-color !important;
+//         font: $font-weight-bold 14px/15px $font-family;
+//         padding: 5px 10px;
+//         border-radius: 20px;
+//         margin-right: 10px;
+//     }
 
-    .card-footer {
-        font: $font-weight-bold 10px/15px $font-family;
-        border: none !important;
-        padding: 16px 0px 10px 0px;
+//     .card-footer {
+//         font: $font-weight-bold 10px/15px $font-family;
+//         border: none !important;
+//         padding: 16px 0px 10px 0px;
 
-        div>div>img {
-            width: 15px;
-            margin-right: 5px;
-        }
+//         div>div>img {
+//             width: 15px;
+//             margin-right: 5px;
+//         }
 
-        img {
-            width: 30px;
-        }
-    }
+//         img {
+//             width: 30px;
+//         }
+//     }
 
-    .imgContent {
-        top: 5%;
-        color: $white;
-        padding: 0px 5px;
-        font: $font-weight-bold 12px/30px $font-family;
-    }
+//     .imgContent {
+//         top: 5%;
+//         color: $white;
+//         padding: 0px 5px;
+//         font: $font-weight-bold 12px/30px $font-family;
+//     }
 
-    img {
-        color: $font-color;
-        font: $font-size-medium $font-family;
-    }
+//     img {
+//         color: $font-color;
+//         font: $font-size-medium $font-family;
+//     }
 
-    // div.cardLangScroll {
-    //     display: flex;
-    //     min-width: 230px;
-    //     overflow-x: scroll !important;
+// div.cardLangScroll {
+//     display: flex;
+//     min-width: 230px;
+//     overflow-x: scroll !important;
 
-    //     ::-webkit-scrollbar {
-    //         width: 10px;
-    //         display: block;
-    //     }
-    // }
-}
+//     ::-webkit-scrollbar {
+//         width: 10px;
+//         display: block;
+//     }
+// }
+//}
 
 .punyarjakusertablewrapper {
     color: $font-color !important;
