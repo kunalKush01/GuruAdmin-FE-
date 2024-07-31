@@ -182,8 +182,7 @@ export const subHeaderContentResponsive = [
   },
   {
     name: "dharmshala_management",
-    //url: "/dharmshala/dashboard",
-    //activeTab: "/dharmshala",
+    activeTab: "/dharmshala",
     icon: DharmshalaIcon,
     activeIcon: DharmshalaIcon,
     children: [
