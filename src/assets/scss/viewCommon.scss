@@ -1017,6 +1017,11 @@
 }
 
 .revenue-chart-wrapper {
+    background: $white;
+    border-radius: 8px;
+    padding: 5px;
+    box-shadow: $box-shadow;
+
     .apexcharts-toolbar {
         display: none;
     }
