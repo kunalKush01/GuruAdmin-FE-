@@ -157,7 +157,7 @@ export default function PunyarjakCard({
         style={{
           width: "100%",
           height: "390px",
-          borderRadiuis: "10px",
+          borderRadius: "10px",
           overflow: "hidden",
         }}
       >
