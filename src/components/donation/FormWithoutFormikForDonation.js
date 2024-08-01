@@ -164,6 +164,7 @@ export default function FormWithoutFormikForDonation({
             mobileNumber: fullPhoneNumber,
           });
           if (res.result) {
+            console.log(res);
             const userMobileNumberWithoutDialCode =
               res.result.mobileNumber.replace(dialCodeFromURL, "");
             res.result.mobileNumber = userMobileNumberWithoutDialCode;
@@ -186,7 +187,7 @@ export default function FormWithoutFormikForDonation({
 
       fetchUserDetails();
     } else {
-      // console.log("Mobile number or dial code missing from URL");
+      console.log("Mobile number or dial code missing from URL");
     }
   }, [mobileNumberFromURL, dialCodeFromURL, name]);
 
@@ -199,7 +200,7 @@ export default function FormWithoutFormikForDonation({
   //**add user drawer form */
 
   const handleCreateUser = async (payload) => {
-    // console.log(payload);
+    console.log(payload);
     // return;
     return createSubscribedUser(payload);
   };
@@ -224,7 +225,6 @@ export default function FormWithoutFormikForDonation({
     }),
   });
   const location = useLocation();
-  const phoneNum = `${formik.values.dialCode}${formik.values.Mobile}`;
   const [open, setOpen] = useState(false);
   const showDrawer = () => {
     setOpen(true);
@@ -321,7 +321,6 @@ export default function FormWithoutFormikForDonation({
                 addDonationUser
                 initialValues={{
                   name: "",
-                  mobile: formik.values.Mobile || "",
                   countryCode: "in",
                   dialCode: "91",
                   email: "",
@@ -338,7 +337,7 @@ export default function FormWithoutFormikForDonation({
                 }}
                 validationSchema={schema}
                 buttonName={"add_user"}
-                getNumber={phoneNum}
+                getNumber={phoneNumber}
               />
             </Col>
             <Col xs={12} sm={6} lg={3}>
