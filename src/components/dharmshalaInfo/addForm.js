@@ -5,9 +5,8 @@ import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { Prompt, useHistory } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
-import {FormikWrapper} from "../../views/dharmshala-management/dharmshalaStyles";
+import { FormikWrapper } from "../../views/dharmshala-management/dharmshalaStyles";
 import CustomTextField from "../partials/customTextField";
-
 
 const AddDharmshalaForm = ({
   initialValues,
@@ -24,7 +23,7 @@ const AddDharmshalaForm = ({
   const currentPage = searchParams.get("page");
   const currentStatus = searchParams.get("status");
   const currentFilter = searchParams.get("filter");
-  const [correct, isCorrect] = useState(false)
+  const [correct, isCorrect] = useState(false);
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: handleSubmit,
@@ -47,7 +46,7 @@ const AddDharmshalaForm = ({
       ...formValues,
     };
     mutation.mutate(data);
-    history.push(`/dharmshala/info?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`)
+    history.push(`/dharmshala/info`);
   };
 
   return (
@@ -57,7 +56,6 @@ const AddDharmshalaForm = ({
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={handleFormSubmit}
-
       >
         {(formik) => (
           <Form>

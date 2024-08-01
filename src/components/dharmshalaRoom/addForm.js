@@ -46,19 +46,20 @@ const AddRoomForm = ({
     setShowPrompt(false);
     const { number, roomType, ...otherValues } = values;
     const data = {
-      roomNumber: number, 
-      roomTypeId: roomType, 
+      roomNumber: number,
+      roomTypeId: roomType,
       ...otherValues,
     };
-    
+
     mutation.mutate(data);
-    history.push(`/room/${URLParams.floorId}/${URLParams.buildingId}?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`);
+    history.push(`/room/${URLParams.floorId}/${URLParams.buildingId}`);
   };
 
-  const { data: roomTypesData, isLoading: isRoomTypesLoading, isError: isRoomTypesError } = useQuery(
-    ['roomTypes'],
-    getRoomTypeList
-  );
+  const {
+    data: roomTypesData,
+    isLoading: isRoomTypesLoading,
+    isError: isRoomTypesError,
+  } = useQuery(["roomTypes"], getRoomTypeList);
   const roomTypes = roomTypesData?.results ?? [];
 
   return (
@@ -75,7 +76,10 @@ const AddRoomForm = ({
               <Prompt
                 when={!!Object.values(formik?.values).find((val) => !!val)}
                 message={(location) =>
-                  `Are you sure you want to leave this page & visit ${location.pathname.replace("/", "")}`
+                  `Are you sure you want to leave this page & visit ${location.pathname.replace(
+                    "/",
+                    ""
+                  )}`
                 }
               />
             )}
@@ -90,7 +94,9 @@ const AddRoomForm = ({
                       name="number"
                       required
                       autoFocus
-                      onInput={(e) => (e.target.value = e.target.value.slice(0, 30))}
+                      onInput={(e) =>
+                        (e.target.value = e.target.value.slice(0, 30))
+                      }
                     />
                   </Col>
                   <Col xs={12} md={4}>

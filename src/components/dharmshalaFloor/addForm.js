@@ -5,10 +5,9 @@ import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { Prompt, useHistory } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
-import {FormikWrapper} from "../../views/dharmshala-management/dharmshalaStyles";
+import { FormikWrapper } from "../../views/dharmshala-management/dharmshalaStyles";
 import CustomTextField from "../partials/customTextField";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
-
 
 const AddDharmshalaFloorForm = ({
   initialValues,
@@ -22,7 +21,7 @@ const AddDharmshalaFloorForm = ({
   const [showPrompt, setShowPrompt] = useState(true);
   const [loading, setLoading] = useState(false);
   const searchParams = new URLSearchParams(history.location.search);
-  console.log(searchParams)
+  console.log(searchParams);
   const currentPage = searchParams.get("page");
   const currentStatus = searchParams.get("status");
   const currentFilter = searchParams.get("filter");
@@ -39,7 +38,6 @@ const AddDharmshalaFloorForm = ({
     },
   });
 
-
   const URLParams = useParams();
   const handleFormSubmit = (values) => {
     setLoading(true);
@@ -49,8 +47,7 @@ const AddDharmshalaFloorForm = ({
       ...formValues,
     };
     mutation.mutate(data);
-    history.push(`/floors/${URLParams.buildingId}?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
-  )
+    history.push(`/floors/${URLParams.buildingId}`);
   };
 
   return (
@@ -60,7 +57,6 @@ const AddDharmshalaFloorForm = ({
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={handleFormSubmit}
-
       >
         {(formik) => (
           <Form>

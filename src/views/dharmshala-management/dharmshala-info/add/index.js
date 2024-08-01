@@ -7,8 +7,7 @@ import * as Yup from "yup";
 import { createBuilding } from "../../../../api/dharmshala/dharmshalaInfo";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddDharmshalaForm from "../../../../components/dharmshalaInfo/addForm";
-import {DharmshalaAddWrapper} from "../../dharmshalaStyles";
-
+import { DharmshalaAddWrapper } from "../../dharmshalaStyles";
 
 const AddDharmshala = () => {
   const history = useHistory();
@@ -40,14 +39,10 @@ const AddDharmshala = () => {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() =>
-              history.push(
-                `/dharmshala/info?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
-              )
-            }
+            onClick={() => history.push(`/dharmshala/info`)}
           />
           <div className="addEvent">
-          <Trans i18nKey={"building_add"} />
+            <Trans i18nKey={"building_add"} />
           </div>
         </div>
       </div>

@@ -51,7 +51,7 @@ const RoomTypeInfoTable = ({
           className="cursor-pointer"
           onClick={() => {
             history.push(
-              `/roomtype/info/${item?._id}?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}&name=${item?.name}&description=${item?.description}&capacity=${item?.capacity}&price=${item?.price}`
+              `/roomtype/info/${item?._id}&name=${item?.name}&description=${item?.description}&capacity=${item?.capacity}&price=${item?.price}`
             );
           }}
         />
@@ -89,16 +89,16 @@ const RoomTypeInfoTable = ({
           {RoomTypesInfo.map((item, index) => (
             <div key={index} className="card">
               <div className="card-body">
-              <div className="card-content">
-                <h5 className="card-title">{item.name}</h5>
-                <p className="card-text">{item.description}</p>
-                <p className="card-text">{item.capacity}</p>
-                <p className="card-text">{item.price}</p>
-              </div>
-              <div className="card-icons">
+                <div className="card-content">
+                  <h5 className="card-title">{item.name}</h5>
+                  <p className="card-text">{item.description}</p>
+                  <p className="card-text">{item.capacity}</p>
+                  <p className="card-text">{item.price}</p>
+                </div>
+                <div className="card-icons">
                   {item.edit}
                   {item.delete}
-              </div>
+                </div>
               </div>
             </div>
           ))}

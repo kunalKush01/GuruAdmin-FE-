@@ -74,8 +74,8 @@ const DharmshalaRoomTable = ({
     },
   ];
   const DharmshalasRoom = useMemo(() => {
-    console.log("floor id is", floorId)
-    console.log("building Id", buildingId)
+    console.log("floor id is", floorId);
+    console.log("building Id", buildingId);
     return data?.map((item, idx) => {
       return {
         id: idx + 1,
@@ -90,7 +90,7 @@ const DharmshalaRoomTable = ({
             className="cursor-pointer "
             onClick={() => {
               history.push(
-                `/rooms/edit/${item?._id}/${floorId}/${buildingId}?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}&number=${item?.roomNumber}&directBookingAvailable=${item?.directBookingAvailable}`
+                `/rooms/edit/${item?._id}/${floorId}/${buildingId}&number=${item?.roomNumber}&directBookingAvailable=${item?.directBookingAvailable}`
               );
             }}
           />
@@ -151,15 +151,14 @@ const DharmshalaRoomTable = ({
           ))}
         </div>
       ) : (
-      <CustomDharmshalaTable
-        maxHeight={maxHeight}
-        height={height}
-        columns={columns}
-        data={DharmshalasRoom}
-      />
+        <CustomDharmshalaTable
+          maxHeight={maxHeight}
+          height={height}
+          columns={columns}
+          data={DharmshalasRoom}
+        />
       )}
     </DharmshalaRoomTableWrapper>
   );
 };
 export default DharmshalaRoomTable;
-

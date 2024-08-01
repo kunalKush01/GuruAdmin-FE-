@@ -29,7 +29,7 @@ const AddRoomTypeForm = ({
   const [loading, setLoading] = useState(false);
 
   const searchParams = new URLSearchParams(history.location.search);
-  console.log(searchParams)
+  console.log(searchParams);
   const currentPage = searchParams.get("page");
   const currentStatus = searchParams.get("status");
   const currentFilter = searchParams.get("filter");
@@ -55,8 +55,7 @@ const AddRoomTypeForm = ({
       ...formValues,
     };
     mutation.mutate(data);
-    history.push(`/roomtype/info?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
-  )
+    history.push(`/roomtype/info`);
   };
 
   return (

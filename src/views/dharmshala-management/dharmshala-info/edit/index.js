@@ -17,7 +17,7 @@ import {
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddDharmshalaForm from "../../../../components/dharmshalaInfo/addForm";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
-import {DharmshalaAddWrapper} from "../../dharmshalaStyles";
+import { DharmshalaAddWrapper } from "../../dharmshalaStyles";
 
 const getLangId = (langArray, langSelection) => {
   let languageId;
@@ -78,14 +78,10 @@ const EditDharmshala = () => {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() =>
-              history.push(
-                `/dharmshala/info?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
-              )
-            }
+            onClick={() => history.push(`/dharmshala/info`)}
           />
           <div className="editEvent">
-          <Trans i18nKey={"dharmshala_edit_building"} />
+            <Trans i18nKey={"dharmshala_edit_building"} />
           </div>
         </div>
       </div>
