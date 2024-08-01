@@ -149,7 +149,10 @@ export default function FormWithoutFormikForDonation({
   const dialCodeFromURL = searchParams.get("dialCode");
   const mobileNumberFromURL = searchParams.get("mobileNumber");
   const name = searchParams.get("name");
-
+  const [dataLoad, setDataLoad] = useState(true);
+  const handleDataLoad = (val) => {
+    setDataLoad(val)
+  };
   useEffect(() => {
     if (mobileNumberFromURL && dialCodeFromURL) {
       const fullPhoneNumber = `${dialCodeFromURL}${mobileNumberFromURL}`;
@@ -189,8 +192,8 @@ export default function FormWithoutFormikForDonation({
     } else {
       console.log("Mobile number or dial code missing from URL");
     }
-  }, [mobileNumberFromURL, dialCodeFromURL, name]);
-
+  }, [mobileNumberFromURL, dialCodeFromURL, name,!dataLoad]);
+console.log(dataLoad)
   useEffect(() => {
     if (name) {
       formik.setFieldValue("donarName", decodeURIComponent(name));
@@ -338,6 +341,7 @@ export default function FormWithoutFormikForDonation({
                 validationSchema={schema}
                 buttonName={"add_user"}
                 getNumber={phoneNumber}
+                onSuccess={handleDataLoad}
               />
             </Col>
             <Col xs={12} sm={6} lg={3}>
