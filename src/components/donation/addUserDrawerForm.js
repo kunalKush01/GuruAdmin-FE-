@@ -1,21 +1,20 @@
 import { Drawer } from "antd";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
-import React, { useEffect, useMemo, useState } from "react";
-import { CloudLightning, Plus } from "react-feather";
+import React, { useEffect, useState } from "react";
+import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
-import { Prompt, useHistory } from "react-router-dom";
+import { Prompt } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
 import CustomTextField from "../partials/customTextField";
 import "../../assets/scss/common.scss";
-import { TextArea } from "../partials/CustomTextArea";
 import pincodes from "indian-pincodes";
 import CustomRadioButton from "../partials/customRadioButton";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { Country, State, City } from "country-state-city";
-import CustomLocationField from "../partials/CustomLocationField";
+import CustomFieldLocationForDonationUser from "../partials/customFieldLocationForDonationUser";
 function AddUserDrawerForm({
   onClose,
   open,
@@ -30,18 +29,8 @@ function AddUserDrawerForm({
   buttonName = "",
   ...props
 }) {
-  const history = useHistory();
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
-
-  const searchParams = new URLSearchParams(history.location.search);
-  const currentPage = searchParams.get("page");
-  const currentCategory = searchParams.get("category");
-  const currentSubCategory = searchParams.get("subCategory");
-  const currentFilter = searchParams.get("filter");
-  const redirectTo = searchParams.get("redirect");
-  const dialCodeFromUrl = searchParams.get("dialCode");
-  const mobileNumberFromUrl = searchParams.get("mobileNumber");
 
   const categoryQueryClient = useQueryClient();
 
@@ -53,29 +42,21 @@ function AddUserDrawerForm({
           ? categoryQueryClient.invalidateQueries(["donations"])
           : categoryQueryClient.invalidateQueries(["subscribedUser"]);
         setLoading(false);
-        addDonationUser
-          ? history.push(
-              `/${redirectTo}/add?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}}&dialCode=${encodeURIComponent(
-                dialCode
-              )}&mobileNumber=${encodeURIComponent(
-                mobileNumber
-              )}&name=${encodeURIComponent(name)}`
-            )
-          : history.push("/subscribed-user");
+        onClose();
       } else if (data?.error) {
         setLoading(false);
       }
     },
   });
   const [showPrompt, setShowPrompt] = useState(true);
-  const [phoneNumber, setPhoneNumber] = useState(getNumber);
-  const [dialCode, setDialCode] = useState(dialCodeFromUrl || "");
-  const [mobileNumber, setMobileNumber] = useState(mobileNumberFromUrl || "");
-  const [name, setName] = useState("");
   const [states, setStates] = useState([]);
   const [country, setCountry] = useState([]);
   const [city, setCity] = useState([]);
   const [districtPincode, setDistrictPincode] = useState([]);
+  const [phoneNumber, setPhoneNumber] = useState(getNumber ?? "");
+  useEffect(() => {
+    setPhoneNumber(getNumber ?? "");
+  }, [getNumber]);
   useEffect(() => {
     const fetchedCountry = Country.getAllCountries();
     const formattedCountry = fetchedCountry.map((country) => ({
@@ -84,12 +65,10 @@ function AddUserDrawerForm({
     }));
     setCountry(formattedCountry);
   }, []);
-
   return (
     <Drawer title="Add User" onClose={onClose} open={open} size="medium">
       <div className="">
         <Formik
-          // enableReinitialize
           initialValues={{
             ...initialValues,
             mobile: getNumber || initialValues.mobile,
@@ -119,9 +98,19 @@ function AddUserDrawerForm({
         >
           {(formik) => {
             useEffect(() => {
+              if (formik.values.location) {
+                formik.setFieldValue("pincode", "");
+              }
+            }, [formik.values.location]);
+            useEffect(() => {
+              if (formik.values.pincode) {
+                formik.setFieldValue("location", "");
+              }
+            }, [formik.values.pincode]);
+            useEffect(() => {
               if (formik.values.district) {
                 const districtPincodes = pincodes.getPincodesByDistrict(
-                  formik.values.district
+                  formik.values.district.split(" ")[0]
                 );
                 if (
                   Array.isArray(districtPincodes) &&
@@ -149,7 +138,7 @@ function AddUserDrawerForm({
                   setDistrictPincode([]);
                 }
               }
-            }, [formik.values.district]);
+            }, [formik.values.district, formik.values.location]);
 
             useEffect(() => {
               if (formik.values.pincode) {
@@ -215,8 +204,12 @@ function AddUserDrawerForm({
                   id: state.isoCode,
                 }));
                 setStates(formattedStates);
-                formik.setFieldValue("state", null);
-                formik.setFieldValue("city", null);
+                {
+                  /* formik.setFieldValue("state", null); */
+                }
+                {
+                  /* formik.setFieldValue("city", null); */
+                }
               } else {
                 setStates([]);
                 setCity([]);
@@ -261,23 +254,18 @@ function AddUserDrawerForm({
                           required
                           onInput={(e) => {
                             e.target.value = e.target.value.slice(0, 30);
-                            setName(e.target.value);
                           }}
                           autoFocus
                         />
                       </Col>
                       <Col xs={12} sm={6} md={6}>
                         <CustomCountryMobileNumberField
-                          value={getNumber}
+                          value={phoneNumber}
                           label={t("dashboard_Recent_DonorNumber")}
                           defaultCountry={initialValues?.countryCode ?? "IN"}
                           placeholder={t("placeHolder_mobile_number")}
                           onChange={(phone, country) => {
                             setPhoneNumber(phone);
-                            setDialCode(country?.dialCode);
-                            setMobileNumber(
-                              phone?.replace(country?.dialCode, "")
-                            );
                             formik.setFieldValue(
                               "countryCode",
                               country?.countryCode
@@ -372,12 +360,18 @@ function AddUserDrawerForm({
                                   />
                                 </Col>
                               ) : (
-                                <div className="mt-1">
-                                  <CustomLocationField
-                                  setFieldValue={formik.setFieldValue}
-                                  values={formik?.values}
+                                <Col
+                                  xs={12}
+                                  sm={6}
+                                  md={12}
+                                  className="pb-0"
+                                  style={{ marginTop: "10px" }}
+                                >
+                                  <CustomFieldLocationForDonationUser
+                                    setFieldValue={formik.setFieldValue}
+                                    values={formik?.values}
                                   />
-                                </div>
+                                </Col>
                               )}
                             </Row>
                           </div>
@@ -412,6 +406,7 @@ function AddUserDrawerForm({
                           width
                           onChange={(val) => {
                             if (val) {
+                              console.log(val);
                               formik.setFieldValue("country", val);
                               formik.setFieldValue("pincode", "");
                               formik.setFieldValue("pin", "");
@@ -437,6 +432,7 @@ function AddUserDrawerForm({
                           disabled={!formik.values.country}
                           onChange={(val) => {
                             if (val) {
+                              console.log(val);
                               formik.setFieldValue("pincode", "");
                               formik.setFieldValue("state", val);
                               formik.setFieldValue("city", "");
@@ -458,6 +454,7 @@ function AddUserDrawerForm({
                           valueKey="id"
                           onChange={(val) => {
                             if (val) {
+                              console.log(val);
                               formik.setFieldValue("pincode", "");
                               formik.setFieldValue("city", val);
                             }
@@ -500,21 +497,6 @@ function AddUserDrawerForm({
                   </Col>
                 </Row>
                 <div className="d-flex justify-content-center">
-                  {/* <Button
-                    color="primary"
-                    className="addAction-btn"
-                    type="submit"
-                    style={{ width: "100%" }}
-                  >
-                    {plusIconDisable && (
-                      <span>
-                        <Plus className="" size={15} strokeWidth={4} />
-                      </span>
-                    )}
-                    <span>
-                      <Trans i18nKey={`${buttonName}`} />
-                    </span>
-                  </Button> */}
                   {loading ? (
                     <Button
                       color="primary"
