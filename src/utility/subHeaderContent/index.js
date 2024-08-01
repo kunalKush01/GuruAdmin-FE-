@@ -300,12 +300,25 @@ export const subHeaderContentResponsive = [
         activeIcon: CategoryIconActive,
       },
       {
+        name: "masters",
+        url: "/configuration/masters",
+        icon: ConfigurationIcon,
+        activeIcon: ConfigurationIcon,
+      },
+      {
+        name: "custom_field",
+        url: "/configuration/custom-fields",
+        icon: ConfigurationIcon,
+        activeIcon: ConfigurationIcon,
+      },
+      {
         name: "user",
         url: "/configuration/users",
         icon: SubadminIcon,
         activeIcon: SubadminIconActive,
       },
     ],
+
     // url: "/configuration",
   },
   {
