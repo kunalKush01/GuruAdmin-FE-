@@ -5,29 +5,24 @@ import { Fragment, useEffect, useLayoutEffect, useMemo, useState } from "react";
 import UserDropdown from "./UserDropdown";
 
 // ** Third Party Components
-import moment from "moment";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import { NavItem, NavLink } from "reactstrap";
-import logOutIcon from "../../../../assets/images/icons/dashBoard/Group 5995.svg";
 import bellIcon from "../../../../assets/images/icons/dashBoard/Group 5996.svg";
 import menuPanelIcon from "../../../../assets/images/icons/dashBoard/icn_MenuPanel.svg";
-import confirmationIcon from "../../../../assets/images/icons/news/conformationIcon.svg";
 import { authApiInstance } from "../../../../axiosApi/authApiInstans";
 import { handleTrustDetail, logOut } from "../../../../redux/authSlice";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
 import LangModel from "../langModel";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import Swal from "sweetalert2";
 import { loginPage } from "../../../../api/loginPageApi";
 import { getAllNotification } from "../../../../api/notification";
-import logo from "../../../../assets/images/pages/main-logo.png";
+import "../../../../assets/scss/viewCommon.scss";
 import CustomSearchBar from "../../../../components/partials/customSearchBar";
 import { isSerchable } from "../../../../utility/localSerachBar";
-import "../../../../assets/scss/viewCommon.scss";
 
 const NavbarUser = (props) => {
   const history = useHistory();
@@ -72,18 +67,6 @@ const NavbarUser = (props) => {
       ""
     );
   }
-  // const loginPageQuery = useQuery(
-  //   [subDomainName],
-  //   async () => await loginPage(subDomainName)
-  // );
-
-  // console.log("loginPageQuery", loginPageQuery);
-
-  // const loginPageData = useMemo(() => {
-  //   dispatch(handleTrustDetail(loginPageQuery?.data?.result));
-  //   console.log("loginPageQuery?.data?.result", loginPageQuery?.data?.result);
-  //   return loginPageQuery?.data?.result;
-  // }, [loginPageQuery]);
 
   const loginPageQuery = useQuery([subDomainName], () =>
     loginPage(subDomainName)
@@ -125,19 +108,19 @@ const NavbarUser = (props) => {
   return (
     <Fragment>
       <div className="navbar-user-wrapper d-flex justify-content-between w-100 align-items-center">
-        <div className="bookmark-wrapper d-flex align-items-center">
+        {/* <div className="bookmark-wrapper d-flex align-items-center">
           <NavItem className="d-none d-lg-block">
             <NavLink to="/" className="navbar-brand">
               {/* <div className="brand-logo">
                 <img src={logo} alt="logo" className="logo" />
               </div> */}
-              {/* <div className="date d-none d-xl-block">
+        {/* <div className="date d-none d-xl-block">
                 <Trans i18nKey={"last_login"} />:{" "}
                 {moment().format("DD MMM YYYY,h:mm a")}
-              </div> */}
+              </div> 
             </NavLink>
           </NavItem>
-        </div>
+        </div> */}
         {isSerchable() && (
           <CustomSearchBar
             setSearchBarState={setSearchBarState}
@@ -200,18 +183,21 @@ const NavbarUser = (props) => {
               }}
             /> */}
           </div>
-          <ul className="nav navbar-nav align-items-center ">
-            <div className="d-flex align-items-center" style={{ marginRight: '26px' }}>
+          <ul className="nav navbar-nav align-items-center">
+            <div
+              className="d-flex align-items-center"
+              style={{ marginRight: "26px" }}
+            >
               <div className="nave-para">
                 <div
-                  className="temple-name text-end d-none d-xl-block text-truncate "
+                  className="temple-name text-end d-none d-xl-block text-truncate"
                   style={{ maxWidth: "130px" }}
                   title={trustDetails?.name}
                 >
                   {ConverFirstLatterToCapital(trustDetails?.name ?? "")}
                 </div>
                 <div
-                  className="text-end d-none d-xl-block text-truncate "
+                  className="text-end d-none d-xl-block text-truncate"
                   style={{ fontSize: "15px", lineHeight: "16px" }}
                   title={userDetails?.name}
                 >
