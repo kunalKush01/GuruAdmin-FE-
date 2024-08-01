@@ -1,26 +1,23 @@
-import React,{ useState }from "react";
+import React, { useState } from "react";
 import { Trans } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
-import {createRoom } from "../../../../api/dharmshala/dharmshalaInfo";
+import { createRoom } from "../../../../api/dharmshala/dharmshalaInfo";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddRoomForm from "../../../../components/dharmshalaRoom/addForm";
-import {DharmshalaRoomAddWrapper} from "../../dharmshalaStyles";
-
+import { DharmshalaRoomAddWrapper } from "../../dharmshalaStyles";
 
 const AddDharmshalaRoom = () => {
   const history = useHistory();
   const { floorId } = useParams();
-  const {buildingId} = useParams();
-  console.log("building id", buildingId)
+  const { buildingId } = useParams();
+  console.log("building id", buildingId);
   const trustId = localStorage.getItem("trustId");
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
   const currentStatus = searchParams.get("status");
   const currentFilter = searchParams.get("filter");
-
-
 
   const handleCreateDharmshalaRoom = async (payload) => {
     return createRoom(payload);
@@ -32,8 +29,7 @@ const AddDharmshalaRoom = () => {
     number: Yup.mixed().required("dharmshala_room_number_required"),
     floorId: Yup.mixed().required("dharmshala_room_number_required"),
     buildingId: Yup.mixed().required("dharmshala_room_number_required"),
-    dharmshalaId: Yup.mixed().required("dharmshala_room_number_required")
-
+    dharmshalaId: Yup.mixed().required("dharmshala_room_number_required"),
   });
 
   const initialValues = {
@@ -41,7 +37,7 @@ const AddDharmshalaRoom = () => {
     //description: "",
     number: "",
     buildingId: buildingId,
-    floorId:floorId,
+    floorId: floorId,
     dharmshalaId: trustId,
   };
 
@@ -55,9 +51,7 @@ const AddDharmshalaRoom = () => {
             src={arrowLeft}
             className="me-2  cursor-pointer"
             onClick={() =>
-              history.push(
-                `/room/${URLParams.floorId}/${URLParams.buildingId}?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
-              )
+              history.push(`/room/${URLParams.floorId}/${URLParams.buildingId}`)
             }
           />
           <div className="addEvent">

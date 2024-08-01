@@ -20,14 +20,14 @@ import DharmshalaRoomTable from "./table";
 import { ChangeCategoryType } from "../../../components/partials/categoryDropdown";
 import { Helmet } from "react-helmet";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
-import {DharmshalaRoomInfo} from "../dharmshalaStyles"
+import { DharmshalaRoomInfo } from "../dharmshalaStyles";
 
 const DharmshalaRooms = () => {
   const history = useHistory();
   const { floorId } = useParams();
   const { buildingId } = useParams();
-  console.log("hello from rooms list page, floor id is: ",floorId);
-  console.log("hello from rooms list page, building id is: ",buildingId);
+  console.log("hello from rooms list page, floor id is: ", floorId);
+  console.log("hello from rooms list page, building id is: ", buildingId);
   const { t } = useTranslation();
   const importFileRef = useRef();
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -77,7 +77,7 @@ const DharmshalaRooms = () => {
       selectedLang.id,
       searchBarValue,
     ],
-    () => getAllRoomsByFloorId(floorId),
+    () => getAllRoomsByFloorId(floorId)
   );
   const dharmshalaRoomListData = useMemo(
     () => dharmshalaRoomList?.data?.results ?? [],
@@ -101,11 +101,7 @@ const DharmshalaRooms = () => {
             <img
               src={arrowLeft}
               className="me-2 cursor-pointer"
-              onClick={() =>
-                history.push(
-                  `/floors/${URLParams.buildingId}?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
-                )
-              }
+              onClick={() => history.push(`/floors/${URLParams.buildingId}`)}
             />
             <div className="addEvent">
               <Trans i18nKey={"dharmshala_rooms_registered"} />
@@ -212,8 +208,10 @@ const DharmshalaRooms = () => {
                     onPageChange={(page) => {
                       setPagination({ ...pagination, page: page.selected + 1 });
                       history.push(
-                        `/dharmshala/info?page=${page.selected + 1}&status=${isDeadAlive}&filter=${dropDownName}`
-                      )
+                        `/dharmshala/info?page=${
+                          page.selected + 1
+                        }&status=${isDeadAlive}&filter=${dropDownName}`
+                      );
                     }}
                     containerClassName={
                       "pagination react-paginate justify-content-end p-1"
@@ -229,4 +227,3 @@ const DharmshalaRooms = () => {
   );
 };
 export default DharmshalaRooms;
-

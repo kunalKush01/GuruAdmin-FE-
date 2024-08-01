@@ -7,8 +7,7 @@ import { Prompt, useHistory } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import { FormikWrapper } from "../../views/dharmshala-management/dharmshalaStyles";
 import CustomTextField from "../partials/customTextField";
-import './dropdown.css';
-
+import "./dropdown.css";
 
 const AddBookingForm = ({
   initialValues,
@@ -44,7 +43,15 @@ const AddBookingForm = ({
   const handleFormSubmit = (values) => {
     setLoading(true);
     setShowPrompt(false);
-    const { startDate, endDate, count, status, earlyCheckIn, lateCheckout, ...otherValues } = values;
+    const {
+      startDate,
+      endDate,
+      count,
+      status,
+      earlyCheckIn,
+      lateCheckout,
+      ...otherValues
+    } = values;
 
     const data = {
       startDate,
@@ -55,9 +62,9 @@ const AddBookingForm = ({
       lateCheckout,
       ...otherValues,
     };
-  
+
     mutation.mutate(data);
-    history.push(`/booking/info?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`);
+    history.push(`/booking/info`);
   };
 
   return (
@@ -74,7 +81,10 @@ const AddBookingForm = ({
               <Prompt
                 when={!!Object.values(formik?.values).find((val) => !!val)}
                 message={(location) =>
-                  `Are you sure you want to leave this page & visit ${location.pathname.replace("/", "")}`
+                  `Are you sure you want to leave this page & visit ${location.pathname.replace(
+                    "/",
+                    ""
+                  )}`
                 }
               />
             )}
@@ -96,36 +106,36 @@ const AddBookingForm = ({
                     />
                   </Col>
                   <Col xs={12} md={4}>
-                  <CustomTextField
-                    type="date"
-                    label={t("dharmshala_booking_start_date")}
-                    placeholder={t("placeHolder_booking_start_date")}
-                    name="Start Date"
-                    required
-                    autoFocus
-                    InputLabelProps={{
-                    shrink: true,
-                    }}
-                    inputProps={{
-                    max: new Date().toISOString().split('T')[0],
-                   }}
-                  />
+                    <CustomTextField
+                      type="date"
+                      label={t("dharmshala_booking_start_date")}
+                      placeholder={t("placeHolder_booking_start_date")}
+                      name="Start Date"
+                      required
+                      autoFocus
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      inputProps={{
+                        max: new Date().toISOString().split("T")[0],
+                      }}
+                    />
                   </Col>
                   <Col xs={12} md={4}>
-                  <CustomTextField
-                    type="date"
-                    label={t("dharmshala_booking_end_date")}
-                    placeholder={t("placeHolder_booking_end_date")}
-                    name="End Date"
-                    required
-                    autoFocus
-                    InputLabelProps={{
-                    shrink: true,
-                    }}
-                    inputProps={{
-                    max: new Date().toISOString().split('T')[0],
-                   }}
-                  />
+                    <CustomTextField
+                      type="date"
+                      label={t("dharmshala_booking_end_date")}
+                      placeholder={t("placeHolder_booking_end_date")}
+                      name="End Date"
+                      required
+                      autoFocus
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      inputProps={{
+                        max: new Date().toISOString().split("T")[0],
+                      }}
+                    />
                   </Col>
                   <Col xs={12} md={4}>
                     <CustomTextField
@@ -164,7 +174,7 @@ const AddBookingForm = ({
                       name="earlyCheckIn"
                       required
                       autoFocus
-                      type="select" 
+                      type="select"
                       value={formik.values.earlyCheckIn}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
@@ -180,7 +190,7 @@ const AddBookingForm = ({
                       name="lateCheckOut"
                       required
                       autoFocus
-                      type="select" 
+                      type="select"
                       value={formik.values.lateCheckOut}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
@@ -189,7 +199,6 @@ const AddBookingForm = ({
                       <option value="false">{t("no")}</option>
                     </CustomTextField>
                   </Col>
-
                 </Row>
               </Col>
             </Row>

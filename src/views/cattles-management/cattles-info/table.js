@@ -180,9 +180,7 @@ const CattleInfoTable = ({
               width={35}
               className="cursor-pointer "
               onClick={() => {
-                history.push(
-                  `/cattle/info/${item?._id}?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
-                );
+                history.push(`/cattle/info/${item?._id}`);
               }}
             />
           ) : (

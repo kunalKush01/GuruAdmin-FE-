@@ -11,7 +11,7 @@ import editIcon from "../../../assets/images/icons/category/editIcon.svg";
 import CustomDharmshalaTable from "../../../components/partials/CustomDharmshalaTable";
 import confirmationIcon from "../../../assets/images/icons/news/conformationIcon.svg";
 import { DharmshalaInfoTableWrapper } from "../dharmshalaStyles";
-import "../dharmshala_css/dharmshalainfotable.css"; 
+import "../dharmshala_css/dharmshalainfotable.css";
 
 const DharmshalaInfoTable = ({
   data = [],
@@ -88,9 +88,7 @@ const DharmshalaInfoTable = ({
               size="lg"
               color="primary"
               className="px-1 py-0"
-              onClick={() =>
-                history.push(`/floor/add/${item._id}`, item._id)
-              }
+              onClick={() => history.push(`/floor/add/${item._id}`, item._id)}
             >
               {" "}
               +{" "}
@@ -100,9 +98,7 @@ const DharmshalaInfoTable = ({
               size="lg"
               color="primary"
               className="px-1 py-0"
-              onClick={() =>
-                history.push(`/floors/${item._id}`, item._id)
-              }
+              onClick={() => history.push(`/floors/${item._id}`, item._id)}
             >
               {item?.floorCount} {t("Floors")}
             </Button>
@@ -111,9 +107,7 @@ const DharmshalaInfoTable = ({
               size="lg"
               color="primary"
               className="px-1 py-0"
-              onClick={() =>
-                history.push(`/floors/${item._id}`, item._id)
-              }
+              onClick={() => history.push(`/floors/${item._id}`, item._id)}
             >
               {item?.floorCount} {t("Floor")}
             </Button>
@@ -126,9 +120,7 @@ const DharmshalaInfoTable = ({
           width={35}
           className="cursor-pointer"
           onClick={() => {
-            history.push(
-              `/building/edit/${item?._id}?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
-            );
+            history.push(`/building/edit/${item?._id}`);
           }}
         />
       ),
@@ -136,7 +128,9 @@ const DharmshalaInfoTable = ({
         <img
           src={item?.floorCount === 0 ? deleteIcon : deleteDisableIcon}
           width={35}
-          className={`cursor-pointer ${item?.floorCount !== 0 ? 'disabled' : ''}`}
+          className={`cursor-pointer ${
+            item?.floorCount !== 0 ? "disabled" : ""
+          }`}
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
