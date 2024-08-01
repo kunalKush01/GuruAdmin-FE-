@@ -128,7 +128,7 @@ export default function Punyarjak() {
               className="me-2 cursor-pointer align-self-center"
               onClick={() => history.push("/")}
             /> */}
-            <div className="addPunyarjak">
+            <div className="addAction">
               <div className="">
                 <div>
                   <Trans i18nKey={"punyarjak"} />
@@ -136,7 +136,7 @@ export default function Punyarjak() {
               </div>
             </div>
           </div>
-          <div className="addPunyarjak">
+          <div className="AddAction">
             {allPermissions?.name === "all" ||
             subPermission?.includes(WRITE) ? (
               <Button
@@ -192,7 +192,8 @@ export default function Punyarjak() {
                           xs={12}
                           md={6}
                           lg={4}
-                          className="pe-sm-3 pe-0" style={{ paddingTop: '3rem' }}
+                          className="pe-sm-3 pe-0"
+                          style={{ paddingTop: "3rem" }}
                           key={item.id}
                         >
                           <PunyarjakCard
