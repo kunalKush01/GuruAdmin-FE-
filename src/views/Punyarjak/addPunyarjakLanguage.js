@@ -104,11 +104,11 @@ export default function AddLanguagePunyarjak() {
             className="me-2  cursor-pointer"
             onClick={() => history.push(`/punyarjak?page=${currentPage}`)}
           />
-          <div className="addPunyarjak">
+          <div className="AddAction">
             <Trans i18nKey={"news_AddLangNews"} />
           </div>
         </div>
-        <div className="addPunyarjak">
+        <div className="AddAction">
           <div className="d-none d-sm-block">
             <Trans i18nKey={"news_InputIn"} />
           </div>

@@ -745,7 +745,7 @@ const Routes = [
     type: "dharmshala-buildings",
     subPermission: WRITE,
   },
-  
+
   {
     path: "/dharmshala/info/:buildingId",
     component: lazy(() =>
@@ -870,18 +870,21 @@ const Routes = [
   {
     path: "/booking/add",
     component: lazy(() =>
-      import("../../views/dharmshala-management/dharmshala-booking/add/index.js")
+      import(
+        "../../views/dharmshala-management/dharmshala-booking/add/index.js"
+      )
     ),
     exact: true,
     type: "dharmshala-bookings",
     subPermission: WRITE,
   },
 
-
   {
     path: "/booking/edit/:bookingId",
     component: lazy(() =>
-      import("../../views/dharmshala-management/dharmshala-booking/edit/index.js")
+      import(
+        "../../views/dharmshala-management/dharmshala-booking/edit/index.js"
+      )
     ),
     exact: true,
     type: "dharmshala-bookings",
@@ -892,7 +895,7 @@ const Routes = [
   //   path: "/booking/calendar",
   //   component: lazy(() =>
   //     import("../../views/dharmshala-management/dharmshala-booking/calendar/index.js")
-    
+
   //   ),
   //   exact: true,
   //   type: "booking-info",
@@ -902,14 +905,11 @@ const Routes = [
     path: "/booking/calendar",
     component: lazy(() =>
       import("../../components/dharmshalaBooking/Calendar.js")
-    
     ),
     exact: true,
     type: "dharmshala-dashboard",
     subPermission: WRITE,
   },
-
-
 ];
 
 export { DefaultRoute, Routes, TemplateTitle };

@@ -45,11 +45,11 @@ export default function AddPunyarjak() {
             className="me-2 cursor-pointer"
             onClick={() => history.push(`/punyarjak?page=${currentPage}`)}
           />
-          <div className="addPunyarjak">
+          <div className="addAction">
             <Trans i18nKey={"add_punyarjak"} />
           </div>
         </div>
-        {/* <div className="addPunyarjak">
+        {/* <div className="AddAction">
           <Trans i18nKey={"news_InputIn"} />
           <CustomDropDown
             ItemListArray={langArray}

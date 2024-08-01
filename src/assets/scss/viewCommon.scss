@@ -391,6 +391,7 @@
         color: $font-color;
         display: flex;
         align-items: center;
+        font-weight: 600;
     }
 
     .FormikWrapper {
@@ -616,7 +617,7 @@
 //     .editNotice,
 //     .addNotification,
 //     .addProfile,
-//     .addPunyarjak,
+//     .AddAction,
 //     .editPunyarjak {
 //         color: $font-color;
 //         display: flex;
@@ -632,7 +633,7 @@
 //     }
 
 //     .addNotification-btn,
-//     .addPunyarjak-btn {
+//     .AddAction-btn {
 //         padding: 8px 20px;
 //         margin-left: 10px;
 //         font: $font-weight-bold $font-size-medium/$font-size-medium $font-family;
