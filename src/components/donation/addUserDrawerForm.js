@@ -26,6 +26,7 @@ function AddUserDrawerForm({
   showTimeInput,
   getNumber,
   addDonationUser,
+  onSuccess,
   buttonName = "",
   ...props
 }) {
@@ -42,9 +43,11 @@ function AddUserDrawerForm({
           ? categoryQueryClient.invalidateQueries(["donations"])
           : categoryQueryClient.invalidateQueries(["subscribedUser"]);
         setLoading(false);
+        onSuccess(true)
         onClose();
       } else if (data?.error) {
         setLoading(false);
+        onSuccess(false)
       }
     },
   });
@@ -78,7 +81,7 @@ function AddUserDrawerForm({
             setLoading(true);
             categoryMutation.mutate({
               email: e.email,
-              mobileNumber: e.mobile.toString(),
+              mobileNumber: e.mobile.toString().replace(new RegExp(`^${e.dialCode}`), ""),
               countryCode: e?.dialCode,
               countryName: e?.countryCode,
               name: e.name,
