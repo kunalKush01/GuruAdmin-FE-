@@ -17,7 +17,7 @@ import {
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddRoomTypeForm from "../../../../components/roomType/addForm";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
-import {RoomTypeAddWrapper} from "../../dharmshalaStyles";
+import { RoomTypeAddWrapper } from "../../dharmshalaStyles";
 
 const getLangId = (langArray, langSelection) => {
   let languageId;
@@ -36,10 +36,10 @@ const EditRoomType = () => {
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
   const searchParams = new URLSearchParams(history.location.search);
-  const name = searchParams.get("name")
-  const description = searchParams.get("description")
-  const capacity = searchParams.get("capacity")
-  const price = searchParams.get("price")
+  const name = searchParams.get("name");
+  const description = searchParams.get("description");
+  const capacity = searchParams.get("capacity");
+  const price = searchParams.get("price");
   const currentPage = searchParams.get("page");
   const currentStatus = searchParams.get("status");
   const currentFilter = searchParams.get("filter");
@@ -86,11 +86,7 @@ const EditRoomType = () => {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() =>
-              history.push(
-                `/roomtype/info?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
-              )
-            }
+            onClick={() => history.push(`/roomtype/info`)}
           />
           <div className="editEvent">
             <Trans i18nKey={"dharmshala_edit_roomtype"} />

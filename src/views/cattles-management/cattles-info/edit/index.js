@@ -134,11 +134,7 @@ const EditCattle = () => {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() =>
-              history.push(
-                `/cattle/info?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
-              )
-            }
+            onClick={() => history.push(`/cattle/info`)}
           />
           <div className="editEvent">
             <Trans i18nKey={"cattle_edit_cattle"} />

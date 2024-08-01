@@ -132,12 +132,12 @@ const DharmshalaFloorTable = ({
           className="cursor-pointer"
           onClick={() => {
             history.push(
-              `/floor/edit/${item?._id}/${item?.buildingId}/?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}&name=${item?.name}&number=${item?.number}&description=${item?.description}`
+              `/floor/edit/${item?._id}/${item?.buildingId}/&name=${item?.name}&number=${item?.number}&description=${item?.description}`
             );
           }}
         />
       ),
-      delete: (
+      delete:
         item?.roomCount === 0 ? (
           <img
             src={deleteIcon}
@@ -181,10 +181,18 @@ const DharmshalaFloorTable = ({
               });
             }}
           />
-        )
-      ),
+        ),
     }));
-  }, [data, buildingID, currentPage, currentStatus, currentFilter, deleteMutation, t, history]);
+  }, [
+    data,
+    buildingID,
+    currentPage,
+    currentStatus,
+    currentFilter,
+    deleteMutation,
+    t,
+    history,
+  ]);
 
   return (
     <DharmshalaFloorTableWrapper>

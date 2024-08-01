@@ -26,7 +26,7 @@ const AddDharmshalaFloor = () => {
     description: Yup.mixed().required("dharmshala_floor_description_required"),
     number: Yup.mixed().required("dharmshala_floor_number_required"),
     buildingId: Yup.mixed().required("dharmshala_floor_number_required"),
-    dharmshalaId: Yup.mixed().required("dharmshala_floor_number_required")
+    dharmshalaId: Yup.mixed().required("dharmshala_floor_number_required"),
   });
 
   const initialValues = {
@@ -38,7 +38,7 @@ const AddDharmshalaFloor = () => {
   };
 
   const URLParams = useParams("");
-  
+
   return (
     <DharmshalaFloorAddWrapper>
       <div className="d-flex justify-content-between align-items-center ">
@@ -46,11 +46,7 @@ const AddDharmshalaFloor = () => {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() =>
-              history.push(
-                `/floors/${URLParams.buildingId}?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
-              )
-            }
+            onClick={() => history.push(`/floors/${URLParams.buildingId}`)}
           />
           <div className="addEvent">
             <Trans i18nKey={"dharmshala_floor_add"} />

@@ -8,12 +8,14 @@ import { useHistory, useParams } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import * as Yup from "yup";
 import moment from "moment";
-import {getFloorDetail, updateFloor} from "../../../../api/dharmshala/dharmshalaInfo";
+import {
+  getFloorDetail,
+  updateFloor,
+} from "../../../../api/dharmshala/dharmshalaInfo";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddDharmshalaFloorForm from "../../../../components/dharmshalaFloor/addForm";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
 import { DharmshalaFloorAddWrapper } from "../../dharmshalaStyles";
-
 
 const getLangId = (langArray, langSelection) => {
   let languageId;
@@ -33,9 +35,9 @@ const EditFloor = () => {
 
   const searchParams = new URLSearchParams(history.location.search);
   console.log(searchParams);
-  const name = searchParams.get("name")
-  const number = searchParams.get("number")
-  const description = searchParams.get("description")
+  const name = searchParams.get("name");
+  const number = searchParams.get("number");
+  const description = searchParams.get("description");
 
   const currentPage = searchParams.get("page");
   const currentStatus = searchParams.get("status");
@@ -73,7 +75,6 @@ const EditFloor = () => {
   }, [floorDetails]);
 
   const URLParams = useParams("");
-  
 
   return (
     <DharmshalaFloorAddWrapper>
@@ -82,14 +83,10 @@ const EditFloor = () => {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() =>
-              history.push(
-                `/floors/${URLParams.buildingId}?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
-              )
-            }
+            onClick={() => history.push(`/floors/${URLParams.buildingId}`)}
           />
           <div className="editEvent">
-          <Trans i18nKey={"dharmshala_floor_edit_dharmshala"} />
+            <Trans i18nKey={"dharmshala_floor_edit_dharmshala"} />
           </div>
         </div>
         {/* <div className="editEvent">
@@ -143,7 +140,7 @@ const EditFloor = () => {
           </Row>
         </Then>
         <Else>
-        {!floorDetails.isFetching && (
+          {!floorDetails.isFetching && (
             <div className="ms-sm-3 mt-1">
               <AddDharmshalaFloorForm
                 handleSubmit={handleDharmshalaFloorUpdate}
@@ -163,4 +160,3 @@ const EditFloor = () => {
 };
 
 export default EditFloor;
-

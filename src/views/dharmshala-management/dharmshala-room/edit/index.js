@@ -8,7 +8,10 @@ import { useHistory, useParams } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import * as Yup from "yup";
 import moment from "moment";
-import {getRoomDetail,updateRoom} from "../../../../api/dharmshala/dharmshalaInfo";
+import {
+  getRoomDetail,
+  updateRoom,
+} from "../../../../api/dharmshala/dharmshalaInfo";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddRoomForm from "../../../../components/dharmshalaRoom/addForm";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
@@ -32,7 +35,7 @@ const EditRoom = () => {
 
   const searchParams = new URLSearchParams(history.location.search);
   console.log(searchParams);
-  const number = searchParams.get("number")
+  const number = searchParams.get("number");
 
   const currentPage = searchParams.get("page");
   const currentStatus = searchParams.get("status");
@@ -46,7 +49,6 @@ const EditRoom = () => {
     ["roomDetails", roomId, langSelection, selectedLang.id],
     async () => getRoomDetail(roomId)
   );
-
 
   const handleDharmshalaRoomUpdate = async (payload) => {
     return updateRoom({
@@ -67,7 +69,6 @@ const EditRoom = () => {
   }, [roomDetails]);
 
   const URLParams = useParams("");
-  
 
   return (
     <DharmshalaRoomAddWrapper>
@@ -77,9 +78,7 @@ const EditRoom = () => {
             src={arrowLeft}
             className="me-2  cursor-pointer"
             onClick={() =>
-              history.push(
-                `/room/${URLParams.floorId}/${URLParams.buildingId}?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
-              )
+              history.push(`/room/${URLParams.floorId}/${URLParams.buildingId}`)
             }
           />
           <div className="editEvent">

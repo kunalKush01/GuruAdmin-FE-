@@ -122,6 +122,9 @@ const SiderLayout = (props) => {
     ) {
       const isActive = active.startsWith(item.url);
       const isHovered = hoveredItem === item.name;
+      const children = item.children
+        ? item.children.map(getMenuItem)
+        : undefined;
 
       return {
         key: item.url,
@@ -132,8 +135,8 @@ const SiderLayout = (props) => {
             style={{ width: "16px", height: "16px" }}
           />
         ),
-        label: !collapsed && <Trans i18nKey={item.name} />,
-        children: item.children ? item.children.map(getMenuItem) : undefined,
+        label: <Trans i18nKey={item.name} />,
+        children: children,
         onClick: () => {
           if (!item.children) {
             history.push(item.url);

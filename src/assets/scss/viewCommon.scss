@@ -1208,38 +1208,40 @@
     }
 
     .ant-menu {
-        background-color: $white;
+
+        //background-color: $white;
 
         .ant-menu-item,
         .ant-menu-submenu-title {
             font-size: 14px;
-            padding-left: 10px !important;
+            //padding-left: 10px !important;
             margin: 4px 0 !important;
 
             &:hover,
             &:active {
-                background-color: $primary-color !important;
-                color: $white !important;
+                //background-color: $primary-color !important;
+                color: $primary-color !important;
             }
         }
 
+
         .ant-menu-submenu {
-            > .ant-menu-submenu-title {
-                padding-left: 10px !important; 
+            >.ant-menu-submenu-title {
+                //padding-left: 20px !important;
             }
 
-            
             .ant-menu-sub {
+
                 .ant-menu-item,
                 .ant-menu-submenu-title {
-                    padding-left: 30px !important; 
+                    padding-left: 30px !important;
                 }
             }
         }
 
         &.ant-menu-inline {
             .ant-menu-item-selected {
-                background-color: $primary-color !important;
+                //background-color: $primary-color !important;
                 color: $white !important;
             }
 
@@ -1263,8 +1265,8 @@
 
         .ant-menu-item,
         .ant-menu-submenu-title {
-            padding: 0 !important;
-            text-align: center;
+            //padding-left: 25px !important;
+            //text-align: center;
 
             .ant-menu-item-icon {
                 margin-right: 0;

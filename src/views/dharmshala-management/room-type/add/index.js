@@ -7,8 +7,7 @@ import * as Yup from "yup";
 import { createRoomType } from "../../../../api/dharmshala/dharmshalaInfo";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddRoomTypeForm from "../../../../components/roomType/addForm";
-import {RoomTypeAddWrapper} from "../../dharmshalaStyles";
-
+import { RoomTypeAddWrapper } from "../../dharmshalaStyles";
 
 const AddRoomType = () => {
   const history = useHistory();
@@ -44,11 +43,7 @@ const AddRoomType = () => {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() =>
-              history.push(
-                `/roomtype/info?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
-              )
-            }
+            onClick={() => history.push(`/roomtype/info`)}
           />
           <div className="addEvent">
             <Trans i18nKey={"dharmshala_roomtype_add"} />

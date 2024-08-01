@@ -103,11 +103,7 @@ const DharmshalaFloors = () => {
             <img
               src={arrowLeft}
               className="me-2 cursor-pointer"
-              onClick={() =>
-                history.push(
-                  `/dharmshala/info?page=${currentPage}&status=${currentStatus}&filter=${currentFilter}`
-                )
-              }
+              onClick={() => history.push(`/dharmshala/info`)}
             />
             <div className="addEvent">
               <Trans i18nKey={"dharmshala_floors_registered"} />
