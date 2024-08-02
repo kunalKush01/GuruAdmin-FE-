@@ -45,7 +45,6 @@ export default function FormWithoutFormikForBooking({
 }) {
   const { t } = useTranslation();
   const history = useHistory();
-  console.log("selected values", formik.values)
   const { SelectedMasterCategory, SelectedSubCategory, Amount } = formik.values;
   const [subLoadOption, setSubLoadOption] = useState([]);
   const { SelectedUser, SelectedCommitmentId } = formik.values;

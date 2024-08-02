@@ -167,7 +167,6 @@ export default function FormWithoutFormikForDonation({
             mobileNumber: fullPhoneNumber,
           });
           if (res.result) {
-            console.log(res);
             const userMobileNumberWithoutDialCode =
               res.result.mobileNumber.replace(dialCodeFromURL, "");
             res.result.mobileNumber = userMobileNumberWithoutDialCode;
@@ -193,7 +192,6 @@ export default function FormWithoutFormikForDonation({
       console.log("Mobile number or dial code missing from URL");
     }
   }, [mobileNumberFromURL, dialCodeFromURL, name,!dataLoad]);
-console.log(dataLoad)
   useEffect(() => {
     if (name) {
       formik.setFieldValue("donarName", decodeURIComponent(name));
@@ -203,8 +201,6 @@ console.log(dataLoad)
   //**add user drawer form */
 
   const handleCreateUser = async (payload) => {
-    console.log(payload);
-    // return;
     return createSubscribedUser(payload);
   };
 

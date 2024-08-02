@@ -21,7 +21,6 @@ const AddDharmshalaFloorForm = ({
   const [showPrompt, setShowPrompt] = useState(true);
   const [loading, setLoading] = useState(false);
   const searchParams = new URLSearchParams(history.location.search);
-  console.log(searchParams);
   const currentPage = searchParams.get("page");
   const currentStatus = searchParams.get("status");
   const currentFilter = searchParams.get("filter");
