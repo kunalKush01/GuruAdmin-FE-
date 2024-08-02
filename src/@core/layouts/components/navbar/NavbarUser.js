@@ -107,7 +107,10 @@ const NavbarUser = (props) => {
 
   return (
     <Fragment>
-      <div className="navbar-user-wrapper d-flex justify-content-between w-100 align-items-center">
+      <div
+        className="navbar-user-wrapper d-flex justify-content-between w-100 align-items-center"
+        style={{ flex: 1 }}
+      >
         {/* <div className="bookmark-wrapper d-flex align-items-center">
           <NavItem className="d-none d-lg-block">
             <NavLink to="/" className="navbar-brand">
