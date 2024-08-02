@@ -134,6 +134,7 @@ const NavbarUser = (props) => {
           className={`d-flex justify-content-end align-items-center ${
             searchBarState ? "display-none" : ""
           }`}
+          style={{ marginLeft: "auto" }}
         >
           <div className="d-flex">
             <img
@@ -189,7 +190,7 @@ const NavbarUser = (props) => {
           <ul className="nav navbar-nav align-items-center">
             <div
               className="d-flex align-items-center"
-              style={{ marginRight: "26px" }}
+              style={{ marginRight: "4px" }}
             >
               <div className="nave-para">
                 <div
