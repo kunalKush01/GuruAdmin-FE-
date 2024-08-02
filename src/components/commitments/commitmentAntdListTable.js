@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import moment from "moment/moment";
 import numberToWords from "number-to-words";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -119,7 +119,17 @@ export default function CommitmentAntdListTable(
       render: (text) => text || "-",
     };
   });
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   const columns = [
     {
       title: t("commitment_Username"),
@@ -196,14 +206,14 @@ export default function CommitmentAntdListTable(
       dataIndex: "commitmentId",
       width: 170,
     },
-    {
-      title: t("dashboard_Recent_DonorReceipt"),
-      render: (text) => text,
-      dataIndex: "receipt",
-      key: "receipt",
-      center: true,
-      width: 150,
-    },
+    // {
+    //   title: t("dashboard_Recent_DonorReceipt"),
+    //   render: (text) => text,
+    //   dataIndex: "receipt",
+    //   key: "receipt",
+    //   center: true,
+    //   width: 150,
+    // },
     {
       title: t("created_by"),
       render: (text) => text,
@@ -222,7 +232,7 @@ export default function CommitmentAntdListTable(
     {
       title: t("Actions"),
       key: "actions",
-      fixed: "right",
+      fixed:!isMobile &&"right",
       width: "180px",
       render: (text, record) => record.actions,
     },
@@ -320,21 +330,6 @@ export default function CommitmentAntdListTable(
             {item?.commitmentId}
           </div>
         ),
-        receipt: (
-          <img
-            src={receiptIcon}
-            width={25}
-            className={`cursor-pointer ${
-              item?.amount != item?.amount - item?.paidAmount
-                ? "cursor-pointer"
-                : " opacity-50 cursor-not-allowed"
-            }`}
-            onClick={() => {
-              item?.amount != item?.amount - item?.paidAmount &&
-                receiptMutation.mutate(item?._id);
-            }}
-          />
-        ),
         createdBy: ConverFirstLatterToCapital(item?.createdBy.name ?? ""),
         payDonation:
           item?.paidStatus !== "completed" ? (
@@ -370,6 +365,19 @@ export default function CommitmentAntdListTable(
         ...customFieldData,
         actions: (
           <div className="actions-column">
+            <img
+              src={receiptIcon}
+              width={25}
+              className={`cursor-pointer ${
+                item?.amount != item?.amount - item?.paidAmount
+                  ? "cursor-pointer"
+                  : " opacity-50 cursor-not-allowed"
+              }`}
+              onClick={() => {
+                item?.amount != item?.amount - item?.paidAmount &&
+                  receiptMutation.mutate(item?._id);
+              }}
+            />
             {(allPermissions?.name === "all" ||
               subPermission?.includes("EDIT") ||
               financeReport) && (
