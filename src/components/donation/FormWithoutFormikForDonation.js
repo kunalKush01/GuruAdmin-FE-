@@ -56,7 +56,10 @@ export default function FormWithoutFormikForDonation({
   const { SelectedUser, SelectedCommitmentId } = formik.values;
   const [commitmentIdByUser, setCommitmentIdByUser] = useState([]);
   const [noUserFound, setNoUserFound] = useState(false);
-
+  const [dataLoad, setDataLoad] = useState(false);
+  const handleDataLoad = (val) => {
+    setDataLoad(val)
+  };
   const loadOption = async (name) => {
     const res = await findAllUsersByName({ name: name });
     return res.results;
@@ -91,6 +94,7 @@ export default function FormWithoutFormikForDonation({
         });
         if (res.result) {
           formik.setFieldValue("SelectedUser", res.result);
+          setNoUserFound(false);
         } else {
           setNoUserFound(true);
         }
@@ -101,7 +105,7 @@ export default function FormWithoutFormikForDonation({
     } else {
       setNoUserFound(false);
     }
-  }, [formik?.values?.Mobile]);
+  }, [formik?.values?.Mobile,dataLoad]);
 
   useUpdateEffect(() => {
     const user = formik?.values?.SelectedUser;
@@ -149,10 +153,6 @@ export default function FormWithoutFormikForDonation({
   const dialCodeFromURL = searchParams.get("dialCode");
   const mobileNumberFromURL = searchParams.get("mobileNumber");
   const name = searchParams.get("name");
-  const [dataLoad, setDataLoad] = useState(true);
-  const handleDataLoad = (val) => {
-    setDataLoad(val)
-  };
   useEffect(() => {
     if (mobileNumberFromURL && dialCodeFromURL) {
       const fullPhoneNumber = `${dialCodeFromURL}${mobileNumberFromURL}`;
@@ -191,7 +191,7 @@ export default function FormWithoutFormikForDonation({
     } else {
       console.log("Mobile number or dial code missing from URL");
     }
-  }, [mobileNumberFromURL, dialCodeFromURL, name,!dataLoad]);
+  }, [mobileNumberFromURL, dialCodeFromURL, name]);
   useEffect(() => {
     if (name) {
       formik.setFieldValue("donarName", decodeURIComponent(name));
