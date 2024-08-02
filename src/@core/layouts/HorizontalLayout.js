@@ -297,7 +297,7 @@ const SiderLayout = (props) => {
                 height: 64,
               }}
             />
-            <div style={{ display: "flex", alignItems: "center" }}>
+            <div style={{ display: "flex", alignItems: "center", flex: 1 }}>
               {navbar ? navbar : <UserDropdown />}
             </div>
           </Header>
