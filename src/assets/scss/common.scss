@@ -117,7 +117,7 @@
     }
 
     hr {
-        margin-top: -0.52rem;
+        margin-top: -0.42rem;
         height: 1.5px;
         color: $font-color;
         opacity: 25%;
@@ -125,7 +125,7 @@
     }
 
     .allTabBox {
-        margin-left: 2.3rem;
+        // margin-left: 2.3rem;
         overflow-x: scroll;
 
         ::-webkit-scrollbar {
@@ -135,6 +135,16 @@
         ::-webkit-scrollbar-thumb {
             background-color: gray;
             border-radius: 25px;
+        }
+
+        .activeTab {
+            z-index: 2;
+            border-bottom: 5px solid;
+            border-color: #ff8744;
+            border-radius: 5px;
+            color: #583703;
+            opacity: 100%;
+            font-weight: bold;
         }
     }
 
