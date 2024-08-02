@@ -91,6 +91,13 @@ export default function DonationForm({
               isArticle: toggleState,
               isGovernment:
                 !payDonation && e?.isGovernment === "YES" ? true : false,
+              modeOfPayment: e?.modeOfPayment?.value,
+              bankName: e?.bankName?.value,
+              chequeNum: e?.chequeNum,
+              chequeDate: e?.chequeDate,
+              chequeStatus: e?.chequeStatus?.value,
+              bankNarration: e?.bankNarration,
+              donationRemarks: e?.donationRemarks,
               customFields: transformedCustomFields,
             });
           }}
