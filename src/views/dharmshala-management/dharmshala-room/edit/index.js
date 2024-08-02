@@ -34,7 +34,6 @@ const EditRoom = () => {
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
   const searchParams = new URLSearchParams(history.location.search);
-  console.log(searchParams);
   const number = searchParams.get("number");
 
   const currentPage = searchParams.get("page");

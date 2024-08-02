@@ -549,7 +549,6 @@ const Calendar = () => {
     });
 
     const totalGuests = eventsOnDate.reduce((total, event) => {
-      console.log("event guests", event.guests)
       return total + event.guests;
     }, 0);
     return totalGuests;
@@ -646,7 +645,6 @@ const Calendar = () => {
   
   //**Extend Your booking */
   const handleSuccess = (success) => {
-    console.log(success);
     setIsBookingResizeSuccess(success);
   };
   const resizeEvent = useCallback(

@@ -409,7 +409,6 @@ function AddUserDrawerForm({
                           width
                           onChange={(val) => {
                             if (val) {
-                              console.log(val);
                               formik.setFieldValue("country", val);
                               formik.setFieldValue("pincode", "");
                               formik.setFieldValue("pin", "");
@@ -435,7 +434,6 @@ function AddUserDrawerForm({
                           disabled={!formik.values.country}
                           onChange={(val) => {
                             if (val) {
-                              console.log(val);
                               formik.setFieldValue("pincode", "");
                               formik.setFieldValue("state", val);
                               formik.setFieldValue("city", "");
@@ -457,7 +455,6 @@ function AddUserDrawerForm({
                           valueKey="id"
                           onChange={(val) => {
                             if (val) {
-                              console.log(val);
                               formik.setFieldValue("pincode", "");
                               formik.setFieldValue("city", val);
                             }
