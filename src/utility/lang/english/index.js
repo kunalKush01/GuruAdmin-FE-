@@ -114,7 +114,7 @@ export const englishContent = {
   article_donation: "Article Donation",
   news_delete: "Delete News",
   news_sure: "Are you sure you want to permanently delete this news?",
-  news_not_found: "News Absent  ",
+  news_not_found: "No News Record Found",
   news_not_click_add_news: "To add a new news article, click 'Add News'.",
 
   // All static content of Events
@@ -132,18 +132,19 @@ export const englishContent = {
   events_endDate_required: "End date is required",
   events_delete: "Delete Event",
   events_sure: "Are you sure you want to permanently delete this event?",
-  events_not_found: "Events Absent",
+  events_not_found: "No Event Record Found ",
   events_not_click_add_events: "To introduce a new event, click 'Add Event'",
 
   // All static content of Dharmshala
   dharmshala_floors_registered: "Floors",
   dharmshala_bookings_registered: "Registered Bookings",
-  dharmshala_bookings_requested:"Requests",
+  dharmshala_bookings_requested: "Requests",
   dharmshala_booking_delete: "Delete Booking",
-  dharmshala_booking_delete_sure:"Are you sure you want to delete this Booking?",
-  roomtypes_available:"Room Types Available",
-  total_rooms_available:"Total Rooms Available",
-  total_bookings:"Total Bookings",
+  dharmshala_booking_delete_sure:
+    "Are you sure you want to delete this Booking?",
+  roomtypes_available: "Room Types Available",
+  total_rooms_available: "Total Rooms Available",
+  total_bookings: "Total Bookings",
   dharmshala_management: "Dharmshala",
   dharmshala_registered: "Registered Dharmshalas",
   building_registered: "Buildings",
@@ -153,7 +154,7 @@ export const englishContent = {
   dharmshala_roomtypes: "Room Types",
   dharmshala_roomtype_add: "Add Room Type",
   loading: "Loading",
-  error_loading_room_types:"Error Loading Room Types",
+  error_loading_room_types: "Error Loading Room Types",
   roomtype_name: "Name",
   dharmshala_roomtype_description: "Description",
   dharmshala_roomtype_capacity: "Capacity",
@@ -186,7 +187,8 @@ export const englishContent = {
   dharmshala_delete: "Delete Dharmshala",
   dharmshala_delete_sure: "Are you sure you want to delete this Dharmshala?",
   dharmshala_building_delete: "Delete Building",
-  dharmshala_building_delete_sure: "Are you sure you want to delete this Building?",
+  dharmshala_building_delete_sure:
+    "Are you sure you want to delete this Building?",
   dharmshala_booking_add: "Book",
   dharmshala_booking_calendar: "Booking Calendar",
   dharmshala_floor_add: "Add Floor",
@@ -196,7 +198,6 @@ export const englishContent = {
   dharmshala_floor_edit_dharmshala: "Edit Floor",
   dharmshala_floor_delete: "Delete Floor",
   dharmshala_floor_delete_sure: "Are you sure you want to delete this Floor?",
-
 
   dharmshala_booking_id: "Booking ID",
   dharmshala_booking_start_date: "Booking Start Date",
@@ -213,29 +214,29 @@ export const englishContent = {
   booking_room_deleted_message: "Room has been deleted successfully",
   requested: "Requested",
   accepted: "Accepted",
-  reserved:"Reserved",
+  reserved: "Reserved",
   confirmed: "Confirmed",
   checkedIn: "Checked In",
-  completed:"Completed",
-  cancelled:"Cancelled",
+  completed: "Completed",
+  cancelled: "Cancelled",
   maintenance: "Maintenance",
-  cancel_booking:"Cancel Booking?",
-  cancel_booking_sure:"Are you sure you want to cancel this Booking?",
-  undo_cancel:"No, Go Back",
-  confirm_cancel:"Yes, Cancel",
+  cancel_booking: "Cancel Booking?",
+  cancel_booking_sure: "Are you sure you want to cancel this Booking?",
+  undo_cancel: "No, Go Back",
+  confirm_cancel: "Yes, Cancel",
 
   dharmshala_rooms_registered: "Rooms",
   dharmshala_room_add: "Add Room",
   dharmshala_room_number: "Room Number",
-  dharmshala_room_room_type:"Select Room Type", 
+  dharmshala_room_room_type: "Select Room Type",
   dharmshala_room_description: "Description",
   dharmshala_room_location: "Location",
   dharmshala_room_edit: "Edit Room",
   dharmshala_room_delete: "Delete Room",
   dharmshala_room_delete_sure: "Are you sure you want to delete this Room?",
   room_number: "Room Number",
-  directBookingAvailable:"Direct Booking Available",
-  room_type:"Room Type",
+  directBookingAvailable: "Direct Booking Available",
+  room_type: "Room Type",
 
   // All static content of Pashudhan
   cattles_management: "Gaushala",
@@ -414,7 +415,7 @@ export const englishContent = {
 
   notices_delete: "Delete Notice",
   notices_sure: "Are you sure you want to permanently delete this notice ? ",
-  notices_not_found: "Notices Missing  ",
+  notices_not_found: "No Notices Found",
   notices_not_click_add_notices:
     "To include a new notice, simply click on 'Add Notice'.",
 
@@ -479,7 +480,7 @@ export const englishContent = {
 
   expence_delete: "Delete Expense",
   expence_sure: "Are you sure you want to permanently delete this expense ? ",
-  expence_not_found: "Expenses Not Found  ",
+  expence_not_found: "No Expenses Found ",
   expence_not_click_add_expence:
     "To record new expenses, click on 'Add Expenses'.",
 
@@ -538,7 +539,7 @@ export const englishContent = {
   logData_createdAmount: "Created Amount",
   logData_editedAmount: "Edited Amount",
 
-  donation_box_not_found: "Donation Boxes Missing",
+  donation_box_not_found: "No Donation Box Collection Record Found",
   donation_box_not_click_add_donation_box:
     "To introduce a new donation box, just click 'Add Collection'",
 
@@ -672,7 +673,7 @@ export const englishContent = {
   username: "The username must only consist of letters of the alphabet",
   punyarjak_sure:
     "Are you sure you want to permanently delete this punyarjak ? ",
-  punyarjak_not_found: "Punyarjak Users Absent  ",
+  punyarjak_not_found: "No Punyarjak Record Found ",
   punyarjak_not_click_add:
     "To include a new Punyarjak user, click 'Add Punyarjak'.",
 
@@ -738,17 +739,16 @@ export const englishContent = {
   placeHolder_building_location: "Enter Building Location",
 
   placeHolder_dharmshala_floor_name: "Enter Floor Name",
-  placeHolder_dharmshala_floor_description:
-    "Enter Floor Description",
+  placeHolder_dharmshala_floor_description: "Enter Floor Description",
   placeHolder_dharmshala_floor_number: "Enter Floor Number",
 
   placeHolder_booking_id: "Enter Booking ID",
   placeHolder_booking_start_date: "Enter Booking Start Date",
   placeHolder_booking_end_date: "Enter Booking End Date",
-  placeHolder_booking_count:"Enter Count",
-  placeHolder_booking_status:"Enter Booking Status",
-  placeHolder_early_check_in:"Early Check In Required?",
-  placeHolder_late_check_out:"Late Check Out Required?",
+  placeHolder_booking_count: "Enter Count",
+  placeHolder_booking_status: "Enter Booking Status",
+  placeHolder_early_check_in: "Early Check In Required?",
+  placeHolder_late_check_out: "Late Check Out Required?",
 
   // All search static keys
   search_notification: "Search All Notifications",
@@ -765,8 +765,8 @@ export const englishContent = {
   search_dharmshala: "Search All Dharmshalas",
   search_bookings: "Search By Booking Id",
   search_roomtypes: "Search All Room Types",
-  search_buildings:"Search All Buildings",
-  search_feedback:"Search All Feedback",
+  search_buildings: "Search All Buildings",
+  search_feedback: "Search All Feedback",
   search_punyarjak: "Search All Punyarjak",
   search_donation_box_collection: "Search All Donation Box",
   search_commitment: "Search All Commitments",
