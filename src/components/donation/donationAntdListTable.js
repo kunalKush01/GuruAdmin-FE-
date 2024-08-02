@@ -19,7 +19,7 @@ import whatsappIcon from "../../assets/images/icons/whatsappIcon.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { EDIT } from "../../utility/permissionsVariable";
 import EditDonation from "./editDonation";
-import '../../assets/scss/common.scss'
+import "../../assets/scss/common.scss";
 
 export default function DonationANTDListTable(
   {
@@ -187,6 +187,55 @@ export default function DonationANTDListTable(
       render: (text) => text,
       width: 150,
     },
+    {
+      title: t("mode_of_payment"),
+      dataIndex: "modeOfPayment",
+      key: "modeOfPayment",
+      render: (text) => text,
+      width: 150,
+    },
+    {
+      title: t("bank_name"),
+      dataIndex: "bankName",
+      key: "bankName",
+      render: (text) => text,
+      width: 180,
+    },
+    {
+      title: t("cheque_no"),
+      dataIndex: "chequeNum",
+      key: "chequeNum",
+      render: (text) => text,
+      width: 180,
+    },
+    {
+      title: t("cheque_date"),
+      dataIndex: "chequeDate",
+      key: "chequeDate",
+      render: (text) => text,
+      width: 180,
+    },
+    {
+      title: t("cheque_status"),
+      dataIndex: "chequeStatus",
+      key: "chequeStatus",
+      render: (text) => text,
+      width: 220,
+    },
+    {
+      title: t("bank_narration"),
+      dataIndex: "bankNarration",
+      key: "bankNarration",
+      render: (text) => text,
+      width: 180,
+    },
+    // {
+    //   title: t("donation_remark"),
+    //   dataIndex: "donationRemarks",
+    //   key: "donationRemarks",
+    //   render: (text) => text,
+    //   width: 180,
+    // },
     ...customColumns,
     {
       title: t("dashboard_Recent_DonorReceipt"),
@@ -227,6 +276,7 @@ export default function DonationANTDListTable(
         }
         return acc;
       }, {});
+      console.log(item.receiptLink)
       return {
         id: idx + 1,
         username: (
@@ -277,6 +327,12 @@ export default function DonationANTDListTable(
             : `${item.commitmentId}`
           : "_",
         createdBy: ConverFirstLatterToCapital(item?.createdBy?.name ?? "-"),
+        modeOfPayment: ConverFirstLatterToCapital(item?.paymentMethod ?? "-"),
+        bankName: ConverFirstLatterToCapital(item?.bankName ?? "-"),
+        chequeNum: ConverFirstLatterToCapital(item?.chequeNum ?? "-"),
+        chequeDate: moment(item.chequeDate).format(" DD MMM YYYY,hh:mm A"),
+        chequeStatus: ConverFirstLatterToCapital(item?.chequeStatus ?? "-"),
+        bankNarration: ConverFirstLatterToCapital(item?.bankNarration ?? "-"),
         receipt: (
           <div className="d-flex align-items-center">
             {isLoading === item?._id ? (
@@ -357,7 +413,7 @@ export default function DonationANTDListTable(
   return (
     <div>
       <Table
-      className="donationListTable"
+        className="donationListTable"
         columns={columns}
         dataSource={Donatio_data}
         scroll={{
