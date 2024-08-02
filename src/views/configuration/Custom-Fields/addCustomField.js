@@ -113,7 +113,6 @@ const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
       ],
     };
     if (activeTab == "Donation") {
-      console.log(payload)
       createDonationCustomFields(payload)
         .then(() => {
           Swal.fire({

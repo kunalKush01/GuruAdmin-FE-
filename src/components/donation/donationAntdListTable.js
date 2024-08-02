@@ -36,7 +36,6 @@ export default function DonationANTDListTable(
   },
   args
 ) {
-  // console.log(data)
   const { t } = useTranslation();
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
