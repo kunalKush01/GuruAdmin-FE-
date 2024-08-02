@@ -1653,7 +1653,7 @@
         border: none !important;
         background-color: $secondary-color !important;
         font: $font-weight-normal $font-size-small $font-family;
-        border-radius: 20px;
+        // border-radius: 20px;
     }
 
     .autocomplete-dropdown-container {
@@ -2872,4 +2872,10 @@
 
 .ant-layout-content {
     padding: 5px !important
+}
+.ant-drawer-content-wrapper{
+    width: 460px !important;
+    // margin-top: 65px !important;
+    // height: 650px !important;
+
 }
