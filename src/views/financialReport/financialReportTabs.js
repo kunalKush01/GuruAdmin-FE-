@@ -13,7 +13,7 @@ const FinancialReportTabs = ({ setActive, active, setPagination }) => {
     { id: 4, name: t("report_donation_box") },
   ];
   return (
-    <div className="financialreporttabswrapper">
+    <div className="categorytabswrapper">
       <div className="d-flex flex-lg-wrap gap-3 mt-2 allTabBox ">
         {FinancialTabs.map((item, idx) => {
           return (
