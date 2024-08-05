@@ -131,10 +131,10 @@ export default function FormWithoutFormikForCommitment({
           />
           {formik.errors.Mobile && (
             <div
-              style={{
-                height: "20px",
-                font: "normal normal bold 11px/33px Noto Sans",
-              }}
+            //   style={{
+            //     height: "20px",
+            //     font: "normal normal bold 11px/33px Noto Sans",
+            //   }}
             >
               {formik.errors.Mobile && (
                 <div className="text-danger">
@@ -324,10 +324,10 @@ export default function FormWithoutFormikForCommitment({
                   {formik.errors.customFields &&
                     formik.errors.customFields[field.fieldName] && (
                       <div
-                        style={{
-                          height: "20px",
-                          font: "normal normal bold 11px/33px Noto Sans",
-                        }}
+                      //     style={{
+                      //       height: "20px",
+                      //       font: "normal normal bold 11px/33px Noto Sans",
+                      //     }}
                       >
                         <div className="text-danger">
                           <Trans
@@ -367,7 +367,7 @@ export default function FormWithoutFormikForCommitment({
                   }
                   required={field.isRequired}
                   placeholder={`Enter ${field.fieldName}`}
-                  />
+                />
               )}
             </Col>
           );

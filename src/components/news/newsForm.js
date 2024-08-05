@@ -197,10 +197,10 @@ export default function NewsForm({
                     />
                     {formik.errors.tagsInit && (
                       <div
-                        style={{
-                          height: "20px",
-                          font: "normal normal bold 11px/33px Noto Sans",
-                        }}
+                      // style={{
+                      //   height: "20px",
+                      //   font: "normal normal bold 11px/33px Noto Sans",
+                      // }}
                       >
                         {formik.errors.tagsInit && (
                           <div className="text-danger">
