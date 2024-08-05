@@ -23,7 +23,6 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
 import { TextArea } from "../partials/CustomTextArea";
 import AsyncSelectField from "../partials/asyncSelectField";
-import CustomRadioButton from "../partials/customRadioButton";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import FormikCardDropdown from "../partials/FormikCardDropdown";
@@ -58,7 +57,7 @@ export default function FormWithoutFormikForDonation({
   const [noUserFound, setNoUserFound] = useState(false);
   const [dataLoad, setDataLoad] = useState(false);
   const handleDataLoad = (val) => {
-    setDataLoad(val)
+    setDataLoad(val);
   };
   const loadOption = async (name) => {
     const res = await findAllUsersByName({ name: name });
@@ -105,7 +104,7 @@ export default function FormWithoutFormikForDonation({
     } else {
       setNoUserFound(false);
     }
-  }, [formik?.values?.Mobile,dataLoad]);
+  }, [formik?.values?.Mobile, dataLoad]);
 
   useUpdateEffect(() => {
     const user = formik?.values?.SelectedUser;
@@ -197,9 +196,59 @@ export default function FormWithoutFormikForDonation({
       formik.setFieldValue("donarName", decodeURIComponent(name));
     }
   }, [name]);
+  const bankOptions = [
+    { value: "State Bank of India", label: "State Bank of India" },
+    { value: "ICICI Bank", label: "ICICI Bank" },
+    { value: "HDFC Bank", label: "HDFC Bank" },
+    { value: "Axis Bank", label: "Axis Bank" },
+    { value: "Punjab National Bank", label: "Punjab National Bank" },
+    { value: "Bank of Baroda", label: "Bank of Baroda" },
+    { value: "Canara Bank", label: "Canara Bank" },
+    { value: "Yes Bank", label: "Yes Bank" },
+    { value: "Kotak Mahindra Bank", label: "Kotak Mahindra Bank" },
+    { value: "Union Bank of India", label: "Union Bank of India" },
+    { value: "IDFC FIRST Bank", label: "IDFC FIRST Bank" },
+    { value: "Bank of India", label: "Bank of India" },
+    { value: "Central Bank of India", label: "Central Bank of India" },
+    { value: "IndusInd Bank", label: "IndusInd Bank" },
+    { value: "DCB Bank", label: "DCB Bank" },
+    {
+      value: "Abhyudaya Cooperative Bank",
+      label: "Abhyudaya Cooperative Bank",
+    },
+    { value: "Allahabad Bank", label: "Allahabad Bank" },
+    { value: "Andhra Bank", label: "Andhra Bank" },
+    { value: "Bandhan Bank", label: "Bandhan Bank" },
+    { value: "Bank of Maharashtra", label: "Bank of Maharashtra" },
+    { value: "Bharatiya Mahila Bank", label: "Bharatiya Mahila Bank" },
+    { value: "British Bank", label: "British Bank" },
+    { value: "Deutsche Bank", label: "Deutsche Bank" },
+    { value: "Development Credit Bank", label: "Development Credit Bank" },
+    { value: "Federal Bank", label: "Federal Bank" },
+    { value: "Indian Bank", label: "Indian Bank" },
+    { value: "Indian Overseas Bank", label: "Indian Overseas Bank" },
+    { value: "Jammu and Kashmir Bank", label: "Jammu and Kashmir Bank" },
+    { value: "Karur Vysya Bank", label: "Karur Vysya Bank" },
+    { value: "Lakshmi Vilas Bank", label: "Lakshmi Vilas Bank" },
+    {
+      value: "Madhya Pradesh Gramin Bank",
+      label: "Madhya Pradesh Gramin Bank",
+    },
+    { value: "Mumbai Bank", label: "Mumbai Bank" },
+    { value: "Oriental Bank of Commerce", label: "Oriental Bank of Commerce" },
+    { value: "Post Office Bank", label: "Post Office Bank" },
+    { value: "RBL Bank", label: "RBL Bank" },
+    { value: "Saraswat Bank", label: "Saraswat Bank" },
+    { value: "South Indian Bank", label: "South Indian Bank" },
+    { value: "Standard Chartered Bank", label: "Standard Chartered Bank" },
+    { value: "Syndicate Bank", label: "Syndicate Bank" },
+    { value: "UCO Bank", label: "UCO Bank" },
+    { value: "United Bank of India", label: "United Bank of India" },
+    { value: "Vijaya Bank", label: "Vijaya Bank" },
+    { value: "Yes Bank", label: "Yes Bank" },
+  ];
 
   //**add user drawer form */
-
   const handleCreateUser = async (payload) => {
     return createSubscribedUser(payload);
   };
@@ -300,10 +349,7 @@ export default function FormWithoutFormikForDonation({
                 <div className="addUser">
                   {" "}
                   <Trans i18nKey={"add_user_donation"} />{" "}
-                  <span
-                    className="cursor-pointer"
-                    onClick={showDrawer}
-                  >
+                  <span className="cursor-pointer" onClick={showDrawer}>
                     <Trans i18nKey={"add_user"} />
                   </span>
                 </div>
@@ -428,6 +474,92 @@ export default function FormWithoutFormikForDonation({
                   (e.target.value = e.target.value?.toLocaleString("en-IN"))
                 }
                 required
+              />
+            </Col>
+            <Col xs={12} sm={6} lg={3}>
+              <FormikCustomReactSelect
+                labelName={t("mode_of_payment")}
+                name="modeOfPayment"
+                loadOptions={[
+                  { value: "", label: "Select Option" },
+                  { value: "Cash", label: "Cash" },
+                  { value: "UPI", label: "UPI" },
+                  { value: "Cheque", label: "Cheque" },
+                  { value: "Credit Card", label: "Credit Card" },
+                  { value: "Debit Card", label: "Debit Card" },
+                  { value: "Bank Transfer", label: "Bank Transfer" },
+                ]}
+                width
+              />
+            </Col>
+            <Col xs={12} sm={6} lg={3}>
+              <FormikCustomReactSelect
+                labelName={t("bank_name")}
+                name="bankName"
+                loadOptions={bankOptions}
+                width
+              />
+            </Col>
+            {formik.values.modeOfPayment &&
+              formik.values.modeOfPayment["value"] == "Cheque" && (
+                <>
+                  <Col xs={12} sm={6} lg={3}>
+                    <CustomTextField
+                      type="text"
+                      label={t("cheque_no")}
+                      placeholder={t("enter_cheque_no")}
+                      name="chequeNum"
+                    />
+                  </Col>
+                  <Col xs={12} sm={6} lg={3}>
+                    <label style={{ fontSize: "15px" }}>
+                      {t("cheque_date")}
+                    </label>
+                    <DatePicker
+                      id="datePickerANTD"
+                      format="YYYY-MM-DD"
+                      onChange={(date) => {
+                        if (date) {
+                          formik.setFieldValue(
+                            "chequeDate",
+                            date.format("YYYY-MM-DD")
+                          );
+                        } else {
+                          formik.setFieldValue("chequeDate", null);
+                        }
+                      }}
+                    />
+                  </Col>
+                  <Col xs={12} sm={6} lg={3}>
+                    <FormikCustomReactSelect
+                      labelName={t("cheque_status")}
+                      name="chequeStatus"
+                      loadOptions={[
+                        { value: "", label: "Select Option" },
+                        { value: "Pending", label: "Pending" },
+                        { value: "Cleared", label: "Cleared" },
+                        { value: "Rejected", label: "Rejected" },
+                        { value: "Returned", label: "Returned" },
+                      ]}
+                      width
+                    />
+                  </Col>
+                </>
+              )}
+            <Col xs={12} sm={6} lg={3}>
+              <CustomTextField
+                type="text"
+                label={t("bank_narration")}
+                placeholder={t("enter_bank_narration")}
+                name="bankNarration"
+              />
+            </Col>
+            <Col xs={12}>
+              <TextArea
+                name="donationRemarks"
+                placeholder={t("Enter Remarks here")}
+                label={t("Remarks")}
+                rows="6"
               />
             </Col>
             {customFieldsList.map((field) => {

@@ -285,7 +285,7 @@ function AddUserDrawerForm({
                           <div
                             style={{
                               height: "20px",
-                              font: "normal normal bold 11px/33px Noto Sans",
+                              font: "normal normal bold 11px Noto Sans",
                             }}
                           >
                             {formik.errors.mobile && (
@@ -500,7 +500,7 @@ function AddUserDrawerForm({
                   {loading ? (
                     <Button
                       color="primary"
-                      className="add-trust-btn"
+                      className="add-trust-btn mt-3"
                       style={{
                         borderRadius: "10px",
                         padding: "5px 40px",
@@ -513,7 +513,7 @@ function AddUserDrawerForm({
                   ) : (
                     <Button
                       color="primary"
-                      className="addAction-btn "
+                      className="addAction-btn mt-3"
                       type="submit"
                       style={{ width: "100%" }}
                     >
