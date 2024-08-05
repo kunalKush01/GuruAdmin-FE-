@@ -34,7 +34,6 @@ const EditFloor = () => {
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
   const searchParams = new URLSearchParams(history.location.search);
-  console.log(searchParams);
   const name = searchParams.get("name");
   const number = searchParams.get("number");
   const description = searchParams.get("description");

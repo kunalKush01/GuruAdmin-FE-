@@ -74,8 +74,6 @@ const DharmshalaRoomTable = ({
     },
   ];
   const DharmshalasRoom = useMemo(() => {
-    console.log("floor id is", floorId);
-    console.log("building Id", buildingId);
     return data?.map((item, idx) => {
       return {
         id: idx + 1,
