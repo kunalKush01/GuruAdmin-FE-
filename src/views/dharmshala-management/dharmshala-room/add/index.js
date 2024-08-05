@@ -12,7 +12,6 @@ const AddDharmshalaRoom = () => {
   const history = useHistory();
   const { floorId } = useParams();
   const { buildingId } = useParams();
-  console.log("building id", buildingId);
   const trustId = localStorage.getItem("trustId");
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
