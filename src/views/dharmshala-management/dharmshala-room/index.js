@@ -26,8 +26,6 @@ const DharmshalaRooms = () => {
   const history = useHistory();
   const { floorId } = useParams();
   const { buildingId } = useParams();
-  console.log("hello from rooms list page, floor id is: ", floorId);
-  console.log("hello from rooms list page, building id is: ", buildingId);
   const { t } = useTranslation();
   const importFileRef = useRef();
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -86,7 +84,6 @@ const DharmshalaRooms = () => {
 
   const isMobileView = window.innerWidth <= 784;
 
-  console.log("dharmshala room list", dharmshalaRoomListData);
   const URLParams = useParams("");
   const queryClient = useQueryClient();
   return (
