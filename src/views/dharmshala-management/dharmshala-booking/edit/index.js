@@ -72,13 +72,6 @@ const AddDharmshalaBooking = (props) => {
     }
   }, [props.location.state]);
 
-  console.log("details room",props.location.state.roomId.roomNumber)
-  console.log("details roomtype",props.location.state.roomTypeId)
-  console.log("details floor",props.location.state.roomId.floorId)
-  console.log("details building",props.location.state.roomId.buildingId)
-
-
-
   useEffect(() => {
       setMobile(auth.userDetail?.mobileNumber ?? "");
       setGuestName(auth.userDetail?.name ?? "");
@@ -279,8 +272,6 @@ const AddDharmshalaBooking = (props) => {
         status: 'accepted', 
         totalCost: totalAmount, 
       });
-      console.log("1 ---------", updatedBooking)
-      console.log("2 ---------", bookingId)
       
 
       if (updatedBooking) {
