@@ -117,7 +117,7 @@
     }
 
     hr {
-        margin-top: -0.52rem;
+        margin-top: -0.42rem;
         height: 1.5px;
         color: $font-color;
         opacity: 25%;
@@ -125,7 +125,7 @@
     }
 
     .allTabBox {
-        margin-left: 2.3rem;
+        // margin-left: 2.3rem;
         overflow-x: scroll;
 
         ::-webkit-scrollbar {
@@ -135,6 +135,16 @@
         ::-webkit-scrollbar-thumb {
             background-color: gray;
             border-radius: 25px;
+        }
+
+        .activeTab {
+            z-index: 2;
+            border-bottom: 5px solid;
+            border-color: #ff8744;
+            border-radius: 5px;
+            color: #583703;
+            opacity: 100%;
+            font-weight: bold;
         }
     }
 
@@ -1653,7 +1663,7 @@
         border: none !important;
         background-color: $secondary-color !important;
         font: $font-weight-normal $font-size-small $font-family;
-        border-radius: 20px;
+        // border-radius: 20px;
     }
 
     .autocomplete-dropdown-container {
@@ -2695,13 +2705,13 @@
 }
 
 .masterDataList_sticky-header {
-    position: fixed;
-    top: 130px !important;
-    left: 0 !important;
+    //position: fixed;
+    //top: 130px !important;
+    //left: 0 !important;
     width: 100%;
     background-color: #fafafa;
     z-index: 1000;
-    padding: 20px 50px 10px 30px;
+    //padding: 20px 50px 10px 30px;
 
     @media (max-width: 768px) {
         top: 75px !important;
@@ -2876,4 +2886,10 @@
 
 .ant-layout-content {
     padding: 5px !important
+}
+.ant-drawer-content-wrapper{
+    width: 460px !important;
+    // margin-top: 65px !important;
+    // height: 650px !important;
+
 }
