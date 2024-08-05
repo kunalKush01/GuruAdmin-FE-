@@ -273,7 +273,7 @@ export default function FormWithoutFormikForDonation({
                 <div
                   style={{
                     height: "20px",
-                    font: "normal normal bold 11px/33px Noto Sans",
+                    font: "normal normal bold 11px Noto Sans",
                   }}
                 >
                   {formik.errors.Mobile && (
@@ -302,11 +302,6 @@ export default function FormWithoutFormikForDonation({
                   <Trans i18nKey={"add_user_donation"} />{" "}
                   <span
                     className="cursor-pointer"
-                    // onClick={() =>
-                    //   history.push(
-                    //     `/add-user?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}&redirect=donation&dialCode=${formik.values.dialCode}&mobileNumber=${formik.values.Mobile}`
-                    //   )
-                    // }
                     onClick={showDrawer}
                   >
                     <Trans i18nKey={"add_user"} />
@@ -483,7 +478,7 @@ export default function FormWithoutFormikForDonation({
                           <div
                             style={{
                               height: "20px",
-                              font: "normal normal bold 11px/33px Noto Sans",
+                              font: "normal normal bold 11px Noto Sans",
                             }}
                           >
                             <div className="text-danger">
