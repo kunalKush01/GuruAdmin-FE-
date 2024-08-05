@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { Table } from "antd";
 import moment from "moment";
 import numberToWords from "number-to-words";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -36,7 +36,6 @@ export default function DonationANTDListTable(
   },
   args
 ) {
-  // console.log(data)
   const { t } = useTranslation();
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
@@ -104,6 +103,17 @@ export default function DonationANTDListTable(
     };
   });
 
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   const columns = [
     {
       title: t("commitment_Username"),
@@ -115,7 +125,7 @@ export default function DonationANTDListTable(
           font: "normal normal 700 13px/20px Noto Sans !important",
         },
       }),
-      width: 200,
+      width: !isMobile ? 200 : 170,
       fixed: "left",
     },
     {
@@ -139,7 +149,7 @@ export default function DonationANTDListTable(
       key: "category",
       render: (text) => text,
       width: "120px",
-      width: 150,
+      width: !isMobile ? 150 : 120,
     },
     {
       title: t("categories_sub_category"),
@@ -185,7 +195,7 @@ export default function DonationANTDListTable(
       dataIndex: "createdBy",
       key: "createdBy",
       render: (text) => text,
-      width: 150,
+      width:!isMobile? 150:120,
     },
     {
       title: t("mode_of_payment"),
@@ -242,7 +252,7 @@ export default function DonationANTDListTable(
       dataIndex: "receipt",
       key: "receipt",
       render: (text) => text,
-      fixed: "right",
+      fixed: !isMobile && "right",
       width: 120,
     },
   ];

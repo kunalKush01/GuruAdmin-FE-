@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Swal from "sweetalert2";
 import styled from "styled-components";
 import { deleteMasterData, updateMasterData } from "../../api/masterApi";
@@ -130,6 +130,17 @@ export function MasterDataTable({ data, loadingRow }) {
       }
     }
   };
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   const columns = useMemo(() => {
     if (!data || !data.schema || !data.list) return []; 
 
@@ -201,7 +212,7 @@ export function MasterDataTable({ data, loadingRow }) {
       })),
       {
         name: "Actions",
-        fixed: "right",
+        fixed:!isMobile&& "right",
         center: true,
         cell: (row) =>
           editingRowId === row.id ? (
