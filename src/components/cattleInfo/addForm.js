@@ -308,10 +308,10 @@ const AddCattleForm = ({
                     />
                     {formik.errors.ownerMobile && (
                       <div
-                        style={{
-                          height: "20px",
-                          font: "normal normal bold 11px/33px Noto Sans",
-                        }}
+                      // style={{
+                      //   height: "20px",
+                      //   font: "normal normal bold 11px/33px Noto Sans",
+                      // }}
                       >
                         {formik.errors.ownerMobile && (
                           <div className="text-danger">
@@ -515,10 +515,10 @@ const AddCattleForm = ({
                         />
                         {formik.errors.purchaserMobile && (
                           <div
-                            style={{
-                              height: "20px",
-                              font: "normal normal bold 11px/33px Noto Sans",
-                            }}
+                          // style={{
+                          //   height: "20px",
+                          //   font: "normal normal bold 11px/33px Noto Sans",
+                          // }}
                           >
                             {formik.errors.purchaserMobile && (
                               <div className="text-danger">

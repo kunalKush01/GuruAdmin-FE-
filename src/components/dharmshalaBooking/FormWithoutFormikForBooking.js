@@ -28,7 +28,6 @@ import CustomTextField from "../partials/customTextField";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import uploadIcon from "../../assets/images/icons/Thumbnail.svg";
 
-
 export default function FormWithoutFormikForBooking({
   formik,
   masterloadOptionQuery,
@@ -105,8 +104,8 @@ export default function FormWithoutFormikForBooking({
       formik.setFieldValue("countryCode", user?.countryName);
       formik.setFieldValue("dialCode", user?.countryCode);
       formik.setFieldValue("donarName", user?.name);
-      formik.setFieldValue("email",user?.email);
-      formik.setFieldValue("guestname",user?.name);
+      formik.setFieldValue("email", user?.email);
+      formik.setFieldValue("guestname", user?.name);
       //formik.setFieldValue("address",user?.address);
       setPhoneNumber(user?.countryCode + user?.mobileNumber);
       return;
@@ -119,7 +118,7 @@ export default function FormWithoutFormikForBooking({
     formik.setFieldValue("SelectedSubCategory", "");
     formik.setFieldValue("SelectedCommitmentId", "");
     formik.setFieldValue("Amount", "");
-    formik.setFieldValue("email","");
+    formik.setFieldValue("email", "");
     formik.setFieldValue("guestname", "");
   }, [formik?.values?.SelectedUser]);
 
@@ -140,7 +139,6 @@ export default function FormWithoutFormikForBooking({
       formik.setFieldValue("donarName", SelectedCommitmentId?.donarName);
       formik.setFieldValue("email", SelectedCommitmentId?.email);
       formik.setFieldValue("guestname", SelectedCommitmentId?.guestname);
-
     }
   }, [SelectedCommitmentId?._id]);
 
@@ -188,10 +186,10 @@ export default function FormWithoutFormikForBooking({
                   />
                   {formik.errors.Mobile && (
                     <div
-                      style={{
-                        height: "20px",
-                        font: "normal normal bold 11px/33px Noto Sans",
-                      }}
+                    //   style={{
+                    //     height: "20px",
+                    //     font: "normal normal bold 11px/33px Noto Sans",
+                    //   }}
                     >
                       {formik.errors.Mobile && (
                         <div className="text-danger">
@@ -211,8 +209,7 @@ export default function FormWithoutFormikForBooking({
                 name="guestname"
                 onInput={(e) => (e.target.value = e.target.value.slice(0, 30))}
               />
-              <Col xs={12} sm={6} lg={4} className=" pb-1">
-            </Col>
+              <Col xs={12} sm={6} lg={4} className=" pb-1"></Col>
               {noUserFound && (
                 <div className="addUser">
                   {" "}
@@ -232,7 +229,7 @@ export default function FormWithoutFormikForBooking({
             </Col>
           </Row>
           <Row>
-          <Col xs={12} sm={6} lg={4} className=" pb-1">
+            <Col xs={12} sm={6} lg={4} className=" pb-1">
               <CustomTextField
                 label={t("Email")}
                 placeholder={t("placeHolder_email")}
@@ -240,7 +237,7 @@ export default function FormWithoutFormikForBooking({
                 onInput={(e) => (e.target.value = e.target.value.slice(0, 30))}
               />
             </Col>
-          <Col xs={12} sm={6} lg={4} className=" pb-1">
+            <Col xs={12} sm={6} lg={4} className=" pb-1">
               <CustomTextField
                 label={t("dashboard_Recent_DonorName")}
                 placeholder={t("placeHolder_donar_name")}
@@ -248,23 +245,23 @@ export default function FormWithoutFormikForBooking({
                 onInput={(e) => (e.target.value = e.target.value.slice(0, 30))}
               />
             </Col>
-            </Row>
-              <Row>
-              <Col xs={12} sm={6} lg={4} className=" opacity-75 pb-1">
-                  <CustomTextField
-                    type="address"
-                    label={t("Address")}
-                    name="address"
-                  />
-                </Col>
-              </Row>
-              <Row>
-              <Col xs={12} sm={6} lg={4} className=" pb-1">
+          </Row>
+          <Row>
+            <Col xs={12} sm={6} lg={4} className=" opacity-75 pb-1">
+              <CustomTextField
+                type="address"
+                label={t("Address")}
+                name="address"
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12} sm={6} lg={4} className=" pb-1">
               <CustomTextField
                 type="select"
                 label={t("ID Type")}
                 placeholder={t("placeHolder_Id_type")}
-                name="id_type"                
+                name="id_type"
               />
             </Col>
             <Col xs={12} sm={6} lg={4} className=" pb-1">
@@ -276,17 +273,13 @@ export default function FormWithoutFormikForBooking({
               />
             </Col>
             <Col xs={12} sm={6} lg={4} className=" pb-1">
-            <input type="file" id="upload-id" className="upload-input" />
-                <img
-                  src={uploadIcon}
-                  className="upload-icon"
-                  alt="Upload"
-                />
-                <label htmlFor="upload-id" className="upload-label">
-                  Upload ID Card
-                </label>
+              <input type="file" id="upload-id" className="upload-input" />
+              <img src={uploadIcon} className="upload-icon" alt="Upload" />
+              <label htmlFor="upload-id" className="upload-label">
+                Upload ID Card
+              </label>
             </Col>
-            </Row>
+          </Row>
         </Col>
       </Row>
     </Form>

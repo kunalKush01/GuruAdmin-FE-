@@ -52,7 +52,9 @@ export default function CustomTextField({
           />
         )}
       </InputGroup>
-      <div style={{ height: "20px" }}>
+      <div
+      //style={{ height: "20px" }}
+      >
         {meta.error && meta.touched && (
           <div className="text-danger">
             <Trans i18nKey={meta.error} />

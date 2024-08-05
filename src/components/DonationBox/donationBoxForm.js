@@ -160,7 +160,7 @@ export default function DonationBoxForm({
                             date ? date.format("YYYY-MM-DD") : null
                           )
                         }
-                        />
+                      />
                     </Col>
                     {customFieldsList.map((field) => {
                       const isSelectField =
@@ -215,10 +215,10 @@ export default function DonationBoxForm({
                               {formik.errors.customFields &&
                                 formik.errors.customFields[field.fieldName] && (
                                   <div
-                                    style={{
-                                      height: "20px",
-                                      font: "normal normal bold 11px/33px Noto Sans",
-                                    }}
+                                  // style={{
+                                  //   height: "20px",
+                                  //   font: "normal normal bold 11px/33px Noto Sans",
+                                  // }}
                                   >
                                     <div className="text-danger">
                                       <Trans

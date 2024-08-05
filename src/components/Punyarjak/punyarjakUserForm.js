@@ -152,12 +152,12 @@ export default function PunyarjakForm({
                         }}
                       />
                       <div
-                        style={{
-                          height: "20px",
-                          width: "fit-content",
-                          textAlign: "left",
-                          font: "normal normal bold 11px/15px Noto Sans",
-                        }}
+                      // style={{
+                      //   height: "20px",
+                      //   width: "fit-content",
+                      //   textAlign: "left",
+                      //   font: "normal normal bold 11px/15px Noto Sans",
+                      // }}
                       >
                         {formik.errors.image && formik.touched.image && (
                           <div className="text-danger text-center">

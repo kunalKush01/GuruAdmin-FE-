@@ -1772,12 +1772,15 @@
 .customtextfieldwrapper {
     color: $font-color !important;
     font: $font-weight-bold $font-size-small $font-family;
-    padding-top: 7px;
+    //padding-top: 7px;
 
     //.formGroup {
     //width: "auto";
     //margin: "auto";
     //}
+    .text-danger {
+        font: normal $font-size-small $font-family;
+    }
 
     .textbox {
         height: 38px
@@ -2887,9 +2890,14 @@
 .ant-layout-content {
     padding: 5px !important
 }
-.ant-drawer-content-wrapper{
+
+.ant-drawer-content-wrapper {
     width: 460px !important;
     // margin-top: 65px !important;
     // height: 650px !important;
 
+}
+
+.text-danger {
+    font: normal $font-size-small $font-family;
 }

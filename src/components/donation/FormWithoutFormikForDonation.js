@@ -320,10 +320,10 @@ export default function FormWithoutFormikForDonation({
               />
               {formik.errors.Mobile && (
                 <div
-                  style={{
-                    height: "20px",
-                    font: "normal normal bold 11px Noto Sans",
-                  }}
+                //   style={{
+                //     height: "20px",
+                //     font: "normal normal bold 11px Noto Sans",
+                //   }}
                 >
                   {formik.errors.Mobile && (
                     <div className="text-danger">
@@ -608,10 +608,10 @@ export default function FormWithoutFormikForDonation({
                       {formik.errors.customFields &&
                         formik.errors.customFields[field.fieldName] && (
                           <div
-                            style={{
-                              height: "20px",
-                              font: "normal normal bold 11px Noto Sans",
-                            }}
+                          // style={{
+                          //   height: "20px",
+                          //   font: "normal normal bold 11px Noto Sans",
+                          // }}
                           >
                             <div className="text-danger">
                               <Trans
