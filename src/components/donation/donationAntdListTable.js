@@ -286,7 +286,6 @@ export default function DonationANTDListTable(
         }
         return acc;
       }, {});
-      console.log(item.receiptLink)
       return {
         id: idx + 1,
         username: (
