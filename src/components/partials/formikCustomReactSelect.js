@@ -15,7 +15,7 @@ export default function FormikCustomReactSelect({ loadOptions, ...props }) {
         value={field.value}
         {...props}
       />
-      <div style={{ height: "20px", fontSize: "11px" }}>
+      <div classname="reactselectlabel">
         {meta.error && meta.touched && (
           <div className="text-danger">
             <Trans i18nKey={meta.error} />
