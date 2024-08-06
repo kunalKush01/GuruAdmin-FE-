@@ -93,7 +93,6 @@ const SiderLayout = (props) => {
   //   }, [location.pathname]);
 
   useEffect(() => {
-    console.log("useEffect triggered", location.pathname);
     const pathParts = location.pathname.split("/");
     if (pathParts.length > 1) {
       setActive(`/${pathParts[1]}`);

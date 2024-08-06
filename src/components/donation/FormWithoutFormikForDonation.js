@@ -557,7 +557,7 @@ export default function FormWithoutFormikForDonation({
             <Col xs={12}>
               <TextArea
                 name="donationRemarks"
-                placeholder={t("Enter Remarks here")}
+                placeholder={t("enter_remark_here")}
                 label={t("Remarks")}
                 rows="6"
               />
@@ -772,7 +772,7 @@ export default function FormWithoutFormikForDonation({
                   <Col xs={12}>
                     <TextArea
                       name="remarks"
-                      placeholder={t("Enter Remarks here")}
+                      placeholder={t("enter_remark_here")}
                       label={t("Remarks")}
                       rows="6"
                     />
