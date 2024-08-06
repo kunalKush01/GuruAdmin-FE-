@@ -20,7 +20,7 @@ import CustomCard from "../../components/partials/customCard";
 import { setCookieWithMainDomain } from "../../utility/formater";
 import { RevenueChart } from "../../utility/revenueChart";
 import DashboardStatsCard from "../../utility/ui-elements/cards/statistics/DashboardStatsCard";
-import '../../assets/scss/viewCommon.scss';
+import "../../assets/scss/viewCommon.scss";
 
 const Home = () => {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
@@ -136,8 +136,9 @@ const Home = () => {
             </div>
           </div>
           <RevenueChart
-            CommitmentData={chartData?.totalCommitmentArr}
+            CommitmentData={chartData?.pendingAmountArr}
             DonationData={chartData?.donationAmountArr}
+            ExpenseData={chartData?.expenseAmountArr}
             chartHeading="dashboard_RevenueReport"
           />
 

@@ -8,35 +8,49 @@ const getCssVariableValue = (variable) => {
     .trim();
 };
 
-const barColors = [
-  getCssVariableValue("--blue"),
+const defaultBarColors = [
+  getCssVariableValue("--green"),
   getCssVariableValue("--yellow"),
-  getCssVariableValue("--purple"),
+  getCssVariableValue("--red"),
 ];
 
 export const RevenueChart = ({
   DonationData = [],
   CommitmentData = [],
+  ExpenseData = [],
   chartHeading,
   cattleSeries,
-  barColors,
+  barColors = defaultBarColors,
 }) => {
   const { t } = useTranslation();
 
   const series = [
     {
       name: t("donation_hundi"),
-      data: DonationData?.map((item) => ({
-        x: item.month,
-        y: item?.amount,
-      })),
+      data: DonationData?.map((item) => {
+        return {
+          x: item.month,
+          y: item?.amount,
+        };
+      }),
     },
     {
-      name: t("commitment"),
-      data: CommitmentData?.map((item) => ({
-        x: item.month,
-        y: item.amount,
-      })),
+      name: t("Pledge"),
+      data: CommitmentData?.map((item) => {
+        return {
+          x: item.month,
+          y: item.amount,
+        };
+      }),
+    },
+    {
+      name: t("Expense"),
+      data: ExpenseData?.map((item) => {
+        return {
+          x: item.month,
+          y: item.amount,
+        };
+      }),
     },
   ];
 
@@ -92,7 +106,7 @@ export const RevenueChart = ({
         options={options}
         series={cattleSeries ? cattleSeries : series}
         type="bar"
-        height={"450"}
+        height={"300"}
       />
     </div>
   );
