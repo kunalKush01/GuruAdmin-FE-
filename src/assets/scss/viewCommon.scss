@@ -1156,7 +1156,7 @@
 .card-dropdown {
     &__control {
         background-color: $secondary-color;
-        border-color: $font-color;
+        // border-color: $font-color;
 
         &:hover,
         &--is-focused {
@@ -1268,6 +1268,7 @@
 
 .custom-sider {
     background-color: $white !important;
+    z-index: 1;
 
     .sider-content {
         display: flex;
@@ -1294,6 +1295,7 @@
 
             .ant-menu {
                 padding-left: 16px;
+
             }
         }
 
@@ -1311,6 +1313,7 @@
             font-size: 14px;
             //padding-left: 10px !important;
             margin: 4px 0 !important;
+
 
             &:hover,
             &:active {
