@@ -68,13 +68,14 @@ export default function AddDonation() {
     Amount: "",
     isGovernment: "NO",
     createdBy: ConverFirstLatterToCapital(loggedInUser),
-    modeOfPayment: "",
+    modeOfPayment: { value: "Cash", label: "Cash" },
     bankName: "",
     chequeNum: "",
     chequeDate: "",
     chequeStatus: "",
     bankNarration: "",
     donationRemarks: "",
+    isArticle: "",
     customFields: customFieldsList.reduce((acc, field) => {
       acc[field.fieldName] = "";
       return acc;

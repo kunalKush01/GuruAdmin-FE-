@@ -1,6 +1,6 @@
 import { Form } from "formik";
 import React, { useEffect, useState } from "react";
-import { Plus } from "react-feather";
+import { CloudLightning, Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { Prompt, useHistory } from "react-router-dom";
 import { useUpdateEffect } from "react-use";
@@ -15,7 +15,7 @@ import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import { DatePicker } from "antd";
 import "../../../src/assets/scss/common.scss";
-import moment from "moment";
+import dayjs from "dayjs";
 export default function FormWithoutFormikForCommitment({
   formik,
   masterloadOptionQuery,
@@ -175,51 +175,49 @@ export default function FormWithoutFormikForCommitment({
         </Col>
         {!editCommitment && (
           <Col xs={12} lg={2} sm={6}>
-            {/* <FormikCustomDatePicker
-              label={t("commitment_select_start_date")}
-              name="startDate"
-            /> */}
             <label style={{ fontSize: "15px" }}>
               {t("commitment_select_start_date")}
             </label>
             <DatePicker
               id="datePickerANTD"
-              format="YYYY-MM-DD"
-              // needConfirm
-              onChange={(date) =>
-                formik.setFieldValue(
-                  "startDate",
-                  date ? date.format("YYYY-MM-DD") : null
-                )
+              format="DD MMM YYYY"
+              value={
+                formik.values.startDate ? dayjs(formik.values.startDate) : null
               }
+              onChange={(date) => {
+                if (date) {
+                  const formattedStartDate = date.format("YYYY-MM-DD");
+                  formik.setFieldValue("startDate", formattedStartDate);
+                  const newEndDate = dayjs(formattedStartDate).add(1, "year");
+                  formik.setFieldValue(
+                    "endDate",
+                    newEndDate.format("YYYY-MM-DD")
+                  );
+                }
+              }}
             />
           </Col>
         )}
         <Col xs={12} lg={!editCommitment ? 2 : 4} sm={6}>
-          {/* <FormikCustomDatePicker
-            label={t("commitment_select_end_date")}
-            name="endDate"
-            pastDateNotAllowed
-          /> */}
           <label style={{ fontSize: "15px" }}>
             {t("commitment_select_end_date")}
           </label>
           <DatePicker
             id="datePickerANTD"
-            format="YYYY-MM-DD"
-            // needConfirm
+            format="DD MMM YYYY"
             disabledDate={(currentDate) => {
               return (
                 formik.values.startDate &&
                 currentDate.isBefore(formik.values.startDate, "day")
               );
             }}
-            onChange={(date) =>
+            onChange={(date) => {
               formik.setFieldValue(
                 "endDate",
                 date ? date.format("YYYY-MM-DD") : null
-              )
-            }
+              );
+            }}
+            value={formik.values.endDate ? dayjs(formik.values.endDate) : null}
             pastDateNotAllowed
           />
         </Col>
@@ -276,7 +274,13 @@ export default function FormWithoutFormikForCommitment({
             min={paidAmount}
           />
         </Col>
-        <Col xs={12} sm={6} lg={4} className="opacity-75">
+        <Col
+          xs={12}
+          sm={6}
+          lg={4}
+          className="opacity-75"
+          style={{ display: "none" }}
+        >
           <CustomTextField label={t("created_by")} name="createdBy" disabled />
         </Col>
         {customFieldsList.map((field) => {
@@ -367,7 +371,7 @@ export default function FormWithoutFormikForCommitment({
                   }
                   required={field.isRequired}
                   placeholder={`Enter ${field.fieldName}`}
-                  />
+                />
               )}
             </Col>
           );

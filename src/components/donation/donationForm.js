@@ -23,7 +23,8 @@ export default function DonationForm({
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const [loading, setLoading] = useState(false);
   const trustId = localStorage.getItem("trustId");
-
+  const searchParams = new URLSearchParams(history.location.search);
+  const donation_type = searchParams.get("type");
   const masterloadOptionQuery = useQuery(
     ["MasterCategory", selectedLang.id],
     async () =>
@@ -37,7 +38,8 @@ export default function DonationForm({
       if (!data?.error) {
         donationQueryClient.invalidateQueries(["donations"]);
         setLoading(false);
-        history.push("/donation");
+        const type = donation_type || "Donation";
+        history.push(`/donation?type=${type}`);
       } else if (data?.error || data === undefined) {
         setLoading(false);
       }
@@ -45,7 +47,6 @@ export default function DonationForm({
   });
   const [showPrompt, setShowPrompt] = useState(true);
   const [toggleState, setToggleState] = useState(false);
-
   return (
     <div className="FormikWrapper">
       {!masterloadOptionQuery.isLoading && (
@@ -85,10 +86,10 @@ export default function DonationForm({
               articleType: e?.articleType,
               articleItem: e?.articleItem,
               articleWeight: e?.articleWeight,
-              articleUnit: e?.articleUnit?.id,
+              articleUnit: e?.articleUnit?.value,
               articleQuantity: e?.articleQuantity,
-              articleRemarks: e?.remarks,
-              isArticle: toggleState,
+              articleRemark: e?.remarks,
+              isArticle: donation_type,
               isGovernment:
                 !payDonation && e?.isGovernment === "YES" ? true : false,
               modeOfPayment: e?.modeOfPayment?.value,
