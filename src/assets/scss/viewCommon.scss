@@ -830,7 +830,7 @@
 
     .form-check-input {
         background: inherit;
-        border: 3px solid #70707070;
+        border: 3px solid $grey;
         width: 1rem;
         height: 1rem;
         margin-right: 10px;
@@ -1300,7 +1300,7 @@
         }
 
         .sider-footer {
-            border-top: 1px solid #f0f0f0;
+            border-top: 1px solid $body-bg;
         }
     }
 
