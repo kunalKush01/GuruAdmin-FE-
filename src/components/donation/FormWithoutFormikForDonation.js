@@ -783,16 +783,16 @@ export default function FormWithoutFormikForDonation({
           )}
         </Col>
       </Row>
-      <div className="btn-Published mt-3">
+      <div className="btn-Published">
         {loading ? (
           <Button
             color="primary"
             className="add-trust-btn"
-            style={{
-              borderRadius: "10px",
-              padding: "5px 40px",
-              opacity: "100%",
-            }}
+            // style={{
+            //   borderRadius: "10px",
+            //   padding: "5px 40px",
+            //   opacity: "100%",
+            // }}
             disabled
           >
             <Spinner size="md" />

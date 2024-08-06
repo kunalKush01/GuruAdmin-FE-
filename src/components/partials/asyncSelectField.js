@@ -35,6 +35,7 @@ export default function AsyncSelectField({
         border: "none",
         color: isFocused ? "#fff" : "#583703",
         zIndex: 2,
+
         "&:hover": {
           color: "#fff",
           backgroundColor: "#FF8744",

@@ -87,8 +87,19 @@ const SiderLayout = (props) => {
     };
   }, []);
 
+  //   useEffect(() => {
+  //     console.log("useEffect triggered", location.pathname);
+  //     setActive(location.pathname);
+  //   }, [location.pathname]);
+
   useEffect(() => {
-    setActive(location.pathname);
+    console.log("useEffect triggered", location.pathname);
+    const pathParts = location.pathname.split("/");
+    if (pathParts.length > 1) {
+      setActive(`/${pathParts[1]}`);
+    } else {
+      setActive(location.pathname);
+    }
   }, [location.pathname]);
 
   const {
