@@ -325,8 +325,8 @@ export default function DonationANTDListTable(
   const Donatio_data = useMemo(() => {
     const filteredData = data.filter((item) =>
       donationType === "Donation"
-        ? item.isArticle === "Donation"
-        : item.isArticle === "Article_Donation"
+        ? item.isArticle === false
+        : item.isArticle === true
     );
     return filteredData.map((item, idx) => {
       const customFields = item.customFields || {};
