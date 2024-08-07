@@ -89,7 +89,7 @@ export default function DonationForm({
               articleUnit: e?.articleUnit?.value,
               articleQuantity: e?.articleQuantity,
               articleRemark: e?.remarks,
-              isArticle: donation_type,
+              isArticle: donation_type == "Donation" ? false : true,
               isGovernment:
                 !payDonation && e?.isGovernment === "YES" ? true : false,
               modeOfPayment: e?.modeOfPayment?.value,

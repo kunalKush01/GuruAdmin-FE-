@@ -75,7 +75,6 @@ export default function AddDonation() {
     chequeStatus: "",
     bankNarration: "",
     donationRemarks: "",
-    isArticle: "",
     customFields: customFieldsList.reduce((acc, field) => {
       acc[field.fieldName] = "";
       return acc;
