@@ -1,6 +1,5 @@
 import { Form } from "formik";
 import React, { useEffect, useState } from "react";
-import { CloudLightning, Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { Prompt, useHistory } from "react-router-dom";
 import { useUpdateEffect } from "react-use";
@@ -11,11 +10,16 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
 import AsyncSelectField from "../partials/asyncSelectField";
 import CustomTextField from "../partials/customTextField";
-import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import { DatePicker } from "antd";
 import "../../../src/assets/scss/common.scss";
-import dayjs from "dayjs";
+import "../../../src/assets/scss/variables/_variables.scss";
+
+import moment from "moment";
+import momentGenerateConfig from "rc-picker/lib/generate/moment";
+
+const MyDatePicker = DatePicker.generatePicker(momentGenerateConfig);
+
 export default function FormWithoutFormikForCommitment({
   formik,
   masterloadOptionQuery,
@@ -178,20 +182,20 @@ export default function FormWithoutFormikForCommitment({
             <label style={{ fontSize: "15px" }}>
               {t("commitment_select_start_date")}
             </label>
-            <DatePicker
+            <MyDatePicker
               id="datePickerANTD"
               format="DD MMM YYYY"
               value={
-                formik.values.startDate ? dayjs(formik.values.startDate) : null
+                formik.values.startDate ? moment(formik.values.startDate) : null
               }
               onChange={(date) => {
                 if (date) {
-                  const formattedStartDate = date.format("YYYY-MM-DD");
+                  const formattedStartDate = date.format("DD MMM YYYY");
                   formik.setFieldValue("startDate", formattedStartDate);
-                  const newEndDate = dayjs(formattedStartDate).add(1, "year");
+                  const newEndDate = moment(formattedStartDate).add(1, "year");
                   formik.setFieldValue(
                     "endDate",
-                    newEndDate.format("YYYY-MM-DD")
+                    newEndDate.format("DD MMM YYYY")
                   );
                 }
               }}
@@ -202,7 +206,7 @@ export default function FormWithoutFormikForCommitment({
           <label style={{ fontSize: "15px" }}>
             {t("commitment_select_end_date")}
           </label>
-          <DatePicker
+          <MyDatePicker
             id="datePickerANTD"
             format="DD MMM YYYY"
             disabledDate={(currentDate) => {
@@ -214,10 +218,10 @@ export default function FormWithoutFormikForCommitment({
             onChange={(date) => {
               formik.setFieldValue(
                 "endDate",
-                date ? date.format("YYYY-MM-DD") : null
+                date ? date.format("DD MMM YYYY") : null
               );
             }}
-            value={formik.values.endDate ? dayjs(formik.values.endDate) : null}
+            value={formik.values.endDate ? moment(formik.values.endDate) : null}
             pastDateNotAllowed
           />
         </Col>
@@ -307,14 +311,14 @@ export default function FormWithoutFormikForCommitment({
                     {field.fieldName}
                     {field.isRequired && "*"}
                   </label>
-                  <DatePicker
+                  <MyDatePicker
                     id="datePickerANTD"
-                    format="YYYY-MM-DD"
+                    format="DD MMM YYYY"
                     onChange={(date) => {
                       if (date) {
                         formik.setFieldValue(
                           `customFields.${field.fieldName}`,
-                          date.format("YYYY-MM-DD")
+                          date.format("DD MMM YYYY")
                         );
                       } else {
                         formik.setFieldValue(
@@ -323,7 +327,6 @@ export default function FormWithoutFormikForCommitment({
                         );
                       }
                     }}
-                    needConfirm
                   />
                   {formik.errors.customFields &&
                     formik.errors.customFields[field.fieldName] && (

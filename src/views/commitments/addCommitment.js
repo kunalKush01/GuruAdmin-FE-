@@ -10,7 +10,6 @@ import CommitmentForm from "../../components/commitments/commitmentForm";
 import { useQuery } from "@tanstack/react-query";
 import { getPledgeCustomFields } from "../../api/customFieldsApi";
 import "../../../src/assets/scss/common.scss";
-import dayjs from "dayjs";
 import { Tag } from "antd";
 
 export default function AddCommitment() {
@@ -72,8 +71,8 @@ export default function AddCommitment() {
     SelectedSubCategory: "",
     createdBy: loggedInUser,
     Amount: "",
-    startDate: dayjs().startOf("day"),
-    endDate: dayjs().add(1, "year").startOf("day"),
+    startDate: moment().startOf("day"),
+    endDate: moment().add(1, "year").startOf("day"),
     customFields: customFieldsList.reduce((acc, field) => {
       acc[field.fieldName] = "";
       return acc;
