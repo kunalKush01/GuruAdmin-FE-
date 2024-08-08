@@ -4,15 +4,7 @@ import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { Prompt, useHistory, useLocation } from "react-router-dom";
 import { useUpdateEffect } from "react-use";
-import {
-  Button,
-  Col,
-  FormGroup,
-  Input,
-  Row,
-  Spinner,
-  UncontrolledTooltip,
-} from "reactstrap";
+import { Button, Col, Row, Spinner } from "reactstrap";
 import { getAllSubCategories } from "../../api/expenseApi";
 import {
   findAllComitmentByUser,
@@ -31,6 +23,7 @@ import "../../../src/assets/scss/common.scss";
 import AddUserDrawerForm from "./addUserDrawerForm";
 import { createSubscribedUser } from "../../api/subscribedUser";
 import * as Yup from "yup";
+import axios from "axios";
 
 export default function FormWithoutFormikForDonation({
   formik,
@@ -49,6 +42,7 @@ export default function FormWithoutFormikForDonation({
 }) {
   const { t } = useTranslation();
   const history = useHistory();
+  const { REACT_APP_BASEPUBLICURL } = process.env;
 
   const { SelectedMasterCategory, SelectedSubCategory, Amount } = formik.values;
   const [subLoadOption, setSubLoadOption] = useState([]);
@@ -196,57 +190,27 @@ export default function FormWithoutFormikForDonation({
       formik.setFieldValue("donarName", decodeURIComponent(name));
     }
   }, [name]);
-  const bankOptions = [
-    { value: "State Bank of India", label: "State Bank of India" },
-    { value: "ICICI Bank", label: "ICICI Bank" },
-    { value: "HDFC Bank", label: "HDFC Bank" },
-    { value: "Axis Bank", label: "Axis Bank" },
-    { value: "Punjab National Bank", label: "Punjab National Bank" },
-    { value: "Bank of Baroda", label: "Bank of Baroda" },
-    { value: "Canara Bank", label: "Canara Bank" },
-    { value: "Yes Bank", label: "Yes Bank" },
-    { value: "Kotak Mahindra Bank", label: "Kotak Mahindra Bank" },
-    { value: "Union Bank of India", label: "Union Bank of India" },
-    { value: "IDFC FIRST Bank", label: "IDFC FIRST Bank" },
-    { value: "Bank of India", label: "Bank of India" },
-    { value: "Central Bank of India", label: "Central Bank of India" },
-    { value: "IndusInd Bank", label: "IndusInd Bank" },
-    { value: "DCB Bank", label: "DCB Bank" },
-    {
-      value: "Abhyudaya Cooperative Bank",
-      label: "Abhyudaya Cooperative Bank",
-    },
-    { value: "Allahabad Bank", label: "Allahabad Bank" },
-    { value: "Andhra Bank", label: "Andhra Bank" },
-    { value: "Bandhan Bank", label: "Bandhan Bank" },
-    { value: "Bank of Maharashtra", label: "Bank of Maharashtra" },
-    { value: "Bharatiya Mahila Bank", label: "Bharatiya Mahila Bank" },
-    { value: "British Bank", label: "British Bank" },
-    { value: "Deutsche Bank", label: "Deutsche Bank" },
-    { value: "Development Credit Bank", label: "Development Credit Bank" },
-    { value: "Federal Bank", label: "Federal Bank" },
-    { value: "Indian Bank", label: "Indian Bank" },
-    { value: "Indian Overseas Bank", label: "Indian Overseas Bank" },
-    { value: "Jammu and Kashmir Bank", label: "Jammu and Kashmir Bank" },
-    { value: "Karur Vysya Bank", label: "Karur Vysya Bank" },
-    { value: "Lakshmi Vilas Bank", label: "Lakshmi Vilas Bank" },
-    {
-      value: "Madhya Pradesh Gramin Bank",
-      label: "Madhya Pradesh Gramin Bank",
-    },
-    { value: "Mumbai Bank", label: "Mumbai Bank" },
-    { value: "Oriental Bank of Commerce", label: "Oriental Bank of Commerce" },
-    { value: "Post Office Bank", label: "Post Office Bank" },
-    { value: "RBL Bank", label: "RBL Bank" },
-    { value: "Saraswat Bank", label: "Saraswat Bank" },
-    { value: "South Indian Bank", label: "South Indian Bank" },
-    { value: "Standard Chartered Bank", label: "Standard Chartered Bank" },
-    { value: "Syndicate Bank", label: "Syndicate Bank" },
-    { value: "UCO Bank", label: "UCO Bank" },
-    { value: "United Bank of India", label: "United Bank of India" },
-    { value: "Vijaya Bank", label: "Vijaya Bank" },
-    { value: "Yes Bank", label: "Yes Bank" },
-  ];
+
+  //**get bank option */
+  const [bankOptions, setBankOptions] = useState([]);
+  const fetchBankOptions = async () => {
+    try {
+      const response = await axios.get(
+        `${REACT_APP_BASEPUBLICURL}bank/bankList`
+      );
+      if (response.status === 200 && Array.isArray(response.data)) {
+        setBankOptions(response.data);
+      } else {
+        throw new Error("Unexpected data format or status code");
+      }
+    } catch (error) {
+      console.error("Error fetching bank options:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchBankOptions();
+  }, []);
 
   //**add user drawer form */
   const handleCreateUser = async (payload) => {
