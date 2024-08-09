@@ -468,7 +468,7 @@ export default function FormWithoutFormikForDonation({
                         />
                       </Col>
                       <Col xs={12} sm={6} lg={3}>
-                        <label style={{ fontSize: "15px" }}>
+                        <label>
                           {t("cheque_date")}
                         </label>
                         <DatePicker
@@ -531,7 +531,7 @@ export default function FormWithoutFormikForDonation({
                         />
                       ) : field.fieldType === "Date" ? (
                         <>
-                          <label style={{ fontSize: "15px" }}>
+                          <label>
                             {field.fieldName}
                             {field.isRequired && "*"}
                           </label>
@@ -555,21 +555,12 @@ export default function FormWithoutFormikForDonation({
                           />
                           {formik.errors.customFields &&
                             formik.errors.customFields[field.fieldName] && (
-                              <div
-                                style={{
-                                  height: "20px",
-                                  font: "normal normal bold 11px Noto Sans",
-                                }}
-                              >
-                                <div className="text-danger">
-                                  <Trans
-                                    i18nKey={
-                                      formik.errors.customFields[
-                                        field.fieldName
-                                      ]
-                                    }
-                                  />
-                                </div>
+                              <div className="text-danger">
+                                <Trans
+                                  i18nKey={
+                                    formik.errors.customFields[field.fieldName]
+                                  }
+                                />
                               </div>
                             )}
                         </>

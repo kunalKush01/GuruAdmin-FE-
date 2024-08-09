@@ -134,12 +134,7 @@ export default function FormWithoutFormikForCommitment({
             required
           />
           {formik.errors.Mobile && (
-            <div
-              style={{
-                height: "20px",
-                font: "normal normal bold 11px/33px Noto Sans",
-              }}
-            >
+            <div>
               {formik.errors.Mobile && (
                 <div className="text-danger">
                   <Trans i18nKey={formik.errors.Mobile} />
@@ -179,9 +174,7 @@ export default function FormWithoutFormikForCommitment({
         </Col>
         {!editCommitment && (
           <Col xs={12} lg={2} sm={6}>
-            <label style={{ fontSize: "15px" }}>
-              {t("commitment_select_start_date")}
-            </label>
+            <label>{t("commitment_select_start_date")}</label>
             <MyDatePicker
               id="datePickerANTD"
               format="DD MMM YYYY"
@@ -203,9 +196,7 @@ export default function FormWithoutFormikForCommitment({
           </Col>
         )}
         <Col xs={12} lg={!editCommitment ? 2 : 4} sm={6}>
-          <label style={{ fontSize: "15px" }}>
-            {t("commitment_select_end_date")}
-          </label>
+          <label>{t("commitment_select_end_date")}</label>
           <MyDatePicker
             id="datePickerANTD"
             format="DD MMM YYYY"
@@ -307,7 +298,7 @@ export default function FormWithoutFormikForCommitment({
                 />
               ) : field.fieldType === "Date" ? (
                 <>
-                  <label style={{ fontSize: "15px" }}>
+                  <label>
                     {field.fieldName}
                     {field.isRequired && "*"}
                   </label>
@@ -330,19 +321,10 @@ export default function FormWithoutFormikForCommitment({
                   />
                   {formik.errors.customFields &&
                     formik.errors.customFields[field.fieldName] && (
-                      <div
-                        style={{
-                          height: "20px",
-                          font: "normal normal bold 11px/33px Noto Sans",
-                        }}
-                      >
-                        <div className="text-danger">
-                          <Trans
-                            i18nKey={
-                              formik.errors.customFields[field.fieldName]
-                            }
-                          />
-                        </div>
+                      <div className="text-danger">
+                        <Trans
+                          i18nKey={formik.errors.customFields[field.fieldName]}
+                        />
                       </div>
                     )}
                 </>
