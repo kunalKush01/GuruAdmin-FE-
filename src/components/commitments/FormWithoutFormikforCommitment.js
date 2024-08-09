@@ -18,7 +18,7 @@ import "../../../src/assets/scss/variables/_variables.scss";
 import moment from "moment";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
 
-const MyDatePicker = DatePicker.generatePicker(momentGenerateConfig);
+const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 
 export default function FormWithoutFormikForCommitment({
   formik,
@@ -175,7 +175,7 @@ export default function FormWithoutFormikForCommitment({
         {!editCommitment && (
           <Col xs={12} lg={2} sm={6}>
             <label>{t("commitment_select_start_date")}</label>
-            <MyDatePicker
+            <CustomDatePicker
               id="datePickerANTD"
               format="DD MMM YYYY"
               value={
@@ -197,7 +197,7 @@ export default function FormWithoutFormikForCommitment({
         )}
         <Col xs={12} lg={!editCommitment ? 2 : 4} sm={6}>
           <label>{t("commitment_select_end_date")}</label>
-          <MyDatePicker
+          <CustomDatePicker
             id="datePickerANTD"
             format="DD MMM YYYY"
             disabledDate={(currentDate) => {
@@ -302,7 +302,7 @@ export default function FormWithoutFormikForCommitment({
                     {field.fieldName}
                     {field.isRequired && "*"}
                   </label>
-                  <MyDatePicker
+                  <CustomDatePicker
                     id="datePickerANTD"
                     format="DD MMM YYYY"
                     onChange={(date) => {
