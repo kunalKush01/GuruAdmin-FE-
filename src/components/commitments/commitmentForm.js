@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { getAllMasterCategories } from "../../api/expenseApi";
 import FormWithoutFormikForCommitment from "./FormWithoutFormikforCommitment";
-import '../../../src/assets/scss/common.scss'
+import "../../../src/assets/scss/common.scss";
 export default function CommitmentForm({
   plusIconDisable = false,
   buttonName = "",
@@ -60,14 +60,18 @@ export default function CommitmentForm({
               ([key, field]) => ({
                 fieldName: key,
                 fieldType:
-                  typeof field.value === "boolean"
+                  typeof field === "object" &&
+                  field !== null &&
+                  !Array.isArray(field)
+                    ? "Select"
+                    : typeof field.value === "boolean"
                     ? "Boolean"
                     : typeof field.value === "number"
                     ? "Number"
                     : typeof field.value === "string" &&
                       !isNaN(Date.parse(field.value))
                     ? "Date"
-                    : "String", 
+                    : "String", // Default to String for other types
                 isRequired: false,
                 value: field.value !== undefined ? field.value : field,
                 trustId: trustId,

@@ -123,7 +123,21 @@ export default function EditCommitment() {
         .toDate(),
       customFields: commitmentDetailQuery?.data?.result?.customFields.reduce(
         (acc, field) => {
-          acc[field.fieldName] = field.value ?? "";
+          acc[field.fieldName] =
+            field.fieldType === "Select"
+              ? {
+                  label:
+                    typeof field.value === "boolean"
+                      ? field.value
+                        ? "True"
+                        : "False"
+                      : field.value,
+                  value: field.value,
+                }
+              : typeof field.value === "string" &&
+                !isNaN(Date.parse(field.value))
+              ? moment(field.value).utcOffset("+0530").toDate()
+              : field.value ?? "";
           return acc;
         },
         {}
