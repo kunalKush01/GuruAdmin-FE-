@@ -16,6 +16,13 @@ export const donationDownloadReceiptApi = (payload) =>
     showToastOnError: false,
   });
 
+  export const getDonation = (payload) =>
+    callApi({
+      requestFunction: (axios) =>
+        axios.post(`${API_BASE_URL}donation/get-donation`, payload),
+      successCode: 200,
+    });
+
 export const getAllDonation = (payload) =>
   callApi({
     requestFunction: (axios) => axios.post(`${API_BASE_URL}donation`, payload),
