@@ -33,6 +33,7 @@ export default function DonationANTDListTable(
     pageSize,
     onChangePage,
     onChangePageSize,
+    donationType,
   },
   args
 ) {
@@ -175,7 +176,7 @@ export default function DonationANTDListTable(
     },
     {
       title: t("original_amount"),
-      dataIndex: "originalAmount",
+      dataIndex:donationType !== "Article_Donation"?"amount": "originalAmount",
       key: "originalAmount",
       render: (text) => text,
       //   width: "180px",
@@ -186,6 +187,7 @@ export default function DonationANTDListTable(
       dataIndex: "amount",
       key: "amount",
       render: (text) => text,
+      hidden: donationType === "Article_Donation" ? false : true,
       //   width: "180px",
       width: 150,
     },
@@ -194,20 +196,22 @@ export default function DonationANTDListTable(
       dataIndex: "commitmentID",
       key: "commitmentID",
       render: (text) => text,
-      //   width: "180px",
+      hidden: donationType === "Article_Donation" ? true : false,
       width: 180,
     },
     {
       title: t("created_by"),
       dataIndex: "createdBy",
       key: "createdBy",
+      hidden: donationType === "Article_Donation" ? true : false,
       render: (text) => text,
-      width:!isMobile? 150:120,
+      width: !isMobile ? 150 : 120,
     },
     {
       title: t("mode_of_payment"),
       dataIndex: "modeOfPayment",
       key: "modeOfPayment",
+      hidden: donationType === "Article_Donation" ? true : false,
       render: (text) => text,
       width: 150,
     },
@@ -215,6 +219,7 @@ export default function DonationANTDListTable(
       title: t("bank_name"),
       dataIndex: "bankName",
       key: "bankName",
+      hidden: donationType === "Article_Donation" ? true : false,
       render: (text) => text,
       width: 180,
     },
@@ -222,6 +227,7 @@ export default function DonationANTDListTable(
       title: t("cheque_no"),
       dataIndex: "chequeNum",
       key: "chequeNum",
+      hidden: donationType === "Article_Donation" ? true : false,
       render: (text) => text,
       width: 180,
     },
@@ -229,6 +235,7 @@ export default function DonationANTDListTable(
       title: t("cheque_date"),
       dataIndex: "chequeDate",
       key: "chequeDate",
+      hidden: donationType === "Article_Donation" ? true : false,
       render: (text) => text,
       width: 180,
     },
@@ -236,6 +243,7 @@ export default function DonationANTDListTable(
       title: t("cheque_status"),
       dataIndex: "chequeStatus",
       key: "chequeStatus",
+      hidden: donationType === "Article_Donation" ? true : false,
       render: (text) => text,
       width: 220,
     },
@@ -243,6 +251,55 @@ export default function DonationANTDListTable(
       title: t("bank_narration"),
       dataIndex: "bankNarration",
       key: "bankNarration",
+      hidden: donationType === "Article_Donation" ? true : false,
+      render: (text) => text,
+      width: 180,
+    },
+    {
+      title: t("articleType"),
+      dataIndex: "articleType",
+      key: "articleType",
+      hidden: donationType === "Article_Donation" ? false : true,
+      render: (text) => text,
+      width: 180,
+    },
+    {
+      title: t("articleItem"),
+      dataIndex: "articleItem",
+      key: "articleItem",
+      hidden: donationType === "Article_Donation" ? false : true,
+      render: (text) => text,
+      width: 180,
+    },
+    {
+      title: t("articleWeight"),
+      dataIndex: "articleWeight",
+      key: "articleWeight",
+      hidden: donationType === "Article_Donation" ? false : true,
+      render: (text) => text,
+      width: 180,
+    },
+    {
+      title: t("articleUnit"),
+      dataIndex: "articleUnit",
+      key: "articleUnit",
+      hidden: donationType === "Article_Donation" ? false : true,
+      render: (text) => text,
+      width: 180,
+    },
+    {
+      title: t("articleQuantity"),
+      dataIndex: "articleQuantity",
+      key: "articleQuantity",
+      hidden: donationType === "Article_Donation" ? false : true,
+      render: (text) => text,
+      width: 180,
+    },
+    {
+      title: t("articleRemark"),
+      dataIndex: "articleRemark",
+      key: "articleRemark",
+      hidden: donationType === "Article_Donation" ? false : true,
       render: (text) => text,
       width: 180,
     },
@@ -273,7 +330,12 @@ export default function DonationANTDListTable(
     }).format(date);
   };
   const Donatio_data = useMemo(() => {
-    return data.map((item, idx) => {
+    const filteredData = data.filter((item) =>
+      donationType === "Donation"
+        ? item.isArticle === false
+        : item.isArticle === true
+    );
+    return filteredData.map((item, idx) => {
       const customFields = item.customFields || {};
       const customFieldData = customFieldNames.reduce((acc, fieldName) => {
         const customField = customFields.find(
@@ -346,9 +408,19 @@ export default function DonationANTDListTable(
         modeOfPayment: ConverFirstLatterToCapital(item?.paymentMethod ?? "-"),
         bankName: ConverFirstLatterToCapital(item?.bankName ?? "-"),
         chequeNum: ConverFirstLatterToCapital(item?.chequeNum ?? "-"),
-        chequeDate: moment(item.chequeDate).format(" DD MMM YYYY,hh:mm A"),
+        chequeDate: item.chequeDate
+          ? moment(item.chequeDate).format(" DD MMM YYYY,hh:mm A")
+          : "-",
         chequeStatus: ConverFirstLatterToCapital(item?.chequeStatus ?? "-"),
         bankNarration: ConverFirstLatterToCapital(item?.bankNarration ?? "-"),
+        articleType: ConverFirstLatterToCapital(item?.articleType ?? "-"),
+        articleItem: ConverFirstLatterToCapital(item?.articleItem ?? "-"),
+        articleWeight: ConverFirstLatterToCapital(item?.articleWeight ?? "-"),
+        articleUnit: ConverFirstLatterToCapital(item?.articleUnit ?? "-"),
+        articleQuantity: ConverFirstLatterToCapital(
+          item?.articleQuantity ?? "-"
+        ),
+        articleRemark: ConverFirstLatterToCapital(item?.articleRemark ?? "-"),
         receipt: (
           <div className="d-flex align-items-center">
             {isLoading === item?._id ? (

@@ -10,6 +10,7 @@ import CommitmentForm from "../../components/commitments/commitmentForm";
 import { useQuery } from "@tanstack/react-query";
 import { getPledgeCustomFields } from "../../api/customFieldsApi";
 import "../../../src/assets/scss/common.scss";
+import { Tag } from "antd";
 
 export default function AddCommitment() {
   const handleCreateCommitment = async (payload) => {
@@ -70,8 +71,8 @@ export default function AddCommitment() {
     SelectedSubCategory: "",
     createdBy: loggedInUser,
     Amount: "",
-    startDate: new Date(),
-    endDate: moment(new Date()).endOf("month").toDate(),
+    startDate: moment().startOf("day"),
+    endDate: moment().add(1, "year").startOf("day"),
     customFields: customFieldsList.reduce((acc, field) => {
       acc[field.fieldName] = "";
       return acc;
@@ -93,6 +94,26 @@ export default function AddCommitment() {
           <div className="addCommitment">
             <Trans i18nKey={"add_commitment"} />
           </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <p style={{ fontSize: "15px", marginBottom: "0" }}>Current User :</p>
+          <Tag
+            color="#ff8744"
+            style={{
+              marginLeft: "8px",
+              borderRadius: "5px",
+              backgroundColor: "#ff8744",
+              color: "white",
+            }}
+          >
+            {loggedInUser}
+          </Tag>
         </div>
       </div>
       <div className="mt-1 mb-3">

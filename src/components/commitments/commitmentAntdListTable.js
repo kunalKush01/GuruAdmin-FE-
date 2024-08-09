@@ -19,7 +19,7 @@ import confirmationIcon from "../../assets/images/icons/news/conformationIcon.sv
 import receiptIcon from "../../assets/images/icons/receiptIcon.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import "../../assets/scss/common.scss";
-import { Table } from "antd";
+import { Checkbox, Table } from "antd";
 import { getPledgeCustomFields } from "../../api/customFieldsApi";
 import "../../assets/scss/common.scss";
 import classNames from "classnames";
@@ -35,10 +35,8 @@ export default function CommitmentAntdListTable(
     currentStatus,
     currentSubCategory,
     subPermission,
-    selectedRows,
-    setSelectedRows,
+    selectedRowDATA,
     allPermissions,
-    notifyIds,
     totalItems,
     currentPage,
     pageSize,
@@ -92,9 +90,6 @@ export default function CommitmentAntdListTable(
     [receiptMutation]
   );
 
-  const handleChange = useCallback((state) => {
-    setSelectedRows(state?.selectedRows);
-  }, []);
   const query = useQuery(["getPledgeFields"], () => getPledgeCustomFields(), {
     keepPreviousData: true,
   });
@@ -232,7 +227,7 @@ export default function CommitmentAntdListTable(
     {
       title: t("Actions"),
       key: "actions",
-      fixed:!isMobile &&"right",
+      fixed: !isMobile && "right",
       width: "180px",
       render: (text, record) => record.actions,
     },
@@ -262,7 +257,7 @@ export default function CommitmentAntdListTable(
         JSON.stringify(customFieldData)
       );
       return {
-        id: idx + 1,
+        key: idx + 1,
         notifyUserId: item?._id,
         username: (
           <div className="d-flex align-items-center ">
@@ -454,10 +449,55 @@ export default function CommitmentAntdListTable(
   const inWordsNumber = numberToWords
     .toWords(parseInt(receipt?.amount ?? 0))
     .toUpperCase();
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const handleSelect = (record, selected) => {
+    if (selected) {
+      setSelectedRowKeys((keys) => [...keys, record.key]);
+    } else {
+      setSelectedRowKeys((keys) => {
+        const index = keys.indexOf(record.key);
+        return [...keys.slice(0, index), ...keys.slice(index + 1)];
+      });
+    }
+  };
+
+  const toggleSelectAll = () => {
+    setSelectedRowKeys((keys) =>
+      keys.length === commitment_Data.length
+        ? []
+        : commitment_Data.map((r) => r.key)
+    );
+  };
+  const headerCheckbox = (
+    <Checkbox
+      checked={selectedRowKeys.length}
+      indeterminate={
+        selectedRowKeys.length > 0 && selectedRowKeys.length < data.length
+      }
+      onChange={toggleSelectAll}
+    />
+  );
+
+  useEffect(() => {
+    const selectedRowsData = commitment_Data.filter((row) =>
+      selectedRowKeys.includes(row.key)
+    );
+    selectedRowDATA(selectedRowsData);
+  }, [selectedRowKeys]);
+
+  const rowSelection = {
+    selectedRowKeys,
+    type: "checkbox",
+    fixed: true,
+    onSelect: handleSelect,
+    columnTitle: headerCheckbox,
+  };
 
   return (
     <>
       <Table
+        rowSelection={rowSelection}
+        rowKey={(record) => record.key}
         className="commitmentListTable"
         columns={columns}
         dataSource={commitment_Data}
