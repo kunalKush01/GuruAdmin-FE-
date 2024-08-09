@@ -99,14 +99,27 @@ export default function EditDonationBox() {
         .toDate(),
       customFields: collectionBoxDetailQuery?.data?.result?.customFields.reduce(
         (acc, field) => {
-          acc[field.fieldName] = field.value ?? "";
+          acc[field.fieldName] =
+            field.fieldType === "Select"
+              ? {
+                  label:
+                    typeof field.value === "boolean"
+                      ? field.value
+                        ? "True"
+                        : "False"
+                      : field.value,
+                  value: field.value,
+                }
+              : typeof field.value === "string" &&
+                !isNaN(Date.parse(field.value))
+              ? moment(field.value).utcOffset("+0530").toDate()
+              : field.value ?? ""; // Use nullish coalescing to handle undefined values
           return acc;
         },
         {}
       ),
     };
   }, [collectionBoxDetailQuery]);
-
   return (
     <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">

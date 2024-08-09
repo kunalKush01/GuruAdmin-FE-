@@ -61,7 +61,11 @@ export default function DonationForm({
               ([key, field]) => ({
                 fieldName: key,
                 fieldType:
-                  typeof field.value === "boolean"
+                  typeof field === "object" &&
+                  field !== null &&
+                  !Array.isArray(field)
+                    ? "Select"
+                    : typeof field.value === "boolean"
                     ? "Boolean"
                     : typeof field.value === "number"
                     ? "Number"
