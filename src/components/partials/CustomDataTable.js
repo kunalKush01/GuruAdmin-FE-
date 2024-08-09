@@ -30,8 +30,7 @@ function CustomDataTable({
       <div
         className="datatablewrapper"
         style={{
-          width:"100%",
-          // minWidth: minWidth || "auto",
+          minWidth: minWidth || "auto",
           maxHeight: maxHeight ? "100%" : "400px",
           height: height || "auto",
         }}
