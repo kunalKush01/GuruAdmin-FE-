@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import { Spinner } from "reactstrap";
 import styled from "styled-components";
 import { getDonationCustomFields } from "../../api/customFieldsApi";
-import { donationDownloadReceiptApi } from "../../api/donationApi";
+import { donationDownloadReceiptApi, getDonation } from "../../api/donationApi";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import receiptIcon from "../../assets/images/icons/receiptIcon.svg";
@@ -38,6 +38,7 @@ export default function DonationANTDListTable(
 ) {
   const { t } = useTranslation();
   const history = useHistory();
+  const selectedLang = useSelector((state) => state.auth.selectLang);
   const [isLoading, setIsLoading] = useState(false);
   const ref = useRef();
   const pdfRef = useRef();
@@ -48,14 +49,20 @@ export default function DonationANTDListTable(
   };
 
   const downloadReceipt = useMutation({
-    mutationFn: donationDownloadReceiptApi,
+    mutationFn: (payload) => {
+      return getDonation(payload);
+    },
     onSuccess: (data) => {
       if (!data.error) {
         setIsLoading(false);
-        window.open(
-          `https://docs.google.com/gview?url=${data?.result}`,
-          "_blank"
-        );
+        if (data.result.receiptLink) {
+          window.open(
+            `https://docs.google.com/gview?url=${data.result.receiptLink}`,
+            '_blank'
+          );
+        } else {
+          toast.error('Receipt link not available at this moment');
+        }
       }
     },
   });
@@ -354,7 +361,7 @@ export default function DonationANTDListTable(
                 onClick={() => {
                   if (!item.receiptLink) {
                     setIsLoading(item?._id);
-                    downloadReceipt.mutate(item?._id);
+                    downloadReceipt.mutate({ donationId: item._id, languageId: selectedLang.id });
                   } else {
                     window.open(
                       `https://docs.google.com/gview?url=${item.receiptLink}`,
