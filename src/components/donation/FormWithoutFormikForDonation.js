@@ -24,7 +24,9 @@ import AddUserDrawerForm from "./addUserDrawerForm";
 import { createSubscribedUser } from "../../api/subscribedUser";
 import * as Yup from "yup";
 import axios from "axios";
+import momentGenerateConfig from "rc-picker/lib/generate/moment";
 
+const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 export default function FormWithoutFormikForDonation({
   formik,
   masterloadOptionQuery,
@@ -471,14 +473,14 @@ export default function FormWithoutFormikForDonation({
                         <label>
                           {t("cheque_date")}
                         </label>
-                        <DatePicker
+                        <CustomDatePicker
                           id="datePickerANTD"
-                          format="YYYY-MM-DD"
+                          format="DD MMM YYYY"
                           onChange={(date) => {
                             if (date) {
                               formik.setFieldValue(
                                 "chequeDate",
-                                date.format("YYYY-MM-DD")
+                                date.format("DD MMM YYYY")
                               );
                             } else {
                               formik.setFieldValue("chequeDate", null);
@@ -521,7 +523,6 @@ export default function FormWithoutFormikForDonation({
                           labelName={field.fieldName}
                           name={`customFields.${field.fieldName}`}
                           loadOptions={[
-                            { value: "", label: "Select Option" },
                             { value: true, label: "True" },
                             { value: false, label: "False" },
                           ]}
@@ -535,14 +536,14 @@ export default function FormWithoutFormikForDonation({
                             {field.fieldName}
                             {field.isRequired && "*"}
                           </label>
-                          <DatePicker
+                          <CustomDatePicker
                             id="datePickerANTD"
-                            format="YYYY-MM-DD"
+                            format="DD MMM YYYY"
                             onChange={(date) => {
                               if (date) {
                                 formik.setFieldValue(
                                   `customFields.${field.fieldName}`,
-                                  date.format("YYYY-MM-DD")
+                                  date.format("DD MMM YYYY")
                                 );
                               } else {
                                 formik.setFieldValue(

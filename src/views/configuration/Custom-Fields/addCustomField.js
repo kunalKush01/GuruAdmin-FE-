@@ -252,7 +252,6 @@ const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
                 value={formData.value}
                 onChange={handleChange}
               >
-                <option value="">Select Option</option>
                 <option value="true">True</option>
                 <option value="false">False</option>
               </Input>
