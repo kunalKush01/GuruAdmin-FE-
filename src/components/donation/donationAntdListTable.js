@@ -50,7 +50,6 @@ export default function DonationANTDListTable(
 
   const downloadReceipt = useMutation({
     mutationFn: (payload) => {
-      console.log("Calling getDonation with payload:", payload);
       return getDonation(payload);
     },
     onSuccess: (data) => {
