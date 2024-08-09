@@ -54,8 +54,6 @@ export default function DonationANTDListTable(
       return getDonation(payload);
     },
     onSuccess: (data) => {
-      console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-      console.log("Received data from getDonation:", data);
       if (!data.error) {
         setIsLoading(false);
         if (data.result.receiptLink) {
