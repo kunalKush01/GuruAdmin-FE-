@@ -232,8 +232,13 @@ export default function Commitment() {
   const subPermission = subPermissions?.subpermissions?.map(
     (item) => item.name
   );
-  const [selectedRows, setSelectedRows] = useState([]);
 
+  const [selectedRows, setSelectedRows] = useState(null);
+  const handleSelectedRowData = (val) => {
+    if (val) {
+      setSelectedRows(val);
+    }
+  };
   const notifyIds = selectedRows?.map((item) => item?.notifyUserId);
 
   const [popover, setPopover] = useState(false);
@@ -370,7 +375,7 @@ export default function Commitment() {
                   nudgeUserApi({ commitmentIds: notifyIds }).then((res) => {
                     if (!res.error) {
                       queryClient.invalidateQueries(["Commitments"]);
-                      setSelectedRows([]);
+                      setSelectedRows(null);
                     }
                   });
               }}
@@ -433,11 +438,10 @@ export default function Commitment() {
                   <Then>
                     <CommitmentAntdListTable
                       data={commitmentItems}
+                      selectedRowDATA={handleSelectedRowData}
                       currentFilter={routFilter}
                       currentPage={routPagination}
-                      selectedRows={selectedRows}
                       notifyIds={notifyIds}
-                      setSelectedRows={setSelectedRows}
                       currentCategory={routCategory}
                       currentStatus={routStatus}
                       currentSubCategory={routSubCategory}

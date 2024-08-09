@@ -2893,3 +2893,21 @@
     // height: 650px !important;
 
 }
+.ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    border-bottom: 5px solid !important;
+    border-color: $primary !important;
+    border-radius: 5px !important;
+    color: $font-color !important;
+    opacity: 100% !important;
+    font-weight: bold !important;
+}
+
+.ant-tabs .ant-tabs-tab-btn {
+    transform: none !important;
+    transition: none !important;
+    color: $font-color !important;
+}
+
+.ant-tabs-ink-bar {
+    display: none;
+}

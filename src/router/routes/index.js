@@ -568,7 +568,8 @@ const Routes = [
   },
   {
     path: "/donation",
-    component: lazy(() => import("../../views/donation/donationList.js")),
+    // component: lazy(() => import("../../views/donation/donationList.js")),
+    component: lazy(() => import("../../views/donation/donationTabList.js")),
     exact: true,
     type: "donation",
     subPermission: READ,
