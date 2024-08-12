@@ -1204,8 +1204,9 @@
             width: 10px !important;
         }
 
-        border: 2px solid $primary-color;
+        //border: 2px solid $primary-color;
         border-radius: 8px;
+        box-shadow: $box-shadow;
 
         .rdt_TableCell {
             color: $font-color !important;
