@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import { Spinner } from "reactstrap";
 import styled from "styled-components";
 import { getDonationCustomFields } from "../../api/customFieldsApi";
-import { donationDownloadReceiptApi } from "../../api/donationApi";
+import { donationDownloadReceiptApi, getDonation } from "../../api/donationApi";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import receiptIcon from "../../assets/images/icons/receiptIcon.svg";
@@ -33,11 +33,13 @@ export default function DonationANTDListTable(
     pageSize,
     onChangePage,
     onChangePageSize,
+    donationType,
   },
   args
 ) {
   const { t } = useTranslation();
   const history = useHistory();
+  const selectedLang = useSelector((state) => state.auth.selectLang);
   const [isLoading, setIsLoading] = useState(false);
   const ref = useRef();
   const pdfRef = useRef();
@@ -48,14 +50,20 @@ export default function DonationANTDListTable(
   };
 
   const downloadReceipt = useMutation({
-    mutationFn: donationDownloadReceiptApi,
+    mutationFn: (payload) => {
+      return getDonation(payload);
+    },
     onSuccess: (data) => {
       if (!data.error) {
         setIsLoading(false);
-        window.open(
-          `https://docs.google.com/gview?url=${data?.result}`,
-          "_blank"
-        );
+        if (data.result.receiptLink) {
+          window.open(
+            `https://docs.google.com/gview?url=${data.result.receiptLink}`,
+            "_blank"
+          );
+        } else {
+          toast.error("Receipt link not available at this moment");
+        }
       }
     },
   });
@@ -168,7 +176,8 @@ export default function DonationANTDListTable(
     },
     {
       title: t("original_amount"),
-      dataIndex: "originalAmount",
+      dataIndex:
+        donationType !== "Article_Donation" ? "amount" : "originalAmount",
       key: "originalAmount",
       render: (text) => text,
       //   width: "180px",
@@ -179,6 +188,7 @@ export default function DonationANTDListTable(
       dataIndex: "amount",
       key: "amount",
       render: (text) => text,
+      hidden: donationType === "Article_Donation" ? false : true,
       //   width: "180px",
       width: 150,
     },
@@ -187,20 +197,22 @@ export default function DonationANTDListTable(
       dataIndex: "commitmentID",
       key: "commitmentID",
       render: (text) => text,
-      //   width: "180px",
+      hidden: donationType === "Article_Donation" ? true : false,
       width: 180,
     },
     {
       title: t("created_by"),
       dataIndex: "createdBy",
       key: "createdBy",
+      hidden: donationType === "Article_Donation" ? true : false,
       render: (text) => text,
-      width:!isMobile? 150:120,
+      width: !isMobile ? 150 : 120,
     },
     {
       title: t("mode_of_payment"),
       dataIndex: "modeOfPayment",
       key: "modeOfPayment",
+      hidden: donationType === "Article_Donation" ? true : false,
       render: (text) => text,
       width: 150,
     },
@@ -208,6 +220,7 @@ export default function DonationANTDListTable(
       title: t("bank_name"),
       dataIndex: "bankName",
       key: "bankName",
+      hidden: donationType === "Article_Donation" ? true : false,
       render: (text) => text,
       width: 180,
     },
@@ -215,6 +228,7 @@ export default function DonationANTDListTable(
       title: t("cheque_no"),
       dataIndex: "chequeNum",
       key: "chequeNum",
+      hidden: donationType === "Article_Donation" ? true : false,
       render: (text) => text,
       width: 180,
     },
@@ -222,6 +236,7 @@ export default function DonationANTDListTable(
       title: t("cheque_date"),
       dataIndex: "chequeDate",
       key: "chequeDate",
+      hidden: donationType === "Article_Donation" ? true : false,
       render: (text) => text,
       width: 180,
     },
@@ -229,6 +244,7 @@ export default function DonationANTDListTable(
       title: t("cheque_status"),
       dataIndex: "chequeStatus",
       key: "chequeStatus",
+      hidden: donationType === "Article_Donation" ? true : false,
       render: (text) => text,
       width: 220,
     },
@@ -236,6 +252,55 @@ export default function DonationANTDListTable(
       title: t("bank_narration"),
       dataIndex: "bankNarration",
       key: "bankNarration",
+      hidden: donationType === "Article_Donation" ? true : false,
+      render: (text) => text,
+      width: 180,
+    },
+    {
+      title: t("articleType"),
+      dataIndex: "articleType",
+      key: "articleType",
+      hidden: donationType === "Article_Donation" ? false : true,
+      render: (text) => text,
+      width: 180,
+    },
+    {
+      title: t("articleItem"),
+      dataIndex: "articleItem",
+      key: "articleItem",
+      hidden: donationType === "Article_Donation" ? false : true,
+      render: (text) => text,
+      width: 180,
+    },
+    {
+      title: t("articleWeight"),
+      dataIndex: "articleWeight",
+      key: "articleWeight",
+      hidden: donationType === "Article_Donation" ? false : true,
+      render: (text) => text,
+      width: 180,
+    },
+    {
+      title: t("articleUnit"),
+      dataIndex: "articleUnit",
+      key: "articleUnit",
+      hidden: donationType === "Article_Donation" ? false : true,
+      render: (text) => text,
+      width: 180,
+    },
+    {
+      title: t("articleQuantity"),
+      dataIndex: "articleQuantity",
+      key: "articleQuantity",
+      hidden: donationType === "Article_Donation" ? false : true,
+      render: (text) => text,
+      width: 180,
+    },
+    {
+      title: t("articleRemark"),
+      dataIndex: "articleRemark",
+      key: "articleRemark",
+      hidden: donationType === "Article_Donation" ? false : true,
       render: (text) => text,
       width: 180,
     },
@@ -266,7 +331,12 @@ export default function DonationANTDListTable(
     }).format(date);
   };
   const Donatio_data = useMemo(() => {
-    return data.map((item, idx) => {
+    const filteredData = data.filter((item) =>
+      donationType === "Donation"
+        ? item.isArticle === false
+        : item.isArticle === true
+    );
+    return filteredData.map((item, idx) => {
       const customFields = item.customFields || {};
       const customFieldData = customFieldNames.reduce((acc, fieldName) => {
         const customField = customFields.find(
@@ -339,9 +409,19 @@ export default function DonationANTDListTable(
         modeOfPayment: ConverFirstLatterToCapital(item?.paymentMethod ?? "-"),
         bankName: ConverFirstLatterToCapital(item?.bankName ?? "-"),
         chequeNum: ConverFirstLatterToCapital(item?.chequeNum ?? "-"),
-        chequeDate: moment(item.chequeDate).format(" DD MMM YYYY,hh:mm A"),
+        chequeDate: item.chequeDate
+          ? moment(item.chequeDate).format(" DD MMM YYYY,hh:mm A")
+          : "-",
         chequeStatus: ConverFirstLatterToCapital(item?.chequeStatus ?? "-"),
         bankNarration: ConverFirstLatterToCapital(item?.bankNarration ?? "-"),
+        articleType: ConverFirstLatterToCapital(item?.articleType ?? "-"),
+        articleItem: ConverFirstLatterToCapital(item?.articleItem ?? "-"),
+        articleWeight: ConverFirstLatterToCapital(item?.articleWeight ?? "-"),
+        articleUnit: ConverFirstLatterToCapital(item?.articleUnit ?? "-"),
+        articleQuantity: ConverFirstLatterToCapital(
+          item?.articleQuantity ?? "-"
+        ),
+        articleRemark: ConverFirstLatterToCapital(item?.articleRemark ?? "-"),
         receipt: (
           <div className="d-flex align-items-center">
             {isLoading === item?._id ? (
@@ -354,7 +434,10 @@ export default function DonationANTDListTable(
                 onClick={() => {
                   if (!item.receiptLink) {
                     setIsLoading(item?._id);
-                    downloadReceipt.mutate(item?._id);
+                    downloadReceipt.mutate({
+                      donationId: item._id,
+                      languageId: selectedLang.id,
+                    });
                   } else {
                     window.open(
                       `https://docs.google.com/gview?url=${item.receiptLink}`,

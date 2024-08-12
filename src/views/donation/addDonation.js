@@ -68,7 +68,7 @@ export default function AddDonation() {
     Amount: "",
     isGovernment: "NO",
     createdBy: ConverFirstLatterToCapital(loggedInUser),
-    modeOfPayment: "",
+    modeOfPayment: { value: "Cash", label: "Cash" },
     bankName: "",
     chequeNum: "",
     chequeDate: "",
