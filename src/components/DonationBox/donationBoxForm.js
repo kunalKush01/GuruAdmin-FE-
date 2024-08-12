@@ -13,6 +13,9 @@ import LogListTable from "./logListTable";
 import "../../assets/scss/common.scss";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import { DatePicker } from "antd";
+import momentGenerateConfig from "rc-picker/lib/generate/moment";
+import moment from "moment";
+const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 
 export default function DonationBoxForm({
   plusIconDisable = false,
@@ -75,7 +78,11 @@ export default function DonationBoxForm({
             ([key, field]) => ({
               fieldName: key,
               fieldType:
-                typeof field.value === "boolean"
+                typeof field === "object" &&
+                field !== null &&
+                !Array.isArray(field)
+                  ? "Select"
+                  : typeof field.value === "boolean"
                   ? "Boolean"
                   : typeof field.value === "number"
                   ? "Number"
@@ -147,18 +154,21 @@ export default function DonationBoxForm({
                         futureDateNotAllowed
                         name="DateTime"
                       /> */}
-                      <label style={{ fontSize: "15px" }}>
-                        {t("donation_select_date")}
-                      </label>
-                      <DatePicker
+                      <label>{t("donation_select_date")}</label>
+                      <CustomDatePicker
                         id="datePickerANTD"
-                        format="YYYY-MM-DD"
+                        format="DD MMM YYYY"
                         // needConfirm
                         onChange={(date) =>
                           formik.setFieldValue(
                             "DateTime",
                             date ? date.format("YYYY-MM-DD") : null
                           )
+                        }
+                        value={
+                          formik.values.DateTime
+                            ? moment(formik.values.DateTime)
+                            : null
                         }
                       />
                     </Col>
@@ -180,7 +190,6 @@ export default function DonationBoxForm({
                               labelName={field.fieldName}
                               name={`customFields.${field.fieldName}`}
                               loadOptions={[
-                                { value: "", label: "Select Option" },
                                 { value: true, label: "True" },
                                 { value: false, label: "False" },
                               ]}
@@ -190,18 +199,18 @@ export default function DonationBoxForm({
                             />
                           ) : field.fieldType === "Date" ? (
                             <>
-                              <label style={{ fontSize: "15px" }}>
+                              <label>
                                 {field.fieldName}
                                 {field.isRequired && "*"}
                               </label>
-                              <DatePicker
+                              <CustomDatePicker
                                 id="datePickerANTD"
-                                format="YYYY-MM-DD"
+                                format="DD MMM YYYY"
                                 onChange={(date) => {
                                   if (date) {
                                     formik.setFieldValue(
                                       `customFields.${field.fieldName}`,
-                                      date.format("YYYY-MM-DD")
+                                      date.format("DD MMM YYYY")
                                     );
                                   } else {
                                     formik.setFieldValue(
@@ -210,16 +219,22 @@ export default function DonationBoxForm({
                                     );
                                   }
                                 }}
+                                value={
+                                  formik.values.customFields &&
+                                  formik.values.customFields[field.fieldName]
+                                    ? moment(
+                                        formik.values.customFields[
+                                          field.fieldName
+                                        ],
+                                        "DD MMM YYYY"
+                                      ) // Parse the date string back to moment object
+                                    : null
+                                }
                                 // needConfirm
                               />
                               {formik.errors.customFields &&
                                 formik.errors.customFields[field.fieldName] && (
-                                  <div
-                                  // style={{
-                                  //   height: "20px",
-                                  //   font: "normal normal bold 11px/33px Noto Sans",
-                                  // }}
-                                  >
+                                  <div>
                                     <div className="text-danger">
                                       <Trans
                                         i18nKey={
@@ -273,7 +288,7 @@ export default function DonationBoxForm({
                   <div>
                     <Trans i18nKey={"Logs"} />
                   </div>
-                  <Col lg={9} className="my-lg-2">
+                  <Col lg={12} className="my-lg-2">
                     <LogListTable data={hundiLogs} />
                   </Col>
                 </Row>

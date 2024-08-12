@@ -186,10 +186,10 @@ export default function FormWithoutFormikForBooking({
                   />
                   {formik.errors.Mobile && (
                     <div
-                    //   style={{
-                    //     height: "20px",
-                    //     font: "normal normal bold 11px/33px Noto Sans",
-                    //   }}
+                      style={{
+                        height: "20px",
+                        font: "normal normal bold 11px/33px Noto Sans",
+                      }}
                     >
                       {formik.errors.Mobile && (
                         <div className="text-danger">

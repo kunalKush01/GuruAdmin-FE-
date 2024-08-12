@@ -97,7 +97,18 @@ export default function BoxListCard({
                     <span className="donationBox_field">
                       {field.fieldName}:
                     </span>
-                    <span className="donationBox_field">{field.value}</span>
+                    <span className="donationBox_field">
+                      {field.fieldType === "Select"
+                        ? typeof field.value === "boolean"
+                          ? field.value
+                            ? "True"
+                            : "False"
+                          : field.value
+                        : typeof field.value === "string" &&
+                          !isNaN(Date.parse(field.value))
+                        ? moment(field.value).format("DD MMM YYYY")
+                        : field.value}
+                    </span>{" "}
                   </div>
                 ))}
                 <CardFooter className="w-100">
