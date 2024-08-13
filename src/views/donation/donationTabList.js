@@ -9,8 +9,7 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
-import { Tabs } from "antd";
-
+import { Dropdown, message, Space, Tabs } from "antd";
 import {
   getAllCategories,
   getAllMasterCategories,
@@ -24,6 +23,7 @@ import { WRITE } from "../../utility/permissionsVariable";
 import DonationANTDListTable from "../../components/donation/donationAntdListTable";
 
 import "../../assets/scss/viewCommon.scss";
+import SuspenseImportForm from "./suspenseImportForm";
 
 export default function Donation() {
   const history = useHistory();
@@ -37,7 +37,9 @@ export default function Donation() {
   const [categoryTypeName, setCategoryTypeName] = useState("All");
   const [subCategoryTypeName, setSubCategoryTypeName] = useState("All");
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
-  const [activeTab, setActiveTab] = useState(donation_type?donation_type:"Donation");
+  const [activeTab, setActiveTab] = useState(
+    donation_type ? donation_type : "Donation"
+  );
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const periodDropDown = () => {
     switch (dropDownName) {
@@ -190,6 +192,22 @@ export default function Donation() {
   const subPermission = subPermissions?.subpermissions?.map(
     (item) => item.name
   );
+  const handleMenuClick = (e) => {
+    // message.info("Click on menu item.");
+    // console.log("click", e);
+  };
+  const [open, setOpen] = useState(false);
+  const showDrawer = () => {
+    setOpen(true);
+  };
+  const onClose = () => {
+    setOpen(false);
+  };
+  const handleButtonClick = (e) => {
+    showDrawer();
+    // message.info("Click on left button.");
+    // console.log("click left button", e);
+  };
   // Donation split tab
   const items = [
     {
@@ -497,6 +515,28 @@ export default function Donation() {
     {
       key: "Suspense",
       label: "Suspense",
+      children: (
+        <div className="d-flex flex-wrap gap-2 gap-md-0 justify-content-end">
+          <Space wrap>
+            <Dropdown.Button
+              menu={{
+                items: [
+                  {
+                    label: "History",
+                    key: "history",
+                    // icon: <UserOutlined />,
+                  },
+                ],
+                onClick: handleMenuClick,
+              }}
+              onClick={handleButtonClick}
+            >
+              Import
+            </Dropdown.Button>
+          </Space>
+          <SuspenseImportForm onClose={onClose} open={open} />
+        </div>
+      ),
     },
   ];
   const handleTabChange = (key) => {
