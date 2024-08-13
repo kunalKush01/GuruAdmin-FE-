@@ -293,20 +293,20 @@ export default function EventForm({
                       />
                       {tagsCharLimit && (
                         <div
-                          style={{
-                            height: "20px",
-                            font: "normal normal bold 11px/33px Noto Sans",
-                          }}
+                        //   style={{
+                        //     height: "20px",
+                        //     font: "normal normal bold 11px/33px Noto Sans",
+                        //   }}
                         >
                           <div className="text-danger">hello</div>
                         </div>
                       )}
                       {formik.errors.tagsInit && (
                         <div
-                          style={{
-                            height: "20px",
-                            font: "normal normal bold 11px/33px Noto Sans",
-                          }}
+                        //   style={{
+                        //     height: "20px",
+                        //     font: "normal normal bold 11px/33px Noto Sans",
+                        //   }}
                         >
                           {formik.errors.tagsInit && (
                             <div className="text-danger">
@@ -342,10 +342,10 @@ export default function EventForm({
                         />
                         {formik.errors.location && (
                           <div
-                            style={{
-                              height: "20px",
-                              font: "normal normal bold 11px/33px Noto Sans",
-                            }}
+                          // style={{
+                          //   height: "20px",
+                          //   font: "normal normal bold 11px/33px Noto Sans",
+                          // }}
                           >
                             {formik.errors.location &&
                               formik.touched.location && (
@@ -460,10 +460,10 @@ export default function EventForm({
 
                       {formik.errors.tagsInit && (
                         <div
-                          style={{
-                            height: "20px",
-                            font: "normal normal bold 11px/33px Noto Sans",
-                          }}
+                        //   style={{
+                        //     height: "20px",
+                        //     font: "normal normal bold 11px/33px Noto Sans",
+                        //   }}
                         >
                           {formik.errors.tagsInit && (
                             <div className="text-danger">
@@ -482,10 +482,10 @@ export default function EventForm({
                         selectsRange
                       />
                       <div
-                        style={{
-                          height: "20px",
-                          font: "normal normal bold 11px/33px Noto Sans",
-                        }}
+                      // style={{
+                      //   height: "20px",
+                      //   font: "normal normal bold 11px/33px Noto Sans",
+                      // }}
                       >
                         {formik.errors.DateTime && formik.touched.DateTime && (
                           <div className="text-danger">
@@ -519,10 +519,10 @@ export default function EventForm({
                               {formik.errors.startTime &&
                                 formik.touched.startTime && (
                                   <div
-                                    style={{
-                                      height: "20px",
-                                      font: "normal normal bold 11px/33px Noto Sans",
-                                    }}
+                                  // style={{
+                                  //   height: "20px",
+                                  //   font: "normal normal bold 11px/33px Noto Sans",
+                                  // }}
                                   >
                                     {formik.errors.startTime &&
                                       formik.touched.startTime && (
@@ -558,10 +558,10 @@ export default function EventForm({
                               {formik.errors.endTime &&
                                 formik.touched.endTime && (
                                   <div
-                                    style={{
-                                      height: "20px",
-                                      font: "normal normal bold 11px/33px Noto Sans",
-                                    }}
+                                  // style={{
+                                  //   height: "20px",
+                                  //   font: "normal normal bold 11px/33px Noto Sans",
+                                  // }}
                                   >
                                     {formik.errors.endTime &&
                                       formik.touched.endTime && (
@@ -590,10 +590,10 @@ export default function EventForm({
                             formik?.values?.endTime !== "" ? (
                               <div
                                 className="text-danger"
-                                style={{
-                                  height: "20px",
-                                  font: "normal normal bold 11px/20px Noto Sans",
-                                }}
+                                // style={{
+                                //   height: "20px",
+                                //   font: "normal normal bold 11px/20px Noto Sans",
+                                // }}
                               >
                                 {/* <Trans i18nKey={"same_time"} /> */}
                                 <Trans i18nKey={"same_time"} />
@@ -602,10 +602,10 @@ export default function EventForm({
                               formik?.values?.endTime !== "" ? (
                               <div
                                 className="text-danger"
-                                style={{
-                                  height: "20px",
-                                  font: "normal normal bold 11px/20px Noto Sans",
-                                }}
+                                // style={{
+                                //   height: "20px",
+                                //   font: "normal normal bold 11px/20px Noto Sans",
+                                // }}
                               >
                                 <Trans i18nKey={"end_time_less"} />
                               </div>

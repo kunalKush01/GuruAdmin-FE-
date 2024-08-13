@@ -288,10 +288,10 @@ export default function FormWithoutFormikForDonation({
               />
               {formik.errors.Mobile && (
                 <div
-                  style={{
-                    height: "20px",
-                    font: "normal normal bold 11px Noto Sans",
-                  }}
+                //   style={{
+                //     height: "20px",
+                //     font: "normal normal bold 11px Noto Sans",
+                //   }}
                 >
                   {formik.errors.Mobile && (
                     <div className="text-danger">
@@ -705,16 +705,16 @@ export default function FormWithoutFormikForDonation({
           </Row>
         </Col>
       </Row>
-      <div className="btn-Published mt-3">
+      <div className="btn-Published">
         {loading ? (
           <Button
             color="primary"
             className="add-trust-btn"
-            style={{
-              borderRadius: "10px",
-              padding: "5px 40px",
-              opacity: "100%",
-            }}
+            // style={{
+            //   borderRadius: "10px",
+            //   padding: "5px 40px",
+            //   opacity: "100%",
+            // }}
             disabled
           >
             <Spinner size="md" />

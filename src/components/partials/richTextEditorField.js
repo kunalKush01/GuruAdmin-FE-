@@ -72,7 +72,7 @@ export default function RichTextField({
           ],
         }}
       />
-      <div className="text-danger mt-1">
+      <div className="text-danger">
         {meta.error && meta.touched && <Trans i18nKey={meta.error} />}
       </div>
     </div>

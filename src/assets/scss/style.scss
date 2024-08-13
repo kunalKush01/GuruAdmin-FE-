@@ -118,7 +118,7 @@ body::-webkit-scrollbar {
 }
 
 .btn-Published {
-    z-index: 5000000000000000;
+    z-index: 0;
     position: fixed;
     bottom: 0.5rem;
     left: 0%;
@@ -128,7 +128,7 @@ body::-webkit-scrollbar {
     padding: 20px;
     background: white;
     text-align: center;
-    box-shadow: -1px -1px 20px 1px gray;
+    box-shadow: -1px -1px 10px 1px gray;
     margin: 0px !important;
 }
 

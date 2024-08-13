@@ -830,7 +830,7 @@
 
     .form-check-input {
         background: inherit;
-        border: 3px solid #70707070;
+        border: 3px solid $grey;
         width: 1rem;
         height: 1rem;
         margin-right: 10px;
@@ -1156,7 +1156,7 @@
 .card-dropdown {
     &__control {
         background-color: $secondary-color;
-        border-color: $font-color;
+        // border-color: $font-color;
 
         &:hover,
         &--is-focused {
@@ -1268,6 +1268,7 @@
 
 .custom-sider {
     background-color: $white !important;
+    z-index: 1;
 
     .sider-content {
         display: flex;
@@ -1294,11 +1295,12 @@
 
             .ant-menu {
                 padding-left: 16px;
+
             }
         }
 
         .sider-footer {
-            border-top: 1px solid #f0f0f0;
+            border-top: 1px solid $body-bg;
         }
     }
 
@@ -1311,6 +1313,7 @@
             font-size: 14px;
             //padding-left: 10px !important;
             margin: 4px 0 !important;
+
 
             &:hover,
             &:active {

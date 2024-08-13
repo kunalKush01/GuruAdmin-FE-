@@ -34,8 +34,8 @@ export default function SubscribedUserForm({
   const currentSubCategory = searchParams.get("subCategory");
   const currentFilter = searchParams.get("filter");
   const redirectTo = searchParams.get("redirect");
-  const dialCodeFromUrl = searchParams.get('dialCode');
-  const mobileNumberFromUrl = searchParams.get('mobileNumber');
+  const dialCodeFromUrl = searchParams.get("dialCode");
+  const mobileNumberFromUrl = searchParams.get("mobileNumber");
 
   const categoryQueryClient = useQueryClient();
 
@@ -49,7 +49,11 @@ export default function SubscribedUserForm({
         setLoading(false);
         addDonationUser
           ? history.push(
-              `/${redirectTo}/add?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}}&dialCode=${encodeURIComponent(dialCode)}&mobileNumber=${encodeURIComponent(mobileNumber)}&name=${encodeURIComponent(name)}`
+              `/${redirectTo}/add?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}}&dialCode=${encodeURIComponent(
+                dialCode
+              )}&mobileNumber=${encodeURIComponent(
+                mobileNumber
+              )}&name=${encodeURIComponent(name)}`
             )
           : history.push("/subscribed-user");
       } else if (data?.error) {
@@ -61,13 +65,16 @@ export default function SubscribedUserForm({
   const [phoneNumber, setPhoneNumber] = useState(getNumber ?? "");
   const [dialCode, setDialCode] = useState(dialCodeFromUrl || "");
   const [mobileNumber, setMobileNumber] = useState(mobileNumberFromUrl || "");
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
 
   return (
     <div className="formwrapper FormikWrapper">
       <Formik
         // enableReinitialize
-        initialValues={{ ...initialValues,mobile: getNumber || initialValues.mobile, }}
+        initialValues={{
+          ...initialValues,
+          mobile: getNumber || initialValues.mobile,
+        }}
         onSubmit={(e) => {
           setShowPrompt(false);
           setLoading(true);
@@ -120,18 +127,24 @@ export default function SubscribedUserForm({
                         setPhoneNumber(phone);
                         setDialCode(country?.dialCode);
                         setMobileNumber(phone?.replace(country?.dialCode, ""));
-                        formik.setFieldValue("countryCode", country?.countryCode);
+                        formik.setFieldValue(
+                          "countryCode",
+                          country?.countryCode
+                        );
                         formik.setFieldValue("dialCode", country?.dialCode);
-                        formik.setFieldValue("mobile", phone?.replace(country?.dialCode, ""));
+                        formik.setFieldValue(
+                          "mobile",
+                          phone?.replace(country?.dialCode, "")
+                        );
                       }}
                       required
                     />
                     {formik.errors.mobile && (
                       <div
-                        style={{
-                          height: "20px",
-                          font: "normal normal bold 11px/33px Noto Sans",
-                        }}
+                      // style={{
+                      //   height: "20px",
+                      //   font: "normal normal bold 11px/33px Noto Sans",
+                      // }}
                       >
                         {formik.errors.mobile && (
                           <div className="text-danger">

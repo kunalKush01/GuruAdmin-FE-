@@ -140,9 +140,9 @@
         .activeTab {
             z-index: 2;
             border-bottom: 5px solid;
-            border-color: #ff8744;
+            border-color: $primary-color;
             border-radius: 5px;
-            color: #583703;
+            color: $font-color;
             opacity: 100%;
             font-weight: bold;
         }
@@ -258,7 +258,7 @@
     .react-tel-input {
         color: $font-color !important;
         border: none !important;
-        background-color: #fff7e8 !important;
+        background-color: $secondary-color !important;
         font: normal normal normal 13px/20px Noto Sans;
         border-radius: 5px;
     }
@@ -271,34 +271,34 @@
     input {
         color: $font-color !important;
         border: none !important;
-        background-color: #fff7e8 !important;
+        background-color: $secondary-color !important;
         font: normal normal normal 13px/20px Noto Sans;
         border-radius: 5px;
     }
 
     .react-tel-input .flag-dropdown {
-        background-color: #fff7e8 !important;
+        background-color: $secondary-color !important;
         border: none !important;
         border-right: 1px solid hsl(0, 0%, 80%) !important;
     }
 
     .react-tel-input .selected-flag:hover {
-        background-color: #fff7e8 !important;
+        background-color: $secondary-color !important;
     }
 
     .react-tel-input .flag-dropdown.open .selected-flag {
-        background-color: #fff7e8 !important;
+        background-color: $secondary-color !important;
     }
 
     .country-list {
-        background-color: #fff7e8 !important;
+        background-color: $secondary-color !important;
 
         ::-webkit-scrollbar {
             width: 5px;
         }
 
         ::-webkit-scrollbar-thumb {
-            background-color: #ff8744 !important;
+            background-color: $primary-color !important;
             border-radius: 5px;
             height: 30px;
             width: 10px !important;
@@ -306,12 +306,12 @@
     }
 
     .react-tel-input .country-list .country:hover {
-        background-color: #ff8744 !important;
-        color: #fff;
+        background-color: $primary-color !important;
+        color: $white;
     }
 
     .react-tel-input .country-list .country:hover .dial-code {
-        color: #fff !important;
+        color: $white !important;
     }
 
     .dial-code {
@@ -319,12 +319,12 @@
     }
 
     .react-tel-input .country-list .country.highlight {
-        background-color: #ff8744 !important;
+        background-color: $primary-color !important;
     }
 
     .react-tel-input .country-list .country.highlight>span {
         font: normal normal bold 13px/20px Noto Sans;
-        color: #ffffff !important;
+        color: $white !important;
     }
 
     .react-tel-input .country-list .search {
@@ -496,7 +496,7 @@
 
     .card-Date {
         font: $font-weight-normal 12px/16px $font-family;
-        color: #9c9c9c;
+        color: $grey;
         max-height: 18px;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -718,7 +718,7 @@
 
     .card-Date {
         font: $font-weight-normal 12px/16px $font-family;
-        color: #9c9c9c;
+        color: $grey;
         max-height: 18px;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -942,7 +942,7 @@
         color: $font-color !important;
         height: 36px;
         border: none !important;
-        background-color: #fff7e8 !important;
+        background-color: $secondary-color !important;
         font: normal normal normal 13px/20px Noto Sans;
         border-radius: 5px;
     }
@@ -950,7 +950,7 @@
     .ReactTags__tagInput input.ReactTags__tagInputField {
         color: $font-color !important;
         border: none !important;
-        background-color: #fff7e8 !important;
+        background-color: $secondary-color !important;
         font: normal normal normal 13px/20px Noto Sans;
         border-radius: 5px;
         outline: none;
@@ -959,7 +959,7 @@
         padding-left: 0.5rem;
 
         ::placeholder {
-            color: #fff7e8;
+            color: $secondary-color;
         }
     }
 
@@ -984,7 +984,7 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background-color: #c9c6c5 !important;
+            background-color: $grey !important;
             border-radius: 25px;
             width: 10px !important;
         }
@@ -1002,12 +1002,12 @@
     .ReactTags__suggestions ul {
         list-style-type: none;
         box-shadow: 0.05em 0.01em 0.5em rgba(0, 0, 0, 0.2);
-        background-color: #fff7e8 !important;
+        background-color: $secondary-color !important;
         width: 200px;
     }
 
     .ReactTags__suggestions li {
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid $grey;
         padding: 5px 10px;
         margin: 0;
     }
@@ -1071,7 +1071,7 @@
     }
 
     .cardtitle {
-        font-size: 22px;
+        font-size: 18px;
         font-family: $font-family;
         font-weight: $font-weight-bold;
         color: $font-color;
@@ -1085,7 +1085,7 @@
         text-overflow: ellipsis;
         white-space: nowrap;
         max-width: 180px;
-        font-size: 30px;
+        font-size: 24px;
         line-height: 75px;
     }
 
@@ -1199,13 +1199,14 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background-color: #c9c6c5 !important;
+            background-color: $grey !important;
             border-radius: 25px;
             width: 10px !important;
         }
 
-        border: 2px solid $primary-color;
+        //border: 2px solid $primary-color;
         border-radius: 8px;
+        box-shadow: $box-shadow;
 
         .rdt_TableCell {
             color: $font-color !important;
@@ -1242,7 +1243,7 @@
 
 .customdatepickerwrapper {
     .react-datepicker__day--outside-month {
-        color: #9c9c9c !important;
+        color: $grey !important;
         pointer-events: none;
     }
 
@@ -1772,12 +1773,15 @@
 .customtextfieldwrapper {
     color: $font-color !important;
     font: $font-weight-bold $font-size-small $font-family;
-    padding-top: 7px;
+    //padding-top: 7px;
 
     //.formGroup {
     //width: "auto";
     //margin: "auto";
     //}
+    .text-danger {
+        font: normal $font-size-small $font-family;
+    }
 
     .textbox {
         height: 38px
@@ -1809,7 +1813,7 @@
 
 .formikcustomdatepickerwrapper {
     .react-datepicker__day--outside-month {
-        color: #9c9c9c !important;
+        color: $grey !important;
         pointer-events: none;
     }
 
@@ -2041,7 +2045,7 @@
 
     .mainImageDiv:hover .hoverImageBackground {
         border-radius: 10px;
-        background-color: #000000;
+        background-color: $grey;
     }
 
     .mainImageDiv:hover img {
@@ -2244,7 +2248,7 @@
 
     .facility_button {
         width: 60%;
-        border: 1px solid #9c9c9c;
+        border: 1px solid $grey;
         border-radius: 10px;
         cursor: pointer;
         text-align: center;
@@ -2254,7 +2258,7 @@
     .facility_button svg {
         width: 100px;
         height: 100px;
-        color: #9c9c9c !important;
+        color: $grey !important;
     }
 
     .facility_add {
@@ -2275,7 +2279,7 @@
 
     .facilityCol:hover {
         transition: background 1s;
-        background: #434343;
+        background: $grey;
         color: $white;
         opacity: 75%;
         border-radius: 10px;
@@ -2605,7 +2609,7 @@
 }
 
 .ant-picker-outlined {
-    background: #fff7e8;
+    background: $secondary-color;
     border: none !important;
 }
 
@@ -2709,7 +2713,7 @@
     //top: 130px !important;
     //left: 0 !important;
     width: 100%;
-    background-color: #fafafa;
+    background-color: $body-bg;
     z-index: 1000;
     //padding: 20px 50px 10px 30px;
 
@@ -2743,22 +2747,22 @@
 }
 
 #addBtn {
-    background-color: #ff8744 !important;
+    background-color: $primary-color !important;
     border: none;
 }
 
 #addCustomFieldBtn {
-    background-color: #ff8744 !important;
+    background-color: $primary-color !important;
     border: none;
 }
 
 #cancel {
-    background-color: #ff5733 !important;
+    background-color: $red !important;
     border: none;
 }
 
 #submit {
-    background-color: #2ecc71 !important;
+    background-color: $green !important;
     border: none;
 }
 
@@ -2786,17 +2790,17 @@
 #addCustomFieldForm,
 #addMasterForm {
     #addBtn {
-        background-color: #ff8744 !important;
+        background-color: $primary-color !important;
         border: none;
     }
 
     #cancel {
-        background-color: #ff5733 !important;
+        background-color: $primary-color !important;
         border: none;
     }
 
     #submit {
-        background-color: #2ecc71 !important;
+        background-color: $green !important;
         border: none;
     }
 
@@ -2853,7 +2857,7 @@
     }
 
     .ant-table-row .ant-table-cell {
-        color: #57350b !important;
+        color: $font-color !important;
         height: 35px;
         font-weight: 400;
     }
@@ -2861,13 +2865,13 @@
     .ant-table-thead .ant-table-cell {
         height: 35px;
         font-weight: 500;
-        color: #57350b !important;
+        color: $font-color !important;
         background-color: white;
         box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
     }
 
     .ant-table-row:nth-child(even) .ant-table-cell {
-        background-color: #fff7e8;
+        background-color: $secondary-color;
     }
 }
 
@@ -2887,12 +2891,14 @@
 .ant-layout-content {
     padding: 5px !important
 }
-.ant-drawer-content-wrapper{
+
+.ant-drawer-content-wrapper {
     width: 460px !important;
     // margin-top: 65px !important;
     // height: 650px !important;
 
 }
+
 .ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
     border-bottom: 5px solid !important;
     border-color: $primary !important;
@@ -2910,4 +2916,8 @@
 
 .ant-tabs-ink-bar {
     display: none;
+}
+
+.text-danger {
+    font: normal $font-size-small $font-family;
 }
