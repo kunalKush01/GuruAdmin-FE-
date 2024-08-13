@@ -172,10 +172,10 @@ export default function UserForm({
                         />
                         {formik.errors.mobile && (
                           <div
-                            style={{
-                              height: "20px",
-                              font: "normal normal bold 11px/33px Noto Sans",
-                            }}
+                          // style={{
+                          //   height: "20px",
+                          //   font: "normal normal bold 11px/33px Noto Sans",
+                          // }}
                           >
                             {formik.errors.mobile && (
                               <div className="text-danger">
@@ -233,10 +233,10 @@ export default function UserForm({
                             }
                           />
                           <div
-                            style={{
-                              height: "20px",
-                              font: "normal normal bold 11px/15px Noto Sans",
-                            }}
+                          // style={{
+                          //   height: "20px",
+                          //   font: "normal normal bold 11px/15px Noto Sans",
+                          // }}
                           >
                             {formik.errors.password &&
                               formik.touched.password && (
@@ -256,10 +256,10 @@ export default function UserForm({
                         <Trans i18nKey={"user_userRole"} />*
                       </div>
                       <div
-                        style={{
-                          height: "20px",
-                          font: "normal normal bold 11px/15px Noto Sans",
-                        }}
+                      // style={{
+                      //   height: "20px",
+                      //   font: "normal normal bold 11px/15px Noto Sans",
+                      // }}
                       >
                         {formik.errors.userRoleChecked &&
                           formik.touched.userRoleChecked && (

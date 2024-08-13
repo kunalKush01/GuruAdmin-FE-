@@ -335,8 +335,7 @@ export default function FormWithoutFormikForCommitment({
                       value={
                         formik.values.customFields &&
                         formik.values.customFields[field.fieldName]
-                          ? moment(
-                              formik.values.customFields[field.fieldName])
+                          ? moment(formik.values.customFields[field.fieldName])
                           : null
                       }
                     />
@@ -387,11 +386,7 @@ export default function FormWithoutFormikForCommitment({
         </Row>
         <div className="btn-Published ">
           {loading ? (
-            <Button
-              color="primary"
-              className="add-trust-btn"
-              disabled
-            >
+            <Button color="primary" className="add-trust-btn" disabled>
               <Spinner size="md" />
             </Button>
           ) : (

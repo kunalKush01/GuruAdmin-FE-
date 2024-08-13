@@ -464,6 +464,13 @@ export const englishContent = {
   articleQuantity: "Article Quantity",
   articleItem: "Article Item",
   articleRemark: "Article Remark",
+  mode_of_payment: "Mode of Payment",
+  bank_name: "Bank Name",
+  cheque_no: "Card/DD/Cheque No",
+  cheque_date: "DD/Cheque Date",
+  cheque_status: "DD/Cheque Clearance Status",
+  bank_narration: "Bank Narration",
+  remark: "Remark",
 
   category_delete: "Delete Category",
   category_sure: "Are you sure you want to permanently delete this category ? ",
@@ -805,4 +812,13 @@ export const englishContent = {
   search_punyarjak: "Search All Punyarjak",
   search_donation_box_collection: "Search All Donation Box",
   search_commitment: "Search All Commitments",
+
+  Overview: "Overview",
+  Bookings: "Bookings",
+  Buildings: "Buildings",
+  RoomTypes: "Room Types",
+  Feedback: "Feedback",
+  enter_remark_here: "Enter remarks here",
+  Remarks: "Remarks",
+  Logout: "Logout",
 };

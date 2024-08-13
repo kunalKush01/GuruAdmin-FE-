@@ -59,10 +59,10 @@ export default function DonationANTDListTable(
         if (data.result.receiptLink) {
           window.open(
             `https://docs.google.com/gview?url=${data.result.receiptLink}`,
-            '_blank'
+            "_blank"
           );
         } else {
-          toast.error('Receipt link not available at this moment');
+          toast.error("Receipt link not available at this moment");
         }
       }
     },
@@ -176,7 +176,8 @@ export default function DonationANTDListTable(
     },
     {
       title: t("original_amount"),
-      dataIndex:donationType !== "Article_Donation"?"amount": "originalAmount",
+      dataIndex:
+        donationType !== "Article_Donation" ? "amount" : "originalAmount",
       key: "originalAmount",
       render: (text) => text,
       //   width: "180px",
@@ -433,7 +434,10 @@ export default function DonationANTDListTable(
                 onClick={() => {
                   if (!item.receiptLink) {
                     setIsLoading(item?._id);
-                    downloadReceipt.mutate({ donationId: item._id, languageId: selectedLang.id });
+                    downloadReceipt.mutate({
+                      donationId: item._id,
+                      languageId: selectedLang.id,
+                    });
                   } else {
                     window.open(
                       `https://docs.google.com/gview?url=${item.receiptLink}`,

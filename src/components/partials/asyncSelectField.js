@@ -35,6 +35,7 @@ export default function AsyncSelectField({
         border: "none",
         color: isFocused ? "#fff" : "#583703",
         zIndex: 2,
+
         "&:hover": {
           color: "#fff",
           backgroundColor: "#FF8744",
@@ -132,7 +133,9 @@ export default function AsyncSelectField({
         }}
         {...props}
       />
-      <div style={{ height: "20px", fontSize: "12px" }}>
+      <div
+      //   style={{ height: "20px", fontSize: "12px" }}
+      >
         {meta.error && meta.touched && (
           <div className="text-danger">
             <Trans i18nKey={meta.error} />
