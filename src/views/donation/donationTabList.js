@@ -24,6 +24,7 @@ import DonationANTDListTable from "../../components/donation/donationAntdListTab
 
 import "../../assets/scss/viewCommon.scss";
 import SuspenseImportForm from "./suspenseImportForm";
+import SuspenseListTable from "../../components/donation/suspenseListTable";
 
 export default function Donation() {
   const history = useHistory();
@@ -516,26 +517,31 @@ export default function Donation() {
       key: "Suspense",
       label: "Suspense",
       children: (
-        <div className="d-flex flex-wrap gap-2 gap-md-0 justify-content-end">
-          <Space wrap>
-            <Dropdown.Button
-              menu={{
-                items: [
-                  {
-                    label: "History",
-                    key: "history",
-                    // icon: <UserOutlined />,
-                  },
-                ],
-                onClick: handleMenuClick,
-              }}
-              onClick={handleButtonClick}
-            >
-              Import
-            </Dropdown.Button>
-          </Space>
-          <SuspenseImportForm onClose={onClose} open={open} />
-        </div>
+        <>
+          <div className="d-flex flex-wrap gap-2 gap-md-0 justify-content-end">
+            <Space wrap>
+              <Dropdown.Button
+                menu={{
+                  items: [
+                    {
+                      label: "History",
+                      key: "history",
+                      // icon: <UserOutlined />,
+                    },
+                  ],
+                  onClick: handleMenuClick,
+                }}
+                onClick={handleButtonClick}
+              >
+                Import
+              </Dropdown.Button>
+            </Space>
+            <SuspenseImportForm onClose={onClose} open={open} />
+          </div>
+          <div className="donationContent">
+            <SuspenseListTable />
+          </div>
+        </>
       ),
     },
   ];

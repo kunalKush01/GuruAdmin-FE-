@@ -27,8 +27,7 @@ function SuspenseImportForm({ onClose, open }) {
   const [loading, setLoading] = useState(false);
   const [sourceFields, setSourceFields] = useState([]);
   const [mapping, setMapping] = useState({});
-  const [fileData, setFileData] = useState(null);
-  const [fileUrl, setFileUrl] = useState(""); // State to hold the file URL
+  const [file, setFile] = useState(null);
 
   const handleFileUpload = async (file) => {
     const fileName = file.name.toLowerCase();
@@ -43,7 +42,6 @@ function SuspenseImportForm({ onClose, open }) {
             complete: (result) => {
               headers = result.meta.fields;
               setSourceFields(headers);
-              setFileData(data);
               setMapping({});
               message.success(`${fileName} file processed successfully`);
             },
@@ -57,7 +55,6 @@ function SuspenseImportForm({ onClose, open }) {
           const worksheet = workbook.Sheets[workbook.SheetNames[0]];
           headers = XLSX.utils.sheet_to_json(worksheet, { header: 1 })[0];
           setSourceFields(headers);
-          setFileData(data);
           setMapping({});
           message.success(`${fileName} file processed successfully`);
         } else {
@@ -78,24 +75,20 @@ function SuspenseImportForm({ onClose, open }) {
     accept: ".xlsx,.csv,.xls",
     customRequest: async ({ file, onSuccess, onError }) => {
       try {
+        setFile(file);
         await handleFileUpload(file);
-        // Simulate file upload to S3 or another service, and set the file URL
-        // Replace the following line with your actual file upload logic
-        setFileUrl("url_to_uploaded_file");
         onSuccess("ok");
       } catch (error) {
         onError(error);
+        setFile(null);
       }
     },
     onChange: (info) => {
       if (info.file.status === "done") {
-        // File successfully uploaded
       } else if (info.file.status === "removed") {
-        // File removed, reset the source fields and mapping
         setSourceFields([]);
         setMapping({});
-        setFileData(null);
-        setFileUrl(""); // Reset file URL
+        setFile(null);
       }
     },
   };
@@ -141,9 +134,8 @@ function SuspenseImportForm({ onClose, open }) {
     targetField: field,
     sourceField: mapping[field],
   }));
-  const trustId = localStorage.getItem("trustId");
-  console.log(trustId)
-  const handleSubmit = async (values) => {
+
+  const handleSubmit = async () => {
     setLoading(true);
     try {
       const payload = {
@@ -155,15 +147,15 @@ function SuspenseImportForm({ onClose, open }) {
           amount: mapping["Amount"] || "",
           modeOfPayment: mapping["Mode Of Payment"] || "",
         },
-        sourceFields, // This should be an array of source field names
-        fileUrl, // Use the actual URL of the uploaded file
+        sourceFields: sourceFields,
+        file: file
       };
 
-      console.log(payload);
-      // return;
-      await createImport(trustId,payload);
+      // console.log(payload);
+
+      await createImport(payload);
       message.success("Import successful");
-      onClose(); // Close the drawer on successful import
+      onClose();
     } catch (error) {
       console.error("Error during import:", error);
       message.error("Error during import.");
@@ -176,7 +168,7 @@ function SuspenseImportForm({ onClose, open }) {
     <Drawer title="Import XLSX/CSV" onClose={onClose} open={open} size="medium">
       <div className="formikwrapper">
         <Formik
-          initialValues={{}} // Define initial values if needed
+          initialValues={{}}
           onSubmit={handleSubmit}
         >
           {() => (
