@@ -1029,7 +1029,7 @@ export default function ProfileForm({
             </Row> */}
             {/* Trust Password Container */}
 
-            <div className="btn-Published d-flex justify-content-center mt-3 mb-3">
+            <div className="btn-Published d-flex justify-content-center">
               {loading ? (
                 <Button
                   color="primary"
