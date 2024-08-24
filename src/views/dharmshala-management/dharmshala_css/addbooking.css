@@ -196,6 +196,7 @@
   display: flex;
   flex-direction: row;
   gap: 35px;
+  margin-bottom: 100px;
 }
 
 .overall-div{
@@ -465,7 +466,7 @@
 /* PAYMENTS */
 
 .payments-container {
-  background-color: #FCF5E7;
+  background-color: #FAFAFA;
   border-radius: 8px; 
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  padding: 20px;
   margin-top: 10px;
@@ -506,7 +507,7 @@
 .payment-tab,
 .payment-history-tab {
   padding: 10px;
-  background-color: #FCF5E7; 
+  background-color: #FAFAFA;  
   border: none; 
   cursor: pointer;
 }

@@ -187,6 +187,12 @@ export const createDharmshalaBooking = (payload) =>
     successCode: 201,
   });
 
+  export const createPayment = (payload) =>
+    callDharmshalaApi({
+      requestFunction: (axios) => axios.post(`payment`, payload),
+      successCode: 201,
+    });
+
 export const calculateBookingTotalPayment = (bookingId) =>
   callDharmshalaApi({
     requestFunction: (axios) => axios.get(`bookings/${bookingId}/total-payment`),
