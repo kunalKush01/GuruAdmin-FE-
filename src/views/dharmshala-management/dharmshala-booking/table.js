@@ -26,6 +26,7 @@ const DharmshalaBookingTable = ({
   isMobileView,
   //buildingID,
 }) => {
+  console.log("🚀🚀🚀 ~ file: table.js:29 ~ data:", data);
   const { t } = useTranslation();
   const history = useHistory();
   const [selectedBookings, setSelectedBookings] = useState([]);
@@ -53,35 +54,10 @@ const DharmshalaBookingTable = ({
   };
 
   const handleEditClick = (item) => {
-    const {
-      _id,
-      bookingId,
-      startDate,
-      endDate,
-      roomId,
-      roomTypeId,
-      count,
-      earlyCheckIn,
-      lateCheckout,
-      status,
-      guestCount
-    } = item;
-  
+    console.log("🚀🚀🚀 ~ file: table.js:56 ~ handleEditClick ~ item:", item);
     history.push({
-      pathname: `/booking/edit/${_id}`,
-      state: {
-        _id,
-        bookingId,
-        startDate,
-        endDate,
-        roomId,
-        roomTypeId,
-        count,
-        earlyCheckIn,
-        lateCheckout,
-        status,
-        guestCount
-      },
+      pathname: `/booking/edit/${item._id}`,
+      state: { bookingData: item }
     });
   };
 
@@ -161,6 +137,7 @@ const DharmshalaBookingTable = ({
     });
 
     return sortedData.map((item, idx) => {
+      console.log("Processing booking item:", item);
       return {
         id: idx + 1,
         bookingId: item?.bookingId,

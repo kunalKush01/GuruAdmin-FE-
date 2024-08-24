@@ -5,8 +5,9 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { getAllMasterCategories } from "../../api/expenseApi";
-import FormWithoutFormikForDonation from "../../components/donation/FormWithoutFormikForDonation";
 import FormWithoutFormikForBooking from "../../components/dharmshalaBooking/FormWithoutFormikForBooking";
+import { createDharmshalaBooking, createPayment } from "../../api/dharmshala/dharmshalaInfo";
+import { PaymentModal } from "./PaymentModal";
 
 const FormWrapper = styled.div`
   .FormikWrapper {
@@ -57,71 +58,116 @@ const FormWrapper = styled.div`
 
 export default function BookingForm({
   plusIconDisable = false,
-  buttonName = "",
-  handleSubmit,
-  payDonation,
-  getCommitmentMobile,
-  validationSchema,
+  // buttonName = "",
+  // payDonation,
+  // getCommitmentMobile,
+  // initialValues,
+  // showTimeInput,
   initialValues,
+  validationSchema,
   showTimeInput,
+  buttonName,
+  isPaymentModalOpen,
+  setIsPaymentModalOpen,
+  isEditing,
 }) {
+  // const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [bookingData, setBookingData] = useState(null);
   const history = useHistory();
-  const donationQueryClient = useQueryClient();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const [loading, setLoading] = useState(false);
   const masterloadOptionQuery = useQuery(
     ["MasterCategory", selectedLang.id],
-    async () =>
-      await getAllMasterCategories({
-        languageId: selectedLang.id,
-      })
+    async () => await getAllMasterCategories({ languageId: selectedLang.id })
   );
-  const donationMutation = useMutation({
-    mutationFn: handleSubmit,
-    onSuccess: (data) => {
-      if (!data?.error) {
-        donationQueryClient.invalidateQueries(["donations"]);
-        setLoading(false);
-        history.push("/donation");
-      } else if (data?.error || data === undefined) {
-        setLoading(false);
-      }
-    },
-  });
+
   const [showPrompt, setShowPrompt] = useState(true);
   const [toggleState, setToggleState] = useState(false);
+
+  const handleCreateBooking = async (formData) => {
+    setBookingData(formData);
+    setIsPaymentModalOpen(true);
+  };
+
+  const handlePaymentSave = async (paymentDetails) => {
+    if (bookingData) {
+      console.log("🚀🚀🚀 ~ file: BookingForm.js:94 ~ handlePaymentSave ~ bookingData:", bookingData);
+      setLoading(true);
+      try {
+        const bookingPayload = {
+          Mobile: bookingData.Mobile,
+          countryCode: bookingData.countryCode,
+          dialCode: bookingData.dialCode,
+          SelectedUser: bookingData.SelectedUser,
+          donarName: bookingData.donarName,
+          startDate: bookingData.fromDate ? bookingData.fromDate.format('DD-MM-YYYY') : null,
+          endDate: bookingData.toDate ? bookingData.toDate.format('DD-MM-YYYY') : null,
+          numMen: bookingData.numMen,
+          numWomen: bookingData.numWomen,
+          numKids: bookingData.numKids,
+          roomsData: bookingData.roomsData.map(room => ({
+            roomTypeId: room.roomType,
+            building: room.building,
+            floor: room.floor,
+            roomId: room.roomNumber,
+            amount: room.amount,
+          })),
+          guestname: bookingData.guestname,
+          email: bookingData.email,
+          address: bookingData.address,
+          idType: bookingData.idType,
+          idNumber: bookingData.idNumber,
+        };
+
+        const bookingResponse = await createDharmshalaBooking(bookingPayload);
+        
+        if (bookingResponse && !bookingResponse.error) {
+          const paymentPayload = {
+            bookingId: bookingResponse._id,
+            totalAmount: {
+              roomrent: bookingData.roomRent,
+              security: bookingData.security
+            },
+            currency: "INR",
+            payments: [
+              {
+                type: "deposit",
+                amount: paymentDetails.amount,
+                date: new Date(),
+                transactionId: paymentDetails.transactionId,
+                remarks: paymentDetails.remark,
+                method: paymentDetails.mode
+              }
+            ],
+            status: "pending"
+          };
+
+          const paymentResponse = await createPayment(paymentPayload);
+
+          if (paymentResponse && !paymentResponse.error) {
+            console.log("Booking and payment created successfully");
+            history.push("/booking/info");
+          } else {
+            console.error("Error in payment creation:", paymentResponse.error);
+          }
+        } else {
+          console.error("Error in booking creation:", bookingResponse.error);
+        }
+      } catch (error) {
+        console.error("Error creating booking and payment:", error);
+      } finally {
+        setLoading(false);
+        setIsPaymentModalOpen(false);
+      }
+    }
+  };
 
   return (
     <FormWrapper className="FormikWrapper">
       {!masterloadOptionQuery.isLoading && (
         <Formik
-          initialValues={{
-            ...initialValues,
-          }}
-          onSubmit={(e) => {
-            setShowPrompt(false);
-            setLoading(true);
-            donationMutation.mutate({
-              categoryId: e?.SelectedSubCategory?.id,
-              amount: e?.Amount,
-              masterCategoryId: e?.SelectedMasterCategory?.id,
-              donarName: e?.donarName,
-              mobileNumber: e?.Mobile.toString(),
-              countryCode: e?.dialCode,
-              countryName: e?.countryCode,
-              commitmentId: e?.SelectedCommitmentId?.commitmentId,
-              articleType: e?.articleType,
-              articleItem: e?.articleItem,
-              articleWeight: e?.articleWeight,
-              articleUnit: e?.articleUnit?.id,
-              articleQuantity: e?.articleQuantity,
-              articleRemarks: e?.remarks,
-              isArticle: toggleState,
-              isGovernment:
-                !payDonation && e?.isGovernment === "YES" ? true : false,
-            });
-          }}
-          validationSchema={validationSchema}
+          initialValues={initialValues}
+          onSubmit={handleCreateBooking}
         >
           {(formik) => (
             <FormWithoutFormikForBooking
@@ -132,15 +178,21 @@ export default function BookingForm({
               setArticle={setToggleState}
               countryFlag={initialValues?.countryCode}
               paidDonation={initialValues?.SelectedUser?.id}
-              payDonation={payDonation}
-              getCommitmentMobile={getCommitmentMobile}
-              plusIconDisable
+              // payDonation={payDonation}
+              // getCommitmentMobile={getCommitmentMobile}
+              plusIconDisable={plusIconDisable}
               showPrompt={showPrompt}
               buttonName={buttonName}
             />
           )}
         </Formik>
       )}
+      <PaymentModal
+        isOpen={isPaymentModalOpen}
+        onClose={() => setIsPaymentModalOpen(false)}
+        onSave={handlePaymentSave}
+        bookingId="MASDSF" 
+      />
     </FormWrapper>
   );
 }

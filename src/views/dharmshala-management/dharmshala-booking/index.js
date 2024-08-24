@@ -100,8 +100,10 @@ const DharmshalaBookings = () => {
   };
 
   const filteredBookingListData = useMemo(() => {
+    console.log("🚀🚀🚀 ~ file: index.js:103 ~ DharmshalaBookings ~ dharmshalaBookingListData:", dharmshalaBookingListData);
     const currentDate = moment();
     let filteredData = dharmshalaBookingListData;
+    console.log("🚀🚀🚀 ~ file: index.js:105 ~ filteredBookingListData ~ filteredData:", filteredData);
     if (showPastRequests) {
       filteredData = filteredData.filter((item) =>
         moment(item.startDate).isBefore(currentDate)
