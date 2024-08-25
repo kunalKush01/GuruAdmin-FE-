@@ -1,69 +1,87 @@
 import { Table, Button, Space } from "antd";
 import moment from "moment";
-import React, { useMemo } from "react";
-import { getAllSuspense } from "../../api/suspenseApi";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { getAllSuspense } from "../../api/suspenseApi";
 
 function SuspenseListTable() {
-  const dataSource = [].map((item, index) => ({
-    key: index + 1,
-    id: item._id,
-    fileName: item.file[0]?.name,
-    uploadedAt: moment(item.uploadedAt).format("DD MMM YYYY"),
-    // status: item.status,
-  }));
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
-  const handleView = (record) => {
-    console.log("View File:", record);
-    // Implement logic to fetch and display file data based on targetFields matching the S3 file headers
-  };
-
+  const { data, isLoading, error } = useQuery(
+    ["suspenseData", currentPage, pageSize],
+    () => getAllSuspense(currentPage, pageSize),
+    {
+      keepPreviousData: true,
+      onError: (error) => {
+        console.error("Error fetching suspense data:", error);
+      },
+    }
+  );
   const handleDownload = (record) => {
-    window.open(record.file[0].presignedUrl, "_blank");
+    if (record.file?.[0]?.presignedUrl) {
+      window.open(record.file[0].presignedUrl, "_blank");
+    } else {
+      console.error("No presigned URL available for download.");
+    }
   };
 
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
+      title: "Transaction Date",
+      dataIndex: "transactionDate",
+      key: "transactionDate",
+      render: (text) => moment(text).format("DD-MMM-YYYY"),
     },
     {
-      title: "File Name",
-      dataIndex: "fileName",
-      key: "fileName",
+      title: "Bank Narration",
+      dataIndex: "bankNarration",
+      key: "bankNarration",
     },
     {
-      title: "Date of Upload",
-      dataIndex: "uploadedAt",
-      key: "uploadedAt",
+      title: "Amount",
+      dataIndex: "amount",
+      key: "amount",
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
+      title: "Mode of Payment",
+      dataIndex: "modeOfPayment",
+      key: "modeOfPayment",
     },
-    {
-      title: "Action",
-      key: "action",
-      render: (text, record) => (
-        <Space size="middle">
-          <Button type="primary" onClick={() => handleView(record)}>
-            View
-          </Button>
-          <Button type="default" onClick={() => handleDownload(record)}>
-            Download
-          </Button>
-        </Space>
-      ),
-    },
+    // Uncomment this if download functionality is required
+    // {
+    //   title: "Action",
+    //   key: "action",
+    //   render: (text, record) => (
+    //     <Space size="middle">
+    //       <Button type="default" onClick={() => handleDownload(record)}>
+    //         Download
+    //       </Button>
+    //     </Space>
+    //   ),
+    // },
   ];
 
+  const tableData = data?.result || [];
+  const totalItems = data?.total || 0;
   return (
     <Table
       className="donationListTable"
       columns={columns}
-      dataSource={dataSource}
+      dataSource={tableData}
+      rowKey={(record) => record._id}
+      loading={isLoading}
+      pagination={{
+        current: currentPage,
+        pageSize: pageSize,
+        total: totalItems,
+        onChange: (page, pageSize) => {
+          setCurrentPage(page);
+          setPageSize(pageSize);
+        },
+        showSizeChanger: true,
+        pageSizeOptions: [10, 20, 50, 100],
+      }}
       scroll={{ x: 1000, y: 400 }}
       sticky={{ offsetHeader: 64 }}
       bordered

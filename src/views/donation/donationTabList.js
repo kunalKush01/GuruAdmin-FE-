@@ -25,6 +25,7 @@ import DonationANTDListTable from "../../components/donation/donationAntdListTab
 import "../../assets/scss/viewCommon.scss";
 import SuspenseImportForm from "./suspenseImportForm";
 import SuspenseListTable from "../../components/donation/suspenseListTable";
+import SuspenseHistoryTable from "../../components/donation/suspenseHistoryTable";
 
 export default function Donation() {
   const history = useHistory();
@@ -193,7 +194,9 @@ export default function Donation() {
   const subPermission = subPermissions?.subpermissions?.map(
     (item) => item.name
   );
+  const [showHistory, setShowHistory] = useState(false);
   const handleMenuClick = (e) => {
+    setShowHistory(true);
     // message.info("Click on menu item.");
     // console.log("click", e);
   };
@@ -519,8 +522,10 @@ export default function Donation() {
       children: (
         <>
           <div className="d-flex flex-wrap gap-2 gap-md-0 justify-content-end">
-            <Space wrap>
+            <Space wrap className="mb-1">
               <Dropdown.Button
+              type="primary"
+              size="large"
                 menu={{
                   items: [
                     {
@@ -539,7 +544,7 @@ export default function Donation() {
             <SuspenseImportForm onClose={onClose} open={open} />
           </div>
           <div className="donationContent">
-            <SuspenseListTable />
+            {!showHistory ? <SuspenseListTable /> : <SuspenseHistoryTable />}
           </div>
         </>
       ),
