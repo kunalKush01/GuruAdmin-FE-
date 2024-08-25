@@ -30,9 +30,21 @@ export const createImport = async (payload) => {
     throw new Error("Error creating import");
   }
 };
-
-export const getAllSuspense = async () => {
-  callApi({
-    requestFunction: (axios) => axios.get(`${API_BASE_URL}suspense/imports`),
+export const getAllSuspense = (page = 1, limit = 10) => {
+  return callApi({
+    requestFunction: (axios) =>
+      axios.get(`${API_BASE_URL}suspense/imports`, {
+        params: { page, limit },
+      }),
+    successCode: 200,
+  });
+};
+export const getAllSuspenseHistory = (page = 1, limit = 10) => {
+  return callApi({
+    requestFunction: (axios) =>
+      axios.get(`${API_BASE_URL}suspense/import-history`, {
+        params: { page, limit },
+      }),
+    successCode: 200,
   });
 };

@@ -39,6 +39,8 @@ function SuspenseImportForm({ onClose, open }) {
         if (fileName.endsWith(".csv")) {
           Papa.parse(data, {
             header: true,
+            skipEmptyLines: true,
+            preview: 1,
             complete: (result) => {
               headers = result.meta.fields;
               setSourceFields(headers);
@@ -53,7 +55,7 @@ function SuspenseImportForm({ onClose, open }) {
         } else if (fileName.endsWith(".xlsx") || fileName.endsWith(".xls")) {
           const workbook = XLSX.read(new Uint8Array(data), { type: "array" });
           const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-          headers = XLSX.utils.sheet_to_json(worksheet, { header: 1 })[0];
+          headers = XLSX.utils.sheet_to_json(worksheet, { header: 1, range: 1 })[0];
           setSourceFields(headers);
           setMapping({});
           message.success(`${fileName} file processed successfully`);
@@ -67,7 +69,11 @@ function SuspenseImportForm({ onClose, open }) {
         message.error("Error processing file.");
       }
     };
-    reader.readAsArrayBuffer(file);
+    if (file.name.toLowerCase().endsWith(".csv")) {
+      reader.readAsText(file);
+    } else {
+      reader.readAsArrayBuffer(file);
+    }
   };
 
   const uploadProps = {
@@ -119,6 +125,7 @@ function SuspenseImportForm({ onClose, open }) {
           onChange={(value) => handleMappingChange(record.targetField, value)}
           value={mapping[record.targetField]}
         >
+          <Select.Option key="" value="">Select Option</Select.Option>
           {sourceFields.map((field) => (
             <Select.Option key={field} value={field}>
               {field}
@@ -148,13 +155,16 @@ function SuspenseImportForm({ onClose, open }) {
           modeOfPayment: mapping["Mode Of Payment"] || "",
         },
         sourceFields: sourceFields,
-        file: file
+        file: file,
       };
 
       // console.log(payload);
 
       await createImport(payload);
       message.success("Import successful");
+      setSourceFields([]);
+      setMapping({});
+      setFile(null);
       onClose();
     } catch (error) {
       console.error("Error during import:", error);
@@ -167,10 +177,7 @@ function SuspenseImportForm({ onClose, open }) {
   return (
     <Drawer title="Import XLSX/CSV" onClose={onClose} open={open} size="medium">
       <div className="formikwrapper">
-        <Formik
-          initialValues={{}}
-          onSubmit={handleSubmit}
-        >
+        <Formik initialValues={{}} onSubmit={handleSubmit}>
           {() => (
             <Form>
               <Row>
