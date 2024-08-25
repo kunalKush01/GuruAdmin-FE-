@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import { Plus } from "react-feather";
 import { DatePicker } from "antd";
+import { Timeline } from "antd";
 import Swal from "sweetalert2";
 import CustomTextField from "../partials/customTextField";
 import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
@@ -251,7 +252,7 @@ useEffect(() => {
           roomType: roomType._id,
           building: "",
           floor: "",
-          roomNumber: "",
+          roomId: "",
           amount: roomType.price,
         });
         remainingGuests -= roomType.capacity;
@@ -265,7 +266,7 @@ useEffect(() => {
           roomType: smallestRoomType._id,
           building: "",
           floor: "",
-          roomNumber: "",
+          roomId: "",
           amount: smallestRoomType.price,
         });
         remainingGuests -= smallestRoomType.capacity;
@@ -281,7 +282,7 @@ useEffect(() => {
   const handleAddRoom = () => {
     const updatedRoomsData = [
       ...formik.values.roomsData,
-      { roomType: "", building: "", floor: "", roomNumber: "", amount: 0 },
+      { roomType: "", building: "", floor: "", roomId: "", amount: 0 },
     ];
     formik.setFieldValue('roomsData', updatedRoomsData);
     updateTotalAmount(updatedRoomsData);
@@ -289,7 +290,7 @@ useEffect(() => {
 
   const handleClearRooms = () => {
     const clearedRoomsData = [
-      { roomType: "", building: "", floor: "", roomNumber: "", amount: 0 },
+      { roomType: "", building: "", floor: "", roomId: "", amount: 0 },
     ];
     formik.setFieldValue('roomsData', clearedRoomsData);
     updateTotalAmount(clearedRoomsData);
@@ -325,6 +326,7 @@ useEffect(() => {
     const updatedRooms = formik.values.roomsData.map((room, i) =>
       i === index ? { ...room, roomId: roomId } : room
     );
+    console.log("Updated rooms data:", updatedRooms);
     formik.setFieldValue('roomsData', updatedRooms);
     updateTotalAmount(updatedRooms);
   };
@@ -407,7 +409,7 @@ useEffect(() => {
                   id="from-date"
                   selected={formik.values.fromDate}
                   onChange={handleFromDateChange}
-                  dateFormat="DD/MM/YYYY"
+                  dateFormat="dd/MM/yyyy"
                   placeholderText="Select a date"
                   className="custom-datepicker"
                 />
@@ -420,7 +422,7 @@ useEffect(() => {
                     id="to-date"
                     selected={formik.values.toDate}
                     onChange={handleToDateChange}
-                    dateFormat="DD/MM/YYYY"
+                    dateFormat="dd/MM/yyyy"
                     placeholderText="Select a date"
                     className="custom-datepicker"
                   />
@@ -559,7 +561,7 @@ useEffect(() => {
                     <select
                       id={`room-number-${index}`}
                       className="room-number-dropdown"
-                      value={room.roomNumber}
+                      value={room.roomId}
                       onChange={(e) =>
                         handleRoomNumberChange(e.target.value, index)
                       }
@@ -570,7 +572,7 @@ useEffect(() => {
                         .filter((r) => r.roomTypeId === room.roomType)
                         .map((room) => (
                           <option key={room._id} value={room._id}>
-                            {room.roomNumber}
+                            {room.roomId}
                           </option>
                         ))}
                     </select>
@@ -856,12 +858,33 @@ useEffect(() => {
                     placeholder="Total Due"
                   />
                 </div>
-                <button className="pay-button">Pay</button>
+                {/* <button className="pay-button">Pay</button> */}
               </div>
             )}
             {activeTab === "paymentHistory" && (
-              <div className="payment-history-tab">
-                <p>Payment history</p>
+              <div 
+              // className="payment-history-tab"
+              >
+                {/* <h3>Payment History</h3> */}
+                {formik.values.payments && formik.values.payments.length > 0 ? (
+                  <Timeline>
+                    {formik.values.payments.map((payment, index) => (
+                      <Timeline.Item 
+                        key={payment._id || index} 
+                        color={payment.type === 'deposit' ? 'green' : 'red'}
+                      >
+                        <p>
+                          <strong>{payment.type === 'deposit' ? 'Deposit' : 'Refund'}</strong>: 
+                          {payment.amount} {formik.values.currency}
+                        </p>
+                        <p>Date: {new Date(payment.date).toLocaleString()}</p>
+                        <p>Method: {payment.method}</p>
+                      </Timeline.Item>
+                    ))}
+                  </Timeline>
+                ) : (
+                  <p>No payment history available.</p>
+                )}
               </div>
             )}
           </div>

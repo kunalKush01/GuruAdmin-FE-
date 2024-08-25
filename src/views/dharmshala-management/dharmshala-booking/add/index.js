@@ -25,7 +25,7 @@ const AddDharmshalaBooking = () => {
         roomType: '',
         building: '',
         floor: '',
-        roomNumber: '',
+        roomId: '',
         amount: 0,
       },
     ],
@@ -41,23 +41,6 @@ const AddDharmshalaBooking = () => {
   useEffect(() => {
     if (location.state && location.state.bookingData) {
       const bookingData = location.state.bookingData;
-      console.log("🚀🚀🚀 ~ file: index.js:44 ~ useEffect ~ bookingData:", bookingData);
-      console.log("Setting initialValues:");
-    console.log("Mobile:", bookingData.userDetails.mobileNumber);
-    console.log("SelectedUser:", bookingData.userDetails);
-    console.log("donarName:", bookingData.userDetails.name);
-    console.log("fromDate:", bookingData.startDate);
-    console.log("toDate:", bookingData.endDate);
-    console.log("numMen:", bookingData.guestCount?.men);
-    console.log("numWomen:", bookingData.guestCount?.women);
-    console.log("numKids:", bookingData.guestCount?.children);
-    console.log("roomsData:", bookingData.rooms);
-    console.log("guestname:", bookingData.userDetails.name);
-    console.log("email:", bookingData.userDetails.email);
-    console.log("roomRent:", bookingData.roomRent);
-    console.log("security:", bookingData.dharmshalaId.advanceOnBooking);
-    console.log("calculatedFields:", bookingData.calculatedFields);
-    
       setInitialValues({
         ...initialValues,
         Mobile: bookingData.userDetails.mobileNumber || "",
@@ -79,6 +62,8 @@ const AddDharmshalaBooking = () => {
         address: bookingData.userDetails.address || "",
         idType: bookingData.userDetails.idType || "",
         idNumber: bookingData.userDetails.idNumber || "",
+        paymentId: bookingData.payment._id || "",
+        payments: bookingData.payment.payments || [],
       });
     }
   }, [location.state]);

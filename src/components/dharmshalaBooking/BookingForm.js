@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { getAllMasterCategories } from "../../api/expenseApi";
 import FormWithoutFormikForBooking from "../../components/dharmshalaBooking/FormWithoutFormikForBooking";
-import { createDharmshalaBooking, createPayment } from "../../api/dharmshala/dharmshalaInfo";
+import { createDharmshalaBooking, createPayment, updatePayment } from "../../api/dharmshala/dharmshalaInfo";
 import { PaymentModal } from "./PaymentModal";
 
 const FormWrapper = styled.div`
@@ -109,7 +109,7 @@ export default function BookingForm({
             roomTypeId: room.roomType,
             building: room.building,
             floor: room.floor,
-            roomId: room.roomNumber,
+            roomId: room.roomId,
             amount: room.amount,
           })),
           guestname: bookingData.guestname,
@@ -122,7 +122,9 @@ export default function BookingForm({
         const bookingResponse = await createDharmshalaBooking(bookingPayload);
         
         if (bookingResponse && !bookingResponse.error) {
+          const existingPayments = Array.isArray(bookingData.payments) ? bookingData.payments : [];
           const paymentPayload = {
+            paymentId: bookingData.paymentId,
             bookingId: bookingResponse._id,
             totalAmount: {
               roomrent: bookingData.roomRent,
@@ -130,10 +132,11 @@ export default function BookingForm({
             },
             currency: "INR",
             payments: [
+              ...existingPayments,
               {
                 type: "deposit",
                 amount: paymentDetails.amount,
-                date: new Date(),
+                date: new Date().toISOString(),
                 transactionId: paymentDetails.transactionId,
                 remarks: paymentDetails.remark,
                 method: paymentDetails.mode
@@ -142,7 +145,15 @@ export default function BookingForm({
             status: "pending"
           };
 
-          const paymentResponse = await createPayment(paymentPayload);
+          let paymentResponse;
+
+          // const paymentResponse = await createPayment(paymentPayload);
+
+          if (bookingData.paymentId) {
+            paymentResponse = await updatePayment(paymentPayload);
+          } else {
+            paymentResponse = await createPayment(paymentPayload);
+          }
 
           if (paymentResponse && !paymentResponse.error) {
             console.log("Booking and payment created successfully");
