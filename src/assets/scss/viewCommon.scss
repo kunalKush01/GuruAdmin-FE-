@@ -1431,3 +1431,27 @@
   .ant-timeline-item-content {
     padding-bottom: 20px;
   }
+
+
+  .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner,
+.ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner,
+.ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner {
+  background: #ffffff;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
+  border-color: #d9d9d9;
+}
+
+.ant-picker-header-view button:hover {
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.ant-picker-today-btn {
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.ant-picker-range .ant-picker-active-bar {
+  background: #d9d9d9;
+}

@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { getAllMasterCategories } from "../../api/expenseApi";
 import FormWithoutFormikForBooking from "../../components/dharmshalaBooking/FormWithoutFormikForBooking";
-import { createDharmshalaBooking, createPayment, updatePayment } from "../../api/dharmshala/dharmshalaInfo";
+import { createDharmshalaBooking, createPayment, updatePayment, updateDharmshalaBooking } from "../../api/dharmshala/dharmshalaInfo";
 import { PaymentModal } from "./PaymentModal";
 
 const FormWrapper = styled.div`
@@ -85,16 +85,16 @@ export default function BookingForm({
   const [toggleState, setToggleState] = useState(false);
 
   const handleCreateBooking = async (formData) => {
-    setBookingData(formData);
+    setBookingData({ ...formData, isEditing });
     setIsPaymentModalOpen(true);
   };
 
   const handlePaymentSave = async (paymentDetails) => {
     if (bookingData) {
-      console.log("🚀🚀🚀 ~ file: BookingForm.js:94 ~ handlePaymentSave ~ bookingData:", bookingData);
       setLoading(true);
       try {
         const bookingPayload = {
+          bookingId: bookingData.bookingId, 
           Mobile: bookingData.Mobile,
           countryCode: bookingData.countryCode,
           dialCode: bookingData.dialCode,
@@ -102,24 +102,48 @@ export default function BookingForm({
           donarName: bookingData.donarName,
           startDate: bookingData.fromDate ? bookingData.fromDate.format('DD-MM-YYYY') : null,
           endDate: bookingData.toDate ? bookingData.toDate.format('DD-MM-YYYY') : null,
-          numMen: bookingData.numMen,
-          numWomen: bookingData.numWomen,
-          numKids: bookingData.numKids,
-          roomsData: bookingData.roomsData.map(room => ({
+          address: bookingData.address,
+          idType: bookingData.idType,
+          idNumber: bookingData.idNumber,
+          guestCount: {
+            men: bookingData.numMen,
+            women: bookingData.numWomen,
+            children: bookingData.numKids,
+          },
+          rooms: bookingData.roomsData.map(room => ({
             roomTypeId: room.roomType,
             building: room.building,
             floor: room.floor,
             roomId: room.roomId,
             amount: room.amount,
           })),
-          guestname: bookingData.guestname,
-          email: bookingData.email,
-          address: bookingData.address,
-          idType: bookingData.idType,
-          idNumber: bookingData.idNumber,
+          userDetails: {
+            name: bookingData.guestname,
+            email: bookingData.email,
+            mobileNumber: bookingData.Mobile,
+            address: bookingData.address,
+            idType: bookingData.idType,
+            idNumber: bookingData.idNumber,
+          },
+          calculatedFields: {
+            roomRent: bookingData.roomRent,
+            totalAmount: bookingData.totalAmount,
+            totalPaid: bookingData.totalPaid,
+            totalDue: bookingData.totalDue,
+          },
         };
+  
+        console.log("Booking Payload:", bookingPayload);
 
-        const bookingResponse = await createDharmshalaBooking(bookingPayload);
+        let bookingResponse;
+      if (bookingData.isEditing) {
+        bookingResponse = await updateDharmshalaBooking({
+          ...bookingPayload,
+          bookingId: bookingData.bookingId, 
+        });
+      } else {
+        bookingResponse = await createDharmshalaBooking(bookingPayload);
+      }
         
         if (bookingResponse && !bookingResponse.error) {
           const existingPayments = Array.isArray(bookingData.payments) ? bookingData.payments : [];
@@ -156,7 +180,7 @@ export default function BookingForm({
           }
 
           if (paymentResponse && !paymentResponse.error) {
-            console.log("Booking and payment created successfully");
+            console.log(bookingData.isEditing ? "Booking updated successfully" : "Booking created successfully");
             history.push("/booking/info");
           } else {
             console.error("Error in payment creation:", paymentResponse.error);

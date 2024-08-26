@@ -22,6 +22,9 @@ import { Prompt } from 'react-router-dom';
 import AddUserDrawerForm from "../donation/addUserDrawerForm";
 import * as Yup from "yup";
 import { useQuery } from "@tanstack/react-query";
+import momentGenerateConfig from "rc-picker/lib/generate/moment";
+
+const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 
 export default function FormWithoutFormikForBooking({
   formik,
@@ -149,6 +152,22 @@ useEffect(() => {
     fetchRoomTypes();
   }, []);
 
+  useEffect(() => {
+    fetchBuildings();
+    fetchRoomTypes();
+    
+    if (formik.values.roomsData && formik.values.roomsData.length > 0) {
+      formik.values.roomsData.forEach((room) => {
+        if (room.building) {
+          fetchFloors(room.building);
+        }
+        if (room.floor) {
+          fetchRooms(room.floor);
+        }
+      });
+    }
+  }, []);
+
   const handleCreateUser = async (payload) => {
     return createSubscribedUser(payload);
   };
@@ -231,11 +250,11 @@ useEffect(() => {
     }
   };
 
-  const handleFromDateChange = (date) => {
+  const handleFromDateChange = (date, dateString) => {
     formik.setFieldValue('fromDate', date);
   };
   
-  const handleToDateChange = (date) => {
+  const handleToDateChange = (date, dateString) => {
     formik.setFieldValue('toDate', date);
   };
 
@@ -298,12 +317,18 @@ useEffect(() => {
 
   const handleRoomTypeChange = (value, index) => {
     const updatedRoomsData = [...formik.values.roomsData];
-    updatedRoomsData[index].roomTypeId = value;
-    updatedRoomsData[index].amount = roomTypes.find((rt) => rt._id === value)?.price ?? 0;
+    updatedRoomsData[index] = {
+      ...updatedRoomsData[index],
+      roomType: value,
+      building: '',
+      floor: '',
+      roomId: '',
+      amount: roomTypes.find((rt) => rt._id === value)?.price ?? 0,
+    };
     formik.setFieldValue('roomsData', updatedRoomsData);
     updateTotalAmount(updatedRoomsData);
   };
-
+  
   const handleBuildingChange = (buildingId, index) => {
     const updatedRooms = formik.values.roomsData.map((room, i) =>
       i === index ? { ...room, building: buildingId, floor: "", roomId: "" } : room
@@ -312,7 +337,7 @@ useEffect(() => {
     updateTotalAmount(updatedRooms);
     fetchFloors(buildingId);
   };
-
+  
   const handleFloorChange = (floorId, index) => {
     const updatedRooms = formik.values.roomsData.map((room, i) =>
       i === index ? { ...room, floor: floorId, roomId: "" } : room
@@ -321,12 +346,11 @@ useEffect(() => {
     updateTotalAmount(updatedRooms);
     fetchRooms(floorId);
   };
-
+  
   const handleRoomNumberChange = (roomId, index) => {
     const updatedRooms = formik.values.roomsData.map((room, i) =>
       i === index ? { ...room, roomId: roomId } : room
     );
-    console.log("Updated rooms data:", updatedRooms);
     formik.setFieldValue('roomsData', updatedRooms);
     updateTotalAmount(updatedRooms);
   };
@@ -405,27 +429,27 @@ useEffect(() => {
                   <label htmlFor="from-date" className="date-label">
                     From Date:
                   </label>
-                  <DatePicker
-                  id="from-date"
-                  selected={formik.values.fromDate}
-                  onChange={handleFromDateChange}
-                  dateFormat="dd/MM/yyyy"
-                  placeholderText="Select a date"
-                  className="custom-datepicker"
-                />
+                  <CustomDatePicker
+      id="from-date"
+      value={formik.values.fromDate}
+      onChange={handleFromDateChange}
+      format="DD/MM/YYYY"
+      placeholder="Select a date"
+      className="custom-datepicker"
+    />
                 </div>
                 <div className="date-picker-item">
                   <label htmlFor="to-date" className="date-label">
                     To Date:
                   </label>
-                  <DatePicker
-                    id="to-date"
-                    selected={formik.values.toDate}
-                    onChange={handleToDateChange}
-                    dateFormat="dd/MM/yyyy"
-                    placeholderText="Select a date"
-                    className="custom-datepicker"
-                  />
+                  <CustomDatePicker
+      id="to-date"
+      value={formik.values.toDate}
+      onChange={handleToDateChange}
+      format="DD/MM/YYYY"
+      placeholder="Select a date"
+      className="custom-datepicker"
+    />
                 </div>
               </div>
               <div className="member-container">
