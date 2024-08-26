@@ -55,10 +55,16 @@ function SuspenseImportForm({ onClose, open }) {
         } else if (fileName.endsWith(".xlsx") || fileName.endsWith(".xls")) {
           const workbook = XLSX.read(new Uint8Array(data), { type: "array" });
           const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-          headers = XLSX.utils.sheet_to_json(worksheet, { header: 1, range: 1 })[0];
-          setSourceFields(headers);
-          setMapping({});
-          message.success(`${fileName} file processed successfully`);
+          headers = XLSX.utils.sheet_to_json(worksheet, { header: 1 })[0];
+          if (headers && headers.length > 0) {
+            setSourceFields(headers);
+            setMapping({});
+            message.success(`${fileName} file processed successfully`);
+          } else {
+            message.error(
+              `Failed to read headers from ${fileName}. Please check the file.`
+            );
+          }
         } else {
           message.error(
             "Unsupported file type. Please upload a .csv or .xlsx file."
@@ -125,7 +131,9 @@ function SuspenseImportForm({ onClose, open }) {
           onChange={(value) => handleMappingChange(record.targetField, value)}
           value={mapping[record.targetField]}
         >
-          <Select.Option key="" value="">Select Option</Select.Option>
+          <Select.Option key="" value="">
+            Select Option
+          </Select.Option>
           {sourceFields.map((field) => (
             <Select.Option key={field} value={field}>
               {field}

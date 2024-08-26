@@ -2922,3 +2922,6 @@
 .text-danger {
     font: normal $font-size-small $font-family;
 }
+.ant-btn-compact-item.ant-btn-primary:not([disabled])+.ant-btn-compact-item.ant-btn-primary:not([disabled]):before{
+    display: none;
+}

@@ -21,7 +21,7 @@ import NoContent from "../../components/partials/noContent";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { WRITE } from "../../utility/permissionsVariable";
 import DonationANTDListTable from "../../components/donation/donationAntdListTable";
-
+import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import "../../assets/scss/viewCommon.scss";
 import SuspenseImportForm from "./suspenseImportForm";
 import SuspenseListTable from "../../components/donation/suspenseListTable";
@@ -197,8 +197,6 @@ export default function Donation() {
   const [showHistory, setShowHistory] = useState(false);
   const handleMenuClick = (e) => {
     setShowHistory(true);
-    // message.info("Click on menu item.");
-    // console.log("click", e);
   };
   const [open, setOpen] = useState(false);
   const showDrawer = () => {
@@ -209,8 +207,6 @@ export default function Donation() {
   };
   const handleButtonClick = (e) => {
     showDrawer();
-    // message.info("Click on left button.");
-    // console.log("click left button", e);
   };
   // Donation split tab
   const items = [
@@ -521,27 +517,38 @@ export default function Donation() {
       label: "Suspense",
       children: (
         <>
-          <div className="d-flex flex-wrap gap-2 gap-md-0 justify-content-end">
-            <Space wrap className="mb-1">
-              <Dropdown.Button
-              type="primary"
-              size="large"
-                menu={{
-                  items: [
-                    {
-                      label: "History",
-                      key: "history",
-                      // icon: <UserOutlined />,
-                    },
-                  ],
-                  onClick: handleMenuClick,
-                }}
-                onClick={handleButtonClick}
-              >
-                Import
-              </Dropdown.Button>
-            </Space>
-            <SuspenseImportForm onClose={onClose} open={open} />
+          <div className="d-flex justify-content-between align-items-center mb-1">
+            {showHistory ? (
+              <img
+                src={arrowLeft}
+                className="me-2  cursor-pointer"
+                onClick={() => setShowHistory(false)}
+              />
+            ) : (
+              <div></div>
+            )}
+            <div className="d-flex flex-wrap gap-2 gap-md-0 justify-content-end">
+              <Space wrap className="">
+                <Dropdown.Button
+                  type="primary"
+                  size="large"
+                  menu={{
+                    items: [
+                      {
+                        label: "History",
+                        key: "history",
+                        // icon: <UserOutlined />,
+                      },
+                    ],
+                    onClick: handleMenuClick,
+                  }}
+                  onClick={handleButtonClick}
+                >
+                  Import
+                </Dropdown.Button>
+              </Space>
+              <SuspenseImportForm onClose={onClose} open={open} />
+            </div>
           </div>
           <div className="donationContent">
             {!showHistory ? <SuspenseListTable /> : <SuspenseHistoryTable />}
