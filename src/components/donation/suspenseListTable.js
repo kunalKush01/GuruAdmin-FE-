@@ -28,10 +28,10 @@ function SuspenseListTable() {
 
   const columns = [
     {
-      title: "Transaction Date",
+      title: "Transaction Date & Time",
       dataIndex: "transactionDate",
       key: "transactionDate",
-      render: (text) => moment(text).format("DD-MMM-YYYY"),
+      render: (text) =>text? moment(text).format("DD-MMM-YYYY"):'-',
     },
     {
       title: "Bank Narration",
@@ -47,6 +47,7 @@ function SuspenseListTable() {
       title: "Mode of Payment",
       dataIndex: "modeOfPayment",
       key: "modeOfPayment",
+      render: (text) =>text? text:'-',
     },
     // Uncomment this if download functionality is required
     // {
