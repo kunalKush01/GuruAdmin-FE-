@@ -23,6 +23,7 @@ import AddUserDrawerForm from "../donation/addUserDrawerForm";
 import * as Yup from "yup";
 import { useQuery } from "@tanstack/react-query";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
+import '../../../src/assets/scss/viewCommon.scss';
 
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 
@@ -38,6 +39,7 @@ export default function FormWithoutFormikForBooking({
   article,
   setArticle,
   showPrompt,
+  isEditing,
   ...props
 }) {
   const { t } = useTranslation();
@@ -126,18 +128,6 @@ useEffect(() => {
   formik.setFieldValue("donarName", "");
 }, [formik?.values?.SelectedUser]);
 
-// useEffect(() => {
-//   const roomRent = parseFloat(formik.values.roomRent) || 0;
-//   const security = parseFloat(formik.values.security) || 0;
-//   const totalPaid = parseFloat(formik.values.totalPaid) || 0;
-
-//   const totalAmount = roomRent + security;
-//   const totalDue = totalAmount - totalPaid;
-
-//   formik.setFieldValue('totalAmount', totalAmount.toFixed(2));
-//   formik.setFieldValue('totalDue', totalDue.toFixed(2));
-// }, [formik.values.roomRent, formik.values.security, formik.values.totalPaid]);
-
 useEffect(() => {
   if (formik.values.calculatedFields) {
     formik.setFieldValue('roomRent', formik.values.calculatedFields.roomRent);
@@ -146,6 +136,14 @@ useEffect(() => {
     formik.setFieldValue('totalPaid', formik.values.calculatedFields.totalPaid);
   }
 }, [formik.values.calculatedFields]);
+
+const idTypeOptions = [
+  { value: 'aadhar', label: 'Aadhar Card' },
+  { value: 'pan', label: 'PAN Card' },
+  { value: 'voter', label: 'Voter ID Card' },
+  { value: 'driving', label: 'Driving License' },
+  { value: 'other', label: 'Other' }
+];
 
   useEffect(() => {
     fetchBuildings();
@@ -357,8 +355,9 @@ useEffect(() => {
 
   const updateTotalAmount = (updatedRoomsData) => {
     const total = updatedRoomsData.reduce((acc, room) => acc + room.amount, 0);
+    const totalAmount = total+ formik.values.security;
     formik.setFieldValue('roomRent', total);
-    formik.setFieldValue('totalAmount', total);
+    formik.setFieldValue('totalAmount', totalAmount);
   };
 
   const handleDeleteRoom = (index) => {
@@ -403,26 +402,66 @@ useEffect(() => {
     });
   };
 
+  const handleBeforeUnload = (event) => {
+    if (!!Object.values(formik?.values).find((val) => !!val)) {
+      event.preventDefault();
+      event.returnValue = '';
+    }
+  };
+  
+  const handleNavigation = (nextLocation) => {
+    if (!!Object.values(formik?.values).find((val) => !!val)) {
+      return new Promise((resolve) => {
+        Swal.fire({
+          title: "Leave page",
+          text: t("Are you sure you want to leave this page & visit bookings"),
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "confirm",
+          cancelButtonText: t("cancel")
+        }).then((result) => {
+          resolve(result.isConfirmed);
+        });
+      });
+    }
+    return true;
+  };
+
+  useEffect(() => {
+    const unblock = history.block((tx) => {
+      const navigate = async () => {
+        const canNavigate = await handleNavigation(tx.location);
+        if (canNavigate) {
+          unblock();
+          history.push("/booking/info");
+        }
+      };
+  
+      navigate();
+      return false;
+    });
+  
+    window.addEventListener('beforeunload', handleBeforeUnload);
+  
+    return () => {
+      unblock();
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [formik.values, history]);
+
   return (
     <Form>
-      {showPrompt && (
-        <Prompt
-          when={!!Object.values(formik?.values).find((val) => !!val)}
-          message={(location) =>
-            `Are you sure you want to leave this page & visit ${location.pathname.replace(
-              "/",
-              ""
-            )}`
-          }
-        />
-      )}
       <div className="overall-div">
         <div className="booking-room">
           <div className="booking-container">
-            <div className="booking-header">
-              <div className="booking-title">Booking</div>
-              <div className="booking-id">Booking ID: MASDSF</div>
-            </div>
+          <div className="booking-header">
+            <div className="booking-title">Booking</div>
+            {isEditing && formik.values.bookingId && (
+              <div className="booking-id">Booking ID: {formik.values.bookingCode}</div>
+            )}
+          </div>
             <div className="flex-container">
               <div className="date-picker-container">
                 <div className="date-picker-item">
@@ -430,26 +469,26 @@ useEffect(() => {
                     From Date:
                   </label>
                   <CustomDatePicker
-      id="from-date"
-      value={formik.values.fromDate}
-      onChange={handleFromDateChange}
-      format="DD/MM/YYYY"
-      placeholder="Select a date"
-      className="custom-datepicker"
-    />
+                    id="from-date"
+                    value={formik.values.fromDate}
+                    onChange={handleFromDateChange}
+                    format="DD MMM YYYY"
+                    placeholder="Select a date"
+                    className="custom-datepicker"
+                  />
                 </div>
                 <div className="date-picker-item">
                   <label htmlFor="to-date" className="date-label">
                     To Date:
                   </label>
                   <CustomDatePicker
-      id="to-date"
-      value={formik.values.toDate}
-      onChange={handleToDateChange}
-      format="DD/MM/YYYY"
-      placeholder="Select a date"
-      className="custom-datepicker"
-    />
+                    id="to-date"
+                    value={formik.values.toDate}
+                    onChange={handleToDateChange}
+                    format="DD MMM YYYY"
+                    placeholder="Select a date"
+                    className="custom-datepicker"
+                  />
                 </div>
               </div>
               <div className="member-container">
@@ -644,7 +683,7 @@ useEffect(() => {
             <Row className="paddingForm">
               <Col xs={12}>
                 <Row>
-                  <Col xs={12} sm={6} lg={4} className="pb-1">
+                  <Col xs={12} sm={6} lg={4} className="pb-1 custom-margin-top" >
                     <Row>
                       <Col xs={12} className="align-self-center">
                       <CustomCountryMobileNumberField
@@ -711,7 +750,7 @@ useEffect(() => {
                   <CustomTextField
                     required
                     label={t("Guest Name")}
-                    placeholder={t("guest_name")}
+                    placeholder={t("Guest Name")}
                     name="guestname"
                     value={formik.values.guestname}
                     onChange={formik.handleChange}
@@ -744,10 +783,11 @@ useEffect(() => {
                     }}
                   />
                   </Col>
-                  <Col xs={12} sm={6} lg={4} className="opacity-75 pb-1">
+                  <Col xs={12} sm={6} lg={8} className="a pb-1">
                   <CustomTextField
                     type="address"
                     label={t("Address")}
+                    placeholder={t("Address")}
                     name="address"
                     value={formik.values.address}
                     onChange={formik.handleChange}
@@ -760,28 +800,22 @@ useEffect(() => {
                     name="idType"
                     labelName={t("ID Type")}
                     placeholder={t("Id Type")}
-                    options={[
-                      { value: 'aadhar', label: 'Aadhar Card' },
-                      { value: 'pan', label: 'PAN Card' },
-                      { value: 'voter', label: 'Voter ID Card' },
-                      { value: 'driving', label: 'Driving License' },
-                      { value: 'other', label: 'Other' }
-                    ]}
-                    value={formik.values.idType}
-                    onChange={(selectedOption) => formik.setFieldValue('idType', selectedOption.value)}
+                    options={idTypeOptions}
+                    value={idTypeOptions.find(option => option.value === formik.values.idType) || null}
+                    onChange={(selectedOption) => formik.setFieldValue('idType', selectedOption ? selectedOption.value : '')}
                   />
                   </Col>
                   <Col xs={12} sm={6} lg={4} className="pb-1">
                   <CustomTextField
                     label={t("Id Number")}
-                    placeholder={t("id_number")}
+                    placeholder={t("Id Number")}
                     name="idNumber"
                     value={formik.values.idNumber}
                     onChange={formik.handleChange}
                     onInput={(e) => (e.target.value = e.target.value.slice(0, 30))}
                   />
                   </Col>
-                  <Col xs={12} sm={6} lg={4} className="pb-1">
+                  <Col xs={12} sm={6} lg={4} className="pb-1 upload-id">
                     <input type="file" id="upload-id" className="upload-input" />
                     <img
                       src={uploadIcon}
@@ -854,34 +888,36 @@ useEffect(() => {
                     placeholder="Total Amount"
                   />
                 </div>
-                <div className="payment-field">
-                  <label htmlFor="total-paid" className="payment-label">
-                    Total Paid:
-                  </label>
-                  <input
-                    type="text"
-                    id="total-paid"
-                    value={formik.values.totalPaid}
-                    readOnly
-                    // onChange={(e) => formik.setFieldValue('totalPaid', e.target.value)}
-                    className="payment-input"
-                    placeholder="Total Paid"
-                  />
-                </div>
-                <div className="payment-field">
-                  <label htmlFor="total-due" className="payment-label">
-                    Total Due:
-                  </label>
-                  <input
-                    type="text"
-                    id="total-due"
-                    value={formik.values.totalDue}
-                    readOnly
-                    // onChange={(e) => formik.setFieldValue('totalDue', e.target.value)}
-                    className="payment-input"
-                    placeholder="Total Due"
-                  />
-                </div>
+                {isEditing && (
+                <>
+                  <div className="payment-field">
+                    <label htmlFor="total-paid" className="payment-label">
+                      Total Paid:
+                    </label>
+                    <input
+                      type="text"
+                      id="total-paid"
+                      value={formik.values.totalPaid}
+                      readOnly
+                      className="payment-input"
+                      placeholder="Total Paid"
+                    />
+                  </div>
+                  <div className="payment-field">
+                    <label htmlFor="total-due" className="payment-label">
+                      Total Due:
+                    </label>
+                    <input
+                      type="text"
+                      id="total-due"
+                      value={formik.values.totalDue}
+                      readOnly
+                      className="payment-input"
+                      placeholder="Total Due"
+                    />
+                  </div>
+                </>
+              )}
                 {/* <button className="pay-button">Pay</button> */}
               </div>
             )}

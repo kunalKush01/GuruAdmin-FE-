@@ -5,55 +5,31 @@ import { DharmshalaBookingAddWrapper } from "../../dharmshalaStyles";
 import "../../dharmshala_css/addbooking.css";
 import BookingForm from "../../../../components/dharmshalaBooking/BookingForm";
 import * as Yup from "yup";
-import moment from 'moment';
-
+import dayjs from 'dayjs';
 
 const AddDharmshalaBooking = () => {
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
-  const [initialValues, setInitialValues] = useState({
-    Mobile: "",
-    countryCode: "in",
-    dialCode: "91",
-    SelectedUser: "",
-    donarName: "",
-    fromDate: null,
-    toDate: null,
-    numMen: '',
-    numWomen: '',
-    numKids: '',
-    roomsData: [
-      {
-        roomType: '',
-        building: '',
-        floor: '',
-        roomId: '',
-        amount: 0,
-      },
-    ],
-    guestname: '',
-    email: '',
-    roomRent:'',
-    security:'',
-  });
+  const [initialValues, setInitialValues] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
+  const { t } = useTranslation();
   const location = useLocation();
   const history = useHistory();
+  const bookingData = location.state?.bookingData;
 
   useEffect(() => {
-    if (location.state && location.state.bookingData) {
-      const bookingData = location.state.bookingData;
-      console.log("🚀🚀🚀 ~ file: index.js:44 ~ useEffect ~ bookingData:", bookingData);
+    if (bookingData) {
       setInitialValues({
-        ...initialValues,
         Mobile: bookingData.userDetails.mobileNumber || "",
+        countryCode: bookingData.userDetails.countryCode || "in",
+        dialCode: bookingData.userDetails.dialCode || "91",
         SelectedUser: bookingData.userDetails || "",
         donarName: bookingData.userDetails.name || "",
-        fromDate: bookingData.startDate ? moment(bookingData.startDate) : null,
-        toDate: bookingData.endDate ? moment(bookingData.endDate) : null,
+        fromDate: bookingData.startDate ? dayjs(bookingData.startDate) : null,
+        toDate: bookingData.endDate ? dayjs(bookingData.endDate) : null,
         numMen: bookingData.guestCount?.men || "",
         numWomen: bookingData.guestCount?.women || "",
         numKids: bookingData.guestCount?.children || "",
-        // roomsData: bookingData.rooms || initialValues.roomsData,
         roomsData: bookingData.rooms.map(room => ({
           roomType: room.roomTypeId,
           building: room.building,
@@ -71,75 +47,74 @@ const AddDharmshalaBooking = () => {
         address: bookingData.userDetails.address || "",
         idType: bookingData.userDetails.idType || "",
         idNumber: bookingData.userDetails.idNumber || "",
-        paymentId: bookingData.payment._id || "",
-        payments: bookingData.payment.payments || [],
-        bookingId: bookingData._id,
+        paymentId: bookingData.payment?._id || "",
+        payments: bookingData.payment?.payments || [],
+        bookingId: bookingData._id || "",
+        bookingCode: bookingData.bookingId || "",
+      });
+    } else {
+      setInitialValues({
+        Mobile: "",
+        countryCode: "in",
+        dialCode: "91",
+        SelectedUser: "",
+        donarName: "",
+        fromDate: null,
+        toDate: null,
+        numMen: '',
+        numWomen: '',
+        numKids: '',
+        roomsData: [
+          {
+            roomType: '',
+            building: '',
+            floor: '',
+            roomId: '',
+            amount: 0,
+          },
+        ],
+        guestname: '',
+        email: '',
+        roomRent: '',
+        security: '',
+        address: '',
+        idType: '',
+        idNumber: '',
+        totalAmount: '',
+        totalPaid: '',
+        totalDue: '',
       });
     }
-  }, [location.state]);
+    setIsLoading(false);
+  }, [bookingData]);
 
   const schema = Yup.object().shape({
-    Mobile: Yup.string().required("expenses_mobile_required"),
-    SelectedUser: Yup.mixed().required("user_select_required"),
+    Mobile: Yup.string().required(t("expenses_mobile_required")),
+    SelectedUser: Yup.mixed().required(t("user_select_required")),
     donarName: Yup.string()
       .matches(
         /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
-        "donation_donar_name_only_letters"
+        t("donation_donar_name_only_letters")
       )
       .trim(),
   });
 
-  // const initialValues = {
-  //   Mobile: "",
-  //   countryCode: "in",
-  //   dialCode: "91",
-  //   SelectedUser: "",
-  //   donarName: "",
-  //   fromDate: null,
-  //   toDate: null,
-  //   numMen: '',
-  //   numWomen: '',
-  //   numKids: '',
-  //   roomsData: [
-  //     {
-  //       roomType: '',
-  //       building: '',
-  //       floor: '',
-  //       roomNumber: '',
-  //       amount: 0,
-  //     },
-  //   ],
-  //   guestname: '',
-  //   email: '',
-  //   donarName: '',
-  //   roomRent:'',
-  //   security:'',
-
-  // };
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    // <DharmshalaBookingAddWrapper style={{ backgroundColor: "#FAFAFA" }}>
-    //   <BookingForm
-    //     initialValues={initialValues}
-    //     // validationSchema={schema}
-    //     showTimeInput
-    //     buttonName="Create Booking"
-    //     isPaymentModalOpen={isPaymentModalOpen}
-    //     setIsPaymentModalOpen={setIsPaymentModalOpen}
-    //   />
-    // </DharmshalaBookingAddWrapper>
-
-<DharmshalaBookingAddWrapper style={{ backgroundColor: "#FAFAFA" }}>
-<BookingForm
-  initialValues={initialValues}
-  validationSchema={schema}
-  showTimeInput
-  buttonName={location.state?.bookingData ? "Update Booking" : "Create Booking"}
-  isPaymentModalOpen={isPaymentModalOpen}
-  setIsPaymentModalOpen={setIsPaymentModalOpen}
-  isEditing={!!location.state?.bookingData}
-/>
-</DharmshalaBookingAddWrapper>
+    <DharmshalaBookingAddWrapper style={{ backgroundColor: "#FAFAFA" }}>
+      <BookingForm
+        initialValues={initialValues}
+        validationSchema={schema}
+        showTimeInput
+        buttonName={bookingData ? t("Update Booking") : t("Create Booking")}
+        isPaymentModalOpen={isPaymentModalOpen}
+        setIsPaymentModalOpen={setIsPaymentModalOpen}
+        isEditing={!!bookingData}
+      />
+    </DharmshalaBookingAddWrapper>
   );
 };
 
