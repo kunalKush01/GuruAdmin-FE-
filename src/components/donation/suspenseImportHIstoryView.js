@@ -1,14 +1,9 @@
 import React, { useRef } from "react";
 import { X, Clipboard } from "react-feather";
-import {
-  Modal,
-  ModalBody,
-  ModalFooter,
-  ModalHeader,
-  Button,
-  Table,
-} from "reactstrap";
+import { Modal, ModalBody, ModalFooter, ModalHeader, Button } from "reactstrap";
+import { Table as AntdTable } from "antd";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
+import "antd/dist/reset.css";
 
 function SuspenseImportHIstoryView({ isOpen, toggle, details }) {
   const errorTableRef = useRef(null);
@@ -16,19 +11,47 @@ function SuspenseImportHIstoryView({ isOpen, toggle, details }) {
   // Function to copy error table to clipboard
   const copyToClipboard = () => {
     if (errorTableRef.current) {
-      const range = document.createRange();
-      range.selectNodeContents(errorTableRef.current);
-      const selection = window.getSelection();
-      selection.removeAllRanges();
-      selection.addRange(range);
+      // Format data as text
+      const formattedData = flattenedErrorData
+        .map(({ line, error }) => `Line ${line}: ${error}`)
+        .join("\n");
+
+      // Create a temporary textarea to copy text
+      const textarea = document.createElement("textarea");
+      textarea.value = formattedData;
+      document.body.appendChild(textarea);
+      textarea.select();
       document.execCommand("copy");
-      selection.removeAllRanges();
+      document.body.removeChild(textarea);
+
       alert("Error details copied to clipboard!");
     }
   };
 
-  // Dummy error data for demonstration
+  // Extract error data
   const errorData = details.lineErrors || [];
+
+  // Flatten errorData for table display
+  const flattenedErrorData = errorData.flatMap((lineError) =>
+    lineError.errorMsg.map((error) => ({
+      line: lineError.line,
+      error: error.error,
+    }))
+  );
+
+  const columns = [
+    {
+      title: "Line Number",
+      dataIndex: "line",
+      key: "line",
+    },
+    {
+      title: "Error Message",
+      dataIndex: "error",
+      key: "error",
+    },
+  ];
+
   return (
     <Modal isOpen={isOpen} toggle={toggle} centered size="lg">
       <ModalHeader toggle={toggle}>
@@ -54,7 +77,7 @@ function SuspenseImportHIstoryView({ isOpen, toggle, details }) {
                 <span
                   style={{
                     color:
-                      details.status == "completed" ? "#24C444" : "#FF0700",
+                      details.status === "completed" ? "#24C444" : "#FF0700",
                     font: "normal normal 600 11px/20px Noto Sans",
                   }}
                 >
@@ -63,11 +86,20 @@ function SuspenseImportHIstoryView({ isOpen, toggle, details }) {
               </p>
               <p>
                 <strong>Success Count:</strong>{" "}
-                {details.lineErrors.length > 0 ? 0 : lineErrors.length || 0}
+                {details.totalRecords
+                  ? details.totalRecords -
+                    (Array.isArray(details.lineErrors)
+                      ? details.lineErrors.length
+                      : 0)
+                  : 0}
               </p>
               <p>
-                <strong>Failed Count:</strong> {details.lineErrors.length || 0}
+                <strong>Failed Count:</strong>
+                {Array.isArray(details.lineErrors)
+                  ? details.lineErrors.length
+                  : 0}
               </p>
+
               {errorData.length > 0 && (
                 <p className="d-flex align-items-center">
                   <strong>Copy to Clipboard:</strong>{" "}
@@ -84,24 +116,20 @@ function SuspenseImportHIstoryView({ isOpen, toggle, details }) {
             {errorData.length > 0 && (
               <div>
                 <h5>Errors:</h5>
-                <Table bordered ref={errorTableRef}>
-                  <thead>
-                    <tr>
-                      <th>Line Number</th>
-                      <th>Error Message</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {errorData.map((lineError, lineIndex) =>
-                      lineError.errorMsg.map((error, errorIndex) => (
-                        <tr key={`${lineIndex}-${errorIndex}`}>
-                          <td>{lineError.line}</td>
-                          <td>{error.error}</td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </Table>
+                <AntdTable
+                  className="commitmentListTable"
+                  columns={columns}
+                  dataSource={flattenedErrorData}
+                  scroll={{
+                    x: 500,
+                    y: 400,
+                  }}
+                  sticky={{
+                    offsetHeader: 64,
+                  }}
+                  ref={errorTableRef}
+                  rowKey={(record, index) => index}
+                />
               </div>
             )}
           </div>

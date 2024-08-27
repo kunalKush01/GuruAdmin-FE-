@@ -532,6 +532,8 @@ export const englishContent = {
   donation_Adddonation: "Add Donation",
   donation_AddArticledonation: "Add Article Donation",
   donation_suspense: "Add Suspense",
+  suspense_delete:"Delete Suspense",
+  suspense_sure:    "Are you sure you want to permanently delete this Record ? ",
   original_amount: "Original Amount",
   estimate_amount: "Estimate Amount",
   donation_select_date_time: "Select Date",
