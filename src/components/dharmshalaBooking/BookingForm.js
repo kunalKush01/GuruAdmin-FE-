@@ -57,7 +57,7 @@ const FormWrapper = styled.div`
 `;
 
 export default function BookingForm({
-  plusIconDisable = false,
+  plusIconDisable = true,
   // buttonName = "",
   // payDonation,
   // getCommitmentMobile,
@@ -91,6 +91,7 @@ export default function BookingForm({
 
   const handlePaymentSave = async (paymentDetails) => {
     if (bookingData) {
+      console.log("🚀🚀🚀 ~ file: BookingForm.js:94 ~ handlePaymentSave ~ bookingData:", bookingData);
       setLoading(true);
       try {
         const bookingPayload = {
@@ -171,8 +172,6 @@ export default function BookingForm({
 
           let paymentResponse;
 
-          // const paymentResponse = await createPayment(paymentPayload);
-
           if (bookingData.paymentId) {
             paymentResponse = await updatePayment(paymentPayload);
           } else {
@@ -218,6 +217,7 @@ export default function BookingForm({
               plusIconDisable={plusIconDisable}
               showPrompt={showPrompt}
               buttonName={buttonName}
+              isEditing={isEditing}
             />
           )}
         </Formik>
