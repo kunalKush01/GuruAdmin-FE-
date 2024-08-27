@@ -9,7 +9,7 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
-import { Dropdown, message, Space, Tabs } from "antd";
+import { Dropdown, Form, Space, Tabs, DatePicker, Input, Modal } from "antd";
 import {
   getAllCategories,
   getAllMasterCategories,
@@ -26,7 +26,9 @@ import "../../assets/scss/viewCommon.scss";
 import SuspenseImportForm from "./suspenseImportForm";
 import SuspenseListTable from "../../components/donation/suspenseListTable";
 import SuspenseHistoryTable from "../../components/donation/suspenseHistoryTable";
-
+import momentGenerateConfig from "rc-picker/lib/generate/moment";
+import { addSuspense } from "../../api/suspenseApi";
+const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 export default function Donation() {
   const history = useHistory();
   const importFileRef = useRef();
@@ -207,6 +209,35 @@ export default function Donation() {
   };
   const handleButtonClick = (e) => {
     showDrawer();
+  };
+  const [isAddModalVisible, setIsAddModalVisible] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const handleAddSuspenseClick = () => {
+    setIsAddModalVisible(true);
+  };
+  const [form] = Form.useForm();
+  const handleFormSubmit = async (values) => {
+    try {
+      // Format date to ISO string
+      const formattedDate = moment(values.transactionDate).utc().format();
+
+      const payload = {
+        transactionDate: formattedDate || "",
+        transactionId: values.transactionId || "",
+        bankNarration: values.bankNarration || "",
+        chequeNo: values.chequeNo || "",
+        amount: values.amount || "",
+        modeOfPayment: values.modeOfPayment || "",
+      };
+
+      await addSuspense(payload);
+      setSuccess(true);
+      form.resetFields();
+      setIsAddModalVisible(false);
+    } catch (error) {
+      setSuccess(false);
+      console.error("Error adding suspense data:", error);
+    }
   };
   // Donation split tab
   const items = [
@@ -529,6 +560,15 @@ export default function Donation() {
             )}
             <div className="d-flex flex-wrap gap-2 gap-md-0 justify-content-end">
               <Space wrap className="">
+                {!showHistory && (
+                  <Button
+                    color="primary"
+                    size="large"
+                    onClick={handleAddSuspenseClick}
+                  >
+                    Add Suspense Record
+                  </Button>
+                )}
                 <Dropdown.Button
                   type="primary"
                   size="large"
@@ -537,7 +577,6 @@ export default function Donation() {
                       {
                         label: "History",
                         key: "history",
-                        // icon: <UserOutlined />,
                       },
                     ],
                     onClick: handleMenuClick,
@@ -548,10 +587,76 @@ export default function Donation() {
                 </Dropdown.Button>
               </Space>
               <SuspenseImportForm onClose={onClose} open={open} />
+              <Modal
+                title="Add Suspense Record"
+                open={isAddModalVisible}
+                onCancel={() => setIsAddModalVisible(false)}
+                footer={null}
+                centered
+              >
+                <Form form={form} onFinish={handleFormSubmit} layout="vertical">
+                  <Form.Item
+                    name="transactionDate"
+                    label="Transaction Date"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Transaction date is required",
+                      },
+                    ]}
+                  >
+                    <CustomDatePicker showTime format="YYYY-MM-DD HH:mm" />
+                  </Form.Item>
+
+                  <Form.Item name="transactionId" label="Transaction ID">
+                    <Input />
+                  </Form.Item>
+
+                  <Form.Item
+                    name="bankNarration"
+                    label="Bank Narration"
+                    rules={[
+                      { required: true, message: "Bank narration is required" },
+                    ]}
+                  >
+                    <Input.TextArea rows={4} />
+                  </Form.Item>
+
+                  <Form.Item name="chequeNo" label="Cheque No">
+                    <Input />
+                  </Form.Item>
+
+                  <Form.Item
+                    name="amount"
+                    label="Amount"
+                    rules={[{ required: true, message: "Amount is required" }]}
+                  >
+                    <Input type="number" min="0" step="0.01" />
+                  </Form.Item>
+
+                  <Form.Item
+                    name="modeOfPayment"
+                    label="Mode of Payment"
+                    rules={[{ required: true, message: "Mode of Payment is required" }]}
+                  >
+                    <Input />
+                  </Form.Item>
+
+                  <Form.Item>
+                    <Button color="primary" htmlType="submit">
+                      Add Record
+                    </Button>
+                  </Form.Item>
+                </Form>
+              </Modal>
             </div>
           </div>
           <div className="donationContent">
-            {!showHistory ? <SuspenseListTable /> : <SuspenseHistoryTable />}
+            {!showHistory ? (
+              <SuspenseListTable success={success} />
+            ) : (
+              <SuspenseHistoryTable />
+            )}
           </div>
         </>
       ),
