@@ -1463,3 +1463,59 @@
 .upload-id {
     margin-top: 20px;
 }
+
+.modal-custom {
+    background-color: $screen-background-color;
+    font-family: $font-family;
+  }
+  
+  .button-cancel {
+    color: $font-color;
+  }
+  
+  .button-save {
+    background-color: $primary-color;
+  }
+  
+  .form-item {
+    color: $font-color;
+    font-size: $font-size-medium;
+  }
+  
+  .input-custom::placeholder {
+    color: $font-color;
+  }
+  
+  .ant-modal-title {
+    font-family: $font-family !important;
+    font-size: $font-size-large !important;
+    color: $font-color !important;
+  }
+  
+  .ant-form-item-label > label {
+    color: $font-color !important;
+    font-family: $font-family !important;
+    font-size: $font-size-medium !important;
+    font-weight: $font-weight-bold !important;
+  }
+  
+  .ant-select-selector {
+    font-family: $font-family !important;
+    font-size: $font-size-medium !important;
+    color: $font-color !important;
+  }
+  
+  .ant-select-dropdown .ant-select-item {
+    font-family: $font-family !important;
+    font-size: $font-size-medium !important;
+    color: $font-color !important;
+  }
+  
+  .ant-input::placeholder,
+  .ant-select-selection-placeholder {
+    font-family: $font-family !important;
+    font-size: $font-size-medium !important;
+    color: $font-color !important;
+  }
+  
+  
