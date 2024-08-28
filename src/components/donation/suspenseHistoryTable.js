@@ -82,7 +82,8 @@ const SuspenseHistoryTable = () => {
     {
       title: "Actions",
       key: "actions",
-      width: 150,
+      fixed: "right",
+      width: 120,
       render: (text, record) => (
         <div className="d-flex gap-2">
           <img

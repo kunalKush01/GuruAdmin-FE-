@@ -115,6 +115,7 @@ function SuspenseListTable({ success }) {
       dataIndex: "transactionDate",
       key: "transactionDate",
       render: (text) => (text ? moment(text).format("DD-MMM-YYYY HH:mm") : "-"),
+      // fixed:"left",
     },
     {
       title: "Bank Narration",
@@ -135,6 +136,8 @@ function SuspenseListTable({ success }) {
     {
       title: "Action",
       key: "action",
+      fixed:"right",
+      width:120,
       render: (text, record) => (
         <Space>
           <img

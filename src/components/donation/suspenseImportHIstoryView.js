@@ -1,22 +1,20 @@
 import React, { useRef } from "react";
 import { X, Clipboard } from "react-feather";
 import { Modal, ModalBody, ModalFooter, ModalHeader, Button } from "reactstrap";
-import { Table as AntdTable } from "antd";
+import { Table as AntdTable, Button as CustomButton } from "antd";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import "antd/dist/reset.css";
+import { CopyOutlined } from "@ant-design/icons";
 
 function SuspenseImportHIstoryView({ isOpen, toggle, details }) {
   const errorTableRef = useRef(null);
 
-  // Function to copy error table to clipboard
   const copyToClipboard = () => {
     if (errorTableRef.current) {
-      // Format data as text
       const formattedData = flattenedErrorData
         .map(({ line, error }) => `Line ${line}: ${error}`)
         .join("\n");
 
-      // Create a temporary textarea to copy text
       const textarea = document.createElement("textarea");
       textarea.value = formattedData;
       document.body.appendChild(textarea);
@@ -28,10 +26,8 @@ function SuspenseImportHIstoryView({ isOpen, toggle, details }) {
     }
   };
 
-  // Extract error data
   const errorData = details.lineErrors || [];
 
-  // Flatten errorData for table display
   const flattenedErrorData = errorData.flatMap((lineError) =>
     lineError.errorMsg.map((error) => ({
       line: lineError.line,
@@ -55,7 +51,7 @@ function SuspenseImportHIstoryView({ isOpen, toggle, details }) {
   return (
     <Modal isOpen={isOpen} toggle={toggle} centered size="lg">
       <ModalHeader toggle={toggle}>
-        Import Results
+        Import Result
         <div>
           <X
             className="cancleIcon"
@@ -67,10 +63,8 @@ function SuspenseImportHIstoryView({ isOpen, toggle, details }) {
         </div>
       </ModalHeader>
       <ModalBody>
-        {/* Display selected record details here */}
         {details && (
           <div>
-            {/* Status, Success Count, Failed Count, and Copy to Clipboard */}
             <div className="d-flex justify-content-between align-items-center mb-3">
               <p>
                 <strong>Status:</strong>{" "}
@@ -101,12 +95,14 @@ function SuspenseImportHIstoryView({ isOpen, toggle, details }) {
               </p>
 
               {errorData.length > 0 && (
-                <p className="d-flex align-items-center">
-                  <strong>Copy to Clipboard:</strong>{" "}
-                  <Clipboard
-                    size={20}
+                <p className="d-flex align-items-center flex-row">
+                  <strong>Copy to Clipboard &nbsp;</strong>
+                  <CustomButton
+                    type=""
+                    icon={<CopyOutlined />}
+                    size={30}
+                    style={{borderColor:"#FF8744",borderRadius:"4px"}}
                     onClick={copyToClipboard}
-                    style={{ cursor: "pointer" }}
                   />
                 </p>
               )}
