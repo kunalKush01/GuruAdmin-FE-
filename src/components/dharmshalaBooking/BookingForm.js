@@ -179,7 +179,6 @@ export default function BookingForm({
           }
 
           if (paymentResponse && !paymentResponse.error) {
-            console.log(bookingData.isEditing ? "Booking updated successfully" : "Booking created successfully");
             history.push("/booking/info");
           } else {
             console.error("Error in payment creation:", paymentResponse.error);

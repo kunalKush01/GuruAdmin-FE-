@@ -6,6 +6,10 @@ import "../../dharmshala_css/addbooking.css";
 import BookingForm from "../../../../components/dharmshalaBooking/BookingForm";
 import * as Yup from "yup";
 import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+
+dayjs.extend(customParseFormat);
+
 
 const AddDharmshalaBooking = () => {
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
@@ -25,8 +29,8 @@ const AddDharmshalaBooking = () => {
         dialCode: bookingData.userDetails.dialCode || "91",
         SelectedUser: bookingData.userDetails || "",
         donarName: bookingData.userDetails.name || "",
-        fromDate: bookingData.startDate ? dayjs(bookingData.startDate) : null,
-        toDate: bookingData.endDate ? dayjs(bookingData.endDate) : null,
+        fromDate: bookingData.startDate ? dayjs(bookingData.startDate, "DD-MM-YYYY") : null,
+        toDate: bookingData.endDate ? dayjs(bookingData.endDate, "DD-MM-YYYY") : null,
         numMen: bookingData.guestCount?.men || "",
         numWomen: bookingData.guestCount?.women || "",
         numKids: bookingData.guestCount?.children || "",

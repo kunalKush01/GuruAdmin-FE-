@@ -1,42 +1,37 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import moment from "moment";
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Table, Space } from "antd";
+import moment from "moment";
 import Swal from "sweetalert2";
-import { Button } from "reactstrap";
 import { deleteDharmshalaBooking } from "../../../api/dharmshala/dharmshalaInfo";
 import deleteIcon from "../../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../../assets/images/icons/category/editIcon.svg";
-import avtarIcon from "../../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import confirmationIcon from "../../../assets/images/icons/news/conformationIcon.svg";
-import CustomDharmshalaTable from "../../../components/partials/CustomDharmshalaTable";
-import { ConverFirstLatterToCapital } from "../../../utility/formater";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
-import { DharmshalaBookingTableWrapper } from "../dharmshalaStyles";
-import "../dharmshala_css/dharmshalabooking.css";
+import "../../../assets/scss/common.scss";
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+
+dayjs.extend(customParseFormat);
+
 
 const DharmshalaBookingTable = ({
   data = [],
-  maxHeight,
-  height,
   currentFilter,
   currentStatus,
   currentPage,
-  isMobileView,
-  //buildingID,
+  pageSize,
+  totalItems,
+  onChangePage,
+  onChangePageSize,
 }) => {
   const { t } = useTranslation();
   const history = useHistory();
-  const [selectedBookings, setSelectedBookings] = useState([]);
-  
-  const handleDeleteDharmshalaBooking = async (payload) => {
-    return deleteDharmshalaBooking(payload);
-  };
-
   const queryClient = useQueryClient();
+
   const deleteMutation = useMutation({
-    mutationFn: handleDeleteDharmshalaBooking,
+    mutationFn: deleteDharmshalaBooking,
     onSuccess: (data) => {
       if (!data.error) {
         queryClient.invalidateQueries(["dharmshalaBookingList"]);
@@ -44,185 +39,147 @@ const DharmshalaBookingTable = ({
     },
   });
 
-  const handleCheckboxChange = (bookingId) => {
-    setSelectedBookings((prevSelected) =>
-      prevSelected.includes(bookingId)
-        ? prevSelected.filter((id) => id !== bookingId)
-        : [...prevSelected, bookingId]
-    );
-  };
-
   const handleEditClick = (item) => {
     history.push({
       pathname: `/booking/edit/${item._id}`,
-      state: { bookingData: item }
+      state: { bookingData: item.originalData }
+    });
+  };
+
+  const handleDeleteClick = (item) => {
+    Swal.fire({
+      title: `<img src="${confirmationIcon}"/>`,
+      html: `
+        <h3 class="swal-heading mt-1">${t("dharmshala_booking_delete")}</h3>
+        <p>${t("dharmshala_booking_delete_sure")}</p>
+      `,
+      showCloseButton: false,
+      showCancelButton: true,
+      focusConfirm: true,
+      cancelButtonText: t("cancel"),
+      cancelButtonAriaLabel: t("cancel"),
+      confirmButtonText: t("confirm"),
+      confirmButtonAriaLabel: "Confirm",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        deleteMutation.mutate(item._id);
+      }
     });
   };
 
   const columns = [
     {
-      name: "",
-      selector: (row) => (
-        <input
-          type="checkbox"
-          checked={selectedBookings.includes(row.bookingId)}
-          onChange={() => handleCheckboxChange(row.bookingId)}
-        />
+      title: t("Booking ID"),
+      dataIndex: "bookingId",
+      key: "bookingId",
+      width: 150,
+      fixed: "left",
+    },
+    {
+      title: t("Start Date"),
+      dataIndex: "startDate",
+      key: "startDate",
+      width: 150,
+    },
+    {
+      title: t("End Date"),
+      dataIndex: "endDate",
+      key: "endDate",
+      width: 150,
+    },
+    {
+      title: t("Count"),
+      dataIndex: "count",
+      key: "count",
+      width: 100,
+    },
+    {
+      title: t("Room Number"),
+      dataIndex: "roomNumber",
+      key: "roomNumber",
+      width: 150,
+    },
+    {
+      title: t("Status"),
+      dataIndex: "status",
+      key: "status",
+      width: 150,
+    },
+    {
+      title: t("Early Check In"),
+      dataIndex: "earlyCheckIn",
+      key: "earlyCheckIn",
+      width: 150,
+      render: (value) => (value ? "Yes" : "No"),
+    },
+    {
+      title: t("Late Checkout"),
+      dataIndex: "lateCheckout",
+      key: "lateCheckout",
+      width: 150,
+      render: (value) => (value ? "Yes" : "No"),
+    },
+    {
+      title: t("Actions"),
+      key: "actions",
+      fixed: "right",
+      width: 120,
+      render: (_, record) => (
+        <Space size="middle">
+          <img
+            src={editIcon}
+            width={25}
+            className="cursor-pointer"
+            onClick={() => handleEditClick(record)}
+            alt="Edit"
+          />
+          <img
+            src={deleteIcon}
+            width={25}
+            className="cursor-pointer"
+            onClick={() => handleDeleteClick(record)}
+            alt="Delete"
+          />
+        </Space>
       ),
-      width: "50px",
-    },
-    {
-      name: t("Booking ID"),
-      selector: (row) => row.bookingId,
-      width: "150px",
-    },
-    {
-      name: t("Start Date"),
-      selector: (row) => row.startDate,
-      width: "150px",
-    },
-    {
-      name: t("End Date"),
-      selector: (row) => row.endDate,
-      width: "150px",
-    },
-    {
-      name: t("Count"),
-      selector: (row) => row.count,
-      width: "100px",
-    },
-    {
-      name: t("Room Number"),
-      selector: (row) => row.roomNumber,
-      width: "200px",
-    },
-    {
-      name: t("Status"),
-      selector: (row) => row.status,
-      width: "200px",
-    },
-    {
-      name: t("Early Check In"),
-      selector: (row) => (row.earlyCheckIn ? "Yes" : "No"),
-      width: "150px",
-    },
-    {
-      name: t("Late Checkout"),
-      selector: (row) => (row.lateCheckout ? "Yes" : "No"),
-      width: "150px",
-    },
-    {
-      name: t(""),
-      width: "400px",
-    },
-    {
-      name: t(""),
-      selector: (row) => row.edit,
-      width: "80px",
-      right: true,
-    },
-    {
-      name: t(""),
-      selector: (row) => row.delete,
-      width: "80px",
-      right: true,
     },
   ];
 
-  const DharmshalasBooking = useMemo(() => {
-    const sortedData = data.slice().sort((a, b) => {
-      return new Date(a.startDate) - new Date(b.startDate);
-    });
-
-    return sortedData.map((item, idx) => {
-      return {
-        id: idx + 1,
-        bookingId: item?.bookingId,
-        startDate: moment(item?.startDate).format("DD MMM YYYY"),
-        endDate: moment(item?.endDate).format("DD MMM YYYY"),
-        count: item?.count,
-        roomNumber: item?.roomId?.roomNumber,
-        status: item?.status,
-        earlyCheckIn: item?.earlyCheckIn,
-        lateCheckout: item?.lateCheckout,
-        edit: (
-          <img
-            src={editIcon}
-            width={35}
-            className="cursor-pointer"
-            onClick={() => handleEditClick(item, currentPage, currentStatus, currentFilter)}
-            />
-        ),
-        delete: (
-          <img
-            src={deleteIcon}
-            width={35}
-            className="cursor-pointer"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              Swal.fire({
-                title: `<img src="${confirmationIcon}"/>`,
-                html: `
-                                      <h3 class="swal-heading mt-1">${t("dharmshala_booking_delete")}</h3>
-                                      <p>${t("dharmshala_booking_delete_sure")}</p>
-                                      `,
-                showCloseButton: false,
-                showCancelButton: true,
-                focusConfirm: true,
-                cancelButtonText: ` ${t("cancel")}`,
-                cancelButtonAriaLabel: ` ${t("cancel")}`,
-                confirmButtonText: ` ${t("confirm")}`,
-                confirmButtonAriaLabel: "Confirm",
-              }).then(async (result) => {
-                if (result.isConfirmed) {
-                  deleteMutation.mutate(item._id);
-                }
-              });
-            }}
-          />
-        ),
-      };
-    });
+  const dataSource = useMemo(() => {
+    return data.map((item) => ({
+      key: item._id,
+      bookingId: item.bookingId,
+      startDate: item.startDate ? dayjs(item.startDate, "DD-MM-YYYY").format("DD MMM YYYY") : 'N/A',
+      endDate: item.endDate ? dayjs(item.endDate, "DD-MM-YYYY").format("DD MMM YYYY") : 'N/A',
+      count: item.count,
+      roomNumber: item.roomId?.roomNumber || 'N/A',
+      status: item.status,
+      earlyCheckIn: item.earlyCheckIn,
+      lateCheckout: item.lateCheckout,
+      _id: item._id,
+      originalData: item,
+    }));
   }, [data]);
 
   return (
-    <DharmshalaBookingTableWrapper>
-      {isMobileView ? (
-        <div className="card-container">
-          {DharmshalasBooking.map((item, index) => (
-            <div key={index} className="card">
-              <div className="card-body">
-                <div className="card-content">
-                  <h5 className="card-title">{item?.bookingId}</h5>
-                  <p className="card-text">Start Date: {item?.startDate}</p>
-                  <p className="card-text">End Date: {item?.endDate}</p>
-                  <p className="card-text">Count: {item?.count}</p>
-                  <p className="card-text">Status: {item?.status}</p>
-                  <p className="card-text">
-                    Early Check In: {item?.earlyCheckIn ? "Yes" : "No"}
-                  </p>
-                  <p className="card-text">
-                    Late Check Out: {item?.lateCheckout ? "Yes" : "No"}
-                  </p>
-                </div>
-                <div className="card-icons">
-                  {item.edit}
-                  {item.delete}
-                </div>
-              </div>
-            </div>
-          ))} 
-        </div>
-      ) : (
-        <CustomDharmshalaTable
-          maxHeight={maxHeight}
-          height={height}
-          columns={columns}
-          data={DharmshalasBooking}
-        />
-      )}
-    </DharmshalaBookingTableWrapper>
+    <Table
+      className="donationListTable"
+      columns={columns}
+      dataSource={dataSource}
+      scroll={{
+        x: 1500,
+        y: 400,
+      }}
+      pagination={{
+        current: currentPage,
+        pageSize: pageSize,
+        total: totalItems,
+        onChange: onChangePage,
+        onShowSizeChange: (current, size) => onChangePageSize(size),
+        showSizeChanger: true,
+      }}
+      bordered
+    />
   );
 };
 
