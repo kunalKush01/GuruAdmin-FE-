@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useIsFetching, useQuery, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import React, { Children, useEffect, useMemo, useRef, useState } from "react";
 import { Plus } from "react-feather";
@@ -28,6 +28,7 @@ import SuspenseListTable from "../../components/donation/suspenseListTable";
 import SuspenseHistoryTable from "../../components/donation/suspenseHistoryTable";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
 import { addSuspense } from "../../api/suspenseApi";
+import { LoadingOutlined, SyncOutlined } from "@ant-design/icons";
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 export default function Donation() {
   const history = useHistory();
@@ -239,11 +240,19 @@ export default function Donation() {
       console.error("Error adding suspense data:", error);
     }
   };
+  const isFetchingSuspense = !showHistory
+    ? useIsFetching({ queryKey: ["suspenseData"] }) > 0
+    : useIsFetching({ queryKey: ["suspenseDataHistory"] }) > 0;
+  const handleRefresh = () => {
+    !showHistory
+      ? queryClient.invalidateQueries(["suspenseData"])
+      : queryClient.invalidateQueries(["suspenseDataHistory"]);
+  };
   // Donation split tab
   const items = [
     {
       key: "Donation",
-      label: t('donation'),
+      label: t("donation"),
       children: (
         <>
           <div className="d-flex flex-wrap gap-2 gap-md-0 justify-content-end">
@@ -559,6 +568,13 @@ export default function Donation() {
               <div></div>
             )}
             <div className="d-flex flex-wrap gap-2 gap-md-0 justify-content-end">
+              <Space className="me-2">
+                {isFetchingSuspense ? (
+                  <LoadingOutlined spin onClick={handleRefresh} />
+                ) : (
+                  <SyncOutlined onClick={handleRefresh} />
+                )}
+              </Space>
               <Space wrap className="">
                 {!showHistory && (
                   <Button
@@ -566,7 +582,7 @@ export default function Donation() {
                     size="large"
                     onClick={handleAddSuspenseClick}
                   >
-                    {t('add_suspense_record')}
+                    {t("add_suspense_record")}
                   </Button>
                 )}
                 <Dropdown.Button
@@ -588,7 +604,7 @@ export default function Donation() {
               </Space>
               <SuspenseImportForm onClose={onClose} open={open} />
               <Modal
-                title={t('add_suspense_record')}
+                title={t("add_suspense_record")}
                 open={isAddModalVisible}
                 onCancel={() => setIsAddModalVisible(false)}
                 footer={null}
@@ -601,7 +617,7 @@ export default function Donation() {
                     rules={[
                       {
                         required: true,
-                        message: t('req_transactionDate'),
+                        message: t("req_transactionDate"),
                       },
                     ]}
                   >
@@ -616,7 +632,7 @@ export default function Donation() {
                     name="bankNarration"
                     label={t("bankNarration")}
                     rules={[
-                      { required: true, message: t('req_bankNarration') },
+                      { required: true, message: t("req_bankNarration") },
                     ]}
                   >
                     <Input.TextArea rows={4} />
@@ -629,7 +645,7 @@ export default function Donation() {
                   <Form.Item
                     name="amount"
                     label={t("suspense_amount")}
-                    rules={[{ required: true, message: t('req_ammount')}]}
+                    rules={[{ required: true, message: t("req_ammount") }]}
                   >
                     <Input type="number" min="0" step="0.01" />
                   </Form.Item>
@@ -640,7 +656,7 @@ export default function Donation() {
                     rules={[
                       {
                         required: true,
-                        message: t('req_modeofPayment'),
+                        message: t("req_modeofPayment"),
                       },
                     ]}
                   >
