@@ -585,6 +585,7 @@ export const englishContent = {
     "To introduce a new donation box, just click 'Add Collection'",
   //All Suspense Data
   suspense:"Suspense",
+  refresh:"Refresh",
   map_fields:"Map Fields",
   transactionDate:"Transaction Date & Time",
   suspense_cheque_no:"Cheque No",
