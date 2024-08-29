@@ -305,13 +305,13 @@ const SiderLayout = (props) => {
                   <img
                     src={menuUnFoldOutlined}
                     alt="Menu Unfold Icon"
-                    style={{ width: "50%", height: "50%" }}
+                    style={{ width: "22px" }}
                   />
                 ) : (
                   <img
                     src={menuFoldOutlined}
                     alt="Menu fold Icon"
-                    style={{ width: "50%", height: "50%" }}
+                    style={{ width: "22px" }}
                   />
                 )
               }
