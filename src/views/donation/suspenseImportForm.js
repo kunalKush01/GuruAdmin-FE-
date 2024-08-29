@@ -9,7 +9,7 @@ import {
 } from "antd";
 import { Form, Formik } from "formik";
 import { Button as ReactstrapButton, Col, Row, Spinner } from "reactstrap";
-import { UploadOutlined } from "@ant-design/icons";
+import uploadIcon from "../../assets/images/icons/file-upload.svg";
 import * as XLSX from "xlsx";
 import Papa from "papaparse";
 import { createImport } from "../../api/suspenseApi";
@@ -190,7 +190,15 @@ function SuspenseImportForm({ onClose, open }) {
               <Row>
                 <Col xs={12} sm={12} md={12}>
                   <Upload {...uploadProps} maxCount={1}>
-                    <AntdButton icon={<UploadOutlined />}>
+                    <AntdButton
+                      icon={
+                        <img
+                          src={uploadIcon}
+                          alt="Upload Icon"
+                          style={{ width: 16, height: 16 }}
+                        />
+                      }
+                    >
                       Click to Upload
                     </AntdButton>
                   </Upload>

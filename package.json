@@ -3,7 +3,6 @@
   "version": "8.0.0",
   "private": true,
   "dependencies": {
-    "@ant-design/icons": "^5.4.0",
     "@aws-amplify/storage": "^5.1.9",
     "@casl/ability": "^5.2.2",
     "@casl/react": "^2.1.1",

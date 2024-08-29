@@ -4,8 +4,9 @@ import { Modal, ModalBody, ModalFooter, ModalHeader, Button } from "reactstrap";
 import { Table as AntdTable, Button as CustomButton } from "antd";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import "antd/dist/reset.css";
-import { CopyOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
+import copyIcon from "../../assets/images/icons/copy-to-clipboard.svg";
+
 
 function SuspenseImportHistoryView({ isOpen, toggle, details }) {
   const errorTableRef = useRef(null);
@@ -100,7 +101,7 @@ function SuspenseImportHistoryView({ isOpen, toggle, details }) {
                   <strong>{t('copyToClipboard')} &nbsp;</strong>
                   <CustomButton
                     type=""
-                    icon={<CopyOutlined />}
+                    icon={<img src={copyIcon} style={{width:"50%",height:"50%"}}/>}
                     size={30}
                     style={{borderColor:"var(--primary-color)",borderRadius:"4px"}}
                     onClick={copyToClipboard}
