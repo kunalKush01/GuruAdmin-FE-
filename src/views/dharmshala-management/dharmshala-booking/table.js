@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { Tag } from "antd";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -152,7 +153,11 @@ const DharmshalaBookingTable = ({
       startDate: item.startDate ? dayjs(item.startDate, "DD-MM-YYYY").format("DD MMM YYYY") : 'N/A',
       endDate: item.endDate ? dayjs(item.endDate, "DD-MM-YYYY").format("DD MMM YYYY") : 'N/A',
       count: item.count,
-      roomNumber: item.roomId?.roomNumber || 'N/A',
+      roomNumber: item.rooms?.map(room => (
+        <Tag color="green" key={room.roomId}>
+          {room.roomNumber}
+        </Tag>
+      )) || 'N/A',
       status: item.status,
       earlyCheckIn: item.earlyCheckIn,
       lateCheckout: item.lateCheckout,

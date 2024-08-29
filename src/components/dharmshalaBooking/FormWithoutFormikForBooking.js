@@ -270,6 +270,7 @@ const idTypeOptions = [
           building: "",
           floor: "",
           roomId: "",
+          roomNumber: "",
           amount: roomType.price,
         });
         remainingGuests -= roomType.capacity;
@@ -284,6 +285,7 @@ const idTypeOptions = [
           building: "",
           floor: "",
           roomId: "",
+          roomNumber: "",
           amount: smallestRoomType.price,
         });
         remainingGuests -= smallestRoomType.capacity;
@@ -299,7 +301,7 @@ const idTypeOptions = [
   const handleAddRoom = () => {
     const updatedRoomsData = [
       ...formik.values.roomsData,
-      { roomType: "", building: "", floor: "", roomId: "", amount: 0 },
+      { roomType: "", building: "", floor: "", roomId: "", roomNumber:'', amount: 0 },
     ];
     formik.setFieldValue('roomsData', updatedRoomsData);
     updateTotalAmount(updatedRoomsData);
@@ -307,7 +309,7 @@ const idTypeOptions = [
 
   const handleClearRooms = () => {
     const clearedRoomsData = [
-      { roomType: "", building: "", floor: "", roomId: "", amount: 0 },
+      { roomType: "", building: "", floor: "", roomId: "", roomNumber:'', amount: 0 },
     ];
     formik.setFieldValue('roomsData', clearedRoomsData);
     updateTotalAmount(clearedRoomsData);
@@ -321,6 +323,7 @@ const idTypeOptions = [
       building: '',
       floor: '',
       roomId: '',
+      roomNumber:'',
       amount: roomTypes.find((rt) => rt._id === value)?.price ?? 0,
     };
     formik.setFieldValue('roomsData', updatedRoomsData);
@@ -329,7 +332,7 @@ const idTypeOptions = [
   
   const handleBuildingChange = (buildingId, index) => {
     const updatedRooms = formik.values.roomsData.map((room, i) =>
-      i === index ? { ...room, building: buildingId, floor: "", roomId: "" } : room
+      i === index ? { ...room, building: buildingId, floor: "", roomNumber: "", roomId: "" } : room
     );
     formik.setFieldValue('roomsData', updatedRooms);
     updateTotalAmount(updatedRooms);
@@ -338,7 +341,7 @@ const idTypeOptions = [
   
   const handleFloorChange = (floorId, index) => {
     const updatedRooms = formik.values.roomsData.map((room, i) =>
-      i === index ? { ...room, floor: floorId, roomId: "" } : room
+      i === index ? { ...room, floor: floorId, roomNumber: "", roomId: "" } : room
     );
     formik.setFieldValue('roomsData', updatedRooms);
     updateTotalAmount(updatedRooms);
@@ -346,9 +349,16 @@ const idTypeOptions = [
   };
   
   const handleRoomNumberChange = (roomId, index) => {
+    const selectedRoom = (rooms[formik.values.roomsData[index].floor] || []).find(room => room._id === roomId);
+    
     const updatedRooms = formik.values.roomsData.map((room, i) =>
-      i === index ? { ...room, roomId: roomId } : room
+      i === index ? { 
+        ...room, 
+        roomId: roomId,
+        roomNumber: selectedRoom ? selectedRoom.roomNumber : ''
+      } : room
     );
+    
     formik.setFieldValue('roomsData', updatedRooms);
     updateTotalAmount(updatedRooms);
   };
@@ -401,58 +411,20 @@ const idTypeOptions = [
       }
     });
   };
-
-  const handleBeforeUnload = (event) => {
-    if (!!Object.values(formik?.values).find((val) => !!val)) {
-      event.preventDefault();
-      event.returnValue = '';
-    }
-  };
   
-  const handleNavigation = (nextLocation) => {
-    if (!!Object.values(formik?.values).find((val) => !!val)) {
-      return new Promise((resolve) => {
-        Swal.fire({
-          title: "Leave page",
-          text: t("Are you sure you want to leave this page & visit bookings"),
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "confirm",
-          cancelButtonText: t("cancel")
-        }).then((result) => {
-          resolve(result.isConfirmed);
-        });
-      });
-    }
-    return true;
-  };
-
-  useEffect(() => {
-    const unblock = history.block((tx) => {
-      const navigate = async () => {
-        const canNavigate = await handleNavigation(tx.location);
-        if (canNavigate) {
-          unblock();
-          history.push("/booking/info");
-        }
-      };
-  
-      navigate();
-      return false;
-    });
-  
-    window.addEventListener('beforeunload', handleBeforeUnload);
-  
-    return () => {
-      unblock();
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, [formik.values, history]);
-
   return (
     <Form>
+      {showPrompt && (
+        <Prompt
+          when={!!Object.values(formik?.values).find((val) => !!val)}
+          message={(location) =>
+            `Are you sure you want to leave this page & visit ${location.pathname.replace(
+              "/",
+              ""
+            )}`
+          }
+        />
+      )}
       <div className="overall-div">
         <div className="booking-room">
           <div className="booking-container">
@@ -625,9 +597,7 @@ const idTypeOptions = [
                       id={`room-number-${index}`}
                       className="room-number-dropdown"
                       value={room.roomId}
-                      onChange={(e) =>
-                        handleRoomNumberChange(e.target.value, index)
-                      }
+                      onChange={(e) => handleRoomNumberChange(e.target.value, index)}
                       disabled={!room.floor}
                     >
                       <option value="">Select Room Number</option>
@@ -635,7 +605,7 @@ const idTypeOptions = [
                         .filter((r) => r.roomTypeId === room.roomType)
                         .map((room) => (
                           <option key={room._id} value={room._id}>
-                            {room.roomId}
+                            {room.roomNumber}
                           </option>
                         ))}
                     </select>
