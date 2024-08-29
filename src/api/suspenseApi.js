@@ -37,7 +37,7 @@ export const getAllSuspense = (page = 1, limit = 10) => {
     showToastOnError: false,
   });
 };
-export const getAllSuspenseHistory = (page = 1, limit = 10) => {
+export const getAllFileUploaded = (page = 1, limit = 10) => {
   return callApi({
     requestFunction: (axios) =>
       axios.get(`${API_BASE_URL}suspense/import-history`, {

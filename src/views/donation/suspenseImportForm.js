@@ -13,6 +13,7 @@ import { UploadOutlined } from "@ant-design/icons";
 import * as XLSX from "xlsx";
 import Papa from "papaparse";
 import { createImport } from "../../api/suspenseApi";
+import { Trans, useTranslation } from "react-i18next";
 
 function SuspenseImportForm({ onClose, open }) {
   const targetFields = [
@@ -23,6 +24,7 @@ function SuspenseImportForm({ onClose, open }) {
     "Amount",
     "Mode Of Payment",
   ];
+  const { t } = useTranslation();
 
   const [loading, setLoading] = useState(false);
   const [sourceFields, setSourceFields] = useState([]);
@@ -114,13 +116,13 @@ function SuspenseImportForm({ onClose, open }) {
 
   const columns = [
     {
-      title: "Target Fields",
+      title: t("target_Fields"),
       dataIndex: "targetField",
       key: "targetField",
       width: 200,
     },
     {
-      title: "Source Fields",
+      title: t("source_Fields"),
       dataIndex: "sourceField",
       key: "sourceField",
       width: 200,
@@ -165,9 +167,6 @@ function SuspenseImportForm({ onClose, open }) {
         sourceFields: sourceFields,
         file: file,
       };
-
-      // console.log(payload);
-
       await createImport(payload);
       message.success("Import successful");
       setSourceFields([]);
@@ -197,16 +196,7 @@ function SuspenseImportForm({ onClose, open }) {
                   </Upload>
                 </Col>
                 <Col xs={12} sm={12} md={12} className="mt-1">
-                  <label
-                    style={{
-                      fontFamily: "'Noto Sans', sans-serif",
-                      fontSize: "15px",
-                      fontWeight: "bold",
-                      color: "#533810",
-                    }}
-                  >
-                    Map Fields
-                  </label>
+                  <Trans i18nKey={"map_fields"} />
                   <div className="card mb-1">
                     <div className="card-body">
                       <Row>

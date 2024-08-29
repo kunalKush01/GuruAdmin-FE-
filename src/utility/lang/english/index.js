@@ -583,6 +583,32 @@ export const englishContent = {
   donation_box_not_found: "No Donation Box Collection Record Found",
   donation_box_not_click_add_donation_box:
     "To introduce a new donation box, just click 'Add Collection'",
+  //All Suspense Data
+  suspense:"Suspense",
+  map_fields:"Map Fields",
+  transactionDate:"Transaction Date & Time",
+  suspense_cheque_no:"Cheque No",
+  suspense_transId:"Transaction ID",
+  bankNarration:"Bank Narration",
+  suspense_amount:"Amount",
+  suspense_mode_of_payment:"Mode of Payment",
+  edit_suspense_record:"Edit Suspense Record",
+  add_suspense_record:"Add Suspense Record",
+  suspense_id:"Id",
+  start_date_time:"Start Date Time",
+  end_date_time:"End Date Time",
+  suspense_status:"Status",
+  suspense_success_count:"Success Count",
+  suspense_failed_count:"Failed Count",
+  suspense_import_result:"Import Result",
+  copyToClipboard:"Copy to Clipboard",
+  req_transactionDate:"Transaction date is required",
+  req_bankNarration:"Bank narration is required",
+  req_ammount:"Amount is required",
+  req_modeofPayment:"Mode of Payment is required",
+  target_Fields:"Target Fields",
+  source_Fields:"Source Fields",
+
 
   // All Commitment Data
   notify_user: "Notify User",

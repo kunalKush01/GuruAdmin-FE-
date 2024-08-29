@@ -243,7 +243,7 @@ export default function Donation() {
   const items = [
     {
       key: "Donation",
-      label: "Donation",
+      label: t('donation'),
       children: (
         <>
           <div className="d-flex flex-wrap gap-2 gap-md-0 justify-content-end">
@@ -394,7 +394,7 @@ export default function Donation() {
     },
     {
       key: "Article_Donation",
-      label: "Article Donation",
+      label: t("article_donation"),
       children: (
         <>
           <div className="d-flex flex-wrap gap-2 gap-md-0 justify-content-end">
@@ -545,7 +545,7 @@ export default function Donation() {
     },
     {
       key: "Suspense",
-      label: "Suspense",
+      label: t("suspense"),
       children: (
         <>
           <div className="d-flex justify-content-between align-items-center mb-1">
@@ -566,7 +566,7 @@ export default function Donation() {
                     size="large"
                     onClick={handleAddSuspenseClick}
                   >
-                    Add Suspense Record
+                    {t('add_suspense_record')}
                   </Button>
                 )}
                 <Dropdown.Button
@@ -588,7 +588,7 @@ export default function Donation() {
               </Space>
               <SuspenseImportForm onClose={onClose} open={open} />
               <Modal
-                title="Add Suspense Record"
+                title={t('add_suspense_record')}
                 open={isAddModalVisible}
                 onCancel={() => setIsAddModalVisible(false)}
                 footer={null}
@@ -597,47 +597,52 @@ export default function Donation() {
                 <Form form={form} onFinish={handleFormSubmit} layout="vertical">
                   <Form.Item
                     name="transactionDate"
-                    label="Transaction Date"
+                    label={t("transactionDate")}
                     rules={[
                       {
                         required: true,
-                        message: "Transaction date is required",
+                        message: t('req_transactionDate'),
                       },
                     ]}
                   >
                     <CustomDatePicker showTime format="YYYY-MM-DD HH:mm" />
                   </Form.Item>
 
-                  <Form.Item name="transactionId" label="Transaction ID">
+                  <Form.Item name="transactionId" label={t("suspense_transId")}>
                     <Input />
                   </Form.Item>
 
                   <Form.Item
                     name="bankNarration"
-                    label="Bank Narration"
+                    label={t("bankNarration")}
                     rules={[
-                      { required: true, message: "Bank narration is required" },
+                      { required: true, message: t('req_bankNarration') },
                     ]}
                   >
                     <Input.TextArea rows={4} />
                   </Form.Item>
 
-                  <Form.Item name="chequeNo" label="Cheque No">
+                  <Form.Item name="chequeNo" label={t("suspense_cheque_no")}>
                     <Input />
                   </Form.Item>
 
                   <Form.Item
                     name="amount"
-                    label="Amount"
-                    rules={[{ required: true, message: "Amount is required" }]}
+                    label={t("suspense_amount")}
+                    rules={[{ required: true, message: t('req_ammount')}]}
                   >
                     <Input type="number" min="0" step="0.01" />
                   </Form.Item>
 
                   <Form.Item
                     name="modeOfPayment"
-                    label="Mode of Payment"
-                    rules={[{ required: true, message: "Mode of Payment is required" }]}
+                    label={t("suspense_mode_of_payment")}
+                    rules={[
+                      {
+                        required: true,
+                        message: t('req_modeofPayment'),
+                      },
+                    ]}
                   >
                     <Input />
                   </Form.Item>

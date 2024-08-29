@@ -34,13 +34,6 @@ function SuspenseListTable({ success }) {
     }
   );
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      queryClient.invalidateQueries(["suspenseData"]);
-    }, 60000); // Poll every 60 seconds
-
-    return () => clearInterval(intervalId);
-  }, [queryClient]);
-  useEffect(() => {
     if (success) {
       queryClient.invalidateQueries(["suspenseData"]);
     }
@@ -93,7 +86,7 @@ function SuspenseListTable({ success }) {
       ...record,
       transactionDate: record.transactionDate
         ? moment(record.transactionDate)
-        : null, // Set transaction date as moment object
+        : null,
     });
   };
 
@@ -111,24 +104,24 @@ function SuspenseListTable({ success }) {
 
   const columns = [
     {
-      title: "Transaction Date & Time",
+      title: t("transactionDate"),
       dataIndex: "transactionDate",
       key: "transactionDate",
       render: (text) => (text ? moment(text).format("DD-MMM-YYYY HH:mm") : "-"),
       // fixed:"left",
     },
     {
-      title: "Bank Narration",
+      title: t("bankNarration"),
       dataIndex: "bankNarration",
       key: "bankNarration",
     },
     {
-      title: "Amount",
+      title: t("suspense_amount"),
       dataIndex: "amount",
       key: "amount",
     },
     {
-      title: "Mode of Payment",
+      title: t("suspense_mode_of_payment"),
       dataIndex: "modeOfPayment",
       key: "modeOfPayment",
       render: (text) => (text ? text : "-"),
@@ -136,8 +129,8 @@ function SuspenseListTable({ success }) {
     {
       title: "Action",
       key: "action",
-      fixed:"right",
-      width:120,
+      fixed: "right",
+      width: 120,
       render: (text, record) => (
         <Space>
           <img
@@ -186,7 +179,7 @@ function SuspenseListTable({ success }) {
 
       {/* Edit Modal */}
       <Modal
-        title="Edit Suspense Record"
+        title={t("edit_suspense_record")}
         open={isEditModalVisible}
         onCancel={() => setIsEditModalVisible(false)}
         footer={null}
@@ -198,37 +191,35 @@ function SuspenseListTable({ success }) {
           layout="vertical"
         >
           <Form.Item
-            label="Transaction Date & Time"
+            label={t("transactionDate")}
             name="transactionDate"
             rules={[
               {
                 required: true,
-                message: "Please select transaction date & time",
+                message: t("req_transactionDate"),
               },
             ]}
           >
             <CustomDatePicker showTime format="YYYY-MM-DD HH:mm" />
           </Form.Item>
           <Form.Item
-            label="Bank Narration"
+            label={t("bankNarration")}
             name="bankNarration"
-            rules={[{ required: true, message: "Please enter bank narration" }]}
+            rules={[{ required: true, message: t("req_bankNarration") }]}
           >
             <Input.TextArea />
           </Form.Item>
           <Form.Item
-            label="Amount"
+            label={t("suspense_amount")}
             name="amount"
-            rules={[{ required: true, message: "Please enter amount" }]}
+            rules={[{ required: true, message: t("req_ammount") }]}
           >
             <Input type="number" />
           </Form.Item>
           <Form.Item
-            label="Mode of Payment"
+            label={t("suspense_mode_of_payment")}
             name="modeOfPayment"
-            rules={[
-              { required: true, message: "Please enter mode of payment" },
-            ]}
+            rules={[{ required: true, message: t("req_modeofPayment") }]}
           >
             <Input />
           </Form.Item>
