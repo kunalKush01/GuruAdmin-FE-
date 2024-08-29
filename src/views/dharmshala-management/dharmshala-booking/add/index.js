@@ -40,6 +40,7 @@ const AddDharmshalaBooking = () => {
           floor: room.floor,
           roomId: room.roomId,
           amount: room.amount,
+          roomNumber: room.roomNumber,
         })),
         guestname: bookingData.userDetails.name || "",
         email: bookingData.userDetails.email || "",

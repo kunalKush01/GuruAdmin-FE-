@@ -116,6 +116,7 @@ export default function BookingForm({
             floor: room.floor,
             roomId: room.roomId,
             amount: room.amount,
+            roomNumber: room.roomNumber,
           })),
           userDetails: {
             name: bookingData.guestname,

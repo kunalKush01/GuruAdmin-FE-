@@ -215,6 +215,17 @@ const DharmshalaBookings = () => {
                     currentFilter={dropDownName}
                     currentPage={pagination.page}
                     isMobileView={isMobileView}
+                    pageSize={pagination.limit}
+                      onChangePage={(page) =>
+                        setPagination((prev) => ({ ...prev, page }))
+                      }
+                      onChangePageSize={(pageSize) =>
+                        setPagination((prev) => ({
+                          ...prev,
+                          limit: pageSize,
+                          page: 1,
+                        }))
+                      }
                   />
                 </Then>
                 <Else>
