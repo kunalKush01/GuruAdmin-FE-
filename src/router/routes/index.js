@@ -884,7 +884,7 @@ const Routes = [
     path: "/booking/edit/:bookingId",
     component: lazy(() =>
       import(
-        "../../views/dharmshala-management/dharmshala-booking/edit/index.js"
+        "../../views/dharmshala-management/dharmshala-booking/add/index.js"
       )
     ),
     exact: true,
