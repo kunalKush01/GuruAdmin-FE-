@@ -450,14 +450,17 @@ export default function FormWithoutFormikForDonation({
                     width
                   />
                 </Col>
-                <Col xs={12} sm={6} lg={3}>
-                  <FormikCustomReactSelect
-                    labelName={t("bank_name")}
-                    name="bankName"
-                    loadOptions={bankOptions}
-                    width
-                  />
-                </Col>
+                {formik.values.modeOfPayment &&
+                  formik.values.modeOfPayment["value"] !== "Cash" && (
+                    <Col xs={12} sm={6} lg={3}>
+                      <FormikCustomReactSelect
+                        labelName={t("bank_name")}
+                        name="bankName"
+                        loadOptions={bankOptions}
+                        width
+                      />
+                    </Col>
+                  )}
                 {formik.values.modeOfPayment &&
                   formik.values.modeOfPayment["value"] == "Cheque" && (
                     <>
@@ -502,14 +505,17 @@ export default function FormWithoutFormikForDonation({
                       </Col>
                     </>
                   )}
-                <Col xs={12} sm={6} lg={3}>
-                  <CustomTextField
-                    type="text"
-                    label={t("bank_narration")}
-                    placeholder={t("enter_bank_narration")}
-                    name="bankNarration"
-                  />
-                </Col>
+                {formik.values.modeOfPayment &&
+                  formik.values.modeOfPayment["value"] !== "Cash" && (
+                    <Col xs={12} sm={6} lg={3}>
+                      <CustomTextField
+                        type="text"
+                        label={t("bank_narration")}
+                        placeholder={t("enter_bank_narration")}
+                        name="bankNarration"
+                      />
+                    </Col>
+                  )}
                 {customFieldsList.map((field) => {
                   const isSelectField =
                     field.masterValues && field.masterValues.length > 0;
