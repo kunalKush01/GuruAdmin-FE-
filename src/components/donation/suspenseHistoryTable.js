@@ -2,21 +2,24 @@ import React, { useState } from "react";
 import { Table, Tag } from "antd";
 import moment from "moment";
 import { useQuery } from "@tanstack/react-query";
-import { getAllSuspenseHistory } from "../../api/suspenseApi";
+import { getAllFileUploaded } from "../../api/suspenseApi";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import eyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
 import { DownloadOutlined } from "@ant-design/icons";
-import SuspenseImportHIstoryView from "./suspenseImportHIstoryView";
+import { useTranslation } from "react-i18next";
+import SuspenseImportHistoryView from "./suspenseImportHistoryView";
 
 const SuspenseHistoryTable = () => {
+  const { t } = useTranslation();
+
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [selectedRecord, setSelectedRecord] = useState(null); // State to store selected record
+  const [selectedRecord, setSelectedRecord] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 
   const { data, isLoading, error } = useQuery(
     ["suspenseDataHistory", currentPage, pageSize],
-    () => getAllSuspenseHistory(currentPage, pageSize),
+    () => getAllFileUploaded(currentPage, pageSize),
     {
       keepPreviousData: true,
       onError: (error) => {
@@ -29,53 +32,52 @@ const SuspenseHistoryTable = () => {
   const totalItems = data?.total || 0;
 
   const handleView = (record) => {
-    setSelectedRecord(record); // Set the selected record
-    setIsFormOpen(true); // Open the modal
+    setSelectedRecord(record);
+    setIsFormOpen(true);
   };
 
   const handleDownload = (record) => {
     const { file } = record;
     if (file && file[0] && file[0].presignedUrl) {
-      window.open(file[0].presignedUrl, '_blank');
+      window.open(file[0].presignedUrl, "_blank");
     } else {
-      console.error('File or presignedUrl not found');
+      console.error("File or presignedUrl not found");
     }
   };
 
   const columns = [
     {
-      title: "ID",
+      title: t("suspense_id"),
       dataIndex: "_id",
       key: "importId",
       width: 220,
     },
     {
-      title: "Start Date Time",
+      title: t("start_date_time"),
       dataIndex: "createdAt",
       key: "createdAt",
       width: 220,
       render: (text) => moment(text).format("DD MMM YYYY HH:mm:ss"), // Format date
     },
     {
-      title: "End Date Time",
+      title: t("end_date_time"),
       dataIndex: "uploadedAt",
       key: "uploadedAt",
       width: 220,
       render: (text) => moment(text).format("DD MMM YYYY HH:mm:ss"), // Format date
     },
     {
-      title: "Status",
+      title: t("suspense_status"),
       dataIndex: "status",
       key: "status",
       width: 220,
       render: (status) => (
         <div
           style={{
-            color: status == "completed" ? "#24C444" : "#FF0700",
-            font: "normal normal 600 11px/20px Noto Sans",
+            color: status == "completed" ? "var(--green)" : "var(--red)",
           }}
         >
-          {ConverFirstLatterToCapital(status)}
+          <label>{ConverFirstLatterToCapital(status)}</label>
         </div>
       ),
     },
@@ -123,10 +125,10 @@ const SuspenseHistoryTable = () => {
         scroll={{ x: 1000, y: 400 }}
       />
       {selectedRecord && (
-        <SuspenseImportHIstoryView
+        <SuspenseImportHistoryView
           isOpen={isFormOpen}
           toggle={() => setIsFormOpen(false)}
-          details={selectedRecord} // Pass the selected record details
+          details={selectedRecord}
         />
       )}
     </>
