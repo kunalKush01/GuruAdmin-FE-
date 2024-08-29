@@ -91,7 +91,6 @@ export default function BookingForm({
 
   const handlePaymentSave = async (paymentDetails) => {
     if (bookingData) {
-      console.log("🚀🚀🚀 ~ file: BookingForm.js:94 ~ handlePaymentSave ~ bookingData:", bookingData);
       setLoading(true);
       try {
         const bookingPayload = {
@@ -133,8 +132,6 @@ export default function BookingForm({
             totalDue: bookingData.totalDue,
           },
         };
-  
-        console.log("Booking Payload:", bookingPayload);
 
         let bookingResponse;
       if (bookingData.isEditing) {

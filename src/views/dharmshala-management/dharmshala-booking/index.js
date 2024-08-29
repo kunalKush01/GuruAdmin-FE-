@@ -100,19 +100,17 @@ const DharmshalaBookings = () => {
 
   const filteredBookingListData = useMemo(() => {
     const currentDate = dayjs().startOf('day');
-    console.log("🚀🚀🚀 ~ file: index.js:103 ~ filteredBookingListData ~ currentDate:", currentDate);
     let filteredData = dharmshalaBookingListData;
     const dateFormat = "DD-MM-YYYY";
-    console.log("🚀🚀🚀 ~ file: index.js:104 ~ filteredBookingListData ~ filteredData:", filteredData);
     if (showPastRequests) {
       filteredData = filteredData.filter((item) =>
         dayjs(item.startDate, dateFormat).isBefore(currentDate)
       );
     } else {
       filteredData = filteredData.filter((item) =>
-        dayjs(item.startDate, dateFormat).isAfter(currentDate) || dayjs(item.startDate, dateFormat).isSame(currentDate)
+        dayjs(item.startDate, dateFormat).isAfter(currentDate) || dayjs(item.startDate, dateFormat).isSame(currentDate) || 
+        dayjs(item.endDate, dateFormat).isAfter(currentDate) || dayjs(item.endDate, dateFormat).isSame(currentDate)
       );
-      console.log("🚀🚀🚀 ~ file: index.js:113 ~ filteredBookingListData ~ filteredData:", filteredData);
     }
     if (statusFilter) {
       filteredData = filteredData.filter((item) =>
@@ -124,7 +122,6 @@ const DharmshalaBookings = () => {
         item.bookingId.toLowerCase().startsWith(searchBarValue.toLowerCase().slice(0, 3))
       );
     }
-    console.log("🚀🚀🚀 ~ file: index.js:124 ~ filteredBookingListData ~ filteredData:", filteredData);
     return filteredData;
   }, [dharmshalaBookingListData, showPastRequests, searchBarValue]);
 

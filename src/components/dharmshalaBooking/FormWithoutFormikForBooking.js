@@ -956,12 +956,7 @@ const idTypeOptions = [
         {loading ? (
           <Button
             color="primary"
-            className="add-trust-btn"
-            style={{
-              borderRadius: "10px",
-              padding: "5px 40px",
-              opacity: "100%",
-            }}
+            className="common-button-style add-trust-btn"
             disabled
           >
             <Spinner size="md" />
