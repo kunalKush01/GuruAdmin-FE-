@@ -28,7 +28,9 @@ import SuspenseListTable from "../../components/donation/suspenseListTable";
 import SuspenseHistoryTable from "../../components/donation/suspenseHistoryTable";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
 import { addSuspense } from "../../api/suspenseApi";
-import { LoadingOutlined, SyncOutlined } from "@ant-design/icons";
+import loadingOutlined from "../../assets/images/icons/loadingIco.svg";
+import syncIcon from "../../assets/images/icons/sync.svg";
+
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 export default function Donation() {
   const history = useHistory();
@@ -570,9 +572,19 @@ export default function Donation() {
             <div className="d-flex flex-wrap gap-2 gap-md-0 justify-content-end">
               <Space className="me-2">
                 {isFetchingSuspense ? (
-                  <LoadingOutlined spin onClick={handleRefresh} />
+                  <img
+                    src={loadingOutlined}
+                    alt="Loading"
+                    style={{ width: 24, height: 24, cursor: "pointer" }}
+                    onClick={handleRefresh}
+                  />
                 ) : (
-                  <SyncOutlined onClick={handleRefresh} />
+                  <img
+                    src={syncIcon}
+                    alt="Loading"
+                    style={{ width: 24, height: 24, cursor: "pointer" }}
+                    onClick={handleRefresh}
+                  />
                 )}
               </Space>
               <Space wrap className="">

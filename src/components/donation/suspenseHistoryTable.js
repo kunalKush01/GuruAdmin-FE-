@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getAllFileUploaded } from "../../api/suspenseApi";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import eyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
-import { DownloadOutlined } from "@ant-design/icons";
+import downloadIcon from "../../assets/images/icons/file-download.svg";
 import { useTranslation } from "react-i18next";
 import SuspenseImportHistoryView from "./suspenseImportHistoryView";
 
@@ -93,8 +93,9 @@ const SuspenseHistoryTable = () => {
             style={{ width: "20px", cursor: "pointer" }}
             onClick={() => handleView(record)}
           />
-          <DownloadOutlined
-            style={{ fontSize: "18px", cursor: "pointer" }}
+          <img
+            src={downloadIcon}
+            style={{ width: "20px", cursor: "pointer" }}
             onClick={() => handleDownload(record)}
           />
         </div>
