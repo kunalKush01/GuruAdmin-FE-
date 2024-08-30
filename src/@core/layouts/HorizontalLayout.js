@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Layout, Menu, Button, theme, ConfigProvider } from "antd";
-import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Trans, useTranslation } from "react-i18next";
 import moment from "moment";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import logOutIcon from "../../assets/images/icons/dashBoard/Group 5995.svg";
 import confirmationIcon from "../../assets/images/icons/news/conformationIcon.svg";
+import menuFoldOutlined from "../../assets/images/icons/menu-collapsed.svg";
+import menuUnFoldOutlined from "../../assets/images/icons/menu-expand.svg";
 import { authApiInstance } from "../../axiosApi/authApiInstans";
 import { handleTrustDetail, logOut } from "../../redux/authSlice";
 
@@ -299,7 +300,21 @@ const SiderLayout = (props) => {
           >
             <Button
               type="text"
-              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+              icon={
+                collapsed ? (
+                  <img
+                    src={menuUnFoldOutlined}
+                    alt="Menu Unfold Icon"
+                    style={{ width: "22px" }}
+                  />
+                ) : (
+                  <img
+                    src={menuFoldOutlined}
+                    alt="Menu fold Icon"
+                    style={{ width: "22px" }}
+                  />
+                )
+              }
               onClick={() => setCollapsed(!collapsed)}
               style={{
                 fontSize: "16px",
