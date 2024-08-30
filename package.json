@@ -57,6 +57,7 @@
     "nouislider": "^15.5.0",
     "nouislider-react": "^3.3.8",
     "number-to-words": "^1.2.4",
+    "papaparse": "^5.4.1",
     "postcss-rtl": "^1.5.0",
     "prismjs": "^1.19.0",
     "prop-types": "~15.7.2",

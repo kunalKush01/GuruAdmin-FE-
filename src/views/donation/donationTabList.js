@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useIsFetching, useQuery, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import React, { Children, useEffect, useMemo, useRef, useState } from "react";
 import { Plus } from "react-feather";
@@ -9,8 +9,7 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
-import { Tabs } from "antd";
-
+import { Dropdown, Form, Space, Tabs, DatePicker, Input, Modal } from "antd";
 import {
   getAllCategories,
   getAllMasterCategories,
@@ -22,9 +21,17 @@ import NoContent from "../../components/partials/noContent";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { WRITE } from "../../utility/permissionsVariable";
 import DonationANTDListTable from "../../components/donation/donationAntdListTable";
-
+import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import "../../assets/scss/viewCommon.scss";
+import SuspenseImportForm from "./suspenseImportForm";
+import SuspenseListTable from "../../components/donation/suspenseListTable";
+import SuspenseHistoryTable from "../../components/donation/suspenseHistoryTable";
+import momentGenerateConfig from "rc-picker/lib/generate/moment";
+import { addSuspense } from "../../api/suspenseApi";
+import loadingOutlined from "../../assets/images/icons/loadingIco.svg";
+import syncIcon from "../../assets/images/icons/sync.svg";
 
+const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 export default function Donation() {
   const history = useHistory();
   const importFileRef = useRef();
@@ -37,7 +44,9 @@ export default function Donation() {
   const [categoryTypeName, setCategoryTypeName] = useState("All");
   const [subCategoryTypeName, setSubCategoryTypeName] = useState("All");
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
-  const [activeTab, setActiveTab] = useState(donation_type?donation_type:"Donation");
+  const [activeTab, setActiveTab] = useState(
+    donation_type ? donation_type : "Donation"
+  );
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const periodDropDown = () => {
     switch (dropDownName) {
@@ -190,11 +199,62 @@ export default function Donation() {
   const subPermission = subPermissions?.subpermissions?.map(
     (item) => item.name
   );
+  const [showHistory, setShowHistory] = useState(false);
+  const handleMenuClick = (e) => {
+    setShowHistory(true);
+  };
+  const [open, setOpen] = useState(false);
+  const showDrawer = () => {
+    setOpen(true);
+  };
+  const onClose = () => {
+    setOpen(false);
+  };
+  const handleButtonClick = (e) => {
+    showDrawer();
+  };
+  const [isAddModalVisible, setIsAddModalVisible] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const handleAddSuspenseClick = () => {
+    setIsAddModalVisible(true);
+  };
+  const [form] = Form.useForm();
+  const handleFormSubmit = async (values) => {
+    try {
+      // Format date to ISO string
+      const formattedDate = moment(values.transactionDate).utc().format();
+
+      const payload = {
+        transactionDate: formattedDate || "",
+        transactionId: values.transactionId || "",
+        bankNarration: values.bankNarration || "",
+        chequeNo: values.chequeNo || "",
+        amount: values.amount || "",
+        modeOfPayment: values.modeOfPayment || "",
+      };
+
+      await addSuspense(payload);
+      setSuccess(true);
+      form.resetFields();
+      setIsAddModalVisible(false);
+    } catch (error) {
+      setSuccess(false);
+      console.error("Error adding suspense data:", error);
+    }
+  };
+  const isFetchingSuspense = !showHistory
+    ? useIsFetching({ queryKey: ["suspenseData"] }) > 0
+    : useIsFetching({ queryKey: ["suspenseDataHistory"] }) > 0;
+  const handleRefresh = () => {
+    !showHistory
+      ? queryClient.invalidateQueries(["suspenseData"])
+      : queryClient.invalidateQueries(["suspenseDataHistory"]);
+  };
   // Donation split tab
   const items = [
     {
       key: "Donation",
-      label: "Donation",
+      label: t("donation"),
       children: (
         <>
           <div className="d-flex flex-wrap gap-2 gap-md-0 justify-content-end">
@@ -345,7 +405,7 @@ export default function Donation() {
     },
     {
       key: "Article_Donation",
-      label: "Article Donation",
+      label: t("article_donation"),
       children: (
         <>
           <div className="d-flex flex-wrap gap-2 gap-md-0 justify-content-end">
@@ -496,7 +556,143 @@ export default function Donation() {
     },
     {
       key: "Suspense",
-      label: "Suspense",
+      label: t("suspense"),
+      children: (
+        <>
+          <div className="d-flex justify-content-between align-items-center mb-1">
+            {showHistory ? (
+              <img
+                src={arrowLeft}
+                className="me-2  cursor-pointer"
+                onClick={() => setShowHistory(false)}
+              />
+            ) : (
+              <div></div>
+            )}
+            <div className="d-flex flex-wrap gap-2 gap-md-0 justify-content-end">
+              <Space className="me-2">
+                {isFetchingSuspense ? (
+                  <img
+                    src={loadingOutlined}
+                    alt="Loading"
+                    style={{ width: 24, height: 24, cursor: "pointer" }}
+                    onClick={handleRefresh}
+                  />
+                ) : (
+                  <img
+                    src={syncIcon}
+                    alt="Loading"
+                    style={{ width: 24, height: 24, cursor: "pointer" }}
+                    onClick={handleRefresh}
+                  />
+                )}
+              </Space>
+              <Space wrap className="">
+                {!showHistory && (
+                  <Button
+                    color="primary"
+                    size="large"
+                    onClick={handleAddSuspenseClick}
+                  >
+                    {t("add_suspense_record")}
+                  </Button>
+                )}
+                <Dropdown.Button
+                  type="primary"
+                  size="large"
+                  menu={{
+                    items: [
+                      {
+                        label: "History",
+                        key: "history",
+                      },
+                    ],
+                    onClick: handleMenuClick,
+                  }}
+                  onClick={handleButtonClick}
+                >
+                  Import
+                </Dropdown.Button>
+              </Space>
+              <SuspenseImportForm onClose={onClose} open={open} />
+              <Modal
+                title={t("add_suspense_record")}
+                open={isAddModalVisible}
+                onCancel={() => setIsAddModalVisible(false)}
+                footer={null}
+                centered
+              >
+                <Form form={form} onFinish={handleFormSubmit} layout="vertical">
+                  <Form.Item
+                    name="transactionDate"
+                    label={t("transactionDate")}
+                    rules={[
+                      {
+                        required: true,
+                        message: t("req_transactionDate"),
+                      },
+                    ]}
+                  >
+                    <CustomDatePicker showTime format="YYYY-MM-DD HH:mm" />
+                  </Form.Item>
+
+                  <Form.Item name="transactionId" label={t("suspense_transId")}>
+                    <Input />
+                  </Form.Item>
+
+                  <Form.Item
+                    name="bankNarration"
+                    label={t("bankNarration")}
+                    rules={[
+                      { required: true, message: t("req_bankNarration") },
+                    ]}
+                  >
+                    <Input.TextArea rows={4} />
+                  </Form.Item>
+
+                  <Form.Item name="chequeNo" label={t("suspense_cheque_no")}>
+                    <Input />
+                  </Form.Item>
+
+                  <Form.Item
+                    name="amount"
+                    label={t("suspense_amount")}
+                    rules={[{ required: true, message: t("req_ammount") }]}
+                  >
+                    <Input type="number" min="0" step="0.01" />
+                  </Form.Item>
+
+                  <Form.Item
+                    name="modeOfPayment"
+                    label={t("suspense_mode_of_payment")}
+                    rules={[
+                      {
+                        required: true,
+                        message: t("req_modeofPayment"),
+                      },
+                    ]}
+                  >
+                    <Input />
+                  </Form.Item>
+
+                  <Form.Item>
+                    <Button color="primary" htmlType="submit">
+                      Add Record
+                    </Button>
+                  </Form.Item>
+                </Form>
+              </Modal>
+            </div>
+          </div>
+          <div className="donationContent">
+            {!showHistory ? (
+              <SuspenseListTable success={success} />
+            ) : (
+              <SuspenseHistoryTable />
+            )}
+          </div>
+        </>
+      ),
     },
   ];
   const handleTabChange = (key) => {
