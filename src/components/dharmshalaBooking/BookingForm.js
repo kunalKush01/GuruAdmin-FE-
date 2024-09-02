@@ -91,6 +91,7 @@ export default function BookingForm({
 
   const handlePaymentSave = async (paymentDetails) => {
     if (bookingData) {
+      console.log("🚀🚀🚀 ~ file: BookingForm.js:94 ~ handlePaymentSave ~ bookingData:", bookingData);
       setLoading(true);
       try {
         const bookingPayload = {
@@ -112,8 +113,11 @@ export default function BookingForm({
           },
           rooms: bookingData.roomsData.map(room => ({
             roomTypeId: room.roomType,
+            roomTypeName: room.roomTypeName,
             building: room.building,
+            buildingName: room.buildingName,
             floor: room.floor,
+            floorName: room.floorName,
             roomId: room.roomId,
             amount: room.amount,
             roomNumber: room.roomNumber,

@@ -130,7 +130,8 @@ const DharmshalaBookings = () => {
     { key: "accepted", label: t("accepted") },
     { key: "reserved", label: t("reserved") },
     { key: "confirmed", label: t("confirmed") },
-    { key: "checkedIn", label: t("checked_in") },
+    { key: "checked-in", label: t("checked_in") },
+    { key: "checked-out", label: t("checked_out") },
     { key: "completed", label: t("completed") },
     { key: "cancelled", label: t("cancelled") },
     { key: "maintenance", label: t("maintenance") }
