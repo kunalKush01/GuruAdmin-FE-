@@ -34,10 +34,9 @@ function SuspenseImportHistoryView({ isOpen, toggle, details }) {
   const flattenedErrorData = errorData.flatMap((lineError) =>
     lineError.errorMsg.map((error) => ({
       line: lineError.line,
-      error: error.error,
+      error: error,
     }))
   );
-
   const columns = [
     {
       title: "Line Number",
