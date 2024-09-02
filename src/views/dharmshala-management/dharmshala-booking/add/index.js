@@ -35,7 +35,7 @@ const AddDharmshalaBooking = () => {
         numWomen: bookingData.guestCount?.women || "",
         numKids: bookingData.guestCount?.children || "",
         roomsData: bookingData.rooms.map(room => ({
-          roomType: room.roomTypeId,
+          roomTypeId: room.roomTypeId,
           building: room.building,
           floor: room.floor,
           roomId: room.roomId,
@@ -74,7 +74,7 @@ const AddDharmshalaBooking = () => {
         numKids: '',
         roomsData: [
           {
-            roomType: '',
+            roomTypeId: '',
             roomTypeName: '',
             building: '',
             buildingName: '',

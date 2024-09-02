@@ -276,40 +276,37 @@ const idTypeOptions = [
     let remainingGuests = totalGuests;
     const roomsCombination = [];
   
-    sortedRoomTypes.forEach((roomType) => {
-      while (remainingGuests > 0 && roomType.capacity <= remainingGuests) {
-        roomsCombination.push({
-          roomTypeId: roomType._id,
-          roomTypeName: roomType.name,
-          building: "",
-          buildingName: "",
-          floor: "",
-          floorName: "",
-          roomId: "",
-          roomNumber: "",
-          amount: roomType.price,
-        });
-        remainingGuests -= roomType.capacity;
-      }
-    });
-  
     while (remainingGuests > 0) {
-      const smallestRoomType = sortedRoomTypes[sortedRoomTypes.length - 1];
-      if (smallestRoomType) {
+      const suitableRoom = sortedRoomTypes.find(room => room.capacity <= remainingGuests);
+      
+      if (suitableRoom) {
         roomsCombination.push({
-          roomType: smallestRoomType._id,
-          roomTypeName: smallestRoomType.name,
+          roomTypeId: suitableRoom._id,
+          roomTypeName: suitableRoom.name,
           building: "",
           buildingName: "",
           floor: "",
           floorName: "",
           roomId: "",
           roomNumber: "",
-          amount: smallestRoomType.price,
+          amount: suitableRoom.price,
         });
-        remainingGuests -= smallestRoomType.capacity;
+        remainingGuests -= suitableRoom.capacity;
       } else {
-        break;
+        // If no suitable room found, assign the smallest room
+        const smallestRoom = sortedRoomTypes[sortedRoomTypes.length - 1];
+        roomsCombination.push({
+          roomTypeId: smallestRoom._id,
+          roomTypeName: smallestRoom.name,
+          building: "",
+          buildingName: "",
+          floor: "",
+          floorName: "",
+          roomId: "",
+          roomNumber: "",
+          amount: smallestRoom.price,
+        });
+        remainingGuests -= smallestRoom.capacity;
       }
     }
   
