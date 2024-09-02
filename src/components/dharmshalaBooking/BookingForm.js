@@ -112,7 +112,7 @@ export default function BookingForm({
             children: bookingData.numKids,
           },
           rooms: bookingData.roomsData.map(room => ({
-            roomTypeId: room.roomType,
+            roomTypeId: room.roomTypeId,
             roomTypeName: room.roomTypeName,
             building: room.building,
             buildingName: room.buildingName,

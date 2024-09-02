@@ -8,6 +8,7 @@ import 'dayjs/locale/en-gb';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import { updatePayment, updateDharmshalaBooking } from "../../../api/dharmshala/dharmshalaInfo";
+import '../../../../src/views/dharmshala-management/dharmshala_css/addbooking.css';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -18,6 +19,7 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
   const { t } = useTranslation();
   const [form] = Form.useForm();
   const [dueAmount, setDueAmount] = useState(0);
+  const [currentDateTime, setCurrentDateTime] = useState('');
 
   const updateBookingMutation = useMutation({
     mutationFn: (payload) => updateDharmshalaBooking(payload),
@@ -58,6 +60,11 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
       const initialFormValues = form.getFieldsValue();
       console.log('Initial Form Values:', initialFormValues);
     }
+    const timer = setInterval(() => {
+      const now = dayjs().tz('Asia/Kolkata');
+      setCurrentDateTime(now.format('ddd, DD MMM YYYY HH:mm:ss [IST]'));
+    }, 1000);
+    return () => clearInterval(timer);
   }, [booking, form]);
 
   const handleOk = () => {
@@ -140,64 +147,8 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
       <Form form={form} layout="vertical">
         {/* Form Fields */}
         <div style={{ border: '1px solid #d9d9d9', padding: '10px', marginBottom: '20px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px' }}>
-            <Form.Item name="building" label={t("Building")} style={{ margin: 0 }}>
-              <Input disabled style={{ backgroundColor: 'white' }} />
-            </Form.Item>
-            <Form.Item name="floor" label={t("Floor")} style={{ margin: 0 }}>
-              <Input disabled style={{ backgroundColor: 'white' }} />
-            </Form.Item>
-            <Form.Item name="roomNumbers" label={t("Room Numbers")} style={{ margin: 0 }}>
-              <Input disabled style={{ backgroundColor: 'white' }} />
-            </Form.Item>
-            <Form.Item name="capacity" label={t("Capacity")} style={{ margin: 0 }}>
-              <Input disabled style={{ backgroundColor: 'white' }} />
-            </Form.Item>
-            <Form.Item name="fromDate" label={t("From Date")} style={{ margin: 0 }}>
-              <DatePicker disabled style={{ width: '100%' }} />
-            </Form.Item>
-            <Form.Item name="toDate" label={t("To Date")} style={{ margin: 0 }}>
-              <DatePicker disabled style={{ width: '100%' }} />
-            </Form.Item>
-          </div>
-        </div>
-
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
-        <Form.Item name="currentDate" label={t("Date and Time")} style={{ width: '48%', margin: 0 }}>
-            <Input value={dayjs().tz('Asia/Kolkata').format('DD MMM YYYY hh:mm:ss A')} readOnly />
-          </Form.Item>
-
-
-          <Form.Item name="dueAmount" label={t("Due Amount")} style={{ width: '48%', margin: 0 }}>
-            <Input disabled />
-          </Form.Item>
-        </div>
-
-        {dueAmount > 0 && (
-          <div style={{ border: '1px solid #d9d9d9', padding: '10px', marginBottom: '20px' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
-              <Form.Item name="paymentMode" label={t("Mode")} rules={[{ required: true, message: t("Please select payment mode!") }]} style={{ margin: 0 }}>
-                <Select>
-                  <Option value="cash">{t("Cash")}</Option>
-                  <Option value="online">{t("Online")}</Option>
-                </Select>
-              </Form.Item>
-              <Form.Item name="transactionId" label={t("Transaction ID")} style={{ margin: 0 }}>
-                <Input />
-              </Form.Item>
-              <Form.Item name="amount" label={t("Amount")} rules={[{ required: true, message: t("Please input the amount!") }]} style={{ margin: 0 }}>
-                <Input type="number" />
-              </Form.Item>
-            </div>
-            <Form.Item name="remark" label={t("Remark")} style={{ margin: '10px 0 0 0' }}>
-              <Input.TextArea rows={3} />
-            </Form.Item>
-          </div>
-        )}
-
-        <div style={{ border: '1px solid #d9d9d9', padding: '10px', marginBottom: '20px' }}>
         <RoomsContainer
-            style={{ maxHeight: '300px', overflow: 'auto' }}
+            style={{ maxHeight: '100px', overflow: 'auto' }}
             roomsData={booking?.rooms || []}
             roomTypes={booking?.rooms.map(room => ({
               _id: room.roomTypeId, 
@@ -247,7 +198,90 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
             isPartialView={true}
             isReadOnly={true}
           />
+          <div style={{ border: '1px solid #d9d9d9', padding: '10px', marginBottom: '20px', marginTop:'20px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px' }}>
+          <Form.Item name="fromDate" label={t("From Date")} style={{ margin: 0 }}>
+          <DatePicker 
+            disabled 
+            style={{ width: '100%' }} 
+            format="DD MMM YYYY"
+          />
+            </Form.Item>
+            <Form.Item name="toDate" label={t("To Date")} style={{ margin: 0 }}>
+              <DatePicker 
+                disabled 
+                style={{ width: '100%' }} 
+                format="DD MMM YYYY"
+              />
+            </Form.Item>
+            </div>
+            </div>
+          </div>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+        <Form.Item name="currentDate" label={t("Date and Time")} style={{ width: '48%', margin: 0 }}>
+          <Input value={currentDateTime} readOnly />
+        </Form.Item>
+
+
+          <Form.Item name="dueAmount" label={t("Due Amount")} style={{ width: '48%', margin: 0 }}>
+            <Input disabled />
+          </Form.Item>
         </div>
+
+        {dueAmount > 0 && (
+          <div style={{ border: '1px solid #d9d9d9', padding: '10px', marginBottom: '20px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
+              <Form.Item name="paymentMode" label={t("Mode")} rules={[{ required: true, message: t("Please select payment mode!") }]} style={{ margin: 0 }}>
+                <Select>
+                  <Option value="cash">{t("Cash")}</Option>
+                  <Option value="online">{t("Online")}</Option>
+                </Select>
+              </Form.Item>
+              <Form.Item name="transactionId" label={t("Transaction ID")} style={{ margin: 0 }}>
+                <Input />
+              </Form.Item>
+              <Form.Item name="amount" label={t("Amount")} rules={[{ required: true, message: t("Please input the amount!") }]} style={{ margin: 0 }}>
+                <Input type="number" />
+              </Form.Item>
+            </div>
+            <Form.Item name="remark" label={t("Remark")} style={{ margin: '10px 0 0 0' }}>
+              <Input.TextArea rows={3} />
+            </Form.Item>
+          </div>
+        )}
+        
+        {/* <div style={{ border: '1px solid #d9d9d9', padding: '10px', marginBottom: '20px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px' }}>
+            <Form.Item name="building" label={t("Building")} style={{ margin: 0 }}>
+              <Input disabled style={{ backgroundColor: 'white' }} />
+            </Form.Item>
+            <Form.Item name="floor" label={t("Floor")} style={{ margin: 0 }}>
+              <Input disabled style={{ backgroundColor: 'white' }} />
+            </Form.Item>
+            <Form.Item name="roomNumbers" label={t("Room Numbers")} style={{ margin: 0 }}>
+              <Input disabled style={{ backgroundColor: 'white' }} />
+            </Form.Item>
+            <Form.Item name="capacity" label={t("Capacity")} style={{ margin: 0 }}>
+              <Input disabled style={{ backgroundColor: 'white' }} />
+            </Form.Item>
+            <Form.Item name="fromDate" label={t("From Date")} style={{ margin: 0 }}>
+              <DatePicker 
+                disabled 
+                style={{ width: '100%' }} 
+                format="DD MMM YYYY"
+              />
+            </Form.Item>
+            <Form.Item name="toDate" label={t("To Date")} style={{ margin: 0 }}>
+              <DatePicker 
+                disabled 
+                style={{ width: '100%' }} 
+                format="DD MMM YYYY"
+              />
+            </Form.Item>
+          </div>
+        </div> */}
+        
       </Form>
     </Modal>
   );
