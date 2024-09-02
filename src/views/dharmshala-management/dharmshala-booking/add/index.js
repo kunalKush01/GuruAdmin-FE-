@@ -41,6 +41,9 @@ const AddDharmshalaBooking = () => {
           roomId: room.roomId,
           amount: room.amount,
           roomNumber: room.roomNumber,
+          roomTypeName: room.roomTypeName,
+          buildingName: room.buildingName,
+          floorName: room.floorName,
         })),
         guestname: bookingData.userDetails.name || "",
         email: bookingData.userDetails.email || "",
@@ -72,9 +75,13 @@ const AddDharmshalaBooking = () => {
         roomsData: [
           {
             roomType: '',
+            roomTypeName: '',
             building: '',
+            buildingName: '',
             floor: '',
+            floorName: '',
             roomId: '',
+            roomNumber: '',
             amount: 0,
           },
         ],
