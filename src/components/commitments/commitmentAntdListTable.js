@@ -325,7 +325,9 @@ export default function CommitmentAntdListTable(
             {item?.commitmentId}
           </div>
         ),
-        createdBy: ConverFirstLatterToCapital(item?.createdBy.name ?? ""),
+        createdBy: ConverFirstLatterToCapital(
+          item?.createdBy ? item?.createdBy.name : ""
+        ),
         payDonation:
           item?.paidStatus !== "completed" ? (
             <div
