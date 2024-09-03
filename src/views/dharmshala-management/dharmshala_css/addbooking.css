@@ -58,7 +58,7 @@
 }
 
 .date-label {
-  font-size: 0.9rem;
+  font-size: 15px;
   margin-bottom: 2px;
   line-height: 20px;
   color: #533810;
@@ -102,7 +102,7 @@
 .member-label {
   display: flex;
   align-items: center;
-  font-size: 0.9rem;
+  font-size: 15px;
   height: 35px;
   margin-top: -10px;
   margin-bottom: -7px;
@@ -156,7 +156,7 @@
   cursor: pointer;
   height: 35px;
   width: 80px;
-  margin-left: 50px; 
+  margin-left: 30px; 
   display: flex;
   justify-content: center; 
   align-items: center;
@@ -184,7 +184,7 @@
 
 .edit-icon {
   position:absolute;
-  bottom: 10px;
+  bottom: 17px;
   right: 10px;
   cursor: pointer;
   width: 50px;
@@ -196,6 +196,7 @@
   display: flex;
   flex-direction: row;
   gap: 35px;
+  margin-bottom: 100px;
 }
 
 .overall-div{
@@ -247,9 +248,9 @@
 .floor-label,
 .room-number-label,
 .amount-label {
-  font-size: 0.9rem;
+  font-size: 15px;
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 1px;
   line-height: 20px;
 }
 
@@ -268,7 +269,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.29);
   transition: box-shadow 0.3s ease;
   height: 35px;
-  margin-top: -8px;
+  /* margin-top: -8px; */
 }
 
 .room-dropdown:focus,
@@ -449,7 +450,6 @@
   width: 30px;
   height: 30px;
   cursor: pointer;
-  margin-top: 25px;
   margin-left: 20px;
   margin-right: 20px;
 
@@ -458,18 +458,18 @@
 .upload-label {
   cursor: pointer;
   font-size: 0.9rem;
-  color: #707070;
+  color: #533810;
   text-decoration: underline;
 }
 
 /* PAYMENTS */
 
 .payments-container {
-  background-color: #FCF5E7;
+  background-color: #FAFAFA;
   border-radius: 8px; 
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  padding: 20px;
   margin-top: 10px;
-  width: 25%;
+  width: 350px;
 }
 
 .tabs {
@@ -480,9 +480,9 @@
 .tab {
   padding: 10px;
   cursor: pointer;
-  color: #6b6b6b;
-  font-size: 19px;
-  font-weight: 500;
+  color: #533810;
+  font-size: 15px;
+  font-weight: bold;
   text-align: left;
   height: 30px;
   position: relative;
@@ -506,7 +506,7 @@
 .payment-tab,
 .payment-history-tab {
   padding: 10px;
-  background-color: #FCF5E7; 
+  background-color: #FAFAFA;  
   border: none; 
   cursor: pointer;
 }
@@ -519,10 +519,12 @@
 }
 
 .payment-label {
-  width: 150px;
-  color: #000; 
-  font-size: 17px;
-  font-weight: 500;
+  width: 100px;
+  color: #533810; 
+  font-size: 15px;
+  font-weight: bold;
+  margin-right: 5px;
+  line-height: 1.2;
 }
 
 .payment-input {
@@ -536,7 +538,8 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.29);
   transition: box-shadow 0.3s ease;
   height: 35px;
-  margin-top: -12px;
+  margin-top: 7px;
+  margin-bottom: 1px;
 }
 
 .payment-input:focus{

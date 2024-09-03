@@ -27,7 +27,7 @@ export const extractDataFromResponse = ({
   if (showErrorToast) {
     toast.error(response.data.message, { ...TOASTSLIDE });
   }
-  data.error = true;
+  // data.error = true;
   return data;
 };
 

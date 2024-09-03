@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import moment from "moment";
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import isBetween from 'dayjs/plugin/isBetween';
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
@@ -15,6 +17,9 @@ import DharmshalaBookingTable from "./table";
 import { Helmet } from "react-helmet";
 import { DharmshalaBookingInfo } from "../dharmshalaStyles";
 import { CustomDropDown } from "../../../components/partials/customDropDown";
+
+dayjs.extend(utc);
+dayjs.extend(isBetween);
 
 const DharmshalaBookings = () => {
   const history = useHistory();
@@ -57,14 +62,8 @@ const DharmshalaBookings = () => {
     }
   };
 
-  let filterStartDate = moment()
-    .startOf(periodDropDown())
-    .utcOffset(0, true)
-    .toISOString();
-  let filterEndDate = moment()
-    .endOf(periodDropDown())
-    .utcOffset(0, true)
-    .toISOString();
+  let filterStartDate = dayjs().startOf(periodDropDown()).utc().toISOString();
+  let filterEndDate = dayjs().endOf(periodDropDown()).utc().toISOString();
 
   const dharmshalaBookingList = useQuery(
     ["dharmshalaBookingList", pagination.page, selectedLang.id, searchBarValue, statusFilter],
@@ -100,15 +99,17 @@ const DharmshalaBookings = () => {
   };
 
   const filteredBookingListData = useMemo(() => {
-    const currentDate = moment();
+    const currentDate = dayjs().startOf('day');
     let filteredData = dharmshalaBookingListData;
+    const dateFormat = "DD-MM-YYYY";
     if (showPastRequests) {
       filteredData = filteredData.filter((item) =>
-        moment(item.startDate).isBefore(currentDate)
+        dayjs(item.startDate, dateFormat).isBefore(currentDate)
       );
     } else {
       filteredData = filteredData.filter((item) =>
-        moment(item.startDate).isAfter(currentDate)
+        dayjs(item.startDate, dateFormat).isAfter(currentDate) || dayjs(item.startDate, dateFormat).isSame(currentDate) || 
+        dayjs(item.endDate, dateFormat).isAfter(currentDate) || dayjs(item.endDate, dateFormat).isSame(currentDate)
       );
     }
     if (statusFilter) {
