@@ -21,7 +21,7 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
   const { t } = useTranslation();
   const [form] = Form.useForm();
   const [dueAmount, setDueAmount] = useState(0);
-  const [currentDateTime, setCurrentDateTime] = useState('');
+  const [currentDateTime, setCurrentDateTime] = useState(dayjs().tz('Asia/Kolkata').format('ddd, DD MMM YYYY HH:mm:ss [IST]'));
   const queryClient = useQueryClient();
 
   const updateBookingMutation = useMutation({
@@ -44,6 +44,13 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
     },
   });
 
+  const updateDateTime = () => {
+    const now = dayjs().tz('Asia/Kolkata');
+    const formattedDateTime = now.format('ddd, DD MMM YYYY HH:mm:ss [IST]');
+    setCurrentDateTime(formattedDateTime);
+    form.setFieldsValue({ currentDate: formattedDateTime });
+  };
+
   useEffect(() => {
     if (booking) {
       const room = booking.rooms[0] || {};
@@ -61,11 +68,9 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
 
       const initialFormValues = form.getFieldsValue();
     }
-    const timer = setInterval(() => {
-      const now = dayjs().tz('Asia/Kolkata');
-      setCurrentDateTime(now.format('ddd, DD MMM YYYY HH:mm:ss [IST]'));
-    }, 1000);
-    return () => clearInterval(timer);
+    updateDateTime(); // Set initial time immediately
+  const timer = setInterval(updateDateTime, 1000);
+  return () => clearInterval(timer);
   }, [booking, form]);
 
   const handleOk = () => {
@@ -123,7 +128,8 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
           updatePaymentMutation.mutate(paymentPayload, {
             onSuccess: async () => {
               try {
-                await queryClient.fetchQuery(['getDharmshalaBookingList'], getDharmshalaBookingList);
+                await queryClient.invalidateQueries(["dharmshalaBookingList"]);
+                form.resetFields();
                 console.log('Booking list refreshed successfully');
               } catch (error) {
                 console.error('Error fetching booking list:', error);
@@ -232,7 +238,7 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
 
 
           <Form.Item name="dueAmount" label={t("Due Amount")} className="form-item-due-amount">
-            <Input disabled />
+            <Input disabled/>  
           </Form.Item>
         </div>
 
