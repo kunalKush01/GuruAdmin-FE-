@@ -187,6 +187,17 @@ export const createDharmshalaBooking = (payload) =>
     successCode: 201,
   });
 
+  export const createPayment = (payload) =>
+    callDharmshalaApi({
+      requestFunction: (axios) => axios.post(`payment`, payload),
+      successCode: 201,
+    });
+
+    export const updatePayment = (payload) =>
+      callDharmshalaApi({
+        requestFunction: (axios) => axios.put(`payment/${payload.paymentId}`, payload),
+      });
+
 export const calculateBookingTotalPayment = (bookingId) =>
   callDharmshalaApi({
     requestFunction: (axios) => axios.get(`bookings/${bookingId}/total-payment`),
@@ -204,10 +215,12 @@ export const deleteDharmshalaBooking = (bookingId) =>
     requestFunction: (axios) => axios.delete(`bookings/${bookingId}`),
   });
 
-export const updateDharmshalaBooking = (payload) =>
-  callDharmshalaApi({
-    requestFunction: (axios) => axios.put(`bookings/${payload.bookingId}`, payload),
-  });
+  export const updateDharmshalaBooking = (payload) => {
+    console.log("Update Booking Payload:", payload);
+    return callDharmshalaApi({
+      requestFunction: (axios) => axios.put(`bookings/${payload.bookingId}`, payload),
+    });
+  };
 
 export const checkoutBooking = (bookingId) =>
   callDharmshalaApi({
