@@ -7,7 +7,6 @@ import "antd/dist/reset.css";
 import { useTranslation } from "react-i18next";
 import copyIcon from "../../assets/images/icons/copy-to-clipboard.svg";
 
-
 function SuspenseImportHistoryView({ isOpen, toggle, details }) {
   const errorTableRef = useRef(null);
   const { t } = useTranslation();
@@ -34,7 +33,7 @@ function SuspenseImportHistoryView({ isOpen, toggle, details }) {
   const flattenedErrorData = errorData.flatMap((lineError) =>
     lineError.errorMsg.map((error) => ({
       line: lineError.line,
-      error: error,
+      error: error.error || error,
     }))
   );
   const columns = [
@@ -53,7 +52,7 @@ function SuspenseImportHistoryView({ isOpen, toggle, details }) {
   return (
     <Modal isOpen={isOpen} toggle={toggle} centered size="lg">
       <ModalHeader toggle={toggle}>
-        {t('suspense_import_result')}
+        {t("suspense_import_result")}
         <div>
           <X
             className="cancleIcon"
@@ -69,18 +68,20 @@ function SuspenseImportHistoryView({ isOpen, toggle, details }) {
           <div>
             <div className="d-flex justify-content-between align-items-center mb-3">
               <p>
-                <strong>{t('suspense_status')}:</strong>{" "}
+                <strong>{t("suspense_status")}:</strong>{" "}
                 <span
                   style={{
                     color:
-                      details.status ==="completed" ? "var(--green)" : "var(--red)",
+                      details.status === "completed"
+                        ? "var(--green)"
+                        : "var(--red)",
                   }}
                 >
                   {ConverFirstLatterToCapital(details.status)}
                 </span>
               </p>
               <p>
-                <strong>{t('suspense_success_count')}:</strong>{" "}
+                <strong>{t("suspense_success_count")}:</strong>{" "}
                 {details.totalRecords
                   ? details.totalRecords -
                     (Array.isArray(details.lineErrors)
@@ -89,7 +90,7 @@ function SuspenseImportHistoryView({ isOpen, toggle, details }) {
                   : 0}
               </p>
               <p>
-                <strong>{t('suspense_failed_count')}:</strong>
+                <strong>{t("suspense_failed_count")}:</strong>
                 {Array.isArray(details.lineErrors)
                   ? details.lineErrors.length
                   : 0}
@@ -97,12 +98,20 @@ function SuspenseImportHistoryView({ isOpen, toggle, details }) {
 
               {errorData.length > 0 && (
                 <p className="d-flex align-items-center flex-row">
-                  <strong>{t('copyToClipboard')} &nbsp;</strong>
+                  <strong>{t("copyToClipboard")} &nbsp;</strong>
                   <CustomButton
                     type=""
-                    icon={<img src={copyIcon} style={{width:"50%",height:"50%"}}/>}
+                    icon={
+                      <img
+                        src={copyIcon}
+                        style={{ width: "50%", height: "50%" }}
+                      />
+                    }
                     size={30}
-                    style={{borderColor:"var(--primary-color)",borderRadius:"4px"}}
+                    style={{
+                      borderColor: "var(--primary-color)",
+                      borderRadius: "4px",
+                    }}
                     onClick={copyToClipboard}
                   />
                 </p>
