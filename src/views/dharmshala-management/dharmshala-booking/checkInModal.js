@@ -7,7 +7,9 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/en-gb';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
-import { updatePayment, updateDharmshalaBooking } from "../../../api/dharmshala/dharmshalaInfo";
+import { updatePayment, updateDharmshalaBooking, getDharmshalaBookingList } from "../../../api/dharmshala/dharmshalaInfo";
+import '../../../../src/views/dharmshala-management/dharmshala_css/addbooking.css';
+import { useQueryClient, useQuery } from "@tanstack/react-query";
 import '../../../../src/views/dharmshala-management/dharmshala_css/addbooking.css';
 
 dayjs.extend(utc);
@@ -20,6 +22,7 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
   const [form] = Form.useForm();
   const [dueAmount, setDueAmount] = useState(0);
   const [currentDateTime, setCurrentDateTime] = useState('');
+  const queryClient = useQueryClient();
 
   const updateBookingMutation = useMutation({
     mutationFn: (payload) => updateDharmshalaBooking(payload),
@@ -55,10 +58,8 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
         dueAmount: booking.calculatedFields.totalDue || 1000, 
       });
       setDueAmount(booking.calculatedFields.totalDue || 0);
-      console.log('Booking Data on Modal Open:', booking);
 
       const initialFormValues = form.getFieldsValue();
-      console.log('Initial Form Values:', initialFormValues);
     }
     const timer = setInterval(() => {
       const now = dayjs().tz('Asia/Kolkata');
@@ -68,10 +69,7 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
   }, [booking, form]);
 
   const handleOk = () => {
-    const existingPayments = Array.isArray(booking.payment.payments) ? booking.payment.payments : [];
-
-    
-    
+    const existingPayments = Array.isArray(booking.payment.payments) ? booking.payment.payments : []; 
     form.validateFields().then((values) => {
       const bookingPayload = {
         bookingId: booking._id,
@@ -94,8 +92,10 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
         },
       };
 
+      const isRefund = mode === 'check-out' && dueAmount < 0;
+
       const newPayment = {
-        type: "deposit",
+        type: isRefund ? "refund" : "deposit",
         amount: values.amount,
         date: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
         transactionId: values.transactionId,
@@ -118,37 +118,63 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
         status: 'pending',
       };
 
-      updateBookingMutation.mutate(bookingPayload);
-      updatePaymentMutation.mutate(paymentPayload);
-
-      onClose();
+      updateBookingMutation.mutate(bookingPayload, {
+        onSuccess: () => {
+          updatePaymentMutation.mutate(paymentPayload, {
+            onSuccess: async () => {
+              try {
+                await queryClient.fetchQuery(['getDharmshalaBookingList'], getDharmshalaBookingList);
+                console.log('Booking list refreshed successfully');
+              } catch (error) {
+                console.error('Error fetching booking list:', error);
+              }
+              onClose();
+            },
+            onError: (error) => {
+              console.error('Error updating payment:', error);
+            },
+          });
+        },
+        onError: (error) => {
+          console.error('Error updating booking:', error);
+        },
+      });
     }).catch((info) => {
       console.log('Validate Failed:', info);
     });
   };
 
-
+  const fromDate = booking ? dayjs(booking.startDate).format('DD MMM YYYY') : '';
+  const toDate = booking ? dayjs(booking.endDate).format('DD MMM YYYY') : '';
 
   return (
     <Modal
-    title={t(mode === 'check-in' ? "Check In" : "Check Out")}
+    title={(
+        <div className="modal-title-container">
+          <span className="modal-title-text">
+            {t(mode === 'check-in' ? "Check In" : "Check Out")}
+          </span>
+          <span className="modal-title-date">
+            ({fromDate} - {toDate})
+          </span>
+        </div>
+      )}
       visible={visible}
+      centered
       onCancel={onClose}
-      width={1000}
+      width={900}
       footer={[
-        <Button key="cancel" onClick={onClose} style={{ borderColor: '#d9d9d9', color: '#d9d9d9' }}>
+        <Button key="cancel" onClick={onClose} className="modal-footer-button-cancel">
           {t("Cancel")}
         </Button>,
-        <Button key="submit" type="primary" onClick={handleOk} style={{ backgroundColor: '#e69138', borderColor: '#e69138' }}>
-        {t(mode === 'check-in' ? "Check In" : "Check Out")}
+        <Button key="submit" type="primary" onClick={handleOk} className="modal-footer-button-submit">
+         {t(mode === 'check-in' ? "Check In" : dueAmount < 0 ? "Check Out & Refund" : "Check Out" )}
         </Button>,
       ]}
     >
       <Form form={form} layout="vertical">
-        {/* Form Fields */}
-        <div style={{ border: '1px solid #d9d9d9', padding: '10px', marginBottom: '20px' }}>
         <RoomsContainer
-            style={{ maxHeight: '100px', overflow: 'auto' }}
+            className="rooms-container"
             roomsData={booking?.rooms || []}
             roomTypes={booking?.rooms.map(room => ({
               _id: room.roomTypeId, 
@@ -198,90 +224,41 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
             isPartialView={true}
             isReadOnly={true}
           />
-          <div style={{ border: '1px solid #d9d9d9', padding: '10px', marginBottom: '20px', marginTop:'20px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px' }}>
-          <Form.Item name="fromDate" label={t("From Date")} style={{ margin: 0 }}>
-          <DatePicker 
-            disabled 
-            style={{ width: '100%' }} 
-            format="DD MMM YYYY"
-          />
-            </Form.Item>
-            <Form.Item name="toDate" label={t("To Date")} style={{ margin: 0 }}>
-              <DatePicker 
-                disabled 
-                style={{ width: '100%' }} 
-                format="DD MMM YYYY"
-              />
-            </Form.Item>
-            </div>
-            </div>
-          </div>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
-        <Form.Item name="currentDate" label={t("Date and Time")} style={{ width: '48%', margin: 0 }}>
+        <div className="form-layout">
+        <Form.Item name="currentDate" label={t("Date and Time")} className="form-item-date-time">
           <Input value={currentDateTime} readOnly />
         </Form.Item>
 
 
-          <Form.Item name="dueAmount" label={t("Due Amount")} style={{ width: '48%', margin: 0 }}>
+          <Form.Item name="dueAmount" label={t("Due Amount")} className="form-item-due-amount">
             <Input disabled />
           </Form.Item>
         </div>
 
-        {dueAmount > 0 && (
-          <div style={{ border: '1px solid #d9d9d9', padding: '10px', marginBottom: '20px' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
-              <Form.Item name="paymentMode" label={t("Mode")} rules={[{ required: true, message: t("Please select payment mode!") }]} style={{ margin: 0 }}>
+        {(mode === 'check-out' || (mode === 'check-in' && dueAmount > 0)) && (
+          <div className="payment-section">
+            <div className="payment-grid">
+              <Form.Item name="paymentMode" label={t("Mode")} rules={[{ required: true, message: t("Please select payment mode!") }]} className="payment-form-item">
                 <Select>
                   <Option value="cash">{t("Cash")}</Option>
                   <Option value="online">{t("Online")}</Option>
                 </Select>
               </Form.Item>
-              <Form.Item name="transactionId" label={t("Transaction ID")} style={{ margin: 0 }}>
+              <Form.Item name="transactionId" label={t("Transaction ID")} className="payment-form-item">
                 <Input />
               </Form.Item>
-              <Form.Item name="amount" label={t("Amount")} rules={[{ required: true, message: t("Please input the amount!") }]} style={{ margin: 0 }}>
+              <Form.Item name="amount" 
+              label={mode === 'check-out' && dueAmount < 0 ? t("Refund Amount") : t("Amount")} 
+               rules={[{ required: true, message: t("Please input the amount!") }]} className="payment-form-item">
                 <Input type="number" />
               </Form.Item>
             </div>
-            <Form.Item name="remark" label={t("Remark")} style={{ margin: '10px 0 0 0' }}>
+            <Form.Item name="remark" label={t("Remark")} className="payment-remark">
               <Input.TextArea rows={3} />
             </Form.Item>
           </div>
         )}
-        
-        {/* <div style={{ border: '1px solid #d9d9d9', padding: '10px', marginBottom: '20px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px' }}>
-            <Form.Item name="building" label={t("Building")} style={{ margin: 0 }}>
-              <Input disabled style={{ backgroundColor: 'white' }} />
-            </Form.Item>
-            <Form.Item name="floor" label={t("Floor")} style={{ margin: 0 }}>
-              <Input disabled style={{ backgroundColor: 'white' }} />
-            </Form.Item>
-            <Form.Item name="roomNumbers" label={t("Room Numbers")} style={{ margin: 0 }}>
-              <Input disabled style={{ backgroundColor: 'white' }} />
-            </Form.Item>
-            <Form.Item name="capacity" label={t("Capacity")} style={{ margin: 0 }}>
-              <Input disabled style={{ backgroundColor: 'white' }} />
-            </Form.Item>
-            <Form.Item name="fromDate" label={t("From Date")} style={{ margin: 0 }}>
-              <DatePicker 
-                disabled 
-                style={{ width: '100%' }} 
-                format="DD MMM YYYY"
-              />
-            </Form.Item>
-            <Form.Item name="toDate" label={t("To Date")} style={{ margin: 0 }}>
-              <DatePicker 
-                disabled 
-                style={{ width: '100%' }} 
-                format="DD MMM YYYY"
-              />
-            </Form.Item>
-          </div>
-        </div> */}
-        
       </Form>
     </Modal>
   );
