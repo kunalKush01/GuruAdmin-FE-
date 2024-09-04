@@ -24,6 +24,7 @@ import * as Yup from "yup";
 import { useQuery } from "@tanstack/react-query";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
 import '../../../src/assets/scss/viewCommon.scss';
+import RoomsContainer from './RoomsContainer';
 
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 
@@ -193,7 +194,10 @@ const idTypeOptions = [
   const fetchBuildings = async () => {
     try {
       const response = await getDharmshalaList();
-      setBuildings(response.results);
+      setBuildings(response.results.map(building => ({
+        _id: building._id,
+        name: building.name
+      })));
     } catch (error) {
       console.error("Error fetching buildings:", error);
     }
@@ -202,7 +206,13 @@ const idTypeOptions = [
   const fetchRoomTypes = async () => {
     try {
       const response = await getRoomTypeList();
-      setRoomTypes(response.results);
+      setRoomTypes(response.results.map(room => ({
+        _id: room._id,
+        name: room.name,
+        capacity: room.capacity,
+        price: room.price,
+        dharmshalaId: room.dharmshalaId
+      })));
       
       if (response.results && response.results.length > 0) {
         const dharmshalaId = response.results[0].dharmshalaId;
@@ -229,7 +239,10 @@ const idTypeOptions = [
       const response = await getDharmshalaFloorList(buildingId);
       setFloors((prevFloors) => ({
         ...prevFloors,
-        [buildingId]: response.results,
+        [buildingId]: response.results.map(floor => ({
+          _id: floor._id,
+          name: floor.name
+        }))
       }));
     } catch (error) {
       console.error("Error fetching floors:", error);
@@ -263,32 +276,37 @@ const idTypeOptions = [
     let remainingGuests = totalGuests;
     const roomsCombination = [];
   
-    sortedRoomTypes.forEach((roomType) => {
-      while (remainingGuests > 0 && roomType.capacity <= remainingGuests) {
-        roomsCombination.push({
-          roomType: roomType._id,
-          building: "",
-          floor: "",
-          roomId: "",
-          amount: roomType.price,
-        });
-        remainingGuests -= roomType.capacity;
-      }
-    });
-  
     while (remainingGuests > 0) {
-      const smallestRoomType = sortedRoomTypes[sortedRoomTypes.length - 1];
-      if (smallestRoomType) {
+      const suitableRoom = sortedRoomTypes.find(room => room.capacity <= remainingGuests);
+      
+      if (suitableRoom) {
         roomsCombination.push({
-          roomType: smallestRoomType._id,
+          roomTypeId: suitableRoom._id,
+          roomTypeName: suitableRoom.name,
           building: "",
+          buildingName: "",
           floor: "",
+          floorName: "",
           roomId: "",
-          amount: smallestRoomType.price,
+          roomNumber: "",
+          amount: suitableRoom.price,
         });
-        remainingGuests -= smallestRoomType.capacity;
+        remainingGuests -= suitableRoom.capacity;
       } else {
-        break;
+        // If no suitable room found, assign the smallest room
+        const smallestRoom = sortedRoomTypes[sortedRoomTypes.length - 1];
+        roomsCombination.push({
+          roomTypeId: smallestRoom._id,
+          roomTypeName: smallestRoom.name,
+          building: "",
+          buildingName: "",
+          floor: "",
+          floorName: "",
+          roomId: "",
+          roomNumber: "",
+          amount: smallestRoom.price,
+        });
+        remainingGuests -= smallestRoom.capacity;
       }
     }
   
@@ -299,7 +317,7 @@ const idTypeOptions = [
   const handleAddRoom = () => {
     const updatedRoomsData = [
       ...formik.values.roomsData,
-      { roomType: "", building: "", floor: "", roomId: "", amount: 0 },
+      { roomType: "", building: "", floor: "", roomId: "", roomNumber:'', amount: 0 },
     ];
     formik.setFieldValue('roomsData', updatedRoomsData);
     updateTotalAmount(updatedRoomsData);
@@ -307,21 +325,26 @@ const idTypeOptions = [
 
   const handleClearRooms = () => {
     const clearedRoomsData = [
-      { roomType: "", building: "", floor: "", roomId: "", amount: 0 },
+      { roomType: "", building: "", floor: "", roomId: "", roomNumber:'', amount: 0 },
     ];
     formik.setFieldValue('roomsData', clearedRoomsData);
     updateTotalAmount(clearedRoomsData);
   };
 
   const handleRoomTypeChange = (value, index) => {
+    const selectedRoomType = roomTypes.find((rt) => rt._id === value);
     const updatedRoomsData = [...formik.values.roomsData];
     updatedRoomsData[index] = {
       ...updatedRoomsData[index],
       roomType: value,
+      roomTypeName: selectedRoomType?.name || '',
       building: '',
+      buildingName: '',
       floor: '',
+      floorName: '',
       roomId: '',
-      amount: roomTypes.find((rt) => rt._id === value)?.price ?? 0,
+      roomNumber: '',
+      amount: selectedRoomType?.price || 0,
     };
     formik.setFieldValue('roomsData', updatedRoomsData);
     updateTotalAmount(updatedRoomsData);
@@ -329,7 +352,15 @@ const idTypeOptions = [
   
   const handleBuildingChange = (buildingId, index) => {
     const updatedRooms = formik.values.roomsData.map((room, i) =>
-      i === index ? { ...room, building: buildingId, floor: "", roomId: "" } : room
+      i === index ? {
+        ...room,
+        building: buildingId,
+        buildingName: buildings.find(b => b._id === buildingId)?.name,
+        floor: "",
+        floorName: "",
+        roomNumber: "",
+        roomId: ""
+      } : room
     );
     formik.setFieldValue('roomsData', updatedRooms);
     updateTotalAmount(updatedRooms);
@@ -338,7 +369,13 @@ const idTypeOptions = [
   
   const handleFloorChange = (floorId, index) => {
     const updatedRooms = formik.values.roomsData.map((room, i) =>
-      i === index ? { ...room, floor: floorId, roomId: "" } : room
+      i === index ? {
+        ...room,
+        floor: floorId,
+        floorName: floors[formik.values.roomsData[index].building]?.find(f => f._id === floorId)?.name,
+        roomNumber: "",
+        roomId: ""
+      } : room
     );
     formik.setFieldValue('roomsData', updatedRooms);
     updateTotalAmount(updatedRooms);
@@ -346,9 +383,16 @@ const idTypeOptions = [
   };
   
   const handleRoomNumberChange = (roomId, index) => {
+    const selectedRoom = (rooms[formik.values.roomsData[index].floor] || []).find(room => room._id === roomId);
+    
     const updatedRooms = formik.values.roomsData.map((room, i) =>
-      i === index ? { ...room, roomId: roomId } : room
+      i === index ? { 
+        ...room, 
+        roomId: roomId,
+        roomNumber: selectedRoom ? selectedRoom.roomNumber : ''
+      } : room
     );
+    
     formik.setFieldValue('roomsData', updatedRooms);
     updateTotalAmount(updatedRooms);
   };
@@ -401,58 +445,20 @@ const idTypeOptions = [
       }
     });
   };
-
-  const handleBeforeUnload = (event) => {
-    if (!!Object.values(formik?.values).find((val) => !!val)) {
-      event.preventDefault();
-      event.returnValue = '';
-    }
-  };
   
-  const handleNavigation = (nextLocation) => {
-    if (!!Object.values(formik?.values).find((val) => !!val)) {
-      return new Promise((resolve) => {
-        Swal.fire({
-          title: "Leave page",
-          text: t("Are you sure you want to leave this page & visit bookings"),
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "confirm",
-          cancelButtonText: t("cancel")
-        }).then((result) => {
-          resolve(result.isConfirmed);
-        });
-      });
-    }
-    return true;
-  };
-
-  useEffect(() => {
-    const unblock = history.block((tx) => {
-      const navigate = async () => {
-        const canNavigate = await handleNavigation(tx.location);
-        if (canNavigate) {
-          unblock();
-          history.push("/booking/info");
-        }
-      };
-  
-      navigate();
-      return false;
-    });
-  
-    window.addEventListener('beforeunload', handleBeforeUnload);
-  
-    return () => {
-      unblock();
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, [formik.values, history]);
-
   return (
     <Form>
+      {showPrompt && (
+        <Prompt
+          when={!!Object.values(formik?.values).find((val) => !!val)}
+          message={(location) =>
+            `Are you sure you want to leave this page & visit ${location.pathname.replace(
+              "/",
+              ""
+            )}`
+          }
+        />
+      )}
       <div className="overall-div">
         <div className="booking-room">
           <div className="booking-container">
@@ -528,153 +534,21 @@ const idTypeOptions = [
             </div>
             <img src={editIcon} className="edit-icon" alt="Edit" />
           </div>
-
-          <div className="rooms-container">
-            <div className="rooms-header">
-              <div className="rooms-title">Rooms</div>
-            </div>
-            <div className="rooms-content">
-              {roomsData.map((room, index) => (
-                <div key={index} className="room-row">
-                  <div className="field-container">
-                    <label
-                      htmlFor={`room-type-${index}`}
-                      className="room-label"
-                    >
-                      Room Type:
-                    </label>
-                    <div className="input-with-icon">
-                      <select
-                        id={`room-type-${index}`}
-                        className="room-dropdown"
-                        value={room.roomType}
-                        onChange={(e) =>
-                          handleRoomTypeChange(e.target.value, index)
-                        }
-                      >
-                        <option value="">Select Room Type</option>
-                        {roomTypes.map((roomType) => (
-                          <option key={roomType._id} value={roomType._id}>
-                            {roomType.name}
-                          </option>
-                        ))}
-                      </select>
-                      <div className="guests-content">
-                        <img
-                          src={guestIcon}
-                          className="guests-icon"
-                          alt="Guests"
-                        />
-                        <span className="guests-count">
-                          {roomTypes.find((rt) => rt._id === room.roomType)
-                            ?.capacity ?? ""}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="field-container">
-                    <label
-                      htmlFor={`building-${index}`}
-                      className="building-label"
-                    >
-                      Building:
-                    </label>
-                    <select
-                      id={`building-${index}`}
-                      className="building-dropdown"
-                      value={room.building}
-                      onChange={(e) =>
-                        handleBuildingChange(e.target.value, index)
-                      }
-                    >
-                      <option value="">Select Building</option>
-                      {buildings.map((building) => (
-                        <option key={building._id} value={building._id}>
-                          {building.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="field-container">
-                    <label htmlFor={`floor-${index}`} className="floor-label">
-                      Floor:
-                    </label>
-                    <select
-                      id={`floor-${index}`}
-                      className="floor-dropdown"
-                      value={room.floor}
-                      onChange={(e) => handleFloorChange(e.target.value, index)}
-                      disabled={!room.building}
-                    >
-                      <option value="">Select Floor</option>
-                      {(floors[room.building] || []).map((floor) => (
-                        <option key={floor._id} value={floor._id}>
-                          {floor.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="field-container">
-                    <label
-                      htmlFor={`room-number-${index}`}
-                      className="room-number-label"
-                    >
-                      Room Number:
-                    </label>
-                    <select
-                      id={`room-number-${index}`}
-                      className="room-number-dropdown"
-                      value={room.roomId}
-                      onChange={(e) =>
-                        handleRoomNumberChange(e.target.value, index)
-                      }
-                      disabled={!room.floor}
-                    >
-                      <option value="">Select Room Number</option>
-                      {(rooms[room.floor] || [])
-                        .filter((r) => r.roomTypeId === room.roomType)
-                        .map((room) => (
-                          <option key={room._id} value={room._id}>
-                            {room.roomId}
-                          </option>
-                        ))}
-                    </select>
-                  </div>
-                  <div className="field-container">
-                    <label htmlFor={`amount-${index}`} className="amount-label">
-                      Amount:
-                    </label>
-                    <input
-                      type="text"
-                      id={`amount-${index}`}
-                      value={room.amount}
-                      readOnly
-                      className="amount-input"
-                      placeholder="Price"
-                    />
-                  </div>
-                  <div className="icon-container">
-                    <img
-                      src={deleteIcon}
-                      className="delete-icon"
-                      alt="Delete"
-                      onClick={() => handleDeleteRoom(index)}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="rooms-buttons">
-              <button className="add-rooms-button" onClick={handleAddRoom}>
-                Add More Rooms
-              </button>
-              <button className="clear-rooms-button" onClick={handleClearRooms}>
-                Clear All
-              </button>
-            </div>
-          </div>  
-        </div>
-        
+          <RoomsContainer
+            roomsData={formik.values.roomsData}
+            roomTypes={roomTypes}
+            buildings={buildings}
+            floors={floors}
+            rooms={rooms}
+            handleRoomTypeChange={handleRoomTypeChange}
+            handleBuildingChange={handleBuildingChange}
+            handleFloorChange={handleFloorChange}
+            handleRoomNumberChange={handleRoomNumberChange}
+            handleDeleteRoom={handleDeleteRoom}
+            handleAddRoom={handleAddRoom}
+            handleClearRooms={handleClearRooms}
+          />  
+        </div> 
         <div className="guest-payment">
           <div className="guest-container-add-booking">
             <div className="guest-header">
