@@ -12,16 +12,16 @@ html {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 20px;
+  padding: 10px;
   width: 100%;
   height: 75vh;
   box-sizing: border-box;
-  background-color: #fff7e8;
+  /* background-color: #ffffff; */
   /* margin-left: -38px;
   margin-top: -20px; */
   margin-left: 0;
   margin-top: 0;
-  
+  border-radius: 8px;
 }
 
 .calendar-filters {
@@ -73,12 +73,12 @@ html {
   flex-direction: row;
   position: sticky;
   top: 0;
-  z-index: 3;
-  background-color: #ff8744;
+   /* z-index: 2;  */
+  /* background-color: #ff8744; */
   color: #ffffff;
-  padding: 8px 0;
+  /* padding: 8px 0; */
   border-radius: 8px 8px 0 0;
-  height: 48px;
+  height: 40px;
 }
 
 .header-cell {
@@ -92,6 +92,9 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
+  color:#533810;
+  border-bottom: 1px solid #707070;
+  /* z-index: 2; */
 }
 
 .property-header {
@@ -103,12 +106,13 @@ html {
   box-sizing: border-box;
   position: sticky;
   left: 0;
-  z-index: 4;
-  background-color: #ff8744;
+  z-index: 2; 
+  background-color: #533810; 
   color: #ffffff;
   height: 40px;
   display: flex;
   align-items: center;
+  border-bottom: 1px solid #707070;
 }
 
 .calendar-property-row {
@@ -119,7 +123,7 @@ html {
 
 .property-cell {
   width: 220px;
-  height: 60px;
+  height: 40px;
   text-align: left;
   font-size: 14px;
   padding: 5px 10px;
@@ -141,7 +145,7 @@ html {
 
 .day-cell {
   min-width: 120px;
-  height: 60px;
+  height: 40px;
   text-align: center;
   font-size: 14px;
   padding: 20px 10px 5px;
@@ -156,7 +160,7 @@ html {
 }
 .day-cell-grayed {
   min-width: 120px;
-  height: 60px;
+  height: 40px;
   text-align: center;
   font-size: 14px;
   padding: 20px 10px 5px;
@@ -180,7 +184,7 @@ html {
 }
 
 .day-cell:hover {
-  border: 2px solid #ff8744;
+  /* border: 2px solid #ff8744; */
   box-shadow: 0 0 5px rgba(255, 135, 68, 0.5);
 }
 
@@ -222,8 +226,8 @@ html {
   bottom: 0;
   left: 0;
   z-index: 3;
-  background-color: #ff8744;
-  color: #ffffff;
+  /* background-color: #ff8744; */
+  color: #533810;
   border-radius: 0 0 8px 8px;
   height: 40px;
 }
@@ -237,8 +241,9 @@ html {
   position: sticky;
   left: 0;
   bottom: 0;
-  z-index: 4;
-  background-color: #ff8744;
+  /* z-index: 4; */
+  background-color: #533810;
+  color:#ffffff
 }
 
 .footer-days-container {
@@ -260,7 +265,7 @@ html {
 }
 
 .separator {
-  height: 60px;
+  height: 40px;
   width: 3px;
   background-color: #707070;
   position: sticky;
@@ -336,8 +341,8 @@ html {
   left: 0;
   right: 0;
   bottom: 0;
-  border: 2px solid #ff8744;
-  border-radius: 50%;
+  /* border: 2px solid #ff8744;
+  border-radius: 50%; */
   pointer-events: none;
 }
 
