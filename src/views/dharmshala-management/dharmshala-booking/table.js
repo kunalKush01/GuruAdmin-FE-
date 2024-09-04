@@ -1,4 +1,5 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
+import { Tag } from "antd";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -8,10 +9,14 @@ import Swal from "sweetalert2";
 import { deleteDharmshalaBooking } from "../../../api/dharmshala/dharmshalaInfo";
 import deleteIcon from "../../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../../assets/images/icons/category/editIcon.svg";
+import checkInIcon from "../../../assets/images/icons/dharmshala/checkin.svg";
+import checkOutIcon from "../../../assets/images/icons/dharmshala/checkout.svg";
 import confirmationIcon from "../../../assets/images/icons/news/conformationIcon.svg";
 import "../../../assets/scss/common.scss";
 import dayjs from 'dayjs';
+import RoomsContainer from "../../../components/dharmshalaBooking/RoomsContainer";
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import CheckInModal from './checkInModal';  
 
 dayjs.extend(customParseFormat);
 
@@ -29,6 +34,9 @@ const DharmshalaBookingTable = ({
   const { t } = useTranslation();
   const history = useHistory();
   const queryClient = useQueryClient();
+  const [checkInVisible, setCheckInVisible] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState(null);
+  const [mode, setMode] = useState('check-in');
 
   const deleteMutation = useMutation({
     mutationFn: deleteDharmshalaBooking,
@@ -66,6 +74,37 @@ const DharmshalaBookingTable = ({
       }
     });
   };
+
+  const handleCheckInClick = (record) => {
+    setSelectedBooking({
+      ...record.originalData,
+      building: record.originalData.buildingId || 'N/A',
+      floor: record.originalData.floorId || 'N/A',
+      rooms: record.originalData.rooms || [],
+      capacity: record.originalData.capacity || 'N/A',
+      startDate: record.startDate,
+      endDate: record.endDate,
+      dueAmount: record.originalData.dueAmount || 0,
+    });
+    setMode('check-in');
+    setCheckInVisible(true);
+  };
+
+  const handleCheckOutClick = (record) => {
+    setSelectedBooking({
+      ...record.originalData,
+      building: record.originalData.buildingId || 'N/A',
+      floor: record.originalData.floorId || 'N/A',
+      rooms: record.originalData.rooms || [],
+      capacity: record.originalData.capacity || 'N/A',
+      startDate: record.startDate,
+      endDate: record.endDate,
+      dueAmount: record.originalData.dueAmount || 0,
+    });
+    setMode('check-out');
+    setCheckInVisible(true);
+  };
+  
 
   const columns = [
     {
@@ -123,7 +162,7 @@ const DharmshalaBookingTable = ({
       title: t("Actions"),
       key: "actions",
       fixed: "right",
-      width: 120,
+      width: 150,
       render: (_, record) => (
         <Space size="middle">
           <img
@@ -140,6 +179,20 @@ const DharmshalaBookingTable = ({
             onClick={() => handleDeleteClick(record)}
             alt="Delete"
           />
+          <img
+          src={checkInIcon}
+          width={17}
+          className="cursor-pointer"
+          onClick={() => handleCheckInClick(record)}
+          alt="Check In"
+        />
+        <img
+          src={checkOutIcon}
+          width={17}
+          className="cursor-pointer"
+          onClick={() => handleCheckOutClick(record)}
+          alt="Check Out"
+        />
         </Space>
       ),
     },
@@ -152,7 +205,11 @@ const DharmshalaBookingTable = ({
       startDate: item.startDate ? dayjs(item.startDate, "DD-MM-YYYY").format("DD MMM YYYY") : 'N/A',
       endDate: item.endDate ? dayjs(item.endDate, "DD-MM-YYYY").format("DD MMM YYYY") : 'N/A',
       count: item.count,
-      roomNumber: item.roomId?.roomNumber || 'N/A',
+      roomNumber: item.rooms?.map(room => (
+        <Tag color="green" key={room.roomId}>
+          {room.roomNumber}
+        </Tag>
+      )) || 'N/A',
       status: item.status,
       earlyCheckIn: item.earlyCheckIn,
       lateCheckout: item.lateCheckout,
@@ -162,6 +219,7 @@ const DharmshalaBookingTable = ({
   }, [data]);
 
   return (
+    <>
     <Table
       className="donationListTable"
       columns={columns}
@@ -180,6 +238,13 @@ const DharmshalaBookingTable = ({
       }}
       bordered
     />
+    <CheckInModal
+        visible={checkInVisible}
+        onClose={() => setCheckInVisible(false)}
+        booking={selectedBooking}
+        mode={mode}
+      />
+  </>
   );
 };
 
