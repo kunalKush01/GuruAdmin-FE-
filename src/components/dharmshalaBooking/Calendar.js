@@ -11,7 +11,7 @@ import "./Calendar.css";
 import "./bookingModal.css";
 import guestIcon from "../../assets/images/icons/guestIcon.png";
 import Switch from "react-toggle-switch";
-import "react-toggle-switch/dist/css/switch.min.css"; 
+import "react-toggle-switch/dist/css/switch.min.css";
 import Swal from "sweetalert2";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { useHistory } from "react-router-dom";
@@ -30,7 +30,6 @@ const BookingModal = ({
   onEditBooking,
   selectedCheckOutDate,
   selectedCheckInDate,
-
 }) => {
   const [guestName, setGuestName] = useState("");
   const [phone, setPhone] = useState(null);
@@ -41,7 +40,7 @@ const BookingModal = ({
       ? new Date(initialDate.getTime() + 24 * 60 * 60 * 1000)
       : new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
   );
-  const [success,onSuccess] = useState(false);
+  const [success, onSuccess] = useState(false);
 
   useEffect(() => {
     if (editEvent) {
@@ -90,7 +89,7 @@ const BookingModal = ({
           text: "The booking has been successfully created.",
           confirmButtonColor: "#3f51b5",
         });
-        onSuccess(true)
+        onSuccess(true);
       }
       onClose();
     } catch (error) {
@@ -107,7 +106,6 @@ const BookingModal = ({
   if (!isOpen || !property) return null;
 
   return (
-
     <div
       className={`modal fade ${isOpen ? "show" : ""}`}
       style={{ display: isOpen ? "block" : "none" }}
@@ -282,7 +280,7 @@ const PlaceholderRows = ({ numRows, numCells }) => {
       {rows.map((_, rowIndex) => (
         <div key={rowIndex} className="calendar-property-row">
           <div className="property-cell"></div>
-          <div className="separator" style={{ height: "60px" }} />
+          <div className="separator" style={{ height: "40px" }} />
           <div className="day-cells-container">
             {cells.map((_, cellIndex) => (
               <div key={cellIndex} className="day-cell"></div>
@@ -321,7 +319,6 @@ const Calendar = () => {
   const [isBookingResizeSuccess, setIsBookingResizeSuccess] = useState(false);
   const [showAvailableOnly, setShowAvailableOnly] = useState(false);
 
-
   //**filter event based on date selection */
   const filteredEvents = useMemo(() => {
     if (!events || events.length === 0) {
@@ -339,7 +336,6 @@ const Calendar = () => {
     });
     return filteredData;
   }, [events, fromDate, toDate, days]);
-
 
   useEffect(() => {
     setFilterEventDataDay(filteredEvents);
@@ -458,7 +454,6 @@ const Calendar = () => {
     }).length;
   };
 
-
   const handleFromDateChange = (date) => {
     if (window.matchMedia("(max-width: 768px)").matches) {
       if (
@@ -506,7 +501,7 @@ const Calendar = () => {
 
   const getRandomColor = () => {
     const colors = ["#4D9DE0", "#E15554", "#E1BC29", "#3BB273", "#7768AE"];
-    const color=colors[Math.floor(Math.random()*colors.length)];
+    const color = colors[Math.floor(Math.random() * colors.length)];
     return color;
   };
 
@@ -527,7 +522,8 @@ const Calendar = () => {
 
     if (showAvailableOnly) {
       filteredProps = filteredProps.filter(
-        (property) => !filteredEvents.some((event) => event.roomId._id === property._id)
+        (property) =>
+          !filteredEvents.some((event) => event.roomId._id === property._id)
       );
     }
 
@@ -538,7 +534,6 @@ const Calendar = () => {
   const filterEvents = events.filter((item) => {
     const filteredIds = filteredProperties.map((property) => property._id);
     return filteredIds.includes(item.roomId._id);
-
   });
 
   const getTotalGuestsForDate = (date) => {
@@ -558,8 +553,6 @@ const Calendar = () => {
     setShowAvailableOnly(!showAvailableOnly);
   };
 
-  
-
   // const handleCellClick = (date, property) => {
   //   setSelectedDate(date);
   //   setSelectedProperty(property);
@@ -567,10 +560,12 @@ const Calendar = () => {
   // };
 
   const handleCellClick = (date, property) => {
-    const formattedDate = date.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
-    history.push(`/booking/add?startDate=${formattedDate}&roomNumber=${property.roomNumber}&roomType=${property.roomTypeName}`);
+    const formattedDate = date.toISOString().split("T")[0]; // Format date as YYYY-MM-DD
+    history.push(
+      `/booking/add?startDate=${formattedDate}&roomNumber=${property.roomNumber}&roomType=${property.roomTypeName}`
+    );
   };
-  
+
   const handleCellClickEdit = (
     date,
     property,
@@ -642,7 +637,7 @@ const Calendar = () => {
     }
     return lastIndex;
   }, -1);
-  
+
   //**Extend Your booking */
   const handleSuccess = (success) => {
     setIsBookingResizeSuccess(success);
@@ -771,18 +766,13 @@ const Calendar = () => {
   return (
     <div className="calendar-container">
       <div className="calendar-filters">
-      <div className="d-flex justify-content-between align-items-center">
-        <img
-          src={arrowLeft}
-          className="me-2 cursor-pointer"
-          onClick={() =>
-            history.push(
-              `/booking/info/`
-            )
-          }
-        />
-        
-      </div>
+        <div className="d-flex justify-content-between align-items-center">
+          <img
+            src={arrowLeft}
+            className="me-2 cursor-pointer"
+            onClick={() => history.push(`/booking/info/`)}
+          />
+        </div>
         <div
           className="calendar-filter"
           style={{
@@ -793,7 +783,6 @@ const Calendar = () => {
                 : "flex",
           }}
         >
-          
           <div className="date-picker-container">
             <div className="fromDate">
               <label htmlFor="from-date">From Date:</label>
@@ -817,12 +806,18 @@ const Calendar = () => {
                 className="custom-datepicker"
               />
             </div>
-            
           </div>
 
-          <div className="calendar-filter" style={{
-            display: window.matchMedia("(max-width: 768px)").matches && (isModalOpen || iseditModalOpen) ? "none" : "flex",
-          }}>
+          <div
+            className="calendar-filter"
+            style={{
+              display:
+                window.matchMedia("(max-width: 768px)").matches &&
+                (isModalOpen || iseditModalOpen)
+                  ? "none"
+                  : "flex",
+            }}
+          >
             <div id="select_div" className="select-container">
               <label htmlFor="room-type">Room Type:</label>
               <select
@@ -838,8 +833,11 @@ const Calendar = () => {
                 ))}
               </select>
             </div>
-            <button className="availability-check" onClick={handleShowAvailableOnly}>
-                {showAvailableOnly ? "Show All" : "Show Available Only"}
+            <button
+              className="availability-check"
+              onClick={handleShowAvailableOnly}
+            >
+              {showAvailableOnly ? "Show All" : "Show Available Only"}
             </button>
           </div>
         </div>
@@ -851,7 +849,7 @@ const Calendar = () => {
             <div className="header-cell property-header sticky">Rooms</div>
             <div
               className="separator"
-              style={{ height: "60px", marginTop: "-10px" }}
+              style={{ height: "40px", marginTop: "-10px" }}
             />
             {days.map((day) => (
               <div
@@ -885,7 +883,7 @@ const Calendar = () => {
                 <div className="property-cell sticky">
                   {property.roomNumber}
                 </div>
-                <div className="separator" style={{ height: "60px" }} />
+                <div className="separator" style={{ height: "40px" }} />
                 <div className="day-cells-container">
                   {(window.matchMedia("(max-width: 768px)").matches
                     ? weekDays
@@ -899,8 +897,7 @@ const Calendar = () => {
                         event.propertyId === property._id &&
                         new Date(event.startDate).setHours(0, 0, 0, 0) <=
                           dayEnd &&
-                        new Date(event.endDate).setHours(0, 0, 0, 0) >=
-                          dayStart
+                        new Date(event.endDate).setHours(0, 0, 0, 0) >= dayStart
                     );
                     const hasEvents = eventsForDay.length > 0;
                     const backgroundColor = hasEvents
@@ -1007,125 +1004,120 @@ const Calendar = () => {
                     );
                   })}
                   {/* Render events in desktop view */}
-                  {
-  (window.matchMedia("(max-width: 768px)").matches
-    ? []
-    : fromDate && toDate
-    ? filterEventDataDay
-    : events
-  )
-    .filter((event) => {
-      return event.roomId._id === property._id;
-    })
-    .filter((event) => {
-      const checkIn = new Date(event.startDate);
-      const checkOut = new Date(event.endDate);
-      const today = new Date();
-      const cutoffDate = new Date(today);
-      cutoffDate.setDate(today.getDate() - 7);
+                  {(window.matchMedia("(max-width: 768px)").matches
+                    ? []
+                    : fromDate && toDate
+                    ? filterEventDataDay
+                    : events
+                  )
+                    .filter((event) => {
+                      return event.roomId._id === property._id;
+                    })
+                    .filter((event) => {
+                      const checkIn = new Date(event.startDate);
+                      const checkOut = new Date(event.endDate);
+                      const today = new Date();
+                      const cutoffDate = new Date(today);
+                      cutoffDate.setDate(today.getDate() - 7);
 
-      
-      const isWithinDateRange =
-        (checkIn >= new Date(fromDate) ||
-          checkOut >= new Date(fromDate)) &&
-        (!toDate || checkIn <= new Date(toDate));
-      const isAfterCutoff =
-        checkIn >= cutoffDate || checkOut >= cutoffDate;
+                      const isWithinDateRange =
+                        (checkIn >= new Date(fromDate) ||
+                          checkOut >= new Date(fromDate)) &&
+                        (!toDate || checkIn <= new Date(toDate));
+                      const isAfterCutoff =
+                        checkIn >= cutoffDate || checkOut >= cutoffDate;
 
-       
+                      if (fromDate) {
+                        return isWithinDateRange;
+                      } else {
+                        return isAfterCutoff;
+                      }
+                    })
+                    .map((event) => {
+                      const checkIn = roundToDay(new Date(event.startDate));
+                      const checkOut = roundToDay(new Date(event.endDate));
+                      const startOffset =
+                        Math.max(
+                          0,
+                          (checkIn - roundToDay(days[0].date)) /
+                            (24 * 60 * 60 * 1000)
+                        ) + 0.5;
+                      const endOffset =
+                        Math.min(
+                          days.length,
+                          (checkOut - roundToDay(days[0].date)) /
+                            (24 * 60 * 60 * 1000)
+                        ) + 0.5;
+                      const duration = endOffset - startOffset;
 
-      if (fromDate) {
-        return isWithinDateRange;
-      } else {
-        return isAfterCutoff;
-      }
-    })
-    .map((event) => {
-      const checkIn = roundToDay(new Date(event.startDate));
-      const checkOut = roundToDay(new Date(event.endDate));
-      const startOffset =
-        Math.max(
-          0,
-          (checkIn - roundToDay(days[0].date)) /
-            (24 * 60 * 60 * 1000)
-        ) + 0.5;
-      const endOffset =
-        Math.min(
-          days.length,
-          (checkOut - roundToDay(days[0].date)) /
-            (24 * 60 * 60 * 1000)
-        ) + 0.5;
-      const duration = endOffset - startOffset;
-
-    
-
-      return (
-        <div
-          key={event._id}
-          style={{
-            display: "flex",
-            position: "absolute",
-            left: `${startOffset * 120}px`,
-            width: `${duration * 120}px`,
-            backgroundColor: getRandomColor(),
-            transition: "opacity 0.3s ease",
-            height: "40px",
-            margin: 0,
-            marginTop: "-9px",
-            padding: "0 10px",
-            boxSizing: "border-box",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            pointerEvents: "auto",
-          }}
-          onMouseOver={(e) => {
-            e.currentTarget.style.opacity = 0.7;
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.opacity = 1.0;
-          }}
-          className="event"
-          onMouseDown={() => startResizing(event, property)}
-          onMouseUp={endResizing}
-        >
-          <span
-            style={{
-              fontSize:
-                !window.matchMedia("(max-width: 768px)").matches && "13px",
-              fontWeight:
-                !window.matchMedia("(max-width: 768px)").matches && "600",
-              flex: "1",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-          >
-            {event.bookingId}
-          </span>
-          <span
-            style={{
-              marginLeft: "10px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <img
-              src={guestIcon}
-              alt="Guests"
-              className="guest-icon"
-            />
-            <span
-              style={{
-                fontSize:
-                  !window.matchMedia("(max-width: 768px)").matches && "16px",
-              }}
-            >{` ${event.count}`}</span>
-          </span>
-        </div>
-      );
-    })}
-
-
+                      return (
+                        <div
+                          key={event._id}
+                          style={{
+                            display: "flex",
+                            position: "absolute",
+                            left: `${startOffset * 120}px`,
+                            width: `${duration * 120}px`,
+                            backgroundColor: getRandomColor(),
+                            transition: "opacity 0.3s ease",
+                            height: "40px",
+                            margin: 0,
+                            marginTop: "-9px",
+                            padding: "0 10px",
+                            boxSizing: "border-box",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            pointerEvents: "auto",
+                          }}
+                          onMouseOver={(e) => {
+                            e.currentTarget.style.opacity = 0.7;
+                          }}
+                          onMouseOut={(e) => {
+                            e.currentTarget.style.opacity = 1.0;
+                          }}
+                          className="event"
+                          onMouseDown={() => startResizing(event, property)}
+                          onMouseUp={endResizing}
+                        >
+                          <span
+                            style={{
+                              fontSize:
+                                !window.matchMedia("(max-width: 768px)")
+                                  .matches && "13px",
+                              fontWeight:
+                                !window.matchMedia("(max-width: 768px)")
+                                  .matches && "600",
+                              flex: "1",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                            }}
+                          >
+                            {event.bookingId}
+                          </span>
+                          <span
+                            style={{
+                              marginLeft: "10px",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
+                          >
+                            <img
+                              src={guestIcon}
+                              alt="Guests"
+                              className="guest-icon"
+                            />
+                            <span
+                              style={{
+                                fontSize:
+                                  !window.matchMedia("(max-width: 768px)")
+                                    .matches && "16px",
+                              }}
+                            >{` ${event.count}`}</span>
+                          </span>
+                        </div>
+                      );
+                    })}
                 </div>
               </div>
             ))
@@ -1137,7 +1129,7 @@ const Calendar = () => {
           )}
 
           {/* Render empty rows for all properties */}
-          
+
           {properties.map((property) => {
             const isFiltered = filteredProperties.some(
               (fp) => fp._id === property._id
@@ -1191,7 +1183,6 @@ const Calendar = () => {
             }
           })}
           <div className="calendar-footer">
-            
             <div className="footer-total-properties sticky d-flex justify-content-between align-items-center">
               <div>Total rooms: {filteredProperties.length}</div>
               <div
