@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory, useLocation } from "react-router-dom";
 import { DharmshalaBookingAddWrapper } from "../../dharmshalaStyles";
-import "../../dharmshala_css/addbooking.css";
+import "../../dharmshala_css/addbooking.scss";
 import BookingForm from "../../../../components/dharmshalaBooking/BookingForm";
 import * as Yup from "yup";
 import dayjs from 'dayjs';
