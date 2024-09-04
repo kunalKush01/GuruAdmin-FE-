@@ -849,7 +849,7 @@ const Calendar = () => {
             <div className="header-cell property-header sticky">Rooms</div>
             <div
               className="separator"
-              style={{ height: "40px", marginTop: "-10px" }}
+              style={{ height: "50px", marginTop: "-10px" }}
             />
             {days.map((day) => (
               <div
