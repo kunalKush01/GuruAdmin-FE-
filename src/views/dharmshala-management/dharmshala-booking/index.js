@@ -29,7 +29,7 @@ const DharmshalaBookings = () => {
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const [showPastRequests, setShowPastRequests] = useState(false);
-  const [statusFilter, setStatusFilter] = useState("requested");
+  const [statusFilter, setStatusFilter] = useState("all");
 
   const [pagination, setPagination] = useState({
     page: 1,
@@ -44,7 +44,7 @@ const DharmshalaBookings = () => {
   useEffect(() => {
     if (currentPage || currentFilter || currentStatus) {
       setdropDownName(currentFilter);
-      setStatusFilter(currentStatus || "requested");
+      setStatusFilter(currentStatus || "All");
       setPagination({ ...pagination, page: parseInt(currentPage) });
     }
   }, [currentPage, currentFilter, currentStatus]);
@@ -112,29 +112,38 @@ const DharmshalaBookings = () => {
         dayjs(item.endDate, dateFormat).isAfter(currentDate) || dayjs(item.endDate, dateFormat).isSame(currentDate)
       );
     }
+
     if (statusFilter) {
-      filteredData = filteredData.filter((item) =>
-        item.status === statusFilter
-      );
+      if (statusFilter === "all") {
+        filteredData = filteredData.filter((item) => item.status !== "checked-out");
+      } else {
+        filteredData = filteredData.filter((item) => item.status === statusFilter);
+      }
     }
+    // if (statusFilter) {
+    //   filteredData = filteredData.filter((item) =>
+    //     item.status === statusFilter
+    //   );
+    // }
     if (searchBarValue && searchBarValue.length >= 3) {
       filteredData = filteredData.filter((item) =>
         item.bookingId.toLowerCase().startsWith(searchBarValue.toLowerCase().slice(0, 3))
       );
     }
     return filteredData;
-  }, [dharmshalaBookingListData, showPastRequests, searchBarValue]);
+  }, [dharmshalaBookingListData, showPastRequests, searchBarValue, statusFilter]);
 
   const statusOptions = [
     { key: "requested", label: t("requested") },
     { key: "accepted", label: t("accepted") },
     { key: "reserved", label: t("reserved") },
     { key: "confirmed", label: t("confirmed") },
-    { key: "checked-in", label: t("checked_in") },
-    { key: "checked-out", label: t("checked_out") },
+    { key: "checked-in", label: t("Checked_in") },
+    { key: "checked-out", label: t("Checked_out") },
     { key: "completed", label: t("completed") },
     { key: "cancelled", label: t("cancelled") },
-    { key: "maintenance", label: t("maintenance") }
+    { key: "maintenance", label: t("maintenance") },
+    { key: "all", label: t("All") }
   ];
 
   return (
