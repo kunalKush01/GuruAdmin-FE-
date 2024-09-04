@@ -1,7 +1,9 @@
+@use '../../../assets/scss/variables/variables' as *;
+
 .booking-container {
   height:auto;
   width: 100%;
-  background-color: #ffffff;
+  background-color: #ffffff; 
   margin-top: 10px;
   border-radius: 8px; 
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
@@ -252,7 +254,7 @@
   font-weight: bold;
   margin-bottom: 1px;
   line-height: 20px;
-  color: #533810;
+  color: $font-color
 }
 
 .room-dropdown,
@@ -791,8 +793,8 @@
 
 /* Modal Footer Buttons */
 .modal-footer-button-cancel {
-  border-color: #d9d9d9;
-  color: #d9d9d9;
+  border-color: $white;
+  color: $white;
 }
 
 .modal-footer-button-submit {

@@ -8,9 +8,8 @@ import 'dayjs/locale/en-gb';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import { updatePayment, updateDharmshalaBooking, getDharmshalaBookingList } from "../../../api/dharmshala/dharmshalaInfo";
-import '../../../../src/views/dharmshala-management/dharmshala_css/addbooking.css';
+import '../../../../src/views/dharmshala-management/dharmshala_css/addbooking.scss';
 import { useQueryClient, useQuery } from "@tanstack/react-query";
-import '../../../../src/views/dharmshala-management/dharmshala_css/addbooking.css';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
