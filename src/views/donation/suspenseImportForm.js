@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button as AntdButton,
+  Button,
   Drawer,
   message,
   Select,
@@ -10,12 +11,16 @@ import {
 import { Form, Formik } from "formik";
 import { Button as ReactstrapButton, Col, Row, Spinner } from "reactstrap";
 import uploadIcon from "../../assets/images/icons/file-upload.svg";
+import downloadIcon from "../../assets/images/icons/file-download.svg";
 import * as XLSX from "xlsx";
 import Papa from "papaparse";
 import { createImport } from "../../api/suspenseApi";
 import { Trans, useTranslation } from "react-i18next";
-
-function SuspenseImportForm({ onClose, open }) {
+import "../../assets/scss/common.scss";
+import { importDonationFile } from "../../api/donationApi";
+import { useQueryClient } from "@tanstack/react-query";
+import { importCommitmentFile } from "../../api/commitmentApi";
+function SuspenseImportForm({ onClose, open, tab }) {
   const targetFields = [
     "Transaction Id",
     "Transaction Date",
@@ -30,6 +35,11 @@ function SuspenseImportForm({ onClose, open }) {
   const [sourceFields, setSourceFields] = useState([]);
   const [mapping, setMapping] = useState({});
   const [file, setFile] = useState(null);
+  useEffect(() => {
+    setSourceFields([]);
+    setMapping({});
+    setFile(null);
+  }, [tab]);
 
   const handleFileUpload = async (file) => {
     const fileName = file.name.toLowerCase();
@@ -151,24 +161,38 @@ function SuspenseImportForm({ onClose, open }) {
     targetField: field,
     sourceField: mapping[field],
   }));
-
+  const queryClient = useQueryClient();
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const payload = {
-        targetFields: {
-          transactionDate: mapping["Transaction Date"] || "",
-          transactionId: mapping["Transaction Id"] || "",
-          bankNarration: mapping["Bank Narration"] || "",
-          chequeNo: mapping["Cheque No"] || "",
-          amount: mapping["Amount"] || "",
-          modeOfPayment: mapping["Mode Of Payment"] || "",
-        },
-        sourceFields: sourceFields,
-        file: file,
-      };
-      await createImport(payload);
-      message.success("Import successful");
+      if (tab === "Suspense") {
+        const payload = {
+          targetFields: {
+            transactionDate: mapping["Transaction Date"] || "",
+            transactionId: mapping["Transaction Id"] || "",
+            bankNarration: mapping["Bank Narration"] || "",
+            chequeNo: mapping["Cheque No"] || "",
+            amount: mapping["Amount"] || "",
+            modeOfPayment: mapping["Mode Of Payment"] || "",
+          },
+          sourceFields: sourceFields,
+          file: file,
+          upload_type: "Suspense",
+        };
+        await createImport(payload);
+      } else if (tab == "Donation") {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_type", "Donation");
+        await importDonationFile(formData);
+      } else if (tab == "Pledge") {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_type", "Pledge");
+        await importCommitmentFile(formData);
+      }
+
+      queryClient.invalidateQueries(["donations"]);
       setSourceFields([]);
       setMapping({});
       setFile(null);
@@ -188,9 +212,48 @@ function SuspenseImportForm({ onClose, open }) {
           {() => (
             <Form>
               <Row>
-                <Col xs={12} sm={12} md={12}>
+                {tab && tab === "Donation" && (
+                  <Col xs={12} sm={12} md={6}>
+                    <a href="/sampleFile/donations.csv" download>
+                      <Button
+                        type=""
+                        className="uploadBtn"
+                        icon={
+                          <img
+                            src={downloadIcon}
+                            alt="Upload Icon"
+                            style={{ width: 16, height: 16 }}
+                          />
+                        }
+                      >
+                        Download Sample File
+                      </Button>
+                    </a>
+                  </Col>
+                )}
+                {tab && tab === "Pledge" && (
+                  <Col xs={12} sm={12} md={6}>
+                    <a href="/sampleFile/commitments.csv" download>
+                      <Button
+                        type=""
+                        className="uploadBtn"
+                        icon={
+                          <img
+                            src={downloadIcon}
+                            alt="Upload Icon"
+                            style={{ width: 16, height: 16 }}
+                          />
+                        }
+                      >
+                        Download Sample File
+                      </Button>
+                    </a>
+                  </Col>
+                )}
+                <Col xs={12} sm={12} md={tab == "Suspense" ? 12 : 6}>
                   <Upload {...uploadProps} maxCount={1}>
                     <AntdButton
+                      className="uploadBtn"
                       icon={
                         <img
                           src={uploadIcon}
@@ -203,22 +266,27 @@ function SuspenseImportForm({ onClose, open }) {
                     </AntdButton>
                   </Upload>
                 </Col>
-                <Col xs={12} sm={12} md={12} className="mt-1">
-                  <Trans i18nKey={"map_fields"} />
-                  <div className="card mb-1">
-                    <div className="card-body">
-                      <Row>
-                        <Col xs={12} sm={12} md={12}>
-                          <Table
-                            columns={columns}
-                            dataSource={data}
-                            pagination={false}
-                          />
-                        </Col>
-                      </Row>
+                {tab && tab == "Suspense" && (
+                  <Col xs={12} sm={12} md={12} className="mt-1">
+                    <span style={{ color: "var(--font-color)" }}>
+                      <Trans i18nKey={"map_fields"} />
+                    </span>
+                    <div className="card mb-1">
+                      <div className="card-body">
+                        <Row>
+                          <Col xs={12} sm={12} md={12}>
+                            <Table
+                              className="importTable"
+                              columns={columns}
+                              dataSource={data}
+                              pagination={false}
+                            />
+                          </Col>
+                        </Row>
+                      </div>
                     </div>
-                  </div>
-                </Col>
+                  </Col>
+                )}
               </Row>
               <div className="d-flex justify-content-center">
                 <ReactstrapButton

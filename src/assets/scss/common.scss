@@ -2926,3 +2926,27 @@
 .ant-btn-compact-item.ant-btn-primary:not([disabled])+.ant-btn-compact-item.ant-btn-primary:not([disabled]):before{
     display: none;
 }
+.dropDownBtn{
+    .ant-btn{
+        box-shadow: none;
+        font:bold 15px "Noto Sans", sans-serif;
+    }
+}
+.ant-drawer-title{
+    color: $font-color;
+}
+.uploadBtn{
+    span{
+        color: $font-color;
+    }
+}
+.importTable{
+    .ant-table-thead{
+        .ant-table-cell{
+            color:$font-color ;
+        }
+    }
+    .ant-table-tbody{
+        color:$font-color ;
+    }
+}

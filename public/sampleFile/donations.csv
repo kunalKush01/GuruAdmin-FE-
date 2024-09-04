@@ -1,0 +1,4 @@
+amount,commitmentId,donarName,donationType,paidStatus,paymentMethod,user.countryCode,user.countryName,user.email,user.mobileNumber,user.name,masterCategoryId
+25,,Vaibhav Jain ,donation,Paid,direct to temple,91,India,vaibhav293@gmail.com,9972871000,Vaibhav Jain,642e712d57f6c43749ce0267
+26,,Vaibhav Jain ,donation,Paid,Card,91,India,vaibhav293@gmail.com,9972871000,Vaibhav Jain,642e712d57f6c43749ce0267
+27,,Vaibhav Jain ,donation,Paid,Card,91,India,vaibhav293@gmail.com,9972871000,Vaibhav Jain,642e712d57f6c43749ce0267
