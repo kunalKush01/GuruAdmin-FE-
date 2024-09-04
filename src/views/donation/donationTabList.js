@@ -306,7 +306,8 @@ export default function Donation() {
             <Button
               className={`secondaryAction-btn me-1`}
               color="primary"
-              onClick={() => importFileRef.current.click()}
+              onClick={handleButtonClick}
+              // onClick={() => importFileRef.current.click()}
             >
               Import File
             </Button>
@@ -454,10 +455,11 @@ export default function Donation() {
               }}
             />
 
-            <Button
+            {/* <Button
               className={`secondaryAction-btn me-1`}
               color="primary"
-              onClick={() => importFileRef.current.click()}
+              // onClick={() => importFileRef.current.click()}
+              onClick={handleButtonClick}
             >
               Import File
             </Button>
@@ -468,7 +470,7 @@ export default function Donation() {
               accept=""
               className="d-none"
               onChange={handleImportFile}
-            />
+            /> */}
 
             {allPermissions?.name === "all" ||
             subPermission?.includes(WRITE) ? (
@@ -591,15 +593,20 @@ export default function Donation() {
                 {!showHistory && (
                   <Button
                     color="primary"
+                    className="addAction-btn"
                     size="large"
                     onClick={handleAddSuspenseClick}
                   >
-                    {t("add_suspense_record")}
+                    <span>
+                      <Plus className="" size={15} strokeWidth={4} />
+                    </span>
+                    <span> {t("add_suspense_record")}</span>
                   </Button>
                 )}
                 <Dropdown.Button
                   type="primary"
                   size="large"
+                  className="dropDownBtn"
                   menu={{
                     items: [
                       {
@@ -614,7 +621,6 @@ export default function Donation() {
                   Import
                 </Dropdown.Button>
               </Space>
-              <SuspenseImportForm onClose={onClose} open={open} />
               <Modal
                 title={t("add_suspense_record")}
                 open={isAddModalVisible}
@@ -714,6 +720,7 @@ export default function Donation() {
           onChange={handleTabChange}
         />
       </div>
+      <SuspenseImportForm onClose={onClose} open={open} tab={activeTab} />
     </div>
   );
 }
