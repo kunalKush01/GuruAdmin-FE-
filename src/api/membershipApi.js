@@ -3,7 +3,8 @@ import { callApi } from "../utility/utils/callApi";
 
 export const getMemberSchema = () =>
   callApi({
-    requestFunction: (axios) =>
-      axios.get(`${API_BASE_URL}memberSchema`),
+    requestFunction: (axios) => axios.get(`${API_BASE_URL}memberSchema`),
     successCode: 200,
+    showToastOnSuccess: false,
+    showToastOnError: false,
   });

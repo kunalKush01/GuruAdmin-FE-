@@ -25,14 +25,18 @@ function FormikMemberForm({
   country,
   city,
   districtPincode,
+  correspondenceStates,
+  correspondenceCountry,
+  correspondenceCity,
+  correspondenceDistrictPincode,
   schema,
   ...props
 }) {
   const { t } = useTranslation();
-
   const renderFormField = useCallback(
     (name, fieldSchema) => {
       const hasDateFormat = fieldSchema.format === "date";
+      const hasNumberFormat = fieldSchema.format === "number";
       const hasEnum = Array.isArray(fieldSchema.enum);
       const hasUrl = fieldSchema.format === "Url";
       if (hasDateFormat) {
@@ -105,6 +109,18 @@ function FormikMemberForm({
           </Col>
         );
       }
+      if (hasNumberFormat) {
+        return (
+          <Col xs={12} sm={6} lg={3} key={name}>
+            <CustomTextField
+              type="number"
+              label={t(fieldSchema.title || name)}
+              name={name}
+              placeholder={t(`Enter ${fieldSchema.title}`)}
+            />
+          </Col>
+        );
+      }
 
       switch (fieldSchema.type) {
         case "string":
@@ -119,13 +135,7 @@ function FormikMemberForm({
           );
         case "boolean":
           return (
-            <Col
-              xs={12}
-              sm={6}
-              lg={3}
-              key={name}
-              className="customtextfieldwrapper"
-            >
+            <Col xs={12} sm={6} lg={3} key={name}>
               <Checkbox name={name}>{t(fieldSchema.title || name)}</Checkbox>
             </Col>
           );
@@ -188,199 +198,459 @@ function FormikMemberForm({
     [renderFormField]
   );
 
+  // const formSections = useMemo(() => {
+  //   if (schema && schema.properties) {
+  //     return Object.keys(schema.properties).map((sectionKey) =>
+  //       renderSection(sectionKey, schema.properties[sectionKey])
+  //     );
+  //   }
+  //   return null;
+  // }, [schema, renderSection]);
   const formSections = useMemo(() => {
     if (schema && schema.properties) {
-      return Object.keys(schema.properties).map((sectionKey) =>
-        renderSection(sectionKey, schema.properties[sectionKey])
-      );
+      return Object.keys(schema.properties)
+        .filter((sectionKey) => sectionKey !== "addressInfo")
+        .map((sectionKey) => {
+          if (sectionKey === "contactInfo") {
+            return (
+              <React.Fragment key={sectionKey}>
+                {renderSection(sectionKey, schema.properties[sectionKey])}
+                {/* Home address */}
+                <Col xs={12} className="mb-2">
+                  <div className="addAction">
+                    <Trans i18nKey={"member_add_info"} />
+                  </div>
+                  <Card>
+                    <Row key="addressSection">
+                      <Col xs={12} sm={12} md={12}>
+                        <div className="addHeading">
+                          <Trans i18nKey={"member_home_add"} />
+                        </div>
+                        <div className="card mb-1" id="membAddCard">
+                          <div
+                            className={
+                              formik.values.searchType !== "isPincode"
+                                ? "card-body"
+                                : "card-body pb-0"
+                            }
+                          >
+                            <Row>
+                              <Col
+                                xs={12}
+                                sm={4}
+                                md={4}
+                                className="customtextfieldwrapper"
+                              >
+                                <label>Search Address</label>
+                              </Col>
+                              <Col xs={12} sm={4} md={4}>
+                                <CustomRadioButton
+                                  name="searchType"
+                                  id="isPincode"
+                                  value="isPincode"
+                                  label={t("label_pincode")}
+                                />
+                              </Col>
+                              <Col xs={12} sm={4} md={4}>
+                                <CustomRadioButton
+                                  label={t("label_googlemap")}
+                                  name="searchType"
+                                  id="isGoogleMap"
+                                  value="isGoogleMap"
+                                />
+                              </Col>
+                              <Col xs={12} sm={4} md={4} className="py-1"></Col>
+                              {formik.values.searchType === "isPincode" ? (
+                                <Col
+                                  xs={12}
+                                  sm={8}
+                                  md={8}
+                                  className="py-1 memberAddInput"
+                                >
+                                  <CustomTextField
+                                    name="pincode"
+                                    placeholder="Enter Pincode"
+                                    value={formik.values.pincode}
+                                    onChange={(e) => {
+                                      formik.setFieldValue(
+                                        "pincode",
+                                        e.target.value
+                                      );
+                                    }}
+                                    required
+                                  />
+                                </Col>
+                              ) : (
+                                <Col
+                                  xs={12}
+                                  sm={8}
+                                  md={8}
+                                  className="memberAddInput"
+                                  style={{ marginTop: "15px" }}
+                                >
+                                  <CustomFieldLocationForDonationUser
+                                    setFieldValue={formik.setFieldValue}
+                                    values={formik.values}
+                                    type="home"
+                                  />
+                                </Col>
+                              )}
+                            </Row>
+                          </div>
+                        </div>
+                      </Col>
+                      <Col xs={12} sm={4} md={4}>
+                        <CustomTextField
+                          label={t("label_add1")}
+                          name="addLine1"
+                          placeholder=""
+                        />
+                      </Col>{" "}
+                      <Col xs={12} sm={4} md={4}>
+                        <CustomTextField
+                          label={t("label_add2")}
+                          name="addLine2"
+                          placeholder=""
+                        />
+                      </Col>
+                      <Col xs={12} sm={4} md={4}>
+                        <FormikCustomReactSelect
+                          labelName={t("label_country")}
+                          loadOptions={country?.map((item) => {
+                            return {
+                              ...item,
+                              name: ConverFirstLatterToCapital(item.name),
+                            };
+                          })}
+                          name="country"
+                          labelKey="name"
+                          valueKey="id"
+                          width
+                          onChange={(val) => {
+                            if (val) {
+                              formik.setFieldValue("country", val);
+                              formik.setFieldValue("pincode", "");
+                              formik.setFieldValue("pin", "");
+                              formik.setFieldValue("district", "");
+                            }
+                          }}
+                        />
+                      </Col>
+                      <Col xs={12} sm={3} md={3}>
+                        <FormikCustomReactSelect
+                          labelName={t("label_state")}
+                          loadOptions={states?.map((item) => {
+                            return {
+                              ...item,
+                              name: ConverFirstLatterToCapital(item.name),
+                            };
+                          })}
+                          name="state"
+                          labelKey="name"
+                          valueKey="id"
+                          width
+                          disabled={!formik.values.country}
+                          onChange={(val) => {
+                            if (val) {
+                              formik.setFieldValue("pincode", "");
+                              formik.setFieldValue("state", val);
+                              formik.setFieldValue("city", "");
+                            }
+                          }}
+                        />
+                      </Col>
+                      <Col xs={12} sm={3} md={3}>
+                        <FormikCustomReactSelect
+                          labelName={t("label_city")}
+                          loadOptions={city?.map((item) => {
+                            return {
+                              ...item,
+                              name: ConverFirstLatterToCapital(item.name),
+                            };
+                          })}
+                          name="city"
+                          labelKey="name"
+                          valueKey="id"
+                          onChange={(val) => {
+                            if (val) {
+                              formik.setFieldValue("pincode", "");
+                              formik.setFieldValue("city", val);
+                            }
+                          }}
+                          disabled={!formik.values.state}
+                          width
+                        />
+                      </Col>
+                      <Col xs={12} sm={3} md={3}>
+                        <CustomTextField
+                          label={t("label_district")}
+                          name="district"
+                          placeholder="Enter District"
+                          onChange={(e) => {
+                            formik.setFieldValue("pincode", "");
+                            formik.setFieldValue("district", e.target.value);
+                            formik.setFieldValue("pin", "");
+                          }}
+                        />
+                      </Col>
+                      <Col xs={12} sm={3} md={3}>
+                        <FormikCustomReactSelect
+                          labelName={t("label_pin")}
+                          loadOptions={districtPincode?.map((item) => {
+                            return {
+                              ...item,
+                              name: item.name,
+                            };
+                          })}
+                          name="pin"
+                          labelKey="name"
+                          valueKey="id"
+                          width
+                        />
+                      </Col>
+                    </Row>
+                  </Card>
+                </Col>
+                {/* Correspondence address */}
+                <Col xs={12} className="mb-2">
+                  <div className="addAction">
+                    <Trans i18nKey={"member_add_info"} />
+                  </div>
+                  <Card>
+                    <Row key="correspondenceAddressSection">
+                      <Col xs={12} sm={12} md={12}>
+                        <div className="addHeading d-flex justify-content-between align-items-center">
+                          <div>
+                            <Trans i18nKey={"member_cor_add"} />
+                          </div>
+                          <div>
+                            <Checkbox>
+                              <Trans i18nKey={"member_same_add"} />
+                            </Checkbox>
+                          </div>
+                        </div>
+                        <div className="card mb-1" id="membAddCard">
+                          <div
+                            className={
+                              formik.values.correspondenceSearchType !==
+                              "isCorrespondencePincode"
+                                ? "card-body"
+                                : "card-body pb-0"
+                            }
+                          >
+                            <Row>
+                              <Col
+                                xs={12}
+                                sm={4}
+                                md={4}
+                                className="customtextfieldwrapper"
+                              >
+                                <label>Search Address</label>
+                              </Col>
+                              <Col xs={12} sm={4} md={4}>
+                                <CustomRadioButton
+                                  name="correspondenceSearchType"
+                                  id="isCorrespondencePincode"
+                                  value="isCorrespondencePincode"
+                                  label={t("label_pincode")}
+                                />
+                              </Col>
+                              <Col xs={12} sm={4} md={4}>
+                                <CustomRadioButton
+                                  label={t("label_googlemap")}
+                                  name="correspondenceSearchType"
+                                  id="isCorrespondenceGoogleMap"
+                                  value="isCorrespondenceGoogleMap"
+                                />
+                              </Col>
+                              <Col xs={12} sm={4} md={4} className="py-1"></Col>
+                              {formik.values.correspondenceSearchType ===
+                              "isCorrespondencePincode" ? (
+                                <Col
+                                  xs={12}
+                                  sm={8}
+                                  md={8}
+                                  className="py-1 memberAddInput"
+                                >
+                                  <CustomTextField
+                                    name="correspondencePincode"
+                                    placeholder="Enter Pincode"
+                                    value={formik.values.correspondencePincode}
+                                    onChange={(e) => {
+                                      formik.setFieldValue(
+                                        "correspondencePincode",
+                                        e.target.value
+                                      );
+                                    }}
+                                    required
+                                  />
+                                </Col>
+                              ) : (
+                                <Col
+                                  xs={12}
+                                  sm={8}
+                                  md={8}
+                                  className="memberAddInput"
+                                  style={{ marginTop: "15px" }}
+                                >
+                                  <CustomFieldLocationForDonationUser
+                                    setFieldValue={formik.setFieldValue}
+                                    values={formik.values}
+                                    type="correspondence"
+                                  />
+                                </Col>
+                              )}
+                            </Row>
+                          </div>
+                        </div>
+                      </Col>
+                      <Col xs={12} sm={4} md={4}>
+                        <CustomTextField
+                          label={t("label_add1")}
+                          name="correspondenceAddLine1"
+                          placeholder=""
+                        />
+                      </Col>{" "}
+                      <Col xs={12} sm={4} md={4}>
+                        <CustomTextField
+                          label={t("label_add2")}
+                          name="correspondenceAddLine2"
+                          placeholder=""
+                        />
+                      </Col>
+                      <Col xs={12} sm={4} md={4}>
+                        <FormikCustomReactSelect
+                          labelName={t("label_country")}
+                          loadOptions={correspondenceCountry?.map((item) => {
+                            return {
+                              ...item,
+                              name: ConverFirstLatterToCapital(item.name),
+                            };
+                          })}
+                          name="correspondenceCountry"
+                          labelKey="name"
+                          valueKey="id"
+                          width
+                          onChange={(val) => {
+                            if (val) {
+                              formik.setFieldValue(
+                                "correspondenceCountry",
+                                val
+                              );
+                              formik.setFieldValue("correspondencePincode", "");
+                              formik.setFieldValue("correspondencePin", "");
+                              formik.setFieldValue(
+                                "correspondenceDistrict",
+                                ""
+                              );
+                            }
+                          }}
+                        />
+                      </Col>
+                      <Col xs={12} sm={3} md={3}>
+                        <FormikCustomReactSelect
+                          labelName={t("label_state")}
+                          loadOptions={correspondenceStates?.map((item) => {
+                            return {
+                              ...item,
+                              name: ConverFirstLatterToCapital(item.name),
+                            };
+                          })}
+                          name="correspondenceState"
+                          labelKey="name"
+                          valueKey="id"
+                          width
+                          disabled={!formik.values.correspondenceCountry}
+                          onChange={(val) => {
+                            if (val) {
+                              formik.setFieldValue("correspondencePincode", "");
+                              formik.setFieldValue("correspondenceState", val);
+                              formik.setFieldValue("correspondenceCity", "");
+                            }
+                          }}
+                        />
+                      </Col>
+                      <Col xs={12} sm={3} md={3}>
+                        <FormikCustomReactSelect
+                          labelName={t("label_city")}
+                          loadOptions={correspondenceCity?.map((item) => {
+                            return {
+                              ...item,
+                              name: ConverFirstLatterToCapital(item.name),
+                            };
+                          })}
+                          name="correspondenceCity"
+                          labelKey="name"
+                          valueKey="id"
+                          onChange={(val) => {
+                            if (val) {
+                              formik.setFieldValue("correspondencePincode", "");
+                              formik.setFieldValue("correspondenceCity", val);
+                            }
+                          }}
+                          disabled={!formik.values.correspondenceState}
+                          width
+                        />
+                      </Col>
+                      <Col xs={12} sm={3} md={3}>
+                        <CustomTextField
+                          label={t("label_district")}
+                          name="correspondenceDistrict"
+                          placeholder="Enter District"
+                          onChange={(e) => {
+                            formik.setFieldValue("correspondencePincode", "");
+                            formik.setFieldValue(
+                              "correspondenceDistrict",
+                              e.target.value
+                            );
+                            formik.setFieldValue("correspondencePin", "");
+                          }}
+                        />
+                      </Col>
+                      <Col xs={12} sm={3} md={3}>
+                        <FormikCustomReactSelect
+                          labelName={t("label_pin")}
+                          loadOptions={correspondenceDistrictPincode?.map(
+                            (item) => {
+                              return {
+                                ...item,
+                                name: item.name,
+                              };
+                            }
+                          )}
+                          name="correspondencePin"
+                          labelKey="name"
+                          valueKey="id"
+                          width
+                        />
+                      </Col>
+                    </Row>
+                  </Card>
+                </Col>
+              </React.Fragment>
+            );
+          }
+
+          // Render other sections normally
+          return renderSection(sectionKey, schema.properties[sectionKey]);
+        });
     }
     return null;
-  }, [schema, renderSection]);
-
+  }, [
+    schema,
+    formik.values,
+    country,
+    states,
+    city,
+    districtPincode,
+    correspondenceCountry,
+    correspondenceStates,
+    correspondenceCity,
+    correspondenceDistrictPincode,
+  ]);
   return (
     <Form>
       {formSections}
-      <Row>
-        <Col xs={12} sm={12} md={12}>
-          <label
-            style={{
-              fontFamily: "'Noto Sans', sans-serif",
-              fontSize: "15px",
-              fontWeight: "bold",
-              color: "#533810",
-            }}
-          >
-            Search Address
-          </label>
-          <div className="card mb-1">
-            <div
-              className={
-                formik.values.searchType !== "isPincode"
-                  ? "card-body"
-                  : "card-body pb-0"
-              }
-            >
-              <Row>
-                <Col xs={12} sm={6} md={6}>
-                  <CustomRadioButton
-                    name="searchType"
-                    id="isPincode"
-                    value="isPincode"
-                    label={t("label_pincode")}
-                  />
-                </Col>
-                <Col xs={12} sm={6} md={6}>
-                  <CustomRadioButton
-                    label={t("label_googlemap")}
-                    name="searchType"
-                    id="isGoogleMap"
-                    value="isGoogleMap"
-                  />
-                </Col>
-                {formik.values.searchType === "isPincode" ? (
-                  <Col xs={12} sm={6} md={6} className="pb-0">
-                    <CustomTextField
-                      name="pincode"
-                      placeholder="Enter Pincode"
-                      value={formik.values.pincode}
-                      onChange={(e) => {
-                        formik.setFieldValue("pincode", e.target.value);
-                      }}
-                      required
-                    />
-                  </Col>
-                ) : (
-                  <Col
-                    xs={12}
-                    sm={6}
-                    md={12}
-                    className="pb-0"
-                    style={{ marginTop: "10px" }}
-                  >
-                    <CustomFieldLocationForDonationUser
-                      setFieldValue={formik.setFieldValue}
-                      values={formik?.values}
-                    />
-                  </Col>
-                )}
-              </Row>
-            </div>
-          </div>
-        </Col>
-        <Col xs={12} sm={6} md={6}>
-          <CustomTextField
-            label={t("label_add1")}
-            name="addLine1"
-            placeholder=""
-          />
-        </Col>{" "}
-        <Col xs={12} sm={6} md={6}>
-          <CustomTextField
-            label={t("label_add2")}
-            name="addLine2"
-            placeholder=""
-          />
-        </Col>
-        <Col xs={12} sm={6} md={6}>
-          <FormikCustomReactSelect
-            labelName={t("label_country")}
-            loadOptions={country?.map((item) => {
-              return {
-                ...item,
-                name: ConverFirstLatterToCapital(item.name),
-              };
-            })}
-            name="country"
-            labelKey="name"
-            valueKey="id"
-            width
-            onChange={(val) => {
-              if (val) {
-                formik.setFieldValue("country", val);
-                formik.setFieldValue("pincode", "");
-                formik.setFieldValue("pin", "");
-                formik.setFieldValue("district", "");
-                // setDistrictPincode(null);
-              }
-            }}
-          />
-        </Col>
-        <Col xs={12} sm={6} md={6}>
-          <FormikCustomReactSelect
-            labelName={t("label_state")}
-            loadOptions={states?.map((item) => {
-              return {
-                ...item,
-                name: ConverFirstLatterToCapital(item.name),
-              };
-            })}
-            name="state"
-            labelKey="name"
-            valueKey="id"
-            width
-            disabled={!formik.values.country}
-            onChange={(val) => {
-              if (val) {
-                formik.setFieldValue("pincode", "");
-                formik.setFieldValue("state", val);
-                formik.setFieldValue("city", "");
-              }
-            }}
-          />
-        </Col>
-        <Col xs={12} sm={6} md={6}>
-          <FormikCustomReactSelect
-            labelName={t("label_city")}
-            loadOptions={city?.map((item) => {
-              return {
-                ...item,
-                name: ConverFirstLatterToCapital(item.name),
-              };
-            })}
-            name="city"
-            labelKey="name"
-            valueKey="id"
-            onChange={(val) => {
-              if (val) {
-                formik.setFieldValue("pincode", "");
-                formik.setFieldValue("city", val);
-              }
-            }}
-            disabled={!formik.values.state}
-            width
-          />
-        </Col>
-        <Col xs={12} sm={6} md={6}>
-          <CustomTextField
-            label={t("label_district")}
-            name="district"
-            placeholder="Enter District"
-            onChange={(e) => {
-              formik.setFieldValue("pincode", "");
-              formik.setFieldValue("district", e.target.value);
-              formik.setFieldValue("pin", "");
-              if (e.target.value == "") {
-                // setDistrictPincode([]);
-              }
-            }}
-          />
-        </Col>
-        <Col xs={12} sm={6} md={6}>
-          <FormikCustomReactSelect
-            labelName={t("label_pin")}
-            loadOptions={districtPincode?.map((item) => {
-              return {
-                ...item,
-                name: item.name,
-              };
-            })}
-            name="pin"
-            labelKey="name"
-            valueKey="id"
-            width
-          />
-        </Col>
-      </Row>
       <div className="btn-Published d-none">
         {loading ? (
           <Button color="primary" className="add-trust-btn" disabled>

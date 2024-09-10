@@ -752,6 +752,10 @@ export const englishContent = {
 
 
   //membership family member fields
+  member_add_info:"Address Information",
+  member_home_add:"Home Address",
+  member_same_add:"Same as home address",
+  member_cor_add:"Correspondence Address",
   member_family_form:"Add Family Member",
   edit_family_member:"Edit Family Member", 
   save:"Save",

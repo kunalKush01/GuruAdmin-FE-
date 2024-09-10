@@ -40,6 +40,12 @@ export default function AddForm({
   const [city, setCity] = useState([]);
   const [districtPincode, setDistrictPincode] = useState([]);
 
+  const [correspondenceStates, setCorrespondaceStates] = useState([]);
+  const [correspondenceCountry, setCorrespondaceCountry] = useState([]);
+  const [correspondenceCity, setCorrespondaceCity] = useState([]);
+  const [correspondenceDistrictPincode, setCorrespondaceDistrictPincode] =
+    useState([]);
+
   useEffect(() => {
     const fetchedCountry = Country.getAllCountries();
     const formattedCountry = fetchedCountry.map((country) => ({
@@ -47,6 +53,7 @@ export default function AddForm({
       id: country.isoCode,
     }));
     setCountry(formattedCountry);
+    setCorrespondaceCountry(formattedCountry);
   }, []);
 
   const memberShipQuery = useQuery(
@@ -62,6 +69,7 @@ export default function AddForm({
     [memberShipQuery]
   );
   const memberSchema = memberSchemaItem ? memberSchemaItem.memberSchema : null;
+
   return (
     <div className="FormikWrapper">
       <Formik
@@ -72,9 +80,9 @@ export default function AddForm({
           setShowPrompt(false);
           setLoading(true);
           categoryMutation.mutate({
+            // home address
             pincode: e.pincode,
             searchType: e.searchType,
-            panNumber: e.panNumber,
             addLine1: e.addLine1,
             addLine2: e.addLine2,
             city: e.city.name,
@@ -82,19 +90,33 @@ export default function AddForm({
             state: e.state.name,
             country: e.country.name,
             pin: e.pin,
+
+            //correspondence address
+            correspondencePincode: e.correspondencePincode,
+            correspondenceSearchType: e.correspondenceSearchType,
+            correspondenceAddLine1: e.correspondenceAddLine1,
+            correspondenceAddLine2: e.correspondenceAddLine2,
+            correspondenceCity: e.correspondenceCity.name,
+            correspondenceDistrict: e.correspondenceDistrict,
+            correspondenceState: e.correspondenceState.name,
+            correspondenceCountry: e.correspondenceCountry.name,
+            correspondencePin: e.correspondencePin,
           });
         }}
         validationSchema={validationSchema}
       >
         {(formik) => {
+          {
+            /* home address */
+          }
           useEffect(() => {
-            if (formik.values.location) {
+            if (formik.values.homeLocation) {
               formik.setFieldValue("pincode", "");
             }
-          }, [formik.values.location]);
+          }, [formik.values.homeLocation]);
           useEffect(() => {
             if (formik.values.pincode) {
-              formik.setFieldValue("location", "");
+              formik.setFieldValue("homeLocation", "");
             }
           }, [formik.values.pincode]);
           useEffect(() => {
@@ -128,7 +150,7 @@ export default function AddForm({
                 setDistrictPincode([]);
               }
             }
-          }, [formik.values.district, formik.values.location]);
+          }, [formik.values.district, formik.values.homeLocation]);
 
           useEffect(() => {
             if (formik.values.pincode) {
@@ -220,6 +242,163 @@ export default function AddForm({
               setCity([]);
             }
           }, [formik.values.state]);
+
+          {
+            /* correspondace address */
+          }
+          useEffect(() => {
+            if (formik.values.correspondenceLocation) {
+              formik.setFieldValue("correspondencePincode", "");
+            }
+          }, [formik.values.correspondenceLocation]);
+
+          useEffect(() => {
+            if (formik.values.correspondencePincode) {
+              formik.setFieldValue("correspondenceLocation", "");
+            }
+          }, [formik.values.correspondencePincode]);
+
+          useEffect(() => {
+            if (formik.values.correspondenceDistrict) {
+              const districtPincodes = pincodes.getPincodesByDistrict(
+                formik.values.correspondenceDistrict.split(" ")[0]
+              );
+              if (
+                Array.isArray(districtPincodes) &&
+                districtPincodes.length > 0
+              ) {
+                const uniquePincodes = districtPincodes.reduce(
+                  (acc, current) => {
+                    const isDuplicate = acc.find(
+                      (item) => item.pincode === current.pincode
+                    );
+                    if (!isDuplicate) {
+                      acc.push(current);
+                    }
+                    return acc;
+                  },
+                  []
+                );
+
+                const formattedPincodes = uniquePincodes.map((code) => ({
+                  name: code.pincode,
+                  id: code.pincode,
+                }));
+                setCorrespondaceDistrictPincode(formattedPincodes);
+              } else {
+                setCorrespondaceDistrictPincode([]);
+              }
+            }
+          }, [
+            formik.values.correspondenceDistrict,
+            formik.values.correspondenceLocation,
+          ]);
+
+          useEffect(() => {
+            if (formik.values.correspondencePincode) {
+              const details = pincodes.getPincodeDetails(
+                Number(formik.values.correspondencePincode)
+              );
+              if (details) {
+                const districtPincodes = pincodes.getPincodesByDistrict(
+                  details.district
+                );
+                const uniquePincodes = districtPincodes.reduce(
+                  (acc, current) => {
+                    const isDuplicate = acc.find(
+                      (item) => item.pincode === current.pincode
+                    );
+                    if (!isDuplicate) {
+                      acc.push(current);
+                    }
+                    return acc;
+                  },
+                  []
+                );
+
+                const formattedPincodes = uniquePincodes.map((code) => ({
+                  name: code.pincode,
+                  id: code.pincode,
+                }));
+                setCorrespondaceDistrictPincode(formattedPincodes);
+                const selectedCountry = correspondenceCountry.find(
+                  (c) => c.name === details.country
+                );
+                const selectedState = correspondenceStates.find(
+                  (c) => c.name === details.state
+                );
+                const selectedCity = correspondenceCity.find((c) =>
+                  details.region.includes(c.name.trim())
+                );
+                const selectedPIN = formattedPincodes.find(
+                  (c) => c.name === details.pincode
+                );
+
+                formik.setFieldValue("correspondenceCity", selectedCity || "");
+                formik.setFieldValue(
+                  "correspondenceDistrict",
+                  details.district || ""
+                );
+                formik.setFieldValue(
+                  "correspondenceCountry",
+                  selectedCountry || ""
+                );
+                formik.setFieldValue("correspondencePin", selectedPIN || "");
+                formik.setFieldValue(
+                  "correspondenceState",
+                  selectedState || ""
+                );
+              } else {
+                formik.setFieldValue("correspondenceCity", "");
+                formik.setFieldValue("correspondenceDistrict", "");
+                formik.setFieldValue("correspondenceCountry", "");
+                formik.setFieldValue("correspondencePin", "");
+                formik.setFieldValue("correspondenceState", "");
+              }
+            }
+          }, [
+            formik.values.correspondencePincode,
+            correspondenceCountry,
+            pincodes,
+            correspondenceStates,
+            correspondenceCity,
+          ]);
+          useEffect(() => {
+            if (formik.values.correspondenceCountry) {
+              const fetchedStates = State.getStatesOfCountry(
+                formik.values.correspondenceCountry.id
+              );
+              const formattedStates = fetchedStates.map((state) => ({
+                name: state.name,
+                id: state.isoCode,
+              }));
+              setCorrespondaceStates(formattedStates);
+              {
+                /* formik.setFieldValue("state", null); */
+              }
+              {
+                /* formik.setFieldValue("city", null); */
+              }
+            } else {
+              setCorrespondaceStates([]);
+              setCorrespondaceCity([]);
+            }
+          }, [formik.values.correspondenceCountry]);
+          useEffect(() => {
+            if (formik.values.correspondenceState) {
+              const fetchedCities = City.getCitiesOfState(
+                formik.values.correspondenceCountry.id,
+                formik.values.correspondenceState.id
+              );
+              const formattedCities = fetchedCities.map((city) => ({
+                name: city.name,
+                id: city.name,
+              }));
+              setCorrespondaceCity(formattedCities);
+            } else {
+              setCorrespondaceCity([]);
+            }
+          }, [formik.values.correspondenceState]);
           return (
             <FormikMemberForm
               formik={formik}
@@ -231,6 +410,10 @@ export default function AddForm({
               country={country}
               city={city}
               districtPincode={districtPincode}
+              correspondenceStates={correspondenceStates}
+              correspondenceCountry={correspondenceCountry}
+              correspondenceCity={correspondenceCity}
+              correspondenceDistrictPincode={correspondenceDistrictPincode}
             />
           );
         }}
