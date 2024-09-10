@@ -2902,18 +2902,17 @@
 }
 
 .ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
-    border-bottom: 5px solid !important;
-    border-color: $primary !important;
-    border-radius: 5px !important;
-    color: $font-color !important;
-    opacity: 100% !important;
-    font-weight: bold !important;
+    border-bottom: 5px solid $primary;
+    border-radius: 5px;
+    color: $font-color;
+    opacity: 1;
+    font-weight: bold;
 }
 
 .ant-tabs .ant-tabs-tab-btn {
-    transform: none !important;
-    transition: none !important;
-    color: $font-color !important;
+    transform: none;
+    transition: none;
+    color: $font-color;
 }
 
 .ant-tabs-ink-bar {
@@ -2923,6 +2922,31 @@
 .text-danger {
     font: normal $font-size-small $font-family;
 }
-.ant-btn-compact-item.ant-btn-primary:not([disabled])+.ant-btn-compact-item.ant-btn-primary:not([disabled]):before{
+
+.ant-btn-compact-item.ant-btn-primary:not([disabled])+.ant-btn-compact-item.ant-btn-primary:not([disabled]):before {
     display: none;
+}
+.dropDownBtn{
+    .ant-btn{
+        box-shadow: none;
+        font:bold 15px "Noto Sans", sans-serif;
+    }
+}
+.ant-drawer-title{
+    color: $font-color;
+}
+.uploadBtn{
+    span{
+        color: $font-color;
+    }
+}
+.importTable{
+    .ant-table-thead{
+        .ant-table-cell{
+            color:$font-color ;
+        }
+    }
+    .ant-table-tbody{
+        color:$font-color ;
+    }
 }

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory, useLocation } from "react-router-dom";
 import { DharmshalaBookingAddWrapper } from "../../dharmshalaStyles";
-import "../../dharmshala_css/addbooking.css";
+import "../../dharmshala_css/addbooking.scss";
 import BookingForm from "../../../../components/dharmshalaBooking/BookingForm";
 import * as Yup from "yup";
 import dayjs from 'dayjs';
@@ -35,11 +35,15 @@ const AddDharmshalaBooking = () => {
         numWomen: bookingData.guestCount?.women || "",
         numKids: bookingData.guestCount?.children || "",
         roomsData: bookingData.rooms.map(room => ({
-          roomType: room.roomTypeId,
+          roomTypeId: room.roomTypeId,
           building: room.building,
           floor: room.floor,
           roomId: room.roomId,
           amount: room.amount,
+          roomNumber: room.roomNumber,
+          roomTypeName: room.roomTypeName,
+          buildingName: room.buildingName,
+          floorName: room.floorName,
         })),
         guestname: bookingData.userDetails.name || "",
         email: bookingData.userDetails.email || "",
@@ -70,10 +74,14 @@ const AddDharmshalaBooking = () => {
         numKids: '',
         roomsData: [
           {
-            roomType: '',
+            roomTypeId: '',
+            roomTypeName: '',
             building: '',
+            buildingName: '',
             floor: '',
+            floorName: '',
             roomId: '',
+            roomNumber: '',
             amount: 0,
           },
         ],
