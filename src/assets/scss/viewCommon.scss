@@ -775,7 +775,7 @@
 }
 
 .chart-card-wrapper {
-    font: $font-weight-bold $font-size-large $font-family;
+    font: $font-weight-bold 30px $font-family;
 
     .chart-card {
         flex: 1 1 20%;
@@ -788,6 +788,7 @@
 
     .card-text {
         font: $font-weight-normal 16px/20px $font-family;
+        font-weight: 500;
     }
 
     .fw-bolder {
@@ -1523,5 +1524,39 @@
     padding: 5px 40px;
     opacity: 100%;
   }
+
+  .dashboard-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 10px;
+  }
+  
+  .dashboard-card {
+    background-color: $light-yellow; 
+    color: $font-color;
+    width: 240px; 
+    height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px $font-color;
+  }
+  
+  .dashboard-card h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: $font-color;
+  }
+  
+  .dashboard-card p {
+    font-size: 30px;
+    font-weight: bold;
+  }
+  
   
   
