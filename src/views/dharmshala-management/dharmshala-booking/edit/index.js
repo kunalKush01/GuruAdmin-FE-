@@ -9,7 +9,7 @@ import editIcon from "../../../../assets/images/icons/category/editIcon.svg";
 import guestIcon from "../../../../assets/images/icons/subadmin.svg";
 import uploadIcon from "../../../../assets/images/icons/Thumbnail.svg";
 import { DharmshalaBookingAddWrapper } from "../../dharmshalaStyles";
-import "../../dharmshala_css/addbooking.css";
+import "../../dharmshala_css/addbooking.scss";
 import { useQuery } from "@tanstack/react-query";
 import { updateDharmshalaBooking, getRoomTypeList, getDharmshalaList, getDharmshalaFloorList, getFloorDetail, getAllRoomsByFloorId} from "../../../../api/dharmshala/dharmshalaInfo";
 import { DatePicker } from "antd";
