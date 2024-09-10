@@ -2659,7 +2659,7 @@
 
 .ant-btn-primary {
     background-color: $primary-color !important;
-    color: white !important;
+    color: $white !important;
     border: none !important;
     border-radius: 5px !important;
 }
@@ -2868,7 +2868,7 @@
         height: 35px;
         font-weight: 500;
         color: $font-color !important;
-        background-color: white;
+        background-color: $white;
         box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
     }
 
@@ -2926,3 +2926,222 @@
 .ant-btn-compact-item.ant-btn-primary:not([disabled])+.ant-btn-compact-item.ant-btn-primary:not([disabled]):before{
     display: none;
 }
+ 
+.memberCard{
+    height: 100%;
+}
+.memberProfileCard{
+    .ant-card-body{
+        padding: 10px !important;
+    }
+    background-color:$gold ;
+}
+.membershipProfileImg {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    border: 4px solid $primary
+  }
+.memberName {
+    margin-top: 10px;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: $font-color;
+    letter-spacing: normal;
+}
+.memberalias {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: $font-color;
+    letter-spacing: normal;
+}
+.card-text-1{
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: $white;
+    letter-spacing: normal;
+    text-align: center;
+}
+.card-text-2{
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: $font-color;
+    letter-spacing: normal;
+    text-align: center;
+    margin-bottom: 5px;
+}
+.card-text-3{
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: $font-color;
+    letter-spacing: normal;
+    text-align: center;
+    margin-bottom: 0px;
+}
+.info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-left: 55px;
+    margin-top: 10px;
+  }
+  
+  .info-item {
+    display: flex;
+    align-items: center;
+  }
+  
+  .info-item img {
+    width: 24px;
+    height: 24px;
+    margin-right: 30px;
+  }
+  
+  .info-item span {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--font-color);
+  }
+  .ant-switch {
+    border-radius: 10px;
+      &.ant-switch-checked {
+      background-color: $primary !important;
+      .ant-switch-handle {
+        background-color: #fff !important;
+      }
+    }
+  
+    .ant-switch-handle {
+      border-radius: 50%;
+      background-color: #fff !important;
+    }
+  
+    &.ant-switch:not(.ant-switch-checked) {
+      background-color: #d9d9d9;
+    }
+  }
+  .memberAdd{
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 14px;
+    color: $grey;
+  }
+  .memberlineAdd{
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: $font-color;
+    letter-spacing: normal;
+  }
+  .familyCard{
+    border: none;
+    background-color: $secondary-color;
+    .ant-card-body{
+        padding: 10px;
+    }
+    margin-bottom: 10px;
+  }
+  .famRow1,
+  .famRow2 {
+      display: flex !important;
+      flex-direction: row !important;
+  }
+  .famRow3{
+    display: flex;
+    justify-content: end !important;
+  }
+  .familyDetails {
+      display: flex !important;
+      align-items: center !important;
+  }
+
+  .editmember {
+      background-color: $font-color !important;
+      color: $white;
+      border: none;
+      font: $font-weight-bold 14px/15px $font-family;
+      font-size: 14px;
+      width: 60px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    //   border-radius: 10px;
+  }
+  .editIconMember{
+    display: none;
+  }
+  /* For tablets and small screens (less than or equal to 768px) */
+  @media only screen and (max-width: 768px) {
+      .familyDetails {
+          display: flex !important;
+          flex-direction: row !important;
+          align-items: flex-start !important;
+      }
+
+      .famRow1,
+      .famRow2 {
+          display: flex !important;
+          flex-direction: row;
+      }
+
+      .famRow2 {
+          display: grid !important;
+          grid-template-columns: 1fr 1fr !important;
+          gap: 10px !important;
+      }
+      .famRow2 .me-3 {
+        margin-right: 0 !important;
+      }
+      .familyProfile{
+        width: 45px !important;
+        height: 45px !important;
+        border-radius: 50% !important;
+      }
+      .editmember{
+        display: none;
+      }
+      .editIconMember{
+        display: block;
+        cursor: pointer;
+        margin-top: -5px !important;
+      }
+  }
+  
+  /* For smartphones (less than or equal to 480px) */
+  @media only screen and (max-width: 480px) {
+    .familyDetails{
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: flex-start !important;
+    }
+  }
+  .memberInfo{
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: $font-color;
+    letter-spacing: normal;
+  }
+  .familyProfile{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+  #membAddCard{
+    background-color: $secondary-color;
+  }
+  .memberAddInput {
+
+      .customtextfieldwrapper input,
+      .locationwrapper input {
+          background-color: $white !important;
+      }
+  }
+  .ant-upload-wrapper .ant-upload-select{
+              width: 100% !important;
+    }
