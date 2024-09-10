@@ -35,6 +35,7 @@ import { WRITE } from "../../utility/permissionsVariable";
 
 import "../../assets/scss/viewCommon.scss";
 import CommitmentAntdListTable from "../../components/commitments/commitmentAntdListTable";
+import SuspenseImportForm from "../donation/suspenseImportForm";
 
 export default function Commitment() {
   const importFileRef = useRef();
@@ -250,6 +251,16 @@ export default function Commitment() {
     setPopover(false);
   };
 
+  const [open, setOpen] = useState(false);
+  const showDrawer = () => {
+    setOpen(true);
+  };
+  const onClose = () => {
+    setOpen(false);
+  };
+  const handleButtonClick = (e) => {
+    showDrawer();
+  };
   return (
     <div className="listviewwrapper">
       <Helmet>
@@ -329,7 +340,8 @@ export default function Commitment() {
             <Button
               className={`secondaryAction-btn me-1`}
               color="primary"
-              onClick={() => importFileRef.current.click()}
+              // onClick={() => importFileRef.current.click()}
+              onClick={handleButtonClick}
             >
               Import File
             </Button>
@@ -480,6 +492,7 @@ export default function Commitment() {
           </Row>
         </div>
       </div>
+      <SuspenseImportForm onClose={onClose} open={open} tab="Pledge" />
     </div>
   );
 }

@@ -586,6 +586,7 @@ export const englishContent = {
   //All Suspense Data
   suspense:"Suspense",
   map_fields:"Map Fields",
+  sample_file_download:"Sample File Download",
   transactionDate:"Transaction Date & Time",
   suspense_cheque_no:"Cheque No",
   suspense_transId:"Transaction ID",
