@@ -7,6 +7,9 @@ export const englishContent = {
   dharmshala: "Dharmshala",
   donation: "Donation",
   commitment: "Pledge",
+  family:"Family",
+  personal:"Personal",
+  official:"Official",
   hundi: "Donation Box",
   financial_reports: "Financial Reports",
   internal_expenses: "Expenses",
@@ -34,6 +37,7 @@ export const englishContent = {
   category: "Category",
   user: "Sub Admin",
   report_Dispute: "Report & Dispute",
+  membership:"Membership",
   masters: "Masters",
   custom_field: "Custom Field",
   masters_list: "Master List",
@@ -532,6 +536,7 @@ export const englishContent = {
   donation_Adddonation: "Add Donation",
   donation_AddArticledonation: "Add Article Donation",
   donation_suspense: "Add Suspense Record",
+  add_memberShip_member:"Add Member",
   suspense_delete:"Delete Suspense Record",
   suspense_sure:    "Are you sure you want to permanently delete this Record ? ",
   original_amount: "Original Amount",
@@ -744,8 +749,17 @@ export const englishContent = {
   punyarjak_not_click_add:
     "To include a new Punyarjak user, click 'Add Punyarjak'.",
 
-  // all place holder images
 
+  //membership family member fields
+  member_family_form:"Add Family Member",
+  edit_family_member:"Edit Family Member", 
+  save:"Save",
+  required_family_name:"Please Enter Name",
+  required_family_relation:"Please Select Relation",
+  upload_profile_image:"Upload Profile Image",
+  // all place holder images
+  placeHolder_family_name:"Enter Name",
+  placeHolder_family_relation:"Select Relation",
   placeHolder_donar_name: "Enter Donor Name",
   placeHolder_price_per_item: "Enter price per item",
   placeHolder_mobile_number: "Enter Mobile Number",
