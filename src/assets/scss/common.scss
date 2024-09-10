@@ -1703,6 +1703,7 @@
 .radiobuttonwrapper {
     label {
         font: $font-weight-bold $font-size-medium $font-family;
+        color: $font-color;
     }
 
     .form-check {
@@ -1714,7 +1715,7 @@
 
 .reactselectwrapper {
     font: $font-weight-bold $font-size-small $font-family;
-
+    color: $font-color;
 }
 
 .searchbarwrapper {
@@ -3140,6 +3141,7 @@
       .customtextfieldwrapper input,
       .locationwrapper input {
           background-color: $white !important;
+          height: 38px;
       }
   }
   .ant-upload-wrapper .ant-upload-select{
@@ -3169,3 +3171,29 @@
         color:$font-color ;
     }
 }
+.addHeading {
+    color: $font-color !important;
+    font: $font-weight-bold $font-size-large $font-family;
+    margin-bottom: 10px;
+}
+.ant-checkbox-wrapper {
+    &:hover .ant-checkbox-inner {
+        border-color: $primary-color !important;
+      }
+    span {
+        color: $font-color !important;
+        font: $font-weight-bold $font-size-medium $font-family;
+    }
+
+    .ant-checkbox-checked {
+        span {
+            color: $primary-color !important;
+        }
+
+        .ant-checkbox-inner {
+            background-color: $primary-color !important;
+            border-color: $primary-color !important;
+        }
+    }      
+}
+  

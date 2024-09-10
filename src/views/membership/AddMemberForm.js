@@ -27,10 +27,10 @@ export default function AddMemberForm() {
   });
   const initialValues = {
     //** Personal Information */
-    mobileNumber:"",
+    mobileNumber: "",
     memberName: "",
     aliasName: "",
-    inMemoryName:"",
+    inMemoryName: "",
     gender: "",
     maritalStatus: "",
     anniversary: "",
@@ -42,7 +42,7 @@ export default function AddMemberForm() {
     memberNumber: "",
     oldNumber: "",
     membershipType: "",
-    dateOfEntry: "",//todo where it isuse?
+    dateOfEntry: "", //todo where it isuse?
     dateOfJoining: "",
 
     //** Contact Information */
@@ -55,7 +55,6 @@ export default function AddMemberForm() {
     searchType: "",
     addLine1: "",
     addLine2: "",
-    street: "", //addLine1+addLine2
     country: "",
     state: "",
     city: "",
@@ -64,15 +63,15 @@ export default function AddMemberForm() {
     pin: "",
 
     //** Corresponding Address Information */
-    correspondingSearchType: "",
-    correspondingAddLine1: "",
-    correspondingAddLine2: "",
-    correspondingStreet: "", //addLine1+addLine2
-    correspondingCountry: "",
-    correspondingState: "",
-    correspondingCity: "",
-    correspondingDistrict: "",
-    correspondingPincode: "",
+    correspondencePincode: "",
+    correspondenceSearchType: "",
+    correspondenceAddLine1: "",
+    correspondenceAddLine2: "",
+    correspondenceCity: "",
+    correspondenceDistrict: "",
+    correspondenceState: "",
+    correspondenceCountry: "",
+    correspondencePin: "",
 
     //** Other Information */
     occupation: "",
