@@ -522,7 +522,7 @@ const Routes = [
     subPermission: READ,
   },
   {
-    path: "/member/profile",
+    path: "/member/profile/:id",
     component: lazy(() => import("../../views/membership/MembershipProfileView.js")),
     exact: true,
     type: "membership",

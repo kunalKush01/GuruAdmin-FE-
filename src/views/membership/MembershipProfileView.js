@@ -17,12 +17,40 @@ import { useTranslation } from "react-i18next";
 import { Button } from "reactstrap";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import FamilyModalForm from "./FamilyModalForm";
+import { getMembersById } from "../../api/membershipApi";
+import { useQuery } from "@tanstack/react-query";
+import moment from "moment";
+import { useSelector } from "react-redux";
 
 function MembershipProfileView() {
   const { t } = useTranslation();
   const history = useHistory();
+  const { id } = useParams();
+  console.log(id);
+  const { data } = useQuery(
+    ["memberShipProfileData", id],
+    () => getMembersById(id),
+    {
+      keepPreviousData: true,
+      onError: (error) => {
+        console.error("Error fetching suspense data:", error);
+      },
+    }
+  );
+  const memberResultData = data ? data?.member : null;
+  const memberData = data ? memberResultData?.data : null;
+  const personalInfo = memberData?.personalInfo;
+  const addressInfo = memberData?.addressInfo;
+  const contactInfo = memberData?.contactInfo;
+  const familyInfo = memberData?.familyInfo;
+  const membershipInfo = memberData?.membershipInfo;
+  const otherInfo = memberData?.otherInfo;
+  const upload = memberData?.upload;
+  const loggedInUser = useSelector((state) => state.auth.userDetail.name);
+
+  console.log(personalInfo);
   const [toggleSwitch, setToggleSwitch] = useState(false);
 
   const handleTabChange = (key) => {
@@ -50,31 +78,49 @@ function MembershipProfileView() {
           <Card className="familyCard">
             <div>
               <div className="familyDetails d-flex flex-row">
-                <div className="famRow1">
-                  <div className="me-1">
-                    <img
-                      src={familyImg2}
-                      className="familyProfile"
-                      alt="Profile"
-                    />
+                <div className="d-flex align-items-center">
+                  <div className="famRow1">
+                    <div className="me-1">
+                      <img
+                        src={familyImg2}
+                        className="familyProfile"
+                        alt="Profile"
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="famRow2">
-                  <div className="me-3">
-                    <span className="memberAdd">Name</span>
-                    <p className="memberInfo mb-0">Ritwik Jain</p>
-                  </div>
-                  <div className="me-3">
-                    <span className="memberAdd">Relation</span>
-                    <p className="memberInfo mb-0">Brother</p>
-                  </div>
-                  <div className="me-3">
-                    <span className="memberAdd">Date of Birth</span>
-                    <p className="memberInfo mb-0">22 Jan 1985</p>
-                  </div>
-                  <div className="me-3">
-                    <span className="memberAdd">Date of Anniversary</span>
-                    <p className="memberInfo mb-0">22 Aug 2023</p>
+                  <div className="famRow2">
+                    <div className="me-3">
+                      <span className="memberAdd">Name</span>
+                      <p className="memberInfo mb-0">
+                        {memberData ? familyInfo["name"] : ""}
+                      </p>
+                    </div>
+                    <div className="me-3">
+                      <span className="memberAdd">Relation</span>
+                      <p className="memberInfo mb-0">
+                        {memberData ? familyInfo["relation"] : ""}
+                      </p>
+                    </div>
+                    <div className="me-3">
+                      <span className="memberAdd">Date of Birth</span>
+                      <p className="memberInfo mb-0">
+                        {memberData
+                          ? moment(familyInfo["dateOfBirth"]).format(
+                              "DD MMM YYYY"
+                            )
+                          : ""}
+                      </p>
+                    </div>
+                    <div className="me-3">
+                      <span className="memberAdd">Date of Anniversary</span>
+                      <p className="memberInfo mb-0">
+                        {memberData
+                          ? moment(familyInfo["anniversary"]).format(
+                              "DD MMM YYYY"
+                            )
+                          : ""}
+                      </p>
+                    </div>
                   </div>
                 </div>
                 <div className="famRow3">
@@ -89,7 +135,7 @@ function MembershipProfileView() {
               </div>
             </div>
           </Card>
-          <Card className="familyCard">
+          {/* <Card className="familyCard">
             <div>
               <div className="familyDetails d-flex flex-row">
                 <div className="famRow1">
@@ -162,7 +208,7 @@ function MembershipProfileView() {
                 </div>
               </div>
             </div>
-          </Card>
+          </Card> */}
           <div className="d-flex justify-content-end mt-2">
             <Button color="primary" onClick={() => openModal("add")}>
               Add
@@ -185,16 +231,22 @@ function MembershipProfileView() {
             <div className="d-flex flex-row">
               <div className="me-3">
                 <span className="memberAdd">PAN Number</span>
-                <p className="memberInfo">ASDFG1234T</p>
+                <p className="memberInfo">
+                  {memberData ? otherInfo["panNumber"] : ""}
+                </p>
               </div>
               <div>
                 <span className="memberAdd">Alternative Mobile Number</span>
-                <p className="memberInfo">+91 9929229992</p>
+                <p className="memberInfo">
+                  {memberData ? contactInfo["alternativePhone"] : ""}
+                </p>
               </div>
             </div>
             <div>
               <span className="memberAdd">In Memory Name</span>
-              <p className="memberInfo">Sharda Jain</p>
+              <p className="memberInfo">
+                {memberData ? personalInfo["inMemoryName"] : ""}
+              </p>
             </div>
           </div>
         </>
@@ -209,19 +261,36 @@ function MembershipProfileView() {
             <div className="d-flex flex-row">
               <div className="me-3">
                 <span className="memberAdd">Created By</span>
-                <p className="memberInfo">Ritwik Jain</p>
+                <p className="memberInfo">{loggedInUser}</p>
               </div>
               <div className="me-3">
                 <span className="memberAdd">Updated Date</span>
-                <p className="memberInfo">22 Aug 2023</p>
+                <p className="memberInfo">
+                  {" "}
+                  {memberData
+                    ? moment(memberResultData["updatedAt"]).format(
+                        "DD MMM YYYY"
+                      )
+                    : ""}
+                </p>
               </div>
               <div className="me-3">
                 <span className="memberAdd">Created Date</span>
-                <p className="memberInfo">22 Jan 1985</p>
+                <p className="memberInfo">
+                  {" "}
+                  {memberData
+                    ? moment(memberResultData["createdAt"]).format(
+                        "DD MMM YYYY"
+                      )
+                    : ""}
+                </p>
               </div>
               <div className="me-3">
                 <span className="memberAdd">Branch</span>
-                <p className="memberInfo">Vihar</p>
+                <p className="memberInfo">
+                  {" "}
+                  {memberData ? membershipInfo["branch"] : ""}
+                </p>
               </div>
             </div>
           </div>
@@ -248,17 +317,28 @@ function MembershipProfileView() {
                 className="membershipProfileImg"
                 alt="Profile"
               />
-              <p className="memberName">Rohan Jain</p>
-              <p className="memberalias">Alias Name</p>
+              <p className="memberName">
+                {memberData ? personalInfo["memberName"] : ""}
+              </p>
+              <p className="memberalias">
+                {memberData ? personalInfo["aliasName"] : ""}
+              </p>
             </div>
             <Card className="memberProfileCard d-flex flex-column align-items-center justify-content-center">
-              <p className="card-text-1">Shiromani Shanrakshak</p>
-              <p className="card-text-2">2024/GUN/1234</p>
-              <p className="card-text-3">Joining Date 22 Jan 2024</p>
+              <p className="card-text-1">
+                {memberData ? membershipInfo["membership"] : ""}
+              </p>
+              <p className="card-text-2">
+                {memberData ? membershipInfo["memberShipMemberNumber"] : ""}
+              </p>
+              <p className="card-text-3">
+                {memberData ? membershipInfo["dateOfJoining"] : ""}
+              </p>
             </Card>
             <div className="info-container">
               <div className="info-item">
-                <img src={personIcon} alt="Person Icon" /> <span>Male</span>
+                <img src={personIcon} alt="Person Icon" />{" "}
+                <span>{memberData ? personalInfo["gender"] : ""}</span>
               </div>
               <div className="info-item">
                 <img src={businessIcon} alt="Business Icon" />{" "}
@@ -266,22 +346,27 @@ function MembershipProfileView() {
               </div>
               <div className="info-item">
                 <img src={calenderIcon} alt="Calendar Icon" />{" "}
-                <span>22 Nov 2002</span>
+                <span>
+                  {memberData
+                    ? moment(personalInfo?.dateOfBirth).format("DD MMM YYYY")
+                    : ""}
+                </span>
               </div>
               <div className="info-item">
-                <img src={ringIcon} alt="Ring Icon" /> <span>Married</span>
+                <img src={ringIcon} alt="Ring Icon" />{" "}
+                <span>{memberData ? personalInfo["maritalStatus"] : ""}</span>
               </div>
               <div className="info-item">
                 <img src={phoneIcon} alt="Phone Icon" />{" "}
-                <span>+91 9972871000</span>
+                <span>{memberData ? contactInfo["phone"] : ""}</span>
               </div>
               <div className="info-item">
                 <img src={whatsappIcon} alt="WhatsApp Icon" />{" "}
-                <span>+91 9972871000</span>
+                <span>{memberData ? contactInfo["whatsappNumber"] : ""}</span>
               </div>
               <div className="info-item">
                 <img src={mailIcon} alt="Mail Icon" />{" "}
-                <span>rohan.jain@gmail.com</span>
+                <span>{memberData ? contactInfo["email"] : ""}</span>
               </div>
               <div>
                 <div className="info-item">
@@ -300,15 +385,42 @@ function MembershipProfileView() {
                 <div>
                   <span className="memberAdd">Home Address</span>
                   <p className="memberlineAdd">
-                    A777, Vaswani Brentwood, VIBGYOR School Road, Bangalore,
-                    Bangalore, Karnataka, India, Pin 560066
+                    {memberData &&
+                    memberData.addressInfo &&
+                    memberData.addressInfo.homeAddress
+                      ? [
+                          memberData.addressInfo.homeAddress.street || "",
+                          memberData.addressInfo.homeAddress.district || "",
+                          memberData.addressInfo.homeAddress.city || "",
+                          memberData.addressInfo.homeAddress.state || "",
+                          memberData.addressInfo.homeAddress.country || "",
+                        ]
+                          .filter((part) => part)
+                          .join(", ")
+                      : ""}
                   </p>
                 </div>
                 <div>
                   <span className="memberAdd">Correspondence Address</span>
                   <p className="memberlineAdd">
-                    A777, Vaswani Brentwood, VIBGYOR School Road, Bangalore,
-                    Bangalore, Karnataka, India, Pin 560066
+                    {memberData &&
+                    memberData.addressInfo &&
+                    memberData.addressInfo.correspondenceAddress
+                      ? [
+                          memberData.addressInfo.correspondenceAddress.street ||
+                            "",
+                          memberData.addressInfo.correspondenceAddress
+                            .district || "",
+                          memberData.addressInfo.correspondenceAddress.city ||
+                            "",
+                          memberData.addressInfo.correspondenceAddress.state ||
+                            "",
+                          memberData.addressInfo.correspondenceAddress
+                            .country || "",
+                        ]
+                          .filter((part) => part)
+                          .join(", ")
+                      : ""}
                   </p>
                 </div>
               </Card>

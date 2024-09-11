@@ -1,5 +1,5 @@
 import { Form } from "formik";
-import React, { useMemo, useCallback } from "react";
+import React, { useMemo, useCallback, useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { Button, Col, Row, Spinner } from "reactstrap";
@@ -33,145 +33,169 @@ function FormikMemberForm({
   ...props
 }) {
   const { t } = useTranslation();
-  const renderFormField = useCallback(
-    (name, fieldSchema) => {
-      const hasDateFormat = fieldSchema.format === "date";
-      const hasNumberFormat = fieldSchema.format === "number";
-      const hasEnum = Array.isArray(fieldSchema.enum);
-      const hasUrl = fieldSchema.format === "Url";
-      if (hasDateFormat) {
-        return (
-          <Col
-            xs={12}
-            sm={6}
-            lg={3}
-            key={name}
-            className="customtextfieldwrapper"
+  const [isSameAsHome, setIsSameAsHome] = useState(false);
+
+  const handleCheckboxChange = (e) => {
+    setIsSameAsHome(e.target.checked);
+
+    if (e.target.checked) {
+      // Update correspondence address fields with home address values
+      formik.setFieldValue("correspondenceAddLine1", formik.values.addLine1);
+      formik.setFieldValue("correspondenceAddLine2", formik.values.addLine2);
+      formik.setFieldValue("correspondenceCountry", formik.values.country);
+      formik.setFieldValue("correspondenceState", formik.values.state);
+      formik.setFieldValue("correspondenceCity", formik.values.city);
+      formik.setFieldValue("correspondenceDistrict", formik.values.district);
+      formik.setFieldValue("correspondencePin", formik.values.pin);
+      formik.setFieldValue("correspondenceLocation", "");
+    } else {
+      // Clear correspondence address fields if unchecked
+      formik.setFieldValue("correspondenceAddLine1", "");
+      formik.setFieldValue("correspondenceAddLine2", "");
+      formik.setFieldValue("correspondenceCountry", "");
+      formik.setFieldValue("correspondenceState", "");
+      formik.setFieldValue("correspondenceCity", "");
+      formik.setFieldValue("correspondenceDistrict", "");
+      formik.setFieldValue("correspondencePin", "");
+    }
+  };
+
+  const renderFormField = (name, fieldSchema) => {
+    const hasDateFormat = fieldSchema.format === "date";
+    const hasNumberFormat = fieldSchema.format === "number";
+    const hasEnum = Array.isArray(fieldSchema.enum);
+    const hasUrl = fieldSchema.format === "Url";
+    if (hasDateFormat) {
+      return (
+        <Col
+          xs={12}
+          sm={6}
+          lg={3}
+          key={name}
+          className="customtextfieldwrapper"
+        >
+          <label>{t(fieldSchema.title)}</label>
+          <CustomDatePickerComponent format="DD MMM YYYY" />
+        </Col>
+      );
+    }
+    if (hasUrl) {
+      return (
+        <Col
+          xs={12}
+          sm={6}
+          lg={3}
+          key={name}
+          className="customtextfieldwrapper"
+        >
+          <label>{t(fieldSchema.title)}</label>
+          <Upload
+            name="image"
+            listType="picture"
+            // customRequest={customRequest}
+            style={{ width: "100%" }}
           >
-            <label>{t(fieldSchema.title)}</label>
-            <CustomDatePickerComponent format="DD MMM YYYY" />
-          </Col>
-        );
-      }
-      if (hasUrl) {
-        return (
-          <Col
-            xs={12}
-            sm={6}
-            lg={3}
-            key={name}
-            className="customtextfieldwrapper"
-          >
-            <label>{t(fieldSchema.title)}</label>
-            <Upload
-              name="image"
-              listType="picture"
-              // customRequest={customRequest}
+            <AntdButton
+              icon={
+                <img
+                  src={uploadIcon}
+                  alt="Upload Icon"
+                  style={{ width: 16, height: 16 }}
+                />
+              }
               style={{ width: "100%" }}
             >
-              <AntdButton
-                icon={
-                  <img
-                    src={uploadIcon}
-                    alt="Upload Icon"
-                    style={{ width: 16, height: 16 }}
-                  />
-                }
-                style={{ width: "100%" }}
-              >
-                {t(fieldSchema.title)}
-              </AntdButton>
-            </Upload>{" "}
-          </Col>
-        );
-      }
+              {t(fieldSchema.title)}
+            </AntdButton>
+          </Upload>{" "}
+        </Col>
+      );
+    }
 
-      if (hasEnum) {
-        return (
-          <Col
-            xs={12}
-            sm={6}
-            lg={3}
-            key={name}
-            className="customtextfieldwrapper"
-          >
-            <FormikCustomReactSelect
-              labelName={t(fieldSchema.title || name)}
-              loadOptions={fieldSchema.enum.map((value) => ({
-                id: value,
-                name: t(value),
-              }))}
-              name={name}
-              labelKey="name"
-              valueKey="id"
-              width
-            />
-          </Col>
-        );
-      }
-      if (hasNumberFormat) {
+    if (hasEnum) {
+      return (
+        <Col
+          xs={12}
+          sm={6}
+          lg={3}
+          key={name}
+          className="customtextfieldwrapper"
+        >
+          <FormikCustomReactSelect
+            labelName={t(fieldSchema.title || name)}
+            loadOptions={fieldSchema.enum.map((value) => ({
+              id: value,
+              name: t(value),
+            }))}
+            name={name}
+            labelKey="name"
+            valueKey="id"
+            width
+          />
+        </Col>
+      );
+    }
+    if (hasNumberFormat) {
+      return (
+        <Col xs={12} sm={6} lg={3} key={name}>
+          <CustomTextField
+            type="number"
+            label={t(fieldSchema.title || name)}
+            name={name}
+            placeholder={t(`Enter ${fieldSchema.title}`)}
+          />
+        </Col>
+      );
+    }
+
+    switch (fieldSchema.type) {
+      case "string":
         return (
           <Col xs={12} sm={6} lg={3} key={name}>
             <CustomTextField
-              type="number"
               label={t(fieldSchema.title || name)}
               name={name}
               placeholder={t(`Enter ${fieldSchema.title}`)}
             />
           </Col>
         );
-      }
-
-      switch (fieldSchema.type) {
-        case "string":
-          return (
-            <Col xs={12} sm={6} lg={3} key={name}>
-              <CustomTextField
-                label={t(fieldSchema.title || name)}
-                name={name}
-                placeholder={t(`Enter ${fieldSchema.title}`)}
-              />
-            </Col>
-          );
-        case "boolean":
-          return (
-            <Col xs={12} sm={6} lg={3} key={name}>
-              <Checkbox name={name}>{t(fieldSchema.title || name)}</Checkbox>
-            </Col>
-          );
-        case "date":
-          return (
-            <Col xs={12} sm={6} lg={3} key={name}>
-              <CustomDatePickerComponent
-                label={t(fieldSchema.title || name)}
-                name={name}
-              />
-            </Col>
-          );
-        case "object":
-          return (
-            <Col xs={12} key={name}>
-              {renderSection(name, fieldSchema)}
-            </Col>
-          );
-        case "array":
-          return (
-            <Col xs={12} key={name}>
-              {fieldSchema.items
-                ? fieldSchema.items.map((itemSchema, index) => (
-                    <Row key={index}>
-                      {renderFormField(`${name}[${index}]`, itemSchema)}
-                    </Row>
-                  ))
-                : null}
-            </Col>
-          );
-        default:
-          return null;
-      }
-    },
-    [t]
-  );
+      case "boolean":
+        return (
+          <Col xs={12} sm={6} lg={3} key={name}>
+            <Checkbox name={name}>{t(fieldSchema.title || name)}</Checkbox>
+          </Col>
+        );
+      case "date":
+        return (
+          <Col xs={12} sm={6} lg={3} key={name}>
+            <CustomDatePickerComponent
+              label={t(fieldSchema.title || name)}
+              name={name}
+            />
+          </Col>
+        );
+      case "object":
+        return (
+          <Col xs={12} key={name}>
+            {renderSection(name, fieldSchema)}
+          </Col>
+        );
+      case "array":
+        return (
+          <Col xs={12} key={name}>
+            {fieldSchema.items
+              ? fieldSchema.items.map((itemSchema, index) => (
+                  <Row key={index}>
+                    {renderFormField(`${name}[${index}]`, itemSchema)}
+                  </Row>
+                ))
+              : null}
+          </Col>
+        );
+      default:
+        return null;
+    }
+  };
 
   const renderSection = useCallback(
     (sectionKey, sectionSchema) => (
@@ -257,6 +281,10 @@ function FormikMemberForm({
                                   name="searchType"
                                   id="isGoogleMap"
                                   value="isGoogleMap"
+                                  checked={
+                                    formik.values.searchType == "" ||
+                                    formik.values.searchType == "isGoogleMap"
+                                  }
                                 />
                               </Col>
                               <Col xs={12} sm={4} md={4} className="py-1"></Col>
@@ -424,7 +452,7 @@ function FormikMemberForm({
                             <Trans i18nKey={"member_cor_add"} />
                           </div>
                           <div>
-                            <Checkbox>
+                            <Checkbox onChange={handleCheckboxChange}>
                               <Trans i18nKey={"member_same_add"} />
                             </Checkbox>
                           </div>
@@ -449,6 +477,7 @@ function FormikMemberForm({
                               </Col>
                               <Col xs={12} sm={4} md={4}>
                                 <CustomRadioButton
+                                  disabled={isSameAsHome}
                                   name="correspondenceSearchType"
                                   id="isCorrespondencePincode"
                                   value="isCorrespondencePincode"
@@ -457,10 +486,17 @@ function FormikMemberForm({
                               </Col>
                               <Col xs={12} sm={4} md={4}>
                                 <CustomRadioButton
+                                  disabled={isSameAsHome}
                                   label={t("label_googlemap")}
                                   name="correspondenceSearchType"
                                   id="isCorrespondenceGoogleMap"
                                   value="isCorrespondenceGoogleMap"
+                                  checked={
+                                    formik.values.correspondenceSearchType ==
+                                      "" ||
+                                    formik.values.correspondenceSearchType ==
+                                      "isCorrespondenceGoogleMap"
+                                  }
                                 />
                               </Col>
                               <Col xs={12} sm={4} md={4} className="py-1"></Col>
@@ -483,6 +519,7 @@ function FormikMemberForm({
                                       );
                                     }}
                                     required
+                                    disabled={isSameAsHome}
                                   />
                                 </Col>
                               ) : (
@@ -497,6 +534,7 @@ function FormikMemberForm({
                                     setFieldValue={formik.setFieldValue}
                                     values={formik.values}
                                     type="correspondence"
+                                    disabled={isSameAsHome}
                                   />
                                 </Col>
                               )}
@@ -509,6 +547,7 @@ function FormikMemberForm({
                           label={t("label_add1")}
                           name="correspondenceAddLine1"
                           placeholder=""
+                          disabled={isSameAsHome}
                         />
                       </Col>{" "}
                       <Col xs={12} sm={4} md={4}>
@@ -516,6 +555,7 @@ function FormikMemberForm({
                           label={t("label_add2")}
                           name="correspondenceAddLine2"
                           placeholder=""
+                          disabled={isSameAsHome}
                         />
                       </Col>
                       <Col xs={12} sm={4} md={4}>
@@ -531,6 +571,7 @@ function FormikMemberForm({
                           labelKey="name"
                           valueKey="id"
                           width
+                          disabled={isSameAsHome}
                           onChange={(val) => {
                             if (val) {
                               formik.setFieldValue(
@@ -560,7 +601,9 @@ function FormikMemberForm({
                           labelKey="name"
                           valueKey="id"
                           width
-                          disabled={!formik.values.correspondenceCountry}
+                          disabled={
+                            !formik.values.correspondenceCountry || isSameAsHome
+                          }
                           onChange={(val) => {
                             if (val) {
                               formik.setFieldValue("correspondencePincode", "");
@@ -588,12 +631,15 @@ function FormikMemberForm({
                               formik.setFieldValue("correspondenceCity", val);
                             }
                           }}
-                          disabled={!formik.values.correspondenceState}
+                          disabled={
+                            !formik.values.correspondenceState || isSameAsHome
+                          }
                           width
                         />
                       </Col>
                       <Col xs={12} sm={3} md={3}>
                         <CustomTextField
+                          disabled={isSameAsHome}
                           label={t("label_district")}
                           name="correspondenceDistrict"
                           placeholder="Enter District"
@@ -609,6 +655,7 @@ function FormikMemberForm({
                       </Col>
                       <Col xs={12} sm={3} md={3}>
                         <FormikCustomReactSelect
+                          disabled={isSameAsHome}
                           labelName={t("label_pin")}
                           loadOptions={correspondenceDistrictPincode?.map(
                             (item) => {
@@ -638,7 +685,10 @@ function FormikMemberForm({
     return null;
   }, [
     schema,
-    formik.values,
+    formik.values.correspondenceLocation,
+    formik.values.homeLocation,
+    formik.values.correspondenceSearchType,
+    formik.values.searchType,
     country,
     states,
     city,
