@@ -49,6 +49,7 @@ export default function CustomTextField({
             placeholder={placeholder}
             min={min}
             value={field.value || ""}
+            disabled={props.disabled}
           />
         )}
       </InputGroup>
