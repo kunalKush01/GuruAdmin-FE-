@@ -246,6 +246,41 @@ export const getDharmshalaBookingList = () =>
     showToastOnError: false,
   });
 
+  export const getAvailableRooms = () =>
+    callDharmshalaApi({
+      requestFunction: (axios) => axios.get(`bookings/available-rooms` ),
+      showToastOnSuccess: false,
+      showToastOnError: false,
+    });
+
+  export const getOccupiedRooms = () =>
+    callDharmshalaApi({
+      requestFunction: (axios) => axios.get(`bookings/occupied-rooms` ),
+      showToastOnSuccess: false,
+      showToastOnError: false,
+    });
+
+  export const getExpectedCheckIns = () =>
+    callDharmshalaApi({
+      requestFunction: (axios) => axios.get(`bookings/expected-checkin-today` ),
+      showToastOnSuccess: false,
+      showToastOnError: false,
+    });
+
+  export const getExpectedCheckouts = () =>
+    callDharmshalaApi({
+      requestFunction: (axios) => axios.get(`bookings/expected-checkout-today` ),
+      showToastOnSuccess: false,
+      showToastOnError: false,
+    });
+
+  export const getOpenBookingRequests = () =>
+    callDharmshalaApi({
+      requestFunction: (axios) => axios.get(`bookings/open-booking-requests` ),
+      showToastOnSuccess: false,
+      showToastOnError: false,
+    });
+
 
   //Feedback
 
