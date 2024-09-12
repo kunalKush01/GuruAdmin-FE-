@@ -775,7 +775,7 @@
 }
 
 .chart-card-wrapper {
-    font: $font-weight-bold 30px $font-family;
+    font: $font-weight-bold $font-size-large $font-family;
 
     .chart-card {
         flex: 1 1 20%;
@@ -788,7 +788,6 @@
 
     .card-text {
         font: $font-weight-normal 16px/20px $font-family;
-        font-weight: 500;
     }
 
     .fw-bolder {
