@@ -137,6 +137,7 @@
     "start": "craco start",
     "start:debug": "NODE_OPTIONS='--inspect' env-cmd -f .env.dev craco start",
     "start:dev": "env-cmd -f .env.dev craco start",
+    "start:local": "env-cmd -f .env.local craco start",
     "start:staging": "env-cmd -f .env.staging craco start",
     "start:production": "env-cmd -f .env.production craco start",
     "build:dev": "env-cmd -f .env.dev craco build",
