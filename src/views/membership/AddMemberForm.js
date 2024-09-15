@@ -8,49 +8,14 @@ import "../../assets/scss/viewCommon.scss";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import "../../assets/scss/viewCommon.scss";
 import AddForm from "../../components/membership/AddForm";
+import { createMember } from "../../api/membershipApi";
 export default function AddMemberForm() {
   const history = useHistory();
-
-  const schema = Yup.object().shape({
-    Mobile: Yup.string().required("expenses_mobile_required"),
-    SelectedUser: Yup.mixed().required("user_select_required"),
-    donarName: Yup.string()
-      .matches(
-        /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
-        "donation_donar_name_only_letters"
-      )
-      .trim(),
-    SelectedMasterCategory: Yup.mixed().required("masterCategory_required"),
-    Amount: Yup.string()
-      .matches(/^[1-9][0-9]*$/, "invalid_amount")
-      .required("amount_required"),
-  });
+  const handleCreateDonation = async (payload) => {
+    // console.log("payload :",payload)
+    return createMember(payload);
+  };
   const initialValues = {
-    //** Personal Information */
-    mobileNumber: "",
-    memberName: "",
-    aliasName: "",
-    inMemoryName: "",
-    gender: "",
-    maritalStatus: "",
-    anniversary: "",
-    dateOfBirth: "",
-
-    //** Member Ship Information */
-    membership: "",
-    branch: "",
-    memberNumber: "",
-    oldNumber: "",
-    membershipType: "",
-    dateOfEntry: "", //todo where it isuse?
-    dateOfJoining: "",
-
-    //** Contact Information */
-    alternativePhone: "",
-    email: "",
-    phone: "",
-    whatsappNumber: "",
-
     //** Address Information */
     searchType: "",
     addLine1: "",
@@ -72,16 +37,6 @@ export default function AddMemberForm() {
     correspondenceState: "",
     correspondenceCountry: "",
     correspondencePin: "",
-
-    //** Other Information */
-    occupation: "",
-    panNumber: "",
-    remark: "",
-
-    //** Upload Information  */
-    memberPhoto: "",
-    parentPhoto: "",
-    anotherPhoto: "",
   };
   return (
     <div className="listviewwrapper">
@@ -99,9 +54,9 @@ export default function AddMemberForm() {
       </div>
       <div className="mt-1">
         <AddForm
-          //   handleSubmit={handleCreateDonation}
+          handleSubmit={handleCreateDonation}
           initialValues={initialValues}
-          validationSchema={schema}
+          // validationSchema={schema}
         />
       </div>
     </div>

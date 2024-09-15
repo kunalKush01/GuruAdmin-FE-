@@ -4,6 +4,7 @@ import profileImg from "../../assets/images/icons/pngtree.png";
 import familyImg1 from "../../assets/images/avatars/5.png";
 import familyImg2 from "../../assets/images/avatars/12.png";
 import familyImg3 from "../../assets/images/avatars/8.png";
+import avatarIcon from "../../assets/images/avatars/blank.png";
 import "../../assets/scss/common.scss";
 import "../../assets/scss/viewCommon.scss";
 import personIcon from "../../assets/images/icons/membership/person.svg";
@@ -313,7 +314,7 @@ function MembershipProfileView() {
           <Card className="memberCard" id="firstCard">
             <div className="d-flex justify-content-center align-items-center flex-column">
               <img
-                src={profileImg}
+                src={avatarIcon}
                 className="membershipProfileImg"
                 alt="Profile"
               />
