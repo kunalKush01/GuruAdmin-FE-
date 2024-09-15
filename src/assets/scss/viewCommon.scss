@@ -1523,3 +1523,41 @@
     padding: 5px 40px;
     opacity: 100%;
   }
+
+  .dashboard-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 10px;
+  }
+  
+  .dashboard-card {
+    background-color: $light-yellow; 
+    color: $font-color;
+    width: 240px; 
+    height: 86px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px $font-color;
+  }
+  
+  .dashboard-card h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: $font-color;
+    padding-left: 10px;
+  }
+  
+  .dashboard-card p {
+    font-size: 30px;
+    font-weight: bold;
+    padding-left: 10px;
+  }
+  
+  
+  
