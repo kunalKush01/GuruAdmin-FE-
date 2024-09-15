@@ -1,5 +1,5 @@
 import { Form } from "formik";
-import React, { useMemo, useCallback, useState } from "react";
+import React, { useMemo, useCallback, useState, useEffect } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { Button, Col, Row, Spinner } from "reactstrap";
@@ -37,9 +37,9 @@ function FormikMemberForm({
 
   const handleCheckboxChange = (e) => {
     setIsSameAsHome(e.target.checked);
-
-    if (e.target.checked) {
-      // Update correspondence address fields with home address values
+  };
+  useEffect(() => {
+    if (isSameAsHome) {
       formik.setFieldValue("correspondenceAddLine1", formik.values.addLine1);
       formik.setFieldValue("correspondenceAddLine2", formik.values.addLine2);
       formik.setFieldValue("correspondenceCountry", formik.values.country);
@@ -49,7 +49,6 @@ function FormikMemberForm({
       formik.setFieldValue("correspondencePin", formik.values.pin);
       formik.setFieldValue("correspondenceLocation", "");
     } else {
-      // Clear correspondence address fields if unchecked
       formik.setFieldValue("correspondenceAddLine1", "");
       formik.setFieldValue("correspondenceAddLine2", "");
       formik.setFieldValue("correspondenceCountry", "");
@@ -58,7 +57,16 @@ function FormikMemberForm({
       formik.setFieldValue("correspondenceDistrict", "");
       formik.setFieldValue("correspondencePin", "");
     }
-  };
+  }, [
+    isSameAsHome,
+    formik.values.addLine1,
+    formik.values.addLine2,
+    formik.values.country,
+    formik.values.state,
+    formik.values.city,
+    formik.values.district,
+    formik.values.pin,
+  ]);
 
   const renderFormField = (name, fieldSchema) => {
     const hasDateFormat = fieldSchema.format === "date";
@@ -75,7 +83,16 @@ function FormikMemberForm({
           className="customtextfieldwrapper"
         >
           <label>{t(fieldSchema.title)}</label>
-          <CustomDatePickerComponent format="DD MMM YYYY" />
+          <CustomDatePickerComponent
+            format="DD MMM YYYY"
+            onChange={(date) => {
+              if (date) {
+                formik.setFieldValue(name, date.format("DD MMM YYYY"));
+              } else {
+                formik.setFieldValue(name, "");
+              }
+            }}
+          />
         </Col>
       );
     }
@@ -90,7 +107,7 @@ function FormikMemberForm({
         >
           <label>{t(fieldSchema.title)}</label>
           <Upload
-            name="image"
+            name={name}
             listType="picture"
             // customRequest={customRequest}
             style={{ width: "100%" }}
@@ -701,21 +718,21 @@ function FormikMemberForm({
   return (
     <Form>
       {formSections}
-      <div className="btn-Published d-none">
-        {loading ? (
+      <div className="btn-Published">
+        {/* {loading ? (
           <Button color="primary" className="add-trust-btn" disabled>
             <Spinner size="md" />
           </Button>
-        ) : (
-          <Button color="primary" className="addAction-btn" type="submit">
-            {!props.plusIconDisable && (
+        ) : ( */}
+        <Button color="primary" className="addAction-btn" type="submit">
+          {/* {!props.plusIconDisable && (
               <span>
                 <Plus className="" size={15} strokeWidth={4} />
               </span>
-            )}
-            <span> Add</span>
-          </Button>
-        )}
+            )} */}
+          <span> Add</span>
+        </Button>
+        {/* )} */}
       </div>
     </Form>
   );

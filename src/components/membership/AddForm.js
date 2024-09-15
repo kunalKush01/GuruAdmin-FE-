@@ -7,33 +7,31 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import pincodes from "indian-pincodes";
 import FormikMemberForm from "./FormikMemberForm";
 import { getMemberSchema } from "../../api/membershipApi";
+import { useSelector } from "react-redux";
 
-export default function AddForm({
-  //   handleSubmit,
-  validationSchema,
-  initialValues,
-}) {
+export default function AddForm({ handleSubmit, initialValues }) {
   const history = useHistory();
   const [loading, setLoading] = useState(false);
   const categoryQueryClient = useQueryClient();
+  const trustId = localStorage.getItem("trustId");
+  const loggedInUser = useSelector((state) => state.auth.userDetail);
 
   const categoryMutation = useMutation({
-    // mutationFn: handleSubmit,
-    onSuccess: (data) => {
-      if (!data.error) {
-        addDonationUser
-          ? categoryQueryClient.invalidateQueries(["donations"])
-          : categoryQueryClient.invalidateQueries(["subscribedUser"]);
-        setLoading(false);
-        onSuccess(true);
-        onClose();
-      } else if (data?.error) {
-        setLoading(false);
-        onSuccess(false);
-      }
-    },
+    mutationFn: handleSubmit,
+    // onSuccess: (data) => {
+    //   if (!data.error) {
+    //     addDonationUser
+    //       ? categoryQueryClient.invalidateQueries(["donations"])
+    //       : categoryQueryClient.invalidateQueries(["subscribedUser"]);
+    //     setLoading(false);
+    //     onSuccess(true);
+    //     onClose();
+    //   } else if (data?.error) {
+    //     setLoading(false);
+    //     onSuccess(false);
+    //   }
+    // },
   });
-  const trustId = localStorage.getItem("trustId");
   const [showPrompt, setShowPrompt] = useState(true);
   const [states, setStates] = useState([]);
   const [country, setCountry] = useState([]);
@@ -68,42 +66,137 @@ export default function AddForm({
     () => memberShipQuery?.data?.schema ?? [],
     [memberShipQuery]
   );
-  const memberSchema = memberSchemaItem ? memberSchemaItem.memberSchema : null;
+  const memberSchema = memberSchemaItem ? memberSchemaItem.memberSchema : {};
+  const generateInitialValues = (schema) => {
+    if (!schema || typeof schema !== "object") {
+      return {};
+    }
+    let initialValues = {};
+    Object.keys(schema).forEach((key) => {
+      const field = schema[key];
+      if (field.type === "object" && field.properties) {
+        Object.keys(field.properties).forEach((key) => {
+          if (key == "correspondenceAddress" || key == "homeAddress") {
+            return;
+          }
+          initialValues[key] = "";
+        });
+      }
+    });
+
+    return initialValues;
+  };
+  const dynamicInitialValues = memberSchema
+    ? generateInitialValues(memberSchema.properties)
+    : null;
+  const generatePayloadFromForm = (schema, formData) => {
+    if (!schema || typeof schema !== "object") {
+      return {};
+    }
+
+    let payload = {};
+
+    Object.keys(schema).forEach((key) => {
+      const field = schema[key];
+      const formValue = formData[key];
+      if (key === "correspondenceAddress") {
+        payload[key] = {
+          ...formValue,
+          street:
+            `${formData.correspondenceAddLine1} ${formData.correspondenceAddLine2}` ||
+            "",
+          state: formData.correspondenceState?.name || "",
+          city: formData.correspondenceCity?.name || "",
+          country: formData.correspondenceCountry?.name || "",
+          district: formData.correspondenceDistrict || "",
+          pincode: formData.correspondencePin || "",
+        };
+      }
+      // Handle homeAddress separately
+      else if (key === "homeAddress") {
+        payload[key] = {
+          ...formValue, // Keep any other fields inside homeAddress
+          street: `${formData.addLine1} ${formData.addLine2}` || "",
+          state: formData.state?.name || "",
+          city: formData.city?.name || "",
+          country: formData.country?.name || "",
+          district: formData.district || "",
+          pincode: formData.pin || "",
+        };
+      } else if (
+        typeof formValue === "object" &&
+        formValue !== null &&
+        formValue.name
+      ) {
+        payload[key] = formValue.name;
+      } else if (field.type === "object" && field.properties) {
+        payload[key] = generatePayloadFromForm(field.properties, formData);
+      } else if (
+        field.type === "array" &&
+        field.items &&
+        field.items.properties
+      ) {
+        payload[key] = formValue.map((item) =>
+          generatePayloadFromForm(field.items.properties, item)
+        );
+      } else {
+        payload[key] = formValue !== undefined ? formValue : "";
+      }
+    });
+
+    return payload;
+  };
+
+  // const generatePayload = (schema) => {
+  //   if (!schema || typeof schema !== "object") {
+  //     return {};
+  //   }
+
+  //   let initialValues = {};
+
+  //   Object.keys(schema).forEach((key) => {
+  //     const field = schema[key];
+  //     if (field.type === "object" && field.properties) {
+  //       initialValues[key] = generatePayload(field.properties);
+  //     } else if (
+  //       field.type === "array" &&
+  //       field.items &&
+  //       field.items.properties
+  //     ) {
+  //       initialValues[key] = [generatePayload(field.items.properties)];
+  //     } else {
+  //       initialValues[key] = "";
+  //     }
+  //   });
+
+  //   return initialValues;
+  // };
+
+  // const payload = {
+  //   trustId: "64798f6b7b341a23f95f8e75",
+  //   userId: "some-user-id",
+  //   data: memberSchema ? generatePayload(memberSchema.properties) : {},
+  // };
 
   return (
     <div className="FormikWrapper">
       <Formik
         initialValues={{
           ...initialValues,
+          ...dynamicInitialValues,
         }}
-        onSubmit={(e) => {
+        onSubmit={(formData) => {
+          const payload = {
+            trustId: trustId && trustId,
+            userId: loggedInUser && loggedInUser.id,
+            data: memberSchema
+              ? generatePayloadFromForm(memberSchema.properties, formData)
+              : {},
+          };
           setShowPrompt(false);
           setLoading(true);
-          categoryMutation.mutate({
-            // home address
-            pincode: e.pincode,
-            searchType: e.searchType,
-            addLine1: e.addLine1,
-            addLine2: e.addLine2,
-            city: e.city.name,
-            district: e.district,
-            state: e.state.name,
-            country: e.country.name,
-            pin: e.pin,
-
-            //correspondence address
-            correspondencePincode: e.correspondencePincode,
-            correspondenceSearchType: e.correspondenceSearchType,
-            correspondenceAddLine1: e.correspondenceAddLine1,
-            correspondenceAddLine2: e.correspondenceAddLine2,
-            correspondenceCity: e.correspondenceCity.name,
-            correspondenceDistrict: e.correspondenceDistrict,
-            correspondenceState: e.correspondenceState.name,
-            correspondenceCountry: e.correspondenceCountry.name,
-            correspondencePin: e.correspondencePin,
-          });
+          categoryMutation.mutate(payload);
         }}
-        validationSchema={validationSchema}
       >
         {(formik) => {
           {

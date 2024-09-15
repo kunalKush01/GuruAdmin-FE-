@@ -1,6 +1,13 @@
 import { API_BASE_URL } from "../axiosApi/authApiInstans";
 import { callApi } from "../utility/utils/callApi";
 
+export const createMember = (payload) =>
+  callApi({
+    requestFunction: (axios) => axios.post(`${API_BASE_URL}members/create`,payload),
+    successCode: 200,
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
 export const getMemberSchema = () =>
   callApi({
     requestFunction: (axios) => axios.get(`${API_BASE_URL}memberSchema`),
