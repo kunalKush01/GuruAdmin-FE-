@@ -50,19 +50,6 @@ const DharmshalaBookingTable = ({
     },
   });
 
-  const handleDownloadClick = (record) => {
-    const apiUrl = `${process.env.REACT_APP_DHARMSHALA_BASEURL}bookings/download/${record.originalData.bookingId}`;
-
-    const link = document.createElement('a');
-    link.href = apiUrl;
-    link.target = '_blank';
-    link.download = `receipt_${record.originalData.bookingId}.pdf`;
-
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
   const handleViewPdfClick = async (record) => {
     const apiUrl = `${process.env.REACT_APP_DHARMSHALA_BASEURL}bookings/download/${record.originalData.bookingId}`;
     
