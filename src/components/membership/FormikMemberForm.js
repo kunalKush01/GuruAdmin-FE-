@@ -33,13 +33,18 @@ function FormikMemberForm({
   ...props
 }) {
   const { t } = useTranslation();
+  const [file, setFile] = useState(null);
+  const customRequest = ({ file, onSuccess, onError }) => {
+    setFile(file);
+    setTimeout(() => {
+      onSuccess("ok");
+    }, 1000);
+  };
   const [isSameAsHome, setIsSameAsHome] = useState(false);
 
   const handleCheckboxChange = (e) => {
     setIsSameAsHome(e.target.checked);
-  };
-  useEffect(() => {
-    if (isSameAsHome) {
+    if (e.target.checked) {
       formik.setFieldValue("correspondenceAddLine1", formik.values.addLine1);
       formik.setFieldValue("correspondenceAddLine2", formik.values.addLine2);
       formik.setFieldValue("correspondenceCountry", formik.values.country);
@@ -57,22 +62,35 @@ function FormikMemberForm({
       formik.setFieldValue("correspondenceDistrict", "");
       formik.setFieldValue("correspondencePin", "");
     }
-  }, [
-    isSameAsHome,
-    formik.values.addLine1,
-    formik.values.addLine2,
-    formik.values.country,
-    formik.values.state,
-    formik.values.city,
-    formik.values.district,
-    formik.values.pin,
-  ]);
+  };
+  // useEffect(() => {
+  //   if (isSameAsHome) {
+  //     formik.setFieldValue("correspondenceAddLine1", formik.values.addLine1);
+  //     formik.setFieldValue("correspondenceAddLine2", formik.values.addLine2);
+  //     formik.setFieldValue("correspondenceCountry", formik.values.country);
+  //     formik.setFieldValue("correspondenceState", formik.values.state);
+  //     formik.setFieldValue("correspondenceCity", formik.values.city);
+  //     formik.setFieldValue("correspondenceDistrict", formik.values.district);
+  //     formik.setFieldValue("correspondencePin", formik.values.pin);
+  //     formik.setFieldValue("correspondenceLocation", "");
+  //   } else {
+  //     formik.setFieldValue("correspondenceAddLine1", "");
+  //     formik.setFieldValue("correspondenceAddLine2", "");
+  //     formik.setFieldValue("correspondenceCountry", "");
+  //     formik.setFieldValue("correspondenceState", "");
+  //     formik.setFieldValue("correspondenceCity", "");
+  //     formik.setFieldValue("correspondenceDistrict", "");
+  //     formik.setFieldValue("correspondencePin", "");
+  //   }
+  // }, [isSameAsHome]);
 
   const renderFormField = (name, fieldSchema) => {
     const hasDateFormat = fieldSchema.format === "date";
     const hasNumberFormat = fieldSchema.format === "number";
     const hasEnum = Array.isArray(fieldSchema.enum);
     const hasUrl = fieldSchema.format === "Url";
+    const isRequired = fieldSchema.isRequired;
+    // console.log(isRequired);
     if (hasDateFormat) {
       return (
         <Col
@@ -82,7 +100,10 @@ function FormikMemberForm({
           key={name}
           className="customtextfieldwrapper"
         >
-          <label>{t(fieldSchema.title)}</label>
+          <label>
+            {t(fieldSchema.title)}{" "}
+            {isRequired && <span className="text-danger">*</span>}
+          </label>
           <CustomDatePickerComponent
             format="DD MMM YYYY"
             onChange={(date) => {
@@ -105,11 +126,14 @@ function FormikMemberForm({
           key={name}
           className="customtextfieldwrapper"
         >
-          <label>{t(fieldSchema.title)}</label>
+          <label>
+            {t(fieldSchema.title)}{" "}
+            {isRequired && <span className="text-danger">*</span>}
+          </label>
           <Upload
             name={name}
             listType="picture"
-            // customRequest={customRequest}
+            customRequest={customRequest}
             style={{ width: "100%" }}
           >
             <AntdButton
@@ -148,6 +172,7 @@ function FormikMemberForm({
             labelKey="name"
             valueKey="id"
             width
+            required={isRequired}
           />
         </Col>
       );
@@ -160,6 +185,7 @@ function FormikMemberForm({
             label={t(fieldSchema.title || name)}
             name={name}
             placeholder={t(`Enter ${fieldSchema.title}`)}
+            required={isRequired}
           />
         </Col>
       );
@@ -173,6 +199,7 @@ function FormikMemberForm({
               label={t(fieldSchema.title || name)}
               name={name}
               placeholder={t(`Enter ${fieldSchema.title}`)}
+              required={isRequired}
             />
           </Col>
         );
@@ -188,6 +215,7 @@ function FormikMemberForm({
             <CustomDatePickerComponent
               label={t(fieldSchema.title || name)}
               name={name}
+              required={isRequired}
             />
           </Col>
         );
@@ -349,6 +377,7 @@ function FormikMemberForm({
                           label={t("label_add1")}
                           name="addLine1"
                           placeholder=""
+                          required
                         />
                       </Col>{" "}
                       <Col xs={12} sm={4} md={4}>
@@ -356,6 +385,7 @@ function FormikMemberForm({
                           label={t("label_add2")}
                           name="addLine2"
                           placeholder=""
+                          required
                         />
                       </Col>
                       <Col xs={12} sm={4} md={4}>
@@ -379,6 +409,7 @@ function FormikMemberForm({
                               formik.setFieldValue("district", "");
                             }
                           }}
+                          required
                         />
                       </Col>
                       <Col xs={12} sm={3} md={3}>
@@ -402,6 +433,7 @@ function FormikMemberForm({
                               formik.setFieldValue("city", "");
                             }
                           }}
+                          required
                         />
                       </Col>
                       <Col xs={12} sm={3} md={3}>
@@ -424,6 +456,7 @@ function FormikMemberForm({
                           }}
                           disabled={!formik.values.state}
                           width
+                          required
                         />
                       </Col>
                       <Col xs={12} sm={3} md={3}>
@@ -436,6 +469,7 @@ function FormikMemberForm({
                             formik.setFieldValue("district", e.target.value);
                             formik.setFieldValue("pin", "");
                           }}
+                          required
                         />
                       </Col>
                       <Col xs={12} sm={3} md={3}>
@@ -451,6 +485,7 @@ function FormikMemberForm({
                           labelKey="name"
                           valueKey="id"
                           width
+                          required
                         />
                       </Col>
                     </Row>
@@ -619,7 +654,8 @@ function FormikMemberForm({
                           valueKey="id"
                           width
                           disabled={
-                            !formik.values.correspondenceCountry || isSameAsHome
+                            !formik.values.correspondenceCountry 
+                            || isSameAsHome
                           }
                           onChange={(val) => {
                             if (val) {
@@ -649,7 +685,8 @@ function FormikMemberForm({
                             }
                           }}
                           disabled={
-                            !formik.values.correspondenceState || isSameAsHome
+                            !formik.values.correspondenceState 
+                            || isSameAsHome
                           }
                           width
                         />
@@ -719,20 +756,20 @@ function FormikMemberForm({
     <Form>
       {formSections}
       <div className="btn-Published">
-        {/* {loading ? (
+        {loading ? (
           <Button color="primary" className="add-trust-btn" disabled>
             <Spinner size="md" />
           </Button>
-        ) : ( */}
-        <Button color="primary" className="addAction-btn" type="submit">
-          {/* {!props.plusIconDisable && (
+        ) : (
+          <Button color="primary" className="addAction-btn" type="submit">
+            {!props.plusIconDisable && (
               <span>
                 <Plus className="" size={15} strokeWidth={4} />
               </span>
-            )} */}
-          <span> Add</span>
-        </Button>
-        {/* )} */}
+            )}
+            <span> Add</span>
+          </Button>
+        )}
       </div>
     </Form>
   );

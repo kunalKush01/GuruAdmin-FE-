@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { Row, Col, Card, Switch, Tabs } from "antd";
 import profileImg from "../../assets/images/icons/pngtree.png";
-import familyImg1 from "../../assets/images/avatars/5.png";
-import familyImg2 from "../../assets/images/avatars/12.png";
-import familyImg3 from "../../assets/images/avatars/8.png";
 import avatarIcon from "../../assets/images/avatars/blank.png";
 import "../../assets/scss/common.scss";
 import "../../assets/scss/viewCommon.scss";
@@ -29,7 +26,6 @@ function MembershipProfileView() {
   const { t } = useTranslation();
   const history = useHistory();
   const { id } = useParams();
-  console.log(id);
   const { data } = useQuery(
     ["memberShipProfileData", id],
     () => getMembersById(id),
@@ -50,8 +46,6 @@ function MembershipProfileView() {
   const otherInfo = memberData?.otherInfo;
   const upload = memberData?.upload;
   const loggedInUser = useSelector((state) => state.auth.userDetail.name);
-
-  console.log(personalInfo);
   const [toggleSwitch, setToggleSwitch] = useState(false);
 
   const handleTabChange = (key) => {
@@ -64,10 +58,14 @@ function MembershipProfileView() {
   //** Add Family Modal Handle */
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalMode, setModalMode] = useState("add");
+  const [familyItemIndex, setFamilyItemIndex] = useState(null)
+  const [currentFamilyInfo, setCurrentFamilyInfo] = useState(null); // Store the family member data
 
-  const openModal = (mode) => {
+  const openModal = (mode,i,item) => {
     setModalMode(mode);
     setIsModalVisible(true);
+    setFamilyItemIndex(i)
+    setCurrentFamilyInfo(item)
   };
 
   const items = [
@@ -76,140 +74,70 @@ function MembershipProfileView() {
       label: t("family"),
       children: (
         <div>
-          <Card className="familyCard">
-            <div>
-              <div className="familyDetails d-flex flex-row">
-                <div className="d-flex align-items-center">
-                  <div className="famRow1">
-                    <div className="me-1">
-                      <img
-                        src={familyImg2}
-                        className="familyProfile"
-                        alt="Profile"
-                      />
+          {familyInfo &&
+            Array.isArray(familyInfo) &&
+            familyInfo.map((item, i) => {
+              return (
+                <Card className="familyCard">
+                  <div>
+                    <div className="familyDetails d-flex flex-row">
+                      <div className="d-flex align-items-center">
+                        <div className="famRow1">
+                          <div className="me-2">
+                            <img
+                              src={item.imageUrl ? item.imageUrl : avatarIcon}
+                              className="familyProfile"
+                              alt=""
+                            />
+                          </div>
+                        </div>
+                        <div className="famRow2">
+                          <div className="me-3">
+                            <span className="memberAdd">Name</span>
+                            <p className="memberInfo mb-0">{item.name || ""}</p>
+                          </div>
+                          <div className="me-3">
+                            <span className="memberAdd">Relation</span>
+                            <p className="memberInfo mb-0">
+                              {item.relation || ""}
+                            </p>
+                          </div>
+                          <div className="me-3">
+                            <span className="memberAdd">Date of Birth</span>
+                            <p className="memberInfo mb-0">
+                              {moment(item.dateOfBirth).format("DD MMM YYYY") ||
+                                ""}
+                            </p>
+                          </div>
+                          <div className="me-3">
+                            <span className="memberAdd">
+                              Date of Anniversary
+                            </span>
+                            <p className="memberInfo mb-0">
+                              {moment(item.anniversary).format("DD MMM YYYY") ||
+                                ""}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="famRow3">
+                        <Button
+                          className="editmember"
+                          onClick={() => openModal("edit",i,item)}
+                        >
+                          Edit
+                        </Button>
+                        <img
+                          src={editIcon}
+                          width={35}
+                          className="editIconMember"
+                        />
+                      </div>
                     </div>
                   </div>
-                  <div className="famRow2">
-                    <div className="me-3">
-                      <span className="memberAdd">Name</span>
-                      <p className="memberInfo mb-0">
-                        {memberData ? familyInfo["name"] : ""}
-                      </p>
-                    </div>
-                    <div className="me-3">
-                      <span className="memberAdd">Relation</span>
-                      <p className="memberInfo mb-0">
-                        {memberData ? familyInfo["relation"] : ""}
-                      </p>
-                    </div>
-                    <div className="me-3">
-                      <span className="memberAdd">Date of Birth</span>
-                      <p className="memberInfo mb-0">
-                        {memberData
-                          ? moment(familyInfo["dateOfBirth"]).format(
-                              "DD MMM YYYY"
-                            )
-                          : ""}
-                      </p>
-                    </div>
-                    <div className="me-3">
-                      <span className="memberAdd">Date of Anniversary</span>
-                      <p className="memberInfo mb-0">
-                        {memberData
-                          ? moment(familyInfo["anniversary"]).format(
-                              "DD MMM YYYY"
-                            )
-                          : ""}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="famRow3">
-                  <Button
-                    className="editmember"
-                    onClick={() => openModal("edit")}
-                  >
-                    Edit
-                  </Button>
-                  <img src={editIcon} width={35} className="editIconMember" />
-                </div>
-              </div>
-            </div>
-          </Card>
-          {/* <Card className="familyCard">
-            <div>
-              <div className="familyDetails d-flex flex-row">
-                <div className="famRow1">
-                  <div className="me-1">
-                    <img
-                      src={familyImg1}
-                      className="familyProfile"
-                      alt="Profile"
-                    />
-                  </div>
-                </div>
-                <div className="famRow2">
-                  <div className="me-3">
-                    <span className="memberAdd">Name</span>
-                    <p className="memberInfo mb-0">Radha Jain</p>
-                  </div>
-                  <div className="me-3">
-                    <span className="memberAdd">Relation</span>
-                    <p className="memberInfo mb-0">Wife</p>
-                  </div>
-                  <div className="me-3">
-                    <span className="memberAdd">Date of Birth</span>
-                    <p className="memberInfo mb-0">-</p>
-                  </div>
-                  <div className="me-3">
-                    <span className="memberAdd">Date of Anniversary</span>
-                    <p className="memberInfo mb-0">-</p>
-                  </div>
-                </div>
-                <div className="famRow3">
-                  <Button className="editmember">Edit</Button>
-                  <img src={editIcon} width={35} className="editIconMember" />
-                </div>
-              </div>
-            </div>
-          </Card>
-          <Card className="familyCard">
-            <div>
-              <div className="familyDetails d-flex flex-row">
-                <div className="famRow1">
-                  <div className="me-1">
-                    <img
-                      src={familyImg3}
-                      className="familyProfile"
-                      alt="Profile"
-                    />
-                  </div>
-                </div>
-                <div className="famRow2">
-                  <div className="me-3">
-                    <span className="memberAdd">Name</span>
-                    <p className="memberInfo mb-0">Ankit Jain</p>
-                  </div>
-                  <div className="me-3">
-                    <span className="memberAdd">Relation</span>
-                    <p className="memberInfo mb-0">Husband</p>
-                  </div>
-                  <div className="me-3">
-                    <span className="memberAdd">Date of Birth</span>
-                    <p className="memberInfo mb-0">02 Feb 1980</p>
-                  </div>
-                  <div className="me-3">
-                    <span className="memberAdd">Date of Anniversary</span>
-                    <p className="memberInfo mb-0">-</p>
-                  </div>
-                </div>
-                <div className="famRow3">
-                  <Button className="editmember">Edit</Button>
-                  <img src={editIcon} width={35} className="editIconMember" />
-                </div>
-              </div>
-            </div>
-          </Card> */}
+                </Card>
+              );
+            })}
           <div className="d-flex justify-content-end mt-2">
             <Button color="primary" onClick={() => openModal("add")}>
               Add
@@ -219,6 +147,20 @@ function MembershipProfileView() {
             isModalVisible={isModalVisible}
             setIsModalVisible={setIsModalVisible}
             mode={modalMode}
+            initialValues={{
+              name: "",
+              dateOfBirth: "",
+              anniversary: "",
+              relation: "",
+              parentPhoto: "", // You can also add image URL if available
+            }}
+            familyInfo={familyInfo}
+            memberData={memberData}
+            memberResultData={memberResultData}
+            upload={upload}
+            id={id}
+            familyItemIndex={familyItemIndex}
+            currentFamilyInfo={currentFamilyInfo}
           />
         </div>
       ),
@@ -314,8 +256,11 @@ function MembershipProfileView() {
           <Card className="memberCard" id="firstCard">
             <div className="d-flex justify-content-center align-items-center flex-column">
               <img
-                src={avatarIcon}
+                src={
+                  upload && upload.memberPhoto ? upload.memberPhoto : avatarIcon
+                }
                 className="membershipProfileImg"
+                // style={{ border: upload == undefined  && "none !important" }}
                 alt="Profile"
               />
               <p className="memberName">
@@ -386,15 +331,13 @@ function MembershipProfileView() {
                 <div>
                   <span className="memberAdd">Home Address</span>
                   <p className="memberlineAdd">
-                    {memberData &&
-                    memberData.addressInfo &&
-                    memberData.addressInfo.homeAddress
+                    {memberData && addressInfo && addressInfo.homeAddress
                       ? [
-                          memberData.addressInfo.homeAddress.street || "",
-                          memberData.addressInfo.homeAddress.district || "",
-                          memberData.addressInfo.homeAddress.city || "",
-                          memberData.addressInfo.homeAddress.state || "",
-                          memberData.addressInfo.homeAddress.country || "",
+                          addressInfo.homeAddress.street || "",
+                          addressInfo.homeAddress.district || "",
+                          addressInfo.homeAddress.city || "",
+                          addressInfo.homeAddress.state || "",
+                          addressInfo.homeAddress.country || "",
                         ]
                           .filter((part) => part)
                           .join(", ")
@@ -405,19 +348,14 @@ function MembershipProfileView() {
                   <span className="memberAdd">Correspondence Address</span>
                   <p className="memberlineAdd">
                     {memberData &&
-                    memberData.addressInfo &&
-                    memberData.addressInfo.correspondenceAddress
+                    addressInfo &&
+                    addressInfo.correspondenceAddress
                       ? [
-                          memberData.addressInfo.correspondenceAddress.street ||
-                            "",
-                          memberData.addressInfo.correspondenceAddress
-                            .district || "",
-                          memberData.addressInfo.correspondenceAddress.city ||
-                            "",
-                          memberData.addressInfo.correspondenceAddress.state ||
-                            "",
-                          memberData.addressInfo.correspondenceAddress
-                            .country || "",
+                          addressInfo.correspondenceAddress.street || "",
+                          addressInfo.correspondenceAddress.district || "",
+                          addressInfo.correspondenceAddress.city || "",
+                          addressInfo.correspondenceAddress.state || "",
+                          addressInfo.correspondenceAddress.country || "",
                         ]
                           .filter((part) => part)
                           .join(", ")
