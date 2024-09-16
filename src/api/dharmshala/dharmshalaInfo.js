@@ -281,6 +281,12 @@ export const getDharmshalaBookingList = () =>
       showToastOnError: false,
     });
 
+  export const downlaodDharmshalaReceipt = (bookingId) =>
+    callDharmshalaApi({
+      requestFunction: (axios) => axios.get(`bookings/download/${bookingId}`),
+      showToastOnSuccess: false,
+      showToastOnError: false,
+    });
 
   //Feedback
 
