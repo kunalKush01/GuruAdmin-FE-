@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Table, Space } from "antd";
 import moment from "moment";
+import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { deleteDharmshalaBooking, downlaodDharmshalaReceipt } from "../../../api/dharmshala/dharmshalaInfo";
 import deleteIcon from "../../../assets/images/icons/category/deleteIcon.svg";
