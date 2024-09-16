@@ -6,7 +6,7 @@ import styled from "styled-components";
 import "../../assets/scss/viewCommon.scss";
 
 export const CustomReactSelect = ({
-  required = false,
+  required,
   label,
   loadOptions,
   labelKey = "label",
@@ -151,7 +151,7 @@ export const CustomReactSelect = ({
       {props.labelName && (
         <label style={{ font: "bold 15px Noto Sans" }}>
           {`${props.labelName}`}
-          {required && "*"}
+          <span className="text-danger">{required && "*"}</span>
         </label>
       )}
       <ReactSelect

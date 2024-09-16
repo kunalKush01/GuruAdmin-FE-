@@ -9,28 +9,30 @@ import FormikMemberForm from "./FormikMemberForm";
 import { getMemberSchema } from "../../api/membershipApi";
 import { useSelector } from "react-redux";
 
-export default function AddForm({ handleSubmit, initialValues }) {
+export default function AddForm({
+  handleSubmit,
+  initialValues,
+  plusIconDisable = false,
+  validationSchema,
+}) {
   const history = useHistory();
   const [loading, setLoading] = useState(false);
-  const categoryQueryClient = useQueryClient();
+  const queryClient = useQueryClient();
   const trustId = localStorage.getItem("trustId");
   const loggedInUser = useSelector((state) => state.auth.userDetail);
 
   const categoryMutation = useMutation({
     mutationFn: handleSubmit,
-    // onSuccess: (data) => {
-    //   if (!data.error) {
-    //     addDonationUser
-    //       ? categoryQueryClient.invalidateQueries(["donations"])
-    //       : categoryQueryClient.invalidateQueries(["subscribedUser"]);
-    //     setLoading(false);
-    //     onSuccess(true);
-    //     onClose();
-    //   } else if (data?.error) {
-    //     setLoading(false);
-    //     onSuccess(false);
-    //   }
-    // },
+    onSuccess: (data) => {
+      if (!data.error) {
+        queryClient.invalidateQueries(["memberShipListData"]);
+        history.push("/membership");
+        setLoading(false);
+        onClose();
+      } else if (data?.error) {
+        setLoading(false);
+      }
+    },
   });
   const [showPrompt, setShowPrompt] = useState(true);
   const [states, setStates] = useState([]);
@@ -123,6 +125,15 @@ export default function AddForm({ handleSubmit, initialValues }) {
           district: formData.district || "",
           pincode: formData.pin || "",
         };
+      } else if (key === "familyInfo") {
+        payload[key] = [
+          {
+            name: formData.name || "",
+            relation: formData.relation || "",
+            familyMemberAnniversary: formData.familyMemberAnniversary || "",
+            familyMemberDateOfBirth: formData.familyMemberDateOfBirth || "",
+          },
+        ];
       } else if (
         typeof formValue === "object" &&
         formValue !== null &&
@@ -146,38 +157,6 @@ export default function AddForm({ handleSubmit, initialValues }) {
 
     return payload;
   };
-
-  // const generatePayload = (schema) => {
-  //   if (!schema || typeof schema !== "object") {
-  //     return {};
-  //   }
-
-  //   let initialValues = {};
-
-  //   Object.keys(schema).forEach((key) => {
-  //     const field = schema[key];
-  //     if (field.type === "object" && field.properties) {
-  //       initialValues[key] = generatePayload(field.properties);
-  //     } else if (
-  //       field.type === "array" &&
-  //       field.items &&
-  //       field.items.properties
-  //     ) {
-  //       initialValues[key] = [generatePayload(field.items.properties)];
-  //     } else {
-  //       initialValues[key] = "";
-  //     }
-  //   });
-
-  //   return initialValues;
-  // };
-
-  // const payload = {
-  //   trustId: "64798f6b7b341a23f95f8e75",
-  //   userId: "some-user-id",
-  //   data: memberSchema ? generatePayload(memberSchema.properties) : {},
-  // };
-
   return (
     <div className="FormikWrapper">
       <Formik
@@ -185,6 +164,7 @@ export default function AddForm({ handleSubmit, initialValues }) {
           ...initialValues,
           ...dynamicInitialValues,
         }}
+        validationSchema={validationSchema}
         onSubmit={(formData) => {
           const payload = {
             trustId: trustId && trustId,

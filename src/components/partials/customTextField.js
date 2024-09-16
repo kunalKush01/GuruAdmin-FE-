@@ -5,7 +5,7 @@ import { InputGroup } from "reactstrap";
 import "../../assets/scss/common.scss";
 
 export default function CustomTextField({
-  required = false,
+  required,
   label,
   type = "text",
   placeholder,
@@ -23,7 +23,7 @@ export default function CustomTextField({
       {label && (
         <label>
           {`${label}`}
-          {required && "*"}
+          <span className="text-danger">{required && "*"}</span>
         </label>
       )}
       <InputGroup>
