@@ -6,12 +6,15 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Table, Space } from "antd";
 import moment from "moment";
 import Swal from "sweetalert2";
-import { deleteDharmshalaBooking } from "../../../api/dharmshala/dharmshalaInfo";
+import { deleteDharmshalaBooking, downlaodDharmshalaReceipt } from "../../../api/dharmshala/dharmshalaInfo";
 import deleteIcon from "../../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../../assets/images/icons/category/editIcon.svg";
 import checkInIcon from "../../../assets/images/icons/dharmshala/checkin.svg";
 import checkOutIcon from "../../../assets/images/icons/dharmshala/checkout.svg";
 import confirmationIcon from "../../../assets/images/icons/news/conformationIcon.svg";
+import whatsappIcon from "../../../assets/images/icons/whatsappIcon.svg";
+import downloadIcon from "../../../assets/images/icons/receiptIcon.svg";
+
 import "../../../assets/scss/common.scss";
 import dayjs from 'dayjs';
 import RoomsContainer from "../../../components/dharmshalaBooking/RoomsContainer";
@@ -46,6 +49,54 @@ const DharmshalaBookingTable = ({
       }
     },
   });
+
+  const handleDownloadClick = (record) => {
+    const apiUrl = `${process.env.REACT_APP_DHARMSHALA_BASEURL}bookings/download/${record.originalData.bookingId}`;
+
+    const link = document.createElement('a');
+    link.href = apiUrl;
+    link.target = '_blank';
+    link.download = `receipt_${record.originalData.bookingId}.pdf`;
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleViewPdfClick = async (record) => {
+    const apiUrl = `${process.env.REACT_APP_DHARMSHALA_BASEURL}bookings/download/${record.originalData.bookingId}`;
+    
+    try {
+      const response = await fetch(apiUrl);
+      if (!response.ok) throw new Error('Failed to fetch PDF');
+      const blob = await response.blob();
+      const dataUrl = URL.createObjectURL(blob);
+      window.open(dataUrl, '_blank');
+    } catch (error) {
+      console.error('Error fetching PDF:', error);
+      toast.error("Receipt link not available at this moment.");
+    }
+  };
+  
+  const handleWhatsAppClick = (record) => {
+    if (!record.originalData.bookingId) {
+      toast.error("Receipt link not available at this moment");
+    } else {
+      const apiUrl = `${process.env.REACT_APP_DHARMSHALA_BASEURL}bookings/download/${record.originalData.bookingId}`;
+      const message = `Hello ${record.originalData.userDetails.name}, thank you for your booking with Booking ID: ${
+        record.originalData.bookingId
+      }. Here is your receipt: ${apiUrl}`;
+      
+      const phoneNumber = `${
+        record.originalData.userDetails.countryCode?.replace("+", "") || ""
+      }${record.originalData.userDetails.mobileNumber || ""}`;
+  
+      window.open(
+        `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`,
+        "_blank"
+      );
+    }
+  };
 
   const handleEditClick = (item) => {
     history.push({
@@ -115,6 +166,18 @@ const DharmshalaBookingTable = ({
       fixed: "left",
     },
     {
+      title: t("Guest Name"),
+      dataIndex: "guestName",
+      key: "guestName",
+      width: 150,
+    },
+    {
+      title: t("Guest Mobile"),
+      dataIndex: "guestMobile",
+      key: "guestMobile",
+      width: 150,
+    },
+    {
       title: t("Start Date"),
       dataIndex: "startDate",
       key: "startDate",
@@ -162,12 +225,12 @@ const DharmshalaBookingTable = ({
       title: t("Actions"),
       key: "actions",
       fixed: "right",
-      width: 150,
+      width: 250,
       render: (_, record) => (
         <Space size="middle">
           <img
             src={editIcon}
-            width={25}
+            width={30}
             className="cursor-pointer"
             onClick={() => handleEditClick(record)}
             alt="Edit"
@@ -193,6 +256,20 @@ const DharmshalaBookingTable = ({
           onClick={() => handleCheckOutClick(record)}
           alt="Check Out"
         />
+        <img
+            src={whatsappIcon}
+            width={25}
+            className="cursor-pointer"
+            onClick={() => handleWhatsAppClick(record)}
+            alt="WhatsApp"
+          />
+          <img
+            src={downloadIcon}
+            width={20}
+            className="cursor-pointer"
+            onClick={() => handleViewPdfClick(record)}
+            alt="Download"
+          />
         </Space>
       ),
     },
@@ -202,6 +279,8 @@ const DharmshalaBookingTable = ({
     return data.map((item) => ({
       key: item._id,
       bookingId: item.bookingId,
+      guestName: item.userDetails.name,
+      guestMobile: item.userDetails.mobileNumber,
       startDate: item.startDate ? dayjs(item.startDate, "DD-MM-YYYY").format("DD MMM YYYY") : 'N/A',
       endDate: item.endDate ? dayjs(item.endDate, "DD-MM-YYYY").format("DD MMM YYYY") : 'N/A',
       count: item.count,
