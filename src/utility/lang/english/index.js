@@ -623,11 +623,10 @@ export const englishContent = {
   commitment_select_end_date: "Select End Date",
 
   commitment_delete: "Delete Pledge",
-  commitment_sure:
-    "Are you sure you want to permanently delete this commitment ? ",
+  commitment_sure: "Are you sure you want to permanently delete this pledge ? ",
   commitment_not_found: "Pledge Not Found  ",
   commitment_not_click_add_commitment:
-    "To make a new commitment, click 'Add Pledge'.",
+    "To make a new pledge, click 'Add Pledge'.",
   commitment_complete: "Completed",
   commitment_partial: "Partial",
 
