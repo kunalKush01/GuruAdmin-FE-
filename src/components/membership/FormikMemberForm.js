@@ -244,7 +244,7 @@ function FormikMemberForm({
             labelName={t(fieldSchema.title || name)}
             loadOptions={
               enumKey && firstValueResult
-                ? firstValueResult.map((value) => ({
+                ? firstValueResult.filter(value => value !== "").map((value) => ({
                     id: value,
                     name: t(value),
                   }))
