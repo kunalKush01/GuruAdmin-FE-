@@ -821,7 +821,7 @@ function FormikMemberForm({
                 <Plus className="" size={15} strokeWidth={4} />
               </span>
             )}
-            <span>{mode !== "edit" ? "Add" : "Edit"}</span>
+            <span>Save</span>
           </Button>
         )}
       </div>
