@@ -38,3 +38,11 @@ export const updateMembersById = (id, payload) => {
     showToastOnError: false,
   });
 };
+
+export const getMasterByKey = (key) =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.get(`${API_BASE_URL}/master/key/${key}`),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });

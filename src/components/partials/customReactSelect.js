@@ -6,7 +6,7 @@ import styled from "styled-components";
 import "../../assets/scss/viewCommon.scss";
 
 export const CustomReactSelect = ({
-  required,
+  required = false,
   label,
   loadOptions,
   labelKey = "label",
@@ -53,12 +53,14 @@ export const CustomReactSelect = ({
       // backgroundColor: DARK_GREY,
       // borderColor: DARK_BLUE_MUTED,
     }),
-    control: (provided,{isDisabled}) => {
+    control: (provided, { isDisabled }) => {
       return {
         ...provided,
         width: `${props.width ?? "200px"}`,
         color: "grey",
-        backgroundColor: isDisabled ? "#efefef" :`${props.outlined ? "" : "#FFF7E8"}`,
+        backgroundColor: isDisabled
+          ? "#efefef"
+          : `${props.outlined ? "" : "#FFF7E8"}`,
         boxShadow: "none",
         border: `${props.outlined ? "1px solid #FF8744" : "none"}`,
         "&:hover": {

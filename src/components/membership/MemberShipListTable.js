@@ -35,24 +35,29 @@ function MemberShipListTable({
       dataIndex: ["data", "personalInfo", "gender"],
       key: "gender",
       width: 100,
+      render: (text, record) => `${record.data.personalInfo.gender?.name ||"-"}`,
     },
     {
       title: "Marital Status",
       dataIndex: ["data", "personalInfo", "maritalStatus"],
       key: "maritalStatus",
       width: 150,
+      render: (text, record) =>
+        `${record.data.personalInfo.maritalStatus?.name ||"-"}`,
     },
     {
       title: "Membership",
       dataIndex: ["data", "membershipInfo", "membership"],
       key: "membership",
       width: 150,
+      render: (text, record) => `${record.data.membershipInfo.membership?.name ||"-"}`
     },
     {
       title: "Branch",
       dataIndex: ["data", "membershipInfo", "branch"],
       key: "branch",
       width: 120,
+      render: (text, record) => `${record.data.membershipInfo.branch?.name ||"-"}`,
     },
     {
       title: "Phone",
@@ -72,7 +77,7 @@ function MemberShipListTable({
       key: "homeAddress",
       width: 200,
       render: (text, record) =>
-        `${record.data.addressInfo.homeAddress.street}, ${record.data.addressInfo.homeAddress.city}, ${record.data.addressInfo.homeAddress.state}, ${record.data.addressInfo.homeAddress.country}`,
+        `${record.data.addressInfo.homeAddress.street ||"-"}, ${record.data.addressInfo.homeAddress.city?.name ||""}, ${record.data.addressInfo.homeAddress.state?.name ||""}, ${record.data.addressInfo.homeAddress.country?.name  ||""}`,
     },
     {
       title: "Occupation",
