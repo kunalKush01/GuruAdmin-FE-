@@ -186,7 +186,6 @@ export default function BookingForm({
               isOpen={isPaymentModalOpen}
               onClose={() => setIsPaymentModalOpen(false)}
               onSave={handlePaymentSave}
-              bookingId="MASDSF"
               totalDue={!isEditing ? formik.values.totalAmount : formik.values.totalDue}
             />
           </>
