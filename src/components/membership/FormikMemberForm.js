@@ -13,6 +13,15 @@ import uploadIcon from "../../assets/images/icons/file-upload.svg";
 import CustomRadioButton from "../partials/customRadioButton";
 import CustomFieldLocationForDonationUser from "../partials/customFieldLocationForDonationUser";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
+import moment from "moment";
+import { useQuery } from "@tanstack/react-query";
+import { API_BASE_URL } from "../../axiosApi/authApiInstans";
+console.log(
+  "193981982740192381247@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2",
+  API_BASE_URL
+);
+import axios from "axios";
+import { getMasterByKey } from "../../api/membershipApi";
 
 const CustomDatePickerComponent =
   DatePicker.generatePicker(momentGenerateConfig);
@@ -30,6 +39,7 @@ function FormikMemberForm({
   correspondenceCity,
   correspondenceDistrictPincode,
   schema,
+  mode,
   ...props
 }) {
   const { t } = useTranslation();
@@ -41,6 +51,44 @@ function FormikMemberForm({
     }, 1000);
   };
   const [isSameAsHome, setIsSameAsHome] = useState(false);
+  function extractEnumMasters(schemaObject) {
+    let enumMasters;
+
+    function traverse(obj) {
+      if (obj && typeof obj === "object") {
+        if (obj.enumMaster) {
+          enumMasters = obj.enumMaster;
+        }
+        Object.keys(obj).forEach((key) => {
+          if (typeof obj[key] === "object") {
+            traverse(obj[key]);
+          }
+        });
+      }
+    }
+
+    traverse(schemaObject);
+    return enumMasters;
+  }
+  const enumMasters = extractEnumMasters(schema);
+  const masterQuery = useQuery(
+    ["MastersKeys", enumMasters], // Include enumMasters in the query key
+    () => getMasterByKey(enumMasters), // Fetch master data using the key
+    {
+      enabled: !!enumMasters, // Only run the query if enumMasters is not null/undefined
+      keepPreviousData: true, // Keep previous data while fetching new data
+    }
+  );
+
+  const masterItem = useMemo(
+    () => masterQuery?.data ?? [], // Fallback to an empty array if there's no data
+    [masterQuery.data] // Only recalculate when the query data changes
+  );
+  const firstValue = masterItem?.values ? Object.values(masterItem.values) : [];
+  const firstValueResult =
+    firstValue.length > 0 && firstValue[0]?.length > 0 ? firstValue[0] : null;
+
+  console.log(firstValueResult);
 
   const handleCheckboxChange = (e) => {
     setIsSameAsHome(e.target.checked);
@@ -63,6 +111,7 @@ function FormikMemberForm({
       formik.setFieldValue("correspondencePin", "");
     }
   };
+
   // useEffect(() => {
   //   if (isSameAsHome) {
   //     formik.setFieldValue("correspondenceAddLine1", formik.values.addLine1);
@@ -83,14 +132,33 @@ function FormikMemberForm({
   //     formik.setFieldValue("correspondencePin", "");
   //   }
   // }, [isSameAsHome]);
-
   const renderFormField = (name, fieldSchema) => {
     const hasDateFormat = fieldSchema.format === "date";
     const hasNumberFormat = fieldSchema.format === "number";
     const hasEnum = Array.isArray(fieldSchema.enum);
     const hasUrl = fieldSchema.format === "Url";
     const isRequired = fieldSchema.isRequired;
-    // console.log(isRequired);
+    const dateValidation = fieldSchema.dateValidation;
+    const isMultipleUpload = fieldSchema.isMultiple;
+    const enumKey = fieldSchema.enumMaster;
+    // let enumOptions = [];
+
+    // if (enumKey) {
+    //   const values =masterItem&& masterItem?.values ? Object.values(masterItem.values) : [];
+    //   console.log(values)
+    //   enumOptions = values.length > 0
+    //     ? values[0].map(value => ({
+    //         id: value,
+    //         name: t(value),
+    //       }))
+    //     : [];
+    // } else if (hasEnum) {
+    //   enumOptions = fieldSchema.enum.map((value) => ({
+    //     id: value,
+    //     name: t(value),
+    //   }));
+    // }
+
     if (hasDateFormat) {
       return (
         <Col
@@ -101,19 +169,28 @@ function FormikMemberForm({
           className="customtextfieldwrapper"
         >
           <label>
-            {t(fieldSchema.title)}{" "}
+            {t(fieldSchema.title)}
             {isRequired && <span className="text-danger">*</span>}
           </label>
           <CustomDatePickerComponent
             format="DD MMM YYYY"
             onChange={(date) => {
               if (date) {
-                formik.setFieldValue(name, date.format("DD MMM YYYY"));
+                const formattedDate = date.format("DD MMM YYYY");
+                formik.setFieldValue(name, formattedDate);
               } else {
                 formik.setFieldValue(name, "");
               }
             }}
+            value={
+              formik.values[name]
+                ? moment(formik.values[name], "DD MMM YYYY")
+                : ""
+            }
           />
+          {formik.errors[name] && (
+            <div className="text-danger">{formik.errors[name]}</div>
+          )}
         </Col>
       );
     }
@@ -135,6 +212,7 @@ function FormikMemberForm({
             listType="picture"
             customRequest={customRequest}
             style={{ width: "100%" }}
+            maxCount={!isMultipleUpload && 1}
           >
             <AntdButton
               icon={
@@ -164,10 +242,17 @@ function FormikMemberForm({
         >
           <FormikCustomReactSelect
             labelName={t(fieldSchema.title || name)}
-            loadOptions={fieldSchema.enum.map((value) => ({
-              id: value,
-              name: t(value),
-            }))}
+            loadOptions={
+              enumKey && firstValueResult
+                ? firstValueResult.map((value) => ({
+                    id: value,
+                    name: t(value),
+                  }))
+                : fieldSchema.enum.map((value) => ({
+                    id: value,
+                    name: t(value),
+                  }))
+            }
             name={name}
             labelKey="name"
             valueKey="id"
@@ -186,6 +271,7 @@ function FormikMemberForm({
             name={name}
             placeholder={t(`Enter ${fieldSchema.title}`)}
             required={isRequired}
+            value={formik.values?.name || ""}
           />
         </Col>
       );
@@ -213,10 +299,23 @@ function FormikMemberForm({
         return (
           <Col xs={12} sm={6} lg={3} key={name}>
             <CustomDatePickerComponent
-              label={t(fieldSchema.title || name)}
-              name={name}
-              required={isRequired}
+              format="DD MMM YYYY"
+              onChange={(date) => {
+                if (date) {
+                  formik.setFieldValue(name, date.format("DD MMM YYYY"));
+                } else {
+                  formik.setFieldValue(name, "");
+                }
+              }}
+              value={
+                formik.values[name]
+                  ? moment(formik.values[name], "DD MMM YYYY")
+                  : null
+              }
             />
+            {formik.errors[name] && (
+              <div className="text-danger">{formik.errors[name]}</div>
+            )}
           </Col>
         );
       case "object":
@@ -243,27 +342,34 @@ function FormikMemberForm({
   };
 
   const renderSection = useCallback(
-    (sectionKey, sectionSchema) => (
-      <Row key={sectionKey}>
-        <Col xs={12} className="mb-2">
-          <div className="addAction">
-            <Trans i18nKey={sectionSchema["title"]} />
-          </div>
-          <Card>
-            <Row>
-              {sectionSchema && sectionSchema.properties
-                ? Object.keys(sectionSchema.properties).map((fieldKey) =>
-                    renderFormField(
-                      fieldKey,
-                      sectionSchema.properties[fieldKey]
+    (sectionKey, sectionSchema) => {
+      // Check if the section is `familyInfo` and skip rendering it
+      if (sectionKey === "familyInfo") {
+        return null;
+      }
+
+      return (
+        <Row key={sectionKey}>
+          <Col xs={12} className="mb-2">
+            <div className="addAction">
+              <Trans i18nKey={sectionSchema["title"]} />
+            </div>
+            <Card>
+              <Row>
+                {sectionSchema && sectionSchema.properties
+                  ? Object.keys(sectionSchema.properties).map((fieldKey) =>
+                      renderFormField(
+                        fieldKey,
+                        sectionSchema.properties[fieldKey]
+                      )
                     )
-                  )
-                : null}
-            </Row>
-          </Card>
-        </Col>
-      </Row>
-    ),
+                  : null}
+              </Row>
+            </Card>
+          </Col>
+        </Row>
+      );
+    },
     [renderFormField]
   );
 
@@ -654,8 +760,7 @@ function FormikMemberForm({
                           valueKey="id"
                           width
                           disabled={
-                            !formik.values.correspondenceCountry 
-                            || isSameAsHome
+                            !formik.values.correspondenceCountry || isSameAsHome
                           }
                           onChange={(val) => {
                             if (val) {
@@ -685,8 +790,7 @@ function FormikMemberForm({
                             }
                           }}
                           disabled={
-                            !formik.values.correspondenceState 
-                            || isSameAsHome
+                            !formik.values.correspondenceState || isSameAsHome
                           }
                           width
                         />
@@ -751,6 +855,9 @@ function FormikMemberForm({
     correspondenceStates,
     correspondenceCity,
     correspondenceDistrictPincode,
+    isSameAsHome,
+    formik,
+    firstValueResult,
   ]);
   return (
     <Form>
@@ -767,7 +874,7 @@ function FormikMemberForm({
                 <Plus className="" size={15} strokeWidth={4} />
               </span>
             )}
-            <span> Add</span>
+            <span>{mode !== "edit" ? "Add" : "Edit"}</span>
           </Button>
         )}
       </div>

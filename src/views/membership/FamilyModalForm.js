@@ -29,6 +29,7 @@ function FamilyModalForm({
   memberResultData,
   id,
   currentFamilyInfo,
+  familyItemIndex,
 }) {
   const { t } = useTranslation();
   const { Option } = Select;
@@ -36,21 +37,27 @@ function FamilyModalForm({
   const queryClient = useQueryClient();
 
   const relationOptions = [
-    "Brother",
-    "Sister",
-    "Wife",
-    "Husband",
     "Father",
     "Mother",
+    "Spouse",
+    "Son",
+    "Daughter",
+    "Brother",
+    "Sister",
+    "Grandfather",
+    "Grandmother",
+    "Uncle",
+    "Aunt",
+    "Cousin",
+    "Nephew",
+    "Niece",
+    "Father-in-Law",
+    "Mother-in-Law",
+    "Brother-in-Law",
+    "Sister-in-Law",
   ];
 
   const [uploadedFileUrl, setUploadedFileUrl] = useState("");
-  // const customRequest = ({ file, onSuccess, onError }) => {
-  //   setUploadedFileUrl(file);
-  //   setTimeout(() => {
-  //     onSuccess("ok");
-  //   }, 1000);
-  // };
 
   const customRequest = ({ file, onSuccess, onError }) => {
     const reader = new FileReader();
@@ -78,11 +85,11 @@ function FamilyModalForm({
     if (mode === "edit" && currentFamilyInfo) {
       form.setFieldsValue({
         name: currentFamilyInfo?.name || "",
-        dateOfBirth: currentFamilyInfo?.dateOfBirth
-          ? moment(currentFamilyInfo?.dateOfBirth, "DD MMM YYYY")
+        familyMemberDateOfBirth: currentFamilyInfo?.familyMemberDateOfBirth
+          ? moment(currentFamilyInfo.familyMemberDateOfBirth, "YYYY-MM-DD")
           : null,
-        anniversary: currentFamilyInfo?.anniversary
-          ? moment(currentFamilyInfo?.anniversary, "DD MMM YYYY")
+        familyMemberAnniversary: currentFamilyInfo?.familyMemberAnniversary
+          ? moment(currentFamilyInfo.familyMemberAnniversary, "YYYY-MM-DD")
           : null,
         relation: currentFamilyInfo?.relation || "",
         imageUrl: "",
@@ -98,21 +105,18 @@ function FamilyModalForm({
     const updatedFamilyInfo = {
       name: values.name,
       relation: values.relation,
-      dateOfBirth: values.dateOfBirth
-        ? values.dateOfBirth.format("YYYY-MM-DD")
+      familyMemberDateOfBirth: values.familyMemberDateOfBirth
+        ? values.familyMemberDateOfBirth.format("YYYY-MM-DD")
         : null,
-      anniversary: values.anniversary
-        ? values.anniversary.format("YYYY-MM-DD")
+      familyMemberAnniversary: values.familyMemberAnniversary
+        ? values.familyMemberAnniversary.format("YYYY-MM-DD")
         : null,
       imageUrl: uploadedFileUrl || "",
     };
 
     if (mode === "edit" && currentFamilyInfo) {
-      const updatedFamilyInfoList = familyInfo.map((member) => {
-        if (
-          member.name === currentFamilyInfo.name &&
-          member.relation === currentFamilyInfo.relation
-        ) {
+      const updatedFamilyInfoList = familyInfo.map((member, index) => {
+        if (index === familyItemIndex) {
           return { ...member, ...updatedFamilyInfo };
         }
         return member;
@@ -136,12 +140,14 @@ function FamilyModalForm({
         userId: memberResultData.userId,
         data: {
           ...memberResultData.data,
-          familyInfo: [...familyInfo, updatedFamilyInfo],
+          familyInfo: Array.isArray(memberResultData.data.familyInfo)
+            ? [...memberResultData.data.familyInfo, updatedFamilyInfo]
+            : [updatedFamilyInfo],
         },
       };
 
       await updateMembersById(id, addPayload);
-      form.resetFields()
+      form.resetFields();
       queryClient.invalidateQueries(["memberShipProfileData"]);
     }
 
@@ -167,7 +173,7 @@ function FamilyModalForm({
 
         <Row gutter={16}>
           <Col xs={24} sm={12}>
-            <Form.Item label={t("member_dob")} name="dateOfBirth">
+            <Form.Item label={t("member_dob")} name="familyMemberDateOfBirth">
               <CustomDatePickerComponent
                 placeholder={t("member_dob")}
                 style={{ width: "100%" }}
@@ -177,7 +183,10 @@ function FamilyModalForm({
           </Col>
 
           <Col xs={24} sm={12}>
-            <Form.Item label={t("member_anniversary")} name="anniversary">
+            <Form.Item
+              label={t("member_anniversary")}
+              name="familyMemberAnniversary"
+            >
               <CustomDatePickerComponent
                 placeholder={t("member_anniversary")}
                 style={{ width: "100%" }}
@@ -192,9 +201,7 @@ function FamilyModalForm({
             <Form.Item
               label={t("member_family_relation")}
               name="relation"
-              rules={[
-                { required: true, message: t("required_family_relation") },
-              ]}
+              rules={[{ required: true, message: t("required_family_relation") }]}
             >
               <Select placeholder={t("placeHolder_family_relation")}>
                 {relationOptions.map((relation) => (
@@ -223,7 +230,6 @@ function FamilyModalForm({
                     />
                   }
                   style={{ width: "100%" }}
-                  y
                 >
                   {t("upload_profile_image")}
                 </Button>

@@ -58,14 +58,14 @@ function MembershipProfileView() {
   //** Add Family Modal Handle */
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalMode, setModalMode] = useState("add");
-  const [familyItemIndex, setFamilyItemIndex] = useState(null)
+  const [familyItemIndex, setFamilyItemIndex] = useState(null);
   const [currentFamilyInfo, setCurrentFamilyInfo] = useState(null); // Store the family member data
 
-  const openModal = (mode,i,item) => {
+  const openModal = (mode, i, item) => {
     setModalMode(mode);
     setIsModalVisible(true);
-    setFamilyItemIndex(i)
-    setCurrentFamilyInfo(item)
+    setFamilyItemIndex(i);
+    setCurrentFamilyInfo(item);
   };
 
   const items = [
@@ -92,30 +92,36 @@ function MembershipProfileView() {
                           </div>
                         </div>
                         <div className="famRow2">
-                          <div className="me-3">
+                          <div className="rowItem">
                             <span className="memberAdd">Name</span>
                             <p className="memberInfo mb-0">{item.name || ""}</p>
                           </div>
-                          <div className="me-3">
+                          <div className="rowItem">
                             <span className="memberAdd">Relation</span>
                             <p className="memberInfo mb-0">
                               {item.relation || ""}
                             </p>
                           </div>
-                          <div className="me-3">
+                          <div className="rowItem">
                             <span className="memberAdd">Date of Birth</span>
                             <p className="memberInfo mb-0">
-                              {moment(item.dateOfBirth).format("DD MMM YYYY") ||
-                                ""}
+                              {item.familyMemberDateOfBirth
+                                ? moment(item.familyMemberDateOfBirth).format(
+                                    "DD MMM YYYY"
+                                  )
+                                : "-"}
                             </p>
                           </div>
-                          <div className="me-3">
+                          <div className="rowItem">
                             <span className="memberAdd">
                               Date of Anniversary
                             </span>
                             <p className="memberInfo mb-0">
-                              {moment(item.anniversary).format("DD MMM YYYY") ||
-                                ""}
+                              {item.familyMemberAnniversary
+                                ? moment(item.familyMemberAnniversary).format(
+                                    "DD MMM YYYY"
+                                  )
+                                : "-"}
                             </p>
                           </div>
                         </div>
@@ -123,7 +129,7 @@ function MembershipProfileView() {
                       <div className="famRow3">
                         <Button
                           className="editmember"
-                          onClick={() => openModal("edit",i,item)}
+                          onClick={() => openModal("edit", i, item)}
                         >
                           Edit
                         </Button>
@@ -149,10 +155,10 @@ function MembershipProfileView() {
             mode={modalMode}
             initialValues={{
               name: "",
-              dateOfBirth: "",
-              anniversary: "",
+              familyMemberDateOfBirth: "",
+              familyMemberAnniversary: "",
               relation: "",
-              parentPhoto: "", // You can also add image URL if available
+              imageUrl: "", // You can also add image URL if available
             }}
             familyInfo={familyInfo}
             memberData={memberData}
@@ -232,7 +238,7 @@ function MembershipProfileView() {
                 <span className="memberAdd">Branch</span>
                 <p className="memberInfo">
                   {" "}
-                  {memberData ? membershipInfo["branch"] : ""}
+                  {memberData ? membershipInfo["branch"]["name"] : ""}
                 </p>
               </div>
             </div>
@@ -244,12 +250,20 @@ function MembershipProfileView() {
 
   return (
     <div className="formikwrapper">
-      <div className="mb-1">
+      <div className="mb-1 d-flex justify-content-between align-items-center">
         <img
           src={arrowLeft}
           className="me-2  cursor-pointer"
           onClick={() => history.push(`/membership`)}
         />
+        <div>
+          <Button
+            color="primary"
+            onClick={() => history.push(`/member/editMember/${id}`)}
+          >
+            Edit
+          </Button>
+        </div>
       </div>
       <Row gutter={[16, 16]}>
         <Col xs={24} sm={12} md={6}>
@@ -272,7 +286,7 @@ function MembershipProfileView() {
             </div>
             <Card className="memberProfileCard d-flex flex-column align-items-center justify-content-center">
               <p className="card-text-1">
-                {memberData ? membershipInfo["membership"] : ""}
+                {memberData ? membershipInfo["membership"]["name"] : ""}
               </p>
               <p className="card-text-2">
                 {memberData ? membershipInfo["memberShipMemberNumber"] : ""}
@@ -284,7 +298,7 @@ function MembershipProfileView() {
             <div className="info-container">
               <div className="info-item">
                 <img src={personIcon} alt="Person Icon" />{" "}
-                <span>{memberData ? personalInfo["gender"] : ""}</span>
+                <span>{memberData ? personalInfo["gender"]["name"] : ""}</span>
               </div>
               <div className="info-item">
                 <img src={businessIcon} alt="Business Icon" />{" "}
@@ -300,7 +314,9 @@ function MembershipProfileView() {
               </div>
               <div className="info-item">
                 <img src={ringIcon} alt="Ring Icon" />{" "}
-                <span>{memberData ? personalInfo["maritalStatus"] : ""}</span>
+                <span>
+                  {memberData ? personalInfo["maritalStatus"]["name"] : ""}
+                </span>
               </div>
               <div className="info-item">
                 <img src={phoneIcon} alt="Phone Icon" />{" "}
@@ -335,9 +351,9 @@ function MembershipProfileView() {
                       ? [
                           addressInfo.homeAddress.street || "",
                           addressInfo.homeAddress.district || "",
-                          addressInfo.homeAddress.city || "",
-                          addressInfo.homeAddress.state || "",
-                          addressInfo.homeAddress.country || "",
+                          addressInfo.homeAddress.city["name"] || "",
+                          addressInfo.homeAddress.state["name"] || "",
+                          addressInfo.homeAddress.country["name"] || "",
                         ]
                           .filter((part) => part)
                           .join(", ")
@@ -353,9 +369,10 @@ function MembershipProfileView() {
                       ? [
                           addressInfo.correspondenceAddress.street || "",
                           addressInfo.correspondenceAddress.district || "",
-                          addressInfo.correspondenceAddress.city || "",
-                          addressInfo.correspondenceAddress.state || "",
-                          addressInfo.correspondenceAddress.country || "",
+                          addressInfo.correspondenceAddress.city["name"] || "",
+                          addressInfo.correspondenceAddress.state["name"] || "",
+                          addressInfo.correspondenceAddress.country["name"] ||
+                            "",
                         ]
                           .filter((part) => part)
                           .join(", ")

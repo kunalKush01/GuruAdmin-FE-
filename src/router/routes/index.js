@@ -536,6 +536,13 @@ const Routes = [
     subPermission: WRITE,
   },
   {
+    path: "/member/editMember/:id",
+    component: lazy(() => import("../../views/membership/AddMemberForm.js")),
+    exact: true,
+    type: "membership",
+    subPermission: EDIT,
+  },
+  {
     path: "/configuration/cattle-breed",
     component: lazy(() =>
       import("../../views/cattles-management/cattle-breed/index.js")

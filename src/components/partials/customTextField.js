@@ -5,7 +5,7 @@ import { InputGroup } from "reactstrap";
 import "../../assets/scss/common.scss";
 
 export default function CustomTextField({
-  required,
+  required = false,
   label,
   type = "text",
   placeholder,

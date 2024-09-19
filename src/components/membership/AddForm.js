@@ -14,19 +14,30 @@ export default function AddForm({
   initialValues,
   plusIconDisable = false,
   validationSchema,
+  mode,
+  id,
 }) {
   const history = useHistory();
   const [loading, setLoading] = useState(false);
   const queryClient = useQueryClient();
   const trustId = localStorage.getItem("trustId");
   const loggedInUser = useSelector((state) => state.auth.userDetail);
-
+  const [editMode, setEditMode] = useState(false);
+  useEffect(() => {
+    if (mode == "edit") {
+      setEditMode(true);
+    } else {
+      setEditMode(false);
+    }
+  }, [mode == "edit"]);
   const categoryMutation = useMutation({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
       if (!data.error) {
         queryClient.invalidateQueries(["memberShipListData"]);
-        history.push("/membership");
+        mode == "add"
+          ? history.push("/membership")
+          : history.push(`/member/profile/${id}`);
         setLoading(false);
         onClose();
       } else if (data?.error) {
@@ -55,11 +66,11 @@ export default function AddForm({
     setCountry(formattedCountry);
     setCorrespondaceCountry(formattedCountry);
   }, []);
-
   const memberShipQuery = useQuery(
     ["memberShipSchema"],
     () => getMemberSchema(),
     {
+      enabled: editMode,
       keepPreviousData: true,
     }
   );
@@ -69,28 +80,7 @@ export default function AddForm({
     [memberShipQuery]
   );
   const memberSchema = memberSchemaItem ? memberSchemaItem.memberSchema : {};
-  const generateInitialValues = (schema) => {
-    if (!schema || typeof schema !== "object") {
-      return {};
-    }
-    let initialValues = {};
-    Object.keys(schema).forEach((key) => {
-      const field = schema[key];
-      if (field.type === "object" && field.properties) {
-        Object.keys(field.properties).forEach((key) => {
-          if (key == "correspondenceAddress" || key == "homeAddress") {
-            return;
-          }
-          initialValues[key] = "";
-        });
-      }
-    });
 
-    return initialValues;
-  };
-  const dynamicInitialValues = memberSchema
-    ? generateInitialValues(memberSchema.properties)
-    : null;
   const generatePayloadFromForm = (schema, formData) => {
     if (!schema || typeof schema !== "object") {
       return {};
@@ -107,9 +97,9 @@ export default function AddForm({
           street:
             `${formData.correspondenceAddLine1} ${formData.correspondenceAddLine2}` ||
             "",
-          state: formData.correspondenceState?.name || "",
-          city: formData.correspondenceCity?.name || "",
-          country: formData.correspondenceCountry?.name || "",
+          state: formData.correspondenceState || "",
+          city: formData.correspondenceCity || "",
+          country: formData.correspondenceCountry || "",
           district: formData.correspondenceDistrict || "",
           pincode: formData.correspondencePin || "",
         };
@@ -119,28 +109,32 @@ export default function AddForm({
         payload[key] = {
           ...formValue, // Keep any other fields inside homeAddress
           street: `${formData.addLine1} ${formData.addLine2}` || "",
-          state: formData.state?.name || "",
-          city: formData.city?.name || "",
-          country: formData.country?.name || "",
+          state: formData.state || "",
+          city: formData.city || "",
+          country: formData.country || "",
           district: formData.district || "",
           pincode: formData.pin || "",
         };
-      } else if (key === "familyInfo") {
-        payload[key] = [
-          {
-            name: formData.name || "",
-            relation: formData.relation || "",
-            familyMemberAnniversary: formData.familyMemberAnniversary || "",
-            familyMemberDateOfBirth: formData.familyMemberDateOfBirth || "",
-          },
-        ];
-      } else if (
-        typeof formValue === "object" &&
-        formValue !== null &&
-        formValue.name
-      ) {
-        payload[key] = formValue.name;
-      } else if (field.type === "object" && field.properties) {
+      } 
+      else if (key === "familyInfo") {
+        return
+        // payload[key] = [
+        //   {
+        //     name: formData.name || "",
+        //     relation: formData.relation || "",
+        //     familyMemberAnniversary: formData.familyMemberAnniversary || "",
+        //     familyMemberDateOfBirth: formData.familyMemberDateOfBirth || "",
+        //   },
+        // ];
+      }
+      //  else if (
+      //   typeof formValue === "object" &&
+      //   formValue !== null &&
+      //   formValue.name
+      // ) {
+      //   payload[key] = formValue;
+      // }
+      else if (field.type === "object" && field.properties) {
         payload[key] = generatePayloadFromForm(field.properties, formData);
       } else if (
         field.type === "array" &&
@@ -154,16 +148,12 @@ export default function AddForm({
         payload[key] = formValue !== undefined ? formValue : "";
       }
     });
-
     return payload;
   };
   return (
     <div className="FormikWrapper">
       <Formik
-        initialValues={{
-          ...initialValues,
-          ...dynamicInitialValues,
-        }}
+        initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={(formData) => {
           const payload = {
@@ -487,6 +477,7 @@ export default function AddForm({
               correspondenceCountry={correspondenceCountry}
               correspondenceCity={correspondenceCity}
               correspondenceDistrictPincode={correspondenceDistrictPincode}
+              mode={mode}
             />
           );
         }}
