@@ -27,11 +27,6 @@ function MemberShipListView() {
       },
     }
   );
-  // useEffect(() => {
-  //   if (success) {
-  //     queryClient.invalidateQueries(["membersListData"]);
-  //   }
-  // }, [success, queryClient]);
   return (
     <div className="listviewwrapper">
       <Helmet>
@@ -62,10 +57,8 @@ function MemberShipListView() {
 
             <input
               type="file"
-              //   ref={importFileRef}
               accept=""
               className="d-none"
-              //   onChange={handleImportFile}
             />
           </div>
         </div>

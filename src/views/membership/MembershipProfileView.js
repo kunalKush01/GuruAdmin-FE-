@@ -59,7 +59,7 @@ function MembershipProfileView() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalMode, setModalMode] = useState("add");
   const [familyItemIndex, setFamilyItemIndex] = useState(null);
-  const [currentFamilyInfo, setCurrentFamilyInfo] = useState(null); // Store the family member data
+  const [currentFamilyInfo, setCurrentFamilyInfo] = useState(null);
 
   const openModal = (mode, i, item) => {
     setModalMode(mode);
@@ -158,7 +158,7 @@ function MembershipProfileView() {
               familyMemberDateOfBirth: "",
               familyMemberAnniversary: "",
               relation: "",
-              imageUrl: "", // You can also add image URL if available
+              imageUrl: "",
             }}
             familyInfo={familyInfo}
             memberData={memberData}
@@ -274,7 +274,6 @@ function MembershipProfileView() {
                   upload && upload.memberPhoto ? upload.memberPhoto : avatarIcon
                 }
                 className="membershipProfileImg"
-                // style={{ border: upload == undefined  && "none !important" }}
                 alt="Profile"
               />
               <p className="memberName">

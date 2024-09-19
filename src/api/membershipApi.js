@@ -42,7 +42,7 @@ export const updateMembersById = (id, payload) => {
 export const getMasterByKey = (key) =>
   callApi({
     requestFunction: (axios) =>
-      axios.get(`${API_BASE_URL}/master/key/${key}`),
+      axios.get(`${API_BASE_URL}/master/get-masters-by-key/${key}`),
     showToastOnSuccess: false,
     showToastOnError: false,
   });

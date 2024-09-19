@@ -32,7 +32,6 @@ export default function AddMemberForm() {
     }
   );
   const memberResultData = data ? data?.member : null;
-  // console.log(memberResultData);
   const handleCreateDonation = async (payload) => {
     if (mode == "edit") {
       return updateMembersById(id, payload);
@@ -66,7 +65,6 @@ export default function AddMemberForm() {
   const createYupSchema = (schema) => {
     const shape = {};
     if (schema) {
-      // Iterate through each section in the schema
       Object.keys(schema.properties).forEach((section) => {
         if (section === "addressInfo") {
           return;
@@ -81,7 +79,6 @@ export default function AddMemberForm() {
               `${fieldInfo.title} is required`
             );
 
-            // Add additional validation based on field type if needed (e.g., date, email)
             if (fieldInfo.format === "email") {
               shape[field] = Yup.string()
                 .email("Invalid email format")
@@ -102,6 +99,7 @@ export default function AddMemberForm() {
   };
   const validate = useMemo(() => createYupSchema(memberSchema), [memberSchema]);
   const combinedValidationSchema = staticValidationSchema.concat(validate);
+
   //**initial values generation */
   const generateInitialValues = (schema, memberResultData) => {
     const editMemberData = memberResultData && memberResultData?.data;
@@ -122,7 +120,6 @@ export default function AddMemberForm() {
         }
       });
     } else if (mode === "edit" && editMemberData) {
-      // Generate initial values for edit mode
       Object.keys(editMemberData).forEach((key) => {
         const field = editMemberData[key];
 
@@ -132,7 +129,6 @@ export default function AddMemberForm() {
             const homeSplitValue = homeLine1.split(" ");
             const correspondaceLine1 = field.correspondenceAddress?.street;
             const correspondaceSplitValue = correspondaceLine1.split(" ");
-            // Handle addressInfo specifically
             initialValues["addLine1"] = homeSplitValue[0] || "";
             initialValues["addLine2"] = homeSplitValue.slice(1).join(" ") || "";
             initialValues["city"] = field.homeAddress?.city || "";
@@ -140,7 +136,6 @@ export default function AddMemberForm() {
             initialValues["state"] = field.homeAddress?.state || "";
             initialValues["country"] = field.homeAddress?.country || "";
             initialValues["pin"] = field.homeAddress?.pincode || "";
-            // initialValues["pin"] = field.homeAddress?.pin || "";
 
             initialValues["correspondenceAddLine1"] =
               correspondaceSplitValue[0] || "";
@@ -157,17 +152,6 @@ export default function AddMemberForm() {
             initialValues["correspondenceDistrict"] =
               field.correspondenceAddress?.district || "";
           }
-          //  else if (key === "familyInfo") {
-          //   return;
-          //   // Handle familyInfo specifically
-          //   initialValues["familyInfo"] = field.map((familyMember) => ({
-          //     name: familyMember.name || "",
-          //     relation: familyMember.relation || "",
-          //     dateOfBirth: familyMember.dateOfBirth || "",
-          //     anniversary: familyMember.anniversary || "",
-          //     imageUrl: familyMember.imageUrl || "",
-          //   }));
-          // }
           else {
             // Handle other objects
             Object.keys(field).forEach((fieldKey) => {
