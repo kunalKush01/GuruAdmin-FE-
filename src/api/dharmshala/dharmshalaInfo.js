@@ -216,7 +216,6 @@ export const deleteDharmshalaBooking = (bookingId) =>
   });
 
   export const updateDharmshalaBooking = (payload) => {
-    console.log("Update Booking Payload:", payload);
     return callDharmshalaApi({
       requestFunction: (axios) => axios.put(`bookings/${payload.bookingId}`, payload),
     });
@@ -281,6 +280,12 @@ export const getDharmshalaBookingList = () =>
       showToastOnError: false,
     });
 
+  export const downlaodDharmshalaReceipt = (bookingId) =>
+    callDharmshalaApi({
+      requestFunction: (axios) => axios.get(`bookings/download/${bookingId}`),
+      showToastOnSuccess: false,
+      showToastOnError: false,
+    });
 
   //Feedback
 
