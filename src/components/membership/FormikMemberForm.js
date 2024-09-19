@@ -16,11 +16,6 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import moment from "moment";
 import { useQuery } from "@tanstack/react-query";
 import { API_BASE_URL } from "../../axiosApi/authApiInstans";
-console.log(
-  "193981982740192381247@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2",
-  API_BASE_URL
-);
-import axios from "axios";
 import { getMasterByKey } from "../../api/membershipApi";
 
 const CustomDatePickerComponent =
@@ -88,8 +83,6 @@ function FormikMemberForm({
   const firstValueResult =
     firstValue.length > 0 && firstValue[0]?.length > 0 ? firstValue[0] : null;
 
-  console.log(firstValueResult);
-
   const handleCheckboxChange = (e) => {
     setIsSameAsHome(e.target.checked);
     if (e.target.checked) {
@@ -111,27 +104,6 @@ function FormikMemberForm({
       formik.setFieldValue("correspondencePin", "");
     }
   };
-
-  // useEffect(() => {
-  //   if (isSameAsHome) {
-  //     formik.setFieldValue("correspondenceAddLine1", formik.values.addLine1);
-  //     formik.setFieldValue("correspondenceAddLine2", formik.values.addLine2);
-  //     formik.setFieldValue("correspondenceCountry", formik.values.country);
-  //     formik.setFieldValue("correspondenceState", formik.values.state);
-  //     formik.setFieldValue("correspondenceCity", formik.values.city);
-  //     formik.setFieldValue("correspondenceDistrict", formik.values.district);
-  //     formik.setFieldValue("correspondencePin", formik.values.pin);
-  //     formik.setFieldValue("correspondenceLocation", "");
-  //   } else {
-  //     formik.setFieldValue("correspondenceAddLine1", "");
-  //     formik.setFieldValue("correspondenceAddLine2", "");
-  //     formik.setFieldValue("correspondenceCountry", "");
-  //     formik.setFieldValue("correspondenceState", "");
-  //     formik.setFieldValue("correspondenceCity", "");
-  //     formik.setFieldValue("correspondenceDistrict", "");
-  //     formik.setFieldValue("correspondencePin", "");
-  //   }
-  // }, [isSameAsHome]);
   const renderFormField = (name, fieldSchema) => {
     const hasDateFormat = fieldSchema.format === "date";
     const hasNumberFormat = fieldSchema.format === "number";
@@ -141,23 +113,6 @@ function FormikMemberForm({
     const dateValidation = fieldSchema.dateValidation;
     const isMultipleUpload = fieldSchema.isMultiple;
     const enumKey = fieldSchema.enumMaster;
-    // let enumOptions = [];
-
-    // if (enumKey) {
-    //   const values =masterItem&& masterItem?.values ? Object.values(masterItem.values) : [];
-    //   console.log(values)
-    //   enumOptions = values.length > 0
-    //     ? values[0].map(value => ({
-    //         id: value,
-    //         name: t(value),
-    //       }))
-    //     : [];
-    // } else if (hasEnum) {
-    //   enumOptions = fieldSchema.enum.map((value) => ({
-    //     id: value,
-    //     name: t(value),
-    //   }));
-    // }
 
     if (hasDateFormat) {
       return (
@@ -373,14 +328,6 @@ function FormikMemberForm({
     [renderFormField]
   );
 
-  // const formSections = useMemo(() => {
-  //   if (schema && schema.properties) {
-  //     return Object.keys(schema.properties).map((sectionKey) =>
-  //       renderSection(sectionKey, schema.properties[sectionKey])
-  //     );
-  //   }
-  //   return null;
-  // }, [schema, renderSection]);
   const formSections = useMemo(() => {
     if (schema && schema.properties) {
       return Object.keys(schema.properties)

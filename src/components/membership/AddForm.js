@@ -118,22 +118,7 @@ export default function AddForm({
       } 
       else if (key === "familyInfo") {
         return
-        // payload[key] = [
-        //   {
-        //     name: formData.name || "",
-        //     relation: formData.relation || "",
-        //     familyMemberAnniversary: formData.familyMemberAnniversary || "",
-        //     familyMemberDateOfBirth: formData.familyMemberDateOfBirth || "",
-        //   },
-        // ];
       }
-      //  else if (
-      //   typeof formValue === "object" &&
-      //   formValue !== null &&
-      //   formValue.name
-      // ) {
-      //   payload[key] = formValue;
-      // }
       else if (field.type === "object" && field.properties) {
         payload[key] = generatePayloadFromForm(field.properties, formData);
       } else if (
