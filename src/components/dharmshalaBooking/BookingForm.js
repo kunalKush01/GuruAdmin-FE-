@@ -135,6 +135,9 @@ export default function BookingForm({
             totalPaid: bookingData.totalPaid,
             totalDue: bookingData.totalDue,
           },
+          amountPaid: paymentDetails.amount,
+          paymentDetails,
+          security: bookingData.security,
         };
 
         let bookingResponse;
@@ -143,50 +146,11 @@ export default function BookingForm({
           ...bookingPayload,
           bookingId: bookingData.bookingId, 
         });
+        history.push("/booking/info");
       } else {
         bookingResponse = await createDharmshalaBooking(bookingPayload);
+        history.push("/booking/info");
       }
-        
-        if (bookingResponse && !bookingResponse.error) {
-          const existingPayments = Array.isArray(bookingData.payments) ? bookingData.payments : [];
-          const paymentPayload = {
-            paymentId: bookingData.paymentId,
-            bookingId: bookingResponse._id,
-            totalAmount: {
-              roomrent: bookingData.roomRent,
-              security: bookingData.security
-            },
-            currency: "INR",
-            payments: [
-              ...existingPayments,
-              {
-                type: "deposit",
-                amount: paymentDetails.amount,
-                date: new Date().toISOString(),
-                transactionId: paymentDetails.transactionId,
-                remarks: paymentDetails.remark,
-                method: paymentDetails.mode
-              }
-            ],
-            status: "pending"
-          };
-
-          let paymentResponse;
-
-          if (bookingData.paymentId) {
-            paymentResponse = await updatePayment(paymentPayload);
-          } else {
-            paymentResponse = await createPayment(paymentPayload);
-          }
-
-          if (paymentResponse && !paymentResponse.error) {
-            history.push("/booking/info");
-          } else {
-            console.error("Error in payment creation:", paymentResponse.error);
-          }
-        } else {
-          console.error("Error in booking creation:", bookingResponse.error);
-        }
       } catch (error) {
         console.error("Error creating booking and payment:", error);
       } finally {
@@ -200,34 +164,35 @@ export default function BookingForm({
     <FormWrapper className="FormikWrapper">
       {!masterloadOptionQuery.isLoading && (
         <Formik
-          initialValues={initialValues}
-          onSubmit={handleCreateBooking}
-        >
-          {(formik) => (
+        initialValues={initialValues}
+        onSubmit={handleCreateBooking}
+      >
+        {(formik) => (
+          <>
             <FormWithoutFormikForBooking
               formik={formik}
               masterloadOptionQuery={masterloadOptionQuery}
               loading={loading}
               article={toggleState}
               setArticle={setToggleState}
-              countryFlag={initialValues?.countryCode}
-              paidDonation={initialValues?.SelectedUser?.id}
-              // payDonation={payDonation}
-              // getCommitmentMobile={getCommitmentMobile}
+              countryFlag={formik.values.countryCode}
+              paidDonation={formik.values.SelectedUser?.id}
               plusIconDisable={plusIconDisable}
               showPrompt={showPrompt}
               buttonName={buttonName}
               isEditing={isEditing}
             />
-          )}
-        </Formik>
+            <PaymentModal
+              isOpen={isPaymentModalOpen}
+              onClose={() => setIsPaymentModalOpen(false)}
+              onSave={handlePaymentSave}
+              totalDue={!isEditing ? formik.values.totalAmount : formik.values.totalDue}
+            />
+          </>
+        )}
+      </Formik>
+      
       )}
-      <PaymentModal
-        isOpen={isPaymentModalOpen}
-        onClose={() => setIsPaymentModalOpen(false)}
-        onSave={handlePaymentSave}
-        bookingId="MASDSF" 
-      />
     </FormWrapper>
   );
 }
