@@ -18,8 +18,8 @@ import { handleExport } from "../../../utility/utils/exportTabele";
 import RoomTypeInfoTable from "./table";
 import { ChangeCategoryType } from "../../../components/partials/categoryDropdown";
 import { Helmet } from "react-helmet";
-import {RoomTypeInfo} from "../dharmshalaStyles"
-
+import { RoomTypeInfo } from "../dharmshalaStyles";
+import { Table } from "antd";
 
 const RoomTypesInfo = () => {
   const history = useHistory();
@@ -72,18 +72,13 @@ const RoomTypesInfo = () => {
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
 
   const roomTypeList = useQuery(
-    [
-      "roomTypeList",
-      pagination?.page,
-      selectedLang.id,
-      searchBarValue,
-    ],
+    ["roomTypeList", pagination?.page, selectedLang.id, searchBarValue],
     () =>
       getRoomTypeList({
         ...pagination,
         search: searchBarValue,
         languageId: selectedLang.id,
-      }).then(data => {
+      }).then((data) => {
         return data;
       })
   );
@@ -102,12 +97,42 @@ const RoomTypesInfo = () => {
     let filteredData = roomTypeListData;
     if (searchBarValue && searchBarValue.length >= 3) {
       filteredData = filteredData.filter((item) =>
-        item.name.toLowerCase().startsWith(searchBarValue.toLowerCase().slice(0, 3))
+        item.name
+          .toLowerCase()
+          .startsWith(searchBarValue.toLowerCase().slice(0, 3))
       );
     }
     return filteredData;
-    
   }, [roomTypeListData, searchBarValue]);
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      width:100,
+      fixed:"left"
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+      width:120,
+    },
+    {
+      title: "Capacity",
+      dataIndex: "capacity",
+      key: "capacity",
+      width:80,
+    },
+    {
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
+      width:60,
+      fixed:"right",
+      render: (price) => `₹${price}`, // Format price with currency symbol
+    },
+  ];
 
   return (
     <RoomTypeInfo>
@@ -135,8 +160,6 @@ const RoomTypesInfo = () => {
                 <Trans i18nKey={"roomtype_add"} />
               </span>
             </Button>
-
-            
           </div>
         </div>
         <div style={{ height: "10px" }}>
@@ -155,25 +178,40 @@ const RoomTypesInfo = () => {
             <If
               condition={
                 !roomTypeList.isLoading &&
-                filteredroomTypeListData.length>0 &&
+                filteredroomTypeListData.length > 0 &&
                 roomTypeListData.length != 0 &&
                 !roomTypeList.isFetching
               }
               disableMemo
             >
               <Then>
-                <RoomTypeInfoTable
+                <Table
+                  className="donationListTable"
+                  columns={columns}
+                  scroll={{
+                    x: 1500,
+                    y: 400,
+                  }}
+                  sticky={{
+                    offsetHeader: 64,
+                  }}
+                  dataSource={roomTypeListData}
+                  rowKey="_id" // Ensure unique row key
+                />
+                {/* <RoomTypeInfoTable
                   data={filteredroomTypeListData}
                   height="160px"
                   currentFilter={routFilter}
                   currentPage={routPagination}
                   isMobileView={isMobileView}
-                />
+                /> */}
               </Then>
               <Else>
                 <If
                   condition={
-                    !roomTypeList.isLoading || filteredroomTypeListData.length===0 || roomTypeListData.length == 0
+                    !roomTypeList.isLoading ||
+                    filteredroomTypeListData.length === 0 ||
+                    roomTypeListData.length == 0
                   }
                   disableMemo
                 >
