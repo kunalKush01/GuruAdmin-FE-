@@ -40,6 +40,8 @@ export const exportAllDonation = (payload) =>
 export const importDonationFile = (payload) =>
   callApi({
     requestFunction: (axios) => axios.post(`donation/import-file`, payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
   });
 
 export const getAllPaidDonations = (payload) =>

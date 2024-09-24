@@ -20,7 +20,8 @@ import "../../assets/scss/common.scss";
 import { importDonationFile } from "../../api/donationApi";
 import { useQueryClient } from "@tanstack/react-query";
 import { importCommitmentFile } from "../../api/commitmentApi";
-function SuspenseImportForm({ onClose, open, tab }) {
+import { useHistory } from "react-router-dom";
+function SuspenseImportForm({ onClose, open, tab, setShowHistory }) {
   const targetFields = [
     "Transaction Id",
     "Transaction Date",
@@ -30,7 +31,7 @@ function SuspenseImportForm({ onClose, open, tab }) {
     "Mode Of Payment",
   ];
   const { t } = useTranslation();
-
+  const history = useHistory();
   const [loading, setLoading] = useState(false);
   const [sourceFields, setSourceFields] = useState([]);
   const [mapping, setMapping] = useState({});
@@ -180,19 +181,25 @@ function SuspenseImportForm({ onClose, open, tab }) {
           upload_type: "Suspense",
         };
         await createImport(payload);
+        await queryClient.invalidateQueries("suspenseData");
+        await queryClient.refetchQueries("suspenseData");
+        setShowHistory(true);
       } else if (tab == "Donation") {
         const formData = new FormData();
         formData.append("file", file);
         formData.append("upload_type", "Donation");
         await importDonationFile(formData);
+        await queryClient.invalidateQueries("donations");
+        await queryClient.refetchQueries("donations");
       } else if (tab == "Pledge") {
         const formData = new FormData();
         formData.append("file", file);
         formData.append("upload_type", "Pledge");
         await importCommitmentFile(formData);
+        await queryClient.invalidateQueries("Commitments");
+        await queryClient.refetchQueries("Commitments");
       }
 
-      queryClient.invalidateQueries(["donations"]);
       setSourceFields([]);
       setMapping({});
       setFile(null);
@@ -251,7 +258,11 @@ function SuspenseImportForm({ onClose, open, tab }) {
                   </Col>
                 )}
                 <Col xs={12} sm={12} md={tab == "Suspense" ? 12 : 6}>
-                  <Upload {...uploadProps} maxCount={1}>
+                  <Upload
+                    {...uploadProps}
+                    maxCount={1}
+                    showUploadList={file == null ? false : true}
+                  >
                     <AntdButton
                       className="uploadBtn"
                       icon={
