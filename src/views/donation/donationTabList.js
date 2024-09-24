@@ -9,7 +9,16 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
-import { Dropdown, Form, Space, Tabs, DatePicker, Input, Modal } from "antd";
+import {
+  Dropdown,
+  Form,
+  Space,
+  Tabs,
+  DatePicker,
+  Input,
+  Modal,
+  Select,
+} from "antd";
 import {
   getAllCategories,
   getAllMasterCategories,
@@ -181,7 +190,7 @@ export default function Donation() {
       const formData = new FormData();
       formData.append("file", file);
       await importDonationFile(formData);
-      queryClient.invalidateQueries(["donations"]);
+      queryClient.invalidateQueries("donations");
     }
   };
 
@@ -234,6 +243,9 @@ export default function Donation() {
       };
 
       await addSuspense(payload);
+      
+      queryClient.invalidateQueries("suspenseData");
+      // await queryClient.refetchQueries("suspenseData");
       setSuccess(true);
       form.resetFields();
       setIsAddModalVisible(false);
@@ -250,6 +262,16 @@ export default function Donation() {
       ? queryClient.invalidateQueries(["suspenseData"])
       : queryClient.invalidateQueries(["suspenseDataHistory"]);
   };
+  const modeOfPaymentOptions = [
+    { value: "", label: "Select Option" },
+    { value: "Cash", label: "Cash" },
+    { value: "UPI", label: "UPI" },
+    { value: "online", label: "Online" },
+    { value: "Cheque", label: "Cheque" },
+    { value: "Credit Card", label: "Credit Card" },
+    { value: "Debit Card", label: "Debit Card" },
+    { value: "Bank Transfer", label: "Bank Transfer" },
+  ];
   // Donation split tab
   const items = [
     {
@@ -678,7 +700,13 @@ export default function Donation() {
                       },
                     ]}
                   >
-                    <Input />
+                    <Select>
+                      {modeOfPaymentOptions.map((option) => (
+                        <Select.Option key={option.value} value={option.value}>
+                          {option.label}
+                        </Select.Option>
+                      ))}
+                    </Select>
                   </Form.Item>
 
                   <Form.Item>
@@ -720,7 +748,12 @@ export default function Donation() {
           onChange={handleTabChange}
         />
       </div>
-      <SuspenseImportForm onClose={onClose} open={open} tab={activeTab} />
+      <SuspenseImportForm
+        onClose={onClose}
+        open={open}
+        tab={activeTab}
+        setShowHistory={setShowHistory}
+      />
     </div>
   );
 }
