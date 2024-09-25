@@ -3,7 +3,7 @@ import React from "react";
 import { CustomReactSelect } from "./customReactSelect";
 import { Trans } from "react-i18next";
 
-export default function FormikCustomReactSelect({ loadOptions, ...props }) {
+export default function FormikCustomReactSelect({ loadOptions,required, ...props }) {
   const [field, meta, helpers] = useField(props);
 
   return (
@@ -14,6 +14,7 @@ export default function FormikCustomReactSelect({ loadOptions, ...props }) {
         placeholder={props.placeholder}
         value={field.value}
         {...props}
+        required={required}
       />
       <div classname="reactselectlabel">
         {meta.error && meta.touched && (
