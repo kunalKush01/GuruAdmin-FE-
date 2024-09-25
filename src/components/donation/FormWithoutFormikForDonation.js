@@ -442,6 +442,7 @@ export default function FormWithoutFormikForDonation({
                       { value: "", label: "Select Option" },
                       { value: "Cash", label: "Cash" },
                       { value: "UPI", label: "UPI" },
+                      { value: "online", label: "Online" },
                       { value: "Cheque", label: "Cheque" },
                       { value: "Credit Card", label: "Credit Card" },
                       { value: "Debit Card", label: "Debit Card" },

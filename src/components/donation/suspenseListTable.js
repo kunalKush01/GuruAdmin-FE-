@@ -1,4 +1,14 @@
-import { Table, Button, Space, Modal, Input, Form, DatePicker } from "antd";
+import {
+  Table,
+  Button,
+  Space,
+  Modal,
+  Input,
+  Form,
+  DatePicker,
+  Select,
+  Tooltip,
+} from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -9,10 +19,12 @@ import {
 } from "../../api/suspenseApi";
 import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
+import exchangeIcon from "../../assets/images/icons/account-donation.svg";
 import Swal from "sweetalert2";
 import confirmationIcon from "../../assets/images/icons/news/conformationIcon.svg";
 import { useTranslation } from "react-i18next";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
+import { useHistory } from "react-router-dom";
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 function SuspenseListTable({ success }) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -21,8 +33,16 @@ function SuspenseListTable({ success }) {
   const [editingRecord, setEditingRecord] = useState(null);
   const [form] = Form.useForm();
   const queryClient = useQueryClient();
+  const history = useHistory();
   const { t } = useTranslation();
-
+  const [categoryTypeName, setCategoryTypeName] = useState("All");
+  const [subCategoryTypeName, setSubCategoryTypeName] = useState("All");
+  const [dropDownName, setdropDownName] = useState("dashboard_monthly");
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 10,
+  });
+  const [activeTab, setActiveTab] = useState("Donation");
   const { data, isLoading } = useQuery(
     ["suspenseData", currentPage, pageSize],
     () => getAllSuspense(currentPage, pageSize),
@@ -101,6 +121,22 @@ function SuspenseListTable({ success }) {
       },
     });
   };
+  const handleDonorMapped = (record) => {
+    const params = new URLSearchParams({
+      page: pagination.page,
+      category: categoryTypeName,
+      subCategory: subCategoryTypeName,
+      filter: dropDownName,
+      type: activeTab,
+      dateTime: record.transactionDate,
+      remark: record.bankNarration,
+      amount: record.amount,
+      sId: record._id,
+      donorMapped: record.donorMapped,
+      modeOfPayment: record.modeOfPayment,
+    }).toString();
+    history.push(`/donation/add?${params}`);
+  };
 
   const columns = [
     {
@@ -108,31 +144,45 @@ function SuspenseListTable({ success }) {
       dataIndex: "transactionDate",
       key: "transactionDate",
       render: (text) => (text ? moment(text).format("DD-MMM-YYYY HH:mm") : "-"),
-      // fixed:"left",
+      width: 100,
+      fixed:"left",
     },
     {
       title: t("bankNarration"),
       dataIndex: "bankNarration",
       key: "bankNarration",
+      render: (text) =>( <div className="">{text}</div>),
+      width: 400,
     },
     {
       title: t("suspense_amount"),
       dataIndex: "amount",
       key: "amount",
+      width: 80,
     },
     {
       title: t("suspense_mode_of_payment"),
       dataIndex: "modeOfPayment",
       key: "modeOfPayment",
-      render: (text) => (text ? text : "-"),
+      render: (text) =>
+        text ? text : <span className="d-flex justify-content-center">-</span>,
+      width: 80,
     },
     {
       title: "Action",
       key: "action",
       fixed: "right",
-      width: 120,
+      width: 80,
       render: (text, record) => (
         <Space>
+          <Tooltip title="Move to Donation">
+            <img
+              src={exchangeIcon}
+              width={20}
+              className="cursor-pointer"
+              onClick={() => handleDonorMapped(record)}
+            />
+          </Tooltip>
           <img
             src={editIcon}
             width={35}
@@ -149,8 +199,17 @@ function SuspenseListTable({ success }) {
       ),
     },
   ];
-
-  const tableData = data?.result || [];
+  const modeOfPaymentOptions = [
+    { value: "", label: "Select Option" },
+    { value: "Cash", label: "Cash" },
+    { value: "UPI", label: "UPI" },
+    { value: "online", label: "Online" },
+    { value: "Cheque", label: "Cheque" },
+    { value: "Credit Card", label: "Credit Card" },
+    { value: "Debit Card", label: "Debit Card" },
+    { value: "Bank Transfer", label: "Bank Transfer" },
+  ];
+  const tableData = data?.result.filter((item) => !item.donorMapped) || [];
   const totalItems = data?.total || 0;
 
   return (
@@ -221,7 +280,13 @@ function SuspenseListTable({ success }) {
             name="modeOfPayment"
             rules={[{ required: true, message: t("req_modeofPayment") }]}
           >
-            <Input />
+            <Select>
+              {modeOfPaymentOptions.map((option) => (
+                <Select.Option key={option.value} value={option.value}>
+                  {option.label}
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit">
