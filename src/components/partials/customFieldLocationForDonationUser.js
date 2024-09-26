@@ -8,14 +8,22 @@ import "../../assets/scss/common.scss";
 
 const CustomFieldLocationForDonationUser = (props) => {
   const handleChange = (address) => {
-    props.setFieldValue("location", address);
-    // this.setState({ address });
+    if (props.type === "home") {
+      props.setFieldValue("homeLocation", address);
+    } else if (props.type === "correspondence") {
+      props.setFieldValue("correspondenceLocation", address);
+    } else {
+      props.setFieldValue("location", address);
+    }
   };
 
   const getCity = (addressArray) => {
     for (let i = 0; i < addressArray.length; i++) {
       if (addressArray[i].types.includes("postal_town")) {
-        if (props.values.searchType === "isGoogleMap") {
+        if (
+          props.values.searchType === "isGoogleMap" ||
+          props.values.correspondenceSearchType === "isCorrespondenceGoogleMap"
+        ) {
           return {
             name: addressArray[i].long_name,
             id: addressArray[i].short_name,
@@ -25,7 +33,10 @@ const CustomFieldLocationForDonationUser = (props) => {
       } else if (
         addressArray[i].types.includes("administrative_area_level_2")
       ) {
-        if (props.values.searchType === "isGoogleMap") {
+        if (
+          props.values.searchType === "isGoogleMap" ||
+          props.values.correspondenceSearchType === "isCorrespondenceGoogleMap"
+        ) {
           return {
             name: addressArray[i].long_name,
             id: addressArray[i].short_name,
@@ -34,7 +45,10 @@ const CustomFieldLocationForDonationUser = (props) => {
         return addressArray[i].long_name;
       }
     }
-    if (props.values.searchType === "isGoogleMap") {
+    if (
+      props.values.searchType === "isGoogleMap" ||
+      props.values.correspondenceSearchType === "isCorrespondenceGoogleMap"
+    ) {
       return "";
     }
     return "";
@@ -42,7 +56,10 @@ const CustomFieldLocationForDonationUser = (props) => {
   const getState = (addressArray) => {
     for (let i = 0; i < addressArray.length; i++) {
       if (addressArray[i].types.includes("administrative_area_level_1")) {
-        if (props.values.searchType === "isGoogleMap") {
+        if (
+          props.values.searchType === "isGoogleMap" ||
+          props.values.correspondenceSearchType === "isCorrespondenceGoogleMap"
+        ) {
           return {
             name: addressArray[i].long_name,
             id: addressArray[i].short_name,
@@ -52,7 +69,10 @@ const CustomFieldLocationForDonationUser = (props) => {
       }
     }
 
-    if (props.values.searchType === "isGoogleMap") {
+    if (
+      props.values.searchType === "isGoogleMap" ||
+      props.values.correspondenceSearchType === "isCorrespondenceGoogleMap"
+    ) {
       return "";
     }
     return "";
@@ -74,9 +94,9 @@ const CustomFieldLocationForDonationUser = (props) => {
     for (let i = 0; i < addressArray.length; i++) {
       if (addressArray[i].types.includes("postal_code")) {
         return {
-            name: addressArray[i].long_name,
-            id: addressArray[i].short_name, // Using short_name as ID for example
-          };
+          name: addressArray[i].long_name,
+          id: addressArray[i].short_name, // Using short_name as ID for example
+        };
       }
     }
     return "";
@@ -93,42 +113,78 @@ const CustomFieldLocationForDonationUser = (props) => {
     geocodeByAddress(address).then((results) => {
       getLatLng(results[0])
         .then((latLng) => {
-          props.setFieldValue("location", results[0].formatted_address);
-          props.setFieldValue(
-            "city",
-            getCity(results[0].address_components) || ""
-          );
-          props.setFieldValue(
-            "state",
-            getState(results[0].address_components) || ""
-          );
-          props.setFieldValue(
-            "country",
-            getCountry(results[0].address_components) || ""
-          );
-          props.setFieldValue(
-            "pin",
-            getPostalCode(results[0].address_components) || ""
-          );
-          props.setFieldValue(
-            "district",
-            getDistrict(results[0].address_components) || ""
-          );
-          // props.setFieldValue(
-          //   "user_postal_code",
-          //   getPostalCode(results[0].address_components) || ""
-          // );
+          if (props.type === "home") {
+            props.setFieldValue("homeLocation", results[0].formatted_address);
+            props.setFieldValue(
+              "city",
+              getCity(results[0].address_components) || ""
+            );
+            props.setFieldValue(
+              "state",
+              getState(results[0].address_components) || ""
+            );
+            props.setFieldValue(
+              "country",
+              getCountry(results[0].address_components) || ""
+            );
+            props.setFieldValue(
+              "pin",
+              getPostalCode(results[0].address_components) || ""
+            );
+            props.setFieldValue(
+              "district",
+              getDistrict(results[0].address_components) || ""
+            );
+          } else if (props.type === "correspondence") {
+            props.setFieldValue(
+              "correspondenceLocation",
+              results[0].formatted_address
+            );
+            props.setFieldValue(
+              "correspondenceCity",
+              getCity(results[0].address_components) || ""
+            );
+            props.setFieldValue(
+              "correspondenceState",
+              getState(results[0].address_components) || ""
+            );
+            props.setFieldValue(
+              "correspondenceCountry",
+              getCountry(results[0].address_components) || ""
+            );
+            props.setFieldValue(
+              "correspondencePin",
+              getPostalCode(results[0].address_components) || ""
+            );
+            props.setFieldValue(
+              "correspondenceDistrict",
+              getDistrict(results[0].address_components) || ""
+            );
+          } else {
+            props.setFieldValue("location", results[0].formatted_address);
+            props.setFieldValue(
+              "city",
+              getCity(results[0].address_components) || ""
+            );
+            props.setFieldValue(
+              "state",
+              getState(results[0].address_components) || ""
+            );
+            props.setFieldValue(
+              "country",
+              getCountry(results[0].address_components) || ""
+            );
+            props.setFieldValue(
+              "pin",
+              getPostalCode(results[0].address_components) || ""
+            );
+            props.setFieldValue(
+              "district",
+              getDistrict(results[0].address_components) || ""
+            );
+          }
           props.setFieldValue("longitude", latLng.lng);
           props.setFieldValue("latitude", latLng.lat);
-          //   this.setState({
-          //     address: results[0].formatted_address,
-          //     city: getCity(results[0].address_components) || "",
-          //     state: getState(results[0].address_components) || "",
-          //     country: getCountry(results[0].address_components) || "",
-          //     postal_code: getPostalCode(results[0].address_components) || "",
-          //     lat: latLng.lat,
-          //     lng: latLng.lng,
-          //   });
         })
         .catch((error) => console.error("Error", error));
     });
@@ -137,7 +193,9 @@ const CustomFieldLocationForDonationUser = (props) => {
   return (
     <div className="locationwrapper">
       <PlacesAutocomplete
-        value={props?.values?.location}
+        value={
+          props?.values?.location || props?.values[`${props.type}Location`]
+        }
         onChange={handleChange}
         onSelect={handleSelect}
         searchOptions={{
@@ -150,11 +208,8 @@ const CustomFieldLocationForDonationUser = (props) => {
               className="w-100 "
               {...getInputProps({
                 placeholder: "Search Places ...",
-                // className: `location-search-input form-control professional-input-radius ${
-                //   props?.errors.location && props?.touched?.location
-                //     ? "is-invalid"
-                //     : null
-                // }`,
+                disabled: props.disabled,
+                name: `${props.type}Location`,
               })}
             />
             <div className="autocomplete-dropdown-container">

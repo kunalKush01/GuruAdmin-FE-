@@ -23,7 +23,7 @@ export default function CustomTextField({
       {label && (
         <label>
           {`${label}`}
-          {required && "*"}
+          <span className="text-danger">{required && "*"}</span>
         </label>
       )}
       <InputGroup>
@@ -49,6 +49,7 @@ export default function CustomTextField({
             placeholder={placeholder}
             min={min}
             value={field.value || ""}
+            disabled={props.disabled}
           />
         )}
       </InputGroup>
