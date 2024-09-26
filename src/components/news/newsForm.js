@@ -22,7 +22,7 @@ import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import ImageUpload from "../partials/imageUpload";
-// import ImageUpload from "../partials/imageUpload2";
+//import ImageUpload from "../partials/imageUpload2";
 import RichTextField from "../partials/richTextEditorField";
 import "../../assets/scss/common.scss";
 
