@@ -3175,6 +3175,11 @@
         color:$font-color ;
     }
 }
+.floorTag{
+    color: $white;
+    background-color: $primary;
+    border-color: $primary;
+}
 .addHeading {
     color: $font-color !important;
     font: $font-weight-bold $font-size-large $font-family;
