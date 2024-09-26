@@ -12,6 +12,7 @@ import CustomDharmshalaTable from "../../../components/partials/CustomDharmshala
 import confirmationIcon from "../../../assets/images/icons/news/conformationIcon.svg";
 import { DharmshalaInfoTableWrapper } from "../dharmshalaStyles";
 import "../dharmshala_css/dharmshalainfotable.css";
+import { Table, Tag } from "antd";
 
 const DharmshalaInfoTable = ({
   data = [],
@@ -74,6 +75,40 @@ const DharmshalaInfoTable = ({
       width: "80px",
     },
   ];
+  const antdColumns = [
+    {
+      title: t("name"), // Table column title
+      dataIndex: "name", // Corresponding field in the data
+      key: "name", // Unique key for this column
+      width: 120,
+      fixed: "left",
+    },
+    {
+      title: t("description"),
+      dataIndex: "description",
+      key: "description",
+      width: 120,
+    },
+    {
+      title: t("location"),
+      dataIndex: "location",
+      key: "location",
+      width: 120,
+    },
+    {
+      title: t("Floor Count"),
+      dataIndex: "floorCount",
+      key: "floorCount",
+      width: 100,
+    },
+    {
+      title: t("Action"),
+      dataIndex: "action",
+      key: "action",
+      width: 80,
+      fixed: "right",
+    },
+  ];
 
   const DharmshalasInfo = useMemo(() => {
     return data?.map((item, idx) => ({
@@ -81,89 +116,122 @@ const DharmshalaInfoTable = ({
       name: item?.name,
       description: item?.description,
       location: item?.location,
+      // floorCount: (
+      //   <div style={{ fontWeight: "bold", cursor: "pointer" }}>
+      //     {item?.floorCount === 0 ? (
+      //       <Button
+      //         size="lg"
+      //         color="primary"
+      //         className="px-1 py-0"
+      //         onClick={() => history.push(`/floor/add/${item._id}`, item._id)}
+      //       >
+      //         {" "}
+      //         +{" "}
+      //       </Button>
+      //     ) : item?.floorCount > 1 ? (
+      //       <Button
+      //         size="lg"
+      //         color="primary"
+      //         className="px-1 py-0"
+      //         onClick={() => history.push(`/floors/${item._id}`, item._id)}
+      //       >
+      //         {item?.floorCount} {t("Floors")}
+      //       </Button>
+      //     ) : (
+      //       <Button
+      //         size="lg"
+      //         color="primary"
+      //         className="px-1 py-0"
+      //         onClick={() => history.push(`/floors/${item._id}`, item._id)}
+      //       >
+      //         {item?.floorCount} {t("Floor")}
+      //       </Button>
+      //     )}
+      //   </div>
+      // ),
       floorCount: (
         <div style={{ fontWeight: "bold", cursor: "pointer" }}>
           {item?.floorCount === 0 ? (
-            <Button
-              size="lg"
-              color="primary"
-              className="px-1 py-0"
+            <Tag
+              className="floorTag"
+              // color="blue"
+              style={{ cursor: "pointer" }}
               onClick={() => history.push(`/floor/add/${item._id}`, item._id)}
             >
-              {" "}
-              +{" "}
-            </Button>
+              +
+            </Tag>
           ) : item?.floorCount > 1 ? (
-            <Button
-              size="lg"
-              color="primary"
-              className="px-1 py-0"
+            <Tag
+              // color="green"
+              className="floorTag"
+              style={{ cursor: "pointer" }}
               onClick={() => history.push(`/floors/${item._id}`, item._id)}
             >
               {item?.floorCount} {t("Floors")}
-            </Button>
+            </Tag>
           ) : (
-            <Button
-              size="lg"
-              color="primary"
-              className="px-1 py-0"
+            <Tag
+              // color="green"
+              className="floorTag"
+              style={{ cursor: "pointer" }}
               onClick={() => history.push(`/floors/${item._id}`, item._id)}
             >
               {item?.floorCount} {t("Floor")}
-            </Button>
+            </Tag>
           )}
         </div>
       ),
-      edit: (
-        <img
-          src={editIcon}
-          width={35}
-          className="cursor-pointer"
-          onClick={() => {
-            history.push(`/building/edit/${item?._id}`);
-          }}
-        />
-      ),
-      delete: (
-        <img
-          src={item?.floorCount === 0 ? deleteIcon : deleteDisableIcon}
-          width={35}
-          className={`cursor-pointer ${
-            item?.floorCount !== 0 ? "disabled" : ""
-          }`}
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            if (item?.floorCount === 0) {
-              Swal.fire({
-                title: `<img src="${confirmationIcon}"/>`,
-                html: `
+      action: (
+        <div>
+          <img
+            src={editIcon}
+            width={35}
+            className="cursor-pointer"
+            onClick={() => {
+              history.push(`/building/edit/${item?._id}`);
+            }}
+          />
+
+          <img
+            src={item?.floorCount === 0 ? deleteIcon : deleteDisableIcon}
+            width={35}
+            className={`cursor-pointer ${
+              item?.floorCount !== 0 ? "disabled" : ""
+            }`}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (item?.floorCount === 0) {
+                Swal.fire({
+                  title: `<img src="${confirmationIcon}"/>`,
+                  html: `
                   <h3 class="swal-heading mt-1">${t(
                     "dharmshala_building_delete"
                   )}</h3>
                   <p>${t("dharmshala_building_delete_sure")}</p>
                 `,
-                showCloseButton: false,
-                showCancelButton: true,
-                focusConfirm: true,
-                cancelButtonText: ` ${t("cancel")}`,
-                cancelButtonAriaLabel: ` ${t("cancel")}`,
-                confirmButtonText: ` ${t("confirm")}`,
-                confirmButtonAriaLabel: "Confirm",
-              }).then(async (result) => {
-                if (result.isConfirmed) {
-                  deleteMutation.mutate(item._id);
-                }
-              });
-            } else {
-              Swal.fire({
-                icon: "warning",
-                title: t("cannot_delete_building"),
-                text: t("cannot_delete_building"),
-              });
-            }
-          }}
-        />
+                  showCloseButton: false,
+                  showCancelButton: true,
+                  focusConfirm: true,
+                  cancelButtonText: ` ${t("cancel")}`,
+                  cancelButtonAriaLabel: ` ${t("cancel")}`,
+                  confirmButtonText: ` ${t("confirm")}`,
+                  confirmButtonAriaLabel: "Confirm",
+                }).then(async (result) => {
+                  if (result.isConfirmed) {
+                    deleteMutation.mutate(item._id);
+                  }
+                });
+              } else {
+                Swal.fire({
+                  icon: "warning",
+                  title: t("cannot_delete_building"),
+                  text: t("cannot_delete_building"),
+                });
+              }
+            }}
+          />
+        </div>
       ),
     }));
   }, [data]);
@@ -190,15 +258,28 @@ const DharmshalaInfoTable = ({
           ))}
         </div>
       ) : (
-        <CustomDharmshalaTable
-          maxHeight={maxHeight}
-          height={height}
-          columns={columns}
-          data={DharmshalasInfo}
+        <Table
+          className="donationListTable"
+          columns={antdColumns}
+          scroll={{
+            x: 1500,
+            y: 400,
+          }}
+          sticky={{
+            offsetHeader: 64,
+          }}
+          dataSource={DharmshalasInfo}
         />
       )}
     </DharmshalaInfoTableWrapper>
   );
 };
+
+/* <CustomDharmshalaTable
+  maxHeight={maxHeight}
+  height={height}
+  columns={columns}
+  data={DharmshalasInfo}
+/> */
 
 export default DharmshalaInfoTable;

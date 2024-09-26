@@ -19,8 +19,8 @@ export const donationDownloadReceiptApi = (payload) =>
   export const getDonation = (payload) =>
     callApi({
       requestFunction: (axios) =>
-        axios.post(`${API_BASE_URL}donation/get-donation`, payload),
-      successCode: 200,
+      axios.post(`${API_BASE_URL}donation/get-donation`, payload),
+      showToastOnSuccess: false,
     });
 
 export const getAllDonation = (payload) =>
@@ -40,6 +40,8 @@ export const exportAllDonation = (payload) =>
 export const importDonationFile = (payload) =>
   callApi({
     requestFunction: (axios) => axios.post(`donation/import-file`, payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
   });
 
 export const getAllPaidDonations = (payload) =>

@@ -25,6 +25,7 @@ const CustomRadioButton = ({ label, heading, customOnChange, ...props }) => {
           {...field}
           {...props}
           onChange={handleChange} // Handle onChange event
+          disabled={props.disabled}
         />
 
         {label && (
