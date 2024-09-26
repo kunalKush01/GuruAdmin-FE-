@@ -25,6 +25,7 @@ import CategoryIconActive from "../../assets/images/icons/configuration-active.s
 import SubadminIcon from "../../assets/images/icons/subadmin.svg";
 import SubadminIconActive from "../../assets/images/icons/subadmin-active.svg";
 import ReportDisputeIcon from "../../assets/images/icons/reportdispute.svg";
+import MembershipIcon from "../../assets/images/icons/membership.svg";
 import ReportDisputeIconActive from "../../assets/images/icons/reportdispute-active.svg";
 import ConfigurationIcon from "../../assets/images/icons/configuration.svg";
 import ConfigurationIconActive from "../../assets/images/icons/configuration-active.svg";
@@ -240,7 +241,12 @@ export const subHeaderContentResponsive = [
     icon: DonationBoxIcon,
     activeIcon: DonationBoxIconActive,
   },
-
+  {
+    name: "membership",
+    url: "/membership",
+    icon: MembershipIcon,
+    activeIcon: MembershipIcon,
+  },
   {
     name: "financial_reports",
     url: "/financial_reports",
