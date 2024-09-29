@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
-import "../../assets/scss/viewCommon.scss";
+import "../../assets/scss/common.scss";
 
 const FinancialReportTabs = ({ setActive, active, setPagination }) => {
   const { t } = useTranslation();
