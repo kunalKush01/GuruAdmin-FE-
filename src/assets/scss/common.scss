@@ -162,11 +162,13 @@
 .cattledashboardcardwrapper {
     width: 100%;
     height: 150px;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, .25);
+    border-radius: 8px;
 
     .customCard {
         background-color: $secondary-color;
         padding: 1.5rem;
-        width: 400px;
+        // width: 400px;
         height: 100%;
         border-radius: 5px;
     }
