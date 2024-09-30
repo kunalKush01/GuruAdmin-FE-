@@ -269,8 +269,8 @@ const BookingModal = ({
   );
 };
 const numPlaceholderRows = 14;
-const numPlaceholderCells = 15;
-
+const numPlaceholderCells = 31;
+const TOTAL_ROWS = 12;
 const PlaceholderRows = ({ numRows, numCells }) => {
   const rows = Array.from({ length: numRows });
   const cells = Array.from({ length: numCells });
@@ -278,7 +278,11 @@ const PlaceholderRows = ({ numRows, numCells }) => {
   return (
     <>
       {rows.map((_, rowIndex) => (
-        <div key={rowIndex} className="calendar-property-row">
+        <div
+          key={rowIndex}
+          className="calendar-property-row"
+          id="mobile-row-view"
+        >
           <div className="property-cell"></div>
           <div className="separator" style={{ height: "40px" }} />
           <div className="day-cells-container">
@@ -291,7 +295,6 @@ const PlaceholderRows = ({ numRows, numCells }) => {
     </>
   );
 };
-
 const Calendar = () => {
   const history = useHistory();
   const [events, setEvents] = useState([]);
@@ -348,6 +351,7 @@ const Calendar = () => {
         ? fromDate.getMonth() + 1
         : new Date().getMonth() + 1;
       const data = await fetchBookings(year, month);
+      console.log(data)
       if (window.matchMedia("(max-width: 768px)").matches) {
         const formattedDays = weekDays.map((day) => ({
           date: new Date(day.date).toISOString().split("T")[0],
@@ -367,7 +371,6 @@ const Calendar = () => {
     };
     fetchEvents();
   }, [weekDays, window.innerWidth]);
-
   useEffect(() => {
     const calculateWeeklyDays = (start, end) => {
       const newDays = [];
@@ -763,6 +766,11 @@ const Calendar = () => {
   const endResizing = () => {
     setResizingEvent(null);
   };
+  //** add extra empty rows till height of the screen */
+  const placeholderRowsNeeded = Math.max(
+    TOTAL_ROWS - filteredProperties.length,
+    0
+  );
   return (
     <div className="calendar-container">
       <div className="calendar-filters">
@@ -1127,13 +1135,19 @@ const Calendar = () => {
               numCells={numPlaceholderCells}
             />
           )}
-
+          {placeholderRowsNeeded > 0 && (
+            <PlaceholderRows
+              numRows={placeholderRowsNeeded}
+              numCells={numPlaceholderCells}
+            />
+          )}
           {/* Render empty rows for all properties */}
 
-          {properties.map((property) => {
+          {/* {properties.map((property) => {
             const isFiltered = filteredProperties.some(
               (fp) => fp._id === property._id
             );
+            console.log(isFiltered);
             if (!isFiltered) {
               return (
                 <div
@@ -1181,7 +1195,7 @@ const Calendar = () => {
             } else {
               return null;
             }
-          })}
+          })} */}
           <div className="calendar-footer">
             <div className="footer-total-properties sticky d-flex justify-content-between align-items-center">
               <div>Total rooms: {filteredProperties.length}</div>

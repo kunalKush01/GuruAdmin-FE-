@@ -14,7 +14,7 @@ html {
   align-items: flex-start;
   padding: 10px;
   width: 100%;
-  height: 75vh;
+  height: 84vh;
   box-sizing: border-box;
   /* background-color: #ffffff; */
   /* margin-left: -38px;
@@ -563,6 +563,9 @@ html {
   .calendar-property-row {
     display: flex;
     flex-direction: column;
+  }
+  .calendar-property-row-mobile {
+    display: none;
   }
   .separator {
     display: none;
