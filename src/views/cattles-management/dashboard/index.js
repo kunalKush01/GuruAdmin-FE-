@@ -121,10 +121,10 @@ const CattlesDashboard = () => {
         setdropDownName={(e) => setdropDownName(e.target.name)}
       />
 
-      <div className="d-flex gap-5 mt-2 mb-3">
+      <div className="d-flex flex-wrap gap-1 justify-content-between mt-1 mb-lg-1 dashboard-cards-wrapper">
         <CattleDashboardCard
           // ShowSubDetails
-          title="Total Registered Cattles"
+          title={t("total_registered_pashudhan")}
           number={dashboardData?.data?.totalCattles?.totalCattle ?? 0}
           data={[
             {
@@ -155,7 +155,7 @@ const CattlesDashboard = () => {
         <CattleDashboardCard
           showRupeesSymbol
           ShowSubDetails
-          title="Total Donation for Cattles"
+          title={t("total_gaushala_donation")}
           number={dashboardData?.data?.donationReceived ?? 0}
           data={[
             {
@@ -170,7 +170,7 @@ const CattlesDashboard = () => {
         />
 
         <CattleDashboardCard
-          title="Cattles Death Registered"
+          title={t("dead_cattles")}
           number={dashboardData?.data?.deathCattle ?? 0}
         />
       </div>
