@@ -6,6 +6,7 @@ export const fetchBookings = async (year, month) => {
   try {
     const response = await getDharmshalaBookingList();
     const bookings = response.results;
+    return bookings
     return bookings.filter(booking => booking.startDate.startsWith(monthKey));
   } 
   catch (error) {

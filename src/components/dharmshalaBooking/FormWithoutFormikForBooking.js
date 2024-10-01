@@ -532,7 +532,7 @@ const idTypeOptions = [
                 </div>
               </div>
             </div>
-            <img src={editIcon} className="edit-icon" alt="Edit" />
+            {/* <img src={editIcon} className="edit-icon" alt="Edit" /> */}
           </div>
           <RoomsContainer
             roomsData={formik.values.roomsData}
