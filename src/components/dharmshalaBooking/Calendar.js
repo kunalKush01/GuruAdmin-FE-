@@ -1,277 +1,18 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import {
-  fetchBookings,
-  createBooking,
-  updateBooking,
-} from "../../api/bookings";
+import { fetchBookings } from "../../api/bookings";
 import { fetchProperties, fetchPropertyTypes } from "../../api/properties";
-import "./Calendar.css";
-import "./bookingModal.css";
+import "../../assets/scss/common.scss";
+import Switch from "react-ios-switch";
 import guestIcon from "../../assets/images/icons/guestIcon.png";
-import Switch from "react-toggle-switch";
-import "react-toggle-switch/dist/css/switch.min.css";
 import Swal from "sweetalert2";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { useHistory } from "react-router-dom";
 import moment from "moment";
-
-const BookingModal = ({
-  isOpen,
-  onClose,
-  initialDate,
-  property,
-  onCreateBooking,
-  eventTitle,
-  eventPhone,
-  editEvent,
-  eventId,
-  eventGuest,
-  onEditBooking,
-  selectedCheckOutDate,
-  selectedCheckInDate,
-}) => {
-  const [guestName, setGuestName] = useState("");
-  const [phone, setPhone] = useState(null);
-  const [guestCount, setGuestCount] = useState(1);
-  const [checkIn, setCheckIn] = useState(initialDate || new Date());
-  const [checkOut, setCheckOut] = useState(
-    initialDate
-      ? new Date(initialDate.getTime() + 24 * 60 * 60 * 1000)
-      : new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
-  );
-  const [success, onSuccess] = useState(false);
-
-  useEffect(() => {
-    if (editEvent) {
-      setGuestName(eventTitle);
-      setPhone(eventPhone);
-      setGuestCount(eventGuest);
-      setCheckIn(new Date(selectedCheckInDate));
-      setCheckOut(new Date(selectedCheckOutDate));
-    }
-  }, [
-    editEvent,
-    eventTitle,
-    eventPhone,
-    eventGuest,
-    initialDate,
-    selectedCheckOutDate,
-    selectedCheckInDate,
-  ]);
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const bookingData = {
-      propertyId: property._id,
-      checkIn,
-      checkOut,
-      title: guestName,
-      guests: guestCount,
-      phoneNo: phone,
-      id: editEvent ? eventId : undefined,
-    };
-
-    try {
-      if (editEvent) {
-        await onEditBooking(bookingData);
-        Swal.fire({
-          icon: "success",
-          title: "Booking Updated",
-          text: "The booking has been successfully updated.",
-          confirmButtonColor: "#3f51b5",
-        });
-        onSuccess(false);
-      } else {
-        await onCreateBooking(bookingData);
-        Swal.fire({
-          icon: "success",
-          title: "Booking Created",
-          text: "The booking has been successfully created.",
-          confirmButtonColor: "#3f51b5",
-        });
-        onSuccess(true);
-      }
-      onClose();
-    } catch (error) {
-      console.error("Error:", error.message);
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Something went wrong! Please try again.",
-        confirmButtonColor: "#f44336",
-      });
-      onSuccess(false);
-    }
-  };
-  if (!isOpen || !property) return null;
-
-  return (
-    <div
-      className={`modal fade ${isOpen ? "show" : ""}`}
-      style={{ display: isOpen ? "block" : "none" }}
-      tabIndex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div
-        className={`modal-dialog ${isOpen ? "" : "hide-modal"}`}
-        role="document"
-      >
-        <div className="modal-content">
-          <div className="container">
-            <div className="row">
-              <div className="booking-form">
-                <form onSubmit={handleSubmit} className="booking-form-modal">
-                  <div className="form-header">
-                    <h2
-                      style={{
-                        marginLeft: "-1.5px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      {!editEvent ? "Create Booking" : "Edit Booking"}
-                      <i
-                        class="bi bi-x-lg"
-                        onClick={() => {
-                          onClose();
-                        }}
-                        style={{ cursor: "pointer" }}
-                      ></i>
-                    </h2>
-                    <p
-                      style={{
-                        marginBottom: "0px",
-                        fontWeight: "200",
-                        color: "#333",
-                      }}
-                    >
-                      Room Number: {property.roomNumber}
-                    </p>
-                  </div>
-                  <div className="row">
-                    <div className="form-group">
-                      <label className="form-label" htmlFor="guestName">
-                        &nbsp;Guest Name:
-                      </label>
-                      <input
-                        id="guestName"
-                        className="form-control"
-                        type="text"
-                        value={guestName}
-                        onChange={(e) => setGuestName(e.target.value)}
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label htmlFor="guestCount" className="form-label">
-                          Number of Guests:
-                        </label>
-                        <input
-                          id="guestCount"
-                          className="form-control"
-                          type="number"
-                          value={guestCount}
-                          onChange={(e) =>
-                            setGuestCount(parseInt(e.target.value))
-                          }
-                          min="1"
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label htmlFor="phoneNum" className="form-label">
-                          Phone:
-                        </label>
-                        <input
-                          id="phoneNum"
-                          className="form-control"
-                          type="number"
-                          value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
-                          // min="1"
-                          // required
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label htmlFor="checkIn" className="form-label">
-                          Check-in Date:
-                        </label>
-                        <DatePicker
-                          id="checkIn"
-                          className="form-control"
-                          selected={checkIn}
-                          onChange={(date) => setCheckIn(date)}
-                          selectsStart
-                          startDate={checkIn}
-                          endDate={checkOut}
-                          minDate={new Date()}
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label htmlFor="checkOut" className="form-label">
-                          Check-out Date:
-                        </label>
-                        <DatePicker
-                          id="checkOut"
-                          className="form-control"
-                          selected={checkOut}
-                          onChange={(date) => setCheckOut(date)}
-                          selectsEnd
-                          startDate={checkIn}
-                          endDate={checkOut}
-                          minDate={checkIn}
-                          required
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row form-actions" id="form-btn">
-                    <div className="col-md-12 mb-2">
-                      <button type="submit" className="submit-btn">
-                        {!editEvent ? "Create Booking" : "Update Booking"}
-                      </button>
-                    </div>
-                    <div className="col-md-12">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          onClose();
-                          onSuccess(true);
-                        }}
-                        className="cancle-btn"
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
 const numPlaceholderRows = 14;
 const numPlaceholderCells = 31;
-const TOTAL_ROWS = 12;
+const TOTAL_ROWS = 14;
 const PlaceholderRows = ({ numRows, numCells }) => {
   const rows = Array.from({ length: numRows });
   const cells = Array.from({ length: numCells });
@@ -305,19 +46,10 @@ const Calendar = () => {
   const [toDate, setToDate] = useState(null);
   const [propertyTypes, setPropertyTypes] = useState([]);
   const [selectedRoomType, setSelectedRoomType] = useState("All");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [iseditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedCheckoutDate, setSelectedCheckoutDate] = useState(null);
-  const [selectedCheckInDate, setSelectedCheckInDate] = useState(null);
   const [selectedProperty, setSelectedProperty] = useState(null);
-  const [eventPhone, setEventPhone] = useState(null);
-  const [eventTitle, setEventTitle] = useState(null);
-  const [eventGuest, setEventGuest] = useState(null);
   const [toggleSwitch, setToggleSwitch] = useState(false);
   const [resizingEvent, setResizingEvent] = useState(null);
   const [resizeProperty, setResizeProperty] = useState(null);
-  const [eventId, setEventId] = useState(null);
   const [filterEventDataDay, setFilterEventDataDay] = useState([]);
   const [weekDays, setWeekDays] = useState([]);
   const [isBookingResizeSuccess, setIsBookingResizeSuccess] = useState(false);
@@ -449,10 +181,15 @@ const Calendar = () => {
       day.getFullYear() === today.getFullYear()
     );
   };
+  const convertDateFormat = (dateStr) => {
+    const [day, month, year] = dateStr.split("-");
+    return `${year}-${month}-${day}`; // "YYYY-MM-DD" format
+  };
+
   const getTotalBookingsForDate = (date) => {
     return events.filter((event) => {
-      const checkIn = new Date(event.startDate);
-      const checkOut = new Date(event.endDate);
+      const checkIn = moment(event.startDate, "DD-MM-YYYY").toDate();
+      const checkOut = moment(event.endDate, "DD-MM-YYYY").toDate();
       return date >= checkIn && date < checkOut;
     }).length;
   };
@@ -557,18 +294,18 @@ const Calendar = () => {
       return roomIds.some((roomId) => filteredIds.includes(roomId));
     });
   const getTotalGuestsForDate = (date) => {
+    const targetDate = moment(date);
     const eventsOnDate = filterEvents.filter((event) => {
-      const checkIn = new Date(event.startDate);
-      const checkOut = new Date(event.endDate);
-      return date >= checkIn && date < checkOut;
+      const checkIn = moment(event.startDate, "DD-MM-YYYY");
+      const checkOut = moment(event.endDate, "DD-MM-YYYY");
+      return targetDate.isBetween(checkIn, checkOut, null, "[]");
     });
-
     const totalGuests = eventsOnDate.reduce((total, event) => {
-      return total + event.guests;
+      const { men, women, children } = event.guestCount;
+      return total + men + women + children;
     }, 0);
     return totalGuests;
   };
-
   const handleShowAvailableOnly = () => {
     setShowAvailableOnly(!showAvailableOnly);
   };
@@ -580,15 +317,11 @@ const Calendar = () => {
   // };
 
   const handleCellClick = (date, property) => {
-    const formattedDate = moment(date).format("DD MMM YYYY");
-
+    // const formattedDate = moment(date).format("DD MMM YYYY");
     history.push({
       pathname: `/booking/add`,
       state: { property: property, date: date },
     });
-    // history.push(
-    //   `/booking/add?startDate=${formattedDate}&roomNumber=${property.roomNumber}&roomType=${property.roomTypeName}`
-    // );
   };
 
   const handleCellClickEdit = (
@@ -603,49 +336,19 @@ const Calendar = () => {
     startDate,
     endDate
   ) => {
-    console.log(
-      date,
-      property,
-      title,
-      phone,
-      guests,
-      eventId,
-      //checkOut,
-      //checkIn
-      startDate,
-      endDate
-    );
-    setIsEditModalOpen(true);
-    setSelectedDate(date);
-    setSelectedCheckoutDate(endDate);
-    setSelectedCheckInDate(startDate);
+    // console.log(
+    //   date,
+    //   property,
+    //   title,
+    //   phone,
+    //   guests,
+    //   eventId,
+    //   //checkOut,
+    //   //checkIn
+    //   startDate,
+    //   endDate
+    // );
     setSelectedProperty(property);
-    setEventPhone(phone);
-    setEventTitle(title);
-    setEventGuest(guests);
-    setEventId(eventId);
-  };
-
-  const handleCreateBooking = async (bookingData) => {
-    try {
-      const newBooking = await createBooking(bookingData);
-      setEvents((prevEvents) => [...prevEvents, newBooking]);
-    } catch (error) {
-      console.error("Error creating booking:", error);
-    }
-  };
-  const handleUpdateBooking = async (updatedBookingData) => {
-    try {
-      const updatedBooking = await updateBooking(updatedBookingData);
-
-      setEvents((prevEvents) =>
-        prevEvents.map((event) =>
-          event.id === updatedBooking.id ? updatedBooking : event
-        )
-      );
-    } catch (error) {
-      console.error("Error updating booking:", error);
-    }
   };
 
   //**switch guest/properties */
@@ -676,43 +379,69 @@ const Calendar = () => {
   }, -1);
 
   //**Extend Your booking */
+  const [conflicts, setConflicts] = useState(false);
   const handleSuccess = (success) => {
     setIsBookingResizeSuccess(success);
   };
   const resizeEvent = useCallback(
     ({ event, start, end }) => {
-      const formattedStart = new Date(start);
-      const formattedEnd = new Date(end);
-      if (formattedEnd < formattedStart) {
+      const formattedStart = moment(start, "DD-MM-YYYY");
+      const formattedEnd = moment(end, "DD-MM-YYYY");
+
+      if (formattedEnd.isBefore(formattedStart)) {
         Swal.fire({
           icon: "error",
           title: "Error",
           text: "End date cannot be before the start date (Check-in date).",
         });
-        setIsEditModalOpen(false);
         return;
       }
-      const conflictingEvents = events.filter((e) => {
-        if (e.id === event.id || e.propertyId !== event.propertyId)
+
+      const conflictingEvents = events.filter((existingEvent) => {
+        const roomIdMatches = existingEvent.rooms.some(
+          (room) => room.roomId === event.rooms[0].roomId
+        );
+
+        if (!roomIdMatches || existingEvent.bookingId === event.bookingId) {
           return false;
-        const eventStart = new Date(e.checkIn);
-        const eventEnd = new Date(e.checkOut);
+        }
+
+        const existingEventStart = moment(
+          existingEvent.startDate,
+          "DD-MM-YYYY"
+        );
+        const existingEventEnd = moment(existingEvent.endDate, "DD-MM-YYYY");
+
         return (
-          (formattedStart >= eventStart && formattedStart <= eventEnd) ||
-          (formattedEnd > eventStart && formattedEnd <= eventEnd) ||
-          (formattedStart <= eventStart && formattedEnd >= eventEnd)
+          formattedStart.isBetween(
+            existingEventStart,
+            existingEventEnd,
+            null,
+            "[]"
+          ) ||
+          formattedEnd.isBetween(
+            existingEventStart,
+            existingEventEnd,
+            null,
+            "[]"
+          ) ||
+          (formattedStart.isBefore(existingEventStart) &&
+            formattedEnd.isAfter(existingEventEnd))
         );
       });
 
+      // Handle any conflicts
       if (conflictingEvents.length > 0) {
+        setConflicts(true);
         Swal.fire({
           icon: "error",
           title: "Error",
           text: "The new dates overlap with another booking.",
         });
-        setIsEditModalOpen(false);
         return;
       }
+
+      // Proceed to handle the resizing event
       handleCellClickEdit(
         formattedStart,
         resizeProperty,
@@ -723,48 +452,38 @@ const Calendar = () => {
         formattedEnd,
         formattedStart
       );
-      setEvents((prevEvents) => {
-        const updatedEvents = prevEvents.map((prevEvent) => {
-          if (prevEvent.id === event.id) {
-            return {
-              ...prevEvent,
-              checkIn: formattedStart,
-              checkOut: formattedEnd,
-            };
-          }
-          return prevEvent;
-        });
-        if (isBookingResizeSuccess) {
-          return updatedEvents;
-        } else {
-          return prevEvents;
-        }
-      });
+
+      // Update the events state
+      setEvents((prevEvents) =>
+        prevEvents.map((prevEvent) =>
+          prevEvent.bookingId === event.bookingId
+            ? {
+                ...prevEvent,
+                startDate: formattedStart.format("DD-MM-YYYY"),
+                endDate: formattedEnd.format("DD-MM-YYYY"),
+              }
+            : prevEvent
+        )
+      );
     },
-    [
-      setIsEditModalOpen,
-      handleCellClickEdit,
-      setIsBookingResizeSuccess,
-      handleSuccess,
-    ]
+    [events, handleCellClickEdit, resizeProperty, setEvents, setConflicts]
   );
   useEffect(() => {
     const handleMouseMove = (e) => {
       if (resizingEvent) {
         const cellWidth = 120;
         const daysOffset = Math.round(e.movementX / cellWidth);
-        const newCheckOut = new Date(resizingEvent.checkOut);
-        newCheckOut.setDate(newCheckOut.getDate() + daysOffset);
-
+        const newCheckOut = moment(resizingEvent.endDate, "DD-MM-YYYY");
+        newCheckOut.add(daysOffset, "days");
+        const formattedEndDate = newCheckOut.format("DD-MM-YYYY");
         setResizingEvent({
           ...resizingEvent,
-          checkOut: newCheckOut,
+          endDate: formattedEndDate,
         });
-
         resizeEvent({
           event: resizingEvent,
-          start: resizingEvent.checkIn,
-          end: newCheckOut,
+          start: resizingEvent.startDate,
+          end: formattedEndDate,
         });
       }
     };
@@ -774,7 +493,11 @@ const Calendar = () => {
       document.removeEventListener("mousemove", handleMouseMove);
     };
     const handleMouseOut = (e) => {
-      if (resizingEvent && !e.currentTarget.contains(e.relatedTarget)) {
+      if (
+        resizingEvent &&
+        conflicts &&
+        !e.currentTarget.contains(e.relatedTarget)
+      ) {
         setResizingEvent(null);
         document.removeEventListener("mousemove", handleMouseMove);
       }
@@ -790,13 +513,11 @@ const Calendar = () => {
       document.removeEventListener("mouseup", handleMouseUp);
       document.removeEventListener("mouseout", handleMouseOut);
     };
-  }, [resizingEvent, resizeEvent]);
+  }, [resizingEvent, resizeEvent, conflicts]);
   const startResizing = (event, property) => {
     setResizingEvent(event);
     setResizeProperty(property);
-    setIsEditModalOpen(true);
   };
-
   const endResizing = () => {
     setResizingEvent(null);
   };
@@ -818,11 +539,7 @@ const Calendar = () => {
         <div
           className="calendar-filter"
           style={{
-            display:
-              window.matchMedia("(max-width: 768px)").matches &&
-              (isModalOpen || iseditModalOpen)
-                ? "none"
-                : "flex",
+            display: window.matchMedia("(max-width: 768px)").matches && "flex",
           }}
         >
           <div className="date-picker-container">
@@ -854,10 +571,7 @@ const Calendar = () => {
             className="calendar-filter"
             style={{
               display:
-                window.matchMedia("(max-width: 768px)").matches &&
-                (isModalOpen || iseditModalOpen)
-                  ? "none"
-                  : "flex",
+                window.matchMedia("(max-width: 768px)").matches && "flex",
             }}
           >
             <div id="select_div" className="select-container">
@@ -933,11 +647,6 @@ const Calendar = () => {
                       : days
                     ).map((day, index) => {
                       // Function to convert "DD-MM-YYYY" to "YYYY-MM-DD"
-                      const convertDateFormat = (dateStr) => {
-                        const [day, month, year] = dateStr.split("-");
-                        return `${year}-${month}-${day}`; // "YYYY-MM-DD" format
-                      };
-
                       // Updated filtering logic
                       const dayStart = new Date(day.date).setHours(0, 0, 0, 0);
                       const dayEnd = new Date(day.date).setHours(
@@ -1163,8 +872,8 @@ const Calendar = () => {
                               e.currentTarget.style.opacity = 1.0;
                             }}
                             className="event"
-                            // onMouseDown={() => startResizing(event, property)}
-                            // onMouseUp={endResizing}
+                            onMouseDown={() => startResizing(event, property)}
+                            onMouseUp={endResizing}
                             onDoubleClick={(e) => {
                               history.push({
                                 pathname: `/booking/edit/${event._id}`,
@@ -1233,61 +942,6 @@ const Calendar = () => {
               numCells={numPlaceholderCells}
             />
           )}
-          {/* Render empty rows for all properties */}
-
-          {/* {properties.map((property) => {
-            const isFiltered = filteredProperties.some(
-              (fp) => fp._id === property._id
-            );
-            console.log(isFiltered);
-            if (!isFiltered) {
-              return (
-                <div
-                  key={property._id}
-                  style={{
-                    display: window.matchMedia("(max-width: 768px)").matches
-                      ? "none"
-                      : "",
-                  }}
-                  className="calendar-property-row empty-row"
-                >
-                  <div className="property-cell sticky"></div>
-                  <div className="separator" />
-                  <div className="day-cells-container">
-                    {(window.matchMedia("(max-width: 768px)").matches
-                      ? weekDays
-                      : days
-                    ).map((day, index, array) => {
-                      const isLastPastDay = index === lastPastDayIndex;
-                      return (
-                        <div
-                          key={day.date.toISOString()}
-                          className={`day-cell ${
-                            day.isSelectable ? "" : "day-cell-grayed"
-                          } ${
-                            isPastDate(new Date(day.date)) ? "past-date" : ""
-                          } ${isLastPastDay ? "last-past-day-cell" : ""}`}
-                        >
-                          {isPastDate(day.date) && (
-                            <div className="overlay">
-                              <span></span>
-                            </div>
-                          )}
-                          <div className="day-price">
-                            <div className="overlayContentText"></div>
-                            <div></div>
-                            <div className="overlayContentDay"></div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              );
-            } else {
-              return null;
-            }
-          })} */}
           <div className="calendar-footer">
             <div className="footer-total-properties sticky d-flex justify-content-between align-items-center">
               <div>Total rooms: {filteredProperties.length}</div>
@@ -1318,32 +972,6 @@ const Calendar = () => {
           </div>
         </div>
       </div>
-      {isModalOpen && selectedDate && selectedProperty && (
-        <BookingModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          initialDate={selectedDate}
-          property={selectedProperty}
-          onCreateBooking={handleCreateBooking}
-        />
-      )}
-      {iseditModalOpen && selectedDate && selectedProperty && (
-        <BookingModal
-          isOpen={iseditModalOpen}
-          onClose={() => setIsEditModalOpen(false)}
-          initialDate={selectedDate}
-          selectedCheckOutDate={selectedCheckoutDate}
-          selectedCheckInDate={selectedCheckInDate}
-          property={selectedProperty}
-          eventTitle={eventTitle}
-          eventPhone={eventPhone}
-          editEvent={iseditModalOpen}
-          eventGuest={eventGuest}
-          eventId={eventId}
-          onEditBooking={handleUpdateBooking}
-          onSuccess={handleSuccess}
-        />
-      )}
     </div>
   );
 };
