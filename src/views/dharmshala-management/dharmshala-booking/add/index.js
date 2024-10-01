@@ -5,11 +5,11 @@ import { DharmshalaBookingAddWrapper } from "../../dharmshalaStyles";
 import "../../dharmshala_css/addbooking.scss";
 import BookingForm from "../../../../components/dharmshalaBooking/BookingForm";
 import * as Yup from "yup";
-import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import moment from "moment";
 
 dayjs.extend(customParseFormat);
-
 
 const AddDharmshalaBooking = () => {
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
@@ -20,6 +20,9 @@ const AddDharmshalaBooking = () => {
   const location = useLocation();
   const history = useHistory();
   const bookingData = location.state?.bookingData;
+  const property = location.state?.property;
+  const bookingDate = location.state?.date;
+  console.log(property, bookingDate);
 
   useEffect(() => {
     if (bookingData) {
@@ -29,12 +32,16 @@ const AddDharmshalaBooking = () => {
         dialCode: bookingData.userDetails.dialCode || "91",
         SelectedUser: bookingData.userDetails || "",
         donarName: bookingData.userDetails.name || "",
-        fromDate: bookingData.startDate ? dayjs(bookingData.startDate, "DD-MM-YYYY") : null,
-        toDate: bookingData.endDate ? dayjs(bookingData.endDate, "DD-MM-YYYY") : null,
+        fromDate: bookingData.startDate
+          ? dayjs(bookingData.startDate, "DD-MM-YYYY")
+          : null,
+        toDate: bookingData.endDate
+          ? dayjs(bookingData.endDate, "DD-MM-YYYY")
+          : null,
         numMen: bookingData.guestCount?.men || "",
         numWomen: bookingData.guestCount?.women || "",
         numKids: bookingData.guestCount?.children || "",
-        roomsData: bookingData.rooms.map(room => ({
+        roomsData: bookingData.rooms.map((room) => ({
           roomTypeId: room.roomTypeId,
           building: room.building,
           floor: room.floor,
@@ -67,38 +74,40 @@ const AddDharmshalaBooking = () => {
         dialCode: "91",
         SelectedUser: "",
         donarName: "",
-        fromDate: null,
-        toDate: null,
-        numMen: '',
-        numWomen: '',
-        numKids: '',
+        fromDate: (bookingDate && moment(bookingDate, "DD MMM YYYY")) || null,
+        toDate: bookingDate
+          ? bookingDate && moment(bookingDate, "DD MMM YYYY").add(1, "days") 
+          : null,
+        numMen: "",
+        numWomen: "",
+        numKids: "",
         roomsData: [
           {
-            roomTypeId: '',
-            roomTypeName: '',
-            building: '',
-            buildingName: '',
-            floor: '',
-            floorName: '',
-            roomId: '',
-            roomNumber: '',
+            roomTypeId:property?.roomTypeId|| "",
+            roomTypeName: property?.roomTypeName||"",
+            building:  property?.buildingId||"",
+            buildingName: "",
+            floor: property?.floorId|| "",
+            floorName: "",
+            roomId: "",
+            roomNumber:property?._id|| "",
             amount: 0,
           },
         ],
-        guestname: '',
-        email: '',
-        roomRent: '',
-        security: '',
-        address: '',
-        idType: '',
-        idNumber: '',
-        totalAmount: '',
-        totalPaid: '',
-        totalDue: '',
+        guestname: "",
+        email: "",
+        roomRent: "",
+        security: "",
+        address: "",
+        idType: "",
+        idNumber: "",
+        totalAmount: "",
+        totalPaid: "",
+        totalDue: "",
       });
     }
     setIsLoading(false);
-  }, [bookingData]);
+  }, [bookingData, bookingDate]);
 
   const schema = Yup.object().shape({
     Mobile: Yup.string().required(t("expenses_mobile_required")),

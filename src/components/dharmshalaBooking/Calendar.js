@@ -15,6 +15,7 @@ import "react-toggle-switch/dist/css/switch.min.css";
 import Swal from "sweetalert2";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { useHistory } from "react-router-dom";
+import moment from "moment";
 
 const BookingModal = ({
   isOpen,
@@ -351,7 +352,6 @@ const Calendar = () => {
         ? fromDate.getMonth() + 1
         : new Date().getMonth() + 1;
       const data = await fetchBookings(year, month);
-      console.log(data)
       if (window.matchMedia("(max-width: 768px)").matches) {
         const formattedDays = weekDays.map((day) => ({
           date: new Date(day.date).toISOString().split("T")[0],
@@ -502,11 +502,26 @@ const Calendar = () => {
     setSelectedRoomType(event.target.value);
   };
 
+  const [eventColors, setEventColors] = useState({});
+
+  // Function to generate random color
   const getRandomColor = () => {
     const colors = ["#4D9DE0", "#E15554", "#E1BC29", "#3BB273", "#7768AE"];
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    return color;
+    return colors[Math.floor(Math.random() * colors.length)];
   };
+
+  // useEffect to assign colors when events change
+  useEffect(() => {
+    const newColors = {};
+
+    events.forEach((event) => {
+      if (!newColors[event._id]) {
+        newColors[event._id] = getRandomColor();
+      }
+    });
+
+    setEventColors((prevColors) => ({ ...prevColors, ...newColors }));
+  }, [events]);
 
   const roundToDay = (date) => {
     const roundedDate = new Date(date);
@@ -534,11 +549,13 @@ const Calendar = () => {
   }, [properties, selectedRoomType, showAvailableOnly, filteredEvents]);
 
   //**filter events */
-  const filterEvents = events.filter((item) => {
-    const filteredIds = filteredProperties.map((property) => property._id);
-    return filteredIds.includes(item.roomId._id);
-  });
-
+  const filterEvents =
+    events &&
+    events.filter((item) => {
+      const filteredIds = filteredProperties.map((property) => property._id);
+      const roomIds = item.rooms.map((room) => room.roomId);
+      return roomIds.some((roomId) => filteredIds.includes(roomId));
+    });
   const getTotalGuestsForDate = (date) => {
     const eventsOnDate = filterEvents.filter((event) => {
       const checkIn = new Date(event.startDate);
@@ -563,10 +580,15 @@ const Calendar = () => {
   // };
 
   const handleCellClick = (date, property) => {
-    const formattedDate = date.toISOString().split("T")[0]; // Format date as YYYY-MM-DD
-    history.push(
-      `/booking/add?startDate=${formattedDate}&roomNumber=${property.roomNumber}&roomType=${property.roomTypeName}`
-    );
+    const formattedDate = moment(date).format("DD MMM YYYY");
+
+    history.push({
+      pathname: `/booking/add`,
+      state: { property: property, date: date },
+    });
+    // history.push(
+    //   `/booking/add?startDate=${formattedDate}&roomNumber=${property.roomNumber}&roomType=${property.roomTypeName}`
+    // );
   };
 
   const handleCellClickEdit = (
@@ -581,6 +603,18 @@ const Calendar = () => {
     startDate,
     endDate
   ) => {
+    console.log(
+      date,
+      property,
+      title,
+      phone,
+      guests,
+      eventId,
+      //checkOut,
+      //checkIn
+      startDate,
+      endDate
+    );
     setIsEditModalOpen(true);
     setSelectedDate(date);
     setSelectedCheckoutDate(endDate);
@@ -886,249 +920,307 @@ const Calendar = () => {
             </div>
           )}
           {filteredProperties.length > 0 ? (
-            filteredProperties.map((property) => (
-              <div key={property._id} className="calendar-property-row">
-                <div className="property-cell sticky">
-                  {property.roomNumber}
-                </div>
-                <div className="separator" style={{ height: "40px" }} />
-                <div className="day-cells-container">
-                  {(window.matchMedia("(max-width: 768px)").matches
-                    ? weekDays
-                    : days
-                  ).map((day, index) => {
-                    const dayStart = new Date(day.date).setHours(0, 0, 0, 0);
-                    const dayEnd = new Date(day.date).setHours(23, 59, 59, 999);
+            filteredProperties.map((property) => {
+              return (
+                <div key={property._id} className="calendar-property-row">
+                  <div className="property-cell sticky">
+                    {property.roomNumber}
+                  </div>
+                  <div className="separator" style={{ height: "40px" }} />
+                  <div className="day-cells-container">
+                    {(window.matchMedia("(max-width: 768px)").matches
+                      ? weekDays
+                      : days
+                    ).map((day, index) => {
+                      // Function to convert "DD-MM-YYYY" to "YYYY-MM-DD"
+                      const convertDateFormat = (dateStr) => {
+                        const [day, month, year] = dateStr.split("-");
+                        return `${year}-${month}-${day}`; // "YYYY-MM-DD" format
+                      };
 
-                    const eventsForDay = events.filter(
-                      (event) =>
-                        event.propertyId === property._id &&
-                        new Date(event.startDate).setHours(0, 0, 0, 0) <=
-                          dayEnd &&
-                        new Date(event.endDate).setHours(0, 0, 0, 0) >= dayStart
-                    );
-                    const hasEvents = eventsForDay.length > 0;
-                    const backgroundColor = hasEvents
-                      ? getRandomColor(eventsForDay[0]._id)
-                      : "";
-                    const isCheckInDate = eventsForDay.some(
-                      (event) =>
-                        new Date(event.startDate).setHours(0, 0, 0, 0) ===
-                        dayStart
-                    );
-                    const isLastPastDay = index === lastPastDayIndex;
-                    return (
-                      <div
-                        key={day.date.toISOString()}
-                        className={`day-cell ${
-                          day.isSelectable ? "" : "day-cell-grayed"
-                        } ${
-                          isPastDate(new Date(day.date)) ? "past-date" : ""
-                        } ${isLastPastDay ? "last-past-day-cell" : ""}`}
-                        onClick={() => {
-                          if (!isPastDate(day.date) && !hasEvents) {
-                            handleCellClick(day.date, property);
-                          } else {
-                            handleCellClickEdit(
-                              day.date,
-                              property,
-                              eventsForDay[0].title,
-                              eventsForDay[0].phoneNo,
-                              eventsForDay[0].guests,
-                              eventsForDay[0].id,
-                              eventsForDay[0].checkOut,
-                              eventsForDay[0].checkIn
-                            );
-                          }
-                        }}
-                        style={{
-                          pointerEvents: isPastDate(day.date) ? "none" : "",
-                          backgroundColor: window.matchMedia(
-                            "(max-width: 768px)"
-                          ).matches
-                            ? backgroundColor
-                            : "",
-                        }}
-                      >
-                        {isPastDate(day.date) && (
-                          <div className="overlay">
-                            <span></span>
-                          </div>
-                        )}
-                        <div className="day-price">
-                          <div
-                            className="overlayContentText"
-                            style={{
-                              display: backgroundColor ? "none" : "",
-                              color:
-                                day.date.toLocaleDateString("en-US", {
-                                  weekday: "short",
-                                }) === "Sun" ||
-                                day.date.toLocaleDateString("en-US", {
-                                  weekday: "short",
-                                }) === "Sat"
-                                  ? "#cc3322"
-                                  : "",
-                            }}
-                          >
-                            {day.date.getDate()}
-                          </div>
-                          <div
-                            className="overlayContentDay"
-                            style={{
-                              display: backgroundColor ? "none" : "",
-                              color:
-                                day.date.toLocaleDateString("en-US", {
-                                  weekday: "short",
-                                }) === "Sun" ||
-                                day.date.toLocaleDateString("en-US", {
-                                  weekday: "short",
-                                }) === "Sat"
-                                  ? "#cc3322"
-                                  : "",
-                            }}
-                          >
-                            {day.date.toLocaleDateString("en-US", {
-                              weekday: "short",
-                            })}
-                          </div>
-                          {hasEvents && isCheckInDate && (
-                            <div
-                              className="event-title"
-                              style={{
-                                display: window.matchMedia("(max-width: 768px)")
-                                  .matches
-                                  ? "flex"
-                                  : "none",
-                                color: "black",
-                                fontWeight: "600",
-                              }}
-                            >
-                              {eventsForDay[0].title}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
-                  {/* Render events in desktop view */}
-                  {(window.matchMedia("(max-width: 768px)").matches
-                    ? []
-                    : fromDate && toDate
-                    ? filterEventDataDay
-                    : events
-                  )
-                    .filter((event) => {
-                      return event.roomId._id === property._id;
-                    })
-                    .filter((event) => {
-                      const checkIn = new Date(event.startDate);
-                      const checkOut = new Date(event.endDate);
-                      const today = new Date();
-                      const cutoffDate = new Date(today);
-                      cutoffDate.setDate(today.getDate() - 7);
+                      // Updated filtering logic
+                      const dayStart = new Date(day.date).setHours(0, 0, 0, 0);
+                      const dayEnd = new Date(day.date).setHours(
+                        23,
+                        59,
+                        59,
+                        999
+                      );
 
-                      const isWithinDateRange =
-                        (checkIn >= new Date(fromDate) ||
-                          checkOut >= new Date(fromDate)) &&
-                        (!toDate || checkIn <= new Date(toDate));
-                      const isAfterCutoff =
-                        checkIn >= cutoffDate || checkOut >= cutoffDate;
+                      const eventsForDay = events.filter((event) => {
+                        const filteredIds = property._id;
+                        const roomIds = event.rooms.map((room) => room.roomId);
 
-                      if (fromDate) {
-                        return isWithinDateRange;
-                      } else {
-                        return isAfterCutoff;
-                      }
-                    })
-                    .map((event) => {
-                      const checkIn = roundToDay(new Date(event.startDate));
-                      const checkOut = roundToDay(new Date(event.endDate));
-                      const startOffset =
-                        Math.max(
-                          0,
-                          (checkIn - roundToDay(days[0].date)) /
-                            (24 * 60 * 60 * 1000)
-                        ) + 0.5;
-                      const endOffset =
-                        Math.min(
-                          days.length,
-                          (checkOut - roundToDay(days[0].date)) /
-                            (24 * 60 * 60 * 1000)
-                        ) + 0.5;
-                      const duration = endOffset - startOffset;
+                        // Convert the event start and end dates to a valid format if needed
+                        const eventStartDateStr = convertDateFormat(
+                          event.startDate
+                        );
+                        const eventEndDateStr = convertDateFormat(
+                          event.endDate
+                        );
 
+                        const eventStartDate = new Date(
+                          eventStartDateStr
+                        ).setHours(0, 0, 0, 0);
+                        const eventEndDate = new Date(eventEndDateStr).setHours(
+                          23,
+                          59,
+                          59,
+                          999
+                        );
+
+                        return (
+                          roomIds.includes(filteredIds) &&
+                          eventStartDate <= dayEnd &&
+                          eventEndDate >= dayStart
+                        );
+                      });
+
+                      const hasEvents = eventsForDay.length > 0;
+                      const backgroundColor = hasEvents
+                        ? eventColors[eventsForDay[0]._id]
+                        : "";
+                      const isCheckInDate = eventsForDay.some(
+                        (event) =>
+                          new Date(event.startDate).setHours(0, 0, 0, 0) ===
+                          dayStart
+                      );
+                      const isLastPastDay = index === lastPastDayIndex;
                       return (
                         <div
-                          key={event._id}
+                          key={day.date.toISOString()}
+                          className={`day-cell ${
+                            day.isSelectable ? "" : "day-cell-grayed"
+                          } ${
+                            isPastDate(new Date(day.date)) ? "past-date" : ""
+                          } ${isLastPastDay ? "last-past-day-cell" : ""}`}
+                          onClick={() => {
+                            if (!isPastDate(day.date) && !hasEvents) {
+                              handleCellClick(day.date, property);
+                            } else {
+                              handleCellClickEdit(
+                                day.date,
+                                property,
+                                eventsForDay[0].title,
+                                eventsForDay[0].phoneNo,
+                                eventsForDay[0].guests,
+                                eventsForDay[0].id,
+                                eventsForDay[0].checkOut,
+                                eventsForDay[0].checkIn
+                              );
+                            }
+                          }}
                           style={{
-                            display: "flex",
-                            position: "absolute",
-                            left: `${startOffset * 120}px`,
-                            width: `${duration * 120}px`,
-                            backgroundColor: getRandomColor(),
-                            transition: "opacity 0.3s ease",
-                            height: "40px",
-                            margin: 0,
-                            marginTop: "-9px",
-                            padding: "0 10px",
-                            boxSizing: "border-box",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            pointerEvents: "auto",
+                            pointerEvents: isPastDate(day.date) ? "none" : "",
+                            backgroundColor: window.matchMedia(
+                              "(max-width: 768px)"
+                            ).matches
+                              ? backgroundColor
+                              : "",
                           }}
-                          onMouseOver={(e) => {
-                            e.currentTarget.style.opacity = 0.7;
-                          }}
-                          onMouseOut={(e) => {
-                            e.currentTarget.style.opacity = 1.0;
-                          }}
-                          className="event"
-                          onMouseDown={() => startResizing(event, property)}
-                          onMouseUp={endResizing}
                         >
-                          <span
-                            style={{
-                              fontSize:
-                                !window.matchMedia("(max-width: 768px)")
-                                  .matches && "13px",
-                              fontWeight:
-                                !window.matchMedia("(max-width: 768px)")
-                                  .matches && "600",
-                              flex: "1",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                            }}
-                          >
-                            {event.bookingId}
-                          </span>
-                          <span
-                            style={{
-                              marginLeft: "10px",
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                            }}
-                          >
-                            <img
-                              src={guestIcon}
-                              alt="Guests"
-                              className="guest-icon"
-                            />
-                            <span
+                          {isPastDate(day.date) && (
+                            <div className="overlay">
+                              <span></span>
+                            </div>
+                          )}
+                          <div className="day-price">
+                            <div
+                              className="overlayContentText"
                               style={{
-                                fontSize:
-                                  !window.matchMedia("(max-width: 768px)")
-                                    .matches && "16px",
+                                display: backgroundColor ? "none" : "",
+                                color:
+                                  day.date.toLocaleDateString("en-US", {
+                                    weekday: "short",
+                                  }) === "Sun" ||
+                                  day.date.toLocaleDateString("en-US", {
+                                    weekday: "short",
+                                  }) === "Sat"
+                                    ? "#cc3322"
+                                    : "",
                               }}
-                            >{` ${event.count}`}</span>
-                          </span>
+                            >
+                              {day.date.getDate()}
+                            </div>
+                            <div
+                              className="overlayContentDay"
+                              style={{
+                                display: backgroundColor ? "none" : "",
+                                color:
+                                  day.date.toLocaleDateString("en-US", {
+                                    weekday: "short",
+                                  }) === "Sun" ||
+                                  day.date.toLocaleDateString("en-US", {
+                                    weekday: "short",
+                                  }) === "Sat"
+                                    ? "#cc3322"
+                                    : "",
+                              }}
+                            >
+                              {day.date.toLocaleDateString("en-US", {
+                                weekday: "short",
+                              })}
+                            </div>
+                            {hasEvents && isCheckInDate && (
+                              <div
+                                className="event-title"
+                                style={{
+                                  display: window.matchMedia(
+                                    "(max-width: 768px)"
+                                  ).matches
+                                    ? "flex"
+                                    : "none",
+                                  color: "black",
+                                  fontWeight: "600",
+                                }}
+                              >
+                                {eventsForDay[0].title}
+                              </div>
+                            )}
+                          </div>
                         </div>
                       );
                     })}
+                    {/* Render events in desktop view */}
+                    {(window.matchMedia("(max-width: 768px)").matches
+                      ? []
+                      : fromDate && toDate
+                      ? filterEventDataDay
+                      : events
+                    )
+                      .filter((event) => {
+                        const roomId = event.rooms.map((item) => {
+                          return item.roomId;
+                        });
+                        return roomId.includes(property._id);
+                      })
+                      .filter((event) => {
+                        const checkIn = new Date(
+                          event.startDate.split("-").reverse().join("-")
+                        ); // Convert to YYYY-MM-DD
+                        const checkOut = new Date(
+                          event.endDate.split("-").reverse().join("-")
+                        );
+                        const today = new Date();
+                        const cutoffDate = new Date(today);
+                        cutoffDate.setDate(today.getDate() - 7);
+
+                        const isWithinDateRange =
+                          (checkIn >= new Date(fromDate) ||
+                            checkOut >= new Date(fromDate)) &&
+                          (!toDate || checkIn <= new Date(toDate));
+                        const isAfterCutoff =
+                          checkIn >= cutoffDate || checkOut >= cutoffDate;
+
+                        return fromDate ? isWithinDateRange : isAfterCutoff;
+                      })
+                      .map((event) => {
+                        const checkIn = roundToDay(
+                          new Date(
+                            event.startDate.split("-").reverse().join("-")
+                          )
+                        );
+                        const checkOut = roundToDay(
+                          new Date(event.endDate.split("-").reverse().join("-"))
+                        );
+                        const startOffset =
+                          Math.max(
+                            0,
+                            (checkIn - roundToDay(days[0].date)) /
+                              (24 * 60 * 60 * 1000)
+                          ) + 0.5;
+                        const endOffset =
+                          Math.min(
+                            days.length,
+                            (checkOut - roundToDay(days[0].date)) /
+                              (24 * 60 * 60 * 1000)
+                          ) + 0.5;
+                        const duration = endOffset - startOffset;
+                        const backgroundColor = eventColors[event._id];
+                        return (
+                          <div
+                            key={event._id}
+                            style={{
+                              display: "flex",
+                              position: "absolute",
+                              left: `${startOffset * 120}px`,
+                              width: `${duration * 120}px`,
+                              backgroundColor: backgroundColor,
+                              transition: "opacity 0.3s ease",
+                              height: "30px",
+                              margin: 0,
+                              marginTop: "-14px",
+                              padding: "0 10px",
+                              boxSizing: "border-box",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              pointerEvents: "auto",
+                            }}
+                            onMouseOver={(e) => {
+                              e.currentTarget.style.opacity = 0.7;
+                            }}
+                            onMouseOut={(e) => {
+                              e.currentTarget.style.opacity = 1.0;
+                            }}
+                            className="event"
+                            // onMouseDown={() => startResizing(event, property)}
+                            // onMouseUp={endResizing}
+                            onDoubleClick={(e) => {
+                              history.push({
+                                pathname: `/booking/edit/${event._id}`,
+                                state: { bookingData: event },
+                              });
+                            }}
+                          >
+                            <span
+                              style={{
+                                fontSize: !window.matchMedia(
+                                  "(max-width: 768px)"
+                                ).matches
+                                  ? "13px"
+                                  : "inherit",
+                                fontWeight: !window.matchMedia(
+                                  "(max-width: 768px)"
+                                ).matches
+                                  ? "600"
+                                  : "inherit",
+                                flex: "1",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                              }}
+                            >
+                              {event?.userDetails?.name}
+                            </span>
+                            <span
+                              style={{
+                                marginLeft: "10px",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                              }}
+                            >
+                              <img
+                                src={guestIcon}
+                                alt="Guests"
+                                className="guest-icon"
+                              />
+                              <span
+                                style={{
+                                  fontSize: !window.matchMedia(
+                                    "(max-width: 768px)"
+                                  ).matches
+                                    ? "16px"
+                                    : "inherit",
+                                }}
+                              >{` ${event.count}`}</span>
+                            </span>
+                          </div>
+                        );
+                      })}
+                  </div>
                 </div>
-              </div>
-            ))
+              );
+            })
           ) : (
             <PlaceholderRows
               numRows={numPlaceholderRows}
