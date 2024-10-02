@@ -749,7 +749,6 @@ const Routes = [
   //   type: "dharmshala",
   //   subPermission: READ,
   // },
-  
   {
     path: "/dharmshala/dashboard",
     component: lazy(() =>
