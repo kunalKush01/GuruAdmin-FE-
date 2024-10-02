@@ -146,7 +146,7 @@ const SiderLayout = (props) => {
             style={{ width: "16px", height: "16px" }}
           />
         ),
-        label: <Trans i18nKey={item.name} />,
+        label: <Trans i18nKey={item.customLabel || item.name} />,
         children: children,
         onClick: () => {
           if (!item.children) {
