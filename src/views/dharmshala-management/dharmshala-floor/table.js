@@ -13,6 +13,7 @@ import CustomDharmshalaTable from "../../../components/partials/CustomDharmshala
 import CustomDataTable from "../../../components/partials/CustomDataTable";
 import { DharmshalaFloorTableWrapper } from "../dharmshalaStyles";
 import "../dharmshala_css/dharmshalafloors.css";
+import { Table, Tag } from "antd";
 
 const DharmshalaFloorTable = ({
   data = [],
@@ -79,6 +80,40 @@ const DharmshalaFloorTable = ({
     },
   ];
 
+  const antdColumns = [
+    {
+      title: t("Name"), // Table column title
+      dataIndex: "name", // Corresponding field in the data
+      key: "name", // Unique key for this column
+      width: 100,
+      fixed: "left",
+    },
+    {
+      title: t("Number"),
+      dataIndex: "number",
+      key: "number",
+      width: 50,
+    },
+    {
+      title: t("Description"),
+      dataIndex: "description",
+      key: "description",
+      width: 120,
+    },
+    {
+      title: t("Room Count"),
+      dataIndex: "roomCount",
+      key: "roomCount",
+      width: 50,
+    },
+    {
+      title: t("Action"),
+      key: "action",
+      width: 50,
+      fixed: "right", // Align the column to the right
+    },
+  ];
+
   const DharmshalasFloor = useMemo(() => {
     const { buildingId } = useParams();
     return data?.map((item, idx) => ({
@@ -89,99 +124,103 @@ const DharmshalaFloorTable = ({
       roomCount: (
         <div style={{ fontWeight: "bold", cursor: "pointer" }}>
           {item?.roomCount === 0 ? (
-            <Button
-              size="lg"
-              color="primary"
-              className="px-1 py-0"
+            <Tag
+              // size="lg"
+              // color="primary"
+              // className="px-1 py-0"
+              className="floorTag"
               onClick={() =>
                 history.push(`/rooms/add/${item._id}/${buildingId}`, item._id)
               }
             >
               {" "}
               +{" "}
-            </Button>
+            </Tag>
           ) : item?.roomCount > 1 ? (
-            <Button
-              size="lg"
-              color="primary"
-              className="px-1 py-0"
+            <Tag
+              // size="lg"
+              // color="primary"
+              // className="px-1 py-0"
+              className="floorTag"
               onClick={() =>
                 history.push(`/room/${item._id}/${buildingId}`, item._id)
               }
             >
               {item?.roomCount} {t("Rooms")}
-            </Button>
+            </Tag>
           ) : (
-            <Button
-              size="lg"
-              color="primary"
-              className="px-1 py-0"
+            <Tag
+              // size="lg"
+              // color="primary"
+              // className="px-1 py-0"
+              className="floorTag"
               onClick={() =>
                 history.push(`/room/${item._id}/${buildingId}`, item._id)
               }
             >
               {item?.roomCount} {t("Room")}
-            </Button>
+            </Tag>
           )}
         </div>
       ),
-      edit: (
-        <img
-          src={editIcon}
-          width={35}
-          className="cursor-pointer"
-          onClick={() => {
-            history.push(
-              `/floor/edit/${item?._id}/${item?.buildingId}/&name=${item?.name}&number=${item?.number}&description=${item?.description}`
-            );
-          }}
-        />
-      ),
-      delete:
-        item?.roomCount === 0 ? (
+      action: (
+        <>
           <img
-            src={deleteIcon}
-            width={35}
-            className="cursor-pointer"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              Swal.fire({
-                title: `<img src="${confirmationIcon}"/>`,
-                html: `
-                  <h3 class="swal-heading mt-1">${t(
-                    "dharmshala_floor_delete"
-                  )}</h3>
-                  <p>${t("dharmshala_floor_delete_sure")}</p>
-                `,
-                showCloseButton: false,
-                showCancelButton: true,
-                focusConfirm: true,
-                cancelButtonText: ` ${t("cancel")}`,
-                cancelButtonAriaLabel: ` ${t("cancel")}`,
-                confirmButtonText: ` ${t("confirm")}`,
-                confirmButtonAriaLabel: "Confirm",
-              }).then(async (result) => {
-                if (result.isConfirmed) {
-                  deleteMutation.mutate(item._id);
-                }
-              });
-            }}
-          />
-        ) : (
-          <img
-            src={deleteDisableIcon}
+            src={editIcon}
             width={35}
             className="cursor-pointer"
             onClick={() => {
-              Swal.fire({
-                icon: "warning",
-                title: t("cannot_delete_floor"),
-                text: t("cannot_delete_floor_non_zero_rooms"),
-              });
+              history.push(
+                `/floor/edit/${item?._id}/${item?.buildingId}/&name=${item?.name}&number=${item?.number}&description=${item?.description}`
+              );
             }}
           />
-        ),
+          <div>
+            {item?.roomCount === 0 ? (
+              <img
+                src={deleteIcon}
+                width={35}
+                className="cursor-pointer"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  Swal.fire({
+                    title: `<img src="${confirmationIcon}"/>`,
+                    html: `
+          <h3 class="swal-heading mt-1">${t("dharmshala_floor_delete")}</h3>
+          <p>${t("dharmshala_floor_delete_sure")}</p>
+        `,
+                    showCloseButton: false,
+                    showCancelButton: true,
+                    focusConfirm: true,
+                    cancelButtonText: ` ${t("cancel")}`,
+                    cancelButtonAriaLabel: ` ${t("cancel")}`,
+                    confirmButtonText: ` ${t("confirm")}`,
+                    confirmButtonAriaLabel: "Confirm",
+                  }).then(async (result) => {
+                    if (result.isConfirmed) {
+                      deleteMutation.mutate(item._id);
+                    }
+                  });
+                }}
+              />
+            ) : (
+              <img
+                src={deleteDisableIcon}
+                width={35}
+                className="cursor-pointer"
+                onClick={() => {
+                  Swal.fire({
+                    icon: "warning",
+                    title: t("cannot_delete_floor"),
+                    text: t("cannot_delete_floor_non_zero_rooms"),
+                  });
+                }}
+              />
+            )}
+          </div>
+        </>
+      ),
     }));
   }, [
     data,
@@ -216,15 +255,27 @@ const DharmshalaFloorTable = ({
           ))}
         </div>
       ) : (
-        <CustomDharmshalaTable
-          maxHeight={maxHeight}
-          height={height}
-          columns={columns}
-          data={DharmshalasFloor}
+        <Table
+          className="donationListTable"
+          columns={antdColumns}
+          scroll={{
+            x: 1500,
+            y: 400,
+          }}
+          sticky={{
+            offsetHeader: 64,
+          }}
+          dataSource={DharmshalasFloor}
         />
       )}
     </DharmshalaFloorTableWrapper>
   );
 };
+// <CustomDharmshalaTable
+//   maxHeight={maxHeight}
+//   height={height}
+//   columns={columns}
+//   data={DharmshalasFloor}
+// />
 
 export default DharmshalaFloorTable;

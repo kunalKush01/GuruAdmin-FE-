@@ -511,7 +511,37 @@ const Routes = [
     type: "configuration",
     subPermission: READ,
   },
-
+  {
+    path: "/membership",
+    component: lazy(() =>
+      // import("../../views/membership/MembershipProfileView.js")
+      import("../../views/membership/MemberShipListView.js")
+    ),
+    // exact:true
+    type: "membership",
+    subPermission: READ,
+  },
+  {
+    path: "/member/profile/:id",
+    component: lazy(() => import("../../views/membership/MembershipProfileView.js")),
+    exact: true,
+    type: "membership",
+    subPermission: READ,
+  },
+  {
+    path: "/member/addMember",
+    component: lazy(() => import("../../views/membership/AddMemberForm.js")),
+    exact: true,
+    type: "membership",
+    subPermission: WRITE,
+  },
+  {
+    path: "/member/editMember/:id",
+    component: lazy(() => import("../../views/membership/AddMemberForm.js")),
+    exact: true,
+    type: "membership",
+    subPermission: EDIT,
+  },
   {
     path: "/configuration/cattle-breed",
     component: lazy(() =>

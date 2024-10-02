@@ -125,6 +125,14 @@ const AddMasterForm = ({ isOpen, toggle, onSuccess }) => {
           fields: [{ FieldName: "", FieldType: "", Required: false }],
         });
         toggle();
+        if(res.error){
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Key already exists. Please use a unique key.",
+          });
+          onSuccess(false);
+        }
       })
       .catch((error) => {
         onSuccess(false);
