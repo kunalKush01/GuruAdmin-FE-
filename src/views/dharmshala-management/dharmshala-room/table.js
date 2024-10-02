@@ -16,6 +16,7 @@ import { ConverFirstLatterToCapital } from "../../../utility/formater";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { DharmshalaRoomTableWrapper } from "../dharmshalaStyles";
 import "../dharmshala_css/dharmshalaroom.css";
+import { Table } from "antd";
 
 const DharmshalaRoomTable = ({
   data = [],
@@ -73,6 +74,35 @@ const DharmshalaRoomTable = ({
       width: "80px",
     },
   ];
+  const antdColumn = [
+    {
+      title: t("room_number"), // Table column title
+      dataIndex: "roomNumber", // Field in the data for this column
+      key: "roomNumber", // Unique key for this column
+      width: 100,
+      fixed:"left"
+    },
+    {
+      title: t("directBookingAvailable"),
+      dataIndex: "directBookingAvailable",
+      key: "directBookingAvailable",
+      width: 100,
+      render: (available) => (available ? "Yes" : "No"), // Conditional rendering for Yes/No
+    },
+    {
+      title: t("room_type"),
+      dataIndex: "roomTypeName",
+      key: "roomTypeName",
+      width: 100,
+    },
+    {
+      title: t("Action"),
+      dataIndex: "action",
+      key: "action",
+      width: 100,
+      fixed:"right"
+    },
+  ];
   const DharmshalasRoom = useMemo(() => {
     return data?.map((item, idx) => {
       return {
@@ -81,50 +111,51 @@ const DharmshalaRoomTable = ({
         directBookingAvailable: item?.directBookingAvailable,
         roomTypeId: item?.roomTypeId,
         roomTypeName: item?.roomTypeName,
-        edit: (
-          <img
-            src={editIcon}
-            width={35}
-            className="cursor-pointer "
-            onClick={() => {
-              history.push(
-                `/rooms/edit/${item?._id}/${floorId}/${buildingId}&number=${item?.roomNumber}&directBookingAvailable=${item?.directBookingAvailable}`
-              );
-            }}
-          />
+        action: (
+          <>
+            <img
+              src={editIcon}
+              width={35}
+              className="cursor-pointer "
+              onClick={() => {
+                history.push(
+                  `/rooms/edit/${item?._id}/${floorId}/${buildingId}&number=${item?.roomNumber}&directBookingAvailable=${item?.directBookingAvailable}`
+                );
+              }}
+            />
+            <img
+              src={deleteIcon}
+              width={35}
+              className="cursor-pointer "
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                Swal.fire({
+                  title: `<img src="${confirmationIcon}"/>`,
+                  html: `
+                            <h3 class="swal-heading mt-1">${t(
+                              "dharmshala_room_delete"
+                            )}</h3>
+                            <p>${t("dharmshala_room_delete_sure")}</p>
+                            `,
+                  showCloseButton: false,
+                  showCancelButton: true,
+                  focusConfirm: true,
+                  cancelButtonText: ` ${t("cancel")}`,
+                  cancelButtonAriaLabel: ` ${t("cancel")}`,
+                  confirmButtonText: ` ${t("confirm")}`,
+                  confirmButtonAriaLabel: "Confirm",
+                }).then(async (result) => {
+                  if (result.isConfirmed) {
+                    deleteMutation.mutate(item._id);
+                  }
+                });
+              }}
+            />
+          </>
         ),
-        delete: (
-          // allPermissions?.name === "all" || subPermission?.includes(DELETE) ? (
-          <img
-            src={deleteIcon}
-            width={35}
-            className="cursor-pointer "
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              Swal.fire({
-                title: `<img src="${confirmationIcon}"/>`,
-                html: `
-                                      <h3 class="swal-heading mt-1">${t(
-                                        "dharmshala_room_delete"
-                                      )}</h3>
-                                      <p>${t("dharmshala_room_delete_sure")}</p>
-                                      `,
-                showCloseButton: false,
-                showCancelButton: true,
-                focusConfirm: true,
-                cancelButtonText: ` ${t("cancel")}`,
-                cancelButtonAriaLabel: ` ${t("cancel")}`,
-                confirmButtonText: ` ${t("confirm")}`,
-                confirmButtonAriaLabel: "Confirm",
-              }).then(async (result) => {
-                if (result.isConfirmed) {
-                  deleteMutation.mutate(item._id);
-                }
-              });
-            }}
-          />
-        ),
+
+        // allPermissions?.name === "all" || subPermission?.includes(DELETE) ? (
       };
     });
   }, [data, floorID]);
@@ -149,14 +180,26 @@ const DharmshalaRoomTable = ({
           ))}
         </div>
       ) : (
-        <CustomDharmshalaTable
-          maxHeight={maxHeight}
-          height={height}
-          columns={columns}
-          data={DharmshalasRoom}
+        <Table
+          className="donationListTable"
+          columns={antdColumn}
+          scroll={{
+            x: 1500,
+            y: 400,
+          }}
+          sticky={{
+            offsetHeader: 64,
+          }}
+          dataSource={DharmshalasRoom}
         />
       )}
     </DharmshalaRoomTableWrapper>
   );
 };
+// <CustomDharmshalaTable
+//   maxHeight={maxHeight}
+//   height={height}
+//   columns={columns}
+//   data={DharmshalasRoom}
+// />
 export default DharmshalaRoomTable;

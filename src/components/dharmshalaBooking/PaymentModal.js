@@ -2,16 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form, Input, Select } from 'antd';
 import "../../assets/scss/viewCommon.scss";
 
-export const PaymentModal = ({ isOpen, onClose, onSave }) => {
+export const PaymentModal = ({ isOpen, onClose, onSave, totalDue }) => {
   const [form] = Form.useForm();
   const [paymentMode, setPaymentMode] = useState('cash');
 
   useEffect(() => {
     if (isOpen) {
-      form.setFieldsValue({ mode: 'cash' });
+      form.resetFields();
+      form.setFieldsValue({ mode: 'cash', amount: totalDue });
       setPaymentMode('cash');
     }
-  }, [isOpen, form]);
+  }, [isOpen, form, totalDue]);
 
   const handleSave = () => {
     form.validateFields().then((values) => {
@@ -41,7 +42,7 @@ export const PaymentModal = ({ isOpen, onClose, onSave }) => {
         </Button>,
       ]}
     >
-      <Form form={form} layout="vertical" initialValues={{ mode: 'cash' }}>
+      <Form form={form} layout="vertical" initialValues={{ mode: 'cash', amount: totalDue }}>
         <Form.Item
           name="mode"
           label="Mode"

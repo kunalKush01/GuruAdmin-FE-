@@ -17,6 +17,8 @@ export default function DonationForm({
   initialValues,
   showTimeInput,
   customFieldsList,
+  sId,
+  donorMapped,
 }) {
   const history = useHistory();
   const donationQueryClient = useQueryClient();
@@ -104,6 +106,8 @@ export default function DonationForm({
               bankNarration: e?.bankNarration,
               donationRemarks: e?.donationRemarks,
               customFields: transformedCustomFields,
+              sId,
+              donorMapped,
             });
           }}
           validationSchema={validationSchema}

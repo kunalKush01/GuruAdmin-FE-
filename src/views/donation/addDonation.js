@@ -3,7 +3,7 @@ import React from "react";
 import { Trans } from "react-i18next";
 import "react-phone-number-input/style.css";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import * as Yup from "yup";
 import { getDonationCustomFields } from "../../api/customFieldsApi";
 import { createDonation } from "../../api/donationApi";
@@ -21,6 +21,12 @@ export default function AddDonation() {
   const currentCategory = searchParams.get("category");
   const currentSubCategory = searchParams.get("subCategory");
   const currentFilter = searchParams.get("filter");
+  const remark = searchParams.get("remark");
+  const amount = searchParams.get("amount");
+  const donorMapped = searchParams.get("donorMapped");
+  const modeOfPayment = searchParams.get("modeOfPayment");
+  const dateTime = searchParams.get("dateTime");
+  const sId = searchParams.get("sId");
   const handleCreateDonation = async (payload) => {
     return createDonation(payload);
   };
@@ -43,8 +49,8 @@ export default function AddDonation() {
       .trim(),
     SelectedMasterCategory: Yup.mixed().required("masterCategory_required"),
     Amount: Yup.string()
-      .matches(/^[1-9][0-9]*$/, "invalid_amount")
-      .required("amount_required"),
+    .matches(/^(0|[1-9]\d*)(\.\d+)?$/, "invalid_amount") // Allows 0, positive integers, and positive decimals
+    .required("amount_required"),
     customFields: Yup.object().shape(
       customFieldsList.reduce((acc, field) => {
         if (field.isRequired) {
@@ -65,16 +71,19 @@ export default function AddDonation() {
     SelectedMasterCategory: "",
     SelectedSubCategory: "",
     SelectedCommitmentId: "",
-    Amount: "",
+    Amount: amount || "",
     isGovernment: "NO",
     createdBy: ConverFirstLatterToCapital(loggedInUser),
-    modeOfPayment: { value: "Cash", label: "Cash" },
+    modeOfPayment: {
+      value: modeOfPayment || "Cash",
+      label: ((modeOfPayment == "online" || modeOfPayment=="") && "Online") || "Cash",
+    },
     bankName: "",
     chequeNum: "",
     chequeDate: "",
     chequeStatus: "",
     bankNarration: "",
-    donationRemarks: "",
+    donationRemarks: remark || "",
     customFields: customFieldsList.reduce((acc, field) => {
       acc[field.fieldName] = "";
       return acc;
@@ -126,6 +135,8 @@ export default function AddDonation() {
           showTimeInput
           buttonName="donation_Adddonation"
           customFieldsList={customFieldsList}
+          donorMapped={donorMapped}
+          sId={sId}
         />
       </div>
     </div>
