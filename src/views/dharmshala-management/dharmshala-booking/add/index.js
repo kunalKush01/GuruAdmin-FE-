@@ -22,8 +22,6 @@ const AddDharmshalaBooking = () => {
   const bookingData = location.state?.bookingData;
   const property = location.state?.property;
   const bookingDate = location.state?.date;
-  console.log(property, bookingDate);
-
   useEffect(() => {
     if (bookingData) {
       setInitialValues({
@@ -84,14 +82,14 @@ const AddDharmshalaBooking = () => {
         roomsData: [
           {
             roomTypeId:property?.roomTypeId|| "",
-            roomTypeName: property?.roomTypeName||"",
             building:  property?.buildingId||"",
-            buildingName: "",
             floor: property?.floorId|| "",
-            floorName: "",
-            roomId: "",
-            roomNumber:property?._id|| "",
+            roomId:property?._id|| "",
             amount: 0,
+            roomNumber:property?.roomNumber|| "",
+            roomTypeName: property?.roomTypeName||"",
+            buildingName: "",
+            floorName: "",
           },
         ],
         guestname: "",
@@ -107,7 +105,7 @@ const AddDharmshalaBooking = () => {
       });
     }
     setIsLoading(false);
-  }, [bookingData, bookingDate]);
+  }, [bookingData, bookingDate,property]);
 
   const schema = Yup.object().shape({
     Mobile: Yup.string().required(t("expenses_mobile_required")),

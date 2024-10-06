@@ -18,13 +18,14 @@ import guestIcon from "../../assets/images/icons/subadmin.svg";
 import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import uploadIcon from "../../assets/images/icons/Thumbnail.svg";
-import { Prompt } from 'react-router-dom';
+import { Prompt } from "react-router-dom";
 import AddUserDrawerForm from "../donation/addUserDrawerForm";
 import * as Yup from "yup";
 import { useQuery } from "@tanstack/react-query";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
-import '../../../src/assets/scss/viewCommon.scss';
-import RoomsContainer from './RoomsContainer';
+import "../../../src/assets/scss/viewCommon.scss";
+import "../../../src/assets/scss/common.scss";
+import RoomsContainer from "./RoomsContainer";
 
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 
@@ -70,8 +71,12 @@ export default function FormWithoutFormikForBooking({
   const [phoneNumber, setPhoneNumber] = useState(getCommitmentMobile ?? "");
   const [noUserFound, setNoUserFound] = useState(false);
   const [open, setOpen] = useState(false);
-  const { data: roomTypesData, isLoading: isRoomTypesLoading, isError: isRoomTypesError } = useQuery(["roomTypes"], getRoomTypeList);
-  
+  const {
+    data: roomTypesData,
+    isLoading: isRoomTypesLoading,
+    isError: isRoomTypesError,
+  } = useQuery(["roomTypes"], getRoomTypeList);
+
   const handleDataLoad = (val) => {
     setDataLoad(val);
   };
@@ -154,7 +159,7 @@ const idTypeOptions = [
   useEffect(() => {
     fetchBuildings();
     fetchRoomTypes();
-    
+
     if (formik.values.roomsData && formik.values.roomsData.length > 0) {
       formik.values.roomsData.forEach((room) => {
         if (room.building) {
@@ -557,7 +562,13 @@ const idTypeOptions = [
             <Row className="paddingForm">
               <Col xs={12}>
                 <Row>
-                  <Col xs={12} sm={6} lg={4} className="pb-1 custom-margin-top" >
+                  <Col
+                    xs={12}
+                    sm={6}
+                    lg={4}
+                    md={6}
+                    className="pb-1 custom-margin-top"
+                  >
                     <Row>
                       <Col xs={12} className="align-self-center">
                       <CustomCountryMobileNumberField
@@ -620,64 +631,79 @@ const idTypeOptions = [
                       </Col>
                     </Row>
                   </Col>
-                  <Col xs={12} sm={6} lg={4} className="pb-1">
-                  <CustomTextField
-                    required
-                    label={t("Guest Name")}
-                    placeholder={t("Guest Name")}
-                    name="guestname"
-                    value={formik.values.guestname}
-                    onChange={formik.handleChange}
-                    onInput={(e) => (e.target.value = e.target.value.slice(0, 30))}
-                  />
+                  <Col xs={12} sm={6} lg={4} md={6} className="pb-1">
+                    <CustomTextField
+                      required
+                      label={t("Guest Name")}
+                      placeholder={t("Guest Name")}
+                      name="guestname"
+                      value={formik.values.guestname}
+                      onChange={formik.handleChange}
+                      onInput={(e) =>
+                        (e.target.value = e.target.value.slice(0, 30))
+                      }
+                    />
+                  </Col>
+                  <Col xs={12} sm={6} lg={4} md={6} className="pb-1">
+                    <CustomTextField
+                      label={t("dashboard_Recent_DonorName")}
+                      placeholder={t("placeHolder_donar_name")}
+                      name="donarName"
+                      value={formik.values.donarName}
+                      onChange={(e) => {
+                        formik.setFieldValue(
+                          "donarName",
+                          e.target.value.slice(0, 30)
+                        );
+                      }}
+                    />
                   </Col>
                 </Row>
                 <Row>
-                  <Col xs={12} sm={6} lg={4} className="pb-1">
-                  <CustomTextField
-                    label={t("Email")}
-                    placeholder={t("placeHolder_email")}
-                    name="email"
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                    onInput={(e) => (e.target.value = e.target.value.slice(0, 30))}
-                  />
+                  <Col xs={12} sm={6} lg={4} md={6} className="pb-1">
+                    <CustomTextField
+                      label={t("Email")}
+                      placeholder={t("placeHolder_email")}
+                      name="email"
+                      value={formik.values.email}
+                      onChange={formik.handleChange}
+                      onInput={(e) =>
+                        (e.target.value = e.target.value.slice(0, 30))
+                      }
+                    />
                   </Col>
-                  <Col xs={12} sm={6} lg={4} className="pb-1">
-                  <CustomTextField
-                    label={t("dashboard_Recent_DonorName")}
-                    placeholder={t("placeHolder_donar_name")}
-                    name="donarName"
-                    value={formik.values.donarName}
-                    onChange={(e) => {
-                      formik.setFieldValue(
-                        "donarName",
-                        e.target.value.slice(0, 30)
-                      );
-                    }}
-                  />
-                  </Col>
-                  <Col xs={12} sm={6} lg={8} className="a pb-1">
-                  <CustomTextField
-                    type="address"
-                    label={t("Address")}
-                    placeholder={t("Address")}
-                    name="address"
-                    value={formik.values.address}
-                    onChange={formik.handleChange}
-                  />
+
+                  <Col xs={12} sm={6} lg={8} md={8} className="a pb-1">
+                    <CustomTextField
+                      type="address"
+                      label={t("Address")}
+                      placeholder={t("Address")}
+                      name="address"
+                      value={formik.values.address}
+                      onChange={formik.handleChange}
+                    />
                   </Col>
                 </Row>
                 <Row>
                   <Col xs={12} sm={6} lg={4} className="pb-2">
-                  <FormikCustomReactSelect
-                    name="idType"
-                    labelName={t("ID Type")}
-                    placeholder={t("Id Type")}
-                    options={idTypeOptions}
-                    value={idTypeOptions.find(option => option.value === formik.values.idType) || null}
-                    onChange={(selectedOption) => formik.setFieldValue('idType', selectedOption ? selectedOption.value : '')}
-                  />
+                    <FormikCustomReactSelect
+                      name="idType"
+                      labelName={t("ID Type")}
+                      placeholder={t("Id Type")}
+                      options={idTypeOptions}
+                      width={"100"}
+                      value={
+                        idTypeOptions.find(
+                          (option) => option.value === formik.values.idType
+                        ) || null
+                      }
+                      onChange={(selectedOption) =>
+                        formik.setFieldValue(
+                          "idType",
+                          selectedOption ? selectedOption.value : ""
+                        )
+                      }
+                    />
                   </Col>
                   <Col xs={12} sm={6} lg={4} className="pb-1">
                   <CustomTextField

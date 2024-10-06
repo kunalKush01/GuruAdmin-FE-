@@ -216,6 +216,7 @@ export const deleteDharmshalaBooking = (bookingId) =>
   });
 
   export const updateDharmshalaBooking = (payload) => {
+    console.log(payload)
     return callDharmshalaApi({
       requestFunction: (axios) => axios.put(`bookings/${payload.bookingId}`, payload),
     });
