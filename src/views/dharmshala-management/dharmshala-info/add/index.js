@@ -8,7 +8,7 @@ import { createBuilding } from "../../../../api/dharmshala/dharmshalaInfo";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddDharmshalaForm from "../../../../components/dharmshalaInfo/addForm";
 import { DharmshalaAddWrapper } from "../../dharmshalaStyles";
-
+import '../../../../assets/scss/common.scss'
 const AddDharmshala = () => {
   const history = useHistory();
   const searchParams = new URLSearchParams(history.location.search);

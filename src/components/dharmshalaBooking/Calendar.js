@@ -10,6 +10,8 @@ import Swal from "sweetalert2";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { useHistory } from "react-router-dom";
 import moment from "moment";
+import { Rnd } from "react-rnd";
+
 const numPlaceholderRows = 14;
 const numPlaceholderCells = 31;
 const TOTAL_ROWS = 14;
@@ -46,13 +48,11 @@ const Calendar = () => {
   const [toDate, setToDate] = useState(null);
   const [propertyTypes, setPropertyTypes] = useState([]);
   const [selectedRoomType, setSelectedRoomType] = useState("All");
-  const [selectedProperty, setSelectedProperty] = useState(null);
   const [toggleSwitch, setToggleSwitch] = useState(false);
   const [resizingEvent, setResizingEvent] = useState(null);
   const [resizeProperty, setResizeProperty] = useState(null);
   const [filterEventDataDay, setFilterEventDataDay] = useState([]);
   const [weekDays, setWeekDays] = useState([]);
-  const [isBookingResizeSuccess, setIsBookingResizeSuccess] = useState(false);
   const [showAvailableOnly, setShowAvailableOnly] = useState(false);
 
   //**filter event based on date selection */
@@ -72,7 +72,6 @@ const Calendar = () => {
     });
     return filteredData;
   }, [events, fromDate, toDate, days]);
-
   useEffect(() => {
     setFilterEventDataDay(filteredEvents);
   }, [fromDate, toDate, filteredEvents]);
@@ -160,7 +159,7 @@ const Calendar = () => {
     }
 
     const endDate = new Date(startDate);
-    endDate.setDate(startDate.getDate() + 30);
+    endDate.setDate(startDate.getDate() + 60);
 
     const datesArray = [];
 
@@ -238,28 +237,21 @@ const Calendar = () => {
   const handleRoomTypeChange = (event) => {
     setSelectedRoomType(event.target.value);
   };
-
   const [eventColors, setEventColors] = useState({});
-
-  // Function to generate random color
-  const getRandomColor = () => {
-    const colors = ["#4D9DE0", "#E15554", "#E1BC29", "#3BB273", "#7768AE"];
-    return colors[Math.floor(Math.random() * colors.length)];
+  const colorPalette = ["#4D9DE0", "#E15554", "#E1BC29", "#3BB273", "#7768AE"];
+  const getColorForEvent = (index) => {
+    return colorPalette[index % colorPalette.length]; // Cycle through the colors in order
   };
-
-  // useEffect to assign colors when events change
   useEffect(() => {
     const newColors = {};
 
-    events.forEach((event) => {
+    events.forEach((event, index) => {
       if (!newColors[event._id]) {
-        newColors[event._id] = getRandomColor();
+        newColors[event._id] = getColorForEvent(index); // Assign color based on index
       }
     });
-
     setEventColors((prevColors) => ({ ...prevColors, ...newColors }));
   }, [events]);
-
   const roundToDay = (date) => {
     const roundedDate = new Date(date);
     roundedDate.setHours(0, 0, 0, 0);
@@ -309,46 +301,12 @@ const Calendar = () => {
   const handleShowAvailableOnly = () => {
     setShowAvailableOnly(!showAvailableOnly);
   };
-
-  // const handleCellClick = (date, property) => {
-  //   setSelectedDate(date);
-  //   setSelectedProperty(property);
-  //   setIsModalOpen(true);
-  // };
-
   const handleCellClick = (date, property) => {
     // const formattedDate = moment(date).format("DD MMM YYYY");
     history.push({
       pathname: `/booking/add`,
       state: { property: property, date: date },
     });
-  };
-
-  const handleCellClickEdit = (
-    date,
-    property,
-    title,
-    phone,
-    guests,
-    eventId,
-    //checkOut,
-    //checkIn
-    startDate,
-    endDate
-  ) => {
-    // console.log(
-    //   date,
-    //   property,
-    //   title,
-    //   phone,
-    //   guests,
-    //   eventId,
-    //   //checkOut,
-    //   //checkIn
-    //   startDate,
-    //   endDate
-    // );
-    setSelectedProperty(property);
   };
 
   //**switch guest/properties */
@@ -380,14 +338,12 @@ const Calendar = () => {
 
   //**Extend Your booking */
   const [conflicts, setConflicts] = useState(false);
-  const handleSuccess = (success) => {
-    setIsBookingResizeSuccess(success);
-  };
+
   const resizeEvent = useCallback(
     ({ event, start, end }) => {
       const formattedStart = moment(start, "DD-MM-YYYY");
       const formattedEnd = moment(end, "DD-MM-YYYY");
-
+console.log(formattedEnd)
       if (formattedEnd.isBefore(formattedStart)) {
         Swal.fire({
           icon: "error",
@@ -411,7 +367,6 @@ const Calendar = () => {
           "DD-MM-YYYY"
         );
         const existingEventEnd = moment(existingEvent.endDate, "DD-MM-YYYY");
-
         return (
           formattedStart.isBetween(
             existingEventStart,
@@ -441,17 +396,11 @@ const Calendar = () => {
         return;
       }
 
-      // Proceed to handle the resizing event
-      handleCellClickEdit(
-        formattedStart,
-        resizeProperty,
-        event.title,
-        event.phoneNo,
-        event.guests,
-        event.id,
-        formattedEnd,
-        formattedStart
-      );
+      const updatedEvent = {
+        ...event,
+        startDate: formattedStart.format("DD-MM-YYYY"),
+        endDate: formattedEnd.format("DD-MM-YYYY"),
+      };
 
       // Update the events state
       setEvents((prevEvents) =>
@@ -465,8 +414,12 @@ const Calendar = () => {
             : prevEvent
         )
       );
+      history.push({
+        pathname: `/booking/edit/${updatedEvent._id}`,
+        state: { bookingData: updatedEvent },
+      });
     },
-    [events, handleCellClickEdit, resizeProperty, setEvents, setConflicts]
+    [events, resizeProperty, setEvents, setConflicts]
   );
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -614,7 +567,8 @@ const Calendar = () => {
                   isToday(day.date) ? "today" : ""
                 } sticky-header`}
               >
-                {day.date.getDate()}
+                {day.date.getDate()}-
+                {day.date.toLocaleString("default", { month: "short" })}
                 {isToday(day.date) && (
                   <div className="current-date-highlight" />
                 )}
@@ -646,8 +600,6 @@ const Calendar = () => {
                       ? weekDays
                       : days
                     ).map((day, index) => {
-                      // Function to convert "DD-MM-YYYY" to "YYYY-MM-DD"
-                      // Updated filtering logic
                       const dayStart = new Date(day.date).setHours(0, 0, 0, 0);
                       const dayEnd = new Date(day.date).setHours(
                         23,
@@ -655,19 +607,15 @@ const Calendar = () => {
                         59,
                         999
                       );
-
                       const eventsForDay = events.filter((event) => {
                         const filteredIds = property._id;
                         const roomIds = event.rooms.map((room) => room.roomId);
-
-                        // Convert the event start and end dates to a valid format if needed
                         const eventStartDateStr = convertDateFormat(
                           event.startDate
                         );
                         const eventEndDateStr = convertDateFormat(
                           event.endDate
                         );
-
                         const eventStartDate = new Date(
                           eventStartDateStr
                         ).setHours(0, 0, 0, 0);
@@ -677,7 +625,6 @@ const Calendar = () => {
                           59,
                           999
                         );
-
                         return (
                           roomIds.includes(filteredIds) &&
                           eventStartDate <= dayEnd &&
@@ -706,17 +653,6 @@ const Calendar = () => {
                           onClick={() => {
                             if (!isPastDate(day.date) && !hasEvents) {
                               handleCellClick(day.date, property);
-                            } else {
-                              handleCellClickEdit(
-                                day.date,
-                                property,
-                                eventsForDay[0].title,
-                                eventsForDay[0].phoneNo,
-                                eventsForDay[0].guests,
-                                eventsForDay[0].id,
-                                eventsForDay[0].checkOut,
-                                eventsForDay[0].checkIn
-                              );
                             }
                           }}
                           style={{
@@ -847,23 +783,46 @@ const Calendar = () => {
                         const duration = endOffset - startOffset;
                         const backgroundColor = eventColors[event._id];
                         return (
-                          <div
+                          <Rnd
                             key={event._id}
+                            disableDragging={true}
+                            default={{
+                              x: startOffset * 120, // Initial left position
+                              y: 0, // Fixed vertical position
+                              width: `${duration * 120}px`, // Initial width based on event duration
+                              height: "30px",
+                            }}
+                            size={{
+                              width: `${duration * 120}px`,
+                              height: "30px",
+                            }}
+                            position={{ x: startOffset * 120, y: 5 }}
+                            minWidth={120} // Minimum size for resizing
+                            maxWidth={days.length * 120} // Maximum size to prevent overflowing
+                            bounds="parent"
+                            enableResizing={{
+                              top: false,
+                              right: true, // Enable resizing from the right edge
+                              bottom: false,
+                              left: false, // Enable resizing from the left edge
+                              topRight: false,
+                              bottomRight: false,
+                              bottomLeft: false,
+                              topLeft: false,
+                            }}
                             style={{
                               display: "flex",
                               position: "absolute",
-                              left: `${startOffset * 120}px`,
-                              width: `${duration * 120}px`,
                               backgroundColor: backgroundColor,
                               transition: "opacity 0.3s ease",
                               height: "30px",
                               margin: 0,
-                              marginTop: "-14px",
                               padding: "0 10px",
                               boxSizing: "border-box",
                               overflow: "hidden",
                               textOverflow: "ellipsis",
                               pointerEvents: "auto",
+                              borderRadius: "8px",
                             }}
                             onMouseOver={(e) => {
                               e.currentTarget.style.opacity = 0.7;
@@ -871,13 +830,36 @@ const Calendar = () => {
                             onMouseOut={(e) => {
                               e.currentTarget.style.opacity = 1.0;
                             }}
-                            className="event"
                             onMouseDown={() => startResizing(event, property)}
                             onMouseUp={endResizing}
                             onDoubleClick={(e) => {
                               history.push({
                                 pathname: `/booking/edit/${event._id}`,
                                 state: { bookingData: event },
+                              });
+                            }}
+                            onResizeStop={(
+                              e,
+                              direction,
+                              ref,
+                              delta,
+                              position
+                            ) => {
+                              const resizedWidth = parseFloat(ref.style.width);
+                              const newDuration = Math.round(
+                                resizedWidth / 120
+                              );
+                              const newCheckOut = moment(
+                                event.startDate,
+                                "DD-MM-YYYY"
+                              )
+                                .add(newDuration, "days")
+                                .format("DD-MM-YYYY");
+
+                              resizeEvent({
+                                event,
+                                start: event.startDate,
+                                end: newCheckOut,
                               });
                             }}
                           >
@@ -896,6 +878,8 @@ const Calendar = () => {
                                 flex: "1",
                                 overflow: "hidden",
                                 textOverflow: "ellipsis",
+                                color: "white",
+                                margin: "auto",
                               }}
                             >
                               {event?.userDetails?.name}
@@ -915,15 +899,18 @@ const Calendar = () => {
                               />
                               <span
                                 style={{
+                                  color: "white",
                                   fontSize: !window.matchMedia(
                                     "(max-width: 768px)"
                                   ).matches
                                     ? "16px"
                                     : "inherit",
                                 }}
-                              >{` ${event.count}`}</span>
+                              >
+                                {` ${event.count}`}
+                              </span>
                             </span>
-                          </div>
+                          </Rnd>
                         );
                       })}
                   </div>
