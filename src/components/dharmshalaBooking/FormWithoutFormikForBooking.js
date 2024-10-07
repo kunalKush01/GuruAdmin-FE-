@@ -572,7 +572,7 @@ const idTypeOptions = [
                     <Row>
                       <Col xs={12} className="align-self-center">
                       <CustomCountryMobileNumberField
-                        value={phoneNumber}
+                        value={formik.values.SelectedUser?.countryCode +formik.values.SelectedUser?.mobileNumber}
                         disabled={payDonation}
                         defaultCountry={countryFlag}
                         label={t("dashboard_Recent_DonorNumber")}

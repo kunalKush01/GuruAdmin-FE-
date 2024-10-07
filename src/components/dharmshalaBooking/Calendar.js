@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { fetchBookings } from "../../api/bookings";
 import { fetchProperties, fetchPropertyTypes } from "../../api/properties";
@@ -11,7 +10,12 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { useHistory } from "react-router-dom";
 import moment from "moment";
 import { Rnd } from "react-rnd";
+import momentGenerateConfig from "rc-picker/lib/generate/moment";
+import { DatePicker } from "antd";
+import { useTranslation } from "react-i18next";
+import { CustomReactSelect } from "../partials/customReactSelect";
 
+const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 const numPlaceholderRows = 14;
 const numPlaceholderCells = 31;
 const TOTAL_ROWS = 14;
@@ -54,6 +58,7 @@ const Calendar = () => {
   const [filterEventDataDay, setFilterEventDataDay] = useState([]);
   const [weekDays, setWeekDays] = useState([]);
   const [showAvailableOnly, setShowAvailableOnly] = useState(false);
+  const { t } = useTranslation();
 
   //**filter event based on date selection */
   const filteredEvents = useMemo(() => {
@@ -192,13 +197,9 @@ const Calendar = () => {
       return date >= checkIn && date < checkOut;
     }).length;
   };
-
   const handleFromDateChange = (date) => {
     if (window.matchMedia("(max-width: 768px)").matches) {
-      if (
-        toDate &&
-        (date > toDate || (toDate - date) / (1000 * 60 * 60 * 24) > 6)
-      ) {
+      if (toDate && (date.isAfter(toDate) || date.diff(toDate, "days") > 6)) {
         setToDate(null);
       }
     }
@@ -206,11 +207,20 @@ const Calendar = () => {
   };
 
   const handleToDateChange = (date) => {
-    const startDate = new Date(fromDate);
-    const endDate = new Date(date);
-    const daysDiff = (endDate - startDate) / (1000 * 60 * 60 * 24);
+    if (!fromDate) {
+      setToDate(null);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Please select a start date first.",
+      });
+      return;
+    }
 
-    if (endDate < startDate) {
+    const daysDiff = date.diff(fromDate, "days");
+
+    if (date.isBefore(fromDate)) {
+      setToDate(null);
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -233,6 +243,46 @@ const Calendar = () => {
       setToDate(date);
     }
   };
+  // const handleFromDateChange = (date) => {
+  //   if (window.matchMedia("(max-width: 768px)").matches) {
+  //     if (
+  //       toDate &&
+  //       (date > toDate || (toDate - date) / (1000 * 60 * 60 * 24) > 6)
+  //     ) {
+  //       setToDate(null);
+  //     }
+  //   }
+  //   setFromDate(date);
+  // };
+
+  // const handleToDateChange = (date) => {
+  //   const startDate = new Date(fromDate);
+  //   const endDate = new Date(date);
+  //   const daysDiff = (endDate - startDate) / (1000 * 60 * 60 * 24);
+
+  //   if (endDate < startDate) {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Oops...",
+  //       text: "The end date cannot be earlier than the start date",
+  //     });
+  //     return;
+  //   }
+
+  //   if (window.matchMedia("(max-width: 768px)").matches) {
+  //     if (daysDiff <= 6) {
+  //       setToDate(date);
+  //     } else {
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "Oops...",
+  //         text: "Date range should not exceed 7 days",
+  //       });
+  //     }
+  //   } else {
+  //     setToDate(date);
+  //   }
+  // };
 
   const handleRoomTypeChange = (event) => {
     setSelectedRoomType(event.target.value);
@@ -343,7 +393,7 @@ const Calendar = () => {
     ({ event, start, end }) => {
       const formattedStart = moment(start, "DD-MM-YYYY");
       const formattedEnd = moment(end, "DD-MM-YYYY");
-console.log(formattedEnd)
+      console.log(formattedEnd);
       if (formattedEnd.isBefore(formattedStart)) {
         Swal.fire({
           icon: "error",
@@ -498,25 +548,37 @@ console.log(formattedEnd)
           <div className="date-picker-container">
             <div className="fromDate">
               <label htmlFor="from-date">From Date:</label>
-              <DatePicker
+              <CustomDatePicker
+                id="from-date"
+                format="DD MMM YYYY"
+                onChange={handleFromDateChange}
+                value={fromDate || ""}
+              />
+              {/* <DatePicker
                 id="from-date"
                 selected={fromDate}
                 onChange={handleFromDateChange}
                 dateFormat="MM/dd/yyyy"
                 placeholderText="Select a date"
                 className="custom-datepicker"
-              />
+              /> */}
             </div>
             <div className="toDate">
               <label htmlFor="to-date">To Date:</label>
-              <DatePicker
+              <CustomDatePicker
+                id="to-date"
+                format="DD MMM YYYY"
+                onChange={handleToDateChange}
+                value={toDate || ""}
+              />
+              {/* <DatePicker
                 id="to-date"
                 selected={toDate}
                 onChange={handleToDateChange}
                 dateFormat="MM/dd/yyyy"
                 placeholderText="Select a date"
                 className="custom-datepicker"
-              />
+              /> */}
             </div>
           </div>
 
@@ -528,8 +590,20 @@ console.log(formattedEnd)
             }}
           >
             <div id="select_div" className="select-container">
-              <label htmlFor="room-type">Room Type:</label>
-              <select
+              <CustomReactSelect
+                labelName={t("room_type")}
+                name="roomType"
+                defaultValue={{ value: "All", label: "All" }}
+                loadOptions={[
+                  ...propertyTypes.map((type) => ({
+                    value: type,
+                    label: type,
+                  })),
+                ]}
+                style={{width:"100%"}}
+                onChange={(value)=>{setSelectedRoomType(value?.value)}}
+              />
+              {/* <select
                 id="room-type"
                 value={selectedRoomType}
                 onChange={handleRoomTypeChange}
@@ -540,7 +614,7 @@ console.log(formattedEnd)
                     {type}
                   </option>
                 ))}
-              </select>
+              </select> */}
             </div>
             <button
               className="availability-check"

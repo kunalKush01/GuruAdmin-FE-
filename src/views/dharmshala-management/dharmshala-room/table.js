@@ -80,7 +80,7 @@ const DharmshalaRoomTable = ({
       dataIndex: "roomNumber", // Field in the data for this column
       key: "roomNumber", // Unique key for this column
       width: 100,
-      fixed:"left"
+      fixed: "left",
     },
     {
       title: t("directBookingAvailable"),
@@ -100,7 +100,7 @@ const DharmshalaRoomTable = ({
       dataIndex: "action",
       key: "action",
       width: 100,
-      fixed:"right"
+      fixed: "right",
     },
   ];
   const DharmshalasRoom = useMemo(() => {
@@ -118,9 +118,10 @@ const DharmshalaRoomTable = ({
               width={35}
               className="cursor-pointer "
               onClick={() => {
-                history.push(
-                  `/rooms/edit/${item?._id}/${floorId}/${buildingId}&number=${item?.roomNumber}&directBookingAvailable=${item?.directBookingAvailable}`
-                );
+                history.push({
+                  pathname: `/rooms/edit/${item?._id}/${floorId}/${buildingId}&number=${item?.roomNumber}&directBookingAvailable=${item?.directBookingAvailable}`,
+                  state: { roomData: item },
+                });
               }}
             />
             <img
