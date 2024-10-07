@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import { FormikWrapper } from "../../views/dharmshala-management/dharmshalaStyles";
 import CustomTextField from "../partials/customTextField";
 import { getRoomTypeList } from "../../api/dharmshala/dharmshalaInfo";
+import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 
 const AddRoomForm = ({
   initialValues,
@@ -47,7 +48,7 @@ const AddRoomForm = ({
     const { number, roomType, ...otherValues } = values;
     const data = {
       roomNumber: number,
-      roomTypeId: roomType,
+      roomTypeId: roomType?.value,
       ...otherValues,
     };
 
@@ -61,7 +62,10 @@ const AddRoomForm = ({
     isError: isRoomTypesError,
   } = useQuery(["roomTypes"], getRoomTypeList);
   const roomTypes = roomTypesData?.results ?? [];
-
+  const roomTypeOptions = roomTypes.map((room) => ({
+    value: room._id,
+    label: room.name,
+  }));
   return (
     <FormikWrapper>
       <Formik
@@ -100,7 +104,16 @@ const AddRoomForm = ({
                     />
                   </Col>
                   <Col xs={12} md={4}>
-                    <CustomTextField
+                    <FormikCustomReactSelect
+                      labelName={t("room_type")}
+                      name="roomType"
+                      loadOptions={[
+                        { value: "", label: "Select Room Type" }, // Default option
+                        ...roomTypeOptions, // Dynamic room type options
+                      ]}
+                      width
+                    />
+                    {/* <CustomTextField
                       type="select"
                       label={t("dharmshala_room_room_type")}
                       name="roomType"
@@ -121,7 +134,7 @@ const AddRoomForm = ({
                           </option>
                         ))
                       )}
-                    </CustomTextField>
+                    </CustomTextField> */}
                   </Col>
                 </Row>
               </Col>
