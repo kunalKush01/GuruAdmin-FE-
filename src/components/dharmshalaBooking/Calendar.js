@@ -259,46 +259,6 @@ const Calendar = () => {
       setToDate(date);
     }
   };
-  // const handleFromDateChange = (date) => {
-  //   if (window.matchMedia("(max-width: 768px)").matches) {
-  //     if (
-  //       toDate &&
-  //       (date > toDate || (toDate - date) / (1000 * 60 * 60 * 24) > 6)
-  //     ) {
-  //       setToDate(null);
-  //     }
-  //   }
-  //   setFromDate(date);
-  // };
-
-  // const handleToDateChange = (date) => {
-  //   const startDate = new Date(fromDate);
-  //   const endDate = new Date(date);
-  //   const daysDiff = (endDate - startDate) / (1000 * 60 * 60 * 24);
-
-  //   if (endDate < startDate) {
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "Oops...",
-  //       text: "The end date cannot be earlier than the start date",
-  //     });
-  //     return;
-  //   }
-
-  //   if (window.matchMedia("(max-width: 768px)").matches) {
-  //     if (daysDiff <= 6) {
-  //       setToDate(date);
-  //     } else {
-  //       Swal.fire({
-  //         icon: "error",
-  //         title: "Oops...",
-  //         text: "Date range should not exceed 7 days",
-  //       });
-  //     }
-  //   } else {
-  //     setToDate(date);
-  //   }
-  // };
 
   const handleRoomTypeChange = (event) => {
     setSelectedRoomType(event.target.value);
@@ -368,7 +328,6 @@ const Calendar = () => {
     setShowAvailableOnly(!showAvailableOnly);
   };
   const handleCellClick = (date, property) => {
-    // const formattedDate = moment(date).format("DD MMM YYYY");
     history.push({
       pathname: `/booking/add`,
       state: { property: property, date: date },
@@ -569,14 +528,6 @@ const Calendar = () => {
                 onChange={handleFromDateChange}
                 value={fromDate || ""}
               />
-              {/* <DatePicker
-                id="from-date"
-                selected={fromDate}
-                onChange={handleFromDateChange}
-                dateFormat="MM/dd/yyyy"
-                placeholderText="Select a date"
-                className="custom-datepicker"
-              /> */}
             </div>
             <div className="toDate">
               <label htmlFor="to-date">To Date:</label>
@@ -586,14 +537,6 @@ const Calendar = () => {
                 onChange={handleToDateChange}
                 value={toDate || ""}
               />
-              {/* <DatePicker
-                id="to-date"
-                selected={toDate}
-                onChange={handleToDateChange}
-                dateFormat="MM/dd/yyyy"
-                placeholderText="Select a date"
-                className="custom-datepicker"
-              /> */}
             </div>
           </div>
 
@@ -620,18 +563,6 @@ const Calendar = () => {
                   setSelectedRoomType(value?.value);
                 }}
               />
-              {/* <select
-                id="room-type"
-                value={selectedRoomType}
-                onChange={handleRoomTypeChange}
-                className="custom-select"
-              >
-                {propertyTypes.map((type) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ))}
-              </select> */}
             </div>
             <button
               className="availability-check"
