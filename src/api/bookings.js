@@ -1,6 +1,6 @@
 import {getDharmshalaBookingList,createDharmshalaBooking,updateDharmshalaBooking} from "../api/dharmshala/dharmshalaInfo"
 
-export const fetchBookings = async (year, month, date) => {
+export const fetchBookings = async (year, month, date, days) => {
   const monthKey = `${year}-${month.toString().padStart(2, "0")}`;
 
   try {
@@ -11,12 +11,20 @@ export const fetchBookings = async (year, month, date) => {
       const [day, bookingMonth, bookingYear] = booking.startDate.split('-').map(Number);
       const bookingMonthKey = `${bookingYear}-${bookingMonth.toString().padStart(2, '0')}`;
 
+      // Create a Date object for the booking date
+      const bookingDate = new Date(bookingYear, bookingMonth - 1, day);
+      // Check if the booking date exists in the `days` array
+      const isBookingInDays = days.some(dayObj => {
+        const dayDate = new Date(dayObj.date);
+        return bookingDate.getTime() === dayDate.getTime();
+      });
       return (
-        bookingMonthKey === monthKey && 
+        isBookingInDays ||
+        (bookingMonthKey === monthKey && 
         (
           bookingYear > year || 
           (bookingYear === year && (bookingMonth > month || (bookingMonth === month && day >= date)))
-        )
+        ))
       );
     });
 

@@ -59,22 +59,24 @@ const Calendar = () => {
   const [weekDays, setWeekDays] = useState([]);
   const [showAvailableOnly, setShowAvailableOnly] = useState(false);
   const { t } = useTranslation();
-
   //**filter event based on date selection */
   const filteredEvents = useMemo(() => {
     if (!events || events.length === 0) {
       return [];
     }
+    const fromDateFormatted = moment(fromDate, "DD-MM-YYYY");
+    const toDateFormatted = moment(toDate, "DD-MM-YYYY");
+
     const filteredData = events.filter((item) => {
-      const checkInDate = new Date(item.startDate);
-      const checkOutDate = new Date(item.endDate);
+      const checkInDate = moment(item.startDate, "DD-MM-YYYY");
+      const checkOutDate = moment(item.endDate, "DD-MM-YYYY");
+      const isInDateRange =
+        checkInDate.isSameOrAfter(fromDateFormatted) &&
+        checkOutDate.isSameOrBefore(toDateFormatted);
 
-      const adjustedCheckIn = new Date(Math.max(checkInDate, fromDate));
-      const adjustedCheckOut = new Date(Math.min(checkOutDate, toDate));
-
-      const isInDateRange = adjustedCheckIn <= adjustedCheckOut;
       return isInDateRange;
     });
+
     return filteredData;
   }, [events, fromDate, toDate, days]);
   useEffect(() => {
@@ -83,11 +85,17 @@ const Calendar = () => {
 
   useEffect(() => {
     const fetchEvents = async () => {
-      const year = fromDate ? fromDate.getFullYear() : new Date().getFullYear();
-      const month = fromDate
-        ? fromDate.getMonth() + 1
+      const dateFromDate = fromDate ? new Date(fromDate) : null;
+      const date = dateFromDate ? dateFromDate.getDate() : null;
+      const year = dateFromDate
+        ? dateFromDate.getFullYear()
+        : new Date().getFullYear();
+      const month = dateFromDate
+        ? dateFromDate.getMonth() + 1
         : new Date().getMonth() + 1;
-      const data = await fetchBookings(year, month);
+
+      const data = await fetchBookings(year, month, date, days);
+
       if (window.matchMedia("(max-width: 768px)").matches) {
         const formattedDays = weekDays.map((day) => ({
           date: new Date(day.date).toISOString().split("T")[0],
@@ -105,8 +113,10 @@ const Calendar = () => {
         setEvents(data);
       }
     };
+
     fetchEvents();
-  }, [weekDays, window.innerWidth]);
+  }, [weekDays, window.innerWidth, fromDate, days]);
+
   useEffect(() => {
     const calculateWeeklyDays = (start, end) => {
       const newDays = [];
@@ -163,17 +173,22 @@ const Calendar = () => {
       startDate.setDate(startDate.getDate() - 7);
     }
 
-    const endDate = new Date(startDate);
-    endDate.setDate(startDate.getDate() + 60);
-
+    const endDate = toDate ? new Date(toDate) : new Date(startDate);
+    if (!toDate) {
+      endDate.setDate(startDate.getDate() + 60);
+    }
+    if ((endDate - startDate) < 30 * 24 * 60 * 60 * 1000) {
+      endDate.setDate(startDate.getDate() + 60);
+    }
     const datesArray = [];
-
     const currentDate = new Date(startDate);
+
     while (currentDate <= endDate) {
       const isSelectable = true;
       datesArray.push({ date: new Date(currentDate), isSelectable });
       currentDate.setDate(currentDate.getDate() + 1);
     }
+
     setDays(datesArray);
   }, [fromDate, toDate]);
 
@@ -187,7 +202,7 @@ const Calendar = () => {
   };
   const convertDateFormat = (dateStr) => {
     const [day, month, year] = dateStr.split("-");
-    return `${year}-${month}-${day}`; // "YYYY-MM-DD" format
+    return `${year}-${month}-${day}`;
   };
 
   const getTotalBookingsForDate = (date) => {
@@ -204,6 +219,7 @@ const Calendar = () => {
       }
     }
     setFromDate(date);
+    setToDate(null);
   };
 
   const handleToDateChange = (date) => {
@@ -217,9 +233,9 @@ const Calendar = () => {
       return;
     }
 
-    const daysDiff = date.diff(fromDate, "days");
+    const daysDiff = date && fromDate ? date.diff(fromDate, "days") : 0;
 
-    if (date.isBefore(fromDate)) {
+    if (date && date.isBefore(fromDate)) {
       setToDate(null);
       Swal.fire({
         icon: "error",
@@ -393,7 +409,6 @@ const Calendar = () => {
     ({ event, start, end }) => {
       const formattedStart = moment(start, "DD-MM-YYYY");
       const formattedEnd = moment(end, "DD-MM-YYYY");
-      console.log(formattedEnd);
       if (formattedEnd.isBefore(formattedStart)) {
         Swal.fire({
           icon: "error",
@@ -600,8 +615,10 @@ const Calendar = () => {
                     label: type,
                   })),
                 ]}
-                style={{width:"100%"}}
-                onChange={(value)=>{setSelectedRoomType(value?.value)}}
+                style={{ width: "100%" }}
+                onChange={(value) => {
+                  setSelectedRoomType(value?.value);
+                }}
               />
               {/* <select
                 id="room-type"
