@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Col, Card, Switch, Tabs } from "antd";
 import profileImg from "../../assets/images/icons/pngtree.png";
 import avatarIcon from "../../assets/images/avatars/blank.png";
@@ -21,6 +21,7 @@ import { getMembersById } from "../../api/membershipApi";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import { useSelector } from "react-redux";
+import { downloadFile } from "../../api/sharedStorageApi";
 
 function MembershipProfileView() {
   const { t } = useTranslation();
@@ -67,7 +68,34 @@ function MembershipProfileView() {
     setFamilyItemIndex(i);
     setCurrentFamilyInfo(item);
   };
+  const [familyImages, setFamilyImages] = useState({});
+  const fetchImage = async (imageUrl, i) => {
+    if (imageUrl) {
+      try {
+        const imgBlob = await downloadFile(imageUrl);
+        const imgURL = URL.createObjectURL(imgBlob);
 
+        setFamilyImages((prevState) => ({
+          ...prevState,
+          [i]: imgURL,
+        }));
+      } catch (error) {
+        console.error("Error downloading image:", error);
+      }
+    }
+  };
+  useEffect(() => {
+    if (familyInfo && Array.isArray(familyInfo)) {
+      familyInfo.forEach((item, i) => {
+        fetchImage(item.imageUrl, i);
+      });
+    }
+  }, [familyInfo]);
+  useEffect(() => {
+    if (upload && upload.memberPhoto) {
+      fetchImage(upload.memberPhoto, 'memberPhoto');
+    }
+  }, [upload]);
   const items = [
     {
       key: "family",
@@ -85,7 +113,11 @@ function MembershipProfileView() {
                         <div className="famRow1">
                           <div className="me-2">
                             <img
-                              src={item.imageUrl ? item.imageUrl : avatarIcon}
+                              src={
+                                familyImages[i] // Use downloaded image if available
+                                  ? familyImages[i]
+                                  : avatarIcon // Fallback to default avatar if no image
+                              }
                               className="familyProfile"
                               alt=""
                             />
@@ -270,9 +302,7 @@ function MembershipProfileView() {
           <Card className="memberCard" id="firstCard">
             <div className="d-flex justify-content-center align-items-center flex-column">
               <img
-                src={
-                  upload && upload.memberPhoto ? upload.memberPhoto : avatarIcon
-                }
+                src={familyImages['memberPhoto'] || avatarIcon}
                 className="membershipProfileImg"
                 alt="Profile"
               />
