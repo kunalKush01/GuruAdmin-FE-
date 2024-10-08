@@ -7,7 +7,7 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import eyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
 import downloadIcon from "../../assets/images/icons/file-download.svg";
 import { useTranslation } from "react-i18next";
-import SuspenseImportHistoryView from "./suspenseImportHIstoryView";
+import SuspenseImportHistoryView from "./suspenseImportHistoryView";
 
 const SuspenseHistoryTable = () => {
   const { t } = useTranslation();
