@@ -1,19 +1,32 @@
 import {getDharmshalaBookingList,createDharmshalaBooking,updateDharmshalaBooking} from "../api/dharmshala/dharmshalaInfo"
 
-
-export const fetchBookings = async (year, month) => {
+export const fetchBookings = async (year, month, date) => {
   const monthKey = `${year}-${month.toString().padStart(2, "0")}`;
+
   try {
     const response = await getDharmshalaBookingList();
     const bookings = response.results;
-    return bookings
-    return bookings.filter(booking => booking.startDate.startsWith(monthKey));
-  } 
-  catch (error) {
+
+    const filteredBookings = bookings.filter(booking => {
+      const [day, bookingMonth, bookingYear] = booking.startDate.split('-').map(Number);
+      const bookingMonthKey = `${bookingYear}-${bookingMonth.toString().padStart(2, '0')}`;
+
+      return (
+        bookingMonthKey === monthKey && 
+        (
+          bookingYear > year || 
+          (bookingYear === year && (bookingMonth > month || (bookingMonth === month && day >= date)))
+        )
+      );
+    });
+
+    return filteredBookings;
+  } catch (error) {
     console.error('Error fetching bookings:', error);
     return [];
   }
 };
+
 
 export const createBooking = async (bookingData) => {
   try {
