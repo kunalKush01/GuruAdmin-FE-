@@ -740,13 +740,22 @@ const Routes = [
     type: "configuration",
     subPermission: READ,
   },
+  // {
+  //   path: "/dharmshala/dashboard",
+  //   component: lazy(() =>
+  //     import("../../views/dharmshala-management/dashboard/index.js")
+  //   ),
+  //   //exact: true,
+  //   type: "dharmshala",
+  //   subPermission: READ,
+  // },
   {
     path: "/dharmshala/dashboard",
     component: lazy(() =>
       import("../../views/dharmshala-management/dashboard/index.js")
     ),
-    //exact: true,
-    type: "dharmshala-dashboard",
+    // exact: true,
+    type: "dharmshala/dashboard",
     subPermission: READ,
   },
   {
@@ -755,7 +764,7 @@ const Routes = [
       import("../../views/dharmshala-management/dharmshala-info/index.js")
     ),
     //exact: true,
-    type: "dharmshala-dashboard",
+    type: "dharmshala/buildings",
     subPermission: READ,
   },
   {
@@ -764,7 +773,7 @@ const Routes = [
       import("../../views/dharmshala-management/dharmshala-info/edit/index.js")
     ),
     //exact: true,
-    type: "dharmshala-buildings",
+    type: "dharmshala/buildings",
     subPermission: READ,
   },
   {
@@ -773,7 +782,7 @@ const Routes = [
       import("../../views/dharmshala-management/dharmshala-info/add/index.js")
     ),
     //exact: true,
-    type: "dharmshala-buildings",
+    type: "dharmshala/buildings",
     subPermission: WRITE,
   },
 
@@ -783,7 +792,7 @@ const Routes = [
       import("../../views/dharmshala-management/dharmshala-info/edit/index.js")
     ),
     exact: true,
-    type: "dharmshala-buildings",
+    type: "dharmshala/buildings",
     subPermission: WRITE,
   },
   {
@@ -792,7 +801,7 @@ const Routes = [
       import("../../views/dharmshala-management/room-type/index.js")
     ),
     exact: true,
-    type: "dharmshala-roomtypes",
+    type: "dharmshala/roomtypes",
     subPermission: READ,
   },
   {
@@ -801,7 +810,7 @@ const Routes = [
       import("../../views/dharmshala-management/room-type/add/index.js")
     ),
     exact: true,
-    type: "dharmshala-roomtypes",
+    type: "dharmshala/roomtypes",
     subPermission: WRITE,
   },
 
@@ -811,7 +820,7 @@ const Routes = [
       import("../../views/dharmshala-management/room-type/edit/index.js")
     ),
     exact: true,
-    type: "dharmshala-roomtypes",
+    type: "dharmshala/roomtypes",
     subPermission: WRITE,
   },
   {
@@ -820,7 +829,7 @@ const Routes = [
       import("../../views/dharmshala-management/dharmshala-floor/index.js")
     ),
     //exact: true,
-    type: "dharmshala-roomtypes",
+    type: "dharmshala/roomtypes",
     subPermission: READ,
   },
   {
@@ -829,7 +838,7 @@ const Routes = [
       import("../../views/dharmshala-management/dharmshala-room/index.js")
     ),
     //exact: true,
-    type: "dharmshala-roomtypes",
+    type: "dharmshala/roomtypes",
     subPermission: READ,
   },
   // {
@@ -847,7 +856,7 @@ const Routes = [
       import("../../views/dharmshala-management/dharmshala-floor/add/index.js")
     ),
     //exact: true,
-    type: "dharmshala-roomtypes",
+    type: "dharmshala/roomtypes",
     subPermission: READ,
   },
   {
@@ -856,7 +865,7 @@ const Routes = [
       import("../../views/dharmshala-management/dharmshala-room/add/index.js")
     ),
     //exact: true,
-    type: "dharmshala-roomtypes",
+    type: "dharmshala/roomtypes",
     subPermission: READ,
   },
   {
@@ -865,7 +874,7 @@ const Routes = [
       import("../../views/dharmshala-management/dharmshala-floor/edit/index.js")
     ),
     exact: true,
-    type: "dharmshala-roomtypes",
+    type: "dharmshala/roomtypes",
     subPermission: READ,
   },
 
@@ -875,7 +884,7 @@ const Routes = [
       import("../../views/dharmshala-management/dharmshala-room/edit/index.js")
     ),
     exact: true,
-    type: "dharmshala-roomtypes",
+    type: "dharmshala/roomtypes",
     subPermission: READ,
   },
   {
@@ -884,7 +893,7 @@ const Routes = [
       import("../../views/dharmshala-management/feedback/index.js")
     ),
     exact: true,
-    type: "dharmshala-feedback",
+    type: "dharmshala/feedback",
     subPermission: READ,
   },
 
@@ -895,7 +904,7 @@ const Routes = [
       import("../../views/dharmshala-management/dharmshala-booking/index.js")
     ),
     exact: true,
-    type: "dharmshala-bookings",
+    type: "dharmshala/bookings",
     subPermission: READ,
   },
   {
@@ -906,7 +915,7 @@ const Routes = [
       )
     ),
     exact: true,
-    type: "dharmshala-bookings",
+    type: "dharmshala/bookings",
     subPermission: WRITE,
   },
 
@@ -918,7 +927,7 @@ const Routes = [
       )
     ),
     exact: true,
-    type: "dharmshala-bookings",
+    type: "dharmshala/bookings",
     subPermission: WRITE,
   },
 
@@ -938,7 +947,7 @@ const Routes = [
       import("../../components/dharmshalaBooking/Calendar.js")
     ),
     exact: true,
-    type: "dharmshala-dashboard",
+    type: "dharmshala/dashboard",
     subPermission: WRITE,
   },
 ];

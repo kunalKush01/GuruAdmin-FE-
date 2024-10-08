@@ -17,6 +17,7 @@ import uploadIcon from "../../assets/images/icons/file-upload.svg";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
 import { updateMembersById } from "../../api/membershipApi";
 import { useQueryClient } from "@tanstack/react-query";
+import { uploadFile } from "../../api/sharedStorageApi";
 
 const CustomDatePickerComponent =
   DatePicker.generatePicker(momentGenerateConfig);
@@ -59,23 +60,20 @@ function FamilyModalForm({
 
   const [uploadedFileUrl, setUploadedFileUrl] = useState("");
 
-  const customRequest = ({ file, onSuccess, onError }) => {
-    const reader = new FileReader();
+  const customRequest = async ({ file, onSuccess, onError }) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
 
-    reader.onloadend = () => {
-      const fileDataUrl = reader.result;
-
-      setUploadedFileUrl(fileDataUrl);
-
-      onSuccess(fileDataUrl);
-    };
-
-    reader.onerror = () => {
-      console.error("Error reading file");
-      onError(new Error("Error reading file"));
-    };
-
-    reader.readAsDataURL(file);
+      const response = await uploadFile(formData);
+      if (response && response.data.result) {
+        setUploadedFileUrl(response.data.result.filePath);
+        onSuccess(response.data.result.filePath);
+      }
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      onError(new Error("Error uploading file"));
+    }
   };
 
   const modalTitle =
@@ -201,7 +199,9 @@ function FamilyModalForm({
             <Form.Item
               label={t("member_family_relation")}
               name="relation"
-              rules={[{ required: true, message: t("required_family_relation") }]}
+              rules={[
+                { required: true, message: t("required_family_relation") },
+              ]}
             >
               <Select placeholder={t("placeHolder_family_relation")}>
                 {relationOptions.map((relation) => (

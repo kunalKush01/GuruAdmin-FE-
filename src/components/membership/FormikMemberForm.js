@@ -17,6 +17,7 @@ import moment from "moment";
 import { useQuery } from "@tanstack/react-query";
 import { API_BASE_URL } from "../../axiosApi/authApiInstans";
 import { getMasterByKey } from "../../api/membershipApi";
+import { uploadFile } from "../../api/sharedStorageApi";
 
 const CustomDatePickerComponent =
   DatePicker.generatePicker(momentGenerateConfig);
@@ -38,13 +39,23 @@ function FormikMemberForm({
   ...props
 }) {
   const { t } = useTranslation();
-  const [file, setFile] = useState(null);
-  const customRequest = ({ file, onSuccess, onError }) => {
-    setFile(file);
-    setTimeout(() => {
-      onSuccess("ok");
-    }, 1000);
+  const customRequest = async ({ file, onSuccess, onError,name}) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await uploadFile(formData);
+      if (response && response.data.result) {
+        console.log(response)
+        formik.setFieldValue(name,response.data.result.filePath);
+        onSuccess(response.data.result.filePath);
+      }
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      onError(new Error("Error uploading file"));
+    }
   };
+
   const [isSameAsHome, setIsSameAsHome] = useState(false);
   function extractEnumMasters(schemaObject) {
     let enumMasters;
@@ -165,7 +176,7 @@ function FormikMemberForm({
           <Upload
             name={name}
             listType="picture"
-            customRequest={customRequest}
+            customRequest={({ file, onSuccess, onError }) => customRequest({ file, onSuccess, onError, name })} 
             style={{ width: "100%" }}
             maxCount={!isMultipleUpload && 1}
           >
@@ -199,10 +210,12 @@ function FormikMemberForm({
             labelName={t(fieldSchema.title || name)}
             loadOptions={
               enumKey && firstValueResult
-                ? firstValueResult.filter(value => value !== "").map((value) => ({
-                    id: value,
-                    name: t(value),
-                  }))
+                ? firstValueResult
+                    .filter((value) => value !== "")
+                    .map((value) => ({
+                      id: value,
+                      name: t(value),
+                    }))
                 : fieldSchema.enum.map((value) => ({
                     id: value,
                     name: t(value),
