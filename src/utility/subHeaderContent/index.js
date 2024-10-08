@@ -35,6 +35,31 @@ import BuildingIcon from "../../assets/images/icons/dharmshala/building.svg";
 import DharmshalaIcon from "../../assets/images/icons/dharmshala/dharmshala.svg";
 import FeedbackIcon from "../../assets/images/icons/dharmshala/feedback.svg";
 import RoomTypeIcon from "../../assets/images/icons/dharmshala/roomtype.svg";
+import GaushalaInfo from "../../assets/images/icons/gaushalaInfo.svg"
+import GaushalaOverview from "../../assets/images/icons/gaushalaOverview.svg"
+import Gaushala from "../../assets/images/icons/gaushala.svg"
+import Inventory from "../../assets/images/icons/inventory.svg"
+import items from "../../assets/images/icons/items.svg"
+import MedicalRecords from "../../assets/images/icons/medicalRecord.svg"
+import PashudhanBreed from "../../assets/images/icons/pashudhanBreed.svg"
+import PashudhanCategory from "../../assets/images/icons/pashudhanCategory.svg"
+import PregnancyRecords from "../../assets/images/icons/pregnancyRecords.svg"
+import Stock from "../../assets/images/icons/stock.svg"
+import Supplies from "../../assets/images/icons/supplies.svg"
+import Usage from "../../assets/images/icons/usage.svg"
+
+import GaushalaInfoActiveIcon from "../../assets/images/icons/gaushalaInfo.svg"
+import GaushalaOverviewActiveIcon from "../../assets/images/icons/gaushalaOverview.svg"
+import GaushalaActiveIcon from "../../assets/images/icons/gaushala.svg"
+import InventoryActiveIcon from "../../assets/images/icons/inventory.svg"
+import itemsActiveIcon from "../../assets/images/icons/items.svg"
+import MedicalRecordsActiveIcon from "../../assets/images/icons/medicalRecord.svg"
+import PashudhanBreedActiveIcon from "../../assets/images/icons/pashudhanBreed.svg"
+import PashudhanCategoryActiveIcon from "../../assets/images/icons/pashudhanCategory.svg"
+import PregnancyRecordsActiveIcon from "../../assets/images/icons/pregnancyRecords.svg"
+import StockActiveIcon from "../../assets/images/icons/stock.svg"
+import SuppliesActiveIcon from "../../assets/images/icons/supplies.svg"
+import UsageActiveIcon from "../../assets/images/icons/usage.svg"
 
 export const subHeaderContent = [
   {
@@ -185,29 +210,29 @@ export const subHeaderContentResponsive = [
         name: "cattle-dashboard",
         customLabel: "Overview",
         url: "/cattle/dashboard",
-        icon: HomeIcon,
-        activeIcon: HomeActiveIcon,
+        icon: GaushalaOverview,
+        activeIcon: GaushalaOverviewActiveIcon,
       },
       {
         name: "cattle-info",
         customLabel: "Pashudhan Info",
         url: "/cattle/info",
-        icon: GowshalaIcon,
-        activeIcon: GowshalaIconActive,
+        icon: GaushalaInfo,
+        activeIcon: GaushalaInfoActiveIcon,
       },
       {
         name: "cattle-medical",
         customLabel: "Medical Records",
         url: "/cattle/medical-info",
-        icon: GowshalaIcon,
-        activeIcon: GowshalaIconActive,
+        icon: MedicalRecords,
+        activeIcon: MedicalRecordsActiveIcon,
       },
       {
         name: "cattle-pregnancy",
         customLabel: "Pregnancy Records",
         url: "/cattle/pregnancy-reports",
-        icon: GowshalaIcon,
-        activeIcon: GowshalaIconActive,
+        icon: PregnancyRecords,
+        activeIcon: PregnancyRecordsActiveIcon,
       },
       // {
       //   name: "cattle-stock",
@@ -222,36 +247,36 @@ export const subHeaderContentResponsive = [
     name: "cattles",
     customLabel: "Inventory",
     activeTab: "/cattle/management/stock",
-    icon: GowshalaIcon,
-    activeIcon: GowshalaIcon,
+    icon: Inventory,
+    activeIcon: InventoryActiveIcon,
     children: [
       {
         name: "cattle-stock",
         customLabel: "Stock",
         url: "/cattle/management/stock",
-        icon: DharmshalaIcon,
-        activeIcon: DharmshalaIcon,
+        icon: Stock,
+        activeIcon: StockActiveIcon,
       },
       {
         name: "cattle-supplies",
         customLabel: "Supplies",
         url: "/cattle/management/supplies",
-        icon: BookingIcon,
-        activeIcon: BookingIcon,
+        icon: Supplies,
+        activeIcon: SuppliesActiveIcon,
       },
       {
         name: "cattle-usage",
         customLabel: "Usage",
         url: "/cattle/management/usage",
-        icon: BuildingIcon,
-        activeIcon: BuildingIcon,
+        icon: Usage,
+        activeIcon: UsageActiveIcon,
       },
       {
         name: "cattle-item",
         customLabel: "Items",
         url: "/cattle/management/item",
-        icon: RoomTypeIcon,
-        activeIcon: RoomTypeIcon,
+        icon: items,
+        activeIcon: itemsActiveIcon,
       },
     ],
   },
@@ -407,15 +432,15 @@ export const subHeaderContentResponsive = [
         name: "cattle-breed",
         customLabel: "Pashudhan Breed",
         url: "/configuration/cattle-breed",
-        icon: GowshalaIcon,
-        activeIcon: GowshalaIconActive,
+        icon: PashudhanBreed,
+        activeIcon: PashudhanBreedActiveIcon,
       },
       {
         name: "cattle-category",
         customLabel: "Pashudhan Category",
         url: "/configuration/cattle-category",
-        icon: GowshalaIcon,
-        activeIcon: GowshalaIconActive,
+        icon: PashudhanCategory,
+        activeIcon: PashudhanCategoryActiveIcon,
       },
     ],
     // url: "/configuration",
