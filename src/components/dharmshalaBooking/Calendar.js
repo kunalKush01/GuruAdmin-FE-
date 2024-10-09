@@ -71,7 +71,6 @@ const Calendar = () => {
   const [weekDays, setWeekDays] = useState([]);
   const [showAvailableOnly, setShowAvailableOnly] = useState(false);
   const { t } = useTranslation();
-  // console.log(properties);
   //**filter event based on date selection */
   const filteredEvents = useMemo(() => {
     if (!events || events.length === 0) {
@@ -272,21 +271,17 @@ const Calendar = () => {
       setToDate(date);
     }
   };
-
-  const handleRoomTypeChange = (event) => {
-    setSelectedRoomType(event.target.value);
-  };
   const [eventColors, setEventColors] = useState({});
   const colorPalette = ["#4D9DE0", "#E15554", "#E1BC29", "#3BB273", "#7768AE"];
   const getColorForEvent = (index) => {
-    return colorPalette[index % colorPalette.length]; // Cycle through the colors in order
+    return colorPalette[index % colorPalette.length];
   };
   useEffect(() => {
     const newColors = {};
 
     events.forEach((event, index) => {
       if (!newColors[event._id]) {
-        newColors[event._id] = getColorForEvent(index); // Assign color based on index
+        newColors[event._id] = getColorForEvent(index);
       }
     });
     setEventColors((prevColors) => ({ ...prevColors, ...newColors }));
@@ -305,14 +300,6 @@ const Calendar = () => {
         (property) => property.roomTypeName === selectedRoomType
       );
     }
-
-    // if (showAvailableOnly) {
-    //   filteredProps = filteredProps.filter(
-    //     (property) =>
-    //       !filteredEvents.some((event) => event.roomId._id === property._id)
-    //   );
-    // }
-
     return filteredProps;
   }, [properties, selectedRoomType, showAvailableOnly, filteredEvents]);
 
@@ -338,50 +325,24 @@ const Calendar = () => {
     return totalGuests;
   };
 
-  // const [availableRooms, setAvailableRooms] = useState([]);
-  // const handleShowAvailableOnly = () => {
-  //   setShowAvailableOnly(!showAvailableOnly);
-  //   const from = moment(fromDate, 'DD-MM-YYYY');
-  //   const to = moment(toDate, 'DD-MM-YYYY');
-  //   const bookedRoomIds = new Set();
-  //   // Collect all booked room IDs for the selected date range
-  //   events.forEach(({ rooms, startDate, endDate }) => {
-  //     const start = moment(startDate, 'DD-MM-YYYY');
-  //     const end = moment(endDate, 'DD-MM-YYYY');
-  //     if (end.isAfter(from) && start.isBefore(to)) { // Adjusted overlap condition
-  //       rooms.forEach(room => {
-  //         bookedRoomIds.add(room.roomId);
-  //       });
-  //     }
-  //     });
-
-  //     // Filter rooms that are not booked in the selected date range
-  //     const filteredRooms = properties.filter((room) => !bookedRoomIds.has(room._id));
-  //     setAvailableRooms(filteredRooms);
-  // };
   const [availableRooms, setAvailableRooms] = useState([]);
 
   const handleShowAvailableOnly = () => {
-    // Toggle the available rooms display
     setShowAvailableOnly(!showAvailableOnly);
 
-    // Check if fromDate and toDate are selected
     const from = fromDate ? moment(fromDate, "DD-MM-YYYY") : null;
     const to = toDate ? moment(toDate, "DD-MM-YYYY") : null;
 
-    // If either date is not selected, exit the function early
     if (!from || !to) {
-      setAvailableRooms(filteredProperties ? filteredProperties : []); // Optionally clear available rooms if no dates are selected
-      return; // Exit early to avoid further processing
+      setAvailableRooms(filteredProperties ? filteredProperties : []); 
+      return; 
     }
 
     const bookedRoomIds = new Set();
     if (events) {
-      // Collect all booked room IDs for the selected date range
       events.forEach(({ rooms, startDate, endDate }) => {
         const start = moment(startDate, "DD-MM-YYYY");
         const end = moment(endDate, "DD-MM-YYYY");
-        // Check for overlapping bookings
         if (end.isAfter(from) && start.isBefore(to)) {
           rooms.forEach((room) => {
             bookedRoomIds.add(room.roomId);
@@ -390,7 +351,6 @@ const Calendar = () => {
       });
     }
 
-    // Filter rooms that are not booked in the selected date range
     const filteredRooms =
       properties && properties.filter((room) => !bookedRoomIds.has(room._id));
     setAvailableRooms(filteredRooms);
@@ -436,9 +396,7 @@ const Calendar = () => {
   const resizeEvent = useCallback(
     ({ event, start, end }) => {
       const formattedStart = moment(start, "DD-MM-YYYY");
-      // console.log("🚀 ~ Calendar ~ formattedStart:", formattedStart)
       const formattedEnd = moment(end, "DD-MM-YYYY");
-      // console.log("🚀 ~ Calendar ~ formattedEnd:", formattedEnd)
       const currentDate = moment();
       const eventEndDate = moment(event.endDate, "DD-MM-YYYY");
       if (eventEndDate.isBefore(currentDate)) {
