@@ -59,6 +59,7 @@ const Calendar = () => {
   const [weekDays, setWeekDays] = useState([]);
   const [showAvailableOnly, setShowAvailableOnly] = useState(false);
   const { t } = useTranslation();
+  // console.log(properties);
   //**filter event based on date selection */
   const filteredEvents = useMemo(() => {
     if (!events || events.length === 0) {
@@ -175,10 +176,10 @@ const Calendar = () => {
 
     const endDate = toDate ? new Date(toDate) : new Date(startDate);
     if (!toDate) {
-      endDate.setDate(startDate.getDate() + 60);
+      endDate.setDate(startDate.getDate() + 30);
     }
-    if ((endDate - startDate) < 30 * 24 * 60 * 60 * 1000) {
-      endDate.setDate(startDate.getDate() + 60);
+    if (endDate - startDate < 30 * 24 * 60 * 60 * 1000) {
+      endDate.setDate(startDate.getDate() + 30);
     }
     const datesArray = [];
     const currentDate = new Date(startDate);
@@ -293,12 +294,12 @@ const Calendar = () => {
       );
     }
 
-    if (showAvailableOnly) {
-      filteredProps = filteredProps.filter(
-        (property) =>
-          !filteredEvents.some((event) => event.roomId._id === property._id)
-      );
-    }
+    // if (showAvailableOnly) {
+    //   filteredProps = filteredProps.filter(
+    //     (property) =>
+    //       !filteredEvents.some((event) => event.roomId._id === property._id)
+    //   );
+    // }
 
     return filteredProps;
   }, [properties, selectedRoomType, showAvailableOnly, filteredEvents]);
@@ -324,9 +325,67 @@ const Calendar = () => {
     }, 0);
     return totalGuests;
   };
+
+  // const [availableRooms, setAvailableRooms] = useState([]);
+  // const handleShowAvailableOnly = () => {
+  //   setShowAvailableOnly(!showAvailableOnly);
+  //   const from = moment(fromDate, 'DD-MM-YYYY');
+  //   const to = moment(toDate, 'DD-MM-YYYY');
+  //   const bookedRoomIds = new Set();
+  //   // Collect all booked room IDs for the selected date range
+  //   events.forEach(({ rooms, startDate, endDate }) => {
+  //     const start = moment(startDate, 'DD-MM-YYYY');
+  //     const end = moment(endDate, 'DD-MM-YYYY');
+  //     if (end.isAfter(from) && start.isBefore(to)) { // Adjusted overlap condition
+  //       rooms.forEach(room => {
+  //         bookedRoomIds.add(room.roomId);
+  //       });
+  //     }
+  //     });
+      
+  //     // Filter rooms that are not booked in the selected date range
+  //     const filteredRooms = properties.filter((room) => !bookedRoomIds.has(room._id));
+  //     setAvailableRooms(filteredRooms);
+  // };
+   const [availableRooms, setAvailableRooms] = useState([]);
+
   const handleShowAvailableOnly = () => {
-    setShowAvailableOnly(!showAvailableOnly);
+      // Toggle the available rooms display
+      setShowAvailableOnly(!showAvailableOnly);
+      
+      // Check if fromDate and toDate are selected
+      const from = fromDate ? moment(fromDate, "DD-MM-YYYY") : null;
+      const to = toDate ? moment(toDate, "DD-MM-YYYY") : null;
+  
+      // If either date is not selected, exit the function early
+      if (!from || !to) {
+          setAvailableRooms(filteredProperties?filteredProperties:[]); // Optionally clear available rooms if no dates are selected
+          return; // Exit early to avoid further processing
+      }
+  
+      const bookedRoomIds = new Set();
+      if (events) {
+          // Collect all booked room IDs for the selected date range
+          events.forEach(({ rooms, startDate, endDate }) => {
+              const start = moment(startDate, "DD-MM-YYYY");
+              const end = moment(endDate, "DD-MM-YYYY");
+              // Check for overlapping bookings
+              if (end.isAfter(from) && start.isBefore(to)) {
+                  rooms.forEach((room) => {
+                      bookedRoomIds.add(room.roomId);
+                  });
+              }
+          });
+      }
+      
+      // Filter rooms that are not booked in the selected date range
+      const filteredRooms = properties && properties.filter(
+          (room) => !bookedRoomIds.has(room._id)
+      );
+      setAvailableRooms(filteredRooms);
   };
+  
+  console.log(availableRooms)
   const handleCellClick = (date, property) => {
     history.push({
       pathname: `/booking/add`,
@@ -367,7 +426,19 @@ const Calendar = () => {
   const resizeEvent = useCallback(
     ({ event, start, end }) => {
       const formattedStart = moment(start, "DD-MM-YYYY");
+      // console.log("🚀 ~ Calendar ~ formattedStart:", formattedStart)
       const formattedEnd = moment(end, "DD-MM-YYYY");
+      // console.log("🚀 ~ Calendar ~ formattedEnd:", formattedEnd)
+      const currentDate = moment();
+      const eventEndDate = moment(event.endDate, "DD-MM-YYYY");
+      if (eventEndDate.isBefore(currentDate)) {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Cannot resize this event; the end date is in the past.",
+        });
+        return;
+      }
       if (formattedEnd.isBefore(formattedStart)) {
         Swal.fire({
           icon: "error",
@@ -582,20 +653,44 @@ const Calendar = () => {
               className="separator"
               style={{ height: "50px", marginTop: "-10px" }}
             />
-            {days.map((day) => (
-              <div
-                key={day.date.toISOString()}
-                className={`header-cell ${
-                  isToday(day.date) ? "today" : ""
-                } sticky-header`}
-              >
-                {day.date.getDate()}-
-                {day.date.toLocaleString("default", { month: "short" })}
-                {isToday(day.date) && (
-                  <div className="current-date-highlight" />
-                )}
-              </div>
-            ))}
+            {days.map((day) => {
+              const dayStart = new Date(day.date).setHours(0, 0, 0, 0);
+              const startDate = fromDate
+                ? new Date(fromDate).setHours(0, 0, 0, 0)
+                : null;
+              const endDate = toDate
+                ? new Date(toDate).setHours(23, 59, 59, 999)
+                : null;
+
+              const isDayInRange =
+                !startDate || !endDate
+                  ? true
+                  : dayStart >= startDate && dayStart <= endDate;
+
+              const isTodayDate = isToday(day.date);
+              const shouldHighlightToday = isDayInRange && isTodayDate;
+
+              return (
+                <div
+                  key={day.date.toISOString()}
+                  className={`header-cell ${
+                    shouldHighlightToday ? "today" : ""
+                  } sticky-header`}
+                >
+                  {isDayInRange ? (
+                    <>
+                      {day.date.getDate()}-
+                      {day.date.toLocaleString("default", { month: "short" })}
+                      {shouldHighlightToday && (
+                        <div className="current-date-highlight" />
+                      )}
+                    </>
+                  ) : (
+                    <span>&nbsp;</span>
+                  )}
+                </div>
+              );
+            })}
           </div>
           {/* Header for mobile view */}
           {filteredProperties.length > 0 ? (
@@ -610,7 +705,7 @@ const Calendar = () => {
             </div>
           )}
           {filteredProperties.length > 0 ? (
-            filteredProperties.map((property) => {
+            (!showAvailableOnly?filteredProperties:availableRooms).map((property) => {
               return (
                 <div key={property._id} className="calendar-property-row">
                   <div className="property-cell sticky">
@@ -621,133 +716,155 @@ const Calendar = () => {
                     {(window.matchMedia("(max-width: 768px)").matches
                       ? weekDays
                       : days
-                    ).map((day, index) => {
-                      const dayStart = new Date(day.date).setHours(0, 0, 0, 0);
-                      const dayEnd = new Date(day.date).setHours(
-                        23,
-                        59,
-                        59,
-                        999
-                      );
-                      const eventsForDay = events.filter((event) => {
-                        const filteredIds = property._id;
-                        const roomIds = event.rooms.map((room) => room.roomId);
-                        const eventStartDateStr = convertDateFormat(
-                          event.startDate
+                    )
+                      .filter((day) => {
+                        const dayStart = new Date(day.date).setHours(
+                          0,
+                          0,
+                          0,
+                          0
                         );
-                        const eventEndDateStr = convertDateFormat(
-                          event.endDate
+                        const startDate = fromDate
+                          ? new Date(fromDate).setHours(0, 0, 0, 0)
+                          : null;
+                        const endDate = toDate
+                          ? new Date(toDate).setHours(23, 59, 59, 999)
+                          : null;
+                        return !fromDate || !toDate
+                          ? true
+                          : dayStart >= startDate && dayStart <= endDate;
+                      })
+                      .map((day, index) => {
+                        const dayStart = new Date(day.date).setHours(
+                          0,
+                          0,
+                          0,
+                          0
                         );
-                        const eventStartDate = new Date(
-                          eventStartDateStr
-                        ).setHours(0, 0, 0, 0);
-                        const eventEndDate = new Date(eventEndDateStr).setHours(
+                        const dayEnd = new Date(day.date).setHours(
                           23,
                           59,
                           59,
                           999
                         );
-                        return (
-                          roomIds.includes(filteredIds) &&
-                          eventStartDate <= dayEnd &&
-                          eventEndDate >= dayStart
-                        );
-                      });
+                        const eventsForDay = events.filter((event) => {
+                          const filteredIds = property._id;
+                          const roomIds = event.rooms.map(
+                            (room) => room.roomId
+                          );
+                          const eventStartDateStr = convertDateFormat(
+                            event.startDate
+                          );
+                          const eventEndDateStr = convertDateFormat(
+                            event.endDate
+                          );
+                          const eventStartDate = new Date(
+                            eventStartDateStr
+                          ).setHours(0, 0, 0, 0);
+                          const eventEndDate = new Date(
+                            eventEndDateStr
+                          ).setHours(23, 59, 59, 999);
+                          return (
+                            roomIds.includes(filteredIds) &&
+                            eventStartDate <= dayEnd &&
+                            eventEndDate >= dayStart
+                          );
+                        });
 
-                      const hasEvents = eventsForDay.length > 0;
-                      const backgroundColor = hasEvents
-                        ? eventColors[eventsForDay[0]._id]
-                        : "";
-                      const isCheckInDate = eventsForDay.some(
-                        (event) =>
-                          new Date(event.startDate).setHours(0, 0, 0, 0) ===
-                          dayStart
-                      );
-                      const isLastPastDay = index === lastPastDayIndex;
-                      return (
-                        <div
-                          key={day.date.toISOString()}
-                          className={`day-cell ${
-                            day.isSelectable ? "" : "day-cell-grayed"
-                          } ${
-                            isPastDate(new Date(day.date)) ? "past-date" : ""
-                          } ${isLastPastDay ? "last-past-day-cell" : ""}`}
-                          onClick={() => {
-                            if (!isPastDate(day.date) && !hasEvents) {
-                              handleCellClick(day.date, property);
-                            }
-                          }}
-                          style={{
-                            pointerEvents: isPastDate(day.date) ? "none" : "",
-                            backgroundColor: window.matchMedia(
-                              "(max-width: 768px)"
-                            ).matches
-                              ? backgroundColor
-                              : "",
-                          }}
-                        >
-                          {isPastDate(day.date) && (
-                            <div className="overlay">
-                              <span></span>
-                            </div>
-                          )}
-                          <div className="day-price">
-                            <div
-                              className="overlayContentText"
-                              style={{
-                                display: backgroundColor ? "none" : "",
-                                color:
-                                  day.date.toLocaleDateString("en-US", {
-                                    weekday: "short",
-                                  }) === "Sun" ||
-                                  day.date.toLocaleDateString("en-US", {
-                                    weekday: "short",
-                                  }) === "Sat"
-                                    ? "#cc3322"
-                                    : "",
-                              }}
-                            >
-                              {day.date.getDate()}
-                            </div>
-                            <div
-                              className="overlayContentDay"
-                              style={{
-                                display: backgroundColor ? "none" : "",
-                                color:
-                                  day.date.toLocaleDateString("en-US", {
-                                    weekday: "short",
-                                  }) === "Sun" ||
-                                  day.date.toLocaleDateString("en-US", {
-                                    weekday: "short",
-                                  }) === "Sat"
-                                    ? "#cc3322"
-                                    : "",
-                              }}
-                            >
-                              {day.date.toLocaleDateString("en-US", {
-                                weekday: "short",
-                              })}
-                            </div>
-                            {hasEvents && isCheckInDate && (
-                              <div
-                                className="event-title"
-                                style={{
-                                  display: window.matchMedia(
-                                    "(max-width: 768px)"
-                                  ).matches
-                                    ? "flex"
-                                    : "none",
-                                  color: "black",
-                                  fontWeight: "600",
-                                }}
-                              >
-                                {eventsForDay[0].title}
+                        const hasEvents = eventsForDay.length > 0;
+                        const backgroundColor = hasEvents
+                          ? eventColors[eventsForDay[0]._id]
+                          : "";
+                        const isCheckInDate = eventsForDay.some(
+                          (event) =>
+                            new Date(event.startDate).setHours(0, 0, 0, 0) ===
+                            dayStart
+                        );
+                        const isLastPastDay = index === lastPastDayIndex;
+                        return (
+                          <div
+                            key={day.date.toISOString()}
+                            className={`day-cell ${
+                              day.isSelectable ? "" : "day-cell-grayed"
+                            } ${
+                              isPastDate(new Date(day.date)) ? "past-date" : ""
+                            } ${isLastPastDay ? "last-past-day-cell" : ""}`}
+                            onClick={() => {
+                              if (!isPastDate(day.date) && !hasEvents) {
+                                handleCellClick(day.date, property);
+                              }
+                            }}
+                            style={{
+                              pointerEvents: isPastDate(day.date) ? "none" : "",
+                              backgroundColor: window.matchMedia(
+                                "(max-width: 768px)"
+                              ).matches
+                                ? backgroundColor
+                                : "",
+                            }}
+                          >
+                            {isPastDate(day.date) && (
+                              <div className="overlay">
+                                <span></span>
                               </div>
                             )}
+                            <div className="day-price">
+                              <div
+                                className="overlayContentText"
+                                style={{
+                                  display: backgroundColor ? "none" : "",
+                                  color:
+                                    day.date.toLocaleDateString("en-US", {
+                                      weekday: "short",
+                                    }) === "Sun" ||
+                                    day.date.toLocaleDateString("en-US", {
+                                      weekday: "short",
+                                    }) === "Sat"
+                                      ? "#cc3322"
+                                      : "",
+                                }}
+                              >
+                                {day.date.getDate()}
+                              </div>
+                              <div
+                                className="overlayContentDay"
+                                style={{
+                                  display: backgroundColor ? "none" : "",
+                                  color:
+                                    day.date.toLocaleDateString("en-US", {
+                                      weekday: "short",
+                                    }) === "Sun" ||
+                                    day.date.toLocaleDateString("en-US", {
+                                      weekday: "short",
+                                    }) === "Sat"
+                                      ? "#cc3322"
+                                      : "",
+                                }}
+                              >
+                                {day.date.toLocaleDateString("en-US", {
+                                  weekday: "short",
+                                })}
+                              </div>
+                              {hasEvents && isCheckInDate && (
+                                <div
+                                  className="event-title"
+                                  style={{
+                                    display: window.matchMedia(
+                                      "(max-width: 768px)"
+                                    ).matches
+                                      ? "flex"
+                                      : "none",
+                                    color: "black",
+                                    fontWeight: "600",
+                                  }}
+                                >
+                                  {eventsForDay[0].title}
+                                </div>
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
                     {/* Render events in desktop view */}
                     {(window.matchMedia("(max-width: 768px)").matches
                       ? []
@@ -855,10 +972,16 @@ const Calendar = () => {
                             onMouseDown={() => startResizing(event, property)}
                             onMouseUp={endResizing}
                             onDoubleClick={(e) => {
-                              history.push({
-                                pathname: `/booking/edit/${event._id}`,
-                                state: { bookingData: event },
-                              });
+                              const checkOut = new Date(
+                                event.endDate.split("-").reverse().join("-")
+                              );
+                              const today = new Date();
+                              if (checkOut >= today) {
+                                history.push({
+                                  pathname: `/booking/edit/${event._id}`,
+                                  state: { bookingData: event },
+                                });
+                              }
                             }}
                             onResizeStop={(
                               e,
@@ -970,13 +1093,31 @@ const Calendar = () => {
 
             <div className="separator" style={{ height: "40px" }} />
             <div className="footer-days-container">
-              {days.map((day) => (
-                <div key={day.date.toISOString()} className="footer-cell">
-                  {toggleSwitch
-                    ? getTotalGuestsForDate(day.date)
-                    : getTotalBookingsForDate(day.date)}
-                </div>
-              ))}
+              {days.map((day) => {
+                const dayStart = new Date(day.date).setHours(0, 0, 0, 0);
+                const startDate = fromDate
+                  ? new Date(fromDate).setHours(0, 0, 0, 0)
+                  : null;
+                const endDate = toDate
+                  ? new Date(toDate).setHours(23, 59, 59, 999)
+                  : null;
+
+                const isDayInRange =
+                  !startDate || !endDate
+                    ? true
+                    : dayStart >= startDate && dayStart <= endDate;
+
+                return (
+                  <div key={day.date.toISOString()} className="footer-cell">
+                    {isDayInRange
+                      ? toggleSwitch
+                        ? getTotalGuestsForDate(day.date)
+                        : getTotalBookingsForDate(day.date)
+                      : // Optionally, display nothing or a placeholder for filtered out days
+                        null}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
