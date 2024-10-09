@@ -4,7 +4,7 @@ import { Trans } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams ,useLocation} from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import * as Yup from "yup";
 import moment from "moment";
@@ -34,8 +34,9 @@ const EditRoom = () => {
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
   const searchParams = new URLSearchParams(history.location.search);
+  const location = useLocation();
+  const roomData = location.state?.roomData;
   const number = searchParams.get("number");
-
   const currentPage = searchParams.get("page");
   const currentStatus = searchParams.get("status");
   const currentFilter = searchParams.get("filter");
@@ -63,7 +64,8 @@ const EditRoom = () => {
 
   const initialValues = useMemo(() => {
     return {
-      number: number,
+      number: roomData?.roomNumber,
+      roomType:{value:roomData?.roomTypeId,label:roomData?.roomTypeName}
     };
   }, [roomDetails]);
 
