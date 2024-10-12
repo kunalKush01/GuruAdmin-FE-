@@ -10,8 +10,8 @@ module.exports = {
         },
       },
     },
-    postcss: {
-      plugins: [require("postcss-rtl")()],
+    postOptions: {
+      plugins: [],
     },
   },
   webpack: {
@@ -28,11 +28,15 @@ module.exports = {
     },
     configure: (webpackConfig) => {
       if (process.env.NODE_ENV === "production") {
-        const TerserPlugin = webpackConfig.optimization.minimizer.find(
-          (i) => i.constructor.name === "TerserPlugin"
+        const terserPlugin = webpackConfig.optimization.minimizer.find(
+          (plugin) =>
+            plugin.constructor && plugin.constructor.name === "TerserPlugin"
         );
-        if (TerserPlugin) {
-          TerserPlugin.options.terserOptions.compress["drop_console"] = true;
+        if (terserPlugin && terserPlugin.options.terserOptions) {
+          terserPlugin.options.terserOptions.compress = {
+            ...terserPlugin.options.terserOptions.compress,
+            drop_console: true,
+          };
         }
       }
       return webpackConfig;
