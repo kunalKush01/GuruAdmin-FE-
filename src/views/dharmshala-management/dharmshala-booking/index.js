@@ -17,6 +17,7 @@ import DharmshalaBookingTable from "./table";
 import { Helmet } from "react-helmet";
 import { DharmshalaBookingInfo } from "../dharmshalaStyles";
 import { CustomDropDown } from "../../../components/partials/customDropDown";
+import RoomHoldModal from "./roomHoldModal";
 
 dayjs.extend(utc);
 dayjs.extend(isBetween);
@@ -30,6 +31,11 @@ const DharmshalaBookings = () => {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const [showPastRequests, setShowPastRequests] = useState(false);
   const [statusFilter, setStatusFilter] = useState("all");
+  const [isRoomHoldModalOpen, setIsRoomHoldModalOpen] = useState(false);
+
+  const toggleRoomHoldModal = () => {
+    setIsRoomHoldModalOpen(!isRoomHoldModalOpen);
+  };
 
   const [pagination, setPagination] = useState({
     page: 1,
@@ -192,6 +198,16 @@ const DharmshalaBookings = () => {
                 )}
               </span>
             </Button>
+            <Button
+              className={`me-1 ${isMobileView ? 'btn-sm' : ''}`}
+              color="primary"
+              onClick={toggleRoomHoldModal}
+              style={{ marginBottom: isMobileView ? "5px" : "0"}}
+            >
+              <span>
+                <Trans i18nKey={"Room Hold"} />
+              </span>
+            </Button>
             <CustomDropDown
               i18nKeyDropDownItemArray={statusOptions}
               defaultDropDownName={statusFilter}
@@ -281,6 +297,7 @@ const DharmshalaBookings = () => {
           </Row>
         </div>
       </div>
+      <RoomHoldModal isOpen={isRoomHoldModalOpen} toggle={toggleRoomHoldModal} />
     </DharmshalaBookingInfo>
   );
 };

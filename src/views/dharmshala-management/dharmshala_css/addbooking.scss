@@ -841,3 +841,37 @@
   margin: 10px 0 0 0;
 }
 
+.custom-modal-header {
+  .modal-title {
+    font-size: 16px;
+    color: $font-color;
+    font-weight: bold;
+    margin-left: -1px;
+  }
+}
+
+.label-custom {
+  font-size: 15px;
+  color: $font-color;
+  font-weight: bold;
+}
+
+.custom-select {
+  color: $font-color;
+  font-weight: bold;
+}
+
+.custom-select.brown-selected {
+  color: $font-color;
+}
+
+.custom-select option {
+  color: $font-color;
+}
+
+.custom-select option:checked {
+  color: $font-color;
+}
+
+
+
