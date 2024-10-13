@@ -39,7 +39,7 @@ const AddItemUsage = () => {
   };
 
   return (
-    <div className="itemusageaddwraper">
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -56,14 +56,12 @@ const AddItemUsage = () => {
           </div>
         </div>
       </div>
-      <div className="FormikWrapper">
-        <AddItemUsageForm
-          handleSubmit={handleCreateItemUsage}
-          initialValues={initialValues}
-          validationSchema={schema}
-          buttonName="cattle_record_add"
-        />
-      </div>
+      <AddItemUsageForm
+        handleSubmit={handleCreateItemUsage}
+        initialValues={initialValues}
+        validationSchema={schema}
+        buttonName="cattle_record_add"
+      />
     </div>
   );
 };

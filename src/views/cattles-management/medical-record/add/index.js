@@ -46,7 +46,7 @@ const AddMedicalInfo = () => {
   };
 
   return (
-    <div className="medicalinfoaddwraper">
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -63,14 +63,12 @@ const AddMedicalInfo = () => {
           </div>
         </div>
       </div>
-      <div className="FormikWrapper">
-        <AddMedicalInfoForm
-          handleSubmit={handleCreateMedicalInfo}
-          initialValues={initialValues}
-          validationSchema={schema}
-          buttonName="cattle_record_add"
-        />
-      </div>
+      <AddMedicalInfoForm
+        handleSubmit={handleCreateMedicalInfo}
+        initialValues={initialValues}
+        validationSchema={schema}
+        buttonName="cattle_record_add"
+      />
     </div>
   );
 };
