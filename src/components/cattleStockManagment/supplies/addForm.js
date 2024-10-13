@@ -13,8 +13,7 @@ import {
 import AsyncSelectField from "../../partials/asyncSelectField";
 import CustomTextField from "../../partials/customTextField";
 import FormikCustomReactSelect from "../../partials/formikCustomReactSelect";
-
-;
+import "../../../assets/scss/common.scss";
 
 const AddSuppliesForm = ({
   initialValues,
@@ -53,7 +52,7 @@ const AddSuppliesForm = ({
   });
 
   return (
-    <FormikWrapper>
+    <div className="formikwrapper">
       <Formik
         enableReinitialize
         initialValues={initialValues}
@@ -223,7 +222,7 @@ const AddSuppliesForm = ({
           </Form>
         )}
       </Formik>
-    </FormikWrapper>
+    </div>
   );
 };
 
