@@ -139,7 +139,7 @@ const AddCattle = () => {
   };
 
   return (
-    <div className="cattleaddwraper">
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -152,16 +152,14 @@ const AddCattle = () => {
           </div>
         </div>
       </div>
-      <div className="FormikWrapper">
-        <AddCattleForm
-          handleSubmit={handleCreateCattleInfo}
-          initialValues={initialValues}
-          validationSchema={schema}
-          buttonName="cattle_add"
-          cattleType={cattleType}
-          cattleSource={cattleSource}
-        />
-      </div>
+      <AddCattleForm
+        handleSubmit={handleCreateCattleInfo}
+        initialValues={initialValues}
+        validationSchema={schema}
+        buttonName="cattle_add"
+        cattleType={cattleType}
+        cattleSource={cattleSource}
+      />
     </div>
   );
 };
