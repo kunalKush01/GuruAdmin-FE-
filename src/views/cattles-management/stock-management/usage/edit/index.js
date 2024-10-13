@@ -84,7 +84,7 @@ const EditItemUsage = () => {
   }, [itemUsageDetailQuery]);
 
   return (
-    <div className="itemusageaddwraper">
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img

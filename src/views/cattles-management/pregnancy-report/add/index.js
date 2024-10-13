@@ -36,7 +36,7 @@ const AddPregnancy = () => {
   };
 
   return (
-    <div className="pregnancyaddwraper">
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -53,14 +53,12 @@ const AddPregnancy = () => {
           </div>
         </div>
       </div>
-      <div className="FormikWrapper">
-        <AddPregnancyForm
-          handleSubmit={handleCreatePregnancyReport}
-          initialValues={initialValues}
-          validationSchema={schema}
-          buttonName="cattle_record_add"
-        />
-      </div>
+      <AddPregnancyForm
+        handleSubmit={handleCreatePregnancyReport}
+        initialValues={initialValues}
+        validationSchema={schema}
+        buttonName="cattle_record_add"
+      />
     </div>
   );
 };

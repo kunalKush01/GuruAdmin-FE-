@@ -45,7 +45,7 @@ const AddPregnancyForm = ({
   });
 
   return (
-    <div className="formikwrapper">
+    <div className="FormikWrapper">
       <Formik
         enableReinitialize
         initialValues={initialValues}
