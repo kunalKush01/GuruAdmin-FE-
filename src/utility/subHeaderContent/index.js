@@ -244,43 +244,6 @@ export const subHeaderContentResponsive = [
     ],
   },
   {
-    name: "cattles",
-    customLabel: "Inventory",
-    activeTab: "/cattle/management/stock",
-    icon: Inventory,
-    activeIcon: InventoryActiveIcon,
-    children: [
-      {
-        name: "cattle-stock",
-        customLabel: "Stock",
-        url: "/cattle/management/stock",
-        icon: Stock,
-        activeIcon: StockActiveIcon,
-      },
-      {
-        name: "cattle-supplies",
-        customLabel: "Supplies",
-        url: "/cattle/management/supplies",
-        icon: Supplies,
-        activeIcon: SuppliesActiveIcon,
-      },
-      {
-        name: "cattle-usage",
-        customLabel: "Usage",
-        url: "/cattle/management/usage",
-        icon: Usage,
-        activeIcon: UsageActiveIcon,
-      },
-      {
-        name: "cattle-item",
-        customLabel: "Items",
-        url: "/cattle/management/item",
-        icon: items,
-        activeIcon: itemsActiveIcon,
-      },
-    ],
-  },
-  {
     name: "dharmshala/dashboard",
     customLabel: "Dharmshala",
     activeTab: "/dharmshala/dashboard",
@@ -359,7 +322,43 @@ export const subHeaderContentResponsive = [
     icon: FinancialReportsIcon,
     activeIcon: FinancialReportsIconActive,
   },
-
+  {
+    name: "cattles",
+    customLabel: "Inventory",
+    activeTab: "/cattle/management/stock",
+    icon: Inventory,
+    activeIcon: InventoryActiveIcon,
+    children: [
+      {
+        name: "cattle-stock",
+        customLabel: "Stock",
+        url: "/cattle/management/stock",
+        icon: Stock,
+        activeIcon: StockActiveIcon,
+      },
+      {
+        name: "cattle-supplies",
+        customLabel: "Supplies",
+        url: "/cattle/management/supplies",
+        icon: Supplies,
+        activeIcon: SuppliesActiveIcon,
+      },
+      {
+        name: "cattle-usage",
+        customLabel: "Usage",
+        url: "/cattle/management/usage",
+        icon: Usage,
+        activeIcon: UsageActiveIcon,
+      },
+      {
+        name: "cattle-item",
+        customLabel: "Items",
+        url: "/cattle/management/item",
+        icon: items,
+        activeIcon: itemsActiveIcon,
+      },
+    ],
+  },
   {
     name: "internal_expenses",
     url: "/internal_expenses",
