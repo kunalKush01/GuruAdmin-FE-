@@ -18,6 +18,8 @@ import AddStockItemForm from "../../../../../components/cattleStockManagment/Ite
 import { ConverFirstLatterToCapital } from "../../../../../utility/formater";
 
 import "../../../../../assets/scss/viewCommon.scss";
+import "../../../../../assets/scss/common.scss";
+
 const getLangId = (langArray, langSelection) => {
   let languageId;
   langArray.map(async (Item) => {
@@ -150,7 +152,7 @@ const EditItem = () => {
         </Then>
         <Else>
           {!itemDetailQuery.isFetching && (
-            <div className="ms-sm-3 mt-1">
+            <div className="FormikWrapper">
               <AddStockItemForm
                 initialValues={initialValues}
                 validationSchema={schema}

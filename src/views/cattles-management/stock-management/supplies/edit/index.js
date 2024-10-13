@@ -21,6 +21,8 @@ import AddSuppliesForm from "../../../../../components/cattleStockManagment/supp
 import { ConverFirstLatterToCapital } from "../../../../../utility/formater";
 
 import "../../../../../assets/scss/viewCommon.scss";
+import "../../../../../assets/scss/common.scss";
+
 const getLangId = (langArray, langSelection) => {
   let languageId;
   langArray.map(async (Item) => {
@@ -150,7 +152,7 @@ const EditSupply = () => {
         </Then>
         <Else>
           {!supplyDetailQuery.isFetching && (
-            <div className="ms-sm-3 mt-1">
+            <div className="FormikWrapper">
               <AddSuppliesForm
                 initialValues={initialValues}
                 validationSchema={schema}

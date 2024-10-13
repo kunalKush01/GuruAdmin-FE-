@@ -18,6 +18,7 @@ import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddDharmshalaForm from "../../../../components/dharmshalaInfo/addForm";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
 import { DharmshalaAddWrapper } from "../../dharmshalaStyles";
+import "../../../../assets/scss/common.scss";
 
 const getLangId = (langArray, langSelection) => {
   let languageId;
@@ -120,7 +121,7 @@ const EditDharmshala = () => {
         </Then>
         <Else>
           {!dharmshalaDetails.isFetching && (
-            <div className="ms-sm-3 mt-1">
+            <div className="FormikWrapper">
               <AddDharmshalaForm
                 handleSubmit={handleDharmshalaUpdate}
                 initialValues={initialValues}

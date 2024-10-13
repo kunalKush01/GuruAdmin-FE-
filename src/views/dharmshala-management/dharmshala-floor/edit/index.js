@@ -16,6 +16,7 @@ import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddDharmshalaFloorForm from "../../../../components/dharmshalaFloor/addForm";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
 import { DharmshalaFloorAddWrapper } from "../../dharmshalaStyles";
+import "../../../../assets/scss/common.scss";
 
 const getLangId = (langArray, langSelection) => {
   let languageId;
@@ -140,7 +141,7 @@ const EditFloor = () => {
         </Then>
         <Else>
           {!floorDetails.isFetching && (
-            <div className="ms-sm-3 mt-1">
+            <div className="FormikWrapper">
               <AddDharmshalaFloorForm
                 handleSubmit={handleDharmshalaFloorUpdate}
                 initialValues={initialValues}
