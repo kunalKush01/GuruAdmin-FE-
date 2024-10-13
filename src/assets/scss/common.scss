@@ -1816,6 +1816,12 @@
 }
 
 .formikcustomdatepickerwrapper {
+    display: flex;
+    flex-direction: column;
+    /* Ensure label is on top */
+    margin-bottom: 15px;
+
+    /* Space between input fields */
     .react-datepicker__day--outside-month {
         color: $grey !important;
         pointer-events: none;
