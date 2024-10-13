@@ -35,31 +35,31 @@ import BuildingIcon from "../../assets/images/icons/dharmshala/building.svg";
 import DharmshalaIcon from "../../assets/images/icons/dharmshala/dharmshala.svg";
 import FeedbackIcon from "../../assets/images/icons/dharmshala/feedback.svg";
 import RoomTypeIcon from "../../assets/images/icons/dharmshala/roomtype.svg";
-import GaushalaInfo from "../../assets/images/icons/gaushalaInfo.svg"
-import GaushalaOverview from "../../assets/images/icons/gaushalaOverview.svg"
-import Gaushala from "../../assets/images/icons/gaushala.svg"
-import Inventory from "../../assets/images/icons/inventory.svg"
-import items from "../../assets/images/icons/items.svg"
-import MedicalRecords from "../../assets/images/icons/medicalRecord.svg"
-import PashudhanBreed from "../../assets/images/icons/pashudhanBreed.svg"
-import PashudhanCategory from "../../assets/images/icons/pashudhanCategory.svg"
-import PregnancyRecords from "../../assets/images/icons/pregnancyRecords.svg"
-import Stock from "../../assets/images/icons/stock.svg"
-import Supplies from "../../assets/images/icons/supplies.svg"
-import Usage from "../../assets/images/icons/usage.svg"
+import GaushalaInfo from "../../assets/images/icons/gaushalaInfo.svg";
+import GaushalaOverview from "../../assets/images/icons/gaushalaOverview.svg";
+import Gaushala from "../../assets/images/icons/gaushala.svg";
+import Inventory from "../../assets/images/icons/inventory.svg";
+import items from "../../assets/images/icons/items.svg";
+import MedicalRecords from "../../assets/images/icons/medicalRecord.svg";
+import PashudhanBreed from "../../assets/images/icons/pashudhanBreed.svg";
+import PashudhanCategory from "../../assets/images/icons/pashudhanCategory.svg";
+import PregnancyRecords from "../../assets/images/icons/pregnancyRecords.svg";
+import Stock from "../../assets/images/icons/stock.svg";
+import Supplies from "../../assets/images/icons/supplies.svg";
+import Usage from "../../assets/images/icons/usage.svg";
 
-import GaushalaInfoActiveIcon from "../../assets/images/icons/gaushalaInfo.svg"
-import GaushalaOverviewActiveIcon from "../../assets/images/icons/gaushalaOverview.svg"
-import GaushalaActiveIcon from "../../assets/images/icons/gaushala.svg"
-import InventoryActiveIcon from "../../assets/images/icons/inventory.svg"
-import itemsActiveIcon from "../../assets/images/icons/items.svg"
-import MedicalRecordsActiveIcon from "../../assets/images/icons/medicalRecord.svg"
-import PashudhanBreedActiveIcon from "../../assets/images/icons/pashudhanBreed.svg"
-import PashudhanCategoryActiveIcon from "../../assets/images/icons/pashudhanCategory.svg"
-import PregnancyRecordsActiveIcon from "../../assets/images/icons/pregnancyRecords.svg"
-import StockActiveIcon from "../../assets/images/icons/stock.svg"
-import SuppliesActiveIcon from "../../assets/images/icons/supplies.svg"
-import UsageActiveIcon from "../../assets/images/icons/usage.svg"
+import GaushalaInfoActiveIcon from "../../assets/images/icons/gaushalaInfo.svg";
+import GaushalaOverviewActiveIcon from "../../assets/images/icons/gaushalaOverview.svg";
+import GaushalaActiveIcon from "../../assets/images/icons/gaushala.svg";
+import InventoryActiveIcon from "../../assets/images/icons/inventory.svg";
+import itemsActiveIcon from "../../assets/images/icons/items.svg";
+import MedicalRecordsActiveIcon from "../../assets/images/icons/medicalRecord.svg";
+import PashudhanBreedActiveIcon from "../../assets/images/icons/pashudhanBreed.svg";
+import PashudhanCategoryActiveIcon from "../../assets/images/icons/pashudhanCategory.svg";
+import PregnancyRecordsActiveIcon from "../../assets/images/icons/pregnancyRecords.svg";
+import StockActiveIcon from "../../assets/images/icons/stock.svg";
+import SuppliesActiveIcon from "../../assets/images/icons/supplies.svg";
+import UsageActiveIcon from "../../assets/images/icons/usage.svg";
 
 export const subHeaderContent = [
   {
@@ -215,21 +215,21 @@ export const subHeaderContentResponsive = [
       },
       {
         name: "cattle-info",
-        customLabel: "Pashudhan Info",
+        customLabel: "Pashudhan",
         url: "/cattle/info",
         icon: GaushalaInfo,
         activeIcon: GaushalaInfoActiveIcon,
       },
       {
         name: "cattle-medical",
-        customLabel: "Medical Records",
+        customLabel: "Medical",
         url: "/cattle/medical-info",
         icon: MedicalRecords,
         activeIcon: MedicalRecordsActiveIcon,
       },
       {
         name: "cattle-pregnancy",
-        customLabel: "Pregnancy Records",
+        customLabel: "Pregnancy",
         url: "/cattle/pregnancy-reports",
         icon: PregnancyRecords,
         activeIcon: PregnancyRecordsActiveIcon,
