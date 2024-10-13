@@ -6,6 +6,8 @@ import { createCattleExpenses } from "../../../../api/cattle/cattleExpense";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddExpenseForm from "../../../../components/cattleExpenses/addform";
 import "../../../../assets/scss/viewCommon.scss";
+import "../../../../assets/scss/common.scss";
+
 const AddExpenses = () => {
   const history = useHistory();
   const searchParams = new URLSearchParams(history.location.search);
@@ -62,7 +64,7 @@ const AddExpenses = () => {
           </div>
         </div>
       </div>
-      <div className="ms-sm-3 mt-1">
+      <div className="FormikWrapper">
         <AddExpenseForm
           handleSubmit={handleCreateExpenses}
           initialValues={initialValues}

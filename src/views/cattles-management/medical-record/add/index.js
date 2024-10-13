@@ -8,6 +8,8 @@ import { createCattleMedicalRecord } from "../../../../api/cattle/cattleMedical"
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddMedicalInfoForm from "../../../../components/cattleMedicalInfo/addForm";
 import "../../../../assets/scss/viewCommon.scss";
+import "../../../../assets/scss/common.scss";
+
 const AddMedicalInfo = () => {
   const history = useHistory();
   const searchParams = new URLSearchParams(history.location.search);
@@ -61,7 +63,7 @@ const AddMedicalInfo = () => {
           </div>
         </div>
       </div>
-      <div className="ms-sm-3 mt-1">
+      <div className="FormikWrapper">
         <AddMedicalInfoForm
           handleSubmit={handleCreateMedicalInfo}
           initialValues={initialValues}

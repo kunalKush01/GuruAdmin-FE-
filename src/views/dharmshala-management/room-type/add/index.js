@@ -8,6 +8,7 @@ import { createRoomType } from "../../../../api/dharmshala/dharmshalaInfo";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddRoomTypeForm from "../../../../components/roomType/addForm";
 import { RoomTypeAddWrapper } from "../../dharmshalaStyles";
+import "../../../../assets/scss/common.scss";
 
 const AddRoomType = () => {
   const history = useHistory();
@@ -50,7 +51,7 @@ const AddRoomType = () => {
           </div>
         </div>
       </div>
-      <div className="ms-sm-3 mt-1">
+      <div className="FormikWrapper">
         <AddRoomTypeForm
           handleSubmit={handleCreateRoomType}
           initialValues={initialValues}

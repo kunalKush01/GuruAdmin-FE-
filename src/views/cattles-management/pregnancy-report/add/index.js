@@ -8,6 +8,8 @@ import { createPregnancyReport } from "../../../../api/cattle/cattlePregnancy";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddPregnancyForm from "../../../../components/cattlePregnancy/addForm";
 import "../../../../assets/scss/viewCommon.scss";
+import "../../../../assets/scss/common.scss";
+
 const AddPregnancy = () => {
   const history = useHistory();
 
@@ -51,7 +53,7 @@ const AddPregnancy = () => {
           </div>
         </div>
       </div>
-      <div className="ms-sm-3 mt-1">
+      <div className="FormikWrapper">
         <AddPregnancyForm
           handleSubmit={handleCreatePregnancyReport}
           initialValues={initialValues}

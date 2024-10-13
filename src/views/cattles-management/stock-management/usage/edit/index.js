@@ -19,6 +19,7 @@ import AddItemUsageForm from "../../../../../components/cattleUsage/addForm";
 import { ConverFirstLatterToCapital } from "../../../../../utility/formater";
 
 import "../../../../../assets/scss/viewCommon.scss";
+import "../../../../../assets/scss/common.scss";
 
 const getLangId = (langArray, langSelection) => {
   let languageId;
@@ -153,7 +154,7 @@ const EditItemUsage = () => {
         </Then>
         <Else>
           {!itemUsageDetailQuery.isFetching && (
-            <div className="ms-sm-3 mt-1">
+            <div className="FormikWrapper">
               <AddItemUsageForm
                 initialValues={initialValues}
                 plusIconDisable

@@ -8,6 +8,7 @@ import { Button, Col, Row, Spinner } from "reactstrap";
 import { FormikWrapper } from "../../views/dharmshala-management/dharmshalaStyles";
 import CustomTextField from "../partials/customTextField";
 import "./dropdown.css";
+import "../../assets/scss/common.scss";
 
 const AddBookingForm = ({
   initialValues,
@@ -68,7 +69,7 @@ const AddBookingForm = ({
   };
 
   return (
-    <FormikWrapper>
+    <div className="FormikWrapper">
       <Formik
         enableReinitialize
         initialValues={initialValues}
@@ -237,7 +238,7 @@ const AddBookingForm = ({
           </Form>
         )}
       </Formik>
-    </FormikWrapper>
+    </div>
   );
 };
 
