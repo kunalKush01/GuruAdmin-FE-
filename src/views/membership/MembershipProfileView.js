@@ -93,7 +93,7 @@ function MembershipProfileView() {
   }, [familyInfo]);
   useEffect(() => {
     if (upload && upload.memberPhoto) {
-      fetchImage(upload.memberPhoto, 'memberPhoto');
+      fetchImage(upload.memberPhoto, "memberPhoto");
     }
   }, [upload]);
   const items = [
@@ -156,20 +156,20 @@ function MembershipProfileView() {
                                 : "-"}
                             </p>
                           </div>
+                          <div className="rowItem">
+                            <Button
+                              className="editmember"
+                              onClick={() => openModal("edit", i, item)}
+                            >
+                              Edit
+                            </Button>
+                            <img
+                              src={editIcon}
+                              width={35}
+                              className="editIconMember"
+                            />
+                          </div>
                         </div>
-                      </div>
-                      <div className="famRow3">
-                        <Button
-                          className="editmember"
-                          onClick={() => openModal("edit", i, item)}
-                        >
-                          Edit
-                        </Button>
-                        <img
-                          src={editIcon}
-                          width={35}
-                          className="editIconMember"
-                        />
                       </div>
                     </div>
                   </div>
@@ -281,8 +281,8 @@ function MembershipProfileView() {
   ];
 
   return (
-    <div className="formikwrapper">
-      <div className="mb-1 d-flex justify-content-between align-items-center">
+    <div className="formikwrapper mb-5">
+      <div className="d-flex justify-content-between align-items-center">
         <img
           src={arrowLeft}
           className="me-2  cursor-pointer"
@@ -297,12 +297,12 @@ function MembershipProfileView() {
           </Button>
         </div>
       </div>
-      <Row gutter={[16, 16]}>
+      <Row gutter={[12, 12]}>
         <Col xs={24} sm={12} md={6}>
           <Card className="memberCard" id="firstCard">
             <div className="d-flex justify-content-center align-items-center flex-column">
               <img
-                src={familyImages['memberPhoto'] || avatarIcon}
+                src={familyImages["memberPhoto"] || avatarIcon}
                 className="membershipProfileImg"
                 alt="Profile"
               />
@@ -361,7 +361,7 @@ function MembershipProfileView() {
               </div>
               <div>
                 <div className="info-item">
-                  <span className="me-1">Future Communication?</span>
+                  <span className="me-1">Future Communication</span>
                   <Switch checked={toggleSwitch} onChange={handleToggle} />
                 </div>
               </div>
