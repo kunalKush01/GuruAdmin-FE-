@@ -8,8 +8,7 @@ import { Button, Col, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
 import CustomTextField from "../../partials/customTextField";
 import FormikCustomReactSelect from "../../partials/formikCustomReactSelect";
-
-;
+import "../../../assets/scss/common.scss";
 
 const AddStockItemForm = ({
   initialValues,
@@ -39,7 +38,7 @@ const AddStockItemForm = ({
   });
 
   return (
-    <FormikWrapper>
+    <div className="formikwrapper">
       <Formik
         enableReinitialize
         initialValues={initialValues}
@@ -164,7 +163,7 @@ const AddStockItemForm = ({
           </Form>
         )}
       </Formik>
-    </FormikWrapper>
+    </div>
   );
 };
 
