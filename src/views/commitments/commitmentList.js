@@ -343,7 +343,7 @@ export default function Commitment() {
               // onClick={() => importFileRef.current.click()}
               onClick={handleButtonClick}
             >
-              Import File
+              {t("Import_File")}
             </Button>
 
             <input

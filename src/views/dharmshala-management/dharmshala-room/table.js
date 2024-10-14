@@ -96,7 +96,7 @@ const DharmshalaRoomTable = ({
       width: 100,
     },
     {
-      title: t("Action"),
+      title: t("action"),
       dataIndex: "action",
       key: "action",
       width: 100,

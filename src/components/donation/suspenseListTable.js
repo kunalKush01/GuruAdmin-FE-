@@ -169,7 +169,7 @@ function SuspenseListTable({ success }) {
       width: 80,
     },
     {
-      title: "Action",
+      title: t("action"),
       key: "action",
       fixed: "right",
       width: 80,
@@ -200,7 +200,7 @@ function SuspenseListTable({ success }) {
     },
   ];
   const modeOfPaymentOptions = [
-    { value: "", label: "Select Option" },
+    { value: "", label: t('select_option')},
     { value: "Cash", label: "Cash" },
     { value: "UPI", label: "UPI" },
     { value: "online", label: "Online" },

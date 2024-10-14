@@ -132,7 +132,7 @@ export default function DonationListTable(
     },
 
     {
-      name: "Action",
+      name: t("action"),
       selector: (row) => row.edit,
     },
   ];

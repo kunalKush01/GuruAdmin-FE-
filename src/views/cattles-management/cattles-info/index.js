@@ -208,7 +208,7 @@ const CattlesInfo = () => {
               color="primary"
               onClick={() => importFileRef.current.click()}
             >
-              Import File
+              {t("Import_File")}
             </Button>
 
             {/* <Button

@@ -158,6 +158,7 @@ export default function DonationBoxForm({
                       <CustomDatePicker
                         id="datePickerANTD"
                         format="DD MMM YYYY"
+                        placeholder={t('select_date')}
                         // needConfirm
                         onChange={(date) =>
                           formik.setFieldValue(

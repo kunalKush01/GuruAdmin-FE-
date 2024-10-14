@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import "react-phone-number-input/style.css";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
@@ -15,6 +15,7 @@ import "../../assets/scss/viewCommon.scss";
 import { Tag } from "antd";
 export default function AddDonation() {
   const history = useHistory();
+  const {t} = useTranslation()
   const loggedInUser = useSelector((state) => state.auth.userDetail.name);
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
@@ -76,7 +77,7 @@ export default function AddDonation() {
     createdBy: ConverFirstLatterToCapital(loggedInUser),
     modeOfPayment: {
       value: modeOfPayment || "Cash",
-      label: ((modeOfPayment == "online" || modeOfPayment=="") && "Online") || "Cash",
+      label: ((modeOfPayment == "online" || modeOfPayment=="") && t('online')) || t('cash'),
     },
     bankName: "",
     chequeNum: "",
