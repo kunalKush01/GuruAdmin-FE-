@@ -18,10 +18,10 @@ const serchablepath = [
   "/cattle/info",
   "/cattle/medical-info",
   "/cattle/pregnancy-reports",
-  "/cattle/management/stock",
-  "/cattle/management/supplies",
-  "/cattle/management/usage",
-  "/cattle/management/item",
+  "/stock-management/stock",
+  "/stock-management/supplies",
+  "/stock-management/usage",
+  "/stock-management/item",
   "/dharmshala/dashboard",
   "/booking/info",
   "/dharmshala/info",
@@ -72,13 +72,13 @@ export const setPlaceholderSerchbar = () => {
       return "search_cattles_medical";
     case "/cattle/pregnancy-reports":
       return "search_cattles_pregnancy";
-    case "/cattle/management/stock":
+    case "/stock-management/stock":
       return "search_cattles_stock";
-    case "/cattle/management/supplies":
+    case "/stock-management/supplies":
       return "search_cattles_supplies";
-    case "/cattle/management/usage":
+    case "/stock-management/usage":
       return "search_cattles_usage";
-    case "/cattle/management/item":
+    case "/stock-management/item":
       return "search_cattles_items";
     case "/dharmshala/dashboard":
       return "search_dharmshala";
