@@ -44,7 +44,7 @@ const AddSuppliesForm = ({
       if (!data?.error) {
         queryClient.invalidateQueries(["cattleStockManagementList"]);
         setLoading(false);
-        history.push("/cattle/management/supplies");
+        history.push("/stock-management/supplies");
       } else if (data?.error || data === undefined) {
         setLoading(false);
       }

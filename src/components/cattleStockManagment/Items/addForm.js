@@ -30,7 +30,7 @@ const AddStockItemForm = ({
       if (!data?.error) {
         queryClient.invalidateQueries(["cattleStockManagementList"]);
         setLoading(false);
-        history.push("/cattle/management/item");
+        history.push("/stock-management/item");
       } else if (data?.error || data === undefined) {
         setLoading(false);
       }
