@@ -18,8 +18,8 @@ import { handleExport } from "../../../utility/utils/exportTabele";
 import RoomTypeInfoTable from "./table";
 import { ChangeCategoryType } from "../../../components/partials/categoryDropdown";
 import { Helmet } from "react-helmet";
-import { RoomTypeInfo } from "../dharmshalaStyles";
 import { Table } from "antd";
+import "../../../assets/scss/dharmshala.scss";
 
 const RoomTypesInfo = () => {
   const history = useHistory();
@@ -109,33 +109,33 @@ const RoomTypesInfo = () => {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      width:100,
-      fixed:"left"
+      width: 100,
+      fixed: "left",
     },
     {
       title: "Description",
       dataIndex: "description",
       key: "description",
-      width:120,
+      width: 120,
     },
     {
       title: "Capacity",
       dataIndex: "capacity",
       key: "capacity",
-      width:80,
+      width: 80,
     },
     {
       title: "Price",
       dataIndex: "price",
       key: "price",
-      width:60,
-      fixed:"right",
+      width: 60,
+      fixed: "right",
       render: (price) => `₹${price}`, // Format price with currency symbol
     },
   ];
 
   return (
-    <RoomTypeInfo>
+    <div className="DharmshalaComponentInfo">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharm Admin | Dharmshala Room Types</title>
@@ -269,7 +269,7 @@ const RoomTypesInfo = () => {
           </Row>
         </div>
       </div>
-    </RoomTypeInfo>
+    </div>
   );
 };
 

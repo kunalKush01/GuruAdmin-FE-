@@ -10,8 +10,7 @@ import deleteDisableIcon from "../../../assets/images/icons/category/deleteDisab
 import editIcon from "../../../assets/images/icons/category/editIcon.svg";
 import CustomDharmshalaTable from "../../../components/partials/CustomDharmshalaTable";
 import confirmationIcon from "../../../assets/images/icons/news/conformationIcon.svg";
-import { DharmshalaInfoTableWrapper } from "../dharmshalaStyles";
-import "../dharmshala_css/dharmshalainfotable.css";
+import "../../../assets/scss/dharmshala.scss";
 import { Table, Tag } from "antd";
 
 const DharmshalaInfoTable = ({
@@ -237,7 +236,7 @@ const DharmshalaInfoTable = ({
   }, [data]);
 
   return (
-    <DharmshalaInfoTableWrapper>
+    <div className="DharmshalaComponentTableWrapper">
       {isMobileView ? (
         <div className="card-container">
           {DharmshalasInfo.map((item, index) => (
@@ -271,7 +270,7 @@ const DharmshalaInfoTable = ({
           dataSource={DharmshalasInfo}
         />
       )}
-    </DharmshalaInfoTableWrapper>
+    </div>
   );
 };
 

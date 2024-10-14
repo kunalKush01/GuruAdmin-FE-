@@ -17,8 +17,8 @@ import {
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddRoomTypeForm from "../../../../components/roomType/addForm";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
-import { RoomTypeAddWrapper } from "../../dharmshalaStyles";
 import "../../../../assets/scss/common.scss";
+import "../../../../assets/scss/dharmshala.scss";
 
 const getLangId = (langArray, langSelection) => {
   let languageId;
@@ -81,7 +81,7 @@ const EditRoomType = () => {
   }, [roomTypeDetails]);
 
   return (
-    <RoomTypeAddWrapper>
+    <div className="DharmshalaComponentAddWrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -145,7 +145,7 @@ const EditRoomType = () => {
         </Then>
         <Else>
           {!roomTypeDetails.isFetching && (
-            <div className="FormikWrapper">
+            <div className="listviewwrapper">
               <AddRoomTypeForm
                 handleSubmit={handleRoomTypeUpdate}
                 initialValues={initialValues}
@@ -159,7 +159,7 @@ const EditRoomType = () => {
           )}
         </Else>
       </If>
-    </RoomTypeAddWrapper>
+    </div>
   );
 };
 

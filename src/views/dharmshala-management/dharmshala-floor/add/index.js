@@ -6,8 +6,8 @@ import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { createDharmshalaFloor } from "../../../../api/dharmshala/dharmshalaInfo";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddDharmshalaFloorForm from "../../../../components/dharmshalaFloor/addForm";
-import { DharmshalaFloorAddWrapper } from "../../dharmshalaStyles";
 import "../../../../assets/scss/common.scss";
+import "../../../../assets/scss/dharmshala.scss";
 
 const AddDharmshalaFloor = () => {
   const history = useHistory();
@@ -41,7 +41,7 @@ const AddDharmshalaFloor = () => {
   const URLParams = useParams("");
 
   return (
-    <DharmshalaFloorAddWrapper>
+    <div className="DharmshalaComponentAddWrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -54,7 +54,7 @@ const AddDharmshalaFloor = () => {
           </div>
         </div>
       </div>
-      <div className="FormikWrapper">
+      <div className="listviewwrapper">
         <AddDharmshalaFloorForm
           handleSubmit={handleCreateDharmshalaFloor}
           initialValues={initialValues}
@@ -62,7 +62,7 @@ const AddDharmshalaFloor = () => {
           buttonName="dharmshala_floor_add"
         />
       </div>
-    </DharmshalaFloorAddWrapper>
+    </div>
   );
 };
 

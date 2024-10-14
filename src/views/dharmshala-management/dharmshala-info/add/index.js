@@ -7,8 +7,9 @@ import * as Yup from "yup";
 import { createBuilding } from "../../../../api/dharmshala/dharmshalaInfo";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddDharmshalaForm from "../../../../components/dharmshalaInfo/addForm";
-import { DharmshalaAddWrapper } from "../../dharmshalaStyles";
 import "../../../../assets/scss/common.scss";
+import "../../../../assets/scss/dharmshala.scss";
+
 const AddDharmshala = () => {
   const history = useHistory();
   const searchParams = new URLSearchParams(history.location.search);
@@ -33,7 +34,7 @@ const AddDharmshala = () => {
   };
 
   return (
-    <DharmshalaAddWrapper>
+    <div className="DharmshalaComponentAddWrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -46,7 +47,7 @@ const AddDharmshala = () => {
           </div>
         </div>
       </div>
-      <div className="FormikWrapper">
+      <div className="listviewwrapper">
         <AddDharmshalaForm
           handleSubmit={handleCreateDharmshala}
           initialValues={initialValues}
@@ -54,7 +55,7 @@ const AddDharmshala = () => {
           buttonName="building_add"
         />
       </div>
-    </DharmshalaAddWrapper>
+    </div>
   );
 };
 
