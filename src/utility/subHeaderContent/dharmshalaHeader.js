@@ -24,12 +24,12 @@ export const dharmshalaHeader = (permission) => {
       active: "/roomtype/info",
       permissionKey: ["dharmshala/roomtypes"],
     },
-    {
-      name: "Feedback",
-      url: "/feedback",
-      active: "/feedback",
-      permissionKey: ["dharmshala/feedback"],
-    },
+    // {
+    //   name: "Feedback",
+    //   url: "/feedback",
+    //   active: "/feedback",
+    //   permissionKey: ["dharmshala/feedback"],
+    // },
   ].filter(item => 
     permission?.includes("all") || 
     item.permissionKey.some(key => permission?.includes(key))
