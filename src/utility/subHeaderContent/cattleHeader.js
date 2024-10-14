@@ -28,20 +28,20 @@ export const cattleHeader = (permission) => {
     //   name: "cattle_expense",
     //   url: "/cattle/expenses",
     // },
-    {
-      name: "cattle_stock_management",
-      url: permission?.includes("all")
-        ? "/cattle/management/stock"
-        : "/cattle/management",
-      active: "/cattle/management",
-      isManagment: true,
-      permissionKey: [
-        "cattle-stock",
-        "cattle-supplies",
-        "cattle-item",
-        "cattle-usage",
-      ],
-    },
+    // {
+    //   name: "cattle_stock_management",
+    //   url: permission?.includes("all")
+    //     ? "/cattle/management/stock"
+    //     : "/cattle/management",
+    //   active: "/cattle/management",
+    //   isManagment: true,
+    //   permissionKey: [
+    //     "cattle-stock",
+    //     "cattle-supplies",
+    //     "cattle-item",
+    //     "cattle-usage",
+    //   ],
+    // },
     // {
     //   name: "cattle_usage",
     //   url: "/cattle/usage",

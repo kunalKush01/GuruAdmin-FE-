@@ -278,13 +278,13 @@ export const subHeaderContentResponsive = [
         icon: RoomTypeIcon,
         activeIcon: RoomTypeIcon,
       },
-      {
-        name: "dharmshala/feedback",
-        customLabel: "Feedback",
-        url: "/feedback",
-        icon: FeedbackIcon,
-        activeIcon: FeedbackIcon,
-      },
+      // {
+      //   name: "dharmshala/feedback",
+      //   customLabel: "Feedback",
+      //   url: "/feedback",
+      //   icon: FeedbackIcon,
+      //   activeIcon: FeedbackIcon,
+      // },
     ],
   },
   {
