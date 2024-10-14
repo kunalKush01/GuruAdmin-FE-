@@ -7,8 +7,8 @@ import * as Yup from "yup";
 import { createRoomType } from "../../../../api/dharmshala/dharmshalaInfo";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddRoomTypeForm from "../../../../components/roomType/addForm";
-import { RoomTypeAddWrapper } from "../../dharmshalaStyles";
 import "../../../../assets/scss/common.scss";
+import "../../../../assets/scss/dharmshala.scss";
 
 const AddRoomType = () => {
   const history = useHistory();
@@ -38,7 +38,7 @@ const AddRoomType = () => {
   };
 
   return (
-    <RoomTypeAddWrapper>
+    <div className="DharmshalaComponentAddWrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -51,7 +51,7 @@ const AddRoomType = () => {
           </div>
         </div>
       </div>
-      <div className="FormikWrapper">
+      <div className="listviewwrapper">
         <AddRoomTypeForm
           handleSubmit={handleCreateRoomType}
           initialValues={initialValues}
@@ -59,7 +59,7 @@ const AddRoomType = () => {
           buttonName="dharmshala_roomtype_add"
         />
       </div>
-    </RoomTypeAddWrapper>
+    </div>
   );
 };
 

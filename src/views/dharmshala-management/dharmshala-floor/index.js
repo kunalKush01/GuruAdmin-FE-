@@ -19,8 +19,7 @@ import DharmshalaFloorTable from "./table";
 import { ChangeCategoryType } from "../../../components/partials/categoryDropdown";
 import { Helmet } from "react-helmet";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
-import { DharmshalaFloorInfo } from "../dharmshalaStyles";
-import "../dharmshala_css/dharmshalafloors.css";
+import "../../../assets/scss/dharmshala.scss";
 
 const DharmshalaFloors = () => {
   const history = useHistory();
@@ -92,7 +91,7 @@ const DharmshalaFloors = () => {
   const isMobileView = window.innerWidth <= 784;
 
   return (
-    <DharmshalaFloorInfo>
+    <div className="DharmshalaComponentTableWrapper">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharm Admin | Dharmshala Floors</title>
@@ -225,7 +224,7 @@ const DharmshalaFloors = () => {
           </Row>
         </div>
       </div>
-    </DharmshalaFloorInfo>
+    </div>
   );
 };
 

@@ -4,17 +4,19 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Nav, NavItem, NavLink } from "reactstrap";
 import styled from "styled-components";
-import BookingIcon from '../../assets/images/icons/dharmshala/booking.svg';
-import BuildingIcon from '../../assets/images/icons/dharmshala/building.svg';
-import DharmshalaIcon from '../../assets/images/icons/dharmshala/dharmshala.svg';
-import FeedbackIcon from '../../assets/images/icons/dharmshala/feedback.svg';
-import RoomTypeIcon from '../../assets/images/icons/dharmshala/roomtype.svg';
-import './DharmshalaTabBar.css';
-import { DharmshalaTabsWrapper } from "../../views/dharmshala-management/dharmshalaStyles";
+import BookingIcon from "../../assets/images/icons/dharmshala/booking.svg";
+import BuildingIcon from "../../assets/images/icons/dharmshala/building.svg";
+import DharmshalaIcon from "../../assets/images/icons/dharmshala/dharmshala.svg";
+import FeedbackIcon from "../../assets/images/icons/dharmshala/feedback.svg";
+import RoomTypeIcon from "../../assets/images/icons/dharmshala/roomtype.svg";
+//import "./DharmshalaTabBar.css";
+import "../../assets/scss/dharmshala.scss";
 
 const DharmshalaTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
   const history = useHistory();
-  const permissions = useSelector((state) => state.auth.userDetail?.permissions);
+  const permissions = useSelector(
+    (state) => state.auth.userDetail?.permissions
+  );
   const permissionsKey = permissions?.map((item) => item?.name);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [hoveredTab, setHoveredTab] = useState(null);
@@ -32,15 +34,17 @@ const DharmshalaTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
 
   const getIcon = (name) => {
     switch (name.toLowerCase()) {
-      case 'buildings':
+      case "buildings":
         return <img src={BuildingIcon} alt="building" className="tab-icon" />;
-      case 'dharmshalas':
-        return <img src={DharmshalaIcon} alt="dharmshala" className="tab-icon" />;
-      case 'bookings':
+      case "dharmshalas":
+        return (
+          <img src={DharmshalaIcon} alt="dharmshala" className="tab-icon" />
+        );
+      case "bookings":
         return <img src={BookingIcon} alt="booking" className="tab-icon" />;
-      case 'feedback':
+      case "feedback":
         return <img src={FeedbackIcon} alt="feedback" className="tab-icon" />;
-      case 'room types':
+      case "room types":
         return <img src={RoomTypeIcon} alt="roomtype" className="tab-icon" />;
       default:
         return name.charAt(0);
@@ -53,9 +57,11 @@ const DharmshalaTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
         <Nav
           pills={!tabBar}
           tabs={tabBar}
-          className={`tab-bar ${isMobile ? 'mobile' : ''}`}
+          className={`tab-bar ${isMobile ? "mobile" : ""}`}
           style={{
-            justifyContent: permissionsKey?.includes("all") ? "space-between" : "",
+            justifyContent: permissionsKey?.includes("all")
+              ? "space-between"
+              : "",
             padding: !tabBar && !isMobile ? ".5rem" : "",
             gap: tabBar && permissionsKey?.includes("all") ? "0.5rem" : "1rem",
             marginBottom: tabBar && 0,
@@ -66,14 +72,18 @@ const DharmshalaTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
           }}
         >
           {tabs?.map((item, index) => {
-            const permissionTabs = item?.permissionKey?.some((perm) => permissionsKey?.includes(perm));
-            const url = item?.permissionKey?.filter((perm) => permissionsKey?.includes(perm));
+            const permissionTabs = item?.permissionKey?.some((perm) =>
+              permissionsKey?.includes(perm)
+            );
+            const url = item?.permissionKey?.filter((perm) =>
+              permissionsKey?.includes(perm)
+            );
 
             if (permissionTabs || permissionsKey?.includes("all")) {
               return (
                 <NavItem
                   key={index}
-                  className={`nav-item ${isMobile ? 'mobile' : ''}`}
+                  className={`nav-item ${isMobile ? "mobile" : ""}`}
                   onMouseEnter={() => isMobile && setHoveredTab(index)}
                   onMouseLeave={() => isMobile && setHoveredTab(null)}
                 >
@@ -84,16 +94,28 @@ const DharmshalaTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
                         ? history.push(`${item?.url}/${url[0]?.split("-")[1]}`)
                         : history.push(item?.url);
                     }}
-                    className={isMobile ? 'mobile-link' : 'desktop-link'}
+                    className={isMobile ? "mobile-link" : "desktop-link"}
                   >
                     {isMobile ? (
-                      <div className={`circle ${hoveredTab === index ? 'hover' : active?.includes(item?.active) ? 'active' : ''}`}>
+                      <div
+                        className={`circle ${
+                          hoveredTab === index
+                            ? "hover"
+                            : active?.includes(item?.active)
+                            ? "active"
+                            : ""
+                        }`}
+                      >
                         {getIcon(item.name)}
                       </div>
                     ) : (
                       <Trans i18nKey={item?.name} />
                     )}
-                    {isMobile && <div className="tab-name"><Trans i18nKey={item?.name} /></div>}
+                    {isMobile && (
+                      <div className="tab-name">
+                        <Trans i18nKey={item?.name} />
+                      </div>
+                    )}
                   </NavLink>
                 </NavItem>
               );
@@ -103,17 +125,23 @@ const DharmshalaTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
           })}
         </Nav>
       ) : (
-        <DharmshalaTabsWrapper>
+        <div className="DharmshalaTabsWrapper">
           <div className="d-flex flex-lg-wrap gap-3 mt-2 allTabBox">
             {tabs?.map((item, idx) => {
-              const permissionTabs = item?.permissionKey?.some((perm) => permissionsKey?.includes(perm));
-              const url = item?.permissionKey?.filter((perm) => permissionsKey?.includes(perm));
+              const permissionTabs = item?.permissionKey?.some((perm) =>
+                permissionsKey?.includes(perm)
+              );
+              const url = item?.permissionKey?.filter((perm) =>
+                permissionsKey?.includes(perm)
+              );
 
               if (permissionTabs || permissionsKey?.includes("all")) {
                 return (
                   <div
                     key={idx}
-                    className={`tabName ${active?.includes(item?.active) ? "activeTab" : ""}`}
+                    className={`tabName ${
+                      active?.includes(item?.active) ? "activeTab" : ""
+                    }`}
                     onClick={() => {
                       setActive(item);
                       item?.isManagment && !permissionsKey?.includes("all")
@@ -132,7 +160,7 @@ const DharmshalaTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
           <div>
             <hr />
           </div>
-        </DharmshalaTabsWrapper>
+        </div>
       )}
     </div>
   );

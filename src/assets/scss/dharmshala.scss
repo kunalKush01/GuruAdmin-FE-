@@ -1,0 +1,185 @@
+@use './variables/variables' as *;
+
+.DharmshalaComponentTableWrapper {
+    color: $font-color !important;
+    margin-bottom: 1rem;
+    font: normal normal bold 15px/23px Noto Sans;
+
+    .modal-body {
+        max-height: 600px !important;
+        overflow: auto !important;
+    }
+
+    .tableDes p {
+        margin-bottom: 0;
+    }
+
+    /* Styles for card container */
+    .card-container {
+        display: block;
+    }
+
+    /* Styles for each card */
+    .card {
+        background-color: #fff7e8;
+        padding: 16px;
+        margin-bottom: 25px;
+        border-radius: 20px;
+        box-shadow: none !important;
+    }
+
+    /* Styles for card body */
+    .card-body {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .card-content {
+        flex-grow: 1;
+    }
+
+    .card-title {
+        font-family: 'Noto Sans', sans-serif;
+        font-size: 20px !important;
+        font-weight: 700 !important;
+        color: $font-color;
+        margin-bottom: 1px !important;
+        line-height: 27px;
+        letter-spacing: 0;
+    }
+
+    .card-text {
+        font-family: 'Noto Sans', sans-serif;
+        line-height: 22px;
+        font-size: 16px;
+        font-weight: 400 !important;
+        letter-spacing: 0;
+        color: $font-color;
+        margin-bottom: 4px;
+    }
+
+    .card-icons {
+        display: flex;
+        gap: 10px;
+    }
+
+    /* Adjustments for mobile view */
+    @media (max-width: 767px) {
+        .card-container {
+            display: block;
+        }
+
+        .card-body {
+            flex-direction: row;
+        }
+
+        .card-content {
+            flex-grow: 1;
+        }
+    }
+
+    .header-container {
+        flex-direction: column;
+    }
+
+    .left-container {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+    }
+
+    .right-container {
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+    }
+
+    @media (min-width: 784px) {
+        .header-container {
+            flex-direction: row;
+        }
+
+        .left-container {
+            width: auto;
+        }
+
+        .right-container {
+            width: auto;
+        }
+    }
+
+    .cursor-pointer {
+        cursor: pointer;
+    }
+
+}
+
+.DharmshalaComponentAddWrapper {
+    color: $font-color;
+    font: normal normal bold 20px/33px Noto Sans;
+
+    .ImagesVideos {
+        font: normal normal bold 15px/33px Noto Sans;
+    }
+
+    .addEvent {
+        color: $font-color;
+        display: flex;
+        align-items: center;
+    }
+}
+
+.DharmshalaComponentInfo {
+    color: $font-color;
+    font: normal normal bold 20px/33px Noto Sans;
+
+    .btn {
+        font-weight: bold;
+    }
+}
+
+.DharmshalaTabsWrapper {
+    .tabName {
+        //font: normal normal bold 18px/28px Noto Sans;
+        color: #583703;
+        opacity: 70%;
+        //padding-right: 1rem;
+        white-space: nowrap;
+        cursor: pointer;
+        padding-bottom: 0.2rem;
+    }
+
+    hr {
+        margin-top: -0.52rem;
+        height: 1.5px;
+        color: #583703;
+        opacity: 25%;
+        z-index: 1;
+    }
+
+    .allTabBox {
+        margin-left: 0rem;
+        overflow-x: scroll;
+
+        ::-webkit-scrollbar {
+            height: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: gray;
+            border-radius: 25px;
+        }
+    }
+
+    .activeTab {
+        z-index: 2;
+        border-bottom: 5px solid;
+        border-color: #ff8744;
+        border-radius: 5px;
+        color: #583703;
+        opacity: 100%;
+        font-weight: bold;
+    }
+}

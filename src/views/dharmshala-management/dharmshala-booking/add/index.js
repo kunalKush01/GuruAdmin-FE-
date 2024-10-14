@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory, useLocation } from "react-router-dom";
-import { DharmshalaBookingAddWrapper } from "../../dharmshalaStyles";
 import "../../dharmshala_css/addbooking.scss";
 import BookingForm from "../../../../components/dharmshalaBooking/BookingForm";
 import * as Yup from "yup";
@@ -74,20 +73,20 @@ const AddDharmshalaBooking = () => {
         donarName: "",
         fromDate: (bookingDate && moment(bookingDate, "DD MMM YYYY")) || null,
         toDate: bookingDate
-          ? bookingDate && moment(bookingDate, "DD MMM YYYY").add(1, "days") 
+          ? bookingDate && moment(bookingDate, "DD MMM YYYY").add(1, "days")
           : null,
         numMen: "",
         numWomen: "",
         numKids: "",
         roomsData: [
           {
-            roomTypeId:property?.roomTypeId|| "",
-            building:  property?.buildingId||"",
-            floor: property?.floorId|| "",
-            roomId:property?._id|| "",
+            roomTypeId: property?.roomTypeId || "",
+            building: property?.buildingId || "",
+            floor: property?.floorId || "",
+            roomId: property?._id || "",
             amount: 0,
-            roomNumber:property?.roomNumber|| "",
-            roomTypeName: property?.roomTypeName||"",
+            roomNumber: property?.roomNumber || "",
+            roomTypeName: property?.roomTypeName || "",
             buildingName: "",
             floorName: "",
           },
@@ -105,7 +104,7 @@ const AddDharmshalaBooking = () => {
       });
     }
     setIsLoading(false);
-  }, [bookingData, bookingDate,property]);
+  }, [bookingData, bookingDate, property]);
 
   const schema = Yup.object().shape({
     Mobile: Yup.string().required(t("expenses_mobile_required")),
@@ -123,7 +122,10 @@ const AddDharmshalaBooking = () => {
   }
 
   return (
-    <DharmshalaBookingAddWrapper style={{ backgroundColor: "#FAFAFA" }}>
+    <div
+      className="DharmshalaComponentAddWrapper"
+      style={{ backgroundColor: "#FAFAFA" }}
+    >
       <BookingForm
         initialValues={initialValues}
         validationSchema={schema}
@@ -133,7 +135,7 @@ const AddDharmshalaBooking = () => {
         setIsPaymentModalOpen={setIsPaymentModalOpen}
         isEditing={!!bookingData}
       />
-    </DharmshalaBookingAddWrapper>
+    </div>
   );
 };
 

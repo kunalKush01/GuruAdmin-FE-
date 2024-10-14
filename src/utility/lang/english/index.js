@@ -870,7 +870,7 @@ export const englishContent = {
   enter_remark_here: "Enter remarks here",
   Remarks: "Remarks",
   Logout: "Logout",
-  total_registered_pashudhan: "Total Registered Cattles",
+  total_registered_pashudhan: "Total Registered Pashudhan",
   total_gaushala_donation: "Total Gaushala Donation",
   dead_cattles: "Dead Pashudhan",
 };
