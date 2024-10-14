@@ -6,7 +6,6 @@ import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { createRoom } from "../../../../api/dharmshala/dharmshalaInfo";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddRoomForm from "../../../../components/dharmshalaRoom/addForm";
-import { DharmshalaRoomAddWrapper } from "../../dharmshalaStyles";
 import "../../../../assets/scss/common.scss";
 
 const AddDharmshalaRoom = () => {
@@ -44,7 +43,7 @@ const AddDharmshalaRoom = () => {
   const URLParams = useParams("");
 
   return (
-    <DharmshalaRoomAddWrapper>
+    <div className="DharmshalaComponentAddWrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -59,7 +58,7 @@ const AddDharmshalaRoom = () => {
           </div>
         </div>
       </div>
-      <div className="FormikWrapper">
+      <div className="listviewwrapper">
         <AddRoomForm
           handleSubmit={handleCreateDharmshalaRoom}
           initialValues={initialValues}
@@ -67,7 +66,7 @@ const AddDharmshalaRoom = () => {
           buttonName="dharmshala_room_add"
         />
       </div>
-    </DharmshalaRoomAddWrapper>
+    </div>
   );
 };
 

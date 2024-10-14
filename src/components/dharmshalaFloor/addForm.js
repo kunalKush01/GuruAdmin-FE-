@@ -5,7 +5,7 @@ import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { Prompt, useHistory } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
-import { FormikWrapper } from "../../views/dharmshala-management/dharmshalaStyles";
+//import { FormikWrapper } from "../../views/dharmshala-management/dharmshalaStyles";
 import CustomTextField from "../partials/customTextField";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import "../../assets/scss/common.scss";

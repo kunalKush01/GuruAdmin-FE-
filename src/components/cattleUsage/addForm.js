@@ -46,7 +46,7 @@ const AddItemUsageForm = ({
       if (!data?.error) {
         queryClient.invalidateQueries(["cattleItemUsageList"]);
         setLoading(false);
-        history.push("/cattle/management/usage");
+        history.push("/stock-management/usage");
       } else if (data?.error || data === undefined) {
         setLoading(false);
       }
