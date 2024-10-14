@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
-import { DharmshalaFeedbackInfo } from "../dharmshalaStyles";
+import "../../../assets/scss/dharmshala.scss";
 
 const DharmshalaFeedback = () => {
   const history = useHistory();
@@ -64,7 +64,7 @@ const DharmshalaFeedback = () => {
   const queryClient = useQueryClient();
 
   return (
-    <DharmshalaFeedbackInfo>
+    <div className="DharmshalaComponentInfo">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharm Admin | Dharmshala Feedback</title>
@@ -74,7 +74,7 @@ const DharmshalaFeedback = () => {
         className="me-2 cursor-pointer"
         onClick={() => history.push(`/dharmshala/dashboard`)}
       />
-    </DharmshalaFeedbackInfo>
+    </div>
   );
 };
 

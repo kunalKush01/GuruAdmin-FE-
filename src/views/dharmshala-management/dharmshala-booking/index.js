@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import isBetween from 'dayjs/plugin/isBetween';
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import isBetween from "dayjs/plugin/isBetween";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
@@ -15,9 +15,9 @@ import { getDharmshalaBookingList } from "../../../api/dharmshala/dharmshalaInfo
 import NoContent from "../../../components/partials/noContent";
 import DharmshalaBookingTable from "./table";
 import { Helmet } from "react-helmet";
-import { DharmshalaBookingInfo } from "../dharmshalaStyles";
 import { CustomDropDown } from "../../../components/partials/customDropDown";
 import RoomHoldModal from "./roomHoldModal";
+import "../../../assets/scss/dharmshala.scss";
 
 dayjs.extend(utc);
 dayjs.extend(isBetween);
@@ -72,7 +72,13 @@ const DharmshalaBookings = () => {
   let filterEndDate = dayjs().endOf(periodDropDown()).utc().toISOString();
 
   const dharmshalaBookingList = useQuery(
-    ["dharmshalaBookingList", pagination.page, selectedLang.id, searchBarValue, statusFilter],
+    [
+      "dharmshalaBookingList",
+      pagination.page,
+      selectedLang.id,
+      searchBarValue,
+      statusFilter,
+    ],
     () => getDharmshalaBookingList()
   );
 
@@ -101,11 +107,13 @@ const DharmshalaBookings = () => {
 
   const handleStatusFilterChange = (e) => {
     setStatusFilter(e.target.name);
-    history.push(`/booking/info?page=${pagination.page}&status=${e.target.name}&filter=${dropDownName}`);
+    history.push(
+      `/booking/info?page=${pagination.page}&status=${e.target.name}&filter=${dropDownName}`
+    );
   };
 
   const filteredBookingListData = useMemo(() => {
-    const currentDate = dayjs().startOf('day');
+    const currentDate = dayjs().startOf("day");
     let filteredData = dharmshalaBookingListData;
     const dateFormat = "DD-MM-YYYY";
     if (showPastRequests) {
@@ -113,17 +121,24 @@ const DharmshalaBookings = () => {
         dayjs(item.startDate, dateFormat).isBefore(currentDate)
       );
     } else {
-      filteredData = filteredData.filter((item) =>
-        dayjs(item.startDate, dateFormat).isAfter(currentDate) || dayjs(item.startDate, dateFormat).isSame(currentDate) || 
-        dayjs(item.endDate, dateFormat).isAfter(currentDate) || dayjs(item.endDate, dateFormat).isSame(currentDate)
+      filteredData = filteredData.filter(
+        (item) =>
+          dayjs(item.startDate, dateFormat).isAfter(currentDate) ||
+          dayjs(item.startDate, dateFormat).isSame(currentDate) ||
+          dayjs(item.endDate, dateFormat).isAfter(currentDate) ||
+          dayjs(item.endDate, dateFormat).isSame(currentDate)
       );
     }
 
     if (statusFilter) {
       if (statusFilter === "all") {
-        filteredData = filteredData.filter((item) => item.status !== "checked-out");
+        filteredData = filteredData.filter(
+          (item) => item.status !== "checked-out"
+        );
       } else {
-        filteredData = filteredData.filter((item) => item.status === statusFilter);
+        filteredData = filteredData.filter(
+          (item) => item.status === statusFilter
+        );
       }
     }
     // if (statusFilter) {
@@ -133,11 +148,18 @@ const DharmshalaBookings = () => {
     // }
     if (searchBarValue && searchBarValue.length >= 3) {
       filteredData = filteredData.filter((item) =>
-        item.bookingId.toLowerCase().startsWith(searchBarValue.toLowerCase().slice(0, 3))
+        item.bookingId
+          .toLowerCase()
+          .startsWith(searchBarValue.toLowerCase().slice(0, 3))
       );
     }
     return filteredData;
-  }, [dharmshalaBookingListData, showPastRequests, searchBarValue, statusFilter]);
+  }, [
+    dharmshalaBookingListData,
+    showPastRequests,
+    searchBarValue,
+    statusFilter,
+  ]);
 
   const statusOptions = [
     { key: "requested", label: t("requested") },
@@ -149,11 +171,11 @@ const DharmshalaBookings = () => {
     { key: "completed", label: t("completed") },
     { key: "cancelled", label: t("cancelled") },
     { key: "maintenance", label: t("maintenance") },
-    { key: "all", label: t("All") }
+    { key: "all", label: t("All") },
   ];
 
   return (
-    <DharmshalaBookingInfo>
+    <div className="DharmshalaComponentInfo">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharm Admin | Dharmshala Bookings</title>
@@ -163,33 +185,42 @@ const DharmshalaBookings = () => {
           <Trans i18nKey={"dharmshala_bookings_requested"} />
           <div className="d-flex mt-1 mt-sm-0 justify-content-between">
             <Button
-              className={`me-1 ${isMobileView ? 'btn-sm' : ''}`}
+              className={`me-1 ${isMobileView ? "btn-sm" : ""}`}
               color="primary"
               onClick={() =>
-                history.push(`/booking/add/?page=${pagination.page}&filter=${dropDownName}`)
+                history.push(
+                  `/booking/add/?page=${pagination.page}&filter=${dropDownName}`
+                )
               }
-              style={{ marginBottom: isMobileView ? "5px" : "0"}}
+              style={{ marginBottom: isMobileView ? "5px" : "0" }}
             >
               <span>
-                <Plus className="" size={15} strokeWidth={4} /> 
+                <Plus className="" size={15} strokeWidth={4} />
               </span>
               <span>
                 <Trans i18nKey={"dharmshala_booking_add"} />
               </span>
             </Button>
             <Button
-              className={`me-1 ${isMobileView ? 'btn-sm' : ''}`}
+              className={`me-1 ${isMobileView ? "btn-sm" : ""}`}
               color="primary"
               onClick={() =>
-                history.push(`/booking/calendar/?page=${pagination.page}&filter=${dropDownName}`)
+                history.push(
+                  `/booking/calendar/?page=${pagination.page}&filter=${dropDownName}`
+                )
               }
-              style={{ marginBottom: isMobileView ? "5px" : "0"}}
+              style={{ marginBottom: isMobileView ? "5px" : "0" }}
             >
               <span>
                 <Trans i18nKey={"dharmshala_booking_calendar"} />
               </span>
             </Button>
-            <Button className={`me-1 ${isMobileView ? 'btn-sm' : ''}`}  color="primary" onClick={togglePastRequests} style={{ marginBottom: isMobileView ? "5px" : "0"}}>
+            <Button
+              className={`me-1 ${isMobileView ? "btn-sm" : ""}`}
+              color="primary"
+              onClick={togglePastRequests}
+              style={{ marginBottom: isMobileView ? "5px" : "0" }}
+            >
               <span>
                 {showPastRequests ? (
                   <Trans i18nKey={"view_upcoming_requests"} />
@@ -199,10 +230,10 @@ const DharmshalaBookings = () => {
               </span>
             </Button>
             <Button
-              className={`me-1 ${isMobileView ? 'btn-sm' : ''}`}
+              className={`me-1 ${isMobileView ? "btn-sm" : ""}`}
               color="primary"
               onClick={toggleRoomHoldModal}
-              style={{ marginBottom: isMobileView ? "5px" : "0"}}
+              style={{ marginBottom: isMobileView ? "5px" : "0" }}
             >
               <span>
                 <Trans i18nKey={"Room Hold"} />
@@ -217,9 +248,18 @@ const DharmshalaBookings = () => {
           </div>
         </div>
         <div style={{ height: "10px" }}>
-          <If condition={dharmshalaBookingList.isFetching || dharmshalaBookingList.isLoading}>
+          <If
+            condition={
+              dharmshalaBookingList.isFetching ||
+              dharmshalaBookingList.isLoading
+            }
+          >
             <Then>
-              <Skeleton baseColor="#ff8744" highlightColor="#fff" height={"3px"} />
+              <Skeleton
+                baseColor="#ff8744"
+                highlightColor="#fff"
+                height={"3px"}
+              />
             </Then>
           </If>
         </div>
@@ -242,27 +282,41 @@ const DharmshalaBookings = () => {
                     currentPage={pagination.page}
                     isMobileView={isMobileView}
                     pageSize={pagination.limit}
-                      onChangePage={(page) =>
-                        setPagination((prev) => ({ ...prev, page }))
-                      }
-                      onChangePageSize={(pageSize) =>
-                        setPagination((prev) => ({
-                          ...prev,
-                          limit: pageSize,
-                          page: 1,
-                        }))
-                      }
+                    onChangePage={(page) =>
+                      setPagination((prev) => ({ ...prev, page }))
+                    }
+                    onChangePageSize={(pageSize) =>
+                      setPagination((prev) => ({
+                        ...prev,
+                        limit: pageSize,
+                        page: 1,
+                      }))
+                    }
                   />
                 </Then>
                 <Else>
-                  <If condition={!dharmshalaBookingList.isLoading && filteredBookingListData.length === 0} disableMemo>
+                  <If
+                    condition={
+                      !dharmshalaBookingList.isLoading &&
+                      filteredBookingListData.length === 0
+                    }
+                    disableMemo
+                  >
                     <Then>
-                      <NoContent headingNotfound={t("no_data_found")} para={t("no_data_found_add_data")} />
+                      <NoContent
+                        headingNotfound={t("no_data_found")}
+                        para={t("no_data_found_add_data")}
+                      />
                     </Then>
                   </If>
                 </Else>
               </If>
-              <If condition={!dharmshalaBookingList.isFetching && dharmshalaBookingList?.data?.totalPages > 1}>
+              <If
+                condition={
+                  !dharmshalaBookingList.isFetching &&
+                  dharmshalaBookingList?.data?.totalPages > 1
+                }
+              >
                 <Then>
                   <Col xs={12} className="d-flex justify-content-center">
                     <ReactPaginate
@@ -285,10 +339,19 @@ const DharmshalaBookings = () => {
                       nextClassName={"page-item next"}
                       previousLinkClassName={"page-item prev"}
                       onPageChange={(page) => {
-                        setPagination({ ...pagination, page: page.selected + 1 });
-                        history.push(`/dharmshala/info?page=${page.selected + 1}&status=${currentStatus}&filter=${dropDownName}`);
+                        setPagination({
+                          ...pagination,
+                          page: page.selected + 1,
+                        });
+                        history.push(
+                          `/dharmshala/info?page=${
+                            page.selected + 1
+                          }&status=${currentStatus}&filter=${dropDownName}`
+                        );
                       }}
-                      containerClassName={"pagination react-paginate justify-content-end p-1"}
+                      containerClassName={
+                        "pagination react-paginate justify-content-end p-1"
+                      }
                     />
                   </Col>
                 </Then>
@@ -297,8 +360,11 @@ const DharmshalaBookings = () => {
           </Row>
         </div>
       </div>
-      <RoomHoldModal isOpen={isRoomHoldModalOpen} toggle={toggleRoomHoldModal} />
-    </DharmshalaBookingInfo>
+      <RoomHoldModal
+        isOpen={isRoomHoldModalOpen}
+        toggle={toggleRoomHoldModal}
+      />
+    </div>
   );
 };
 

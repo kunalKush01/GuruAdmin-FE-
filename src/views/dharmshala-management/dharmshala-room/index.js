@@ -20,7 +20,7 @@ import DharmshalaRoomTable from "./table";
 import { ChangeCategoryType } from "../../../components/partials/categoryDropdown";
 import { Helmet } from "react-helmet";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
-import { DharmshalaRoomInfo } from "../dharmshalaStyles";
+import "../../../assets/scss/dharmshala.scss";
 
 const DharmshalaRooms = () => {
   const history = useHistory();
@@ -87,7 +87,7 @@ const DharmshalaRooms = () => {
   const URLParams = useParams("");
   const queryClient = useQueryClient();
   return (
-    <DharmshalaRoomInfo>
+    <div className="DharmshalaComponentInfo">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharm Admin | Dharmshala Rooms</title>
@@ -220,7 +220,7 @@ const DharmshalaRooms = () => {
           </Row>
         </div>
       </div>
-    </DharmshalaRoomInfo>
+    </div>
   );
 };
 export default DharmshalaRooms;

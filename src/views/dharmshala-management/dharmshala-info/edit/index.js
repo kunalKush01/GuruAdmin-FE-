@@ -17,8 +17,8 @@ import {
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddDharmshalaForm from "../../../../components/dharmshalaInfo/addForm";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
-import { DharmshalaAddWrapper } from "../../dharmshalaStyles";
 import "../../../../assets/scss/common.scss";
+import "../../../../assets/scss/dharmshala.scss";
 
 const getLangId = (langArray, langSelection) => {
   let languageId;
@@ -73,7 +73,7 @@ const EditDharmshala = () => {
   }, [dharmshalaDetails]);
 
   return (
-    <DharmshalaAddWrapper>
+    <div className="DharmshalaComponentAddWrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -121,7 +121,7 @@ const EditDharmshala = () => {
         </Then>
         <Else>
           {!dharmshalaDetails.isFetching && (
-            <div className="FormikWrapper">
+            <div className="listviewwrapper">
               <AddDharmshalaForm
                 handleSubmit={handleDharmshalaUpdate}
                 initialValues={initialValues}
@@ -133,7 +133,7 @@ const EditDharmshala = () => {
           )}
         </Else>
       </If>
-    </DharmshalaAddWrapper>
+    </div>
   );
 };
 
