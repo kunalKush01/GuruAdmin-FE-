@@ -8,7 +8,7 @@ import { createBuilding } from "../../../../api/dharmshala/dharmshalaInfo";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddDharmshalaForm from "../../../../components/dharmshalaInfo/addForm";
 import { DharmshalaAddWrapper } from "../../dharmshalaStyles";
-import '../../../../assets/scss/common.scss'
+import "../../../../assets/scss/common.scss";
 const AddDharmshala = () => {
   const history = useHistory();
   const searchParams = new URLSearchParams(history.location.search);
@@ -46,7 +46,7 @@ const AddDharmshala = () => {
           </div>
         </div>
       </div>
-      <div className="ms-sm-3 mt-1">
+      <div className="FormikWrapper">
         <AddDharmshalaForm
           handleSubmit={handleCreateDharmshala}
           initialValues={initialValues}

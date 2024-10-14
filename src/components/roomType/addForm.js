@@ -7,14 +7,15 @@ import { Prompt, useHistory } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
 import CustomTextField from "../partials/customTextField";
+import "../../assets/scss/common.scss";
 
-const FormikWrapper = styled.div`
-  font: normal normal bold 15px/33px Noto Sans;
+// const FormikWrapper = styled.div`
+//   font: normal normal bold 15px/33px Noto Sans;
 
-  .animated-height {
-    transition: height 0.5s;
-  }
-`;
+//   .animated-height {
+//     transition: height 0.5s;
+//   }
+// `;
 
 const AddRoomTypeForm = ({
   initialValues,
@@ -58,7 +59,7 @@ const AddRoomTypeForm = ({
   };
 
   return (
-    <FormikWrapper>
+    <div className="FormikWrapper">
       <Formik
         enableReinitialize
         initialValues={initialValues}
@@ -173,7 +174,7 @@ const AddRoomTypeForm = ({
           </Form>
         )}
       </Formik>
-    </FormikWrapper>
+    </div>
   );
 };
 

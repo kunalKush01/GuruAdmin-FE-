@@ -18,6 +18,8 @@ import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddPregnancyForm from "../../../../components/cattlePregnancy/addForm";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
 import "../../../../assets/scss/viewCommon.scss";
+import "../../../../assets/scss/common.scss";
+
 const getLangId = (langArray, langSelection) => {
   let languageId;
   langArray.map(async (Item) => {
@@ -85,7 +87,7 @@ const EditPregnancyReport = () => {
   }, [PregnancyReportDetailQuery]);
 
   return (
-    <div className="pregnancyaddwraper">
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -156,7 +158,7 @@ const EditPregnancyReport = () => {
         </Then>
         <Else>
           {!PregnancyReportDetailQuery.isFetching && (
-            <div className="ms-sm-3 mt-1">
+            <div className="FormikWrapper">
               <AddPregnancyForm
                 initialValues={initialValues}
                 validationSchema={schema}

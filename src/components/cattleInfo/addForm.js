@@ -94,7 +94,7 @@ const AddCattleForm = ({
   });
 
   return (
-    <div className="formikwrapper">
+    <div className="FormikWrapper">
       <Formik
         enableReinitialize
         initialValues={initialValues}
@@ -158,10 +158,10 @@ const AddCattleForm = ({
             )}
 
             <Row className="paddingForm">
-              <Col xs={12} md={10}>
+              <Col xs={12} md={12}>
                 {/* First Row */}
-                <Row>
-                  <Col xs={12} md={4}>
+                <Row className="mb-1">
+                  <Col xs={12} md={3}>
                     <CustomTextField
                       label={t("cattle_tag_id")}
                       placeholder={t("placeHolder_cattle_tag_id")}
@@ -173,7 +173,7 @@ const AddCattleForm = ({
                       }
                     />
                   </Col>
-                  <Col xs={12} md={4}>
+                  <Col xs={12} md={3}>
                     <AsyncSelectField
                       name="motherId"
                       labelKey="tagId"
@@ -184,7 +184,7 @@ const AddCattleForm = ({
                       defaultOptions
                     />
                   </Col>
-                  <Col xs={12} md={4}>
+                  <Col xs={12} md={3}>
                     <AsyncSelectField
                       name="type"
                       labelKey="name"
@@ -200,7 +200,7 @@ const AddCattleForm = ({
                       required
                     />
                   </Col>
-                  <Col xs={12} md={4}>
+                  <Col xs={12} md={3}>
                     <FormikCustomReactSelect
                       name="breed"
                       isSearchable
@@ -215,8 +215,8 @@ const AddCattleForm = ({
                   </Col>
                 </Row>
                 {/* second row */}
-                <Row>
-                  <Col xs={12} md={4}>
+                <Row className="mb-1">
+                  <Col xs={12} md={3}>
                     <FormikCustomDatePicker
                       futureDateNotAllowed
                       name="dob"
@@ -227,7 +227,7 @@ const AddCattleForm = ({
                       setFieldValue={formik.setFieldValue}
                     />
                   </Col>
-                  <Col xs={12} md={4}>
+                  <Col xs={12} md={3}>
                     <CustomTextField
                       label={t("cattle_age")}
                       placeholder={t("placeHolder_cattle_age")}
@@ -239,7 +239,7 @@ const AddCattleForm = ({
                       }
                     />
                   </Col>
-                  <Col xs={12} md={4}>
+                  <Col xs={12} md={3}>
                     <FormikCustomDatePicker
                       name="purchaseDate"
                       futureDateNotAllowed
@@ -248,7 +248,7 @@ const AddCattleForm = ({
                       dateFormat=" dd-MM-yyyy"
                     />
                   </Col>
-                  <Col xs={12} md={4}>
+                  <Col xs={12} md={3}>
                     <CustomTextField
                       label={t("cattle_purchase_price")}
                       placeholder={t("placeHolder_cattle_purchase_price")}
@@ -259,8 +259,10 @@ const AddCattleForm = ({
                       }
                     />
                   </Col>
-
-                  <Col xs={12} md={4}>
+                </Row>
+                {/* third row */}
+                <Row className="mb-1">
+                  <Col xs={12} md={3}>
                     <FormikCustomReactSelect
                       name="source"
                       loadOptions={cattleSource}
@@ -269,10 +271,7 @@ const AddCattleForm = ({
                       width="100%"
                     />
                   </Col>
-                </Row>
-                {/* third row */}
-                <Row>
-                  <Col xs={12} md={4}>
+                  <Col xs={12} md={3}>
                     <CustomTextField
                       label={t("cattle_owner_name")}
                       placeholder={t("placeHolder_cattle_owner_name")}
@@ -283,7 +282,7 @@ const AddCattleForm = ({
                       }
                     />
                   </Col>
-                  <Col xs={12} md={4}>
+                  <Col xs={12} md={3}>
                     <CustomCountryMobileNumberField
                       value={phoneNumber}
                       defaultCountry={countryFlag}
@@ -321,7 +320,7 @@ const AddCattleForm = ({
                       </div>
                     )}
                   </Col>
-                  <Col xs={12} md={4}>
+                  <Col xs={12} md={3}>
                     <CustomTextField
                       label={t("cattle_owner_id")}
                       placeholder={t("placeHolder_cattle_owner_Id")}
@@ -334,7 +333,7 @@ const AddCattleForm = ({
                   </Col>
                 </Row>
                 {/* forth row */}
-                <Row>
+                <Row className="mb-1">
                   <Col md={2}>
                     <div className="ImagesVideos">
                       <Trans i18nKey={"cattle_cow_image"} />{" "}

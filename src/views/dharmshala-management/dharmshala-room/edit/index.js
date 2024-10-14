@@ -4,7 +4,7 @@ import { Trans } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useSelector } from "react-redux";
-import { useHistory, useParams ,useLocation} from "react-router-dom";
+import { useHistory, useParams, useLocation } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import * as Yup from "yup";
 import moment from "moment";
@@ -16,6 +16,7 @@ import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddRoomForm from "../../../../components/dharmshalaRoom/addForm";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
 import { DharmshalaRoomAddWrapper } from "../../dharmshalaStyles";
+import "../../../../assets/scss/common.scss";
 
 const getLangId = (langArray, langSelection) => {
   let languageId;
@@ -65,7 +66,7 @@ const EditRoom = () => {
   const initialValues = useMemo(() => {
     return {
       number: roomData?.roomNumber,
-      roomType:{value:roomData?.roomTypeId,label:roomData?.roomTypeName}
+      roomType: { value: roomData?.roomTypeId, label: roomData?.roomTypeName },
     };
   }, [roomDetails]);
 
@@ -122,7 +123,7 @@ const EditRoom = () => {
         </Then>
         <Else>
           {!roomDetails.isFetching && (
-            <div className="ms-sm-3 mt-1">
+            <div className="FormikWrapper">
               <AddRoomForm
                 handleSubmit={handleDharmshalaRoomUpdate}
                 initialValues={initialValues}

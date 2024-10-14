@@ -9,6 +9,8 @@ import arrowLeft from "../../../../../assets/images/icons/arrow-left.svg";
 import AddItemUsageForm from "../../../../../components/cattleUsage/addForm";
 
 import "../../../../../assets/scss/viewCommon.scss";
+import "../../../../../assets/scss/common.scss";
+
 const AddItemUsage = () => {
   const history = useHistory();
   const searchParams = new URLSearchParams(history.location.search);
@@ -37,7 +39,7 @@ const AddItemUsage = () => {
   };
 
   return (
-    <div className="itemusageaddwraper">
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -54,14 +56,12 @@ const AddItemUsage = () => {
           </div>
         </div>
       </div>
-      <div className="ms-sm-3 mt-1">
-        <AddItemUsageForm
-          handleSubmit={handleCreateItemUsage}
-          initialValues={initialValues}
-          validationSchema={schema}
-          buttonName="cattle_record_add"
-        />
-      </div>
+      <AddItemUsageForm
+        handleSubmit={handleCreateItemUsage}
+        initialValues={initialValues}
+        validationSchema={schema}
+        buttonName="cattle_record_add"
+      />
     </div>
   );
 };

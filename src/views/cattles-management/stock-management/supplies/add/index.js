@@ -10,6 +10,8 @@ import arrowLeft from "../../../../../assets/images/icons/arrow-left.svg";
 import AddSuppliesForm from "../../../../../components/cattleStockManagment/supplies/addForm";
 
 import "../../../../../assets/scss/viewCommon.scss";
+import "../../../../../assets/scss/common.scss";
+
 const AddSupplies = () => {
   const history = useHistory();
   const searchParams = new URLSearchParams(history.location.search);
@@ -52,7 +54,7 @@ const AddSupplies = () => {
           </div>
         </div>
       </div>
-      <div className="ms-sm-3 mt-1">
+      <div className="FormikWrapper">
         <AddSuppliesForm
           handleSubmit={handleCreateSupply}
           initialValues={initialValues}

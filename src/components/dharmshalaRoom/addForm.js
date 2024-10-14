@@ -10,6 +10,7 @@ import { FormikWrapper } from "../../views/dharmshala-management/dharmshalaStyle
 import CustomTextField from "../partials/customTextField";
 import { getRoomTypeList } from "../../api/dharmshala/dharmshalaInfo";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
+import "../../assets/scss/common.scss";
 
 const AddRoomForm = ({
   initialValues,
@@ -67,7 +68,7 @@ const AddRoomForm = ({
     label: room.name,
   }));
   return (
-    <FormikWrapper>
+    <div className="FormikWrapper">
       <Formik
         enableReinitialize
         initialValues={initialValues}
@@ -174,7 +175,7 @@ const AddRoomForm = ({
           </Form>
         )}
       </Formik>
-    </FormikWrapper>
+    </div>
   );
 };
 

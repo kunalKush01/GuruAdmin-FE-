@@ -48,20 +48,20 @@
     }
 }
 
-.cattleaddwraper {
-    color: $font-color;
-    font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
+// .cattleaddwraper {
+//     color: $font-color;
+//     font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
 
-    .ImagesVideos {
-        font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-large*1.65 $font-family;
-    }
+//     .ImagesVideos {
+//         font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-large*1.65 $font-family;
+//     }
 
-    .addAction {
-        color: $font-color;
-        display: flex;
-        align-items: center;
-    }
-}
+//     .addAction {
+//         color: $font-color;
+//         display: flex;
+//         align-items: center;
+//     }
+// }
 
 .cattleinfo {
     color: $font-color;
@@ -127,20 +127,20 @@
     }
 }
 
-.medicalinfoaddwraper {
-    color: $font-color;
-    font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
+// .medicalinfoaddwraper {
+//     color: $font-color;
+//     font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
 
-    .ImagesVideos {
-        font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-large*1.65 $font-family;
-    }
+//     .ImagesVideos {
+//         font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-large*1.65 $font-family;
+//     }
 
-    .addAction {
-        color: $font-color;
-        display: flex;
-        align-items: center;
-    }
-}
+//     .addAction {
+//         color: $font-color;
+//         display: flex;
+//         align-items: center;
+//     }
+// }
 
 .medicalwrapper {
     color: $font-color;
@@ -165,20 +165,20 @@
     }
 }
 
-.pregnancyaddwraper {
-    color: $font-color;
-    font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
+// .pregnancyaddwraper {
+//     color: $font-color;
+//     font: $font-weight-normal $font-weight-bold $font-size-large/$font-size-large*1.65 $font-family;
 
-    .ImagesVideos {
-        font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-large*1.65 $font-family;
-    }
+//     .ImagesVideos {
+//         font: $font-weight-normal $font-weight-bold $font-size-medium/$font-size-large*1.65 $font-family;
+//     }
 
-    .addAction {
-        color: $font-color;
-        display: flex;
-        align-items: center;
-    }
-}
+//     .addAction {
+//         color: $font-color;
+//         display: flex;
+//         align-items: center;
+//     }
+// }
 
 .pregnancyreportwrapper {
     color: $font-color;
@@ -398,6 +398,11 @@
         padding: 10px;
         background: $white;
         border-radius: 8px;
+        max-height: 90vh;
+        /* Set height relative to viewport */
+        overflow-y: auto;
+        /* Enable scrolling */
+        padding-bottom: 200px;
     }
 
     .reactselectlabel {
@@ -1419,41 +1424,41 @@
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  }
-  
-  .payment-history-tab h3 {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.payment-history-tab h3 {
     margin-bottom: 20px;
     color: #333;
-  }
-  
-  /* Customize Timeline styles if needed */
-  .ant-timeline-item-content {
+}
+
+/* Customize Timeline styles if needed */
+.ant-timeline-item-content {
     padding-bottom: 20px;
-  }
+}
 
 
-  .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner,
+.ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner,
 .ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner,
 .ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner {
-  background: #ffffff;
-  color: rgba(0, 0, 0, 0.85);
+    background: #ffffff;
+    color: rgba(0, 0, 0, 0.85);
 }
 
 .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
-  border-color: #d9d9d9;
+    border-color: #d9d9d9;
 }
 
 .ant-picker-header-view button:hover {
-  color: rgba(0, 0, 0, 0.85);
+    color: rgba(0, 0, 0, 0.85);
 }
 
 .ant-picker-today-btn {
-  color: rgba(0, 0, 0, 0.85);
+    color: rgba(0, 0, 0, 0.85);
 }
 
 .ant-picker-range .ant-picker-active-bar {
-  background: #d9d9d9;
+    background: #d9d9d9;
 }
 
 .custom-margin-top {
@@ -1467,75 +1472,75 @@
 .modal-custom {
     background-color: $screen-background-color;
     font-family: $font-family;
-  }
-  
-  .button-cancel {
+}
+
+.button-cancel {
     color: $font-color;
-  }
-  
-  .button-save {
+}
+
+.button-save {
     background-color: $primary-color;
-  }
-  
-  .form-item {
+}
+
+.form-item {
     color: $font-color;
     font-size: $font-size-medium;
-  }
-  
-  .input-custom::placeholder {
+}
+
+.input-custom::placeholder {
     color: $font-color;
-  }
-  
-  .ant-modal-title {
+}
+
+.ant-modal-title {
     font-family: $font-family !important;
     font-size: $font-size-large !important;
     color: $font-color !important;
-  }
-  
-  .ant-form-item-label > label {
+}
+
+.ant-form-item-label>label {
     color: $font-color !important;
     font-family: $font-family !important;
     font-size: $font-size-medium !important;
     font-weight: $font-weight-bold !important;
-  }
-  
-  .ant-select-selector {
-    font-family: $font-family !important;
-    font-size: $font-size-medium !important;
-    color: $font-color !important;
-  }
-  
-  .ant-select-dropdown .ant-select-item {
-    font-family: $font-family !important;
-    font-size: $font-size-medium !important;
-    color: $font-color !important;
-  }
-  
-  .ant-input::placeholder,
-  .ant-select-selection-placeholder {
-    font-family: $font-family !important;
-    font-size: $font-size-medium !important;
-    color: $font-color !important;
-  }
+}
 
-  .common-button-style {
+.ant-select-selector {
+    font-family: $font-family !important;
+    font-size: $font-size-medium !important;
+    color: $font-color !important;
+}
+
+.ant-select-dropdown .ant-select-item {
+    font-family: $font-family !important;
+    font-size: $font-size-medium !important;
+    color: $font-color !important;
+}
+
+.ant-input::placeholder,
+.ant-select-selection-placeholder {
+    font-family: $font-family !important;
+    font-size: $font-size-medium !important;
+    color: $font-color !important;
+}
+
+.common-button-style {
     border-radius: 10px;
     padding: 5px 40px;
     opacity: 100%;
-  }
+}
 
-  .dashboard-container {
+.dashboard-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 20px;
     padding: 10px;
-  }
-  
-  .dashboard-card {
-    background-color: $light-yellow; 
+}
+
+.dashboard-card {
+    background-color: $light-yellow;
     color: $font-color;
-    width: 240px; 
+    width: 240px;
     height: 86px;
     display: flex;
     flex-direction: column;
@@ -1543,21 +1548,18 @@
     align-items: left;
     border-radius: 8px;
     box-shadow: 0 2px 5px $font-color;
-  }
-  
-  .dashboard-card h3 {
+}
+
+.dashboard-card h3 {
     font-size: 16px;
     margin-bottom: 10px;
     font-weight: 500;
     color: $font-color;
     padding-left: 10px;
-  }
-  
-  .dashboard-card p {
+}
+
+.dashboard-card p {
     font-size: 30px;
     font-weight: bold;
     padding-left: 10px;
-  }
-  
-  
-  
+}

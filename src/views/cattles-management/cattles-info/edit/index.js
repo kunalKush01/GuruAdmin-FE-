@@ -19,6 +19,8 @@ import AddCattleForm from "../../../../components/cattleInfo/addForm";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
 import { cattleSource, cattleType } from "../add";
 import "../../../../assets/scss/viewCommon.scss";
+import "../../../../assets/scss/common.scss";
+
 const getLangId = (langArray, langSelection) => {
   let languageId;
   langArray.map(async (Item) => {
@@ -128,7 +130,7 @@ const EditCattle = () => {
   }, [cattleDetails]);
 
   return (
-    <div className="cattleaddwraper">
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -192,7 +194,7 @@ const EditCattle = () => {
         </Then>
         <Else>
           {!cattleDetails.isFetching && (
-            <div className="ms-sm-3 mt-1">
+            <div className="FormikWrapper">
               <AddCattleForm
                 handleSubmit={handleCattleUpdate}
                 initialValues={initialValues}

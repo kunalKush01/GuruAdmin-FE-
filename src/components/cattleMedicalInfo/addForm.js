@@ -12,8 +12,7 @@ import FormikRangeDatePicker from "../partials/FormikRangeDatePicker";
 import AsyncSelectField from "../partials/asyncSelectField";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
-
-;
+import "../../assets/scss/common.scss";
 
 const AddMedicalInfoForm = ({
   initialValues,
@@ -51,7 +50,7 @@ const AddMedicalInfoForm = ({
   });
 
   return (
-    <FormikWrapper>
+    <div className="FormikWrapper">
       <Formik
         enableReinitialize
         initialValues={initialValues}
@@ -230,7 +229,7 @@ const AddMedicalInfoForm = ({
           </Form>
         )}
       </Formik>
-    </FormikWrapper>
+    </div>
   );
 };
 
