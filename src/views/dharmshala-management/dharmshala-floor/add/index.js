@@ -7,6 +7,7 @@ import { createDharmshalaFloor } from "../../../../api/dharmshala/dharmshalaInfo
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddDharmshalaFloorForm from "../../../../components/dharmshalaFloor/addForm";
 import { DharmshalaFloorAddWrapper } from "../../dharmshalaStyles";
+import "../../../../assets/scss/common.scss";
 
 const AddDharmshalaFloor = () => {
   const history = useHistory();
@@ -53,7 +54,7 @@ const AddDharmshalaFloor = () => {
           </div>
         </div>
       </div>
-      <div className="ms-sm-3 mt-1">
+      <div className="FormikWrapper">
         <AddDharmshalaFloorForm
           handleSubmit={handleCreateDharmshalaFloor}
           initialValues={initialValues}

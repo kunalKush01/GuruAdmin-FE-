@@ -8,6 +8,8 @@ import { createCattleMedicalRecord } from "../../../../api/cattle/cattleMedical"
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddMedicalInfoForm from "../../../../components/cattleMedicalInfo/addForm";
 import "../../../../assets/scss/viewCommon.scss";
+import "../../../../assets/scss/common.scss";
+
 const AddMedicalInfo = () => {
   const history = useHistory();
   const searchParams = new URLSearchParams(history.location.search);
@@ -44,7 +46,7 @@ const AddMedicalInfo = () => {
   };
 
   return (
-    <div className="medicalinfoaddwraper">
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -61,14 +63,12 @@ const AddMedicalInfo = () => {
           </div>
         </div>
       </div>
-      <div className="ms-sm-3 mt-1">
-        <AddMedicalInfoForm
-          handleSubmit={handleCreateMedicalInfo}
-          initialValues={initialValues}
-          validationSchema={schema}
-          buttonName="cattle_record_add"
-        />
-      </div>
+      <AddMedicalInfoForm
+        handleSubmit={handleCreateMedicalInfo}
+        initialValues={initialValues}
+        validationSchema={schema}
+        buttonName="cattle_record_add"
+      />
     </div>
   );
 };

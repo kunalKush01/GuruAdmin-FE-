@@ -8,6 +8,7 @@ import { Button, Col, Row, Spinner } from "reactstrap";
 import { FormikWrapper } from "../../views/dharmshala-management/dharmshalaStyles";
 import CustomTextField from "../partials/customTextField";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import "../../assets/scss/common.scss";
 
 const AddDharmshalaFloorForm = ({
   initialValues,
@@ -50,7 +51,7 @@ const AddDharmshalaFloorForm = ({
   };
 
   return (
-    <FormikWrapper>
+    <div className="FormikWrapper">
       <Formik
         enableReinitialize
         initialValues={initialValues}
@@ -151,7 +152,7 @@ const AddDharmshalaFloorForm = ({
           </Form>
         )}
       </Formik>
-    </FormikWrapper>
+    </div>
   );
 };
 

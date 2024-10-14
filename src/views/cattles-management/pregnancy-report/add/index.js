@@ -8,6 +8,8 @@ import { createPregnancyReport } from "../../../../api/cattle/cattlePregnancy";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddPregnancyForm from "../../../../components/cattlePregnancy/addForm";
 import "../../../../assets/scss/viewCommon.scss";
+import "../../../../assets/scss/common.scss";
+
 const AddPregnancy = () => {
   const history = useHistory();
 
@@ -34,7 +36,7 @@ const AddPregnancy = () => {
   };
 
   return (
-    <div className="pregnancyaddwraper">
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -51,14 +53,12 @@ const AddPregnancy = () => {
           </div>
         </div>
       </div>
-      <div className="ms-sm-3 mt-1">
-        <AddPregnancyForm
-          handleSubmit={handleCreatePregnancyReport}
-          initialValues={initialValues}
-          validationSchema={schema}
-          buttonName="cattle_record_add"
-        />
-      </div>
+      <AddPregnancyForm
+        handleSubmit={handleCreatePregnancyReport}
+        initialValues={initialValues}
+        validationSchema={schema}
+        buttonName="cattle_record_add"
+      />
     </div>
   );
 };

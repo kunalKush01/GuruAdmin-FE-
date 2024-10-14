@@ -7,7 +7,7 @@ import { Prompt, useHistory } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import { FormikWrapper } from "../../views/dharmshala-management/dharmshalaStyles";
 import CustomTextField from "../partials/customTextField";
-import '../../assets/scss/common.scss'
+import "../../assets/scss/common.scss";
 const AddDharmshalaForm = ({
   initialValues,
   validationSchema,
@@ -50,7 +50,7 @@ const AddDharmshalaForm = ({
   };
 
   return (
-    <FormikWrapper>
+    <div className="FormikWrapper">
       <Formik
         enableReinitialize
         initialValues={initialValues}
@@ -149,7 +149,7 @@ const AddDharmshalaForm = ({
           </Form>
         )}
       </Formik>
-    </FormikWrapper>
+    </div>
   );
 };
 

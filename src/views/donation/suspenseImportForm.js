@@ -214,106 +214,104 @@ function SuspenseImportForm({ onClose, open, tab, setShowHistory }) {
 
   return (
     <Drawer title="Import XLSX/CSV" onClose={onClose} open={open} size="medium">
-      <div className="formikwrapper">
-        <Formik initialValues={{}} onSubmit={handleSubmit}>
-          {() => (
-            <Form>
-              <Row>
-                {tab && tab === "Donation" && (
-                  <Col xs={12} sm={12} md={6}>
-                    <a href="/sampleFile/donations.csv" download>
-                      <Button
-                        type=""
-                        className="uploadBtn"
-                        icon={
-                          <img
-                            src={downloadIcon}
-                            alt="Upload Icon"
-                            style={{ width: 16, height: 16 }}
-                          />
-                        }
-                      >
-                        Download Sample File
-                      </Button>
-                    </a>
-                  </Col>
-                )}
-                {tab && tab === "Pledge" && (
-                  <Col xs={12} sm={12} md={6}>
-                    <a href="/sampleFile/commitments.csv" download>
-                      <Button
-                        type=""
-                        className="uploadBtn"
-                        icon={
-                          <img
-                            src={downloadIcon}
-                            alt="Upload Icon"
-                            style={{ width: 16, height: 16 }}
-                          />
-                        }
-                      >
-                        Download Sample File
-                      </Button>
-                    </a>
-                  </Col>
-                )}
-                <Col xs={12} sm={12} md={tab == "Suspense" ? 12 : 6}>
-                  <Upload
-                    {...uploadProps}
-                    maxCount={1}
-                    showUploadList={file == null ? false : true}
-                  >
-                    <AntdButton
+      <Formik initialValues={{}} onSubmit={handleSubmit}>
+        {() => (
+          <Form>
+            <Row>
+              {tab && tab === "Donation" && (
+                <Col xs={12} sm={12} md={6}>
+                  <a href="/sampleFile/donations.csv" download>
+                    <Button
+                      type=""
                       className="uploadBtn"
                       icon={
                         <img
-                          src={uploadIcon}
+                          src={downloadIcon}
                           alt="Upload Icon"
                           style={{ width: 16, height: 16 }}
                         />
                       }
                     >
-                      Click to Upload
-                    </AntdButton>
-                  </Upload>
+                      Download Sample File
+                    </Button>
+                  </a>
                 </Col>
-                {tab && tab == "Suspense" && (
-                  <Col xs={12} sm={12} md={12} className="mt-1">
-                    <span style={{ color: "var(--font-color)" }}>
-                      <Trans i18nKey={"map_fields"} />
-                    </span>
-                    <div className="card mb-1">
-                      <div className="card-body">
-                        <Row>
-                          <Col xs={12} sm={12} md={12}>
-                            <Table
-                              className="importTable"
-                              columns={columns}
-                              dataSource={data}
-                              pagination={false}
-                            />
-                          </Col>
-                        </Row>
-                      </div>
-                    </div>
-                  </Col>
-                )}
-              </Row>
-              <div className="d-flex justify-content-center">
-                <ReactstrapButton
-                  color="primary"
-                  className="addAction-btn mt-3"
-                  type="submit"
-                  style={{ width: "100%" }}
-                  disabled={loading}
+              )}
+              {tab && tab === "Pledge" && (
+                <Col xs={12} sm={12} md={6}>
+                  <a href="/sampleFile/commitments.csv" download>
+                    <Button
+                      type=""
+                      className="uploadBtn"
+                      icon={
+                        <img
+                          src={downloadIcon}
+                          alt="Upload Icon"
+                          style={{ width: 16, height: 16 }}
+                        />
+                      }
+                    >
+                      Download Sample File
+                    </Button>
+                  </a>
+                </Col>
+              )}
+              <Col xs={12} sm={12} md={tab == "Suspense" ? 12 : 6}>
+                <Upload
+                  {...uploadProps}
+                  maxCount={1}
+                  showUploadList={file == null ? false : true}
                 >
-                  {loading ? <Spinner size="sm" /> : <span>Import</span>}
-                </ReactstrapButton>
-              </div>
-            </Form>
-          )}
-        </Formik>
-      </div>
+                  <AntdButton
+                    className="uploadBtn"
+                    icon={
+                      <img
+                        src={uploadIcon}
+                        alt="Upload Icon"
+                        style={{ width: 16, height: 16 }}
+                      />
+                    }
+                  >
+                    Click to Upload
+                  </AntdButton>
+                </Upload>
+              </Col>
+              {tab && tab == "Suspense" && (
+                <Col xs={12} sm={12} md={12} className="mt-1">
+                  <span style={{ color: "var(--font-color)" }}>
+                    <Trans i18nKey={"map_fields"} />
+                  </span>
+                  <div className="card mb-1">
+                    <div className="card-body">
+                      <Row>
+                        <Col xs={12} sm={12} md={12}>
+                          <Table
+                            className="importTable"
+                            columns={columns}
+                            dataSource={data}
+                            pagination={false}
+                          />
+                        </Col>
+                      </Row>
+                    </div>
+                  </div>
+                </Col>
+              )}
+            </Row>
+            <div className="d-flex justify-content-center">
+              <ReactstrapButton
+                color="primary"
+                className="addAction-btn mt-3"
+                type="submit"
+                style={{ width: "100%" }}
+                disabled={loading}
+              >
+                {loading ? <Spinner size="sm" /> : <span>Import</span>}
+              </ReactstrapButton>
+            </div>
+          </Form>
+        )}
+      </Formik>
     </Drawer>
   );
 }

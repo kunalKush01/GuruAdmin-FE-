@@ -257,7 +257,7 @@ export const englishContent = {
   cattle_alive: "Alive",
   cattle_expense_type_consumable: "Consumable",
   cattle_expense_type_general: "General",
-  cattle_info: "Pashudhan Info",
+  cattle_info: "Pashudhan",
   cattle_photo: "Pashudhan's Photo",
   cattle_owner_photo: "Owner's Photo",
   cattle_owner_id: "Owner's ID",

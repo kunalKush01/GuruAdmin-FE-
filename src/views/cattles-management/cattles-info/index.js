@@ -202,27 +202,6 @@ const CattlesInfo = () => {
                 );
               }}
             />
-            {allPermissions?.name === "all" ||
-            subPermission?.includes(WRITE) ? (
-              <Button
-                className="me-1"
-                color="primary"
-                onClick={() =>
-                  history.push(
-                    `/cattle/info/add?page=${pagination.page}&status=${isDeadAlive}&filter=${dropDownName}`
-                  )
-                }
-              >
-                <span>
-                  <Plus className="" size={15} strokeWidth={4} />
-                </span>
-                <span>
-                  <Trans i18nKey={"cattle_add"} />
-                </span>
-              </Button>
-            ) : (
-              ""
-            )}
 
             <Button
               className="me-1"
@@ -248,6 +227,7 @@ const CattlesInfo = () => {
 
             <Button
               color="primary"
+              className={"me-1"}
               onClick={() =>
                 handleExport({
                   dataName: exportCattleJson(
@@ -261,6 +241,27 @@ const CattlesInfo = () => {
               <Trans i18nKey={"export_report"} />
               <img src={exportIcon} width={15} className="ms-2" />
             </Button>
+            {allPermissions?.name === "all" ||
+            subPermission?.includes(WRITE) ? (
+              <Button
+                className="me-1"
+                color="primary"
+                onClick={() =>
+                  history.push(
+                    `/cattle/info/add?page=${pagination.page}&status=${isDeadAlive}&filter=${dropDownName}`
+                  )
+                }
+              >
+                <span>
+                  <Plus className="" size={15} strokeWidth={4} />
+                </span>
+                <span>
+                  <Trans i18nKey={"cattle_add"} />
+                </span>
+              </Button>
+            ) : (
+              ""
+            )}
             <input
               type="file"
               ref={importFileRef}

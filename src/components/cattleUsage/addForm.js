@@ -14,8 +14,7 @@ import AsyncSelectField from "../partials/asyncSelectField";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
-
-;
+import "../../assets/scss/common.scss";
 
 const AddItemUsageForm = ({
   initialValues,
@@ -55,7 +54,7 @@ const AddItemUsageForm = ({
   });
 
   return (
-    <FormikWrapper>
+    <div className="FormikWrapper">
       <Formik
         enableReinitialize
         initialValues={initialValues}
@@ -243,7 +242,7 @@ const AddItemUsageForm = ({
           </Form>
         )}
       </Formik>
-    </FormikWrapper>
+    </div>
   );
 };
 

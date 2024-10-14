@@ -8,6 +8,8 @@ import { createCattleInfo } from "../../../../api/cattle/cattleInfo";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddCattleForm from "../../../../components/cattleInfo/addForm";
 import "../../../../assets/scss/viewCommon.scss";
+import "../../../../assets/scss/common.scss";
+
 export const cattleType = [
   {
     label: "Cow",
@@ -137,7 +139,7 @@ const AddCattle = () => {
   };
 
   return (
-    <div className="cattleaddwraper">
+    <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -150,16 +152,14 @@ const AddCattle = () => {
           </div>
         </div>
       </div>
-      <div className="ms-sm-3 mt-1">
-        <AddCattleForm
-          handleSubmit={handleCreateCattleInfo}
-          initialValues={initialValues}
-          validationSchema={schema}
-          buttonName="cattle_add"
-          cattleType={cattleType}
-          cattleSource={cattleSource}
-        />
-      </div>
+      <AddCattleForm
+        handleSubmit={handleCreateCattleInfo}
+        initialValues={initialValues}
+        validationSchema={schema}
+        buttonName="cattle_add"
+        cattleType={cattleType}
+        cattleSource={cattleSource}
+      />
     </div>
   );
 };
