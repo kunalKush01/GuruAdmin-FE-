@@ -78,13 +78,13 @@ const LayoutWrapper = (props) => {
         "show-overlay": navbarStore.query.length,
       })}
     >
-      {location.pathname.startsWith("/cattle") && (
+      {/* {location.pathname.startsWith("/cattle") && (
         <CattleTabBar
           tabs={cattleHeader(permissionsKey)}
           active={active}
           setActive={setActive}
         />
-      )}
+      )} */}
       {(location.pathname.startsWith("/dharmshala") ||
         location.pathname.startsWith("/roomtype") || 
         location.pathname.startsWith("/booking")||

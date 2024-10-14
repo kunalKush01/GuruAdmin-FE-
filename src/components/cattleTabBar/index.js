@@ -2,64 +2,79 @@ import { useLayoutEffect } from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { Tabs } from "antd";
+import { Nav, NavItem, NavLink } from "reactstrap";
 
-const { TabPane } = Tabs;
-
-const CattleTabBar = ({ tabs = [], setActive, active }) => {
+const CattleTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
   const history = useHistory();
-  const permissions = useSelector((state) => state.auth.userDetail?.permissions);
+  const permissions = useSelector(
+    (state) => state.auth.userDetail?.permissions
+  );
+
   const permissionsKey = permissions?.map((item) => item?.name);
 
   useLayoutEffect(() => {
     setActive(location.pathname);
   }, [location.pathname]);
 
-  const handleTabChange = (key) => {
-    const selectedTab = tabs.find((tab) => tab.url === key);
-    if (selectedTab?.isManagment && !permissionsKey?.includes("all")) {
-      const url = selectedTab.permissionKey?.find((perm) => permissionsKey?.includes(perm));
-      history.push(`${selectedTab.url}/${url?.split("-")[1]}`);
-    } else {
-      history.push(key);
-    }
-  };
-
   return (
-    <Tabs
-      activeKey={active}
-      onChange={handleTabChange}
-      tabBarStyle={{
-        justifyContent: permissionsKey?.includes("all") ? "space-between" : "flex-start",
-        padding: ".5rem",
-        gap: permissionsKey?.includes("all") ? "2rem" : "4rem",
-        marginBottom: 0,
-      }}
-    >
-      {tabs?.map((item, index) => {
-        const permissionTabs = item?.permissionKey?.some((perm) => permissionsKey?.includes(perm));
+    <div>
+      <Nav
+        pills={!tabBar}
+        tabs={tabBar}
+        style={{
+          backgroundColor: !tabBar && "#fff7e8",
+          justifyContent: permissionsKey?.includes("all")
+            ? "space-between"
+            : "",
+          padding: !tabBar && ".5rem",
+          gap: tabBar && permissionsKey?.includes("all") ? "2rem" : "4rem",
+          marginBottom: tabBar && 0,
+        }}
+      >
+        {tabs?.map((item, index) => {
+          const permissionTabs = item?.permissionKey?.some((item) =>
+            permissionsKey?.includes(item)
+          );
+          const url = item?.permissionKey?.filter((item) =>
+            permissionsKey?.includes(item)
+          );
+          //   console.log(
+          //     "permissionTabs",
+          //     url[0]?.split("-")[1],
+          //     item?.permissionKey,
+          //     permissionsKey,
+          //     permissionTabs
+          //   );
 
-        if (permissionTabs || permissionsKey?.includes("all")) {
-          return (
-            <TabPane
-              tab={
-                <span
+          if (permissionTabs || permissionsKey?.includes("all")) {
+            return (
+              <NavItem key={index}>
+                <NavLink
+                  active={active?.includes(item?.active)}
+                  onClick={() => {
+                    item?.isManagment && !permissionsKey?.includes("all")
+                      ? history.push(`${item?.url}/${url[0]?.split("-")[1]}`)
+                      : history.push(item?.url);
+                  }}
                   style={{
                     fontWeight: active?.includes(item?.active) ? 800 : 400,
-                    color: !active?.includes(item?.active) ? "#583703" : "#583703",
+                    color: !active?.includes(item?.active)
+                      ? "#583703"
+                      : tabBar
+                      ? "#583703"
+                      : "",
                   }}
                 >
-                  <Trans i18nKey={item.name} />
-                </span>
-              }
-              key={item.url}
-            />
-          );
-        } else {
-          return null;
-        }
-      })}
-    </Tabs>
+                  <Trans i18nKey={item?.name} />
+                </NavLink>
+              </NavItem>
+            );
+          } else {
+            return null;
+          }
+        })}
+      </Nav>
+    </div>
   );
 };
 
