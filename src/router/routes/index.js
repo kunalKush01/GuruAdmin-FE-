@@ -173,7 +173,7 @@ const Routes = [
   },
 
   {
-    path: "/cattle/management/stock",
+    path: "/stock-management/stock",
     component: lazy(() =>
       import("../../views/cattles-management/stock-management/index.js")
     ),
@@ -184,7 +184,7 @@ const Routes = [
   },
 
   {
-    path: "/cattle/management/supplies",
+    path: "/stock-management/supplies",
     component: lazy(() =>
       import("../../views/cattles-management/stock-management/index.js")
     ),
@@ -194,7 +194,7 @@ const Routes = [
     isGaushala: "Gaushala",
   },
   {
-    path: "/cattle/management/supplies/add",
+    path: "/stock-management/supplies/add",
     component: lazy(() =>
       import(
         "../../views/cattles-management/stock-management/supplies/add/index.js"
@@ -207,7 +207,7 @@ const Routes = [
   },
 
   {
-    path: "/cattle/management/supplies/:supplyId",
+    path: "/stock-management/supplies/:supplyId",
     component: lazy(() =>
       import(
         "../../views/cattles-management/stock-management/supplies/edit/index.js"
@@ -220,7 +220,7 @@ const Routes = [
   },
 
   {
-    path: "/cattle/management/item",
+    path: "/stock-management/item",
     component: lazy(() =>
       import("../../views/cattles-management/stock-management/index.js")
     ),
@@ -231,7 +231,7 @@ const Routes = [
   },
 
   {
-    path: "/cattle/management/item/add",
+    path: "/stock-management/item/add",
     component: lazy(() =>
       import(
         "../../views/cattles-management/stock-management/items/add/index.js"
@@ -244,7 +244,7 @@ const Routes = [
   },
 
   {
-    path: "/cattle/management/item/:itemId",
+    path: "/stock-management/item/:itemId",
     component: lazy(() =>
       import(
         "../../views/cattles-management/stock-management/items/edit/index.js"
@@ -257,7 +257,7 @@ const Routes = [
   },
 
   {
-    path: "/cattle/management/usage",
+    path: "/stock-management/usage",
     component: lazy(() =>
       import("../../views/cattles-management/stock-management/index.js")
     ),
@@ -268,7 +268,7 @@ const Routes = [
   },
 
   {
-    path: "/cattle/management/usage/add",
+    path: "/stock-management/usage/add",
     component: lazy(() =>
       import(
         "../../views/cattles-management/stock-management/usage/add/index.js"
@@ -281,7 +281,7 @@ const Routes = [
   },
 
   {
-    path: "/cattle/management/usage/:itemUsageId",
+    path: "/stock-management/usage/:itemUsageId",
     component: lazy(() =>
       import(
         "../../views/cattles-management/stock-management/usage/edit/index.js"

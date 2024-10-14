@@ -90,7 +90,7 @@ const StockManagementItemTable = ({
               className="cursor-pointer "
               onClick={() => {
                 history.push(
-                  `/cattle/management/item/${item?._id}?page=${currentPage}&filter=${currentFilter}`
+                  `/stock-management/item/${item?._id}?page=${currentPage}&filter=${currentFilter}`
                 );
               }}
             />
