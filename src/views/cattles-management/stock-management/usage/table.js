@@ -103,7 +103,7 @@ const UsageManagementTable = ({
               className="cursor-pointer "
               onClick={() => {
                 history.push(
-                  `/cattle/management/usage/${item?._id}?page=${currentPage}&filter=${currentFilter}`
+                  `/stock-management/usage/${item?._id}?page=${currentPage}&filter=${currentFilter}`
                 );
               }}
             />

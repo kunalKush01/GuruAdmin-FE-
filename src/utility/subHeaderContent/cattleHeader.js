@@ -31,7 +31,7 @@ export const cattleHeader = (permission) => {
     // {
     //   name: "cattle_stock_management",
     //   url: permission?.includes("all")
-    //     ? "/cattle/management/stock"
+    //     ? "/stock-management/stock"
     //     : "/cattle/management",
     //   active: "/cattle/management",
     //   isManagment: true,

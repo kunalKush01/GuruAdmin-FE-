@@ -101,7 +101,7 @@ const Usage = ({
                   onPageChange={(page) => {
                     setPagination({ ...pagination, page: page.selected + 1 });
                     history.push(
-                      `/cattle/management/usage?page=${
+                      `/stock-management/usage?page=${
                         page.selected + 1
                       }&filter=${dropDownName}`
                     );

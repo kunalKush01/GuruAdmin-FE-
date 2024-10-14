@@ -85,7 +85,7 @@ const Stocks = ({
                   onPageChange={(page) => {
                     setPagination({ ...pagination, page: page.selected + 1 });
                     history.push(
-                      `/cattle/management/stock?page=${
+                      `/stock-management/stock?page=${
                         page.selected + 1
                       }&filter=${dropDownName}`
                     );
