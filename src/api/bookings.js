@@ -6,7 +6,9 @@ export const fetchBookings = async (year, month, date, days) => {
   try {
     const response = await getDharmshalaBookingList();
     const bookings = response.results;
-
+    if (date === null) {
+      return bookings;
+    }
     const filteredBookings = bookings.filter(booking => {
       const [day, bookingMonth, bookingYear] = booking.startDate.split('-').map(Number);
       const bookingMonthKey = `${bookingYear}-${bookingMonth.toString().padStart(2, '0')}`;
