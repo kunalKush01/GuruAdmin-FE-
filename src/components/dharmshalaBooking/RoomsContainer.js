@@ -16,7 +16,8 @@ const RoomsContainer = ({
   handleAddRoom,
   handleClearRooms,
   isPartialView = false,
-  isReadOnly = false
+  isReadOnly = false,
+  hideAmountField = false
 }) => {
   return (
     <div className="rooms-container">
@@ -112,19 +113,21 @@ const RoomsContainer = ({
                   ))}
               </select>
             </div>
-            <div className="field-container">
-              <label htmlFor={`amount-${index}`} className="amount-label">
-                Amount:
-              </label>
-              <input
-                type="text"
-                id={`amount-${index}`}
-                value={room.amount}
-                readOnly
-                className="amount-input"
-                placeholder="Price"
-              />
-            </div>
+            {!hideAmountField && (
+              <div className="field-container">
+                <label htmlFor={`amount-${index}`} className="amount-label">
+                  Amount:
+                </label>
+                <input
+                  type="text"
+                  id={`amount-${index}`}
+                  value={room.amount}
+                  readOnly
+                  className="amount-input"
+                  placeholder="Price"
+                />
+              </div>
+            )}
             {!isPartialView && (
               <div className="icon-container">
                 <img
