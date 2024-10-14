@@ -266,7 +266,7 @@ export default function Donation() {
               color="primary"
               onClick={() => importFileRef.current.click()}
             >
-              Import File
+              {t("Import_File")}
             </Button>
 
             <input

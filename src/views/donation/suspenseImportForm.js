@@ -22,15 +22,15 @@ import { useQueryClient } from "@tanstack/react-query";
 import { importCommitmentFile } from "../../api/commitmentApi";
 import { useHistory } from "react-router-dom";
 function SuspenseImportForm({ onClose, open, tab, setShowHistory }) {
-  const targetFields = [
-    "Transaction Id",
-    "Transaction Date",
-    "Bank Narration",
-    "Cheque No",
-    "Amount",
-    "Mode Of Payment",
-  ];
   const { t } = useTranslation();
+  const targetFields = [
+    t('transaction_id'),
+    t('transaction_Date'),
+    t('bank_narration'),
+    t('cheque_no'),
+    t('amount'),
+    t('mode_of_payment')
+  ];
   const history = useHistory();
   const [loading, setLoading] = useState(false);
   const [sourceFields, setSourceFields] = useState([]);
@@ -140,12 +140,12 @@ function SuspenseImportForm({ onClose, open, tab, setShowHistory }) {
       render: (text, record) => (
         <Select
           style={{ width: "100%" }}
-          placeholder="Select Source Field"
+          placeholder={t('select_source_fields')}
           onChange={(value) => handleMappingChange(record.targetField, value)}
           value={mapping[record.targetField]}
         >
           <Select.Option key="" value="">
-            Select Option
+            {t('select_option')}
           </Select.Option>
           {sourceFields.map((field) => (
             <Select.Option key={field} value={field}>
@@ -213,7 +213,7 @@ function SuspenseImportForm({ onClose, open, tab, setShowHistory }) {
   };
 
   return (
-    <Drawer title="Import XLSX/CSV" onClose={onClose} open={open} size="medium">
+    <Drawer title={t("import_xlsx_csv")} onClose={onClose} open={open} size="medium">
       <Formik initialValues={{}} onSubmit={handleSubmit}>
         {() => (
           <Form>
@@ -232,7 +232,7 @@ function SuspenseImportForm({ onClose, open, tab, setShowHistory }) {
                         />
                       }
                     >
-                      Download Sample File
+                      {t("download_sample_file")}
                     </Button>
                   </a>
                 </Col>
@@ -251,7 +251,7 @@ function SuspenseImportForm({ onClose, open, tab, setShowHistory }) {
                         />
                       }
                     >
-                      Download Sample File
+                      {t("download_sample_file")}
                     </Button>
                   </a>
                 </Col>
@@ -272,7 +272,7 @@ function SuspenseImportForm({ onClose, open, tab, setShowHistory }) {
                       />
                     }
                   >
-                    Click to Upload
+                    {t('click_to_upload')}
                   </AntdButton>
                 </Upload>
               </Col>
@@ -306,7 +306,7 @@ function SuspenseImportForm({ onClose, open, tab, setShowHistory }) {
                 style={{ width: "100%" }}
                 disabled={loading}
               >
-                {loading ? <Spinner size="sm" /> : <span>Import</span>}
+                {loading ? <Spinner size="sm" /> : <span>{t('import')}</span>}
               </ReactstrapButton>
             </div>
           </Form>

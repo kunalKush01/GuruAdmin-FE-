@@ -4,6 +4,7 @@ import "../../assets/scss/common.scss";
 import "../../assets/scss/viewCommon.scss";
 import eyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
 import { useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 function MemberShipListTable({
   data,
@@ -14,31 +15,31 @@ function MemberShipListTable({
   onChangePageSize,
 }) {
   const history = useHistory();
-
+  const {t}= useTranslation()
   const columns = [
     {
-      title: "Member Name",
+      title: t("member_name"),
       dataIndex: ["data", "personalInfo", "memberName"],
       key: "memberName",
       width: 150,
       fixed: "left",
     },
     {
-      title: "Alias Name",
+      title: t("alias_name"),
       dataIndex: ["data", "personalInfo", "aliasName"],
       key: "aliasName",
       width: 120,
       fixed: "left",
     },
     {
-      title: "Gender",
+      title:t("gender"),
       dataIndex: ["data", "personalInfo", "gender"],
       key: "gender",
       width: 100,
       render: (text, record) => `${record.data.personalInfo.gender?.name ||"-"}`,
     },
     {
-      title: "Marital Status",
+      title: t("marital_status"),
       dataIndex: ["data", "personalInfo", "maritalStatus"],
       key: "maritalStatus",
       width: 150,
@@ -46,33 +47,33 @@ function MemberShipListTable({
         `${record.data.personalInfo.maritalStatus?.name ||"-"}`,
     },
     {
-      title: "Membership",
+      title:t("membership"),
       dataIndex: ["data", "membershipInfo", "membership"],
       key: "membership",
       width: 150,
       render: (text, record) => `${record.data.membershipInfo.membership?.name ||"-"}`
     },
     {
-      title: "Branch",
+      title: t("branch"),
       dataIndex: ["data", "membershipInfo", "branch"],
       key: "branch",
       width: 120,
       render: (text, record) => `${record.data.membershipInfo.branch?.name ||"-"}`,
     },
     {
-      title: "Phone",
+      title: t("phone"),
       dataIndex: ["data", "contactInfo", "phone"],
       key: "phone",
       width: 120,
     },
     {
-      title: "Email",
+      title:t("email"),
       dataIndex: ["data", "contactInfo", "email"],
       key: "email",
       width: 200,
     },
     {
-      title: "Home Address",
+      title: t("home_address"),
       dataIndex: ["data", "addressInfo", "homeAddress", "street"],
       key: "homeAddress",
       width: 200,
@@ -80,25 +81,25 @@ function MemberShipListTable({
         `${record.data.addressInfo.homeAddress.street ||"-"}, ${record.data.addressInfo.homeAddress.city?.name ||""}, ${record.data.addressInfo.homeAddress.state?.name ||""}, ${record.data.addressInfo.homeAddress.country?.name  ||""}`,
     },
     {
-      title: "Occupation",
+      title:t("occupation"),
       dataIndex: ["data", "otherInfo", "occupation"],
       key: "occupation",
       width: 150,
     },
     {
-      title: "PAN Number",
+      title: t("pan_number"),
       dataIndex: ["data", "otherInfo", "panNumber"],
       key: "panNumber",
       width: 150,
     },
     {
-      title: "Special Remark",
+      title: t("special_remark"),
       dataIndex: ["data", "otherInfo", "specialRemark"],
       key: "specialRemark",
       width: 200,
     },
     {
-      title: "Action",
+      title:t("action"),
       key: "action",
       width: 100,
       fixed: "right",

@@ -10,8 +10,9 @@ import { ChevronDown, RotateCw, X } from 'react-feather'
 
 // ** Reactstrap Imports
 import { CardBody, CardText, Row, Col, Table } from 'reactstrap'
-
+import { useTranslation } from 'react-i18next'
 const CardActions = () => {
+  const {t}= useTranslation()
   return (
     <Fragment>
       <Breadcrumbs breadCrumbTitle='Card Actions' breadCrumbParent='Card' breadCrumbActive='Card Actions' />
@@ -28,7 +29,7 @@ const CardActions = () => {
               <Table responsive bordered>
                 <thead>
                   <tr>
-                    <th>Action</th>
+                    <th>{t("action")}</th>
                     <th>Icon</th>
                     <th>Details</th>
                   </tr>

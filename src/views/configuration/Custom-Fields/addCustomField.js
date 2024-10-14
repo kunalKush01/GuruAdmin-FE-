@@ -277,7 +277,7 @@ const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
               value={formData.master}
               onChange={handleChange}
             >
-              <option value="">Select Option</option>
+              <option value="">{t('select_option')}</option>
               {masterItem &&
                 masterItem.map((item) => {
                   return <option value={item.id}>{item.name}</option>;
@@ -298,7 +298,7 @@ const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
               value={formData.masterData}
               onChange={handleChange}
             >
-              <option value="">Select Option</option>
+              <option value="">{t('select_option')}</option>
               {masterItem &&
                 masterDataItem &&
                 Object.values(masterDataItem?.schema || {}).map(
