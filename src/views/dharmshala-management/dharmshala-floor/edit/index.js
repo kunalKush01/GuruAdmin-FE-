@@ -15,8 +15,8 @@ import {
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddDharmshalaFloorForm from "../../../../components/dharmshalaFloor/addForm";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
-import { DharmshalaFloorAddWrapper } from "../../dharmshalaStyles";
 import "../../../../assets/scss/common.scss";
+import "../../../../assets/scss/dharmshala.scss";
 
 const getLangId = (langArray, langSelection) => {
   let languageId;
@@ -77,7 +77,7 @@ const EditFloor = () => {
   const URLParams = useParams("");
 
   return (
-    <DharmshalaFloorAddWrapper>
+    <div className="DharmshalaComponentAddWrapper">
       <div className="d-flex justify-content-between align-items-center ">
         <div className="d-flex justify-content-between align-items-center ">
           <img
@@ -141,7 +141,7 @@ const EditFloor = () => {
         </Then>
         <Else>
           {!floorDetails.isFetching && (
-            <div className="FormikWrapper">
+            <div className="listviewwrapper">
               <AddDharmshalaFloorForm
                 handleSubmit={handleDharmshalaFloorUpdate}
                 initialValues={initialValues}
@@ -155,7 +155,7 @@ const EditFloor = () => {
           )}
         </Else>
       </If>
-    </DharmshalaFloorAddWrapper>
+    </div>
   );
 };
 

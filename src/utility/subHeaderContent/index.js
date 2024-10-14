@@ -429,14 +429,14 @@ export const subHeaderContentResponsive = [
       },
       {
         name: "cattle-breed",
-        customLabel: "Pashudhan Breed",
+        customLabel: "Pashu Breed",
         url: "/configuration/cattle-breed",
         icon: PashudhanBreed,
         activeIcon: PashudhanBreedActiveIcon,
       },
       {
         name: "cattle-category",
-        customLabel: "Pashudhan Category",
+        customLabel: "Pashu Category",
         url: "/configuration/cattle-category",
         icon: PashudhanCategory,
         activeIcon: PashudhanCategoryActiveIcon,

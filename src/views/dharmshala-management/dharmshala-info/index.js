@@ -13,7 +13,7 @@ import { getDharmshalaList } from "../../../api/dharmshala/dharmshalaInfo";
 import NoContent from "../../../components/partials/noContent";
 import DharmshalaInfoTable from "./table";
 import { Helmet } from "react-helmet";
-import { DharmshalaInfo } from "../dharmshalaStyles";
+import "../../../assets/scss/dharmshala.scss";
 
 const DharmshalasInfo = () => {
   const history = useHistory();
@@ -54,12 +54,7 @@ const DharmshalasInfo = () => {
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
 
   const dharmshalaList = useQuery(
-    [
-      "dharmshalaList",
-      pagination?.page,
-      selectedLang.id,
-      searchBarValue,
-    ],
+    ["dharmshalaList", pagination?.page, selectedLang.id, searchBarValue],
     () =>
       getDharmshalaList({
         ...pagination,
@@ -92,14 +87,16 @@ const DharmshalasInfo = () => {
     let filteredData = dharmshalaListData;
     if (searchBarValue && searchBarValue.length >= 3) {
       filteredData = filteredData.filter((item) =>
-        item.name.toLowerCase().startsWith(searchBarValue.toLowerCase().slice(0, 3))
+        item.name
+          .toLowerCase()
+          .startsWith(searchBarValue.toLowerCase().slice(0, 3))
       );
     }
     return filteredData;
   }, [dharmshalaListData, searchBarValue]);
 
   return (
-    <DharmshalaInfo>
+    <div className="DharmshalaComponentInfo">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharm Admin | Dharmshala</title>
@@ -121,7 +118,7 @@ const DharmshalasInfo = () => {
                 <Plus className="" size={15} strokeWidth={4} />
               </span>
               <span>
-              <Trans i18nKey={"building_add"} />
+                <Trans i18nKey={"building_add"} />
               </span>
             </Button>
           </div>
@@ -144,7 +141,7 @@ const DharmshalasInfo = () => {
                 condition={
                   !dharmshalaList.isLoading &&
                   dharmshalaListData.length !== 0 &&
-                  filtereddharmshalaListData.length!==0&&
+                  filtereddharmshalaListData.length !== 0 &&
                   !dharmshalaList.isFetching
                 }
                 disableMemo
@@ -226,7 +223,7 @@ const DharmshalasInfo = () => {
           </Row>
         </div>
       </div>
-    </DharmshalaInfo>
+    </div>
   );
 };
 

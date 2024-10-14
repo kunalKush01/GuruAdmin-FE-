@@ -11,8 +11,7 @@ import editIcon from "../../../assets/images/icons/category/editIcon.svg";
 import confirmationIcon from "../../../assets/images/icons/news/conformationIcon.svg";
 import CustomDharmshalaTable from "../../../components/partials/CustomDharmshalaTable";
 import CustomDataTable from "../../../components/partials/CustomDataTable";
-import { DharmshalaFloorTableWrapper } from "../dharmshalaStyles";
-import "../dharmshala_css/dharmshalafloors.css";
+import "../../../assets/scss/dharmshala.scss";
 import { Table, Tag } from "antd";
 
 const DharmshalaFloorTable = ({
@@ -234,7 +233,7 @@ const DharmshalaFloorTable = ({
   ]);
 
   return (
-    <DharmshalaFloorTableWrapper>
+    <div className="DharmshalaComponentTableWrapper">
       {isMobileView ? (
         <div className="card-container">
           {DharmshalasFloor.map((item, index) => (
@@ -268,7 +267,7 @@ const DharmshalaFloorTable = ({
           dataSource={DharmshalasFloor}
         />
       )}
-    </DharmshalaFloorTableWrapper>
+    </div>
   );
 };
 // <CustomDharmshalaTable

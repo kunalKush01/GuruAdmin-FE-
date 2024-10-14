@@ -14,8 +14,7 @@ import confirmationIcon from "../../../assets/images/icons/news/conformationIcon
 import CustomDharmshalaTable from "../../../components/partials/CustomDharmshalaTable";
 import { ConverFirstLatterToCapital } from "../../../utility/formater";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
-import { DharmshalaRoomTableWrapper } from "../dharmshalaStyles";
-import "../dharmshala_css/dharmshalaroom.css";
+import "../../../assets/scss/dharmshala.scss";
 import { Table } from "antd";
 
 const DharmshalaRoomTable = ({
@@ -161,7 +160,7 @@ const DharmshalaRoomTable = ({
     });
   }, [data, floorID]);
   return (
-    <DharmshalaRoomTableWrapper>
+    <div className="DharmshalaComponentTableWrapper">
       {isMobileView ? (
         <div className="card-container">
           {DharmshalasRoom.map((item, index) => (
@@ -194,7 +193,7 @@ const DharmshalaRoomTable = ({
           dataSource={DharmshalasRoom}
         />
       )}
-    </DharmshalaRoomTableWrapper>
+    </div>
   );
 };
 // <CustomDharmshalaTable
