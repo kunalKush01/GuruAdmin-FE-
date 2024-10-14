@@ -95,7 +95,7 @@ const SuppliesTable = ({
               className="cursor-pointer "
               onClick={() => {
                 history.push(
-                  `/cattle/management/supplies/${item?.id}?page=${currentPage}&filter=${currentFilter}`
+                  `/stock-management/supplies/${item?.id}?page=${currentPage}&filter=${currentFilter}`
                 );
               }}
             />

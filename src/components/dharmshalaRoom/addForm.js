@@ -6,7 +6,6 @@ import { Trans, useTranslation } from "react-i18next";
 import { Prompt, useHistory } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import { useParams } from "react-router-dom";
-import { FormikWrapper } from "../../views/dharmshala-management/dharmshalaStyles";
 import CustomTextField from "../partials/customTextField";
 import { getRoomTypeList } from "../../api/dharmshala/dharmshalaInfo";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";

@@ -9,8 +9,7 @@ import { deleteRoomTypeInfo } from "../../../api/dharmshala/dharmshalaInfo";
 import deleteIcon from "../../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../../assets/images/icons/category/editIcon.svg";
 import CustomDharmshalaTable from "../../../components/partials/CustomDharmshalaTable";
-import { RoomTypeInfoTableWrapper } from "../dharmshalaStyles";
-import "../dharmshala_css/roomtypetable.css";
+import "../../../assets/scss/dharmshala.scss";
 
 const RoomTypeInfoTable = ({
   data = [],
@@ -83,7 +82,7 @@ const RoomTypeInfoTable = ({
   }, [data]);
 
   return (
-    <RoomTypeInfoTableWrapper>
+    <div className="DharmshalaComponentTableWrapper">
       {isMobileView ? (
         <div className="card-container">
           {RoomTypesInfo.map((item, index) => (
@@ -146,7 +145,7 @@ const RoomTypeInfoTable = ({
           data={RoomTypesInfo}
         />
       )}
-    </RoomTypeInfoTableWrapper>
+    </div>
   );
 };
 
