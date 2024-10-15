@@ -267,8 +267,8 @@ const DharmshalaBookingTable = ({
     return data.map((item) => ({
       key: item._id,
       bookingId: item.bookingId,
-      guestName: item.userDetails.name,
-      guestMobile: item.userDetails.mobileNumber,
+      guestName: item.userDetails?.name,
+      guestMobile: item.userDetails?.mobileNumber,
       startDate: item.startDate ? dayjs(item.startDate, "DD-MM-YYYY").format("DD MMM YYYY") : 'N/A',
       endDate: item.endDate ? dayjs(item.endDate, "DD-MM-YYYY").format("DD MMM YYYY") : 'N/A',
       count: item.count,
