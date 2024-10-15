@@ -572,19 +572,23 @@ const idTypeOptions = [
                     <Row>
                       <Col xs={12} className="align-self-center">
                       <CustomCountryMobileNumberField
-                        value={formik.values.SelectedUser?.countryCode +formik.values.SelectedUser?.mobileNumber}
+                        value={`${formik.values.SelectedUser?.countryCode || ''}${formik.values.SelectedUser?.mobileNumber || ''}`}
                         disabled={payDonation}
                         defaultCountry={countryFlag}
                         label={t("dashboard_Recent_DonorNumber")}
                         placeholder={t("placeHolder_mobile_number")}
                         onChange={(phone, country) => {
                           setPhoneNumber(phone);
-                          formik.setFieldValue("countryCode", country?.countryCode);
-                          formik.setFieldValue("dialCode", country?.dialCode);
-                          formik.setFieldValue(
-                            "Mobile",
-                            phone?.replace(country?.dialCode, "")
-                          );
+                          formik.setFieldValue("countryCode", country?.countryCode || '');
+                          formik.setFieldValue("dialCode", country?.dialCode || '');
+                          if (typeof phone === 'string' && typeof country?.dialCode === 'string') {
+                            formik.setFieldValue(
+                              "Mobile",
+                              phone.replace(country.dialCode, "")
+                            );
+                          } else {
+                            formik.setFieldValue("Mobile", '');
+                          }
                         }}
                         required
                       />
