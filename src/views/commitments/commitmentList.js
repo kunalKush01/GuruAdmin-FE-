@@ -357,7 +357,7 @@ export default function Commitment() {
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
-                className={`addAction-btn mt-md-1 mt-lg-0`}
+                className={`addAction-btn me-1`}
                 onClick={() =>
                   history.push(
                     `/commitment/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${dropDownName}`

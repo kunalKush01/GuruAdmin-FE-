@@ -158,9 +158,9 @@ export default function Category() {
               </div>
             </div>
           </div>
-          <div className="addAction justify-content-between">
+          <div className="addAction gap-1 justify-content-between">
             <ChangeCategoryType
-              className={"me-1"}
+              className={"  "}
               categoryTypeArray={newTypes}
               typeName={ConverFirstLatterToCapital(dropDownName)}
               setTypeName={(e) => {

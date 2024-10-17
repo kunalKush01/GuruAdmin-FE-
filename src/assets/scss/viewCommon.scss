@@ -392,6 +392,9 @@
         display: flex;
         align-items: center;
         font-weight: 600;
+        margin-left: 0rem !important;
+        margin-top: 0rem !important;
+
     }
 
     .FormikWrapper {
@@ -401,6 +404,8 @@
         max-height: 90vh;
         /* Set height relative to viewport */
         overflow-y: auto;
+        overflow-x: hidden;
+
         /* Enable scrolling */
         padding-bottom: 200px;
     }
@@ -425,7 +430,7 @@
 
     .addAction-btn {
         padding: 8px 20px;
-        margin-left: 10px;
+        //margin-left: 10px;
         font: $font-weight-bold $font-size-medium $font-family;
         border-color: $primary-color !important;
         background-color: $primary-color !important;
@@ -433,7 +438,7 @@
 
     .secondaryAction-btn {
         padding: 8px 20px;
-        margin-left: 10px;
+        //margin-left: 10px;
         font: $font-weight-bold $font-size-medium $font-family;
         border-color: $primary-color !important;
         background-color: $primary-color !important;

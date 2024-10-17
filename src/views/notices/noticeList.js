@@ -153,7 +153,7 @@ export default function NoticeList() {
               </div>
             </div>
           </div>
-          <div className="addAction justify-content-between">
+          <div className="addAction gap-1 justify-content-between">
             <ChangePeriodDropDown
               dropDownName={dropDownName}
               setdropDownName={(e) => {

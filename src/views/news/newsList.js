@@ -142,7 +142,7 @@ export default function News() {
               </div>
             </div>
           </div>
-          <div className="addAction justify-content-between">
+          <div className="addAction gap-1 justify-content-between">
             <ChangePeriodDropDown
               className={"me-1"}
               dropDownName={dropDownName}
@@ -213,7 +213,8 @@ export default function News() {
                           xs={12}
                           md={6}
                           lg={4}
-                          className="pe-sm-3 pe-0" style={{ paddingTop: '3rem' }}
+                          className="pe-sm-3 pe-0"
+                          style={{ paddingTop: "3rem" }}
                           key={item.id}
                         >
                           <NewsCard
