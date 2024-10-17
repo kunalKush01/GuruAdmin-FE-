@@ -106,7 +106,7 @@ export default function ExpensesForm({
   return (
     <div className="formwrapper FormikWrapper">
       <Formik
-        // enableReinitialize
+        //enableReinitialize
         initialValues={{ ...initialValues }}
         onSubmit={(e) => {
           setShowPrompt(false);
@@ -213,21 +213,31 @@ export default function ExpensesForm({
                             )}
                             name="orderQuantity"
                             onBlur={() => {
+                              if (
+                                formik.values?.perItemAmount &&
+                                formik.values?.orderQuantity
+                              ) {
+                                formik.setFieldValue(
+                                  "Amount",
+                                  Number(formik.values?.orderQuantity) *
+                                    Number(formik.values?.perItemAmount)
+                                );
+                              }
+                            }}
+                            onChange={(e) => {
+                              formik.handleChange(e); // Ensures Formik updates the orderQuantity field
                               if (formik.values?.perItemAmount) {
                                 formik.setFieldValue(
                                   "Amount",
-                                  formik.values?.orderQuantity *
-                                    formik.values?.perItemAmount
+                                  Number(e.target.value) *
+                                    Number(formik.values?.perItemAmount)
                                 );
                               }
                             }}
                             required
-                            autoFocus
-                            onInput={(e) =>
-                              (e.target.value = e.target.value.slice(0, 30))
-                            }
                           />
                         </Col>
+
                         <Col xs={12} md={6}>
                           <CustomTextField
                             type="number"
@@ -235,11 +245,24 @@ export default function ExpensesForm({
                             label={t("price_per_item")}
                             placeholder={t("placeHolder_price_per_item")}
                             onBlur={() => {
+                              if (
+                                formik.values?.orderQuantity &&
+                                formik.values?.perItemAmount
+                              ) {
+                                formik.setFieldValue(
+                                  "Amount",
+                                  Number(formik.values?.orderQuantity) *
+                                    Number(formik.values?.perItemAmount)
+                                );
+                              }
+                            }}
+                            onChange={(e) => {
+                              formik.handleChange(e); // Ensures Formik updates the perItemAmount field
                               if (formik.values?.orderQuantity) {
                                 formik.setFieldValue(
                                   "Amount",
-                                  formik.values?.orderQuantity *
-                                    formik.values?.perItemAmount
+                                  Number(formik.values?.orderQuantity) *
+                                    Number(e.target.value)
                                 );
                               }
                             }}
@@ -248,24 +271,14 @@ export default function ExpensesForm({
                         </Col>
                       </>
                     )}
-                    <Col
-                      xs={12}
-                      md={6}
-                      className={
-                        (formik.values?.expenseType?.value === "assets" ||
-                          formik.values?.expenseType?.value === "consumable") &&
-                        "opacity-75"
-                      }
-                    >
+                    <Col xs={12} md={6}>
                       <CustomTextField
                         type="number"
                         label={t("amount")}
                         placeholder={t("enter_price_manually")}
                         name="Amount"
-                        disabled={
-                          formik.values?.expenseType?.value === "assets" ||
-                          formik.values?.expenseType?.value === "consumable"
-                        }
+                        value={formik.values.Amount || ""} // Show the calculated or manually entered Amount value
+                        onChange={formik.handleChange}
                         required
                       />
                     </Col>
