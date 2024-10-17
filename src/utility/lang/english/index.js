@@ -511,7 +511,7 @@ export const englishContent = {
   expence_amount_required: "Amount is Required",
 
   expence_delete: "Delete Expense",
-  expence_sure: "Are you sure you want to permanently delete this expense ? ",
+  expence_sure: "Are you sure you want to permanently delete this expense?",
   expence_not_found: "No Expenses Found ",
   expence_not_click_add_expence:
     "To record new expenses, click on 'Add Expenses'.",
