@@ -4013,3 +4013,8 @@
         margin-right: 30px;
     }
 }
+
+.search-button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
