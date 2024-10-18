@@ -26,6 +26,7 @@ import momentGenerateConfig from "rc-picker/lib/generate/moment";
 import "../../../src/assets/scss/viewCommon.scss";
 import "../../../src/assets/scss/common.scss";
 import RoomsContainer from "./RoomsContainer";
+import moment from 'moment';
 
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 
@@ -143,6 +144,16 @@ useEffect(() => {
   }
 }, [formik.values.calculatedFields]);
 
+useEffect(() => {
+  if (formik.values.roomsData && formik.values.roomsData.length > 0) {
+    formik.values.roomsData.forEach((room) => {
+      if (room.floor) {
+        fetchRooms(room.floor);
+      }
+    });
+  }
+}, [formik.values.fromDate, formik.values.toDate]);
+
 const idTypeOptions = [
   { value: 'aadhar', label: 'Aadhar Card' },
   { value: 'pan', label: 'PAN Card' },
@@ -256,7 +267,10 @@ const idTypeOptions = [
 
   const fetchRooms = async (floorId) => {
     try {
-      const response = await getAllRoomsByFloorId(floorId);
+      const fromDate = formik.values.fromDate ? moment(formik.values.fromDate).format('YYYY-MM-DD') : '';
+      const toDate = formik.values.toDate ? moment(formik.values.toDate).format('YYYY-MM-DD') : '';
+      
+      const response = await getAllRoomsByFloorId(floorId, fromDate, toDate);
       setRooms((prevRooms) => ({
         ...prevRooms,
         [floorId]: response.results,
@@ -265,9 +279,17 @@ const idTypeOptions = [
       console.error("Error fetching rooms:", error);
     }
   };
+  
+
+  const disabledDate = (current) => {
+    return current && current < moment().startOf('day');
+  };
 
   const handleFromDateChange = (date, dateString) => {
     formik.setFieldValue('fromDate', date);
+    if (formik.values.toDate && date > formik.values.toDate) {
+      formik.setFieldValue('toDate', null);
+    }
   };
   
   const handleToDateChange = (date, dateString) => {
@@ -286,7 +308,7 @@ const idTypeOptions = [
       
       if (suitableRoom) {
         roomsCombination.push({
-          roomTypeId: suitableRoom._id,
+          roomType: suitableRoom._id,
           roomTypeName: suitableRoom.name,
           building: "",
           buildingName: "",
@@ -301,7 +323,7 @@ const idTypeOptions = [
         // If no suitable room found, assign the smallest room
         const smallestRoom = sortedRoomTypes[sortedRoomTypes.length - 1];
         roomsCombination.push({
-          roomTypeId: smallestRoom._id,
+          roomType: smallestRoom._id,
           roomTypeName: smallestRoom.name,
           building: "",
           buildingName: "",
@@ -377,7 +399,7 @@ const idTypeOptions = [
       i === index ? {
         ...room,
         floor: floorId,
-        floorName: floors[formik.values.roomsData[index].building]?.find(f => f._id === floorId)?.name,
+        floorName: floors[room.building]?.find(f => f._id === floorId)?.name,
         roomNumber: "",
         roomId: ""
       } : room
@@ -388,7 +410,8 @@ const idTypeOptions = [
   };
   
   const handleRoomNumberChange = (roomId, index) => {
-    const selectedRoom = (rooms[formik.values.roomsData[index].floor] || []).find(room => room._id === roomId);
+    const floorId = formik.values.roomsData[index].floor;
+    const selectedRoom = (rooms[floorId] || []).find(room => room._id === roomId);
     
     const updatedRooms = formik.values.roomsData.map((room, i) =>
       i === index ? { 
@@ -486,6 +509,7 @@ const idTypeOptions = [
                     format="DD MMM YYYY"
                     placeholder="Select a date"
                     className="custom-datepicker"
+                    disabledDate={disabledDate}
                   />
                 </div>
                 <div className="date-picker-item">
@@ -499,6 +523,10 @@ const idTypeOptions = [
                     format="DD MMM YYYY"
                     placeholder="Select a date"
                     className="custom-datepicker"
+                    disabledDate={(current) => {
+                      return (current && current < moment().startOf('day')) || 
+                             (formik.values.fromDate && current < formik.values.fromDate);
+                    }}
                   />
                 </div>
               </div>
