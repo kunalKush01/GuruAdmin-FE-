@@ -279,6 +279,14 @@ const idTypeOptions = [
       console.error("Error fetching rooms:", error);
     }
   };
+
+  const isSearchEnabled = () => {
+    return (
+      formik.values.fromDate &&
+      formik.values.toDate &&
+      (formik.values.numMen || formik.values.numWomen || formik.values.numKids)
+    );
+  };
   
 
   const disabledDate = (current) => {
@@ -297,6 +305,7 @@ const idTypeOptions = [
   };
 
   const handleSearch = () => {
+    if (!isSearchEnabled()) return;
     const totalGuests = parseInt(formik.values.numMen) + parseInt(formik.values.numWomen) + parseInt(formik.values.numKids);
     const sortedRoomTypes = [...roomTypes].sort((a, b) => b.capacity - a.capacity);
   
@@ -320,7 +329,6 @@ const idTypeOptions = [
         });
         remainingGuests -= suitableRoom.capacity;
       } else {
-        // If no suitable room found, assign the smallest room
         const smallestRoom = sortedRoomTypes[sortedRoomTypes.length - 1];
         roomsCombination.push({
           roomType: smallestRoom._id,
@@ -559,9 +567,14 @@ const idTypeOptions = [
                   className="member-input"
                   placeholder="Kids"
                 />
-                  <button className="search-button" onClick={handleSearch} type="button">
-                    Search
-                  </button>
+                  <button 
+                  className={`search-button ${isSearchEnabled() ? '' : 'disabled'}`} 
+                  onClick={handleSearch} 
+                  type="button"
+                  disabled={!isSearchEnabled()}
+                >
+                  Search
+                </button>
                 </div>
               </div>
             </div>
