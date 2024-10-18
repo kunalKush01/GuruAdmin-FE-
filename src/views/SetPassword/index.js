@@ -154,7 +154,7 @@ const SetPassword = () => {
             {<CardTitle className="fw-bold mb-0 ">Set Password</CardTitle>}
             {loginPageData?.name !== "" && (
               <div className="templeName">
-                Admin:{" "}
+                {" "}
                 <span
                   title={ConverFirstLatterToCapital(loginPageData?.name ?? "")}
                 >

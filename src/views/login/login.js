@@ -315,7 +315,7 @@ const LoginCover = () => {
               {/* {<CardTitle className="fw-bold mb-2 ">Sign In</CardTitle>} */}
               {loginPageData && loginPageData?.name !== "" && (
                 <p className="templeName text-center">
-                  Admin:{" "}
+                  {" "}
                   <span
                     title={ConverFirstLatterToCapital(
                       loginPageData?.name ?? ""
