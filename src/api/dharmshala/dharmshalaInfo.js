@@ -159,12 +159,18 @@ export const deleteHousekeepingTask = (taskId) =>
       showToastOnError: false,
     });
 
-  export const getAllRoomsByFloorId = (floorId) =>
-    callDharmshalaApi({
-      requestFunction: (axios) => axios.get(`rooms/?floorId=${floorId}`),
-      showToastOnSuccess: false,
-      showToastOnError: false,
-    });
+    export const getAllRoomsByFloorId = (floorId, fromDate, toDate) =>
+      callDharmshalaApi({
+        requestFunction: (axios) => axios.get(`rooms/`, {
+          params: {
+            floorId,
+            fromDate,
+            toDate
+          }
+        }),
+        showToastOnSuccess: false,
+        showToastOnError: false,
+      });
 
   export const getAllRoomsByBuildingId = (buildingId) =>
     callDharmshalaApi({

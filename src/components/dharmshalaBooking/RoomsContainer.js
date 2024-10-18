@@ -19,6 +19,16 @@ const RoomsContainer = ({
   isReadOnly = false,
   hideAmountField = false
 }) => {
+
+  const getSelectedRoomIds = () => {
+    return roomsData.map(room => room.roomId).filter(id => id);
+  };
+
+  const handleButtonClick = (action) => (event) => {
+    event.preventDefault();
+    action();
+  };
+
   return (
     <div className="rooms-container">
       <div className="rooms-header">
@@ -32,10 +42,10 @@ const RoomsContainer = ({
                 Room Type:
               </label>
               <div className="input-with-icon">
-                <select
+              <select
                   id={`room-type-${index}`}
                   className="room-dropdown"
-                  value={room.roomTypeId}
+                  value={room.roomType || ""}
                   onChange={(e) => handleRoomTypeChange(e.target.value, index)}
                   disabled={isReadOnly}
                 >
@@ -101,14 +111,15 @@ const RoomsContainer = ({
                 className="room-number-dropdown"
                 value={room.roomId}
                 onChange={(e) => handleRoomNumberChange(e.target.value, index)}
-                disabled={isReadOnly || !room.floor}
+                disabled={isReadOnly || !room.floor || !room.roomType}
               >
                 <option value="">Select Room Number</option>
                 {(rooms[room.floor] || [])
-                  .filter((r) => r.roomTypeId === room.roomTypeId)
-                  .map((room) => (
-                    <option key={room._id} value={room._id}>
-                      {room.roomNumber}
+                  .filter((r) => r.roomTypeId === room.roomType)
+                  .filter((r) => !getSelectedRoomIds().includes(r._id) || r._id === room.roomId)
+                  .map((availableRoom) => (
+                    <option key={availableRoom._id} value={availableRoom._id}>
+                      {availableRoom.roomNumber}
                     </option>
                   ))}
               </select>
@@ -143,10 +154,10 @@ const RoomsContainer = ({
       </div>
       {!isPartialView && (
         <div className="rooms-buttons">
-          <button className="add-rooms-button" onClick={handleAddRoom}>
+          <button className="add-rooms-button" onClick={handleButtonClick(handleAddRoom)}>
             Add More Rooms
           </button>
-          <button className="clear-rooms-button" onClick={handleClearRooms}>
+          <button className="clear-rooms-button" onClick={handleButtonClick(handleClearRooms)}>
             Clear All
           </button>
         </div>

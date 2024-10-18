@@ -80,7 +80,7 @@ const AddDharmshalaBooking = () => {
         numKids: "",
         roomsData: [
           {
-            roomTypeId: property?.roomTypeId || "",
+            roomTypeId: property?.roomType || "",
             building: property?.buildingId || "",
             floor: property?.floorId || "",
             roomId: property?._id || "",
