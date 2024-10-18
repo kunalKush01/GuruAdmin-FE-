@@ -27,6 +27,7 @@ import passwordEyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-e
 import backIconIcon from "../../assets/images/icons/signInIcon/backIcon.svg";
 import emailInputIcon from "../../assets/images/icons/signInIcon/email.svg";
 import hidePassIcon from "../../assets/images/icons/signInIcon/hidePassIcon.svg";
+import placeholderImage from "../../assets/images/pages/placeholder.webp";
 import {
   handleTokenLogin,
   handleTrustDetail,
@@ -221,8 +222,9 @@ const LoginCover = () => {
 
   const { skin } = useSkin();
 
-  const illustration = skin === "dark" ? "login-v2-dark.svg" : "main-logo.png",
-    source = require(`@src/assets/images/pages/${illustration}`).default;
+  //   const illustration = skin === "dark" ? "login-v2-dark.svg" : "main-logo.png",
+  //     source = require(`@src/assets/images/pages/placeholder.png`).default;
+  const source = placeholderImage;
 
   const headers = {
     ...defaultHeaders,
@@ -276,10 +278,43 @@ const LoginCover = () => {
           sm="12"
         >
           {!forgotPassWordActive ? (
-            <Col className="px-xl-2 mx-auto" xs="12" sm="8" md="6" lg="12">
-              {<CardTitle className="fw-bold mb-2 ">Sign In</CardTitle>}
+            <Col
+              className="px-xl-2 mx-auto"
+              xs="12"
+              sm="8"
+              md="6"
+              lg="12"
+              style={{
+                backgroundColor: "#FCF5E7",
+                borderRadius: "8px",
+                padding: "20px",
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+              }}
+            >
+              <div
+                className="logo-container"
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <img
+                  src="/static/media/main-logo.90679d22e72add629886.png"
+                  alt="Logo"
+                  style={{
+                    maxWidth: "200px", // Set a specific width
+                    height: "auto",
+                    marginLeft: "0", // Ensure no left margin
+                    marginRight: "0",
+                    marginBottom: "20px", // Ensure no right margin
+                  }}
+                />
+              </div>
+
+              {/* {<CardTitle className="fw-bold mb-2 ">Sign In</CardTitle>} */}
               {loginPageData && loginPageData?.name !== "" && (
-                <p className="templeName">
+                <p className="templeName text-center">
                   Admin:{" "}
                   <span
                     title={ConverFirstLatterToCapital(
