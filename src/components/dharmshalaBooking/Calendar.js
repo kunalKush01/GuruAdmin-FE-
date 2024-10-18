@@ -26,7 +26,7 @@ const PlaceholderRows = ({ numRows, numCells, fromDate, toDate }) => {
     if (fromDate && toDate) {
       const start = moment(fromDate);
       const end = moment(toDate);
-      const days = end.diff(start, 'days') + 1; // Include end date
+      const days = end.diff(start, "days") + 1; // Include end date
       return Array.from({ length: days });
     }
     return Array.from({ length: numCells });
@@ -272,7 +272,7 @@ const Calendar = () => {
     }
   };
   const [eventColors, setEventColors] = useState({});
-  const colorPalette = ["#4D9DE0", "#E15554", "#E1BC29", "#3BB273", "#7768AE"];
+  const colorPalette = ["#E9F8FD", "#EDEDFE", "#FEF6E7", "#F1FBE7", "#FCEBEA"];
   const getColorForEvent = (index) => {
     return colorPalette[index % colorPalette.length];
   };
@@ -334,8 +334,8 @@ const Calendar = () => {
     const to = toDate ? moment(toDate, "DD-MM-YYYY") : null;
 
     if (!from || !to) {
-      setAvailableRooms(filteredProperties ? filteredProperties : []); 
-      return; 
+      setAvailableRooms(filteredProperties ? filteredProperties : []);
+      return;
     }
 
     const bookedRoomIds = new Set();
@@ -598,7 +598,7 @@ const Calendar = () => {
                     label: type,
                   })),
                 ]}
-                style={{ width: "100%" }}
+                style={{ width: "100%", backgroundColor: "#ffffff" }}
                 onChange={(value) => {
                   setSelectedRoomType(value?.value);
                 }}
