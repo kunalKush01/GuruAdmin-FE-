@@ -272,7 +272,7 @@ const Calendar = () => {
     }
   };
   const [eventColors, setEventColors] = useState({});
-  const colorPalette = ["#E9F8FD", "#EDEDFE", "#FEF6E7", "#F1FBE7", "#FCEBEA"];
+  const colorPalette = ["#E9F8FD", "#5F69E6", "#F3B64B", "#79BB43", "#EC5B52"];
   const getColorForEvent = (index) => {
     return colorPalette[index % colorPalette.length];
   };
@@ -598,7 +598,7 @@ const Calendar = () => {
                     label: type,
                   })),
                 ]}
-                style={{ width: "100%", backgroundColor: "#ffffff" }}
+                style={{ width: "100%" }}
                 onChange={(value) => {
                   setSelectedRoomType(value?.value);
                 }}

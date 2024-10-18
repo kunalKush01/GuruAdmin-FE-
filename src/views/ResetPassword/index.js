@@ -175,7 +175,7 @@ const ResetPassWord = () => {
 
             {loginPageData?.name !== "" && (
               <div className="templeName">
-                Admin:{" "}
+                {" "}
                 <span
                   title={ConverFirstLatterToCapital(loginPageData?.name ?? "")}
                 >
