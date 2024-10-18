@@ -139,7 +139,7 @@ export default function AddForm({
     <div className="FormikWrapper">
       <Formik
         initialValues={initialValues}
-        validationSchema={validationSchema}
+        // validationSchema={validationSchema}
         onSubmit={(formData) => {
           const payload = {
             trustId: trustId && trustId,
