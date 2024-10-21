@@ -50,6 +50,8 @@ export const createRoomType = (payload) =>
   callDharmshalaApi({
     requestFunction: (axios) => axios.post(`roomTypes/`, payload),
     successCode: 201,
+    showToastOnSuccess: false,
+    showToastOnError: false,
   });
 
 export const getRoomTypeList = () =>
