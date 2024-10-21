@@ -319,15 +319,6 @@ export default function EventForm({
                   )}
                 </Row>
                 <Row>
-                  <Col xs={12} className="">
-                    <RichTextField
-                      height="200px"
-                      label={t("news_label_Description")}
-                      name="Body"
-                    />
-                  </Col>
-                </Row>
-                <Row>
                   <Col xs={12} md={6}>
                     {!AddLanguage ? (
                       <>
@@ -385,6 +376,15 @@ export default function EventForm({
                       </Col>
                     </>
                   )}
+                </Row>
+                <Row>
+                  <Col xs={12} className="">
+                    <RichTextField
+                      height="200px"
+                      label={t("news_label_Description")}
+                      name="Body"
+                    />
+                  </Col>
                 </Row>
                 {!AddLanguage && (
                   <Row>
