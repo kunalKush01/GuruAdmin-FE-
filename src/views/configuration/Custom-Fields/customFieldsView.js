@@ -3,12 +3,13 @@ import { Tabs } from "antd";
 import CustomFieldTable from "../../../components/custom-fields/customFieldTable";
 import { Button } from "reactstrap";
 import { Plus } from "react-feather";
-import '../../../assets/scss/common.scss'
+import "../../../assets/scss/common.scss";
 import AddCustomField from "./addCustomField";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   getDonationBoxCustomFields,
   getDonationCustomFields,
+  getExpensesCustomFields,
   getPledgeCustomFields,
 } from "../../../api/customFieldsApi";
 
@@ -39,6 +40,13 @@ const customFieldsView = () => {
       keepPreviousData: true,
     }
   );
+  const expenses_query = useQuery(
+    ["getExpensesFields"],
+    () => getExpensesCustomFields(),
+    {
+      keepPreviousData: true,
+    }
+  );
 
   const donation_custom_fields = useMemo(
     () => donation_query?.data ?? [],
@@ -52,6 +60,10 @@ const customFieldsView = () => {
     () => donation_box_query?.data ?? [],
     [donation_box_query]
   );
+  const expenses_custom_fields = useMemo(
+    () => expenses_query?.data ?? [],
+    [expenses_query]
+  );
 
   const handleRowSuccess = () => {
     if (activeTab === "Donation") {
@@ -60,6 +72,8 @@ const customFieldsView = () => {
       queryClient.invalidateQueries(["getPledgeFields"]);
     } else if (activeTab === "Donation Box") {
       queryClient.invalidateQueries(["getDonationBoxFields"]);
+    } else if (activeTab === "Expenses") {
+      queryClient.invalidateQueries(["getExpensesFields"]);
     }
   };
   const trustId = localStorage.getItem("trustId");
@@ -152,6 +166,39 @@ const customFieldsView = () => {
               </Button>
             </div>
             <CustomFieldTable customFields={donation_box_custom_fields} />
+          </div>
+          <AddCustomField
+            trustId={trustId}
+            isOpen={isFormOpen}
+            toggle={toggleForm}
+            // onSubmit={handleFormSubmit}
+            onSuccess={handleRowSuccess}
+            activeTab={activeTab}
+          />
+        </>
+      ),
+    },
+    {
+      key: "Expenses",
+      label: "Expenses",
+      children: (
+        <>
+          <div>
+            <div
+              className="d-flex justify-content-end w-100"
+              style={{ marginBottom: "10px" }}
+            >
+              <Button className="" id="addCustomFieldBtn" onClick={toggleForm}>
+                <Plus
+                  className=""
+                  size={15}
+                  strokeWidth={4}
+                  style={{ marginRight: "5px" }}
+                />
+                Add
+              </Button>
+            </div>
+            <CustomFieldTable customFields={expenses_custom_fields} />
           </div>
           <AddCustomField
             trustId={trustId}
