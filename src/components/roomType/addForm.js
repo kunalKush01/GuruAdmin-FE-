@@ -32,7 +32,7 @@ const AddRoomTypeForm = ({
         toast.success(t("roomtype_added_successfully"));
       } else if (data?.error) {
         setLoading(false);
-        const errorMessage = typeof data.error === 'string' ? data.error : t("A room type with this name already exists in the Dharmshala.");
+        const errorMessage = typeof data.error === 'string' ? data.error : t("A room type with this name already exists in the Dharmshala");
         toast.error(t(errorMessage));
       }
     },
