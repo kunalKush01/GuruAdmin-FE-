@@ -9,6 +9,8 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import ExpensesForm from "../../components/internalExpenses/expensesForm";
 
 import "../../assets/scss/viewCommon.scss";
+import { getExpensesCustomFields } from "../../api/customFieldsApi";
+import { useQuery } from "@tanstack/react-query";
 
 export const ExpenseType = [
   {
@@ -25,9 +27,19 @@ export const ExpenseType = [
   },
 ];
 
+export default function AddNews() {
 const handleCreateExpense = async (payload) => {
   return createExpense(payload);
 };
+const customFieldsQuery = useQuery(
+  ["getExpensesFields"],
+  async () => await getExpensesCustomFields(),
+  {
+    keepPreviousData: true,
+  }
+);
+const customFieldsList = customFieldsQuery?.data?.customFields ?? [];
+
 const schema = Yup.object().shape({
   Title: Yup.string()
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
@@ -60,9 +72,18 @@ const schema = Yup.object().shape({
   }),
 
   DateTime: Yup.string(),
+  customFields: Yup.object().shape(
+    customFieldsList.reduce((acc, field) => {
+      if (field.isRequired) {
+        acc[field.fieldName] = Yup.mixed().required(
+          `${field.fieldName} is required`
+        );
+      }
+      return acc;
+    }, {})
+  ),
 });
 
-export default function AddNews() {
   const history = useHistory();
   const langArray = useSelector((state) => state.auth.availableLang);
 
@@ -83,6 +104,10 @@ export default function AddNews() {
     Body: "",
     AddedBy: loggedInUser,
     DateTime: new Date(),
+    customFields: customFieldsList.reduce((acc, field) => {
+      acc[field.fieldName] = "";
+      return acc;
+    }, {}),
   };
 
   return (
@@ -109,6 +134,7 @@ export default function AddNews() {
           initialValues={initialValues}
           expenseTypeArr={ExpenseType}
           validationSchema={schema}
+          customFieldsList={customFieldsList}
           showTimeInput
           buttonName="expenses_AddExpenses"
         />
