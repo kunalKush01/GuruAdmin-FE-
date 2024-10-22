@@ -16,6 +16,7 @@ import '../../../assets/scss/common.scss'
 import {
   createDonationBoxCustomFields,
   createDonationCustomFields,
+  createExpensesCustomFields,
   createPledgeCustomFields,
 } from "../../../api/customFieldsApi";
 import { getAllMastersWithoutPagination, getMasterDataById } from "../../../api/masterApi";
@@ -177,6 +178,28 @@ const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
           });
         });
     }
+    else if (activeTab == "Expenses") {
+      createExpensesCustomFields(payload)
+        .then(() => {
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "Custom field added successfully.",
+          });
+          onSuccess(true);
+          setFormData(initialFormData);
+          toggle();
+        })
+        .catch((error) => {
+          onSuccess(false);
+          console.error("Error adding custom field:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Failed to add custom field.",
+          });
+        });
+    }
   };
 
   return (
@@ -194,139 +217,153 @@ const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
         </div>
       </ModalHeader>
       <ModalBody>
-        <Form className="row">
-          <FormGroup className="col-md-12">
-            <Label
-              for="fieldName"
-              style={{ fontSize: "13px", fontWeight: "500" }}
-            >
-              Field Name
-              <span className="text-danger">*</span>
-            </Label>
-            <Input
-              type="text"
-              placeholder="Enter text here"
-              name="fieldName"
-              id="fieldName"
-              value={formData.fieldName}
-              onChange={handleChange}
-              onBlur={() =>
-                handleInputBlur({ name: "fieldName", isRequired: true })
-              }
-            />
-            {validationMessages.fieldName && (
-              <div style={{ color: "#ff8744", fontSize: "12px" }}>
-                {validationMessages.fieldName}
-              </div>
-            )}
-          </FormGroup>
-          <FormGroup className="col-md-6">
-            <Label
-              for="fieldType"
-              style={{ fontSize: "13px", fontWeight: "500" }}
-            >
-              Field Type
-            </Label>
-            <Input
-              type="select"
-              name="fieldType"
-              id="fieldType"
-              value={formData.fieldType}
-              onChange={handleChange}
-            >
-              <option value="String">String</option>
-              <option value="Number">Number</option>
-              <option value="Boolean">Boolean</option>
-              <option value="Date">Date</option>
-            </Input>
-          </FormGroup>
-          <FormGroup className="col-md-6">
-            <Label for="value" style={{ fontSize: "13px", fontWeight: "500" }}>
-              Value
-            </Label>
-            {formData.fieldType === "Boolean" ? (
-              <Input
-                type="select"
-                name="value"
-                id="value"
-                value={formData.value}
-                onChange={handleChange}
+        <Form>
+          <div className="row">
+            <FormGroup className="col-md-12">
+              <Label
+                for="fieldName"
+                style={{ fontSize: "13px", fontWeight: "500" }}
               >
-                <option value="true">True</option>
-                <option value="false">False</option>
-              </Input>
-            ) : (
+                Field Name
+                <span className="text-danger">*</span>
+              </Label>
               <Input
                 type="text"
-                name="value"
-                id="value"
-                value={formData.value}
+                placeholder="Enter text here"
+                name="fieldName"
+                id="fieldName"
+                value={formData.fieldName}
                 onChange={handleChange}
-                placeholder="Enter value here"
+                onBlur={() =>
+                  handleInputBlur({ name: "fieldName", isRequired: true })
+                }
               />
-            )}
-          </FormGroup>
-          <FormGroup className="col-md-6">
-            <Label for="master" style={{ fontSize: "13px", fontWeight: "500" }}>
-              Master List
-            </Label>
-            <Input
-              type="select"
-              name="master"
-              id="master"
-              value={formData.master}
-              onChange={handleChange}
-            >
-              <option value="">Select Option</option>
-              {masterItem &&
-                masterItem.map((item) => {
-                  return <option value={item.id}>{item.name}</option>;
-                })}
-            </Input>
-          </FormGroup>
-          <FormGroup className="col-md-6">
-            <Label
-              for="masterData"
-              style={{ fontSize: "13px", fontWeight: "500" }}
-            >
-              Master Data List
-            </Label>
-            <Input
-              type="select"
-              name="masterData"
-              id="masterData"
-              value={formData.masterData}
-              onChange={handleChange}
-            >
-              <option value="">Select Option</option>
-              {masterItem &&
-                masterDataItem &&
-                Object.values(masterDataItem?.schema || {}).map(
-                  (item, index) => {
-                    return (
-                      <option key={index} value={item.name}>
-                        {item.name}
-                      </option>
-                    );
-                  }
-                )}
-            </Input>
-          </FormGroup>
-          <FormGroup className="col-md-6">
-            <Label
-              for="isRequired"
-              style={{ fontSize: "13px", fontWeight: "500" }}
-            >
-              Is Required
-            </Label>
-            <Input
-              type="checkbox"
-              name="isRequired"
-              id="isRequired"
-              checked={formData.isRequired}
-              onChange={handleChange}
-            />
-          </FormGroup>
+              {validationMessages.fieldName && (
+                <div style={{ color: "#ff8744", fontSize: "12px" }}>
+                  {validationMessages.fieldName}
+                </div>
+              )}
+            </FormGroup>
+          </div>
+          <div className="row">
+            <FormGroup className="col-md-6 col-sm-12">
+              <Label
+                for="fieldType"
+                style={{ fontSize: "13px", fontWeight: "500" }}
+              >
+                Field Type
+              </Label>
+              <Input
+                type="select"
+                name="fieldType"
+                id="fieldType"
+                value={formData.fieldType}
+                onChange={handleChange}
+              >
+                <option value="String">String</option>
+                <option value="Number">Number</option>
+                <option value="Boolean">Boolean</option>
+                <option value="Date">Date</option>
+              </Input>
+            </FormGroup>
+            <FormGroup className="col-md-6 col-sm-12">
+              <Label
+                for="value"
+                style={{ fontSize: "13px", fontWeight: "500" }}
+              >
+                Value
+              </Label>
+              {formData.fieldType === "Boolean" ? (
+                <Input
+                  type="select"
+                  name="value"
+                  id="value"
+                  value={formData.value}
+                  onChange={handleChange}
+                >
+                  <option value="true">True</option>
+                  <option value="false">False</option>
+                </Input>
+              ) : (
+                <Input
+                  type="text"
+                  name="value"
+                  id="value"
+                  value={formData.value}
+                  onChange={handleChange}
+                  placeholder="Enter value here"
+                />
+              )}
+            </FormGroup>
+          </div>
+          <div className="row">
+            <FormGroup className="col-md-6 col-sm-12">
+              <Label
+                for="master"
+                style={{ fontSize: "13px", fontWeight: "500" }}
+              >
+                Master List
+              </Label>
+              <Input
+                type="select"
+                name="master"
+                id="master"
+                value={formData.master}
+                onChange={handleChange}
+              >
+                <option value="">Select Option</option>
+                {masterItem &&
+                  masterItem.map((item) => {
+                    return <option value={item.id}>{item.name}</option>;
+                  })}
+              </Input>
+            </FormGroup>
+            <FormGroup className="col-md-6 col-sm-12">
+              <Label
+                for="masterData"
+                style={{ fontSize: "13px", fontWeight: "500" }}
+              >
+                Master Data List
+              </Label>
+              <Input
+                type="select"
+                name="masterData"
+                id="masterData"
+                value={formData.masterData}
+                onChange={handleChange}
+              >
+                <option value="">Select Option</option>
+                {masterItem &&
+                  masterDataItem &&
+                  Object.values(masterDataItem?.schema || {}).map(
+                    (item, index) => {
+                      return (
+                        <option key={index} value={item.name}>
+                          {item.name}
+                        </option>
+                      );
+                    }
+                  )}
+              </Input>
+            </FormGroup>
+          </div>
+          <div className="row">
+            <FormGroup className="col-md-6 col-sm-12">
+              <Label
+                for="isRequired"
+                style={{ fontSize: "13px", fontWeight: "500" }}
+              >
+                Is Required
+              </Label>
+              <Input
+                type="checkbox"
+                name="isRequired"
+                id="isRequired"
+                checked={formData.isRequired}
+                onChange={handleChange}
+              />
+            </FormGroup>
+          </div>
         </Form>
       </ModalBody>
       <ModalFooter>
