@@ -3,7 +3,11 @@ import React from "react";
 import { CustomReactSelect } from "./customReactSelect";
 import { Trans } from "react-i18next";
 
-export default function FormikCustomReactSelect({ loadOptions,required, ...props }) {
+export default function FormikCustomReactSelect({
+  loadOptions,
+  required,
+  ...props
+}) {
   const [field, meta, helpers] = useField(props);
 
   return (
@@ -16,7 +20,7 @@ export default function FormikCustomReactSelect({ loadOptions,required, ...props
         {...props}
         required={required}
       />
-      <div classname="reactselectlabel">
+      <div className="reactselectlabel">
         {meta.error && meta.touched && (
           <div className="text-danger">
             <Trans i18nKey={meta.error} />
