@@ -4,36 +4,36 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import CustomDataTable from "../partials/CustomDataTable";
 import "../../assets/scss/common.scss";
+import { Table } from "antd";
 export default function LogListTable({ data }) {
   const { t } = useTranslation();
-
   const columns = [
     {
-      name: t("logData_editedBy"),
-      selector: (row) => row.editedBy,
+      title: t("logData_editedBy"),
+      dataIndex: "editedBy",
+      key: "editedBy",
     },
     {
-      name: t("logData_createdBy"),
-      selector: (row) => row.createdBy,
-      // width:"150px",
+      title: t("logData_createdBy"),
+      dataIndex: "createdBy",
+      key: "createdBy",
     },
     {
-      name: t("logData_timeDate"),
-      selector: (row) => row.timeDate,
-      // width:"150px",
+      title: t("logData_timeDate"),
+      dataIndex: "timeDate",
+      key: "timeDate",
     },
-
     {
-      name: t("logData_createdAmount"),
-      selector: (row) => row.createdAmount,
+      title: t("logData_createdAmount"),
+      dataIndex: "createdAmount",
+      key: "createdAmount",
     },
-
     {
-      name: t("logData_editedAmount"),
-      selector: (row) => row.editedAmount,
+      title: t("logData_editedAmount"),
+      dataIndex: "editedAmount",
+      key: "editedAmount",
     },
   ];
-
   const logData = useMemo(() => {
     return data.map((item, idx) => {
       return {
@@ -49,7 +49,12 @@ export default function LogListTable({ data }) {
 
   return (
     <div className="loglisttablewrapper">
-      <CustomDataTable columns={columns} maxHeight="350px" data={logData} />
+      {/* <CustomDataTable columns={columns} maxHeight="350px" data={logData} /> */}
+      <Table
+      className="donationListTable"
+        columns={columns} 
+        dataSource={logData} 
+      />
     </div>
   );
 }
