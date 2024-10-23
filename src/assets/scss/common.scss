@@ -2905,7 +2905,7 @@
 }
 
 .ant-layout-content {
-    padding: 5px !important;
+    padding: 5px 5px 10px 5px !important;
     max-height: 100vh;
     overflow-y: auto;
 }
@@ -2923,16 +2923,25 @@
     color: $font-color;
     opacity: 1;
     font-weight: bold;
+    height: 30px;
+    padding: 2px 2px 5px 2px;
 }
 
 .ant-tabs .ant-tabs-tab-btn {
     transform: none;
     transition: none;
     color: $font-color;
+    height: 30px;
+    padding: 2px 2px 5px 2px;
 }
 
 .ant-tabs-ink-bar {
     display: none;
+    height: 30px;
+}
+
+.ant-tabs-nav-wrap {
+    height: 30px;
 }
 
 .text-danger {
