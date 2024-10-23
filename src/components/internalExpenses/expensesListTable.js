@@ -63,6 +63,13 @@ export function ExpensesListTable({
       title: t("expenses_Date"),
       dataIndex: "date",
       width: 200,
+      render: (date) => {
+        const formattedDate = moment(date)
+          .local()
+          .format("DD MMM YYYY");
+    
+        return formattedDate;
+      },
     },
     {
       title: t("dashboard_Recent_DonorAmount"),

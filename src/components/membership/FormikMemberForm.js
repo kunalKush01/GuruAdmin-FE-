@@ -16,7 +16,7 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import moment from "moment";
 import { useQuery } from "@tanstack/react-query";
 import { API_BASE_URL } from "../../axiosApi/authApiInstans";
-import { getMasterByKey } from "../../api/membershipApi";
+import { getMasterByKey, getMastersByKeys } from "../../api/membershipApi";
 import { uploadFile } from "../../api/sharedStorageApi";
 
 const CustomDatePickerComponent =
@@ -39,66 +39,76 @@ function FormikMemberForm({
   ...props
 }) {
   const { t } = useTranslation();
-  // const customRequest = async ({ file, onSuccess, onError,name}) => {
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append("file", file);
-
-  //     const response = await uploadFile(formData);
-  //     if (response && response.data.result) {
-  //       console.log(response)
-  //       formik.setFieldValue(name,response.data.result.filePath);
-  //       onSuccess(response.data.result.filePath);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error uploading file:", error);
-  //     onError(new Error("Error uploading file"));
-  //   }
-  // };
-  const customRequest = async ({ file, onSuccess, onError, name, isMultiple }) => {
+  const customRequest = async ({ file, onSuccess, onError,name}) => {
     try {
       const formData = new FormData();
-  
-      // If isMultiple is true, and the file is an array, append all files
-      if (isMultiple) {
-        const filesArray = Array.isArray(file) ? file : [file]; // Ensure we have an array
-        filesArray.forEach(fileItem => {
-          formData.append('files', fileItem); // Use 'files' for multiple uploads
-        });
-      } else {
-        // For single file upload
-        formData.append("file", file);
-      }
-  
-      console.log('Files being uploaded:', formData.getAll('files')); // Log the files being uploaded
-  
-      const response = await uploadFile(formData, isMultiple); // Pass isMultiple to uploadFile
-  
-      if (response && response.data) {
-        if (isMultiple) {
-          // If multiple, extract and set all file paths
-          const filePaths = response.data.filePaths; // Ensure backend returns an array of paths
-          formik.setFieldValue(name, filePaths);
-        } else {
-          formik.setFieldValue(name, response.data.result.filePath);
-        }
-        onSuccess(isMultiple ? response.data.filePaths : response.data.result.filePath);
+      formData.append("file", file);
+
+      const response = await uploadFile(formData);
+      if (response && response.data.result) {
+        console.log(response)
+        formik.setFieldValue(name,response.data.result.filePath);
+        onSuccess(response.data.result.filePath);
       }
     } catch (error) {
       console.error("Error uploading file:", error);
       onError(new Error("Error uploading file"));
     }
   };
-  
+  // const customRequest = async ({
+  //   file,
+  //   onSuccess,
+  //   onError,
+  //   name,
+  //   isMultiple,
+  // }) => {
+  //   try {
+  //     const formData = new FormData();
+
+  //     // If isMultiple is true, and the file is an array, append all files
+  //     if (isMultiple) {
+  //       const filesArray = Array.isArray(file) ? file : [file]; // Ensure we have an array
+  //       filesArray.forEach((fileItem) => {
+  //         formData.append("files", fileItem); // Use 'files' for multiple uploads
+  //       });
+  //     } else {
+  //       // For single file upload
+  //       formData.append("file", file);
+  //     }
+
+  //     console.log("Files being uploaded:", formData.getAll("files")); // Log the files being uploaded
+
+  //     const response = await uploadFile(formData, isMultiple); // Pass isMultiple to uploadFile
+
+  //     if (response && response.data) {
+  //       if (isMultiple) {
+  //         // If multiple, extract and set all file paths
+  //         const filePaths = response.data.filePaths; // Ensure backend returns an array of paths
+  //         formik.setFieldValue(name, filePaths);
+  //       } else {
+  //         formik.setFieldValue(name, response.data.result.filePath);
+  //       }
+  //       onSuccess(
+  //         isMultiple ? response.data.filePaths : response.data.result.filePath
+  //       );
+  //     }
+  //   } catch (error) {
+  //     console.error("Error uploading file:", error);
+  //     onError(new Error("Error uploading file"));
+  //   }
+  // };
+
   const [isSameAsHome, setIsSameAsHome] = useState(false);
   function extractEnumMasters(schemaObject) {
-    let enumMasters;
+    const enumMasters = []; // Initialize an array to store enumMaster keys
 
     function traverse(obj) {
       if (obj && typeof obj === "object") {
+        // Check if the current object has an enumMaster property
         if (obj.enumMaster) {
-          enumMasters = obj.enumMaster;
+          enumMasters.push({enumKey:obj.enumMaster,title:obj.title}); // Store the enumMaster key
         }
+        // Recursively traverse each property of the object
         Object.keys(obj).forEach((key) => {
           if (typeof obj[key] === "object") {
             traverse(obj[key]);
@@ -108,26 +118,35 @@ function FormikMemberForm({
     }
 
     traverse(schemaObject);
-    return enumMasters;
+    // console.log(enumMasters); // Log all collected enumMasters
+    return enumMasters; // Return the array of all enumMasters
   }
+
   const enumMasters = extractEnumMasters(schema);
+
   const masterQuery = useQuery(
-    ["MastersKeys", enumMasters], // Include enumMasters in the query key
-    () => getMasterByKey(enumMasters), // Fetch master data using the key
+    ["MastersKeys", ...enumMasters.map((master) => master.enumKey)], // Use enumKeys for unique query keys
+    () => getMastersByKeys(enumMasters.map((master) => master.enumKey)), // Fetch master data using the enumKeys
     {
-      enabled: !!enumMasters, // Only run the query if enumMasters is not null/undefined
+      enabled: enumMasters.length > 0, // Only run the query if enumMasters is not empty
       keepPreviousData: true, // Keep previous data while fetching new data
     }
   );
 
-  const masterItem = useMemo(
-    () => masterQuery?.data ?? [], // Fallback to an empty array if there's no data
+  // Process the fetched data
+  const masterItems = useMemo(
+    () => masterQuery.data ?? [], // Fallback to an empty array if there's no data
     [masterQuery.data] // Only recalculate when the query data changes
   );
-  const firstValue = masterItem?.values ? Object.values(masterItem.values) : [];
-  const firstValueResult =
-    firstValue.length > 0 && firstValue[0]?.length > 0 ? firstValue[0] : null;
 
+  // Flatten the results from the fetched data
+  const firstValues = masterItems.map((item) =>
+    item.values ? Object.values(item.values) : []
+  );
+  const firstValueResult = firstValues.map((values) =>
+    values.length > 0 ? values[0] : null
+  );
+// console.log(firstValueResult)
   const handleCheckboxChange = (e) => {
     setIsSameAsHome(e.target.checked);
     if (e.target.checked) {
@@ -153,12 +172,12 @@ function FormikMemberForm({
     const hasDateFormat = fieldSchema.format === "date";
     const hasNumberFormat = fieldSchema.format === "number";
     const hasEnum = Array.isArray(fieldSchema.enum);
-    const hasUrl = fieldSchema.format === "Url"||fieldSchema?.items?.format === "Url";
+    const hasUrl =
+      fieldSchema.format === "Url" || fieldSchema?.items?.format === "Url";
     const isRequired = fieldSchema.isRequired;
     const dateValidation = fieldSchema.dateValidation;
     const isMultipleUpload = fieldSchema.isMultiple;
     const enumKey = fieldSchema.enumMaster;
-
     if (hasDateFormat) {
       return (
         <Col
@@ -210,10 +229,19 @@ function FormikMemberForm({
           <Upload
             name={name}
             listType="picture"
-            customRequest={({ file, onSuccess, onError }) => customRequest({ file, onSuccess, onError, name ,isMultiple:isMultipleUpload})} 
+            customRequest={({ file, onSuccess, onError }) =>
+              customRequest({
+                file,
+                onSuccess,
+                onError,
+                name,
+                isMultiple: isMultipleUpload,
+              })
+            }
             style={{ width: "100%" }}
-            multiple={isMultipleUpload}
-            maxCount={!isMultipleUpload && 1}
+            // multiple={isMultipleUpload}
+            // maxCount={!isMultipleUpload && 1}
+            maxCount={ 1}
           >
             <AntdButton
               icon={
@@ -232,7 +260,18 @@ function FormikMemberForm({
       );
     }
 
-    if (hasEnum) {
+    if (hasEnum||enumKey) {
+      const loadOptions = enumKey && firstValueResult
+      ? firstValueResult.find((result, index) => {
+          return enumMasters[index]?.enumKey.trim() === enumKey.trim();
+      })?.filter(value => value !== "").map(value => ({
+          id: value,
+          name: t(value),
+      }))
+      : fieldSchema.enum.map(value => ({
+          id: value,
+          name: t(value),
+      }));
       return (
         <Col
           xs={12}
@@ -244,17 +283,7 @@ function FormikMemberForm({
           <FormikCustomReactSelect
             labelName={t(fieldSchema.title || name)}
             loadOptions={
-              enumKey && firstValueResult
-                ? firstValueResult
-                    .filter((value) => value !== "")
-                    .map((value) => ({
-                      id: value,
-                      name: t(value),
-                    }))
-                : fieldSchema.enum.map((value) => ({
-                    id: value,
-                    name: t(value),
-                  }))
+              loadOptions
             }
             name={name}
             labelKey="name"
@@ -442,6 +471,7 @@ function FormikMemberForm({
                                   className="py-1 memberAddInput"
                                 >
                                   <CustomTextField
+                                    type="number"
                                     name="pincode"
                                     placeholder="Enter Pincode"
                                     value={formik.values.pincode}
@@ -662,6 +692,7 @@ function FormikMemberForm({
                                   className="py-1 memberAddInput"
                                 >
                                   <CustomTextField
+                                    type="number"
                                     name="correspondencePincode"
                                     placeholder="Enter Pincode"
                                     value={formik.values.correspondencePincode}
