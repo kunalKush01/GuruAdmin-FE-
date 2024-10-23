@@ -138,6 +138,7 @@
             amountPaid: paymentDetails.amount,
             paymentDetails,
             security: bookingData.security,
+            imagePath: bookingData.imagePath,
           };
 
           let bookingResponse;

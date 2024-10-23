@@ -6,6 +6,7 @@ import { Button, Col, Row, Spinner } from "reactstrap";
 import { Plus } from "react-feather";
 import { DatePicker } from "antd";
 import { Timeline } from "antd";
+import {  Upload, message } from "antd";
 import Swal from "sweetalert2";
 import CustomTextField from "../partials/customTextField";
 import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
@@ -27,6 +28,8 @@ import "../../../src/assets/scss/viewCommon.scss";
 import "../../../src/assets/scss/common.scss";
 import RoomsContainer from "./RoomsContainer";
 import moment from 'moment';
+import { UploadOutlined } from "@ant-design/icons";
+import { uploadFile, deleteFile, downloadFile } from '../../api/sharedStorageApi'; 
 
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 
@@ -47,18 +50,12 @@ export default function FormWithoutFormikForBooking({
 }) {
   const { t } = useTranslation();
   const history = useHistory();
-  // const [fromDate, setFromDate] = useState(null);
-  // const [toDate, setToDate] = useState(null);
-  // const [numMen, setNumMen] = useState("");
-  // const [numWomen, setNumWomen] = useState("");
-  // const [numKids, setNumKids] = useState("");
   const [activeTab, setActiveTab] = useState("payment");
   const [totalAmount, setTotalAmount] = useState(0);
   const [totalPaid, setTotalPaid] = useState("");
   const [totalDue, setTotalDue] = useState("");
-  // const [roomsData, setRoomsData] = useState([
-  //   { roomType: "", building: "", floor: "", roomNumber: "", amount: 0 },
-  // ]);
+  const [fileList, setFileList] = useState([]);
+  const [uploading, setUploading] = useState(false);
   const fromDate = formik.values.fromDate;
   const toDate = formik.values.toDate;
   const numMen = formik.values.numMen;
@@ -153,6 +150,66 @@ useEffect(() => {
     });
   }
 }, [formik.values.fromDate, formik.values.toDate]);
+
+useEffect(() => {
+  const loadInitialRoomData = async () => {
+    if (isEditing && formik.values.roomsData) {
+      // Load buildings and room types first
+      await fetchBuildings();
+      await fetchRoomTypes();
+
+      // Then load floors and rooms for each existing room
+      for (const room of formik.values.roomsData) {
+        if (room.building) {
+          await fetchFloors(room.building);
+        }
+        if (room.floor) {
+          await fetchRooms(room.floor);
+        }
+      }
+    }
+  };
+
+  loadInitialRoomData();
+}, [isEditing]);
+
+const handleInitialFile = async () => {
+  try {
+    // Download the file
+    const blob = await downloadFile(formik.values.imagePath);
+    
+    // Create a File object from the blob
+    const fileName = formik.values.imagePath.split('/').pop();
+    const file = new File([blob], fileName, { type: blob.type });
+    
+    // Create a dummy response object to match Upload component's expectations
+    const dummyResponse = {
+      data: {
+        result: {
+          filePath: formik.values.imagePath,
+          result: { value: formik.values.imagePath }
+        }
+      }
+    };
+    
+    setFileList([{
+      uid: '-1',
+      name: fileName,
+      status: 'done',
+      url: URL.createObjectURL(blob),
+      response: dummyResponse
+    }]);
+  } catch (error) {
+    console.error('Error loading initial file:', error);
+    message.error('Failed to load ID card image');
+  }
+};
+
+useEffect(() => {
+  if (isEditing && formik.values.imagePath) {
+    handleInitialFile();
+  }
+}, [isEditing, formik.values.imagePath]);
 
 const idTypeOptions = [
   { value: 'aadhar', label: 'Aadhar Card' },
@@ -271,20 +328,44 @@ const idTypeOptions = [
       const toDate = formik.values.toDate ? moment(formik.values.toDate).format('YYYY-MM-DD') : '';
       
       const response = await getAllRoomsByFloorId(floorId, fromDate, toDate);
-      setRooms((prevRooms) => ({
+      
+      // Find any existing room selections for this floor
+      const existingRoomSelections = formik.values.roomsData
+        .filter(room => room.floor === floorId && room.roomId)
+        .map(room => ({
+          _id: room.roomId,
+          roomNumber: room.roomNumber,
+          roomTypeId: room.roomType
+        }));
+
+      // Combine API response with existing selections to ensure they're available in dropdown
+      const availableRooms = [
+        ...response.results,
+        ...existingRoomSelections.filter(existingRoom => 
+          !response.results.some(apiRoom => apiRoom._id === existingRoom._id)
+        )
+      ];
+
+      setRooms(prevRooms => ({
         ...prevRooms,
-        [floorId]: response.results,
+        [floorId]: availableRooms,
       }));
     } catch (error) {
       console.error("Error fetching rooms:", error);
     }
   };
 
+
   const isSearchEnabled = () => {
+    const men = parseInt(formik.values.numMen) || 0;
+    const women = parseInt(formik.values.numWomen) || 0;
+    const kids = parseInt(formik.values.numKids) || 0;
+    const totalGuests = men + women + kids;
+  
     return (
       formik.values.fromDate &&
       formik.values.toDate &&
-      (formik.values.numMen || formik.values.numWomen || formik.values.numKids)
+      totalGuests > 0  
     );
   };
   
@@ -306,7 +387,12 @@ const idTypeOptions = [
 
   const handleSearch = () => {
     if (!isSearchEnabled()) return;
-    const totalGuests = parseInt(formik.values.numMen) + parseInt(formik.values.numWomen) + parseInt(formik.values.numKids);
+    
+    const men = parseInt(formik.values.numMen) || 0;
+    const women = parseInt(formik.values.numWomen) || 0;
+    const kids = parseInt(formik.values.numKids) || 0;
+    const totalGuests = men + women + kids;
+  
     const sortedRoomTypes = [...roomTypes].sort((a, b) => b.capacity - a.capacity);
   
     let remainingGuests = totalGuests;
@@ -425,7 +511,7 @@ const idTypeOptions = [
       i === index ? { 
         ...room, 
         roomId: roomId,
-        roomNumber: selectedRoom ? selectedRoom.roomNumber : ''
+        roomNumber: selectedRoom ? selectedRoom.roomNumber : room.roomNumber // Preserve existing room number if no new selection
       } : room
     );
     
@@ -479,6 +565,112 @@ const idTypeOptions = [
       if (result.isConfirmed) {
         history.push("/booking/info");
       }
+    });
+  };
+
+  const handleUpload = async (options) => {
+    const { onSuccess, onError, file, onProgress } = options;
+    
+    if (options.event) {
+      options.event.preventDefault();
+      options.event.stopPropagation();
+    }
+    
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    setUploading(true);
+    
+    try {
+      const response = await uploadFile(formData);
+      
+      if (response?.status && response?.data?.result?.result?.value) {
+        onSuccess(response, file);
+        message.success(`${file.name} file uploaded successfully.`);
+        setFileList([{
+          uid: file.uid,
+          name: file.name,
+          status: 'done',
+          url: URL.createObjectURL(file),
+          response: response
+        }]);
+        formik.setFieldValue('imagePath', response.data.result.filePath);
+      } else {
+        throw new Error('Invalid response structure from server');
+      }
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      onError({ error });
+      message.error(`${file.name} file upload failed. ${error.message || 'Please try again.'}`);
+    } finally {
+      setUploading(false);
+    }
+  };
+  
+
+  const handleRemove = async (file) => {
+    try {
+      const filePath = file.response?.data?.result?.result?.value || formik.values.imagePath;
+      if (filePath) {
+        await deleteFile(filePath);
+        message.success('File removed successfully');
+      }
+      setFileList([]);
+      formik.setFieldValue('imagePath', '');
+    } catch (error) {
+      console.error('Error removing file:', error);
+      message.error('Failed to remove file');
+    }
+  };
+
+  const handleDownload = async () => {
+    try {
+      if (formik.values.imagePath) {
+        const blob = await downloadFile(formik.values.imagePath);
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = formik.values.imagePath.split('/').pop();
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+      }
+    } catch (error) {
+      console.error('Error downloading file:', error);
+      message.error('Failed to download file');
+    }
+  };
+
+  const uploadProps = {
+    name: 'file',
+    customRequest: handleUpload,
+    onRemove: handleRemove,
+    fileList: fileList,
+    accept: 'image/*',
+    showUploadList: {
+      showPreviewIcon: true,
+      showRemoveIcon: true,
+    },
+    onClick: (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+    },
+    onPreview: async (file) => {
+      if (!file.url && !file.preview) {
+        file.preview = await getBase64(file.originFileObj);
+      }
+      const image = file.url || file.preview;
+      const imgWindow = window.open('', '_blank');
+      imgWindow.document.write(`<img src="${image}" alt="preview"/>`);
+    }
+  };
+
+  const getBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
     });
   };
   
@@ -761,21 +953,21 @@ const idTypeOptions = [
                   />
                   </Col>
                   <Col xs={12} sm={6} lg={4} className="pb-1 upload-id">
-                    <input type="file" id="upload-id" className="upload-input" />
-                    <img
-                      src={uploadIcon}
-                      className="upload-icon"
-                      alt="Upload"
-                    />
-                    <label htmlFor="upload-id" className="upload-label">
-                      Upload ID Card
-                    </label>
-                  </Col>
+                  <Upload {...uploadProps}>
+                    <Button icon={<UploadOutlined />} disabled={uploading} style={{ 
+                        fontSize: '6px',
+                        padding: '4px 8px',
+                        height: '40px',
+                        lineHeight: '2'
+                      }}>
+                      {uploading ? 'Uploading...' : 'Upload ID Card'}
+                    </Button>
+                  </Upload>
+                </Col>
                 </Row>
               </Col>
             </Row>
           </div>
-
           <div className="payments-container">
             <div className="tabs">
               <div
@@ -921,4 +1113,4 @@ const idTypeOptions = [
       </div>
     </Form>
   );
-}
+} 

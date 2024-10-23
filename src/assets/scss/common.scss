@@ -4025,3 +4025,14 @@
     opacity: 0.5;
     cursor: not-allowed;
   }
+
+  .ant-upload-select {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  
+  .ant-upload-select .ant-upload {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+  }
