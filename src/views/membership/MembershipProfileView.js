@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Card, Switch, Tabs , Image, Typography } from "antd";
+import { Row, Col, Card, Switch, Tabs, Image, Typography } from "antd";
 import profileImg from "../../assets/images/icons/pngtree.png";
 import avatarIcon from "../../assets/images/avatars/blank.png";
 import "../../assets/scss/common.scss";
@@ -107,17 +107,27 @@ function MembershipProfileView() {
   }, [upload]);
   const ImageCard = ({ imageUrl, title, description }) => {
     return (
-      <Card style={{ width: 350, borderRadius: 8, boxShadow: '0 2px 8px rgba(0,0,0,0.1)', margin: '10px' }}>
+      <Card
+        style={{
+          width: 280,
+          height: 270,
+          borderRadius: 8,
+          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+          margin: "10px",
+        }}
+      >
         <Image
-          width={300}
-          height={200}
+          width={230}
+          height={180}
           src={imageUrl}
           alt={title}
           style={{ borderRadius: 8 }} // Rounded corners for the image
         />
-        <div style={{ padding: '16px' }}>
-          <Title level={4} style={{ margin: 0 }}>{title}</Title>
-          <Text type="secondary">{description}</Text>
+        <div style={{ padding: "16px" }}>
+          <Title level={4} style={{ margin: 0 }}>
+            {title}
+          </Title>
+          {/* <Text type="secondary">{description}</Text> */}
         </div>
       </Card>
     );
@@ -191,6 +201,7 @@ function MembershipProfileView() {
                             </Button>
                             <img
                               src={editIcon}
+                              onClick={() => openModal("edit", i, item)}
                               width={35}
                               className="editIconMember"
                             />
@@ -263,7 +274,9 @@ function MembershipProfileView() {
       key: "photo",
       label: t("photo"),
       children: (
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'start' }}>
+        <div
+          style={{ display: "flex", flexWrap: "wrap", justifyContent: "start" }}
+        >
           {upload && (
             <>
               {upload.memberPhoto && familyImages["memberPhoto"] && (
@@ -357,13 +370,16 @@ function MembershipProfileView() {
         </div>
       </div>
       <Row gutter={[12, 12]}>
-        <Col xs={24} sm={12} md={6}>
+        <Col xs={24} sm={24} md={8} lg={6}>
           <Card className="memberCard" id="firstCard">
             <div className="d-flex justify-content-center align-items-center flex-column">
-              <img
+              <Image
+              id="profileImg"
+                width={220} // Set the width to match your CSS
+                height={220} // Set the height to match your CSS
                 src={familyImages["memberPhoto"] || avatarIcon}
-                className="membershipProfileImg"
                 alt="Profile"
+                className="membershipProfileImg"
               />
               <p className="memberName">
                 {memberData ? personalInfo["memberName"] : ""}
@@ -428,9 +444,9 @@ function MembershipProfileView() {
           </Card>
         </Col>
 
-        <Col xs={24} sm={12} md={18}>
+        <Col xs={24} sm={24} md={16} lg={18}>
           <Row gutter={[16, 16]}>
-            <Col xs={24} md={24} sm={12}>
+            <Col xs={24} md={24} sm={24}>
               <Card>
                 <div>
                   <span className="memberAdd">Home Address</span>
@@ -469,7 +485,7 @@ function MembershipProfileView() {
                 </div>
               </Card>
             </Col>
-            <Col xs={24} md={24} sm={12}>
+            <Col xs={24} md={24} sm={24}>
               <div id="lastCard">
                 <Card>
                   {" "}
