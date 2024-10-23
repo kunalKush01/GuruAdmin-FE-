@@ -241,17 +241,22 @@ const DharmshalaInfoTable = ({
         <div className="card-container">
           {DharmshalasInfo.map((item, index) => (
             <div key={index} className="card">
+              <div className="card-header">
+                <h5 className="card-title">{item.name}</h5>
+              </div>
               <div className="card-body">
                 <div className="card-content">
-                  <h5 className="card-title">{item.name}</h5>
                   <p className="card-text">{item.description}</p>
                   <p className="card-text">{item.location}</p>
+                </div>
+                <div className="card-bottom">
                   <p className="card-text">{item.floorCount}</p>
                 </div>
-                <div className="card-icons">
-                  {item.edit}
-                  {item.delete}
-                </div>
+              </div>
+              <div className="card-icons">
+                {item.edit || <i className="fas fa-edit"></i>}{" "}
+                {/* Default Edit Icon if not provided */}
+                {item.delete || <i className="fas fa-trash"></i>}
               </div>
             </div>
           ))}

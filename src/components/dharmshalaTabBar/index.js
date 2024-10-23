@@ -10,7 +10,7 @@ import DharmshalaIcon from "../../assets/images/icons/dharmshala/dharmshala.svg"
 import FeedbackIcon from "../../assets/images/icons/dharmshala/feedback.svg";
 import RoomTypeIcon from "../../assets/images/icons/dharmshala/roomtype.svg";
 //import "./DharmshalaTabBar.css";
-import "../../assets/scss/dharmshala.scss";
+import "../../assets/scss/tabbar.scss";
 
 const DharmshalaTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
   const history = useHistory();
@@ -69,6 +69,7 @@ const DharmshalaTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
             flexWrap: "nowrap",
             flexDirection: isMobile ? "row" : "row",
             flexWrap: isMobile ? "nowrap" : "wrap",
+            overflowX: isMobile ? "scroll" : "none",
           }}
         >
           {tabs?.map((item, index) => {
@@ -106,7 +107,7 @@ const DharmshalaTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
                             : ""
                         }`}
                       >
-                        {getIcon(item.name)}
+                        {/* {getIcon(item.name)} */}
                       </div>
                     ) : (
                       <Trans i18nKey={item?.name} />
@@ -125,7 +126,7 @@ const DharmshalaTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
           })}
         </Nav>
       ) : (
-        <div className="DharmshalaTabsWrapper">
+        <div className="TabsWrapper">
           <div className="d-flex flex-lg-wrap gap-3 mt-2 allTabBox">
             {tabs?.map((item, idx) => {
               const permissionTabs = item?.permissionKey?.some((perm) =>
