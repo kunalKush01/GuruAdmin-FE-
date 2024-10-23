@@ -21,11 +21,18 @@
 
     /* Styles for each card */
     .card {
-        background-color: #fff7e8;
-        padding: 16px;
+        background-color: #ffffff;
+        // padding: 16px;
         margin-bottom: 25px;
-        border-radius: 20px;
-        box-shadow: none !important;
+        border-radius: 8px;
+        // box-shadow: none !important;
+        max-width: 350px;
+        /* Adjust as needed */
+        overflow: hidden;
+        /* Ensures the content is clipped if it overflows */
+        word-wrap: break-word;
+        /* Ensures long words are broken and wrap onto the next line */
+        white-space: normal;
     }
 
     /* Styles for card body */
@@ -33,6 +40,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        max-width: 350px;
     }
 
     .card-content {
@@ -47,6 +55,36 @@
         margin-bottom: 1px !important;
         line-height: 27px;
         letter-spacing: 0;
+        text-align: left;
+        word-wrap: break-word;
+        max-width: 300px;
+    }
+
+    .card-header {
+        font-size: 18px;
+        font-weight: 700;
+        color: #5a3a1e;
+        /* Dark brown color */
+        text-align: left;
+        /* Align the header text to the left */
+        border-bottom: 1px solid #e0e0e0;
+        /* Divider line */
+        margin-bottom: 8px;
+        padding-bottom: 8px;
+        padding: 10px 5px 5px 20px
+    }
+
+    .card-bottom {
+        font-size: 18px;
+        font-weight: 700;
+        color: #5a3a1e;
+        /* Dark brown color */
+        text-align: left;
+        /* Align the header text to the left */
+        /*border-top: 1px solid #e0e0e0;
+        /* Divider line */
+        margin-top: 8px;
+        padding-top: 8px;
     }
 
     .card-text {
@@ -57,6 +95,8 @@
         letter-spacing: 0;
         color: $font-color;
         margin-bottom: 4px;
+        word-wrap: break-word;
+        max-width: 220px;
     }
 
     .card-icons {
@@ -140,46 +180,46 @@
     }
 }
 
-.DharmshalaTabsWrapper {
-    .tabName {
-        //font: normal normal bold 18px/28px Noto Sans;
-        color: #583703;
-        opacity: 70%;
-        //padding-right: 1rem;
-        white-space: nowrap;
-        cursor: pointer;
-        padding-bottom: 0.2rem;
-    }
+// .DharmshalaTabsWrapper {
+//     .tabName {
+//         //font: normal normal bold 18px/28px Noto Sans;
+//         color: #583703;
+//         opacity: 70%;
+//         //padding-right: 1rem;
+//         white-space: nowrap;
+//         cursor: pointer;
+//         padding-bottom: 0.2rem;
+//     }
 
-    hr {
-        margin-top: -0.52rem;
-        height: 1.5px;
-        color: #583703;
-        opacity: 25%;
-        z-index: 1;
-    }
+//     hr {
+//         margin-top: -0.52rem;
+//         height: 1.5px;
+//         color: #583703;
+//         opacity: 25%;
+//         z-index: 1;
+//     }
 
-    .allTabBox {
-        margin-left: 0rem;
-        overflow-x: scroll;
+//     .allTabBox {
+//         margin-left: 0rem;
+//         overflow-x: scroll;
 
-        ::-webkit-scrollbar {
-            height: 5px;
-        }
+//         ::-webkit-scrollbar {
+//             height: 5px;
+//         }
 
-        ::-webkit-scrollbar-thumb {
-            background-color: gray;
-            border-radius: 25px;
-        }
-    }
+//         ::-webkit-scrollbar-thumb {
+//             background-color: gray;
+//             border-radius: 25px;
+//         }
+//     }
 
-    .activeTab {
-        z-index: 2;
-        border-bottom: 5px solid;
-        border-color: #ff8744;
-        border-radius: 5px;
-        color: #583703;
-        opacity: 100%;
-        font-weight: bold;
-    }
-}
+//     .activeTab {
+//         z-index: 2;
+//         border-bottom: 5px solid;
+//         border-color: #ff8744;
+//         border-radius: 5px;
+//         color: #583703;
+//         opacity: 100%;
+//         font-weight: bold;
+//     }
+// }
