@@ -5,14 +5,21 @@ import "../../assets/scss/viewCommon.scss";
 export const PaymentModal = ({ isOpen, onClose, onSave, totalDue }) => {
   const [form] = Form.useForm();
   const [paymentMode, setPaymentMode] = useState('cash');
+  const [isSaveDisabled, setIsSaveDisabled] = useState(true); 
 
   useEffect(() => {
     if (isOpen) {
       form.resetFields();
       form.setFieldsValue({ mode: 'cash', amount: totalDue });
       setPaymentMode('cash');
+      setIsSaveDisabled(!totalDue); 
     }
   }, [isOpen, form, totalDue]);
+
+  const handleFormChange = (changedValues) => {
+    const amount = changedValues.amount;
+    setIsSaveDisabled(!amount); 
+  };
 
   const handleSave = () => {
     form.validateFields().then((values) => {
@@ -37,12 +44,23 @@ export const PaymentModal = ({ isOpen, onClose, onSave, totalDue }) => {
         <Button key="cancel" onClick={onClose}>
           Cancel
         </Button>,
-        <Button key="save" type="primary" onClick={handleSave}>
+        <Button 
+          key="save" 
+          type="primary" 
+          onClick={handleSave} 
+          disabled={isSaveDisabled} 
+          className={isSaveDisabled ? 'blur-button' : ''} 
+        >
           Save
         </Button>,
       ]}
     >
-      <Form form={form} layout="vertical" initialValues={{ mode: 'cash', amount: totalDue }}>
+      <Form 
+        form={form} 
+        layout="vertical" 
+        initialValues={{ mode: 'cash', amount: totalDue }}
+        onValuesChange={handleFormChange} 
+      >
         <Form.Item
           name="mode"
           label="Mode"
@@ -68,7 +86,7 @@ export const PaymentModal = ({ isOpen, onClose, onSave, totalDue }) => {
         <Form.Item
           name="amount"
           label="Amount"
-          rules={[{ required: true }]}
+          rules={[{ required: true, message: 'Amount is required.' }]}
         >
           <Input type="number" placeholder="Enter amount" />
         </Form.Item>
