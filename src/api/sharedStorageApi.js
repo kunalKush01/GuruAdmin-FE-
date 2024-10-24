@@ -2,9 +2,11 @@ import axios from 'axios';
 
 const REACT_APP_BASEURL_PUBLIC=process.env.REACT_APP_BASEURL_PUBLIC;
 
-export const uploadFile = async (payload) => {
+export const uploadFile = async (payload,isMultiple) => {
   try {
-    const response = await axios.post(`${REACT_APP_BASEURL_PUBLIC}storage/upload`, payload);
+    //  const endpoint = isMultiple ? 'storage/upload/multiple' : 'storage/upload'
+     const endpoint = 'storage/upload'
+    const response = await axios.post(`${REACT_APP_BASEURL_PUBLIC}${endpoint}`, payload);
     if (response.status === 200) {
       return response.data;
     } else {

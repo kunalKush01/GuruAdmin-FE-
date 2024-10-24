@@ -28,7 +28,6 @@ function MemberShipListTable({
       dataIndex: ["data", "personalInfo", "aliasName"],
       key: "aliasName",
       width: 120,
-      fixed: "left",
     },
     {
       title: "Gender",
