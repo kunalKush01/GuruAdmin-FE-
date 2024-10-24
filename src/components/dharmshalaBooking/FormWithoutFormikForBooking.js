@@ -988,16 +988,6 @@ const idTypeOptions = [
                         src={previewImage}
                       />
                     )}
-                  {/* <Upload {...uploadProps}>
-                    <Button icon={<UploadOutlined />} disabled={uploading} style={{ 
-                        fontSize: '6px',
-                        padding: '4px 8px',
-                        height: '40px',
-                        lineHeight: '2'
-                      }}>
-                      {uploading ? 'Uploading...' : 'Upload ID Card'}
-                    </Button>
-                  </Upload> */}
                 </Col>
                 </Row>
               </Col>
