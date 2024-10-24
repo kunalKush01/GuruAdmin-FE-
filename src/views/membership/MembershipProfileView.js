@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Card, Switch, Tabs } from "antd";
+import { Row, Col, Card, Switch, Tabs, Image, Typography } from "antd";
 import profileImg from "../../assets/images/icons/pngtree.png";
 import avatarIcon from "../../assets/images/avatars/blank.png";
 import "../../assets/scss/common.scss";
@@ -24,6 +24,7 @@ import { useSelector } from "react-redux";
 import { downloadFile } from "../../api/sharedStorageApi";
 
 function MembershipProfileView() {
+  const { Title, Text } = Typography;
   const { t } = useTranslation();
   const history = useHistory();
   const { id } = useParams();
@@ -96,6 +97,41 @@ function MembershipProfileView() {
       fetchImage(upload.memberPhoto, "memberPhoto");
     }
   }, [upload]);
+  useEffect(() => {
+    if (upload) {
+      const { memberPhoto, parentPhoto, anotherPhoto } = upload;
+      fetchImage(memberPhoto, "memberPhoto");
+      fetchImage(parentPhoto, "parentPhoto");
+      fetchImage(anotherPhoto, "anotherPhoto");
+    }
+  }, [upload]);
+  const ImageCard = ({ imageUrl, title, description }) => {
+    return (
+      <Card
+        style={{
+          width: 280,
+          height: 270,
+          borderRadius: 8,
+          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+          margin: "10px",
+        }}
+      >
+        <Image
+          width={230}
+          height={180}
+          src={imageUrl}
+          alt={title}
+          style={{ borderRadius: 8 }} // Rounded corners for the image
+        />
+        <div style={{ padding: "16px" }}>
+          <Title level={4} style={{ margin: 0 }}>
+            {title}
+          </Title>
+          {/* <Text type="secondary">{description}</Text> */}
+        </div>
+      </Card>
+    );
+  };
   const items = [
     {
       key: "family",
@@ -165,6 +201,7 @@ function MembershipProfileView() {
                             </Button>
                             <img
                               src={editIcon}
+                              onClick={() => openModal("edit", i, item)}
                               width={35}
                               className="editIconMember"
                             />
@@ -234,6 +271,41 @@ function MembershipProfileView() {
       ),
     },
     {
+      key: "photo",
+      label: t("photo"),
+      children: (
+        <div
+          style={{ display: "flex", flexWrap: "wrap", justifyContent: "start" }}
+        >
+          {upload && (
+            <>
+              {upload.memberPhoto && familyImages["memberPhoto"] && (
+                <ImageCard
+                  imageUrl={familyImages["memberPhoto"]}
+                  title="Member Photo"
+                  description="This is the member's photo."
+                />
+              )}
+              {upload.parentPhoto && familyImages["parentPhoto"] && (
+                <ImageCard
+                  imageUrl={familyImages["parentPhoto"]}
+                  title="Parent Photo"
+                  description="This is the parent's photo."
+                />
+              )}
+              {upload.anotherPhoto && familyImages["anotherPhoto"] && (
+                <ImageCard
+                  imageUrl={familyImages["anotherPhoto"]}
+                  title="Another Photo"
+                  description="This is another photo."
+                />
+              )}
+            </>
+          )}
+        </div>
+      ),
+    },
+    {
       key: "official",
       label: t("official"),
       children: (
@@ -298,13 +370,16 @@ function MembershipProfileView() {
         </div>
       </div>
       <Row gutter={[12, 12]}>
-        <Col xs={24} sm={12} md={6}>
+        <Col xs={24} sm={24} md={8} lg={6}>
           <Card className="memberCard" id="firstCard">
             <div className="d-flex justify-content-center align-items-center flex-column">
-              <img
+              <Image
+              id="profileImg"
+                width={220} // Set the width to match your CSS
+                height={220} // Set the height to match your CSS
                 src={familyImages["memberPhoto"] || avatarIcon}
-                className="membershipProfileImg"
                 alt="Profile"
+                className="membershipProfileImg"
               />
               <p className="memberName">
                 {memberData ? personalInfo["memberName"] : ""}
@@ -369,9 +444,9 @@ function MembershipProfileView() {
           </Card>
         </Col>
 
-        <Col xs={24} sm={12} md={18}>
+        <Col xs={24} sm={24} md={16} lg={18}>
           <Row gutter={[16, 16]}>
-            <Col xs={24} md={24} sm={12}>
+            <Col xs={24} md={24} sm={24}>
               <Card>
                 <div>
                   <span className="memberAdd">Home Address</span>
@@ -410,7 +485,7 @@ function MembershipProfileView() {
                 </div>
               </Card>
             </Col>
-            <Col xs={24} md={24} sm={12}>
+            <Col xs={24} md={24} sm={24}>
               <div id="lastCard">
                 <Card>
                   {" "}

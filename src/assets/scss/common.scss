@@ -784,6 +784,12 @@
 }
 
 .formwrapper {
+    padding: 10px;
+    background: $white !important;
+    border-radius: 8px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    // padding-bottom: 200px;
     .FormikWrapper {
         padding: 10px;
         background: $white !important;
@@ -2951,7 +2957,6 @@
 .ant-btn-compact-item.ant-btn-primary:not([disabled])+.ant-btn-compact-item.ant-btn-primary:not([disabled]):before {
     display: none;
 }
-
 .memberCard {
     height: 100%;
 }
@@ -2960,17 +2965,19 @@
     .ant-card-body {
         padding: 10px !important;
     }
-
-    background-color:$gold ;
+    background-color: $gold;
 }
 
 .membershipProfileImg {
     width: 220px;
     height: 220px;
     border-radius: 50%;
-    border: 4px solid $primary
+    border: 4px solid $primary;
 }
-
+#profileImg .ant-image-mask {
+    border-radius: 50%; /* Make the mask circular */
+    overflow: hidden; /* Ensure that the mask does not exceed the bounds of the parent */
+}
 .memberName {
     margin-top: 10px;
     font-family: 'Noto Sans', sans-serif;
@@ -2998,7 +3005,7 @@
     margin-bottom: 5px;
 }
 
-.card-text-2 {
+.card-text-2, .card-text-3 {
     font-family: 'Noto Sans', sans-serif;
     font-size: 14px;
     font-weight: 700;
@@ -3008,33 +3015,26 @@
     margin-bottom: 5px;
 }
 
-.card-text-3 {
-    font-family: 'Noto Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    color: $font-color;
-    letter-spacing: normal;
-    text-align: center;
-    margin-bottom: 0px;
-}
-
 .info-container {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap; /* Allow items to wrap */
     gap: 4px;
-    margin-left: 55px;
-    margin-top: 10px;
+    padding: 10px; /* Use padding instead of margin */
+    max-width: 100%; /* Ensure it doesn't exceed the card */
+    overflow: hidden; /* Hide overflow if necessary */
 }
 
 .info-item {
     display: flex;
     align-items: center;
+    flex: 1 1 calc(50% - 10px); /* Responsive width for items */
+    min-width: 120px; /* Set a minimum width to maintain visibility */
 }
 
 .info-item img {
     width: 18px;
     height: 18px;
-    margin-right: 30px;
+    margin-right: 8px; /* Adjust margin to be less than before */
 }
 
 .info-item span {
@@ -3042,6 +3042,7 @@
     font-weight: 300;
     color: var(--font-color);
 }
+
 
 .ant-switch {
     border-radius: 10px;
@@ -3077,7 +3078,6 @@
     color: $font-color;
     letter-spacing: normal;
 }
-
 .familyCard {
     border: none;
     background-color: $secondary-color;
@@ -3097,6 +3097,7 @@
     justify-content: space-between;
     padding: 15px;
     padding-right: 5px;
+    flex-wrap: wrap; /* Allow items to wrap onto the next line if needed */
 }
 
 .famRow3 {
@@ -3105,7 +3106,10 @@
 }
 
 .rowItem {
-    width: 180px;
+    flex: 2; /* Allow items to take more space proportionally */
+    min-width: 130px; /* Keep the minimum width */
+    margin: 5px; /* Add margin for better spacing */
+    box-sizing: border-box; /* Ensure padding and borders are included in the element's total width and height */
 }
 
 .familyDetails {
@@ -3125,7 +3129,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    //   border-radius: 10px;
+    // border-radius: 10px; /* Uncomment if needed */
 }
 
 .editIconMember {
@@ -3147,9 +3151,8 @@
     }
 
     .famRow2 {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr !important;
-        gap: 10px !important;
+        display: flex; /* Changed from grid to flex for better wrapping */
+        flex-wrap: wrap; /* Allow wrapping */
     }
 
     .famRow2 .me-3 {
@@ -3171,6 +3174,12 @@
         cursor: pointer;
         margin-top: -5px !important;
     }
+
+    .rowItem {
+        flex: 1; /* Allow items to flex and take equal space */
+        min-width: 100px; /* Minimum width for items on smaller screens */
+        margin: 5px; /* Add some margin for better spacing */
+    }
 }
 
 /* For smartphones (less than or equal to 480px) */
@@ -3179,6 +3188,15 @@
         display: flex !important;
         flex-direction: row !important;
         align-items: flex-start !important;
+    }
+
+    .rowItem {
+        width: 100%; /* Full width for each item on small screens */
+    }
+
+    .editmember {
+        width: auto; /* Auto width for buttons on smaller screens */
+        padding: 5px 10px; /* Add padding for better click area */
     }
 }
 
@@ -3199,7 +3217,19 @@
 #membAddCard {
     background-color: $secondary-color;
 }
-
+@media (max-width: 990px) {
+    .familyCard {
+      margin: 0 auto; // Center cards in the column
+      width: 100%; // Full width for each card
+    }
+  
+    .memberProfileCard {
+      width: 100%; // Ensure profile card takes full width
+    }
+  
+    // Adjust any other styles as needed
+  }
+  
 .memberAddInput {
 
     .customtextfieldwrapper input,

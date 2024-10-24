@@ -19,7 +19,11 @@ import {
 } from "../../api/cattle/cattleExpense";
 import { Storage } from "aws-amplify";
 import "../../assets/scss/common.scss";
-
+import { DatePicker } from "antd";
+import momentGenerateConfig from "rc-picker/lib/generate/moment";
+import moment from "moment";
+const CustomDatePickerComponent =
+  DatePicker.generatePicker(momentGenerateConfig);
 export default function ExpensesForm({
   plusIconDisable = false,
   buttonName = "",
@@ -160,7 +164,11 @@ export default function ExpensesForm({
                 Number(formik.values.orderQuantity) *
                 Number(formik.values.perItemAmount);
               formik.setFieldValue("Amount", newAmount);
-            } else {
+            }
+            if (
+              formik.values?.orderQuantity == "" ||
+              formik.values?.perItemAmount == ""
+            ) {
               formik.setFieldValue("Amount", "");
             }
           }, [formik.values.orderQuantity, formik.values.perItemAmount]);
@@ -179,275 +187,289 @@ export default function ExpensesForm({
               )}
               <div className="paddingForm">
                 <Row>
-                  <Col xs={12} md={7}>
-                    <Row>
-                      <Col xs="12" md="6">
-                        <CustomTextField
-                          label={t("news_label_Title")}
-                          name="Title"
-                          placeholder={t("placeHolder_title")}
-                          onInput={(e) =>
-                            (e.target.value = e.target.value.slice(0, 30))
+                  <Col xs={12} md={6} lg={4}>
+                    <CustomTextField
+                      label={t("news_label_Title")}
+                      name="Title"
+                      placeholder={t("placeHolder_title")}
+                      onInput={(e) =>
+                        (e.target.value = e.target.value.slice(0, 30))
+                      }
+                      autoFocus
+                      required
+                    />
+                  </Col>
+                  <Col xs={12} md={6} lg={4}>
+                    <FormikCustomReactSelect
+                      labelName={t("dashboard_Recent_DonorType")}
+                      name="expenseType"
+                      loadOptions={expenseTypeArr}
+                      placeholder={t("placeHolder_expense_type")}
+                      required
+                      disabled={editLogs}
+                      width={"100"}
+                    />
+                  </Col>
+                  <Col xs={12} md={6} lg={4}>
+                    <label>
+                      {t("donation_select_date")}
+                      <span className="text-danger">*</span>
+                    </label>
+                    <CustomDatePickerComponent
+                      format="DD MMM YYYY"
+                      onChange={(date) => {
+                        if (date) {
+                          const utcDate = date
+                            .startOf("day")
+                            .utc()
+                            .toISOString();
+                          formik.setFieldValue("DateTime", utcDate)
+                        } else {
+                          formik.setFieldValue("DateTime", "");
+                        }
+                      }}
+                      value={
+                        formik.values["DateTime"]
+                          ? moment.utc(formik.values["DateTime"])
+                          : null 
+                      }
+                      disabledDate={(current) =>
+                        current < moment().startOf("day")
+                      }
+                    />
+                  </Col>
+                  {(formik.values?.expenseType?.value === "assets" ||
+                    formik.values?.expenseType?.value === "consumable") && (
+                    <>
+                      <Col xs={12} md={6} lg={4}>
+                        <AsyncSelectField
+                          name="name"
+                          labelKey="name"
+                          valueKey="name"
+                          loadOptions={nameLoadOption}
+                          label={t("name")}
+                          onChange={(e) => {
+                            formik.setFieldValue("name", e);
+                            formik.setFieldValue("itemId", e);
+                          }}
+                          placeholder={t("placeHolder_cattle_item_name")}
+                          defaultOptions
+                          required={
+                            formik.values?.expenseType?.value === "assets" ||
+                            formik.values?.expenseType?.value === "consumable"
                           }
-                          autoFocus
-                          required
                         />
                       </Col>
-                      <Col xs={12} md={6}>
-                        <FormikCustomReactSelect
-                          labelName={t("dashboard_Recent_DonorType")}
-                          name="expenseType"
-                          loadOptions={expenseTypeArr}
-                          placeholder={t("placeHolder_expense_type")}
-                          required
-                          disabled={editLogs}
-                          width={"100"}
+                      <Col xs={12} md={6} lg={4}>
+                        <AsyncSelectField
+                          name="itemId"
+                          labelKey="itemId"
+                          valueKey="itemId"
+                          loadOptions={loadOption}
+                          label={t("cattle_itemId")}
+                          onChange={(e) => {
+                            formik.setFieldValue("itemId", e);
+                            formik.setFieldValue("name", e);
+                          }}
+                          placeholder={t("placeHolder_cattle_itemId")}
+                          defaultOptions
+                          required={
+                            formik.values?.expenseType?.value === "assets" ||
+                            formik.values?.expenseType?.value === "consumable"
+                          }
                         />
                       </Col>
-                      {(formik.values?.expenseType?.value === "assets" ||
-                        formik.values?.expenseType?.value === "consumable") && (
-                        <>
-                          <Col xs={12} md={6}>
-                            <AsyncSelectField
-                              name="name"
-                              labelKey="name"
-                              valueKey="name"
-                              loadOptions={nameLoadOption}
-                              label={t("name")}
-                              onChange={(e) => {
-                                formik.setFieldValue("name", e);
-                                formik.setFieldValue("itemId", e);
-                              }}
-                              placeholder={t("placeHolder_cattle_item_name")}
-                              defaultOptions
-                              required
-                            />
-                          </Col>
-                          <Col xs={12} md={6}>
-                            <AsyncSelectField
-                              name="itemId"
-                              labelKey="itemId"
-                              valueKey="itemId"
-                              loadOptions={loadOption}
-                              label={t("cattle_itemId")}
-                              onChange={(e) => {
-                                formik.setFieldValue("itemId", e);
-                                formik.setFieldValue("name", e);
-                              }}
-                              placeholder={t("placeHolder_cattle_itemId")}
-                              defaultOptions
-                              required
-                            />
-                          </Col>
-                          <Col xs={12} md={6}>
-                            <CustomTextField
-                              label={t("cattle_expense_order_quantity")}
-                              type="number"
-                              placeholder={t(
-                                "placeHolder_cattle_expense_order_quantity"
-                              )}
-                              name="orderQuantity"
-                              onChange={(e) => {
-                                formik.handleChange(e);
-                              }}
-                              required
-                            />
-                          </Col>
-                          <Col xs={12} md={6}>
-                            <CustomTextField
-                              type="number"
-                              name="perItemAmount"
-                              label={t("price_per_item")}
-                              placeholder={t("placeHolder_price_per_item")}
-                              onChange={(e) => {
-                                formik.handleChange(e);
-                              }}
-                              required
-                            />
-                          </Col>
-                        </>
-                      )}
-                      <Col xs={12} md={6}>
+                      <Col xs={12} md={6} lg={4}>
+                        <CustomTextField
+                          label={t("cattle_expense_order_quantity")}
+                          type="number"
+                          placeholder={t(
+                            "placeHolder_cattle_expense_order_quantity"
+                          )}
+                          name="orderQuantity"
+                          onChange={(e) => {
+                            formik.handleChange(e);
+                          }}
+                          required={
+                            formik.values?.expenseType?.value === "assets" ||
+                            formik.values?.expenseType?.value === "consumable"
+                          }
+                        />
+                      </Col>
+                      <Col xs={12} md={6} lg={4}>
                         <CustomTextField
                           type="number"
-                          label={t("amount")}
-                          placeholder={t("enter_price_manually")}
-                          name="Amount"
-                          value={formik.values.Amount || ""}
+                          name="perItemAmount"
+                          label={t("price_per_item")}
+                          placeholder={t("placeHolder_price_per_item")}
                           onChange={(e) => {
-                            formik.setFieldValue("Amount", e.target.value);
+                            formik.handleChange(e);
                           }}
-                          required
-                          disabled
+                          required={
+                            formik.values?.expenseType?.value === "assets" ||
+                            formik.values?.expenseType?.value === "consumable"
+                          }
                         />
                       </Col>
-                      {(formik.values?.expenseType?.value === "assets" ||
-                        formik.values?.expenseType?.value === "consumable") && (
-                        <>
-                          <Col xs={12} md={8}>
-                            <div>
+                    </>
+                  )}
+                  <Col xs={12} md={6} lg={4}>
+                    <CustomTextField
+                      type="number"
+                      label={t("amount")}
+                      placeholder={t("enter_price_manually")}
+                      name="Amount"
+                      value={formik.values.Amount || ""}
+                      onChange={(e) => {
+                        formik.setFieldValue("Amount", e.target.value);
+                      }}
+                      required
+                      disabled={
+                        formik.values?.expenseType?.value === "assets" ||
+                        formik.values?.expenseType?.value === "consumable"
+                      }
+                    />
+                  </Col>
+                  {(formik.values?.expenseType?.value === "assets" ||
+                    formik.values?.expenseType?.value === "consumable") && (
+                    <>
+                      <Col xs={12} md={6} lg={4}>
+                        <div>
+                          <label>
+                            <Trans i18nKey={"cattle_expense_bill_invoice"} />
+                          </label>
+                        </div>
+                        <div className="d-flex gap-2 align-items-center">
+                          <input
+                            ref={uploadInvoice}
+                            type={"file"}
+                            className="upload-invoice"
+                            name="bill_invoice"
+                            accept=".pdf"
+                            onChange={(e) => {
+                              if (e.target.files?.length) {
+                                handleUpload(e.target.files[0]);
+                                // handleUpload(e.target.files[0]).then((e)=>formik.setFieldValue('documents',e.target.files[0].name));
+                                formik.setFieldValue(
+                                  "bill_invoice",
+                                  `${randomNumber}_${e.target?.files[0]?.name
+                                    .split(" ")
+                                    .join("-")}`
+                                );
+                              }
+                            }}
+                          />
+                          {isUploading ? (
+                            <Spinner color="primary" size="sm" />
+                          ) : (
+                            <Button
+                              color="primary"
+                              onClick={() => uploadInvoice.current.click()}
+                            >
+                              <Trans i18nKey="cattle_expense_bill_invoice_upload" />
+                            </Button>
+                          )}
+                        </div>
+                      </Col>
+                    </>
+                  )}
+                  {customFieldsList &&
+                    customFieldsList.map((field) => {
+                      const isSelectField =
+                        field.masterValues && field.masterValues.length > 0;
+
+                      return (
+                        <Col xs={12} md={6} lg={4} key={field._id}>
+                          {field.fieldType === "Boolean" ? (
+                            <FormikCustomReactSelect
+                              labelName={field.fieldName}
+                              name={`customFields.${field.fieldName}`}
+                              loadOptions={[
+                                { value: true, label: "True" },
+                                { value: false, label: "False" },
+                              ]}
+                              required={field.isRequired}
+                              width
+                              placeholder={`Select ${field.fieldName}`}
+                            />
+                          ) : field.fieldType === "Date" ? (
+                            <>
                               <label>
-                                <Trans
-                                  i18nKey={"cattle_expense_bill_invoice"}
-                                />
+                                {field.fieldName}
+                                {field.isRequired && "*"}
                               </label>
-                            </div>
-                            <div className="d-flex gap-2 align-items-center">
-                              <input
-                                ref={uploadInvoice}
-                                type={"file"}
-                                className="upload-invoice"
-                                name="bill_invoice"
-                                accept=".pdf"
-                                onChange={(e) => {
-                                  if (e.target.files?.length) {
-                                    handleUpload(e.target.files[0]);
-                                    // handleUpload(e.target.files[0]).then((e)=>formik.setFieldValue('documents',e.target.files[0].name));
+                              <CustomDatePicker
+                                id="datePickerANTD"
+                                format="DD MMM YYYY"
+                                onChange={(date) => {
+                                  if (date) {
                                     formik.setFieldValue(
-                                      "bill_invoice",
-                                      `${randomNumber}_${e.target?.files[0]?.name
-                                        .split(" ")
-                                        .join("-")}`
+                                      `customFields.${field.fieldName}`,
+                                      date.format("DD MMM YYYY")
+                                    );
+                                  } else {
+                                    formik.setFieldValue(
+                                      `customFields.${field.fieldName}`,
+                                      null
                                     );
                                   }
                                 }}
+                                // needConfirm
                               />
-                              {isUploading ? (
-                                <Spinner color="primary" size="sm" />
-                              ) : (
-                                <Button
-                                  color="primary"
-                                  onClick={() => uploadInvoice.current.click()}
-                                >
-                                  <Trans i18nKey="cattle_expense_bill_invoice_upload" />
-                                </Button>
-                              )}
-                            </div>
-                          </Col>
-                        </>
-                      )}
-                    </Row>
-                    <Row>
-                      <Col xs={12} className="mt-1">
-                        <RichTextField
-                          height="200px"
-                          label={t("news_label_Description")}
-                          name="Body"
-                        />
-                      </Col>
-                    </Row>
-                    <Row className="">
-                      <Col xs={12} md={6} className="opacity-75">
-                        <CustomTextField
-                          label={t("added_by")}
-                          name="AddedBy"
-                          disabled
-                        />
-                      </Col>
-                      {customFieldsList &&
-                        customFieldsList.map((field) => {
-                          const isSelectField =
-                            field.masterValues && field.masterValues.length > 0;
-
-                          return (
-                            <Col xs={12} sm={6} lg={3} key={field._id}>
-                              {field.fieldType === "Boolean" ? (
-                                <FormikCustomReactSelect
-                                  labelName={field.fieldName}
-                                  name={`customFields.${field.fieldName}`}
-                                  loadOptions={[
-                                    { value: true, label: "True" },
-                                    { value: false, label: "False" },
-                                  ]}
-                                  required={field.isRequired}
-                                  width
-                                  placeholder={`Select ${field.fieldName}`}
-                                />
-                              ) : field.fieldType === "Date" ? (
-                                <>
-                                  <label>
-                                    {field.fieldName}
-                                    {field.isRequired && "*"}
-                                  </label>
-                                  <CustomDatePicker
-                                    id="datePickerANTD"
-                                    format="DD MMM YYYY"
-                                    onChange={(date) => {
-                                      if (date) {
-                                        formik.setFieldValue(
-                                          `customFields.${field.fieldName}`,
-                                          date.format("DD MMM YYYY")
-                                        );
-                                      } else {
-                                        formik.setFieldValue(
-                                          `customFields.${field.fieldName}`,
-                                          null
-                                        );
+                              {formik.errors.customFields &&
+                                formik.errors.customFields[field.fieldName] && (
+                                  <div className="text-danger">
+                                    <Trans
+                                      i18nKey={
+                                        formik.errors.customFields[
+                                          field.fieldName
+                                        ]
                                       }
-                                    }}
-                                    // needConfirm
-                                  />
-                                  {formik.errors.customFields &&
-                                    formik.errors.customFields[
-                                      field.fieldName
-                                    ] && (
-                                      <div className="text-danger">
-                                        <Trans
-                                          i18nKey={
-                                            formik.errors.customFields[
-                                              field.fieldName
-                                            ]
-                                          }
-                                        />
-                                      </div>
-                                    )}
-                                </>
-                              ) : isSelectField ? (
-                                <FormikCustomReactSelect
-                                  labelName={field.fieldName}
-                                  name={`customFields.${field.fieldName}`}
-                                  loadOptions={
-                                    field.masterValues &&
-                                    field.masterValues.map((item) => ({
-                                      value: item.value,
-                                      label: item.value,
-                                    }))
-                                  }
-                                  width
-                                  required={field.isRequired}
-                                  placeholder={`Select ${field.fieldName}`}
-                                  valueKey="value"
-                                  labelKey="label"
-                                />
-                              ) : (
-                                <CustomTextField
-                                  label={field.fieldName}
-                                  name={`customFields.${field.fieldName}`}
-                                  type={
-                                    field.fieldType === "String"
-                                      ? "text"
-                                      : field.fieldType.toLowerCase()
-                                  }
-                                  required={field.isRequired}
-                                  placeholder={`Enter ${field.fieldName}`}
-                                />
-                              )}
-                            </Col>
-                          );
-                        })}
-                    </Row>
-                  </Col>
-                  <Col>
-                    <Row>
-                      <Col xs={12}>
-                        <FormikCustomDatePicker
-                          label={t("donation_select_date")}
-                          name="DateTime"
-                          pastDateNotAllowed
-                          // showTimeInput={showTimeInput}
-                        />
-                      </Col>
-                    </Row>
+                                    />
+                                  </div>
+                                )}
+                            </>
+                          ) : isSelectField ? (
+                            <FormikCustomReactSelect
+                              labelName={field.fieldName}
+                              name={`customFields.${field.fieldName}`}
+                              loadOptions={
+                                field.masterValues &&
+                                field.masterValues.map((item) => ({
+                                  value: item.value,
+                                  label: item.value,
+                                }))
+                              }
+                              width
+                              required={field.isRequired}
+                              placeholder={`Select ${field.fieldName}`}
+                              valueKey="value"
+                              labelKey="label"
+                            />
+                          ) : (
+                            <CustomTextField
+                              label={field.fieldName}
+                              name={`customFields.${field.fieldName}`}
+                              type={
+                                field.fieldType === "String"
+                                  ? "text"
+                                  : field.fieldType.toLowerCase()
+                              }
+                              required={field.isRequired}
+                              placeholder={`Enter ${field.fieldName}`}
+                            />
+                          )}
+                        </Col>
+                      );
+                    })}
+                </Row>
+                <Row>
+                  <Col xs={12} className="mt-1">
+                    <RichTextField
+                      height="200px"
+                      label={t("news_label_Description")}
+                      name="Body"
+                    />
                   </Col>
                 </Row>
                 {editLogs && (
@@ -455,7 +477,7 @@ export default function ExpensesForm({
                     <div>
                       <Trans i18nKey={"Logs"} />
                     </div>
-                    <Col lg={9} className="my-lg-2">
+                    <Col lg={12} md={12} className="my-lg-2">
                       <LogListTable data={expenseLog} />
                     </Col>
                   </Row>
