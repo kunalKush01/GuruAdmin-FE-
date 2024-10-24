@@ -14,6 +14,7 @@ import { ExpenseType } from "./addExpenses";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import "../../assets/scss/viewCommon.scss";
 import { getExpensesCustomFields } from "../../api/customFieldsApi";
+import { Tag } from "antd";
 
 export default function AddExpense() {
 const handleCreateExpense = async (payload) => {
@@ -145,6 +146,20 @@ const schema = Yup.object().shape({
           <div className="addExpense">
             <Trans i18nKey={"expenses_EditExpenses"} />
           </div>
+        </div>
+        <div className="d-flex align-items-center">
+          <p style={{ fontSize: "15px", marginBottom: "0" }}>Current User :</p>
+          <Tag
+            color="#ff8744"
+            style={{
+              marginLeft: "8px",
+              borderRadius: "5px",
+              backgroundColor: "#ff8744",
+              color: "white",
+            }}
+          >
+            {loggedInUser}
+          </Tag>
         </div>
       </div>
 
