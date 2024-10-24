@@ -39,7 +39,7 @@ const AddDharmshalaBooking = () => {
         numWomen: bookingData.guestCount?.women || "",
         numKids: bookingData.guestCount?.children || "",
         roomsData: bookingData.rooms.map((room) => ({
-          roomTypeId: room.roomTypeId,
+          roomType: room.roomTypeId,
           building: room.building,
           floor: room.floor,
           roomId: room.roomId,
@@ -63,6 +63,7 @@ const AddDharmshalaBooking = () => {
         payments: bookingData.payment?.payments || [],
         bookingId: bookingData._id || "",
         bookingCode: bookingData.bookingId || "",
+        imagePath: bookingData.imagePath || "",
       });
     } else {
       setInitialValues({
@@ -80,7 +81,7 @@ const AddDharmshalaBooking = () => {
         numKids: "",
         roomsData: [
           {
-            roomTypeId: property?.roomTypeId || "",
+            roomTypeId: property?.roomType || "",
             building: property?.buildingId || "",
             floor: property?.floorId || "",
             roomId: property?._id || "",
@@ -101,6 +102,7 @@ const AddDharmshalaBooking = () => {
         totalAmount: "",
         totalPaid: "",
         totalDue: "",
+        imagePath: "",
       });
     }
     setIsLoading(false);
