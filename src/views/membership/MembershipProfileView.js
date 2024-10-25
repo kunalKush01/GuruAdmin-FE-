@@ -148,14 +148,17 @@ function MembershipProfileView() {
                       <div className="d-flex align-items-center">
                         <div className="famRow1">
                           <div className="me-2">
-                            <img
+                            <Image
+                              id="profileImgFam"
+                              width={50}
+                              height={50}
                               src={
-                                familyImages[i] // Use downloaded image if available
+                                familyImages[i]
                                   ? familyImages[i]
-                                  : avatarIcon // Fallback to default avatar if no image
+                                  : avatarIcon
                               }
+                              alt="Profile"
                               className="familyProfile"
-                              alt=""
                             />
                           </div>
                         </div>
@@ -192,7 +195,7 @@ function MembershipProfileView() {
                                 : "-"}
                             </p>
                           </div>
-                          <div className="rowItem">
+                          <div className="rowItem rowEditButton">
                             <Button
                               className="editmember"
                               onClick={() => openModal("edit", i, item)}
@@ -374,7 +377,7 @@ function MembershipProfileView() {
           <Card className="memberCard" id="firstCard">
             <div className="d-flex justify-content-center align-items-center flex-column">
               <Image
-              id="profileImg"
+                id="profileImg"
                 width={220} // Set the width to match your CSS
                 height={220} // Set the height to match your CSS
                 src={familyImages["memberPhoto"] || avatarIcon}
