@@ -12,8 +12,10 @@ import confirmationIcon from "../../../../../assets/images/icons/news/conformati
 import { authApiInstance } from "../../../../../axiosApi/authApiInstans";
 import { logOut } from "../../../../../redux/authSlice";
 import { subHeaderContentResponsive } from "../../../../../utility/subHeaderContent";
-import VerticalMenuHeader from "./VerticalMenuHeader";
+//import VerticalMenuHeader from "./VerticalMenuHeader";
 import VerticalNavMenuItems from "./VerticalNavMenuItems";
+import logo from "../../../../../assets/images/pages/main-logo.png";
+import "../../../../../assets/scss/viewCommon.scss";
 
 const Sidebar = (props) => {
   const {
@@ -98,6 +100,11 @@ const Sidebar = (props) => {
               onScrollY={(container) => scrollMenu(container)}
             >
               <ul className="navigation navigation-main">
+                <div className="brand-logo">
+                  <a href="/dashboard">
+                    <img src={logo} alt="logo" className="logo" />
+                  </a>
+                </div>
                 <VerticalNavMenuItems
                   items={verticalBarData}
                   menuData={verticalBarData}
@@ -125,7 +132,9 @@ const Sidebar = (props) => {
                         Swal.fire({
                           title: `<img src="${confirmationIcon}"/>`,
                           html: `
-                            <h3 class="swal-heading mt-1">${t("logout_msg")}</h3>
+                            <h3 class="swal-heading mt-1">${t(
+                              "logout_msg"
+                            )}</h3>
                           `,
                           showCloseButton: false,
                           showCancelButton: true,
@@ -151,11 +160,14 @@ const Sidebar = (props) => {
                       paddingLeft: "20px",
                       paddingRight: "20px",
                       marginTop: "10px",
-                      wordWrap: "break-word"
+                      wordWrap: "break-word",
                     }}
                   >
-                    <strong>Last Login:</strong><br />
-                    {moment(userDetails?.lastLogin).format("DD MMM YYYY, h:mm a")}
+                    <strong>Last Login:</strong>
+                    <br />
+                    {moment(userDetails?.lastLogin).format(
+                      "DD MMM YYYY, h:mm a"
+                    )}
                   </div>
                 </li>
               </ul>

@@ -8,7 +8,9 @@ const { TabPane } = Tabs;
 
 const CattleTabBar = ({ tabs = [], setActive, active }) => {
   const history = useHistory();
-  const permissions = useSelector((state) => state.auth.userDetail?.permissions);
+  const permissions = useSelector(
+    (state) => state.auth.userDetail?.permissions
+  );
   const permissionsKey = permissions?.map((item) => item?.name);
 
   useLayoutEffect(() => {
@@ -18,7 +20,9 @@ const CattleTabBar = ({ tabs = [], setActive, active }) => {
   const handleTabChange = (key) => {
     const selectedTab = tabs.find((tab) => tab.url === key);
     if (selectedTab?.isManagment && !permissionsKey?.includes("all")) {
-      const url = selectedTab.permissionKey?.find((perm) => permissionsKey?.includes(perm));
+      const url = selectedTab.permissionKey?.find((perm) =>
+        permissionsKey?.includes(perm)
+      );
       history.push(`${selectedTab.url}/${url?.split("-")[1]}`);
     } else {
       history.push(key);
@@ -30,14 +34,18 @@ const CattleTabBar = ({ tabs = [], setActive, active }) => {
       activeKey={active}
       onChange={handleTabChange}
       tabBarStyle={{
-        justifyContent: permissionsKey?.includes("all") ? "space-between" : "flex-start",
-        padding: ".5rem",
-        gap: permissionsKey?.includes("all") ? "2rem" : "4rem",
-        marginBottom: 0,
+        justifyContent: permissionsKey?.includes("all")
+          ? "space-between"
+          : "flex-start",
+        // padding: ".5rem",
+        // gap: permissionsKey?.includes("all") ? "2rem" : "4rem",
+        //marginBottom: 0,
       }}
     >
       {tabs?.map((item, index) => {
-        const permissionTabs = item?.permissionKey?.some((perm) => permissionsKey?.includes(perm));
+        const permissionTabs = item?.permissionKey?.some((perm) =>
+          permissionsKey?.includes(perm)
+        );
 
         if (permissionTabs || permissionsKey?.includes("all")) {
           return (
@@ -46,7 +54,9 @@ const CattleTabBar = ({ tabs = [], setActive, active }) => {
                 <span
                   style={{
                     fontWeight: active?.includes(item?.active) ? 800 : 400,
-                    color: !active?.includes(item?.active) ? "#583703" : "#583703",
+                    color: !active?.includes(item?.active)
+                      ? "#583703"
+                      : "#583703",
                   }}
                 >
                   <Trans i18nKey={item.name} />
