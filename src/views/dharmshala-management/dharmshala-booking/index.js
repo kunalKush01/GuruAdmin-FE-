@@ -183,68 +183,77 @@ const DharmshalaBookings = () => {
       <div>
         <div className="d-sm-flex mb-1 justify-content-between align-items-center ">
           <Trans i18nKey={"dharmshala_bookings_requested"} />
-          <div className="d-flex mt-1 mt-sm-0 justify-content-between">
-            <Button
-              className={`me-1 ${isMobileView ? "btn-sm" : ""}`}
-              color="primary"
-              onClick={() =>
-                history.push(
-                  `/booking/add/?page=${pagination.page}&filter=${dropDownName}`
-                )
-              }
-              style={{ marginBottom: isMobileView ? "5px" : "0" }}
-            >
-              <span>
-                <Plus className="" size={15} strokeWidth={4} />
-              </span>
-              <span>
-                <Trans i18nKey={"dharmshala_booking_add"} />
-              </span>
-            </Button>
-            <Button
-              className={`me-1 ${isMobileView ? "btn-sm" : ""}`}
-              color="primary"
-              onClick={() =>
-                history.push(
-                  `/booking/calendar/?page=${pagination.page}&filter=${dropDownName}`
-                )
-              }
-              style={{ marginBottom: isMobileView ? "5px" : "0" }}
-            >
-              <span>
-                <Trans i18nKey={"dharmshala_booking_calendar"} />
-              </span>
-            </Button>
-            <Button
-              className={`me-1 ${isMobileView ? "btn-sm" : ""}`}
-              color="primary"
-              onClick={togglePastRequests}
-              style={{ marginBottom: isMobileView ? "5px" : "0" }}
-            >
-              <span>
-                {showPastRequests ? (
-                  <Trans i18nKey={"view_upcoming_requests"} />
-                ) : (
-                  <Trans i18nKey={"view_past_requests"} />
-                )}
-              </span>
-            </Button>
-            <Button
-              className={`me-1 ${isMobileView ? "btn-sm" : ""}`}
-              color="primary"
-              onClick={toggleRoomHoldModal}
-              style={{ marginBottom: isMobileView ? "5px" : "0" }}
-            >
-              <span>
-                <Trans i18nKey={"Room Hold"} />
-              </span>
-            </Button>
-            <CustomDropDown
-              i18nKeyDropDownItemArray={statusOptions}
-              defaultDropDownName={statusFilter}
-              handleDropDownClick={handleStatusFilterChange}
-              width={"120px"}
-            />
+          <div
+            className="d-flex mt-1 mt-sm-0 justify-content-between"
+            id="dharmshala_booking_buttons"
+          >
+            <div className="dharmshala-botton-container">
+              <div className="row1">
+                <Button
+                  className={`me-1 ${isMobileView ? "btn-sm" : ""}`}
+                  color="primary"
+                  onClick={() =>
+                    history.push(
+                      `/booking/add/?page=${pagination.page}&filter=${dropDownName}`
+                    )
+                  }
+                  style={{ marginBottom: isMobileView ? "5px" : "0" }}
+                >
+                  <span>
+                    <Plus className="" size={15} strokeWidth={4} />
+                  </span>
+                  <span>
+                    <Trans i18nKey={"dharmshala_booking_add"} />
+                  </span>
+                </Button>
+                <Button
+                  className={`me-1 ${isMobileView ? "btn-sm" : ""}`}
+                  color="primary"
+                  onClick={() =>
+                    history.push(
+                      `/booking/calendar/?page=${pagination.page}&filter=${dropDownName}`
+                    )
+                  }
+                  style={{ marginBottom: isMobileView ? "5px" : "0" }}
+                >
+                  <span>
+                    <Trans i18nKey={"dharmshala_booking_calendar"} />
+                  </span>
+                </Button>
+              </div>
+              <div className="row2">
+                <Button
+                  className={`me-1 ${isMobileView ? "btn-sm" : ""}`}
+                  color="primary"
+                  onClick={togglePastRequests}
+                  style={{ marginBottom: isMobileView ? "5px" : "0" }}
+                >
+                  <span>
+                    {showPastRequests ? (
+                      <Trans i18nKey={"view_upcoming_requests"} />
+                    ) : (
+                      <Trans i18nKey={"view_past_requests"} />
+                    )}
+                  </span>
+                </Button>
+                <Button
+                  className={`me-1 ${isMobileView ? "btn-sm" : ""}`}
+                  color="primary"
+                  onClick={toggleRoomHoldModal}
+                  style={{ marginBottom: isMobileView ? "5px" : "0" }}
+                >
+                  <span>
+                    <Trans i18nKey={"Room Hold"} />
+                  </span>
+                </Button>
+              </div>
+              <CustomDropDown
+                i18nKeyDropDownItemArray={statusOptions}
+                defaultDropDownName={statusFilter}
+                handleDropDownClick={handleStatusFilterChange}
+                width={"120px"}
+              />
+            </div>
           </div>
         </div>
         <div style={{ height: "10px" }}>
