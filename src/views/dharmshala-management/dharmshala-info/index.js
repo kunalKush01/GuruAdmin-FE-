@@ -102,7 +102,7 @@ const DharmshalasInfo = () => {
         <title>Apna Dharm Admin | Dharmshala</title>
       </Helmet>
       <div>
-        <div className="d-sm-flex mb-1 justify-content-between align-items-center ">
+        <div className={`d-sm-flex mb-1 justify-content-between align-items-center ${isMobileView && "d-flex flex-row"}`}>
           <Trans i18nKey="building_registered" />
           <div className="d-flex mt-1 mt-sm-0 justify-content-between">
             <Button

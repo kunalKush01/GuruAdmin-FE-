@@ -21,14 +21,15 @@
 
     /* Styles for each card */
     .card {
-        background-color: #ffffff;
+        background-color: $secondary-color;
         // padding: 16px;
         margin-bottom: 25px;
         border-radius: 8px;
         // box-shadow: none !important;
-        max-width: 350px;
+        // max-width: 350px;
         /* Adjust as needed */
         overflow: hidden;
+        width: 100%;
         /* Ensures the content is clipped if it overflows */
         word-wrap: break-word;
         /* Ensures long words are broken and wrap onto the next line */
@@ -63,11 +64,11 @@
     .card-header {
         font-size: 18px;
         font-weight: 700;
-        color: #5a3a1e;
+        color: $font-color;
         /* Dark brown color */
         text-align: left;
         /* Align the header text to the left */
-        border-bottom: 1px solid #e0e0e0;
+        border-bottom: 1px solid $font-color;
         /* Divider line */
         margin-bottom: 8px;
         padding-bottom: 8px;
@@ -77,7 +78,7 @@
     .card-bottom {
         font-size: 18px;
         font-weight: 700;
-        color: #5a3a1e;
+        color: $font-color;
         /* Dark brown color */
         text-align: left;
         /* Align the header text to the left */

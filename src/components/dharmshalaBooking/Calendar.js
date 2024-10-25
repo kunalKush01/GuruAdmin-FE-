@@ -5,6 +5,8 @@ import { fetchProperties, fetchPropertyTypes } from "../../api/properties";
 import "../../assets/scss/common.scss";
 import Switch from "react-ios-switch";
 import guestIcon from "../../assets/images/icons/guestIcon.png";
+import arrPrev from "../../assets/images/icons/arrow-prev.svg";
+import arrNext from "../../assets/images/icons/arrow-next.svg";
 import Swal from "sweetalert2";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { useHistory } from "react-router-dom";
@@ -70,6 +72,7 @@ const Calendar = () => {
   const [filterEventDataDay, setFilterEventDataDay] = useState([]);
   const [weekDays, setWeekDays] = useState([]);
   const [showAvailableOnly, setShowAvailableOnly] = useState(false);
+  const [currentMonth, setCurrentMonth] = useState("");
   const { t } = useTranslation();
   //**filter event based on date selection */
   const filteredEvents = useMemo(() => {
@@ -115,7 +118,9 @@ const Calendar = () => {
         }));
 
         const filteredData = data.filter((item) => {
-          const formattedItemDate = moment(item.startDate, "DD-MM-YYYY").format("YYYY-MM-DD"); // Convert 'DD-MM-YYYY' to 'YYYY-MM-DD'
+          const formattedItemDate = moment(item.startDate, "DD-MM-YYYY").format(
+            "YYYY-MM-DD"
+          ); // Convert 'DD-MM-YYYY' to 'YYYY-MM-DD'
 
           const matchingDate = formattedDays.find(
             (day) => day.date === formattedItemDate
@@ -130,7 +135,12 @@ const Calendar = () => {
 
     fetchEvents();
   }, [weekDays, window.innerWidth, fromDate, days]);
-
+  const updateMonth = (days) => {
+    const firstDay = days[0]?.date;
+    if (firstDay) {
+      setCurrentMonth(moment(firstDay).format("MMMM YYYY"));
+    }
+  };
   useEffect(() => {
     const calculateWeeklyDays = (start, end) => {
       const newDays = [];
@@ -145,7 +155,7 @@ const Calendar = () => {
     const handleResize = () => {
       const startDate = fromDate ? new Date(fromDate) : new Date();
       if (!fromDate) {
-        startDate.setDate(startDate.getDate() - 7);
+        startDate.setDate(startDate.getDate() - 4);
       }
 
       const endDate = toDate ? new Date(toDate) : new Date(startDate);
@@ -158,6 +168,7 @@ const Calendar = () => {
       if (window.innerWidth <= 768) {
         const weeklyDays = calculateWeeklyDays(startDate, endDate);
         setWeekDays(weeklyDays);
+        updateMonth(weeklyDays);
       }
     };
     handleResize();
@@ -180,7 +191,24 @@ const Calendar = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, [fromDate, toDate, properties.length, propertyTypes.length]);
+ 
+  const handleNextWeek = () => {
+    const nextWeek = weekDays.map((day) => ({
+      date: new Date(moment(day.date).add(7, "days").toDate()),
+      isSelectable: day.isSelectable,
+    }));
+    setWeekDays(nextWeek);
+    updateMonth(nextWeek);
+  };
 
+  const handlePrevWeek = () => {
+    const prevWeek = weekDays.map((day) => ({
+      date: new Date(moment(day.date).subtract(7, "days").toDate()),
+      isSelectable: day.isSelectable,
+    }));
+    setWeekDays(prevWeek);
+    updateMonth(prevWeek);
+  };
   useEffect(() => {
     const startDate = fromDate ? new Date(fromDate) : new Date();
     if (!fromDate) {
@@ -666,8 +694,25 @@ const Calendar = () => {
           {/* Header for mobile view */}
           {filteredProperties.length > 0 ? (
             <div className="calendar-header-mobile">
-              <div className="header-cell-mobile property-header-mobile sticky">
-                Week View
+              <div className="header-cell-mobile property-header-mobile sticky d-flex justify-content-between">
+                <img
+                  src={arrPrev}
+                  width={30}
+                  height={30}
+                  className="weekArr"
+                  onClick={handlePrevWeek}
+                />
+                <div className="d-flex flex-column align-items-center justify-content-center">
+                  Week View
+                  <span className="monthText fs-6">{`(${currentMonth})`}</span>
+                </div>
+                <img
+                  src={arrNext}
+                  width={30}
+                  height={30}
+                  className="weekArr"
+                  onClick={handleNextWeek}
+                />
               </div>
             </div>
           ) : (
@@ -821,20 +866,20 @@ const Calendar = () => {
                                     weekday: "short",
                                   })}
                                 </div>
-                                  <div
-                                    className="event-title"
-                                    style={{
-                                      display: window.matchMedia(
-                                        "(max-width: 768px)"
-                                      ).matches
-                                        ? "flex"
-                                        : "none",
-                                      color: "black",
-                                      fontWeight: "600",
-                                    }}
-                                  >
-                                    {eventsForDay[0]?.userDetails?.name||""}
-                                  </div>
+                                <div
+                                  className="event-title"
+                                  style={{
+                                    display: window.matchMedia(
+                                      "(max-width: 768px)"
+                                    ).matches
+                                      ? "flex"
+                                      : "none",
+                                    color: "black",
+                                    fontWeight: "600",
+                                  }}
+                                >
+                                  {eventsForDay[0]?.userDetails?.name || ""}
+                                </div>
                               </div>
                             </div>
                           );

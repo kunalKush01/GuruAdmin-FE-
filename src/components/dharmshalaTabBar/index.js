@@ -63,7 +63,7 @@ const DharmshalaTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
               ? "space-between"
               : "",
             padding: !tabBar && !isMobile ? ".5rem" : "",
-            gap: tabBar && permissionsKey?.includes("all") ? "0.5rem" : "1rem",
+            gap: tabBar && permissionsKey?.includes("all") ? "0.5rem" : "1rem" || isMobile? "0rem" : "1rem",
             marginBottom: tabBar && 0,
             display: "flex",
             flexWrap: "nowrap",
