@@ -3854,7 +3854,8 @@
         margin-bottom: 10px;
         z-index: 12000;
         flex-direction: row;
-        /* gap: 10px; */
+        flex-wrap: wrap; /* Allow items to wrap */
+        gap: 10px; 
     }
 
     .calendar-filter {
@@ -3965,7 +3966,7 @@
 
     .day-cell {
         /* height: 60px; */
-        min-width: 59.5px;
+        min-width: 55.5px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -3974,7 +3975,7 @@
 
     .day-cells-container {
         display: flex;
-        justify-content: center;
+        justify-content: start;
         align-items: center;
     }
 

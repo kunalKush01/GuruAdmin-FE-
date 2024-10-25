@@ -110,13 +110,15 @@ const Calendar = () => {
 
       if (window.matchMedia("(max-width: 768px)").matches) {
         const formattedDays = weekDays.map((day) => ({
-          date: new Date(day.date).toISOString().split("T")[0],
+          date: moment(day.date).format("YYYY-MM-DD"), // Format using moment to 'YYYY-MM-DD'
           isSelectable: day.isSelectable,
         }));
 
         const filteredData = data.filter((item) => {
+          const formattedItemDate = moment(item.startDate, "DD-MM-YYYY").format("YYYY-MM-DD"); // Convert 'DD-MM-YYYY' to 'YYYY-MM-DD'
+
           const matchingDate = formattedDays.find(
-            (day) => day.date === item.startDate
+            (day) => day.date === formattedItemDate
           );
           return !!matchingDate;
         });
@@ -272,7 +274,7 @@ const Calendar = () => {
     }
   };
   const [eventColors, setEventColors] = useState({});
-  const colorPalette = ["#E9F8FD", "#5F69E6", "#F3B64B", "#79BB43", "#EC5B52"];
+  const colorPalette = ["#77DDFF", "#5F69E6", "#F3B64B", "#79BB43", "#EC5B52"];
   const getColorForEvent = (index) => {
     return colorPalette[index % colorPalette.length];
   };
@@ -819,7 +821,6 @@ const Calendar = () => {
                                     weekday: "short",
                                   })}
                                 </div>
-                                {hasEvents && isCheckInDate && (
                                   <div
                                     className="event-title"
                                     style={{
@@ -832,9 +833,8 @@ const Calendar = () => {
                                       fontWeight: "600",
                                     }}
                                   >
-                                    {eventsForDay[0].title}
+                                    {eventsForDay[0]?.userDetails?.name||""}
                                   </div>
-                                )}
                               </div>
                             </div>
                           );
