@@ -50,7 +50,9 @@ const VerticalMenuHeader = (props) => {
         <li className="nav-item me-auto d-flex align-items-center">
           <div className="navbar-image-logo-wrapper">
             <div className="brand-logo">
-              <img src={logo} alt="logo" className="logo" />
+              <a href="/dashboard">
+                <img src={logo} alt="logo" className="logo" />
+              </a>
             </div>
           </div>
         </li>
