@@ -789,6 +789,7 @@
     border-radius: 8px;
     overflow-y: auto;
     overflow-x: hidden;
+
     // padding-bottom: 200px;
     .FormikWrapper {
         padding: 10px;
@@ -2016,6 +2017,11 @@
 
 .wraperimagefield {
     padding-left: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    /* Keep the menu below */
+    align-items: center;
 
     .image_text {
         font: $font-weight-normal medium 22px/30px Kanit;
@@ -2085,6 +2091,7 @@
             width: 80px;
             height: 80px;
         }
+
     }
 
     @media screen and (max-width: 991px) {
@@ -2626,19 +2633,20 @@
     /* margin-top: 32px !important; */
     display: flex !important;
     height: 38px !important;
+    background: $secondary-color !important;
 }
 
 .ant-picker-outlined {
-    background: $white;
+    background: $secondary-color;
     border: none !important;
-    border: 1px solid $primary-color !important;
+    //border: 1px solid $primary-color !important;
     color: $primary-color !important;
     font: bold 13px "Noto Sans", sans-serif;
 }
 
 .ant-picker .ant-picker-input>input::placeholder {
     font-weight: 600 !important;
-    color: #9b845f !important;
+    color: #533810 !important;
 }
 
 .ant-picker .ant-picker-input>input {
@@ -2647,7 +2655,7 @@
 }
 
 .ant-picker-suffix {
-    color: #9b845f !important;
+    color: #533810 !important;
 }
 
 /* .ant-pagination {
@@ -2958,6 +2966,7 @@
 .ant-btn-compact-item.ant-btn-primary:not([disabled])+.ant-btn-compact-item.ant-btn-primary:not([disabled]):before {
     display: none;
 }
+
 .memberCard {
     height: 100%;
 }
@@ -2966,6 +2975,7 @@
     .ant-card-body {
         padding: 10px !important;
     }
+
     background-color: $gold;
 }
 
@@ -2975,13 +2985,17 @@
     border-radius: 50%;
     border: 4px solid $primary;
 }
-#profileImg ,#profileImgFam .ant-image-mask {
-    border-radius: 50%; /* Make the mask circular */
-    overflow: hidden; /* Ensure that the mask does not exceed the bounds of the parent */
+
+#profileImg,
+#profileImgFam .ant-image-mask {
+    border-radius: 50%;
+    /* Make the mask circular */
+    overflow: hidden;
+    /* Ensure that the mask does not exceed the bounds of the parent */
 }
-#profileImgFam{
-    
-}
+
+#profileImgFam {}
+
 .memberName {
     margin-top: 10px;
     font-family: 'Noto Sans', sans-serif;
@@ -3009,7 +3023,8 @@
     margin-bottom: 5px;
 }
 
-.card-text-2, .card-text-3 {
+.card-text-2,
+.card-text-3 {
     font-family: 'Noto Sans', sans-serif;
     font-size: 14px;
     font-weight: 700;
@@ -3021,24 +3036,31 @@
 
 .info-container {
     display: flex;
-    flex-wrap: wrap; /* Allow items to wrap */
+    flex-wrap: wrap;
+    /* Allow items to wrap */
     gap: 4px;
-    padding: 10px; /* Use padding instead of margin */
-    max-width: 100%; /* Ensure it doesn't exceed the card */
-    overflow: hidden; /* Hide overflow if necessary */
+    padding: 10px;
+    /* Use padding instead of margin */
+    max-width: 100%;
+    /* Ensure it doesn't exceed the card */
+    overflow: hidden;
+    /* Hide overflow if necessary */
 }
 
 .info-item {
     display: flex;
     align-items: center;
-    flex: 1 1 calc(50% - 10px); /* Responsive width for items */
-    min-width: 120px; /* Set a minimum width to maintain visibility */
+    flex: 1 1 calc(50% - 10px);
+    /* Responsive width for items */
+    min-width: 120px;
+    /* Set a minimum width to maintain visibility */
 }
 
 .info-item img {
     width: 18px;
     height: 18px;
-    margin-right: 8px; /* Adjust margin to be less than before */
+    margin-right: 8px;
+    /* Adjust margin to be less than before */
 }
 
 .info-item span {
@@ -3082,6 +3104,7 @@
     color: $font-color;
     letter-spacing: normal;
 }
+
 .familyCard {
     border: none;
     background-color: $secondary-color;
@@ -3101,7 +3124,8 @@
     justify-content: space-between;
     padding: 0px 15px;
     padding-right: 5px;
-    flex-wrap: wrap; /* Allow items to wrap onto the next line if needed */
+    flex-wrap: wrap;
+    /* Allow items to wrap onto the next line if needed */
     align-items: center;
 }
 
@@ -3111,15 +3135,21 @@
 }
 
 .rowItem {
-    flex: 2; /* Allow items to take more space proportionally */
-    min-width: 135px; /* Keep the minimum width */
-    margin: 5px; /* Add margin for better spacing */
-    box-sizing: border-box; /* Ensure padding and borders are included in the element's total width and height */
+    flex: 2;
+    /* Allow items to take more space proportionally */
+    min-width: 135px;
+    /* Keep the minimum width */
+    margin: 5px;
+    /* Add margin for better spacing */
+    box-sizing: border-box;
+    /* Ensure padding and borders are included in the element's total width and height */
 }
-.rowEditButton{
+
+.rowEditButton {
     display: flex;
     justify-content: flex-end;
 }
+
 .familyDetails {
     justify-content: space-between;
     display: flex !important;
@@ -3159,8 +3189,10 @@
     }
 
     .famRow2 {
-        display: flex; /* Changed from grid to flex for better wrapping */
-        flex-wrap: wrap; /* Allow wrapping */
+        display: flex;
+        /* Changed from grid to flex for better wrapping */
+        flex-wrap: wrap;
+        /* Allow wrapping */
     }
 
     .famRow2 .me-3 {
@@ -3184,9 +3216,12 @@
     }
 
     .rowItem {
-        flex: 1; /* Allow items to flex and take equal space */
-        min-width: 100px; /* Minimum width for items on smaller screens */
-        margin: 5px; /* Add some margin for better spacing */
+        flex: 1;
+        /* Allow items to flex and take equal space */
+        min-width: 100px;
+        /* Minimum width for items on smaller screens */
+        margin: 5px;
+        /* Add some margin for better spacing */
     }
 }
 
@@ -3199,12 +3234,15 @@
     }
 
     .rowItem {
-        width: 100%; /* Full width for each item on small screens */
+        width: 100%;
+        /* Full width for each item on small screens */
     }
 
     .editmember {
-        width: auto; /* Auto width for buttons on smaller screens */
-        padding: 5px 10px; /* Add padding for better click area */
+        width: auto;
+        /* Auto width for buttons on smaller screens */
+        padding: 5px 10px;
+        /* Add padding for better click area */
     }
 }
 
@@ -3225,19 +3263,20 @@
 #membAddCard {
     background-color: $secondary-color;
 }
+
 @media (max-width: 990px) {
     .familyCard {
-      margin: 0 auto; // Center cards in the column
-      width: 100%; // Full width for each card
+        margin: 0 auto; // Center cards in the column
+        width: 100%; // Full width for each card
     }
-  
+
     .memberProfileCard {
-      width: 100%; // Ensure profile card takes full width
+        width: 100%; // Ensure profile card takes full width
     }
-  
+
     // Adjust any other styles as needed
-  }
-  
+}
+
 .memberAddInput {
 
     .customtextfieldwrapper input,
@@ -4071,32 +4110,37 @@
 .search-button.disabled {
     opacity: 0.5;
     cursor: not-allowed;
-  }
+}
 
-  .ant-upload-select {
+.ant-upload-select {
     width: 100% !important;
     height: 100% !important;
-  }
-  
-  .ant-upload-select .ant-upload {
+}
+
+.ant-upload-select .ant-upload {
     width: 100% !important;
     height: 100% !important;
     margin: 0 !important;
-  }
-  .uploadIdCard {
-    .ant-upload-select{
-        height:40px !important;
+}
+
+.uploadIdCard {
+    .ant-upload-select {
+        height: 40px !important;
         border: none !important;
     }
-    .ant-btn-default{
+
+    .ant-btn-default {
         height: 38px !important;
     }
-    .ant-upload-list-item-name{
+
+    .ant-upload-list-item-name {
         color: $font-color;
     }
-  }
-  @media (max-width: 768px) {
+}
+
+@media (max-width: 768px) {
     .guest-container-add-booking {
-        width: 100% !important; /* Adjust max width for smaller screens */
+        width: 100% !important;
+        /* Adjust max width for smaller screens */
     }
 }

@@ -342,7 +342,7 @@ export default function ProfileForm({
                   <hr />
                 </div>
               </Col>
-              <Row className="">
+              <Row className="" style={{ gap: "30px" }}>
                 {!AddLanguage && (
                   <Col xs={12} lg={1} className="me-4">
                     <div className="d-flex mt-1">
