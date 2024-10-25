@@ -4068,3 +4068,36 @@
         margin-right: 30px;
     }
 }
+
+.search-button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .ant-upload-select {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  
+  .ant-upload-select .ant-upload {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+  }
+  .uploadIdCard {
+    .ant-upload-select{
+        height:40px !important;
+        border: none !important;
+    }
+    .ant-btn-default{
+        height: 38px !important;
+    }
+    .ant-upload-list-item-name{
+        color: $font-color;
+    }
+  }
+  @media (max-width: 768px) {
+    .guest-container-add-booking {
+        width: 100% !important; /* Adjust max width for smaller screens */
+    }
+}
