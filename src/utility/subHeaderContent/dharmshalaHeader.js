@@ -20,8 +20,8 @@ export const dharmshalaHeader = (permission) => {
     },
     {
       name: "Room Types",
-      url: "/roomtype-info",
-      active: "/roomtype-info",
+      url: "/roomtype/info",
+      active: "/roomtype/info",
       permissionKey: ["dharmshala/roomtypes"],
     },
     {

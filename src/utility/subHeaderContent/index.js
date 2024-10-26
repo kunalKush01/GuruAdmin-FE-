@@ -274,7 +274,7 @@ export const subHeaderContentResponsive = [
       {
         name: "Room Types",
         customLabel: "Room Types",
-        url: "/roomtype-info",
+        url: "/roomtype/info",
         icon: RoomTypeIcon,
         activeIcon: RoomTypeIcon,
       },
