@@ -233,7 +233,7 @@ const DharmshalaFloorTable = ({
   ]);
 
   return (
-    <div className="DharmshalaComponentTableWrapper">
+    <div className="DharmshalaComponentInfo">
       {isMobileView ? (
         <div className="card-container">
           {DharmshalasFloor.map((item, index) => (
