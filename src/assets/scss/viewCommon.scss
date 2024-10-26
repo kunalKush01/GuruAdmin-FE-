@@ -379,7 +379,7 @@
 
 .listviewwrapper {
     color: $font-color;
-    background: $white;
+    //background: $white; //Careful with this, breaks many pages
     font: $font-weight-normal $font-size-medium $font-family;
 
     .ImagesVideos {
@@ -442,7 +442,8 @@
         //margin-left: 10px;
         font: $font-weight-bold $font-size-medium $font-family;
         border-color: $primary-color !important;
-        background-color: $primary-color !important;
+        background-color: $white !important;
+        color: $primary-color !important;
     }
 
     .listviewContent {
