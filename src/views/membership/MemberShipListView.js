@@ -48,18 +48,14 @@ function MemberShipListView() {
           </div>
           <div className="addAction d-flex flex-wrap gap-2 gap-md-0">
             <Button
-              className={`secondaryAction-btn me-1`}
+              className={`addAction-btn me-1`}
               color="primary"
               onClick={() => history.push(`/member/addMember`)}
             >
               Add
             </Button>
 
-            <input
-              type="file"
-              accept=""
-              className="d-none"
-            />
+            <input type="file" accept="" className="d-none" />
           </div>
         </div>
         <div style={{ height: "10px" }}></div>
