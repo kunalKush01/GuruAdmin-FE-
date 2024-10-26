@@ -146,7 +146,7 @@ export default function User() {
     (item) => item.name
   );
   return (
-    <div className="listviewwrapper">
+    <div>
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharm Admin | Users</title>
