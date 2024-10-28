@@ -94,7 +94,7 @@ const DharmshalaRooms = () => {
       </Helmet>
       <div>
         <div className="d-sm-flex mb-1 justify-content-between align-items-center ">
-          <div className="d-flex justify-content-between align-items-center ">
+          <div className="d-flex align-items-center ">
             <img
               src={arrowLeft}
               className="me-2 cursor-pointer"
