@@ -302,7 +302,7 @@ const Calendar = () => {
     }
   };
   const [eventColors, setEventColors] = useState({});
-  const colorPalette = ["#77DDFF", "#5F69E6", "#F3B64B", "#79BB43", "#EC5B52"];
+  const colorPalette = ["#E9F8FD", "#5F69E6", "#F3B64B", "#79BB43", "#EC5B52"];
   const getColorForEvent = (index) => {
     return colorPalette[index % colorPalette.length];
   };
