@@ -283,7 +283,7 @@ export default function Donation() {
             className="d-flex flex-wrap gap-2 gap-md-0 justify-content-end"
             id="donation_view_btn"
           >
-            <div className="dharmshala-botton-container">
+            <div className="botton-container">
               <div className="d-flex row1">
                 <ChangeCategoryType
                   className={"me-1"}
