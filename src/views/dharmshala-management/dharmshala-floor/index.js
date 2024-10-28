@@ -91,7 +91,7 @@ const DharmshalaFloors = () => {
   const isMobileView = window.innerWidth <= 784;
 
   return (
-    <div className="DharmshalaComponentTableWrapper">
+    <div className="DharmshalaComponentInfo">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Apna Dharm Admin | Dharmshala Floors</title>

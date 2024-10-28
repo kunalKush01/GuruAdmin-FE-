@@ -236,7 +236,7 @@ const DharmshalaInfoTable = ({
   }, [data]);
 
   return (
-    <div className="DharmshalaComponentTableWrapper">
+    <div className="DharmshalaComponentInfo">
       {isMobileView ? (
         <div className="card-container">
           {DharmshalasInfo.map((item, index) => (

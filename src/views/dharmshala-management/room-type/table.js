@@ -82,7 +82,7 @@ const RoomTypeInfoTable = ({
   }, [data]);
 
   return (
-    <div className="DharmshalaComponentTableWrapper">
+    <div className="DharmshalaComponentInfo">
       {isMobileView ? (
         <div className="card-container">
           {RoomTypesInfo.map((item, index) => (

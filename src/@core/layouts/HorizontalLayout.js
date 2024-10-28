@@ -62,23 +62,20 @@ const SiderLayout = (props) => {
 
   const [isMounted, setIsMounted] = useState(false);
   const [hoveredItem, setHoveredItem] = useState(null);
-
-  const [navbarScrolled, setNavbarScrolled] = useState(false);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
-  // ** Store Vars
-
-  // ** Vars
   const contentWidth = layoutStore.contentWidth;
   const isHidden = layoutStore.menuHidden;
 
   const setContentWidth = (val) => dispatch(handleContentWidth(val));
   const setIsHidden = (val) => dispatch(handleMenuHidden(val));
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
-    !isLogged && history.push("/login");
+    if (!isLogged) {
+      history.push("/login");
+    }
   }, [isLogged, history]);
 
   useEffect(() => {
@@ -88,11 +85,7 @@ const SiderLayout = (props) => {
     };
   }, []);
 
-  //   useEffect(() => {
-  //     console.log("useEffect triggered", location.pathname);
-  //     setActive(location.pathname);
-  //   }, [location.pathname]);
-
+  // Ensure the active state is updated based on the current location
   useEffect(() => {
     const pathParts = location.pathname.split("/");
     if (pathParts.length > 1) {
@@ -101,17 +94,6 @@ const SiderLayout = (props) => {
       setActive(location.pathname);
     }
   }, [location.pathname]);
-
-  const {
-    children,
-    navbar,
-    customizer,
-    setLastLayout,
-    setLayout,
-    transition,
-    setTransition,
-    themeConfig,
-  } = props;
 
   const permissionsKey = permissions?.map((item) => item?.name);
 
@@ -174,26 +156,20 @@ const SiderLayout = (props) => {
   const confirmLogout = () => {
     Swal.fire({
       title: `<img src="${confirmationIcon}"/>`,
-      html: `
-        <h3 class="swal-heading mt-1">${t("logout_msg")}</h3>
-      `,
-      showCloseButton: false,
+      html: `<h3 class="swal-heading mt-1">${t("logout_msg")}</h3>`,
       showCancelButton: true,
       focusConfirm: true,
       cancelButtonText: ` ${t("no")}`,
-      cancelButtonAriaLabel: ` ${t("cencel")}`,
       confirmButtonText: ` ${t("yes")}`,
       confirmButtonAriaLabel: "Confirm",
-    }).then(async (result) => {
+    }).then((result) => {
       if (result.isConfirmed) {
         handleLogOut();
       }
     });
   };
 
-  if (!isMounted) {
-    return null;
-  }
+  if (!isMounted) return null;
 
   const handleMenuOpenChange = (keys) => {
     setOpenKeys(keys);
@@ -226,17 +202,19 @@ const SiderLayout = (props) => {
         >
           <div className="sider-content">
             <div className="logo-container">
-              <img
-                src={collapsed ? smallLogo : bigLogo}
-                alt="Logo"
-                style={{
-                  maxWidth: "100%",
-                  height: "auto",
-                  maxHeight: collapsed ? "56px" : "64px",
-                  marginLeft: collapsed ? "50%" : "9px",
-                  transform: collapsed ? "translateX(-50%)" : "none",
-                }}
-              />
+              <a href="/dashboard">
+                <img
+                  src={collapsed ? smallLogo : bigLogo}
+                  alt="Logo"
+                  style={{
+                    maxWidth: "100%",
+                    height: "auto",
+                    maxHeight: collapsed ? "56px" : "64px",
+                    marginLeft: collapsed ? "50%" : "9px",
+                    transform: collapsed ? "translateX(-50%)" : "none",
+                  }}
+                />
+              </a>
             </div>
             <div className="menu-container">
               <Menu
@@ -316,20 +294,10 @@ const SiderLayout = (props) => {
                 )
               }
               onClick={() => setCollapsed(!collapsed)}
-              style={{
-                fontSize: "16px",
-                width: 64,
-                height: 64,
-              }}
+              style={{ fontSize: "16px", width: 64, height: 64 }}
             />
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                flex: 1,
-              }}
-            >
-              {navbar ? navbar : <UserDropdown />}
+            <div style={{ display: "flex", alignItems: "center", flex: 1 }}>
+              {props.navbar ? props.navbar : <UserDropdown />}
             </div>
           </Header>
           <Content
@@ -341,11 +309,11 @@ const SiderLayout = (props) => {
               overflow: "auto",
             }}
           >
-            {children}
+            {props.children}
           </Content>
         </Layout>
       </Layout>
-      {customizer && (
+      {props.customizer && (
         <Customizer
           skin={skin}
           setSkin={setSkin}
@@ -357,15 +325,15 @@ const SiderLayout = (props) => {
           setNavbarColor={setNavbarColor}
           isRtl={isRtl}
           layout={props.layout}
-          setLastLayout={setLastLayout}
-          setLayout={setLayout}
+          setLastLayout={props.setLastLayout}
+          setLayout={props.setLayout}
           isHidden={isHidden}
           setIsHidden={setIsHidden}
           contentWidth={contentWidth}
           setContentWidth={setContentWidth}
-          transition={transition}
-          setTransition={setTransition}
-          themeConfig={themeConfig}
+          transition={props.transition}
+          setTransition={props.setTransition}
+          themeConfig={props.themeConfig}
         />
       )}
     </ConfigProvider>
