@@ -143,7 +143,7 @@ const DharmshalaBookingTable = ({
     setMode('check-out');
     setCheckInVisible(true);
   };
-  
+  const isMobileView = window.innerWidth < 768
 
   const columns = [
     {
@@ -152,6 +152,7 @@ const DharmshalaBookingTable = ({
       key: "bookingId",
       width: 150,
       fixed: "left",
+      width: isMobileView ? 100 : 150
     },
     {
       title: t("Guest Name"),
@@ -212,7 +213,7 @@ const DharmshalaBookingTable = ({
     {
       title: t("Actions"),
       key: "actions",
-      fixed: "right",
+      fixed: !isMobileView &&"right" ,
       width: 250,
       render: (_, record) => (
         <Space size="middle">
