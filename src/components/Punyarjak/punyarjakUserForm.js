@@ -13,7 +13,10 @@ import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import ImageUpload from "../partials/imageUpload";
 import RichTextField from "../partials/richTextEditorField";
 import "../../assets/scss/common.scss";
-
+import momentGenerateConfig from "rc-picker/lib/generate/moment";
+import { DatePicker } from "antd";
+const CustomDatePickerComponent =
+  DatePicker.generatePicker(momentGenerateConfig);
 export default function PunyarjakForm({
   plusIconDisable = false,
   loadOptions,
@@ -172,11 +175,17 @@ export default function PunyarjakForm({
               <Col xs={12} lg={4}>
                 {!AddLanguage && (
                   <Col>
-                    <FormikCustomDatePicker
+                    {/* <FormikCustomDatePicker
                       label={t("donation_select_date")}
                       name="DateTime"
                       pastDateNotAllowed
                       // showTimeInput={showTimeInput}
+                    /> */}
+                    <label>{t("donation_select_date")}</label>
+                    <CustomDatePickerComponent
+                      placeholder={t("donation_select_date")}
+                      style={{ width: "100%" }}
+                      format="DD MMM YYYY"
                     />
                   </Col>
                 )}
