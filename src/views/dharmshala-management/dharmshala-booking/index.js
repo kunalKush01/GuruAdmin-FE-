@@ -187,7 +187,7 @@ const DharmshalaBookings = () => {
             className="d-flex mt-1 mt-sm-0 justify-content-between"
             id="dharmshala_booking_buttons"
           >
-            <div className="dharmshala-botton-container">
+            <div className="botton-container">
               <div className="row1">
                 <Button
                   className={`me-1 ${isMobileView ? "btn-sm" : ""}`}

@@ -3174,46 +3174,55 @@
 .editIconMember {
     display: none;
 }
-.weekArr{
+
+.weekArr {
     display: none;
     cursor: pointer;
 }
+
 .monthText {
     font-family: 'Poppins', sans-serif;
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-weight: 300;
-  }
-  .scheduleModalForm {
+}
+
+.scheduleModalForm {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  
-  .scheduleModalFormContent {
-    max-width: 300px; /* Limit the form width */
-  }
-  
-  .scheduleModalFormContent .mb-2,
-  .scheduleModalFormContent .mt-2 {
+}
+
+.scheduleModalFormContent {
+    max-width: 300px;
+    /* Limit the form width */
+}
+
+.scheduleModalFormContent .mb-2,
+.scheduleModalFormContent .mt-2 {
     width: 100%;
     text-align: center;
-  }
-  
+}
+
 /* For tablets and small screens (less than or equal to 768px) */
 @media only screen and (max-width: 768px) {
     .scheduleModalFormContent {
-        max-width: 300px; /* Set a smaller width on larger screens */
-      }
-    .weekArr{
+        max-width: 300px;
+        /* Set a smaller width on larger screens */
+    }
+
+    .weekArr {
         display: block;
         cursor: pointer;
     }
-    .availability-check{
+
+    .availability-check {
         display: none;
     }
-    .fromDate{
+
+    .fromDate {
         width: 180px;
     }
+
     .familyDetails {
         display: flex !important;
         flex-direction: row !important;
@@ -3265,9 +3274,10 @@
 
 /* For smartphones (less than or equal to 480px) */
 @media only screen and (max-width: 480px) {
-    .availability-check{
+    .availability-check {
         display: none;
     }
+
     .familyDetails {
         display: flex !important;
         flex-direction: row !important;
@@ -3894,10 +3904,12 @@
     align-items: center;
     /* Center align items vertically */
 }
-.dharmshala-botton-container{
+
+.botton-container {
     display: flex;
     flex-direction: row;
 }
+
 /* Responsive styles for mobile */
 @media (max-width: 768px) {
 
@@ -3922,22 +3934,28 @@
     }
 
     .dashboard-container {
-        flex-direction: row;        /* Keep it in row direction */
-        justify-content: flex-start;     /* Center items horizontally */
+        flex-direction: row;
+        /* Keep it in row direction */
+        justify-content: flex-start;
+        /* Center items horizontally */
     }
 
     .dashboard-card {
-        width: calc(50% - 10px);   /* Each card takes 50% of the width minus gap */
-        height: auto;               /* Allow height to adjust automatically */
+        width: calc(50% - 10px);
+        /* Each card takes 50% of the width minus gap */
+        height: auto;
+        /* Allow height to adjust automatically */
     }
 
-    #dharmshala_booking_buttons .dharmshala-botton-container,
-    #donation_view_btn .dharmshala-botton-container {
+    #dharmshala_booking_buttons .botton-container,
+    #donation_view_btn .botton-container {
         width: 100%;
-        flex-direction: column !important; /* Stack buttons vertically */
-        align-items: stretch !important;    /* Stretch buttons to fill container */
+        flex-direction: column !important;
+        /* Stack buttons vertically */
+        align-items: stretch !important;
+        /* Stretch buttons to fill container */
     }
-    
+
     #dharmshala_booking_buttons .row1,
     #dharmshala_booking_buttons .row2,
     #donation_view_btn .row1,
@@ -3946,34 +3964,39 @@
         display: flex !important;
         flex-direction: row !important;
         justify-content: space-between !important;
-        align-items: stretch; /* Stretch buttons to fill container */
+        align-items: stretch;
+        /* Stretch buttons to fill container */
     }
-    
+
     #dharmshala_booking_buttons .btn,
     #donation_view_btn .btn {
-        width: 100%;    
-        margin-right: 5px !important; /* Full width on mobile */
-        margin-bottom: 5px;           /* Spacing between buttons */
+        width: 100%;
+        margin-right: 5px !important;
+        /* Full width on mobile */
+        margin-bottom: 5px;
+        /* Spacing between buttons */
         height: 35px;
     }
-    
+
     #dharmshala_booking_buttons .dropdownwrapper,
     #donation_view_btn .dropdownwrapper {
         width: 49%;
     }
-    
+
     #dharmshala_booking_buttons .dropdown-toggle,
     #donation_view_btn .dropdown-toggle {
         margin-right: 0px !important;
     }
-    
+
     #dharmshala_booking_buttons .dropdown-menu,
     #donation_view_btn .dropdown-menu {
         width: 100%;
-    }    
+    }
+
     #donation_view_btn .addAction-btn {
         margin-right: 0px !important;
-    }    
+    }
+
     .calendar-row {
         margin-left: 19px;
         height: 100%;
@@ -3998,8 +4021,9 @@
         margin-bottom: 10px;
         z-index: 12000;
         flex-direction: row;
-        flex-wrap: wrap; /* Allow items to wrap */
-        gap: 10px; 
+        flex-wrap: wrap;
+        /* Allow items to wrap */
+        gap: 10px;
     }
 
     .calendar-filter {
