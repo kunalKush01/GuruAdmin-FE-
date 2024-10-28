@@ -3152,9 +3152,27 @@
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-weight: 300;
   }
+  .scheduleModalForm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .scheduleModalFormContent {
+    max-width: 300px; /* Limit the form width */
+  }
+  
+  .scheduleModalFormContent .mb-2,
+  .scheduleModalFormContent .mt-2 {
+    width: 100%;
+    text-align: center;
+  }
   
 /* For tablets and small screens (less than or equal to 768px) */
 @media only screen and (max-width: 768px) {
+    .scheduleModalFormContent {
+        max-width: 300px; /* Set a smaller width on larger screens */
+      }
     .weekArr{
         display: block;
         cursor: pointer;

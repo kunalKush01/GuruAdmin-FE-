@@ -89,7 +89,7 @@ const DharmshalaTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
                   onMouseLeave={() => isMobile && setHoveredTab(null)}
                 >
                   <NavLink
-                    active={active?.includes(item?.active)}
+                    active={typeof active === 'string' && active?.includes(item?.active)}
                     onClick={() => {
                       item?.isManagment && !permissionsKey?.includes("all")
                         ? history.push(`${item?.url}/${url[0]?.split("-")[1]}`)
@@ -102,7 +102,7 @@ const DharmshalaTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
                         className={`circle ${
                           hoveredTab === index
                             ? "hover"
-                            : active?.includes(item?.active)
+                            :typeof active === 'string' &&  active?.includes(item?.active)
                             ? "active"
                             : ""
                         }`}
@@ -141,9 +141,10 @@ const DharmshalaTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
                   <div
                     key={idx}
                     className={`tabName ${
-                      active?.includes(item?.active) ? "activeTab" : ""
+                      typeof active === 'string' && active?.includes(item?.active) ? "activeTab" : ""
                     }`}
                     onClick={() => {
+                      if (active?.includes(item?.active)) return;
                       setActive(item);
                       item?.isManagment && !permissionsKey?.includes("all")
                         ? history.push(`${item?.url}/${url[0]?.split("-")[1]}`)

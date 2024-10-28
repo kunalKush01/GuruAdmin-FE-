@@ -345,9 +345,9 @@ export default function NewsCard({
                   });
                 }}
               >
-                <Form>
-                  <Row className="justify-content-center">
-                    <Col xs={8} className="">
+                <Form className="scheduleModalForm">
+                  <Row className="scheduleModalFormContent justify-content-center text-center">
+                    <Col xs={12} className="mb-2">
                       <FormikCustomDatePicker
                         name="DateTime"
                         width="100%"
@@ -355,8 +355,6 @@ export default function NewsCard({
                         showTimeInput
                       />
                     </Col>
-                  </Row>
-                  <Row>
                     <Col xs={12} className="mt-2">
                       <Button type="submit" color="primary" size="sm">
                         Submit
