@@ -284,7 +284,7 @@ export default function Donation() {
             id="donation_view_btn"
           >
             <div className="botton-container">
-              <div className="d-flex row1">
+              <div className="d-flex row1 me-1">
                 <ChangeCategoryType
                   className={"me-1"}
                   categoryTypeArray={newTypes}
