@@ -18,7 +18,7 @@ const schema = Yup.object().shape({
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
     .required("news_title_required")
     .trim(),
-  image: Yup.string().required("img_required"),
+  // image: Yup.string().required("img_required"),
 });
 
 export default function AddPunyarjak() {

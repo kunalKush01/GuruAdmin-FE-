@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
 import { add } from "lodash";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -25,7 +25,15 @@ import ImageUpload from "../partials/imageUpload";
 //import ImageUpload from "../partials/imageUpload2";
 import RichTextField from "../partials/richTextEditorField";
 import "../../assets/scss/common.scss";
-
+import momentGenerateConfig from "rc-picker/lib/generate/moment";
+import { DatePicker, Image } from "antd";
+import moment from "moment";
+import UploadImage from "../partials/uploadImage";
+import { uploadFile } from "../../api/sharedStorageApi";
+import uploadIcon from "../../assets/images/icons/file-upload.svg";
+import { fetchImage } from "../partials/downloadUploadImage";
+const CustomDatePickerComponent =
+  DatePicker.generatePicker(momentGenerateConfig);
 export default function NewsForm({
   plusIconDisable = false,
   handleSubmit,
@@ -117,6 +125,8 @@ export default function NewsForm({
   const langToast = {
     toastId: "langError",
   };
+  const [uploadedFileUrl, setUploadedFileUrl] = useState([]);
+  const [imageUrl, setImageUrl] = useState([]);
   return (
     <div className="formwrapper FormikWrapper">
       <Formik
@@ -138,30 +148,47 @@ export default function NewsForm({
             body: e.Body,
             publishDate: e?.DateTime,
             publishedBy: e.PublishedBy,
-            images: e?.images,
+            images: uploadedFileUrl || "",
             removedImages: deletedImages,
           });
           setDeletedTags([]);
         }}
         validationSchema={validationSchema}
       >
-        {(formik) => (
-          <Form>
-            {showPrompt && (
-              <Prompt
-                when={!!Object.values(formik?.values).find((val) => !!val)}
-                message={(location) =>
-                  `Are you sure you want to leave this page & visit ${location.pathname.replace(
-                    "/",
-                    ""
-                  )}`
-                }
-              />
-            )}
-            <Row className="paddingForm">
-              <Col xs={12} md={7}>
+        {(formik) => {
+          useEffect(() => {
+            if (formik.values.images && formik.values.images.length > 0) {
+              const loadImages = async () => {
+                const urls = await Promise.all(
+                  formik.values.images.map(async (image) => {
+                    const url = await fetchImage(image.name);
+                    return url;
+                  })
+                );
+
+                setImageUrl(urls);
+              };
+
+              loadImages();
+            }
+          }, [formik.values.images]);
+
+          return (
+            <Form>
+              {showPrompt && (
+                <Prompt
+                  when={!!Object.values(formik?.values).find((val) => !!val)}
+                  message={(location) =>
+                    `Are you sure you want to leave this page & visit ${location.pathname.replace(
+                      "/",
+                      ""
+                    )}`
+                  }
+                />
+              )}
+              <Row className="paddingForm">
                 <Row>
-                  <Col xs={12} md={6}>
+                  <Col xs={12} lg={4} md={6}>
                     <CustomTextField
                       label={t("news_label_Title")}
                       placeholder={t("placeHolder_title")}
@@ -173,7 +200,7 @@ export default function NewsForm({
                       autoFocus
                     />
                   </Col>
-                  <Col xs={12} md={6}>
+                  <Col xs={12} lg={4} md={6}>
                     <label>Tags</label>
                     <ReactTags
                       tags={formik.values.tagsInit}
@@ -214,6 +241,7 @@ export default function NewsForm({
                   {!AddLanguage && (
                     <Col
                       xs={12}
+                      lg={4}
                       md={6}
                       className=""
                       style={{ paddingTop: "8px" }}
@@ -249,104 +277,102 @@ export default function NewsForm({
                     />
                   </Col>
                 </Row>
-                {!AddLanguage && (
-                  <Row>
-                    <div className="ImagesVideos">
-                      <Trans i18nKey={"news_label_ImageVedio"} />{" "}
-                      <span style={{ fontSize: "13px", color: "gray" }}>
-                        <Trans i18nKey={"image_size_suggestion"} />
-                      </span>
-                    </div>
-                    <div>
-                      <ImageUpload
-                        multiple
-                        type={editImage}
-                        imageSpinner={imageSpinner}
-                        imageName="NewsImage"
-                        acceptFile="image/*"
-                        svgNotSupported
-                        setImageSpinner={setImageSpinner}
-                        bg_plus={thumbnailImage}
-                        disabledAddLanguage={AddLanguage}
-                        setDeletedImages={setDeletedImages}
-                        editedFileNameInitialValue={
-                          formik?.values?.images ? formik?.values?.images : null
-                        }
-                        defaultImages={defaultImages}
-                        randomNumber={randomNumber}
-                        fileName={(file, type) => {
-                          formik.setFieldValue("images", [
-                            ...formik.values.images,
-                            `${file}`,
-                          ]);
-                          formik.setFieldValue("type", type);
-                        }}
-                        removeFile={(fileName) => {
-                          const newFiles = [...formik?.values?.images];
-                          // newFiles.splice(index, 1);
-                          const updatedFiles = newFiles.filter(
-                            (img) => !img.includes(fileName)
-                          );
-                          formik.setFieldValue("images", updatedFiles);
-                        }}
-                      />
-                    </div>
-                  </Row>
-                )}
-              </Col>
-              <Col>
                 <Row>
                   {!AddLanguage && (
-                    <Col xs={12}>
-                      <FormikCustomDatePicker
-                        label={t("donation_select_date")}
+                    <Col xs={12} lg={4} md={6}>
+                      <div className="ImagesVideos">
+                        <Trans i18nKey={"news_label_ImageVedio"} />{" "}
+                      </div>
+                      <div>
+                        <UploadImage
+                          required
+                          uploadFileFunction={uploadFile}
+                          setUploadedFileUrl={setUploadedFileUrl}
+                          name="NewsImage"
+                          listType="picture"
+                          buttonLabel={t("upload_image")}
+                          initialUploadUrl={imageUrl}
+                          isMultiple={true}
+                          icon={
+                            <img
+                              src={uploadIcon}
+                              alt="Upload Icon"
+                              style={{ width: 16, height: 16 }}
+                            />
+                          }
+                        />
+                      </div>
+                    </Col>
+                  )}
+                  {!AddLanguage && (
+                    <Col xs={12} lg={4} md={6}>
+                      <label>{t("donation_select_date")}</label>
+                      <CustomDatePickerComponent
+                        placeholder={t("donation_select_date")}
+                        style={{ width: "100%" }}
                         name="DateTime"
-                        pastDateNotAllowed
-                        // showTimeInput={showTimeInput}
+                        format="DD MMM YYYY"
+                        onChange={(date) => {
+                          if (date) {
+                            const utcDate = date
+                              .startOf("day")
+                              .utc()
+                              .toISOString();
+                            formik.setFieldValue("DateTime", utcDate);
+                          } else {
+                            formik.setFieldValue("DateTime", "");
+                          }
+                        }}
+                        value={
+                          formik.values["DateTime"]
+                            ? moment.utc(formik.values["DateTime"])
+                            : null
+                        }
+                        disabledDate={(current) =>
+                          current < moment().startOf("day")
+                        }
                       />
                     </Col>
                   )}
-                  <Row>
-                    <Col xs={7} className="opacity-75">
-                      <CustomTextField
-                        label={t("news_label_Published")}
-                        name="PublishedBy"
-                        disabled
-                      />
-                    </Col>
-                  </Row>
+                  <Col xs={12} lg={4} md={6} className="opacity-75">
+                    <CustomTextField
+                      label={t("news_label_Published")}
+                      name="PublishedBy"
+                      disabled
+                    />
+                  </Col>
                 </Row>
-              </Col>
-            </Row>
-            <div className="btn-Published mb-0">
-              {loading ? (
-                <Button
-                  color="primary"
-                  className="add-trust-btn"
-                  style={{
-                    borderRadius: "10px",
-                    padding: "5px 40px",
-                    opacity: "100%",
-                  }}
-                  disabled
-                >
-                  <Spinner size="md" />
-                </Button>
-              ) : (
-                <Button color="primary" type="submit" disabled={imageSpinner}>
-                  {plusIconDisable && (
+              </Row>
+              <div className="btn-Published mb-0">
+                {loading ? (
+                  <Button
+                    color="primary"
+                    className="add-trust-btn"
+                    style={{
+                      borderRadius: "10px",
+                      padding: "5px 40px",
+                      opacity: "100%",
+                    }}
+                    disabled
+                  >
+                    <Spinner size="md" />
+                  </Button>
+                ) : (
+                  <Button color="primary" type="submit" disabled={imageSpinner}>
+                    {plusIconDisable && (
+                      <span>
+                        <Plus className="me-1" size={15} strokeWidth={4} />
+                      </span>
+                    )}
                     <span>
-                      <Plus className="me-1" size={15} strokeWidth={4} />
+                      <Trans i18nKey={`${buttonName}`} />
                     </span>
-                  )}
-                  <span>
-                    <Trans i18nKey={`${buttonName}`} />
-                  </span>
-                </Button>
-              )}
-            </div>
-          </Form>
-        )}
+                  </Button>
+                )}
+              </div>
+            </Form>
+          );
+        }}
       </Formik>
     </div>
   );
