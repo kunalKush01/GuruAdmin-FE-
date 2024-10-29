@@ -173,9 +173,9 @@ export default function PunyarjakForm({
                   <Col xs={12} lg={4} md={6}>
                     <div className="ImagesVideos">
                       <Trans i18nKey={"add_image"} />{" "}
-                      {/* <span style={{ fontSize: "13px", color: "gray" }}>
+                      <span style={{ fontSize: "13px", color: "gray" }}>
                         <Trans i18nKey={"image_size_suggestion"} />
-                      </span> */}
+                      </span>
                     </div>
                     <UploadImage
                       required
@@ -202,11 +202,6 @@ export default function PunyarjakForm({
                   <Button
                     color="primary"
                     className="add-trust-btn"
-                    style={{
-                      borderRadius: "10px",
-                      padding: "5px 40px",
-                      opacity: "100%",
-                    }}
                     disabled
                   >
                     <Spinner size="md" />
