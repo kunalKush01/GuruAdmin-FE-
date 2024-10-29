@@ -8,10 +8,24 @@ import "../../assets/scss/viewCommon.scss";
 import { useHistory } from "react-router-dom";
 import { getAllMembers } from "../../api/membershipApi";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useSelector } from "react-redux";
+import { WRITE } from "../../utility/permissionsVariable";
 
 function MemberShipListView() {
   const history = useHistory();
   const queryClient = useQueryClient();
+
+  const permissions = useSelector((state) => state.auth.userDetail?.permissions);
+  const allPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "all"
+  );
+  const subPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "membership" 
+  );
+  const subPermission = subPermissions?.subpermissions?.map(
+    (item) => item.name
+  );
+
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 10,
@@ -47,13 +61,15 @@ function MemberShipListView() {
             </div>
           </div>
           <div className="addAction d-flex flex-wrap gap-2 gap-md-0">
-            <Button
-              className={`addAction-btn me-1`}
-              color="primary"
-              onClick={() => history.push(`/member/addMember`)}
-            >
-              Add
-            </Button>
+          {(allPermissions?.name === "all" || subPermission?.includes(WRITE)) && (
+              <Button
+                className={`addAction-btn me-1`}
+                color="primary"
+                onClick={() => history.push(`/member/addMember`)}
+              >
+                Add
+              </Button>
+            )}
 
             <input type="file" accept="" className="d-none" />
           </div>
