@@ -279,9 +279,12 @@ export default function NewsForm({
                 </Row>
                 <Row>
                   {!AddLanguage && (
-                    <Col xs={12} lg={4} md={6}>
+                    <Col xs={12} lg={6} md={6}>
                       <div className="ImagesVideos">
                         <Trans i18nKey={"news_label_ImageVedio"} />{" "}
+                        <span style={{ fontSize: "13px", color: "gray" }}>
+                        <Trans i18nKey={"image_size_suggestion"} />
+                      </span>
                       </div>
                       <div>
                         <UploadImage
@@ -305,7 +308,7 @@ export default function NewsForm({
                     </Col>
                   )}
                   {!AddLanguage && (
-                    <Col xs={12} lg={4} md={6}>
+                    <Col xs={12} lg={3} md={6}>
                       <label>{t("donation_select_date")}</label>
                       <CustomDatePickerComponent
                         placeholder={t("donation_select_date")}
@@ -334,7 +337,7 @@ export default function NewsForm({
                       />
                     </Col>
                   )}
-                  <Col xs={12} lg={4} md={6} className="opacity-75">
+                  <Col xs={12} lg={3} md={6} className="opacity-75">
                     <CustomTextField
                       label={t("news_label_Published")}
                       name="PublishedBy"
@@ -348,11 +351,6 @@ export default function NewsForm({
                   <Button
                     color="primary"
                     className="add-trust-btn"
-                    style={{
-                      borderRadius: "10px",
-                      padding: "5px 40px",
-                      opacity: "100%",
-                    }}
                     disabled
                   >
                     <Spinner size="md" />

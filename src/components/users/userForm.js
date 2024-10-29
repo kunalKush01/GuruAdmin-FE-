@@ -349,13 +349,7 @@ export default function UserForm({
               {loading ? (
                 <Button
                   color="primary"
-                  className="add-trust-btn"
-                  style={{
-                    borderRadius: "10px",
-                    padding: "5px 40px",
-                    opacity: "100%",
-                    marginTop: "5rem",
-                  }}
+                  className="add-trust-btn mt-1"
                   disabled
                 >
                   <Spinner size="md" />
