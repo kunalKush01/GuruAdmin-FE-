@@ -46,6 +46,10 @@ const SiderLayout = (props) => {
     (state) => state.auth.trustDetail?.typeId?.name
   );
 
+  const hasDharmshalaAccess = useSelector(
+    (state) => state.auth.trustDetail?.hasDharmshala
+  );
+
   const [collapsed, setCollapsed] = useState(false);
   const [active, setActive] = useState(location.pathname);
   const [openKeys, setOpenKeys] = useState([]);
@@ -105,6 +109,11 @@ const SiderLayout = (props) => {
     );
     const isGaushala =
       item?.isCattle?.toLowerCase() === trustType?.toLowerCase();
+
+      const isDharmshalaItem = item?.name === "Dharmshala";
+      if (isDharmshalaItem && !hasDharmshalaAccess) {
+      return null;
+      }
 
     if (
       (hasAllPermission && isGaushala) ||
