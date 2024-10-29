@@ -46,7 +46,6 @@ function FormikMemberForm({
 
       const response = await uploadFile(formData);
       if (response && response.data.result) {
-        console.log(response);
         formik.setFieldValue(name, response.data.result.filePath);
         onSuccess(response.data.result.filePath);
       }
