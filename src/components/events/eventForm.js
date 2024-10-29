@@ -577,22 +577,13 @@ export default function EventForm({
                           formik?.values?.endTime !== "" ? (
                             <div
                               className="text-danger"
-                              // style={{
-                              //   height: "20px",
-                              //   font: "normal normal bold 11px/20px Noto Sans",
-                              // }}
                             >
-                              {/* <Trans i18nKey={"same_time"} /> */}
                               <Trans i18nKey={"same_time"} />
                             </div>
                           ) : selectedTimeStart > selectedTimeEnd &&
                             formik?.values?.endTime !== "" ? (
                             <div
                               className="text-danger"
-                              // style={{
-                              //   height: "20px",
-                              //   font: "normal normal bold 11px/20px Noto Sans",
-                              // }}
                             >
                               <Trans i18nKey={"end_time_less"} />
                             </div>
