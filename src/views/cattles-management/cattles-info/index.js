@@ -293,7 +293,7 @@ const CattlesInfo = () => {
               disableMemo
             >
               <Then>
-                <div
+                <CattleInfoTable
                   className="cattleinfo"
                   Table
                   data={cattleListData}

@@ -22,7 +22,7 @@ const schema = Yup.object().shape({
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
     .required("news_title_required")
     .trim(),
-  image: Yup.string().required("img_required"),
+  // image: Yup.string().required("img_required"),
 });
 
 const getLangId = (langArray, langSelection) => {
@@ -69,7 +69,7 @@ export default function EditSubAdmin() {
       DateTime: moment(punyarjakDetailQuery?.data?.result?.publishDate)
         .utcOffset("+0530")
         .toDate(),
-      image: punyarjakDetailQuery?.data?.result?.image,
+      image: punyarjakDetailQuery?.data?.result?.imageName,
     };
   }, [punyarjakDetailQuery]);
 

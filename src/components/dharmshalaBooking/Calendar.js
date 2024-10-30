@@ -5,6 +5,8 @@ import { fetchProperties, fetchPropertyTypes } from "../../api/properties";
 import "../../assets/scss/common.scss";
 import Switch from "react-ios-switch";
 import guestIcon from "../../assets/images/icons/guestIcon.png";
+import arrPrev from "../../assets/images/icons/arrow-prev.svg";
+import arrNext from "../../assets/images/icons/arrow-next.svg";
 import Swal from "sweetalert2";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { useHistory } from "react-router-dom";
@@ -26,7 +28,7 @@ const PlaceholderRows = ({ numRows, numCells, fromDate, toDate }) => {
     if (fromDate && toDate) {
       const start = moment(fromDate);
       const end = moment(toDate);
-      const days = end.diff(start, 'days') + 1; // Include end date
+      const days = end.diff(start, "days") + 1; // Include end date
       return Array.from({ length: days });
     }
     return Array.from({ length: numCells });
@@ -70,6 +72,7 @@ const Calendar = () => {
   const [filterEventDataDay, setFilterEventDataDay] = useState([]);
   const [weekDays, setWeekDays] = useState([]);
   const [showAvailableOnly, setShowAvailableOnly] = useState(false);
+  const [currentMonth, setCurrentMonth] = useState("");
   const { t } = useTranslation();
   //**filter event based on date selection */
   const filteredEvents = useMemo(() => {
@@ -110,13 +113,17 @@ const Calendar = () => {
 
       if (window.matchMedia("(max-width: 768px)").matches) {
         const formattedDays = weekDays.map((day) => ({
-          date: new Date(day.date).toISOString().split("T")[0],
+          date: moment(day.date).format("YYYY-MM-DD"), // Format using moment to 'YYYY-MM-DD'
           isSelectable: day.isSelectable,
         }));
 
         const filteredData = data.filter((item) => {
+          const formattedItemDate = moment(item.startDate, "DD-MM-YYYY").format(
+            "YYYY-MM-DD"
+          ); // Convert 'DD-MM-YYYY' to 'YYYY-MM-DD'
+
           const matchingDate = formattedDays.find(
-            (day) => day.date === item.startDate
+            (day) => day.date === formattedItemDate
           );
           return !!matchingDate;
         });
@@ -128,7 +135,12 @@ const Calendar = () => {
 
     fetchEvents();
   }, [weekDays, window.innerWidth, fromDate, days]);
-
+  const updateMonth = (days) => {
+    const firstDay = days[0]?.date;
+    if (firstDay) {
+      setCurrentMonth(moment(firstDay).format("MMMM YYYY"));
+    }
+  };
   useEffect(() => {
     const calculateWeeklyDays = (start, end) => {
       const newDays = [];
@@ -143,7 +155,7 @@ const Calendar = () => {
     const handleResize = () => {
       const startDate = fromDate ? new Date(fromDate) : new Date();
       if (!fromDate) {
-        startDate.setDate(startDate.getDate() - 7);
+        startDate.setDate(startDate.getDate() - 4);
       }
 
       const endDate = toDate ? new Date(toDate) : new Date(startDate);
@@ -156,6 +168,7 @@ const Calendar = () => {
       if (window.innerWidth <= 768) {
         const weeklyDays = calculateWeeklyDays(startDate, endDate);
         setWeekDays(weeklyDays);
+        updateMonth(weeklyDays);
       }
     };
     handleResize();
@@ -178,7 +191,24 @@ const Calendar = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, [fromDate, toDate, properties.length, propertyTypes.length]);
+ 
+  const handleNextWeek = () => {
+    const nextWeek = weekDays.map((day) => ({
+      date: new Date(moment(day.date).add(7, "days").toDate()),
+      isSelectable: day.isSelectable,
+    }));
+    setWeekDays(nextWeek);
+    updateMonth(nextWeek);
+  };
 
+  const handlePrevWeek = () => {
+    const prevWeek = weekDays.map((day) => ({
+      date: new Date(moment(day.date).subtract(7, "days").toDate()),
+      isSelectable: day.isSelectable,
+    }));
+    setWeekDays(prevWeek);
+    updateMonth(prevWeek);
+  };
   useEffect(() => {
     const startDate = fromDate ? new Date(fromDate) : new Date();
     if (!fromDate) {
@@ -272,7 +302,7 @@ const Calendar = () => {
     }
   };
   const [eventColors, setEventColors] = useState({});
-  const colorPalette = ["#4D9DE0", "#E15554", "#E1BC29", "#3BB273", "#7768AE"];
+  const colorPalette = ["#E9F8FD", "#5F69E6", "#F3B64B", "#79BB43", "#EC5B52"];
   const getColorForEvent = (index) => {
     return colorPalette[index % colorPalette.length];
   };
@@ -334,8 +364,8 @@ const Calendar = () => {
     const to = toDate ? moment(toDate, "DD-MM-YYYY") : null;
 
     if (!from || !to) {
-      setAvailableRooms(filteredProperties ? filteredProperties : []); 
-      return; 
+      setAvailableRooms(filteredProperties ? filteredProperties : []);
+      return;
     }
 
     const bookedRoomIds = new Set();
@@ -664,8 +694,25 @@ const Calendar = () => {
           {/* Header for mobile view */}
           {filteredProperties.length > 0 ? (
             <div className="calendar-header-mobile">
-              <div className="header-cell-mobile property-header-mobile sticky">
-                Week View
+              <div className="header-cell-mobile property-header-mobile sticky d-flex justify-content-between">
+                <img
+                  src={arrPrev}
+                  width={30}
+                  height={30}
+                  className="weekArr"
+                  onClick={handlePrevWeek}
+                />
+                <div className="d-flex flex-column align-items-center justify-content-center">
+                  Week View
+                  <span className="monthText fs-6">{`(${currentMonth})`}</span>
+                </div>
+                <img
+                  src={arrNext}
+                  width={30}
+                  height={30}
+                  className="weekArr"
+                  onClick={handleNextWeek}
+                />
               </div>
             </div>
           ) : (
@@ -819,22 +866,20 @@ const Calendar = () => {
                                     weekday: "short",
                                   })}
                                 </div>
-                                {hasEvents && isCheckInDate && (
-                                  <div
-                                    className="event-title"
-                                    style={{
-                                      display: window.matchMedia(
-                                        "(max-width: 768px)"
-                                      ).matches
-                                        ? "flex"
-                                        : "none",
-                                      color: "black",
-                                      fontWeight: "600",
-                                    }}
-                                  >
-                                    {eventsForDay[0].title}
-                                  </div>
-                                )}
+                                <div
+                                  className="event-title"
+                                  style={{
+                                    display: window.matchMedia(
+                                      "(max-width: 768px)"
+                                    ).matches
+                                      ? "flex"
+                                      : "none",
+                                    color: "black",
+                                    fontWeight: "600",
+                                  }}
+                                >
+                                  {eventsForDay[0]?.userDetails?.name || ""}
+                                </div>
                               </div>
                             </div>
                           );

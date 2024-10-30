@@ -160,7 +160,7 @@ const DharmshalaRoomTable = ({
     });
   }, [data, floorID]);
   return (
-    <div className="DharmshalaComponentTableWrapper">
+    <div className="DharmshalaComponentInfo">
       {isMobileView ? (
         <div className="card-container">
           {DharmshalasRoom.map((item, index) => (

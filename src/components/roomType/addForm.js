@@ -5,17 +5,9 @@ import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { Prompt, useHistory } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
-import styled from "styled-components";
+import { toast } from "react-toastify";
 import CustomTextField from "../partials/customTextField";
 import "../../assets/scss/common.scss";
-
-// const FormikWrapper = styled.div`
-//   font: normal normal bold 15px/33px Noto Sans;
-
-//   .animated-height {
-//     transition: height 0.5s;
-//   }
-// `;
 
 const AddRoomTypeForm = ({
   initialValues,
@@ -29,11 +21,6 @@ const AddRoomTypeForm = ({
   const [showPrompt, setShowPrompt] = useState(true);
   const [loading, setLoading] = useState(false);
 
-  const searchParams = new URLSearchParams(history.location.search);
-  const currentPage = searchParams.get("page");
-  const currentStatus = searchParams.get("status");
-  const currentFilter = searchParams.get("filter");
-
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: handleSubmit,
@@ -41,21 +28,39 @@ const AddRoomTypeForm = ({
       if (!data?.error) {
         queryClient.invalidateQueries(["roomTypeList"]);
         setLoading(false);
-      } else if (data?.error || data === undefined) {
+        history.push(`/roomtype/info`);
+        toast.success(t("roomtype_added_successfully"));
+      } else if (data?.error) {
         setLoading(false);
+        const errorMessage = typeof data.error === 'string' ? data.error : t("A room type with this name already exists in the Dharmshala");
+        toast.error(t(errorMessage));
       }
+    },
+    onError: (error) => {
+      setLoading(false);
+      const errorMessage = error.message || t("A room type with this name already exists in the Dharmshala.");
+      toast.error(t(errorMessage));
     },
   });
 
-  const handleFormSubmit = (values) => {
+  const handleFormSubmit = (values, { setFieldError }) => {
     setLoading(true);
     setShowPrompt(false);
     const { ...formValues } = values;
     const data = {
       ...formValues,
     };
-    mutation.mutate(data);
-    history.push(`/roomtype/info`);
+    mutation.mutate(data, {
+      onError: (error) => {
+        const errorMessage = error.message || t("A room type with this name already exists in the Dharmshala.");
+        if (errorMessage.toLowerCase().includes("duplicate")) {
+          setFieldError("name", t("A room type with this name already exists in the Dharmshala"));
+          toast.error(t("A room type with this name already exists in the Dharmshala."));
+        } else {
+          toast.error(t(errorMessage));
+        }
+      },
+    });
   };
 
   return (
@@ -82,7 +87,6 @@ const AddRoomTypeForm = ({
 
             <Row className="paddingForm">
               <Col xs={12} md={10}>
-                {/* First Row */}
                 <Row>
                   <Col xs={12} md={4}>
                     <CustomTextField
@@ -145,11 +149,6 @@ const AddRoomTypeForm = ({
                 <Button
                   color="primary"
                   className="add-trust-btn"
-                  style={{
-                    borderRadius: "10px",
-                    padding: "5px 40px",
-                    opacity: "100%",
-                  }}
                   disabled
                 >
                   <Spinner size="md" />

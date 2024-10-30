@@ -95,7 +95,7 @@ export default function EditNews() {
       Id: newsDetailQuery?.data?.result?.id,
       Title: newsDetailQuery?.data?.result?.title,
       tagsInit: tags,
-      images: [],
+      images: newsDetailQuery?.data?.result?.images ?? [],
       preference: newsDetailQuery?.data?.result?.preference ?? [],
       Body: he?.decode(newsDetailQuery?.data?.result?.body ?? ""),
       PublishedBy: loggedInUser,
