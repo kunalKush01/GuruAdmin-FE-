@@ -153,9 +153,7 @@ function MembershipProfileView() {
                               width={50}
                               height={50}
                               src={
-                                familyImages[i]
-                                  ? familyImages[i]
-                                  : avatarIcon
+                                familyImages[i] ? familyImages[i] : avatarIcon
                               }
                               alt="Profile"
                               className="familyProfile"
@@ -365,6 +363,7 @@ function MembershipProfileView() {
         />
         <div>
           <Button
+            className="mb-1"
             color="primary"
             onClick={() => history.push(`/member/editMember/${id}`)}
           >
