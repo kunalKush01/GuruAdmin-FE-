@@ -129,7 +129,7 @@ const AddMasterForm = ({ isOpen, toggle, onSuccess }) => {
           Swal.fire({
             icon: "error",
             title: "Error",
-            text: "Key already exists. Please use a unique key.",
+            text: "Both name and key must be unique. The provided name or key already exists.",
           });
           onSuccess(false);
         }

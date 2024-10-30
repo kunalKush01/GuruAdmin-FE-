@@ -19,6 +19,8 @@ export const getAllPaidDonationsReceipts = (payload) =>
 export const importCommitmentFile = (payload) =>
   callApi({
     requestFunction: (axios) => axios.post(`commitment/import-file`, payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
   });
 
 export const getAllMasterCategories = (payload) =>
