@@ -874,5 +874,6 @@ export const englishContent = {
   total_gaushala_donation: "Total Gaushala Donation",
   dead_cattles: "Dead Pashudhan",
   upload_id_card:"Upload ID Card",
+  upload_image:"Upload Image",
   photo:"Photos"
 };

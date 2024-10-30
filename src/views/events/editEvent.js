@@ -86,7 +86,7 @@ export default function EditEvent() {
       Title: eventDetailQuery?.data?.result?.title,
       tagsInit: tags,
       Body: he?.decode(eventDetailQuery?.data?.result?.body ?? ""),
-      images: [],
+      images: eventDetailQuery?.data?.result?.images??[],
       PublishedBy: eventDetailQuery?.data?.result?.publishedBy,
       DateTime: {
         start: moment(eventDetailQuery?.data?.result?.startDate)

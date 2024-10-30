@@ -39,15 +39,14 @@ function FormikMemberForm({
   ...props
 }) {
   const { t } = useTranslation();
-  const customRequest = async ({ file, onSuccess, onError,name}) => {
+  const customRequest = async ({ file, onSuccess, onError, name }) => {
     try {
       const formData = new FormData();
       formData.append("file", file);
 
       const response = await uploadFile(formData);
       if (response && response.data.result) {
-        console.log(response)
-        formik.setFieldValue(name,response.data.result.filePath);
+        formik.setFieldValue(name, response.data.result.filePath);
         onSuccess(response.data.result.filePath);
       }
     } catch (error) {
@@ -106,7 +105,7 @@ function FormikMemberForm({
       if (obj && typeof obj === "object") {
         // Check if the current object has an enumMaster property
         if (obj.enumMaster) {
-          enumMasters.push({enumKey:obj.enumMaster,title:obj.title}); // Store the enumMaster key
+          enumMasters.push({ enumKey: obj.enumMaster, title: obj.title }); // Store the enumMaster key
         }
         // Recursively traverse each property of the object
         Object.keys(obj).forEach((key) => {
@@ -146,7 +145,7 @@ function FormikMemberForm({
   const firstValueResult = firstValues.map((values) =>
     values.length > 0 ? values[0] : null
   );
-// console.log(firstValueResult)
+  // console.log(firstValueResult)
   const handleCheckboxChange = (e) => {
     setIsSameAsHome(e.target.checked);
     if (e.target.checked) {
@@ -227,6 +226,7 @@ function FormikMemberForm({
             {isRequired && <span className="text-danger">*</span>}
           </label>
           <Upload
+            className="uploadIdCard"
             name={name}
             listType="picture"
             customRequest={({ file, onSuccess, onError }) =>
@@ -241,7 +241,7 @@ function FormikMemberForm({
             style={{ width: "100%" }}
             // multiple={isMultipleUpload}
             // maxCount={!isMultipleUpload && 1}
-            maxCount={ 1}
+            maxCount={1}
           >
             <AntdButton
               icon={
@@ -260,18 +260,22 @@ function FormikMemberForm({
       );
     }
 
-    if (hasEnum||enumKey) {
-      const loadOptions = enumKey && firstValueResult
-      ? firstValueResult.find((result, index) => {
-          return enumMasters[index]?.enumKey.trim() === enumKey.trim();
-      })?.filter(value => value !== "").map(value => ({
-          id: value,
-          name: t(value),
-      }))
-      : fieldSchema.enum.map(value => ({
-          id: value,
-          name: t(value),
-      }));
+    if (hasEnum || enumKey) {
+      const loadOptions =
+        enumKey && firstValueResult
+          ? firstValueResult
+              .find((result, index) => {
+                return enumMasters[index]?.enumKey.trim() === enumKey.trim();
+              })
+              ?.filter((value) => value !== "")
+              .map((value) => ({
+                id: value,
+                name: t(value),
+              }))
+          : fieldSchema.enum.map((value) => ({
+              id: value,
+              name: t(value),
+            }));
       return (
         <Col
           xs={12}
@@ -282,9 +286,7 @@ function FormikMemberForm({
         >
           <FormikCustomReactSelect
             labelName={t(fieldSchema.title || name)}
-            loadOptions={
-              loadOptions
-            }
+            loadOptions={loadOptions}
             name={name}
             labelKey="name"
             valueKey="id"

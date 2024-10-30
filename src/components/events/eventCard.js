@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import he from "he";
 import moment from "moment";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -17,6 +17,7 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 import BtnPopover from "../partials/btnPopover";
 import "../../assets/scss/common.scss";
+import { fetchImage } from "../partials/downloadUploadImage";
 
 function BtnContent({
   eventId,
@@ -130,6 +131,23 @@ export default function EventCard({
   allPermissions,
 }) {
   const history = useHistory();
+  const [imageUrl, setImageUrl] = useState([]);
+  useEffect(() => {
+    if (data) {
+      const loadImages = async () => {
+        const urls = await Promise.all(
+          data?.images.map(async (image) => {
+            const url = await fetchImage(image.name);
+            return url;
+          })
+        );
+
+        setImageUrl(urls);
+      };
+
+      loadImages();
+    }
+  }, [data]);
   return (
     <div className="eventcardwrapper">
       <div>
@@ -153,7 +171,7 @@ export default function EventCard({
               >
                 <div className="w-100 h-100" style={{ borderRadius: "15px" }}>
                   <img
-                    src={data?.images[0]?.presignedUrl ?? placeHolder}
+                    src={(imageUrl && imageUrl[0] || data?.images[0]?.presignedUrl) ?? placeHolder}
                     alt="Event Image"
                     className="eventImage"
                     style={{
