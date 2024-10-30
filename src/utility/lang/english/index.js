@@ -878,5 +878,6 @@ export const englishContent = {
   dead_cattles: "Dead Pashudhan",
   upload_id_card:"Upload ID Card",
   upload_image:"Upload Image",
-  photo:"Photos"
+  photo:"Photos",
+  Import_File:"Import File"
 };
