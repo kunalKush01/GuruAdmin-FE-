@@ -46,7 +46,7 @@ export default function Expenses() {
     limit: 10,
   });
   const [expenseType, setExpenseType] = useState(
-    t("cattle_expense_type_general")
+    t("all")
   );
 
   const searchParams = new URLSearchParams(history.location.search);
@@ -60,6 +60,10 @@ export default function Expenses() {
   const routeExpenseType = expenseType;
 
   const ExpenseType = [
+    {
+      id: 0,
+      name: t("all"),
+    },
     {
       id: 1,
       name: t("cattle_expense_type_general"),
@@ -109,7 +113,7 @@ export default function Expenses() {
         ...pagination,
         startDate: filterStartDate,
         endDate: filterEndDate,
-        expenseType: expenseType?.toUpperCase(),
+expenseType: expenseType === t("all") ? undefined : expenseType.toUpperCase(),
         languageId: selectedLang.id,
         search: searchBarValue,
       }),

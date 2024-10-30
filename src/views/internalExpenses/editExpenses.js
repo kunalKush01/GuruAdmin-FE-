@@ -13,10 +13,21 @@ import ExpensesForm from "../../components/internalExpenses/expensesForm";
 import { ExpenseType } from "./addExpenses";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import "../../assets/scss/viewCommon.scss";
+import { getExpensesCustomFields } from "../../api/customFieldsApi";
+import { Tag } from "antd";
 
+export default function AddExpense() {
 const handleCreateExpense = async (payload) => {
   return updateExpensesDetail(payload);
 };
+const customFieldsQuery = useQuery(
+  ["getExpensesFields"],
+  async () => await getExpensesCustomFields(),
+  {
+    keepPreviousData: true,
+  }
+);
+const customFieldsList = customFieldsQuery?.data?.customFields ?? [];
 const schema = Yup.object().shape({
   Title: Yup.string()
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
@@ -49,9 +60,18 @@ const schema = Yup.object().shape({
   }),
 
   DateTime: Yup.string(),
+  customFields: Yup.object().shape(
+    customFieldsList.reduce((acc, field) => {
+      if (field.isRequired) {
+        acc[field.fieldName] = Yup.mixed().required(
+          `${field.fieldName} is required`
+        );
+      }
+      return acc;
+    }, {})
+  ),
 });
 
-export default function AddExpense() {
   const history = useHistory();
   const langArray = useSelector((state) => state.auth.availableLang);
 
@@ -87,6 +107,27 @@ export default function AddExpense() {
     DateTime: moment(ExpensesDetailQuery?.data?.result?.expenseDate)
       .utcOffset("+0530")
       .toDate(),
+   customFields: ExpensesDetailQuery?.data?.result?.customFields.reduce(
+        (acc, field) => {
+          acc[field.fieldName] =
+            field.fieldType === "Select"
+              ? {
+                  label:
+                    typeof field.value === "boolean"
+                      ? field.value
+                        ? "True"
+                        : "False"
+                      : field.value,
+                  value: field.value,
+                }
+              : typeof field.value === "string" &&
+                !isNaN(Date.parse(field.value))
+              ? moment(field.value).utcOffset("+0530").toDate()
+              : field.value ?? "";
+          return acc;
+        },
+        {}
+      ),
   };
 
   return (
@@ -106,6 +147,20 @@ export default function AddExpense() {
             <Trans i18nKey={"expenses_EditExpenses"} />
           </div>
         </div>
+        <div className="d-flex align-items-center">
+          <p style={{ fontSize: "15px", marginBottom: "0" }}>Current User :</p>
+          <Tag
+            color="#ff8744"
+            style={{
+              marginLeft: "8px",
+              borderRadius: "5px",
+              backgroundColor: "#ff8744",
+              color: "white",
+            }}
+          >
+            {loggedInUser}
+          </Tag>
+        </div>
       </div>
 
       {!ExpensesDetailQuery.isLoading ? (
@@ -118,6 +173,7 @@ export default function AddExpense() {
             expenseTypeArr={ExpenseType}
             validationSchema={schema}
             showTimeInput
+            customFieldsList={customFieldsList}
             buttonName="save_changes"
           />
         </div>

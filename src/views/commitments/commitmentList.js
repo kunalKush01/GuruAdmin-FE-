@@ -353,11 +353,31 @@ export default function Commitment() {
               className="d-none"
               onChange={handleImportFile}
             />
+            <Button
+              id="Popover1"
+              color="success"
+              onMouseEnter={onHover}
+              onMouseLeave={onHoverLeave}
+              className={`addAction ms-1 me-1 ${
+                notifyIds?.length > 0 ? "opacity-100" : "opacity-50"
+              }`}
+              onClick={() => {
+                notifyIds?.length > 0 &&
+                  nudgeUserApi({ commitmentIds: notifyIds }).then((res) => {
+                    if (!res.error) {
+                      queryClient.invalidateQueries(["Commitments"]);
+                      setSelectedRows(null);
+                    }
+                  });
+              }}
+            >
+              <Trans i18nKey={"notify_user"} />
+            </Button>
             {allPermissions?.name === "all" ||
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
-                className={`addAction-btn mt-md-1 mt-lg-0`}
+                className={`addAction-btn`}
                 onClick={() =>
                   history.push(
                     `/commitment/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${dropDownName}`
@@ -374,26 +394,6 @@ export default function Commitment() {
             ) : (
               ""
             )}
-            <Button
-              id="Popover1"
-              color="success"
-              onMouseEnter={onHover}
-              onMouseLeave={onHoverLeave}
-              className={`addAction ms-1 ${
-                notifyIds?.length > 0 ? "opacity-100" : "opacity-50"
-              }`}
-              onClick={() => {
-                notifyIds?.length > 0 &&
-                  nudgeUserApi({ commitmentIds: notifyIds }).then((res) => {
-                    if (!res.error) {
-                      queryClient.invalidateQueries(["Commitments"]);
-                      setSelectedRows(null);
-                    }
-                  });
-              }}
-            >
-              <Trans i18nKey={"notify_user"} />
-            </Button>
             {notifyIds?.length <= 0 && (
               <div className="">
                 <Popover

@@ -184,7 +184,7 @@ export default function Expenses() {
           </If>
         </div>
         <div className="newsContent">
-          <Row>
+          <Col>
             <If condition={boxCollectionQuery.isLoading} disableMemo>
               <Then>
                 <SkeletonTheme
@@ -265,7 +265,7 @@ export default function Expenses() {
                 </Col>
               </Then>
             </If>
-          </Row>
+          </Col>
         </div>
       </div>
     </div>

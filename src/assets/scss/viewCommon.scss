@@ -379,6 +379,7 @@
 
 .listviewwrapper {
     color: $font-color;
+    //background: $white; //Careful with this, breaks many pages
     font: $font-weight-normal $font-size-medium $font-family;
 
     .ImagesVideos {
@@ -392,6 +393,9 @@
         display: flex;
         align-items: center;
         font-weight: 600;
+        margin-left: 0rem !important;
+        margin-top: 0rem !important;
+
     }
 
     .FormikWrapper {
@@ -401,6 +405,8 @@
         max-height: 90vh;
         /* Set height relative to viewport */
         overflow-y: auto;
+        overflow-x: hidden;
+
         /* Enable scrolling */
         padding-bottom: 200px;
     }
@@ -425,7 +431,7 @@
 
     .addAction-btn {
         padding: 8px 20px;
-        margin-left: 10px;
+        //margin-left: 10px;
         font: $font-weight-bold $font-size-medium $font-family;
         border-color: $primary-color !important;
         background-color: $primary-color !important;
@@ -433,10 +439,11 @@
 
     .secondaryAction-btn {
         padding: 8px 20px;
-        margin-left: 10px;
+        //margin-left: 10px;
         font: $font-weight-bold $font-size-medium $font-family;
         border-color: $primary-color !important;
-        background-color: $primary-color !important;
+        background-color: $white !important;
+        color: $primary-color !important;
     }
 
     .listviewContent {
@@ -565,7 +572,7 @@
     }
 
     .templeName {
-        font: 600 23px/43px $font-family;
+        font: 600 20px/43px $font-family;
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
@@ -712,10 +719,11 @@
         font-weight: 800 !important;
         font-size: 35px;
         font-family: $font-family;
+        text-align: center;
     }
 
     .signInEnterUserNAme {
-        font: $font-weight-normal 18px/25px $font-family;
+        font: $font-weight-normal 14px/25px $font-family;
     }
 
     .forgetPassword {
@@ -772,7 +780,7 @@
     }
 
     .templeName {
-        font: $font-weight-bold 23px/43px $font-family;
+        font: $font-weight-bold 20px/43px $font-family;
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
@@ -1563,3 +1571,9 @@
     font-weight: bold;
     padding-left: 10px;
 }
+
+// .blur-button {
+//     filter: blur(1px);
+//     opacity: 1.0;
+//     pointer-events: none;
+//   }

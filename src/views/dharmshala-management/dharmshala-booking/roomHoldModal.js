@@ -71,7 +71,7 @@ const RoomHoldModal = ({ isOpen, toggle }) => {
 
   const fetchRooms = async (floorId) => {
     try {
-      const response = await getAllRoomsByFloorId(floorId);
+      const response = await getAllRoomsByFloorId(floorId, fromDate.format('YYYY-MM-DD'), toDate.format('YYYY-MM-DD'));
       setRooms(prevRooms => ({
         ...prevRooms,
         [floorId]: response.results,
@@ -134,7 +134,11 @@ const RoomHoldModal = ({ isOpen, toggle }) => {
       } : room
     );
     setRoomsData(updatedRooms);
-    fetchRooms(floorId);
+    if (fromDate && toDate) {
+      fetchRooms(floorId);
+    } else {
+      toast.warn('Please select both From Date and To Date before selecting a floor.');
+    }
   };
 
   const handleRoomNumberChange = (roomId, index) => {

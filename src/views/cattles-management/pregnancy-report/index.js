@@ -33,17 +33,15 @@ const PregnancyReport = () => {
   });
 
   const searchParams = new URLSearchParams(history.location.search);
-  const currentPage = searchParams.get("page");
-  const currentPregnancyStatus = searchParams.get("status");
-  const currentFilter = searchParams.get("filter");
+  const currentPage = searchParams.get("page") || 1;
+  const currentPregnancyStatus = searchParams.get("status") || t("all");
+  const currentFilter = searchParams.get("filter") || "dashboard_monthly";
 
   useEffect(() => {
-    if (currentPage || currentFilter || currentPregnancyStatus) {
-      setdropDownName(currentFilter);
-      setPregnancyStatus(currentPregnancyStatus);
-      setPagination({ ...pagination, page: parseInt(currentPage) });
-    }
-  }, []);
+    setdropDownName(currentFilter);
+    setPregnancyStatus(currentPregnancyStatus);
+    setPagination((prev) => ({ ...prev, page: parseInt(currentPage) }));
+  }, [currentPage, currentFilter, currentPregnancyStatus]);
 
   const periodDropDown = () => {
     switch (dropDownName) {
@@ -59,11 +57,11 @@ const PregnancyReport = () => {
     }
   };
 
-  let filterStartDate = moment()
+  const filterStartDate = moment()
     .startOf(periodDropDown())
     .utcOffset(0, true)
     .toISOString();
-  let filterEndDate = moment()
+  const filterEndDate = moment()
     .endOf(periodDropDown())
     .utcOffset(0, true)
     .toISOString();
@@ -74,7 +72,7 @@ const PregnancyReport = () => {
       filterStartDate,
       pregnancyStatus,
       filterEndDate,
-      pagination?.page,
+      pagination.page,
       selectedLang.id,
       searchBarValue,
     ],
@@ -84,9 +82,12 @@ const PregnancyReport = () => {
         search: searchBarValue,
         startDate: filterStartDate,
         endDate: filterEndDate,
-        status: pregnancyStatus == "inactive" ? "NO" : active ? "YES" : "ALL",
+        status: pregnancyStatus === t("inactive") ? "NO" : pregnancyStatus === t("active") ? "YES" : "ALL",
         languageId: selectedLang.id,
-      })
+      }),
+    {
+      keepPreviousData: true,
+    }
   );
 
   const cattlePregnancyListData = useMemo(
