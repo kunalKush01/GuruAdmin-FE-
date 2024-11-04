@@ -193,6 +193,7 @@ export default function NoticeCard({
       loadImage();
     }
   }, [data]);
+
   return (
     <div className="noticecardwrapper" key={data.id}>
       <div>
@@ -459,8 +460,8 @@ export default function NoticeCard({
                 }}
               >
                 <Form>
-                  <Row className="justify-content-center">
-                    <Col xs={8}>
+                  <Row className="responsive-row">
+                    <Col xs={8} lg={12} sm={12} className="responsive-col">
                       <FormikCustomDatePicker
                         name="DateTime"
                         width="100%"
@@ -469,8 +470,8 @@ export default function NoticeCard({
                       />
                     </Col>
                   </Row>
-                  <Row>
-                    <Col xs={12} className="mt-2">
+                  <Row className="mx-auto">
+                    <Col xs={12} className="mx-auto">
                       <Button type="submit" color="primary" size="sm">
                         Submit
                       </Button>

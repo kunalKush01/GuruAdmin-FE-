@@ -280,139 +280,151 @@ export default function Commitment() {
               </div>
             </div>
           </div>
-          <div className="addAction d-flex flex-wrap gap-2 gap-md-0">
-            <ChangeCategoryType
-              className={"me-1"}
-              categoryTypeArray={newTypes}
-              typeName={ConverFirstLatterToCapital(categoryTypeName ?? "")}
-              setTypeName={(e) => {
-                setCategoryId(e.target.id);
-                setCategoryTypeName(e.target.name);
-                setPagination({ page: 1, limit: 10 });
-                history.push(
-                  `/commitment?page=${1}&category=${
-                    e.target.name
-                  }&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${dropDownName}`
-                );
-              }}
-            />
-            <ChangeCategoryType
-              className={"me-1"}
-              categoryTypeArray={subCategoryTypes}
-              typeName={ConverFirstLatterToCapital(subCategoryTypeName ?? "")}
-              setTypeName={(e) => {
-                setSubCategoryTypeId(e.target.id);
-                setSubCategoryTypeName(e.target.name);
-                setPagination({ page: 1, limit: 10 });
-                history.push(
-                  `/commitment?page=${1}&category=${categoryTypeName}&subCategory=${
-                    e.target.name
-                  }&status=${commitmentStatus}&filter=${dropDownName}`
-                );
-              }}
-            />
-            <ChangeStatus
-              className={"me-1"}
-              dropDownName={commitmentStatus}
-              setdropDownName={(e) => {
-                setCommitmentStatus(e.target.name);
-                setPagination({ page: 1, limit: 10 });
-                history.push(
-                  `/commitment?page=${1}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${
-                    e.target.name
-                  }&filter=${dropDownName}`
-                );
-              }}
-            />
-            <ChangePeriodDropDown
-              className={"me-1"}
-              dropDownName={dropDownName}
-              setdropDownName={(e) => {
-                setdropDownName(e.target.name);
-                setPagination({ page: 1, limit: 10 });
-                history.push(
-                  `/commitment?page=${1}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${
-                    e.target.name
-                  }`
-                );
-              }}
-            />
-            <Button
-              className={`secondaryAction-btn me-1`}
-              color="primary"
-              // onClick={() => importFileRef.current.click()}
-              onClick={handleButtonClick}
-            >
-              Import File
-            </Button>
-
-            <input
-              type="file"
-              ref={importFileRef}
-              accept=""
-              className="d-none"
-              onChange={handleImportFile}
-            />
-            <Button
-              id="Popover1"
-              color="success"
-              onMouseEnter={onHover}
-              onMouseLeave={onHoverLeave}
-              className={`addAction ms-1 me-1 ${
-                notifyIds?.length > 0 ? "opacity-100" : "opacity-50"
-              }`}
-              onClick={() => {
-                notifyIds?.length > 0 &&
-                  nudgeUserApi({ commitmentIds: notifyIds }).then((res) => {
-                    if (!res.error) {
-                      queryClient.invalidateQueries(["Commitments"]);
-                      setSelectedRows(null);
-                    }
-                  });
-              }}
-            >
-              <Trans i18nKey={"notify_user"} />
-            </Button>
-            {allPermissions?.name === "all" ||
-            subPermission?.includes(WRITE) ? (
-              <Button
-                color="primary"
-                className={`addAction-btn`}
-                onClick={() =>
-                  history.push(
-                    `/commitment/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${dropDownName}`
-                  )
-                }
-              >
-                <span>
-                  <Plus className="" size={15} strokeWidth={4} />
-                </span>
-                <span>
-                  <Trans i18nKey={"add_commitment"} />
-                </span>
-              </Button>
-            ) : (
-              ""
-            )}
-            {notifyIds?.length <= 0 && (
-              <div className="">
-                <Popover
-                  placement="bottom"
-                  isOpen={popover}
-                  target="Popover1"
-                  trigger="hover"
-                  className="notifyUserPOP"
-                >
-                  <PopoverHeader>
-                    {" "}
-                    <Trans i18nKey={"notify_user"} />
-                  </PopoverHeader>
-                  <PopoverBody>
-                    <Trans i18nKey={"notify_user_content"} />
-                  </PopoverBody>
-                </Popover>
+          <div
+            className="d-flex flex-wrap gap-2 gap-md-0 justify-content-end"
+            id="donation_view_btn"
+          >
+            <div className="botton-container">
+              <div className="d-flex row1">
+                <ChangeCategoryType
+                  className={"me-1"}
+                  categoryTypeArray={newTypes}
+                  typeName={ConverFirstLatterToCapital(categoryTypeName ?? "")}
+                  setTypeName={(e) => {
+                    setCategoryId(e.target.id);
+                    setCategoryTypeName(e.target.name);
+                    setPagination({ page: 1, limit: 10 });
+                    history.push(
+                      `/commitment?page=${1}&category=${
+                        e.target.name
+                      }&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${dropDownName}`
+                    );
+                  }}
+                />
+                <ChangeCategoryType
+                  className={"me-1"}
+                  categoryTypeArray={subCategoryTypes}
+                  typeName={ConverFirstLatterToCapital(
+                    subCategoryTypeName ?? ""
+                  )}
+                  setTypeName={(e) => {
+                    setSubCategoryTypeId(e.target.id);
+                    setSubCategoryTypeName(e.target.name);
+                    setPagination({ page: 1, limit: 10 });
+                    history.push(
+                      `/commitment?page=${1}&category=${categoryTypeName}&subCategory=${
+                        e.target.name
+                      }&status=${commitmentStatus}&filter=${dropDownName}`
+                    );
+                  }}
+                />
+                <ChangeStatus
+                  className="me-1 donationFilterBtn"
+                  dropDownName={commitmentStatus}
+                  setdropDownName={(e) => {
+                    setCommitmentStatus(e.target.name);
+                    setPagination({ page: 1, limit: 10 });
+                    history.push(
+                      `/commitment?page=${1}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${
+                        e.target.name
+                      }&filter=${dropDownName}`
+                    );
+                  }}
+                />
               </div>
-            )}
+              <div className="d-flex row2">
+                <ChangePeriodDropDown
+                  className="me-1 pledgeMonthBtn"
+                  dropDownName={dropDownName}
+                  setdropDownName={(e) => {
+                    setdropDownName(e.target.name);
+                    setPagination({ page: 1, limit: 10 });
+                    history.push(
+                      `/commitment?page=${1}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${
+                        e.target.name
+                      }`
+                    );
+                  }}
+                />
+                <Button
+                  className={`secondaryAction-btn me-1 pledgeImportBtn`}
+                  color="primary"
+                  // onClick={() => importFileRef.current.click()}
+                  onClick={handleButtonClick}
+                >
+                  Import File
+                </Button>
+                <input
+                  type="file"
+                  ref={importFileRef}
+                  accept=""
+                  className="d-none"
+                  onChange={handleImportFile}
+                />
+                <Button
+                  id="Popover1"
+                  color="success"
+                  onMouseEnter={onHover}
+                  onMouseLeave={onHoverLeave}
+                  className={`addAction ms-1 me-1 donationFilterBtn ${
+                    notifyIds?.length > 0 ? "opacity-100" : "opacity-50"
+                  }`}
+                  onClick={() => {
+                    notifyIds?.length > 0 &&
+                      nudgeUserApi({ commitmentIds: notifyIds }).then((res) => {
+                        if (!res.error) {
+                          queryClient.invalidateQueries(["Commitments"]);
+                          setSelectedRows(null);
+                        }
+                      });
+                  }}
+                >
+                  <Trans i18nKey={"notify_user"} />
+                </Button>
+              </div>
+              <div className="d-flex row2">
+                {allPermissions?.name === "all" ||
+                subPermission?.includes(WRITE) ? (
+                  <Button
+                    color="primary"
+                    className={`addAction-btn`}
+                    onClick={() =>
+                      history.push(
+                        `/commitment/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${dropDownName}`
+                      )
+                    }
+                  >
+                    <span>
+                      <Plus className="" size={15} strokeWidth={4} />
+                    </span>
+                    <span>
+                      <Trans i18nKey={"add_commitment"} />
+                    </span>
+                  </Button>
+                ) : (
+                  ""
+                )}
+                {notifyIds?.length <= 0 && (
+                  <div className="">
+                    <Popover
+                      placement="bottom"
+                      isOpen={popover}
+                      target="Popover1"
+                      trigger="hover"
+                      className="notifyUserPOP"
+                    >
+                      <PopoverHeader>
+                        {" "}
+                        <Trans i18nKey={"notify_user"} />
+                      </PopoverHeader>
+                      <PopoverBody>
+                        <Trans i18nKey={"notify_user_content"} />
+                      </PopoverBody>
+                    </Popover>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
         <div style={{ height: "10px" }}>

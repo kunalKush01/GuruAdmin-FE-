@@ -237,7 +237,11 @@ export default function NewsCard({
               width: "100%",
               borderBottom: "1px solid rgb(255, 135, 68)",
             }}
-            src={imageUrl ? imageUrl[0] : data?.images[0]?.presignedUrl ?? placeHolder}
+            src={
+              imageUrl
+                ? imageUrl[0]
+                : data?.images[0]?.presignedUrl ?? placeHolder
+            }
           />
           <div className="position-absolute imgContent  w-100">
             {(allPermissions?.name === "all" ||
@@ -363,9 +367,9 @@ export default function NewsCard({
                   });
                 }}
               >
-                <Form className="scheduleModalForm">
-                  <Row className="scheduleModalFormContent justify-content-center text-center">
-                    <Col xs={12} className="mb-2">
+                <Form>
+                  <Row className="responsive-row">
+                    <Col xs={8} lg={12} sm={12} className="responsive-col">
                       <FormikCustomDatePicker
                         name="DateTime"
                         width="100%"
@@ -373,7 +377,9 @@ export default function NewsCard({
                         showTimeInput
                       />
                     </Col>
-                    <Col xs={12} className="mt-2">
+                  </Row>
+                  <Row className="mx-auto">
+                    <Col xs={12} className="mx-auto">
                       <Button type="submit" color="primary" size="sm">
                         Submit
                       </Button>
