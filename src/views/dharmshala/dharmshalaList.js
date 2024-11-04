@@ -288,7 +288,7 @@ export default function Dharmshala() {
               color="primary"
               onClick={() => importFileRef.current.click()}
             >
-              Import File
+              {t("Import_File")}
             </Button>
 
             <input

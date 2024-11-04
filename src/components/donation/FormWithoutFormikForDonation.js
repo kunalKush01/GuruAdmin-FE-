@@ -402,6 +402,7 @@ export default function FormWithoutFormikForDonation({
             <Col xs={12} sm={6} lg={3}>
               <FormikCustomReactSelect
                 labelName={t("category_select_sub_category")}
+                placeholder={t('select_option')}
                 loadOptions={subLoadOption?.map((cate) => {
                   return {
                     ...cate,
@@ -438,15 +439,16 @@ export default function FormWithoutFormikForDonation({
                   <FormikCustomReactSelect
                     labelName={t("mode_of_payment")}
                     name="modeOfPayment"
+                    placeholder={t('select_option')}
                     loadOptions={[
-                      { value: "", label: "Select Option" },
-                      { value: "Cash", label: "Cash" },
-                      { value: "UPI", label: "UPI" },
-                      { value: "online", label: "Online" },
-                      { value: "Cheque", label: "Cheque" },
-                      { value: "Credit Card", label: "Credit Card" },
-                      { value: "Debit Card", label: "Debit Card" },
-                      { value: "Bank Transfer", label: "Bank Transfer" },
+                      { value: "", label: t('select_option') },
+                      { value: "Cash", label: t('cash') },
+                      { value: "UPI", label: t('upi') },
+                      { value: "online", label: t('online') },
+                      { value: "Cheque", label: t('cheque') },
+                      { value: "Credit Card", label: t('credit_card') },
+                      { value: "Debit Card", label: t('debit_card') },
+                      { value: "Bank Transfer", label: t('bank_transfer') },
                     ]}
                     width
                   />
@@ -495,7 +497,7 @@ export default function FormWithoutFormikForDonation({
                           labelName={t("cheque_status")}
                           name="chequeStatus"
                           loadOptions={[
-                            { value: "", label: "Select Option" },
+                            { value: "", label: t('select_option') },
                             { value: "Pending", label: "Pending" },
                             { value: "Cleared", label: "Cleared" },
                             { value: "Rejected", label: "Rejected" },

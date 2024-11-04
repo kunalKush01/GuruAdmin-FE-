@@ -9,12 +9,13 @@ import save from "../../assets/images/icons/category/save.png";
 import cancel from "../../assets/images/icons/category/cancel.png";
 import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
 import '../../assets/scss/common.scss'
+import { useTranslation } from "react-i18next";
 export function MasterDataTable({ data, loadingRow }) {
   const queryClient = useQueryClient();
   const [editingRowId, setEditingRowId] = useState(null);
   const [editedValues, setEditedValues] = useState({});
   const [validationMessages, setValidationMessages] = useState({});
-
+  const {t} = useTranslation()
   const handleEditStart = (rowId) => {
     setEditingRowId(rowId);
     const row = data.list.find((item, index) => index + 1 == rowId);
@@ -182,7 +183,7 @@ export function MasterDataTable({ data, loadingRow }) {
                 }
                 onBlur={() => handleInputBlur(field)}
               >
-                <option value="">Select</option>
+                <option value="">{t('select_option')}</option>
                 <option value="True">True</option>
                 <option value="False">False</option>
               </select>
@@ -211,7 +212,7 @@ export function MasterDataTable({ data, loadingRow }) {
         },
       })),
       {
-        name: "Actions",
+        name: t('action'),
         fixed:!isMobile&& "right",
         center: true,
         cell: (row) =>
