@@ -54,48 +54,6 @@ function FormikMemberForm({
       onError(new Error("Error uploading file"));
     }
   };
-  // const customRequest = async ({
-  //   file,
-  //   onSuccess,
-  //   onError,
-  //   name,
-  //   isMultiple,
-  // }) => {
-  //   try {
-  //     const formData = new FormData();
-
-  //     // If isMultiple is true, and the file is an array, append all files
-  //     if (isMultiple) {
-  //       const filesArray = Array.isArray(file) ? file : [file]; // Ensure we have an array
-  //       filesArray.forEach((fileItem) => {
-  //         formData.append("files", fileItem); // Use 'files' for multiple uploads
-  //       });
-  //     } else {
-  //       // For single file upload
-  //       formData.append("file", file);
-  //     }
-
-  //     console.log("Files being uploaded:", formData.getAll("files")); // Log the files being uploaded
-
-  //     const response = await uploadFile(formData, isMultiple); // Pass isMultiple to uploadFile
-
-  //     if (response && response.data) {
-  //       if (isMultiple) {
-  //         // If multiple, extract and set all file paths
-  //         const filePaths = response.data.filePaths; // Ensure backend returns an array of paths
-  //         formik.setFieldValue(name, filePaths);
-  //       } else {
-  //         formik.setFieldValue(name, response.data.result.filePath);
-  //       }
-  //       onSuccess(
-  //         isMultiple ? response.data.filePaths : response.data.result.filePath
-  //       );
-  //     }
-  //   } catch (error) {
-  //     console.error("Error uploading file:", error);
-  //     onError(new Error("Error uploading file"));
-  //   }
-  // };
 
   const [isSameAsHome, setIsSameAsHome] = useState(false);
   function extractEnumMasters(schemaObject) {
@@ -117,7 +75,6 @@ function FormikMemberForm({
     }
 
     traverse(schemaObject);
-    // console.log(enumMasters); // Log all collected enumMasters
     return enumMasters; // Return the array of all enumMasters
   }
 
@@ -204,6 +161,14 @@ function FormikMemberForm({
               formik.values[name]
                 ? moment(formik.values[name], "DD MMM YYYY")
                 : ""
+            }
+            disabledDate={
+              dateValidation
+                ? (current) =>
+                    current &&
+                    (current.isSame(moment(), "day") ||
+                      current.isAfter(moment()))
+                : null
             }
           />
           {formik.errors[name] && (

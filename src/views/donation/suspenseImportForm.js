@@ -219,7 +219,7 @@ function SuspenseImportForm({ onClose, open, tab, setShowHistory }) {
           <Form>
             <Row>
               {tab && tab === "Donation" && (
-                <Col xs={12} sm={12} md={6}>
+                <Col xs={6} sm={12} md={6}>
                   <a href="/sampleFile/donations.csv" download>
                     <Button
                       type=""
@@ -238,7 +238,7 @@ function SuspenseImportForm({ onClose, open, tab, setShowHistory }) {
                 </Col>
               )}
               {tab && tab === "Pledge" && (
-                <Col xs={12} sm={12} md={6}>
+                <Col xs={6} sm={12} md={6}>
                   <a href="/sampleFile/commitments.csv" download>
                     <Button
                       type=""
@@ -256,7 +256,7 @@ function SuspenseImportForm({ onClose, open, tab, setShowHistory }) {
                   </a>
                 </Col>
               )}
-              <Col xs={12} sm={12} md={tab == "Suspense" ? 12 : 6}>
+              <Col xs={6} sm={12} md={tab == "Suspense" ? 12 : 6}>
                 <Upload
                   {...uploadProps}
                   maxCount={1}
