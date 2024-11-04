@@ -110,7 +110,7 @@ export default function UserForm({
             )}
             <Row className="paddingForm">
               <Col xs={12} className=" mt-2 ps-0 d-md-flex">
-                <div className="me-3">
+                <div className="">
                   <ImageUpload
                     bg_plus={defaultAvtar}
                     imageSpinner={imageSpinner}
@@ -135,7 +135,7 @@ export default function UserForm({
                     }}
                   />
                 </div>
-                <Row className=" w-100 mt-3">
+                <Row className="">
                   <Col xs={12} md={10}>
                     <Row>
                       <Col xs={12} sm={6} lg={4}>
@@ -250,7 +250,7 @@ export default function UserForm({
                     </Row>
                   </Col>
 
-                  <Row className="mb-5 pb-2">
+                  <Col className="">
                     <Col xs={12}>
                       <div className=" mt-1" style={{ fontSize: "15px" }}>
                         <Trans i18nKey={"user_userRole"} />*
@@ -270,7 +270,10 @@ export default function UserForm({
                       </div>
                     </Col>
                     <Col xs={12} className="">
-                      <Row className="row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-4 ">
+                      <Row
+                        className="row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-4 "
+                        style={{ paddingRight: "0px !important" }}
+                      >
                         <Col className="">
                           <div className="checkBoxBorderBox mt-1">
                             <FormGroup
@@ -338,7 +341,7 @@ export default function UserForm({
                         })}
                       </Row>
                     </Col>
-                  </Row>
+                  </Col>
                 </Row>
               </Col>
             </Row>
@@ -346,13 +349,7 @@ export default function UserForm({
               {loading ? (
                 <Button
                   color="primary"
-                  className="add-trust-btn"
-                  style={{
-                    borderRadius: "10px",
-                    padding: "5px 40px",
-                    opacity: "100%",
-                    marginTop: "5rem",
-                  }}
+                  className="add-trust-btn mt-1"
                   disabled
                 >
                   <Spinner size="md" />

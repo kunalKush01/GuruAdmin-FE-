@@ -399,7 +399,7 @@ export default function FinancialReport() {
             <div>
               <Button
                 color="primary"
-                className="secondaryAction-btn"
+                className="addAction-btn"
                 onClick={handleClickExport}
               >
                 <span className="d-flex align-items-center">

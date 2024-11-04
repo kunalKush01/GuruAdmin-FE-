@@ -1,7 +1,7 @@
 import { Form } from "formik";
 import React, { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Prompt, useHistory } from "react-router-dom";
+import { Prompt, useHistory,useLocation } from "react-router-dom";
 import { useUpdateEffect } from "react-use";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import { getAllSubCategories } from "../../api/expenseApi";
@@ -14,9 +14,11 @@ import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import { DatePicker } from "antd";
 import "../../../src/assets/scss/common.scss";
 import "../../../src/assets/scss/variables/_variables.scss";
-
+import * as Yup from "yup";
 import moment from "moment";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
+import AddUserDrawerForm from "../donation/addUserDrawerForm";
+import { createSubscribedUser } from "../../api/subscribedUser";
 
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 
@@ -58,7 +60,10 @@ export default function FormWithoutFormikForCommitment({
   }, [SelectedMasterCategory]);
 
   const [phoneNumber, setPhoneNumber] = useState(getCommitmentMobile);
-
+  const [dataLoad, setDataLoad] = useState(false);
+  const handleDataLoad = (val) => {
+    setDataLoad(val);
+  };
   useUpdateEffect(() => {
     const user = formik?.values?.SelectedUser;
     if (user?.id) {
@@ -73,7 +78,7 @@ export default function FormWithoutFormikForCommitment({
     formik.setFieldValue("countryCode", "");
     formik.setFieldValue("dialCode", "");
     formik.setFieldValue("donarName", "");
-  }, [formik?.values?.SelectedUser]);
+  }, [formik?.values?.SelectedUser,dataLoad]);
 
   useUpdateEffect(() => {
     if (formik?.values?.Mobile?.toString().length == 10) {
@@ -83,6 +88,7 @@ export default function FormWithoutFormikForCommitment({
         });
         if (res.result) {
           formik.setFieldValue("SelectedUser", res.result);
+          setNoUserFound(false);
         } else {
           setNoUserFound(true);
         }
@@ -93,7 +99,7 @@ export default function FormWithoutFormikForCommitment({
     } else {
       setNoUserFound(false);
     }
-  }, [formik?.values?.Mobile]);
+  }, [formik?.values?.Mobile,dataLoad]);
 
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
@@ -101,6 +107,37 @@ export default function FormWithoutFormikForCommitment({
   const currentSubCategory = searchParams.get("subCategory");
   const currentFilter = searchParams.get("filter");
 
+  const handleCreateUser = async (payload) => {
+    return createSubscribedUser(payload);
+  };
+
+  const schema = Yup.object().shape({
+    mobile: Yup.string().required("users_mobile_required"),
+    email: Yup.string()
+      .email("email_invalid")
+      .required("users_email_required")
+      .trim(),
+    name: Yup.string()
+      .matches(
+        /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+        "user_only_letters"
+      )
+      .required("users_title_required")
+      .trim(),
+    pincode: Yup.string().when("searchType", {
+      is: "isPincode",
+      then: Yup.string().max(6, "Pincode not found"),
+      otherwise: Yup.string(),
+    }),
+  });
+  const location = useLocation();
+  const [open, setOpen] = useState(false);
+  const showDrawer = () => {
+    setOpen(true);
+  };
+  const onClose = () => {
+    setOpen(false);
+  };
   return (
     <div className="formwrapper FormikWrapper">
       <Form>
@@ -160,18 +197,37 @@ export default function FormWithoutFormikForCommitment({
               <div className="addUser">
                 {" "}
                 <Trans i18nKey={"add_user_donation"} />{" "}
-                <span
-                  className="cursor-pointer"
-                  onClick={() =>
-                    history.push(
-                      `/add-user?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}&redirect=commitment`
-                    )
-                  }
-                >
+                <span className="cursor-pointer" onClick={showDrawer}>
                   <Trans i18nKey={"add_user"} />
                 </span>
               </div>
             )}
+            <AddUserDrawerForm
+                onClose={onClose}
+                open={open}
+                handleSubmit={handleCreateUser}
+                addDonationUser
+                initialValues={{
+                  name: "",
+                  countryCode: "in",
+                  dialCode: "91",
+                  email: "",
+                  pincode: "",
+                  searchType: "isPincode",
+                  panNum: "",
+                  addLine1: "",
+                  addLine2: "",
+                  city: "",
+                  district: "",
+                  state: "",
+                  country: "",
+                  pin: "",
+                }}
+                validationSchema={schema}
+                buttonName={"add_user"}
+                getNumber={phoneNumber}
+                onSuccess={handleDataLoad}
+              />
           </Col>
           {!editCommitment && (
             <Col xs={12} lg={2} sm={6}>

@@ -4,7 +4,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import { Plus } from "react-feather";
-import { DatePicker } from "antd";
+import { DatePicker, Image } from "antd";
 import { Timeline } from "antd";
 import {  Upload, message } from "antd";
 import Swal from "sweetalert2";
@@ -30,8 +30,9 @@ import RoomsContainer from "./RoomsContainer";
 import moment from 'moment';
 import { UploadOutlined } from "@ant-design/icons";
 import { uploadFile, deleteFile, downloadFile } from '../../api/sharedStorageApi'; 
-
+import {Button as AntdButton } from "antd";
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
+import uploadIc from "../../assets/images/icons/file-upload.svg";
 
 export default function FormWithoutFormikForBooking({
   formik,
@@ -640,7 +641,8 @@ const idTypeOptions = [
       message.error('Failed to download file');
     }
   };
-
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState('');
   const uploadProps = {
     name: 'file',
     customRequest: handleUpload,
@@ -655,16 +657,7 @@ const idTypeOptions = [
       e.preventDefault();
       e.stopPropagation();
     },
-    onPreview: async (file) => {
-      if (!file.url && !file.preview) {
-        file.preview = await getBase64(file.originFileObj);
-      }
-      const image = file.url || file.preview;
-      const imgWindow = window.open('', '_blank');
-      imgWindow.document.write(`<img src="${image}" alt="preview"/>`);
-    }
   };
-
   const getBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -673,6 +666,14 @@ const idTypeOptions = [
       reader.onerror = error => reject(error);
     });
   };
+  const handlePreview = async (file) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+    setPreviewImage(file.url || file.preview);
+    setPreviewOpen(true);
+  };
+
   
   return (
     <Form>
@@ -953,16 +954,40 @@ const idTypeOptions = [
                   />
                   </Col>
                   <Col xs={12} sm={6} lg={4} className="pb-1 upload-id">
-                  <Upload {...uploadProps}>
-                    <Button icon={<UploadOutlined />} disabled={uploading} style={{ 
-                        fontSize: '6px',
-                        padding: '4px 8px',
-                        height: '40px',
-                        lineHeight: '2'
-                      }}>
-                      {uploading ? 'Uploading...' : 'Upload ID Card'}
-                    </Button>
-                  </Upload>
+                    <Upload
+                      name="file"
+                      className="uploadIdCard"
+                      listType="picture"
+                      {...uploadProps}
+                      style={{ width: "100%" }}
+                      onPreview={handlePreview}
+                    >
+                      <AntdButton
+                        icon={
+                          <img
+                            src={uploadIc}
+                            alt="Upload Icon"
+                            style={{ width: 16, height: 16 }}
+                          />
+                        }
+                        style={{ width: "100%" }}
+                      >
+                        {t("upload_id_card")}
+                      </AntdButton>
+                    </Upload>
+                    {previewImage && (
+                      <Image
+                        wrapperStyle={{
+                          display: 'none',
+                        }}
+                        preview={{
+                          visible: previewOpen,
+                          onVisibleChange: (visible) => setPreviewOpen(visible),
+                          afterOpenChange: (visible) => !visible && setPreviewImage(''),
+                        }}
+                        src={previewImage}
+                      />
+                    )}
                 </Col>
                 </Row>
               </Col>

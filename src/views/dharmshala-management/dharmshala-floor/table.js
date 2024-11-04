@@ -233,16 +233,24 @@ const DharmshalaFloorTable = ({
   ]);
 
   return (
-    <div className="DharmshalaComponentTableWrapper">
+    <div className="DharmshalaComponentInfo">
       {isMobileView ? (
         <div className="card-container">
           {DharmshalasFloor.map((item, index) => (
             <div key={index} className="card">
+              <div className="card-header">
+                <h5 className="card-title">{item.name}</h5>
+                <div class="card-actions">
+                  <i class="fas fa-pen"></i>
+                  <i class="fas fa-trash-alt"></i>
+                </div>
+              </div>
               <div className="card-body">
                 <div className="card-content">
-                  <h5 className="card-title">{item.name}</h5>
                   <p className="card-text">{item.number}</p>
                   <p className="card-text">{item.description}</p>
+                </div>
+                <div className="card-bottom">
                   <p className="card-text">{item.roomCount}</p>
                 </div>
                 <div className="card-icons">

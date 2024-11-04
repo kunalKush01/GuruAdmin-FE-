@@ -16,6 +16,7 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 import CustomDataTable from "../partials/CustomDataTable";
 import "../../assets/scss/common.scss";
+import { Table } from "antd";
 
 export function ExpensesListTable({
   data,
@@ -41,60 +42,56 @@ export function ExpensesListTable({
   });
   const { t } = useTranslation();
   const history = useHistory();
-
-  let columns = [
+  const columns = [
     {
-      name: t("categories_serial_number"),
-      selector: (row) => row.id,
-      style: {
-        font: "normal normal 700 13px/20px noto sans !important ",
+      title: t("categories_serial_number"),
+      dataIndex: "id",
+      width: 180,
+      fixed: "left",
+    },
+    {
+      title: t("news_label_Title"),
+      dataIndex: "title",
+      width: 200,
+    },
+    {
+      title: t("expence_description"),
+      dataIndex: "description",
+      width: 300,
+    },
+    {
+      title: t("expenses_Date"),
+      dataIndex: "date",
+      width: 200,
+      render: (date) => {
+        const formattedDate = moment(date)
+          .local()
+          .format("DD MMM YYYY");
+    
+        return formattedDate;
       },
-      width: "180px",
     },
     {
-      name: t("news_label_Title"),
-      selector: (row) => row.title,
-      width: "230px",
+      title: t("dashboard_Recent_DonorAmount"),
+      dataIndex: "amount",
+      width: 200,
     },
     {
-      name: t("expence_description"),
-      selector: (row) => row.description,
-      width: "300px",
-    },
-
-    {
-      name: t("expenses_Date"),
-      selector: (row) => row.date,
-      width: "200px",
+      title: t("dashboard_Recent_DonorType"),
+      dataIndex: "expenseType",
+      width: 200,
     },
     {
-      name: t("dashboard_Recent_DonorAmount"),
-      selector: (row) => row.amount,
-      width: "200px",
+      title: t("created_by"),
+      dataIndex: "createdBy",
+      width: 200,
     },
     {
-      name: t("dashboard_Recent_DonorType"),
-      width: "200px",
-      selector: (row) => row.expenseType,
-    },
-    {
-      name: t("created_by"),
-      center: true,
-      selector: (row) => row.createdBy,
-    },
-
-    {
-      name: t(""),
-      center: true,
-      selector: (row) => row.edit,
-    },
-    {
-      name: "",
-      center: true,
-      selector: (row) => row.delete,
+      title: t("Actions"),
+      dataIndex: "action",
+      fixed:"right"
     },
   ];
-
   const categoriesList = useMemo(() => {
     return data.map((item, idx) => ({
       _Id: item?.id,
@@ -115,71 +112,71 @@ export function ExpensesListTable({
       expenseType: item?.expenseType
         ? ConverFirstLatterToCapital(item?.expenseType?.toLowerCase() ?? "")
         : "-",
-      edit:
-        allPermissions?.name === "all" ||
-        subPermission?.includes(EDIT) ||
-        financeReport ? (
-          <img
-            src={editIcon}
-            width={35}
-            className={financeReport ? "d-none" : "cursor-pointer "}
-            onClick={() => {
-              financeReport
-                ? ""
-                : history.push(
+      action: (
+        <div className="d-flex justify-content-center">
+          {allPermissions?.name === "all" ||
+          subPermission?.includes(EDIT) ||
+          financeReport ? (
+            <img
+              src={editIcon}
+              width={35}
+              className={financeReport ? "d-none" : "cursor-pointer mr-2"}
+              onClick={() => {
+                if (!financeReport) {
+                  history.push(
                     `/internal_expenses/edit/${item.id}?page=${currentPage}&expenseType=${currentExpenseFilter}&filter=${currentFilter}`
                   );
-            }}
-          />
-        ) : (
-          ""
-        ),
-      delete:
-        allPermissions?.name === "all" ||
-        subPermission?.includes(DELETE) ||
-        financeReport ? (
-          <img
-            src={deleteIcon}
-            width={35}
-            className={financeReport ? "d-none" : "cursor-pointer "}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              // Swal.fire("Oops...", "Something went wrong!", "error");
-              financeReport
-                ? ""
-                : Swal.fire({
+                }
+              }}
+              alt="Edit"
+            />
+          ) : null}
+
+          {allPermissions?.name === "all" ||
+          subPermission?.includes(DELETE) ||
+          financeReport ? (
+            <img
+              src={deleteIcon}
+              width={35}
+              className={financeReport ? "d-none" : "cursor-pointer"}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (!financeReport) {
+                  Swal.fire({
                     title: `<img src="${confirmationIcon}"/>`,
                     html: `
-                                  <h3 class="swal-heading">${t(
-                                    "expence_delete"
-                                  )}</h3>
-                                  <p>${t("expence_sure")}</p>
-                                  `,
+                    <h3 class="swal-heading">${t("expence_delete")}</h3>
+                    <p>${t("expence_sure")}</p>
+                  `,
                     showCloseButton: false,
                     showCancelButton: true,
-                    focusConfirm: true,
-                    cancelButtonText: `${t("cancel")}`,
-                    cancelButtonAriaLabel: `${t("cancel")}`,
-
                     confirmButtonText: `${t("confirm")}`,
-                    confirmButtonAriaLabel: "Confirm",
+                    cancelButtonText: `${t("cancel")}`,
                   }).then(async (result) => {
                     if (result.isConfirmed) {
                       deleteMutation.mutate(item.id);
                     }
                   });
-            }}
-          />
-        ) : (
-          ""
-        ),
+                }
+              }}
+              alt="Delete"
+            />
+          ) : null}
+        </div>
+      ),
     }));
   }, [data]);
 
   return (
     <div className="recentdonationtablewrapper">
-      <CustomDataTable maxHeight={""} columns={columns} data={categoriesList} />
+      {/* <CustomDataTable maxHeight={""} columns={columns} data={categoriesList} /> */}
+      <Table
+        className="donationListTable"
+        columns={columns}
+        dataSource={categoriesList}
+        rowKey="_Id"
+      />
     </div>
   );
 }

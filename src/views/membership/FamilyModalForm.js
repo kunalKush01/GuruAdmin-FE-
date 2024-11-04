@@ -18,6 +18,7 @@ import momentGenerateConfig from "rc-picker/lib/generate/moment";
 import { updateMembersById } from "../../api/membershipApi";
 import { useQueryClient } from "@tanstack/react-query";
 import { uploadFile } from "../../api/sharedStorageApi";
+import UploadImage from "../../components/partials/uploadImage";
 
 const CustomDatePickerComponent =
   DatePicker.generatePicker(momentGenerateConfig);
@@ -59,22 +60,6 @@ function FamilyModalForm({
   ];
 
   const [uploadedFileUrl, setUploadedFileUrl] = useState("");
-
-  const customRequest = async ({ file, onSuccess, onError }) => {
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-
-      const response = await uploadFile(formData);
-      if (response && response.data.result) {
-        setUploadedFileUrl(response.data.result.filePath);
-        onSuccess(response.data.result.filePath);
-      }
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      onError(new Error("Error uploading file"));
-    }
-  };
 
   const modalTitle =
     mode === "add" ? t("member_family_form") : t("edit_family_member");
@@ -130,6 +115,7 @@ function FamilyModalForm({
       };
 
       await updateMembersById(id, updatedPayload);
+      form.resetFields()
       queryClient.invalidateQueries(["memberShipProfileData"]);
       console.log("Updated Payload:", updatedPayload);
     } else {
@@ -215,25 +201,21 @@ function FamilyModalForm({
 
           <Col xs={24} sm={12}>
             <Form.Item label={t("upload_profile_image")} name="imageUrl">
-              <Upload
+              <UploadImage
+                uploadFileFunction={uploadFile}
+                setUploadedFileUrl={setUploadedFileUrl}
                 name="image"
                 listType="picture"
-                customRequest={customRequest}
                 maxCount={1}
-              >
-                <Button
-                  icon={
-                    <img
-                      src={uploadIcon}
-                      alt="Upload Icon"
-                      style={{ width: 16, height: 16 }}
-                    />
-                  }
-                  style={{ width: "100%" }}
-                >
-                  {t("upload_profile_image")}
-                </Button>
-              </Upload>
+                buttonLabel={t("upload_profile_image")}
+                icon={
+                  <img
+                    src={uploadIcon}
+                    alt="Upload Icon"
+                    style={{ width: 16, height: 16 }}
+                  />
+                }
+              />
             </Form.Item>
           </Col>
         </Row>
