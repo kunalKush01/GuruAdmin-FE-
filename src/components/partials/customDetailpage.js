@@ -1,6 +1,6 @@
 import he from "he";
 import moment from "moment";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import Slider from "react-slick";
@@ -11,6 +11,7 @@ import cardClockIcon from "../../assets/images/icons/news/clockIcon.svg";
 import placeHolder from "../../assets/images/placeholderImages/placeHolder.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import "../../assets/scss/common.scss";
+import { fetchImage } from "./downloadUploadImage";
 
 export default function DetailPage({
   tags,
@@ -68,7 +69,23 @@ export default function DetailPage({
       },
     ],
   };
+  const [imageUrl, setImageUrl] = useState([]);
+  useEffect(() => {
+    if (images) {
+      const loadImages = async () => {
+        const urls = await Promise.all(
+          images.map(async (image) => {
+            const url = await fetchImage(image.name);
+            return url;
+          })
+        );
 
+        setImageUrl(urls);
+      };
+
+      loadImages();
+    }
+  }, [images]);
   return (
     <div className="trustwrapper">
       <div className="window nav statusBar body "></div>
@@ -95,14 +112,14 @@ export default function DetailPage({
         </div>
         <Row className="my-lg-3 mt-2">
           <Col xs={12} lg={4} className="">
-            {images?.length > 1 ? (
+            {imageUrl?.length > 1 ? (
               <Slider {...settings}>
-                {images?.length
-                  ? images?.map((item) => {
+                {imageUrl?.length
+                  ? imageUrl?.map((item) => {
                       return (
                         <div className="detailImage">
                           <img
-                            src={item?.presignedUrl}
+                            src={item}
                             className="detailImage h-100 w-100"
                           />
                         </div>

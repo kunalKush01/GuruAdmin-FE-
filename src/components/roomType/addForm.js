@@ -149,11 +149,6 @@ const AddRoomTypeForm = ({
                 <Button
                   color="primary"
                   className="add-trust-btn"
-                  style={{
-                    borderRadius: "10px",
-                    padding: "5px 40px",
-                    opacity: "100%",
-                  }}
                   disabled
                 >
                   <Spinner size="md" />
