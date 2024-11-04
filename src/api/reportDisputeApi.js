@@ -7,3 +7,11 @@ export const getAllReporDisputeList = (payload) =>
         showToastOnSuccess: false,
         showToastOnError: false,
     });
+
+    export const updateDisputeStatus = (disputeId) =>
+      callApi({
+        requestFunction: (axios) =>
+          axios.put(`${API_BASE_URL}dispute/update-status/${disputeId}`),
+        showToastOnSuccess: true, // Show toast if you want a success message
+        showToastOnError: true, // Show toast if you want an error message
+      });

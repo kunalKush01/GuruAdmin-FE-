@@ -503,11 +503,6 @@ function AddUserDrawerForm({
                     <Button
                       color="primary"
                       className="add-trust-btn mt-3"
-                      style={{
-                        borderRadius: "10px",
-                        padding: "5px 40px",
-                        opacity: "100%",
-                      }}
                       disabled
                     >
                       <Spinner size="md" />

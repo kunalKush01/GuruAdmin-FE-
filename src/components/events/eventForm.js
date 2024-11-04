@@ -24,6 +24,14 @@ import ImageUpload from "../partials/imageUpload";
 import RichTextField from "../partials/richTextEditorField";
 import CustomLocationField from "../partials/CustomLocationField";
 import "../../assets/scss/common.scss";
+import momentGenerateConfig from "rc-picker/lib/generate/moment";
+import { DatePicker, Image } from "antd";
+import UploadImage from "../partials/uploadImage";
+import { uploadFile } from "../../api/sharedStorageApi";
+import uploadIcon from "../../assets/images/icons/file-upload.svg";
+import { fetchImage } from "../partials/downloadUploadImage";
+const CustomDatePickerComponent =
+  DatePicker.generatePicker(momentGenerateConfig);
 export default function EventForm({
   buttonName = "",
   AddLanguage,
@@ -139,7 +147,8 @@ export default function EventForm({
   const langToast = {
     toastId: "langError",
   };
-
+  const [uploadedFileUrl, setUploadedFileUrl] = useState([]);
+  const [imageUrl, setImageUrl] = useState([]);
   return (
     <div className="formwrapper FormikWrapper">
       <Formik
@@ -172,32 +181,48 @@ export default function EventForm({
             endDate: e?.DateTime?.end
               ? moment(e?.DateTime?.end).format("YYYY-MM-DD")
               : moment(e?.DateTime?.start).format("YYYY-MM-DD"),
-            images: e?.images,
+            images: uploadedFileUrl || "",
             removedImages: deletedImages,
           });
           setDeletedTags([]);
         }}
         validationSchema={validationSchema}
       >
-        {(formik) => (
-          <Form>
-            {showPrompt && (
-              <Prompt
-                when={!!Object.values(formik?.values).find((val) => !!val)}
-                message={(location) =>
-                  `Are you sure you want to leave this page & visit ${location.pathname.replace(
-                    "/",
-                    ""
-                  )}`
-                }
-              />
-            )}
+        {(formik) => {
+          useEffect(() => {
+            if (formik.values.images && formik.values.images.length > 0) {
+              const loadImages = async () => {
+                const urls = await Promise.all(
+                  formik.values.images.map(async (image) => {
+                    const url = await fetchImage(image.name);
+                    return url;
+                  })
+                );
 
-            <Row className="paddingForm">
-              <Col xs={12} md={7}>
+                setImageUrl(urls);
+              };
+
+              loadImages();
+            }
+          }, [formik.values.images]);
+          return (
+            <Form>
+              {showPrompt && (
+                <Prompt
+                  when={!!Object.values(formik?.values).find((val) => !!val)}
+                  message={(location) =>
+                    `Are you sure you want to leave this page & visit ${location.pathname.replace(
+                      "/",
+                      ""
+                    )}`
+                  }
+                />
+              )}
+
+              <Row className="paddingForm">
                 <Row>
                   {!AddLanguage && (
-                    <Col xs={12} md={6}>
+                    <Col xs={12} lg={4} md={6}>
                       <AsyncSelectField
                         name="SelectedEvent"
                         loadOptions={loadOption}
@@ -254,7 +279,7 @@ export default function EventForm({
                       />
                     </Col>
                   )}
-                  <Col xs={12} md={6}>
+                  <Col xs={12} lg={4} md={6}>
                     <CustomTextField
                       label={t("news_label_Title")}
                       placeholder={t("placeHolder_title")}
@@ -268,7 +293,7 @@ export default function EventForm({
                   </Col>
 
                   {AddLanguage && (
-                    <Col xs={12} md={6}>
+                    <Col xs={12} lg={4} md={6}>
                       <label>Tags</label>
                       <ReactTags
                         placeholder={t("placeHolder_tags")}
@@ -317,124 +342,8 @@ export default function EventForm({
                       )}
                     </Col>
                   )}
-                </Row>
-                <Row>
-                  <Col xs={12} md={6}>
-                    {!AddLanguage ? (
-                      <>
-                        <label>
-                          <Trans i18nKey={"location"} />
-                        </label>
-                        *
-                        <CustomLocationField
-                          setFieldValue={formik.setFieldValue}
-                          error={formik}
-                          values={formik?.values}
-                        />
-                        {formik.errors.location && (
-                          <div
-                          // style={{
-                          //   height: "20px",
-                          //   font: "normal normal bold 11px/33px Noto Sans",
-                          // }}
-                          >
-                            {formik.errors.location &&
-                              formik.touched.location && (
-                                <div className="text-danger">
-                                  <Trans i18nKey={formik.errors.location} />
-                                </div>
-                              )}
-                          </div>
-                        )}
-                      </>
-                    ) : (
-                      <CustomTextField
-                        label={t("location")}
-                        name="location"
-                        placeholder={t("placeHolder_location")}
-                        required
-                      />
-                    )}
-                  </Col>
                   {!AddLanguage && (
-                    <>
-                      <Col xs={12} md={4} className="opacity-75">
-                        <CustomTextField
-                          label={t("City")}
-                          placeholder={t("placeHolder_city")}
-                          name="city"
-                          disabled
-                        />
-                      </Col>
-                      <Col xs={12} md={4} className="opacity-75">
-                        <CustomTextField
-                          label={t("State")}
-                          placeholder={t("placeHolder_state")}
-                          name="state"
-                          disabled
-                        />
-                      </Col>
-                    </>
-                  )}
-                </Row>
-                <Row>
-                  <Col xs={12} className="">
-                    <RichTextField
-                      height="200px"
-                      label={t("news_label_Description")}
-                      name="Body"
-                    />
-                  </Col>
-                </Row>
-                {!AddLanguage && (
-                  <Row>
-                    <div className="ImagesVideos">
-                      <Trans i18nKey={"news_label_ImageVedio"} />{" "}
-                      <span style={{ fontSize: "13px", color: "gray" }}>
-                        <Trans i18nKey={"image_size_suggestion"} />
-                      </span>
-                    </div>
-                    <div>
-                      <ImageUpload
-                        multiple
-                        type={editImage}
-                        acceptFile="image/*"
-                        imageName="EventImage"
-                        svgNotSupported
-                        disabledAddLanguage={AddLanguage}
-                        imageSpinner={imageSpinner}
-                        setImageSpinner={setImageSpinner}
-                        bg_plus={thumbnailImage}
-                        setDeletedImages={setDeletedImages}
-                        editedFileNameInitialValue={
-                          formik?.values?.images ? formik?.values?.images : null
-                        }
-                        defaultImages={imageOnGlobalEvent}
-                        randomNumber={randomNumber}
-                        fileName={(file, type) => {
-                          formik.setFieldValue("images", [
-                            ...formik?.values?.images,
-                            `${file}`,
-                          ]);
-                          formik.setFieldValue("type", type);
-                        }}
-                        removeFile={(fileName) => {
-                          const newFiles = [...formik.values.images];
-
-                          const updatedFiles = newFiles.filter(
-                            (img) => !img.includes(fileName)
-                          );
-                          formik.setFieldValue("images", updatedFiles);
-                        }}
-                      />
-                    </div>
-                  </Row>
-                )}
-              </Col>
-              {!AddLanguage && (
-                <Col xs="4" className="">
-                  <Row>
-                    <Col xs="10">
+                    <Col xs={12} lg={4} md={6}>
                       <label>Tags</label>
                       <ReactTags
                         placeholder={t("placeHolder_tags")}
@@ -473,200 +382,301 @@ export default function EventForm({
                         </div>
                       )}
                     </Col>
-
-                    <Col>
-                      <FormikRangeDatePicker
-                        label={t("donation_select_date_time")}
-                        name="DateTime"
-                        pastDateNotAllowed
-                        selectsRange
-                      />
-                      <div
-                      // style={{
-                      //   height: "20px",
-                      //   font: "normal normal bold 11px/33px Noto Sans",
-                      // }}
-                      >
-                        {formik.errors.DateTime && formik.touched.DateTime && (
-                          <div className="text-danger">
-                            <Trans i18nKey={formik.errors.DateTime?.end} />
+                  )}
+                  <Col xs={12} lg={4} md={6}>
+                    {!AddLanguage ? (
+                      <>
+                        <label>
+                          <Trans i18nKey={"location"} />
+                        </label>
+                        *
+                        <CustomLocationField
+                          setFieldValue={formik.setFieldValue}
+                          error={formik}
+                          values={formik?.values}
+                        />
+                        {formik.errors.location && (
+                          <div
+                          // style={{
+                          //   height: "20px",
+                          //   font: "normal normal bold 11px/33px Noto Sans",
+                          // }}
+                          >
+                            {formik.errors.location &&
+                              formik.touched.location && (
+                                <div className="text-danger">
+                                  <Trans i18nKey={formik.errors.location} />
+                                </div>
+                              )}
                           </div>
                         )}
-                      </div>
-                    </Col>
-                    <Col xs="10">
-                      <Row>
-                        <Col xs="6" md="5">
-                          {!AddLanguage && (
-                            <>
-                              <label>
-                                <Trans i18nKey={"start_Time"} />*
-                              </label>
-                              <TimePicker
-                                onChange={(e) => {
-                                  handleTimeChange(e);
-                                  formik.setFieldValue("startTime", e);
-                                }}
-                                name="startTime"
-                                value={
-                                  selectedTimeStart ?? formik.values.startTime
-                                }
-                                disableClock={true}
-                                clearIcon={null}
-                                format="HH:mm"
-                                placeholder="HH:mm"
-                              />
-                              {formik.errors.startTime &&
-                                formik.touched.startTime && (
-                                  <div
-                                  // style={{
-                                  //   height: "20px",
-                                  //   font: "normal normal bold 11px/33px Noto Sans",
-                                  // }}
-                                  >
-                                    {formik.errors.startTime &&
-                                      formik.touched.startTime && (
-                                        <div className="text-danger">
-                                          <Trans
-                                            i18nKey={formik.errors.startTime}
-                                          />
-                                        </div>
-                                      )}
-                                  </div>
-                                )}
-                            </>
-                          )}
-                        </Col>
-                        <Col xs="6" md="5" className="">
-                          {!AddLanguage && (
-                            <>
-                              <label>
-                                <Trans i18nKey={"end_Time"} />*
-                              </label>
-                              <TimePicker
-                                onChange={(e) => {
-                                  handleTimeChangeEnd(e);
-                                  formik.setFieldValue("endTime", e);
-                                }}
-                                name="endTime"
-                                value={selectedTimeEnd}
-                                disableClock={true}
-                                clearIcon={null}
-                                format="HH:mm"
-                                placeholder="HH:mm"
-                              />
-                              {formik.errors.endTime &&
-                                formik.touched.endTime && (
-                                  <div
-                                  // style={{
-                                  //   height: "20px",
-                                  //   font: "normal normal bold 11px/33px Noto Sans",
-                                  // }}
-                                  >
-                                    {formik.errors.endTime &&
-                                      formik.touched.endTime && (
-                                        <div className="text-danger">
-                                          <Trans
-                                            i18nKey={formik.errors.endTime}
-                                          />
-                                        </div>
-                                      )}
-                                  </div>
-                                )}
-                            </>
-                          )}
-                        </Col>
-                        {!AddLanguage ? (
-                          formik?.values?.DateTime?.end === null ||
-                          moment(formik?.values?.DateTime?.start).format(
+                      </>
+                    ) : (
+                      <CustomTextField
+                        label={t("location")}
+                        name="location"
+                        placeholder={t("placeHolder_location")}
+                        required
+                      />
+                    )}
+                  </Col>
+                  {!AddLanguage && (
+                    <>
+                      <Col xs={12} lg={4} md={6} className="opacity-75">
+                        <CustomTextField
+                          label={t("City")}
+                          placeholder={t("placeHolder_city")}
+                          name="city"
+                          disabled
+                        />
+                      </Col>
+                      <Col xs={12} lg={4} md={6} className="opacity-75">
+                        <CustomTextField
+                          label={t("State")}
+                          placeholder={t("placeHolder_state")}
+                          name="state"
+                          disabled
+                        />
+                      </Col>
+                    </>
+                  )}
+                  {!AddLanguage && (
+                    <>
+                      <Col xs={12} lg={4} md={6}>
+                        <label>{t("donation_select_date")}</label>
+                        <CustomDatePickerComponent
+                          placeholder={t("donation_select_date")}
+                          style={{ width: "100%" }}
+                          name="DateTime"
+                          format="DD MMM YYYY"
+                          onChange={(date) => {
+                            if (date) {
+                              const utcDate = date
+                                .startOf("day")
+                                .utc()
+                                .toISOString();
+                              formik.setFieldValue("DateTime", utcDate);
+                            } else {
+                              formik.setFieldValue("DateTime", "");
+                            }
+                          }}
+                          value={
+                            formik.values["DateTime"]
+                              ? moment.utc(formik.values["DateTime"])
+                              : null
+                          }
+                          disabledDate={(current) =>
+                            current < moment().startOf("day")
+                          }
+                        />
+                        <div
+                        // style={{
+                        //   height: "20px",
+                        //   font: "normal normal bold 11px/33px Noto Sans",
+                        // }}
+                        >
+                          {formik.errors.DateTime &&
+                            formik.touched.DateTime && (
+                              <div className="text-danger">
+                                <Trans i18nKey={formik.errors.DateTime?.end} />
+                              </div>
+                            )}
+                        </div>
+                      </Col>
+                      <Col xs={12} lg={4} md={6}>
+                        {!AddLanguage && (
+                          <>
+                            <label>
+                              <Trans i18nKey={"start_Time"} />*
+                            </label>
+                            <TimePicker
+                              onChange={(e) => {
+                                handleTimeChange(e);
+                                formik.setFieldValue("startTime", e);
+                              }}
+                              name="startTime"
+                              value={
+                                selectedTimeStart ?? formik.values.startTime
+                              }
+                              disableClock={true}
+                              clearIcon={null}
+                              format="HH:mm"
+                              placeholder="HH:mm"
+                            />
+                            {formik.errors.startTime &&
+                              formik.touched.startTime && (
+                                <div
+                                // style={{
+                                //   height: "20px",
+                                //   font: "normal normal bold 11px/33px Noto Sans",
+                                // }}
+                                >
+                                  {formik.errors.startTime &&
+                                    formik.touched.startTime && (
+                                      <div className="text-danger">
+                                        <Trans
+                                          i18nKey={formik.errors.startTime}
+                                        />
+                                      </div>
+                                    )}
+                                </div>
+                              )}
+                          </>
+                        )}
+                      </Col>
+                      <Col xs={12} lg={4} md={6}>
+                        {!AddLanguage && (
+                          <>
+                            <label>
+                              <Trans i18nKey={"end_Time"} />*
+                            </label>
+                            <TimePicker
+                              onChange={(e) => {
+                                handleTimeChangeEnd(e);
+                                formik.setFieldValue("endTime", e);
+                              }}
+                              name="endTime"
+                              value={selectedTimeEnd}
+                              disableClock={true}
+                              clearIcon={null}
+                              format="HH:mm"
+                              placeholder="HH:mm"
+                            />
+                            {formik.errors.endTime &&
+                              formik.touched.endTime && (
+                                <div
+                                // style={{
+                                //   height: "20px",
+                                //   font: "normal normal bold 11px/33px Noto Sans",
+                                // }}
+                                >
+                                  {formik.errors.endTime &&
+                                    formik.touched.endTime && (
+                                      <div className="text-danger">
+                                        <Trans
+                                          i18nKey={formik.errors.endTime}
+                                        />
+                                      </div>
+                                    )}
+                                </div>
+                              )}
+                          </>
+                        )}
+                      </Col>
+                      {!AddLanguage ? (
+                        formik?.values?.DateTime?.end === null ||
+                        moment(formik?.values?.DateTime?.start).format(
+                          "dd-mm-yy"
+                        ) ===
+                          moment(formik?.values?.DateTime?.end).format(
                             "dd-mm-yy"
-                          ) ===
-                            moment(formik?.values?.DateTime?.end).format(
-                              "dd-mm-yy"
-                            ) ? (
-                            formik?.values?.startTime ===
-                              formik?.values?.endTime &&
-                            formik?.values?.startTime !== "" &&
+                          ) ? (
+                          formik?.values?.startTime ===
+                            formik?.values?.endTime &&
+                          formik?.values?.startTime !== "" &&
+                          formik?.values?.endTime !== "" ? (
+                            <div
+                              className="text-danger"
+                            >
+                              <Trans i18nKey={"same_time"} />
+                            </div>
+                          ) : selectedTimeStart > selectedTimeEnd &&
                             formik?.values?.endTime !== "" ? (
-                              <div
-                                className="text-danger"
-                                // style={{
-                                //   height: "20px",
-                                //   font: "normal normal bold 11px/20px Noto Sans",
-                                // }}
-                              >
-                                {/* <Trans i18nKey={"same_time"} /> */}
-                                <Trans i18nKey={"same_time"} />
-                              </div>
-                            ) : selectedTimeStart > selectedTimeEnd &&
-                              formik?.values?.endTime !== "" ? (
-                              <div
-                                className="text-danger"
-                                // style={{
-                                //   height: "20px",
-                                //   font: "normal normal bold 11px/20px Noto Sans",
-                                // }}
-                              >
-                                <Trans i18nKey={"end_time_less"} />
-                              </div>
-                            ) : (
-                              ""
-                            )
+                            <div
+                              className="text-danger"
+                            >
+                              <Trans i18nKey={"end_time_less"} />
+                            </div>
                           ) : (
                             ""
                           )
                         ) : (
                           ""
-                        )}
-                      </Row>
-                    </Col>
-                  </Row>
-                </Col>
-              )}
-            </Row>
-            <div className="btn-Published mb-2">
-              {loading ? (
-                <Button
-                  color="primary"
-                  className="add-trust-btn"
-                  style={{
-                    borderRadius: "10px",
-                    padding: "5px 40px",
-                    opacity: "100%",
-                  }}
-                  disabled
-                >
-                  <Spinner size="md" />
-                </Button>
-              ) : (
-                <Button
-                  color="primary"
-                  className="addAction-btn "
-                  type="submit"
-                  disabled={
-                    imageSpinner ||
-                    (moment(formik?.values?.DateTime?.start).format(
-                      "dd-mm-yy"
-                    ) ===
-                      moment(formik?.values?.DateTime?.end).format(
-                        "dd-mm-yy"
-                      ) &&
-                      selectedTimeStart > selectedTimeEnd)
-                  }
-                >
-                  {plusIconDisable && (
-                    <span>
-                      <Plus className="me-1" size={15} strokeWidth={4} />
-                    </span>
+                        )
+                      ) : (
+                        ""
+                      )}
+                    </>
                   )}
-                  <span>
-                    <Trans i18nKey={`${buttonName}`} />
-                  </span>
-                </Button>
-              )}
-            </div>
-          </Form>
-        )}
+                </Row>
+                <Row>
+                  <Col xs={12} className="">
+                    <RichTextField
+                      height="200px"
+                      label={t("news_label_Description")}
+                      name="Body"
+                    />
+                  </Col>
+                  {!AddLanguage && (
+                    <Col xs={12} lg={4} md={6}>
+                      <div className="ImagesVideos">
+                        <Trans i18nKey={"news_label_ImageVedio"} />{" "}
+                        <span style={{ fontSize: "13px", color: "gray" }}>
+                        <Trans i18nKey={"image_size_suggestion"} />
+                      </span>
+                      </div>
+                      <div>
+                        <UploadImage
+                          required
+                          uploadFileFunction={uploadFile}
+                          setUploadedFileUrl={setUploadedFileUrl}
+                          name="EventImage"
+                          listType="picture"
+                          buttonLabel={t("upload_image")}
+                          initialUploadUrl={imageUrl}
+                          isMultiple={true}
+                          icon={
+                            <img
+                              src={uploadIcon}
+                              alt="Upload Icon"
+                              style={{ width: 16, height: 16 }}
+                            />
+                          }
+                        />
+                      </div>
+                    </Col>
+                  )}
+                </Row>
+              </Row>
+              <div className="btn-Published mb-2">
+                {loading ? (
+                  <Button
+                    color="primary"
+                    className="add-trust-btn"
+                    disabled
+                  >
+                    <Spinner size="md" />
+                  </Button>
+                ) : (
+                  <Button
+                    color="primary"
+                    className="addAction-btn "
+                    type="submit"
+                    disabled={
+                      imageSpinner ||
+                      (moment(formik?.values?.DateTime?.start).format(
+                        "dd-mm-yy"
+                      ) ===
+                        moment(formik?.values?.DateTime?.end).format(
+                          "dd-mm-yy"
+                        ) &&
+                        selectedTimeStart > selectedTimeEnd)
+                    }
+                  >
+                    {plusIconDisable && (
+                      <span>
+                        <Plus className="me-1" size={15} strokeWidth={4} />
+                      </span>
+                    )}
+                    <span>
+                      <Trans i18nKey={`${buttonName}`} />
+                    </span>
+                  </Button>
+                )}
+              </div>
+            </Form>
+          );
+        }}
       </Formik>
     </div>
   );

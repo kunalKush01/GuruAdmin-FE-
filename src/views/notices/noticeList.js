@@ -124,7 +124,7 @@ export default function NoticeList() {
   const subPermission = subPermissions?.subpermissions?.map(
     (item) => item.name
   );
-
+  
   return (
     <div className="listviewwrapper">
       <Helmet>

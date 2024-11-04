@@ -10,7 +10,7 @@ import DharmshalaIcon from "../../assets/images/icons/dharmshala/dharmshala.svg"
 import FeedbackIcon from "../../assets/images/icons/dharmshala/feedback.svg";
 import RoomTypeIcon from "../../assets/images/icons/dharmshala/roomtype.svg";
 //import "./DharmshalaTabBar.css";
-import "../../assets/scss/dharmshala.scss";
+import "../../assets/scss/tabbar.scss";
 
 const DharmshalaTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
   const history = useHistory();
@@ -63,12 +63,13 @@ const DharmshalaTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
               ? "space-between"
               : "",
             padding: !tabBar && !isMobile ? ".5rem" : "",
-            gap: tabBar && permissionsKey?.includes("all") ? "0.5rem" : "1rem",
+            gap: tabBar && permissionsKey?.includes("all") ? "0.5rem" : "1rem" || isMobile? "0rem" : "1rem",
             marginBottom: tabBar && 0,
             display: "flex",
             flexWrap: "nowrap",
             flexDirection: isMobile ? "row" : "row",
             flexWrap: isMobile ? "nowrap" : "wrap",
+            overflowX: isMobile ? "scroll" : "none",
           }}
         >
           {tabs?.map((item, index) => {
@@ -88,7 +89,7 @@ const DharmshalaTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
                   onMouseLeave={() => isMobile && setHoveredTab(null)}
                 >
                   <NavLink
-                    active={active?.includes(item?.active)}
+                    active={typeof active === 'string' && active?.includes(item?.active)}
                     onClick={() => {
                       item?.isManagment && !permissionsKey?.includes("all")
                         ? history.push(`${item?.url}/${url[0]?.split("-")[1]}`)
@@ -101,12 +102,12 @@ const DharmshalaTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
                         className={`circle ${
                           hoveredTab === index
                             ? "hover"
-                            : active?.includes(item?.active)
+                            :typeof active === 'string' &&  active?.includes(item?.active)
                             ? "active"
                             : ""
                         }`}
                       >
-                        {getIcon(item.name)}
+                        {/* {getIcon(item.name)} */}
                       </div>
                     ) : (
                       <Trans i18nKey={item?.name} />
@@ -125,7 +126,7 @@ const DharmshalaTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
           })}
         </Nav>
       ) : (
-        <div className="DharmshalaTabsWrapper">
+        <div className="TabsWrapper">
           <div className="d-flex flex-lg-wrap gap-3 mt-2 allTabBox">
             {tabs?.map((item, idx) => {
               const permissionTabs = item?.permissionKey?.some((perm) =>
@@ -140,9 +141,10 @@ const DharmshalaTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
                   <div
                     key={idx}
                     className={`tabName ${
-                      active?.includes(item?.active) ? "activeTab" : ""
+                      typeof active === 'string' && active?.includes(item?.active) ? "activeTab" : ""
                     }`}
                     onClick={() => {
+                      if (active?.includes(item?.active)) return;
                       setActive(item);
                       item?.isManagment && !permissionsKey?.includes("all")
                         ? history.push(`${item?.url}/${url[0]?.split("-")[1]}`)

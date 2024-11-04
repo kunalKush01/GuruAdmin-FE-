@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
 import he from "he";
 import moment from "moment";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -37,6 +37,7 @@ import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 import BtnPopover from "../partials/btnPopover";
 import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import "../../assets/scss/common.scss";
+import { fetchImage } from "../partials/downloadUploadImage";
 
 function BtnContent({
   noticeId,
@@ -180,6 +181,18 @@ export default function NoticeCard({
       }
     },
   });
+  const [imageUrl, setImageUrl] = useState(null);
+  useEffect(() => {
+    if (data) {
+      const loadImage = async () => {
+        const url = await fetchImage(data?.imageName);
+        if (url) {
+          setImageUrl(url);
+        }
+      };
+      loadImage();
+    }
+  }, [data]);
 
   return (
     <div className="noticecardwrapper" key={data.id}>
@@ -204,7 +217,7 @@ export default function NoticeCard({
               >
                 <div className="w-100 h-100">
                   <img
-                    src={data?.image || placeHolder}
+                    src={imageUrl ? imageUrl : data?.image ?? placeHolder}
                     alt="Notice Image"
                     style={{
                       width: "100%",
@@ -447,8 +460,8 @@ export default function NoticeCard({
                 }}
               >
                 <Form>
-                  <Row className="justify-content-center">
-                    <Col xs={8}>
+                  <Row className="responsive-row">
+                    <Col xs={8} lg={12} sm={12} className="responsive-col">
                       <FormikCustomDatePicker
                         name="DateTime"
                         width="100%"
@@ -457,8 +470,8 @@ export default function NoticeCard({
                       />
                     </Col>
                   </Row>
-                  <Row>
-                    <Col xs={12} className="mt-2">
+                  <Row className="mx-auto">
+                    <Col xs={12} className="mx-auto">
                       <Button type="submit" color="primary" size="sm">
                         Submit
                       </Button>

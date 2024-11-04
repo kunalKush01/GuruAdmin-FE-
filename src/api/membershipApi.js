@@ -46,3 +46,12 @@ export const getMasterByKey = (key) =>
     showToastOnSuccess: false,
     showToastOnError: false,
   });
+
+  // New function to fetch masters by an array of keys
+export const getMastersByKeys = async (keys) => {
+  // Create an array of promises for fetching data for each key
+  const promises = keys.map((key) => getMasterByKey(key));
+
+  // Await all promises and return the results
+  return Promise.all(promises);
+};
