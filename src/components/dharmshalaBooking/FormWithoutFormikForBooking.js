@@ -708,7 +708,7 @@ const idTypeOptions = [
                     value={formik.values.fromDate}
                     onChange={handleFromDateChange}
                     format="DD MMM YYYY"
-                    placeholder="Select a date"
+                    placeholder={t('select_date')}
                     className="custom-datepicker"
                     disabledDate={disabledDate}
                   />
@@ -722,7 +722,7 @@ const idTypeOptions = [
                     value={formik.values.toDate}
                     onChange={handleToDateChange}
                     format="DD MMM YYYY"
-                    placeholder="Select a date"
+                    placeholder={t('select_date')}
                     className="custom-datepicker"
                     disabledDate={(current) => {
                       return (current && current < moment().startOf('day')) || 

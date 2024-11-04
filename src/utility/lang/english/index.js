@@ -561,6 +561,8 @@ export const englishContent = {
   DonationBox_AddCollectionBox: "Add Collection ",
   DonationBox_EditCollectionBox: "Edit Collection ",
   created_by: "Created By",
+  updated_date:"Updated Date",
+  created_date:"Created Date",
   mode_of_payment: "Mode of payment",
   bank_name: "Bank",
   cheque_no: "Card/DD/Cheque No",
@@ -756,6 +758,7 @@ export const englishContent = {
   member_family_name: "Name",
   member_dob: "Date of Birth",
   member_anniversary: "Date of Anniversary",
+  in_memory_name: "In Memory Name",
   member_family_relation: "Relation",
   member_cor_add: "Correspondence Address",
   member_family_form: "Add Family Member",
@@ -875,5 +878,6 @@ export const englishContent = {
   dead_cattles: "Dead Pashudhan",
   upload_id_card:"Upload ID Card",
   upload_image:"Upload Image",
-  photo:"Photos"
+  photo:"Photos",
+  Import_File:"Import File"
 };

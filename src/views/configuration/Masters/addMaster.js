@@ -152,7 +152,7 @@ const AddMaster = ({
                 required={field.required}
                 onBlur={() => handleInputBlur(field)}
               >
-                <option value="">Select Option</option>
+                <option value="">{t('select_option')}</option>
                 <option value="True">True</option>
                 <option value="False">False</option>
               </Input>

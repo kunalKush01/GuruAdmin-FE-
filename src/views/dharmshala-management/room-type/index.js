@@ -106,26 +106,26 @@ const RoomTypesInfo = () => {
   }, [roomTypeListData, searchBarValue]);
   const columns = [
     {
-      title: "Name",
+      title: t("name"),
       dataIndex: "name",
       key: "name",
       width: isMobileView?30:100,
       fixed: "left",
     },
     {
-      title: "Description",
+      title: t("description"),
       dataIndex: "description",
       key: "description",
       width:120,
     },
     {
-      title: "Capacity",
+      title: t("capacity"),
       dataIndex: "capacity",
       key: "capacity",
       width:isMobileView?40: 80,
     },
     {
-      title: "Price",
+      title: t("price"),
       dataIndex: "price",
       key: "price",
       width: isMobileView?30:60,
