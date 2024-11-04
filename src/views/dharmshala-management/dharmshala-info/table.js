@@ -55,7 +55,7 @@ const DharmshalaInfoTable = ({
       width: "200px",
     },
     {
-      name: t("Floor Count"),
+      name: t("floor_count"),
       selector: (row) => row.floorCount,
       width: "200px",
     },
@@ -95,13 +95,13 @@ const DharmshalaInfoTable = ({
       width: 120,
     },
     {
-      title: t("Floor Count"),
+      title: t("floor_count"),
       dataIndex: "floorCount",
       key: "floorCount",
       width: 100,
     },
     {
-      title: t("Action"),
+      title: t("action"),
       dataIndex: "action",
       key: "action",
       width: 80,

@@ -233,6 +233,7 @@ export default function FormWithoutFormikForCommitment({
             <Col xs={12} lg={2} sm={6}>
               <label>{t("commitment_select_start_date")}</label>
               <CustomDatePicker
+                placeholder={t('select_date')}
                 id="datePickerANTD"
                 format="DD MMM YYYY"
                 value={
@@ -262,6 +263,7 @@ export default function FormWithoutFormikForCommitment({
             <CustomDatePicker
               id="datePickerANTD"
               format="DD MMM YYYY"
+              placeholder={t('select_date')}
               disabledDate={(currentDate) => {
                 return (
                   formik.values.startDate &&
@@ -287,6 +289,7 @@ export default function FormWithoutFormikForCommitment({
               labelName={t("categories_select_category")}
               name={"SelectedMasterCategory"}
               disabled={editCommitment}
+              placeholder={t('select_option')}
               labelKey={"name"}
               valueKey={"id"}
               loadOptions={
@@ -311,6 +314,7 @@ export default function FormWithoutFormikForCommitment({
                   name: ConverFirstLatterToCapital(cate.name),
                 };
               })}
+              placeholder={t('select_option')}
               name={"SelectedSubCategory"}
               labelKey={"name"}
               disabled={editCommitment}

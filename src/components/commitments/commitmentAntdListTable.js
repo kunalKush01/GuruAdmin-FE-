@@ -225,7 +225,7 @@ export default function CommitmentAntdListTable(
     },
     ...customColumns,
     {
-      title: t("Actions"),
+      title: t("action"),
       key: "actions",
       fixed: !isMobile && "right",
       width: "180px",
