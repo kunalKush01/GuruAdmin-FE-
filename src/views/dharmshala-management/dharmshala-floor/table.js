@@ -106,7 +106,7 @@ const DharmshalaFloorTable = ({
       width: 50,
     },
     {
-      title: t("Action"),
+      title: t("action"),
       key: "action",
       width: 50,
       fixed: "right", // Align the column to the right

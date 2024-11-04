@@ -7,8 +7,10 @@ import save from "../../assets/images/icons/category/save.png";
 import cancel from "../../assets/images/icons/category/cancel.png";
 import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
 import ANTDcustometable from "../partials/antdReactTable";
+import { useTranslation } from "react-i18next";
 
 export function MasterANTDTable({ data, loadingRow }) {
+  const {t} = useTranslation()
   const queryClient = useQueryClient();
   const [editingRowId, setEditingRowId] = useState(null);
   const [editedValues, setEditedValues] = useState({});
@@ -181,7 +183,7 @@ export function MasterANTDTable({ data, loadingRow }) {
                 }
                 onBlur={() => handleInputBlur(field)}
               >
-                <option value="">Select</option>
+                <option value="">{t('select_option')}</option>
                 <option value="True">True</option>
                 <option value="False">False</option>
               </select>
@@ -211,7 +213,7 @@ export function MasterANTDTable({ data, loadingRow }) {
         },
       })),
       {
-        title: "Actions",
+        title: t('action'),
         fixed:!isMobile&& "right",
         center: true,
         render: (row) =>

@@ -263,7 +263,7 @@ export default function Donation() {
       : queryClient.invalidateQueries(["suspenseDataHistory"]);
   };
   const modeOfPaymentOptions = [
-    { value: "", label: "Select Option" },
+    { value: "", label: t('select_option') },
     { value: "Cash", label: "Cash" },
     { value: "UPI", label: "UPI" },
     { value: "online", label: "Online" },
@@ -338,7 +338,7 @@ export default function Donation() {
                   onClick={handleButtonClick}
                   // onClick={() => importFileRef.current.click()}
                 >
-                  Import File
+                {t("Import_File")}
                 </Button>
 
                 <input
@@ -634,7 +634,7 @@ export default function Donation() {
                   menu={{
                     items: [
                       {
-                        label: "History",
+                        label: t("history"),
                         key: "history",
                       },
                     ],
@@ -642,7 +642,7 @@ export default function Donation() {
                   }}
                   onClick={handleButtonClick}
                 >
-                  Import
+                  {t('import')}
                 </Dropdown.Button>
               </Space>
               <Modal
@@ -663,7 +663,7 @@ export default function Donation() {
                       },
                     ]}
                   >
-                    <CustomDatePicker showTime format="YYYY-MM-DD HH:mm" />
+                    <CustomDatePicker showTime format="YYYY-MM-DD HH:mm" placeholder={t('select_date')}/>
                   </Form.Item>
 
                   <Form.Item name="transactionId" label={t("suspense_transId")}>
@@ -713,7 +713,7 @@ export default function Donation() {
 
                   <Form.Item>
                     <Button color="primary" htmlType="submit">
-                      Add Record
+                      {t('add_record')}
                     </Button>
                   </Form.Item>
                 </Form>
