@@ -3,13 +3,11 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 const Permission = ({ subPermission, type, isGaushala = "", ...props }) => {
-  console.log("🚀🚀🚀 ~ file: Permission.js:6 ~ Permission ~ type:", type);
   const permissions = useSelector((state) => state.auth.userDetail.permissions);
   const hasDharmshalaAccess = "true"
   // useSelector(
   //   (state) => state.auth.trustDetail?.hasDharmshala
   // );
-  console.log("🚀🚀🚀 ~ file: Permission.js:11 ~ Permission ~ hasDharmshalaAccess:", hasDharmshalaAccess);
 
   const permissionRoute = permissions?.find(
     (item) => item?.name === type || item?.name === "all"
