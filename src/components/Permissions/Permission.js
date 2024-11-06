@@ -4,7 +4,8 @@ import { useHistory } from "react-router-dom";
 
 const Permission = ({ subPermission, type, isGaushala = "", ...props }) => {
   const permissions = useSelector((state) => state.auth.userDetail.permissions);
-  const hasDharmshalaAccess = useSelector(
+  const hasDharmshalaAccess =
+  useSelector(
     (state) => state.auth.trustDetail?.hasDharmshala
   );
 
@@ -26,16 +27,18 @@ const Permission = ({ subPermission, type, isGaushala = "", ...props }) => {
   const trustsModal = localStorage.getItem("trustsModal");
   const trustType = localStorage.getItem("trustType");
 
-  if (
-    (["dharmshala/dashboard", 
-      "dharmshala/bookings", 
-      "dharmshala/buildings", 
-      "dharmshala/roomtypes", 
-      "dharmshala/feedback"].includes(type)) &&
-    !hasDharmshalaAccess
-  ) {
-    history.push("/not-found");
-    return null;
+  if (hasDharmshalaAccess !== undefined) {
+    if (
+      (["dharmshala/dashboard", 
+        "dharmshala/bookings", 
+        "dharmshala/buildings", 
+        "dharmshala/roomtypes", 
+        "dharmshala/feedback"].includes(type)) &&
+      !hasDharmshalaAccess
+    ) {
+      history.push("/not-found");
+      return null;
+    }
   }
 
   if (
