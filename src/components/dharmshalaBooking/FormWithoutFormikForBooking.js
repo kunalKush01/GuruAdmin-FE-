@@ -537,8 +537,11 @@ const idTypeOptions = [
 
     const totalAmount = totalRoomRent + formik.values.security;
 
+    const totalDueNew = totalRoomRent - formik.values.totalPaid;
+
     formik.setFieldValue('roomRent', totalRoomRent);
     formik.setFieldValue('totalAmount', totalAmount);
+    formik.setFieldValue('totalDue', totalDueNew);
   };
 
   const handleDeleteRoom = (index) => {
