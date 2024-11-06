@@ -133,9 +133,7 @@ export default function ExpensesForm({
                     !isNaN(Date.parse(field.value))
                   ? "Date"
                   : "String", // Default to String for other types
-              isRequired: false,
               value: field.value !== undefined ? field.value : field,
-              trustId: trustId,
             })
           );
           expenseMutation.mutate({
