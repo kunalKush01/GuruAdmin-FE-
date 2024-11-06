@@ -86,7 +86,7 @@ export default function Master() {
                   strokeWidth={4}
                   style={{ marginRight: "5px" }}
                 />
-                Add
+                {t("add")}
               </Button>
             </div>
           </div>

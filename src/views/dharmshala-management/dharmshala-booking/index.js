@@ -243,7 +243,7 @@ const DharmshalaBookings = () => {
                   style={{ marginBottom: isMobileView ? "5px" : "0" }}
                 >
                   <span>
-                    <Trans i18nKey={"Room Hold"} />
+                    <Trans i18nKey={"room_hold"} />
                   </span>
                 </Button>
               </div>
