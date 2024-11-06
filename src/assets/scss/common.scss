@@ -1728,6 +1728,10 @@
 .reactselectwrapper {
     font: $font-weight-bold $font-size-small $font-family;
     color: $font-color;
+
+    .input {
+        padding-left: 14px;
+    }
 }
 
 .searchbarwrapper {
@@ -4267,10 +4271,12 @@
         /* Adjust max width for smaller screens */
     }
 }
-.ReactTags__selected{
+
+.ReactTags__selected {
     scrollbar-width: none !important;
 }
-.add-trust-btn{
+
+.add-trust-btn {
     border-radius: 10px;
     padding: 5px 40px;
     opacity: 100%;
