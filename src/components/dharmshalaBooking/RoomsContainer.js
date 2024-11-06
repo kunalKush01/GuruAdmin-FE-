@@ -114,7 +114,7 @@ const RoomsContainer = ({
                 onChange={(e) => handleRoomNumberChange(e.target.value, index)}
                 disabled={isReadOnly || !room.floor || !room.roomType}
               >
-                <option value="">{t('कमरा नंबर चुनें')}</option>
+                <option value="">{t('select_room_number')}</option>
                 {(rooms[room.floor] || [])
                   .filter((r) => r.roomTypeId === room.roomType)
                   .filter((r) => !getSelectedRoomIds().includes(r._id) || r._id === room.roomId)

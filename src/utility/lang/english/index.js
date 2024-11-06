@@ -937,5 +937,6 @@ export const englishContent = {
   private_donors:"Private Donors",
   govt_aid:"Govt Aid",
   pashu_breed:"Pashu Breed",
-  pashu_category:"Pashu Category"
+  pashu_category:"Pashu Category",
+  select_room_number:"Select room number"
 };
