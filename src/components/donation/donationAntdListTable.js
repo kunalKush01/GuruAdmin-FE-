@@ -384,10 +384,10 @@ export default function DonationANTDListTable(
                   borderRadius: "50%",
                   backgroundColor:
                     item?.paidStatus === "Paid"
-                      ? "green"
+                      ? "#79BB43"
                       : item?.paidStatus === "Pending"
-                      ? "orange"
-                      : "red",
+                      ? "#F3B64B"
+                      : "#EC5B52",
                 }}
               ></span>
             </div>
