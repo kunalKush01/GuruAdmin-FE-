@@ -174,6 +174,12 @@ useEffect(() => {
   loadInitialRoomData();
 }, [isEditing]);
 
+useEffect(() => {
+  if (formik.values.fromDate && formik.values.toDate && formik.values.roomsData.length > 0) {
+    updateTotalAmount(formik.values.roomsData);
+  }
+}, [formik.values.fromDate, formik.values.toDate]);
+
 const handleInitialFile = async () => {
   try {
     // Download the file
@@ -412,7 +418,7 @@ const idTypeOptions = [
           floorName: "",
           roomId: "",
           roomNumber: "",
-          amount: suitableRoom.price,
+          amount: suitableRoom.price, 
         });
         remainingGuests -= suitableRoom.capacity;
       } else {
@@ -426,7 +432,7 @@ const idTypeOptions = [
           floorName: "",
           roomId: "",
           roomNumber: "",
-          amount: smallestRoom.price,
+          amount: smallestRoom.price, 
         });
         remainingGuests -= smallestRoom.capacity;
       }
@@ -521,9 +527,17 @@ const idTypeOptions = [
   };
 
   const updateTotalAmount = (updatedRoomsData) => {
-    const total = updatedRoomsData.reduce((acc, room) => acc + room.amount, 0);
-    const totalAmount = total+ formik.values.security;
-    formik.setFieldValue('roomRent', total);
+    const startDate = moment(formik.values.fromDate);
+    const endDate = moment(formik.values.toDate);
+    const numberOfDays = endDate.diff(startDate, 'days') + 1; 
+
+    const roomRentPerDay = updatedRoomsData.reduce((acc, room) => acc + room.amount, 0);
+
+    const totalRoomRent = roomRentPerDay * numberOfDays;
+
+    const totalAmount = totalRoomRent + formik.values.security;
+
+    formik.setFieldValue('roomRent', totalRoomRent);
     formik.setFieldValue('totalAmount', totalAmount);
   };
 
