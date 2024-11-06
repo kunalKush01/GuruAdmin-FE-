@@ -346,14 +346,16 @@ export default function Commitment() {
                     );
                   }}
                 />
-                <Button
-                  className={`secondaryAction-btn me-1 pledgeImportBtn`}
-                  color="primary"
-                  // onClick={() => importFileRef.current.click()}
-                  onClick={handleButtonClick}
-                >
-                  {t('Import_File')}
-                </Button>
+                {allPermissions?.name === "all" ||
+                  subPermission?.includes(WRITE) ? (
+                    <Button
+                      className={`secondaryAction-btn me-1 pledgeImportBtn`}
+                      color="primary"
+                      onClick={handleButtonClick}
+                    >
+                      {t('Import_File')}
+                    </Button>
+                  ) : null}
                 <input
                   type="file"
                   ref={importFileRef}

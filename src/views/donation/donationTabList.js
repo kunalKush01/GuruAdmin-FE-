@@ -614,19 +614,19 @@ export default function Donation() {
                 )}
               </Space>
               <Space wrap className="">
-                {!showHistory && (
-                  <Button
-                    color="primary"
-                    className="addAction-btn"
-                    size="large"
-                    onClick={handleAddSuspenseClick}
-                  >
-                    <span>
-                      <Plus className="" size={15} strokeWidth={4} />
-                    </span>
-                    <span> {t("add_suspense_record")}</span>
-                  </Button>
-                )}
+              {!showHistory && (allPermissions?.name === "all" || subPermission?.includes(WRITE)) && (
+              <Button
+                color="primary"
+                className="addAction-btn"
+                size="large"
+                onClick={handleAddSuspenseClick}
+              >
+                <span>
+                  <Plus className="" size={15} strokeWidth={4} />
+                </span>
+                <span> {t("add_suspense_record")}</span>
+              </Button>
+            )}
                 <Dropdown.Button
                   type="primary"
                   size="large"

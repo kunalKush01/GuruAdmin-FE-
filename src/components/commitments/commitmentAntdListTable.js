@@ -23,6 +23,7 @@ import { Checkbox, Table } from "antd";
 import { getPledgeCustomFields } from "../../api/customFieldsApi";
 import "../../assets/scss/common.scss";
 import classNames from "classnames";
+import { WRITE, DELETE, EDIT, READ } from "../../utility/permissionsVariable";
 
 export default function CommitmentAntdListTable(
   {
@@ -376,7 +377,7 @@ export default function CommitmentAntdListTable(
               }}
             />
             {(allPermissions?.name === "all" ||
-              subPermission?.includes("EDIT") ||
+              subPermission?.includes(EDIT) ||
               financeReport) && (
               <img
                 src={editIcon}
@@ -398,7 +399,7 @@ export default function CommitmentAntdListTable(
               />
             )}
             {(allPermissions?.name === "all" ||
-              subPermission?.includes("DELETE") ||
+              subPermission?.includes(DELETE) ||
               financeReport) && (
               <img
                 src={deleteIcon}
