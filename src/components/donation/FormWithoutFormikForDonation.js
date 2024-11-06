@@ -44,7 +44,7 @@ export default function FormWithoutFormikForDonation({
 }) {
   const { t } = useTranslation();
   const history = useHistory();
-  const { REACT_APP_BASEPUBLICURL } = process.env;
+  const { REACT_APP_BASEURL_PUBLIC } = process.env;
 
   const { SelectedMasterCategory, SelectedSubCategory, Amount } = formik.values;
   const [subLoadOption, setSubLoadOption] = useState([]);
@@ -198,7 +198,7 @@ export default function FormWithoutFormikForDonation({
   const fetchBankOptions = async () => {
     try {
       const response = await axios.get(
-        `${REACT_APP_BASEPUBLICURL}bank/bankList`
+        `${REACT_APP_BASEURL_PUBLIC}bank/bankList`
       );
       if (response.status === 200 && Array.isArray(response.data)) {
         setBankOptions(response.data);
