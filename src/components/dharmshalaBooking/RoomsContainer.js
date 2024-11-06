@@ -18,7 +18,8 @@ const RoomsContainer = ({
   handleClearRooms,
   isPartialView = false,
   isReadOnly = false,
-  hideAmountField = false
+  hideAmountField = false,
+  isCheckModal = false,
 }) => {
 
   const getSelectedRoomIds = () => {
@@ -46,7 +47,7 @@ const RoomsContainer = ({
               <select
                   id={`room-type-${index}`}
                   className="room-dropdown"
-                  value={room.roomType || ""}
+                  value={room.roomTypeId || room.roomType||""}
                   onChange={(e) => handleRoomTypeChange(e.target.value, index)}
                   disabled={isReadOnly}
                 >
@@ -114,15 +115,23 @@ const RoomsContainer = ({
                 onChange={(e) => handleRoomNumberChange(e.target.value, index)}
                 disabled={isReadOnly || !room.floor || !room.roomType}
               >
-                <option value="">{t('select_room_number')}</option>
-                {(rooms[room.floor] || [])
+                <option value="">Select Room Number</option>
+                {isCheckModal?
+                  (rooms[room.floor] || [])
+                  .map((availableRoom) => (
+                    <option key={availableRoom._id} value={availableRoom._id}>
+                      {availableRoom.roomNumber}
+                    </option>
+                  )):
+                  (rooms[room.floor] || [])
                   .filter((r) => r.roomTypeId === room.roomType)
                   .filter((r) => !getSelectedRoomIds().includes(r._id) || r._id === room.roomId)
                   .map((availableRoom) => (
                     <option key={availableRoom._id} value={availableRoom._id}>
                       {availableRoom.roomNumber}
                     </option>
-                  ))}
+                  ))
+                  }
               </select>
             </div>
             {!hideAmountField && (

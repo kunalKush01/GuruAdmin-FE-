@@ -124,11 +124,11 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
         <RoomsContainer
           className="rooms-container"
           roomsData={booking?.rooms || []}
-          roomTypes={booking?.rooms.map(room => ({
+          roomTypes={booking?.rooms?.map(room => ({
             _id: room.roomTypeId, 
             name: room.roomTypeName 
           })) || []}
-          buildings={booking?.rooms.map(room => ({
+          buildings={booking?.rooms?.map(room => ({
             _id: room.building, 
             name: room.buildingName 
           })) || []}
@@ -164,6 +164,7 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
           }, {})}
           isPartialView={true}
           isReadOnly={true}
+          isCheckModal={true}
         />
 
         <div className="form-layout">
