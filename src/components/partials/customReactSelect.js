@@ -4,7 +4,6 @@ import { Trans } from "react-i18next";
 import { useField } from "formik";
 import styled from "styled-components";
 import "../../assets/scss/viewCommon.scss";
-
 export const CustomReactSelect = ({
   required = false,
   label,
@@ -77,6 +76,7 @@ export const CustomReactSelect = ({
     singleValue: (provided) => ({
       ...provided,
       margin: "0px",
+      padding: "8px",
       color: "#583703",
       font: "normal normal bold 13px/20px Noto Sans",
     }),

@@ -16,6 +16,7 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { DELETE, EDIT } from "../../utility/permissionsVariable";
 import CustomDataTable from "../partials/CustomDataTable";
 import "../../assets/scss/common.scss";
+import { Table } from "antd";
 
 export function SubAdminUserListTable({
   data,
@@ -41,35 +42,42 @@ export function SubAdminUserListTable({
 
   const columns = [
     {
-      name: t("Username"),
-      selector: (row) => row.userName,
-      style: {
-        font: "normal normal 700 13px/20px noto sans !important ",
-      },
+      title: t("Username"),
+      dataIndex: 'userName',
+      key: 'userName',
+      render: (text) => (
+        <span style={{ font: "normal normal 700 13px/20px noto sans" }}>{text}</span>
+      ),
     },
     {
-      name: t("Mobile Number"),
-      selector: (row) => row.mobile,
+      title: t("Mobile Number"),
+      dataIndex: 'mobile',
+      key: 'mobile',
     },
     {
-      name: t("Email"),
-      selector: (row) => row.email,
+      title: t("Email"),
+      dataIndex: 'email',
+      key: 'email',
     },
     {
-      name: t("User Role"),
-      selector: (row) => row.userRole,
+      title: t("User Role"),
+      dataIndex: 'userRole',
+      key: 'userRole',
     },
     {
-      name: t(""),
-      selector: (row) => row.edit,
-      center: true,
+      title: "",
+      dataIndex: 'edit',
+      key: 'edit',
+      align: 'center',
     },
     {
-      name: t(""),
-      selector: (row) => row.delete,
-      center: true,
+      title: "",
+      dataIndex: 'delete',
+      key: 'delete',
+      align: 'center',
     },
   ];
+  
 
   const categoriesList = useMemo(() => {
     return data.map((item, idx) => ({
@@ -150,7 +158,20 @@ export function SubAdminUserListTable({
 
   return (
     <div className="usertablewrapper">
-      <CustomDataTable maxHeight={""} columns={columns} data={categoriesList} />
+      <Table
+        className="donationListTable"
+        columns={columns}
+        dataSource={categoriesList}
+        scroll={{
+          x: 1500,
+          y: 400,
+        }}
+        sticky={{
+          offsetHeader: 64,
+        }}
+        bordered
+        rowKey="id"
+      />
     </div>
   );
 }
