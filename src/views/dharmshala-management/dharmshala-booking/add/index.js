@@ -54,7 +54,7 @@ const AddDharmshalaBooking = () => {
         roomRent: bookingData.calculatedFields.roomRent || "",
         totalAmount: bookingData.calculatedFields.totalAmount || "",
         totalPaid: bookingData.calculatedFields.totalPaid || "",
-        totalDue: bookingData.calculatedFields.totalDue || "",
+        totalDue: bookingData.calculatedFields.totalDue || 0,
         security: bookingData.dharmshalaId.advanceOnBooking || "",
         address: bookingData.userDetails.address || "",
         idType: bookingData.userDetails.idType || "",
@@ -117,6 +117,35 @@ const AddDharmshalaBooking = () => {
         t("donation_donar_name_only_letters")
       )
       .trim(),
+      fromDate: Yup.date()
+      .required(t("Check-in date is required"))
+      .min(dayjs().startOf('day'), t("Check-in date cannot be in the past")),
+    
+    toDate: Yup.date()
+      .required(t("Check-out date is required"))
+      .min(
+        Yup.ref('fromDate'),
+        t("Check-out date must be after check-in date")
+      ),
+      roomsData: Yup.array().of(
+      Yup.object().shape({
+        roomType: Yup.string()
+          .required(t("Room type is required")),
+        
+        building: Yup.string()
+          .required(t("Building is required")),
+        
+        floor: Yup.string()
+          .required(t("Floor is required")),
+        
+        roomId: Yup.string()
+          .required(t("Room is required")),
+        
+        amount: Yup.number()
+          .required(t("Amount is required"))
+          .min(0, t("Amount cannot be negative")),
+      })
+    ).min(1, t("At least one room must be selected")),
   });
 
   if (isLoading) {

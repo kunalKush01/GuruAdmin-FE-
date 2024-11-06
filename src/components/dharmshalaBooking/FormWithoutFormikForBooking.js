@@ -134,15 +134,6 @@ useEffect(() => {
 }, [formik?.values?.SelectedUser]);
 
 useEffect(() => {
-  if (formik.values.calculatedFields) {
-    formik.setFieldValue('roomRent', formik.values.calculatedFields.roomRent);
-    formik.setFieldValue('totalAmount', formik.values.calculatedFields.totalAmount);
-    formik.setFieldValue('totalDue', formik.values.calculatedFields.totalDue);
-    formik.setFieldValue('totalPaid', formik.values.calculatedFields.totalPaid);
-  }
-}, [formik.values.calculatedFields]);
-
-useEffect(() => {
   if (formik.values.roomsData && formik.values.roomsData.length > 0) {
     formik.values.roomsData.forEach((room) => {
       if (room.floor) {
@@ -246,6 +237,15 @@ const idTypeOptions = [
       });
     }
   }, []);
+
+  useEffect(() => {
+    if (formik.values) {
+      formik.setFieldValue('roomRent', formik.values.roomRent);
+      formik.setFieldValue('totalAmount', formik.values.totalAmount);
+      formik.setFieldValue('totalDue', formik.values.totalDue);
+      formik.setFieldValue('totalPaid', formik.values.totalPaid);
+    }
+  }, [formik.values.calculatedFields]);
 
   const handleCreateUser = async (payload) => {
     return createSubscribedUser(payload);
@@ -529,7 +529,7 @@ const idTypeOptions = [
   const updateTotalAmount = (updatedRoomsData) => {
     const startDate = moment(formik.values.fromDate);
     const endDate = moment(formik.values.toDate);
-    const numberOfDays = endDate.diff(startDate, 'days') + 1; 
+    const numberOfDays = endDate.diff(startDate, 'days'); 
 
     const roomRentPerDay = updatedRoomsData.reduce((acc, room) => acc + room.amount, 0);
 

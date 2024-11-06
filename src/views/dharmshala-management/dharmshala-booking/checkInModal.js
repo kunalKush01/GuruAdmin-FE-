@@ -164,6 +164,7 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
           }, {})}
           isPartialView={true}
           isReadOnly={true}
+          isCheckModal={true}
         />
 
         <div className="form-layout">
