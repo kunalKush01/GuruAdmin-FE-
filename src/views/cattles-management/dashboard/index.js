@@ -159,11 +159,11 @@ const CattlesDashboard = () => {
           number={dashboardData?.data?.donationReceived ?? 0}
           data={[
             {
-              heading: " Private Donors",
+              heading:t("private_donors"),
               value: dashboardData?.data?.privateDonationReceived ?? 0,
             },
             {
-              heading: "Govt aid",
+              heading:t("govt_aid"),
               value: dashboardData?.data?.govDonationReceived ?? 0,
             },
           ]}

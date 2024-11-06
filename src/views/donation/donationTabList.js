@@ -263,7 +263,7 @@ export default function Donation() {
       : queryClient.invalidateQueries(["suspenseDataHistory"]);
   };
   const modeOfPaymentOptions = [
-    { value: "", label: "Select Option" },
+    { value: "", label: t('select_option') },
     { value: "Cash", label: "Cash" },
     { value: "UPI", label: "UPI" },
     { value: "online", label: "Online" },
@@ -338,7 +338,7 @@ export default function Donation() {
                   onClick={handleButtonClick}
                   // onClick={() => importFileRef.current.click()}
                 >
-                  Import File
+                {t("Import_File")}
                 </Button>
 
                 <input
@@ -440,90 +440,83 @@ export default function Donation() {
       label: t("article_donation"),
       children: (
         <>
-          <div className="d-flex flex-wrap gap-2 gap-md-0 justify-content-end">
-            <ChangeCategoryType
-              className={"me-1"}
-              categoryTypeArray={newTypes}
-              typeName={ConverFirstLatterToCapital(categoryTypeName ?? "")}
-              setTypeName={(e) => {
-                setCategoryId(e.target.id);
-                setCategoryTypeName(e.target.name);
-                setPagination({ page: 1 });
-                history.push(
-                  `/donation?page=${1}&category=${
-                    e.target.name
-                  }&subCategory=${subCategoryTypeName}&filter=${dropDownName}`
-                );
-              }}
-            />
+          <div
+            className="d-flex flex-wrap gap-2 gap-md-0 justify-content-end"
+            id="donation_view_btn"
+          >
+            <div className="botton-container">
+              <div className="d-flex row1">
+                <ChangeCategoryType
+                  className={"me-1"}
+                  categoryTypeArray={newTypes}
+                  typeName={ConverFirstLatterToCapital(categoryTypeName ?? "")}
+                  setTypeName={(e) => {
+                    setCategoryId(e.target.id);
+                    setCategoryTypeName(e.target.name);
+                    setPagination({ page: 1 });
+                    history.push(
+                      `/donation?page=${1}&category=${
+                        e.target.name
+                      }&subCategory=${subCategoryTypeName}&filter=${dropDownName}`
+                    );
+                  }}
+                />
 
-            <ChangeCategoryType
-              className={"me-1"}
-              categoryTypeArray={subCategoryTypes}
-              typeName={ConverFirstLatterToCapital(subCategoryTypeName ?? "")}
-              setTypeName={(e) => {
-                setSubCategoryTypeId(e.target.id);
-                setSubCategoryTypeName(e.target.name);
-                setPagination({ page: 1 });
-                history.push(
-                  `/donation?page=${1}&category=${categoryTypeName}&subCategory=${
-                    e.target.name
-                  }&filter=${dropDownName}`
-                );
-              }}
-            />
-            <ChangePeriodDropDown
-              className={"me-1"}
-              dropDownName={dropDownName}
-              setdropDownName={(e) => {
-                setdropDownName(e.target.name);
-                setPagination({ page: 1 });
-                history.push(
-                  `/donation?page=${1}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${
-                    e.target.name
-                  }`
-                );
-              }}
-            />
-
-            {/* <Button
-              className={`secondaryAction-btn me-1`}
-              color="primary"
-              // onClick={() => importFileRef.current.click()}
-              onClick={handleButtonClick}
-            >
-              Import File
-            </Button>
-
-            <input
-              type="file"
-              ref={importFileRef}
-              accept=""
-              className="d-none"
-              onChange={handleImportFile}
-            /> */}
-
-            {allPermissions?.name === "all" ||
-            subPermission?.includes(WRITE) ? (
-              <Button
-                color="primary"
-                className={`addAction-btn`}
-                onClick={() =>
-                  history.push(
-                    `/donation/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}&type=${activeTab}`
-                  )
-                }
-              >
-                <span>
-                  <Plus className="" size={15} strokeWidth={4} />
-                </span>
-                <span>
-                  <Trans i18nKey={"donation_AddArticledonation"} />
-                </span>
-              </Button>
-            ) : (
-              ""
-            )}
+                <ChangeCategoryType
+                  className={"me-1"}
+                  categoryTypeArray={subCategoryTypes}
+                  typeName={ConverFirstLatterToCapital(
+                    subCategoryTypeName ?? ""
+                  )}
+                  setTypeName={(e) => {
+                    setSubCategoryTypeId(e.target.id);
+                    setSubCategoryTypeName(e.target.name);
+                    setPagination({ page: 1 });
+                    history.push(
+                      `/donation?page=${1}&category=${categoryTypeName}&subCategory=${
+                        e.target.name
+                      }&filter=${dropDownName}`
+                    );
+                  }}
+                />
+                <ChangePeriodDropDown
+                  className="me-1 donationFilterBtn"
+                  dropDownName={dropDownName}
+                  setdropDownName={(e) => {
+                    setdropDownName(e.target.name);
+                    setPagination({ page: 1 });
+                    history.push(
+                      `/donation?page=${1}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${
+                        e.target.name
+                      }`
+                    );
+                  }}
+                />
+              </div>
+              <div className="row2">
+                {allPermissions?.name === "all" ||
+                subPermission?.includes(WRITE) ? (
+                  <Button
+                    color="primary"
+                    className={`addAction-btn`}
+                    onClick={() =>
+                      history.push(
+                        `/donation/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}&type=${activeTab}`
+                      )
+                    }
+                  >
+                    <span>
+                      <Plus className="" size={15} strokeWidth={4} />
+                    </span>
+                    <span>
+                      <Trans i18nKey={"donation_AddArticledonation"} />
+                    </span>
+                  </Button>
+                ) : (
+                  ""
+                )}
+              </div>
+            </div>
           </div>
           <div style={{ height: "10px" }}>
             <If condition={donationQuery.isFetching}>
@@ -621,19 +614,19 @@ export default function Donation() {
                 )}
               </Space>
               <Space wrap className="">
-                {!showHistory && (
-                  <Button
-                    color="primary"
-                    className="addAction-btn"
-                    size="large"
-                    onClick={handleAddSuspenseClick}
-                  >
-                    <span>
-                      <Plus className="" size={15} strokeWidth={4} />
-                    </span>
-                    <span> {t("add_suspense_record")}</span>
-                  </Button>
-                )}
+              {!showHistory && (allPermissions?.name === "all" || subPermission?.includes(WRITE)) && (
+              <Button
+                color="primary"
+                className="addAction-btn"
+                size="large"
+                onClick={handleAddSuspenseClick}
+              >
+                <span>
+                  <Plus className="" size={15} strokeWidth={4} />
+                </span>
+                <span> {t("add_suspense_record")}</span>
+              </Button>
+            )}
                 <Dropdown.Button
                   type="primary"
                   size="large"
@@ -641,7 +634,7 @@ export default function Donation() {
                   menu={{
                     items: [
                       {
-                        label: "History",
+                        label: t("history"),
                         key: "history",
                       },
                     ],
@@ -649,7 +642,7 @@ export default function Donation() {
                   }}
                   onClick={handleButtonClick}
                 >
-                  Import
+                  {t('import')}
                 </Dropdown.Button>
               </Space>
               <Modal
@@ -670,7 +663,7 @@ export default function Donation() {
                       },
                     ]}
                   >
-                    <CustomDatePicker showTime format="YYYY-MM-DD HH:mm" />
+                    <CustomDatePicker showTime format="YYYY-MM-DD HH:mm" placeholder={t('select_date')}/>
                   </Form.Item>
 
                   <Form.Item name="transactionId" label={t("suspense_transId")}>
@@ -720,7 +713,7 @@ export default function Donation() {
 
                   <Form.Item>
                     <Button color="primary" htmlType="submit">
-                      Add Record
+                      {t('add_record')}
                     </Button>
                   </Form.Item>
                 </Form>
