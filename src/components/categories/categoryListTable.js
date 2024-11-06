@@ -14,6 +14,7 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
 import CustomDataTable from "../partials/CustomDataTable";
 import "../../assets/scss/common.scss";
+import { Table } from "antd";
 
 export function CategoryListTable({
   data,
@@ -37,50 +38,50 @@ export function CategoryListTable({
   });
   const { t } = useTranslation();
   const history = useHistory();
-
   const columns = [
     {
-      name: t("categories_serial_number"),
-      selector: (row) => row.id,
-      width: "200px",
-      style: {
-        font: "normal normal 700 13px/20px noto sans !important ",
-      },
+      title: t("categories_serial_number"),
+      dataIndex: "id",
+      key: "id",
+      width: 200,
+      render: (text) => (
+        <span style={{ font: "normal normal 700 13px/20px noto sans" }}>
+          {text}
+        </span>
+      ),
     },
     {
-      name: t("name"),
-      selector: (row) => row.subCategory,
-      width: "220px",
+      title: t("name"),
+      dataIndex: "subCategory",
+      key: "subCategory",
+      width: 220,
     },
     {
-      name: t("categories_master_category"),
-      selector: (row) => row.masterCategory,
-
+      title: t("categories_master_category"),
+      dataIndex: "masterCategory",
+      key: "masterCategory",
       width:
-        window.screen.width < "700"
-          ? "250px"
-          : window.screen.width > "700" && window.screen.width < "900"
-          ? "350px"
-          : window.screen.width > "900" && window.screen.width < "1200"
-          ? "675px"
-          : window.screen.width > "1200" && window.screen.width < "1450"
-          ? "675px"
-          : "675px",
-    },
-
-    {
-      name: "",
-      selector: (row) => row.addLanguage,
-      width: "230px",
+        window.screen.width < 700
+          ? 250
+          : window.screen.width >= 700 && window.screen.width < 900
+          ? 350
+          : window.screen.width >= 900 && window.screen.width < 1200
+          ? 675
+          : window.screen.width >= 1200 && window.screen.width < 1450
+          ? 675
+          : 675,
     },
     {
-      name: "",
-      selector: (row) => row.editCategory,
-      // width:"120px"
+      title: "",
+      dataIndex: "addLanguage",
+      key: "addLanguage",
+      width: 230,
     },
     {
-      name: "",
-      selector: (row) => row.deleteCategory,
+      title: t("Actions"),
+      dataIndex: "action",
+      width: 120,
+      fixed:"right"
     },
   ];
 
@@ -114,67 +115,82 @@ export function CategoryListTable({
         ) : (
           ""
         ),
-      editCategory:
-        allPermissions?.name === "all" || subPermission?.includes(EDIT) ? (
-          <img
-            className="cursor-pointer"
-            src={editIcon}
-            width={35}
-            onClick={() =>
-              history.push(
-                `/configuration/categories/edit/${item.id}?page=${currentPage}&filter=${currentFilter}`
-              )
-            }
-          />
-        ) : (
-          ""
-        ),
-      deleteCategory:
-        allPermissions?.name === "all" || subPermission?.includes(DELETE) ? (
-          <img
-            className="cursor-pointer"
-            src={deleteIcon}
-            width={35}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              // Swal.fire("Oops...", "Something went wrong!", "error");
-              Swal.fire({
-                title: `<img src="${confirmationIcon}"/>`,
-                html: `
+      action: (
+        <div className="d-flex">
+          <div>
+            {allPermissions?.name === "all" || subPermission?.includes(EDIT) ? (
+              <img
+                className="cursor-pointer"
+                src={editIcon}
+                width={35}
+                onClick={() =>
+                  history.push(
+                    `/configuration/categories/edit/${item.id}?page=${currentPage}&filter=${currentFilter}`
+                  )
+                }
+              />
+            ) : (
+              ""
+            )}
+          </div>
+          <div>
+            {allPermissions?.name === "all" ||
+            subPermission?.includes(DELETE) ? (
+              <img
+                className="cursor-pointer"
+                src={deleteIcon}
+                width={35}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  // Swal.fire("Oops...", "Something went wrong!", "error");
+                  Swal.fire({
+                    title: `<img src="${confirmationIcon}"/>`,
+                    html: `
                                   <h3 class="swal-heading mt-1">${t(
                                     "category_delete"
                                   )}</h3>
                                   <p>${t("category_sure")}</p>
                                   `,
-                showCloseButton: false,
-                showCancelButton: true,
-                focusConfirm: true,
-                cancelButtonText: `${t("cancel")}`,
-                cancelButtonAriaLabel: `${t("cancel")}`,
+                    showCloseButton: false,
+                    showCancelButton: true,
+                    focusConfirm: true,
+                    cancelButtonText: `${t("cancel")}`,
+                    cancelButtonAriaLabel: `${t("cancel")}`,
 
-                confirmButtonText: `${t("confirm")}`,
-                confirmButtonAriaLabel: "Confirm",
-              }).then(async (result) => {
-                if (result.isConfirmed) {
-                  deleteMutation.mutate(item.id);
-                }
-              });
-            }}
-          />
-        ) : (
-          ""
-        ),
+                    confirmButtonText: `${t("confirm")}`,
+                    confirmButtonAriaLabel: "Confirm",
+                  }).then(async (result) => {
+                    if (result.isConfirmed) {
+                      deleteMutation.mutate(item.id);
+                    }
+                  });
+                }}
+              />
+            ) : (
+              ""
+            )}
+          </div>
+        </div>
+      ),
     }));
   }, [data]);
 
   return (
     <div className="categorytablewrapper">
-      <CustomDataTable
-        // minWidth="fit-content"
-        maxHeight={""}
+      <Table
+        className="donationListTable"
         columns={columns}
-        data={categoriesList}
+        dataSource={categoriesList}
+        scroll={{
+          x: 1500,
+          y: 400,
+        }}
+        sticky={{
+          offsetHeader: 64,
+        }}
+        bordered
+        rowKey="id"
       />
     </div>
   );

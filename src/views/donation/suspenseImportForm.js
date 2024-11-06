@@ -260,6 +260,7 @@ function SuspenseImportForm({ onClose, open, tab, setShowHistory }) {
                 <Upload
                   {...uploadProps}
                   maxCount={1}
+                  className="uploadIdCard"
                   showUploadList={file == null ? false : true}
                 >
                   <AntdButton
