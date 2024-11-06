@@ -94,7 +94,7 @@ const RoomHoldModal = ({ isOpen, toggle }) => {
     const selectedRoomType = roomTypes.find(rt => rt._id === value);
     updatedRooms[index] = {
       ...updatedRooms[index],
-      roomTypeId: value,
+      roomType: value,
       roomTypeName: selectedRoomType?.name || '',
       building: '',
       buildingName: '',
@@ -158,27 +158,25 @@ const RoomHoldModal = ({ isOpen, toggle }) => {
     setRoomsData(updatedRooms);
   };
 
+  // const handleAddRoom = () => {
+  //   setRoomsData([...roomsData, {}]);
+  // };
+
+  // const handleClearRooms = () => {
+  //   setRoomsData([{}]);
+  // };
+
   const handleAddRoom = () => {
-    setRoomsData([...roomsData, {}]);
-  };
-
-  const handleClearRooms = () => {
-    setRoomsData([{}]);
-  };
-
-  const handleAddRoomWrapper = (e) => {
-    e.preventDefault(); 
     const lastRoom = roomsData[roomsData.length - 1];
-    if (lastRoom.roomTypeId && lastRoom.building && lastRoom.floor && lastRoom.roomId) {
-      handleAddRoom();
+    if (lastRoom.roomType && lastRoom.building && lastRoom.floor && lastRoom.roomId) {
+      setRoomsData([...roomsData, {}]);
     } else {
       toast.warn('Please fill in all fields for the current room before adding a new one.');
     }
   };
-
-  const handleClearRoomsWrapper = (e) => {
-    e.preventDefault();
-    handleClearRooms();
+  
+  const handleClearRooms = () => {
+    setRoomsData([{}]);
   };
 
   const handleSubmit = async (e) => {
@@ -190,7 +188,7 @@ const RoomHoldModal = ({ isOpen, toggle }) => {
       type: type,
       remark: remark,
       rooms: roomsData.map(room => ({
-        roomTypeId: room.roomTypeId,
+        roomTypeId: room.roomType,
         roomTypeName: room.roomTypeName,
         building: room.building,
         buildingName: room.buildingName,
@@ -289,8 +287,8 @@ const RoomHoldModal = ({ isOpen, toggle }) => {
             handleFloorChange={handleFloorChange}
             handleRoomNumberChange={handleRoomNumberChange}
             handleDeleteRoom={handleDeleteRoom}
-            handleAddRoom={handleAddRoomWrapper}
-            handleClearRooms={handleClearRoomsWrapper}
+            handleAddRoom={handleAddRoom}      
+            handleClearRooms={handleClearRooms} 
             hideAmountField={true}
           />
           <FormGroup className="mt-3">
