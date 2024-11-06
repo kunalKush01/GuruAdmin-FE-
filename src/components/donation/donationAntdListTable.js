@@ -360,19 +360,37 @@ export default function DonationANTDListTable(
         id: idx + 1,
         username: (
           <div className="d-flex align-items-center">
-            <img
-              src={
-                item?.user?.profilePhoto !== "" && item?.user?.profilePhoto
-                  ? item?.user?.profilePhoto
-                  : avtarIcon
-              }
-              style={{
-                marginRight: "5px",
-                width: "25px",
-                height: "25px",
-              }}
-              className="rounded-circle"
-            />
+            <div style={{ position: "relative", display: "inline-block" }}>
+              <img
+                src={
+                  item?.user?.profilePhoto !== "" && item?.user?.profilePhoto
+                    ? item?.user?.profilePhoto
+                    : avtarIcon
+                }
+                style={{
+                  marginRight: "5px",
+                  width: "30px",
+                  height: "30px",
+                }}
+                className="rounded-circle"
+              />
+              <span
+                style={{
+                  position: "absolute",
+                  top: "0",
+                  left: "0",
+                  width: "10px",
+                  height: "10px",
+                  borderRadius: "50%",
+                  backgroundColor:
+                    item?.paidStatus === "Paid"
+                      ? "green"
+                      : item?.paidStatus === "Pending"
+                      ? "orange"
+                      : "red",
+                }}
+              ></span>
+            </div>
             <div>{ConverFirstLatterToCapital(item?.user?.name ?? "")}</div>
           </div>
         ),
