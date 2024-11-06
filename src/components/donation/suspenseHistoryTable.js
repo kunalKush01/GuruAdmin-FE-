@@ -82,7 +82,7 @@ const SuspenseHistoryTable = () => {
       ),
     },
     {
-      title: "Actions",
+      title: t('action'),
       key: "actions",
       fixed: "right",
       width: 120,

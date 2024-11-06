@@ -14,23 +14,23 @@ const DharmshalaDashboardStatsCard = ({ dashboardData }) => {
       </Helmet>
       <div className="dashboard-container">
         <div className="dashboard-card">
-          <h3>{t("Available Rooms")}</h3>
+          <h3>{t("available_rooms")}</h3>
           <p>{dashboardData.availableRooms}</p>
         </div>
         <div className="dashboard-card">
-          <h3>{t("Occupied Rooms")}</h3>
+          <h3>{t("occupied_rooms")}</h3>
           <p>{dashboardData.occupiedRooms}</p>
         </div>
         <div className="dashboard-card">
-          <h3>{t("Expected Check-Ins")}</h3>
+          <h3>{t("expected_check_ins")}</h3>
           <p>{dashboardData.expectedCheckIns}</p>
         </div>
         <div className="dashboard-card">
-          <h3>{t("Expected Checkouts")}</h3>
+          <h3>{t("expected_checkouts")}</h3>
           <p>{dashboardData.expectedCheckouts}</p>
         </div>
         <div className="dashboard-card">
-          <h3>{t("Open Booking Requests")}</h3>
+          <h3>{t("open_booking_requests")}</h3>
           <p>{dashboardData.openBookingRequests}</p>
         </div>
       </div>

@@ -211,7 +211,7 @@ const DharmshalaBookingTable = ({
       render: (value) => (value ? "Yes" : "No"),
     },
     {
-      title: t("Actions"),
+      title: t("action"),
       key: "actions",
       fixed: !isMobileView &&"right" ,
       width: 250,

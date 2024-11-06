@@ -153,9 +153,7 @@ function MembershipProfileView() {
                               width={50}
                               height={50}
                               src={
-                                familyImages[i]
-                                  ? familyImages[i]
-                                  : avatarIcon
+                                familyImages[i] ? familyImages[i] : avatarIcon
                               }
                               alt="Profile"
                               className="familyProfile"
@@ -164,17 +162,17 @@ function MembershipProfileView() {
                         </div>
                         <div className="famRow2">
                           <div className="rowItem">
-                            <span className="memberAdd">Name</span>
+                            <span className="memberAdd">{t('name')}</span>
                             <p className="memberInfo mb-0">{item.name || ""}</p>
                           </div>
                           <div className="rowItem">
-                            <span className="memberAdd">Relation</span>
+                            <span className="memberAdd">{t('member_family_relation')}</span>
                             <p className="memberInfo mb-0">
                               {item.relation || ""}
                             </p>
                           </div>
                           <div className="rowItem">
-                            <span className="memberAdd">Date of Birth</span>
+                            <span className="memberAdd">{t('member_dob')}</span>
                             <p className="memberInfo mb-0">
                               {item.familyMemberDateOfBirth
                                 ? moment(item.familyMemberDateOfBirth).format(
@@ -185,7 +183,7 @@ function MembershipProfileView() {
                           </div>
                           <div className="rowItem">
                             <span className="memberAdd">
-                              Date of Anniversary
+                              {t('member_anniversary')}
                             </span>
                             <p className="memberInfo mb-0">
                               {item.familyMemberAnniversary
@@ -200,7 +198,7 @@ function MembershipProfileView() {
                               className="editmember"
                               onClick={() => openModal("edit", i, item)}
                             >
-                              Edit
+                              {t('edit')}
                             </Button>
                             <img
                               src={editIcon}
@@ -218,7 +216,7 @@ function MembershipProfileView() {
             })}
           <div className="d-flex justify-content-end mt-2">
             <Button color="primary" onClick={() => openModal("add")}>
-              Add
+              {t('add')}
             </Button>
           </div>
           <FamilyModalForm
@@ -251,20 +249,20 @@ function MembershipProfileView() {
           <div>
             <div className="d-flex flex-row">
               <div className="me-3">
-                <span className="memberAdd">PAN Number</span>
+                <span className="memberAdd">{t('pan_number')}</span>
                 <p className="memberInfo">
                   {memberData ? otherInfo["panNumber"] : ""}
                 </p>
               </div>
               <div>
-                <span className="memberAdd">Alternative Mobile Number</span>
+                <span className="memberAdd">{t('alt_phone')}</span>
                 <p className="memberInfo">
                   {memberData ? contactInfo["alternativePhone"] : ""}
                 </p>
               </div>
             </div>
             <div>
-              <span className="memberAdd">In Memory Name</span>
+              <span className="memberAdd">{t('in_memory_name')}</span>
               <p className="memberInfo">
                 {memberData ? personalInfo["inMemoryName"] : ""}
               </p>
@@ -316,11 +314,11 @@ function MembershipProfileView() {
           <div>
             <div className="d-flex flex-row">
               <div className="me-3">
-                <span className="memberAdd">Created By</span>
+                <span className="memberAdd">{t('created_by')}</span>
                 <p className="memberInfo">{loggedInUser}</p>
               </div>
               <div className="me-3">
-                <span className="memberAdd">Updated Date</span>
+                <span className="memberAdd">{t('updated_date')}</span>
                 <p className="memberInfo">
                   {" "}
                   {memberData
@@ -331,7 +329,7 @@ function MembershipProfileView() {
                 </p>
               </div>
               <div className="me-3">
-                <span className="memberAdd">Created Date</span>
+                <span className="memberAdd">{t('created_date')}</span>
                 <p className="memberInfo">
                   {" "}
                   {memberData
@@ -342,7 +340,7 @@ function MembershipProfileView() {
                 </p>
               </div>
               <div className="me-3">
-                <span className="memberAdd">Branch</span>
+                <span className="memberAdd">{t('branch')}</span>
                 <p className="memberInfo">
                   {" "}
                   {memberData ? membershipInfo["branch"]["name"] : ""}
@@ -365,10 +363,11 @@ function MembershipProfileView() {
         />
         <div>
           <Button
+            className="mb-1"
             color="primary"
             onClick={() => history.push(`/member/editMember/${id}`)}
           >
-            Edit
+            {t('edit')}
           </Button>
         </div>
       </div>
@@ -439,7 +438,7 @@ function MembershipProfileView() {
               </div>
               <div>
                 <div className="info-item">
-                  <span className="me-1">Future Communication</span>
+                  <span className="me-1">{t('future_communication')}</span>
                   <Switch checked={toggleSwitch} onChange={handleToggle} />
                 </div>
               </div>
@@ -452,7 +451,7 @@ function MembershipProfileView() {
             <Col xs={24} md={24} sm={24}>
               <Card>
                 <div>
-                  <span className="memberAdd">Home Address</span>
+                  <span className="memberAdd">{t('home_address')}</span>
                   <p className="memberlineAdd">
                     {memberData && addressInfo && addressInfo.homeAddress
                       ? [
@@ -468,7 +467,7 @@ function MembershipProfileView() {
                   </p>
                 </div>
                 <div>
-                  <span className="memberAdd">Correspondence Address</span>
+                  <span className="memberAdd">{t('correspondence_address')}</span>
                   <p className="memberlineAdd">
                     {memberData &&
                     addressInfo &&

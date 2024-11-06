@@ -692,37 +692,37 @@ const idTypeOptions = [
         <div className="booking-room">
           <div className="booking-container">
           <div className="booking-header">
-            <div className="booking-title">Booking</div>
+            <div className="booking-title">{t('booking')}</div>
             {isEditing && formik.values.bookingId && (
-              <div className="booking-id">Booking ID: {formik.values.bookingCode}</div>
+              <div className="booking-id">{t('booking_id')}: {formik.values.bookingCode}</div>
             )}
           </div>
             <div className="flex-container">
               <div className="date-picker-container">
                 <div className="date-picker-item">
                   <label htmlFor="from-date" className="date-label">
-                    From Date:
+                    {t('from_date')}:
                   </label>
                   <CustomDatePicker
                     id="from-date"
                     value={formik.values.fromDate}
                     onChange={handleFromDateChange}
                     format="DD MMM YYYY"
-                    placeholder="Select a date"
+                    placeholder={t('select_date')}
                     className="custom-datepicker"
                     disabledDate={disabledDate}
                   />
                 </div>
                 <div className="date-picker-item">
                   <label htmlFor="to-date" className="date-label">
-                    To Date:
+                    {t('to_date')}:
                   </label>
                   <CustomDatePicker
                     id="to-date"
                     value={formik.values.toDate}
                     onChange={handleToDateChange}
                     format="DD MMM YYYY"
-                    placeholder="Select a date"
+                    placeholder={t('select_date')}
                     className="custom-datepicker"
                     disabledDate={(current) => {
                       return (current && current < moment().startOf('day')) || 
@@ -733,7 +733,7 @@ const idTypeOptions = [
               </div>
               <div className="member-container">
                 <label htmlFor="num-men" className="member-label">
-                  Members (M/W/K):
+                  {t('members')} (M/W/K):
                 </label>
                 <div className="member-inputs">
                 <input
@@ -766,7 +766,7 @@ const idTypeOptions = [
                   type="button"
                   disabled={!isSearchEnabled()}
                 >
-                  Search
+                  {t('search')}
                 </button>
                 </div>
               </div>
@@ -791,7 +791,7 @@ const idTypeOptions = [
         <div className="guest-payment">
           <div className="guest-container-add-booking">
             <div className="guest-header">
-              <div className="guest-title">Guest Details</div>
+              <div className="guest-title">{t('guest_detail')}</div>
             </div>
             <Row className="paddingForm">
               <Col xs={12}>
@@ -872,8 +872,8 @@ const idTypeOptions = [
                   <Col xs={12} sm={6} lg={4} md={6} className="pb-1">
                     <CustomTextField
                       required
-                      label={t("Guest Name")}
-                      placeholder={t("Guest Name")}
+                      label={t("guest_name")}
+                      placeholder={t("guest_name")}
                       name="guestname"
                       value={formik.values.guestname}
                       onChange={formik.handleChange}
@@ -900,7 +900,7 @@ const idTypeOptions = [
                 <Row>
                   <Col xs={12} sm={6} lg={4} md={6} className="pb-1">
                     <CustomTextField
-                      label={t("Email")}
+                      label={t("email")}
                       placeholder={t("placeHolder_email")}
                       name="email"
                       value={formik.values.email}
@@ -914,8 +914,8 @@ const idTypeOptions = [
                   <Col xs={12} sm={6} lg={8} md={8} className="a pb-1">
                     <CustomTextField
                       type="address"
-                      label={t("Address")}
-                      placeholder={t("Address")}
+                      label={t("home_address")}
+                      placeholder={t("home_address")}
                       name="address"
                       value={formik.values.address}
                       onChange={formik.handleChange}
@@ -926,8 +926,8 @@ const idTypeOptions = [
                   <Col xs={12} sm={6} lg={4} className="pb-2">
                     <FormikCustomReactSelect
                       name="idType"
-                      labelName={t("ID Type")}
-                      placeholder={t("Id Type")}
+                      labelName={t("id_type")}
+                      placeholder={t("id_type")}
                       options={idTypeOptions}
                       width={"100"}
                       value={
@@ -945,8 +945,8 @@ const idTypeOptions = [
                   </Col>
                   <Col xs={12} sm={6} lg={4} className="pb-1">
                   <CustomTextField
-                    label={t("Id Number")}
-                    placeholder={t("Id Number")}
+                    label={t("idNumber")}
+                    placeholder={t("idNumber")}
                     name="idNumber"
                     value={formik.values.idNumber}
                     onChange={formik.handleChange}
@@ -999,20 +999,20 @@ const idTypeOptions = [
                 className={`tab ${activeTab === "payment" ? "active" : ""}`}
                 onClick={() => setActiveTab("payment")}
               >
-                Payment
+                {t('payment')}
               </div>
               <div
                 className={`tab ${activeTab === "paymentHistory" ? "active" : ""}`}
                 onClick={() => setActiveTab("paymentHistory")}
               >
-                Payment History
+                {t('payment_history')}
               </div>
             </div>
             {activeTab === "payment" && (
               <div className="payment-tab">
                 <div className="payment-field">
                   <label htmlFor="room-rent" className="payment-label">
-                    Room Rent:
+                    {t('room_rent')}:
                   </label>
                   <input
                     type="text"
@@ -1025,7 +1025,7 @@ const idTypeOptions = [
                 </div>
                 <div className="payment-field">
                   <label htmlFor="security" className="payment-label">
-                    Security:
+                    {t('security')}:
                   </label>
                   <input
                     type="text"
@@ -1039,7 +1039,7 @@ const idTypeOptions = [
                 </div>
                 <div className="payment-field">
                   <label htmlFor="total-amount" className="payment-label">
-                    Total Amount:
+                    {t('total_amount')}:
                   </label>
                   <input
                     type="text"
@@ -1054,7 +1054,7 @@ const idTypeOptions = [
                 <>
                   <div className="payment-field">
                     <label htmlFor="total-paid" className="payment-label">
-                      Total Paid:
+                      {t('total_paid')}:
                     </label>
                     <input
                       type="text"
@@ -1067,7 +1067,7 @@ const idTypeOptions = [
                   </div>
                   <div className="payment-field">
                     <label htmlFor="total-due" className="payment-label">
-                      Total Due:
+                      {t('total_due')}:
                     </label>
                     <input
                       type="text"
@@ -1099,13 +1099,13 @@ const idTypeOptions = [
                           <strong>{payment.type === 'deposit' ? 'Deposit' : 'Refund'}</strong>: 
                           {payment.amount} {formik.values.currency}
                         </p>
-                        <p>Date: {new Date(payment.date).toLocaleString()}</p>
-                        <p>Method: {payment.method}</p>
+                        <p>{t('date')}: {new Date(payment.date).toLocaleString()}</p>
+                        <p>{t('method')}: {payment.method}</p>
                       </Timeline.Item>
                     ))}
                   </Timeline>
                 ) : (
-                  <p>No payment history available.</p>
+                  <p>{t('No_payment_history_available')}.</p>
                 )}
               </div>
             )}

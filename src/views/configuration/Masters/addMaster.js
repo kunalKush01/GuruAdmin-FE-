@@ -14,6 +14,7 @@ import { addMasterInRow } from "../../../api/masterApi";
 import Swal from "sweetalert2";
 import "../../../assets/scss/common.scss";
 import { X } from "react-feather";
+import { useTranslation } from "react-i18next";
 const AddMaster = ({
   schema,
   isOpen,
@@ -23,6 +24,7 @@ const AddMaster = ({
   masterItem,
   onSuccess,
 }) => {
+  const {t} = useTranslation()
   const initialFormData = schema.reduce((acc, field) => {
     acc[field.name] = "";
     return acc;
@@ -152,7 +154,7 @@ const AddMaster = ({
                 required={field.required}
                 onBlur={() => handleInputBlur(field)}
               >
-                <option value="">Select Option</option>
+                <option value="">{t('select_option')}</option>
                 <option value="True">True</option>
                 <option value="False">False</option>
               </Input>
