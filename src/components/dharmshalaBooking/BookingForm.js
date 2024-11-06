@@ -141,6 +141,8 @@
                 onClose={() => setIsPaymentModalOpen(false)}
                 onSave={handlePaymentSave}
                 totalDue={!isEditing ? formik.values.totalAmount : formik.values.totalDue}
+                isEditing={isEditing}
+                security={formik.values.security}
               />
             </>
           )}
