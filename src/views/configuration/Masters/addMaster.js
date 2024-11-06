@@ -14,6 +14,7 @@ import { addMasterInRow } from "../../../api/masterApi";
 import Swal from "sweetalert2";
 import "../../../assets/scss/common.scss";
 import { X } from "react-feather";
+import { useTranslation } from "react-i18next";
 const AddMaster = ({
   schema,
   isOpen,
@@ -23,6 +24,7 @@ const AddMaster = ({
   masterItem,
   onSuccess,
 }) => {
+  const {t} = useTranslation()
   const initialFormData = schema.reduce((acc, field) => {
     acc[field.name] = "";
     return acc;

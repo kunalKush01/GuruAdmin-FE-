@@ -353,7 +353,7 @@ export default function Commitment() {
                       color="primary"
                       onClick={handleButtonClick}
                     >
-                      Import File
+                      {t('Import_File')}
                     </Button>
                   ) : null}
                 <input

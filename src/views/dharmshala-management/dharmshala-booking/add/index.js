@@ -161,7 +161,7 @@ const AddDharmshalaBooking = () => {
         initialValues={initialValues}
         validationSchema={schema}
         showTimeInput
-        buttonName={bookingData ? t("Update Booking") : t("Create Booking")}
+        buttonName={bookingData ? t("update_booking") : t("create_booking")}
         isPaymentModalOpen={isPaymentModalOpen}
         setIsPaymentModalOpen={setIsPaymentModalOpen}
         isEditing={!!bookingData}

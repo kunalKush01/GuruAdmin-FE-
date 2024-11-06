@@ -1,6 +1,7 @@
 import React from 'react';
 import guestIcon from "../../assets/images/icons/subadmin.svg";
 import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
+import { t } from 'i18next';
 
 const RoomsContainer = ({
   roomsData,
@@ -33,14 +34,14 @@ const RoomsContainer = ({
   return (
     <div className="rooms-container">
       <div className="rooms-header">
-        <div className="rooms-title">Rooms</div>
+        <div className="rooms-title">{t('rooms')}</div>
       </div>
       <div className="rooms-content">
         {roomsData.map((room, index) => (
           <div key={index} className="room-row">
             <div className="field-container">
               <label htmlFor={`room-type-${index}`} className="room-label">
-                Room Type:
+                {t('room_type')}:
               </label>
               <div className="input-with-icon">
               <select
@@ -50,7 +51,7 @@ const RoomsContainer = ({
                   onChange={(e) => handleRoomTypeChange(e.target.value, index)}
                   disabled={isReadOnly}
                 >
-                  <option value="">Select Room Type</option>
+                  <option value="">{t('Select_Room_Type')}</option>
                   {roomTypes.map((roomType) => (
                     <option key={roomType._id} value={roomType._id}>
                       {roomType.name}
@@ -67,7 +68,7 @@ const RoomsContainer = ({
             </div>
             <div className="field-container">
               <label htmlFor={`building-${index}`} className="building-label">
-                Building:
+                {t('building')}:
               </label>
               <select
                 id={`building-${index}`}
@@ -76,7 +77,7 @@ const RoomsContainer = ({
                 onChange={(e) => handleBuildingChange(e.target.value, index)}
                 disabled={isReadOnly}
               >
-                <option value="">Select Building</option>
+                <option value="">{t('select_building')}</option>
                 {buildings.map((building) => (
                   <option key={building._id} value={building._id}>
                     {building.name}
@@ -86,7 +87,7 @@ const RoomsContainer = ({
             </div>
             <div className="field-container">
               <label htmlFor={`floor-${index}`} className="floor-label">
-                Floor:
+                {t('floor')}:
               </label>
               <select
                 id={`floor-${index}`}
@@ -95,7 +96,7 @@ const RoomsContainer = ({
                 onChange={(e) => handleFloorChange(e.target.value, index)}
                 disabled={isReadOnly || !room.building}
               >
-                <option value="">Select Floor</option>
+                <option value="">{t('select_floor')}</option>
                 {(floors[room.building] || []).map((floor) => (
                   <option key={floor._id} value={floor._id}>
                     {floor.name}
@@ -105,7 +106,7 @@ const RoomsContainer = ({
             </div>
             <div className="field-container">
               <label htmlFor={`room-number-${index}`} className="room-number-label">
-                Room Number:
+                {t('room_number')}:
               </label>
               <select
                 id={`room-number-${index}`}
@@ -136,7 +137,7 @@ const RoomsContainer = ({
             {!hideAmountField && (
               <div className="field-container">
                 <label htmlFor={`amount-${index}`} className="amount-label">
-                  Amount:
+                  {t("amount")}:
                 </label>
                 <input
                   type="text"
@@ -164,10 +165,10 @@ const RoomsContainer = ({
       {!isPartialView && (
         <div className="rooms-buttons">
           <button className="add-rooms-button" onClick={handleButtonClick(handleAddRoom)}>
-            Add More Rooms
+            {t('addmore_room')}
           </button>
           <button className="clear-rooms-button" onClick={handleButtonClick(handleClearRooms)}>
-            Clear All
+            {t('clear_all')}
           </button>
         </div>
       )}
