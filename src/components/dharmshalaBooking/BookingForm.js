@@ -3,11 +3,11 @@
   import React, { useState } from "react";
   import { useSelector } from "react-redux";
   import { useHistory } from "react-router-dom";
-  import styled from "styled-components";
   import { getAllMasterCategories } from "../../api/expenseApi";
   import FormWithoutFormikForBooking from "../../components/dharmshalaBooking/FormWithoutFormikForBooking";
   import { createDharmshalaBooking, createPayment, updatePayment, updateDharmshalaBooking } from "../../api/dharmshala/dharmshalaInfo";
   import { PaymentModal } from "./PaymentModal";
+  import '../../views/dharmshala-management/dharmshala_css/addbooking.scss';
 
   export default function BookingForm({
     plusIconDisable = true,
@@ -115,7 +115,7 @@
     };
 
     return (
-      <div className="FormikWrapper">
+      <div className="form-wrapper">
         {!masterloadOptionQuery.isLoading && (
           <Formik
           initialValues={initialValues}
