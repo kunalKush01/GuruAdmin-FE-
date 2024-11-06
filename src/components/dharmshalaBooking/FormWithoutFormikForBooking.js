@@ -167,9 +167,9 @@ useEffect(() => {
 
 useEffect(() => {
   if (formik.values.fromDate && formik.values.toDate && formik.values.roomsData.length > 0) {
-    updateTotalAmount(formik.values.roomsData);
+    updateTotalAmount(formik.values.roomsData,formik.values.fromDate,formik.values.toDate);
   }
-}, [formik.values.fromDate, formik.values.toDate]);
+}, [formik.values.fromDate, formik.values.toDate,formik.values.roomsData]);
 
 const handleInitialFile = async () => {
   try {
@@ -245,7 +245,7 @@ const idTypeOptions = [
       formik.setFieldValue('totalDue', formik.values.totalDue);
       formik.setFieldValue('totalPaid', formik.values.totalPaid);
     }
-  }, [formik.values.calculatedFields]);
+  }, [formik.values.roomRent,formik.values.totalAmount,formik.values.totalDue,formik.values.totalPaid]);
 
   const handleCreateUser = async (payload) => {
     return createSubscribedUser(payload);
@@ -439,7 +439,7 @@ const idTypeOptions = [
     }
   
     formik.setFieldValue('roomsData', roomsCombination);
-    updateTotalAmount(roomsCombination);
+    updateTotalAmount(roomsCombination,formik.values.fromDate,formik.values.toDate);
   };
 
   const handleAddRoom = () => {
@@ -448,7 +448,7 @@ const idTypeOptions = [
       { roomType: "", building: "", floor: "", roomId: "", roomNumber:'', amount: 0 },
     ];
     formik.setFieldValue('roomsData', updatedRoomsData);
-    updateTotalAmount(updatedRoomsData);
+    updateTotalAmount(updatedRoomsData,formik.values.fromDate,formik.values.toDate);
   };
 
   const handleClearRooms = () => {
@@ -456,7 +456,7 @@ const idTypeOptions = [
       { roomType: "", building: "", floor: "", roomId: "", roomNumber:'', amount: 0 },
     ];
     formik.setFieldValue('roomsData', clearedRoomsData);
-    updateTotalAmount(clearedRoomsData);
+    updateTotalAmount(clearedRoomsData,formik.values.fromDate,formik.values.toDate);
   };
 
   const handleRoomTypeChange = (value, index) => {
@@ -475,7 +475,7 @@ const idTypeOptions = [
       amount: selectedRoomType?.price || 0,
     };
     formik.setFieldValue('roomsData', updatedRoomsData);
-    updateTotalAmount(updatedRoomsData);
+    updateTotalAmount(updatedRoomsData,formik.values.fromDate,formik.values.toDate);
   };
   
   const handleBuildingChange = (buildingId, index) => {
@@ -491,7 +491,7 @@ const idTypeOptions = [
       } : room
     );
     formik.setFieldValue('roomsData', updatedRooms);
-    updateTotalAmount(updatedRooms);
+    updateTotalAmount(updatedRooms,formik.values.fromDate,formik.values.toDate);
     fetchFloors(buildingId);
   };
   
@@ -506,7 +506,7 @@ const idTypeOptions = [
       } : room
     );
     formik.setFieldValue('roomsData', updatedRooms);
-    updateTotalAmount(updatedRooms);
+    updateTotalAmount(updatedRooms,formik.values.fromDate,formik.values.toDate);
     fetchRooms(floorId);
   };
   
@@ -523,12 +523,12 @@ const idTypeOptions = [
     );
     
     formik.setFieldValue('roomsData', updatedRooms);
-    updateTotalAmount(updatedRooms);
+    updateTotalAmount(updatedRooms,formik.values.fromDate,formik.values.toDate);
   };
 
-  const updateTotalAmount = (updatedRoomsData) => {
-    const startDate = moment(formik.values.fromDate);
-    const endDate = moment(formik.values.toDate);
+  const updateTotalAmount = (updatedRoomsData,fromDate,toDate) => {
+    const startDate = fromDate;
+    const endDate = toDate;
     const numberOfDays = endDate.diff(startDate, 'days'); 
 
     const roomRentPerDay = updatedRoomsData.reduce((acc, room) => acc + room.amount, 0);
@@ -555,7 +555,7 @@ const idTypeOptions = [
       if (result.isConfirmed) {
         const updatedRoomsData = formik.values.roomsData.filter((room, idx) => idx !== index);
         formik.setFieldValue('roomsData', updatedRoomsData);
-        updateTotalAmount(updatedRoomsData);
+        updateTotalAmount(updatedRoomsData,formik.values.fromDate,formik.values.toDate);
         Swal.fire(
           t("booking_room_deleted"),
           t("booking_room_deleted_message"),
