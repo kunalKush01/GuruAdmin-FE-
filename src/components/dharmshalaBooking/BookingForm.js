@@ -120,6 +120,7 @@
           <Formik
           initialValues={initialValues}
           onSubmit={handleCreateBooking}
+          validationSchema={validationSchema}
         >
           {(formik) => (
             <>
