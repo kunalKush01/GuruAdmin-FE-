@@ -20,7 +20,7 @@ const CustomCountryMobileNumberField = ({
       {label && (
         <label>
           {`${label}`}
-          {required && "*"}
+          <span className="text-danger">{required && "*"}</span>
         </label>
       )}
       <PhoneInput
