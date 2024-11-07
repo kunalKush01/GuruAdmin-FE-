@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form, Input, Select } from 'antd';
 import "../../assets/scss/viewCommon.scss";
 
-export const PaymentModal = ({ isOpen, onClose, onSave, totalDue }) => {
+export const PaymentModal = ({ isOpen, onClose, onSave, totalDue, isEditing, security }) => {
   const [form] = Form.useForm();
   const [paymentMode, setPaymentMode] = useState('cash');
   const [isSaveDisabled, setIsSaveDisabled] = useState(true); 
@@ -10,15 +10,20 @@ export const PaymentModal = ({ isOpen, onClose, onSave, totalDue }) => {
   useEffect(() => {
     if (isOpen) {
       form.resetFields();
-      form.setFieldsValue({ mode: 'cash', amount: totalDue });
+      form.setFieldsValue({ mode: 'cash' });
+      if (isEditing && Math.abs(totalDue) === security) {
+        form.setFieldsValue({ amount: '' });
+      } else {
+        form.setFieldsValue({ amount: totalDue });
+      }
       setPaymentMode('cash');
-      setIsSaveDisabled(!totalDue); 
+      setIsSaveDisabled(!totalDue && !isEditing); 
     }
-  }, [isOpen, form, totalDue]);
+  }, [isOpen, form, totalDue, isEditing, security]);
 
   const handleFormChange = (changedValues) => {
     const amount = changedValues.amount;
-    setIsSaveDisabled(!amount); 
+    setIsSaveDisabled(!amount && !isEditing); 
   };
 
   const handleSave = () => {
@@ -86,7 +91,7 @@ export const PaymentModal = ({ isOpen, onClose, onSave, totalDue }) => {
         <Form.Item
           name="amount"
           label="Amount"
-          rules={[{ required: true, message: 'Amount is required.' }]}
+          rules={isEditing ? [] : [{ required: true, message: 'Amount is required.' }]}
         >
           <Input type="number" placeholder="Enter amount" />
         </Form.Item>
