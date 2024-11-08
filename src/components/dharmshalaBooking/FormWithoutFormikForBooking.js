@@ -352,10 +352,12 @@ export default function FormWithoutFormikForBooking({
       const response = await getDharmshalaFloorList(buildingId);
       setFloors((prevFloors) => ({
         ...prevFloors,
-        [buildingId]: response.results ? response.results.map((floor) => ({
-          _id: floor._id,
-          name: floor.name,
-        })) : [],
+        [buildingId]: response.results
+          ? response.results.map((floor) => ({
+              _id: floor._id,
+              name: floor.name,
+            }))
+          : [],
       }));
     } catch (error) {
       console.error("Error fetching floors:", error);
@@ -403,9 +405,9 @@ export default function FormWithoutFormikForBooking({
   };
 
   const isSearchEnabled = () => {
-    const men = parseInt(formik.values.numMen) || 0;
-    const women = parseInt(formik.values.numWomen) || 0;
-    const kids = parseInt(formik.values.numKids) || 0;
+    const men = parseInt(formik.values.numMen, 10) || 0;
+    const women = parseInt(formik.values.numWomen, 10) || 0;
+    const kids = parseInt(formik.values.numKids, 10) || 0;
     const totalGuests = men + women + kids;
 
     return formik.values.fromDate && formik.values.toDate && totalGuests > 0;
@@ -425,13 +427,14 @@ export default function FormWithoutFormikForBooking({
   const handleToDateChange = (date, dateString) => {
     formik.setFieldValue("toDate", date);
   };
-
-  const handleSearch = () => {
+  const [isSearchRoom, setIsSearchRoom] = useState(false);
+  const handleSearch = (e) => {
+    e.preventDefault();
     if (!isSearchEnabled()) return;
-
-    const men = parseInt(formik.values.numMen) || 0;
-    const women = parseInt(formik.values.numWomen) || 0;
-    const kids = parseInt(formik.values.numKids) || 0;
+    setIsSearchRoom(true);
+    const men = parseInt(formik.values.numMen, 10) || 0;
+    const women = parseInt(formik.values.numWomen, 10) || 0;
+    const kids = parseInt(formik.values.numKids, 10) || 0;
     const totalGuests = men + women + kids;
 
     const sortedRoomTypes = [...roomTypes].sort(
@@ -445,7 +448,7 @@ export default function FormWithoutFormikForBooking({
       const suitableRoom = sortedRoomTypes.find(
         (room) => room.capacity <= remainingGuests
       );
-
+      console.log("suitableRoom", suitableRoom);
       if (suitableRoom) {
         roomsCombination.push({
           roomType: suitableRoom._id,
@@ -461,6 +464,7 @@ export default function FormWithoutFormikForBooking({
         remainingGuests -= suitableRoom.capacity;
       } else {
         const smallestRoom = sortedRoomTypes[sortedRoomTypes.length - 1];
+
         roomsCombination.push({
           roomType: smallestRoom._id,
           roomTypeName: smallestRoom.name,
@@ -483,7 +487,7 @@ export default function FormWithoutFormikForBooking({
       formik.values.toDate
     );
   };
-
+  console.log(formik.values.roomsData);
   const handleAddRoom = () => {
     const updatedRoomsData = [
       ...formik.values.roomsData,
@@ -620,7 +624,7 @@ export default function FormWithoutFormikForBooking({
   const updateTotalAmount = (updatedRoomsData, fromDate, toDate) => {
     const startDate = fromDate;
     const endDate = toDate;
-    const numberOfDays =endDate? endDate.diff(startDate, "days"):null;
+    const numberOfDays = endDate ? endDate.diff(startDate, "days") : null;
 
     const roomRentPerDay = updatedRoomsData.reduce(
       (acc, room) => acc + room.amount,
@@ -837,8 +841,9 @@ export default function FormWithoutFormikForBooking({
                     className="custom-datepicker"
                     disabledDate={disabledDate}
                     name="fromDate"
+                    onBlur={formik.handleBlur}
                   />
-                  {formik.errors.fromDate && (
+                  {formik.errors.fromDate && formik.touched.fromDate && (
                     <div className="text-danger">
                       <Trans i18nKey={formik.errors.fromDate} />
                     </div>
@@ -856,6 +861,7 @@ export default function FormWithoutFormikForBooking({
                     format="DD MMM YYYY"
                     placeholder={t("select_date")}
                     className="custom-datepicker"
+                    onBlur={formik.handleBlur}
                     disabledDate={(current) => {
                       return (
                         (current && current < moment().startOf("day")) ||
@@ -865,7 +871,7 @@ export default function FormWithoutFormikForBooking({
                     }}
                     name="toDate"
                   />
-                  {formik.errors.toDate && (
+                  {formik.errors.toDate && formik.touched.toDate && (
                     <div className="text-danger">
                       <Trans i18nKey={formik.errors.toDate} />
                     </div>
@@ -880,60 +886,88 @@ export default function FormWithoutFormikForBooking({
                 <div className="member-inputs">
                   <div className="d-flex flex-column">
                     <input
-                      type="text"
+                      type="number"
                       id="num-men"
-                      value={formik.values.numMen}
+                      value={
+                        formik.values.numMen === "" ? "" : formik.values.numMen
+                      }
                       onChange={(e) =>
-                        formik.setFieldValue("numMen", e.target.value)
+                        formik.setFieldValue(
+                          "numMen",
+                          e.target.value === ""
+                            ? ""
+                            : parseInt(e.target.value, 10)
+                        )
                       }
                       className="member-input"
                       placeholder="Men"
+                      name="numMen"
                     />
-                    {formik.errors.numMen && (
+                    {/* {formik.errors.numMen && (
                       <div className="text-danger">
                         <Trans i18nKey={formik.errors.numMen} />
                       </div>
-                    )}
+                    )} */}
                   </div>
                   <div className="d-flex flex-column">
                     <input
-                      type="text"
+                      type="number"
                       id="num-women"
-                      value={formik.values.numWomen}
+                      value={
+                        formik.values.numWomen === ""
+                          ? ""
+                          : formik.values.numWomen
+                      }
                       onChange={(e) =>
-                        formik.setFieldValue("numWomen", e.target.value)
+                        formik.setFieldValue(
+                          "numWomen",
+                          e.target.value === ""
+                            ? ""
+                            : parseInt(e.target.value, 10)
+                        )
                       }
                       className="member-input"
                       placeholder="Women"
+                      name="numWomen"
                     />
-                    {formik.errors.numWomen && (
+                    {/* {formik.errors.numWomen && (
                       <div className="text-danger">
                         <Trans i18nKey={formik.errors.numWomen} />
                       </div>
-                    )}
+                    )} */}
                   </div>
                   <div className="d-flex flex-column">
                     <input
-                      type="text"
+                      type="number"
                       id="num-kids"
-                      value={formik.values.numKids}
+                      value={
+                        formik.values.numKids === ""
+                          ? ""
+                          : formik.values.numKids
+                      }
                       onChange={(e) =>
-                        formik.setFieldValue("numKids", e.target.value)
+                        formik.setFieldValue(
+                          "numKids",
+                          e.target.value === ""
+                            ? ""
+                            : parseInt(e.target.value, 10)
+                        )
                       }
                       className="member-input"
                       placeholder="Kids"
+                      name="numKids"
                     />
-                    {formik.errors.numKids && (
+                    {/* {formik.errors.numKids && (
                       <div className="text-danger">
                         <Trans i18nKey={formik.errors.numKids} />
                       </div>
-                    )}
+                    )} */}
                   </div>
                   <button
                     className={`search-button ${
                       isSearchEnabled() ? "" : "disabled"
                     }`}
-                    onClick={handleSearch}
+                    onClick={(e) => handleSearch(e)}
                     type="button"
                     disabled={!isSearchEnabled()}
                   >
@@ -958,6 +992,7 @@ export default function FormWithoutFormikForBooking({
             handleDeleteRoom={handleDeleteRoom}
             handleAddRoom={handleAddRoom}
             handleClearRooms={handleClearRooms}
+            isSearchRoom={isSearchRoom}
           />
         </div>
         <div className="guest-payment">
@@ -1008,6 +1043,7 @@ export default function FormWithoutFormikForBooking({
                             }
                           }}
                           required
+                          onBlur={formik.handleBlur}
                         />
                         {noUserFound && (
                           <div className="addUser">
@@ -1047,7 +1083,7 @@ export default function FormWithoutFormikForBooking({
                           getNumber={phoneNumber}
                           onSuccess={handleDataLoad}
                         />
-                        {formik.errors.Mobile && (
+                        {formik.errors.Mobile && formik.touched.Mobile && (
                           <div className="text-danger">
                             <Trans i18nKey={formik.errors.Mobile} />
                           </div>

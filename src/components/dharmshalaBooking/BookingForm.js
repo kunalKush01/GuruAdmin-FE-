@@ -59,9 +59,9 @@
             idType: bookingData.idType,
             idNumber: bookingData.idNumber,
             guestCount: {
-              men: bookingData.numMen,
-              women: bookingData.numWomen,
-              children: bookingData.numKids,
+              men: bookingData.numMen||0,
+              women: bookingData.numWomen||0,
+              children: bookingData.numKids||0,
             },
             rooms: bookingData.roomsData.map(room => ({
               roomTypeId: room.roomType,

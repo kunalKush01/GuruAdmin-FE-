@@ -5,6 +5,7 @@ import { t } from "i18next";
 import { Trans } from "react-i18next";
 
 const RoomsContainer = ({
+  isSearchRoom,
   formik,
   roomsData,
   roomTypes,
@@ -31,7 +32,7 @@ const RoomsContainer = ({
     event.preventDefault();
     action();
   };
-
+console.log(roomsData)
   return (
     <div className="rooms-container">
       <div className="rooms-header">
@@ -54,17 +55,18 @@ const RoomsContainer = ({
                     onChange={(e) => {
                       handleRoomTypeChange(e.target.value, index);
                       formik.setFieldValue(
-                        `roomsData[${index}].roomTypeId`,
+                        `roomsData[${index}].roomType`,
                         e.target.value
                       );
-                      formik.validateField(`roomsData[${index}].roomTypeId`);
+                      formik.validateField(`roomsData[${index}].roomType`);
                       formik.setFieldTouched(
-                        `roomsData[${index}].roomTypeId`,
+                        `roomsData[${index}].roomType`,
                         true
                       );
                     }}
-                    disabled={isReadOnly}
-                    name={`roomsData[${index}].roomTypeId`}
+                    disabled={isReadOnly || !isSearchRoom}
+                    onBlur={!isCheckModal && formik.handleBlur}
+                    name={`roomsData[${index}].roomType`}
                   >
                     <option value="">{t("Select_Room_Type")}</option>
                     {roomTypes.map((roomType) => (
@@ -73,11 +75,12 @@ const RoomsContainer = ({
                       </option>
                     ))}
                   </select>
-                  {formik.errors.roomsData?.[index]?.roomTypeId &&
-                    formik.touched.roomsData?.[index]?.roomTypeId && (
+                  {!isCheckModal &&
+                    formik.errors.roomsData?.[index]?.roomType &&
+                    formik.touched.roomsData?.[index]?.roomType && (
                       <div className="text-danger">
                         <Trans
-                          i18nKey={formik.errors.roomsData[index].roomTypeId}
+                          i18nKey={formik.errors.roomsData[index].roomType}
                         />
                       </div>
                     )}
@@ -106,10 +109,8 @@ const RoomsContainer = ({
                 className="building-dropdown"
                 value={room.building}
                 onChange={(e) => handleBuildingChange(e.target.value, index)}
-                disabled={isReadOnly}
-                onBlur={() =>
-                  formik.setFieldTouched(`roomsData[${index}].building`)
-                } // Set touched on blur
+                disabled={isReadOnly || !isSearchRoom}
+                onBlur={!isCheckModal && formik.handleBlur}
                 name={`roomsData[${index}].building`}
               >
                 <option value="">{t("select_building")}</option>
@@ -119,7 +120,8 @@ const RoomsContainer = ({
                   </option>
                 ))}
               </select>
-              {formik.touched.roomsData?.[index]?.building &&
+              {!isCheckModal &&
+                formik.touched.roomsData?.[index]?.building &&
                 formik.errors.roomsData?.[index]?.building && (
                   <div className="text-danger">
                     <Trans i18nKey={formik.errors.roomsData[index].building} />
@@ -137,9 +139,7 @@ const RoomsContainer = ({
                 value={room.floor}
                 onChange={(e) => handleFloorChange(e.target.value, index)}
                 disabled={isReadOnly || !room.building}
-                onBlur={() =>
-                  formik.setFieldTouched(`roomsData[${index}].floor`)
-                } // Set touched on blur
+                onBlur={!isCheckModal && formik.handleBlur}
                 name={`roomsData[${index}].floor`}
               >
                 <option value="">{t("select_floor")}</option>
@@ -149,7 +149,8 @@ const RoomsContainer = ({
                   </option>
                 ))}
               </select>
-              {formik.touched.roomsData?.[index]?.floor &&
+              {!isCheckModal &&
+                formik.touched.roomsData?.[index]?.floor &&
                 formik.errors.roomsData?.[index]?.floor && (
                   <div className="text-danger">
                     <Trans i18nKey={formik.errors.roomsData[index].floor} />
@@ -170,9 +171,7 @@ const RoomsContainer = ({
                 value={room.roomId}
                 onChange={(e) => handleRoomNumberChange(e.target.value, index)}
                 disabled={isReadOnly || !room.floor || !room.roomType}
-                onBlur={() =>
-                  formik.setFieldTouched(`roomsData[${index}].roomId`)
-                } // Set touched on blur
+                onBlur={!isCheckModal && formik.handleBlur}
                 name={`roomsData[${index}].roomId`}
               >
                 <option value="">Select Room Number</option>
@@ -198,7 +197,8 @@ const RoomsContainer = ({
                         </option>
                       ))}
               </select>
-              {formik.touched.roomsData?.[index]?.roomId &&
+              {!isCheckModal &&
+                formik.touched.roomsData?.[index]?.roomId &&
                 formik.errors.roomsData?.[index]?.roomId && (
                   <div className="text-danger">
                     <Trans i18nKey={formik.errors.roomsData[index].roomId} />
