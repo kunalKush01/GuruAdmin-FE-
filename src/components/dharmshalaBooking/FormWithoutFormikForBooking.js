@@ -550,6 +550,17 @@ const idTypeOptions = [
     formik.setFieldValue('totalDue', totalDueNew);
   };
 
+  const getFieldLabel = (totalDue) => {
+    if (totalDue < 0) return "Refund:";
+    if (totalDue > 0) return "Collect Now:";
+    return "Status:";
+  };
+  
+  const getFieldValue = (totalDue) => {
+    if (totalDue === 0) return "Settled";
+    return Math.abs(totalDue).toString();
+  };
+
   const handleDeleteRoom = (index) => {
     Swal.fire({
       title: t("booking_room_delete"),
@@ -1090,15 +1101,15 @@ const idTypeOptions = [
                   </div>
                   <div className="payment-field">
                     <label htmlFor="total-due" className="payment-label">
-                      Total Due:
+                      {getFieldLabel(formik.values.totalDue)}
                     </label>
                     <input
                       type="text"
                       id="total-due"
-                      value={formik.values.totalDue}
+                      value={getFieldValue(formik.values.totalDue)}
                       readOnly
                       className="payment-input"
-                      placeholder="Total Due"
+                      placeholder="Amount"
                     />
                   </div>
                 </>

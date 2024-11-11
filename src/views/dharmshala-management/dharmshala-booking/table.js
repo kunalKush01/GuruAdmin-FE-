@@ -231,13 +231,7 @@ const DharmshalaBookingTable = ({
             onClick={() => handleDeleteClick(record)}
             alt="Delete"
           />
-          <img
-          src={checkInIcon}
-          width={17}
-          className="cursor-pointer"
-          onClick={() => handleCheckInClick(record)}
-          alt="Check In"
-        />
+          {record.originalData.status === 'checked-in' ? (
         <img
           src={checkOutIcon}
           width={17}
@@ -245,6 +239,17 @@ const DharmshalaBookingTable = ({
           onClick={() => handleCheckOutClick(record)}
           alt="Check Out"
         />
+      ) : (
+        record.originalData.status !== 'checked-out' && (
+          <img
+            src={checkInIcon}
+            width={17}
+            className="cursor-pointer"
+            onClick={() => handleCheckInClick(record)}
+            alt="Check In"
+          />
+        )
+      )}
         <img
             src={whatsappIcon}
             width={25}
