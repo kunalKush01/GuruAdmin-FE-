@@ -32,7 +32,6 @@ const RoomsContainer = ({
     event.preventDefault();
     action();
   };
-console.log(roomsData)
   return (
     <div className="rooms-container">
       <div className="rooms-header">

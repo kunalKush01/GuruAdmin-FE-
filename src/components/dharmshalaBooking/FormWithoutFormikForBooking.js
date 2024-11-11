@@ -448,7 +448,6 @@ export default function FormWithoutFormikForBooking({
       const suitableRoom = sortedRoomTypes.find(
         (room) => room.capacity <= remainingGuests
       );
-      console.log("suitableRoom", suitableRoom);
       if (suitableRoom) {
         roomsCombination.push({
           roomType: suitableRoom._id,
@@ -487,7 +486,6 @@ export default function FormWithoutFormikForBooking({
       formik.values.toDate
     );
   };
-  console.log(formik.values.roomsData);
   const handleAddRoom = () => {
     const updatedRoomsData = [
       ...formik.values.roomsData,

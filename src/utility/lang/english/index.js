@@ -938,5 +938,6 @@ export const englishContent = {
   govt_aid:"Govt Aid",
   pashu_breed:"Pashu Breed",
   pashu_category:"Pashu Category",
-  select_room_number:"Select room number"
+  select_room_number:"Select room number",
+  roomtype_added_successfully:"Room type added successfully"
 };
