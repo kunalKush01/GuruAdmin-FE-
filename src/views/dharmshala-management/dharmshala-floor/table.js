@@ -108,6 +108,7 @@ const DharmshalaFloorTable = ({
     {
       title: t("action"),
       key: "action",
+      dataIndex: "action",
       width: 50,
       fixed: "right", // Align the column to the right
     },
@@ -163,14 +164,20 @@ const DharmshalaFloorTable = ({
         </div>
       ),
       action: (
-        <>
+        <div className="d-flex">
           <img
             src={editIcon}
             width={35}
             className="cursor-pointer"
             onClick={() => {
               history.push(
-                `/floor/edit/${item?._id}/${item?.buildingId}/&name=${item?.name}&number=${item?.number}&description=${item?.description}`
+                `/floor/edit/${item?._id}/${
+                  item?.buildingId
+                }?name=${encodeURIComponent(
+                  item?.name
+                )}&number=${encodeURIComponent(
+                  item?.number
+                )}&description=${encodeURIComponent(item?.description)}`
               );
             }}
           />
@@ -218,7 +225,7 @@ const DharmshalaFloorTable = ({
               />
             )}
           </div>
-        </>
+        </div>
       ),
     }));
   }, [
