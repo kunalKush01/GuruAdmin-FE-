@@ -109,26 +109,36 @@ const AddDharmshalaBooking = () => {
   }, [bookingData, bookingDate, property]);
 
   const schema = Yup.object().shape({
-    // Date validations
-    fromDate: Yup.date().required("From Date is required").nullable(),
+    Mobile: Yup.string().required(t("expenses_mobile_required")),
+    SelectedUser: Yup.mixed().required(t("user_select_required")),
+    donarName: Yup.string()
+      .matches(
+        /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+        t("donation_donar_name_only_letters")
+      )
+      .trim(),
+      fromDate: Yup.date()
+      .required(t("Check-in date is required"))
+      .min(dayjs().startOf('day'), t("Check-in date cannot be in the past")),
+    
     toDate: Yup.date()
       .required("To Date is required")
       .min(Yup.ref("fromDate"), "To Date cannot be before From Date")
       .nullable(),
 
     // Members validations
-    // numMen: Yup.number()
-    //   .typeError("Please enter a valid number")
-    //   .min(0, "Must be 0 or more")
-    //   .required("Men is required"),
-    // numWomen: Yup.number()
-    //   .typeError("Please enter a valid number")
-    //   .min(0, "Must be 0 or more")
-    //   .required("Women is required"),
-    // numKids: Yup.number()
-    //   .typeError("Please enter a valid number")
-    //   .min(0, "Must be 0 or more")
-    //   .required("Kids is required"),
+    numMen: Yup.number()
+      .typeError("Please enter a valid number")
+      .min(0, "Must be 0 or more")
+      .required("Men is required"),
+    numWomen: Yup.number()
+      .typeError("Please enter a valid number")
+      .min(0, "Must be 0 or more")
+      .required("Women is required"),
+    numKids: Yup.number()
+      .typeError("Please enter a valid number")
+      .min(0, "Must be 0 or more")
+      .required("Kids is required"),
 
     // Guest details validations
     Mobile: Yup.string()
@@ -139,7 +149,7 @@ const AddDharmshalaBooking = () => {
     guestname: Yup.string()
       .max(30, "Guest name cannot exceed 30 characters")
       .required("Guest name is required"),
-    // donarName: Yup.string().max(30, "Donor name cannot exceed 30 characters"),
+    donarName: Yup.string().max(30, "Donor name cannot exceed 30 characters"),
 
     // Email validation
     // email: Yup.string()
@@ -156,22 +166,23 @@ const AddDharmshalaBooking = () => {
       .required("ID Number is required"),
 
     // Payment validations
-    // roomRent: Yup.number().typeError("Room Rent must be a number").nullable(),
-    // security: Yup.number().typeError("Security must be a number").nullable(),
-    // totalAmount: Yup.number()
-    //   .typeError("Total Amount must be a number")
-    //   .nullable(),
-    // totalPaid: Yup.number().typeError("Total Paid must be a number").nullable(),
+    roomRent: Yup.number().typeError("Room Rent must be a number").nullable(),
+    security: Yup.number().typeError("Security must be a number").nullable(),
+    totalAmount: Yup.number()
+      .typeError("Total Amount must be a number")
+      .nullable(),
+    totalPaid: Yup.number().typeError("Total Paid must be a number").nullable(),
     roomsData: Yup.array()
       .of(
         Yup.object().shape({
-          roomType: Yup.string().required("Room Type is required"),
+          roomTypeId: Yup.string().required("Room Type is required"),
           building: Yup.string().required("Building is required"),
           floor: Yup.string().required("Floor is required"),
           roomId: Yup.string().required("Room Number is required"),
         })
       )
-      .required("Rooms data is required"),
+      .required("Rooms data is required")
+      .min(1, "At least one room must be selected"),
   });
 
   if (isLoading) {
