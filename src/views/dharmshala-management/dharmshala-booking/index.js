@@ -162,16 +162,16 @@ const DharmshalaBookings = () => {
   ]);
 
   const statusOptions = [
+    { key: "all", label: t("All") },
+    { key: "checked-in", label: t("Checked_in") },
+    { key: "checked-out", label: t("Checked_out") },
     { key: "requested", label: t("requested") },
     { key: "accepted", label: t("accepted") },
     { key: "reserved", label: t("reserved") },
     { key: "confirmed", label: t("confirmed") },
-    { key: "checked-in", label: t("Checked_in") },
-    { key: "checked-out", label: t("Checked_out") },
     { key: "completed", label: t("completed") },
     { key: "cancelled", label: t("cancelled") },
     { key: "maintenance", label: t("maintenance") },
-    { key: "all", label: t("All") },
   ];
 
   return (
