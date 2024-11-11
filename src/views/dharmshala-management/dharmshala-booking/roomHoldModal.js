@@ -7,11 +7,13 @@ import { toast } from 'react-toastify';
 import '../../../../src/views/dharmshala-management/dharmshala_css/addbooking.scss';
 import { DatePicker } from "antd";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
+import { useQueryClient } from '@tanstack/react-query';
 
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 
 const RoomHoldModal = ({ isOpen, toggle }) => {
   const { t } = useTranslation();
+  const queryClient = useQueryClient()
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
   const [type, setType] = useState('');
@@ -202,6 +204,7 @@ const RoomHoldModal = ({ isOpen, toggle }) => {
 
     try {
       const response = await createRoomHold(payload);
+      queryClient.invalidateQueries(["dharmshalaRoomholdList"]);
       toast.success('Room hold created successfully');
       resetForm();
       toggle(); 

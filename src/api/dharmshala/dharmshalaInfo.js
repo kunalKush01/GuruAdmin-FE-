@@ -372,3 +372,10 @@ export const getDharmshalaBookingList = () =>
       callDharmshalaApi({
         requestFunction: (axios) => axios.delete(`dharmshalas/${dharmshalaId}`),
       });
+
+      export const getAllRoomHoldList = () =>
+        callDharmshalaApi({
+          requestFunction: (axios) => axios.get(`bookings/ListRoomhold`),
+          showToastOnSuccess: false,
+          showToastOnError: false,
+        });  
