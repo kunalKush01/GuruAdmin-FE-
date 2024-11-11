@@ -262,7 +262,7 @@ const DharmshalaBookingTable = ({
             alt="WhatsApp"
           />
           </Tooltip>
-          <Tooltip title="Whatsapp receipt">
+          <Tooltip title="Download receipt">
           <img
             src={downloadIcon}
             width={20}
