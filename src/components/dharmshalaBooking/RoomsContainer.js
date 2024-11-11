@@ -2,6 +2,7 @@ import React from 'react';
 import guestIcon from "../../assets/images/icons/subadmin.svg";
 import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
 import { t } from 'i18next';
+import { Trans } from 'react-i18next';
 
 const RoomsContainer = ({
   isSearchRoom,
