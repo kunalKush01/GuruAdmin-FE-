@@ -217,13 +217,15 @@ const DharmshalaBookingTable = ({
       width: 250,
       render: (_, record) => (
         <Space size="middle">
-          <img
-            src={editIcon}
-            width={30}
-            className="cursor-pointer"
-            onClick={() => handleEditClick(record)}
-            alt="Edit"
-          />
+         {record.originalData.status !== 'checked-out' && (
+            <img
+              src={editIcon}
+              width={30}
+              className="cursor-pointer"
+              onClick={() => handleEditClick(record)}
+              alt="Edit"
+            />
+          )}
           <img
             src={deleteIcon}
             width={25}

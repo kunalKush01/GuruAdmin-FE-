@@ -543,7 +543,16 @@ const idTypeOptions = [
 
     const totalAmount = totalRoomRent + formik.values.security;
 
-    const totalDueNew = totalRoomRent - formik.values.totalPaid + formik.values.security;
+    // const totalDueNew = totalRoomRent - formik.values.totalPaid + formik.values.security;
+    let totalDueNew = totalAmount - formik.values.totalPaid;
+
+    if (formik.values.totalPaid > totalAmount){
+      totalDueNew -= formik.values.security
+    }
+
+    if (totalDueNew === 0) {
+      totalDueNew -= formik.values.security;
+  }
 
     formik.setFieldValue('roomRent', totalRoomRent);
     formik.setFieldValue('totalAmount', totalAmount);
