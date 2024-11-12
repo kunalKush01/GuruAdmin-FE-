@@ -939,6 +939,6 @@ export const englishContent = {
   pashu_breed:"Pashu Breed",
   pashu_category:"Pashu Category",
   select_room_number:"Select room number",
-  add_room_hold:"Add Room Hold",
-  history:"History"
+  cannot_delete_floor:"Can not delete floor",
+  cannot_delete_floor_non_zero_rooms:"Can not delete floors with rooms"
 };

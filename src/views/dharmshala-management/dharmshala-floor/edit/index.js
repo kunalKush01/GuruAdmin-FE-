@@ -4,7 +4,7 @@ import { Trans } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams ,useLocation} from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import * as Yup from "yup";
 import moment from "moment";
@@ -34,7 +34,9 @@ const EditFloor = () => {
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
-  const searchParams = new URLSearchParams(history.location.search);
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+
   const name = searchParams.get("name");
   const number = searchParams.get("number");
   const description = searchParams.get("description");
@@ -75,7 +77,6 @@ const EditFloor = () => {
   }, [floorDetails]);
 
   const URLParams = useParams("");
-
   return (
     <div className="DharmshalaComponentAddWrapper">
       <div className="d-flex justify-content-between align-items-center ">
