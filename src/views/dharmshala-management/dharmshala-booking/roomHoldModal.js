@@ -293,6 +293,7 @@ const RoomHoldModal = ({ isOpen, toggle }) => {
             handleAddRoom={handleAddRoom}      
             handleClearRooms={handleClearRooms} 
             hideAmountField={true}
+            isCheckModal={true}
           />
           <FormGroup className="mt-3">
             <Label for="remark" className="label-custom">
