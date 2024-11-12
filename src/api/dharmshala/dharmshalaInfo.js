@@ -64,6 +64,8 @@ export const getRoomTypeList = () =>
 export const deleteRoomTypeInfo = (payload) =>
   callDharmshalaApi({
     requestFunction: (axios) => axios.delete(`roomTypes/${payload}`),
+    showToastOnSuccess: false,
+    showToastOnError: false,
   });
 export const updateRoomTypeInfo = (payload) =>
   callDharmshalaApi({

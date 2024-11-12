@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 
-import { getRoomTypeList } from "../../../api/dharmshala/dharmshalaInfo";
+import { deleteRoomTypeInfo, getRoomTypeList } from "../../../api/dharmshala/dharmshalaInfo";
 import NoContent from "../../../components/partials/noContent";
 import { Helmet } from "react-helmet";
 import { Table } from "antd";
@@ -18,6 +18,7 @@ import "../../../assets/scss/dharmshala.scss";
 
 import deleteIcon from "../../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../../assets/images/icons/category/editIcon.svg";
+import Swal from "sweetalert2";
 
 const RoomTypesInfo = () => {
   const history = useHistory();
@@ -28,21 +29,33 @@ const RoomTypesInfo = () => {
     page: 1,
     limit: 10,
   });
-
+  
   const searchParams = new URLSearchParams(history.location.search);
+  const handleDeleteRoomType = async (payload) => {
+    return deleteRoomTypeInfo(payload);
+  };
+  
+  const deleteMutation = useMutation({
+    mutationFn: handleDeleteRoomType,
+    onSuccess: (data) => {
+      if (!data.error) {
+       return queryClient.invalidateQueries("RoomTypeList");
+      }
+    },
+  });
   const currentPage = searchParams.get("page");
   const currentStatus = searchParams.get("status");
   const currentFilter = searchParams.get("filter");
   const routPagination = pagination.page;
   const routFilter = dropDownName;
-
+  
   useEffect(() => {
     if (currentPage || currentFilter || currentStatus) {
       setdropDownName(currentFilter);
       setPagination({ ...pagination, page: parseInt(currentPage) });
     }
   }, []);
-
+  
   const periodDropDown = () => {
     switch (dropDownName) {
       case "dashboard_monthly":
@@ -88,7 +101,6 @@ const RoomTypesInfo = () => {
   const queryClient = useQueryClient();
 
   const isMobileView = window.innerWidth <= 784;
-
   const filteredroomTypeListData = useMemo(() => {
     const currentDate = moment();
     let filteredData = roomTypeListData;
@@ -116,7 +128,7 @@ const RoomTypesInfo = () => {
             className="cursor-pointer"
             onClick={() => {
               history.push(
-                `/roomtype/info/${item?._id}&name=${item?.name}&description=${item?.description}&capacity=${item?.capacity}&price=${item?.price}`
+                `/roomtype/info/${item?._id}?name=${item?.name}&description=${item?.description}&capacity=${item?.capacity}&price=${item?.price}&isEdit=${true}`
               );
             }}
           />
