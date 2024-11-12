@@ -17,17 +17,19 @@ export const PaymentModal = ({ isOpen, onClose, onSave, totalDue, isEditing, sec
         form.setFieldsValue({ amount: totalDue });
       }
       setPaymentMode('cash');
-      setIsSaveDisabled(!totalDue && !isEditing); 
+      setIsSaveDisabled(!totalDue && !isEditing && !form.getFieldValue('checkIn')); 
 
       const today = new Date().toLocaleDateString('en-CA');
       setShowCheckIn(fromDate === today);
     }
   }, [isOpen, form, totalDue, isEditing, security, fromDate]);
 
-  const handleFormChange = (changedValues) => {
-    const amount = changedValues.amount;
-    setIsSaveDisabled(!amount && !isEditing); 
+  const handleFormChange = (changedValues, allValues) => {
+    const { amount, checkIn } = allValues;
+    // Enable the Save button if the amount is filled or "Check-In" is selected
+    setIsSaveDisabled(!amount && !checkIn && !isEditing);
   };
+  
 
   const handleSave = () => {
     form.validateFields().then((values) => {
