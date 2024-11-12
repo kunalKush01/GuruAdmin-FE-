@@ -21,7 +21,7 @@ import EditDonation from "./editDonation";
 import { toast } from "react-toastify";
 import "../../assets/scss/common.scss";
 
-export default function DonationListTable(
+export default function DonationList(
   { data, topdf, allPermissions, subPermission, financeReport },
   args
 ) {
@@ -198,10 +198,7 @@ export default function DonationListTable(
                 width={25}
                 className="cursor-pointer me-2"
                 onClick={() => {
-                  if (!item.receiptLink) {
-                    setIsLoading(item?._id);
-                    downloadReceipt.mutate(item?._id);
-                  } else {
+                  if (item.receiptLink) {
                     window.open(
                       `https://docs.google.com/gview?url=${item.receiptLink}`,
                       "_blank"

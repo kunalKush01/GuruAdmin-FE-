@@ -85,7 +85,7 @@ const ReportTable = ({ data }) => {
       dataIndex: "action",
       key: "action",
       width: 50,
-      fixed:"right"
+      fixed: "right",
     },
   ];
 
@@ -149,7 +149,7 @@ const ReportTable = ({ data }) => {
       <Table
         columns={columns}
         dataSource={reportData}
-        className="donationListTable"
+        className="commonListTable"
         scroll={{
           x: 1500,
           y: 400,

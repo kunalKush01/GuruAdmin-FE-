@@ -181,7 +181,7 @@ const DharmshalaRoomTable = ({
         </div>
       ) : (
         <Table
-          className="donationListTable"
+          className="commonListTable"
           columns={antdColumn}
           scroll={{
             x: 1500,
