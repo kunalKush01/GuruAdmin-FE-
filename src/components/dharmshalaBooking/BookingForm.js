@@ -92,6 +92,7 @@ export default function BookingForm({
           paymentDetails,
           security: bookingData.security,
           imagePath: bookingData.imagePath,
+          status: paymentDetails.status,
         };
 
         let bookingResponse;
@@ -143,6 +144,7 @@ export default function BookingForm({
               totalDue={!isEditing ? formik.values.totalAmount : formik.values.totalDue}
               isEditing={isEditing}
               security={formik.values.security}
+              fromDate={formik.values.fromDate ? formik.values.fromDate.format("YYYY-MM-DD") : undefined}
             />
           </>
         )}
