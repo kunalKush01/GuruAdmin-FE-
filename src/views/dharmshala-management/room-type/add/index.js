@@ -26,7 +26,9 @@ const AddRoomType = () => {
     description: Yup.mixed().required(
       "dharmshala_roomtype_description_required"
     ),
-    capacity: Yup.mixed().required("dharmshala_roomtype_capacity_required"),
+    capacity: Yup.string()
+      .matches(/^\d+$/, "Only numeric values are allowed")
+      .required("dharmshala_roomtype_capacity_required"),
     price: Yup.mixed().required("dharmshala_roomtype_price_required"),
   });
 

@@ -40,45 +40,6 @@ const DharmshalaFloorTable = ({
     },
   });
 
-  const columns = [
-    {
-      name: t("Name"),
-      selector: (row) => row.name,
-      width: "200px",
-    },
-    {
-      name: t("Number"),
-      selector: (row) => row.number,
-      width: "300px",
-    },
-    {
-      name: t("description"),
-      selector: (row) => row.description,
-      width: "200px",
-    },
-    {
-      name: t("Room Count"),
-      selector: (row) => row.roomCount,
-      width: "200px",
-    },
-    {
-      name: t(""),
-      width: "800px",
-    },
-    {
-      name: t(""),
-      selector: (row) => row.edit,
-      width: "80px",
-      right: true,
-    },
-    {
-      name: t(""),
-      selector: (row) => row.delete,
-      width: "80px",
-      right: true,
-    },
-  ];
-
   const antdColumns = [
     {
       title: t("Name"), // Table column title

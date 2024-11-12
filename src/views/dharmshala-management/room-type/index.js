@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
@@ -10,42 +10,52 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 
-import { getRoomTypeList } from "../../../api/dharmshala/dharmshalaInfo";
-import exportIcon from "../../../assets/images/icons/exportIcon.svg";
-import { ChangePeriodDropDown } from "../../../components/partials/changePeriodDropDown";
+import { deleteRoomTypeInfo, getRoomTypeList } from "../../../api/dharmshala/dharmshalaInfo";
 import NoContent from "../../../components/partials/noContent";
-import { handleExport } from "../../../utility/utils/exportTabele";
-import RoomTypeInfoTable from "./table";
-import { ChangeCategoryType } from "../../../components/partials/categoryDropdown";
 import { Helmet } from "react-helmet";
 import { Table } from "antd";
 import "../../../assets/scss/dharmshala.scss";
 
+import deleteIcon from "../../../assets/images/icons/category/deleteIcon.svg";
+import editIcon from "../../../assets/images/icons/category/editIcon.svg";
+import Swal from "sweetalert2";
+
 const RoomTypesInfo = () => {
   const history = useHistory();
   const { t } = useTranslation();
-  const importFileRef = useRef();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 10,
   });
-
+  
   const searchParams = new URLSearchParams(history.location.search);
+  const handleDeleteRoomType = async (payload) => {
+    return deleteRoomTypeInfo(payload);
+  };
+  
+  const deleteMutation = useMutation({
+    mutationFn: handleDeleteRoomType,
+    onSuccess: (data) => {
+      if (!data.error) {
+       return queryClient.invalidateQueries("RoomTypeList");
+      }
+    },
+  });
   const currentPage = searchParams.get("page");
   const currentStatus = searchParams.get("status");
   const currentFilter = searchParams.get("filter");
   const routPagination = pagination.page;
   const routFilter = dropDownName;
-
+  
   useEffect(() => {
     if (currentPage || currentFilter || currentStatus) {
       setdropDownName(currentFilter);
       setPagination({ ...pagination, page: parseInt(currentPage) });
     }
   }, []);
-
+  
   const periodDropDown = () => {
     switch (dropDownName) {
       case "dashboard_monthly":
@@ -91,7 +101,6 @@ const RoomTypesInfo = () => {
   const queryClient = useQueryClient();
 
   const isMobileView = window.innerWidth <= 784;
-
   const filteredroomTypeListData = useMemo(() => {
     const currentDate = moment();
     let filteredData = roomTypeListData;
@@ -104,33 +113,84 @@ const RoomTypesInfo = () => {
     }
     return filteredData;
   }, [roomTypeListData, searchBarValue]);
+  const RoomTypesInfo = useMemo(() => {
+    return filteredroomTypeListData?.map((item, idx) => ({
+      id: idx + 1,
+      name: item?.name,
+      description: item?.description,
+      capacity: item?.capacity,
+      price: item?.price,
+      action: (
+        <div className="d-flex">
+          <img
+            src={editIcon}
+            width={35}
+            className="cursor-pointer"
+            onClick={() => {
+              history.push(
+                `/roomtype/info/${item?._id}?name=${item?.name}&description=${item?.description}&capacity=${item?.capacity}&price=${item?.price}&isEdit=${true}`
+              );
+            }}
+          />
+          <img
+            src={deleteIcon}
+            width={35}
+            className="cursor-pointer"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              Swal.fire({
+                title: t("dharmshala_roomtype_delete"),
+                text: t("dharmshala_roomtype_delete_sure"),
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: t("confirm"),
+                cancelButtonText: t("cancel"),
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  deleteMutation.mutate(item._id);
+                }
+              });
+            }}
+          />
+        </div>
+      ),
+    }));
+  }, [filteredroomTypeListData]);
   const columns = [
     {
       title: t("name"),
       dataIndex: "name",
       key: "name",
-      width: isMobileView?30:100,
+      width: isMobileView ? 30 : 100,
       fixed: "left",
     },
     {
       title: t("description"),
       dataIndex: "description",
       key: "description",
-      width:120,
+      width: 120,
     },
     {
       title: t("capacity"),
       dataIndex: "capacity",
       key: "capacity",
-      width:isMobileView?40: 80,
+      width: isMobileView ? 40 : 80,
     },
     {
       title: t("price"),
       dataIndex: "price",
       key: "price",
-      width: isMobileView?30:60,
+      width: isMobileView ? 30 : 60,
       // fixed: "right",
       render: (price) => `₹${price}`, // Format price with currency symbol
+    },
+    {
+      title: t("Action"),
+      dataIndex: "action",
+      key: "action",
+      fixed: "right",
+      width:isMobileView ? 30 : 60
     },
   ];
 
@@ -141,7 +201,11 @@ const RoomTypesInfo = () => {
         <title>Apna Dharm Admin | Dharmshala Room Types</title>
       </Helmet>
       <div>
-        <div className={`d-sm-flex mb-1 justify-content-between align-items-center ${isMobileView && "d-flex flex-row"}`}>
+        <div
+          className={`d-sm-flex mb-1 justify-content-between align-items-center ${
+            isMobileView && "d-flex flex-row"
+          }`}
+        >
           <Trans i18nKey="dharmshala_roomtypes" />
           <div className="d-flex mt-1 mt-sm-0 justify-content-between">
             <Button
@@ -195,8 +259,8 @@ const RoomTypesInfo = () => {
                   sticky={{
                     offsetHeader: 64,
                   }}
-                  dataSource={roomTypeListData}
-                  rowKey="_id" // Ensure unique row key
+                  dataSource={RoomTypesInfo}
+                  rowKey="id" // Ensure unique row key
                 />
                 {/* <RoomTypeInfoTable
                   data={filteredroomTypeListData}

@@ -29,6 +29,7 @@ const AddDharmshalaRoom = () => {
     floorId: Yup.mixed().required("dharmshala_room_number_required"),
     buildingId: Yup.mixed().required("dharmshala_room_number_required"),
     dharmshalaId: Yup.mixed().required("dharmshala_room_number_required"),
+    roomType: Yup.mixed().required("room_type_required"),
   });
 
   const initialValues = {
