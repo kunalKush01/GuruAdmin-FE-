@@ -150,12 +150,6 @@ const DharmshalaBookingTable = ({
     return endDate.isAfter(today) || endDate.isSame(today);
   };
   
-
-  const isBookingActive = (record) => {
-    const endDate = dayjs(record.originalData.endDate, "DD-MM-YYYY").startOf('day');
-    const today = dayjs().startOf('day');
-    return endDate.isAfter(today) || endDate.isSame(today);
-  };
   
   const isMobileView = window.innerWidth < 768
 
