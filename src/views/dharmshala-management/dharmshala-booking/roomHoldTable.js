@@ -69,7 +69,7 @@ function RoomHoldTable() {
   return (
     <div>
       <Table
-        className="donationListTable"
+        className="commonListTable"
         columns={columns}
         dataSource={dharmshalaRoomholdListData}
         scroll={{

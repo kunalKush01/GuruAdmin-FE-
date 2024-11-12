@@ -81,7 +81,7 @@ export function CategoryListTable({
       title: t("Actions"),
       dataIndex: "action",
       width: 120,
-      fixed:"right"
+      fixed: "right",
     },
   ];
 
@@ -179,7 +179,7 @@ export function CategoryListTable({
   return (
     <div className="categorytablewrapper">
       <Table
-        className="donationListTable"
+        className="commonListTable"
         columns={columns}
         dataSource={categoriesList}
         scroll={{

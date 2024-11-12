@@ -2818,7 +2818,7 @@
 }
 
 .commitmentListTable,
-.donationListTable,
+.commonListTable,
 .masterDataListAntdTable,
 .masterListAntdTable,
 .masterlistTableContainer,
@@ -2911,7 +2911,7 @@
     }
 }
 
-.donationListTable .ant-table-body,
+.commonListTable .ant-table-body,
 .masterDataListAntdTable .ant-table-body,
 .customFieldTable .ant-table-body,
 .masterTable .ant-table-body {
@@ -3202,17 +3202,22 @@
 /* Override for screens 768px or smaller */
 @media (max-width: 768px) {
     .responsive-row {
-        justify-content: flex-start; /* Removes centering on mobile */
+        justify-content: flex-start;
+        /* Removes centering on mobile */
     }
 
     .responsive-col {
-        display: block; /* Full-width on mobile */
+        display: block;
+        /* Full-width on mobile */
         justify-content: flex-start;
     }
-    .noticeContent{
+
+    .noticeContent {
         width: 100% !important;
     }
-    .donationFilterBtn,#Popover1{
+
+    .donationFilterBtn,
+    #Popover1 {
         margin-right: 0 !important;
     }
 }
@@ -3364,6 +3369,7 @@
 
 .uploadBtn {
     height: 38px !important;
+
     span {
         color: $font-color;
     }
@@ -3987,20 +3993,25 @@
         margin-bottom: 5px;
         /* Spacing between buttons */
         height: 35px;
-        
+
     }
+
     #donation_view_btn #Popover1 {
         margin-right: 0px !important;
     }
+
     #donation_view_btn .secondaryAction-btn {
         margin-right: 14px !important;
     }
+
     #donation_view_btn .pledgeMonthBtn {
         width: 118px !important;
     }
+
     #donation_view_btn .pledgeImportBtn {
         padding: 0 12px !important;
     }
+
     #dharmshala_booking_buttons .dropdownwrapper,
     #donation_view_btn .dropdownwrapper {
         width: 49%;
