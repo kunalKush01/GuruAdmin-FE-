@@ -82,7 +82,7 @@ const SuspenseHistoryTable = () => {
       ),
     },
     {
-      title: t('action'),
+      title: t("action"),
       key: "actions",
       fixed: "right",
       width: 120,
@@ -106,7 +106,7 @@ const SuspenseHistoryTable = () => {
   return (
     <>
       <Table
-        className="donationListTable"
+        className="commonListTable"
         columns={columns}
         dataSource={tableData}
         rowKey={(record) => record._id}

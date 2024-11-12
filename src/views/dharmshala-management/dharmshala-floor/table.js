@@ -231,7 +231,7 @@ const DharmshalaFloorTable = ({
         </div>
       ) : (
         <Table
-          className="donationListTable"
+          className="commonListTable"
           columns={antdColumns}
           scroll={{
             x: 1500,

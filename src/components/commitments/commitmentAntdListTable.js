@@ -16,6 +16,8 @@ import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import confirmationIcon from "../../assets/images/icons/news/conformationIcon.svg";
+import eyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
+
 import receiptIcon from "../../assets/images/icons/receiptIcon.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import "../../assets/scss/common.scss";
@@ -152,7 +154,13 @@ export default function CommitmentAntdListTable(
       key: "donarName",
       width: 150,
     },
-
+    {
+      title: t("dashboard_Recent_DonorCommitId"),
+      render: (text) => text,
+      key: "commitmentId",
+      dataIndex: "commitmentId",
+      width: 210,
+    },
     {
       title: t("category"),
       render: (text) => text,
@@ -195,13 +203,7 @@ export default function CommitmentAntdListTable(
       key: "amountDue",
       dataIndex: "amountDue",
     },
-    {
-      title: t("dashboard_Recent_DonorCommitId"),
-      render: (text) => text,
-      key: "commitmentId",
-      dataIndex: "commitmentId",
-      width: 170,
-    },
+
     // {
     //   title: t("dashboard_Recent_DonorReceipt"),
     //   render: (text) => text,
@@ -364,17 +366,14 @@ export default function CommitmentAntdListTable(
         actions: (
           <div className="actions-column">
             <img
-              src={receiptIcon}
+              src={eyeIcon}
               width={25}
               className={`cursor-pointer ${
                 item?.amount != item?.amount - item?.paidAmount
                   ? "cursor-pointer"
                   : " opacity-50 cursor-not-allowed"
               }`}
-              onClick={() => {
-                item?.amount != item?.amount - item?.paidAmount &&
-                  receiptMutation.mutate(item?._id);
-              }}
+              onClick={() => history.push(`/donations/paid/${item._id}`)}
             />
             {(allPermissions?.name === "all" ||
               subPermission?.includes(EDIT) ||

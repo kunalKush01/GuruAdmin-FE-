@@ -145,13 +145,13 @@ function SuspenseListTable({ success }) {
       key: "transactionDate",
       render: (text) => (text ? moment(text).format("DD-MMM-YYYY HH:mm") : "-"),
       width: 100,
-      fixed:"left",
+      fixed: "left",
     },
     {
       title: t("bankNarration"),
       dataIndex: "bankNarration",
       key: "bankNarration",
-      render: (text) =>( <div className="">{text}</div>),
+      render: (text) => <div className="">{text}</div>,
       width: 400,
     },
     {
@@ -200,7 +200,7 @@ function SuspenseListTable({ success }) {
     },
   ];
   const modeOfPaymentOptions = [
-    { value: "", label: t('select_option')},
+    { value: "", label: t("select_option") },
     { value: "Cash", label: "Cash" },
     { value: "UPI", label: "UPI" },
     { value: "online", label: "Online" },
@@ -215,7 +215,7 @@ function SuspenseListTable({ success }) {
   return (
     <>
       <Table
-        className="donationListTable"
+        className="commonListTable"
         columns={columns}
         dataSource={tableData}
         rowKey={(record) => record._id}

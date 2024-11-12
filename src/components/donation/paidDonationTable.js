@@ -11,7 +11,7 @@ import "../../assets/scss/common.scss";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomDataTable from "../partials/CustomDataTable";
 
-export default function DonationListTable({ data, topdf }, args) {
+export default function DonationList({ data, topdf }, args) {
   const { t } = useTranslation();
   const history = useHistory();
   const ref = useRef();
@@ -83,6 +83,11 @@ export default function DonationListTable({ data, topdf }, args) {
       cellExport: (row) => row.createdBy,
     },
     {
+      name: t("paid_status"),
+      selector: (row) => row.paidStatus,
+      cellExport: (row) => row.paidStatus,
+    },
+    {
       name: t("dashboard_Recent_DonorReceipt"),
       selector: (row) => row.receipt,
     },
@@ -130,16 +135,26 @@ export default function DonationListTable({ data, topdf }, args) {
             : `${item.commitmentId}`
           : "_",
         createdBy: ConverFirstLatterToCapital(item?.createdBy?.name ?? "-"),
+        paidStatus: ConverFirstLatterToCapital(item?.paidStatus ?? "-"),
+
         receipt: (
           <img
             src={receiptIcon}
             width={25}
             className="cursor-pointer"
+            enabled={!!item?.receiptLink}
+            style={{
+              opacity: item?.receiptLink ? 1 : 0.4, // 70% opacity if link is disabled
+            }}
             onClick={() => {
-              setReceipt(item);
-              setTimeout(() => {
-                pdfRef.current.click();
-              }, 100);
+              if (item?.receiptLink) {
+                const newWindow = window.open(
+                  `https://docs.google.com/gview?url=${item.receiptLink}`
+                );
+                newWindow.onload = () => {
+                  newWindow.print(); // Automatically trigger print dialog
+                };
+              }
             }}
           />
         ),
