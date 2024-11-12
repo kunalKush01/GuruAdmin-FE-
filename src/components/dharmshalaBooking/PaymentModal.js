@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Button, Form, Input, Select } from 'antd';
+import { Modal, Button, Form, Input, Select, Checkbox } from 'antd';
 import "../../assets/scss/viewCommon.scss";
 
-export const PaymentModal = ({ isOpen, onClose, onSave, totalDue, isEditing, security }) => {
+export const PaymentModal = ({ isOpen, onClose, onSave, totalDue, isEditing, security, fromDate }) => {
   const [form] = Form.useForm();
   const [paymentMode, setPaymentMode] = useState('cash');
   const [isSaveDisabled, setIsSaveDisabled] = useState(true); 
-
+  const [showCheckIn, setShowCheckIn] = useState(false);
   useEffect(() => {
     if (isOpen) {
       form.resetFields();
-      form.setFieldsValue({ mode: 'cash' });
+      form.setFieldsValue({ mode: 'cash', checkIn: false });
       if (isEditing && Math.abs(totalDue) === security) {
         form.setFieldsValue({ amount: '' });
       } else {
@@ -18,8 +18,11 @@ export const PaymentModal = ({ isOpen, onClose, onSave, totalDue, isEditing, sec
       }
       setPaymentMode('cash');
       setIsSaveDisabled(!totalDue && !isEditing); 
+
+      const today = new Date().toLocaleDateString('en-CA');
+      setShowCheckIn(fromDate === today);
     }
-  }, [isOpen, form, totalDue, isEditing, security]);
+  }, [isOpen, form, totalDue, isEditing, security, fromDate]);
 
   const handleFormChange = (changedValues) => {
     const amount = changedValues.amount;
@@ -28,7 +31,11 @@ export const PaymentModal = ({ isOpen, onClose, onSave, totalDue, isEditing, sec
 
   const handleSave = () => {
     form.validateFields().then((values) => {
-      onSave(values);
+      const formData = {
+        ...values,
+        status: values.checkIn ? 'checked-in' : ''
+      };
+      onSave(formData);
       onClose();
     });
   };
@@ -42,7 +49,7 @@ export const PaymentModal = ({ isOpen, onClose, onSave, totalDue, isEditing, sec
 
   return (
     <Modal
-      title="Collect Payment"
+      title="Collect/Refund Payment"
       visible={isOpen}
       onCancel={onClose}
       footer={[
@@ -98,6 +105,15 @@ export const PaymentModal = ({ isOpen, onClose, onSave, totalDue, isEditing, sec
         <Form.Item name="remark" label="Remark">
           <Input.TextArea placeholder="Enter remark" />
         </Form.Item>
+        {showCheckIn && (
+          <Form.Item
+            name="checkIn"
+            valuePropName="checked"
+            className="mb-0"
+          >
+            <Checkbox>Check-In</Checkbox>
+          </Form.Item>
+        )}
       </Form>
     </Modal>
   );
