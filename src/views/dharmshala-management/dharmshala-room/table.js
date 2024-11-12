@@ -42,63 +42,32 @@ const DharmshalaRoomTable = ({
       }
     },
   });
-  const columns = [
-    {
-      name: t("room_number"),
-      selector: (row) => row.roomNumber,
-      width: "200px",
-    },
-    {
-      name: t("directBookingAvailable"),
-      selector: (row) => (row.directBookingAvailable ? "Yes" : "No"),
-      width: "250px",
-    },
-    {
-      name: t("room_type"),
-      selector: (row) => row.roomTypeName,
-      width: "250px",
-    },
-    {
-      name: t(""),
-      width: "985px",
-    },
-    {
-      name: t(""),
-      selector: (row) => row.edit,
-      width: "80px",
-    },
-    {
-      name: t(""),
-      selector: (row) => row.delete,
-      width: "80px",
-    },
-  ];
   const antdColumn = [
     {
       title: t("room_number"), // Table column title
       dataIndex: "roomNumber", // Field in the data for this column
       key: "roomNumber", // Unique key for this column
-      width: 100,
+      width: 120,
       fixed: "left",
     },
     {
       title: t("directBookingAvailable"),
       dataIndex: "directBookingAvailable",
       key: "directBookingAvailable",
-      width: 100,
+      width: 150,
       render: (available) => (available ? "Yes" : "No"), // Conditional rendering for Yes/No
     },
     {
       title: t("room_type"),
       dataIndex: "roomTypeName",
       key: "roomTypeName",
-      width: 100,
+      width: 150,
     },
     {
       title: t("action"),
       dataIndex: "action",
       key: "action",
-      width: 100,
+      width: 50,
       fixed: "right",
     },
   ];
