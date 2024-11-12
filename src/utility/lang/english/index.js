@@ -944,5 +944,9 @@ export const englishContent = {
   cannot_delete_floor:"Can not delete floor",
   cannot_delete_floor_non_zero_rooms:"Can not delete floors with rooms",
   roomtype_added_successfully:"Room type added successfully",
-  roomtype_edit_successfully:"Room type updated successfully"
+  roomtype_edit_successfully:"Room type updated successfully",
+  create_booking:"Create booking",
+  update_booking:"Update booking",
+  select_building:"Select Building",
+  add_room_hold:"Add room hold"
 };
