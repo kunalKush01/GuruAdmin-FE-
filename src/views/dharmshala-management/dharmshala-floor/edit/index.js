@@ -77,7 +77,6 @@ const EditFloor = () => {
   }, [floorDetails]);
 
   const URLParams = useParams("");
-console.log(name)
   return (
     <div className="DharmshalaComponentAddWrapper">
       <div className="d-flex justify-content-between align-items-center ">
