@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Tag } from "antd";
+import { Tag, Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -143,6 +143,15 @@ const DharmshalaBookingTable = ({
     setMode("check-out");
     setCheckInVisible(true);
   };
+
+  const isBookingActive = (record) => {
+    const endDate = dayjs(record.originalData.endDate, "DD-MM-YYYY").startOf(
+      "day"
+    );
+    const today = dayjs().startOf("day");
+    return endDate.isAfter(today) || endDate.isSame(today);
+  };
+
   const isMobileView = window.innerWidth < 768;
 
   const columns = [

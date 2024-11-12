@@ -319,10 +319,12 @@ const idTypeOptions = [
       const response = await getDharmshalaFloorList(buildingId);
       setFloors((prevFloors) => ({
         ...prevFloors,
-        [buildingId]:response.results? response.results.map(floor => ({
-          _id: floor._id,
-          name: floor.name
-        })):[]
+        [buildingId]: response.results
+          ? response.results.map((floor) => ({
+              _id: floor._id,
+              name: floor.name,
+            }))
+          : [],
       }));
     } catch (error) {
       console.error("Error fetching floors:", error);
@@ -364,9 +366,9 @@ const idTypeOptions = [
 
 
   const isSearchEnabled = () => {
-    const men = parseInt(formik.values.numMen) || 0;
-    const women = parseInt(formik.values.numWomen) || 0;
-    const kids = parseInt(formik.values.numKids) || 0;
+    const men = parseInt(formik.values.numMen, 10) || 0;
+    const women = parseInt(formik.values.numWomen, 10) || 0;
+    const kids = parseInt(formik.values.numKids, 10) || 0;
     const totalGuests = men + women + kids;
   
     return (
@@ -391,13 +393,14 @@ const idTypeOptions = [
   const handleToDateChange = (date, dateString) => {
     formik.setFieldValue('toDate', date);
   };
-
-  const handleSearch = () => {
+  const [isSearchRoom, setIsSearchRoom] = useState(false);
+  const handleSearch = (e) => {
+    e.preventDefault();
     if (!isSearchEnabled()) return;
-    
-    const men = parseInt(formik.values.numMen) || 0;
-    const women = parseInt(formik.values.numWomen) || 0;
-    const kids = parseInt(formik.values.numKids) || 0;
+    setIsSearchRoom(true);
+    const men = parseInt(formik.values.numMen, 10) || 0;
+    const women = parseInt(formik.values.numWomen, 10) || 0;
+    const kids = parseInt(formik.values.numKids, 10) || 0;
     const totalGuests = men + women + kids;
   
     const sortedRoomTypes = [...roomTypes].sort((a, b) => b.capacity - a.capacity);
@@ -406,8 +409,9 @@ const idTypeOptions = [
     const roomsCombination = [];
   
     while (remainingGuests > 0) {
-      const suitableRoom = sortedRoomTypes.find(room => room.capacity <= remainingGuests);
-      
+      const suitableRoom = sortedRoomTypes.find(
+        (room) => room.capacity <= remainingGuests
+      );
       if (suitableRoom) {
         roomsCombination.push({
           roomType: suitableRoom._id,
@@ -423,6 +427,7 @@ const idTypeOptions = [
         remainingGuests -= suitableRoom.capacity;
       } else {
         const smallestRoom = sortedRoomTypes[sortedRoomTypes.length - 1];
+
         roomsCombination.push({
           roomType: smallestRoom._id,
           roomTypeName: smallestRoom.name,
@@ -441,7 +446,6 @@ const idTypeOptions = [
     formik.setFieldValue('roomsData', roomsCombination);
     updateTotalAmount(roomsCombination,formik.values.fromDate,formik.values.toDate);
   };
-
   const handleAddRoom = () => {
     const updatedRoomsData = [
       ...formik.values.roomsData,
@@ -535,7 +539,7 @@ const idTypeOptions = [
     }
     const startDate = fromDate;
     const endDate = toDate;
-    const numberOfDays =endDate?endDate.diff(startDate, 'days'):null; 
+    const numberOfDays = endDate ? endDate.diff(startDate, "days") : null;
 
     const roomRentPerDay = updatedRoomsData.reduce((acc, room) => acc + room.amount, 0);
 
@@ -744,7 +748,7 @@ const idTypeOptions = [
               <div className="date-picker-container">
                 <div className="date-picker-item">
                   <label htmlFor="from-date" className="date-label">
-                    From Date:
+                    From Date<span className="text-danger">*</span>:
                   </label>
                   <CustomDatePicker
                     id="from-date"
@@ -754,11 +758,18 @@ const idTypeOptions = [
                     placeholder={t('select_date')}
                     className="custom-datepicker"
                     disabledDate={disabledDate}
+                    name="fromDate"
+                    onBlur={formik.handleBlur}
                   />
+                  {formik.errors.fromDate && formik.touched.fromDate && (
+                    <div className="text-danger">
+                      <Trans i18nKey={formik.errors.fromDate} />
+                    </div>
+                  )}
                 </div>
                 <div className="date-picker-item">
                   <label htmlFor="to-date" className="date-label">
-                    To Date:
+                    To Date<span className="text-danger">*</span>:
                   </label>
                   <CustomDatePicker
                     id="to-date"
@@ -767,11 +778,17 @@ const idTypeOptions = [
                     format="DD MMM YYYY"
                     placeholder={t('select_date')}
                     className="custom-datepicker"
+                    onBlur={formik.handleBlur}
                     disabledDate={(current) => {
                       return (current && current < moment().startOf('day')) || 
                              (formik.values.fromDate && current < formik.values.fromDate);
                     }}
                   />
+                  {formik.errors.toDate && formik.touched.toDate && (
+                    <div className="text-danger">
+                      <Trans i18nKey={formik.errors.toDate} />
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="member-container">
@@ -779,38 +796,95 @@ const idTypeOptions = [
                   Members (M/W/K):
                 </label>
                 <div className="member-inputs">
-                <input
-                  type="text"
-                  id="num-men"
-                  value={formik.values.numMen}
-                  onChange={(e) => formik.setFieldValue('numMen', e.target.value)}
-                  className="member-input"
-                  placeholder="Men"
-                />
-                <input
-                  type="text"
-                  id="num-women"
-                  value={formik.values.numWomen}
-                  onChange={(e) => formik.setFieldValue('numWomen', e.target.value)}
-                  className="member-input"
-                  placeholder="Women"
-                />
-                <input
-                  type="text"
-                  id="num-kids"
-                  value={formik.values.numKids}
-                  onChange={(e) => formik.setFieldValue('numKids', e.target.value)}
-                  className="member-input"
-                  placeholder="Kids"
-                />
-                  <button 
-                  className={`search-button ${isSearchEnabled() ? '' : 'disabled'}`} 
-                  onClick={handleSearch} 
-                  type="button"
-                  disabled={!isSearchEnabled()}
-                >
-                  Search
-                </button>
+                  <div className="d-flex flex-column">
+                    <input
+                      type="number"
+                      id="num-men"
+                      value={
+                        formik.values.numMen === "" ? "" : formik.values.numMen
+                      }
+                      onChange={(e) =>
+                        formik.setFieldValue(
+                          "numMen",
+                          e.target.value === ""
+                            ? ""
+                            : parseInt(e.target.value, 10)
+                        )
+                      }
+                      className="member-input"
+                      placeholder="Men"
+                      name="numMen"
+                    />
+                    {/* {formik.errors.numMen && (
+                      <div className="text-danger">
+                        <Trans i18nKey={formik.errors.numMen} />
+                      </div>
+                    )} */}
+                  </div>
+                  <div className="d-flex flex-column">
+                    <input
+                      type="number"
+                      id="num-women"
+                      value={
+                        formik.values.numWomen === ""
+                          ? ""
+                          : formik.values.numWomen
+                      }
+                      onChange={(e) =>
+                        formik.setFieldValue(
+                          "numWomen",
+                          e.target.value === ""
+                            ? ""
+                            : parseInt(e.target.value, 10)
+                        )
+                      }
+                      className="member-input"
+                      placeholder="Women"
+                      name="numWomen"
+                    />
+                    {/* {formik.errors.numWomen && (
+                      <div className="text-danger">
+                        <Trans i18nKey={formik.errors.numWomen} />
+                      </div>
+                    )} */}
+                  </div>
+                  <div className="d-flex flex-column">
+                    <input
+                      type="number"
+                      id="num-kids"
+                      value={
+                        formik.values.numKids === ""
+                          ? ""
+                          : formik.values.numKids
+                      }
+                      onChange={(e) =>
+                        formik.setFieldValue(
+                          "numKids",
+                          e.target.value === ""
+                            ? ""
+                            : parseInt(e.target.value, 10)
+                        )
+                      }
+                      className="member-input"
+                      placeholder="Kids"
+                      name="numKids"
+                    />
+                    {/* {formik.errors.numKids && (
+                      <div className="text-danger">
+                        <Trans i18nKey={formik.errors.numKids} />
+                      </div>
+                    )} */}
+                  </div>
+                  <button
+                    className={`search-button ${
+                      isSearchEnabled() ? "" : "disabled"
+                    }`}
+                    onClick={(e) => handleSearch(e)}
+                    type="button"
+                    disabled={!isSearchEnabled()}
+                  >
+                    Search
+                  </button>
                 </div>
               </div>
             </div>
@@ -818,6 +892,7 @@ const idTypeOptions = [
           </div>
           <RoomsContainer
             roomsData={formik.values.roomsData}
+            formik={formik}
             roomTypes={roomTypes}
             buildings={buildings}
             floors={floors}
@@ -829,8 +904,9 @@ const idTypeOptions = [
             handleDeleteRoom={handleDeleteRoom}
             handleAddRoom={handleAddRoom}
             handleClearRooms={handleClearRooms}
-          />  
-        </div> 
+            isSearchRoom={isSearchRoom}
+          />
+        </div>
         <div className="guest-payment">
           <div className="guest-container-add-booking">
             <div className="guest-header">
@@ -848,28 +924,40 @@ const idTypeOptions = [
                   >
                     <Row>
                       <Col xs={12} className="align-self-center">
-                      <CustomCountryMobileNumberField
-                        value={`${formik.values.SelectedUser?.countryCode || ''}${formik.values.SelectedUser?.mobileNumber || ''}`}
-                        disabled={payDonation}
-                        defaultCountry={countryFlag}
-                        label={t("dashboard_Recent_DonorNumber")}
-                        placeholder={t("placeHolder_mobile_number")}
-                        onChange={(phone, country) => {
-                          setPhoneNumber(phone);
-                          formik.setFieldValue("countryCode", country?.countryCode || '');
-                          formik.setFieldValue("dialCode", country?.dialCode || '');
-                          if (typeof phone === 'string' && typeof country?.dialCode === 'string') {
+                        <CustomCountryMobileNumberField
+                          value={`${
+                            formik.values.SelectedUser?.countryCode || ""
+                          }${formik.values.SelectedUser?.mobileNumber || ""}`}
+                          disabled={payDonation}
+                          defaultCountry={countryFlag}
+                          label={t("dashboard_Recent_DonorNumber")}
+                          placeholder={t("placeHolder_mobile_number")}
+                          onChange={(phone, country) => {
+                            setPhoneNumber(phone);
                             formik.setFieldValue(
-                              "Mobile",
-                              phone.replace(country.dialCode, "")
+                              "countryCode",
+                              country?.countryCode || ""
                             );
-                          } else {
-                            formik.setFieldValue("Mobile", '');
-                          }
-                        }}
-                        required
-                      />
-                      {noUserFound && (
+                            formik.setFieldValue(
+                              "dialCode",
+                              country?.dialCode || ""
+                            );
+                            if (
+                              typeof phone === "string" &&
+                              typeof country?.dialCode === "string"
+                            ) {
+                              formik.setFieldValue(
+                                "Mobile",
+                                phone.replace(country.dialCode, "")
+                              );
+                            } else {
+                              formik.setFieldValue("Mobile", "");
+                            }
+                          }}
+                          required
+                          onBlur={formik.handleBlur}
+                        />
+                        {noUserFound && (
                           <div className="addUser">
                             {" "}
                             <Trans i18nKey={"add_user_donation"} />{" "}
@@ -904,7 +992,7 @@ const idTypeOptions = [
                           getNumber={phoneNumber}
                           onSuccess={handleDataLoad}
                         />
-                        {formik.errors.Mobile && (
+                        {formik.errors.Mobile && formik.touched.Mobile && (
                           <div className="text-danger">
                             <Trans i18nKey={formik.errors.Mobile} />
                           </div>
@@ -968,6 +1056,7 @@ const idTypeOptions = [
                 <Row>
                   <Col xs={12} sm={6} lg={4} className="pb-2">
                     <FormikCustomReactSelect
+                      required
                       name="idType"
                       labelName={t("ID Type")}
                       placeholder={t("Id Type")}
@@ -988,6 +1077,7 @@ const idTypeOptions = [
                   </Col>
                   <Col xs={12} sm={6} lg={4} className="pb-1">
                   <CustomTextField
+                    required
                     label={t("Id Number")}
                     placeholder={t("Id Number")}
                     name="idNumber"
