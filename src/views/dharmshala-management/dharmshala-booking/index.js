@@ -18,6 +18,9 @@ import { Helmet } from "react-helmet";
 import { CustomDropDown } from "../../../components/partials/customDropDown";
 import RoomHoldModal from "./roomHoldModal";
 import "../../../assets/scss/dharmshala.scss";
+import { Dropdown, Space } from "antd";
+import RoomHoldTable from "./roomHoldTable";
+import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
 
 dayjs.extend(utc);
 dayjs.extend(isBetween);
@@ -173,7 +176,13 @@ const DharmshalaBookings = () => {
     { key: "cancelled", label: t("cancelled") },
     { key: "maintenance", label: t("maintenance") },
   ];
-
+  const [showRoomHold, setShowRoomHold] = useState(false);
+  const handleBtnClick = (e) => {
+    setShowRoomHold(true);
+  };
+  const handlebackBtn = () => {
+    setShowRoomHold(false);
+  };
   return (
     <div className="DharmshalaComponentInfo">
       <Helmet>
@@ -222,21 +231,40 @@ const DharmshalaBookings = () => {
                 </Button>
               </div>
               <div className="row2">
-                <Button
-                  className={`me-1 ${isMobileView ? "btn-sm" : ""}`}
-                  color="primary"
-                  onClick={togglePastRequests}
-                  style={{ marginBottom: isMobileView ? "5px" : "0" }}
-                >
-                  <span>
-                    {showPastRequests ? (
-                      <Trans i18nKey={"view_upcoming_requests"} />
-                    ) : (
-                      <Trans i18nKey={"view_past_requests"} />
-                    )}
-                  </span>
-                </Button>
-                <Button
+                <Space wrap className="">
+                  <Button
+                    className={`${isMobileView ? "btn-sm" : ""}`}
+                    color="primary"
+                    onClick={togglePastRequests}
+                    style={{ marginBottom: isMobileView ? "5px" : "0" }}
+                  >
+                    <span>
+                      {showPastRequests ? (
+                        <Trans i18nKey={"view_upcoming_requests"} />
+                      ) : (
+                        <Trans i18nKey={"view_past_requests"} />
+                      )}
+                    </span>
+                  </Button>
+                  <Dropdown.Button
+                    type="primary"
+                    size="large"
+                    className={`me-1 ${isMobileView ? "btn-sm" : ""}`}
+                    menu={{
+                      items: [
+                        {
+                          label: t("add_room_hold"),
+                          key: "add_room_hold",
+                        },
+                      ],
+                      onClick: toggleRoomHoldModal,
+                    }}
+                    onClick={handleBtnClick}
+                  >
+                    {t("room_hold")}
+                  </Dropdown.Button>
+                </Space>
+                {/* <Button
                   className={`me-1 ${isMobileView ? "btn-sm" : ""}`}
                   color="primary"
                   onClick={toggleRoomHoldModal}
@@ -245,7 +273,7 @@ const DharmshalaBookings = () => {
                   <span>
                     <Trans i18nKey={"room_hold"} />
                   </span>
-                </Button>
+                </Button> */}
               </div>
               <CustomDropDown
                 i18nKeyDropDownItemArray={statusOptions}
@@ -284,24 +312,38 @@ const DharmshalaBookings = () => {
                 disableMemo
               >
                 <Then>
-                  <DharmshalaBookingTable
-                    data={filteredBookingListData}
-                    height="160px"
-                    currentFilter={dropDownName}
-                    currentPage={pagination.page}
-                    isMobileView={isMobileView}
-                    pageSize={pagination.limit}
-                    onChangePage={(page) =>
-                      setPagination((prev) => ({ ...prev, page }))
-                    }
-                    onChangePageSize={(pageSize) =>
-                      setPagination((prev) => ({
-                        ...prev,
-                        limit: pageSize,
-                        page: 1,
-                      }))
-                    }
-                  />
+                  {showRoomHold && (
+                    <div className="d-flex">
+                      <img
+                        src={arrowLeft}
+                        className="mt-0 mb-1 me-1 cursor-pointer"
+                        onClick={handlebackBtn}
+                      />
+                      <span>Room Holds</span>
+                    </div>
+                  )}
+                  {!showRoomHold ? (
+                    <DharmshalaBookingTable
+                      data={filteredBookingListData}
+                      height="160px"
+                      currentFilter={dropDownName}
+                      currentPage={pagination.page}
+                      isMobileView={isMobileView}
+                      pageSize={pagination.limit}
+                      onChangePage={(page) =>
+                        setPagination((prev) => ({ ...prev, page }))
+                      }
+                      onChangePageSize={(pageSize) =>
+                        setPagination((prev) => ({
+                          ...prev,
+                          limit: pageSize,
+                          page: 1,
+                        }))
+                      }
+                    />
+                  ) : (
+                    <RoomHoldTable />
+                  )}
                 </Then>
                 <Else>
                   <If
