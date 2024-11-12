@@ -224,59 +224,75 @@ const DharmshalaBookingTable = ({
       key: "actions",
       fixed: !isMobileView && "right",
       width: 250,
-      render: (_, record) => (
-        <Space size="middle">
-          {record.originalData.status !== "checked-out" && (
-            <img
-              src={editIcon}
-              width={30}
-              className="cursor-pointer"
-              onClick={() => handleEditClick(record)}
-              alt="Edit"
-            />
-          )}
-          <img
-            src={deleteIcon}
-            width={25}
-            className="cursor-pointer"
-            onClick={() => handleDeleteClick(record)}
-            alt="Delete"
-          />
-          {record.originalData.status === "checked-in" ? (
-            <img
-              src={checkOutIcon}
-              width={17}
-              className="cursor-pointer"
-              onClick={() => handleCheckOutClick(record)}
-              alt="Check Out"
-            />
-          ) : (
-            record.originalData.status !== "checked-out" && (
+      render: (_, record) => {
+        const isActive = isBookingActive(record);
+        return (
+          <Space size="middle">
+            {isActive && (
+              <Tooltip title="Edit">
+                <img
+                  src={editIcon}
+                  width={30}
+                  className="cursor-pointer"
+                  onClick={() => handleEditClick(record)}
+                  alt="Edit"
+                />
+              </Tooltip>
+            )}
+            <Tooltip title="Delete">
               <img
-                src={checkInIcon}
-                width={17}
+                src={deleteIcon}
+                width={25}
                 className="cursor-pointer"
-                onClick={() => handleCheckInClick(record)}
-                alt="Check In"
+                onClick={() => handleDeleteClick(record)}
+                alt="Delete"
               />
-            )
-          )}
-          <img
-            src={whatsappIcon}
-            width={25}
-            className="cursor-pointer"
-            onClick={() => handleWhatsAppClick(record)}
-            alt="WhatsApp"
-          />
-          <img
-            src={downloadIcon}
-            width={20}
-            className="cursor-pointer"
-            onClick={() => handleViewPdfClick(record)}
-            alt="Download"
-          />
-        </Space>
-      ),
+            </Tooltip>
+            {isActive &&
+              (record.originalData.status === "checked-in" ? (
+                <Tooltip title="Check Out">
+                  <img
+                    src={checkOutIcon}
+                    width={17}
+                    className="cursor-pointer"
+                    onClick={() => handleCheckOutClick(record)}
+                    alt="Check Out"
+                  />
+                </Tooltip>
+              ) : (
+                record.originalData.status !== "checked-out" && (
+                  <Tooltip title="Check In">
+                    <img
+                      src={checkInIcon}
+                      width={17}
+                      className="cursor-pointer"
+                      onClick={() => handleCheckInClick(record)}
+                      alt="Check In"
+                    />
+                  </Tooltip>
+                )
+              ))}
+            <Tooltip title="Whatsapp receipt">
+              <img
+                src={whatsappIcon}
+                width={25}
+                className="cursor-pointer"
+                onClick={() => handleWhatsAppClick(record)}
+                alt="WhatsApp"
+              />
+            </Tooltip>
+            <Tooltip title="Download receipt">
+              <img
+                src={downloadIcon}
+                width={20}
+                className="cursor-pointer"
+                onClick={() => handleViewPdfClick(record)}
+                alt="Download"
+              />
+            </Tooltip>
+          </Space>
+        );
+      },
     },
   ];
 
