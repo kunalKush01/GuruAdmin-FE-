@@ -543,11 +543,31 @@ const idTypeOptions = [
 
     const totalAmount = totalRoomRent + formik.values.security;
 
-    const totalDueNew = totalRoomRent - formik.values.totalPaid + formik.values.security;
+    // const totalDueNew = totalRoomRent - formik.values.totalPaid + formik.values.security;
+    let totalDueNew = totalAmount - formik.values.totalPaid;
+
+    if (formik.values.totalPaid > totalAmount){
+      totalDueNew -= formik.values.security
+    }
+
+    if (totalDueNew === 0) {
+      totalDueNew -= formik.values.security;
+  }
 
     formik.setFieldValue('roomRent', totalRoomRent);
     formik.setFieldValue('totalAmount', totalAmount);
     formik.setFieldValue('totalDue', totalDueNew);
+  };
+
+  const getFieldLabel = (totalDue) => {
+    if (totalDue < 0) return "Refund:";
+    if (totalDue > 0) return "Collect Now:";
+    return "Status:";
+  };
+  
+  const getFieldValue = (totalDue) => {
+    if (totalDue === 0) return "Settled";
+    return Math.abs(totalDue).toString();
   };
 
   const handleDeleteRoom = (index) => {
@@ -1090,15 +1110,15 @@ const idTypeOptions = [
                   </div>
                   <div className="payment-field">
                     <label htmlFor="total-due" className="payment-label">
-                      Total Due:
+                      {getFieldLabel(formik.values.totalDue)}
                     </label>
                     <input
                       type="text"
                       id="total-due"
-                      value={formik.values.totalDue}
+                      value={getFieldValue(formik.values.totalDue)}
                       readOnly
                       className="payment-input"
-                      placeholder="Total Due"
+                      placeholder="Amount"
                     />
                   </div>
                 </>
