@@ -105,6 +105,7 @@ const AddRoomForm = ({
                   </Col>
                   <Col xs={12} md={4}>
                     <FormikCustomReactSelect
+                      required
                       labelName={t("room_type")}
                       name="roomType"
                       loadOptions={[
@@ -113,6 +114,11 @@ const AddRoomForm = ({
                       ]}
                       width
                     />
+                    {formik.errors.roomType && (
+                      <div className="text-danger">
+                        <Trans i18nKey={formik.errors.roomType} />
+                      </div>
+                    )}
                     {/* <CustomTextField
                       type="select"
                       label={t("dharmshala_room_room_type")}
@@ -142,11 +148,7 @@ const AddRoomForm = ({
 
             <div className="btn-Published mt-3">
               {loading ? (
-                <Button
-                  color="primary"
-                  className="add-trust-btn"
-                  disabled
-                >
+                <Button color="primary" className="add-trust-btn" disabled>
                   <Spinner size="md" />
                 </Button>
               ) : (
