@@ -238,6 +238,7 @@ export const englishContent = {
 
   dharmshala_rooms_registered: "Rooms",
   dharmshala_room_add: "Add Room",
+  room_type_required:"Room type is required",
   dharmshala_room_number: "Room Number",
   dharmshala_room_room_type: "Select Room Type",
   dharmshala_room_description: "Description",
