@@ -941,5 +941,7 @@ export const englishContent = {
   pashu_category:"Pashu Category",
   select_room_number:"Select room number",
   cannot_delete_floor:"Can not delete floor",
-  cannot_delete_floor_non_zero_rooms:"Can not delete floors with rooms"
+  cannot_delete_floor_non_zero_rooms:"Can not delete floors with rooms",
+  roomtype_added_successfully:"Room type added successfully",
+  roomtype_edit_successfully:"Room type updated successfully"
 };
