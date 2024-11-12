@@ -101,7 +101,12 @@ export default function BookingForm({
           ...bookingPayload,
           bookingId: bookingData.bookingId, 
         });
-        history.push("/booking/info");
+        if(bookingResponse.error==true){
+          setShowPrompt(false)
+        }else{
+          history.push("/booking/info");
+          setShowPrompt(true)
+        }
       } else {
         bookingResponse = await createDharmshalaBooking(bookingPayload);
         history.push("/booking/info");

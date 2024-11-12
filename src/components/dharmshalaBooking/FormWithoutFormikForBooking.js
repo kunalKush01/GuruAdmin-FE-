@@ -748,7 +748,7 @@ const idTypeOptions = [
               <div className="date-picker-container">
                 <div className="date-picker-item">
                   <label htmlFor="from-date" className="date-label">
-                    From Date:
+                    From Date<span className="text-danger">*</span>:
                   </label>
                   <CustomDatePicker
                     id="from-date"
@@ -769,7 +769,7 @@ const idTypeOptions = [
                 </div>
                 <div className="date-picker-item">
                   <label htmlFor="to-date" className="date-label">
-                    To Date:
+                    To Date<span className="text-danger">*</span>:
                   </label>
                   <CustomDatePicker
                     id="to-date"
@@ -1056,6 +1056,7 @@ const idTypeOptions = [
                 <Row>
                   <Col xs={12} sm={6} lg={4} className="pb-2">
                     <FormikCustomReactSelect
+                      required
                       name="idType"
                       labelName={t("ID Type")}
                       placeholder={t("Id Type")}
@@ -1076,6 +1077,7 @@ const idTypeOptions = [
                   </Col>
                   <Col xs={12} sm={6} lg={4} className="pb-1">
                   <CustomTextField
+                    required
                     label={t("Id Number")}
                     placeholder={t("Id Number")}
                     name="idNumber"
