@@ -238,6 +238,7 @@ export const englishContent = {
 
   dharmshala_rooms_registered: "Rooms",
   dharmshala_room_add: "Add Room",
+  room_type_required:"Room type is required",
   dharmshala_room_number: "Room Number",
   dharmshala_room_room_type: "Select Room Type",
   dharmshala_room_description: "Description",
@@ -941,5 +942,7 @@ export const englishContent = {
   select_room_number:"Select room number",
   roomtype_added_successfully:"Room type added successfully",
   cannot_delete_floor:"Can not delete floor",
-  cannot_delete_floor_non_zero_rooms:"Can not delete floors with rooms"
+  cannot_delete_floor_non_zero_rooms:"Can not delete floors with rooms",
+  roomtype_added_successfully:"Room type added successfully",
+  roomtype_edit_successfully:"Room type updated successfully"
 };

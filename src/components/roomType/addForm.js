@@ -14,6 +14,7 @@ const AddRoomTypeForm = ({
   validationSchema,
   handleSubmit,
   buttonName,
+  isEdit,
   ...props
 }) => {
   const history = useHistory();
@@ -29,7 +30,11 @@ const AddRoomTypeForm = ({
         queryClient.invalidateQueries(["roomTypeList"]);
         setLoading(false);
         history.push(`/roomtype/info`);
-        toast.success(t("roomtype_added_successfully"));
+        if(isEdit=="true"){
+          return toast.success(t('roomtype_edit_successfully'))
+        }else{
+         return toast.success(t("roomtype_added_successfully"));
+        }
       } else if (data?.error) {
         setLoading(false);
         const errorMessage = typeof data.error === 'string' ? data.error : t("Failed to create room type. Please try again.");

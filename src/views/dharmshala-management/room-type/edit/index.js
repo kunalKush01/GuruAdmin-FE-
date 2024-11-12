@@ -4,7 +4,7 @@ import { Trans } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams,useLocation } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import styled from "styled-components";
 import * as Yup from "yup";
@@ -35,12 +35,13 @@ const EditRoomType = () => {
   const { roomTypeId } = useParams();
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang = useSelector((state) => state.auth.selectLang);
-
-  const searchParams = new URLSearchParams(history.location.search);
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
   const name = searchParams.get("name");
   const description = searchParams.get("description");
   const capacity = searchParams.get("capacity");
   const price = searchParams.get("price");
+  const isEdit = searchParams.get("isEdit");
   const currentPage = searchParams.get("page");
   const currentStatus = searchParams.get("status");
   const currentFilter = searchParams.get("filter");
@@ -152,6 +153,7 @@ const EditRoomType = () => {
                 validationSchema={schema}
                 editThumbnail
                 buttonName="save_changes"
+                isEdit={isEdit}
                 /*RoomTypeType={RoomTypeType}
                 RoomTypeSource={RoomTypeSource} */
               />
