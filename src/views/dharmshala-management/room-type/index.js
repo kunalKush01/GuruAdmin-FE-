@@ -109,26 +109,26 @@ const RoomTypesInfo = () => {
       title: t("name"),
       dataIndex: "name",
       key: "name",
-      width: isMobileView?30:100,
+      width: isMobileView ? 30 : 100,
       fixed: "left",
     },
     {
       title: t("description"),
       dataIndex: "description",
       key: "description",
-      width:120,
+      width: 120,
     },
     {
       title: t("capacity"),
       dataIndex: "capacity",
       key: "capacity",
-      width:isMobileView?40: 80,
+      width: isMobileView ? 40 : 80,
     },
     {
       title: t("price"),
       dataIndex: "price",
       key: "price",
-      width: isMobileView?30:60,
+      width: isMobileView ? 30 : 60,
       // fixed: "right",
       render: (price) => `₹${price}`, // Format price with currency symbol
     },
@@ -141,7 +141,11 @@ const RoomTypesInfo = () => {
         <title>Apna Dharm Admin | Dharmshala Room Types</title>
       </Helmet>
       <div>
-        <div className={`d-sm-flex mb-1 justify-content-between align-items-center ${isMobileView && "d-flex flex-row"}`}>
+        <div
+          className={`d-sm-flex mb-1 justify-content-between align-items-center ${
+            isMobileView && "d-flex flex-row"
+          }`}
+        >
           <Trans i18nKey="dharmshala_roomtypes" />
           <div className="d-flex mt-1 mt-sm-0 justify-content-between">
             <Button
@@ -186,7 +190,7 @@ const RoomTypesInfo = () => {
             >
               <Then>
                 <Table
-                  className="donationListTable"
+                  className="commonListTable"
                   columns={columns}
                   scroll={{
                     x: 1500,
