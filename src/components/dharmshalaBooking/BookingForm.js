@@ -42,57 +42,57 @@ export default function BookingForm({
     setIsPaymentModalOpen(true);
   };
 
-  const handlePaymentSave = async (paymentDetails) => {
-    if (bookingData) {
-      setLoading(true);
-      try {
-        const bookingPayload = {
-          bookingId: bookingData.bookingId, 
-          Mobile: bookingData.Mobile,
-          countryCode: bookingData.countryCode,
-          dialCode: bookingData.dialCode,
-          SelectedUser: bookingData.SelectedUser,
-          donarName: bookingData.donarName,
-          startDate: bookingData.fromDate ? bookingData.fromDate.format('DD-MM-YYYY') : null,
-          endDate: bookingData.toDate ? bookingData.toDate.format('DD-MM-YYYY') : null,
-          address: bookingData.address,
-          idType: bookingData.idType,
-          idNumber: bookingData.idNumber,
-          guestCount: {
-            men: bookingData.numMen,
-            women: bookingData.numWomen,
-            children: bookingData.numKids,
-          },
-          rooms: bookingData.roomsData.map(room => ({
-            roomTypeId: room.roomType,
-            roomTypeName: room.roomTypeName,
-            building: room.building,
-            buildingName: room.buildingName,
-            floor: room.floor,
-            floorName: room.floorName,
-            roomId: room.roomId,
-            amount: room.amount,
-            roomNumber: room.roomNumber,
-          })),
-          userDetails: {
-            name: bookingData.guestname,
-            email: bookingData.email,
-            mobileNumber: bookingData.Mobile,
+    const handlePaymentSave = async (paymentDetails) => {
+      if (bookingData) {
+        setLoading(true);
+        try {
+          const bookingPayload = {
+            bookingId: bookingData.bookingId, 
+            Mobile: bookingData.Mobile,
+            countryCode: bookingData.countryCode,
+            dialCode: bookingData.dialCode,
+            SelectedUser: bookingData.SelectedUser,
+            donarName: bookingData.donarName,
+            startDate: bookingData.fromDate ? bookingData.fromDate.format('DD-MM-YYYY') : null,
+            endDate: bookingData.toDate ? bookingData.toDate.format('DD-MM-YYYY') : null,
             address: bookingData.address,
             idType: bookingData.idType,
             idNumber: bookingData.idNumber,
-          },
-          calculatedFields: {
-            roomRent: bookingData.roomRent,
-            totalAmount: bookingData.totalAmount,
-            totalPaid: bookingData.totalPaid,
-            totalDue: bookingData.totalDue,
-          },
-          amountPaid: paymentDetails.amount,
-          paymentDetails,
-          security: bookingData.security,
-          imagePath: bookingData.imagePath,
-          status: paymentDetails.status,
+            guestCount: {
+              men: bookingData.numMen||0,
+              women: bookingData.numWomen||0,
+              children: bookingData.numKids||0,
+            },
+            rooms: bookingData.roomsData.map(room => ({
+              roomTypeId: room.roomType,
+              roomTypeName: room.roomTypeName,
+              building: room.building,
+              buildingName: room.buildingName,
+              floor: room.floor,
+              floorName: room.floorName,
+              roomId: room.roomId,
+              amount: room.amount,
+              roomNumber: room.roomNumber,
+            })),
+            userDetails: {
+              name: bookingData.guestname,
+              email: bookingData.email,
+              mobileNumber: bookingData.Mobile,
+              address: bookingData.address,
+              idType: bookingData.idType,
+              idNumber: bookingData.idNumber,
+            },
+            calculatedFields: {
+              roomRent: bookingData.roomRent,
+              totalAmount: bookingData.totalAmount,
+              totalPaid: bookingData.totalPaid,
+              totalDue: bookingData.totalDue,
+            },
+            amountPaid: paymentDetails.amount,
+            paymentDetails,
+            security: bookingData.security,
+            imagePath: bookingData.imagePath,
+            status: paymentDetails.status,
         };
 
         let bookingResponse;
@@ -101,7 +101,12 @@ export default function BookingForm({
           ...bookingPayload,
           bookingId: bookingData.bookingId, 
         });
-        history.push("/booking/info");
+        if(bookingResponse.error==true){
+          setShowPrompt(false)
+        }else{
+          history.push("/booking/info");
+          setShowPrompt(true)
+        }
       } else {
         bookingResponse = await createDharmshalaBooking(bookingPayload);
         history.push("/booking/info");
@@ -121,6 +126,7 @@ export default function BookingForm({
         <Formik
         initialValues={initialValues}
         onSubmit={handleCreateBooking}
+        validationSchema={validationSchema}
       >
         {(formik) => (
           <>

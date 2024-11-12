@@ -14,6 +14,7 @@ const AddRoomTypeForm = ({
   validationSchema,
   handleSubmit,
   buttonName,
+  isEdit,
   ...props
 }) => {
   const history = useHistory();
@@ -29,16 +30,20 @@ const AddRoomTypeForm = ({
         queryClient.invalidateQueries(["roomTypeList"]);
         setLoading(false);
         history.push(`/roomtype/info`);
-        toast.success(t("roomtype_added_successfully"));
+        if(isEdit=="true"){
+          return toast.success(t('roomtype_edit_successfully'))
+        }else{
+         return toast.success(t("roomtype_added_successfully"));
+        }
       } else if (data?.error) {
         setLoading(false);
-        const errorMessage = typeof data.error === 'string' ? data.error : t("A room type with this name already exists in the Dharmshala");
+        const errorMessage = typeof data.error === 'string' ? data.error : t("Failed to create room type. Please try again.");
         toast.error(t(errorMessage));
       }
     },
     onError: (error) => {
       setLoading(false);
-      const errorMessage = error.message || t("A room type with this name already exists in the Dharmshala.");
+      const errorMessage = error.message || t("An unexpected error occurred. Please try again.");
       toast.error(t(errorMessage));
     },
   });
@@ -54,7 +59,7 @@ const AddRoomTypeForm = ({
       onError: (error) => {
         const errorMessage = error.message || t("A room type with this name already exists in the Dharmshala.");
         if (errorMessage.toLowerCase().includes("duplicate")) {
-          setFieldError("name", t("A room type with this name already exists in the Dharmshala"));
+          setFieldError("name", t("A room type with this name already exists in the Dharmshala."));
           toast.error(t("A room type with this name already exists in the Dharmshala."));
         } else {
           toast.error(t(errorMessage));
