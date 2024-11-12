@@ -2,8 +2,11 @@ import React from 'react';
 import guestIcon from "../../assets/images/icons/subadmin.svg";
 import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
 import { t } from 'i18next';
+import { Trans } from 'react-i18next';
 
 const RoomsContainer = ({
+  isSearchRoom,
+  formik,
   roomsData,
   roomTypes,
   buildings,
@@ -30,7 +33,6 @@ const RoomsContainer = ({
     event.preventDefault();
     action();
   };
-
   return (
     <div className="rooms-container">
       <div className="rooms-header">
@@ -41,23 +43,48 @@ const RoomsContainer = ({
           <div key={index} className="room-row">
             <div className="field-container">
               <label htmlFor={`room-type-${index}`} className="room-label">
-                {t('room_type')}:
+                {t('room_type')}
+                <span className="text-danger">*</span>:
               </label>
-              <div className="input-with-icon">
-              <select
-                  id={`room-type-${index}`}
-                  className="room-dropdown"
-                  value={room.roomTypeId || room.roomType||""}
-                  onChange={(e) => handleRoomTypeChange(e.target.value, index)}
-                  disabled={isReadOnly}
-                >
-                  <option value="">{t('Select_Room_Type')}</option>
-                  {roomTypes.map((roomType) => (
-                    <option key={roomType._id} value={roomType._id}>
-                      {roomType.name}
-                    </option>
-                  ))}
-                </select>
+              <div className="input-with-icon w-100">
+                <div className="d-flex flex-column w-100">
+                  <select
+                    id={`room-type-${index}`}
+                    className="room-dropdown"
+                    value={room.roomTypeId || room.roomType}
+                    onChange={(e) => {
+                      handleRoomTypeChange(e.target.value, index);
+                      formik.setFieldValue(
+                        `roomsData[${index}].roomType`,
+                        e.target.value
+                      );
+                      formik.validateField(`roomsData[${index}].roomType`);
+                      formik.setFieldTouched(
+                        `roomsData[${index}].roomType`,
+                        true
+                      );
+                    }}
+                    disabled={isReadOnly || !isSearchRoom}
+                    onBlur={!isCheckModal && formik.handleBlur}
+                    name={`roomsData[${index}].roomType`}
+                  >
+                    <option value="">{t("Select_Room_Type")}</option>
+                    {roomTypes.map((roomType) => (
+                      <option key={roomType._id} value={roomType._id}>
+                        {roomType.name}
+                      </option>
+                    ))}
+                  </select>
+                  {!isCheckModal &&
+                    formik.errors.roomsData?.[index]?.roomType &&
+                    formik.touched.roomsData?.[index]?.roomType && (
+                      <div className="text-danger">
+                        <Trans
+                          i18nKey={formik.errors.roomsData[index].roomType}
+                        />
+                      </div>
+                    )}
+                </div>
                 <div className="guests-content">
                   <img src={guestIcon} className="guests-icon" alt="Guests" style={{ width: '24px', height: '24px' }}/>
                   <span className="guests-count">
@@ -68,14 +95,17 @@ const RoomsContainer = ({
             </div>
             <div className="field-container">
               <label htmlFor={`building-${index}`} className="building-label">
-                {t('building')}:
+                {t('building')}
+                <span className="text-danger">*</span>:
               </label>
               <select
                 id={`building-${index}`}
                 className="building-dropdown"
                 value={room.building}
                 onChange={(e) => handleBuildingChange(e.target.value, index)}
-                disabled={isReadOnly}
+                disabled={isReadOnly || !isSearchRoom}
+                onBlur={!isCheckModal && formik.handleBlur}
+                name={`roomsData[${index}].building`}
               >
                 <option value="">{t('select_building')}</option>
                 {buildings.map((building) => (
@@ -84,10 +114,18 @@ const RoomsContainer = ({
                   </option>
                 ))}
               </select>
+              {!isCheckModal &&
+                formik.touched.roomsData?.[index]?.building &&
+                formik.errors.roomsData?.[index]?.building && (
+                  <div className="text-danger">
+                    <Trans i18nKey={formik.errors.roomsData[index].building} />
+                  </div>
+                )}
             </div>
             <div className="field-container">
               <label htmlFor={`floor-${index}`} className="floor-label">
-                {t('floor')}:
+                {t('floor')}
+                <span className="text-danger">*</span>:
               </label>
               <select
                 id={`floor-${index}`}
@@ -95,6 +133,8 @@ const RoomsContainer = ({
                 value={room.floor}
                 onChange={(e) => handleFloorChange(e.target.value, index)}
                 disabled={isReadOnly || !room.building}
+                onBlur={!isCheckModal && formik.handleBlur}
+                name={`roomsData[${index}].floor`}
               >
                 <option value="">{t('select_floor')}</option>
                 {(floors[room.building] || []).map((floor) => (
@@ -103,10 +143,18 @@ const RoomsContainer = ({
                   </option>
                 ))}
               </select>
+              {!isCheckModal &&
+                formik.touched.roomsData?.[index]?.floor &&
+                formik.errors.roomsData?.[index]?.floor && (
+                  <div className="text-danger">
+                    <Trans i18nKey={formik.errors.roomsData[index].floor} />
+                  </div>
+                )}
             </div>
             <div className="field-container">
               <label htmlFor={`room-number-${index}`} className="room-number-label">
-                {t('room_number')}:
+                {t('room_number')}
+                <span className="text-danger">*</span>:
               </label>
               <select
                 id={`room-number-${index}`}
@@ -114,6 +162,8 @@ const RoomsContainer = ({
                 value={room.roomId}
                 onChange={(e) => handleRoomNumberChange(e.target.value, index)}
                 disabled={isReadOnly || !room.floor || !room.roomType}
+                onBlur={!isCheckModal && formik.handleBlur}
+                name={`roomsData[${index}].roomId`}
               >
                 <option value="">Select Room Number</option>
                 {isCheckModal?
@@ -133,6 +183,13 @@ const RoomsContainer = ({
                   ))
                   }
               </select>
+              {!isCheckModal &&
+                formik.touched.roomsData?.[index]?.roomId &&
+                formik.errors.roomsData?.[index]?.roomId && (
+                  <div className="text-danger">
+                    <Trans i18nKey={formik.errors.roomsData[index].roomId} />
+                  </div>
+                )}
             </div>
             {!hideAmountField && (
               <div className="field-container">

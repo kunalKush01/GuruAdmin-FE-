@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Tag } from "antd";
+import { Tag, Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -150,6 +150,7 @@ const DharmshalaBookingTable = ({
     return endDate.isAfter(today) || endDate.isSame(today);
   };
   
+  
   const isMobileView = window.innerWidth < 768
 
   const columns = [
@@ -227,6 +228,7 @@ const DharmshalaBookingTable = ({
         return (
           <Space size="middle">
             {isActive && (
+              <Tooltip title="Edit">
               <img
                 src={editIcon}
                 width={30}
@@ -234,7 +236,9 @@ const DharmshalaBookingTable = ({
                 onClick={() => handleEditClick(record)}
                 alt="Edit"
               />
+              </Tooltip>
             )}
+            <Tooltip title="Delete">
             <img
               src={deleteIcon}
               width={25}
@@ -242,8 +246,10 @@ const DharmshalaBookingTable = ({
               onClick={() => handleDeleteClick(record)}
               alt="Delete"
             />
+            </Tooltip>
             {isActive && (
               record.originalData.status === 'checked-in' ? (
+                <Tooltip title="Check Out">
                 <img
                   src={checkOutIcon}
                   width={17}
@@ -251,8 +257,10 @@ const DharmshalaBookingTable = ({
                   onClick={() => handleCheckOutClick(record)}
                   alt="Check Out"
                 />
+                </Tooltip>
               ) : (
                 record.originalData.status !== 'checked-out' && (
+                  <Tooltip title="Check In">
                   <img
                     src={checkInIcon}
                     width={17}
@@ -260,9 +268,11 @@ const DharmshalaBookingTable = ({
                     onClick={() => handleCheckInClick(record)}
                     alt="Check In"
                   />
+                  </Tooltip>
                 )
               )
             )}
+            <Tooltip title="Whatsapp receipt">
             <img
               src={whatsappIcon}
               width={25}
@@ -270,6 +280,8 @@ const DharmshalaBookingTable = ({
               onClick={() => handleWhatsAppClick(record)}
               alt="WhatsApp"
             />
+            </Tooltip>
+            <Tooltip title="Download receipt">
             <img
               src={downloadIcon}
               width={20}
@@ -277,6 +289,7 @@ const DharmshalaBookingTable = ({
               onClick={() => handleViewPdfClick(record)}
               alt="Download"
             />
+            </Tooltip>
           </Space>
         );
       },
