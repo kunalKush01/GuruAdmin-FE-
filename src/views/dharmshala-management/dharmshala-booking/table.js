@@ -143,6 +143,13 @@ const DharmshalaBookingTable = ({
     setMode('check-out');
     setCheckInVisible(true);
   };
+
+  const isBookingActive = (record) => {
+    const endDate = dayjs(record.originalData.endDate, "DD-MM-YYYY").startOf('day');
+    const today = dayjs().startOf('day');
+    return endDate.isAfter(today) || endDate.isSame(today);
+  };
+  
   const isMobileView = window.innerWidth < 768
 
   const columns = [
@@ -215,59 +222,64 @@ const DharmshalaBookingTable = ({
       key: "actions",
       fixed: !isMobileView &&"right" ,
       width: 250,
-      render: (_, record) => (
-        <Space size="middle">
-         {record.originalData.status !== 'checked-out' && (
+      render: (_, record) => {
+        const isActive = isBookingActive(record);
+        return (
+          <Space size="middle">
+            {isActive && (
+              <img
+                src={editIcon}
+                width={30}
+                className="cursor-pointer"
+                onClick={() => handleEditClick(record)}
+                alt="Edit"
+              />
+            )}
             <img
-              src={editIcon}
-              width={30}
+              src={deleteIcon}
+              width={25}
               className="cursor-pointer"
-              onClick={() => handleEditClick(record)}
-              alt="Edit"
+              onClick={() => handleDeleteClick(record)}
+              alt="Delete"
             />
-          )}
-          <img
-            src={deleteIcon}
-            width={25}
-            className="cursor-pointer"
-            onClick={() => handleDeleteClick(record)}
-            alt="Delete"
-          />
-          {record.originalData.status === 'checked-in' ? (
-        <img
-          src={checkOutIcon}
-          width={17}
-          className="cursor-pointer"
-          onClick={() => handleCheckOutClick(record)}
-          alt="Check Out"
-        />
-      ) : (
-        record.originalData.status !== 'checked-out' && (
-          <img
-            src={checkInIcon}
-            width={17}
-            className="cursor-pointer"
-            onClick={() => handleCheckInClick(record)}
-            alt="Check In"
-          />
-        )
-      )}
-        <img
-            src={whatsappIcon}
-            width={25}
-            className="cursor-pointer"
-            onClick={() => handleWhatsAppClick(record)}
-            alt="WhatsApp"
-          />
-          <img
-            src={downloadIcon}
-            width={20}
-            className="cursor-pointer"
-            onClick={() => handleViewPdfClick(record)}
-            alt="Download"
-          />
-        </Space>
-      ),
+            {isActive && (
+              record.originalData.status === 'checked-in' ? (
+                <img
+                  src={checkOutIcon}
+                  width={17}
+                  className="cursor-pointer"
+                  onClick={() => handleCheckOutClick(record)}
+                  alt="Check Out"
+                />
+              ) : (
+                record.originalData.status !== 'checked-out' && (
+                  <img
+                    src={checkInIcon}
+                    width={17}
+                    className="cursor-pointer"
+                    onClick={() => handleCheckInClick(record)}
+                    alt="Check In"
+                  />
+                )
+              )
+            )}
+            <img
+              src={whatsappIcon}
+              width={25}
+              className="cursor-pointer"
+              onClick={() => handleWhatsAppClick(record)}
+              alt="WhatsApp"
+            />
+            <img
+              src={downloadIcon}
+              width={20}
+              className="cursor-pointer"
+              onClick={() => handleViewPdfClick(record)}
+              alt="Download"
+            />
+          </Space>
+        );
+      },
     },
   ];
 
