@@ -9,6 +9,7 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import { updateDharmshalaBooking } from "../../../api/dharmshala/dharmshalaInfo";
 import '../../../../src/views/dharmshala-management/dharmshala_css/addbooking.scss';
+import { toast } from 'react-toastify';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -37,6 +38,8 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
   useEffect(() => {
     if (booking) {
       const room = booking.rooms[0] || {};
+      const bookingStartDate = dayjs(booking.startDate, "DD MMM YYYY");
+      const bookingEndDate = dayjs(booking.endDate, "DD MMM YYYY");
       form.setFieldsValue({
         building: room.buildingName || booking.building,
         floor: room.floorName || booking.floor,
@@ -64,6 +67,19 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
   const handleOk = () => {
     form.validateFields().then((values) => {
       const isRefund = mode === 'check-out' && dueAmount < 0;
+      const bookingStartDate = dayjs(booking.startDate, "DD MMM YYYY");
+      const bookingEndDate = dayjs(booking.endDate, "DD MMM YYYY");
+      const currentDate = dayjs(values.currentDate, "ddd, DD MMM YYYY HH:mm:ss [IST]");
+
+      if (currentDate.isBefore(bookingStartDate)) {
+        toast.error("Check-in is only allowed on or after the booking start date.");
+        return;
+      }
+
+      if (mode === 'check-out' && currentDate.isBefore(bookingEndDate)) {
+        toast.error("Check-out is only allowed on or after the booking end date.");
+        return;
+      }
 
       const bookingPayload = {
         bookingId: booking._id,
