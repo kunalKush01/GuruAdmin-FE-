@@ -17,7 +17,7 @@ import {
 } from "../../api/categoryApi";
 import { getAllDonation, importDonationFile } from "../../api/dharmshalaApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import DonationListTable from "../../components/donation/donationListTable";
+import DonationList from "../../components/donation/donationList";
 import { ChangeCategoryType } from "../../components/partials/categoryDropdown";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
 import NoContent from "../../components/partials/noContent";
@@ -350,7 +350,7 @@ export default function Dharmshala() {
               <Else>
                 <If condition={donationItems.length != 0} disableMemo>
                   <Then>
-                    <DonationListTable
+                    <DonationList
                       data={donationItems}
                       allPermissions={allPermissions}
                       subPermission={subPermission}

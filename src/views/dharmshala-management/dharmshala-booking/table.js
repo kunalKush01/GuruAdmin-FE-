@@ -7,7 +7,10 @@ import { Table, Space } from "antd";
 import moment from "moment";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
-import { deleteDharmshalaBooking, downlaodDharmshalaReceipt } from "../../../api/dharmshala/dharmshalaInfo";
+import {
+  deleteDharmshalaBooking,
+  downlaodDharmshalaReceipt,
+} from "../../../api/dharmshala/dharmshalaInfo";
 import deleteIcon from "../../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../../assets/images/icons/category/editIcon.svg";
 import checkInIcon from "../../../assets/images/icons/dharmshala/checkin.svg";
@@ -17,13 +20,12 @@ import whatsappIcon from "../../../assets/images/icons/whatsappIcon.svg";
 import downloadIcon from "../../../assets/images/icons/receiptIcon.svg";
 
 import "../../../assets/scss/common.scss";
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 import RoomsContainer from "../../../components/dharmshalaBooking/RoomsContainer";
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-import CheckInModal from './checkInModal';  
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import CheckInModal from "./checkInModal";
 
 dayjs.extend(customParseFormat);
-
 
 const DharmshalaBookingTable = ({
   data = [],
@@ -40,7 +42,7 @@ const DharmshalaBookingTable = ({
   const queryClient = useQueryClient();
   const [checkInVisible, setCheckInVisible] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
-  const [mode, setMode] = useState('check-in');
+  const [mode, setMode] = useState("check-in");
 
   const deleteMutation = useMutation({
     mutationFn: deleteDharmshalaBooking,
@@ -53,32 +55,30 @@ const DharmshalaBookingTable = ({
 
   const handleViewPdfClick = async (record) => {
     const apiUrl = `${process.env.REACT_APP_DHARMSHALA_BASEURL}bookings/download/${record.originalData.bookingId}`;
-    
+
     try {
       const response = await fetch(apiUrl);
-      if (!response.ok) throw new Error('Failed to fetch PDF');
+      if (!response.ok) throw new Error("Failed to fetch PDF");
       const blob = await response.blob();
       const dataUrl = URL.createObjectURL(blob);
-      window.open(dataUrl, '_blank');
+      window.open(dataUrl, "_blank");
     } catch (error) {
-      console.error('Error fetching PDF:', error);
+      console.error("Error fetching PDF:", error);
       toast.error("Receipt link not available at this moment.");
     }
   };
-  
+
   const handleWhatsAppClick = (record) => {
     if (!record.originalData.bookingId) {
       toast.error("Receipt link not available at this moment");
     } else {
       const apiUrl = `${process.env.REACT_APP_DHARMSHALA_BASEURL}bookings/download/${record.originalData.bookingId}`;
-      const message = `Hello ${record.originalData.userDetails.name}, thank you for your booking with Booking ID: ${
-        record.originalData.bookingId
-      }. Here is your receipt: ${apiUrl}`;
-      
+      const message = `Hello ${record.originalData.userDetails.name}, thank you for your booking with Booking ID: ${record.originalData.bookingId}. Here is your receipt: ${apiUrl}`;
+
       const phoneNumber = `${
         record.originalData.userDetails.countryCode?.replace("+", "") || ""
       }${record.originalData.userDetails.mobileNumber || ""}`;
-  
+
       window.open(
         `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`,
         "_blank"
@@ -89,7 +89,7 @@ const DharmshalaBookingTable = ({
   const handleEditClick = (item) => {
     history.push({
       pathname: `/booking/edit/${item._id}`,
-      state: { bookingData: item.originalData }
+      state: { bookingData: item.originalData },
     });
   };
 
@@ -117,41 +117,42 @@ const DharmshalaBookingTable = ({
   const handleCheckInClick = (record) => {
     setSelectedBooking({
       ...record.originalData,
-      building: record.originalData.buildingId || 'N/A',
-      floor: record.originalData.floorId || 'N/A',
+      building: record.originalData.buildingId || "N/A",
+      floor: record.originalData.floorId || "N/A",
       rooms: record.originalData.rooms || [],
-      capacity: record.originalData.capacity || 'N/A',
+      capacity: record.originalData.capacity || "N/A",
       startDate: record.startDate,
       endDate: record.endDate,
       dueAmount: record.originalData.dueAmount || 0,
     });
-    setMode('check-in');
+    setMode("check-in");
     setCheckInVisible(true);
   };
 
   const handleCheckOutClick = (record) => {
     setSelectedBooking({
       ...record.originalData,
-      building: record.originalData.buildingId || 'N/A',
-      floor: record.originalData.floorId || 'N/A',
+      building: record.originalData.buildingId || "N/A",
+      floor: record.originalData.floorId || "N/A",
       rooms: record.originalData.rooms || [],
-      capacity: record.originalData.capacity || 'N/A',
+      capacity: record.originalData.capacity || "N/A",
       startDate: record.startDate,
       endDate: record.endDate,
       dueAmount: record.originalData.dueAmount || 0,
     });
-    setMode('check-out');
+    setMode("check-out");
     setCheckInVisible(true);
   };
 
   const isBookingActive = (record) => {
-    const endDate = dayjs(record.originalData.endDate, "DD-MM-YYYY").startOf('day');
-    const today = dayjs().startOf('day');
+    const endDate = dayjs(record.originalData.endDate, "DD-MM-YYYY").startOf(
+      "day"
+    );
+    const today = dayjs().startOf("day");
     return endDate.isAfter(today) || endDate.isSame(today);
   };
-  
-  
-  const isMobileView = window.innerWidth < 768
+
+  const isMobileView = window.innerWidth < 768;
 
   const columns = [
     {
@@ -160,7 +161,7 @@ const DharmshalaBookingTable = ({
       key: "bookingId",
       width: 150,
       fixed: "left",
-      width: isMobileView ? 100 : 150
+      width: isMobileView ? 100 : 150,
     },
     {
       title: t("Guest Name"),
@@ -221,7 +222,7 @@ const DharmshalaBookingTable = ({
     {
       title: t("action"),
       key: "actions",
-      fixed: !isMobileView &&"right" ,
+      fixed: !isMobileView && "right",
       width: 250,
       render: (_, record) => {
         const isActive = isBookingActive(record);
@@ -229,66 +230,65 @@ const DharmshalaBookingTable = ({
           <Space size="middle">
             {isActive && (
               <Tooltip title="Edit">
-              <img
-                src={editIcon}
-                width={30}
-                className="cursor-pointer"
-                onClick={() => handleEditClick(record)}
-                alt="Edit"
-              />
+                <img
+                  src={editIcon}
+                  width={30}
+                  className="cursor-pointer"
+                  onClick={() => handleEditClick(record)}
+                  alt="Edit"
+                />
               </Tooltip>
             )}
             <Tooltip title="Delete">
-            <img
-              src={deleteIcon}
-              width={25}
-              className="cursor-pointer"
-              onClick={() => handleDeleteClick(record)}
-              alt="Delete"
-            />
+              <img
+                src={deleteIcon}
+                width={25}
+                className="cursor-pointer"
+                onClick={() => handleDeleteClick(record)}
+                alt="Delete"
+              />
             </Tooltip>
-            {isActive && (
-              record.originalData.status === 'checked-in' ? (
+            {isActive &&
+              (record.originalData.status === "checked-in" ? (
                 <Tooltip title="Check Out">
-                <img
-                  src={checkOutIcon}
-                  width={17}
-                  className="cursor-pointer"
-                  onClick={() => handleCheckOutClick(record)}
-                  alt="Check Out"
-                />
-                </Tooltip>
-              ) : (
-                record.originalData.status !== 'checked-out' && (
-                  <Tooltip title="Check In">
                   <img
-                    src={checkInIcon}
+                    src={checkOutIcon}
                     width={17}
                     className="cursor-pointer"
-                    onClick={() => handleCheckInClick(record)}
-                    alt="Check In"
+                    onClick={() => handleCheckOutClick(record)}
+                    alt="Check Out"
                   />
+                </Tooltip>
+              ) : (
+                record.originalData.status !== "checked-out" && (
+                  <Tooltip title="Check In">
+                    <img
+                      src={checkInIcon}
+                      width={17}
+                      className="cursor-pointer"
+                      onClick={() => handleCheckInClick(record)}
+                      alt="Check In"
+                    />
                   </Tooltip>
                 )
-              )
-            )}
+              ))}
             <Tooltip title="Whatsapp receipt">
-            <img
-              src={whatsappIcon}
-              width={25}
-              className="cursor-pointer"
-              onClick={() => handleWhatsAppClick(record)}
-              alt="WhatsApp"
-            />
+              <img
+                src={whatsappIcon}
+                width={25}
+                className="cursor-pointer"
+                onClick={() => handleWhatsAppClick(record)}
+                alt="WhatsApp"
+              />
             </Tooltip>
             <Tooltip title="Download receipt">
-            <img
-              src={downloadIcon}
-              width={20}
-              className="cursor-pointer"
-              onClick={() => handleViewPdfClick(record)}
-              alt="Download"
-            />
+              <img
+                src={downloadIcon}
+                width={20}
+                className="cursor-pointer"
+                onClick={() => handleViewPdfClick(record)}
+                alt="Download"
+              />
             </Tooltip>
           </Space>
         );
@@ -302,14 +302,19 @@ const DharmshalaBookingTable = ({
       bookingId: item.bookingId,
       guestName: item.userDetails?.name,
       guestMobile: item.userDetails?.mobileNumber,
-      startDate: item.startDate ? dayjs(item.startDate, "DD-MM-YYYY").format("DD MMM YYYY") : 'N/A',
-      endDate: item.endDate ? dayjs(item.endDate, "DD-MM-YYYY").format("DD MMM YYYY") : 'N/A',
+      startDate: item.startDate
+        ? dayjs(item.startDate, "DD-MM-YYYY").format("DD MMM YYYY")
+        : "N/A",
+      endDate: item.endDate
+        ? dayjs(item.endDate, "DD-MM-YYYY").format("DD MMM YYYY")
+        : "N/A",
       count: item.count,
-      roomNumber: item.rooms?.map(room => (
-        <Tag color="green" key={room.roomId}>
-          {room.roomNumber}
-        </Tag>
-      )) || 'N/A',
+      roomNumber:
+        item.rooms?.map((room) => (
+          <Tag color="green" key={room.roomId}>
+            {room.roomNumber}
+          </Tag>
+        )) || "N/A",
       status: item.status,
       earlyCheckIn: item.earlyCheckIn,
       lateCheckout: item.lateCheckout,
@@ -320,31 +325,31 @@ const DharmshalaBookingTable = ({
 
   return (
     <>
-    <Table
-      className="donationListTable"
-      columns={columns}
-      dataSource={dataSource}
-      scroll={{
-        x: 1500,
-        y: 400,
-      }}
-      pagination={{
-        current: currentPage,
-        pageSize: pageSize,
-        total: totalItems,
-        onChange: onChangePage,
-        onShowSizeChange: (current, size) => onChangePageSize(size),
-        showSizeChanger: true,
-      }}
-      bordered
-    />
-    <CheckInModal
+      <Table
+        className="commonListTable"
+        columns={columns}
+        dataSource={dataSource}
+        scroll={{
+          x: 1500,
+          y: 400,
+        }}
+        pagination={{
+          current: currentPage,
+          pageSize: pageSize,
+          total: totalItems,
+          onChange: onChangePage,
+          onShowSizeChange: (current, size) => onChangePageSize(size),
+          showSizeChanger: true,
+        }}
+        bordered
+      />
+      <CheckInModal
         visible={checkInVisible}
         onClose={() => setCheckInVisible(false)}
         booking={selectedBooking}
         mode={mode}
       />
-  </>
+    </>
   );
 };
 

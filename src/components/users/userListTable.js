@@ -43,41 +43,42 @@ export function SubAdminUserListTable({
   const columns = [
     {
       title: t("Username"),
-      dataIndex: 'userName',
-      key: 'userName',
+      dataIndex: "userName",
+      key: "userName",
       render: (text) => (
-        <span style={{ font: "normal normal 700 13px/20px noto sans" }}>{text}</span>
+        <span style={{ font: "normal normal 700 13px/20px noto sans" }}>
+          {text}
+        </span>
       ),
     },
     {
       title: t("Mobile Number"),
-      dataIndex: 'mobile',
-      key: 'mobile',
+      dataIndex: "mobile",
+      key: "mobile",
     },
     {
       title: t("Email"),
-      dataIndex: 'email',
-      key: 'email',
+      dataIndex: "email",
+      key: "email",
     },
     {
       title: t("User Role"),
-      dataIndex: 'userRole',
-      key: 'userRole',
+      dataIndex: "userRole",
+      key: "userRole",
     },
     {
       title: "",
-      dataIndex: 'edit',
-      key: 'edit',
-      align: 'center',
+      dataIndex: "edit",
+      key: "edit",
+      align: "center",
     },
     {
       title: "",
-      dataIndex: 'delete',
-      key: 'delete',
-      align: 'center',
+      dataIndex: "delete",
+      key: "delete",
+      align: "center",
     },
   ];
-  
 
   const categoriesList = useMemo(() => {
     return data.map((item, idx) => ({
@@ -159,7 +160,7 @@ export function SubAdminUserListTable({
   return (
     <div className="usertablewrapper">
       <Table
-        className="donationListTable"
+        className="commonListTable"
         columns={columns}
         dataSource={categoriesList}
         scroll={{
