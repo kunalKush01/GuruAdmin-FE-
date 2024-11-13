@@ -523,7 +523,7 @@ export default function DonationANTDListTable(
   return (
     <div>
       <Table
-        className="donationListTable"
+        className="commonListTable"
         columns={columns}
         dataSource={Donatio_data}
         scroll={{

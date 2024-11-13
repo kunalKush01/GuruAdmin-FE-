@@ -51,9 +51,9 @@ export default function LogListTable({ data }) {
     <div className="loglisttablewrapper">
       {/* <CustomDataTable columns={columns} maxHeight="350px" data={logData} /> */}
       <Table
-      className="donationListTable"
-        columns={columns} 
-        dataSource={logData} 
+        className="commonListTable"
+        columns={columns}
+        dataSource={logData}
       />
     </div>
   );

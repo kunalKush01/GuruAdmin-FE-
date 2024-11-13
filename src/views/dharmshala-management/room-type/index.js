@@ -250,7 +250,7 @@ const RoomTypesInfo = () => {
             >
               <Then>
                 <Table
-                  className="donationListTable"
+                  className="commonListTable"
                   columns={columns}
                   scroll={{
                     x: 1500,

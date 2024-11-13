@@ -64,10 +64,8 @@ export function ExpensesListTable({
       dataIndex: "date",
       width: 200,
       render: (date) => {
-        const formattedDate = moment(date)
-          .local()
-          .format("DD MMM YYYY");
-    
+        const formattedDate = moment(date).local().format("DD MMM YYYY");
+
         return formattedDate;
       },
     },
@@ -89,7 +87,7 @@ export function ExpensesListTable({
     {
       title: t("Actions"),
       dataIndex: "action",
-      fixed:"right"
+      fixed: "right",
     },
   ];
   const categoriesList = useMemo(() => {
@@ -172,7 +170,7 @@ export function ExpensesListTable({
     <div className="recentdonationtablewrapper">
       {/* <CustomDataTable maxHeight={""} columns={columns} data={categoriesList} /> */}
       <Table
-        className="donationListTable"
+        className="commonListTable"
         columns={columns}
         dataSource={categoriesList}
         rowKey="_Id"
