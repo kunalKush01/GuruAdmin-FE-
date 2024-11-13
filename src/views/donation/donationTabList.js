@@ -18,6 +18,7 @@ import {
   Input,
   Modal,
   Select,
+  Tag,
 } from "antd";
 import {
   getAllCategories,
@@ -31,6 +32,7 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { WRITE } from "../../utility/permissionsVariable";
 import DonationANTDListTable from "../../components/donation/donationAntdListTable";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import filterIcon from "../../assets/images/icons/filter.svg";
 import "../../assets/scss/viewCommon.scss";
 import SuspenseImportForm from "./suspenseImportForm";
 import SuspenseListTable from "../../components/donation/suspenseListTable";
@@ -38,7 +40,9 @@ import SuspenseHistoryTable from "../../components/donation/suspenseHistoryTable
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
 import { addSuspense } from "../../api/suspenseApi";
 import loadingOutlined from "../../assets/images/icons/loadingIco.svg";
+import crossIcon from "../../assets/images/icons/cross.svg";
 import syncIcon from "../../assets/images/icons/sync.svg";
+import AddFilterSection from "../../components/partials/addFilterSection";
 
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 export default function Donation() {
@@ -263,7 +267,7 @@ export default function Donation() {
       : queryClient.invalidateQueries(["suspenseDataHistory"]);
   };
   const modeOfPaymentOptions = [
-    { value: "", label: t('select_option') },
+    { value: "", label: t("select_option") },
     { value: "Cash", label: "Cash" },
     { value: "UPI", label: "UPI" },
     { value: "online", label: "Online" },
@@ -272,6 +276,27 @@ export default function Donation() {
     { value: "Debit Card", label: "Debit Card" },
     { value: "Bank Transfer", label: "Bank Transfer" },
   ];
+
+  const [filterOpen, setFilterOpen] = useState(false);
+  const showFilter = () => {
+    setFilterOpen(true);
+  };
+  const onFilterClose = () => {
+    setFilterOpen(false);
+  };
+  const handleApplyFilter = (e) => {
+    showFilter();
+  };
+  const [filterData, setFilterData] = useState(null);
+  const onFilterSubmit = (filterData) => {
+    console.log("Filter Data received:", filterData);
+    setFilterData(filterData);
+    // Handle the filter data here, e.g., send it to an API, update state, etc.
+  };
+  const handleRemoveAllFilter=()=>{
+    setFilterData(null)
+  }
+
   // Donation split tab
   const items = [
     {
@@ -338,7 +363,7 @@ export default function Donation() {
                   onClick={handleButtonClick}
                   // onClick={() => importFileRef.current.click()}
                 >
-                {t("Import_File")}
+                  {t("Import_File")}
                 </Button>
 
                 <input
@@ -353,7 +378,7 @@ export default function Donation() {
                 subPermission?.includes(WRITE) ? (
                   <Button
                     color="primary"
-                    className={`addAction-btn`}
+                    className={`addAction-btn me-1`}
                     onClick={() =>
                       history.push(
                         `/donation/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}&type=${activeTab}`
@@ -370,9 +395,52 @@ export default function Donation() {
                 ) : (
                   ""
                 )}
+                <Button
+                  className="secondaryAction-btn"
+                  color="primary"
+                  onClick={handleApplyFilter}
+                >
+                  <img
+                    src={filterIcon}
+                    alt="Filter Icon"
+                    width={20}
+                    className="filterIcon"
+                  />
+                  {t("filter")}
+                </Button>
               </div>
             </div>
           </div>
+          <div className="d-flex justify-content-between">
+            <div>
+              {filterData !== null && (
+                <span className="filterLable">Active Filters:</span>
+              )}
+              {/* Display filter data as tags */}
+              {filterData !== null &&
+                Object.keys(filterData).map((key) => {
+                  if (key.startsWith("fieldName")) {
+                    const index = key.replace("fieldName", ""); // Extract the index
+                    const fieldName = filterData[key].label;
+                    const filterType = filterData[`filterType${index}`]?.label;
+                    const filterValue = filterData[`filterValue${index}`];
+
+                    return (
+                      <Tag key={index} color="orange" style={{ margin: "5px" }}>
+                        {`${fieldName} (${filterType}): ${filterValue}`} <img src={crossIcon} width={15} className="crossIcon" />
+                      </Tag>
+                    );
+                  }
+                  return null;
+                })}
+            </div>
+            <div style={{marginTop:"5px"}}>
+              {filterData !== null && (
+                <span className="cursor-pointer" onClick={handleRemoveAllFilter}>Cancel</span>
+              )}
+            </div>
+          </div>
+
           <div style={{ height: "10px" }}>
             <If condition={donationQuery.isFetching}>
               <Then>
@@ -614,19 +682,21 @@ export default function Donation() {
                 )}
               </Space>
               <Space wrap className="">
-              {!showHistory && (allPermissions?.name === "all" || subPermission?.includes(WRITE)) && (
-              <Button
-                color="primary"
-                className="addAction-btn"
-                size="large"
-                onClick={handleAddSuspenseClick}
-              >
-                <span>
-                  <Plus className="" size={15} strokeWidth={4} />
-                </span>
-                <span> {t("add_suspense_record")}</span>
-              </Button>
-            )}
+                {!showHistory &&
+                  (allPermissions?.name === "all" ||
+                    subPermission?.includes(WRITE)) && (
+                    <Button
+                      color="primary"
+                      className="addAction-btn"
+                      size="large"
+                      onClick={handleAddSuspenseClick}
+                    >
+                      <span>
+                        <Plus className="" size={15} strokeWidth={4} />
+                      </span>
+                      <span> {t("add_suspense_record")}</span>
+                    </Button>
+                  )}
                 <Dropdown.Button
                   type="primary"
                   size="large"
@@ -642,7 +712,7 @@ export default function Donation() {
                   }}
                   onClick={handleButtonClick}
                 >
-                  {t('import')}
+                  {t("import")}
                 </Dropdown.Button>
               </Space>
               <Modal
@@ -663,7 +733,11 @@ export default function Donation() {
                       },
                     ]}
                   >
-                    <CustomDatePicker showTime format="YYYY-MM-DD HH:mm" placeholder={t('select_date')}/>
+                    <CustomDatePicker
+                      showTime
+                      format="YYYY-MM-DD HH:mm"
+                      placeholder={t("select_date")}
+                    />
                   </Form.Item>
 
                   <Form.Item name="transactionId" label={t("suspense_transId")}>
@@ -713,7 +787,7 @@ export default function Donation() {
 
                   <Form.Item>
                     <Button color="primary" htmlType="submit">
-                      {t('add_record')}
+                      {t("add_record")}
                     </Button>
                   </Form.Item>
                 </Form>
@@ -755,6 +829,11 @@ export default function Donation() {
         open={open}
         tab={activeTab}
         setShowHistory={setShowHistory}
+      />
+      <AddFilterSection
+        onFilterClose={onFilterClose}
+        filterOpen={filterOpen}
+        onSubmitFilter={onFilterSubmit}
       />
     </div>
   );

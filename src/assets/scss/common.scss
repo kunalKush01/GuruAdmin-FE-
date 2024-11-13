@@ -2930,12 +2930,12 @@
     overflow-y: auto;
 }
 
-.ant-drawer-content-wrapper {
-    width: 460px !important;
-    // margin-top: 65px !important;
-    // height: 650px !important;
+// .ant-drawer-content-wrapper {
+//     width: 460px !important;
+//     // margin-top: 65px !important;
+//     // height: 650px !important;
 
-}
+// }
 
 .ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
     border-bottom: 5px solid $primary;
@@ -3368,6 +3368,7 @@
 }
 
 .uploadBtn {
+    width: 100%;
     height: 38px !important;
 
     span {
@@ -4310,4 +4311,17 @@
     border-radius: 10px;
     padding: 5px 40px;
     opacity: 100%;
+}
+.filterIcon{
+    margin-top: -1px;
+    margin-right: 5px;
+}
+.filterLable{
+    font-size: 15px;
+    color: $font-color;
+    font-weight: 600;
+}
+.crossIcon{
+    margin-bottom: 3px;
+    cursor: pointer;
 }
