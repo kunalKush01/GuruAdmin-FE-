@@ -553,7 +553,6 @@ const idTypeOptions = [
     // if (formik.values.totalPaid > totalAmount){
     //   totalDueNew -= formik.values.security
     // }
-
     if (totalDueNew === 0) {
       totalDueNew -= formik.values.security;
   }
