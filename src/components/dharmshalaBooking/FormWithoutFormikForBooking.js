@@ -122,6 +122,20 @@ useEffect(() => {
     formik.setFieldValue("guestname", user?.name);
     formik.setFieldValue("email", user?.email);
     formik.setFieldValue("donarName", user?.name);
+
+    const addressParts = [];
+    if (user?.addLine1) addressParts.push(user.addLine1);
+    if (user?.addLine2) addressParts.push(user.addLine2);
+    if (user?.city) addressParts.push(user.city);
+    if (user?.district) addressParts.push(user.district);
+    if (user?.state) addressParts.push(user.state);
+    if (user?.country) addressParts.push(user.country);
+    if (user?.pin) addressParts.push(user.pin);
+    if (user?.address) addressParts.push(user.address);
+    
+    const fullAddress = addressParts.filter(Boolean).join(", ");
+    formik.setFieldValue("address", fullAddress);
+    
     setPhoneNumber(user?.countryCode + user?.mobileNumber);
     return;
   }
@@ -131,6 +145,7 @@ useEffect(() => {
   formik.setFieldValue("guestname", "");
   formik.setFieldValue("email", "");
   formik.setFieldValue("donarName", "");
+  formik.setFieldValue("address", "");
 }, [formik?.values?.SelectedUser]);
 
 useEffect(() => {
