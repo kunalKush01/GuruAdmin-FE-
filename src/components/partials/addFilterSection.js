@@ -9,6 +9,7 @@ import FormikCustomReactSelect from "./formikCustomReactSelect";
 import CustomTextField from "./customTextField";
 const { RangePicker } = DatePicker;
 import '../../assets/scss/common.scss'
+import moment from "moment";
 function AddFilterSection({ onFilterClose, filterOpen, onSubmitFilter }) {
   const { t } = useTranslation();
 
@@ -56,7 +57,7 @@ function AddFilterSection({ onFilterClose, filterOpen, onSubmitFilter }) {
             format="DD MMM YYYY"
             placeholder={t("Select Date")}
             onChange={(date) => {
-              const formattedStartDate = date.format("DD MMM YYYY");
+              const formattedStartDate = moment(date).format("DD MMM YYYY");
               formik.setFieldValue(`filterValue${index}`, formattedStartDate);
             }}
           />
