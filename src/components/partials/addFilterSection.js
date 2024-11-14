@@ -1,4 +1,4 @@
-import { DatePicker, Drawer, Input } from "antd";
+import { DatePicker, Drawer, Input, Collapse } from "antd";
 import { Formik, Form, Field } from "formik";
 import React from "react";
 import { Plus } from "react-feather";
@@ -8,8 +8,9 @@ import "../../assets/scss/common.scss";
 import FormikCustomReactSelect from "./formikCustomReactSelect";
 import CustomTextField from "./customTextField";
 const { RangePicker } = DatePicker;
-import '../../assets/scss/common.scss'
 import moment from "moment";
+const { Panel } = Collapse;
+
 function AddFilterSection({ onFilterClose, filterOpen, onSubmitFilter }) {
   const { t } = useTranslation();
 
@@ -32,9 +33,8 @@ function AddFilterSection({ onFilterClose, filterOpen, onSubmitFilter }) {
     const value = field ? field.value : null;
 
     const handleChange = (e) => {
-      // Reset the value if field is changed
       if (formik.values[`fieldName${index}`] !== field.value) {
-        formik.setFieldValue(`filterValue${index}`, ""); // Clear the value
+        formik.setFieldValue(`filterValue${index}`, "");
       } else {
         formik.setFieldValue(`filterValue${index}`, e.target.value);
       }
@@ -83,13 +83,16 @@ function AddFilterSection({ onFilterClose, filterOpen, onSubmitFilter }) {
     }
   };
 
+  // Check if it's mobile view based on window width
+  const isMobileView = window.innerWidth <= 768;
+
   return (
     <Drawer
       id="filterDrawer"
       title={t("Apply Filter")}
       onClose={onFilterClose}
       open={filterOpen}
-      width={700}
+      width={isMobileView ? "100%" : 700}
     >
       <Formik
         initialValues={{}}
@@ -101,72 +104,116 @@ function AddFilterSection({ onFilterClose, filterOpen, onSubmitFilter }) {
       >
         {(formik) => (
           <Form>
-            <Row>
-              <Col xs={12} sm={6} lg={4} className='d-flex'>
-                <label className="filterLable">Field Name:</label>
-              </Col>
-              <Col xs={12} sm={6} lg={3} className='d-flex'>
-                <label className="filterLable">Filter Type:</label>
-              </Col>
-              <Col xs={12} sm={6} lg={5} className='d-flex'>
-                <label className="filterLable">Field Value:</label>
-              </Col>
-            </Row>
-            {[1, 2, 3].map((index) => (
-              <Row className="mb-2" key={index}>
-                {/* Field Selection */}
-                <Col xs={12} sm={6} lg={4}>
-                  <FormikCustomReactSelect
-                    name={`fieldName${index}`}
-                    labelKey="label"
-                    valueKey="value"
-                    loadOptions={fieldOptions}
-                    placeholder={t("Select Field")}
-                    required
-                    onChange={(value) => {
-                      // Reset the filterValue when field name changes
-                      formik.setFieldValue(`filterValue${index}`, "");
-                      formik.setFieldValue(`fieldName${index}`, value);
-                    }}
-                    width="100"
-                  />
-                </Col>
+            {!isMobileView ? (
+              <>
+                <Row>
+                  <Col xs={4} sm={6} lg={4} className="d-flex">
+                    <label className="filterLable">Field Name:</label>
+                  </Col>
+                  <Col xs={4} sm={6} lg={3} className="d-flex">
+                    <label className="filterLable">Filter Type:</label>
+                  </Col>
+                  <Col xs={4} sm={6} lg={5} className="d-flex">
+                    <label className="filterLable">Field Value:</label>
+                  </Col>
+                </Row>
+                {[1, 2, 3].map((index) => (
+                  <Row className="mb-2" key={index}>
+                    <Col xs={4} sm={6} lg={4}>
+                      <FormikCustomReactSelect
+                        name={`fieldName${index}`}
+                        labelKey="label"
+                        valueKey="value"
+                        loadOptions={fieldOptions}
+                        placeholder={t("Select Field")}
+                        required
+                        onChange={(value) => {
+                          formik.setFieldValue(`filterValue${index}`, "");
+                          formik.setFieldValue(`fieldName${index}`, value);
+                        }}
+                        width="100"
+                      />
+                    </Col>
 
-                {/* Filter Type Selection */}
-                <Col xs={12} sm={6} lg={3}>
-                  <FormikCustomReactSelect
-                    name={`filterType${index}`}
-                    labelKey="label"
-                    valueKey="value"
-                    loadOptions={filterTypeOptions}
-                    placeholder={t("Select Filter")}
-                    required
-                    width="100"
-                  />
-                </Col>
+                    <Col xs={4} sm={6} lg={3}>
+                      <FormikCustomReactSelect
+                        name={`filterType${index}`}
+                        labelKey="label"
+                        valueKey="value"
+                        loadOptions={filterTypeOptions}
+                        placeholder={t("Select Filter")}
+                        required
+                        width="100"
+                      />
+                    </Col>
 
-                {/* Filter Value Input */}
-                <Col xs={12} sm={6} lg={5}>
-                  <Field name={`filterValue${index}`}>
-                    {() =>
-                      renderFilterValueInput(
-                        formik.values[`fieldName${index}`],
-                        index,
-                        formik
-                      )
-                    }
-                  </Field>
-                </Col>
-              </Row>
-            ))}
+                    <Col xs={4} sm={6} lg={5}>
+                      <Field name={`filterValue${index}`}>
+                        {() =>
+                          renderFilterValueInput(
+                            formik.values[`fieldName${index}`],
+                            index,
+                            formik
+                          )
+                        }
+                      </Field>
+                    </Col>
+                  </Row>
+                ))}
+              </>
+            ) : (
+              <Collapse accordion>
+                {[1, 2, 3].map((index) => {
+                  const fieldName = formik.values[`fieldName${index}`]?.label || `Field ${index}`;
+                  return (
+                    <Panel header={fieldName} key={index}>
+                      <div className="mb-2">
+                        <FormikCustomReactSelect
+                          name={`fieldName${index}`}
+                          labelKey="label"
+                          valueKey="value"
+                          loadOptions={fieldOptions}
+                          placeholder={t("Select Field")}
+                          required
+                          onChange={(value) => {
+                            formik.setFieldValue(`filterValue${index}`, "");
+                            formik.setFieldValue(`fieldName${index}`, value);
+                          }}
+                          width="100"
+                        />
+                      </div>
 
-            {/* Submit Button */}
-            <div className="d-flex justify-content-end">
-              <Button
-                color="primary"
-                className="addAction-btn"
-                type="submit"
-              >
+                      <div className="mb-2">
+                        <FormikCustomReactSelect
+                          name={`filterType${index}`}
+                          labelKey="label"
+                          valueKey="value"
+                          loadOptions={filterTypeOptions}
+                          placeholder={t("Select Filter")}
+                          required
+                          width="100"
+                        />
+                      </div>
+
+                      <div>
+                        <Field name={`filterValue${index}`}>
+                          {() =>
+                            renderFilterValueInput(
+                              formik.values[`fieldName${index}`],
+                              index,
+                              formik
+                            )
+                          }
+                        </Field>
+                      </div>
+                    </Panel>
+                  );
+                })}
+              </Collapse>
+            )}
+
+            <div className="d-flex justify-content-end mt-3">
+              <Button color="primary" className="addAction-btn" type="submit">
                 <Plus size={15} strokeWidth={4} />
                 <span>{t("Apply Filters")}</span>
               </Button>
