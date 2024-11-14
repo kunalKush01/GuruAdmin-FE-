@@ -395,6 +395,7 @@ export default function Donation() {
                 ) : (
                   ""
                 )}
+              </div>
                 <Button
                   className="secondaryAction-btn"
                   color="primary"
@@ -408,7 +409,6 @@ export default function Donation() {
                   />
                   {t("filter")}
                 </Button>
-              </div>
             </div>
           </div>
           <div className="d-flex justify-content-between">
