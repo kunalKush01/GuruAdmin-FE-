@@ -87,7 +87,7 @@ const DharmshalaRoomTable = ({
               className="cursor-pointer "
               onClick={() => {
                 history.push({
-                  pathname: `/rooms/edit/${item?._id}/${floorId}/${buildingId}&number=${item?.roomNumber}&directBookingAvailable=${item?.directBookingAvailable}`,
+                  pathname: `/rooms/edit/${item?._id}/${floorId}/${buildingId}`,
                   state: { roomData: item },
                 });
               }}
