@@ -1,6 +1,6 @@
 import { DatePicker, Drawer, Input, Collapse } from "antd";
 import { Formik, Form, Field } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { Button, Col, Row } from "reactstrap";
@@ -163,46 +163,41 @@ function AddFilterSection({ onFilterClose, filterOpen, onSubmitFilter }) {
               </>
             ) : (
               <Collapse accordion>
-                {[1, 2, 3].map((index) => {
-                  const fieldName = formik.values[`fieldName${index}`]?.label || `Field ${index}`;
-                  return (
-                    <Panel header={fieldName} key={index}>
-                      <div className="mb-2">
-                        <FormikCustomReactSelect
-                          name={`fieldName${index}`}
-                          labelKey="label"
-                          valueKey="value"
-                          loadOptions={fieldOptions}
-                          placeholder={t("Select Field")}
-                          required
-                          onChange={(value) => {
-                            formik.setFieldValue(`filterValue${index}`, "");
-                            formik.setFieldValue(`fieldName${index}`, value);
-                          }}
-                          width="100"
-                        />
-                      </div>
+                {fieldOptions.map((item, index) => {
+                  const fieldTitle = item.label;
+                  const fieldValue = item.value;
 
+                  {/* // Use useEffect to set the initial value for fieldName to avoid infinite render
+                  useEffect(() => {
+                    if (
+                      formik.values[`filterType${index + 1}`] !== undefined ||
+                      formik.values[`filterValue${index + 1}`] !== undefined
+                    ) {
+                      formik.setFieldValue(`fieldName${index + 1}`, {
+                        value: fieldValue,
+                        label: fieldTitle,
+                      });
+                    }
+                  }, [fieldValue, fieldTitle, formik]); */}
+
+                  return (
+                    <Panel header={fieldTitle} key={index + 1}>
                       <div className="mb-2">
                         <FormikCustomReactSelect
-                          name={`filterType${index}`}
+                          name={`filterType${index + 1}`}
                           labelKey="label"
                           valueKey="value"
                           loadOptions={filterTypeOptions}
-                          placeholder={t("Select Filter")}
+                          placeholder={t("Select Filter Type")}
                           required
                           width="100"
                         />
                       </div>
 
                       <div>
-                        <Field name={`filterValue${index}`}>
+                        <Field name={`filterValue${index + 1}`}>
                           {() =>
-                            renderFilterValueInput(
-                              formik.values[`fieldName${index}`],
-                              index,
-                              formik
-                            )
+                            renderFilterValueInput(item, index + 1, formik)
                           }
                         </Field>
                       </div>
