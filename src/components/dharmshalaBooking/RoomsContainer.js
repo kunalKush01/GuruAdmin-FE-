@@ -64,7 +64,7 @@ const RoomsContainer = ({
                         true
                       );
                     }}
-                    disabled={isReadOnly || !isSearchRoom}
+                    disabled={isReadOnly}
                     onBlur={!isCheckModal && formik.handleBlur}
                     name={`roomsData[${index}].roomType`}
                   >
@@ -76,8 +76,8 @@ const RoomsContainer = ({
                     ))}
                   </select>
                   {!isCheckModal &&
-                    formik.errors.roomsData?.[index]?.roomType &&
-                    formik.touched.roomsData?.[index]?.roomType && (
+                    formik.touched.roomsData?.[index]?.roomType &&
+                    formik.errors.roomsData?.[index]?.roomType && (
                       <div className="text-danger">
                         <Trans
                           i18nKey={formik.errors.roomsData[index].roomType}
@@ -103,7 +103,7 @@ const RoomsContainer = ({
                 className="building-dropdown"
                 value={room.building}
                 onChange={(e) => handleBuildingChange(e.target.value, index)}
-                disabled={isReadOnly || !isSearchRoom}
+                disabled={isReadOnly}
                 onBlur={!isCheckModal && formik.handleBlur}
                 name={`roomsData[${index}].building`}
               >
