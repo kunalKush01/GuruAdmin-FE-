@@ -13,6 +13,8 @@ import { MasterListTable } from "../../../components/Masters/mastersListTable";
 import { Plus } from "react-feather";
 import AddMasterForm from "./addMasterForm";
 import '../../../assets/scss/common.scss'
+import { useSelector } from "react-redux";
+import { WRITE } from "../../../utility/permissionsVariable";
 
 
 export default function Master() {
@@ -64,6 +66,22 @@ export default function Master() {
   const handleFormSuccess = () => {
     queryClient.invalidateQueries(["Masters"]);
   };
+
+  // PERMISSSIONS
+  const permissions = useSelector(
+    (state) => state.auth.userDetail?.permissions
+  );
+  const allPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "all"
+  );
+  const subPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "configuration"
+  );
+
+  const subPermission = subPermissions?.subpermissions?.map(
+    (item) => item.name
+  );
+  
   return (
     <div className="masterlistTableContainer">
       <Helmet>
@@ -79,6 +97,8 @@ export default function Master() {
               <Trans i18nKey={"masters_list"} />
             </div>
             <div>
+            {allPermissions?.name === "all" ||
+            subPermission?.includes(WRITE) ? (
               <Button className="" id="addBtn" onClick={toggleForm}>
                 <Plus
                   className=""
@@ -88,6 +108,9 @@ export default function Master() {
                 />
                 {t("add")}
               </Button>
+              ) : (
+                ""
+              )}
             </div>
           </div>
         </div>

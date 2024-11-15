@@ -508,7 +508,7 @@ const Routes = [
       import("../../views/configuration/Report&Disput/reportDisputList")
     ),
     // exact:true
-    type: "configuration",
+    type: "report/disputes",
     subPermission: READ,
   },
   {
