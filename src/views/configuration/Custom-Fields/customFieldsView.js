@@ -13,6 +13,9 @@ import {
   getPledgeCustomFields,
 } from "../../../api/customFieldsApi";
 
+import { useSelector } from "react-redux";
+import { WRITE } from "../../../utility/permissionsVariable";
+
 const customFieldsView = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("Donation");
@@ -65,6 +68,21 @@ const customFieldsView = () => {
     [expenses_query]
   );
 
+  // PERMISSSIONS
+  const permissions = useSelector(
+    (state) => state.auth.userDetail?.permissions
+  );
+  const allPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "all"
+  );
+  const subPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "configuration"
+  );
+
+  const subPermission = subPermissions?.subpermissions?.map(
+    (item) => item.name
+  );
+
   const handleRowSuccess = () => {
     if (activeTab === "Donation") {
       queryClient.invalidateQueries(["getDonationFields"]);
@@ -89,6 +107,8 @@ const customFieldsView = () => {
               className="d-flex justify-content-end w-100"
               style={{ marginBottom: "10px" }}
             >
+               {allPermissions?.name === "all" ||
+            subPermission?.includes(WRITE) ? (
               <Button className="" id="addCustomFieldBtn" onClick={toggleForm}>
                 <Plus
                   className=""
@@ -98,6 +118,9 @@ const customFieldsView = () => {
                 />
                 Add
               </Button>
+              ) : (
+                ""
+              )}
             </div>
             <CustomFieldTable customFields={donation_custom_fields} />
           </div>
