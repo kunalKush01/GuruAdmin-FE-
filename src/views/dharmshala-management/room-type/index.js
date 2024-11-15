@@ -19,6 +19,7 @@ import "../../../assets/scss/dharmshala.scss";
 import deleteIcon from "../../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../../assets/images/icons/category/editIcon.svg";
 import Swal from "sweetalert2";
+import { DELETE, EDIT, WRITE } from "../../../utility/permissionsVariable";
 
 const RoomTypesInfo = () => {
   const history = useHistory();
@@ -29,6 +30,11 @@ const RoomTypesInfo = () => {
     page: 1,
     limit: 10,
   });
+
+  const permissions = useSelector((state) => state.auth.userDetail?.permissions);
+  const allPermissions = permissions?.find((permissionName) => permissionName.name === "all");
+  const subPermissions = permissions?.find((permissionName) => permissionName.name === "dharmshala/roomtypes");
+  const subPermission = subPermissions?.subpermissions?.map((item) => item.name);
   
   const searchParams = new URLSearchParams(history.location.search);
   const handleDeleteRoomType = async (payload) => {
@@ -208,6 +214,7 @@ const RoomTypesInfo = () => {
         >
           <Trans i18nKey="dharmshala_roomtypes" />
           <div className="d-flex mt-1 mt-sm-0 justify-content-between">
+          {(allPermissions?.name === "all" || subPermission?.includes(WRITE)) && (
             <Button
               className="me-1"
               color="primary"
@@ -224,6 +231,7 @@ const RoomTypesInfo = () => {
                 <Trans i18nKey={"roomtype_add"} />
               </span>
             </Button>
+            )}
           </div>
         </div>
         <div style={{ height: "10px" }}>
