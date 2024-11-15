@@ -14,6 +14,7 @@ import NoContent from "../../../components/partials/noContent";
 import DharmshalaInfoTable from "./table";
 import { Helmet } from "react-helmet";
 import "../../../assets/scss/dharmshala.scss";
+import {DELETE, EDIT, WRITE} from "../../../utility/permissionsVariable.js";
 
 const DharmshalasInfo = () => {
   const history = useHistory();
@@ -30,6 +31,11 @@ const DharmshalasInfo = () => {
   const currentPage = searchParams.get("page");
   const currentStatus = searchParams.get("status");
   const currentFilter = searchParams.get("filter");
+
+  const permissions = useSelector((state) => state.auth.userDetail?.permissions);
+  const allPermissions = permissions?.find((permissionName) => permissionName.name === "all");
+  const subPermissions = permissions?.find((permissionName) => permissionName.name === "dharmshala/buildings");
+  const subPermission = subPermissions?.subpermissions?.map((item) => item.name);
 
   useEffect(() => {
     if (currentPage || currentFilter || currentStatus) {
@@ -105,6 +111,7 @@ const DharmshalasInfo = () => {
         <div className={`d-sm-flex mb-1 justify-content-between align-items-center ${isMobileView && "d-flex flex-row"}`}>
           <Trans i18nKey="building_registered" />
           <div className="d-flex mt-1 mt-sm-0 justify-content-between">
+          {(allPermissions?.name === "all" || subPermission?.includes(WRITE)) && (
             <Button
               className="me-1"
               color="primary"
@@ -121,6 +128,7 @@ const DharmshalasInfo = () => {
                 <Trans i18nKey={"building_add"} />
               </span>
             </Button>
+            )}
           </div>
         </div>
         <div style={{ height: "10px" }}>
