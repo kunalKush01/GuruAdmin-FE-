@@ -23,6 +23,7 @@ export default function BookingForm({
   isPaymentModalOpen,
   setIsPaymentModalOpen,
   isEditing,
+  editBookingData
 }) {
   // const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [bookingData, setBookingData] = useState(null);
@@ -142,6 +143,7 @@ export default function BookingForm({
               showPrompt={showPrompt}
               buttonName={buttonName}
               isEditing={isEditing}
+              editBookingData={editBookingData}
             />
             <PaymentModal
               isOpen={isPaymentModalOpen}
