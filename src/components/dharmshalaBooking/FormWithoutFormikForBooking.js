@@ -13,18 +13,7 @@ import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumbe
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import AsyncSelectField from "../partials/asyncSelectField";
 import { getAllSubCategories } from "../../api/expenseApi";
-import {
-  findAllComitmentByUser,
-  findAllUsersByName,
-  findAllUsersByNumber,
-} from "../../api/findUser";
-import {
-  getRoomTypeList,
-  getDharmshalaList,
-  getDharmshalaFloorList,
-  getAllRoomsByFloorId,
-  getDharmshala,
-} from "../../api/dharmshala/dharmshalaInfo";
+
 import {
   findAllComitmentByUser,
   findAllUsersByName,
