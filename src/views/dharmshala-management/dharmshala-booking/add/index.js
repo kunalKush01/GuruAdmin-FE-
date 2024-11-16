@@ -184,6 +184,7 @@ const AddDharmshalaBooking = () => {
         isPaymentModalOpen={isPaymentModalOpen}
         setIsPaymentModalOpen={setIsPaymentModalOpen}
         isEditing={!!bookingData}
+        editBookingData={bookingData}
       />
     </div>
   );
