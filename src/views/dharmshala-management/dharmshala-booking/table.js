@@ -87,6 +87,7 @@ const DharmshalaBookingTable = ({
   };
 
   const handleEditClick = (item) => {
+    //console.log("@@@", item.originalData);
     history.push({
       pathname: `/booking/edit/${item._id}`,
       state: { bookingData: item.originalData },
