@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Form } from "formik";
 import { Trans, useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
@@ -25,6 +25,19 @@ import {
   getAllRoomsByFloorId,
   getDharmshala,
 } from "../../api/dharmshala/dharmshalaInfo";
+import {
+  findAllComitmentByUser,
+  findAllUsersByName,
+  findAllUsersByNumber,
+} from "../../api/findUser";
+import {
+  getRoomTypeList,
+  getDharmshalaList,
+  getDharmshalaFloorList,
+  getAllRoomsByFloorId,
+  getDharmshala,
+  checkRoomAvailability,
+} from "../../api/dharmshala/dharmshalaInfo";
 import guestIcon from "../../assets/images/icons/subadmin.svg";
 import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
@@ -32,7 +45,7 @@ import uploadIcon from "../../assets/images/icons/Thumbnail.svg";
 import { Prompt } from "react-router-dom";
 import AddUserDrawerForm from "../donation/addUserDrawerForm";
 import * as Yup from "yup";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
 import "../../../src/assets/scss/viewCommon.scss";
 import "../../../src/assets/scss/common.scss";
@@ -61,6 +74,7 @@ export default function FormWithoutFormikForBooking({
   setArticle,
   showPrompt,
   isEditing,
+  editBookingData,
   ...props
 }) {
   const { t } = useTranslation();
@@ -436,9 +450,90 @@ export default function FormWithoutFormikForBooking({
   const disabledDate = (current) => {
     return current && current < moment().startOf("day");
   };
+  const [selectedFromDate, setSelectedFromDate] = useState(
+    editBookingData.startDate
+  );
+  const [selectedToDate, setSelectedToDate] = useState(editBookingData.endDate);
+  const checkRoomAvailable = useMutation({
+    mutationFn: checkRoomAvailability,
+    onSuccess: (data) => {
+      // Log the entire response
+      console.log("API Response:", data);
+
+      // Check if there are results and if rooms are unavailable
+      const result = data.results?.[0]; // Assuming results is an array and you need the first element
+
+      if (result && !result.available) {
+        // Extract unavailable room numbers
+        const unavailableRoomNumbers = result.unavailableRoomNumbers;
+
+        if (unavailableRoomNumbers && unavailableRoomNumbers.length > 0) {
+          // Create the error message
+          const errorMessage = `Room(s) ${unavailableRoomNumbers.join(
+            ", "
+          )} not available for the selected dates`;
+
+          // Show SweetAlert error
+          Swal.fire({
+            icon: "error",
+            title: "Room Availability Error",
+            text: errorMessage,
+            confirmButtonText: "OK",
+          });
+        }
+      } else {
+        // console.log("Rooms available:", result.availableRooms);
+      }
+    },
+  });
+  const handleDateChange = async (fromDate, toDate) => {
+    const isFormattedString = (date) =>
+      typeof date === "string" && /^\d{2}-\d{2}-\d{4}$/.test(date);
+
+    const formattedFromDate = isFormattedString(fromDate)
+      ? fromDate
+      : fromDate.format("DD-MM-YYYY");
+
+    const formattedToDate = isFormattedString(toDate)
+      ? toDate
+      : toDate.format("DD-MM-YYYY");
+
+    console.log("Formatted From Date:", formattedFromDate);
+    console.log("Formatted To Date:", formattedToDate);
+
+    if (formattedFromDate || formattedToDate) {
+      const bookingPayload = {
+        startDate: formattedFromDate,
+        endDate: formattedToDate,
+        currentBookingId: editBookingData?._id,
+        rooms: editBookingData?.rooms.map((room) => ({
+          roomTypeId: room.roomType,
+          roomTypeName: room.roomTypeName,
+          building: room.building,
+          buildingName: room.buildingName,
+          floor: room.floor,
+          floorName: room.floorName,
+          roomId: room.roomId,
+          amount: room.amount,
+          roomNumber: room.roomNumber,
+        })),
+      };
+      await checkRoomAvailable.mutate(bookingPayload);
+      // Trigger API call
+      // checkRoomAvailability(bookingPayload)
+      //   .then((availabilityData) => {
+      //     console.log("Room availability data:", availabilityData);
+      //   })
+      //   .catch((error) => {
+      //     console.error("Error fetching room availability:", error);
+      //   });
+    }
+  };
 
   const handleFromDateChange = (date, dateString) => {
     formik.setFieldValue("fromDate", date);
+    setSelectedFromDate(date);
+    handleDateChange(date, selectedToDate);
     if (formik.values.toDate && date > formik.values.toDate) {
       formik.setFieldValue("toDate", null);
     }
@@ -446,6 +541,8 @@ export default function FormWithoutFormikForBooking({
 
   const handleToDateChange = (date, dateString) => {
     formik.setFieldValue("toDate", date);
+    setSelectedToDate(date);
+    handleDateChange(selectedFromDate, date);
   };
   const [isSearchRoom, setIsSearchRoom] = useState(false);
   const handleSearch = (e) => {
@@ -842,6 +939,53 @@ export default function FormWithoutFormikForBooking({
     setPreviewImage(file.url || file.preview);
     setPreviewOpen(true);
   };
+  const [datesChanged, setDatesChanged] = useState(false);
+
+  // useEffect(() => {
+  //   if (formik.values.fromDate && formik.values.toDate) {
+  //     setDatesChanged(true);
+  //   }
+  // }, [formik.values.fromDate, formik.values.toDate]);
+
+  // // Memoize the booking payload
+  // const bookingPayload = useMemo(() => {
+  //   if (isEditing && editBookingData && formik.values.fromDate && formik.values.toDate) {
+  //     return {
+  //       startDate: moment(formik.values.fromDate).format("DD-MM-YYYY"),
+  //       endDate: moment(formik.values.toDate).format("DD-MM-YYYY"),
+  //       currentBookingId: editBookingData._id,
+  //       rooms: editBookingData.rooms.map((room) => ({
+  //         roomTypeId: room.roomType,
+  //         roomTypeName: room.roomTypeName,
+  //         building: room.building,
+  //         buildingName: room.buildingName,
+  //         floor: room.floor,
+  //         floorName: room.floorName,
+  //         roomId: room.roomId,
+  //         amount: room.amount,
+  //         roomNumber: room.roomNumber,
+  //       })),
+  //     };
+  //   }
+  //   return null;
+  // }, [isEditing, editBookingData, formik.values.fromDate, formik.values.toDate]);
+
+  // // Fetch room availability data only if dates have changed
+  // const { data: availabilityData, isLoading, error } = useQuery(
+  //   ["checkRoomAvailable", bookingPayload],
+  //   () => checkRoomAvailability(bookingPayload),
+  //   {
+  //     enabled: !!bookingPayload && datesChanged, // Trigger only if dates have changed
+  //     refetchOnWindowFocus: false,
+  //   }
+  // );
+
+  // // Log availability data when fetched
+  // useEffect(() => {
+  //   if (availabilityData) {
+  //     console.log("Room availability data:", availabilityData);
+  //   }
+  // }, [availabilityData]);
 
   return (
     <Form>

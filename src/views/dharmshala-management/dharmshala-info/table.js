@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Button } from "reactstrap";
+import {DELETE, EDIT} from "../../../utility/permissionsVariable.js";
 import { deleteDharmshalaInfo } from "../../../api/dharmshala/dharmshalaInfo";
 import deleteIcon from "../../../assets/images/icons/category/deleteIcon.svg";
 import deleteDisableIcon from "../../../assets/images/icons/category/deleteDisableIcon.svg";
@@ -13,6 +14,8 @@ import confirmationIcon from "../../../assets/images/icons/news/conformationIcon
 import "../../../assets/scss/dharmshala.scss";
 import { Table, Tag } from "antd";
 
+import { useSelector } from "react-redux";
+
 const DharmshalaInfoTable = ({
   data = [],
   maxHeight,
@@ -20,13 +23,18 @@ const DharmshalaInfoTable = ({
   currentFilter,
   currentStatus,
   currentPage,
-  isMobileView,
+  isMobileView,   
 }) => {
   const { t } = useTranslation();
   const history = useHistory();
   const handleDeleteDharmshala = async (payload) => {
     return deleteDharmshalaInfo(payload);
   };
+
+  const permissions = useSelector((state) => state.auth.userDetail?.permissions);
+  const allPermissions = permissions?.find((permissionName) => permissionName.name === "all");
+  const subPermissions = permissions?.find((permissionName) => permissionName.name === "dharmshala/buildings");
+  const subPermission = subPermissions?.subpermissions?.map((item) => item.name);
 
   const queryClient = useQueryClient();
   const deleteMutation = useMutation({
@@ -182,6 +190,7 @@ const DharmshalaInfoTable = ({
       ),
       action: (
         <div>
+           {(allPermissions?.name === "all" || subPermission?.includes(EDIT)) && (
           <img
             src={editIcon}
             width={35}
@@ -190,7 +199,9 @@ const DharmshalaInfoTable = ({
               history.push(`/building/edit/${item?._id}`);
             }}
           />
+           )}
 
+          {(allPermissions?.name === "all" || subPermission?.includes(DELETE)) && (
           <img
             src={item?.floorCount === 0 ? deleteIcon : deleteDisableIcon}
             width={35}
@@ -230,10 +241,11 @@ const DharmshalaInfoTable = ({
               }
             }}
           />
+        )}
         </div>
       ),
     }));
-  }, [data]);
+  },[data, allPermissions, subPermission]);
 
   return (
     <div className="DharmshalaComponentInfo">
