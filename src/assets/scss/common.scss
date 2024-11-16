@@ -1132,6 +1132,7 @@
         color: $font-color !important;
         font: $font-weight-normal $font-size-small $font-family;
         border-radius: 5px;
+        margin-right: 5px;
     }
 
     .react-tel-input .flag-dropdown {
@@ -1723,6 +1724,53 @@
         align-items: center;
         gap: 0.8rem;
     }
+}
+
+.checkboxwrapper {
+    background: $secondary-color;
+    height: 38px;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+
+    label {
+        font: $font-weight-bold $font-size-medium $font-family;
+        color: $font-color;
+    }
+
+
+    .custom-checkbox {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-color: #fff;
+        border: 2px solid #efefef;
+        border-radius: 4px;
+        width: 24px;
+        height: 24px;
+        display: inline-block;
+        position: relative;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-right: 10px;
+    }
+
+    .custom-checkbox:checked {
+        background-color: #ff8c47;
+    }
+
+    .custom-checkbox:checked::after {
+        content: '✔';
+        color: #fff;
+        font-size: 16px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        line-height: 1;
+    }
+
 }
 
 .reactselectwrapper {

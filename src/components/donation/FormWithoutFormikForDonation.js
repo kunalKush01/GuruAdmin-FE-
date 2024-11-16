@@ -402,7 +402,7 @@ export default function FormWithoutFormikForDonation({
             <Col xs={12} sm={6} lg={3}>
               <FormikCustomReactSelect
                 labelName={t("category_select_sub_category")}
-                placeholder={t('select_option')}
+                placeholder={t("select_option")}
                 loadOptions={subLoadOption?.map((cate) => {
                   return {
                     ...cate,
@@ -417,6 +417,16 @@ export default function FormWithoutFormikForDonation({
                   formik?.values?.SelectedCommitmentId !== ""
                 }
                 width
+                onChange={(selectedOption) => {
+                  formik.setFieldValue("SelectedSubCategory", selectedOption);
+
+                  // Check if the selected subcategory has isFixedAmount === true
+                  if (selectedOption?.isFixedAmount) {
+                    formik.setFieldValue("Amount", selectedOption.amount || ""); // Set the amount from subcategory
+                  } else {
+                    formik.setFieldValue("Amount", ""); // Clear the amount for non-fixed subcategories
+                  }
+                }}
               />
             </Col>
             <Col
@@ -439,16 +449,16 @@ export default function FormWithoutFormikForDonation({
                   <FormikCustomReactSelect
                     labelName={t("mode_of_payment")}
                     name="modeOfPayment"
-                    placeholder={t('select_option')}
+                    placeholder={t("select_option")}
                     loadOptions={[
-                      { value: "", label: t('select_option') },
-                      { value: "Cash", label: t('cash') },
-                      { value: "UPI", label: t('upi') },
-                      { value: "online", label: t('online') },
-                      { value: "Cheque", label: t('cheque') },
-                      { value: "Credit Card", label: t('credit_card') },
-                      { value: "Debit Card", label: t('debit_card') },
-                      { value: "Bank Transfer", label: t('bank_transfer') },
+                      { value: "", label: t("select_option") },
+                      { value: "Cash", label: t("cash") },
+                      { value: "UPI", label: t("upi") },
+                      { value: "online", label: t("online") },
+                      { value: "Cheque", label: t("cheque") },
+                      { value: "Credit Card", label: t("credit_card") },
+                      { value: "Debit Card", label: t("debit_card") },
+                      { value: "Bank Transfer", label: t("bank_transfer") },
                     ]}
                     width
                   />
@@ -497,7 +507,7 @@ export default function FormWithoutFormikForDonation({
                           labelName={t("cheque_status")}
                           name="chequeStatus"
                           loadOptions={[
-                            { value: "", label: t('select_option') },
+                            { value: "", label: t("select_option") },
                             { value: "Pending", label: "Pending" },
                             { value: "Cleared", label: "Cleared" },
                             { value: "Rejected", label: "Rejected" },
@@ -611,8 +621,12 @@ export default function FormWithoutFormikForDonation({
                     label={t("categories_select_amount")}
                     placeholder={t("enter_price_manually")}
                     name="Amount"
-                    onInput={(e) =>
-                      (e.target.value = e.target.value?.toLocaleString("en-IN"))
+                    value={formik.values.Amount} // Ensure it is controlled by Formik
+                    onChange={(e) =>
+                      formik.setFieldValue(
+                        "Amount",
+                        e.target.value?.toLocaleString("en-IN")
+                      )
                     }
                     required
                   />
@@ -710,11 +724,7 @@ export default function FormWithoutFormikForDonation({
       </Row>
       <div className="btn-Published">
         {loading ? (
-          <Button
-            color="primary"
-            className="add-trust-btn"
-            disabled
-          >
+          <Button color="primary" className="add-trust-btn" disabled>
             <Spinner size="md" />
           </Button>
         ) : (
