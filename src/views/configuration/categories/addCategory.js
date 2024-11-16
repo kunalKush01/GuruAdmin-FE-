@@ -23,6 +23,20 @@ const schema = Yup.object().shape({
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
     .required("categories_sub_category_required")
     .trim(),
+  IsFixedAmount: Yup.boolean().required(), // Fixed the definition of Yup.boolean()
+  Amount: Yup.string()
+    .matches(/^(0|[1-9]\d*)(\.\d+)?$/, "invalid_amount") // Allows 0, positive integers, and positive decimals
+    .when("IsFixedAmount", {
+      is: true, // Conditional validation: Amount is required if IsFixedAmount is true
+      then: Yup.string()
+        .required("amount_required") // Ensures Amount is required
+        .test(
+          "is-greater-than-zero",
+          "Amount must be greater than 0",
+          (value) => parseFloat(value) > 0
+        ), // Custom validation for greater than 0
+      otherwise: Yup.string(), // Not required if IsFixedAmount is false
+    }),
 });
 
 export default function AddCategory() {
@@ -81,6 +95,8 @@ export default function AddCategory() {
               Id: "",
               MasterCategory: masterloadOptionQuery?.data?.results[0],
               SubCategory: "",
+              IsFixedAmount: false,
+              Amount: 0,
             }}
             validationSchema={schema}
             buttonName={"categories_AddCategory"}

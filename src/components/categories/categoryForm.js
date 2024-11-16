@@ -1,23 +1,16 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { FastField, Form, Formik } from "formik";
-import { flatMap } from "lodash";
-import React, { useMemo, useState } from "react";
+import { Form, Formik } from "formik";
+import React, { useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { Prompt, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Button, ButtonGroup, Col, Row, Spinner } from "reactstrap";
-import styled from "styled-components";
-import * as Yup from "yup";
-import { createNews } from "../../api/newsApi";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { ConverFirstLatterToCapital } from "../../utility/formater";
-import { CustomDropDown } from "../partials/customDropDown";
-import CustomTextField from "../partials/customTextField";
-import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
-import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
-import RichTextField from "../partials/richTextEditorField";
+import { Button, Col, Row, Spinner } from "reactstrap";
 import "../../assets/scss/common.scss";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
+import CustomCheckBox from "../partials/customCheckBox";
+import CustomTextField from "../partials/customTextField";
+import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 
 export default function CategoryForm({
   loadOptions = [],
@@ -37,6 +30,7 @@ export default function CategoryForm({
   const { t } = useTranslation();
   const categoryQuerClient = useQueryClient();
   const [loading, setLoading] = useState(false);
+  const [isFixedAmountChecked, setIsFixedAmountChecked] = useState(false);
   const categoryMutation = useMutation({
     mutationFn: handleSubmit,
     onSuccess: (data) => {
@@ -57,7 +51,7 @@ export default function CategoryForm({
   };
 
   return (
-    <div className="formwrapper FormikWrapper">
+    <div className="FormikWrapper">
       <Formik
         initialValues={{ ...initialValues }}
         onSubmit={(e) => {
@@ -71,6 +65,8 @@ export default function CategoryForm({
             name: e?.SubCategory,
             masterId: e?.MasterCategory?.id,
             categoryId: e?.Id,
+            isFixedAmount: e?.IsFixedAmount,
+            amount: e?.Amount,
           });
         }}
         validationSchema={validationSchema}
@@ -90,10 +86,10 @@ export default function CategoryForm({
             )}
 
             <Row className="paddingForm">
-              <Col xs={12} md={10} lg={7}>
+              <Col>
                 <Row>
                   {!AddLanguage && (
-                    <Col xs={12} sm={6}>
+                    <Col xs={12} sm={3}>
                       <FormikCustomReactSelect
                         labelName={t("categories_select_master_category")}
                         required
@@ -112,12 +108,12 @@ export default function CategoryForm({
                             };
                           })
                         }
-                        width={"100"}
+                        width={"100%"}
                         {...props}
                       />
                     </Col>
                   )}
-                  <Col xs={12} sm={6}>
+                  <Col xs={12} sm={3}>
                     <CustomTextField
                       label={t("categories_sub_category")}
                       name="SubCategory"
@@ -127,9 +123,35 @@ export default function CategoryForm({
                       required
                     />
                   </Col>
+                  <Col xs={12} sm={3} className="mt-2">
+                    <CustomCheckBox
+                      name="IsFixedAmount"
+                      label={t("is_fixed_amount")}
+                      customOnChange={(checked) => {
+                        setIsFixedAmountChecked(checked);
+                        console.log("Checkbox state:", checked);
+                      }}
+                      disabled={false}
+                    />
+                  </Col>
+
+                  {isFixedAmountChecked && (
+                    <Col xs={12} sm={3}>
+                      <CustomTextField
+                        type="number"
+                        label={t("amount")}
+                        name="Amount"
+                        onChange={(e) => {
+                          formik.setFieldValue("Amount", e.target.value); // Update Formik state
+                        }}
+                        required
+                      />
+                    </Col>
+                  )}
                 </Row>
               </Col>
             </Row>
+
             <div className="btn-Published">
               {loading ? (
                 <Button
