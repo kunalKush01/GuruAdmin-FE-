@@ -39,17 +39,17 @@ export function CategoryListTable({
   const { t } = useTranslation();
   const history = useHistory();
   const columns = [
-    {
-      title: t("categories_serial_number"),
-      dataIndex: "id",
-      key: "id",
-      width: 150,
-      render: (text) => (
-        <span style={{ font: "normal normal 700 13px/20px noto sans" }}>
-          {text}
-        </span>
-      ),
-    },
+    // {
+    //   title: t("categories_serial_number"),
+    //   dataIndex: "id",
+    //   key: "id",
+    //   width: 150,
+    //   render: (text) => (
+    //     <span style={{ font: "normal normal 700 13px/20px noto sans" }}>
+    //       {text}
+    //     </span>
+    //   ),
+    // },
     {
       title: t("name"),
       dataIndex: "subCategory",
@@ -102,8 +102,8 @@ export function CategoryListTable({
   const categoriesList = useMemo(() => {
     return data.map((item) => ({
       _Id: item.id,
-      id:
-        item?.serialNumber > 9 ? item?.serialNumber : `0${item?.serialNumber}`,
+      //   id:
+      //     item?.serialNumber > 9 ? item?.serialNumber : `0${item?.serialNumber}`,
       masterCategory: ConverFirstLatterToCapital(item.masterCategory.name),
       subCategory: ConverFirstLatterToCapital(item.name),
       isFixedAmount: item.isFixedAmount ? "Yes" : "No",
