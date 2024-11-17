@@ -15,7 +15,7 @@ function MemberShipListTable({
   onChangePageSize,
 }) {
   const history = useHistory();
-  const {t}= useTranslation()
+  const { t } = useTranslation();
   const columns = [
     {
       title: t("member_name"),
@@ -31,11 +31,12 @@ function MemberShipListTable({
       width: 120,
     },
     {
-      title:t("gender"),
+      title: t("gender"),
       dataIndex: ["data", "personalInfo", "gender"],
       key: "gender",
       width: 100,
-      render: (text, record) => `${record.data.personalInfo.gender?.name ||"-"}`,
+      render: (text, record) =>
+        `${record.data.personalInfo.gender?.name || "-"}`,
     },
     {
       title: t("marital_status"),
@@ -43,21 +44,23 @@ function MemberShipListTable({
       key: "maritalStatus",
       width: 150,
       render: (text, record) =>
-        `${record.data.personalInfo.maritalStatus?.name ||"-"}`,
+        `${record.data.personalInfo.maritalStatus?.name || "-"}`,
     },
     {
-      title:t("membership"),
+      title: t("membership"),
       dataIndex: ["data", "membershipInfo", "membership"],
       key: "membership",
       width: 150,
-      render: (text, record) => `${record.data.membershipInfo.membership?.name ||"-"}`
+      render: (text, record) =>
+        `${record.data.membershipInfo.membership?.name || "-"}`,
     },
     {
       title: t("branch"),
       dataIndex: ["data", "membershipInfo", "branch"],
       key: "branch",
       width: 120,
-      render: (text, record) => `${record.data.membershipInfo.branch?.name ||"-"}`,
+      render: (text, record) =>
+        `${record.data.membershipInfo.branch?.name || "-"}`,
     },
     {
       title: t("phone"),
@@ -66,7 +69,7 @@ function MemberShipListTable({
       width: 120,
     },
     {
-      title:t("email"),
+      title: t("email"),
       dataIndex: ["data", "contactInfo", "email"],
       key: "email",
       width: 200,
@@ -76,11 +79,18 @@ function MemberShipListTable({
       dataIndex: ["data", "addressInfo", "homeAddress", "street"],
       key: "homeAddress",
       width: 200,
-      render: (text, record) =>
-        `${record.data.addressInfo.homeAddress.street ||"-"}, ${record.data.addressInfo.homeAddress.city?.name ||""}, ${record.data.addressInfo.homeAddress.state?.name ||""}, ${record.data.addressInfo.homeAddress.country?.name  ||""}`,
+      render: (text, record) => {
+        const homeAddress = record?.data?.addressInfo?.homeAddress || {};
+        const street = homeAddress?.street || "-";
+        const city = homeAddress?.city?.name || "";
+        const state = homeAddress?.state?.name || "";
+        const country = homeAddress?.country?.name || "";
+
+        return `${street}, ${city}, ${state}, ${country}`;
+      },
     },
     {
-      title:t("occupation"),
+      title: t("occupation"),
       dataIndex: ["data", "otherInfo", "occupation"],
       key: "occupation",
       width: 150,
@@ -98,7 +108,7 @@ function MemberShipListTable({
       width: 200,
     },
     {
-      title:t("action"),
+      title: t("action"),
       key: "action",
       width: 100,
       fixed: "right",
