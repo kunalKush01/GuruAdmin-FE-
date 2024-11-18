@@ -380,4 +380,11 @@ export const getDharmshalaBookingList = () =>
           requestFunction: (axios) => axios.get(`bookings/ListRoomhold`),
           showToastOnSuccess: false,
           showToastOnError: false,
-        });  
+        });
+      export const checkRoomAvailability = (payload) =>
+        callDharmshalaApi({
+          requestFunction: (axios) =>
+            axios.post(`bookings/check-availability`, payload),
+          showToastOnSuccess: false,
+          showToastOnError: false,
+        });        

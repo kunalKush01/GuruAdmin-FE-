@@ -39,17 +39,17 @@ export function CategoryListTable({
   const { t } = useTranslation();
   const history = useHistory();
   const columns = [
-    {
-      title: t("categories_serial_number"),
-      dataIndex: "id",
-      key: "id",
-      width: 200,
-      render: (text) => (
-        <span style={{ font: "normal normal 700 13px/20px noto sans" }}>
-          {text}
-        </span>
-      ),
-    },
+    // {
+    //   title: t("categories_serial_number"),
+    //   dataIndex: "id",
+    //   key: "id",
+    //   width: 150,
+    //   render: (text) => (
+    //     <span style={{ font: "normal normal 700 13px/20px noto sans" }}>
+    //       {text}
+    //     </span>
+    //   ),
+    // },
     {
       title: t("name"),
       dataIndex: "subCategory",
@@ -66,10 +66,22 @@ export function CategoryListTable({
           : window.screen.width >= 700 && window.screen.width < 900
           ? 350
           : window.screen.width >= 900 && window.screen.width < 1200
-          ? 675
+          ? 250
           : window.screen.width >= 1200 && window.screen.width < 1450
-          ? 675
-          : 675,
+          ? 250
+          : 250,
+    },
+    {
+      title: t("is_fixed_amount"),
+      dataIndex: "isFixedAmount",
+      key: "isFixedAmount",
+      width: 120,
+    },
+    {
+      title: t("amount"),
+      dataIndex: "amount",
+      key: "a",
+      width: 180,
     },
     {
       title: "",
@@ -90,10 +102,13 @@ export function CategoryListTable({
   const categoriesList = useMemo(() => {
     return data.map((item) => ({
       _Id: item.id,
-      id:
-        item?.serialNumber > 9 ? item?.serialNumber : `0${item?.serialNumber}`,
+      //   id:
+      //     item?.serialNumber > 9 ? item?.serialNumber : `0${item?.serialNumber}`,
       masterCategory: ConverFirstLatterToCapital(item.masterCategory.name),
       subCategory: ConverFirstLatterToCapital(item.name),
+      isFixedAmount: item.isFixedAmount ? "Yes" : "No",
+      amount: item.amount,
+
       addLanguage:
         allPermissions?.name === "all" || subPermission?.includes(WRITE) ? (
           <Button
