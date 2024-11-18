@@ -47,7 +47,7 @@ export default function CommitmentForm({
   const [showPrompt, setShowPrompt] = useState(true);
 
   return (
-    <div className="formwrapper FormikWrapper">
+    <div className="FormikWrapper">
       {!masterloadOptionQuery.isLoading && (
         <Formik
           initialValues={{

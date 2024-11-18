@@ -1,7 +1,7 @@
 import { Form } from "formik";
 import React, { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Prompt, useHistory,useLocation } from "react-router-dom";
+import { Prompt, useHistory, useLocation } from "react-router-dom";
 import { useUpdateEffect } from "react-use";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import { getAllSubCategories } from "../../api/expenseApi";
@@ -78,7 +78,7 @@ export default function FormWithoutFormikForCommitment({
     formik.setFieldValue("countryCode", "");
     formik.setFieldValue("dialCode", "");
     formik.setFieldValue("donarName", "");
-  }, [formik?.values?.SelectedUser,dataLoad]);
+  }, [formik?.values?.SelectedUser, dataLoad]);
 
   useUpdateEffect(() => {
     if (formik?.values?.Mobile?.toString().length == 10) {
@@ -99,7 +99,7 @@ export default function FormWithoutFormikForCommitment({
     } else {
       setNoUserFound(false);
     }
-  }, [formik?.values?.Mobile,dataLoad]);
+  }, [formik?.values?.Mobile, dataLoad]);
 
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
@@ -139,7 +139,7 @@ export default function FormWithoutFormikForCommitment({
     setOpen(false);
   };
   return (
-    <div className="formwrapper FormikWrapper">
+    <div className="FormikWrapper">
       <Form>
         {showPrompt && (
           <Prompt
@@ -203,37 +203,37 @@ export default function FormWithoutFormikForCommitment({
               </div>
             )}
             <AddUserDrawerForm
-                onClose={onClose}
-                open={open}
-                handleSubmit={handleCreateUser}
-                addDonationUser
-                initialValues={{
-                  name: "",
-                  countryCode: "in",
-                  dialCode: "91",
-                  email: "",
-                  pincode: "",
-                  searchType: "isPincode",
-                  panNum: "",
-                  addLine1: "",
-                  addLine2: "",
-                  city: "",
-                  district: "",
-                  state: "",
-                  country: "",
-                  pin: "",
-                }}
-                validationSchema={schema}
-                buttonName={"add_user"}
-                getNumber={phoneNumber}
-                onSuccess={handleDataLoad}
-              />
+              onClose={onClose}
+              open={open}
+              handleSubmit={handleCreateUser}
+              addDonationUser
+              initialValues={{
+                name: "",
+                countryCode: "in",
+                dialCode: "91",
+                email: "",
+                pincode: "",
+                searchType: "isPincode",
+                panNum: "",
+                addLine1: "",
+                addLine2: "",
+                city: "",
+                district: "",
+                state: "",
+                country: "",
+                pin: "",
+              }}
+              validationSchema={schema}
+              buttonName={"add_user"}
+              getNumber={phoneNumber}
+              onSuccess={handleDataLoad}
+            />
           </Col>
           {!editCommitment && (
             <Col xs={12} lg={2} sm={6}>
               <label>{t("commitment_select_start_date")}</label>
               <CustomDatePicker
-                placeholder={t('select_date')}
+                placeholder={t("select_date")}
                 id="datePickerANTD"
                 format="DD MMM YYYY"
                 value={
@@ -263,7 +263,7 @@ export default function FormWithoutFormikForCommitment({
             <CustomDatePicker
               id="datePickerANTD"
               format="DD MMM YYYY"
-              placeholder={t('select_date')}
+              placeholder={t("select_date")}
               disabledDate={(currentDate) => {
                 return (
                   formik.values.startDate &&
@@ -289,7 +289,7 @@ export default function FormWithoutFormikForCommitment({
               labelName={t("categories_select_category")}
               name={"SelectedMasterCategory"}
               disabled={editCommitment}
-              placeholder={t('select_option')}
+              placeholder={t("select_option")}
               labelKey={"name"}
               valueKey={"id"}
               loadOptions={
@@ -314,12 +314,22 @@ export default function FormWithoutFormikForCommitment({
                   name: ConverFirstLatterToCapital(cate.name),
                 };
               })}
-              placeholder={t('select_option')}
+              placeholder={t("select_option")}
               name={"SelectedSubCategory"}
               labelKey={"name"}
               disabled={editCommitment}
               labelValue={"id"}
               width
+              onChange={(selectedOption) => {
+                formik.setFieldValue("SelectedSubCategory", selectedOption);
+
+                // Check if the selected subcategory has isFixedAmount === true
+                if (selectedOption?.isFixedAmount) {
+                  formik.setFieldValue("Amount", selectedOption.amount || ""); // Set the amount from subcategory
+                } else {
+                  formik.setFieldValue("Amount", ""); // Clear the amount for non-fixed subcategories
+                }
+              }}
             />
           </Col>
           <Col xs={12} sm={6} lg={4}>
@@ -337,6 +347,13 @@ export default function FormWithoutFormikForCommitment({
               name="Amount"
               required
               min={paidAmount}
+              value={formik.values.Amount} // Ensure it is controlled by Formik
+              onChange={(e) =>
+                formik.setFieldValue(
+                  "Amount",
+                  e.target.value?.toLocaleString("en-IN")
+                )
+              }
             />
           </Col>
           <Col
