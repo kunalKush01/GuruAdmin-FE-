@@ -6,27 +6,15 @@ import { Button, Col, Row, Spinner } from "reactstrap";
 import { Plus } from "react-feather";
 import { DatePicker, Image } from "antd";
 import { Timeline } from "antd";
-import { Upload, message } from "antd";
+import {  Upload, message } from "antd";
 import Swal from "sweetalert2";
 import CustomTextField from "../partials/customTextField";
 import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import AsyncSelectField from "../partials/asyncSelectField";
 import { getAllSubCategories } from "../../api/expenseApi";
-
-import {
-  findAllComitmentByUser,
-  findAllUsersByName,
-  findAllUsersByNumber,
-} from "../../api/findUser";
-import {
-  getRoomTypeList,
-  getDharmshalaList,
-  getDharmshalaFloorList,
-  getAllRoomsByFloorId,
-  getDharmshala,
-  checkRoomAvailability,
-} from "../../api/dharmshala/dharmshalaInfo";
+import { findAllComitmentByUser, findAllUsersByName, findAllUsersByNumber } from "../../api/findUser";
+import { getRoomTypeList, getDharmshalaList, getDharmshalaFloorList, getAllRoomsByFloorId, getDharmshala, checkRoomAvailability } from "../../api/dharmshala/dharmshalaInfo";
 import guestIcon from "../../assets/images/icons/subadmin.svg";
 import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
@@ -39,14 +27,10 @@ import momentGenerateConfig from "rc-picker/lib/generate/moment";
 import "../../../src/assets/scss/viewCommon.scss";
 import "../../../src/assets/scss/common.scss";
 import RoomsContainer from "./RoomsContainer";
-import moment from "moment";
+import moment from 'moment';
 import { UploadOutlined } from "@ant-design/icons";
-import {
-  uploadFile,
-  deleteFile,
-  downloadFile,
-} from "../../api/sharedStorageApi";
-import { Button as AntdButton } from "antd";
+import { uploadFile, deleteFile, downloadFile } from '../../api/sharedStorageApi'; 
+import {Button as AntdButton } from "antd";
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 import uploadIc from "../../assets/images/icons/file-upload.svg";
 
@@ -104,170 +88,155 @@ export default function FormWithoutFormikForBooking({
     setOpen(false);
   };
 
-  useEffect(() => {
-    if (!isEditing) {
-      const Mobile = formik?.values?.Mobile.toString();
-      console.log("Triggered: ", Mobile);
-      if (Mobile?.length === 10) {
-        const results = async () => {
-          try {
-            const res = await findAllUsersByNumber({
-              mobileNumber: Mobile,
-            });
-            if (res.result) {
-              formik.setFieldValue("SelectedUser", res.result);
-              setNoUserFound(false);
-            } else {
-              setNoUserFound(true);
-            }
-          } catch (error) {
-            console.error("Error fetching user:", error);
-            setNoUserFound(true);
-          }
-        };
-        results();
-      } else if (Mobile?.length !== 10) {
-        formik.setFieldValue("SelectedUser", "");
-        setNoUserFound(false);
-      }
-    }
-  }, [formik?.values?.Mobile]);
-
-  useEffect(() => {
-    const user = formik?.values?.SelectedUser;
-    console.log("Triggered This: ", user);
-
-    if (user?.id) {
-      formik.setFieldValue("Mobile", user?.mobileNumber);
-      formik.setFieldValue("countryCode", user?.countryName);
-      formik.setFieldValue("dialCode", user?.countryCode);
-      formik.setFieldValue("guestname", user?.name);
-      formik.setFieldValue("email", user?.email);
-      formik.setFieldValue("donarName", user?.name);
-
-      const addressParts = [];
-      if (user?.addLine1) addressParts.push(user.addLine1);
-      if (user?.addLine2) addressParts.push(user.addLine2);
-      if (user?.city) addressParts.push(user.city);
-      if (user?.district) addressParts.push(user.district);
-      if (user?.state) addressParts.push(user.state);
-      if (user?.country) addressParts.push(user.country);
-      if (user?.pin) addressParts.push(user.pin);
-      if (user?.address) addressParts.push(user.address);
-
-      const fullAddress = addressParts.filter(Boolean).join(", ");
-      formik.setFieldValue("address", fullAddress);
-      //console.log("Phone:", user?.countryCode + user?.mobileNumber);
-      //setPhoneNumber(user?.countryCode + user?.mobileNumber);
-      return;
-    }
-    formik.setFieldValue("Mobile", "");
-    formik.setFieldValue("countryCode", "");
-    formik.setFieldValue("dialCode", "");
-    formik.setFieldValue("guestname", "");
-    formik.setFieldValue("email", "");
-    formik.setFieldValue("donarName", "");
-    formik.setFieldValue("address", "");
-  }, [formik?.values?.SelectedUser, formik?.values?.Mobile]);
-
-  useEffect(() => {
-    if (formik.values.roomsData && formik.values.roomsData.length > 0) {
-      formik.values.roomsData.forEach((room) => {
-        if (room.floor) {
-          fetchRooms(room.floor);
+useEffect(() => {
+  const Mobile = formik?.values?.Mobile?.toString();
+  if (Mobile?.length === 10) {
+    const results = async () => {
+      try {
+        const res = await findAllUsersByNumber({
+          mobileNumber: Mobile,
+        });
+        if (res.result) {
+          formik.setFieldValue("SelectedUser", res.result);
+          setNoUserFound(false);
+        } else {
+          setNoUserFound(true);
         }
-      });
-    }
-  }, [formik.values.fromDate, formik.values.toDate]);
-
-  useEffect(() => {
-    const loadInitialRoomData = async () => {
-      if (isEditing && formik.values.roomsData) {
-        // Load buildings and room types first
-        await fetchBuildings();
-        await fetchRoomTypes();
-
-        // Then load floors and rooms for each existing room
-        for (const room of formik.values.roomsData) {
-          if (room.building) {
-            await fetchFloors(room.building);
-          }
-          if (room.floor) {
-            await fetchRooms(room.floor);
-          }
-        }
+      } catch (error) {
+        console.error("Error fetching user:", error);
+        setNoUserFound(true);
       }
     };
+    results();
+  } else if (Mobile?.length !== 10) {
+    formik.setFieldValue("SelectedUser", "");
+    setNoUserFound(false);
+  }
+}, [formik?.values?.Mobile]);
 
-    loadInitialRoomData();
-  }, [isEditing]);
+useEffect(() => {
+  const user = formik?.values?.SelectedUser;
+  if (user?.id) {
+    formik.setFieldValue("Mobile", user?.mobileNumber);
+    formik.setFieldValue("countryCode", user?.countryName);
+    formik.setFieldValue("dialCode", user?.countryCode);
+    formik.setFieldValue("guestname", user?.name);
+    formik.setFieldValue("email", user?.email);
+    formik.setFieldValue("donarName", user?.name);
 
-  useEffect(() => {
-    if (
-      formik.values.fromDate &&
-      formik.values.toDate &&
-      formik.values.roomsData.length > 0
-    ) {
-      updateTotalAmount(
-        formik.values.roomsData,
-        formik.values.fromDate,
-        formik.values.toDate
-      );
-    }
-  }, [formik.values.fromDate, formik.values.toDate, formik.values.roomsData]);
+    const addressParts = [];
+    if (user?.addLine1) addressParts.push(user.addLine1);
+    if (user?.addLine2) addressParts.push(user.addLine2);
+    if (user?.city) addressParts.push(user.city);
+    if (user?.district) addressParts.push(user.district);
+    if (user?.state) addressParts.push(user.state);
+    if (user?.country) addressParts.push(user.country);
+    if (user?.pin) addressParts.push(user.pin);
+    if (user?.address) addressParts.push(user.address);
+    
+    const fullAddress = addressParts.filter(Boolean).join(", ");
+    formik.setFieldValue("address", fullAddress);
+    
+    setPhoneNumber(user?.countryCode + user?.mobileNumber);
+    return;
+  }
+  formik.setFieldValue("Mobile", "");
+  formik.setFieldValue("countryCode", "");
+  formik.setFieldValue("dialCode", "");
+  formik.setFieldValue("guestname", "");
+  formik.setFieldValue("email", "");
+  formik.setFieldValue("donarName", "");
+  formik.setFieldValue("address", "");
+}, [formik?.values?.SelectedUser]);
 
-  const handleInitialFile = async () => {
-    try {
-      // Download the file
-      const blob = await downloadFile(formik.values.imagePath);
+useEffect(() => {
+  if (formik.values.roomsData && formik.values.roomsData.length > 0) {
+    formik.values.roomsData.forEach((room) => {
+      if (room.floor) {
+        fetchRooms(room.floor);
+      }
+    });
+  }
+}, [formik.values.fromDate, formik.values.toDate]);
 
-      // Create a File object from the blob
-      const fileName = formik.values.imagePath.split("/").pop();
-      const file = new File([blob], fileName, { type: blob.type });
+useEffect(() => {
+  const loadInitialRoomData = async () => {
+    if (isEditing && formik.values.roomsData) {
+      // Load buildings and room types first
+      await fetchBuildings();
+      await fetchRoomTypes();
 
-      // Create a dummy response object to match Upload component's expectations
-      const dummyResponse = {
-        data: {
-          result: {
-            filePath: formik.values.imagePath,
-            result: { value: formik.values.imagePath },
-          },
-        },
-      };
-
-      setFileList([
-        {
-          uid: "-1",
-          name: fileName,
-          status: "done",
-          url: URL.createObjectURL(blob),
-          response: dummyResponse,
-        },
-      ]);
-    } catch (error) {
-      console.error("Error loading initial file:", error);
-      message.error("Failed to load ID card image");
+      // Then load floors and rooms for each existing room
+      for (const room of formik.values.roomsData) {
+        if (room.building) {
+          await fetchFloors(room.building);
+        }
+        if (room.floor) {
+          await fetchRooms(room.floor);
+        }
+      }
     }
   };
 
+  loadInitialRoomData();
+}, [isEditing]);
+
+useEffect(() => {
+  if (formik.values.fromDate && formik.values.toDate && formik.values.roomsData.length > 0) {
+    updateTotalAmount(formik.values.roomsData,formik.values.fromDate,formik.values.toDate);
+  }
+}, [formik.values.fromDate, formik.values.toDate,formik.values.roomsData]);
+
+const handleInitialFile = async () => {
+  try {
+    // Download the file
+    const blob = await downloadFile(formik.values.imagePath);
+    
+    // Create a File object from the blob
+    const fileName = formik.values.imagePath.split('/').pop();
+    const file = new File([blob], fileName, { type: blob.type });
+    
+    // Create a dummy response object to match Upload component's expectations
+    const dummyResponse = {
+      data: {
+        result: {
+          filePath: formik.values.imagePath,
+          result: { value: formik.values.imagePath }
+        }
+      }
+    };
+    
+    setFileList([{
+      uid: '-1',
+      name: fileName,
+      status: 'done',
+      url: URL.createObjectURL(blob),
+      response: dummyResponse
+    }]);
+  } catch (error) {
+    console.error('Error loading initial file:', error);
+    message.error('Failed to load ID card image');
+  }
+};
+
+useEffect(() => {
+  if (isEditing && formik.values.imagePath) {
+    handleInitialFile();
+  }
+}, [isEditing, formik.values.imagePath]);
+
+const idTypeOptions = [
+  { value: 'aadhar', label: 'Aadhar Card' },
+  { value: 'pan', label: 'PAN Card' },
+  { value: 'voter', label: 'Voter ID Card' },
+  { value: 'driving', label: 'Driving License' },
+  { value: 'other', label: 'Other' }
+];
+
   useEffect(() => {
-    if (isEditing && formik.values.imagePath) {
-      handleInitialFile();
-    }
-  }, [isEditing, formik.values.imagePath]);
-
-  const idTypeOptions = [
-    { value: "aadhar", label: "Aadhar Card" },
-    { value: "pan", label: "PAN Card" },
-    { value: "voter", label: "Voter ID Card" },
-    { value: "driving", label: "Driving License" },
-    { value: "other", label: "Other" },
-  ];
-
-  //   useEffect(() => {
-  //     fetchBuildings();
-  //     fetchRoomTypes();
-  //   }, []);
+    fetchBuildings();
+    fetchRoomTypes();
+  }, []);
 
   useEffect(() => {
     fetchBuildings();
@@ -287,17 +256,12 @@ export default function FormWithoutFormikForBooking({
 
   useEffect(() => {
     if (formik.values) {
-      formik.setFieldValue("roomRent", formik.values.roomRent);
-      formik.setFieldValue("totalAmount", formik.values.totalAmount);
-      formik.setFieldValue("totalDue", formik.values.totalDue);
-      formik.setFieldValue("totalPaid", formik.values.totalPaid);
+      formik.setFieldValue('roomRent', formik.values.roomRent);
+      formik.setFieldValue('totalAmount', formik.values.totalAmount);
+      formik.setFieldValue('totalDue', formik.values.totalDue);
+      formik.setFieldValue('totalPaid', formik.values.totalPaid);
     }
-  }, [
-    formik.values.roomRent,
-    formik.values.totalAmount,
-    formik.values.totalDue,
-    formik.values.totalPaid,
-  ]);
+  }, [formik.values.roomRent,formik.values.totalAmount,formik.values.totalDue,formik.values.totalPaid]);
 
   const handleCreateUser = async (payload) => {
     return createSubscribedUser(payload);
@@ -326,12 +290,10 @@ export default function FormWithoutFormikForBooking({
   const fetchBuildings = async () => {
     try {
       const response = await getDharmshalaList();
-      setBuildings(
-        response.results.map((building) => ({
-          _id: building._id,
-          name: building.name,
-        }))
-      );
+      setBuildings(response.results.map(building => ({
+        _id: building._id,
+        name: building.name
+      })));
     } catch (error) {
       console.error("Error fetching buildings:", error);
     }
@@ -340,16 +302,14 @@ export default function FormWithoutFormikForBooking({
   const fetchRoomTypes = async () => {
     try {
       const response = await getRoomTypeList();
-      setRoomTypes(
-        response.results.map((room) => ({
-          _id: room._id,
-          name: room.name,
-          capacity: room.capacity,
-          price: room.price,
-          dharmshalaId: room.dharmshalaId,
-        }))
-      );
-
+      setRoomTypes(response.results.map(room => ({
+        _id: room._id,
+        name: room.name,
+        capacity: room.capacity,
+        price: room.price,
+        dharmshalaId: room.dharmshalaId
+      })));
+      
       if (response.results && response.results.length > 0) {
         const dharmshalaId = response.results[0].dharmshalaId;
         fetchDharmshalaDetails(dharmshalaId);
@@ -363,7 +323,7 @@ export default function FormWithoutFormikForBooking({
     try {
       const response = await getDharmshala(dharmshalaId);
       if (response && response.advanceOnBooking) {
-        formik.setFieldValue("security", response.advanceOnBooking);
+        formik.setFieldValue('security', response.advanceOnBooking);
       }
     } catch (error) {
       console.error("Error fetching dharmshala details:", error);
@@ -389,36 +349,29 @@ export default function FormWithoutFormikForBooking({
 
   const fetchRooms = async (floorId) => {
     try {
-      const fromDate = formik.values.fromDate
-        ? moment(formik.values.fromDate).format("YYYY-MM-DD")
-        : "";
-      const toDate = formik.values.toDate
-        ? moment(formik.values.toDate).format("YYYY-MM-DD")
-        : "";
-
+      const fromDate = formik.values.fromDate ? moment(formik.values.fromDate).format('YYYY-MM-DD') : '';
+      const toDate = formik.values.toDate ? moment(formik.values.toDate).format('YYYY-MM-DD') : '';
+      
       const response = await getAllRoomsByFloorId(floorId, fromDate, toDate);
-
+      
       // Find any existing room selections for this floor
       const existingRoomSelections = formik.values.roomsData
-        .filter((room) => room.floor === floorId && room.roomId)
-        .map((room) => ({
+        .filter(room => room.floor === floorId && room.roomId)
+        .map(room => ({
           _id: room.roomId,
           roomNumber: room.roomNumber,
-          roomTypeId: room.roomType,
+          roomTypeId: room.roomType
         }));
 
       // Combine API response with existing selections to ensure they're available in dropdown
       const availableRooms = [
         ...response.results,
-        ...existingRoomSelections.filter(
-          (existingRoom) =>
-            !response.results.some(
-              (apiRoom) => apiRoom._id === existingRoom._id
-            )
-        ),
+        ...existingRoomSelections.filter(existingRoom => 
+          !response.results.some(apiRoom => apiRoom._id === existingRoom._id)
+        )
       ];
 
-      setRooms((prevRooms) => ({
+      setRooms(prevRooms => ({
         ...prevRooms,
         [floorId]: availableRooms,
       }));
@@ -427,19 +380,24 @@ export default function FormWithoutFormikForBooking({
     }
   };
 
+
   const isSearchEnabled = () => {
     const men = parseInt(formik.values.numMen, 10) || 0;
     const women = parseInt(formik.values.numWomen, 10) || 0;
     const kids = parseInt(formik.values.numKids, 10) || 0;
     const totalGuests = men + women + kids;
-
-    return formik.values.fromDate && formik.values.toDate && totalGuests > 0;
+  
+    return (
+      formik.values.fromDate &&
+      formik.values.toDate &&
+      totalGuests > 0  
+    );
   };
+  
 
   const disabledDate = (current) => {
-    return current && current < moment().startOf("day");
+    return current && current < moment().startOf('day');
   };
-  console.log(isEditing);
   const [selectedFromDate, setSelectedFromDate] = useState(
     isEditing ? editBookingData.startDate : formik.values.fromDate
   );
@@ -530,14 +488,12 @@ export default function FormWithoutFormikForBooking({
     const women = parseInt(formik.values.numWomen, 10) || 0;
     const kids = parseInt(formik.values.numKids, 10) || 0;
     const totalGuests = men + women + kids;
-
-    const sortedRoomTypes = [...roomTypes].sort(
-      (a, b) => b.capacity - a.capacity
-    );
-
+  
+    const sortedRoomTypes = [...roomTypes].sort((a, b) => b.capacity - a.capacity);
+  
     let remainingGuests = totalGuests;
     const roomsCombination = [];
-
+  
     while (remainingGuests > 0) {
       const suitableRoom = sortedRoomTypes.find(
         (room) => room.capacity <= remainingGuests
@@ -552,7 +508,7 @@ export default function FormWithoutFormikForBooking({
           floorName: "",
           roomId: "",
           roomNumber: "",
-          amount: suitableRoom.price,
+          amount: suitableRoom.price, 
         });
         remainingGuests -= suitableRoom.capacity;
       } else {
@@ -567,56 +523,30 @@ export default function FormWithoutFormikForBooking({
           floorName: "",
           roomId: "",
           roomNumber: "",
-          amount: smallestRoom.price,
+          amount: smallestRoom.price, 
         });
         remainingGuests -= smallestRoom.capacity;
       }
     }
-
-    formik.setFieldValue("roomsData", roomsCombination);
-    updateTotalAmount(
-      roomsCombination,
-      formik.values.fromDate,
-      formik.values.toDate
-    );
+  
+    formik.setFieldValue('roomsData', roomsCombination);
+    updateTotalAmount(roomsCombination,formik.values.fromDate,formik.values.toDate);
   };
   const handleAddRoom = () => {
     const updatedRoomsData = [
       ...formik.values.roomsData,
-      {
-        roomType: "",
-        building: "",
-        floor: "",
-        roomId: "",
-        roomNumber: "",
-        amount: 0,
-      },
+      { roomType: "", building: "", floor: "", roomId: "", roomNumber:'', amount: 0 },
     ];
-    formik.setFieldValue("roomsData", updatedRoomsData);
-    updateTotalAmount(
-      updatedRoomsData,
-      formik.values.fromDate,
-      formik.values.toDate
-    );
+    formik.setFieldValue('roomsData', updatedRoomsData);
+    updateTotalAmount(updatedRoomsData,formik.values.fromDate,formik.values.toDate);
   };
 
   const handleClearRooms = () => {
     const clearedRoomsData = [
-      {
-        roomType: "",
-        building: "",
-        floor: "",
-        roomId: "",
-        roomNumber: "",
-        amount: 0,
-      },
+      { roomType: "", building: "", floor: "", roomId: "", roomNumber:'', amount: 0 },
     ];
-    formik.setFieldValue("roomsData", clearedRoomsData);
-    updateTotalAmount(
-      clearedRoomsData,
-      formik.values.fromDate,
-      formik.values.toDate
-    );
+    formik.setFieldValue('roomsData', clearedRoomsData);
+    updateTotalAmount(clearedRoomsData,formik.values.fromDate,formik.values.toDate);
   };
 
   const handleRoomTypeChange = (value, index) => {
@@ -625,109 +555,79 @@ export default function FormWithoutFormikForBooking({
     updatedRoomsData[index] = {
       ...updatedRoomsData[index],
       roomType: value,
-      roomTypeName: selectedRoomType?.name || "",
-      building: "",
-      buildingName: "",
-      floor: "",
-      floorName: "",
-      roomId: "",
-      roomNumber: "",
+      roomTypeName: selectedRoomType?.name || '',
+      building: '',
+      buildingName: '',
+      floor: '',
+      floorName: '',
+      roomId: '',
+      roomNumber: '',
       amount: selectedRoomType?.price || 0,
     };
-    formik.setFieldValue("roomsData", updatedRoomsData);
-    updateTotalAmount(
-      updatedRoomsData,
-      formik.values.fromDate,
-      formik.values.toDate
-    );
+    formik.setFieldValue('roomsData', updatedRoomsData);
+    updateTotalAmount(updatedRoomsData,formik.values.fromDate,formik.values.toDate);
   };
-
+  
   const handleBuildingChange = (buildingId, index) => {
     const updatedRooms = formik.values.roomsData.map((room, i) =>
-      i === index
-        ? {
-            ...room,
-            building: buildingId,
-            buildingName: buildings.find((b) => b._id === buildingId)?.name,
-            floor: "",
-            floorName: "",
-            roomNumber: "",
-            roomId: "",
-          }
-        : room
+      i === index ? {
+        ...room,
+        building: buildingId,
+        buildingName: buildings.find(b => b._id === buildingId)?.name,
+        floor: "",
+        floorName: "",
+        roomNumber: "",
+        roomId: ""
+      } : room
     );
-    formik.setFieldValue("roomsData", updatedRooms);
-    updateTotalAmount(
-      updatedRooms,
-      formik.values.fromDate,
-      formik.values.toDate
-    );
+    formik.setFieldValue('roomsData', updatedRooms);
+    updateTotalAmount(updatedRooms,formik.values.fromDate,formik.values.toDate);
     fetchFloors(buildingId);
   };
-
+  
   const handleFloorChange = (floorId, index) => {
     const updatedRooms = formik.values.roomsData.map((room, i) =>
-      i === index
-        ? {
-            ...room,
-            floor: floorId,
-            floorName: floors[room.building]?.find((f) => f._id === floorId)
-              ?.name,
-            roomNumber: "",
-            roomId: "",
-          }
-        : room
+      i === index ? {
+        ...room,
+        floor: floorId,
+        floorName: floors[room.building]?.find(f => f._id === floorId)?.name,
+        roomNumber: "",
+        roomId: ""
+      } : room
     );
-    formik.setFieldValue("roomsData", updatedRooms);
-    updateTotalAmount(
-      updatedRooms,
-      formik.values.fromDate,
-      formik.values.toDate
-    );
+    formik.setFieldValue('roomsData', updatedRooms);
+    updateTotalAmount(updatedRooms,formik.values.fromDate,formik.values.toDate);
     fetchRooms(floorId);
   };
-
+  
   const handleRoomNumberChange = (roomId, index) => {
     const floorId = formik.values.roomsData[index].floor;
-    const selectedRoom = (rooms[floorId] || []).find(
-      (room) => room._id === roomId
-    );
-
+    const selectedRoom = (rooms[floorId] || []).find(room => room._id === roomId);
+    
     const updatedRooms = formik.values.roomsData.map((room, i) =>
-      i === index
-        ? {
-            ...room,
-            roomId: roomId,
-            roomNumber: selectedRoom
-              ? selectedRoom.roomNumber
-              : room.roomNumber, // Preserve existing room number if no new selection
-          }
-        : room
+      i === index ? { 
+        ...room, 
+        roomId: roomId,
+        roomNumber: selectedRoom ? selectedRoom.roomNumber : room.roomNumber // Preserve existing room number if no new selection
+      } : room
     );
-
-    formik.setFieldValue("roomsData", updatedRooms);
-    updateTotalAmount(
-      updatedRooms,
-      formik.values.fromDate,
-      formik.values.toDate
-    );
+    
+    formik.setFieldValue('roomsData', updatedRooms);
+    updateTotalAmount(updatedRooms,formik.values.fromDate,formik.values.toDate);
   };
 
-  const updateTotalAmount = (updatedRoomsData, fromDate, toDate) => {
+  const updateTotalAmount = (updatedRoomsData,fromDate,toDate) => {
     if (!fromDate || !toDate) {
-      formik.setFieldValue("roomRent", 0);
-      formik.setFieldValue("totalAmount", 0);
-      formik.setFieldValue("totalDue", 0);
+      formik.setFieldValue('roomRent', 0);
+      formik.setFieldValue('totalAmount', 0);
+      formik.setFieldValue('totalDue', 0);
       return;
     }
     const startDate = fromDate;
     const endDate = toDate;
     const numberOfDays = endDate ? endDate.diff(startDate, "days") : null;
 
-    const roomRentPerDay = updatedRoomsData.reduce(
-      (acc, room) => acc + room.amount,
-      0
-    );
+    const roomRentPerDay = updatedRoomsData.reduce((acc, room) => acc + room.amount, 0);
 
     const totalRoomRent = roomRentPerDay * numberOfDays;
 
@@ -741,11 +641,11 @@ export default function FormWithoutFormikForBooking({
     // }
     if (totalDueNew === 0) {
       totalDueNew -= formik.values.security;
-    }
+  }
 
-    formik.setFieldValue("roomRent", totalRoomRent);
-    formik.setFieldValue("totalAmount", totalAmount);
-    formik.setFieldValue("totalDue", totalDueNew);
+    formik.setFieldValue('roomRent', totalRoomRent);
+    formik.setFieldValue('totalAmount', totalAmount);
+    formik.setFieldValue('totalDue', totalDueNew);
   };
 
   const getFieldLabel = (totalDue) => {
@@ -753,7 +653,7 @@ export default function FormWithoutFormikForBooking({
     if (totalDue > 0) return "Collect Now:";
     return "Status:";
   };
-
+  
   const getFieldValue = (totalDue) => {
     if (totalDue === 0) return "Settled";
     return Math.abs(totalDue).toString();
@@ -771,15 +671,9 @@ export default function FormWithoutFormikForBooking({
       confirmButtonText: t("confirm"),
     }).then((result) => {
       if (result.isConfirmed) {
-        const updatedRoomsData = formik.values.roomsData.filter(
-          (room, idx) => idx !== index
-        );
-        formik.setFieldValue("roomsData", updatedRoomsData);
-        updateTotalAmount(
-          updatedRoomsData,
-          formik.values.fromDate,
-          formik.values.toDate
-        );
+        const updatedRoomsData = formik.values.roomsData.filter((room, idx) => idx !== index);
+        formik.setFieldValue('roomsData', updatedRoomsData);
+        updateTotalAmount(updatedRoomsData,formik.values.fromDate,formik.values.toDate);
         Swal.fire(
           t("booking_room_deleted"),
           t("booking_room_deleted_message"),
@@ -788,6 +682,7 @@ export default function FormWithoutFormikForBooking({
       }
     });
   };
+  
 
   const handleCancel = () => {
     Swal.fire({
@@ -808,62 +703,56 @@ export default function FormWithoutFormikForBooking({
 
   const handleUpload = async (options) => {
     const { onSuccess, onError, file, onProgress } = options;
-
+    
     if (options.event) {
       options.event.preventDefault();
       options.event.stopPropagation();
     }
-
+    
     const formData = new FormData();
-    formData.append("file", file);
-
+    formData.append('file', file);
+    
     setUploading(true);
-
+    
     try {
       const response = await uploadFile(formData);
-
+      
       if (response?.status && response?.data?.result?.result?.value) {
         onSuccess(response, file);
         message.success(`${file.name} file uploaded successfully.`);
-        setFileList([
-          {
-            uid: file.uid,
-            name: file.name,
-            status: "done",
-            url: URL.createObjectURL(file),
-            response: response,
-          },
-        ]);
-        formik.setFieldValue("imagePath", response.data.result.filePath);
+        setFileList([{
+          uid: file.uid,
+          name: file.name,
+          status: 'done',
+          url: URL.createObjectURL(file),
+          response: response
+        }]);
+        formik.setFieldValue('imagePath', response.data.result.filePath);
       } else {
-        throw new Error("Invalid response structure from server");
+        throw new Error('Invalid response structure from server');
       }
     } catch (error) {
-      console.error("Error uploading file:", error);
+      console.error('Error uploading file:', error);
       onError({ error });
-      message.error(
-        `${file.name} file upload failed. ${
-          error.message || "Please try again."
-        }`
-      );
+      message.error(`${file.name} file upload failed. ${error.message || 'Please try again.'}`);
     } finally {
       setUploading(false);
     }
   };
+  
 
   const handleRemove = async (file) => {
     try {
-      const filePath =
-        file.response?.data?.result?.result?.value || formik.values.imagePath;
+      const filePath = file.response?.data?.result?.result?.value || formik.values.imagePath;
       if (filePath) {
         await deleteFile(filePath);
-        message.success("File removed successfully");
+        message.success('File removed successfully');
       }
       setFileList([]);
-      formik.setFieldValue("imagePath", "");
+      formik.setFieldValue('imagePath', '');
     } catch (error) {
-      console.error("Error removing file:", error);
-      message.error("Failed to remove file");
+      console.error('Error removing file:', error);
+      message.error('Failed to remove file');
     }
   };
 
@@ -872,26 +761,26 @@ export default function FormWithoutFormikForBooking({
       if (formik.values.imagePath) {
         const blob = await downloadFile(formik.values.imagePath);
         const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
+        const a = document.createElement('a');
         a.href = url;
-        a.download = formik.values.imagePath.split("/").pop();
+        a.download = formik.values.imagePath.split('/').pop();
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
       }
     } catch (error) {
-      console.error("Error downloading file:", error);
-      message.error("Failed to download file");
+      console.error('Error downloading file:', error);
+      message.error('Failed to download file');
     }
   };
   const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState("");
+  const [previewImage, setPreviewImage] = useState('');
   const uploadProps = {
-    name: "file",
+    name: 'file',
     customRequest: handleUpload,
     onRemove: handleRemove,
     fileList: fileList,
-    accept: "image/*",
+    accept: 'image/*',
     showUploadList: {
       showPreviewIcon: true,
       showRemoveIcon: true,
@@ -906,7 +795,7 @@ export default function FormWithoutFormikForBooking({
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
+      reader.onerror = error => reject(error);
     });
   };
   const handlePreview = async (file) => {
@@ -916,7 +805,7 @@ export default function FormWithoutFormikForBooking({
     setPreviewImage(file.url || file.preview);
     setPreviewOpen(true);
   };
-
+ 
   return (
     <Form>
       {showPrompt && (
@@ -933,14 +822,12 @@ export default function FormWithoutFormikForBooking({
       <div className="overall-div">
         <div className="booking-room">
           <div className="booking-container">
-            <div className="booking-header">
-              <div className="booking-title">Booking</div>
-              {isEditing && formik.values.bookingId && (
-                <div className="booking-id">
-                  Booking ID: {formik.values.bookingCode}
-                </div>
-              )}
-            </div>
+          <div className="booking-header">
+            <div className="booking-title">Booking</div>
+            {isEditing && formik.values.bookingId && (
+              <div className="booking-id">Booking ID: {formik.values.bookingCode}</div>
+            )}
+          </div>
             <div className="flex-container">
               <div className="date-picker-container">
                 <div className="date-picker-item">
@@ -952,7 +839,7 @@ export default function FormWithoutFormikForBooking({
                     value={formik.values.fromDate}
                     onChange={handleFromDateChange}
                     format="DD MMM YYYY"
-                    placeholder={t("select_date")}
+                    placeholder={t('select_date')}
                     className="custom-datepicker"
                     disabledDate={disabledDate}
                     name="fromDate"
@@ -973,15 +860,12 @@ export default function FormWithoutFormikForBooking({
                     value={formik.values.toDate}
                     onChange={handleToDateChange}
                     format="DD MMM YYYY"
-                    placeholder={t("select_date")}
+                    placeholder={t('select_date')}
                     className="custom-datepicker"
                     onBlur={formik.handleBlur}
                     disabledDate={(current) => {
-                      return (
-                        (current && current < moment().startOf("day")) ||
-                        (formik.values.fromDate &&
-                          current < formik.values.fromDate)
-                      );
+                      return (current && current < moment().startOf('day')) || 
+                             (formik.values.fromDate && current < formik.values.fromDate);
                     }}
                   />
                   {formik.errors.toDate && formik.touched.toDate && (
@@ -1125,8 +1009,10 @@ export default function FormWithoutFormikForBooking({
                     <Row>
                       <Col xs={12} className="align-self-center">
                         <CustomCountryMobileNumberField
-                          value={formik.values.Mobile}
-                          disabled={isEditing}
+                          value={`${
+                            formik.values.SelectedUser?.countryCode || ""
+                          }${formik.values.SelectedUser?.mobileNumber || ""}`}
+                          disabled={payDonation}
                           defaultCountry={countryFlag}
                           label={t("dashboard_Recent_DonorNumber")}
                           placeholder={t("placeHolder_mobile_number")}
@@ -1155,15 +1041,11 @@ export default function FormWithoutFormikForBooking({
                           required
                           onBlur={formik.handleBlur}
                         />
-
                         {noUserFound && (
                           <div className="addUser">
                             {" "}
                             <Trans i18nKey={"add_user_donation"} />{" "}
-                            <span
-                              className="cursor-pointer"
-                              onClick={showDrawer}
-                            >
+                            <span className="cursor-pointer" onClick={showDrawer}>
                               <Trans i18nKey={"add_user"} />
                             </span>
                           </div>
@@ -1278,17 +1160,15 @@ export default function FormWithoutFormikForBooking({
                     />
                   </Col>
                   <Col xs={12} sm={6} lg={4} className="pb-1">
-                    <CustomTextField
-                      required
-                      label={t("Id Number")}
-                      placeholder={t("Id Number")}
-                      name="idNumber"
-                      value={formik.values.idNumber}
-                      onChange={formik.handleChange}
-                      onInput={(e) =>
-                        (e.target.value = e.target.value.slice(0, 30))
-                      }
-                    />
+                  <CustomTextField
+                    required
+                    label={t("Id Number")}
+                    placeholder={t("Id Number")}
+                    name="idNumber"
+                    value={formik.values.idNumber}
+                    onChange={formik.handleChange}
+                    onInput={(e) => (e.target.value = e.target.value.slice(0, 30))}
+                  />
                   </Col>
                   <Col xs={12} sm={6} lg={4} className="pb-1 upload-id">
                     <Upload
@@ -1315,18 +1195,17 @@ export default function FormWithoutFormikForBooking({
                     {previewImage && (
                       <Image
                         wrapperStyle={{
-                          display: "none",
+                          display: 'none',
                         }}
                         preview={{
                           visible: previewOpen,
                           onVisibleChange: (visible) => setPreviewOpen(visible),
-                          afterOpenChange: (visible) =>
-                            !visible && setPreviewImage(""),
+                          afterOpenChange: (visible) => !visible && setPreviewImage(''),
                         }}
                         src={previewImage}
                       />
                     )}
-                  </Col>
+                </Col>
                 </Row>
               </Col>
             </Row>
@@ -1340,9 +1219,7 @@ export default function FormWithoutFormikForBooking({
                 Payment
               </div>
               <div
-                className={`tab ${
-                  activeTab === "paymentHistory" ? "active" : ""
-                }`}
+                className={`tab ${activeTab === "paymentHistory" ? "active" : ""}`}
                 onClick={() => setActiveTab("paymentHistory")}
               >
                 Payment History
@@ -1391,55 +1268,53 @@ export default function FormWithoutFormikForBooking({
                   />
                 </div>
                 {isEditing && (
-                  <>
-                    <div className="payment-field">
-                      <label htmlFor="total-paid" className="payment-label">
-                        Total Paid:
-                      </label>
-                      <input
-                        type="text"
-                        id="total-paid"
-                        value={formik.values.totalPaid}
-                        readOnly
-                        className="payment-input"
-                        placeholder="Total Paid"
-                      />
-                    </div>
-                    <div className="payment-field">
-                      <label htmlFor="total-due" className="payment-label">
-                        {getFieldLabel(formik.values.totalDue)}
-                      </label>
-                      <input
-                        type="text"
-                        id="total-due"
-                        value={getFieldValue(formik.values.totalDue)}
-                        readOnly
-                        className="payment-input"
-                        placeholder="Amount"
-                      />
-                    </div>
-                  </>
-                )}
+                <>
+                  <div className="payment-field">
+                    <label htmlFor="total-paid" className="payment-label">
+                      Total Paid:
+                    </label>
+                    <input
+                      type="text"
+                      id="total-paid"
+                      value={formik.values.totalPaid}
+                      readOnly
+                      className="payment-input"
+                      placeholder="Total Paid"
+                    />
+                  </div>
+                  <div className="payment-field">
+                    <label htmlFor="total-due" className="payment-label">
+                      {getFieldLabel(formik.values.totalDue)}
+                    </label>
+                    <input
+                      type="text"
+                      id="total-due"
+                      value={getFieldValue(formik.values.totalDue)}
+                      readOnly
+                      className="payment-input"
+                      placeholder="Amount"
+                    />
+                  </div>
+                </>
+              )}
                 {/* <button className="pay-button">Pay</button> */}
               </div>
             )}
             {activeTab === "paymentHistory" && (
-              <div
+              <div 
               // className="payment-history-tab"
               >
                 {/* <h3>Payment History</h3> */}
                 {formik.values.payments && formik.values.payments.length > 0 ? (
                   <Timeline>
                     {formik.values.payments.map((payment, index) => (
-                      <Timeline.Item
-                        key={payment._id || index}
-                        color={payment.type === "deposit" ? "green" : "red"}
+                      <Timeline.Item 
+                        key={payment._id || index} 
+                        color={payment.type === 'deposit' ? 'green' : 'red'}
                       >
                         <p>
-                          <strong>
-                            {payment.type === "deposit" ? "Deposit" : "Refund"}
-                          </strong>
-                          :{payment.amount} {formik.values.currency}
+                          <strong>{payment.type === 'deposit' ? 'Deposit' : 'Refund'}</strong>: 
+                          {payment.amount} {formik.values.currency}
                         </p>
                         <p>Date: {new Date(payment.date).toLocaleString()}</p>
                         <p>Method: {payment.method}</p>
@@ -1453,6 +1328,7 @@ export default function FormWithoutFormikForBooking({
             )}
           </div>
         </div>
+
       </div>
 
       <div className="btn-Published mt-3">
@@ -1479,4 +1355,4 @@ export default function FormWithoutFormikForBooking({
       </div>
     </Form>
   );
-}
+} 
