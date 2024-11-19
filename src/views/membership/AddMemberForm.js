@@ -32,7 +32,7 @@ export default function AddMemberForm() {
     }
   );
   const memberResultData = data ? data?.member : null;
-  const handleCreateDonation = async (payload) => {
+  const handleCreateMember = async (payload) => {
     if (mode == "edit") {
       return updateMembersById(id, payload);
     } else {
@@ -151,8 +151,7 @@ export default function AddMemberForm() {
               field.correspondenceAddress?.city || "";
             initialValues["correspondenceDistrict"] =
               field.correspondenceAddress?.district || "";
-          }
-          else {
+          } else {
             // Handle other objects
             Object.keys(field).forEach((fieldKey) => {
               initialValues[fieldKey] = field[fieldKey] || "";
@@ -233,7 +232,7 @@ export default function AddMemberForm() {
       </div>
       <div className="mt-1">
         <AddForm
-          handleSubmit={handleCreateDonation}
+          handleSubmit={handleCreateMember}
           initialValues={mode == "add" ? initialValues : editedInitialValues}
           validationSchema={combinedValidationSchema}
           mode={mode}
