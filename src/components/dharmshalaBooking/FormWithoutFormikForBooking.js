@@ -1,38 +1,23 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { Form } from "formik";
 import { Trans, useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import { Button, Col, Row, Spinner } from "reactstrap";
+import { Button,Spinner } from "reactstrap";
 import { Plus } from "react-feather";
-import { DatePicker, Image } from "antd";
+import { DatePicker } from "antd";
 import { Timeline } from "antd";
-import {  Upload, message } from "antd";
 import Swal from "sweetalert2";
-import CustomTextField from "../partials/customTextField";
-import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
-import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
-import AsyncSelectField from "../partials/asyncSelectField";
-import { getAllSubCategories } from "../../api/expenseApi";
-import { findAllComitmentByUser, findAllUsersByName, findAllUsersByNumber } from "../../api/findUser";
 import { getRoomTypeList, getDharmshalaList, getDharmshalaFloorList, getAllRoomsByFloorId, getDharmshala, checkRoomAvailability } from "../../api/dharmshala/dharmshalaInfo";
-import guestIcon from "../../assets/images/icons/subadmin.svg";
-import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
-import editIcon from "../../assets/images/icons/category/editIcon.svg";
-import uploadIcon from "../../assets/images/icons/Thumbnail.svg";
 import { Prompt } from "react-router-dom";
-import AddUserDrawerForm from "../donation/addUserDrawerForm";
 import * as Yup from "yup";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
 import "../../../src/assets/scss/viewCommon.scss";
 import "../../../src/assets/scss/common.scss";
 import RoomsContainer from "./RoomsContainer";
 import moment from 'moment';
-import { UploadOutlined } from "@ant-design/icons";
-import { uploadFile, deleteFile, downloadFile } from '../../api/sharedStorageApi'; 
-import {Button as AntdButton } from "antd";
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
-import uploadIc from "../../assets/images/icons/file-upload.svg";
+import GuestDetailsSection from "./guestDetailsSection";
 
 export default function FormWithoutFormikForBooking({
   formik,
@@ -53,101 +38,10 @@ export default function FormWithoutFormikForBooking({
   const { t } = useTranslation();
   const history = useHistory();
   const [activeTab, setActiveTab] = useState("payment");
-  const [totalAmount, setTotalAmount] = useState(0);
-  const [totalPaid, setTotalPaid] = useState("");
-  const [totalDue, setTotalDue] = useState("");
-  const [fileList, setFileList] = useState([]);
-  const [uploading, setUploading] = useState(false);
-  const fromDate = formik.values.fromDate;
-  const toDate = formik.values.toDate;
-  const numMen = formik.values.numMen;
-  const numWomen = formik.values.numWomen;
-  const numKids = formik.values.numKids;
-  const roomsData = formik.values.roomsData;
   const [buildings, setBuildings] = useState([]);
   const [floors, setFloors] = useState({});
   const [rooms, setRooms] = useState({});
   const [roomTypes, setRoomTypes] = useState([]);
-  const [phoneNumber, setPhoneNumber] = useState(getCommitmentMobile ?? "");
-  const [noUserFound, setNoUserFound] = useState(false);
-  const [open, setOpen] = useState(false);
-  const {
-    data: roomTypesData,
-    isLoading: isRoomTypesLoading,
-    isError: isRoomTypesError,
-  } = useQuery(["roomTypes"], getRoomTypeList);
-
-  const handleDataLoad = (val) => {
-    setDataLoad(val);
-  };
-
-  const showDrawer = () => {
-    setOpen(true);
-  };
-  const onClose = () => {
-    setOpen(false);
-  };
-
-useEffect(() => {
-  const Mobile = formik?.values?.Mobile?.toString();
-  if (Mobile?.length === 10) {
-    const results = async () => {
-      try {
-        const res = await findAllUsersByNumber({
-          mobileNumber: Mobile,
-        });
-        if (res.result) {
-          formik.setFieldValue("SelectedUser", res.result);
-          setNoUserFound(false);
-        } else {
-          setNoUserFound(true);
-        }
-      } catch (error) {
-        console.error("Error fetching user:", error);
-        setNoUserFound(true);
-      }
-    };
-    results();
-  } else if (Mobile?.length !== 10) {
-    formik.setFieldValue("SelectedUser", "");
-    setNoUserFound(false);
-  }
-}, [formik?.values?.Mobile]);
-
-useEffect(() => {
-  const user = formik?.values?.SelectedUser;
-  if (user?.id) {
-    formik.setFieldValue("Mobile", user?.mobileNumber);
-    formik.setFieldValue("countryCode", user?.countryName);
-    formik.setFieldValue("dialCode", user?.countryCode);
-    formik.setFieldValue("guestname", user?.name);
-    formik.setFieldValue("email", user?.email);
-    formik.setFieldValue("donarName", user?.name);
-
-    const addressParts = [];
-    if (user?.addLine1) addressParts.push(user.addLine1);
-    if (user?.addLine2) addressParts.push(user.addLine2);
-    if (user?.city) addressParts.push(user.city);
-    if (user?.district) addressParts.push(user.district);
-    if (user?.state) addressParts.push(user.state);
-    if (user?.country) addressParts.push(user.country);
-    if (user?.pin) addressParts.push(user.pin);
-    if (user?.address) addressParts.push(user.address);
-    
-    const fullAddress = addressParts.filter(Boolean).join(", ");
-    formik.setFieldValue("address", fullAddress);
-    
-    setPhoneNumber(user?.countryCode + user?.mobileNumber);
-    return;
-  }
-  formik.setFieldValue("Mobile", "");
-  formik.setFieldValue("countryCode", "");
-  formik.setFieldValue("dialCode", "");
-  formik.setFieldValue("guestname", "");
-  formik.setFieldValue("email", "");
-  formik.setFieldValue("donarName", "");
-  formik.setFieldValue("address", "");
-}, [formik?.values?.SelectedUser]);
 
 useEffect(() => {
   if (formik.values.roomsData && formik.values.roomsData.length > 0) {
@@ -162,11 +56,9 @@ useEffect(() => {
 useEffect(() => {
   const loadInitialRoomData = async () => {
     if (isEditing && formik.values.roomsData) {
-      // Load buildings and room types first
       await fetchBuildings();
       await fetchRoomTypes();
 
-      // Then load floors and rooms for each existing room
       for (const room of formik.values.roomsData) {
         if (room.building) {
           await fetchFloors(room.building);
@@ -186,52 +78,6 @@ useEffect(() => {
     updateTotalAmount(formik.values.roomsData,formik.values.fromDate,formik.values.toDate);
   }
 }, [formik.values.fromDate, formik.values.toDate,formik.values.roomsData]);
-
-const handleInitialFile = async () => {
-  try {
-    // Download the file
-    const blob = await downloadFile(formik.values.imagePath);
-    
-    // Create a File object from the blob
-    const fileName = formik.values.imagePath.split('/').pop();
-    const file = new File([blob], fileName, { type: blob.type });
-    
-    // Create a dummy response object to match Upload component's expectations
-    const dummyResponse = {
-      data: {
-        result: {
-          filePath: formik.values.imagePath,
-          result: { value: formik.values.imagePath }
-        }
-      }
-    };
-    
-    setFileList([{
-      uid: '-1',
-      name: fileName,
-      status: 'done',
-      url: URL.createObjectURL(blob),
-      response: dummyResponse
-    }]);
-  } catch (error) {
-    console.error('Error loading initial file:', error);
-    message.error('Failed to load ID card image');
-  }
-};
-
-useEffect(() => {
-  if (isEditing && formik.values.imagePath) {
-    handleInitialFile();
-  }
-}, [isEditing, formik.values.imagePath]);
-
-const idTypeOptions = [
-  { value: 'aadhar', label: 'Aadhar Card' },
-  { value: 'pan', label: 'PAN Card' },
-  { value: 'voter', label: 'Voter ID Card' },
-  { value: 'driving', label: 'Driving License' },
-  { value: 'other', label: 'Other' }
-];
 
   useEffect(() => {
     fetchBuildings();
@@ -262,30 +108,6 @@ const idTypeOptions = [
       formik.setFieldValue('totalPaid', formik.values.totalPaid);
     }
   }, [formik.values.roomRent,formik.values.totalAmount,formik.values.totalDue,formik.values.totalPaid]);
-
-  const handleCreateUser = async (payload) => {
-    return createSubscribedUser(payload);
-  };
-
-  const schema = Yup.object().shape({
-    mobile: Yup.string().required("users_mobile_required"),
-    email: Yup.string()
-      .email("email_invalid")
-      .required("users_email_required")
-      .trim(),
-    name: Yup.string()
-      .matches(
-        /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
-        "user_only_letters"
-      )
-      .required("users_title_required")
-      .trim(),
-    pincode: Yup.string().when("searchType", {
-      is: "isPincode",
-      then: Yup.string().max(6, "Pincode not found"),
-      otherwise: Yup.string(),
-    }),
-  });
 
   const fetchBuildings = async () => {
     try {
@@ -701,111 +523,6 @@ const idTypeOptions = [
     });
   };
 
-  const handleUpload = async (options) => {
-    const { onSuccess, onError, file, onProgress } = options;
-    
-    if (options.event) {
-      options.event.preventDefault();
-      options.event.stopPropagation();
-    }
-    
-    const formData = new FormData();
-    formData.append('file', file);
-    
-    setUploading(true);
-    
-    try {
-      const response = await uploadFile(formData);
-      
-      if (response?.status && response?.data?.result?.result?.value) {
-        onSuccess(response, file);
-        message.success(`${file.name} file uploaded successfully.`);
-        setFileList([{
-          uid: file.uid,
-          name: file.name,
-          status: 'done',
-          url: URL.createObjectURL(file),
-          response: response
-        }]);
-        formik.setFieldValue('imagePath', response.data.result.filePath);
-      } else {
-        throw new Error('Invalid response structure from server');
-      }
-    } catch (error) {
-      console.error('Error uploading file:', error);
-      onError({ error });
-      message.error(`${file.name} file upload failed. ${error.message || 'Please try again.'}`);
-    } finally {
-      setUploading(false);
-    }
-  };
-  
-
-  const handleRemove = async (file) => {
-    try {
-      const filePath = file.response?.data?.result?.result?.value || formik.values.imagePath;
-      if (filePath) {
-        await deleteFile(filePath);
-        message.success('File removed successfully');
-      }
-      setFileList([]);
-      formik.setFieldValue('imagePath', '');
-    } catch (error) {
-      console.error('Error removing file:', error);
-      message.error('Failed to remove file');
-    }
-  };
-
-  const handleDownload = async () => {
-    try {
-      if (formik.values.imagePath) {
-        const blob = await downloadFile(formik.values.imagePath);
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = formik.values.imagePath.split('/').pop();
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-      }
-    } catch (error) {
-      console.error('Error downloading file:', error);
-      message.error('Failed to download file');
-    }
-  };
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState('');
-  const uploadProps = {
-    name: 'file',
-    customRequest: handleUpload,
-    onRemove: handleRemove,
-    fileList: fileList,
-    accept: 'image/*',
-    showUploadList: {
-      showPreviewIcon: true,
-      showRemoveIcon: true,
-    },
-    onClick: (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-    },
-  };
-  const getBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
-    });
-  };
-  const handlePreview = async (file) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-    setPreviewImage(file.url || file.preview);
-    setPreviewOpen(true);
-  };
- 
   return (
     <Form>
       {showPrompt && (
@@ -992,224 +709,13 @@ const idTypeOptions = [
           />
         </div>
         <div className="guest-payment">
-          <div className="guest-container-add-booking">
-            <div className="guest-header">
-              <div className="guest-title">Guest Details</div>
-            </div>
-            <Row className="paddingForm">
-              <Col xs={12}>
-                <Row>
-                  <Col
-                    xs={12}
-                    sm={6}
-                    lg={4}
-                    md={6}
-                    className="pb-1 custom-margin-top"
-                  >
-                    <Row>
-                      <Col xs={12} className="align-self-center">
-                        <CustomCountryMobileNumberField
-                          value={`${
-                            formik.values.SelectedUser?.countryCode || ""
-                          }${formik.values.SelectedUser?.mobileNumber || ""}`}
-                          disabled={payDonation}
-                          defaultCountry={countryFlag}
-                          label={t("dashboard_Recent_DonorNumber")}
-                          placeholder={t("placeHolder_mobile_number")}
-                          onChange={(phone, country) => {
-                            setPhoneNumber(phone);
-                            formik.setFieldValue(
-                              "countryCode",
-                              country?.countryCode || ""
-                            );
-                            formik.setFieldValue(
-                              "dialCode",
-                              country?.dialCode || ""
-                            );
-                            if (
-                              typeof phone === "string" &&
-                              typeof country?.dialCode === "string"
-                            ) {
-                              formik.setFieldValue(
-                                "Mobile",
-                                phone.replace(country.dialCode, "")
-                              );
-                            } else {
-                              formik.setFieldValue("Mobile", "");
-                            }
-                          }}
-                          required
-                          onBlur={formik.handleBlur}
-                        />
-                        {noUserFound && (
-                          <div className="addUser">
-                            {" "}
-                            <Trans i18nKey={"add_user_donation"} />{" "}
-                            <span className="cursor-pointer" onClick={showDrawer}>
-                              <Trans i18nKey={"add_user"} />
-                            </span>
-                          </div>
-                        )}
-                        <AddUserDrawerForm
-                          onClose={onClose}
-                          open={open}
-                          handleSubmit={handleCreateUser}
-                          addDonationUser
-                          initialValues={{
-                            name: "",
-                            countryCode: "in",
-                            dialCode: "91",
-                            email: "",
-                            pincode: "",
-                            searchType: "isPincode",
-                            panNum: "",
-                            addLine1: "",
-                            addLine2: "",
-                            city: "",
-                            district: "",
-                            state: "",
-                            country: "",
-                            pin: "",
-                          }}
-                          validationSchema={schema}
-                          buttonName={"add_user"}
-                          getNumber={phoneNumber}
-                          onSuccess={handleDataLoad}
-                        />
-                        {formik.errors.Mobile && formik.touched.Mobile && (
-                          <div className="text-danger">
-                            <Trans i18nKey={formik.errors.Mobile} />
-                          </div>
-                        )}
-                      </Col>
-                    </Row>
-                  </Col>
-                  <Col xs={12} sm={6} lg={4} md={6} className="pb-1">
-                    <CustomTextField
-                      required
-                      label={t("Guest Name")}
-                      placeholder={t("Guest Name")}
-                      name="guestname"
-                      value={formik.values.guestname}
-                      onChange={formik.handleChange}
-                      onInput={(e) =>
-                        (e.target.value = e.target.value.slice(0, 30))
-                      }
-                    />
-                  </Col>
-                  <Col xs={12} sm={6} lg={4} md={6} className="pb-1">
-                    <CustomTextField
-                      label={t("dashboard_Recent_DonorName")}
-                      placeholder={t("placeHolder_donar_name")}
-                      name="donarName"
-                      value={formik.values.donarName}
-                      onChange={(e) => {
-                        formik.setFieldValue(
-                          "donarName",
-                          e.target.value.slice(0, 30)
-                        );
-                      }}
-                    />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs={12} sm={6} lg={4} md={6} className="pb-1">
-                    <CustomTextField
-                      label={t("Email")}
-                      placeholder={t("placeHolder_email")}
-                      name="email"
-                      value={formik.values.email}
-                      onChange={formik.handleChange}
-                      onInput={(e) =>
-                        (e.target.value = e.target.value.slice(0, 30))
-                      }
-                    />
-                  </Col>
-
-                  <Col xs={12} sm={6} lg={8} md={8} className="a pb-1">
-                    <CustomTextField
-                      type="address"
-                      label={t("Address")}
-                      placeholder={t("Address")}
-                      name="address"
-                      value={formik.values.address}
-                      onChange={formik.handleChange}
-                    />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs={12} sm={6} lg={4} className="pb-2">
-                    <FormikCustomReactSelect
-                      required
-                      name="idType"
-                      labelName={t("ID Type")}
-                      placeholder={t("Id Type")}
-                      options={idTypeOptions}
-                      width={"100"}
-                      value={
-                        idTypeOptions.find(
-                          (option) => option.value === formik.values.idType
-                        ) || null
-                      }
-                      onChange={(selectedOption) =>
-                        formik.setFieldValue(
-                          "idType",
-                          selectedOption ? selectedOption.value : ""
-                        )
-                      }
-                    />
-                  </Col>
-                  <Col xs={12} sm={6} lg={4} className="pb-1">
-                  <CustomTextField
-                    required
-                    label={t("Id Number")}
-                    placeholder={t("Id Number")}
-                    name="idNumber"
-                    value={formik.values.idNumber}
-                    onChange={formik.handleChange}
-                    onInput={(e) => (e.target.value = e.target.value.slice(0, 30))}
-                  />
-                  </Col>
-                  <Col xs={12} sm={6} lg={4} className="pb-1 upload-id">
-                    <Upload
-                      name="file"
-                      className="uploadIdCard"
-                      listType="picture"
-                      {...uploadProps}
-                      style={{ width: "100%" }}
-                      onPreview={handlePreview}
-                    >
-                      <AntdButton
-                        icon={
-                          <img
-                            src={uploadIc}
-                            alt="Upload Icon"
-                            style={{ width: 16, height: 16 }}
-                          />
-                        }
-                        style={{ width: "100%" }}
-                      >
-                        {t("upload_id_card")}
-                      </AntdButton>
-                    </Upload>
-                    {previewImage && (
-                      <Image
-                        wrapperStyle={{
-                          display: 'none',
-                        }}
-                        preview={{
-                          visible: previewOpen,
-                          onVisibleChange: (visible) => setPreviewOpen(visible),
-                          afterOpenChange: (visible) => !visible && setPreviewImage(''),
-                        }}
-                        src={previewImage}
-                      />
-                    )}
-                </Col>
-                </Row>
-              </Col>
-            </Row>
-          </div>
+          <GuestDetailsSection
+            formik={formik}
+            getCommitmentMobile={getCommitmentMobile}
+            payDonation={payDonation}
+            countryFlag={countryFlag}
+            isEditing={isEditing}
+          />
           <div className="payments-container">
             <div className="tabs">
               <div
@@ -1328,7 +834,6 @@ const idTypeOptions = [
             )}
           </div>
         </div>
-
       </div>
 
       <div className="btn-Published mt-3">
