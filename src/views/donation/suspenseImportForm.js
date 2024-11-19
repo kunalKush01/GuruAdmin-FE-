@@ -21,7 +21,9 @@ import { importDonationFile } from "../../api/donationApi";
 import { useQueryClient } from "@tanstack/react-query";
 import { importCommitmentFile } from "../../api/commitmentApi";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 function SuspenseImportForm({ onClose, open, tab, setShowHistory }) {
+  const loggedInUser = useSelector((state) => state.auth.userDetail.name);
   const { t } = useTranslation();
   const targetFields = [
     t('transaction_id'),
@@ -188,6 +190,7 @@ function SuspenseImportForm({ onClose, open, tab, setShowHistory }) {
         const formData = new FormData();
         formData.append("file", file);
         formData.append("upload_type", "Donation");
+        formData.append("createdBy", loggedInUser?loggedInUser:"");
         await importDonationFile(formData);
         await queryClient.invalidateQueries("donations");
         await queryClient.refetchQueries("donations");
@@ -195,6 +198,7 @@ function SuspenseImportForm({ onClose, open, tab, setShowHistory }) {
         const formData = new FormData();
         formData.append("file", file);
         formData.append("upload_type", "Pledge");
+        formData.append("createdBy", loggedInUser?loggedInUser:"");
         await importCommitmentFile(formData);
         await queryClient.invalidateQueries("Commitments");
         await queryClient.refetchQueries("Commitments");
