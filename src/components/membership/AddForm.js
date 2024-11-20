@@ -115,11 +115,9 @@ export default function AddForm({
           district: formData.district || "",
           pincode: formData.pin || "",
         };
-      } 
-      else if (key === "familyInfo") {
-        return
-      }
-      else if (field.type === "object" && field.properties) {
+      } else if (key === "familyInfo") {
+        return;
+      } else if (field.type === "object" && field.properties) {
         payload[key] = generatePayloadFromForm(field.properties, formData);
       } else if (
         field.type === "array" &&
@@ -143,7 +141,8 @@ export default function AddForm({
         onSubmit={(formData) => {
           const payload = {
             trustId: trustId && trustId,
-            userId: loggedInUser && loggedInUser.id,
+            createdByUserId: loggedInUser && loggedInUser.id,
+            memberType: "Member",
             data: memberSchema
               ? generatePayloadFromForm(memberSchema.properties, formData)
               : {},
