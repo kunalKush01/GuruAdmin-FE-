@@ -62,7 +62,7 @@ const VerticalNavMenuLink = ({
       >
         <span className='menu-item text-truncate d-flex align-items-center'>
           <img src={item.icon} height={20} width={20} style={{ marginLeft: '0px', marginRight: '10px'}} />
-          <Trans i18nKey={item?.name}/>
+          <Trans i18nKey={item.customLabel || item.name} />
         </span>
         {item.badge && item.badgeText ? (
           <Badge className='ms-auto me-1' color={item.badge} pill>
