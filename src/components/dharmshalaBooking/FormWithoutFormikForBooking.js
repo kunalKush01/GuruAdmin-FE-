@@ -153,35 +153,6 @@ export default function FormWithoutFormikForBooking({
       console.error("Error fetching rooms:", error);
     }
   };
-  // useEffect(() => {
-  //   if (formik.values.roomsData && formik.values.roomsData.length > 0) {
-  //     formik.values.roomsData.forEach((room) => {
-  //       if (room.floor) {
-  //         fetchRooms(room.floor);
-  //       }
-  //     });
-  //   }
-  // }, [formik.values.fromDate, formik.values.toDate]);
-
-  // useEffect(() => {
-  //   const loadInitialRoomData = async () => {
-  //     if (isEditing && formik.values.roomsData) {
-  //       await fetchBuildings();
-  //       await fetchRoomTypes();
-
-  //       for (const room of formik.values.roomsData) {
-  //         if (room.building) {
-  //           await fetchFloors(room.building);
-  //         }
-  //         if (room.floor) {
-  //           await fetchRooms(room.floor);
-  //         }
-  //       }
-  //     }
-  //   };
-
-  //   loadInitialRoomData();
-  // }, [isEditing]);
 
   const updateTotalAmount = (updatedRoomsData, fromDate, toDate) => {
     if (!fromDate || !toDate) {
@@ -203,12 +174,8 @@ export default function FormWithoutFormikForBooking({
 
     const totalAmount = totalRoomRent + formik.values.security;
 
-    // const totalDueNew = totalRoomRent - formik.values.totalPaid + formik.values.security;
     let totalDueNew = totalAmount - formik.values.totalPaid;
 
-    // if (formik.values.totalPaid > totalAmount){
-    //   totalDueNew -= formik.values.security
-    // }
     if (totalDueNew === 0) {
       totalDueNew -= formik.values.security;
     }
@@ -340,7 +307,6 @@ export default function FormWithoutFormikForBooking({
   const checkRoomAvailable = useMutation({
     mutationFn: checkRoomAvailability,
     onSuccess: (data) => {
-      // Check if there are results and if rooms are unavailable
       const result = data.results?.[0]; // Assuming results is an array and you need the first element
 
       if (result && !result.available) {
