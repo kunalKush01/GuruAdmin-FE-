@@ -1,6 +1,7 @@
 // ** React Imports
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 // ** Third Party Components
 import classnames from "classnames";
@@ -68,6 +69,38 @@ const VerticalNavMenuGroup = ({
   // ** Returns condition to add open class
   const isOpen = openGroups.includes(item.id);
 
+  const permissions = useSelector((state) => state.auth.userDetail?.permissions);
+  const trustType = useSelector((state) => state.auth.trustDetail?.typeId?.name);
+  const hasDharmshalaAccess = useSelector((state) => state.auth.trustDetail?.hasDharmshala);
+
+  const checkPermission = (item) => {
+    const permissionsKey = permissions?.map((perm) => perm?.name);
+    const hasAllPermission = permissionsKey?.includes("all");
+    const hasItemPermission = permissionsKey?.includes(item?.name);
+    const hasCattleItemPermission = item?.innerPermissions?.some((perm) =>
+      permissionsKey?.includes(perm)
+    );
+    const isGaushala =
+      item?.isCattle?.toLowerCase() === trustType?.toLowerCase();
+
+    const isDharmshalaItem = item?.name === "dharmshala/dashboard";
+    if (isDharmshalaItem && !hasDharmshalaAccess) {
+      return false;
+    }
+
+    return (
+      (hasAllPermission && isGaushala) ||
+      (hasCattleItemPermission && isGaushala) ||
+      (hasItemPermission && isGaushala) ||
+      (hasAllPermission && item?.name !== "cattles_management") ||
+      (hasItemPermission && item?.name !== "cattles_management")
+    );
+  };
+
+  if (!checkPermission(item)) {
+    return null;
+  }
+
   return (
     <li
       className={classnames("nav-item has-sub", {
@@ -88,7 +121,7 @@ const VerticalNavMenuGroup = ({
           style={{ marginLeft: "0px", marginRight: "10px" }}
         />
         <span className="menu-title text-truncate">
-          <Trans i18nKey={item?.name} />
+        <Trans i18nKey={item.customLabel || item.name} />
         </span>
         {item.badge && item.badgeText ? (
           <Badge className="ms-auto me-1" color={item.badge} pill>

@@ -3410,6 +3410,14 @@
         font: bold 15px "Noto Sans", sans-serif;
     }
 }
+.roomholdBtn {
+    margin-right: 10px;
+    .ant-btn {
+        height: 38px;
+        box-shadow: none;
+        font: bold 15px "Noto Sans", sans-serif;
+    }
+}
 
 .ant-drawer-title {
     color: $font-color;
