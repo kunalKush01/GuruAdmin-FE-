@@ -110,7 +110,7 @@ const SiderLayout = (props) => {
     const isGaushala =
       item?.isCattle?.toLowerCase() === trustType?.toLowerCase();
 
-      const isDharmshalaItem = item?.name === "Dharmshala";
+      const isDharmshalaItem = item?.name === "dharmshala/dashboard";
       if (isDharmshalaItem && !hasDharmshalaAccess) {
       return null;
       }

@@ -249,7 +249,7 @@ const DharmshalaBookings = () => {
                   <Dropdown.Button
                     type="primary"
                     size="large"
-                    className={`me-1 ${isMobileView ? "btn-sm" : ""}`}
+                    className="roomholdBtn"
                     menu={{
                       items: [
                         {
