@@ -668,11 +668,6 @@ export default function FormWithoutFormikForBooking({
                       placeholder="Men"
                       name="numMen"
                     />
-                    {/* {formik.errors.numMen && (
-                      <div className="text-danger">
-                        <Trans i18nKey={formik.errors.numMen} />
-                      </div>
-                    )} */}
                   </div>
                   <div className="d-flex flex-column">
                     <input
@@ -695,11 +690,6 @@ export default function FormWithoutFormikForBooking({
                       placeholder="Women"
                       name="numWomen"
                     />
-                    {/* {formik.errors.numWomen && (
-                      <div className="text-danger">
-                        <Trans i18nKey={formik.errors.numWomen} />
-                      </div>
-                    )} */}
                   </div>
                   <div className="d-flex flex-column">
                     <input
@@ -722,11 +712,6 @@ export default function FormWithoutFormikForBooking({
                       placeholder="Kids"
                       name="numKids"
                     />
-                    {/* {formik.errors.numKids && (
-                      <div className="text-danger">
-                        <Trans i18nKey={formik.errors.numKids} />
-                      </div>
-                    )} */}
                   </div>
                   <button
                     className={`search-button ${
@@ -741,7 +726,6 @@ export default function FormWithoutFormikForBooking({
                 </div>
               </div>
             </div>
-            {/* <img src={editIcon} className="edit-icon" alt="Edit" /> */}
           </div>
           <RoomsContainer
             roomsData={formik.values.roomsData}
