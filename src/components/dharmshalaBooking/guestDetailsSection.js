@@ -26,6 +26,7 @@ function GuestDetailsSection({
   const [noUserFound, setNoUserFound] = useState(false);
   const [open, setOpen] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [dataLoad, setDataLoad] = useState(false);
   const showDrawer = () => {
     setOpen(true);
   };
@@ -82,8 +83,7 @@ function GuestDetailsSection({
       formik.setFieldValue("SelectedUser", "");
       setNoUserFound(false);
     }
-  }, [formik?.values?.Mobile]);
-  console.log(formik?.values?.SelectedUser)
+  }, [formik?.values?.Mobile,dataLoad]);
   useEffect(() => {
     const user = formik?.values?.SelectedUser;
     if (user?.id) {
@@ -105,13 +105,16 @@ function GuestDetailsSection({
       if (user?.address) addressParts.push(user.address);
 
       const fullAddress = addressParts.filter(Boolean).join(", ");
-      formik.setFieldValue("address", fullAddress);
-
+      if(!formik.values.address){
+        formik.setFieldValue("address", fullAddress);
+      }else{
+        formik.setFieldValue("address", formik.values.address);
+      }
+      
       setPhoneNumber(user?.countryCode + user?.mobileNumber);
       return;
     }
   }, [formik?.values?.SelectedUser]);
-
   const [previewImage, setPreviewImage] = useState("");
   const [fileList, setFileList] = useState([]);
 
