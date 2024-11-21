@@ -117,18 +117,18 @@ const AddDharmshalaBooking = () => {
       .nullable(),
 
     // Members validations
-    numMen: Yup.number()
-      .typeError("Please enter a valid number")
-      .min(0, "Must be 0 or more")
-      .required("Men is required"),
-    numWomen: Yup.number()
-      .typeError("Please enter a valid number")
-      .min(0, "Must be 0 or more")
-      .required("Women is required"),
-    numKids: Yup.number()
-      .typeError("Please enter a valid number")
-      .min(0, "Must be 0 or more")
-      .required("Kids is required"),
+    // numMen: Yup.number()
+    //   .typeError("Please enter a valid number")
+    //   .min(0, "Must be 0 or more")
+    //   .required("Men is required"),
+    // numWomen: Yup.number()
+    //   .typeError("Please enter a valid number")
+    //   .min(0, "Must be 0 or more")
+    //   .required("Women is required"),
+    // numKids: Yup.number()
+    //   .typeError("Please enter a valid number")
+    //   .min(0, "Must be 0 or more")
+    //   .required("Kids is required"),
 
     // Guest details validations
     Mobile: Yup.string()

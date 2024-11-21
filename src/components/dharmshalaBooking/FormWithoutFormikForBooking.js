@@ -2,12 +2,19 @@ import React, { useState, useEffect } from "react";
 import { Form } from "formik";
 import { Trans, useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import { Button,Spinner } from "reactstrap";
+import { Button, Spinner } from "reactstrap";
 import { Plus } from "react-feather";
 import { DatePicker } from "antd";
 import { Timeline } from "antd";
 import Swal from "sweetalert2";
-import { getRoomTypeList, getDharmshalaList, getDharmshalaFloorList, getAllRoomsByFloorId, getDharmshala, checkRoomAvailability } from "../../api/dharmshala/dharmshalaInfo";
+import {
+  getRoomTypeList,
+  getDharmshalaList,
+  getDharmshalaFloorList,
+  getAllRoomsByFloorId,
+  getDharmshala,
+  checkRoomAvailability,
+} from "../../api/dharmshala/dharmshalaInfo";
 import { Prompt } from "react-router-dom";
 import * as Yup from "yup";
 import { useMutation } from "@tanstack/react-query";
@@ -15,7 +22,7 @@ import momentGenerateConfig from "rc-picker/lib/generate/moment";
 import "../../../src/assets/scss/viewCommon.scss";
 import "../../../src/assets/scss/common.scss";
 import RoomsContainer from "./RoomsContainer";
-import moment from 'moment';
+import moment from "moment";
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 import GuestDetailsSection from "./guestDetailsSection";
 
@@ -43,79 +50,15 @@ export default function FormWithoutFormikForBooking({
   const [rooms, setRooms] = useState({});
   const [roomTypes, setRoomTypes] = useState([]);
 
-useEffect(() => {
-  if (formik.values.roomsData && formik.values.roomsData.length > 0) {
-    formik.values.roomsData.forEach((room) => {
-      if (room.floor) {
-        fetchRooms(room.floor);
-      }
-    });
-  }
-}, [formik.values.fromDate, formik.values.toDate]);
-
-useEffect(() => {
-  const loadInitialRoomData = async () => {
-    if (isEditing && formik.values.roomsData) {
-      await fetchBuildings();
-      await fetchRoomTypes();
-
-      for (const room of formik.values.roomsData) {
-        if (room.building) {
-          await fetchFloors(room.building);
-        }
-        if (room.floor) {
-          await fetchRooms(room.floor);
-        }
-      }
-    }
-  };
-
-  loadInitialRoomData();
-}, [isEditing]);
-
-useEffect(() => {
-  if (formik.values.fromDate && formik.values.toDate && formik.values.roomsData.length > 0) {
-    updateTotalAmount(formik.values.roomsData,formik.values.fromDate,formik.values.toDate);
-  }
-}, [formik.values.fromDate, formik.values.toDate,formik.values.roomsData]);
-
-  useEffect(() => {
-    fetchBuildings();
-    fetchRoomTypes();
-  }, []);
-
-  useEffect(() => {
-    fetchBuildings();
-    fetchRoomTypes();
-
-    if (formik.values.roomsData && formik.values.roomsData.length > 0) {
-      formik.values.roomsData.forEach((room) => {
-        if (room.building) {
-          fetchFloors(room.building);
-        }
-        if (room.floor) {
-          fetchRooms(room.floor);
-        }
-      });
-    }
-  }, []);
-
-  useEffect(() => {
-    if (formik.values) {
-      formik.setFieldValue('roomRent', formik.values.roomRent);
-      formik.setFieldValue('totalAmount', formik.values.totalAmount);
-      formik.setFieldValue('totalDue', formik.values.totalDue);
-      formik.setFieldValue('totalPaid', formik.values.totalPaid);
-    }
-  }, [formik.values.roomRent,formik.values.totalAmount,formik.values.totalDue,formik.values.totalPaid]);
-
   const fetchBuildings = async () => {
     try {
       const response = await getDharmshalaList();
-      setBuildings(response.results.map(building => ({
-        _id: building._id,
-        name: building.name
-      })));
+      setBuildings(
+        response.results.map((building) => ({
+          _id: building._id,
+          name: building.name,
+        }))
+      );
     } catch (error) {
       console.error("Error fetching buildings:", error);
     }
@@ -124,14 +67,16 @@ useEffect(() => {
   const fetchRoomTypes = async () => {
     try {
       const response = await getRoomTypeList();
-      setRoomTypes(response.results.map(room => ({
-        _id: room._id,
-        name: room.name,
-        capacity: room.capacity,
-        price: room.price,
-        dharmshalaId: room.dharmshalaId
-      })));
-      
+      setRoomTypes(
+        response.results.map((room) => ({
+          _id: room._id,
+          name: room.name,
+          capacity: room.capacity,
+          price: room.price,
+          dharmshalaId: room.dharmshalaId,
+        }))
+      );
+
       if (response.results && response.results.length > 0) {
         const dharmshalaId = response.results[0].dharmshalaId;
         fetchDharmshalaDetails(dharmshalaId);
@@ -145,7 +90,7 @@ useEffect(() => {
     try {
       const response = await getDharmshala(dharmshalaId);
       if (response && response.advanceOnBooking) {
-        formik.setFieldValue('security', response.advanceOnBooking);
+        formik.setFieldValue("security", response.advanceOnBooking);
       }
     } catch (error) {
       console.error("Error fetching dharmshala details:", error);
@@ -171,29 +116,36 @@ useEffect(() => {
 
   const fetchRooms = async (floorId) => {
     try {
-      const fromDate = formik.values.fromDate ? moment(formik.values.fromDate).format('YYYY-MM-DD') : '';
-      const toDate = formik.values.toDate ? moment(formik.values.toDate).format('YYYY-MM-DD') : '';
-      
+      const fromDate = formik.values.fromDate
+        ? moment(formik.values.fromDate).format("YYYY-MM-DD")
+        : "";
+      const toDate = formik.values.toDate
+        ? moment(formik.values.toDate).format("YYYY-MM-DD")
+        : "";
+
       const response = await getAllRoomsByFloorId(floorId, fromDate, toDate);
-      
+
       // Find any existing room selections for this floor
       const existingRoomSelections = formik.values.roomsData
-        .filter(room => room.floor === floorId && room.roomId)
-        .map(room => ({
+        .filter((room) => room.floor === floorId && room.roomId)
+        .map((room) => ({
           _id: room.roomId,
           roomNumber: room.roomNumber,
-          roomTypeId: room.roomType
+          roomTypeId: room.roomType,
         }));
 
       // Combine API response with existing selections to ensure they're available in dropdown
       const availableRooms = [
         ...response.results,
-        ...existingRoomSelections.filter(existingRoom => 
-          !response.results.some(apiRoom => apiRoom._id === existingRoom._id)
-        )
+        ...existingRoomSelections.filter(
+          (existingRoom) =>
+            !response.results.some(
+              (apiRoom) => apiRoom._id === existingRoom._id
+            )
+        ),
       ];
 
-      setRooms(prevRooms => ({
+      setRooms((prevRooms) => ({
         ...prevRooms,
         [floorId]: availableRooms,
       }));
@@ -201,24 +153,183 @@ useEffect(() => {
       console.error("Error fetching rooms:", error);
     }
   };
+  // useEffect(() => {
+  //   if (formik.values.roomsData && formik.values.roomsData.length > 0) {
+  //     formik.values.roomsData.forEach((room) => {
+  //       if (room.floor) {
+  //         fetchRooms(room.floor);
+  //       }
+  //     });
+  //   }
+  // }, [formik.values.fromDate, formik.values.toDate]);
 
+  // useEffect(() => {
+  //   const loadInitialRoomData = async () => {
+  //     if (isEditing && formik.values.roomsData) {
+  //       await fetchBuildings();
+  //       await fetchRoomTypes();
+
+  //       for (const room of formik.values.roomsData) {
+  //         if (room.building) {
+  //           await fetchFloors(room.building);
+  //         }
+  //         if (room.floor) {
+  //           await fetchRooms(room.floor);
+  //         }
+  //       }
+  //     }
+  //   };
+
+  //   loadInitialRoomData();
+  // }, [isEditing]);
+
+  const updateTotalAmount = (updatedRoomsData, fromDate, toDate) => {
+    if (!fromDate || !toDate) {
+      formik.setFieldValue("roomRent", 0);
+      formik.setFieldValue("totalAmount", 0);
+      formik.setFieldValue("totalDue", 0);
+      return;
+    }
+    const startDate = fromDate;
+    const endDate = toDate;
+    const numberOfDays = endDate ? endDate.diff(startDate, "days") : null;
+
+    const roomRentPerDay = updatedRoomsData.reduce(
+      (acc, room) => acc + room.amount,
+      0
+    );
+
+    const totalRoomRent = roomRentPerDay * numberOfDays;
+
+    const totalAmount = totalRoomRent + formik.values.security;
+
+    // const totalDueNew = totalRoomRent - formik.values.totalPaid + formik.values.security;
+    let totalDueNew = totalAmount - formik.values.totalPaid;
+
+    // if (formik.values.totalPaid > totalAmount){
+    //   totalDueNew -= formik.values.security
+    // }
+    if (totalDueNew === 0) {
+      totalDueNew -= formik.values.security;
+    }
+
+    formik.setFieldValue("roomRent", totalRoomRent);
+    formik.setFieldValue("totalAmount", totalAmount);
+    formik.setFieldValue("totalDue", totalDueNew);
+  };
+
+  const getFieldLabel = (totalDue) => {
+    if (totalDue < 0) return "Refund:";
+    if (totalDue > 0) return "Collect Now:";
+    return "Status:";
+  };
+
+  const getFieldValue = (totalDue) => {
+    if (totalDue === 0) return "Settled";
+    return Math.abs(totalDue).toString();
+  };
+
+  const handleDeleteRoom = (index) => {
+    Swal.fire({
+      title: t("booking_room_delete"),
+      text: t("booking_room_delete_sure"),
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      cancelButtonText: t("cancel"),
+      confirmButtonText: t("confirm"),
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const updatedRoomsData = formik.values.roomsData.filter(
+          (room, idx) => idx !== index
+        );
+        formik.setFieldValue("roomsData", updatedRoomsData);
+        updateTotalAmount(
+          updatedRoomsData,
+          formik.values.fromDate,
+          formik.values.toDate
+        );
+        Swal.fire(
+          t("booking_room_deleted"),
+          t("booking_room_deleted_message"),
+          t("success")
+        );
+      }
+    });
+  };
+
+  const handleCancel = () => {
+    Swal.fire({
+      title: t("cancel_booking"),
+      text: t("cancel_booking_sure"),
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      cancelButtonText: t("undo_cancel"),
+      confirmButtonText: t("confirm_cancel"),
+    }).then((result) => {
+      if (result.isConfirmed) {
+        history.push("/booking/info");
+      }
+    });
+  };
+  useEffect(() => {
+    if (
+      formik.values.fromDate &&
+      formik.values.toDate &&
+      formik.values.roomsData.length > 0
+    ) {
+      updateTotalAmount(
+        formik.values.roomsData,
+        formik.values.fromDate,
+        formik.values.toDate
+      );
+    }
+  }, [formik.values.fromDate, formik.values.toDate, formik.values.roomsData]);
+
+  useEffect(() => {
+    fetchBuildings();
+    fetchRoomTypes();
+
+    if (formik.values.roomsData && formik.values.roomsData.length > 0) {
+      formik.values.roomsData.forEach((room) => {
+        if (room.building) {
+          fetchFloors(room.building);
+        }
+        if (room.floor) {
+          fetchRooms(room.floor);
+        }
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (formik.values) {
+      formik.setFieldValue("roomRent", formik.values.roomRent);
+      formik.setFieldValue("totalAmount", formik.values.totalAmount);
+      formik.setFieldValue("totalDue", formik.values.totalDue);
+      formik.setFieldValue("totalPaid", formik.values.totalPaid);
+    }
+  }, [
+    formik.values.roomRent,
+    formik.values.totalAmount,
+    formik.values.totalDue,
+    formik.values.totalPaid,
+  ]);
 
   const isSearchEnabled = () => {
     const men = parseInt(formik.values.numMen, 10) || 0;
     const women = parseInt(formik.values.numWomen, 10) || 0;
     const kids = parseInt(formik.values.numKids, 10) || 0;
     const totalGuests = men + women + kids;
-  
-    return (
-      formik.values.fromDate &&
-      formik.values.toDate &&
-      totalGuests > 0  
-    );
+
+    return formik.values.fromDate && formik.values.toDate && totalGuests > 0;
   };
-  
 
   const disabledDate = (current) => {
-    return current && current < moment().startOf('day');
+    return current && current < moment().startOf("day");
   };
   const [selectedFromDate, setSelectedFromDate] = useState(
     isEditing ? editBookingData.startDate : formik.values.fromDate
@@ -310,12 +421,14 @@ useEffect(() => {
     const women = parseInt(formik.values.numWomen, 10) || 0;
     const kids = parseInt(formik.values.numKids, 10) || 0;
     const totalGuests = men + women + kids;
-  
-    const sortedRoomTypes = [...roomTypes].sort((a, b) => b.capacity - a.capacity);
-  
+
+    const sortedRoomTypes = [...roomTypes].sort(
+      (a, b) => b.capacity - a.capacity
+    );
+
     let remainingGuests = totalGuests;
     const roomsCombination = [];
-  
+
     while (remainingGuests > 0) {
       const suitableRoom = sortedRoomTypes.find(
         (room) => room.capacity <= remainingGuests
@@ -330,7 +443,7 @@ useEffect(() => {
           floorName: "",
           roomId: "",
           roomNumber: "",
-          amount: suitableRoom.price, 
+          amount: suitableRoom.price,
         });
         remainingGuests -= suitableRoom.capacity;
       } else {
@@ -345,30 +458,56 @@ useEffect(() => {
           floorName: "",
           roomId: "",
           roomNumber: "",
-          amount: smallestRoom.price, 
+          amount: smallestRoom.price,
         });
         remainingGuests -= smallestRoom.capacity;
       }
     }
-  
-    formik.setFieldValue('roomsData', roomsCombination);
-    updateTotalAmount(roomsCombination,formik.values.fromDate,formik.values.toDate);
+
+    formik.setFieldValue("roomsData", roomsCombination);
+    updateTotalAmount(
+      roomsCombination,
+      formik.values.fromDate,
+      formik.values.toDate
+    );
   };
   const handleAddRoom = () => {
     const updatedRoomsData = [
       ...formik.values.roomsData,
-      { roomType: "", building: "", floor: "", roomId: "", roomNumber:'', amount: 0 },
+      {
+        roomType: "",
+        building: "",
+        floor: "",
+        roomId: "",
+        roomNumber: "",
+        amount: 0,
+      },
     ];
-    formik.setFieldValue('roomsData', updatedRoomsData);
-    updateTotalAmount(updatedRoomsData,formik.values.fromDate,formik.values.toDate);
+    formik.setFieldValue("roomsData", updatedRoomsData);
+    updateTotalAmount(
+      updatedRoomsData,
+      formik.values.fromDate,
+      formik.values.toDate
+    );
   };
 
   const handleClearRooms = () => {
     const clearedRoomsData = [
-      { roomType: "", building: "", floor: "", roomId: "", roomNumber:'', amount: 0 },
+      {
+        roomType: "",
+        building: "",
+        floor: "",
+        roomId: "",
+        roomNumber: "",
+        amount: 0,
+      },
     ];
-    formik.setFieldValue('roomsData', clearedRoomsData);
-    updateTotalAmount(clearedRoomsData,formik.values.fromDate,formik.values.toDate);
+    formik.setFieldValue("roomsData", clearedRoomsData);
+    updateTotalAmount(
+      clearedRoomsData,
+      formik.values.fromDate,
+      formik.values.toDate
+    );
   };
 
   const handleRoomTypeChange = (value, index) => {
@@ -377,150 +516,92 @@ useEffect(() => {
     updatedRoomsData[index] = {
       ...updatedRoomsData[index],
       roomType: value,
-      roomTypeName: selectedRoomType?.name || '',
-      building: '',
-      buildingName: '',
-      floor: '',
-      floorName: '',
-      roomId: '',
-      roomNumber: '',
+      roomTypeName: selectedRoomType?.name || "",
+      building: "",
+      buildingName: "",
+      floor: "",
+      floorName: "",
+      roomId: "",
+      roomNumber: "",
       amount: selectedRoomType?.price || 0,
     };
-    formik.setFieldValue('roomsData', updatedRoomsData);
-    updateTotalAmount(updatedRoomsData,formik.values.fromDate,formik.values.toDate);
+    formik.setFieldValue("roomsData", updatedRoomsData);
+    updateTotalAmount(
+      updatedRoomsData,
+      formik.values.fromDate,
+      formik.values.toDate
+    );
   };
-  
+
   const handleBuildingChange = (buildingId, index) => {
     const updatedRooms = formik.values.roomsData.map((room, i) =>
-      i === index ? {
-        ...room,
-        building: buildingId,
-        buildingName: buildings.find(b => b._id === buildingId)?.name,
-        floor: "",
-        floorName: "",
-        roomNumber: "",
-        roomId: ""
-      } : room
+      i === index
+        ? {
+            ...room,
+            building: buildingId,
+            buildingName: buildings.find((b) => b._id === buildingId)?.name,
+            floor: "",
+            floorName: "",
+            roomNumber: "",
+            roomId: "",
+          }
+        : room
     );
-    formik.setFieldValue('roomsData', updatedRooms);
-    updateTotalAmount(updatedRooms,formik.values.fromDate,formik.values.toDate);
+    formik.setFieldValue("roomsData", updatedRooms);
+    updateTotalAmount(
+      updatedRooms,
+      formik.values.fromDate,
+      formik.values.toDate
+    );
     fetchFloors(buildingId);
   };
-  
+
   const handleFloorChange = (floorId, index) => {
     const updatedRooms = formik.values.roomsData.map((room, i) =>
-      i === index ? {
-        ...room,
-        floor: floorId,
-        floorName: floors[room.building]?.find(f => f._id === floorId)?.name,
-        roomNumber: "",
-        roomId: ""
-      } : room
+      i === index
+        ? {
+            ...room,
+            floor: floorId,
+            floorName: floors[room.building]?.find((f) => f._id === floorId)
+              ?.name,
+            roomNumber: "",
+            roomId: "",
+          }
+        : room
     );
-    formik.setFieldValue('roomsData', updatedRooms);
-    updateTotalAmount(updatedRooms,formik.values.fromDate,formik.values.toDate);
+    formik.setFieldValue("roomsData", updatedRooms);
+    updateTotalAmount(
+      updatedRooms,
+      formik.values.fromDate,
+      formik.values.toDate
+    );
     fetchRooms(floorId);
   };
-  
+
   const handleRoomNumberChange = (roomId, index) => {
     const floorId = formik.values.roomsData[index].floor;
-    const selectedRoom = (rooms[floorId] || []).find(room => room._id === roomId);
-    
-    const updatedRooms = formik.values.roomsData.map((room, i) =>
-      i === index ? { 
-        ...room, 
-        roomId: roomId,
-        roomNumber: selectedRoom ? selectedRoom.roomNumber : room.roomNumber // Preserve existing room number if no new selection
-      } : room
+    const selectedRoom = (rooms[floorId] || []).find(
+      (room) => room._id === roomId
     );
-    
-    formik.setFieldValue('roomsData', updatedRooms);
-    updateTotalAmount(updatedRooms,formik.values.fromDate,formik.values.toDate);
-  };
 
-  const updateTotalAmount = (updatedRoomsData,fromDate,toDate) => {
-    if (!fromDate || !toDate) {
-      formik.setFieldValue('roomRent', 0);
-      formik.setFieldValue('totalAmount', 0);
-      formik.setFieldValue('totalDue', 0);
-      return;
-    }
-    const startDate = fromDate;
-    const endDate = toDate;
-    const numberOfDays = endDate ? endDate.diff(startDate, "days") : null;
+    const updatedRooms = formik.values.roomsData.map((room, i) =>
+      i === index
+        ? {
+            ...room,
+            roomId: roomId,
+            roomNumber: selectedRoom
+              ? selectedRoom.roomNumber
+              : room.roomNumber, // Preserve existing room number if no new selection
+          }
+        : room
+    );
 
-    const roomRentPerDay = updatedRoomsData.reduce((acc, room) => acc + room.amount, 0);
-
-    const totalRoomRent = roomRentPerDay * numberOfDays;
-
-    const totalAmount = totalRoomRent + formik.values.security;
-
-    // const totalDueNew = totalRoomRent - formik.values.totalPaid + formik.values.security;
-    let totalDueNew = totalAmount - formik.values.totalPaid;
-
-    // if (formik.values.totalPaid > totalAmount){
-    //   totalDueNew -= formik.values.security
-    // }
-    if (totalDueNew === 0) {
-      totalDueNew -= formik.values.security;
-  }
-
-    formik.setFieldValue('roomRent', totalRoomRent);
-    formik.setFieldValue('totalAmount', totalAmount);
-    formik.setFieldValue('totalDue', totalDueNew);
-  };
-
-  const getFieldLabel = (totalDue) => {
-    if (totalDue < 0) return "Refund:";
-    if (totalDue > 0) return "Collect Now:";
-    return "Status:";
-  };
-  
-  const getFieldValue = (totalDue) => {
-    if (totalDue === 0) return "Settled";
-    return Math.abs(totalDue).toString();
-  };
-
-  const handleDeleteRoom = (index) => {
-    Swal.fire({
-      title: t("booking_room_delete"),
-      text: t("booking_room_delete_sure"),
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      cancelButtonText: t("cancel"),
-      confirmButtonText: t("confirm"),
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const updatedRoomsData = formik.values.roomsData.filter((room, idx) => idx !== index);
-        formik.setFieldValue('roomsData', updatedRoomsData);
-        updateTotalAmount(updatedRoomsData,formik.values.fromDate,formik.values.toDate);
-        Swal.fire(
-          t("booking_room_deleted"),
-          t("booking_room_deleted_message"),
-          t("success")
-        );
-      }
-    });
-  };
-  
-
-  const handleCancel = () => {
-    Swal.fire({
-      title: t("cancel_booking"),
-      text: t("cancel_booking_sure"),
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      cancelButtonText: t("undo_cancel"),
-      confirmButtonText: t("confirm_cancel"),
-    }).then((result) => {
-      if (result.isConfirmed) {
-        history.push("/booking/info");
-      }
-    });
+    formik.setFieldValue("roomsData", updatedRooms);
+    updateTotalAmount(
+      updatedRooms,
+      formik.values.fromDate,
+      formik.values.toDate
+    );
   };
 
   return (
@@ -539,12 +620,14 @@ useEffect(() => {
       <div className="overall-div">
         <div className="booking-room">
           <div className="booking-container">
-          <div className="booking-header">
-            <div className="booking-title">Booking</div>
-            {isEditing && formik.values.bookingId && (
-              <div className="booking-id">Booking ID: {formik.values.bookingCode}</div>
-            )}
-          </div>
+            <div className="booking-header">
+              <div className="booking-title">Booking</div>
+              {isEditing && formik.values.bookingId && (
+                <div className="booking-id">
+                  Booking ID: {formik.values.bookingCode}
+                </div>
+              )}
+            </div>
             <div className="flex-container">
               <div className="date-picker-container">
                 <div className="date-picker-item">
@@ -556,7 +639,7 @@ useEffect(() => {
                     value={formik.values.fromDate}
                     onChange={handleFromDateChange}
                     format="DD MMM YYYY"
-                    placeholder={t('select_date')}
+                    placeholder={t("select_date")}
                     className="custom-datepicker"
                     disabledDate={disabledDate}
                     name="fromDate"
@@ -577,12 +660,15 @@ useEffect(() => {
                     value={formik.values.toDate}
                     onChange={handleToDateChange}
                     format="DD MMM YYYY"
-                    placeholder={t('select_date')}
+                    placeholder={t("select_date")}
                     className="custom-datepicker"
                     onBlur={formik.handleBlur}
                     disabledDate={(current) => {
-                      return (current && current < moment().startOf('day')) || 
-                             (formik.values.fromDate && current < formik.values.fromDate);
+                      return (
+                        (current && current < moment().startOf("day")) ||
+                        (formik.values.fromDate &&
+                          current < formik.values.fromDate)
+                      );
                     }}
                   />
                   {formik.errors.toDate && formik.touched.toDate && (
@@ -725,7 +811,9 @@ useEffect(() => {
                 Payment
               </div>
               <div
-                className={`tab ${activeTab === "paymentHistory" ? "active" : ""}`}
+                className={`tab ${
+                  activeTab === "paymentHistory" ? "active" : ""
+                }`}
                 onClick={() => setActiveTab("paymentHistory")}
               >
                 Payment History
@@ -774,53 +862,55 @@ useEffect(() => {
                   />
                 </div>
                 {isEditing && (
-                <>
-                  <div className="payment-field">
-                    <label htmlFor="total-paid" className="payment-label">
-                      Total Paid:
-                    </label>
-                    <input
-                      type="text"
-                      id="total-paid"
-                      value={formik.values.totalPaid}
-                      readOnly
-                      className="payment-input"
-                      placeholder="Total Paid"
-                    />
-                  </div>
-                  <div className="payment-field">
-                    <label htmlFor="total-due" className="payment-label">
-                      {getFieldLabel(formik.values.totalDue)}
-                    </label>
-                    <input
-                      type="text"
-                      id="total-due"
-                      value={getFieldValue(formik.values.totalDue)}
-                      readOnly
-                      className="payment-input"
-                      placeholder="Amount"
-                    />
-                  </div>
-                </>
-              )}
+                  <>
+                    <div className="payment-field">
+                      <label htmlFor="total-paid" className="payment-label">
+                        Total Paid:
+                      </label>
+                      <input
+                        type="text"
+                        id="total-paid"
+                        value={formik.values.totalPaid}
+                        readOnly
+                        className="payment-input"
+                        placeholder="Total Paid"
+                      />
+                    </div>
+                    <div className="payment-field">
+                      <label htmlFor="total-due" className="payment-label">
+                        {getFieldLabel(formik.values.totalDue)}
+                      </label>
+                      <input
+                        type="text"
+                        id="total-due"
+                        value={getFieldValue(formik.values.totalDue)}
+                        readOnly
+                        className="payment-input"
+                        placeholder="Amount"
+                      />
+                    </div>
+                  </>
+                )}
                 {/* <button className="pay-button">Pay</button> */}
               </div>
             )}
             {activeTab === "paymentHistory" && (
-              <div 
+              <div
               // className="payment-history-tab"
               >
                 {/* <h3>Payment History</h3> */}
                 {formik.values.payments && formik.values.payments.length > 0 ? (
                   <Timeline>
                     {formik.values.payments.map((payment, index) => (
-                      <Timeline.Item 
-                        key={payment._id || index} 
-                        color={payment.type === 'deposit' ? 'green' : 'red'}
+                      <Timeline.Item
+                        key={payment._id || index}
+                        color={payment.type === "deposit" ? "green" : "red"}
                       >
                         <p>
-                          <strong>{payment.type === 'deposit' ? 'Deposit' : 'Refund'}</strong>: 
-                          {payment.amount} {formik.values.currency}
+                          <strong>
+                            {payment.type === "deposit" ? "Deposit" : "Refund"}
+                          </strong>
+                          :{payment.amount} {formik.values.currency}
                         </p>
                         <p>Date: {new Date(payment.date).toLocaleString()}</p>
                         <p>Method: {payment.method}</p>
@@ -860,4 +950,4 @@ useEffect(() => {
       </div>
     </Form>
   );
-} 
+}
