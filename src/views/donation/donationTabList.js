@@ -61,6 +61,7 @@ export default function Donation() {
     donation_type ? donation_type : "Donation"
   );
   const selectedLang = useSelector((state) => state.auth.selectLang);
+  const [filterData, setFilterData] = useState({});
   const periodDropDown = () => {
     switch (dropDownName) {
       case "dashboard_monthly":
@@ -163,6 +164,7 @@ export default function Donation() {
       filterEndDate,
       filterStartDate,
       searchBarValue,
+      filterData,
     ],
     () =>
       getAllDonation({
@@ -173,6 +175,7 @@ export default function Donation() {
         categoryId: subCategoryId,
         endDate: filterEndDate,
         languageId: selectedLang.id,
+        ...(filterData && { advancedSearch: filterData }),
       }),
     {
       keepPreviousData: true,
@@ -287,16 +290,22 @@ export default function Donation() {
   const handleApplyFilter = (e) => {
     showFilter();
   };
-  const [filterData, setFilterData] = useState(null);
   const onFilterSubmit = (filterData) => {
     console.log("Filter Data received:", filterData);
     setFilterData(filterData);
     // Handle the filter data here, e.g., send it to an API, update state, etc.
   };
-  const handleRemoveAllFilter=()=>{
-    setFilterData(null)
-  }
+  const handleRemoveAllFilter = () => {
+    setFilterData({});
+  };
+  const removeFilter = (fieldName) => {
+    const newFilterData = { ...filterData };
+    delete newFilterData[fieldName]; // Remove the field from filterData
 
+    setFilterData(newFilterData); // For React state
+  };
+  const hasFilters = Object.keys(filterData).length > 0;
+  console.log(hasFilters);
   // Donation split tab
   const items = [
     {
@@ -396,47 +405,66 @@ export default function Donation() {
                   ""
                 )}
               </div>
-                <Button
-                  className="secondaryAction-btn"
-                  color="primary"
-                  onClick={handleApplyFilter}
-                >
-                  <img
-                    src={filterIcon}
-                    alt="Filter Icon"
-                    width={20}
-                    className="filterIcon"
-                  />
-                  {t("filter")}
-                </Button>
+              <Button
+                className="secondaryAction-btn"
+                color="primary"
+                onClick={handleApplyFilter}
+              >
+                <img
+                  src={filterIcon}
+                  alt="Filter Icon"
+                  width={20}
+                  className="filterIcon"
+                />
+                {t("filter")}
+              </Button>
             </div>
           </div>
           <div className="d-flex justify-content-between">
             <div>
-              {filterData !== null && (
+              {hasFilters && (
                 <span className="filterLable">Active Filters:</span>
               )}
               {/* Display filter data as tags */}
-              {filterData !== null &&
+              {hasFilters &&
                 Object.keys(filterData).map((key) => {
-                  if (key.startsWith("fieldName")) {
-                    const index = key.replace("fieldName", ""); // Extract the index
-                    const fieldName = filterData[key].label;
-                    const filterType = filterData[`filterType${index}`]?.label;
-                    const filterValue = filterData[`filterValue${index}`];
+                  // Extract the filter details from the data
+                  const filterItem = filterData[key];
+
+                  if (filterItem) {
+                    const fieldName = key; // Use the key as the field name (e.g., "donarName")
+                    const filterType = filterItem.type; // Get the type (e.g., "equal")
+                    const filterValue = filterItem.value; // Get the value (e.g., "Vaibhav Jain")
 
                     return (
-                      <Tag key={index} color="orange" style={{ margin: "5px" }}>
-                        {`${fieldName} (${filterType}): ${filterValue}`} <img src={crossIcon} width={15} className="crossIcon" />
+                      <Tag
+                        key={fieldName}
+                        color="orange"
+                        style={{ margin: "5px" }}
+                      >
+                        {`${fieldName} (${filterType}): ${filterValue}`}{" "}
+                        <img
+                          src={crossIcon}
+                          width={15}
+                          className="crossIcon"
+                          onClick={() => removeFilter(fieldName)} // Remove filter by field name
+                          style={{ cursor: "pointer", marginLeft: "5px" }}
+                        />
                       </Tag>
                     );
                   }
+
                   return null;
                 })}
             </div>
-            <div style={{marginTop:"5px"}}>
-              {filterData !== null && (
-                <span className="cursor-pointer" onClick={handleRemoveAllFilter}>Cancel</span>
+            <div style={{ marginTop: "5px" }}>
+              {hasFilters && (
+                <span
+                  className="cursor-pointer"
+                  onClick={handleRemoveAllFilter}
+                >
+                  Cancel
+                </span>
               )}
             </div>
           </div>
@@ -834,6 +862,7 @@ export default function Donation() {
         onFilterClose={onFilterClose}
         filterOpen={filterOpen}
         onSubmitFilter={onFilterSubmit}
+        moduleName={activeTab}
       />
     </div>
   );
