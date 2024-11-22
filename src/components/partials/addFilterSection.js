@@ -1,7 +1,7 @@
 import { DatePicker, Drawer, Input, Collapse } from "antd";
 import { Formik, Form, Field } from "formik";
-import React, { useEffect } from "react";
-import { Plus } from "react-feather";
+import React, { useEffect, useState } from "react";
+import { Plus, Trash, Trash2 } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { Button, Col, Row } from "reactstrap";
 import "../../assets/scss/common.scss";
@@ -9,17 +9,42 @@ import FormikCustomReactSelect from "./formikCustomReactSelect";
 import CustomTextField from "./customTextField";
 const { RangePicker } = DatePicker;
 import moment from "moment";
+import { fetchFields } from "../../fetchModuleFields";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 const { Panel } = Collapse;
+import deleteIcon from "../../../src/assets/images/icons/category/deleteIcon.svg";
 
-function AddFilterSection({ onFilterClose, filterOpen, onSubmitFilter }) {
+function AddFilterSection({
+  onFilterClose,
+  filterOpen,
+  onSubmitFilter,
+  moduleName,
+}) {
   const { t } = useTranslation();
+  const [fieldOptions, setFieldOptions] = useState([]);
+  const trustId = localStorage.getItem("trustId");
+  const modName = ConverFirstLatterToCapital(moduleName);
+  const [filterRows, setFilterRows] = useState([{ id: 1 }]);
 
-  // Options for the field and filter type select inputs
-  const fieldOptions = [
-    { value: "name", label: t("Name") },
-    { value: "dob", label: t("Date of Birth") },
-    { value: "mobile", label: t("Mobile Number") },
-  ];
+  useEffect(() => {
+    const excludeFields = [
+      "_id",
+      "updatedAt",
+      // "createdAt",
+      "__v",
+      "trustId",
+      "receiptLink",
+      "receiptName",
+      "customFields",
+      "user",
+      "createdBy",
+    ];
+    const getFields = async () => {
+      const options = await fetchFields(trustId, modName, excludeFields);
+      setFieldOptions(options);
+    };
+    getFields();
+  }, [trustId, moduleName]);
 
   const filterTypeOptions = [
     { value: "", label: t("select_option") },
@@ -28,29 +53,66 @@ function AddFilterSection({ onFilterClose, filterOpen, onSubmitFilter }) {
     { value: "inRange", label: t("inRange") },
   ];
 
-  // Function to render dynamic input based on selected field
+  // const renderFilterValueInput = (field, index, formik) => {
+  //   const value = field ? field.value : null;
+  //   switch (value) {
+  //     case "name":
+  //       return (
+  //         <CustomTextField
+  //           name={`filterValue${index}`}
+  //           placeholder={t("Enter Name")}
+  //           type="text"
+  //         />
+  //       );
+  //     case "dob":
+  //       return (
+  //         <RangePicker
+  //           id="datePickerANTD"
+  //           format="DD MMM YYYY"
+  //           placeholder={t("Select Date")}
+  //           onChange={(date) => {
+  //             const formattedStartDate = moment(date).format("DD MMM YYYY");
+  //             formik.setFieldValue(`filterValue${index}`, formattedStartDate);
+  //           }}
+  //         />
+  //       );
+  //     case "mobile":
+  //       return (
+  //         <CustomTextField
+  //           name={`filterValue${index}`}
+  //           placeholder={t("Enter Mobile Number")}
+  //           type="number"
+  //         />
+  //       );
+  //     default:
+  //       return (
+  //         <CustomTextField
+  //           name={`filterValue${index}`}
+  //           placeholder={t("Enter Value")}
+  //           type="text"
+  //         />
+  //       );
+  //   }
+  // };
   const renderFilterValueInput = (field, index, formik) => {
     const value = field ? field.value : null;
 
-    const handleChange = (e) => {
-      if (formik.values[`fieldName${index}`] !== field.value) {
-        formik.setFieldValue(`filterValue${index}`, "");
-      } else {
-        formik.setFieldValue(`filterValue${index}`, e.target.value);
-      }
-    };
-
-    switch (value) {
-      case "name":
+    // Check the field type for the selected field
+    const selectedField = fieldOptions.find((option) => option.value === value);
+    const fieldType = selectedField ? selectedField.type : null;
+    // Render input field based on field type
+    switch (fieldType) {
+      case "String":
         return (
-          <CustomTextField
-            name={`filterValue${index}`}
-            placeholder={t("Enter Name")}
-            type="text"
-            onChange={handleChange}
-          />
+          <div className="w-100">
+            <CustomTextField
+              name={`filterValue${index}`}
+              placeholder={t("Enter Value")}
+              type="text"
+            />
+          </div>
         );
-      case "dob":
+      case "Date":
         return (
           <RangePicker
             id="datePickerANTD"
@@ -62,28 +124,53 @@ function AddFilterSection({ onFilterClose, filterOpen, onSubmitFilter }) {
             }}
           />
         );
-      case "mobile":
+      case "Number":
         return (
-          <CustomTextField
+          <div className="w-100">
+            <CustomTextField
+              name={`filterValue${index}`}
+              placeholder={t("Enter Number")}
+              type="number"
+            />
+          </div>
+        );
+      case "Boolean":
+        return (
+          <FormikCustomReactSelect
             name={`filterValue${index}`}
-            placeholder={t("Enter Mobile Number")}
-            type="number"
-            onChange={handleChange}
+            labelKey="label"
+            valueKey="value"
+            loadOptions={[
+              { value: true, label: t("True") },
+              { value: false, label: t("False") },
+            ]}
+            placeholder={t("Select Boolean")}
+            width="100"
           />
         );
       default:
         return (
-          <CustomTextField
-            name={`filterValue${index}`}
-            placeholder={t("Enter Value")}
-            type="text"
-            onChange={handleChange}
-          />
+          <div className="w-100">
+            <CustomTextField
+              name={`filterValue${index}`}
+              placeholder={t("Enter Value")}
+              type="text"
+            />
+          </div>
         );
     }
   };
 
-  // Check if it's mobile view based on window width
+  const addRow = () => {
+    setFilterRows((prevRows) => [...prevRows, { id: Date.now() }]);
+  };
+
+  const deleteRow = (id) => {
+    if (filterRows.length > 1) {
+      setFilterRows((prevRows) => prevRows.filter((row) => row.id !== id));
+    }
+  };
+
   const isMobileView = window.innerWidth <= 768;
 
   return (
@@ -97,120 +184,150 @@ function AddFilterSection({ onFilterClose, filterOpen, onSubmitFilter }) {
       <Formik
         initialValues={{}}
         onSubmit={(values) => {
-          console.log("Form Values:", values);
-          onSubmitFilter(values);
+          const advancedSearch = {};
+          Object.keys(values).forEach((key) => {
+            if (key.startsWith("fieldName")) {
+              const index = key.replace("fieldName", "");
+              const fieldName = values[key]?.value;
+              const filterType = values[`filterType${index}`]?.value;
+              const filterValue = values[`filterValue${index}`];
+
+              if (fieldName && filterType && filterValue) {
+                advancedSearch[fieldName] = {
+                  type: filterType,
+                  value: filterValue,
+                };
+              }
+            }
+          });
+
+          onSubmitFilter(advancedSearch);
           onFilterClose();
         }}
       >
         {(formik) => (
           <Form>
-            {!isMobileView ? (
-              <>
-                <Row>
-                  <Col xs={4} sm={6} lg={4} className="d-flex">
-                    <label className="filterLable">Field Name:</label>
-                  </Col>
-                  <Col xs={4} sm={6} lg={3} className="d-flex">
-                    <label className="filterLable">Filter Type:</label>
-                  </Col>
-                  <Col xs={4} sm={6} lg={5} className="d-flex">
-                    <label className="filterLable">Field Value:</label>
-                  </Col>
-                </Row>
-                {[1, 2, 3].map((index) => (
-                  <Row className="mb-2" key={index}>
-                    <Col xs={4} sm={6} lg={4}>
-                      <FormikCustomReactSelect
-                        name={`fieldName${index}`}
-                        labelKey="label"
-                        valueKey="value"
-                        loadOptions={fieldOptions}
-                        placeholder={t("Select Field")}
-                        required
-                        onChange={(value) => {
-                          formik.setFieldValue(`filterValue${index}`, "");
-                          formik.setFieldValue(`fieldName${index}`, value);
-                        }}
-                        width="100"
-                      />
-                    </Col>
+            <Row>
+              <Col xs={4} sm={4} lg={4} className="d-flex">
+                <label className="filterLable">Field Name:</label>
+              </Col>
+              <Col xs={3} sm={3} lg={3} className="d-flex">
+                <label className="filterLable">Filter Type:</label>
+              </Col>
+              <Col xs={5} sm={5} lg={5} className="d-flex">
+                <label className="filterLable">Field Value:</label>
+              </Col>
+            </Row>
+            {filterRows.map((row) => (
+              <Row
+                key={row.id}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: "15px",
+                }}
+              >
+                <Col xs={4} sm={4} lg={4}>
+                  <FormikCustomReactSelect
+                    name={`fieldName${row.id}`}
+                    labelKey="label"
+                    valueKey="value"
+                    loadOptions={fieldOptions}
+                    placeholder={t("Select Field")}
+                    // onChange={(value) => {
+                    //   formik.setFieldValue(`filterValue${row.id}`, "");
+                    //   formik.setFieldValue(`fieldName${row.id}`, value);
+                    // }}
+                    onChange={(value) => {
+                      if (value && value.value) {
+                        // Check if value and value.value exist
+                        formik.setFieldValue(`filterValue${row.id}`, "");
+                        formik.setFieldValue(`fieldName${row.id}`, value);
 
-                    <Col xs={4} sm={6} lg={3}>
-                      <FormikCustomReactSelect
-                        name={`filterType${index}`}
-                        labelKey="label"
-                        valueKey="value"
-                        loadOptions={filterTypeOptions}
-                        placeholder={t("Select Filter")}
-                        required
-                        width="100"
-                      />
-                    </Col>
-
-                    <Col xs={4} sm={6} lg={5}>
-                      <Field name={`filterValue${index}`}>
-                        {() =>
-                          renderFilterValueInput(
-                            formik.values[`fieldName${index}`],
-                            index,
-                            formik
-                          )
+                        // Save the type of the selected field
+                        const selectedField = fieldOptions.find(
+                          (option) => option.value === value.value
+                        );
+                        if (selectedField) {
+                          formik.setFieldValue(
+                            `fieldType${row.id}`,
+                            selectedField.type
+                          );
                         }
-                      </Field>
-                    </Col>
-                  </Row>
-                ))}
-              </>
-            ) : (
-              <Collapse accordion>
-                {fieldOptions.map((item, index) => {
-                  const fieldTitle = item.label;
-                  const fieldValue = item.value;
-
-                  {/* // Use useEffect to set the initial value for fieldName to avoid infinite render
-                  useEffect(() => {
-                    if (
-                      formik.values[`filterType${index + 1}`] !== undefined ||
-                      formik.values[`filterValue${index + 1}`] !== undefined
-                    ) {
-                      formik.setFieldValue(`fieldName${index + 1}`, {
-                        value: fieldValue,
-                        label: fieldTitle,
-                      });
+                      } else {
+                        formik.setFieldValue(`fieldName${row.id}`, "");
+                        formik.setFieldValue(`fieldType${row.id}`, "");
+                      }
+                    }}
+                    width="100"
+                  />
+                </Col>
+                <Col xs={3} sm={3} lg={3}>
+                  <FormikCustomReactSelect
+                    name={`filterType${row.id}`}
+                    labelKey="label"
+                    valueKey="value"
+                    loadOptions={filterTypeOptions}
+                    width="100"
+                    placeholder={t("Select Filter")}
+                  />
+                </Col>
+                <Col xs={5} sm={5} lg={5} className="d-flex">
+                  <Field name={`filterValue${row.id}`}>
+                    {() =>
+                      renderFilterValueInput(
+                        formik.values[`fieldName${row.id}`],
+                        row.id,
+                        formik
+                      )
                     }
-                  }, [fieldValue, fieldTitle, formik]); */}
+                  </Field>
+                  <img
+                    src={deleteIcon}
+                    onClick={() => deleteRow(row.id)}
+                    style={{
+                      margin: "0 0 0 10px",
+                      cursor:
+                        filterRows.length === 1 ? "not-allowed" : "pointer",
+                      width: "35px",
+                      height: "35px",
+                      opacity: filterRows.length === 1 ? 0.5 : 1,
+                    }}
+                  />
+                </Col>
+              </Row>
+            ))}
 
-                  return (
-                    <Panel header={fieldTitle} key={index + 1}>
-                      <div className="mb-2">
-                        <FormikCustomReactSelect
-                          name={`filterType${index + 1}`}
-                          labelKey="label"
-                          valueKey="value"
-                          loadOptions={filterTypeOptions}
-                          placeholder={t("Select Filter Type")}
-                          required
-                          width="100"
-                        />
-                      </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-start",
+                marginBottom: "15px",
+              }}
+            >
+              <Button
+                color="primary"
+                onClick={addRow}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  padding: "10px",
+                  fontSize: "14px",
+                }}
+                className="secondaryAction-btn"
+              >
+                <Plus size={15} style={{ marginRight: "5px" }} />
+                {t("Add New Filter")}
+              </Button>
+            </div>
 
-                      <div>
-                        <Field name={`filterValue${index + 1}`}>
-                          {() =>
-                            renderFilterValueInput(item, index + 1, formik)
-                          }
-                        </Field>
-                      </div>
-                    </Panel>
-                  );
-                })}
-              </Collapse>
-            )}
-
-            <div className="d-flex justify-content-end mt-3">
-              <Button color="primary" className="addAction-btn" type="submit">
-                <Plus size={15} strokeWidth={4} />
-                <span>{t("Apply Filters")}</span>
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <Button
+                color="primary"
+                type="submit"
+                style={{ padding: "10px 20px" }}
+              >
+                {t("Apply Filters")}
               </Button>
             </div>
           </Form>
