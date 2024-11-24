@@ -162,17 +162,19 @@ function MembershipProfileView() {
                         </div>
                         <div className="famRow2">
                           <div className="rowItem">
-                            <span className="memberAdd">{t('name')}</span>
+                            <span className="memberAdd">{t("name")}</span>
                             <p className="memberInfo mb-0">{item.name || ""}</p>
                           </div>
                           <div className="rowItem">
-                            <span className="memberAdd">{t('member_family_relation')}</span>
+                            <span className="memberAdd">
+                              {t("member_family_relation")}
+                            </span>
                             <p className="memberInfo mb-0">
                               {item.relation || ""}
                             </p>
                           </div>
                           <div className="rowItem">
-                            <span className="memberAdd">{t('member_dob')}</span>
+                            <span className="memberAdd">{t("member_dob")}</span>
                             <p className="memberInfo mb-0">
                               {item.familyMemberDateOfBirth
                                 ? moment(item.familyMemberDateOfBirth).format(
@@ -183,7 +185,7 @@ function MembershipProfileView() {
                           </div>
                           <div className="rowItem">
                             <span className="memberAdd">
-                              {t('member_anniversary')}
+                              {t("member_anniversary")}
                             </span>
                             <p className="memberInfo mb-0">
                               {item.familyMemberAnniversary
@@ -198,7 +200,7 @@ function MembershipProfileView() {
                               className="editmember"
                               onClick={() => openModal("edit", i, item)}
                             >
-                              {t('edit')}
+                              {t("edit")}
                             </Button>
                             <img
                               src={editIcon}
@@ -216,7 +218,7 @@ function MembershipProfileView() {
             })}
           <div className="d-flex justify-content-end mt-2">
             <Button color="primary" onClick={() => openModal("add")}>
-              {t('add')}
+              {t("add")}
             </Button>
           </div>
           <FamilyModalForm
@@ -249,20 +251,20 @@ function MembershipProfileView() {
           <div>
             <div className="d-flex flex-row">
               <div className="me-3">
-                <span className="memberAdd">{t('pan_number')}</span>
+                <span className="memberAdd">{t("pan_number")}</span>
                 <p className="memberInfo">
                   {memberData ? otherInfo["panNumber"] : ""}
                 </p>
               </div>
               <div>
-                <span className="memberAdd">{t('alt_phone')}</span>
+                <span className="memberAdd">{t("alt_phone")}</span>
                 <p className="memberInfo">
                   {memberData ? contactInfo["alternativePhone"] : ""}
                 </p>
               </div>
             </div>
             <div>
-              <span className="memberAdd">{t('in_memory_name')}</span>
+              <span className="memberAdd">{t("in_memory_name")}</span>
               <p className="memberInfo">
                 {memberData ? personalInfo["inMemoryName"] : ""}
               </p>
@@ -314,11 +316,11 @@ function MembershipProfileView() {
           <div>
             <div className="d-flex flex-row">
               <div className="me-3">
-                <span className="memberAdd">{t('created_by')}</span>
+                <span className="memberAdd">{t("created_by")}</span>
                 <p className="memberInfo">{loggedInUser}</p>
               </div>
               <div className="me-3">
-                <span className="memberAdd">{t('updated_date')}</span>
+                <span className="memberAdd">{t("updated_date")}</span>
                 <p className="memberInfo">
                   {" "}
                   {memberData
@@ -329,7 +331,7 @@ function MembershipProfileView() {
                 </p>
               </div>
               <div className="me-3">
-                <span className="memberAdd">{t('created_date')}</span>
+                <span className="memberAdd">{t("created_date")}</span>
                 <p className="memberInfo">
                   {" "}
                   {memberData
@@ -340,10 +342,10 @@ function MembershipProfileView() {
                 </p>
               </div>
               <div className="me-3">
-                <span className="memberAdd">{t('branch')}</span>
+                <span className="memberAdd">{t("branch")}</span>
                 <p className="memberInfo">
                   {" "}
-                  {memberData ? membershipInfo["branch"]["name"] : ""}
+                  {memberData ? membershipInfo?.branch?.name : ""}
                 </p>
               </div>
             </div>
@@ -367,7 +369,7 @@ function MembershipProfileView() {
             color="primary"
             onClick={() => history.push(`/member/editMember/${id}`)}
           >
-            {t('edit')}
+            {t("edit")}
           </Button>
         </div>
       </div>
@@ -392,7 +394,7 @@ function MembershipProfileView() {
             </div>
             <Card className="memberProfileCard d-flex flex-column align-items-center justify-content-center">
               <p className="card-text-1">
-                {memberData ? membershipInfo["membership"]["name"] : ""}
+                {memberData ? membershipInfo?.membership?.name : ""}
               </p>
               <p className="card-text-2">
                 {memberData ? membershipInfo["memberShipMemberNumber"] : ""}
@@ -404,24 +406,26 @@ function MembershipProfileView() {
             <div className="info-container">
               <div className="info-item">
                 <img src={personIcon} alt="Person Icon" />{" "}
-                <span>{memberData ? personalInfo["gender"]["name"] : ""}</span>
+                <span>{memberData ? personalInfo?.gender?.name : ""}</span>
               </div>
               <div className="info-item">
                 <img src={businessIcon} alt="Business Icon" />{" "}
-                <span>Businessman</span>
+                <span>{memberData ? personalInfo?.business?.name : ""}</span>
               </div>
               <div className="info-item">
                 <img src={calenderIcon} alt="Calendar Icon" />{" "}
                 <span>
-                  {memberData
-                    ? moment(personalInfo?.dateOfBirth).format("DD MMM YYYY")
-                    : ""}
+                  <span>
+                    {memberData && personalInfo?.dateOfBirth
+                      ? moment(personalInfo.dateOfBirth).format("DD MMM YYYY")
+                      : ""}
+                  </span>
                 </span>
               </div>
               <div className="info-item">
                 <img src={ringIcon} alt="Ring Icon" />{" "}
                 <span>
-                  {memberData ? personalInfo["maritalStatus"]["name"] : ""}
+                  {memberData ? personalInfo?.maritalStatus?.name : ""}
                 </span>
               </div>
               <div className="info-item">
@@ -438,7 +442,7 @@ function MembershipProfileView() {
               </div>
               <div>
                 <div className="info-item">
-                  <span className="me-1">{t('future_communication')}</span>
+                  <span className="me-1">{t("future_communication")}</span>
                   <Switch checked={toggleSwitch} onChange={handleToggle} />
                 </div>
               </div>
@@ -451,15 +455,15 @@ function MembershipProfileView() {
             <Col xs={24} md={24} sm={24}>
               <Card>
                 <div>
-                  <span className="memberAdd">{t('home_address')}</span>
+                  <span className="memberAdd">{t("home_address")}</span>
                   <p className="memberlineAdd">
                     {memberData && addressInfo && addressInfo.homeAddress
                       ? [
                           addressInfo.homeAddress.street || "",
                           addressInfo.homeAddress.district || "",
-                          addressInfo.homeAddress.city["name"] || "",
-                          addressInfo.homeAddress.state["name"] || "",
-                          addressInfo.homeAddress.country["name"] || "",
+                          addressInfo.homeAddress?.city?.name || "",
+                          addressInfo.homeAddress?.state?.name || "",
+                          addressInfo.homeAddress?.country?.name || "",
                         ]
                           .filter((part) => part)
                           .join(", ")
@@ -467,7 +471,9 @@ function MembershipProfileView() {
                   </p>
                 </div>
                 <div>
-                  <span className="memberAdd">{t('correspondence_address')}</span>
+                  <span className="memberAdd">
+                    {t("correspondence_address")}
+                  </span>
                   <p className="memberlineAdd">
                     {memberData &&
                     addressInfo &&
@@ -475,9 +481,9 @@ function MembershipProfileView() {
                       ? [
                           addressInfo.correspondenceAddress.street || "",
                           addressInfo.correspondenceAddress.district || "",
-                          addressInfo.correspondenceAddress.city["name"] || "",
-                          addressInfo.correspondenceAddress.state["name"] || "",
-                          addressInfo.correspondenceAddress.country["name"] ||
+                          addressInfo.correspondenceAddress?.city?.name || "",
+                          addressInfo.correspondenceAddress?.state?.name || "",
+                          addressInfo.correspondenceAddress?.country?.name ||
                             "",
                         ]
                           .filter((part) => part)
