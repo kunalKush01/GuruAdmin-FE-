@@ -111,19 +111,14 @@ const NavbarUser = (props) => {
         className="navbar-user-wrapper d-flex justify-content-between w-100 align-items-center"
         style={{ flex: 1 }}
       >
-        {/* <div className="bookmark-wrapper d-flex align-items-center">
-          <NavItem className="d-none d-lg-block">
-            <NavLink to="/" className="navbar-brand">
-              {/* <div className="brand-logo">
-                <img src={logo} alt="logo" className="logo" />
-              </div> */}
-        {/* <div className="date d-none d-xl-block">
-                <Trans i18nKey={"last_login"} />:{" "}
-                {moment().format("DD MMM YYYY,h:mm a")}
-              </div> 
-            </NavLink>
-          </NavItem>
-        </div> */}
+        {process.env.NODE_ENV !== "production" && (
+          <div className="dev-flag">
+            {process.env.NODE_ENV.charAt(0).toUpperCase() +
+              process.env.NODE_ENV.slice(1)}{" "}
+            Environment
+          </div>
+        )}
+
         {isSerchable() && (
           <CustomSearchBar
             setSearchBarState={setSearchBarState}
@@ -162,30 +157,6 @@ const NavbarUser = (props) => {
                 onClick={() => history.push("/notification")}
               />
             </div>
-            {/* <img
-              className="icon d-none d-xl-block"
-              src={logOutIcon}
-              onClick={() => {
-                Swal.fire({
-                  title: `<img src="${confirmationIcon}"/>`,
-                  html: `
-                    <h3 class="swal-heading mt-1">${t("logout_msg")}</h3>
-                  `,
-                  showCloseButton: false,
-                  showCancelButton: true,
-                  focusConfirm: true,
-                  cancelButtonText: ` ${t("no")}`,
-                  cancelButtonAriaLabel: ` ${t("cencel")}`,
-                  confirmButtonText: ` ${t("yes")}`,
-                  confirmButtonAriaLabel: "Confirm",
-                }).then(async (result) => {
-                  if (result.isConfirmed) {
-                    handleLogOut();
-                    localStorage.setItem("trustId", "");
-                  }
-                });
-              }}
-            /> */}
           </div>
           <ul className="nav navbar-nav align-items-center">
             <div
