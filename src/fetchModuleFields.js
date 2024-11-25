@@ -1,6 +1,21 @@
 import axios from "axios";
 const { REACT_APP_BASEURL } = process.env;
-
+const excludedUserFields = [
+  "password",
+  "isEmailVerified",
+  "socialToken",
+  "countryCode",
+  "pin",
+  "searchType",
+  "roles",
+  "preferences",
+  "otp",
+  "deleteOtp",
+  "isDeleteRequested",
+  "deletedAt",
+  "updatedAt",
+  "createdAt",
+];
 export const fetchFields = async (trustId, moduleName, excludeFields = []) => {
   try {
     const response = await axios.get(
@@ -10,6 +25,15 @@ export const fetchFields = async (trustId, moduleName, excludeFields = []) => {
     if (response.data?.status && response.data?.data?.result?.fields) {
       const fields = response.data.data.result.fields;
       const customFields = response.data.data.result.customFields;
+      const userFields = Object.keys(fields.user || {})
+        .filter((key) => !excludedUserFields.includes(key))
+        .map((key) => ({
+          value: `user_${key}`,
+          label: `${key
+            .replace(/([A-Z])/g, " $1")
+            .replace(/^./, (str) => str.toUpperCase())}`,
+          type: fields.user[key]?.type,
+        }));
 
       // Extract field options from fields
       const fieldOptions = Object.keys(fields)
@@ -30,7 +54,7 @@ export const fetchFields = async (trustId, moduleName, excludeFields = []) => {
       }));
 
       // Combine both field types
-      return [...fieldOptions, ...customFieldOptions];
+      return [...fieldOptions, ...userFields, ...customFieldOptions];
     } else {
       console.warn("No fields found in the response.");
       return [];

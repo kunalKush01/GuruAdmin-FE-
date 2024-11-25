@@ -291,7 +291,6 @@ export default function Donation() {
     showFilter();
   };
   const onFilterSubmit = (filterData) => {
-    console.log("Filter Data received:", filterData);
     setFilterData(filterData);
     // Handle the filter data here, e.g., send it to an API, update state, etc.
   };
@@ -305,7 +304,6 @@ export default function Donation() {
     setFilterData(newFilterData); // For React state
   };
   const hasFilters = Object.keys(filterData).length > 0;
-  console.log(hasFilters);
   // Donation split tab
   const items = [
     {
@@ -428,21 +426,70 @@ export default function Donation() {
               {/* Display filter data as tags */}
               {hasFilters &&
                 Object.keys(filterData).map((key) => {
-                  // Extract the filter details from the data
                   const filterItem = filterData[key];
 
                   if (filterItem) {
-                    const fieldName = key; // Use the key as the field name (e.g., "donarName")
-                    const filterType = filterItem.type; // Get the type (e.g., "equal")
-                    const filterValue = filterItem.value; // Get the value (e.g., "Vaibhav Jain")
-
+                    const fieldName = key;
+                    const filterType = filterItem.type;
+                    let filterValue;
+                    if (filterType === "inRange") {
+                      if (filterItem.fromDate && filterItem.toDate) {
+                        // Date range case
+                        const fromDate = moment(
+                          filterItem.fromDate,
+                          moment.ISO_8601,
+                          true
+                        ).isValid()
+                          ? moment(filterItem.fromDate).format("DD MMM YYYY")
+                          : filterItem.fromDate;
+                        const toDate = moment(
+                          filterItem.toDate,
+                          moment.ISO_8601,
+                          true
+                        ).isValid()
+                          ? moment(filterItem.toDate).format("DD MMM YYYY")
+                          : filterItem.toDate;
+                        filterValue = `${fromDate} to ${toDate}`;
+                      } else if (
+                        filterItem.from !== undefined &&
+                        filterItem.to !== undefined
+                      ) {
+                        // Numeric range case
+                        filterValue = `${filterItem.from} to ${filterItem.to}`;
+                      } else {
+                        filterValue = "Invalid range";
+                      }
+                    } else {
+                      // Single value case
+                      filterValue = moment(
+                        filterItem.value,
+                        moment.ISO_8601,
+                        true
+                      ).isValid()
+                        ? moment(filterItem.value).format("DD MMM YYYY")
+                        : filterItem.value;
+                    }
+                    {
+                      /* const filterValue = moment(
+                      filterItem.value,
+                      moment.ISO_8601,
+                      true
+                    ).isValid()
+                      ? moment(filterItem.value).format("DD MMM YYYY")
+                      : filterItem.value; */
+                    }
+                    const displayName = fieldName
+                      .replace(/^user_/, "") // Remove 'user_' prefix
+                      .replace(/([A-Z])/g, " $1") // Add space before uppercase letters
+                      .replace(/^./, (str) => str.toUpperCase()); // Capitalize the first letter
+                    console.log(filterData);
                     return (
                       <Tag
                         key={fieldName}
                         color="orange"
                         style={{ margin: "5px" }}
                       >
-                        {`${fieldName} (${filterType}): ${filterValue}`}{" "}
+                        {`${displayName} (${filterType}): ${filterValue}`}{" "}
                         <img
                           src={crossIcon}
                           width={15}

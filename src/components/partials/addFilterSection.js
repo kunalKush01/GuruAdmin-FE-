@@ -13,7 +13,9 @@ import { fetchFields } from "../../fetchModuleFields";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 const { Panel } = Collapse;
 import deleteIcon from "../../../src/assets/images/icons/category/deleteIcon.svg";
+import momentGenerateConfig from "rc-picker/lib/generate/moment";
 
+const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 function AddFilterSection({
   onFilterClose,
   filterOpen,
@@ -46,61 +48,35 @@ function AddFilterSection({
     getFields();
   }, [trustId, moduleName]);
 
-  const filterTypeOptions = [
-    { value: "", label: t("select_option") },
-    { value: "contains", label: t("contains") },
-    { value: "equal", label: t("equal") },
-    { value: "inRange", label: t("inRange") },
-  ];
+  const renderFilterTypeOptions = (fieldType) => {
+    switch (fieldType) {
+      case "String":
+        return [
+          { value: "contains", label: t("contains") },
+          { value: "equal", label: t("equal") },
+        ];
+      case "Date":
+        return [
+          { value: "equal", label: t("equal") },
+          { value: "inRange", label: t("inRange") },
+        ];
+      case "Number":
+        return [
+          { value: "equal", label: t("equal") },
+          { value: "inRange", label: t("inRange") },
+          { value: "lessThan", label: t("less_than") },
+          { value: "greaterThan", label: t("greater_than") },
+        ];
+      default:
+        return [{ value: "", label: t("select_option") }];
+    }
+  };
 
-  // const renderFilterValueInput = (field, index, formik) => {
-  //   const value = field ? field.value : null;
-  //   switch (value) {
-  //     case "name":
-  //       return (
-  //         <CustomTextField
-  //           name={`filterValue${index}`}
-  //           placeholder={t("Enter Name")}
-  //           type="text"
-  //         />
-  //       );
-  //     case "dob":
-  //       return (
-  //         <RangePicker
-  //           id="datePickerANTD"
-  //           format="DD MMM YYYY"
-  //           placeholder={t("Select Date")}
-  //           onChange={(date) => {
-  //             const formattedStartDate = moment(date).format("DD MMM YYYY");
-  //             formik.setFieldValue(`filterValue${index}`, formattedStartDate);
-  //           }}
-  //         />
-  //       );
-  //     case "mobile":
-  //       return (
-  //         <CustomTextField
-  //           name={`filterValue${index}`}
-  //           placeholder={t("Enter Mobile Number")}
-  //           type="number"
-  //         />
-  //       );
-  //     default:
-  //       return (
-  //         <CustomTextField
-  //           name={`filterValue${index}`}
-  //           placeholder={t("Enter Value")}
-  //           type="text"
-  //         />
-  //       );
-  //   }
-  // };
-  const renderFilterValueInput = (field, index, formik) => {
+  const renderFilterValueInput = (field, filterType, index, formik) => {
     const value = field ? field.value : null;
 
-    // Check the field type for the selected field
     const selectedField = fieldOptions.find((option) => option.value === value);
     const fieldType = selectedField ? selectedField.type : null;
-    // Render input field based on field type
     switch (fieldType) {
       case "String":
         return (
@@ -113,27 +89,64 @@ function AddFilterSection({
           </div>
         );
       case "Date":
-        return (
-          <RangePicker
-            id="datePickerANTD"
-            format="DD MMM YYYY"
-            placeholder={t("Select Date")}
-            onChange={(date) => {
-              const formattedStartDate = moment(date).format("DD MMM YYYY");
-              formik.setFieldValue(`filterValue${index}`, formattedStartDate);
-            }}
-          />
-        );
-      case "Number":
-        return (
-          <div className="w-100">
-            <CustomTextField
-              name={`filterValue${index}`}
-              placeholder={t("Enter Number")}
-              type="number"
+        if (filterType && filterType.value === "inRange") {
+          return (
+            <RangePicker
+              id="dateRangePickerANTD"
+              format="DD MMM YYYY"
+              placeholder={[t("Start Date"), t("End Date")]}
+              onChange={(dates) => {
+                const formattedDates =
+                  dates && dates.length
+                    ? dates.map((date) => date.toISOString()) // Ensure date is valid and formatted
+                    : []; // Handle the case where dates are cleared
+                formik.setFieldValue(`filterValue${index}`, formattedDates);
+              }}
+              style={{ width: "100%" }}
             />
-          </div>
-        );
+          );
+        } else {
+          return (
+            <CustomDatePicker
+              id="datePickerANTD"
+              format="DD MMM YYYY"
+              placeholder={t("Select Date")}
+              onChange={(date) => {
+                const formattedDate = date ? moment(date).toISOString() : null;
+                formik.setFieldValue(`filterValue${index}`, formattedDate);
+              }}
+              style={{ width: "100%" }}
+            />
+          );
+        }
+      case "Number":
+        if (filterType && filterType.value === "inRange") {
+          return (
+            <div style={{ display: "flex", gap: "5px" }}>
+              <CustomTextField
+                name={`filterValue${index}.from`}
+                placeholder={t("From")}
+                type="number"
+              />
+              <CustomTextField
+                name={`filterValue${index}.to`}
+                placeholder={t("To")}
+                type="number"
+              />
+            </div>
+          );
+        } else {
+          return (
+            <div style={{ display: "flex", width: "100%" }}>
+              <CustomTextField
+                width="100%"
+                name={`filterValue${index}`}
+                placeholder={t("Enter Number")}
+                type="number"
+              />
+            </div>
+          );
+        }
       case "Boolean":
         return (
           <FormikCustomReactSelect
@@ -165,9 +178,12 @@ function AddFilterSection({
     setFilterRows((prevRows) => [...prevRows, { id: Date.now() }]);
   };
 
-  const deleteRow = (id) => {
+  const deleteRow = (id, formik) => {
     if (filterRows.length > 1) {
       setFilterRows((prevRows) => prevRows.filter((row) => row.id !== id));
+      formik.setFieldValue(`fieldName${id}`, undefined);
+      formik.setFieldValue(`filterType${id}`, undefined);
+      formik.setFieldValue(`filterValue${id}`, undefined);
     }
   };
 
@@ -191,13 +207,38 @@ function AddFilterSection({
               const fieldName = values[key]?.value;
               const filterType = values[`filterType${index}`]?.value;
               const filterValue = values[`filterValue${index}`];
-
-              if (fieldName && filterType && filterValue) {
-                advancedSearch[fieldName] = {
-                  type: filterType,
-                  value: filterValue,
-                };
+              if (fieldName && filterType) {
+                if (filterType === "inRange") {
+                  if (Array.isArray(filterValue)) {
+                    advancedSearch[fieldName] = {
+                      type: filterType,
+                      fromDate: filterValue[0]
+                        ? moment(filterValue[0]).toISOString()
+                        : null,
+                      toDate: filterValue[1]
+                        ? moment(filterValue[1]).toISOString()
+                        : null,
+                    };
+                  } else if (typeof filterValue === "object") {
+                    advancedSearch[fieldName] = {
+                      type: filterType,
+                      from: filterValue.from || null,
+                      to: filterValue.to || null,
+                    };
+                  }
+                } else {
+                  advancedSearch[fieldName] = {
+                    type: filterType,
+                    value: filterValue,
+                  };
+                }
               }
+              // if (fieldName && filterType && filterValue) {
+              //   advancedSearch[fieldName] = {
+              //     type: filterType,
+              //     value: filterValue,
+              //   };
+              // }
             }
           });
 
@@ -234,10 +275,6 @@ function AddFilterSection({
                     valueKey="value"
                     loadOptions={fieldOptions}
                     placeholder={t("Select Field")}
-                    // onChange={(value) => {
-                    //   formik.setFieldValue(`filterValue${row.id}`, "");
-                    //   formik.setFieldValue(`fieldName${row.id}`, value);
-                    // }}
                     onChange={(value) => {
                       if (value && value.value) {
                         // Check if value and value.value exist
@@ -267,7 +304,9 @@ function AddFilterSection({
                     name={`filterType${row.id}`}
                     labelKey="label"
                     valueKey="value"
-                    loadOptions={filterTypeOptions}
+                    loadOptions={renderFilterTypeOptions(
+                      formik.values[`fieldType${row.id}`] // Pass the field type for the current row
+                    )}
                     width="100"
                     placeholder={t("Select Filter")}
                   />
@@ -277,6 +316,7 @@ function AddFilterSection({
                     {() =>
                       renderFilterValueInput(
                         formik.values[`fieldName${row.id}`],
+                        formik.values[`filterType${row.id}`],
                         row.id,
                         formik
                       )
@@ -284,7 +324,7 @@ function AddFilterSection({
                   </Field>
                   <img
                     src={deleteIcon}
-                    onClick={() => deleteRow(row.id)}
+                    onClick={() => deleteRow(row.id, formik)}
                     style={{
                       margin: "0 0 0 10px",
                       cursor:
