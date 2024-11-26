@@ -237,7 +237,6 @@ export default function Donation() {
   const [form] = Form.useForm();
   const handleFormSubmit = async (values) => {
     try {
-      // Format date to ISO string
       const formattedDate = moment(values.transactionDate).utc().format();
 
       const payload = {
@@ -252,7 +251,6 @@ export default function Donation() {
       await addSuspense(payload);
 
       queryClient.invalidateQueries("suspenseData");
-      // await queryClient.refetchQueries("suspenseData");
       setSuccess(true);
       form.resetFields();
       setIsAddModalVisible(false);
@@ -292,16 +290,15 @@ export default function Donation() {
   };
   const onFilterSubmit = (filterData) => {
     setFilterData(filterData);
-    // Handle the filter data here, e.g., send it to an API, update state, etc.
   };
   const handleRemoveAllFilter = () => {
     setFilterData({});
   };
   const removeFilter = (fieldName) => {
     const newFilterData = { ...filterData };
-    delete newFilterData[fieldName]; // Remove the field from filterData
+    delete newFilterData[fieldName];
 
-    setFilterData(newFilterData); // For React state
+    setFilterData(newFilterData);
   };
   const hasFilters = Object.keys(filterData).length > 0;
   // Donation split tab
