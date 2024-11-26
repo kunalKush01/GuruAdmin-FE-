@@ -48,9 +48,9 @@ export const fetchFields = async (trustId, moduleName, excludeFields = []) => {
 
       // Extract custom field options
       const customFieldOptions = customFields.map((field) => ({
-        value: field.fieldName,
+        value: `customFields_${field.fieldName}`,
         label: field.fieldName,
-        type: field.type,
+        type: field.fieldType,
       }));
 
       // Combine both field types

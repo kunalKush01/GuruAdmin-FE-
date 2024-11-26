@@ -427,62 +427,52 @@ export default function Donation() {
               {hasFilters &&
                 Object.keys(filterData).map((key) => {
                   const filterItem = filterData[key];
-
                   if (filterItem) {
                     const fieldName = key;
                     const filterType = filterItem.type;
                     let filterValue;
                     if (filterType === "inRange") {
                       if (filterItem.fromDate && filterItem.toDate) {
-                        // Date range case
-                        const fromDate = moment(
-                          filterItem.fromDate,
-                          moment.ISO_8601,
-                          true
-                        ).isValid()
+                        // Date range
+                        const fromDate = moment(filterItem.fromDate,moment.ISO_8601,true).isValid()
                           ? moment(filterItem.fromDate).format("DD MMM YYYY")
                           : filterItem.fromDate;
-                        const toDate = moment(
-                          filterItem.toDate,
-                          moment.ISO_8601,
-                          true
-                        ).isValid()
+                        const toDate = moment(filterItem.toDate,moment.ISO_8601,true).isValid()
                           ? moment(filterItem.toDate).format("DD MMM YYYY")
                           : filterItem.toDate;
                         filterValue = `${fromDate} to ${toDate}`;
-                      } else if (
-                        filterItem.from !== undefined &&
-                        filterItem.to !== undefined
-                      ) {
-                        // Numeric range case
+                      } 
+                      else if (filterItem.from !== undefined &&filterItem.to !== undefined) {
+                        // Numeric range
                         filterValue = `${filterItem.from} to ${filterItem.to}`;
-                      } else {
+                      } 
+                      else {
                         filterValue = "Invalid range";
                       }
-                    } else {
-                      // Single value case
-                      filterValue = moment(
-                        filterItem.value,
-                        moment.ISO_8601,
-                        true
-                      ).isValid()
-                        ? moment(filterItem.value).format("DD MMM YYYY")
-                        : filterItem.value;
                     }
-                    {
-                      /* const filterValue = moment(
-                      filterItem.value,
-                      moment.ISO_8601,
-                      true
-                    ).isValid()
-                      ? moment(filterItem.value).format("DD MMM YYYY")
-                      : filterItem.value; */
+                    else if (filterType === "equal") {
+                      if (typeof filterItem.value === "number") {
+                        filterValue = filterItem.value;
+                      } 
+                      else if (moment(filterItem.value, moment.ISO_8601, true).isValid()) {
+                        filterValue = moment(filterItem.value).format("DD MMM YYYY");
+                      } 
+                      else {
+                        filterValue = filterItem.value;
+                      }
+                    } 
+                    else if (filterType === "greaterThan" ||filterType === "lessThan") {
+                      filterValue = filterItem.value;
+                    } 
+                    else {
+                      filterValue = filterItem.value || "Invalid filter";
                     }
                     const displayName = fieldName
                       .replace(/^user_/, "") // Remove 'user_' prefix
+                      .replace(/^customFields_/, "") // Remove 'customFields_' prefix
                       .replace(/([A-Z])/g, " $1") // Add space before uppercase letters
                       .replace(/^./, (str) => str.toUpperCase()); // Capitalize the first letter
-                    console.log(filterData);
+
                     return (
                       <Tag
                         key={fieldName}
