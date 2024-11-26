@@ -27,7 +27,34 @@ function AddFilterSection({
   const trustId = localStorage.getItem("trustId");
   const modName = ConverFirstLatterToCapital(moduleName);
   const [filterRows, setFilterRows] = useState([{ id: 1 }]);
+  const [selectedFields, setSelectedFields] = useState([]); // Track selected fields
+  const handleFieldChange = (value, rowId, formik) => {
+    const previousValue = formik.values[`fieldName${rowId}`]?.value;
+    if (previousValue) {
+      // Remove previous value from selectedFields
+      setSelectedFields((prev) =>
+        prev.filter((field) => field !== previousValue)
+      );
+    }
 
+    if (value && value.value) {
+      // Add new value to selectedFields
+      setSelectedFields((prev) => [...prev, value.value]);
+      formik.setFieldValue(`filterValue${rowId}`, "");
+      formik.setFieldValue(`fieldName${rowId}`, value);
+
+      // Save the type of the selected field
+      const selectedField = fieldOptions.find(
+        (option) => option.value === value.value
+      );
+      if (selectedField) {
+        formik.setFieldValue(`fieldType${rowId}`, selectedField.type);
+      }
+    } else {
+      formik.setFieldValue(`fieldName${rowId}`, "");
+      formik.setFieldValue(`fieldType${rowId}`, "");
+    }
+  };
   useEffect(() => {
     const excludeFields = [
       "_id",
@@ -47,7 +74,8 @@ function AddFilterSection({
     };
     getFields();
   }, [trustId, moduleName]);
-
+  const getFilteredFieldOptions = () =>
+    fieldOptions.filter((option) => !selectedFields.includes(option.value));
   const renderFilterTypeOptions = (fieldType) => {
     switch (fieldType) {
       case "String":
@@ -67,6 +95,8 @@ function AddFilterSection({
           { value: "lessThan", label: t("less_than") },
           { value: "greaterThan", label: t("greater_than") },
         ];
+      case "Boolean":
+        return [{ value: "equal", label: t("equal") }];
       default:
         return [{ value: "", label: t("select_option") }];
     }
@@ -149,17 +179,19 @@ function AddFilterSection({
         }
       case "Boolean":
         return (
-          <FormikCustomReactSelect
-            name={`filterValue${index}`}
-            labelKey="label"
-            valueKey="value"
-            loadOptions={[
-              { value: true, label: t("True") },
-              { value: false, label: t("False") },
-            ]}
-            placeholder={t("Select Boolean")}
-            width="100"
-          />
+          <div className="w-100">
+            <FormikCustomReactSelect
+              name={`filterValue${index}`}
+              labelKey="label"
+              valueKey="value"
+              loadOptions={[
+                { value: true, label: t("True") },
+                { value: false, label: t("False") },
+              ]}
+              placeholder={t("Select Boolean")}
+              width="100"
+            />
+          </div>
         );
       default:
         return (
@@ -179,6 +211,17 @@ function AddFilterSection({
   };
 
   const deleteRow = (id, formik) => {
+    const deletedFieldValue = formik.values[`fieldName${id}`]?.value;
+
+    if (deletedFieldValue) {
+      setFieldOptions((prevOptions) => [
+        ...prevOptions,
+        { value: deletedFieldValue, label: deletedFieldValue },
+      ]);
+      setSelectedFields((prev) =>
+        prev.filter((field) => field !== deletedFieldValue)
+      );
+    }
     if (filterRows.length > 1) {
       setFilterRows((prevRows) => prevRows.filter((row) => row.id !== id));
       formik.setFieldValue(`fieldName${id}`, undefined);
@@ -227,9 +270,13 @@ function AddFilterSection({
                     };
                   }
                 } else {
+                  const actualValue =
+                    typeof filterValue === "object" && "value" in filterValue
+                      ? filterValue.value
+                      : filterValue;
                   advancedSearch[fieldName] = {
                     type: filterType,
-                    value: filterValue,
+                    value: actualValue,
                   };
                 }
               }
@@ -273,29 +320,11 @@ function AddFilterSection({
                     name={`fieldName${row.id}`}
                     labelKey="label"
                     valueKey="value"
-                    loadOptions={fieldOptions}
+                    loadOptions={getFilteredFieldOptions()} // Pass filtered options
                     placeholder={t("Select Field")}
-                    onChange={(value) => {
-                      if (value && value.value) {
-                        // Check if value and value.value exist
-                        formik.setFieldValue(`filterValue${row.id}`, "");
-                        formik.setFieldValue(`fieldName${row.id}`, value);
-
-                        // Save the type of the selected field
-                        const selectedField = fieldOptions.find(
-                          (option) => option.value === value.value
-                        );
-                        if (selectedField) {
-                          formik.setFieldValue(
-                            `fieldType${row.id}`,
-                            selectedField.type
-                          );
-                        }
-                      } else {
-                        formik.setFieldValue(`fieldName${row.id}`, "");
-                        formik.setFieldValue(`fieldType${row.id}`, "");
-                      }
-                    }}
+                    onChange={(value) =>
+                      handleFieldChange(value, row.id, formik)
+                    }
                     width="100"
                   />
                 </Col>
