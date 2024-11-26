@@ -899,6 +899,23 @@
 .navbar-user-wrapper {
     color: $font-color !important;
 
+    .dev-flag {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: $primary-color; // Yellow background
+        color: $white;
+        height: 22px; // Set height to 22px
+        line-height: 22px; // Vertically center the text
+        padding: 0 15px; // Adjust padding for horizontal space
+        font-size: 12px;
+        font-weight: bold;
+        z-index: 1000;
+        clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%); // Creates the triangular bottom cut
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // Adds a subtle shadow
+    }
+
     .brand-logo div {
         font: $font-weight-bold $font-size-large $font-family;
         margin-right: 80px;
