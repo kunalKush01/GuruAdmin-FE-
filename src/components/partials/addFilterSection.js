@@ -27,7 +27,7 @@ function AddFilterSection({
   const trustId = localStorage.getItem("trustId");
   const modName = ConverFirstLatterToCapital(moduleName);
   const [filterRows, setFilterRows] = useState([{ id: 1 }]);
-  const [selectedFields, setSelectedFields] = useState([]); // Track selected fields
+  const [selectedFields, setSelectedFields] = useState([]);
   const handleFieldChange = (value, rowId, formik) => {
     const previousValue = formik.values[`fieldName${rowId}`]?.value;
     if (previousValue) {
@@ -128,8 +128,8 @@ function AddFilterSection({
               onChange={(dates) => {
                 const formattedDates =
                   dates && dates.length
-                    ? dates.map((date) => date.toISOString()) // Ensure date is valid and formatted
-                    : []; // Handle the case where dates are cleared
+                    ? dates.map((date) => date.toISOString())
+                    : [];
                 formik.setFieldValue(`filterValue${index}`, formattedDates);
               }}
               style={{ width: "100%" }}
@@ -280,12 +280,6 @@ function AddFilterSection({
                   };
                 }
               }
-              // if (fieldName && filterType && filterValue) {
-              //   advancedSearch[fieldName] = {
-              //     type: filterType,
-              //     value: filterValue,
-              //   };
-              // }
             }
           });
 
@@ -320,7 +314,7 @@ function AddFilterSection({
                     name={`fieldName${row.id}`}
                     labelKey="label"
                     valueKey="value"
-                    loadOptions={getFilteredFieldOptions()} // Pass filtered options
+                    loadOptions={getFilteredFieldOptions()}
                     placeholder={t("Select Field")}
                     onChange={(value) =>
                       handleFieldChange(value, row.id, formik)
@@ -334,7 +328,7 @@ function AddFilterSection({
                     labelKey="label"
                     valueKey="value"
                     loadOptions={renderFilterTypeOptions(
-                      formik.values[`fieldType${row.id}`] // Pass the field type for the current row
+                      formik.values[`fieldType${row.id}`]
                     )}
                     width="100"
                     placeholder={t("Select Filter")}
