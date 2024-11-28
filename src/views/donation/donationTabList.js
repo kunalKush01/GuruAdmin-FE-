@@ -301,11 +301,13 @@ export default function Donation() {
   const handleRemoveAllFilter = () => {
     setFilterData({});
   };
-  const removeFilter = (fieldName) => {
+  const [rowId, setRowId] = useState(null)
+  const removeFilter = (fieldName,id) => {
     const newFilterData = { ...filterData };
     delete newFilterData[fieldName];
 
     setFilterData(newFilterData);
+    setRowId(id)
   };
   const hasFilters = Object.keys(filterData).length > 0;
   // Donation split tab
@@ -505,7 +507,7 @@ export default function Donation() {
                           src={crossIcon}
                           width={15}
                           className="crossIcon"
-                          onClick={() => removeFilter(fieldName)} // Remove filter by field name
+                          onClick={() => removeFilter(fieldName,index)} // Remove filter by field name
                           style={{ cursor: "pointer", marginLeft: "5px" }}
                         />
                       </Tag>
@@ -521,7 +523,7 @@ export default function Donation() {
                   className="cursor-pointer"
                   onClick={handleRemoveAllFilter}
                 >
-                  Cancel
+                  Clear All
                 </span>
               )}
             </div>
@@ -922,6 +924,7 @@ export default function Donation() {
         onSubmitFilter={onFilterSubmit}
         moduleName={activeTab}
         activeFilterData={filterData ?? {}}
+        rowId={rowId??null}
       />
     </div>
   );
