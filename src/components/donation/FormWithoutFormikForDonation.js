@@ -104,7 +104,7 @@ export default function FormWithoutFormikForDonation({
 
   useUpdateEffect(() => {
     const user = formik?.values?.SelectedUser;
-    if (user?.id) {
+    if (user?.userId) {
       formik.setFieldValue("Mobile", user?.mobileNumber);
       formik.setFieldValue("countryCode", user?.countryName);
       formik.setFieldValue("dialCode", user?.countryCode);
