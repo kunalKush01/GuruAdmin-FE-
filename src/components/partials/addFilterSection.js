@@ -22,6 +22,7 @@ function AddFilterSection({
   onSubmitFilter,
   moduleName,
   activeFilterData,
+  rowId,
 }) {
   const { t } = useTranslation();
   const [fieldOptions, setFieldOptions] = useState([]);
@@ -29,6 +30,8 @@ function AddFilterSection({
   const modName = ConverFirstLatterToCapital(moduleName);
   const [filterRows, setFilterRows] = useState([{ id: 1 }]);
   const [selectedFields, setSelectedFields] = useState([]);
+  const formikRef = useRef();
+  const isMobileView = window.innerWidth <= 768;
   const handleFieldChange = (value, rowId, formik) => {
     const previousValue = formik.values[`fieldName${rowId}`]?.value;
     if (previousValue) {
@@ -231,89 +234,61 @@ function AddFilterSection({
     }
   };
 
-  const isMobileView = window.innerWidth <= 768;
-  // useEffect(() => {
-  //   if (Object.keys(activeFilterData).length > 0) {
-  //     const updatedFilterRows = filterRows.filter((row) => {
-  //       // Keep the row if its index still exists in activeFilterData
-  //       return Object.values(activeFilterData).some(
-  //         (filter) => filter.index === row.id.toString()
-  //       );
-  //     });
-  //     setFilterRows(updatedFilterRows); // Update filterRows state
-  //   } else {
-  //     setFilterRows([{ id: 1 }]); // Update filterRows state
-  //   }
-  // }, [activeFilterData]);
-  const formikRef = useRef();
+
   useEffect(() => {
     if (formikRef && activeFilterData) {
       if (activeFilterData != {}) {
+        const updatedFilterRows = filterRows.filter((row) => {
+          return Object.values(activeFilterData).some(
+            (filter) => filter.index === row.id.toString()
+          );
+        });
+        //**start: if there is no active filter */
         if (Object.keys(activeFilterData).length === 0) {
-          // Reset filter rows to one default row
           setFilterRows([{ id: 1 }]);
-
-          // Reset formik values for all rows
-          filterRows.forEach((row) => {
-            if (formikRef.current) {
-              formikRef.current.setFieldValue(`fieldName${row.id}`, "");
-              formikRef.current.setFieldValue(`filterType${row.id}`, "");
-              formikRef.current.setFieldValue(`filterValue${row.id}`, "");
-            }
-          });
+          // if (formikRef.current) {
+          //   formikRef.current.setFieldValue("fieldName1", "");
+          //   formikRef.current.setFieldValue("filterType1", "");
+          //   formikRef.current.setFieldValue("filterValue1", "");
+          // }
         } else {
-          const updatedFilterRows = filterRows.filter((row) => {
-            return Object.values(activeFilterData).some(
-              (filter) => filter.index === row.id.toString()
-            );
-          });
-
           setFilterRows(updatedFilterRows);
+        }
+        //**end */
+        
+        //**start: get back field after delete filter */
+        if (rowId) {
+          const deletedFieldValue =
+            formikRef.current?.values[`fieldName${rowId}`]?.value;
 
-          const removedRows = filterRows.filter((row) => {
-            return !Object.values(activeFilterData).some(
-              (filter) => filter.index === row.id.toString()
+          if (deletedFieldValue) {
+            setFieldOptions((prevOptions) => [
+              ...prevOptions,
+              { value: deletedFieldValue, label: deletedFieldValue },
+            ]);
+            setSelectedFields((prev) =>
+              prev.filter((field) => field !== deletedFieldValue)
             );
-          });
-
-          // Restore removed field options and remove from selected fields
-          removedRows.forEach((row) => {
-            const deletedFieldValue =
-              formikRef.current?.values[`fieldName${row.id}`]?.value;
-
-            if (deletedFieldValue) {
-              // Add deleted field back to options
-              setFieldOptions((prevOptions) => [
-                ...prevOptions,
-                { value: deletedFieldValue, label: deletedFieldValue },
-              ]);
-              setSelectedFields((prev) =>
-                prev.filter((field) => field !== deletedFieldValue)
-              );
-            }
-            if (formikRef.current) {
-              formikRef.current.setFieldValue(`fieldName${row.id}`, "");
-              formikRef.current.setFieldValue(`filterType${row.id}`, "");
-              formikRef.current.setFieldValue(
-                `filterValue${row.id}`,
-                ""
-              );
-            }
-
-            // Reset the Formik values for the removed row
-          });
+          }
+          if (formikRef.current) {
+            formikRef.current.setFieldValue(`fieldName${rowId}`, "");
+            formikRef.current.setFieldValue(`filterType${rowId}`, "");
+            formikRef.current.setFieldValue(`filterValue${rowId}`, "");
+          }
         }
-      } else {
-        setFilterRows([{ id: 1 }]);
-        if (formikRef.current) {
-          formikRef.current.setFieldValue("fieldName1", "");
-          formikRef.current.setFieldValue("filterType1", "");
-          formikRef.current.setFieldValue("filterValue1", "");
-        }
+        //**end */
+      }
+    } 
+    else {
+      setFilterRows([{ id: 1 }]);
+      if (formikRef.current) {
+        formikRef.current.setFieldValue("fieldName1", "");
+        formikRef.current.setFieldValue("filterType1", "");
+        formikRef.current.setFieldValue("filterValue1", "");
       }
     }
-  }, [activeFilterData, formikRef]); // Ensure filterRows is included in the dependency array
-  console.log(filterRows);
+  }, [activeFilterData, formikRef, rowId]); 
+console.log(activeFilterData)
   return (
     <Drawer
       id="filterDrawer"
