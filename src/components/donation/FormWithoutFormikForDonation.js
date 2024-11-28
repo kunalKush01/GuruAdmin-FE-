@@ -329,7 +329,7 @@ export default function FormWithoutFormikForDonation({
                 addDonationUser
                 initialValues={{
                   name: "",
-                  countryCode: "in",
+                  countryCode: "India",
                   dialCode: "91",
                   email: "",
                   pincode: "",
