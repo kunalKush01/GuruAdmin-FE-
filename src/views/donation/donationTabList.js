@@ -152,6 +152,13 @@ export default function Donation() {
   const [subCategoryTypeId, setSubCategoryTypeId] = useState();
 
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
+  const filteredData = useMemo(() => {
+    return Object.entries(filterData).reduce((acc, [key, value]) => {
+      const { index, ...rest } = value; // Destructure and exclude 'index'
+      acc[key] = rest; // Add the remaining data
+      return acc;
+    }, {});
+  }, [filterData]);
 
   const donationQuery = useQuery(
     [
@@ -164,7 +171,7 @@ export default function Donation() {
       filterEndDate,
       filterStartDate,
       searchBarValue,
-      filterData,
+      filteredData,
     ],
     () =>
       getAllDonation({
@@ -175,7 +182,7 @@ export default function Donation() {
         categoryId: subCategoryId,
         endDate: filterEndDate,
         languageId: selectedLang.id,
-        ...(filterData && { advancedSearch: filterData }),
+        ...(filterData && filteredData && { advancedSearch: filteredData }),
       }),
     {
       keepPreviousData: true,
@@ -425,43 +432,59 @@ export default function Donation() {
                 Object.keys(filterData).map((key) => {
                   const filterItem = filterData[key];
                   if (filterItem) {
+                    const index = filterItem.index;
                     const fieldName = key;
                     const filterType = filterItem.type;
                     let filterValue;
                     if (filterType === "inRange") {
                       if (filterItem.fromDate && filterItem.toDate) {
                         // Date range
-                        const fromDate = moment(filterItem.fromDate,moment.ISO_8601,true).isValid()
+                        const fromDate = moment(
+                          filterItem.fromDate,
+                          moment.ISO_8601,
+                          true
+                        ).isValid()
                           ? moment(filterItem.fromDate).format("DD MMM YYYY")
                           : filterItem.fromDate;
-                        const toDate = moment(filterItem.toDate,moment.ISO_8601,true).isValid()
+                        const toDate = moment(
+                          filterItem.toDate,
+                          moment.ISO_8601,
+                          true
+                        ).isValid()
                           ? moment(filterItem.toDate).format("DD MMM YYYY")
                           : filterItem.toDate;
                         filterValue = `${fromDate} to ${toDate}`;
-                      } 
-                      else if (filterItem.from !== undefined &&filterItem.to !== undefined) {
+                      } else if (
+                        filterItem.from !== undefined &&
+                        filterItem.to !== undefined
+                      ) {
                         // Numeric range
                         filterValue = `${filterItem.from} to ${filterItem.to}`;
-                      } 
-                      else {
+                      } else {
                         filterValue = "Invalid range";
                       }
-                    }
-                    else if (filterType === "equal") {
+                    } else if (filterType === "equal") {
                       if (typeof filterItem.value === "number") {
                         filterValue = filterItem.value;
-                      } 
-                      else if (moment(filterItem.value, moment.ISO_8601, true).isValid()) {
-                        filterValue = moment(filterItem.value).format("DD MMM YYYY");
-                      } 
-                      else {
+                      } else if (
+                        moment(
+                          filterItem.value,
+                          moment.ISO_8601,
+                          true
+                        ).isValid()
+                      ) {
+                        filterValue = moment(filterItem.value).format(
+                          "DD MMM YYYY"
+                        );
+                      } else {
                         filterValue = filterItem.value;
                       }
-                    } 
-                    else if (filterType === "greaterThan" ||filterType === "lessThan") {
+                    } else if (
+                      filterType === "greaterThan" ||
+                      filterType === "lessThan"
+                    ) {
                       filterValue = filterItem.value;
-                    } 
-                    else {
+                    } else {
                       filterValue = filterItem.value || "Invalid filter";
                     }
                     const displayName = fieldName
@@ -473,6 +496,7 @@ export default function Donation() {
                     return (
                       <Tag
                         key={fieldName}
+                        id={index}
                         color="orange"
                         style={{ margin: "5px" }}
                       >
@@ -897,6 +921,7 @@ export default function Donation() {
         filterOpen={filterOpen}
         onSubmitFilter={onFilterSubmit}
         moduleName={activeTab}
+        activeFilterData={filterData ?? {}}
       />
     </div>
   );
