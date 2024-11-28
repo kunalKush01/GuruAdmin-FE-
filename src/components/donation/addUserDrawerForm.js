@@ -84,7 +84,7 @@ function AddUserDrawerForm({
               mobileNumber: e.mobile
                 .toString()
                 .replace(new RegExp(`^${e.dialCode}`), ""),
-              countryCode: e?.dialCode,
+              countryCode: "+" + e?.dialCode,
               countryName: e?.countryCode,
               name: e.name,
               pincode: e.pincode,
@@ -267,7 +267,7 @@ function AddUserDrawerForm({
                         <CustomCountryMobileNumberField
                           value={phoneNumber}
                           label={t("dashboard_Recent_DonorNumber")}
-                          defaultCountry={initialValues?.countryCode ?? "IN"}
+                          defaultCountry={initialValues?.countryCode ?? "India"}
                           placeholder={t("placeHolder_mobile_number")}
                           onChange={(phone, country) => {
                             setPhoneNumber(phone);
