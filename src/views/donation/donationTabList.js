@@ -298,9 +298,13 @@ export default function Donation() {
   const onFilterSubmit = (filterData) => {
     setFilterData(filterData);
   };
+  const [removedData, setRemovedData] = useState({})
   const handleRemoveAllFilter = () => {
+    const removedFilters = { ...filterData };
     setFilterData({});
+    setRemovedData(removedFilters);
   };
+  console.log(removedData)
   const [rowId, setRowId] = useState(null)
   const removeFilter = (fieldName,id) => {
     const newFilterData = { ...filterData };
@@ -446,14 +450,14 @@ export default function Donation() {
                           moment.ISO_8601,
                           true
                         ).isValid()
-                          ? moment(filterItem.fromDate).format("DD MMM YYYY")
+                          ? moment(filterItem.fromDate).subtract(1, "day").format("DD MMM YYYY")
                           : filterItem.fromDate;
                         const toDate = moment(
                           filterItem.toDate,
                           moment.ISO_8601,
                           true
                         ).isValid()
-                          ? moment(filterItem.toDate).format("DD MMM YYYY")
+                          ? moment(filterItem.toDate).subtract(1, "day").format("DD MMM YYYY")
                           : filterItem.toDate;
                         filterValue = `${fromDate} to ${toDate}`;
                       } else if (
@@ -475,7 +479,7 @@ export default function Donation() {
                           true
                         ).isValid()
                       ) {
-                        filterValue = moment(filterItem.value).format(
+                        filterValue = moment(filterItem.value).subtract(1, "day").format(
                           "DD MMM YYYY"
                         );
                       } else {
@@ -925,6 +929,7 @@ export default function Donation() {
         moduleName={activeTab}
         activeFilterData={filterData ?? {}}
         rowId={rowId??null}
+        removedData={removedData}
       />
     </div>
   );
