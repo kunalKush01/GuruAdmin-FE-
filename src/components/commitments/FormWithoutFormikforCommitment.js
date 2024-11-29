@@ -66,7 +66,7 @@ export default function FormWithoutFormikForCommitment({
   };
   useUpdateEffect(() => {
     const user = formik?.values?.SelectedUser;
-    if (user?.id) {
+    if (user?.userId) {
       formik.setFieldValue("Mobile", user.mobileNumber);
       formik.setFieldValue("countryCode", user?.countryName);
       formik.setFieldValue("dialCode", user?.countryCode);
