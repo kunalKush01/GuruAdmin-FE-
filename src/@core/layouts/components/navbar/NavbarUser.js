@@ -111,10 +111,10 @@ const NavbarUser = (props) => {
         className="navbar-user-wrapper d-flex justify-content-between w-100 align-items-center"
         style={{ flex: 1 }}
       >
-        {process.env.NODE_ENV !== "production" && (
+        {process.env.REACT_APP_ENVIRONMENT !== "production" && (
           <div className="dev-flag">
-            {process.env.NODE_ENV.charAt(0).toUpperCase() +
-              process.env.NODE_ENV.slice(1)}{" "}
+            {process.env.REACT_APP_ENVIRONMENT.charAt(0).toUpperCase() +
+              process.env.REACT_APP_ENVIRONMENT.slice(1)}{" "}
             Environment
           </div>
         )}

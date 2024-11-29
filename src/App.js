@@ -10,7 +10,7 @@ import Router from "./router/Router";
 import { disableInspect } from "./utility/removeContextMenu";
 
 const App = () => {
-  if (process.env.REACT_APP_ENVIRMENT === "production") {
+  if (process.env.REACT_APP_ENVIRONMENT === "production") {
     disableInspect();
   }
 
