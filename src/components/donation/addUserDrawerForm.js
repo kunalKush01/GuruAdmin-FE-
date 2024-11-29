@@ -79,8 +79,11 @@ function AddUserDrawerForm({
           onSubmit={(e) => {
             setShowPrompt(false);
             setLoading(true);
-            categoryMutation.mutate({
-              email: e.email,
+
+            // Prepare payload
+            const payload = {
+              ...e,
+              email: e.email?.trim() || null,
               mobileNumber: e.mobile
                 .toString()
                 .replace(new RegExp(`^${e.dialCode}`), ""),
@@ -92,12 +95,14 @@ function AddUserDrawerForm({
               panNum: e.panNum,
               addLine1: e.addLine1,
               addLine2: e.addLine2,
-              city: e.city.name,
+              city: e.city?.name,
               district: e.district,
-              state: e.state.name,
-              country: e.country.name,
-              pin: e.pin.name,
-            });
+              state: e.state?.name,
+              country: e.country?.name,
+              pin: e.pin?.name,
+            };
+
+            categoryMutation.mutate(payload);
           }}
           validationSchema={validationSchema}
         >
@@ -303,7 +308,6 @@ function AddUserDrawerForm({
                           label={t("subscribed_user_email")}
                           name="email"
                           placeholder={t("placeHolder_email")}
-                          required
                         />
                       </Col>
                       <Col xs={12} sm={6} md={6}>
