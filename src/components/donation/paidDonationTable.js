@@ -78,6 +78,12 @@ export default function DonationList({ data, topdf }, args) {
       cellExport: (row) => row.commitmentID,
     },
     {
+      name: t("dashboard_Recent_DonorReceipNo"),
+      selector: (row) => row.receiptNo,
+      width: "180px",
+      cellExport: (row) => row.receiptNo,
+    },
+    {
       name: t("created_by"),
       selector: (row) => row.createdBy,
       cellExport: (row) => row.createdBy,
