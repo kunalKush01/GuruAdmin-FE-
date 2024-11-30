@@ -257,10 +257,22 @@ function AddFilterSection({
               formikRef.current?.values[`fieldName${row.id}`]?.value;
             if (deletedFieldValue) {
               // Add deleted field back to options
-              setFieldOptions((prevOptions) => [
-                ...prevOptions,
-                { value: deletedFieldValue, label: deletedFieldValue },
-              ]);
+              setFieldOptions((prevOptions) => {
+                // Ensure no duplicate options
+                if (
+                  !prevOptions.some(
+                    (option) => option.value === deletedFieldValue
+                  )
+                ) {
+                  return [
+                    ...prevOptions,
+                    { value: deletedFieldValue, label: deletedFieldValue },
+                  ];
+                }
+                return prevOptions;
+              });
+  
+              // Remove the field from selected fields
               setSelectedFields((prev) =>
                 prev.filter((field) => field !== deletedFieldValue)
               );
