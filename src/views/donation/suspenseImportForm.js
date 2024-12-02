@@ -217,7 +217,7 @@ function SuspenseImportForm({ onClose, open, tab, setShowHistory }) {
   };
 
   return (
-    <Drawer title={t("import_xlsx_csv")} onClose={onClose} open={open} size="medium">
+    <Drawer title={t("import_xlsx_csv")} onClose={onClose} open={open} width={420}>
       <Formik initialValues={{}} onSubmit={handleSubmit}>
         {() => (
           <Form>
@@ -306,7 +306,7 @@ function SuspenseImportForm({ onClose, open, tab, setShowHistory }) {
             <div className="d-flex justify-content-center">
               <ReactstrapButton
                 color="primary"
-                className="addAction-btn mt-3"
+                className="addAction-btn mt-2"
                 type="submit"
                 style={{ width: "100%" }}
                 disabled={loading}
