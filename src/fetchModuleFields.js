@@ -23,35 +23,41 @@ export const fetchFields = async (trustId, moduleName, excludeFields = []) => {
     );
 
     if (response.data?.status && response.data?.data?.result?.fields) {
-      const fields = response.data.data.result.fields;
-      const customFields = response.data.data.result.customFields;
-      const userFields = Object.keys(fields.user || {})
-        .filter((key) => !excludedUserFields.includes(key))
-        .map((key) => ({
-          value: `user_${key}`,
-          label: `${key
-            .replace(/([A-Z])/g, " $1")
-            .replace(/^./, (str) => str.toUpperCase())}`,
-          type: fields.user[key]?.type,
-        }));
+      const fields = response.data.data.result.fields || {};
+      const customFields = response.data.data.result.customFields || [];
+      const userFields = fields.user
+        ? Object.keys(fields.user || {})
+            .filter((key) => !excludedUserFields.includes(key))
+            .map((key) => ({
+              value: `user_${key}`,
+              label: `${key
+                .replace(/([A-Z])/g, " $1")
+                .replace(/^./, (str) => str.toUpperCase())}`,
+              type: fields.user[key]?.type,
+            }))
+        : [];
 
       // Extract field options from fields
-      const fieldOptions = Object.keys(fields)
-        .filter((key) => !excludeFields.includes(key))
-        .map((key) => ({
-          value: key,
-          label: key
-            .replace(/([A-Z])/g, " $1")
-            .replace(/^./, (str) => str.toUpperCase()),
-          type: fields[key].type,
-        }));
+      const fieldOptions = fields
+        ? Object.keys(fields)
+            .filter((key) => !excludeFields.includes(key))
+            .map((key) => ({
+              value: key,
+              label: key
+                .replace(/([A-Z])/g, " $1")
+                .replace(/^./, (str) => str.toUpperCase()),
+              type: fields[key].type,
+            }))
+        : [];
 
       // Extract custom field options
-      const customFieldOptions = customFields.map((field) => ({
-        value: `customFields_${field.fieldName}`,
-        label: field.fieldName,
-        type: field.fieldType,
-      }));
+      const customFieldOptions = customFields
+        ? customFields.map((field) => ({
+            value: `customFields_${field.fieldName}`,
+            label: field.fieldName,
+            type: field.fieldType,
+          }))
+        : [];
 
       // Combine both field types
       return [...fieldOptions, ...userFields, ...customFieldOptions];
