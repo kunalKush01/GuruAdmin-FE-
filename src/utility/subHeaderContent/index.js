@@ -449,9 +449,9 @@ export const subHeaderContentResponsive = [
     // url: "/configuration",
   },
   {
-    name: "report/disputes",
+    name: "configuration/reportDispute",
     customLabel: "Report & Dispute",
-    url: "configuration/reportDispute",
+    url: "/configuration/reportDispute",
     icon: ReportDisputeIcon,
     activeIcon: ReportDisputeIconActive,
   },
