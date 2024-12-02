@@ -88,6 +88,11 @@ function AddFilterSection({
           { value: "contains", label: t("contains") },
           { value: "equal", label: t("equal") },
         ];
+      case "ObjectID":
+        return [
+          { value: "contains", label: t("contains") },
+          { value: "equal", label: t("equal") },
+        ];
       case "Date":
         return [
           { value: "equal", label: t("equal") },
