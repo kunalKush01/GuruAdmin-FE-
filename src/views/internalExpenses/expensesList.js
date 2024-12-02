@@ -19,11 +19,16 @@ import { ChangePeriodDropDown } from "../../components/partials/changePeriodDrop
 import NoContent from "../../components/partials/noContent";
 import { WRITE } from "../../utility/permissionsVariable";
 import { ChangeCategoryType } from "../../components/partials/categoryDropdown";
+import filterIcon from "../../assets/images/icons/filter.svg";
 
 import "../../assets/scss/viewCommon.scss";
+import FilterTag from "../../components/partials/filterTag";
+import AddFilterSection from "../../components/partials/addFilterSection";
 
 export default function Expenses() {
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
+  const [filterData, setFilterData] = useState({});
+
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const periodDropDown = () => {
     switch (dropDownName) {
@@ -45,9 +50,7 @@ export default function Expenses() {
     page: 1,
     limit: 10,
   });
-  const [expenseType, setExpenseType] = useState(
-    t("all")
-  );
+  const [expenseType, setExpenseType] = useState(t("all"));
 
   const searchParams = new URLSearchParams(history.location.search);
 
@@ -97,7 +100,13 @@ export default function Expenses() {
     .toISOString();
 
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
-
+  const filteredData = useMemo(() => {
+    return Object.entries(filterData).reduce((acc, [key, value]) => {
+      const { index, ...rest } = value; // Destructure and exclude 'index'
+      acc[key] = rest; // Add the remaining data
+      return acc;
+    }, {});
+  }, [filterData]);
   const expensesQuery = useQuery(
     [
       "Expenses",
@@ -107,15 +116,18 @@ export default function Expenses() {
       expenseType,
       filterStartDate,
       searchBarValue,
+      filteredData,
     ],
     () =>
       getAllExpense({
         ...pagination,
         startDate: filterStartDate,
         endDate: filterEndDate,
-expenseType: expenseType === t("all") ? undefined : expenseType.toUpperCase(),
+        expenseType:
+          expenseType === t("all") ? undefined : expenseType.toUpperCase(),
         languageId: selectedLang.id,
         search: searchBarValue,
+        ...(filterData && filteredData && { advancedSearch: filteredData }),
       }),
     {
       keepPreviousData: true,
@@ -141,6 +153,35 @@ expenseType: expenseType === t("all") ? undefined : expenseType.toUpperCase(),
   const subPermission = subPermissions?.subpermissions?.map(
     (item) => item.name
   );
+
+  const [filterOpen, setFilterOpen] = useState(false);
+  const showFilter = () => {
+    setFilterOpen(true);
+  };
+  const onFilterClose = () => {
+    setFilterOpen(false);
+  };
+  const handleApplyFilter = (e) => {
+    showFilter();
+  };
+  const onFilterSubmit = (filterData) => {
+    setFilterData(filterData);
+  };
+  const [removedData, setRemovedData] = useState({});
+  const handleRemoveAllFilter = () => {
+    const removedFilters = { ...filterData };
+    setFilterData({});
+    setRemovedData(removedFilters);
+  };
+  const [rowId, setRowId] = useState(null);
+  const removeFilter = (fieldName, id) => {
+    const newFilterData = { ...filterData };
+    delete newFilterData[fieldName];
+
+    setFilterData(newFilterData);
+    setRowId(id);
+  };
+  const hasFilters = Object.keys(filterData).length > 0;
   return (
     <div className="listviewwrapper">
       <Helmet>
@@ -199,7 +240,7 @@ expenseType: expenseType === t("all") ? undefined : expenseType.toUpperCase(),
             subPermission?.includes(WRITE) ? (
               <Button
                 color="primary"
-                className="addAction-btn"
+                className="addAction-btn me-1"
                 onClick={() =>
                   history.push(
                     `/internal_expenses/add?page=${pagination.page}&expenseType=${expenseType}&filter=${dropDownName}`
@@ -216,7 +257,28 @@ expenseType: expenseType === t("all") ? undefined : expenseType.toUpperCase(),
             ) : (
               ""
             )}
+          <Button
+            className="secondaryAction-btn"
+            color="primary"
+            onClick={handleApplyFilter}
+          >
+            <img
+              src={filterIcon}
+              alt="Filter Icon"
+              width={20}
+              className="filterIcon"
+            />
+            {t("filter")}
+          </Button>
           </div>
+        </div>
+        <div className="d-flex justify-content-between">
+          <FilterTag
+            hasFilters={hasFilters}
+            filterData={filterData}
+            removeFilter={removeFilter}
+            handleRemoveAllFilter={handleRemoveAllFilter}
+          />
         </div>
         <div style={{ height: "10px" }}>
           <If condition={expensesQuery.isFetching}>
@@ -307,6 +369,15 @@ expenseType: expenseType === t("all") ? undefined : expenseType.toUpperCase(),
           </Row>
         </div>
       </div>
+      <AddFilterSection
+        onFilterClose={onFilterClose}
+        filterOpen={filterOpen}
+        onSubmitFilter={onFilterSubmit}
+        moduleName={"Expense"}
+        activeFilterData={filterData ?? {}}
+        rowId={rowId ?? null}
+        removedData={removedData}
+      />
     </div>
   );
 }

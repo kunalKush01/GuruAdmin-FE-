@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { Button, Col, Row } from "reactstrap";
 import MemberShipListTable from "../../components/membership/MemberShipListTable";
 import "../../assets/scss/common.scss";
@@ -10,17 +10,24 @@ import { getAllMembers } from "../../api/membershipApi";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import { WRITE } from "../../utility/permissionsVariable";
+import filterIcon from "../../assets/images/icons/filter.svg";
+import FilterTag from "../../components/partials/filterTag";
+import AddFilterSection from "../../components/partials/addFilterSection";
 
 function MemberShipListView() {
   const history = useHistory();
   const queryClient = useQueryClient();
+  const [filterData, setFilterData] = useState({});
+  const { t } = useTranslation();
 
-  const permissions = useSelector((state) => state.auth.userDetail?.permissions);
+  const permissions = useSelector(
+    (state) => state.auth.userDetail?.permissions
+  );
   const allPermissions = permissions?.find(
     (permissionName) => permissionName.name === "all"
   );
   const subPermissions = permissions?.find(
-    (permissionName) => permissionName.name === "membership" 
+    (permissionName) => permissionName.name === "membership"
   );
   const subPermission = subPermissions?.subpermissions?.map(
     (item) => item.name
@@ -30,10 +37,20 @@ function MemberShipListView() {
     page: 1,
     limit: 10,
   });
-
+  const filteredData = useMemo(() => {
+    return Object.entries(filterData).reduce((acc, [key, value]) => {
+      const { index, ...rest } = value; // Destructure and exclude 'index'
+      acc[key] = rest; // Add the remaining data
+      return acc;
+    }, {});
+  }, [filterData]);
   const { data } = useQuery(
-    ["memberShipListData", pagination.page, pagination.limit],
-    () => getAllMembers({ ...pagination }),
+    ["memberShipListData", pagination.page, pagination.limit, filteredData],
+    () =>
+      getAllMembers({
+        ...pagination,
+        ...(filterData && filteredData && { advancedSearch: filteredData }),
+      }),
     {
       keepPreviousData: true,
       onError: (error) => {
@@ -41,6 +58,35 @@ function MemberShipListView() {
       },
     }
   );
+
+  const [filterOpen, setFilterOpen] = useState(false);
+  const showFilter = () => {
+    setFilterOpen(true);
+  };
+  const onFilterClose = () => {
+    setFilterOpen(false);
+  };
+  const handleApplyFilter = (e) => {
+    showFilter();
+  };
+  const onFilterSubmit = (filterData) => {
+    setFilterData(filterData);
+  };
+  const [removedData, setRemovedData] = useState({});
+  const handleRemoveAllFilter = () => {
+    const removedFilters = { ...filterData };
+    setFilterData({});
+    setRemovedData(removedFilters);
+  };
+  const [rowId, setRowId] = useState(null);
+  const removeFilter = (fieldName, id) => {
+    const newFilterData = { ...filterData };
+    delete newFilterData[fieldName];
+
+    setFilterData(newFilterData);
+    setRowId(id);
+  };
+  const hasFilters = Object.keys(filterData).length > 0;
   return (
     <div className="listviewwrapper">
       <Helmet>
@@ -61,7 +107,8 @@ function MemberShipListView() {
             </div>
           </div>
           <div className="addAction d-flex flex-wrap gap-2 gap-md-0">
-          {(allPermissions?.name === "all" || subPermission?.includes(WRITE)) && (
+            {(allPermissions?.name === "all" ||
+              subPermission?.includes(WRITE)) && (
               <Button
                 className={`addAction-btn me-1`}
                 color="primary"
@@ -73,6 +120,27 @@ function MemberShipListView() {
 
             <input type="file" accept="" className="d-none" />
           </div>
+          <Button
+            className="secondaryAction-btn"
+            color="primary"
+            onClick={handleApplyFilter}
+          >
+            <img
+              src={filterIcon}
+              alt="Filter Icon"
+              width={20}
+              className="filterIcon"
+            />
+            {t("filter")}
+          </Button>
+        </div>
+        <div className="d-flex justify-content-between">
+          <FilterTag
+            hasFilters={hasFilters}
+            filterData={filterData}
+            removeFilter={removeFilter}
+            handleRemoveAllFilter={handleRemoveAllFilter}
+          />
         </div>
         <div style={{ height: "10px" }}></div>
         <div className="commitmentContent">
@@ -95,6 +163,15 @@ function MemberShipListView() {
           </Row>
         </div>
       </div>
+      <AddFilterSection
+        onFilterClose={onFilterClose}
+        filterOpen={filterOpen}
+        onSubmitFilter={onFilterSubmit}
+        moduleName={"Member"}
+        activeFilterData={filterData ?? {}}
+        rowId={rowId ?? null}
+        removedData={removedData}
+      />
     </div>
   );
 }
