@@ -89,6 +89,7 @@ export const englishContent = {
   dashboard_Recent_DonorAmount: "Amount",
   dashboard_Recent_DonorCommitId: "Pledge ID",
   dashboard_Recent_DonorReceipt: "Receipt",
+  dashboard_Recent_DonorReceipNo: "Receipt Number",
   dashboard_viewAll: "View All",
   dashboard_top: "Top 5 Donor's",
   label_state: "State",

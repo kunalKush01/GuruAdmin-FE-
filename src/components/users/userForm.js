@@ -136,7 +136,7 @@ export default function UserForm({
                   />
                 </div>
                 <Row className="">
-                  <Col xs={12} md={10}>
+                  <Col xs={12}>
                     <Row>
                       <Col xs={12} sm={6} lg={4}>
                         <CustomTextField
@@ -347,11 +347,7 @@ export default function UserForm({
             </Row>
             <div className="btn-Published">
               {loading ? (
-                <Button
-                  color="primary"
-                  className="add-trust-btn mt-1"
-                  disabled
-                >
+                <Button color="primary" className="add-trust-btn mt-1" disabled>
                   <Spinner size="md" />
                 </Button>
               ) : (

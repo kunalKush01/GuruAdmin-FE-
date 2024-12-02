@@ -152,6 +152,13 @@ export default function DonationANTDListTable(
       width: 150,
     },
     {
+      title: t("dashboard_Recent_DonorReceipNo"),
+      dataIndex: "receiptNo",
+      key: "receiptNo",
+      render: (text) => text,
+      width: 180,
+    },
+    {
       title: t("category"),
       dataIndex: "category",
       key: "category",
@@ -423,6 +430,7 @@ export default function DonationANTDListTable(
             ? `0${item.commitmentId}`
             : `${item.commitmentId}`
           : "_",
+        receiptNo: `${item.receiptNo}`,
         createdBy: ConverFirstLatterToCapital(item?.createdBy?.name ?? "-"),
         modeOfPayment: ConverFirstLatterToCapital(item?.paymentMethod ?? "-"),
         bankName: ConverFirstLatterToCapital(item?.bankName ?? "-"),
