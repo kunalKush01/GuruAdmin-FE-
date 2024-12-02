@@ -69,7 +69,7 @@ function AddUserDrawerForm({
     setCountry(formattedCountry);
   }, []);
   return (
-    <Drawer title="Add User" onClose={onClose} open={open} size="medium">
+    <Drawer title="Add User" onClose={onClose} open={open} width={500}>
       <div className="">
         <Formik
           initialValues={{
