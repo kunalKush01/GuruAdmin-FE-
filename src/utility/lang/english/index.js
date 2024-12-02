@@ -887,7 +887,7 @@ export const englishContent = {
   alias_name: "Alias Name",
   gender: "Gender",
   marital_status: "Marital Status",
-  membership: "Membership",
+  membership: "Members",
   download_sample_file: "Download Sample File",
   import_xlsx_csv: "Import XLSX/CSV",
   click_to_upload: "Click to upload",
