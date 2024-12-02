@@ -115,6 +115,14 @@ const SiderLayout = (props) => {
       return null;
       }
 
+      if (
+        (item?.name === "gaushala" && item?.customLabel === "Pashu Breed" || 
+         item?.name === "gaushala" && item?.customLabel === "Pashu Category") && 
+        !isGaushala
+      ) {
+        return null;
+      }
+
     if (
       (hasAllPermission && isGaushala) ||
       (hasCattleItemPermission && isGaushala) ||
