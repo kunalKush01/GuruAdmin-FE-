@@ -178,9 +178,9 @@ const Routes = [
       import("../../views/cattles-management/stock-management/index.js")
     ),
     exact: true,
-    type: "cattle-stock",
+    type: "stock-management/stock",
     subPermission: WRITE,
-    isGaushala: "Gaushala",
+    // isGaushala: "Gaushala",
   },
 
   {
@@ -189,9 +189,9 @@ const Routes = [
       import("../../views/cattles-management/stock-management/index.js")
     ),
     exact: true,
-    type: "cattle-supplies",
+    type: "stock-management/supplies",
     subPermission: READ,
-    isGaushala: "Gaushala",
+    // isGaushala: "Gaushala",
   },
   {
     path: "/stock-management/supplies/add",
@@ -201,9 +201,9 @@ const Routes = [
       )
     ),
     exact: true,
-    type: "cattle-supplies",
+    type: "stock-management/supplies",
     subPermission: WRITE,
-    isGaushala: "Gaushala",
+    // isGaushala: "Gaushala",
   },
 
   {
@@ -214,9 +214,9 @@ const Routes = [
       )
     ),
     exact: true,
-    type: "cattle-supplies",
+    type: "stock-management/supplies",
     subPermission: WRITE,
-    isGaushala: "Gaushala",
+    // isGaushala: "Gaushala",
   },
 
   {
@@ -225,9 +225,9 @@ const Routes = [
       import("../../views/cattles-management/stock-management/index.js")
     ),
     exact: true,
-    type: "cattle-item",
+    type: "stock-management/item",
     subPermission: READ,
-    isGaushala: "Gaushala",
+    // isGaushala: "Gaushala",
   },
 
   {
@@ -238,9 +238,9 @@ const Routes = [
       )
     ),
     exact: true,
-    type: "cattle-item",
+    type: "stock-management/item",
     subPermission: WRITE,
-    isGaushala: "Gaushala",
+    // isGaushala: "Gaushala",
   },
 
   {
@@ -251,9 +251,9 @@ const Routes = [
       )
     ),
     exact: true,
-    type: "cattle-item",
+    type: "stock-management/item",
     subPermission: WRITE,
-    isGaushala: "Gaushala",
+    // isGaushala: "Gaushala",
   },
 
   {
@@ -262,9 +262,9 @@ const Routes = [
       import("../../views/cattles-management/stock-management/index.js")
     ),
     exact: true,
-    type: "cattle-usage",
+    type: "stock-management/usage",
     subPermission: READ,
-    isGaushala: "Gaushala",
+    // isGaushala: "Gaushala",
   },
 
   {
@@ -275,9 +275,9 @@ const Routes = [
       )
     ),
     exact: true,
-    type: "cattle-usage",
+    type: "stock-management/usage",
     subPermission: WRITE,
-    isGaushala: "Gaushala",
+    // isGaushala: "Gaushala",
   },
 
   {
@@ -288,9 +288,9 @@ const Routes = [
       )
     ),
     exact: true,
-    type: "cattle-usage",
+    type: "stock-management/usage",
     subPermission: WRITE,
-    isGaushala: "Gaushala",
+    // isGaushala: "Gaushala",
   },
   {
     path: "/events/about/:eventId",

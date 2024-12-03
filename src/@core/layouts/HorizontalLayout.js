@@ -107,6 +107,12 @@ const SiderLayout = (props) => {
     const hasCattleItemPermission = item?.innerPermissions?.some((perm) =>
       permissionsKey?.includes(perm)
     );
+
+    const hasChildPermission = item?.children?.some(child => 
+      permissionsKey?.includes(child?.name) || 
+      child?.innerPermissions?.some(perm => permissionsKey?.includes(perm))
+    );
+
     const isGaushala =
       item?.isCattle?.toLowerCase() === trustType?.toLowerCase();
 
@@ -123,19 +129,24 @@ const SiderLayout = (props) => {
         return null;
       }
 
-    if (
-      (hasAllPermission && isGaushala) ||
-      (hasCattleItemPermission && isGaushala) ||
+      const shouldShowItem = hasAllPermission || 
       (hasItemPermission && isGaushala) ||
-      (hasAllPermission && item?.name !== "cattles_management") ||
-      (hasItemPermission && item?.name !== "cattles_management")
-    ) {
-      const isActive = active.startsWith(item.url);
-      const isHovered = hoveredItem === item.name;
-      const children = item.children
-        ? item.children.map(getMenuItem)
+      (hasChildPermission && isGaushala) ||
+      (hasItemPermission && item?.name !== "cattles_management") ||
+      (hasChildPermission && item?.name !== "cattles_management");
+
+      if (shouldShowItem) {
+        const isActive = active.startsWith(item.url);
+        const isHovered = hoveredItem === item.name;
+        const children = item.children
+        ? hasAllPermission 
+          ? item.children.map(getMenuItem)
+          : item.children
+              .map(getMenuItem)
+              .filter(child => child !== null)
         : undefined;
 
+        if (hasAllPermission || children?.length > 0 || hasItemPermission || hasChildPermission) {
       return {
         key: item.url,
         icon: (
@@ -154,6 +165,7 @@ const SiderLayout = (props) => {
         },
       };
     }
+  }
     return null;
   };
 
