@@ -27,12 +27,10 @@ export const createImport = async (payload) => {
     throw new Error("Error creating import");
   }
 };
-export const getAllSuspense = (page = 1, limit = 10) => {
+export const getAllSuspense = (payload) => {
   return callApi({
     requestFunction: (axios) =>
-      axios.get(`${API_BASE_URL}suspense/imports`, {
-        params: { page, limit },
-      }),
+      axios.post(`${API_BASE_URL}suspense/importsList`, payload),
     showToastOnSuccess: false,
     showToastOnError: false,
   });

@@ -106,33 +106,35 @@ function MemberShipListView() {
               </div>
             </div>
           </div>
-          <div className="addAction d-flex flex-wrap gap-2 gap-md-0">
-            {(allPermissions?.name === "all" ||
-              subPermission?.includes(WRITE)) && (
-              <Button
-                className={`addAction-btn me-1`}
-                color="primary"
-                onClick={() => history.push(`/member/addMember`)}
-              >
-                Add
-              </Button>
-            )}
+          <div className="d-flex">
+            <div className="addAction d-flex flex-wrap gap-2 gap-md-0">
+              {(allPermissions?.name === "all" ||
+                subPermission?.includes(WRITE)) && (
+                <Button
+                  className={`addAction-btn me-1`}
+                  color="primary"
+                  onClick={() => history.push(`/member/addMember`)}
+                >
+                  Add
+                </Button>
+              )}
 
-            <input type="file" accept="" className="d-none" />
+              <input type="file" accept="" className="d-none" />
+            </div>
+            <Button
+              className="secondaryAction-btn"
+              color="primary"
+              onClick={handleApplyFilter}
+            >
+              <img
+                src={filterIcon}
+                alt="Filter Icon"
+                width={20}
+                className="filterIcon"
+              />
+              {t("filter")}
+            </Button>
           </div>
-          <Button
-            className="secondaryAction-btn"
-            color="primary"
-            onClick={handleApplyFilter}
-          >
-            <img
-              src={filterIcon}
-              alt="Filter Icon"
-              width={20}
-              className="filterIcon"
-            />
-            {t("filter")}
-          </Button>
         </div>
         <div className="d-flex justify-content-between">
           <FilterTag

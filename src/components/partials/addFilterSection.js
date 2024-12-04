@@ -61,6 +61,15 @@ function AddFilterSection({
     }
   };
   useEffect(() => {
+    const donation_excludeField = [
+      "articleItem",
+      "articleQuantity",
+      "articleRemark",
+      "articleType",
+      "articleUnit",
+      "articleWeight",
+      "isArticle",
+    ];
     const excludeFields = [
       "_id",
       "updatedAt",
@@ -73,8 +82,16 @@ function AddFilterSection({
       "user",
       "createdBy",
     ];
+    let finalExcludeFields = excludeFields;
+
+    if (moduleName === "Article_Donation") {
+      finalExcludeFields = excludeFields;
+    } else {
+      finalExcludeFields = [...excludeFields, ...donation_excludeField];
+    }
+
     const getFields = async () => {
-      const options = await fetchFields(trustId, modName, excludeFields);
+      const options = await fetchFields(trustId, modName, finalExcludeFields);
       setFieldOptions(options);
     };
     getFields();
@@ -114,20 +131,38 @@ function AddFilterSection({
 
   const renderFilterValueInput = (field, filterType, index, formik) => {
     const value = field ? field.value : null;
-
+    const enumValue = field ? field.enum : null;
     const selectedField = fieldOptions.find((option) => option.value === value);
     const fieldType = selectedField ? selectedField.type : null;
     switch (fieldType) {
       case "String":
-        return (
-          <div className="w-100">
-            <CustomTextField
-              name={`filterValue${index}`}
-              placeholder={t("Enter Value")}
-              type="text"
-            />
-          </div>
-        );
+        if (Array.isArray(enumValue) && enumValue.length > 0) {
+          return (
+            <div className="w-100">
+              <FormikCustomReactSelect
+                name={`filterValue${index}`}
+                labelKey="label"
+                valueKey="value"
+                options={enumValue.map((item) => ({
+                  value: item,
+                  label: ConverFirstLatterToCapital(item),
+                }))}
+                placeholder={t("Select Value")}
+                width="100"
+              />
+            </div>
+          );
+        } else {
+          return (
+            <div className="w-100">
+              <CustomTextField
+                name={`filterValue${index}`}
+                placeholder={t("Enter Value")}
+                type="text"
+              />
+            </div>
+          );
+        }
       case "Date":
         if (filterType && filterType.value === "inRange") {
           return (
@@ -276,7 +311,7 @@ function AddFilterSection({
                 }
                 return prevOptions;
               });
-  
+
               // Remove the field from selected fields
               setSelectedFields((prev) =>
                 prev.filter((field) => field !== deletedFieldValue)
