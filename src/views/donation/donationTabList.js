@@ -313,65 +313,102 @@ export default function Donation() {
     { value: "Debit Card", label: "Debit Card" },
     { value: "Bank Transfer", label: "Bank Transfer" },
   ];
+  // State for managing filter modal for each tab
+  const [donationFilterOpen, setDonationFilterOpen] = useState(false);
+  const [articleDonationFilterOpen, setArticleDonationFilterOpen] =
+    useState(false);
+  const [suspenseFilterOpen, setSuspenseFilterOpen] = useState(false);
 
-  const [filterOpen, setFilterOpen] = useState(false);
-  const showFilter = () => {
-    setFilterOpen(true);
+  // Functions for Donation tab
+  const showDonationFilter = () => {
+    setDonationFilterOpen(true);
   };
-  const onFilterClose = () => {
-    setFilterOpen(false);
-  };
-  const handleApplyFilter = (e) => {
-    showFilter();
-  };
-  const onFilterSubmit = (filterData) => {
-    if (activeTab == "Donation") {
-      setDonationFilterData(filterData);
-    } else if (activeTab == "Article_Donation") {
-      setArticleDonationFilterData(filterData);
-    } else if (activeTab == "Suspense") {
-      setSuspenseFilterData(filterData);
-    }
-  };
-  const [removedData, setRemovedData] = useState({});
-  const handleRemoveAllFilter = () => {
-    if (activeTab === "Donation") {
-      setRemovedData(donationFilterData);
-      setDonationFilterData({});
-    } else if (activeTab == "Article_Donation") {
-      setRemovedData(articleDonationFilterData);
-      setArticleDonationFilterData({});
-    } else if (activeTab === "Suspense") {
-      setRemovedData(suspenseFilterData);
-      setSuspenseFilterData({});
-    }
 
-    // const removedFilters = { ...filterData };
-    // setFilterData({});
-    // setRemovedData(removedFilters);
+  const onDonationFilterClose = () => {
+    setDonationFilterOpen(false);
   };
-  const [rowId, setRowId] = useState(null);
-  const removeFilter = (fieldName, id) => {
-    if (activeTab === "Donation") {
-      const newDonationFilterData = { ...donationFilterData };
-      delete newDonationFilterData[fieldName];
-      setDonationFilterData(newDonationFilterData);
-    } else if (activeTab === "Article_Donation") {
-      const newArticleDonationFilterData = { ...articleDonationFilterData };
-      delete newArticleDonationFilterData[fieldName];
-      setArticleDonationFilterData(newArticleDonationFilterData);
-    } else if (activeTab === "Suspense") {
-      const newSuspenseFilterData = { ...suspenseFilterData };
-      delete newSuspenseFilterData[fieldName];
-      setSuspenseFilterData(newSuspenseFilterData);
-    }
-    setRowId(id);
-    // const newFilterData = { ...filterData };
-    // delete newFilterData[fieldName];
 
-    // setFilterData(newFilterData);
-    // setRowId(id);
+  const handleApplyDonationFilter = () => {
+    showDonationFilter();
   };
+
+  // Functions for Article Donation tab
+  const showArticleDonationFilter = () => {
+    setArticleDonationFilterOpen(true);
+  };
+
+  const onArticleDonationFilterClose = () => {
+    setArticleDonationFilterOpen(false);
+  };
+
+  const handleApplyArticleDonationFilter = () => {
+    showArticleDonationFilter();
+  };
+
+  // Functions for Suspense tab
+  const showSuspenseFilter = () => {
+    setSuspenseFilterOpen(true);
+  };
+
+  const onSuspenseFilterClose = () => {
+    setSuspenseFilterOpen(false);
+  };
+
+  const handleApplySuspenseFilter = () => {
+    showSuspenseFilter();
+  };
+
+  const onDonationFilterSubmit = (filterData) => {
+    setDonationFilterData(filterData);
+  };
+  const onArticleDonationFilterSubmit = (filterData) => {
+    setArticleDonationFilterData(filterData);
+  };
+  const onSuspenseFilterSubmit = (filterData) => {
+    setSuspenseFilterData(filterData);
+  };
+
+  const [donationRemovedData, setDonationRemovedData] = useState({});
+  const [articleDonationemovedData, setArticleDonationemovedData] = useState(
+    {}
+  );
+  const [suspenseRemovedData, setSuspenseRemovedData] = useState({});
+  const donationRemoveAllFilter = () => {
+    setDonationRemovedData(donationFilterData);
+    setDonationFilterData({});
+  };
+  const articleDonationRemoveAllFilter = () => {
+    setArticleDonationemovedData(articleDonationFilterData);
+    setArticleDonationFilterData({});
+  };
+  const suspenseRemoveAllFilter = () => {
+    setSuspenseRemovedData(suspenseFilterData);
+    setSuspenseFilterData({});
+  };
+  const [donantionFilterRowId, setDonantionFilterRowId] = useState(null);
+  const [articleDonantionFilterRowId, setArticleDonantionFilterRowId] =
+    useState(null);
+  const [suspenseFilterRowId, setSuspenseFIlterRowId] = useState(null);
+
+  const donationRemoveFilter = (fieldName, id) => {
+    const updatedFilters = { ...donationFilterData };
+    delete updatedFilters[fieldName];
+    setDonationFilterData(updatedFilters);
+    setDonantionFilterRowId(id);
+  };
+  const articleDonationRemoveFilter = (fieldName, id) => {
+    const updatedFilters = { ...articleDonationFilterData };
+    delete updatedFilters[fieldName];
+    setArticleDonationFilterData(updatedFilters);
+    setArticleDonantionFilterRowId(id);
+  };
+  const suspenseRemoveFilter = (fieldName, id) => {
+    const updatedFilters = { ...suspenseFilterData };
+    delete updatedFilters[fieldName];
+    setSuspenseFilterData(updatedFilters);
+    setSuspenseFIlterRowId(id);
+  };
+
   // const hasFilters = Object.keys(filterData).length > 0;
   const hasFilters =
     activeTab === "Donation"
@@ -484,7 +521,7 @@ export default function Donation() {
               <Button
                 className="secondaryAction-btn"
                 color="primary"
-                onClick={handleApplyFilter}
+                onClick={handleApplyDonationFilter}
               >
                 <img
                   src={filterIcon}
@@ -500,8 +537,8 @@ export default function Donation() {
             <FilterTag
               hasFilters={hasFilters}
               filterData={donationFilterData}
-              removeFilter={removeFilter}
-              handleRemoveAllFilter={handleRemoveAllFilter}
+              removeFilter={donationRemoveFilter}
+              handleRemoveAllFilter={donationRemoveAllFilter}
             />
           </div>
 
@@ -565,13 +602,13 @@ export default function Donation() {
             </Row>
           </div>
           <AddFilterSection
-            onFilterClose={onFilterClose}
-            filterOpen={filterOpen}
-            onSubmitFilter={onFilterSubmit}
+            onFilterClose={onDonationFilterClose}
+            filterOpen={donationFilterOpen}
+            onSubmitFilter={onDonationFilterSubmit}
             moduleName={activeTab}
             activeFilterData={donationFilterData ?? {}}
-            rowId={rowId ?? null}
-            removedData={removedData}
+            rowId={donantionFilterRowId ?? null}
+            removedData={donationRemovedData}
           />
         </>
       ),
@@ -660,7 +697,7 @@ export default function Donation() {
               <Button
                 className="secondaryAction-btn"
                 color="primary"
-                onClick={handleApplyFilter}
+                onClick={handleApplyArticleDonationFilter}
               >
                 <img
                   src={filterIcon}
@@ -676,8 +713,8 @@ export default function Donation() {
             <FilterTag
               hasFilters={hasFilters}
               filterData={articleDonationFilterData}
-              removeFilter={removeFilter}
-              handleRemoveAllFilter={handleRemoveAllFilter}
+              removeFilter={articleDonationRemoveFilter}
+              handleRemoveAllFilter={articleDonationRemoveAllFilter}
             />
           </div>
           <div style={{ height: "10px" }}>
@@ -740,13 +777,13 @@ export default function Donation() {
             </Row>
           </div>
           <AddFilterSection
-            onFilterClose={onFilterClose}
-            filterOpen={filterOpen}
-            onSubmitFilter={onFilterSubmit}
+            onFilterClose={onArticleDonationFilterClose}
+            filterOpen={articleDonationFilterOpen}
+            onSubmitFilter={onArticleDonationFilterSubmit}
             moduleName={activeTab}
             activeFilterData={articleDonationFilterData ?? {}}
-            rowId={rowId ?? null}
-            removedData={removedData}
+            rowId={articleDonantionFilterRowId ?? null}
+            removedData={articleDonationemovedData}
           />
         </>
       ),
@@ -820,7 +857,7 @@ export default function Donation() {
                 <Button
                   className="secondaryAction-btn"
                   color="primary"
-                  onClick={handleApplyFilter}
+                  onClick={handleApplySuspenseFilter}
                 >
                   <img
                     src={filterIcon}
@@ -914,8 +951,8 @@ export default function Donation() {
             <FilterTag
               hasFilters={hasFilters}
               filterData={suspenseFilterData}
-              removeFilter={removeFilter}
-              handleRemoveAllFilter={handleRemoveAllFilter}
+              removeFilter={suspenseRemoveFilter}
+              handleRemoveAllFilter={suspenseRemoveAllFilter}
             />
           </div>
           <div className="donationContent mt-1">
@@ -930,13 +967,13 @@ export default function Donation() {
             )}
           </div>
           <AddFilterSection
-            onFilterClose={onFilterClose}
-            filterOpen={filterOpen}
-            onSubmitFilter={onFilterSubmit}
+            onFilterClose={onSuspenseFilterClose}
+            filterOpen={suspenseFilterOpen}
+            onSubmitFilter={onSuspenseFilterSubmit}
             moduleName={activeTab}
             activeFilterData={suspenseFilterData ?? {}}
-            rowId={rowId ?? null}
-            removedData={removedData}
+            rowId={suspenseFilterRowId ?? null}
+            removedData={suspenseRemovedData}
           />
         </>
       ),
