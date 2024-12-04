@@ -26,7 +26,7 @@ import { useTranslation } from "react-i18next";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
 import { useHistory } from "react-router-dom";
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
-function SuspenseListTable({ success }) {
+function SuspenseListTable({ success, filterData, type }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
@@ -44,10 +44,19 @@ function SuspenseListTable({ success }) {
   });
   const [activeTab, setActiveTab] = useState("Donation");
   const { data, isLoading } = useQuery(
-    ["suspenseData", currentPage, pageSize],
-    () => getAllSuspense(currentPage, pageSize),
+    ["suspenseData", currentPage, pageSize, filterData],
+    () =>
+      getAllSuspense({
+        page: currentPage,
+        limit: pageSize,
+        search: "",
+        sortKey: "createdAt",
+        sortOrder: "DESC",
+        ...(filterData && filterData && { advancedSearch: filterData }),
+      }),
     {
       keepPreviousData: true,
+      enabled: type == "Suspense",
       onError: (error) => {
         console.error("Error fetching suspense data:", error);
       },

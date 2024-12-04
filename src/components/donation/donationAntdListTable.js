@@ -523,7 +523,7 @@ export default function DonationANTDListTable(
         ...customFieldData,
       };
     });
-  }, [data, isLoading, donation_custom_fields]);
+  }, [data, isLoading, donation_custom_fields,donationType]);
 
   const inWordsNumber = numberToWords
     .toWords(parseInt(receipt?.amount ?? 0))

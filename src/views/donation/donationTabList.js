@@ -61,7 +61,12 @@ export default function Donation() {
     donation_type ? donation_type : "Donation"
   );
   const selectedLang = useSelector((state) => state.auth.selectLang);
-  const [filterData, setFilterData] = useState({});
+  const [donationFilterData, setDonationFilterData] = useState({});
+  const [articleDonationFilterData, setArticleDonationFilterData] = useState(
+    {}
+  );
+  const [suspenseFilterData, setSuspenseFilterData] = useState({});
+
   const periodDropDown = () => {
     switch (dropDownName) {
       case "dashboard_monthly":
@@ -152,13 +157,35 @@ export default function Donation() {
   const [subCategoryTypeId, setSubCategoryTypeId] = useState();
 
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
+  // const filteredData = useMemo(() => {
+  //   return Object.entries(filterData).reduce((acc, [key, value]) => {
+  //     const { index, ...rest } = value; // Destructure and exclude 'index'
+  //     acc[key] = rest; // Add the remaining data
+  //     return acc;
+  //   }, {});
+  // }, [filterData]);
   const filteredData = useMemo(() => {
-    return Object.entries(filterData).reduce((acc, [key, value]) => {
+    // Select the filterData based on the active module (Donation or Suspense)
+    const currentFilterData =
+      activeTab === "Donation"
+        ? donationFilterData
+        : activeTab === "Article_Donation"
+        ? articleDonationFilterData
+        : activeTab === "Suspense"
+        ? suspenseFilterData
+        : {}; // If no active tab, use an empty object
+
+    return Object.entries(currentFilterData).reduce((acc, [key, value]) => {
       const { index, ...rest } = value; // Destructure and exclude 'index'
-      acc[key] = rest; // Add the remaining data
+      acc[key] = rest; // Add the remaining data without 'index'
       return acc;
     }, {});
-  }, [filterData]);
+  }, [
+    donationFilterData,
+    articleDonationFilterData,
+    suspenseFilterData,
+    activeTab,
+  ]);
 
   const donationQuery = useQuery(
     [
@@ -182,10 +209,12 @@ export default function Donation() {
         categoryId: subCategoryId,
         endDate: filterEndDate,
         languageId: selectedLang.id,
-        ...(filterData && filteredData && { advancedSearch: filteredData }),
+        ...((donationFilterData || articleDonationFilterData) &&
+          filteredData && { advancedSearch: filteredData }),
       }),
     {
       keepPreviousData: true,
+      enabled: activeTab === "Donation" || activeTab === "Article_Donation",
     }
   );
 
@@ -296,23 +325,63 @@ export default function Donation() {
     showFilter();
   };
   const onFilterSubmit = (filterData) => {
-    setFilterData(filterData);
+    if (activeTab == "Donation") {
+      setDonationFilterData(filterData);
+    } else if (activeTab == "Article_Donation") {
+      setArticleDonationFilterData(filterData);
+    } else if (activeTab == "Suspense") {
+      setSuspenseFilterData(filterData);
+    }
   };
   const [removedData, setRemovedData] = useState({});
   const handleRemoveAllFilter = () => {
-    const removedFilters = { ...filterData };
-    setFilterData({});
-    setRemovedData(removedFilters);
+    if (activeTab === "Donation") {
+      setRemovedData(donationFilterData);
+      setDonationFilterData({});
+    } else if (activeTab == "Article_Donation") {
+      setRemovedData(articleDonationFilterData);
+      setArticleDonationFilterData({});
+    } else if (activeTab === "Suspense") {
+      setRemovedData(suspenseFilterData);
+      setSuspenseFilterData({});
+    }
+
+    // const removedFilters = { ...filterData };
+    // setFilterData({});
+    // setRemovedData(removedFilters);
   };
   const [rowId, setRowId] = useState(null);
   const removeFilter = (fieldName, id) => {
-    const newFilterData = { ...filterData };
-    delete newFilterData[fieldName];
-
-    setFilterData(newFilterData);
+    if (activeTab === "Donation") {
+      const newDonationFilterData = { ...donationFilterData };
+      delete newDonationFilterData[fieldName];
+      setDonationFilterData(newDonationFilterData);
+    } else if (activeTab === "Article_Donation") {
+      const newArticleDonationFilterData = { ...articleDonationFilterData };
+      delete newArticleDonationFilterData[fieldName];
+      setArticleDonationFilterData(newArticleDonationFilterData);
+    } else if (activeTab === "Suspense") {
+      const newSuspenseFilterData = { ...suspenseFilterData };
+      delete newSuspenseFilterData[fieldName];
+      setSuspenseFilterData(newSuspenseFilterData);
+    }
     setRowId(id);
+    // const newFilterData = { ...filterData };
+    // delete newFilterData[fieldName];
+
+    // setFilterData(newFilterData);
+    // setRowId(id);
   };
-  const hasFilters = Object.keys(filterData).length > 0;
+  // const hasFilters = Object.keys(filterData).length > 0;
+  const hasFilters =
+    activeTab === "Donation"
+      ? Object.keys(donationFilterData).length > 0
+      : activeTab === "Article_Donation"
+      ? Object.keys(articleDonationFilterData).length > 0
+      : activeTab === "Suspense"
+      ? Object.keys(suspenseFilterData).length > 0
+      : false;
+
   // Donation split tab
   const items = [
     {
@@ -430,7 +499,7 @@ export default function Donation() {
           <div className="d-flex justify-content-between">
             <FilterTag
               hasFilters={hasFilters}
-              filterData={filterData}
+              filterData={donationFilterData}
               removeFilter={removeFilter}
               handleRemoveAllFilter={handleRemoveAllFilter}
             />
@@ -495,6 +564,15 @@ export default function Donation() {
               </If>
             </Row>
           </div>
+          <AddFilterSection
+            onFilterClose={onFilterClose}
+            filterOpen={filterOpen}
+            onSubmitFilter={onFilterSubmit}
+            moduleName={activeTab}
+            activeFilterData={donationFilterData ?? {}}
+            rowId={rowId ?? null}
+            removedData={removedData}
+          />
         </>
       ),
     },
@@ -594,6 +672,14 @@ export default function Donation() {
               </Button>
             </div>
           </div>
+          <div className="d-flex justify-content-between">
+            <FilterTag
+              hasFilters={hasFilters}
+              filterData={articleDonationFilterData}
+              removeFilter={removeFilter}
+              handleRemoveAllFilter={handleRemoveAllFilter}
+            />
+          </div>
           <div style={{ height: "10px" }}>
             <If condition={donationQuery.isFetching}>
               <Then>
@@ -653,6 +739,15 @@ export default function Donation() {
               </If>
             </Row>
           </div>
+          <AddFilterSection
+            onFilterClose={onFilterClose}
+            filterOpen={filterOpen}
+            onSubmitFilter={onFilterSubmit}
+            moduleName={activeTab}
+            activeFilterData={articleDonationFilterData ?? {}}
+            rowId={rowId ?? null}
+            removedData={removedData}
+          />
         </>
       ),
     },
@@ -661,7 +756,7 @@ export default function Donation() {
       label: t("suspense"),
       children: (
         <>
-          <div className="d-flex justify-content-between align-items-center mb-1">
+          <div className="d-flex justify-content-between align-items-center">
             {showHistory ? (
               <img
                 src={arrowLeft}
@@ -722,6 +817,19 @@ export default function Donation() {
                 >
                   {t("import")}
                 </Dropdown.Button>
+                <Button
+                  className="secondaryAction-btn"
+                  color="primary"
+                  onClick={handleApplyFilter}
+                >
+                  <img
+                    src={filterIcon}
+                    alt="Filter Icon"
+                    width={20}
+                    className="filterIcon"
+                  />
+                  {t("filter")}
+                </Button>
               </Space>
               <Modal
                 title={t("add_suspense_record")}
@@ -802,13 +910,34 @@ export default function Donation() {
               </Modal>
             </div>
           </div>
-          <div className="donationContent">
+          <div className="d-flex justify-content-between">
+            <FilterTag
+              hasFilters={hasFilters}
+              filterData={suspenseFilterData}
+              removeFilter={removeFilter}
+              handleRemoveAllFilter={handleRemoveAllFilter}
+            />
+          </div>
+          <div className="donationContent mt-1">
             {!showHistory ? (
-              <SuspenseListTable success={success} />
+              <SuspenseListTable
+                success={success}
+                filterData={filteredData}
+                type={activeTab}
+              />
             ) : (
               <SuspenseHistoryTable />
             )}
           </div>
+          <AddFilterSection
+            onFilterClose={onFilterClose}
+            filterOpen={filterOpen}
+            onSubmitFilter={onFilterSubmit}
+            moduleName={activeTab}
+            activeFilterData={suspenseFilterData ?? {}}
+            rowId={rowId ?? null}
+            removedData={removedData}
+          />
         </>
       ),
     },
@@ -837,15 +966,6 @@ export default function Donation() {
         open={open}
         tab={activeTab}
         setShowHistory={setShowHistory}
-      />
-      <AddFilterSection
-        onFilterClose={onFilterClose}
-        filterOpen={filterOpen}
-        onSubmitFilter={onFilterSubmit}
-        moduleName={activeTab=="Article_Donation"?"Donation":activeTab}
-        activeFilterData={filterData ?? {}}
-        rowId={rowId ?? null}
-        removedData={removedData}
       />
     </div>
   );

@@ -71,6 +71,12 @@ function FilterTag({ hasFilters, filterData, removeFilter ,handleRemoveAllFilter
               }
               const displayName = fieldName
                 .replace(/^user_/, "") // Remove 'user_' prefix
+                .replace(/^personalInfo_/, "") // Remove 'user_' prefix
+                .replace(/^addressInfo_/, "") // Remove 'user_' prefix
+                .replace(/^contactInfo_/, "") // Remove 'user_' prefix
+                .replace(/^otherInfo_/, "") // Remove 'user_' prefix
+                .replace(/^membershipInfo_/, "") // Remove 'user_' prefix
+                .replace(/^familyInfo_/, "") // Remove 'user_' prefix
                 .replace(/^customFields_/, "") // Remove 'customFields_' prefix
                 .replace(/([A-Z])/g, " $1") // Add space before uppercase letters
                 .replace(/^./, (str) => str.toUpperCase()); // Capitalize the first letter
