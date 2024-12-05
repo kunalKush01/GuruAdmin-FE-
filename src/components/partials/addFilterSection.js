@@ -102,12 +102,12 @@ function AddFilterSection({
     switch (fieldType) {
       case "String":
         return [
-          { value: "contains", label: t("contains") },
+          { value: "contain", label: t("contains") },
           { value: "equal", label: t("equal") },
         ];
       case "ObjectID":
         return [
-          { value: "contains", label: t("contains") },
+          { value: "contain", label: t("contains") },
           { value: "equal", label: t("equal") },
         ];
       case "Date":
