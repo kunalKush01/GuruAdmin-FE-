@@ -21,58 +21,51 @@ function FilterTag({
             if (filterItem) {
               const index = filterItem.index;
               const fieldName = key;
-              const filterType = filterItem.type;
+              let filterType = filterItem.type;
               let filterValue;
+              //**For Filter Type is In range */
               if (filterType === "inRange") {
+                //**date range value */
                 if (filterItem.fromDate && filterItem.toDate) {
-                  // Date range
-                  const fromDate = moment(
-                    filterItem.fromDate,
-                    moment.ISO_8601,
-                    true
-                  ).isValid()
-                    ? moment(filterItem.fromDate).format("DD MMM YYYY")
-                    : filterItem.fromDate;
-                  const toDate = moment(
-                    filterItem.toDate,
-                    moment.ISO_8601,
-                    true
-                  ).isValid()
-                    ? moment(filterItem.toDate).format("DD MMM YYYY")
-                    : filterItem.toDate;
-                  filterValue = `${fromDate} to ${toDate}`;
-                } else if (
-                  filterItem.from !== undefined &&
-                  filterItem.to !== undefined
-                ) {
-                  // Numeric range
+                  const fromDateMoment = moment(filterItem.fromDate, moment.ISO_8601, true);
+                  const toDateMoment = moment(filterItem.toDate, moment.ISO_8601, true);
+
+                  if (fromDateMoment.isValid() && toDateMoment.isValid()) {
+                    // Check if the dates represent the same day
+                    if (fromDateMoment.isSame(toDateMoment, "day")) {
+                      // Single date case
+                      filterType="equal"
+                      filterValue = fromDateMoment.format("DD MMM YYYY");
+                    } else {
+                      // Range date case
+                      const fromDate = fromDateMoment.format("DD MMM YYYY");
+                      const toDate = toDateMoment.format("DD MMM YYYY");
+                      filterValue = `${fromDate} to ${toDate}`;
+                    }
+                  } else {
+                    // Fallback if dates are invalid
+                    filterValue = `${filterItem.fromDate || "Invalid"} to ${filterItem.toDate || "Invalid"}`;
+                  }
+                }
+                //**number range value */
+                else if (filterItem.from !== undefined && filterItem.to !== undefined) {
                   filterValue = `${filterItem.from} to ${filterItem.to}`;
-                } else {
+                } 
+                //**else condition if not available value */
+                else {
                   filterValue = "Invalid range";
                 }
-              } else if (filterType === "equal") {
+              } 
+              //**For Filter Type is equal */
+              else if (filterType === "equal") {
+                //**single number value */
                 if (typeof filterItem.value === "number") {
                   filterValue = filterItem.value;
-                } else if (moment(filterItem).isValid()) {
-                  {
-                    /* filterValue = moment(filterItem.value)
-                    .format("DD MMM YYYY"); */
-                  }
-                  {/* console.log(filterItem); */}
-                  const selectedDate = moment(filterItem.fromDate); // Convert the value to a moment object
-
-                  if (selectedDate.isValid()) {
-                    const selectedDateAt6_30PM =
-                      selectedDate.format("D MMM YYYY"); // convert to ISO format
-
-                    filterValue = selectedDateAt6_30PM;
-                  }
-                } else {
+                } 
+                 else  {
                   filterValue = filterItem.value;
                 }
-              } else if (
-                filterType === "greaterThan" ||
-                filterType === "lessThan"
+              } else if (filterType === "greaterThan" || filterType === "lessThan"
               ) {
                 filterValue = filterItem.value;
               } else {
