@@ -1,7 +1,7 @@
 import { DatePicker, Drawer, Input, Collapse } from "antd";
 import { Formik, Form, Field } from "formik";
 import React, { useEffect, useRef, useState } from "react";
-import { Plus, Trash, Trash2 } from "react-feather";
+import { CloudLightning, Plus, Trash, Trash2 } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { Button, Col, Row } from "reactstrap";
 import "../../assets/scss/common.scss";
@@ -172,12 +172,9 @@ function AddFilterSection({
               placeholder={[t("Start Date"), t("End Date")]}
               onChange={(dates) => {
                 if (dates && dates.length) {
-                  const formattedDates = dates.map((date) =>
-                    date.clone().add(1, "day").toISOString()
-                  );
-                  formik.setFieldValue(`filterValue${index}`, formattedDates);
+                  formik.setFieldValue(`filterValue${index}`, dates);
                 } else {
-                  formik.setFieldValue(`filterValue${index}`, []); // Clear the value if no dates are selected
+                  formik.setFieldValue(`filterValue${index}`, []);
                 }
               }}
               style={{ width: "100%" }}
@@ -190,10 +187,45 @@ function AddFilterSection({
               format="DD MMM YYYY"
               placeholder={t("Select Date")}
               onChange={(date) => {
-                const formattedDate = date
-                  ? moment(date).startOf("day").add(1, "day").toISOString() // Ensure no timezone shift
-                  : null;
-                formik.setFieldValue(`filterValue${index}`, formattedDate);
+                if (date) {
+                  // Create a moment object and explicitly set to UTC
+                  const selectedDate = moment(date).add(1, "day").utc();
+
+                  // Calculate FromDate (previous day at 18:30 UTC)
+                  const fromDate = selectedDate
+                    .clone()
+                    .subtract(1, "day")
+                    .set({
+                      hour: 18,
+                      minute: 30,
+                      second: 0,
+                      millisecond: 0,
+                    })
+                    .toISOString();
+
+                  // Calculate ToDate (selected date at 18:29:59.999 UTC)
+                  const toDate = selectedDate
+                    .clone()
+                    .set({
+                      hour: 18,
+                      minute: 30,
+                      second: 0,
+                      millisecond: 0,
+                    })
+                    .subtract(1, "millisecond")
+                    .toISOString();
+
+                  console.log("Original Date:", date);
+                  console.log("Selected Date (UTC):", selectedDate.format());
+                  console.log("FromDate:", fromDate);
+                  console.log("ToDate:", toDate);
+
+                  // Set the formik field value
+                  formik.setFieldValue(`filterValue${index}`, selectedDate);
+                } else {
+                  // Handle null case
+                  formik.setFieldValue(`filterValue${index}`, null);
+                }
               }}
               style={{ width: "100%" }}
             />
@@ -399,13 +431,32 @@ function AddFilterSection({
               if (fieldName && filterType) {
                 if (filterType === "inRange") {
                   if (Array.isArray(filterValue)) {
+                    console.log(filterValue);
                     advancedSearch[fieldName] = {
                       type: filterType,
                       fromDate: filterValue[0]
-                        ? moment(filterValue[0]).toISOString()
+                        ? filterValue[0]
+                            .clone()
+                            .set({
+                              hour: 18,
+                              minute: 30,
+                              second: 0,
+                              millisecond: 0,
+                            })
+                            .toISOString()
                         : null,
                       toDate: filterValue[1]
-                        ? moment(filterValue[1]).toISOString()
+                        ? filterValue[1]
+                            .clone()
+                            .add(1, "day")
+                            .set({
+                              hour: 18,
+                              minute: 30,
+                              second: 0,
+                              millisecond: 0,
+                            })
+                            .subtract(1, "millisecond")
+                            .toISOString()
                         : null,
                       index: index,
                     };
@@ -414,6 +465,42 @@ function AddFilterSection({
                       type: filterType,
                       from: filterValue.from || null,
                       to: filterValue.to || null,
+                      index: index,
+                    };
+                  }
+                } else if (
+                  typeof filterValue === "string" &&
+                  moment(filterValue, moment.ISO_8601, true).isValid() &&
+                  isNaN(Number(filterValue))
+                ) {
+                  const selectedDate = filterValue;
+                  if (selectedDate&&selectedDate.isValid()) {
+                    const fromDate = selectedDate
+                      .clone()
+                      .subtract(1, "day")
+                      .set({
+                        hour: 18,
+                        minute: 30,
+                        second: 0,
+                        millisecond: 0,
+                      })
+                      .toISOString();
+
+                    const toDate = selectedDate
+                      .clone()
+                      .set({
+                        hour: 18,
+                        minute: 30,
+                        second: 0,
+                        millisecond: 0,
+                      })
+                      .subtract(1, "millisecond")
+                      .toISOString();
+
+                    advancedSearch[fieldName] = {
+                      type: "inRange",
+                      fromDate: fromDate,
+                      toDate: toDate,
                       index: index,
                     };
                   }
