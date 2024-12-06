@@ -1,7 +1,7 @@
 import { DatePicker, Drawer, Input, Collapse } from "antd";
 import { Formik, Form, Field } from "formik";
 import React, { useEffect, useRef, useState } from "react";
-import { Plus, Trash, Trash2 } from "react-feather";
+import { CloudLightning, Plus, Trash, Trash2 } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { Button, Col, Row } from "reactstrap";
 import "../../assets/scss/common.scss";
@@ -61,9 +61,20 @@ function AddFilterSection({
     }
   };
   useEffect(() => {
+    const donation_excludeField = [
+      "articleItem",
+      "articleQuantity",
+      "articleRemark",
+      "articleType",
+      "articleUnit",
+      "articleWeight",
+      "isArticle",
+      "originalAmount",
+    ];
     const excludeFields = [
       "_id",
       "updatedAt",
+      "updatedBy",
       // "createdAt",
       "__v",
       "trustId",
@@ -72,9 +83,32 @@ function AddFilterSection({
       "customFields",
       "user",
       "createdBy",
+      "donorMapped",
+      "transactionId",
+      "isArticle",
+      "isDeleted",
+      "isGovernment",
+      "donationType",
+      "pgOrderId",
+      "receiptNo",
+      "billInvoice",
+      "billInvoiceExpiredAt",
+      "billInvoiceName",
+      "supplyId",
+      "itemId",
+      'pricePerItem',
+      "orderQuantity",
     ];
+    let finalExcludeFields = excludeFields;
+
+    if (moduleName === "Article_Donation") {
+      finalExcludeFields = excludeFields;
+    } else {
+      finalExcludeFields = [...excludeFields, ...donation_excludeField];
+    }
+
     const getFields = async () => {
-      const options = await fetchFields(trustId, modName, excludeFields);
+      const options = await fetchFields(trustId, modName, finalExcludeFields);
       setFieldOptions(options);
     };
     getFields();
@@ -85,7 +119,12 @@ function AddFilterSection({
     switch (fieldType) {
       case "String":
         return [
-          { value: "contains", label: t("contains") },
+          { value: "contain", label: t("contains") },
+          { value: "equal", label: t("equal") },
+        ];
+      case "ObjectID":
+        return [
+          { value: "contain", label: t("contains") },
           { value: "equal", label: t("equal") },
         ];
       case "Date":
@@ -109,20 +148,38 @@ function AddFilterSection({
 
   const renderFilterValueInput = (field, filterType, index, formik) => {
     const value = field ? field.value : null;
-
+    const enumValue = field ? field.enum : null;
     const selectedField = fieldOptions.find((option) => option.value === value);
     const fieldType = selectedField ? selectedField.type : null;
     switch (fieldType) {
       case "String":
-        return (
-          <div className="w-100">
-            <CustomTextField
-              name={`filterValue${index}`}
-              placeholder={t("Enter Value")}
-              type="text"
-            />
-          </div>
-        );
+        if (Array.isArray(enumValue) && enumValue.length > 0) {
+          return (
+            <div className="w-100">
+              <FormikCustomReactSelect
+                name={`filterValue${index}`}
+                labelKey="label"
+                valueKey="value"
+                options={enumValue.map((item) => ({
+                  value: item,
+                  label: ConverFirstLatterToCapital(item),
+                }))}
+                placeholder={t("Select Value")}
+                width="100"
+              />
+            </div>
+          );
+        } else {
+          return (
+            <div className="w-100">
+              <CustomTextField
+                name={`filterValue${index}`}
+                placeholder={t("Enter Value")}
+                type="text"
+              />
+            </div>
+          );
+        }
       case "Date":
         if (filterType && filterType.value === "inRange") {
           return (
@@ -132,12 +189,9 @@ function AddFilterSection({
               placeholder={[t("Start Date"), t("End Date")]}
               onChange={(dates) => {
                 if (dates && dates.length) {
-                  const formattedDates = dates.map((date) =>
-                    date.clone().add(1, "day").toISOString()
-                  );
-                  formik.setFieldValue(`filterValue${index}`, formattedDates);
+                  formik.setFieldValue(`filterValue${index}`, dates);
                 } else {
-                  formik.setFieldValue(`filterValue${index}`, []); // Clear the value if no dates are selected
+                  formik.setFieldValue(`filterValue${index}`, []);
                 }
               }}
               style={{ width: "100%" }}
@@ -150,10 +204,12 @@ function AddFilterSection({
               format="DD MMM YYYY"
               placeholder={t("Select Date")}
               onChange={(date) => {
-                const formattedDate = date
-                  ? moment(date).startOf("day").add(1, "day").toISOString() // Ensure no timezone shift
-                  : null;
-                formik.setFieldValue(`filterValue${index}`, formattedDate);
+                if (date) {
+                  const selectedDate = moment(date).add(1, "day").utc();
+                  formik.setFieldValue(`filterValue${index}`, selectedDate);
+                } else {
+                  formik.setFieldValue(`filterValue${index}`, null);
+                }
               }}
               style={{ width: "100%" }}
             />
@@ -224,10 +280,16 @@ function AddFilterSection({
     const deletedFieldValue = formik.values[`fieldName${id}`]?.value;
 
     if (deletedFieldValue) {
-      setFieldOptions((prevOptions) => [
-        ...prevOptions,
-        { value: deletedFieldValue, label: deletedFieldValue },
-      ]);
+      setFieldOptions((prevOptions) => {
+        // Ensure no duplicate options
+        if (!prevOptions.some((option) => option.value === deletedFieldValue)) {
+          return [
+            ...prevOptions,
+            { value: deletedFieldValue, label: deletedFieldValue },
+          ];
+        }
+        return prevOptions;
+      });
       setSelectedFields((prev) =>
         prev.filter((field) => field !== deletedFieldValue)
       );
@@ -239,7 +301,7 @@ function AddFilterSection({
       formik.setFieldValue(`filterValue${id}`, undefined);
     }
   };
-
+  // console.log(activeFilterData)
   useEffect(() => {
     if (formikRef) {
       if (activeFilterData && activeFilterData != {}) {
@@ -271,7 +333,7 @@ function AddFilterSection({
                 }
                 return prevOptions;
               });
-  
+
               // Remove the field from selected fields
               setSelectedFields((prev) =>
                 prev.filter((field) => field !== deletedFieldValue)
@@ -336,7 +398,7 @@ function AddFilterSection({
         formikRef.current.setFieldValue("filterValue1", "");
       }
     }
-  }, [activeFilterData, formikRef, rowId, removedData]);
+  }, [activeFilterData && activeFilterData, formikRef, rowId, removedData]);
   return (
     <Drawer
       id="filterDrawer"
@@ -362,10 +424,28 @@ function AddFilterSection({
                     advancedSearch[fieldName] = {
                       type: filterType,
                       fromDate: filterValue[0]
-                        ? moment(filterValue[0]).toISOString()
+                        ? filterValue[0]
+                            .clone()
+                            .set({
+                              hour: 18,
+                              minute: 30,
+                              second: 0,
+                              millisecond: 0,
+                            })
+                            .toISOString()
                         : null,
                       toDate: filterValue[1]
-                        ? moment(filterValue[1]).toISOString()
+                        ? filterValue[1]
+                            .clone()
+                            .add(1, "day")
+                            .set({
+                              hour: 18,
+                              minute: 30,
+                              second: 0,
+                              millisecond: 0,
+                            })
+                            .subtract(1, "millisecond")
+                            .toISOString()
                         : null,
                       index: index,
                     };
@@ -374,6 +454,41 @@ function AddFilterSection({
                       type: filterType,
                       from: filterValue.from || null,
                       to: filterValue.to || null,
+                      index: index,
+                    };
+                  }
+                } else if (
+                  typeof filterValue == "object" &&
+                  moment(filterValue).isValid()
+                ) {
+                  const selectedDate = filterValue;
+                  if (selectedDate && selectedDate.isValid()) {
+                    const fromDate = selectedDate
+                      .clone()
+                      .subtract(1, "day")
+                      .set({
+                        hour: 18,
+                        minute: 30,
+                        second: 0,
+                        millisecond: 0,
+                      })
+                      .toISOString();
+
+                    const toDate = selectedDate
+                      .clone()
+                      .set({
+                        hour: 18,
+                        minute: 30,
+                        second: 0,
+                        millisecond: 0,
+                      })
+                      .subtract(1, "millisecond")
+                      .toISOString();
+
+                    advancedSearch[fieldName] = {
+                      type: "inRange",
+                      fromDate: fromDate,
+                      toDate: toDate,
                       index: index,
                     };
                   }
