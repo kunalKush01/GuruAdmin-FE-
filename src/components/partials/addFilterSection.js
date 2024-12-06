@@ -188,42 +188,9 @@ function AddFilterSection({
               placeholder={t("Select Date")}
               onChange={(date) => {
                 if (date) {
-                  // Create a moment object and explicitly set to UTC
                   const selectedDate = moment(date).add(1, "day").utc();
-
-                  // Calculate FromDate (previous day at 18:30 UTC)
-                  const fromDate = selectedDate
-                    .clone()
-                    .subtract(1, "day")
-                    .set({
-                      hour: 18,
-                      minute: 30,
-                      second: 0,
-                      millisecond: 0,
-                    })
-                    .toISOString();
-
-                  // Calculate ToDate (selected date at 18:29:59.999 UTC)
-                  const toDate = selectedDate
-                    .clone()
-                    .set({
-                      hour: 18,
-                      minute: 30,
-                      second: 0,
-                      millisecond: 0,
-                    })
-                    .subtract(1, "millisecond")
-                    .toISOString();
-
-                  console.log("Original Date:", date);
-                  console.log("Selected Date (UTC):", selectedDate.format());
-                  console.log("FromDate:", fromDate);
-                  console.log("ToDate:", toDate);
-
-                  // Set the formik field value
                   formik.setFieldValue(`filterValue${index}`, selectedDate);
                 } else {
-                  // Handle null case
                   formik.setFieldValue(`filterValue${index}`, null);
                 }
               }}
@@ -296,10 +263,20 @@ function AddFilterSection({
     const deletedFieldValue = formik.values[`fieldName${id}`]?.value;
 
     if (deletedFieldValue) {
-      setFieldOptions((prevOptions) => [
-        ...prevOptions,
-        { value: deletedFieldValue, label: deletedFieldValue },
-      ]);
+      setFieldOptions((prevOptions) => {
+        // Ensure no duplicate options
+        if (
+          !prevOptions.some(
+            (option) => option.value === deletedFieldValue
+          )
+        ) {
+          return [
+            ...prevOptions,
+            { value: deletedFieldValue, label: deletedFieldValue },
+          ];
+        }
+        return prevOptions;
+      });
       setSelectedFields((prev) =>
         prev.filter((field) => field !== deletedFieldValue)
       );
@@ -311,7 +288,7 @@ function AddFilterSection({
       formik.setFieldValue(`filterValue${id}`, undefined);
     }
   };
-
+// console.log(activeFilterData)
   useEffect(() => {
     if (formikRef) {
       if (activeFilterData && activeFilterData != {}) {
@@ -408,7 +385,7 @@ function AddFilterSection({
         formikRef.current.setFieldValue("filterValue1", "");
       }
     }
-  }, [activeFilterData, formikRef, rowId, removedData]);
+  }, [activeFilterData&&activeFilterData, formikRef, rowId, removedData]);
   return (
     <Drawer
       id="filterDrawer"
@@ -431,7 +408,6 @@ function AddFilterSection({
               if (fieldName && filterType) {
                 if (filterType === "inRange") {
                   if (Array.isArray(filterValue)) {
-                    console.log(filterValue);
                     advancedSearch[fieldName] = {
                       type: filterType,
                       fromDate: filterValue[0]
@@ -469,12 +445,11 @@ function AddFilterSection({
                     };
                   }
                 } else if (
-                  typeof filterValue === "string" &&
-                  moment(filterValue, moment.ISO_8601, true).isValid() &&
-                  isNaN(Number(filterValue))
+                  typeof filterValue =="object"&&
+                  moment(filterValue).isValid() 
                 ) {
                   const selectedDate = filterValue;
-                  if (selectedDate&&selectedDate.isValid()) {
+                  if (selectedDate && selectedDate.isValid()) {
                     const fromDate = selectedDate
                       .clone()
                       .subtract(1, "day")
