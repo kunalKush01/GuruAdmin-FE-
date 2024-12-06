@@ -69,10 +69,12 @@ function AddFilterSection({
       "articleUnit",
       "articleWeight",
       "isArticle",
+      "originalAmount",
     ];
     const excludeFields = [
       "_id",
       "updatedAt",
+      "updatedBy",
       // "createdAt",
       "__v",
       "trustId",
@@ -81,6 +83,21 @@ function AddFilterSection({
       "customFields",
       "user",
       "createdBy",
+      "donorMapped",
+      "transactionId",
+      "isArticle",
+      "isDeleted",
+      "isGovernment",
+      "donationType",
+      "pgOrderId",
+      "receiptNo",
+      "billInvoice",
+      "billInvoiceExpiredAt",
+      "billInvoiceName",
+      "supplyId",
+      "itemId",
+      'pricePerItem',
+      "orderQuantity",
     ];
     let finalExcludeFields = excludeFields;
 
@@ -265,11 +282,7 @@ function AddFilterSection({
     if (deletedFieldValue) {
       setFieldOptions((prevOptions) => {
         // Ensure no duplicate options
-        if (
-          !prevOptions.some(
-            (option) => option.value === deletedFieldValue
-          )
-        ) {
+        if (!prevOptions.some((option) => option.value === deletedFieldValue)) {
           return [
             ...prevOptions,
             { value: deletedFieldValue, label: deletedFieldValue },
@@ -288,7 +301,7 @@ function AddFilterSection({
       formik.setFieldValue(`filterValue${id}`, undefined);
     }
   };
-// console.log(activeFilterData)
+  // console.log(activeFilterData)
   useEffect(() => {
     if (formikRef) {
       if (activeFilterData && activeFilterData != {}) {
@@ -385,7 +398,7 @@ function AddFilterSection({
         formikRef.current.setFieldValue("filterValue1", "");
       }
     }
-  }, [activeFilterData&&activeFilterData, formikRef, rowId, removedData]);
+  }, [activeFilterData && activeFilterData, formikRef, rowId, removedData]);
   return (
     <Drawer
       id="filterDrawer"
@@ -445,8 +458,8 @@ function AddFilterSection({
                     };
                   }
                 } else if (
-                  typeof filterValue =="object"&&
-                  moment(filterValue).isValid() 
+                  typeof filterValue == "object" &&
+                  moment(filterValue).isValid()
                 ) {
                   const selectedDate = filterValue;
                   if (selectedDate && selectedDate.isValid()) {
