@@ -5,20 +5,56 @@ import { ConverFirstLatterToCapital } from "./utility/formater";
 const { REACT_APP_BASEURL } = process.env;
 
 const excludedUserFields = [
-  "password",
-  "isEmailVerified",
-  "socialToken",
+  "accountNotification",
+  "addLine1",
+  "addLine2",
+  // "address",
+  "addressline1",
+  "allNotification",
+  "cardHolderName",
+  "cardNumber",
+  // "city",
+  // "country",
   "countryCode",
-  "pin",
-  "searchType",
-  "roles",
-  "preferences",
-  "otp",
-  "deleteOtp",
-  "isDeleteRequested",
-  "deletedAt",
-  "updatedAt",
+  // "countryName",
   "createdAt",
+  "deleteOtp",
+  "deletedAt",
+  // "district",
+  // "dob",
+  // "email",
+  "imageExpiredAt",
+  "isActive",
+  "isDeleteRequested",
+  "isDeleted",
+  "isEmailVerified",
+  "isPanVerified",
+  "languageId",
+  "latitude",
+  "longitude",
+  // "mobileNumber",
+  // "name",
+  "otp",
+  "panImage",
+  "panImageName",
+  // "panNum",
+  "password",
+  // "pin",
+  "pinCode",
+  "pincode",
+  "preferenceId",
+  "preferences",
+  "profileImage",
+  "profileImageName",
+  "promotionalNotification",
+  "reportedTrust",
+  "roles",
+  "searchType",
+  "socialToken",
+  // "state",
+  "updatedAt",
+  "userId",
+  "type"
 ];
 const trustId = localStorage.getItem("trustId");
 const accessToken = selectAccessToken(store.getState());
@@ -36,7 +72,7 @@ export const fetchFields = async (trustId, moduleName, excludeFields = []) => {
       if (moduleName === "Article_Donation") {
         apiModuleName = "Donation";
       }
-  
+
       const response = await axios.get(
         `${REACT_APP_BASEURL}${trustId}/schema/${apiModuleName}/fields`
       );
@@ -66,7 +102,7 @@ export const fetchFields = async (trustId, moduleName, excludeFields = []) => {
                   .replace(/([A-Z])/g, " $1")
                   .replace(/^./, (str) => str.toUpperCase()),
                 type: fields[key].type,
-                enum: fields[key]?.enum || [], 
+                enum: fields[key]?.enum || [],
               }))
           : [];
 
@@ -76,7 +112,7 @@ export const fetchFields = async (trustId, moduleName, excludeFields = []) => {
               value: `customFields_${field.fieldName}`,
               label: field.fieldName,
               type: field.fieldType,
-              // enum: field?.enum || [], 
+              // enum: field?.enum || [],
             }))
           : [];
         // Combine both field types
@@ -102,8 +138,10 @@ export const fetchFields = async (trustId, moduleName, excludeFields = []) => {
             }
             for (let key in properties) {
               const property = properties[key];
-              console.log(`${parentKey}_${key}`)
-              const currentKey = parentKey ? `${parentKey}_${key}${properties[key]?.enum ? "_name" : ""}` : key;
+              console.log(`${parentKey}_${key}`);
+              const currentKey = parentKey
+                ? `${parentKey}_${key}${properties[key]?.enum ? "_name" : ""}`
+                : key;
               if (property.type === "object") {
                 traverseSchema(property.properties, currentKey);
               } else if (property.title) {
@@ -111,7 +149,7 @@ export const fetchFields = async (trustId, moduleName, excludeFields = []) => {
                   value: currentKey,
                   label: property.title,
                   type: ConverFirstLatterToCapital(property.type),
-                  enum:properties[key]?.enum||[]
+                  enum: properties[key]?.enum || [],
                 });
               }
             }
