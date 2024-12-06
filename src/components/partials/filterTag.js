@@ -3,7 +3,12 @@ import crossIcon from "../../assets/images/icons/cross.svg";
 import moment from "moment";
 import { Tag } from "antd";
 
-function FilterTag({ hasFilters, filterData, removeFilter ,handleRemoveAllFilter}) {
+function FilterTag({
+  hasFilters,
+  filterData,
+  removeFilter,
+  handleRemoveAllFilter,
+}) {
   if (!hasFilters) return null;
   return (
     <>
@@ -26,18 +31,14 @@ function FilterTag({ hasFilters, filterData, removeFilter ,handleRemoveAllFilter
                     moment.ISO_8601,
                     true
                   ).isValid()
-                    ? moment(filterItem.fromDate)
-                        .subtract(1, "day")
-                        .format("DD MMM YYYY")
+                    ? moment(filterItem.fromDate).format("DD MMM YYYY")
                     : filterItem.fromDate;
                   const toDate = moment(
                     filterItem.toDate,
                     moment.ISO_8601,
                     true
                   ).isValid()
-                    ? moment(filterItem.toDate)
-                        .subtract(1, "day")
-                        .format("DD MMM YYYY")
+                    ? moment(filterItem.toDate).format("DD MMM YYYY")
                     : filterItem.toDate;
                   filterValue = `${fromDate} to ${toDate}`;
                 } else if (
@@ -52,12 +53,20 @@ function FilterTag({ hasFilters, filterData, removeFilter ,handleRemoveAllFilter
               } else if (filterType === "equal") {
                 if (typeof filterItem.value === "number") {
                   filterValue = filterItem.value;
-                } else if (
-                  moment(filterItem.value, moment.ISO_8601, true).isValid()
-                ) {
-                  filterValue = moment(filterItem.value)
-                    .subtract(1, "day")
-                    .format("DD MMM YYYY");
+                } else if (moment(filterItem).isValid()) {
+                  {
+                    /* filterValue = moment(filterItem.value)
+                    .format("DD MMM YYYY"); */
+                  }
+                  {/* console.log(filterItem); */}
+                  const selectedDate = moment(filterItem.fromDate); // Convert the value to a moment object
+
+                  if (selectedDate.isValid()) {
+                    const selectedDateAt6_30PM =
+                      selectedDate.format("D MMM YYYY"); // convert to ISO format
+
+                    filterValue = selectedDateAt6_30PM;
+                  }
                 } else {
                   filterValue = filterItem.value;
                 }

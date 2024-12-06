@@ -102,7 +102,8 @@ export const fetchFields = async (trustId, moduleName, excludeFields = []) => {
             }
             for (let key in properties) {
               const property = properties[key];
-              const currentKey = parentKey ? `${parentKey}_${key}` : key;
+              console.log(`${parentKey}_${key}`)
+              const currentKey = parentKey ? `${parentKey}_${key}${properties[key]?.enum ? "_name" : ""}` : key;
               if (property.type === "object") {
                 traverseSchema(property.properties, currentKey);
               } else if (property.title) {
