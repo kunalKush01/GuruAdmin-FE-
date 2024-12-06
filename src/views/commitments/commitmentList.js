@@ -36,6 +36,10 @@ import { WRITE } from "../../utility/permissionsVariable";
 import "../../assets/scss/viewCommon.scss";
 import CommitmentAntdListTable from "../../components/commitments/commitmentAntdListTable";
 import SuspenseImportForm from "../donation/suspenseImportForm";
+import AddFilterSection from "../../components/partials/addFilterSection";
+import filterIcon from "../../assets/images/icons/filter.svg";
+import FilterTag from "../../components/partials/filterTag";
+
 
 export default function Commitment() {
   const importFileRef = useRef();
@@ -43,6 +47,7 @@ export default function Commitment() {
   const [categoryTypeName, setCategoryTypeName] = useState("All");
   const [subCategoryTypeName, setSubCategoryTypeName] = useState("All");
   const [commitmentStatus, setCommitmentStatus] = useState("All");
+  const [filterData, setFilterData] = useState({});
 
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const periodDropDown = () => {
@@ -170,7 +175,13 @@ export default function Commitment() {
   } else {
     payloadStatus = "All";
   }
-
+  const filteredData = useMemo(() => {
+    return Object.entries(filterData).reduce((acc, [key, value]) => {
+      const { index, ...rest } = value; // Destructure and exclude 'index'
+      acc[key] = rest; // Add the remaining data
+      return acc;
+    }, {});
+  }, [filterData]);
   const commitmentQuery = useQuery(
     [
       "Commitments",
@@ -184,6 +195,7 @@ export default function Commitment() {
       commitmentStatus,
       filterStartDate,
       searchBarValue,
+      filteredData
     ],
     () =>
       getAllCommitments({
@@ -195,6 +207,7 @@ export default function Commitment() {
         status: payloadStatus,
         languageId: selectedLang.id,
         search: searchBarValue,
+        ...(filterData && filteredData && { advancedSearch: filteredData }),
       }),
     {
       keepPreviousData: true,
@@ -261,6 +274,35 @@ export default function Commitment() {
   const handleButtonClick = (e) => {
     showDrawer();
   };
+  
+  const [filterOpen, setFilterOpen] = useState(false);
+  const showFilter = () => {
+    setFilterOpen(true);
+  };
+  const onFilterClose = () => {
+    setFilterOpen(false);
+  };
+  const handleApplyFilter = (e) => {
+    showFilter();
+  };
+  const onFilterSubmit = (filterData) => {
+    setFilterData(filterData);
+  };
+  const [removedData, setRemovedData] = useState({});
+  const handleRemoveAllFilter = () => {
+    const removedFilters = { ...filterData };
+    setFilterData({});
+    setRemovedData(removedFilters);
+  };
+  const [rowId, setRowId] = useState(null);
+  const removeFilter = (fieldName, id) => {
+    const newFilterData = { ...filterData };
+    delete newFilterData[fieldName];
+
+    setFilterData(newFilterData);
+    setRowId(id);
+  };
+  const hasFilters = Object.keys(filterData).length > 0;
   return (
     <div className="listviewwrapper">
       <Helmet>
@@ -389,7 +431,7 @@ export default function Commitment() {
                 subPermission?.includes(WRITE) ? (
                   <Button
                     color="primary"
-                    className={`addAction-btn`}
+                    className={`addAction-btn me-1`}
                     onClick={() =>
                       history.push(
                         `/commitment/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${dropDownName}`
@@ -426,9 +468,30 @@ export default function Commitment() {
                   </div>
                 )}
               </div>
+              <Button
+                className="secondaryAction-btn"
+                color="primary"
+                onClick={handleApplyFilter}
+              >
+                <img
+                  src={filterIcon}
+                  alt="Filter Icon"
+                  width={20}
+                  className="filterIcon"
+                />
+                {t("filter")}
+              </Button>
             </div>
           </div>
         </div>
+          <div className="d-flex justify-content-between">
+            <FilterTag
+              hasFilters={hasFilters}
+              filterData={filterData}
+              removeFilter={removeFilter}
+              handleRemoveAllFilter={handleRemoveAllFilter}
+            />
+          </div>
         <div style={{ height: "10px" }}>
           <If condition={commitmentQuery.isFetching}>
             <Then>
@@ -507,6 +570,15 @@ export default function Commitment() {
         </div>
       </div>
       <SuspenseImportForm onClose={onClose} open={open} tab="Pledge" />
+      <AddFilterSection
+        onFilterClose={onFilterClose}
+        filterOpen={filterOpen}
+        onSubmitFilter={onFilterSubmit}
+        moduleName={"Commitment"}
+        activeFilterData={filterData ?? {}}
+        rowId={rowId ?? null}
+        removedData={removedData}
+      />
     </div>
   );
 }

@@ -40,9 +40,9 @@ import SuspenseHistoryTable from "../../components/donation/suspenseHistoryTable
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
 import { addSuspense } from "../../api/suspenseApi";
 import loadingOutlined from "../../assets/images/icons/loadingIco.svg";
-import crossIcon from "../../assets/images/icons/cross.svg";
 import syncIcon from "../../assets/images/icons/sync.svg";
 import AddFilterSection from "../../components/partials/addFilterSection";
+import FilterTag from "../../components/partials/filterTag";
 
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 export default function Donation() {
@@ -61,7 +61,12 @@ export default function Donation() {
     donation_type ? donation_type : "Donation"
   );
   const selectedLang = useSelector((state) => state.auth.selectLang);
-  const [filterData, setFilterData] = useState({});
+  const [donationFilterData, setDonationFilterData] = useState({});
+  const [articleDonationFilterData, setArticleDonationFilterData] = useState(
+    {}
+  );
+  const [suspenseFilterData, setSuspenseFilterData] = useState({});
+
   const periodDropDown = () => {
     switch (dropDownName) {
       case "dashboard_monthly":
@@ -152,13 +157,35 @@ export default function Donation() {
   const [subCategoryTypeId, setSubCategoryTypeId] = useState();
 
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
+  // const filteredData = useMemo(() => {
+  //   return Object.entries(filterData).reduce((acc, [key, value]) => {
+  //     const { index, ...rest } = value; // Destructure and exclude 'index'
+  //     acc[key] = rest; // Add the remaining data
+  //     return acc;
+  //   }, {});
+  // }, [filterData]);
   const filteredData = useMemo(() => {
-    return Object.entries(filterData).reduce((acc, [key, value]) => {
+    // Select the filterData based on the active module (Donation or Suspense)
+    const currentFilterData =
+      activeTab === "Donation"
+        ? donationFilterData
+        : activeTab === "Article_Donation"
+        ? articleDonationFilterData
+        : activeTab === "Suspense"
+        ? suspenseFilterData
+        : {}; // If no active tab, use an empty object
+
+    return Object.entries(currentFilterData).reduce((acc, [key, value]) => {
       const { index, ...rest } = value; // Destructure and exclude 'index'
-      acc[key] = rest; // Add the remaining data
+      acc[key] = rest; // Add the remaining data without 'index'
       return acc;
     }, {});
-  }, [filterData]);
+  }, [
+    donationFilterData,
+    articleDonationFilterData,
+    suspenseFilterData,
+    activeTab,
+  ]);
 
   const donationQuery = useQuery(
     [
@@ -182,10 +209,12 @@ export default function Donation() {
         categoryId: subCategoryId,
         endDate: filterEndDate,
         languageId: selectedLang.id,
-        ...(filterData && filteredData && { advancedSearch: filteredData }),
+        ...((donationFilterData || articleDonationFilterData) &&
+          filteredData && { advancedSearch: filteredData }),
       }),
     {
       keepPreviousData: true,
+      enabled: activeTab === "Donation" || activeTab === "Article_Donation",
     }
   );
 
@@ -284,36 +313,112 @@ export default function Donation() {
     { value: "Debit Card", label: "Debit Card" },
     { value: "Bank Transfer", label: "Bank Transfer" },
   ];
+  // State for managing filter modal for each tab
+  const [donationFilterOpen, setDonationFilterOpen] = useState(false);
+  const [articleDonationFilterOpen, setArticleDonationFilterOpen] =
+    useState(false);
+  const [suspenseFilterOpen, setSuspenseFilterOpen] = useState(false);
 
-  const [filterOpen, setFilterOpen] = useState(false);
-  const showFilter = () => {
-    setFilterOpen(true);
+  // Functions for Donation tab
+  const showDonationFilter = () => {
+    setDonationFilterOpen(true);
   };
-  const onFilterClose = () => {
-    setFilterOpen(false);
-  };
-  const handleApplyFilter = (e) => {
-    showFilter();
-  };
-  const onFilterSubmit = (filterData) => {
-    setFilterData(filterData);
-  };
-  const [removedData, setRemovedData] = useState({})
-  const handleRemoveAllFilter = () => {
-    const removedFilters = { ...filterData };
-    setFilterData({});
-    setRemovedData(removedFilters);
-  };
-  console.log(removedData)
-  const [rowId, setRowId] = useState(null)
-  const removeFilter = (fieldName,id) => {
-    const newFilterData = { ...filterData };
-    delete newFilterData[fieldName];
 
-    setFilterData(newFilterData);
-    setRowId(id)
+  const onDonationFilterClose = () => {
+    setDonationFilterOpen(false);
   };
-  const hasFilters = Object.keys(filterData).length > 0;
+
+  const handleApplyDonationFilter = () => {
+    showDonationFilter();
+  };
+
+  // Functions for Article Donation tab
+  const showArticleDonationFilter = () => {
+    setArticleDonationFilterOpen(true);
+  };
+
+  const onArticleDonationFilterClose = () => {
+    setArticleDonationFilterOpen(false);
+  };
+
+  const handleApplyArticleDonationFilter = () => {
+    showArticleDonationFilter();
+  };
+
+  // Functions for Suspense tab
+  const showSuspenseFilter = () => {
+    setSuspenseFilterOpen(true);
+  };
+
+  const onSuspenseFilterClose = () => {
+    setSuspenseFilterOpen(false);
+  };
+
+  const handleApplySuspenseFilter = () => {
+    showSuspenseFilter();
+  };
+
+  const onDonationFilterSubmit = (filterData) => {
+    setDonationFilterData(filterData);
+  };
+  const onArticleDonationFilterSubmit = (filterData) => {
+    setArticleDonationFilterData(filterData);
+  };
+  const onSuspenseFilterSubmit = (filterData) => {
+    setSuspenseFilterData(filterData);
+  };
+
+  const [donationRemovedData, setDonationRemovedData] = useState({});
+  const [articleDonationemovedData, setArticleDonationemovedData] = useState(
+    {}
+  );
+  const [suspenseRemovedData, setSuspenseRemovedData] = useState({});
+  const donationRemoveAllFilter = () => {
+    setDonationRemovedData(donationFilterData);
+    setDonationFilterData({});
+  };
+  const articleDonationRemoveAllFilter = () => {
+    setArticleDonationemovedData(articleDonationFilterData);
+    setArticleDonationFilterData({});
+  };
+  const suspenseRemoveAllFilter = () => {
+    setSuspenseRemovedData(suspenseFilterData);
+    setSuspenseFilterData({});
+  };
+  const [donantionFilterRowId, setDonantionFilterRowId] = useState(null);
+  const [articleDonantionFilterRowId, setArticleDonantionFilterRowId] =
+    useState(null);
+  const [suspenseFilterRowId, setSuspenseFIlterRowId] = useState(null);
+
+  const donationRemoveFilter = (fieldName, id) => {
+    const updatedFilters = { ...donationFilterData };
+    delete updatedFilters[fieldName];
+    setDonationFilterData(updatedFilters);
+    setDonantionFilterRowId(id);
+  };
+  const articleDonationRemoveFilter = (fieldName, id) => {
+    const updatedFilters = { ...articleDonationFilterData };
+    delete updatedFilters[fieldName];
+    setArticleDonationFilterData(updatedFilters);
+    setArticleDonantionFilterRowId(id);
+  };
+  const suspenseRemoveFilter = (fieldName, id) => {
+    const updatedFilters = { ...suspenseFilterData };
+    delete updatedFilters[fieldName];
+    setSuspenseFilterData(updatedFilters);
+    setSuspenseFIlterRowId(id);
+  };
+
+  // const hasFilters = Object.keys(filterData).length > 0;
+  const hasFilters =
+    activeTab === "Donation"
+      ? Object.keys(donationFilterData).length > 0
+      : activeTab === "Article_Donation"
+      ? Object.keys(articleDonationFilterData).length > 0
+      : activeTab === "Suspense"
+      ? Object.keys(suspenseFilterData).length > 0
+      : false;
+
   // Donation split tab
   const items = [
     {
@@ -416,7 +521,7 @@ export default function Donation() {
               <Button
                 className="secondaryAction-btn"
                 color="primary"
-                onClick={handleApplyFilter}
+                onClick={handleApplyDonationFilter}
               >
                 <img
                   src={filterIcon}
@@ -429,108 +534,12 @@ export default function Donation() {
             </div>
           </div>
           <div className="d-flex justify-content-between">
-            <div>
-              {hasFilters && (
-                <span className="filterLable">Active Filters:</span>
-              )}
-              {/* Display filter data as tags */}
-              {hasFilters &&
-                Object.keys(filterData).map((key) => {
-                  const filterItem = filterData[key];
-                  if (filterItem) {
-                    const index = filterItem.index;
-                    const fieldName = key;
-                    const filterType = filterItem.type;
-                    let filterValue;
-                    if (filterType === "inRange") {
-                      if (filterItem.fromDate && filterItem.toDate) {
-                        // Date range
-                        const fromDate = moment(
-                          filterItem.fromDate,
-                          moment.ISO_8601,
-                          true
-                        ).isValid()
-                          ? moment(filterItem.fromDate).subtract(1, "day").format("DD MMM YYYY")
-                          : filterItem.fromDate;
-                        const toDate = moment(
-                          filterItem.toDate,
-                          moment.ISO_8601,
-                          true
-                        ).isValid()
-                          ? moment(filterItem.toDate).subtract(1, "day").format("DD MMM YYYY")
-                          : filterItem.toDate;
-                        filterValue = `${fromDate} to ${toDate}`;
-                      } else if (
-                        filterItem.from !== undefined &&
-                        filterItem.to !== undefined
-                      ) {
-                        // Numeric range
-                        filterValue = `${filterItem.from} to ${filterItem.to}`;
-                      } else {
-                        filterValue = "Invalid range";
-                      }
-                    } else if (filterType === "equal") {
-                      if (typeof filterItem.value === "number") {
-                        filterValue = filterItem.value;
-                      } else if (
-                        moment(
-                          filterItem.value,
-                          moment.ISO_8601,
-                          true
-                        ).isValid()
-                      ) {
-                        filterValue = moment(filterItem.value).subtract(1, "day").format(
-                          "DD MMM YYYY"
-                        );
-                      } else {
-                        filterValue = filterItem.value;
-                      }
-                    } else if (
-                      filterType === "greaterThan" ||
-                      filterType === "lessThan"
-                    ) {
-                      filterValue = filterItem.value;
-                    } else {
-                      filterValue = filterItem.value || "Invalid filter";
-                    }
-                    const displayName = fieldName
-                      .replace(/^user_/, "") // Remove 'user_' prefix
-                      .replace(/^customFields_/, "") // Remove 'customFields_' prefix
-                      .replace(/([A-Z])/g, " $1") // Add space before uppercase letters
-                      .replace(/^./, (str) => str.toUpperCase()); // Capitalize the first letter
-
-                    return (
-                      <Tag
-                        key={fieldName}
-                        id={index}
-                        color="orange"
-                        style={{ margin: "5px" }}
-                      >
-                        {`${displayName} (${filterType}): ${filterValue}`}{" "}
-                        <img
-                          src={crossIcon}
-                          width={15}
-                          className="crossIcon"
-                          onClick={() => removeFilter(fieldName,index)} // Remove filter by field name
-                          style={{ cursor: "pointer", marginLeft: "5px" }}
-                        />
-                      </Tag>
-                    );
-                  }
-
-                  return null;
-                })}
-            </div>
-            <div style={{ marginTop: "5px" }}>
-              {hasFilters && (
-                <span
-                  className="cursor-pointer"
-                  onClick={handleRemoveAllFilter}
-                >
-                  Clear All
-                </span>
-              )}
-            </div>
+            <FilterTag
+              hasFilters={hasFilters}
+              filterData={donationFilterData}
+              removeFilter={donationRemoveFilter}
+              handleRemoveAllFilter={donationRemoveAllFilter}
+            />
           </div>
 
           <div style={{ height: "10px" }}>
@@ -592,6 +601,15 @@ export default function Donation() {
               </If>
             </Row>
           </div>
+          <AddFilterSection
+            onFilterClose={onDonationFilterClose}
+            filterOpen={donationFilterOpen}
+            onSubmitFilter={onDonationFilterSubmit}
+            moduleName={activeTab}
+            activeFilterData={donationFilterData ?? {}}
+            rowId={donantionFilterRowId ?? null}
+            removedData={donationRemovedData}
+          />
         </>
       ),
     },
@@ -658,7 +676,7 @@ export default function Donation() {
                 subPermission?.includes(WRITE) ? (
                   <Button
                     color="primary"
-                    className={`addAction-btn`}
+                    className={`addAction-btn me-1`}
                     onClick={() =>
                       history.push(
                         `/donation/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}&type=${activeTab}`
@@ -676,7 +694,28 @@ export default function Donation() {
                   ""
                 )}
               </div>
+              <Button
+                className="secondaryAction-btn"
+                color="primary"
+                onClick={handleApplyArticleDonationFilter}
+              >
+                <img
+                  src={filterIcon}
+                  alt="Filter Icon"
+                  width={20}
+                  className="filterIcon"
+                />
+                {t("filter")}
+              </Button>
             </div>
+          </div>
+          <div className="d-flex justify-content-between">
+            <FilterTag
+              hasFilters={hasFilters}
+              filterData={articleDonationFilterData}
+              removeFilter={articleDonationRemoveFilter}
+              handleRemoveAllFilter={articleDonationRemoveAllFilter}
+            />
           </div>
           <div style={{ height: "10px" }}>
             <If condition={donationQuery.isFetching}>
@@ -737,6 +776,15 @@ export default function Donation() {
               </If>
             </Row>
           </div>
+          <AddFilterSection
+            onFilterClose={onArticleDonationFilterClose}
+            filterOpen={articleDonationFilterOpen}
+            onSubmitFilter={onArticleDonationFilterSubmit}
+            moduleName={activeTab}
+            activeFilterData={articleDonationFilterData ?? {}}
+            rowId={articleDonantionFilterRowId ?? null}
+            removedData={articleDonationemovedData}
+          />
         </>
       ),
     },
@@ -745,7 +793,7 @@ export default function Donation() {
       label: t("suspense"),
       children: (
         <>
-          <div className="d-flex justify-content-between align-items-center mb-1">
+          <div className="d-flex justify-content-between align-items-center">
             {showHistory ? (
               <img
                 src={arrowLeft}
@@ -806,6 +854,19 @@ export default function Donation() {
                 >
                   {t("import")}
                 </Dropdown.Button>
+                <Button
+                  className="secondaryAction-btn"
+                  color="primary"
+                  onClick={handleApplySuspenseFilter}
+                >
+                  <img
+                    src={filterIcon}
+                    alt="Filter Icon"
+                    width={20}
+                    className="filterIcon"
+                  />
+                  {t("filter")}
+                </Button>
               </Space>
               <Modal
                 title={t("add_suspense_record")}
@@ -886,13 +947,34 @@ export default function Donation() {
               </Modal>
             </div>
           </div>
-          <div className="donationContent">
+          <div className="d-flex justify-content-between">
+            <FilterTag
+              hasFilters={hasFilters}
+              filterData={suspenseFilterData}
+              removeFilter={suspenseRemoveFilter}
+              handleRemoveAllFilter={suspenseRemoveAllFilter}
+            />
+          </div>
+          <div className="donationContent mt-1">
             {!showHistory ? (
-              <SuspenseListTable success={success} />
+              <SuspenseListTable
+                success={success}
+                filterData={filteredData}
+                type={activeTab}
+              />
             ) : (
               <SuspenseHistoryTable />
             )}
           </div>
+          <AddFilterSection
+            onFilterClose={onSuspenseFilterClose}
+            filterOpen={suspenseFilterOpen}
+            onSubmitFilter={onSuspenseFilterSubmit}
+            moduleName={activeTab}
+            activeFilterData={suspenseFilterData ?? {}}
+            rowId={suspenseFilterRowId ?? null}
+            removedData={suspenseRemovedData}
+          />
         </>
       ),
     },
@@ -921,15 +1003,6 @@ export default function Donation() {
         open={open}
         tab={activeTab}
         setShowHistory={setShowHistory}
-      />
-      <AddFilterSection
-        onFilterClose={onFilterClose}
-        filterOpen={filterOpen}
-        onSubmitFilter={onFilterSubmit}
-        moduleName={activeTab}
-        activeFilterData={filterData ?? {}}
-        rowId={rowId??null}
-        removedData={removedData}
       />
     </div>
   );
