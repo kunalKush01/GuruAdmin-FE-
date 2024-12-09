@@ -13,6 +13,7 @@ import { WRITE } from "../../utility/permissionsVariable";
 import filterIcon from "../../assets/images/icons/filter.svg";
 import FilterTag from "../../components/partials/filterTag";
 import AddFilterSection from "../../components/partials/addFilterSection";
+import SuspenseImportForm from "../donation/suspenseImportForm";
 
 function MemberShipListView() {
   const history = useHistory();
@@ -87,6 +88,18 @@ function MemberShipListView() {
     setRowId(id);
   };
   const hasFilters = Object.keys(filterData).length > 0;
+
+  //**import */
+  const [open, setOpen] = useState(false);
+  const showDrawer = () => {
+    setOpen(true);
+  };
+  const onClose = () => {
+    setOpen(false);
+  };
+  const handleImport = (e) => {
+    showDrawer();
+  };
   return (
     <div className="listviewwrapper">
       <Helmet>
@@ -121,6 +134,13 @@ function MemberShipListView() {
 
               <input type="file" accept="" className="d-none" />
             </div>
+            <Button
+              className="secondaryAction-btn me-1"
+              color="primary"
+              onClick={handleImport}
+            >
+              {t("import")}
+            </Button>
             <Button
               className="secondaryAction-btn"
               color="primary"
@@ -173,6 +193,11 @@ function MemberShipListView() {
         activeFilterData={filterData ?? {}}
         rowId={rowId ?? null}
         removedData={removedData}
+      />
+      <SuspenseImportForm
+        onClose={onClose}
+        open={open}
+        tab={"MemberShip"}
       />
     </div>
   );
