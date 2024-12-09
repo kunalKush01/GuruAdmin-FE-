@@ -176,7 +176,7 @@ export default function Donation() {
         : {}; // If no active tab, use an empty object
 
     return Object.entries(currentFilterData).reduce((acc, [key, value]) => {
-      const { index, ...rest } = value; // Destructure and exclude 'index'
+      const { index,label, ...rest } = value; // Destructure and exclude 'index'
       acc[key] = rest; // Add the remaining data without 'index'
       return acc;
     }, {});
@@ -318,14 +318,18 @@ export default function Donation() {
   const [articleDonationFilterOpen, setArticleDonationFilterOpen] =
     useState(false);
   const [suspenseFilterOpen, setSuspenseFilterOpen] = useState(false);
-
+  const [fetchDonationField, setFetchDonationField] = useState(false)
+  const [fetchArticleDonationField, setFetchArticleDonationField] = useState(false)
+  const [fetchSuspenseField, setFetchSuspenseField] = useState(false)
   // Functions for Donation tab
   const showDonationFilter = () => {
     setDonationFilterOpen(true);
+    setFetchDonationField(true)
   };
 
   const onDonationFilterClose = () => {
     setDonationFilterOpen(false);
+    setFetchDonationField(false)
   };
 
   const handleApplyDonationFilter = () => {
@@ -335,10 +339,12 @@ export default function Donation() {
   // Functions for Article Donation tab
   const showArticleDonationFilter = () => {
     setArticleDonationFilterOpen(true);
+    setFetchArticleDonationField(true)
   };
 
   const onArticleDonationFilterClose = () => {
     setArticleDonationFilterOpen(false);
+    setFetchArticleDonationField(false)
   };
 
   const handleApplyArticleDonationFilter = () => {
@@ -348,10 +354,12 @@ export default function Donation() {
   // Functions for Suspense tab
   const showSuspenseFilter = () => {
     setSuspenseFilterOpen(true);
+    setFetchSuspenseField(true)
   };
 
   const onSuspenseFilterClose = () => {
     setSuspenseFilterOpen(false);
+    setFetchSuspenseField(false)
   };
 
   const handleApplySuspenseFilter = () => {
@@ -609,6 +617,8 @@ export default function Donation() {
             activeFilterData={donationFilterData ?? {}}
             rowId={donantionFilterRowId ?? null}
             removedData={donationRemovedData}
+            languageId={selectedLang.id}
+            fetchField={fetchDonationField}
           />
         </>
       ),
@@ -784,6 +794,8 @@ export default function Donation() {
             activeFilterData={articleDonationFilterData ?? {}}
             rowId={articleDonantionFilterRowId ?? null}
             removedData={articleDonationemovedData}
+            languageId={selectedLang.id}
+            fetchField={fetchArticleDonationField}
           />
         </>
       ),
@@ -974,6 +986,8 @@ export default function Donation() {
             activeFilterData={suspenseFilterData ?? {}}
             rowId={suspenseFilterRowId ?? null}
             removedData={suspenseRemovedData}
+            languageId={selectedLang.id}
+            fetchField={fetchSuspenseField}
           />
         </>
       ),

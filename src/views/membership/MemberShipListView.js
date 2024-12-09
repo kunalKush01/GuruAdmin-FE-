@@ -15,6 +15,7 @@ import FilterTag from "../../components/partials/filterTag";
 import AddFilterSection from "../../components/partials/addFilterSection";
 
 function MemberShipListView() {
+  const selectedLang = useSelector((state) => state.auth.selectLang);
   const history = useHistory();
   const queryClient = useQueryClient();
   const [filterData, setFilterData] = useState({});
@@ -60,11 +61,15 @@ function MemberShipListView() {
   );
 
   const [filterOpen, setFilterOpen] = useState(false);
+  const [isfetchField, setIsfetchField] = useState(false)
+
   const showFilter = () => {
     setFilterOpen(true);
+    setIsfetchField(true);
   };
   const onFilterClose = () => {
     setFilterOpen(false);
+    setIsfetchField(false);
   };
   const handleApplyFilter = (e) => {
     showFilter();
@@ -173,6 +178,8 @@ function MemberShipListView() {
         activeFilterData={filterData ?? {}}
         rowId={rowId ?? null}
         removedData={removedData}
+        languageId={selectedLang.id}
+        fetchField={isfetchField}
       />
     </div>
   );
