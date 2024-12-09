@@ -65,7 +65,7 @@ const headers = {
   Authorization: `Bearer ${accessToken}`,
   "x-dharmshala-id": trustId,
 };
-export const fetchFields = async (trustId, moduleName, excludeFields = []) => {
+export const fetchFields = async (trustId, moduleName, excludeFields = [],languageId) => {
   try {
     if (moduleName !== "Member") {
       let apiModuleName = moduleName;
@@ -73,8 +73,12 @@ export const fetchFields = async (trustId, moduleName, excludeFields = []) => {
         apiModuleName = "Donation";
       }
 
-      const response = await axios.get(
-        `${REACT_APP_BASEURL}${trustId}/schema/${apiModuleName}/fields`
+      const response = await axios.post(
+        `${REACT_APP_BASEURL}${trustId}/schema/${apiModuleName}/fields`,
+        {
+          EnglishLanguageId: "6332cbba8054b2cac94da3d1",
+          languageId: languageId,
+        }
       );
 
       if (response.data?.status && response.data?.data?.result?.fields) {
@@ -103,6 +107,7 @@ export const fetchFields = async (trustId, moduleName, excludeFields = []) => {
                   .replace(/^./, (str) => str.toUpperCase()),
                 type: fields[key].type,
                 enum: fields[key]?.enum || [],
+                valueWithId:fields[key]?.valueWithId||[]
               }))
           : [];
 
@@ -112,7 +117,7 @@ export const fetchFields = async (trustId, moduleName, excludeFields = []) => {
               value: `customFields_${field.fieldName}`,
               label: field.fieldName,
               type: field.fieldType,
-              // enum: field?.enum || [],
+              masterKey: field?.masterKey || null,
             }))
           : [];
         // Combine both field types

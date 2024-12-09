@@ -14,6 +14,7 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 const { Panel } = Collapse;
 import deleteIcon from "../../../src/assets/images/icons/category/deleteIcon.svg";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
+import { getMasterByKey } from "../../api/membershipApi";
 
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 function AddFilterSection({
@@ -24,6 +25,8 @@ function AddFilterSection({
   activeFilterData,
   rowId,
   removedData,
+  languageId,
+  fetchField,
 }) {
   const { t } = useTranslation();
   const [fieldOptions, setFieldOptions] = useState([]);
@@ -96,7 +99,7 @@ function AddFilterSection({
       "billInvoiceName",
       "supplyId",
       "itemId",
-      'pricePerItem',
+      "pricePerItem",
       "orderQuantity",
     ];
     let finalExcludeFields = excludeFields;
@@ -108,11 +111,18 @@ function AddFilterSection({
     }
 
     const getFields = async () => {
-      const options = await fetchFields(trustId, modName, finalExcludeFields);
+      const options = await fetchFields(
+        trustId,
+        modName,
+        finalExcludeFields,
+        languageId
+      );
       setFieldOptions(options);
     };
-    getFields();
-  }, [trustId, moduleName]);
+    if (fetchField == true) {
+      getFields();
+    }
+  }, [trustId, moduleName, fetchField]);
   const getFilteredFieldOptions = () =>
     fieldOptions.filter((option) => !selectedFields.includes(option.value));
   const renderFilterTypeOptions = (fieldType) => {
@@ -147,10 +157,30 @@ function AddFilterSection({
   };
 
   const renderFilterValueInput = (field, filterType, index, formik) => {
+    const [masterValue, setMasterValue] = useState(null);
     const value = field ? field.value : null;
     const enumValue = field ? field.enum : null;
     const selectedField = fieldOptions.find((option) => option.value === value);
     const fieldType = selectedField ? selectedField.type : null;
+    const valueWithId = field ? field.valueWithId : null;
+    const masterKey = field ? field.masterKey : null;
+
+    useEffect(() => {
+      if (masterKey) {
+        getMasterByKey(masterKey)
+          .then((data) => {
+            setMasterValue(data);
+          })
+          .catch((error) => {
+            console.error("Error fetching master data:", error);
+          });
+      }
+    }, [masterKey]);
+
+    const extractedValues = masterValue
+      ? Object.values(masterValue.values)[0]
+      : [];
+
     switch (fieldType) {
       case "String":
         if (Array.isArray(enumValue) && enumValue.length > 0) {
@@ -169,6 +199,22 @@ function AddFilterSection({
               />
             </div>
           );
+        } else if (masterKey) {
+          return (
+            <div className="w-100">
+              <FormikCustomReactSelect
+                name={`filterValue${index}`}
+                labelKey="label"
+                valueKey="value"
+                options={extractedValues.map((item) => ({
+                  value: item,
+                  label: ConverFirstLatterToCapital(item),
+                }))}
+                placeholder={t("Select Value")}
+                width="100"
+              />
+            </div>
+          );
         } else {
           return (
             <div className="w-100">
@@ -176,6 +222,24 @@ function AddFilterSection({
                 name={`filterValue${index}`}
                 placeholder={t("Enter Value")}
                 type="text"
+              />
+            </div>
+          );
+        }
+      case "ObjectID":
+        if (Array.isArray(valueWithId) && valueWithId.length > 0) {
+          return (
+            <div className="w-100">
+              <FormikCustomReactSelect
+                name={`filterValue${index}`}
+                labelKey="label"
+                valueKey="value"
+                options={valueWithId.map((item) => ({
+                  value: item.value,
+                  label: ConverFirstLatterToCapital(item.label),
+                }))}
+                placeholder={t("Select Value")}
+                width="100"
               />
             </div>
           );
@@ -301,7 +365,6 @@ function AddFilterSection({
       formik.setFieldValue(`filterValue${id}`, undefined);
     }
   };
-  // console.log(activeFilterData)
   useEffect(() => {
     if (formikRef) {
       if (activeFilterData && activeFilterData != {}) {
@@ -459,6 +522,7 @@ function AddFilterSection({
                   }
                 } else if (
                   typeof filterValue == "object" &&
+                  !("label" in filterValue && "value" in filterValue) &&
                   moment(filterValue).isValid()
                 ) {
                   const selectedDate = filterValue;
@@ -497,10 +561,15 @@ function AddFilterSection({
                     typeof filterValue === "object" && "value" in filterValue
                       ? filterValue.value
                       : filterValue;
+                  const actualLabel =
+                    typeof filterValue === "object" && "label" in filterValue
+                      ? filterValue.label
+                      : null;
                   advancedSearch[fieldName] = {
                     type: filterType,
                     value: actualValue,
                     index: index,
+                    label: actualLabel,
                   };
                 }
               }
