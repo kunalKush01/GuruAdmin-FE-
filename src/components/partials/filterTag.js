@@ -20,6 +20,7 @@ function FilterTag({
             const filterItem = filterData[key];
             if (filterItem) {
               const index = filterItem.index;
+              const label = filterItem.label
               const fieldName = key;
               let filterType = filterItem.type;
               let filterValue;
@@ -63,7 +64,7 @@ function FilterTag({
                   filterValue = filterItem.value;
                 } 
                  else  {
-                  filterValue = filterItem.value;
+                  filterValue =label ? label : filterItem.value;
                 }
               } else if (filterType === "greaterThan" || filterType === "lessThan"
               ) {

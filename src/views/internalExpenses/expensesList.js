@@ -155,11 +155,15 @@ export default function Expenses() {
   );
 
   const [filterOpen, setFilterOpen] = useState(false);
+  const [isfetchField, setIsfetchField] = useState(false)
+
   const showFilter = () => {
     setFilterOpen(true);
+    setIsfetchField(true)
   };
   const onFilterClose = () => {
     setFilterOpen(false);
+    setIsfetchField(false);
   };
   const handleApplyFilter = (e) => {
     showFilter();
@@ -377,6 +381,8 @@ export default function Expenses() {
         activeFilterData={filterData ?? {}}
         rowId={rowId ?? null}
         removedData={removedData}
+        languageId={selectedLang.id}
+        fetchField={isfetchField}
       />
     </div>
   );
