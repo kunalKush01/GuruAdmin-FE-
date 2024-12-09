@@ -40,7 +40,6 @@ import AddFilterSection from "../../components/partials/addFilterSection";
 import filterIcon from "../../assets/images/icons/filter.svg";
 import FilterTag from "../../components/partials/filterTag";
 
-
 export default function Commitment() {
   const importFileRef = useRef();
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
@@ -195,7 +194,7 @@ export default function Commitment() {
       commitmentStatus,
       filterStartDate,
       searchBarValue,
-      filteredData
+      filteredData,
     ],
     () =>
       getAllCommitments({
@@ -274,13 +273,16 @@ export default function Commitment() {
   const handleButtonClick = (e) => {
     showDrawer();
   };
-  
+
   const [filterOpen, setFilterOpen] = useState(false);
+  const [isfetchField, setIsfetchField] = useState(false)
   const showFilter = () => {
     setFilterOpen(true);
+    setIsfetchField(true)
   };
   const onFilterClose = () => {
     setFilterOpen(false);
+    setIsfetchField(false);
   };
   const handleApplyFilter = (e) => {
     showFilter();
@@ -389,15 +391,15 @@ export default function Commitment() {
                   }}
                 />
                 {allPermissions?.name === "all" ||
-                  subPermission?.includes(WRITE) ? (
-                    <Button
-                      className={`secondaryAction-btn me-1 pledgeImportBtn`}
-                      color="primary"
-                      onClick={handleButtonClick}
-                    >
-                      {t('Import_File')}
-                    </Button>
-                  ) : null}
+                subPermission?.includes(WRITE) ? (
+                  <Button
+                    className={`secondaryAction-btn me-1 pledgeImportBtn`}
+                    color="primary"
+                    onClick={handleButtonClick}
+                  >
+                    {t("Import_File")}
+                  </Button>
+                ) : null}
                 <input
                   type="file"
                   ref={importFileRef}
@@ -484,14 +486,14 @@ export default function Commitment() {
             </div>
           </div>
         </div>
-          <div className="d-flex justify-content-between">
-            <FilterTag
-              hasFilters={hasFilters}
-              filterData={filterData}
-              removeFilter={removeFilter}
-              handleRemoveAllFilter={handleRemoveAllFilter}
-            />
-          </div>
+        <div className="d-flex justify-content-between">
+          <FilterTag
+            hasFilters={hasFilters}
+            filterData={filterData}
+            removeFilter={removeFilter}
+            handleRemoveAllFilter={handleRemoveAllFilter}
+          />
+        </div>
         <div style={{ height: "10px" }}>
           <If condition={commitmentQuery.isFetching}>
             <Then>
@@ -578,6 +580,8 @@ export default function Commitment() {
         activeFilterData={filterData ?? {}}
         rowId={rowId ?? null}
         removedData={removedData}
+        languageId={selectedLang.id}
+        fetchField={isfetchField}
       />
     </div>
   );
