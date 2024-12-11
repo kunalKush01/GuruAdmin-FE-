@@ -22,16 +22,23 @@ import { useQueryClient } from "@tanstack/react-query";
 import { importCommitmentFile } from "../../api/commitmentApi";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
-function SuspenseImportForm({ onClose, open, tab, setShowHistory }) {
+import { importMemberFile } from "../../api/membershipApi";
+function SuspenseImportForm({
+  onClose,
+  open,
+  tab,
+  setShowHistory,
+  mappedField,
+}) {
   const loggedInUser = useSelector((state) => state.auth.userDetail.name);
   const { t } = useTranslation();
   const targetFields = [
-    t('transaction_id'),
-    t('transaction_Date'),
-    t('bank_narration'),
-    t('cheque_no'),
-    t('amount'),
-    t('mode_of_payment')
+    t("transaction_id"),
+    t("transaction_Date"),
+    t("bank_narration"),
+    t("cheque_no"),
+    t("amount"),
+    t("mode_of_payment"),
   ];
   const history = useHistory();
   const [loading, setLoading] = useState(false);
@@ -126,7 +133,9 @@ function SuspenseImportForm({ onClose, open, tab, setShowHistory }) {
       [targetField]: sourceField,
     });
   };
-
+  
+  console.log("mappedFIeld",mappedField)
+  console.log("mapping",mapping)
   const columns = [
     {
       title: t("target_Fields"),
@@ -142,12 +151,12 @@ function SuspenseImportForm({ onClose, open, tab, setShowHistory }) {
       render: (text, record) => (
         <Select
           style={{ width: "100%" }}
-          placeholder={t('select_source_fields')}
+          placeholder={t("select_source_fields")}
           onChange={(value) => handleMappingChange(record.targetField, value)}
           value={mapping[record.targetField]}
         >
           <Select.Option key="" value="">
-            {t('select_option')}
+            {t("select_option")}
           </Select.Option>
           {sourceFields.map((field) => (
             <Select.Option key={field} value={field}>
@@ -159,11 +168,19 @@ function SuspenseImportForm({ onClose, open, tab, setShowHistory }) {
     },
   ];
 
-  const data = targetFields.map((field) => ({
-    key: field,
-    targetField: field,
-    sourceField: mapping[field],
-  }));
+  const data =
+    tab && tab !== "MemberShip"
+      ? targetFields.map((field) => ({
+          key: field,
+          targetField: field,
+          sourceField: mapping[field],
+        }))
+      : mappedField &&
+        mappedField.map((field, index) => ({
+          key: `${field.value}-${index}`,
+          targetField: field.label,
+          sourceField: mapping[field.value],
+        }));
   const queryClient = useQueryClient();
   const handleSubmit = async () => {
     setLoading(true);
@@ -190,7 +207,7 @@ function SuspenseImportForm({ onClose, open, tab, setShowHistory }) {
         const formData = new FormData();
         formData.append("file", file);
         formData.append("upload_type", "Donation");
-        formData.append("createdBy", loggedInUser?loggedInUser:"");
+        formData.append("createdBy", loggedInUser ? loggedInUser : "");
         await importDonationFile(formData);
         await queryClient.invalidateQueries("donations");
         await queryClient.refetchQueries("donations");
@@ -198,10 +215,26 @@ function SuspenseImportForm({ onClose, open, tab, setShowHistory }) {
         const formData = new FormData();
         formData.append("file", file);
         formData.append("upload_type", "Pledge");
-        formData.append("createdBy", loggedInUser?loggedInUser:"");
+        formData.append("createdBy", loggedInUser ? loggedInUser : "");
         await importCommitmentFile(formData);
         await queryClient.invalidateQueries("Commitments");
         await queryClient.refetchQueries("Commitments");
+      } else if (tab == "MemberShip") {
+        const targetFields = {};
+        mappedField.forEach((field) => {
+          targetFields[field.value] = mapping[field.label] || "";
+        });
+
+        const payload = {
+          targetFields,
+          sourceFields: sourceFields,
+          file: file,
+          upload_type: "Membership",
+        };
+        await importMemberFile(payload);
+        queryClient.invalidateQueries(["memberShipListData"]);
+        // await queryClient.invalidateQueries("memberShipListData");
+        // await queryClient.refetchQueries("memberShipListData");
       }
 
       setSourceFields([]);
@@ -217,7 +250,12 @@ function SuspenseImportForm({ onClose, open, tab, setShowHistory }) {
   };
 
   return (
-    <Drawer title={t("import_xlsx_csv")} onClose={onClose} open={open} width={420}>
+    <Drawer
+      title={t("import_xlsx_csv")}
+      onClose={onClose}
+      open={open}
+      width={tab == "MemberShip" ? 500 : 420}
+    >
       <Formik initialValues={{}} onSubmit={handleSubmit}>
         {() => (
           <Form>
@@ -260,7 +298,11 @@ function SuspenseImportForm({ onClose, open, tab, setShowHistory }) {
                   </a>
                 </Col>
               )}
-              <Col xs={6} sm={12} md={tab == "Suspense" ? 12 : 6}>
+              <Col
+                xs={6}
+                sm={12}
+                md={tab == "Suspense" || tab == "MemberShip" ? 12 : 6}
+              >
                 <Upload
                   {...uploadProps}
                   maxCount={1}
@@ -277,11 +319,11 @@ function SuspenseImportForm({ onClose, open, tab, setShowHistory }) {
                       />
                     }
                   >
-                    {t('click_to_upload')}
+                    {t("click_to_upload")}
                   </AntdButton>
                 </Upload>
               </Col>
-              {tab && tab == "Suspense" && (
+              {tab && (tab == "Suspense" || tab == "MemberShip") && (
                 <Col xs={12} sm={12} md={12} className="mt-1">
                   <span style={{ color: "var(--font-color)" }}>
                     <Trans i18nKey={"map_fields"} />
@@ -311,7 +353,7 @@ function SuspenseImportForm({ onClose, open, tab, setShowHistory }) {
                 style={{ width: "100%" }}
                 disabled={loading}
               >
-                {loading ? <Spinner size="sm" /> : <span>{t('import')}</span>}
+                {loading ? <Spinner size="sm" /> : <span>{t("import")}</span>}
               </ReactstrapButton>
             </div>
           </Form>
