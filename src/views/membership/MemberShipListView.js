@@ -6,7 +6,7 @@ import MemberShipListTable from "../../components/membership/MemberShipListTable
 import "../../assets/scss/common.scss";
 import "../../assets/scss/viewCommon.scss";
 import { useHistory } from "react-router-dom";
-import { getAllMembers } from "../../api/membershipApi";
+import { getAllMembers, getMemberSchema } from "../../api/membershipApi";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import { WRITE } from "../../utility/permissionsVariable";
@@ -14,6 +14,7 @@ import filterIcon from "../../assets/images/icons/filter.svg";
 import FilterTag from "../../components/partials/filterTag";
 import AddFilterSection from "../../components/partials/addFilterSection";
 import SuspenseImportForm from "../donation/suspenseImportForm";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 function MemberShipListView() {
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -62,7 +63,7 @@ function MemberShipListView() {
   );
 
   const [filterOpen, setFilterOpen] = useState(false);
-  const [isfetchField, setIsfetchField] = useState(false)
+  const [isfetchField, setIsfetchField] = useState(false);
 
   const showFilter = () => {
     setFilterOpen(true);
@@ -105,6 +106,55 @@ function MemberShipListView() {
   const handleImport = (e) => {
     showDrawer();
   };
+  const memberShipQuery = useQuery(
+    ["memberShipSchema"],
+    () => getMemberSchema(),
+    {
+      keepPreviousData: true,
+    }
+  );
+
+  const memberSchemaItem = useMemo(
+    () => memberShipQuery?.data?.schema ?? [],
+    [memberShipQuery]
+  );
+  const memberSchema = memberSchemaItem ? memberSchemaItem.memberSchema : {};
+  const [mappedField, setMappedField] = useState(null);
+  useEffect(() => {
+    if (memberSchema) {
+      function transformSchema(schema) {
+        let output = [];
+
+        function traverseSchema(properties, parentKey = "") {
+          if (parentKey == "upload") {
+            return false;
+          }
+          for (let key in properties) {
+            const property = properties[key];
+            if (property.type === "array") {
+              continue;
+            }
+            const currentKey = key;
+            if (property.type === "object") {
+              traverseSchema(property.properties, currentKey);
+            } else if (property.title) {
+              output.push({
+                value: currentKey,
+                label: property.title,
+              });
+            }
+          }
+        }
+
+        traverseSchema(schema.properties);
+        return output;
+      }
+
+      const result = transformSchema(memberSchema);
+      setMappedField(result);
+    }
+  }, [memberSchema]);
+
   return (
     <div className="listviewwrapper">
       <Helmet>
@@ -204,7 +254,8 @@ function MemberShipListView() {
       <SuspenseImportForm
         onClose={onClose}
         open={open}
-        tab={"MemberShip"}
+        tab="MemberShip"
+        mappedField={mappedField}
       />
     </div>
   );

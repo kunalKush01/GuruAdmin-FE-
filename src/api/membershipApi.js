@@ -47,11 +47,38 @@ export const getMasterByKey = (key) =>
     showToastOnError: false,
   });
 
-  // New function to fetch masters by an array of keys
+// New function to fetch masters by an array of keys
 export const getMastersByKeys = async (keys) => {
   // Create an array of promises for fetching data for each key
   const promises = keys.map((key) => getMasterByKey(key));
 
   // Await all promises and return the results
   return Promise.all(promises);
+};
+
+export const importMemberFile = async (payload) => {
+  try {
+    const formData = new FormData();
+    formData.append("file", payload.file);
+    Object.keys(payload.targetFields).forEach((key) => {
+      formData.append(`targetFields[${key}]`, payload.targetFields[key]);
+    });
+    formData.append("sourceFields", JSON.stringify(payload.sourceFields));
+
+    const response = await callApi({
+      requestFunction: (axios) =>
+        axios.post(`${API_BASE_URL}members/imports`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }),
+      showToastOnSuccess: false,
+      showToastOnError: false,
+    });
+
+    return response;
+  } catch (error) {
+    console.error("Error creating import:", error);
+    throw new Error("Error creating import");
+  }
 };
