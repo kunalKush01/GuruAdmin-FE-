@@ -134,8 +134,6 @@ function SuspenseImportForm({
     });
   };
   
-  console.log("mappedFIeld",mappedField)
-  console.log("mapping",mapping)
   const columns = [
     {
       title: t("target_Fields"),
@@ -232,9 +230,8 @@ function SuspenseImportForm({
           upload_type: "Membership",
         };
         await importMemberFile(payload);
-        queryClient.invalidateQueries(["memberShipListData"]);
-        // await queryClient.invalidateQueries("memberShipListData");
-        // await queryClient.refetchQueries("memberShipListData");
+        await queryClient.invalidateQueries("memberShipListData");
+        await queryClient.refetchQueries("memberShipListData");
       }
 
       setSourceFields([]);

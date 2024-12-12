@@ -125,32 +125,54 @@ export default function AddMemberForm() {
 
         if (typeof field === "object" && field !== null) {
           if (key === "addressInfo") {
-            const homeLine1 = field.homeAddress?.street;
-            const homeSplitValue = homeLine1.split(" ");
-            const correspondaceLine1 = field.correspondenceAddress?.street;
-            const correspondaceSplitValue = correspondaceLine1.split(" ");
-            initialValues["addLine1"] = homeSplitValue[0] || "";
-            initialValues["addLine2"] = homeSplitValue.slice(1).join(" ") || "";
-            initialValues["city"] = field.homeAddress?.city || "";
-            initialValues["district"] = field.homeAddress?.district || "";
-            initialValues["state"] = field.homeAddress?.state || "";
-            initialValues["country"] = field.homeAddress?.country || "";
-            initialValues["pin"] = field.homeAddress?.pincode || "";
-
-            initialValues["correspondenceAddLine1"] =
-              correspondaceSplitValue[0] || "";
-            initialValues["correspondenceAddLine2"] =
-              correspondaceSplitValue.slice(1).join(" ") || "";
-            initialValues["correspondenceState"] =
-              field.correspondenceAddress?.state || "";
-            initialValues["correspondenceCountry"] =
-              field.correspondenceAddress?.country || "";
-            initialValues["correspondencePin"] =
-              field.correspondenceAddress?.pincode || "";
-            initialValues["correspondenceCity"] =
-              field.correspondenceAddress?.city || "";
-            initialValues["correspondenceDistrict"] =
-              field.correspondenceAddress?.district || "";
+            const processAddress = (address) => {
+              const initialValues = {};
+  
+              Object.entries(address || {}).forEach(
+                ([fieldKey, fieldValue]) => {
+                  console.log(fieldKey,fieldValue)
+                  if (typeof fieldValue === "object" && fieldValue !== null) {
+                    // Handling nested objects like city, state, country with name/id
+                    if (fieldValue.name && fieldValue.id) {
+                      initialValues[fieldKey] = {
+                        name: fieldValue.name || "",
+                        id: fieldValue.id || ""
+                      };
+                    }  
+                  } else if (typeof fieldValue === "string") {
+                    // Handling street (split into AddLine1 and AddLine2)
+                    if (fieldKey === "street") {
+                      const splitValue = fieldValue.split(" ");
+                      initialValues["addLine1"] = splitValue[0] || "";
+                      initialValues["addLine2"] = splitValue.slice(1).join(" ") || "";
+                    } else if (fieldKey === "correspondenceStreet") {
+                      const splitValue = fieldValue.split(" ");
+                      initialValues["correspondenceAddLine1"] =
+                        splitValue[0] || "";
+                      initialValues["correspondenceAddLine2"] =
+                        splitValue.slice(1).join(" ") || "";
+                    } else {
+                      initialValues[fieldKey] = fieldValue || "";
+                    }
+                  }
+                }
+              );
+  
+              return initialValues;
+            };
+  
+            // Process homeAddress and correspondenceAddress
+            const homeAddressInitialValues = processAddress(field.homeAddress);
+            const correspondenceAddressInitialValues = processAddress(
+              field.correspondenceAddress
+            );
+  
+            // Merge the results into initialValues
+            Object.assign(
+              initialValues,
+              homeAddressInitialValues,
+              correspondenceAddressInitialValues
+            );
           } else {
             // Handle other objects
             Object.keys(field).forEach((fieldKey) => {
@@ -170,6 +192,7 @@ export default function AddMemberForm() {
         mode === "edit" && memberResultData
       )
     : {};
+  // console.log(dynamicInitialValues);
   const staticInitialValues = {
     //** Address Information */
     searchType: "",
