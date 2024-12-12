@@ -154,9 +154,7 @@ export default function DonationList({ data, topdf }, args) {
             }}
             onClick={() => {
               if (item?.receiptLink) {
-                const newWindow = window.open(
-                  `https://docs.google.com/gview?url=${item.receiptLink}`
-                );
+                const newWindow = window.open(`${item.receiptLink}`);
                 newWindow.onload = () => {
                   newWindow.print(); // Automatically trigger print dialog
                 };

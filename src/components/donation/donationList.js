@@ -41,10 +41,7 @@ export default function DonationList(
     onSuccess: (data) => {
       if (!data.error) {
         setIsLoading(false);
-        window.open(
-          `https://docs.google.com/gview?url=${data?.result}`,
-          "_blank"
-        );
+        window.open(`${data?.result}`, "_blank");
       }
     },
   });
@@ -199,10 +196,7 @@ export default function DonationList(
                 className="cursor-pointer me-2"
                 onClick={() => {
                   if (item.receiptLink) {
-                    window.open(
-                      `https://docs.google.com/gview?url=${item.receiptLink}`,
-                      "_blank"
-                    );
+                    window.open(`${item.receiptLink}`, "_blank");
                   }
                 }}
               />
@@ -219,9 +213,7 @@ export default function DonationList(
                     item.donarName
                   }, thank you for your donation of ₹${item.amount.toLocaleString(
                     "en-IN"
-                  )} to ${
-                    loggedTemple?.name
-                  }. Here is your receipt: https://docs.google.com/gview?url=${
+                  )} to ${loggedTemple?.name}. Here is your receipt: ${
                     item.receiptLink
                   }`;
                   const phoneNumber = `${
