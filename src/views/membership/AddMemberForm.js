@@ -127,24 +127,25 @@ export default function AddMemberForm() {
           if (key === "addressInfo") {
             const processAddress = (address) => {
               const initialValues = {};
-  
+
               Object.entries(address || {}).forEach(
                 ([fieldKey, fieldValue]) => {
-                  console.log(fieldKey,fieldValue)
+                  // console.log(fieldKey);
                   if (typeof fieldValue === "object" && fieldValue !== null) {
                     // Handling nested objects like city, state, country with name/id
                     if (fieldValue.name && fieldValue.id) {
                       initialValues[fieldKey] = {
                         name: fieldValue.name || "",
-                        id: fieldValue.id || ""
+                        id: fieldValue.id || "",
                       };
-                    }  
+                    }
                   } else if (typeof fieldValue === "string") {
                     // Handling street (split into AddLine1 and AddLine2)
                     if (fieldKey === "street") {
                       const splitValue = fieldValue.split(" ");
                       initialValues["addLine1"] = splitValue[0] || "";
-                      initialValues["addLine2"] = splitValue.slice(1).join(" ") || "";
+                      initialValues["addLine2"] =
+                        splitValue.slice(1).join(" ") || "";
                     } else if (fieldKey === "correspondenceStreet") {
                       const splitValue = fieldValue.split(" ");
                       initialValues["correspondenceAddLine1"] =
@@ -154,19 +155,35 @@ export default function AddMemberForm() {
                     } else {
                       initialValues[fieldKey] = fieldValue || "";
                     }
+                  } else if (typeof fieldValue == "number") {
+                    if (fieldKey === "pincode") {
+                      // Handle pincode
+                      initialValues["pincode"] = fieldValue || "";
+                      initialValues["pin"] = {
+                        name: fieldValue || "",
+                        id: fieldValue || "",
+                      };
+                    } else if (fieldKey === "correspondencePincode") {
+                      // Handle correspondencePincode
+                      initialValues["correspondencePincode"] = fieldValue || "";
+                      initialValues["correspondencePin"] = {
+                        name: fieldValue || "",
+                        id: fieldValue || "",
+                      };
+                    }
                   }
                 }
               );
-  
+
               return initialValues;
             };
-  
+
             // Process homeAddress and correspondenceAddress
             const homeAddressInitialValues = processAddress(field.homeAddress);
             const correspondenceAddressInitialValues = processAddress(
               field.correspondenceAddress
             );
-  
+
             // Merge the results into initialValues
             Object.assign(
               initialValues,
