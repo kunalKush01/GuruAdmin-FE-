@@ -57,10 +57,7 @@ export default function DonationANTDListTable(
       if (!data.error) {
         setIsLoading(false);
         if (data.result.receiptLink) {
-          window.open(
-            `https://docs.google.com/gview?url=${data.result.receiptLink}`,
-            "_blank"
-          );
+          window.open(`${data.result.receiptLink}`, "_blank");
         } else {
           toast.error("Receipt link not available at this moment");
         }
@@ -465,10 +462,7 @@ export default function DonationANTDListTable(
                       languageId: selectedLang.id,
                     });
                   } else {
-                    window.open(
-                      `https://docs.google.com/gview?url=${item.receiptLink}`,
-                      "_blank"
-                    );
+                    window.open(`${item.receiptLink}`, "_blank");
                   }
                 }}
               />
@@ -485,9 +479,7 @@ export default function DonationANTDListTable(
                     item.donarName
                   }, thank you for your donation of ₹${item.amount.toLocaleString(
                     "en-IN"
-                  )} to ${
-                    loggedTemple?.name
-                  }. Here is your receipt: https://docs.google.com/gview?url=${
+                  )} to ${loggedTemple?.name}. Here is your receipt: ${
                     item.receiptLink
                   }`;
                   const phoneNumber = `${
@@ -523,7 +515,7 @@ export default function DonationANTDListTable(
         ...customFieldData,
       };
     });
-  }, [data, isLoading, donation_custom_fields,donationType]);
+  }, [data, isLoading, donation_custom_fields, donationType]);
 
   const inWordsNumber = numberToWords
     .toWords(parseInt(receipt?.amount ?? 0))
