@@ -39,7 +39,7 @@ export default function AddForm({
           ? history.push("/membership")
           : history.push(`/member/profile/${id}`);
         setLoading(false);
-        onClose();
+        // onClose();
       } else if (data?.error) {
         setLoading(false);
       }
@@ -91,31 +91,60 @@ export default function AddForm({
     Object.keys(schema).forEach((key) => {
       const field = schema[key];
       const formValue = formData[key];
-      if (key === "correspondenceAddress") {
-        payload[key] = {
-          ...formValue,
-          street:
-            `${formData.correspondenceAddLine1} ${formData.correspondenceAddLine2}` ||
-            "",
-          state: formData.correspondenceState || "",
-          city: formData.correspondenceCity || "",
-          country: formData.correspondenceCountry || "",
-          district: formData.correspondenceDistrict || "",
-          pincode: formData.correspondencePin || "",
-        };
+      if (key === "correspondenceAddress" || key === "homeAddress") {
+        if (field.type === "object" && field.properties) {
+          payload[key] = Object.keys(field.properties).reduce(
+            (addressPayload, subKey) => {
+              if (subKey === "street") {
+                addressPayload[subKey] = `${formData.addLine1 || ""} ${
+                  formData.addLine2 || ""
+                }`.trim();
+              } else if (subKey === "correspondenceStreet") {
+                addressPayload[subKey] = `${
+                  formData.correspondenceAddLine1 || ""
+                } ${formData.correspondenceAddLine2 || ""}`.trim();
+              } else if (typeof formData[subKey] === "object") {
+                // Handle nested objects dynamically
+                addressPayload[subKey] = {
+                  name: formData[subKey]?.name || "",
+                  id: formData[subKey]?.id || "",
+                };
+              } else {
+                // Handle other fields
+                addressPayload[subKey] = formData[subKey] || "";
+              }
+              return addressPayload;
+            },
+            {}
+          );
+        }
       }
-      // Handle homeAddress separately
-      else if (key === "homeAddress") {
-        payload[key] = {
-          ...formValue, // Keep any other fields inside homeAddress
-          street: `${formData.addLine1} ${formData.addLine2}` || "",
-          state: formData.state || "",
-          city: formData.city || "",
-          country: formData.country || "",
-          district: formData.district || "",
-          pincode: formData.pin || "",
-        };
-      } else if (key === "familyInfo") {
+      // if (key === "correspondenceAddress") {
+      //   payload[key] = {
+      //     ...formValue,
+      //     correspondenceStreet:
+      //       `${formData.correspondenceAddLine1} ${formData.correspondenceAddLine2}` ||
+      //       "",
+      //     correspondenceState: formData.correspondenceState || "",
+      //     correspondenceCity: formData.correspondenceCity || "",
+      //     correspondenceCountry: formData.correspondenceCountry || "",
+      //     correspondenceDistrict: formData.correspondenceDistrict || "",
+      //     correspondencePincode: formData.correspondencePin || "",
+      //   };
+      // }
+      // // Handle homeAddress separately
+      // else if (key === "homeAddress") {
+      //   payload[key] = {
+      //     ...formValue, // Keep any other fields inside homeAddress
+      //     street: `${formData.addLine1} ${formData.addLine2}` || "",
+      //     state: formData.state || "",
+      //     city: formData.city || "",
+      //     country: formData.country || "",
+      //     district: formData.district || "",
+      //     pincode: formData.pin || "",
+      //   };
+      // }
+      else if (key === "familyInfo") {
         return;
       } else if (field.type === "object" && field.properties) {
         payload[key] = generatePayloadFromForm(field.properties, formData);
@@ -131,6 +160,7 @@ export default function AddForm({
         payload[key] = formValue !== undefined ? formValue : "";
       }
     });
+    // console.log(payload)
     return payload;
   };
   return (

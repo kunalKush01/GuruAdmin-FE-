@@ -38,6 +38,7 @@ function MembershipProfileView() {
       },
     }
   );
+  // console.log(data);
   const memberResultData = data ? data?.member : null;
   const memberData = data ? memberResultData?.data : null;
   const personalInfo = memberData?.personalInfo;
@@ -47,6 +48,22 @@ function MembershipProfileView() {
   const membershipInfo = memberData?.membershipInfo;
   const otherInfo = memberData?.otherInfo;
   const upload = memberData?.upload;
+  const formatDynamicAddress = (address) => {
+    const addressParts = [];
+  
+    for (let key in address) {
+      const value = address[key];
+      
+      if (value && typeof value === "object" && value.name) {
+        addressParts.push(value.name);
+      }
+      else if (typeof value === "string" || typeof value === "number") {
+        addressParts.push(value);
+      }
+    }
+  
+    return addressParts.length > 0 ? addressParts.join(", ") : "";
+  };
   const loggedInUser = useSelector((state) => state.auth.userDetail.name);
   const [toggleSwitch, setToggleSwitch] = useState(false);
 
@@ -458,15 +475,7 @@ function MembershipProfileView() {
                   <span className="memberAdd">{t("home_address")}</span>
                   <p className="memberlineAdd">
                     {memberData && addressInfo && addressInfo.homeAddress
-                      ? [
-                          addressInfo.homeAddress.street || "",
-                          addressInfo.homeAddress.district || "",
-                          addressInfo.homeAddress?.city?.name || "",
-                          addressInfo.homeAddress?.state?.name || "",
-                          addressInfo.homeAddress?.country?.name || "",
-                        ]
-                          .filter((part) => part)
-                          .join(", ")
+                      ? formatDynamicAddress(addressInfo.homeAddress)
                       : ""}
                   </p>
                 </div>
@@ -478,16 +487,7 @@ function MembershipProfileView() {
                     {memberData &&
                     addressInfo &&
                     addressInfo.correspondenceAddress
-                      ? [
-                          addressInfo.correspondenceAddress.street || "",
-                          addressInfo.correspondenceAddress.district || "",
-                          addressInfo.correspondenceAddress?.city?.name || "",
-                          addressInfo.correspondenceAddress?.state?.name || "",
-                          addressInfo.correspondenceAddress?.country?.name ||
-                            "",
-                        ]
-                          .filter((part) => part)
-                          .join(", ")
+                      ? formatDynamicAddress(addressInfo.correspondenceAddress)
                       : ""}
                   </p>
                 </div>

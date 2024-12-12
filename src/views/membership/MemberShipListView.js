@@ -190,7 +190,7 @@ function MemberShipListView() {
               <input type="file" accept="" className="d-none" />
             </div>
             <Button
-              className="secondaryAction-btn me-1"
+              className="addAction-btn me-1"
               color="primary"
               onClick={handleImport}
             >
