@@ -60,6 +60,7 @@ export const importMemberFile = async (payload) => {
   try {
     const formData = new FormData();
     formData.append("file", payload.file);
+    formData.append("createdByUserId", payload.createdByUserId);
     Object.keys(payload.targetFields).forEach((key) => {
       formData.append(`targetFields[${key}]`, payload.targetFields[key]);
     });

@@ -51,8 +51,17 @@ function MembershipProfileView() {
   const upload = memberData?.upload;
   const formatDynamicAddress = (address) => {
     const addressParts = [];
-    
-    // Function to extract values from nested address objects
+
+    // Helper function to extract name or fallback value from nested objects
+    const extractNameOrDefault = (value) => {
+        if (value && typeof value === "object") {
+            // If the object has a name property, use it
+            return value.name ? value.name : null;
+        }
+        return value ? value : null;
+    };
+
+    // Function to extract values from address fields
     const extractAddressValues = (address, prefix = '') => {
         const fields = [
             "street", 
@@ -67,12 +76,9 @@ function MembershipProfileView() {
             const fieldKey = prefix ? `${prefix}${ConverFirstLatterToCapital(field)}` : field;
             const value = address[fieldKey];
 
-            if (value) {
-                if (typeof value === "object" && value.name) {
-                    addressParts.push(value.name);
-                } else {
-                    addressParts.push(value);
-                }
+            const extractedValue = extractNameOrDefault(value);
+            if (extractedValue) {
+                addressParts.push(extractedValue);
             }
         });
     };
@@ -85,6 +91,7 @@ function MembershipProfileView() {
 
     return addressParts.length > 0 ? addressParts.join(", ") : "";
 };
+
   const loggedInUser = useSelector((state) => state.auth.userDetail.name);
   const [toggleSwitch, setToggleSwitch] = useState(false);
 

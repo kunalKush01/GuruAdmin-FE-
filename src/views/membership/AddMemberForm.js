@@ -104,7 +104,6 @@ export default function AddMemberForm() {
                /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,
                   "Please enter a valid mobile number"
                 )
-                .required(`${fieldInfo.title} is required`);
             }
           }
         });

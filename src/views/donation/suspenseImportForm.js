@@ -30,7 +30,7 @@ function SuspenseImportForm({
   setShowHistory,
   mappedField,
 }) {
-  const loggedInUser = useSelector((state) => state.auth.userDetail.name);
+  const loggedInUser = useSelector((state) => state.auth.userDetail)
   const { t } = useTranslation();
   const targetFields = [
     t("transaction_id"),
@@ -133,7 +133,7 @@ function SuspenseImportForm({
       [targetField]: sourceField,
     });
   };
-  
+
   const columns = [
     {
       title: t("target_Fields"),
@@ -205,7 +205,7 @@ function SuspenseImportForm({
         const formData = new FormData();
         formData.append("file", file);
         formData.append("upload_type", "Donation");
-        formData.append("createdBy", loggedInUser ? loggedInUser : "");
+        formData.append("createdBy", loggedInUser ? loggedInUser?.name : "");
         await importDonationFile(formData);
         await queryClient.invalidateQueries("donations");
         await queryClient.refetchQueries("donations");
@@ -213,7 +213,7 @@ function SuspenseImportForm({
         const formData = new FormData();
         formData.append("file", file);
         formData.append("upload_type", "Pledge");
-        formData.append("createdBy", loggedInUser ? loggedInUser : "");
+        formData.append("createdBy", loggedInUser ? loggedInUser?.name : "");
         await importCommitmentFile(formData);
         await queryClient.invalidateQueries("Commitments");
         await queryClient.refetchQueries("Commitments");
@@ -226,6 +226,7 @@ function SuspenseImportForm({
         const payload = {
           targetFields,
           sourceFields: sourceFields,
+          createdByUserId: loggedInUser && loggedInUser?.id,
           file: file,
           upload_type: "Membership",
         };
