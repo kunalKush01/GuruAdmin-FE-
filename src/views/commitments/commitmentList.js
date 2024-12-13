@@ -35,10 +35,10 @@ import { WRITE } from "../../utility/permissionsVariable";
 
 import "../../assets/scss/viewCommon.scss";
 import CommitmentAntdListTable from "../../components/commitments/commitmentAntdListTable";
-import SuspenseImportForm from "../donation/suspenseImportForm";
 import AddFilterSection from "../../components/partials/addFilterSection";
 import filterIcon from "../../assets/images/icons/filter.svg";
 import FilterTag from "../../components/partials/filterTag";
+import ImportForm from "../donation/importForm";
 
 export default function Commitment() {
   const importFileRef = useRef();
@@ -571,7 +571,7 @@ export default function Commitment() {
           </Row>
         </div>
       </div>
-      <SuspenseImportForm onClose={onClose} open={open} tab="Pledge" />
+      <ImportForm onClose={onClose} open={open} tab="Pledge" />
       <AddFilterSection
         onFilterClose={onFilterClose}
         filterOpen={filterOpen}

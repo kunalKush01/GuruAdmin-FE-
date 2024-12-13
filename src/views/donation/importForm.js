@@ -23,7 +23,7 @@ import { importCommitmentFile } from "../../api/commitmentApi";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { importMemberFile } from "../../api/membershipApi";
-function SuspenseImportForm({
+function ImportForm({
   onClose,
   open,
   tab,
@@ -361,4 +361,4 @@ function SuspenseImportForm({
   );
 }
 
-export default SuspenseImportForm;
+export default ImportForm;
