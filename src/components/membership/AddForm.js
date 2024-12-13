@@ -119,31 +119,6 @@ export default function AddForm({
           );
         }
       }
-      // if (key === "correspondenceAddress") {
-      //   payload[key] = {
-      //     ...formValue,
-      //     correspondenceStreet:
-      //       `${formData.correspondenceAddLine1} ${formData.correspondenceAddLine2}` ||
-      //       "",
-      //     correspondenceState: formData.correspondenceState || "",
-      //     correspondenceCity: formData.correspondenceCity || "",
-      //     correspondenceCountry: formData.correspondenceCountry || "",
-      //     correspondenceDistrict: formData.correspondenceDistrict || "",
-      //     correspondencePincode: formData.correspondencePin || "",
-      //   };
-      // }
-      // // Handle homeAddress separately
-      // else if (key === "homeAddress") {
-      //   payload[key] = {
-      //     ...formValue, // Keep any other fields inside homeAddress
-      //     street: `${formData.addLine1} ${formData.addLine2}` || "",
-      //     state: formData.state || "",
-      //     city: formData.city || "",
-      //     country: formData.country || "",
-      //     district: formData.district || "",
-      //     pincode: formData.pin || "",
-      //   };
-      // }
       else if (key === "familyInfo") {
         return;
       } else if (field.type === "object" && field.properties) {
