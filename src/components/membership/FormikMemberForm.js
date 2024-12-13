@@ -102,7 +102,6 @@ function FormikMemberForm({
   const firstValueResult = firstValues.map((values) =>
     values.length > 0 ? values[0] : null
   );
-  // console.log(firstValueResult)
   const handleCheckboxChange = (e) => {
     setIsSameAsHome(e.target.checked);
     if (e.target.checked) {

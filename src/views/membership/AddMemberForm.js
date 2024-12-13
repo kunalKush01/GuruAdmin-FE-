@@ -73,7 +73,6 @@ export default function AddMemberForm() {
         const sectionProperties = schema.properties[section].properties;
         Object.keys(sectionProperties).forEach((field) => {
           const fieldInfo = sectionProperties[field];
-
           if (fieldInfo.isRequired) {
             shape[field] = Yup.mixed().required(
               `${fieldInfo.title} is required`
@@ -89,8 +88,24 @@ export default function AddMemberForm() {
                 `${fieldInfo.title} is required`
               );
             }
+            if (fieldInfo.isTypePhone) {
+              shape[field] = Yup.string()
+                .matches(
+               /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,
+                  "Please enter a valid mobile number"
+                )
+                .required(`${fieldInfo.title} is required`);
+            }
           } else {
             shape[field] = Yup.mixed().nullable();
+            if (fieldInfo.isTypePhone) {
+              shape[field] = Yup.string()
+                .matches(
+               /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,
+                  "Please enter a valid mobile number"
+                )
+                .required(`${fieldInfo.title} is required`);
+            }
           }
         });
       });
