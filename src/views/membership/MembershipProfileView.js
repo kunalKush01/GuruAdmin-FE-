@@ -161,6 +161,7 @@ function MembershipProfileView() {
           src={imageUrl}
           alt={title}
           style={{ borderRadius: 8 }} // Rounded corners for the image
+          preview={imageUrl?true:false}
         />
         <div style={{ padding: "16px" }}>
           <Title level={4} style={{ margin: 0 }}>
@@ -196,6 +197,7 @@ function MembershipProfileView() {
                               }
                               alt="Profile"
                               className="familyProfile"
+                              preview={familyImages[i] ? true : false}
                             />
                           </div>
                         </div>
@@ -423,6 +425,7 @@ function MembershipProfileView() {
                 src={familyImages["memberPhoto"] || avatarIcon}
                 alt="Profile"
                 className="membershipProfileImg"
+                preview={familyImages["memberPhoto"] ? true : false}
               />
               <p className="memberName">
                 {memberData ? personalInfo["memberName"] : ""}
