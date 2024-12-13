@@ -73,7 +73,6 @@ export default function AddMemberForm() {
         const sectionProperties = schema.properties[section].properties;
         Object.keys(sectionProperties).forEach((field) => {
           const fieldInfo = sectionProperties[field];
-
           if (fieldInfo.isRequired) {
             shape[field] = Yup.mixed().required(
               `${fieldInfo.title} is required`
@@ -89,8 +88,23 @@ export default function AddMemberForm() {
                 `${fieldInfo.title} is required`
               );
             }
+            if (fieldInfo.isTypePhone) {
+              shape[field] = Yup.string()
+                .matches(
+               /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,
+                  "Please enter a valid mobile number"
+                )
+                .required(`${fieldInfo.title} is required`);
+            }
           } else {
             shape[field] = Yup.mixed().nullable();
+            if (fieldInfo.isTypePhone) {
+              shape[field] = Yup.string()
+                .matches(
+               /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,
+                  "Please enter a valid mobile number"
+                )
+            }
           }
         });
       });
@@ -125,36 +139,91 @@ export default function AddMemberForm() {
 
         if (typeof field === "object" && field !== null) {
           if (key === "addressInfo") {
-            const homeLine1 = field.homeAddress?.street;
-            const homeSplitValue = homeLine1.split(" ");
-            const correspondaceLine1 = field.correspondenceAddress?.street;
-            const correspondaceSplitValue = correspondaceLine1.split(" ");
-            initialValues["addLine1"] = homeSplitValue[0] || "";
-            initialValues["addLine2"] = homeSplitValue.slice(1).join(" ") || "";
-            initialValues["city"] = field.homeAddress?.city || "";
-            initialValues["district"] = field.homeAddress?.district || "";
-            initialValues["state"] = field.homeAddress?.state || "";
-            initialValues["country"] = field.homeAddress?.country || "";
-            initialValues["pin"] = field.homeAddress?.pincode || "";
+            const processAddress = (address) => {
+              const initialValues = {};
 
-            initialValues["correspondenceAddLine1"] =
-              correspondaceSplitValue[0] || "";
-            initialValues["correspondenceAddLine2"] =
-              correspondaceSplitValue.slice(1).join(" ") || "";
-            initialValues["correspondenceState"] =
-              field.correspondenceAddress?.state || "";
-            initialValues["correspondenceCountry"] =
-              field.correspondenceAddress?.country || "";
-            initialValues["correspondencePin"] =
-              field.correspondenceAddress?.pincode || "";
-            initialValues["correspondenceCity"] =
-              field.correspondenceAddress?.city || "";
-            initialValues["correspondenceDistrict"] =
-              field.correspondenceAddress?.district || "";
+              Object.entries(address || {}).forEach(
+                ([fieldKey, fieldValue]) => {
+                  // console.log(fieldKey);
+                  if (typeof fieldValue === "object" && fieldValue !== null) {
+                    // Handling nested objects like city, state, country with name/id
+                    if (fieldValue.name && fieldValue.id) {
+                      initialValues[fieldKey] = {
+                        name: fieldValue.name || "",
+                        id: fieldValue.id || "",
+                      };
+                    }
+                  } else if (typeof fieldValue === "string") {
+                    // Handling street (split into AddLine1 and AddLine2)
+                    if (fieldKey === "street") {
+                      const splitValue = fieldValue.split(" ");
+                      initialValues["addLine1"] = splitValue[0] || "";
+                      initialValues["addLine2"] =
+                        splitValue.slice(1).join(" ") || "";
+                    } else if (fieldKey === "correspondenceStreet") {
+                      const splitValue = fieldValue.split(" ");
+                      initialValues["correspondenceAddLine1"] =
+                        splitValue[0] || "";
+                      initialValues["correspondenceAddLine2"] =
+                        splitValue.slice(1).join(" ") || "";
+                    } else {
+                      initialValues[fieldKey] = fieldValue || "";
+                    }
+                  } else if (typeof fieldValue == "number") {
+                    if (fieldKey === "pincode") {
+                      // Handle pincode
+                      initialValues["pincode"] = fieldValue || "";
+                      initialValues["pin"] = {
+                        name: fieldValue || "",
+                        id: fieldValue || "",
+                      };
+                    } else if (fieldKey === "correspondencePincode") {
+                      // Handle correspondencePincode
+                      initialValues["correspondencePincode"] = fieldValue || "";
+                      initialValues["correspondencePin"] = {
+                        name: fieldValue || "",
+                        id: fieldValue || "",
+                      };
+                    }
+                  }
+                }
+              );
+
+              return initialValues;
+            };
+
+            // Process homeAddress and correspondenceAddress
+            const homeAddressInitialValues = processAddress(field.homeAddress);
+            const correspondenceAddressInitialValues = processAddress(
+              field.correspondenceAddress
+            );
+
+            // Merge the results into initialValues
+            Object.assign(
+              initialValues,
+              homeAddressInitialValues,
+              correspondenceAddressInitialValues
+            );
           } else {
             // Handle other objects
             Object.keys(field).forEach((fieldKey) => {
-              initialValues[fieldKey] = field[fieldKey] || "";
+              const value = field[fieldKey];
+
+              if (
+                typeof value === "object" &&
+                value !== null &&
+                value.hasOwnProperty("name") &&
+                value.hasOwnProperty("id")
+              ) {
+                // Set "Select Option" for empty name or id
+                initialValues[fieldKey] = {
+                  name: value.name || "Select Option",
+                  id: value.id || "Select Option",
+                };
+              } else {
+                initialValues[fieldKey] = value || "";
+              }
+              // initialValues[fieldKey] = field[fieldKey] || "";
             });
           }
         } else {

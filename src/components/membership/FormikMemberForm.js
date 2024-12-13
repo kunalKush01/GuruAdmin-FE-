@@ -102,7 +102,6 @@ function FormikMemberForm({
   const firstValueResult = firstValues.map((values) =>
     values.length > 0 ? values[0] : null
   );
-  // console.log(firstValueResult)
   const handleCheckboxChange = (e) => {
     setIsSameAsHome(e.target.checked);
     if (e.target.checked) {
@@ -241,6 +240,11 @@ function FormikMemberForm({
               id: value,
               name: t(value),
             }));
+      const options = [
+        { id: "", name: "Select Option" },
+        ...(Array.isArray(loadOptions) ? loadOptions : []),
+      ];
+
       return (
         <Col
           xs={12}
@@ -251,7 +255,7 @@ function FormikMemberForm({
         >
           <FormikCustomReactSelect
             labelName={t(fieldSchema.title || name)}
-            loadOptions={loadOptions}
+            loadOptions={options}
             name={name}
             labelKey="name"
             valueKey="id"

@@ -6,13 +6,15 @@ import MemberShipListTable from "../../components/membership/MemberShipListTable
 import "../../assets/scss/common.scss";
 import "../../assets/scss/viewCommon.scss";
 import { useHistory } from "react-router-dom";
-import { getAllMembers } from "../../api/membershipApi";
+import { getAllMembers, getMemberSchema } from "../../api/membershipApi";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import { WRITE } from "../../utility/permissionsVariable";
 import filterIcon from "../../assets/images/icons/filter.svg";
 import FilterTag from "../../components/partials/filterTag";
 import AddFilterSection from "../../components/partials/addFilterSection";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
+import ImportForm from "../donation/importForm";
 
 function MemberShipListView() {
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -61,7 +63,7 @@ function MemberShipListView() {
   );
 
   const [filterOpen, setFilterOpen] = useState(false);
-  const [isfetchField, setIsfetchField] = useState(false)
+  const [isfetchField, setIsfetchField] = useState(false);
 
   const showFilter = () => {
     setFilterOpen(true);
@@ -92,6 +94,67 @@ function MemberShipListView() {
     setRowId(id);
   };
   const hasFilters = Object.keys(filterData).length > 0;
+
+  //**import */
+  const [open, setOpen] = useState(false);
+  const showDrawer = () => {
+    setOpen(true);
+  };
+  const onClose = () => {
+    setOpen(false);
+  };
+  const handleImport = (e) => {
+    showDrawer();
+  };
+  const memberShipQuery = useQuery(
+    ["memberShipSchema"],
+    () => getMemberSchema(),
+    {
+      keepPreviousData: true,
+    }
+  );
+
+  const memberSchemaItem = useMemo(
+    () => memberShipQuery?.data?.schema ?? [],
+    [memberShipQuery]
+  );
+  const memberSchema = memberSchemaItem ? memberSchemaItem.memberSchema : {};
+  const [mappedField, setMappedField] = useState(null);
+  useEffect(() => {
+    if (memberSchema) {
+      function transformSchema(schema) {
+        let output = [];
+
+        function traverseSchema(properties, parentKey = "") {
+          if (parentKey == "upload") {
+            return false;
+          }
+          for (let key in properties) {
+            const property = properties[key];
+            if (property.type === "array") {
+              continue;
+            }
+            const currentKey = key;
+            if (property.type === "object") {
+              traverseSchema(property.properties, currentKey);
+            } else if (property.title) {
+              output.push({
+                value: currentKey,
+                label: property.title,
+              });
+            }
+          }
+        }
+
+        traverseSchema(schema.properties);
+        return output;
+      }
+
+      const result = transformSchema(memberSchema);
+      setMappedField(result);
+    }
+  }, [memberSchema]);
+
   return (
     <div className="listviewwrapper">
       <Helmet>
@@ -126,6 +189,13 @@ function MemberShipListView() {
 
               <input type="file" accept="" className="d-none" />
             </div>
+            <Button
+              className="addAction-btn me-1"
+              color="primary"
+              onClick={handleImport}
+            >
+              {t("import")}
+            </Button>
             <Button
               className="secondaryAction-btn"
               color="primary"
@@ -180,6 +250,12 @@ function MemberShipListView() {
         removedData={removedData}
         languageId={selectedLang.id}
         fetchField={isfetchField}
+      />
+      <ImportForm
+        onClose={onClose}
+        open={open}
+        tab="MemberShip"
+        mappedField={mappedField}
       />
     </div>
   );

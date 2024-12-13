@@ -115,9 +115,8 @@ function FamilyModalForm({
       };
 
       await updateMembersById(id, updatedPayload);
-      form.resetFields()
+      form.resetFields();
       queryClient.invalidateQueries(["memberShipProfileData"]);
-      console.log("Updated Payload:", updatedPayload);
     } else {
       const addPayload = {
         trustId: memberResultData.trustId,
@@ -162,6 +161,10 @@ function FamilyModalForm({
                 placeholder={t("member_dob")}
                 style={{ width: "100%" }}
                 format="DD MMM YYYY"
+                disabledDate={(current) =>
+                  current &&
+                  (current.isSame(moment(), "day") || current.isAfter(moment()))
+                }
               />
             </Form.Item>
           </Col>
@@ -175,6 +178,10 @@ function FamilyModalForm({
                 placeholder={t("member_anniversary")}
                 style={{ width: "100%" }}
                 format="DD MMM YYYY"
+                disabledDate={(current) =>
+                  current &&
+                  (current.isSame(moment(), "day") || current.isAfter(moment()))
+                }
               />
             </Form.Item>
           </Col>

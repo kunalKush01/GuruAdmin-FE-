@@ -22,6 +22,7 @@ import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import { useSelector } from "react-redux";
 import { downloadFile } from "../../api/sharedStorageApi";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 function MembershipProfileView() {
   const { Title, Text } = Typography;
@@ -38,6 +39,7 @@ function MembershipProfileView() {
       },
     }
   );
+  // console.log(data);
   const memberResultData = data ? data?.member : null;
   const memberData = data ? memberResultData?.data : null;
   const personalInfo = memberData?.personalInfo;
@@ -47,12 +49,56 @@ function MembershipProfileView() {
   const membershipInfo = memberData?.membershipInfo;
   const otherInfo = memberData?.otherInfo;
   const upload = memberData?.upload;
+  const formatDynamicAddress = (address) => {
+    const addressParts = [];
+
+    // Helper function to extract name or fallback value from nested objects
+    const extractNameOrDefault = (value) => {
+        if (value && typeof value === "object") {
+            // If the object has a name property, use it
+            return value.name ? value.name : null;
+        }
+        return value ? value : null;
+    };
+
+    // Function to extract values from address fields
+    const extractAddressValues = (address, prefix = '') => {
+        const fields = [
+            "street", 
+            "city", 
+            "district", 
+            "pincode", 
+            "state", 
+            "country"
+        ];
+
+        fields.forEach(field => {
+            const fieldKey = prefix ? `${prefix}${ConverFirstLatterToCapital(field)}` : field;
+            const value = address[fieldKey];
+
+            const extractedValue = extractNameOrDefault(value);
+            if (extractedValue) {
+                addressParts.push(extractedValue);
+            }
+        });
+    };
+
+    // Extract values for main address (no prefix needed)
+    extractAddressValues(address);
+
+    // Extract values for correspondence address (prefix 'correspondence' added)
+    extractAddressValues(address, "correspondence");
+
+    return addressParts.length > 0 ? addressParts.join(", ") : "";
+};
+
   const loggedInUser = useSelector((state) => state.auth.userDetail.name);
   const [toggleSwitch, setToggleSwitch] = useState(false);
 
   const handleTabChange = (key) => {
     setActiveTab(key);
   };
+  
   const handleToggle = (checked) => {
     setToggleSwitch(checked);
   };
@@ -122,6 +168,7 @@ function MembershipProfileView() {
           src={imageUrl}
           alt={title}
           style={{ borderRadius: 8 }} // Rounded corners for the image
+          preview={imageUrl?true:false}
         />
         <div style={{ padding: "16px" }}>
           <Title level={4} style={{ margin: 0 }}>
@@ -157,6 +204,7 @@ function MembershipProfileView() {
                               }
                               alt="Profile"
                               className="familyProfile"
+                              preview={familyImages[i] ? true : false}
                             />
                           </div>
                         </div>
@@ -345,7 +393,7 @@ function MembershipProfileView() {
                 <span className="memberAdd">{t("branch")}</span>
                 <p className="memberInfo">
                   {" "}
-                  {memberData ? membershipInfo?.branch?.name : ""}
+                  {memberData ? membershipInfo?.branch?.name=="Select Option"?"":membershipInfo?.branch?.name : ""}
                 </p>
               </div>
             </div>
@@ -384,6 +432,7 @@ function MembershipProfileView() {
                 src={familyImages["memberPhoto"] || avatarIcon}
                 alt="Profile"
                 className="membershipProfileImg"
+                preview={familyImages["memberPhoto"] ? true : false}
               />
               <p className="memberName">
                 {memberData ? personalInfo["memberName"] : ""}
@@ -394,7 +443,7 @@ function MembershipProfileView() {
             </div>
             <Card className="memberProfileCard d-flex flex-column align-items-center justify-content-center">
               <p className="card-text-1">
-                {memberData ? membershipInfo?.membership?.name : ""}
+                {memberData ? membershipInfo?.membership?.name=="Select Option"?"":membershipInfo?.membership?.name : ""}
               </p>
               <p className="card-text-2">
                 {memberData ? membershipInfo["memberShipMemberNumber"] : ""}
@@ -406,7 +455,13 @@ function MembershipProfileView() {
             <div className="info-container">
               <div className="info-item">
                 <img src={personIcon} alt="Person Icon" />{" "}
-                <span>{memberData ? personalInfo?.gender?.name : ""}</span>
+                <span>
+                  {memberData
+                    ? personalInfo?.gender?.name == "Select Option"
+                      ? ""
+                      : personalInfo?.gender?.name
+                    : ""}
+                </span>
               </div>
               <div className="info-item">
                 <img src={businessIcon} alt="Business Icon" />{" "}
@@ -425,7 +480,11 @@ function MembershipProfileView() {
               <div className="info-item">
                 <img src={ringIcon} alt="Ring Icon" />{" "}
                 <span>
-                  {memberData ? personalInfo?.maritalStatus?.name : ""}
+                  {memberData
+                    ? personalInfo?.maritalStatus?.name == "Select Option"
+                      ? ""
+                      : personalInfo?.maritalStatus?.name
+                    : ""}
                 </span>
               </div>
               <div className="info-item">
@@ -458,15 +517,7 @@ function MembershipProfileView() {
                   <span className="memberAdd">{t("home_address")}</span>
                   <p className="memberlineAdd">
                     {memberData && addressInfo && addressInfo.homeAddress
-                      ? [
-                          addressInfo.homeAddress.street || "",
-                          addressInfo.homeAddress.district || "",
-                          addressInfo.homeAddress?.city?.name || "",
-                          addressInfo.homeAddress?.state?.name || "",
-                          addressInfo.homeAddress?.country?.name || "",
-                        ]
-                          .filter((part) => part)
-                          .join(", ")
+                      ? formatDynamicAddress(addressInfo.homeAddress)
                       : ""}
                   </p>
                 </div>
@@ -478,16 +529,7 @@ function MembershipProfileView() {
                     {memberData &&
                     addressInfo &&
                     addressInfo.correspondenceAddress
-                      ? [
-                          addressInfo.correspondenceAddress.street || "",
-                          addressInfo.correspondenceAddress.district || "",
-                          addressInfo.correspondenceAddress?.city?.name || "",
-                          addressInfo.correspondenceAddress?.state?.name || "",
-                          addressInfo.correspondenceAddress?.country?.name ||
-                            "",
-                        ]
-                          .filter((part) => part)
-                          .join(", ")
+                      ? formatDynamicAddress(addressInfo.correspondenceAddress)
                       : ""}
                   </p>
                 </div>
