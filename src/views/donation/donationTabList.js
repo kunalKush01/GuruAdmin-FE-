@@ -34,7 +34,6 @@ import DonationANTDListTable from "../../components/donation/donationAntdListTab
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import filterIcon from "../../assets/images/icons/filter.svg";
 import "../../assets/scss/viewCommon.scss";
-import SuspenseImportForm from "./suspenseImportForm";
 import SuspenseListTable from "../../components/donation/suspenseListTable";
 import SuspenseHistoryTable from "../../components/donation/suspenseHistoryTable";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
@@ -43,6 +42,7 @@ import loadingOutlined from "../../assets/images/icons/loadingIco.svg";
 import syncIcon from "../../assets/images/icons/sync.svg";
 import AddFilterSection from "../../components/partials/addFilterSection";
 import FilterTag from "../../components/partials/filterTag";
+import ImportForm from "./importForm";
 
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 export default function Donation() {
@@ -1012,7 +1012,7 @@ export default function Donation() {
           onChange={handleTabChange}
         />
       </div>
-      <SuspenseImportForm
+      <ImportForm
         onClose={onClose}
         open={open}
         tab={activeTab}

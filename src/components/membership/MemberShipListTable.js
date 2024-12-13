@@ -36,7 +36,11 @@ function MemberShipListTable({
       key: "gender",
       width: 100,
       render: (text, record) =>
-        `${record.data.personalInfo.gender?.name || "-"}`,
+        `${
+          record.data.personalInfo.gender?.name == "Select Option"
+            ? "-"
+            : record.data.personalInfo.gender?.name || "-"
+        }`,
     },
     {
       title: t("marital_status"),
@@ -44,7 +48,11 @@ function MemberShipListTable({
       key: "maritalStatus",
       width: 150,
       render: (text, record) =>
-        `${record.data.personalInfo.maritalStatus?.name || "-"}`,
+        `${
+          record.data.personalInfo.maritalStatus?.name == "Select Option"
+            ? "-"
+            : record.data.personalInfo.maritalStatus?.name || "-"
+        }`,
     },
     {
       title: t("membership"),
@@ -52,7 +60,11 @@ function MemberShipListTable({
       key: "membership",
       width: 150,
       render: (text, record) =>
-        `${record.data.membershipInfo.membership?.name || "-"}`,
+        `${
+          record.data.membershipInfo.membership?.name == "Select Option"
+            ? "-"
+            : record.data.membershipInfo.membership?.name || "-"
+        }`,
     },
     {
       title: t("branch"),
@@ -60,7 +72,11 @@ function MemberShipListTable({
       key: "branch",
       width: 120,
       render: (text, record) =>
-        `${record.data.membershipInfo.branch?.name || "-"}`,
+        `${
+          record.data.membershipInfo.branch?.name == "Select Option"
+            ? "-"
+            : record.data.membershipInfo.branch?.name || "-"
+        }`,
     },
     {
       title: t("phone"),
