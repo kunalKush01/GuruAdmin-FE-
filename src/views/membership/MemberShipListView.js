@@ -13,8 +13,8 @@ import { WRITE } from "../../utility/permissionsVariable";
 import filterIcon from "../../assets/images/icons/filter.svg";
 import FilterTag from "../../components/partials/filterTag";
 import AddFilterSection from "../../components/partials/addFilterSection";
-import SuspenseImportForm from "../donation/suspenseImportForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
+import ImportForm from "../donation/importForm";
 
 function MemberShipListView() {
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -251,7 +251,7 @@ function MemberShipListView() {
         languageId={selectedLang.id}
         fetchField={isfetchField}
       />
-      <SuspenseImportForm
+      <ImportForm
         onClose={onClose}
         open={open}
         tab="MemberShip"

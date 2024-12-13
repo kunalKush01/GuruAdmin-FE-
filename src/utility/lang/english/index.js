@@ -968,4 +968,5 @@ export const englishContent = {
   inRange: "In Range",
   less_than: "Less Than",
   greater_than: "Greater Than",
+  history:"History"
 };
