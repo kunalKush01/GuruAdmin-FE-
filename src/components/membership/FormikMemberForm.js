@@ -241,6 +241,11 @@ function FormikMemberForm({
               id: value,
               name: t(value),
             }));
+      const options = [
+        { id: "", name: "Select Option" },
+        ...(Array.isArray(loadOptions) ? loadOptions : []),
+      ];
+
       return (
         <Col
           xs={12}
@@ -251,7 +256,7 @@ function FormikMemberForm({
         >
           <FormikCustomReactSelect
             labelName={t(fieldSchema.title || name)}
-            loadOptions={loadOptions}
+            loadOptions={options}
             name={name}
             labelKey="name"
             valueKey="id"

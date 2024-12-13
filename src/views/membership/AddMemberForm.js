@@ -193,7 +193,23 @@ export default function AddMemberForm() {
           } else {
             // Handle other objects
             Object.keys(field).forEach((fieldKey) => {
-              initialValues[fieldKey] = field[fieldKey] || "";
+              const value = field[fieldKey];
+
+              if (
+                typeof value === "object" &&
+                value !== null &&
+                value.hasOwnProperty("name") &&
+                value.hasOwnProperty("id")
+              ) {
+                // Set "Select Option" for empty name or id
+                initialValues[fieldKey] = {
+                  name: value.name || "Select Option",
+                  id: value.id || "Select Option",
+                };
+              } else {
+                initialValues[fieldKey] = value || "";
+              }
+              // initialValues[fieldKey] = field[fieldKey] || "";
             });
           }
         } else {
@@ -209,7 +225,6 @@ export default function AddMemberForm() {
         mode === "edit" && memberResultData
       )
     : {};
-  // console.log(dynamicInitialValues);
   const staticInitialValues = {
     //** Address Information */
     searchType: "",

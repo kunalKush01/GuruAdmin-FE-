@@ -22,6 +22,7 @@ import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import { useSelector } from "react-redux";
 import { downloadFile } from "../../api/sharedStorageApi";
+import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 function MembershipProfileView() {
   const { Title, Text } = Typography;
@@ -50,26 +51,47 @@ function MembershipProfileView() {
   const upload = memberData?.upload;
   const formatDynamicAddress = (address) => {
     const addressParts = [];
-  
-    for (let key in address) {
-      const value = address[key];
-      
-      if (value && typeof value === "object" && value.name) {
-        addressParts.push(value.name);
-      }
-      else if (typeof value === "string" || typeof value === "number") {
-        addressParts.push(value);
-      }
-    }
-  
+    
+    // Function to extract values from nested address objects
+    const extractAddressValues = (address, prefix = '') => {
+        const fields = [
+            "street", 
+            "city", 
+            "district", 
+            "pincode", 
+            "state", 
+            "country"
+        ];
+
+        fields.forEach(field => {
+            const fieldKey = prefix ? `${prefix}${ConverFirstLatterToCapital(field)}` : field;
+            const value = address[fieldKey];
+
+            if (value) {
+                if (typeof value === "object" && value.name) {
+                    addressParts.push(value.name);
+                } else {
+                    addressParts.push(value);
+                }
+            }
+        });
+    };
+
+    // Extract values for main address (no prefix needed)
+    extractAddressValues(address);
+
+    // Extract values for correspondence address (prefix 'correspondence' added)
+    extractAddressValues(address, "correspondence");
+
     return addressParts.length > 0 ? addressParts.join(", ") : "";
-  };
+};
   const loggedInUser = useSelector((state) => state.auth.userDetail.name);
   const [toggleSwitch, setToggleSwitch] = useState(false);
 
   const handleTabChange = (key) => {
     setActiveTab(key);
   };
+  
   const handleToggle = (checked) => {
     setToggleSwitch(checked);
   };
@@ -362,7 +384,7 @@ function MembershipProfileView() {
                 <span className="memberAdd">{t("branch")}</span>
                 <p className="memberInfo">
                   {" "}
-                  {memberData ? membershipInfo?.branch?.name : ""}
+                  {memberData ? membershipInfo?.branch?.name=="Select Option"?"":membershipInfo?.branch?.name : ""}
                 </p>
               </div>
             </div>
@@ -411,7 +433,7 @@ function MembershipProfileView() {
             </div>
             <Card className="memberProfileCard d-flex flex-column align-items-center justify-content-center">
               <p className="card-text-1">
-                {memberData ? membershipInfo?.membership?.name : ""}
+                {memberData ? membershipInfo?.membership?.name=="Select Option"?"":membershipInfo?.membership?.name : ""}
               </p>
               <p className="card-text-2">
                 {memberData ? membershipInfo["memberShipMemberNumber"] : ""}
@@ -423,7 +445,13 @@ function MembershipProfileView() {
             <div className="info-container">
               <div className="info-item">
                 <img src={personIcon} alt="Person Icon" />{" "}
-                <span>{memberData ? personalInfo?.gender?.name : ""}</span>
+                <span>
+                  {memberData
+                    ? personalInfo?.gender?.name == "Select Option"
+                      ? ""
+                      : personalInfo?.gender?.name
+                    : ""}
+                </span>
               </div>
               <div className="info-item">
                 <img src={businessIcon} alt="Business Icon" />{" "}
@@ -442,7 +470,11 @@ function MembershipProfileView() {
               <div className="info-item">
                 <img src={ringIcon} alt="Ring Icon" />{" "}
                 <span>
-                  {memberData ? personalInfo?.maritalStatus?.name : ""}
+                  {memberData
+                    ? personalInfo?.maritalStatus?.name == "Select Option"
+                      ? ""
+                      : personalInfo?.maritalStatus?.name
+                    : ""}
                 </span>
               </div>
               <div className="info-item">
