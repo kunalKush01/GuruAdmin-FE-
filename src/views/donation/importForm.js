@@ -33,6 +33,8 @@ function ImportForm({
   const loggedInUser = useSelector((state) => state.auth.userDetail)
   const { t } = useTranslation();
   const targetFields = [
+    t("mobileNum"),
+    t("donarName"),
     t("transaction_id"),
     t("transaction_Date"),
     t("bank_narration"),
@@ -192,6 +194,8 @@ function ImportForm({
             chequeNo: mapping["Cheque No"] || "",
             amount: mapping["Amount"] || "",
             modeOfPayment: mapping["Mode Of Payment"] || "",
+            mobileNum: mapping["Mobile No"] || "",
+            donarName: mapping["Donar Name"] || "",
           },
           sourceFields: sourceFields,
           file: file,
