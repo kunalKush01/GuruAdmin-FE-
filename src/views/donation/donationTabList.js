@@ -176,7 +176,7 @@ export default function Donation() {
         : {}; // If no active tab, use an empty object
 
     return Object.entries(currentFilterData).reduce((acc, [key, value]) => {
-      const { index,label, ...rest } = value; // Destructure and exclude 'index'
+      const { index, label, ...rest } = value; // Destructure and exclude 'index'
       acc[key] = rest; // Add the remaining data without 'index'
       return acc;
     }, {});
@@ -282,6 +282,8 @@ export default function Donation() {
         chequeNo: values.chequeNo || "",
         amount: values.amount || "",
         modeOfPayment: values.modeOfPayment || "",
+        donarName: values.donarName || "",
+        mobileNum: values.mobileNum || "",
       };
 
       await addSuspense(payload);
@@ -318,18 +320,19 @@ export default function Donation() {
   const [articleDonationFilterOpen, setArticleDonationFilterOpen] =
     useState(false);
   const [suspenseFilterOpen, setSuspenseFilterOpen] = useState(false);
-  const [fetchDonationField, setFetchDonationField] = useState(false)
-  const [fetchArticleDonationField, setFetchArticleDonationField] = useState(false)
-  const [fetchSuspenseField, setFetchSuspenseField] = useState(false)
+  const [fetchDonationField, setFetchDonationField] = useState(false);
+  const [fetchArticleDonationField, setFetchArticleDonationField] =
+    useState(false);
+  const [fetchSuspenseField, setFetchSuspenseField] = useState(false);
   // Functions for Donation tab
   const showDonationFilter = () => {
     setDonationFilterOpen(true);
-    setFetchDonationField(true)
+    setFetchDonationField(true);
   };
 
   const onDonationFilterClose = () => {
     setDonationFilterOpen(false);
-    setFetchDonationField(false)
+    setFetchDonationField(false);
   };
 
   const handleApplyDonationFilter = () => {
@@ -339,12 +342,12 @@ export default function Donation() {
   // Functions for Article Donation tab
   const showArticleDonationFilter = () => {
     setArticleDonationFilterOpen(true);
-    setFetchArticleDonationField(true)
+    setFetchArticleDonationField(true);
   };
 
   const onArticleDonationFilterClose = () => {
     setArticleDonationFilterOpen(false);
-    setFetchArticleDonationField(false)
+    setFetchArticleDonationField(false);
   };
 
   const handleApplyArticleDonationFilter = () => {
@@ -354,12 +357,12 @@ export default function Donation() {
   // Functions for Suspense tab
   const showSuspenseFilter = () => {
     setSuspenseFilterOpen(true);
-    setFetchSuspenseField(true)
+    setFetchSuspenseField(true);
   };
 
   const onSuspenseFilterClose = () => {
     setSuspenseFilterOpen(false);
-    setFetchSuspenseField(false)
+    setFetchSuspenseField(false);
   };
 
   const handleApplySuspenseFilter = () => {
@@ -888,73 +891,120 @@ export default function Donation() {
                 centered
               >
                 <Form form={form} onFinish={handleFormSubmit} layout="vertical">
-                  <Form.Item
-                    name="transactionDate"
-                    label={t("transactionDate")}
-                    rules={[
-                      {
-                        required: true,
-                        message: t("req_transactionDate"),
-                      },
-                    ]}
-                  >
-                    <CustomDatePicker
-                      showTime
-                      format="YYYY-MM-DD HH:mm"
-                      placeholder={t("select_date")}
-                    />
-                  </Form.Item>
-
-                  <Form.Item name="transactionId" label={t("suspense_transId")}>
-                    <Input />
-                  </Form.Item>
-
-                  <Form.Item
-                    name="bankNarration"
-                    label={t("bankNarration")}
-                    rules={[
-                      { required: true, message: t("req_bankNarration") },
-                    ]}
-                  >
-                    <Input.TextArea rows={4} />
-                  </Form.Item>
-
-                  <Form.Item name="chequeNo" label={t("suspense_cheque_no")}>
-                    <Input />
-                  </Form.Item>
-
-                  <Form.Item
-                    name="amount"
-                    label={t("suspense_amount")}
-                    rules={[{ required: true, message: t("req_ammount") }]}
-                  >
-                    <Input type="number" min="0" step="0.01" />
-                  </Form.Item>
-
-                  <Form.Item
-                    name="modeOfPayment"
-                    label={t("suspense_mode_of_payment")}
-                    rules={[
-                      {
-                        required: true,
-                        message: t("req_modeofPayment"),
-                      },
-                    ]}
-                  >
-                    <Select>
-                      {modeOfPaymentOptions.map((option) => (
-                        <Select.Option key={option.value} value={option.value}>
-                          {option.label}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-
-                  <Form.Item>
-                    <Button color="primary" htmlType="submit">
-                      {t("add_record")}
-                    </Button>
-                  </Form.Item>
+                  <Row gutter={16}>
+                    <Col span={12}>
+                      <Form.Item
+                        name="transactionDate"
+                        label={t("transactionDate")}
+                        rules={[
+                          {
+                            required: true,
+                            message: t("req_transactionDate"),
+                          },
+                        ]}
+                      >
+                        <CustomDatePicker
+                          showTime
+                          format="YYYY-MM-DD HH:mm"
+                          placeholder={t("select_date")}
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                      <Form.Item
+                        name="transactionId"
+                        label={t("suspense_transId")}
+                      >
+                        <Input />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                  <Row gutter={16}>
+                    <Col span={12}>
+                      <Form.Item
+                        label={t("donarName")}
+                        name="donarName"
+                        rules={[{ required: false, message: t("donarName") }]}
+                      >
+                        <Input type="text" />
+                      </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                      <Form.Item
+                        label={t("mobileNum")}
+                        name="mobileNum"
+                        rules={[{ required: false, message: t("mobileNum") }]}
+                      >
+                        <Input type="number" />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                  <Row gutter={16}>
+                    <Col span={24}>
+                      <Form.Item
+                        name="bankNarration"
+                        label={t("bankNarration")}
+                        rules={[
+                          { required: true, message: t("req_bankNarration") },
+                        ]}
+                      >
+                        <Input.TextArea rows={4} />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                  <Row gutter={16}>
+                    <Col span={12}>
+                      <Form.Item
+                        name="chequeNo"
+                        label={t("suspense_cheque_no")}
+                      >
+                        <Input />
+                      </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                      <Form.Item
+                        name="amount"
+                        label={t("suspense_amount")}
+                        rules={[{ required: true, message: t("req_ammount") }]}
+                      >
+                        <Input type="number" min="0" step="0.01" />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                  <Row gutter={16}>
+                    <Col span={24}>
+                      <Form.Item
+                        name="modeOfPayment"
+                        label={t("suspense_mode_of_payment")}
+                        rules={[
+                          {
+                            required: true,
+                            message: t("req_modeofPayment"),
+                          },
+                        ]}
+                      >
+                        <Select>
+                          {modeOfPaymentOptions.map((option) => (
+                            <Select.Option
+                              key={option.value}
+                              value={option.value}
+                            >
+                              {option.label}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                  <Row justify="end">
+                    <Col>
+                      <Form.Item>
+                        <Button color="primary" htmlType="submit">
+                          {t("add_record")}
+                        </Button>
+                      </Form.Item>
+                    </Col>
+                  </Row>
                 </Form>
               </Modal>
             </div>

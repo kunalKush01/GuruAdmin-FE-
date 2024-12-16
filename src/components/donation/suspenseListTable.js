@@ -157,6 +157,20 @@ function SuspenseListTable({ success, filterData, type }) {
       fixed: "left",
     },
     {
+      title: t("donarName"),
+      dataIndex: "donarName",
+      key: "donarName",
+      render: (text) => (text ? text : "-"),
+      width: 100,
+    },
+    {
+      title: t("mobileNum"),
+      dataIndex: "mobileNum",
+      key: "mobileNum",
+      render: (text) => (text ? text : "-"),
+      width: 100,
+    },
+    {
       title: t("bankNarration"),
       dataIndex: "bankNarration",
       key: "bankNarration",
@@ -269,6 +283,20 @@ function SuspenseListTable({ success, filterData, type }) {
             ]}
           >
             <CustomDatePicker showTime format="YYYY-MM-DD HH:mm" />
+          </Form.Item>
+          <Form.Item
+            label={t("donarName")}
+            name="donarName"
+            rules={[{ required: true, message: t("donarName") }]}
+          >
+            <Input type="text" />
+          </Form.Item>
+          <Form.Item
+            label={t("mobileNum")}
+            name="mobileNum"
+            rules={[{ required: true, message: t("mobileNum") }]}
+          >
+            <Input type="number" />
           </Form.Item>
           <Form.Item
             label={t("bankNarration")}
