@@ -282,8 +282,6 @@ export default function Donation() {
         chequeNo: values.chequeNo || "",
         amount: values.amount || "",
         modeOfPayment: values.modeOfPayment || "",
-        donarName: values.donarName || "",
-        mobileNum: values.mobileNum || "",
       };
 
       await addSuspense(payload);
@@ -916,26 +914,6 @@ export default function Donation() {
                         label={t("suspense_transId")}
                       >
                         <Input />
-                      </Form.Item>
-                    </Col>
-                  </Row>
-                  <Row gutter={16}>
-                    <Col span={12}>
-                      <Form.Item
-                        label={t("donarName")}
-                        name="donarName"
-                        rules={[{ required: false, message: t("donarName") }]}
-                      >
-                        <Input type="text" />
-                      </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                      <Form.Item
-                        label={t("mobileNum")}
-                        name="mobileNum"
-                        rules={[{ required: false, message: t("mobileNum") }]}
-                      >
-                        <Input type="number" />
                       </Form.Item>
                     </Col>
                   </Row>

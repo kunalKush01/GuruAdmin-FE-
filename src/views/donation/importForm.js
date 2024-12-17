@@ -41,6 +41,8 @@ function ImportForm({
     t("cheque_no"),
     t("amount"),
     t("mode_of_payment"),
+    t("masterCategoryId"),
+    t("categoryId"),
   ];
   const history = useHistory();
   const [loading, setLoading] = useState(false);
@@ -196,10 +198,13 @@ function ImportForm({
             modeOfPayment: mapping["Mode Of Payment"] || "",
             mobileNum: mapping["Mobile No"] || "",
             donarName: mapping["Donar Name"] || "",
+            masterCategoryId: mapping["Category"] || "",
+            categoryId: mapping["Sub Category"] || "",
           },
           sourceFields: sourceFields,
           file: file,
           upload_type: "Suspense",
+          createdBy: loggedInUser && loggedInUser?.id
         };
         await createImport(payload);
         await queryClient.invalidateQueries("suspenseData");

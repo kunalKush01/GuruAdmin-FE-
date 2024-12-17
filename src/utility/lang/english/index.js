@@ -971,5 +971,7 @@ export const englishContent = {
   history:"History",
   mobileNum:"Mobile No",
   donarName:"Donar Name",
-  add_record:"Add record"
+  add_record:"Add record",
+  masterCategoryId:"Category",
+  categoryId:"Sub Category"
 };
