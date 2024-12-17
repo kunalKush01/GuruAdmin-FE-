@@ -968,5 +968,10 @@ export const englishContent = {
   inRange: "In Range",
   less_than: "Less Than",
   greater_than: "Greater Than",
-  history:"History"
+  history:"History",
+  mobileNum:"Mobile No",
+  donarName:"Donar Name",
+  add_record:"Add record",
+  masterCategoryId:"Category",
+  categoryId:"Sub Category"
 };
