@@ -9,7 +9,7 @@ import downloadIcon from "../../assets/images/icons/file-download.svg";
 import { useTranslation } from "react-i18next";
 import SuspenseImportHistoryView from "./suspenseImportHistoryView";
 
-const SuspenseHistoryTable = () => {
+const ImportHistoryTable = ({tab}) => {
   const { t } = useTranslation();
 
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -19,7 +19,7 @@ const SuspenseHistoryTable = () => {
 
   const { data, isLoading, error } = useQuery(
     ["suspenseDataHistory", currentPage, pageSize],
-    () => getAllFileUploaded(currentPage, pageSize),
+    () => getAllFileUploaded(currentPage, pageSize,tab),
     {
       keepPreviousData: true,
       onError: (error) => {
@@ -27,9 +27,10 @@ const SuspenseHistoryTable = () => {
       },
     }
   );
-
-  const tableData = data?.result || [];
-  const totalItems = data?.total || 0;
+  
+  const filteredData = data?.results?.filter(item => item.uploadType === tab) || [];
+  // Use totalResults from the API response for pagination
+  const totalItems = data?.totalResults || 0
 
   const handleView = (record) => {
     setSelectedRecord(record);
@@ -108,7 +109,7 @@ const SuspenseHistoryTable = () => {
       <Table
         className="commonListTable"
         columns={columns}
-        dataSource={tableData}
+        dataSource={filteredData}
         rowKey={(record) => record._id}
         loading={isLoading}
         pagination={{
@@ -136,4 +137,4 @@ const SuspenseHistoryTable = () => {
   );
 };
 
-export default SuspenseHistoryTable;
+export default ImportHistoryTable;

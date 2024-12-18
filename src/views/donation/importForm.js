@@ -218,6 +218,7 @@ function ImportForm({
         await importDonationFile(formData);
         await queryClient.invalidateQueries("donations");
         await queryClient.refetchQueries("donations");
+        setShowHistory(true);
       } else if (tab == "Pledge") {
         const formData = new FormData();
         formData.append("file", file);
@@ -226,6 +227,7 @@ function ImportForm({
         await importCommitmentFile(formData);
         await queryClient.invalidateQueries("Commitments");
         await queryClient.refetchQueries("Commitments");
+        setShowHistory(true);
       } else if (tab == "MemberShip") {
         const targetFields = {};
         mappedField.forEach((field) => {
@@ -242,6 +244,7 @@ function ImportForm({
         await importMemberFile(payload);
         await queryClient.invalidateQueries("memberShipListData");
         await queryClient.refetchQueries("memberShipListData");
+        setShowHistory(true);
       }
 
       setSourceFields([]);
