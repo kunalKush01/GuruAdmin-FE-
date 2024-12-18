@@ -251,9 +251,13 @@ export default function Donation() {
   const subPermission = subPermissions?.subpermissions?.map(
     (item) => item.name
   );
-  const [showHistory, setShowHistory] = useState(false);
-  const handleMenuClick = (e) => {
-    setShowHistory(true);
+  const [showDonationHistory, setShowDonationHistory] = useState(false);
+  const [showSuspenseHistory, setShowSuspenseHistory] = useState(false);
+  const handleMenuDonationClick = (e) => {
+    setShowDonationHistory(true);
+  };
+  const handleMenuSuspenseClick = (e) => {
+    setShowSuspenseHistory(true);
   };
   const [open, setOpen] = useState(false);
   const showDrawer = () => {
@@ -295,11 +299,16 @@ export default function Donation() {
       console.error("Error adding suspense data:", error);
     }
   };
-  const isFetchingSuspense = !showHistory
+  const isFetchingSuspense = !showSuspenseHistory
     ? useIsFetching({ queryKey: ["suspenseData"] }) > 0
     : useIsFetching({ queryKey: ["suspenseDataHistory"] }) > 0;
   const handleRefresh = () => {
-    !showHistory
+    !showSuspenseHistory
+      ? queryClient.invalidateQueries(["suspenseData"])
+      : queryClient.invalidateQueries(["suspenseDataHistory"]);
+  };
+  const handleDonationRefresh = () => {
+    !showDonationHistory
       ? queryClient.invalidateQueries(["suspenseData"])
       : queryClient.invalidateQueries(["suspenseDataHistory"]);
   };
@@ -439,23 +448,23 @@ export default function Donation() {
             className="d-flex justify-content-between align-items-center"
             id="donation_view_btn"
           >
-            {showHistory ? (
+            {showDonationHistory ? (
               <img
                 src={arrowLeft}
                 className="me-2  cursor-pointer"
-                onClick={() => setShowHistory(false)}
+                onClick={() => setShowDonationHistory(false)}
               />
             ) : (
               <div></div>
             )}
             <div className="botton-container">
               <Space className="me-2">
-                {showHistory ? (
+                {showDonationHistory ? (
                   <img
                     src={syncIcon}
                     alt="Loading"
                     style={{ width: 24, height: 24, cursor: "pointer" }}
-                    onClick={handleRefresh}
+                    onClick={handleDonationRefresh}
                   />
                 ) : (
                   <div></div>
@@ -517,37 +526,11 @@ export default function Donation() {
                 >
                   {t("Import_File")}
                 </Button> */}
-                <Dropdown.Button
-                  type="primary"
-                  size="large"
-                  className="dropDownBtn"
-                  menu={{
-                    items: [
-                      {
-                        label: t("history"),
-                        key: "history",
-                      },
-                    ],
-                    onClick: handleMenuClick,
-                  }}
-                  onClick={handleButtonClick}
-                >
-                  {t("import")}
-                </Dropdown.Button>
-
-                <input
-                  type="file"
-                  ref={importFileRef}
-                  accept=""
-                  className="d-none"
-                  onChange={handleImportFile}
-                />
-
                 {allPermissions?.name === "all" ||
                 subPermission?.includes(WRITE) ? (
                   <Button
                     color="primary"
-                    className={`addAction-btn me-1`}
+                    className={`addAction-btn`}
                     onClick={() =>
                       history.push(
                         `/donation/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}&type=${activeTab}`
@@ -564,6 +547,36 @@ export default function Donation() {
                 ) : (
                   ""
                 )}
+                <Dropdown.Button
+                  type="primary"
+                  size="large"
+                  className="dropDownBtn"
+                  menu={{
+                    items: [
+                      {
+                        label: t("history"),
+                        key: "history",
+                      },
+                    ],
+                    onClick: handleMenuDonationClick,
+                  }}
+                  onClick={handleButtonClick}
+                >
+                  {t("import")}
+                </Dropdown.Button>
+                <ImportForm
+                  onClose={onClose}
+                  open={open}
+                  tab={activeTab}
+                  setShowDonationHistory={setShowDonationHistory}
+                />
+                <input
+                  type="file"
+                  ref={importFileRef}
+                  accept=""
+                  className="d-none"
+                  onChange={handleImportFile}
+                />
               </Space>
               <Button
                 className="secondaryAction-btn"
@@ -617,7 +630,7 @@ export default function Donation() {
                 <Else>
                   <If condition={donationItems.length != 0} disableMemo>
                     <Then>
-                      {!showHistory ? (
+                      {!showDonationHistory ? (
                         <DonationANTDListTable
                           donationType={activeTab}
                           data={donationItems}
@@ -849,11 +862,11 @@ export default function Donation() {
       children: (
         <>
           <div className="d-flex justify-content-between align-items-center">
-            {showHistory ? (
+            {showSuspenseHistory ? (
               <img
                 src={arrowLeft}
                 className="me-2  cursor-pointer"
-                onClick={() => setShowHistory(false)}
+                onClick={() => setShowSuspenseHistory(false)}
               />
             ) : (
               <div></div>
@@ -877,7 +890,7 @@ export default function Donation() {
                 )}
               </Space>
               <Space wrap className="">
-                {!showHistory &&
+                {!showSuspenseHistory &&
                   (allPermissions?.name === "all" ||
                     subPermission?.includes(WRITE)) && (
                     <Button
@@ -903,12 +916,18 @@ export default function Donation() {
                         key: "history",
                       },
                     ],
-                    onClick: handleMenuClick,
+                    onClick: handleMenuSuspenseClick,
                   }}
                   onClick={handleButtonClick}
                 >
                   {t("import")}
                 </Dropdown.Button>
+                <ImportForm
+                  onClose={onClose}
+                  open={open}
+                  tab={activeTab}
+                  setShowSuspenseHistory={setShowSuspenseHistory}
+                />
                 <Button
                   className="secondaryAction-btn"
                   color="primary"
@@ -1038,7 +1057,7 @@ export default function Donation() {
             />
           </div>
           <div className="donationContent mt-1">
-            {!showHistory ? (
+            {!showSuspenseHistory ? (
               <SuspenseListTable
                 success={success}
                 filterData={filteredData}
@@ -1082,12 +1101,6 @@ export default function Donation() {
           onChange={handleTabChange}
         />
       </div>
-      <ImportForm
-        onClose={onClose}
-        open={open}
-        tab={activeTab}
-        setShowHistory={setShowHistory}
-      />
     </div>
   );
 }
