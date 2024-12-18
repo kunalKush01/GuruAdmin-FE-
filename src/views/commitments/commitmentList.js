@@ -39,7 +39,11 @@ import AddFilterSection from "../../components/partials/addFilterSection";
 import filterIcon from "../../assets/images/icons/filter.svg";
 import FilterTag from "../../components/partials/filterTag";
 import ImportForm from "../donation/importForm";
+import { Dropdown, Space } from "antd";
 
+import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import syncIcon from "../../assets/images/icons/sync.svg";
+import ImportHistoryTable from "../../components/donation/importHistoryTable";
 export default function Commitment() {
   const importFileRef = useRef();
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
@@ -275,10 +279,10 @@ export default function Commitment() {
   };
 
   const [filterOpen, setFilterOpen] = useState(false);
-  const [isfetchField, setIsfetchField] = useState(false)
+  const [isfetchField, setIsfetchField] = useState(false);
   const showFilter = () => {
     setFilterOpen(true);
-    setIsfetchField(true)
+    setIsfetchField(true);
   };
   const onFilterClose = () => {
     setFilterOpen(false);
@@ -305,6 +309,15 @@ export default function Commitment() {
     setRowId(id);
   };
   const hasFilters = Object.keys(filterData).length > 0;
+  const [showHistory, setShowHistory] = useState(false);
+  const handleMenuClick = (e) => {
+    setShowHistory(true);
+  };
+  const handleRefresh = () => {
+    !showHistory
+      ? queryClient.invalidateQueries(["suspenseData"])
+      : queryClient.invalidateQueries(["suspenseDataHistory"]);
+  };
   return (
     <div className="listviewwrapper">
       <Helmet>
@@ -319,7 +332,15 @@ export default function Commitment() {
             <div className="addAction d-flex">
               <div className="">
                 <div>
-                  <Trans i18nKey={"commitment"} />
+                  {showHistory ? (
+                    <img
+                      src={arrowLeft}
+                      className="me-2  cursor-pointer"
+                      onClick={() => setShowHistory(false)}
+                    />
+                  ) : (
+                    <Trans i18nKey={"commitment"} />
+                  )}
                 </div>
               </div>
             </div>
@@ -329,6 +350,18 @@ export default function Commitment() {
             id="donation_view_btn"
           >
             <div className="botton-container">
+              <Space className="me-2">
+                {showHistory ? (
+                  <img
+                    src={syncIcon}
+                    alt="Loading"
+                    style={{ width: 24, height: 24, cursor: "pointer" }}
+                    onClick={handleRefresh}
+                  />
+                ) : (
+                  <div></div>
+                )}
+              </Space>
               <div className="d-flex row1">
                 <ChangeCategoryType
                   className={"me-1"}
@@ -392,13 +425,25 @@ export default function Commitment() {
                 />
                 {allPermissions?.name === "all" ||
                 subPermission?.includes(WRITE) ? (
-                  <Button
-                    className={`secondaryAction-btn me-1 pledgeImportBtn`}
-                    color="primary"
-                    onClick={handleButtonClick}
-                  >
-                    {t("Import_File")}
-                  </Button>
+                  <Space wrap>
+                    <Dropdown.Button
+                      type="primary"
+                      size="large"
+                      className="dropDownBtn me-1"
+                      menu={{
+                        items: [
+                          {
+                            label: t("history"),
+                            key: "history",
+                          },
+                        ],
+                        onClick: handleMenuClick,
+                      }}
+                      onClick={handleButtonClick}
+                    >
+                      {t("import")}
+                    </Dropdown.Button>
+                  </Space>
                 ) : null}
                 <input
                   type="file"
@@ -527,33 +572,37 @@ export default function Commitment() {
                   disableMemo
                 >
                   <Then>
-                    <CommitmentAntdListTable
-                      data={commitmentItems}
-                      selectedRowDATA={handleSelectedRowData}
-                      currentFilter={routFilter}
-                      currentPage={routPagination}
-                      notifyIds={notifyIds}
-                      currentCategory={routCategory}
-                      currentStatus={routStatus}
-                      currentSubCategory={routSubCategory}
-                      allPermissions={allPermissions}
-                      subPermission={subPermission}
-                      totalItems={totalItems}
-                      pageSize={pagination.limit}
-                      onChangePage={(page) => {
-                        setPagination((prev) => ({ ...prev, page }));
-                        history.push(
-                          `/commitment?page=${page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${dropDownName}`
-                        );
-                      }}
-                      onChangePageSize={(pageSize) => {
-                        setPagination((prev) => ({
-                          ...prev,
-                          limit: pageSize,
-                          page: 1,
-                        }));
-                      }}
-                    />
+                    {!showHistory ? (
+                      <CommitmentAntdListTable
+                        data={commitmentItems}
+                        selectedRowDATA={handleSelectedRowData}
+                        currentFilter={routFilter}
+                        currentPage={routPagination}
+                        notifyIds={notifyIds}
+                        currentCategory={routCategory}
+                        currentStatus={routStatus}
+                        currentSubCategory={routSubCategory}
+                        allPermissions={allPermissions}
+                        subPermission={subPermission}
+                        totalItems={totalItems}
+                        pageSize={pagination.limit}
+                        onChangePage={(page) => {
+                          setPagination((prev) => ({ ...prev, page }));
+                          history.push(
+                            `/commitment?page=${page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${dropDownName}`
+                          );
+                        }}
+                        onChangePageSize={(pageSize) => {
+                          setPagination((prev) => ({
+                            ...prev,
+                            limit: pageSize,
+                            page: 1,
+                          }));
+                        }}
+                      />
+                    ) : (
+                      <ImportHistoryTable tab={"Pledge"} />
+                    )}
                   </Then>
                   <Else>
                     {!commitmentQuery.isFetching &&
