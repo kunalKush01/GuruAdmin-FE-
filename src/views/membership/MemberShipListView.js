@@ -15,6 +15,10 @@ import FilterTag from "../../components/partials/filterTag";
 import AddFilterSection from "../../components/partials/addFilterSection";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import ImportForm from "../donation/importForm";
+import { Dropdown, Space } from "antd";
+import ImportHistoryTable from "../../components/donation/importHistoryTable";
+import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import syncIcon from "../../assets/images/icons/sync.svg";
 
 function MemberShipListView() {
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -154,7 +158,15 @@ function MemberShipListView() {
       setMappedField(result);
     }
   }, [memberSchema]);
-
+  const [showHistory, setShowHistory] = useState(false);
+  const handleMenuClick = (e) => {
+    setShowHistory(true);
+  };
+  const handleRefresh = () => {
+    !showHistory
+      ? queryClient.invalidateQueries(["suspenseData"])
+      : queryClient.invalidateQueries(["suspenseDataHistory"]);
+  };
   return (
     <div className="listviewwrapper">
       <Helmet>
@@ -169,17 +181,37 @@ function MemberShipListView() {
             <div className="addAction d-flex">
               <div className="">
                 <div>
-                  <Trans i18nKey={"membership"} />
+                  {showHistory ? (
+                    <img
+                      src={arrowLeft}
+                      className="me-2  cursor-pointer"
+                      onClick={() => setShowHistory(false)}
+                    />
+                  ) : (
+                    <Trans i18nKey={"membership"} />
+                  )}
                 </div>
               </div>
             </div>
           </div>
-          <div className="d-flex">
+          <Space wrap className="d-flex">
+            <Space className="me-2">
+              {showHistory ? (
+                <img
+                  src={syncIcon}
+                  alt="Loading"
+                  style={{ width: 24, height: 24, cursor: "pointer" }}
+                  onClick={handleRefresh}
+                />
+              ) : (
+                <div></div>
+              )}
+            </Space>
             <div className="addAction d-flex flex-wrap gap-2 gap-md-0">
               {(allPermissions?.name === "all" ||
                 subPermission?.includes(WRITE)) && (
                 <Button
-                  className={`addAction-btn me-1`}
+                  className={`addAction-btn`}
                   color="primary"
                   onClick={() => history.push(`/member/addMember`)}
                 >
@@ -189,13 +221,30 @@ function MemberShipListView() {
 
               <input type="file" accept="" className="d-none" />
             </div>
-            <Button
+            {/* <Button
               className="addAction-btn me-1"
               color="primary"
               onClick={handleImport}
             >
               {t("import")}
-            </Button>
+            </Button> */}
+            <Dropdown.Button
+              type="primary"
+              size="large"
+              className="dropDownBtn"
+              menu={{
+                items: [
+                  {
+                    label: t("history"),
+                    key: "history",
+                  },
+                ],
+                onClick: handleMenuClick,
+              }}
+              onClick={handleImport}
+            >
+              {t("import")}
+            </Dropdown.Button>
             <Button
               className="secondaryAction-btn"
               color="primary"
@@ -209,7 +258,7 @@ function MemberShipListView() {
               />
               {t("filter")}
             </Button>
-          </div>
+          </Space>
         </div>
         <div className="d-flex justify-content-between">
           <FilterTag
@@ -222,21 +271,25 @@ function MemberShipListView() {
         <div style={{ height: "10px" }}></div>
         <div className="commitmentContent">
           <Row>
-            <MemberShipListTable
-              data={data ? data.results : []}
-              totalItems={data ? data.totalResults : 0}
-              pageSize={pagination.limit}
-              onChangePage={(page) => {
-                setPagination((prev) => ({ ...prev, page }));
-              }}
-              onChangePageSize={(pageSize) => {
-                setPagination((prev) => ({
-                  ...prev,
-                  limit: pageSize,
-                  page: 1,
-                }));
-              }}
-            />
+            {!showHistory ? (
+              <MemberShipListTable
+                data={data ? data.results : []}
+                totalItems={data ? data.totalResults : 0}
+                pageSize={pagination.limit}
+                onChangePage={(page) => {
+                  setPagination((prev) => ({ ...prev, page }));
+                }}
+                onChangePageSize={(pageSize) => {
+                  setPagination((prev) => ({
+                    ...prev,
+                    limit: pageSize,
+                    page: 1,
+                  }));
+                }}
+              />
+            ) : (
+              <ImportHistoryTable tab={"Membership"} />
+            )}
           </Row>
         </div>
       </div>
