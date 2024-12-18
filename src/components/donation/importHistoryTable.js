@@ -18,7 +18,7 @@ const ImportHistoryTable = ({tab}) => {
   const [pageSize, setPageSize] = useState(10);
 
   const { data, isLoading, error } = useQuery(
-    ["suspenseDataHistory", currentPage, pageSize],
+    ["suspenseDataHistory", currentPage, pageSize,tab],
     () => getAllFileUploaded(currentPage, pageSize,tab),
     {
       keepPreviousData: true,

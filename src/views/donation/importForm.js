@@ -28,6 +28,8 @@ function ImportForm({
   open,
   tab,
   setShowHistory,
+  setShowSuspenseHistory,
+  setShowDonationHistory,
   mappedField,
 }) {
   const loggedInUser = useSelector((state) => state.auth.userDetail)
@@ -209,7 +211,7 @@ function ImportForm({
         await createImport(payload);
         await queryClient.invalidateQueries("suspenseData");
         await queryClient.refetchQueries("suspenseData");
-        setShowHistory(true);
+        setShowSuspenseHistory(true);
       } else if (tab == "Donation") {
         const formData = new FormData();
         formData.append("file", file);
@@ -218,7 +220,7 @@ function ImportForm({
         await importDonationFile(formData);
         await queryClient.invalidateQueries("donations");
         await queryClient.refetchQueries("donations");
-        setShowHistory(true);
+        setShowDonationHistory(true);
       } else if (tab == "Pledge") {
         const formData = new FormData();
         formData.append("file", file);
