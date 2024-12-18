@@ -35,7 +35,6 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import filterIcon from "../../assets/images/icons/filter.svg";
 import "../../assets/scss/viewCommon.scss";
 import SuspenseListTable from "../../components/donation/suspenseListTable";
-import SuspenseHistoryTable from "../../components/donation/suspenseHistoryTable";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
 import { addSuspense } from "../../api/suspenseApi";
 import loadingOutlined from "../../assets/images/icons/loadingIco.svg";
@@ -43,6 +42,7 @@ import syncIcon from "../../assets/images/icons/sync.svg";
 import AddFilterSection from "../../components/partials/addFilterSection";
 import FilterTag from "../../components/partials/filterTag";
 import ImportForm from "./importForm";
+import ImportHistoryTable from "../../components/donation/importHistoryTable";
 
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 export default function Donation() {
@@ -436,10 +436,31 @@ export default function Donation() {
       children: (
         <>
           <div
-            className="d-flex flex-wrap gap-2 gap-md-0 justify-content-end"
+            className="d-flex justify-content-between align-items-center"
             id="donation_view_btn"
           >
+            {showHistory ? (
+              <img
+                src={arrowLeft}
+                className="me-2  cursor-pointer"
+                onClick={() => setShowHistory(false)}
+              />
+            ) : (
+              <div></div>
+            )}
             <div className="botton-container">
+              <Space className="me-2">
+                {showHistory ? (
+                  <img
+                    src={syncIcon}
+                    alt="Loading"
+                    style={{ width: 24, height: 24, cursor: "pointer" }}
+                    onClick={handleRefresh}
+                  />
+                ) : (
+                  <div></div>
+                )}
+              </Space>
               <div className="d-flex row1 me-1">
                 <ChangeCategoryType
                   className={"me-1"}
@@ -487,15 +508,32 @@ export default function Donation() {
                   }}
                 />
               </div>
-              <div className="row2">
-                <Button
+              <Space wrap className="row2">
+                {/* <Button
                   className={`secondaryAction-btn me-1`}
                   color="primary"
                   onClick={handleButtonClick}
                   // onClick={() => importFileRef.current.click()}
                 >
                   {t("Import_File")}
-                </Button>
+                </Button> */}
+                <Dropdown.Button
+                  type="primary"
+                  size="large"
+                  className="dropDownBtn"
+                  menu={{
+                    items: [
+                      {
+                        label: t("history"),
+                        key: "history",
+                      },
+                    ],
+                    onClick: handleMenuClick,
+                  }}
+                  onClick={handleButtonClick}
+                >
+                  {t("import")}
+                </Dropdown.Button>
 
                 <input
                   type="file"
@@ -526,7 +564,7 @@ export default function Donation() {
                 ) : (
                   ""
                 )}
-              </div>
+              </Space>
               <Button
                 className="secondaryAction-btn"
                 color="primary"
@@ -579,25 +617,29 @@ export default function Donation() {
                 <Else>
                   <If condition={donationItems.length != 0} disableMemo>
                     <Then>
-                      <DonationANTDListTable
-                        donationType={activeTab}
-                        data={donationItems}
-                        allPermissions={allPermissions}
-                        subPermission={subPermission}
-                        totalItems={totalItems}
-                        currentPage={pagination.page}
-                        pageSize={pagination.limit}
-                        onChangePage={(page) =>
-                          setPagination((prev) => ({ ...prev, page }))
-                        }
-                        onChangePageSize={(pageSize) =>
-                          setPagination((prev) => ({
-                            ...prev,
-                            limit: pageSize,
-                            page: 1,
-                          }))
-                        }
-                      />
+                      {!showHistory ? (
+                        <DonationANTDListTable
+                          donationType={activeTab}
+                          data={donationItems}
+                          allPermissions={allPermissions}
+                          subPermission={subPermission}
+                          totalItems={totalItems}
+                          currentPage={pagination.page}
+                          pageSize={pagination.limit}
+                          onChangePage={(page) =>
+                            setPagination((prev) => ({ ...prev, page }))
+                          }
+                          onChangePageSize={(pageSize) =>
+                            setPagination((prev) => ({
+                              ...prev,
+                              limit: pageSize,
+                              page: 1,
+                            }))
+                          }
+                        />
+                      ) : (
+                        <ImportHistoryTable tab={activeTab} />
+                      )}
                     </Then>
                     <Else>
                       <NoContent
@@ -1003,7 +1045,7 @@ export default function Donation() {
                 type={activeTab}
               />
             ) : (
-              <SuspenseHistoryTable />
+              <ImportHistoryTable tab={activeTab} />
             )}
           </div>
           <AddFilterSection
