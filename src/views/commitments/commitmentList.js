@@ -620,7 +620,7 @@ export default function Commitment() {
           </Row>
         </div>
       </div>
-      <ImportForm onClose={onClose} open={open} tab="Pledge" />
+      <ImportForm onClose={onClose} open={open} tab="Pledge" setShowHistory={setShowHistory} />
       <AddFilterSection
         onFilterClose={onFilterClose}
         filterOpen={filterOpen}

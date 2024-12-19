@@ -309,6 +309,7 @@ function MemberShipListView() {
         open={open}
         tab="MemberShip"
         mappedField={mappedField}
+        setShowHistory={setShowHistory}
       />
     </div>
   );
