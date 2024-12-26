@@ -86,7 +86,7 @@ function GuestDetailsSection({
   }, [formik?.values?.Mobile,dataLoad]);
   useEffect(() => {
     const user = formik?.values?.SelectedUser;
-    if (user?.id) {
+    if (user) {
       formik.setFieldValue("Mobile", user?.mobileNumber);
       formik.setFieldValue("countryCode", user?.countryName);
       formik.setFieldValue("dialCode", user?.countryCode);
@@ -105,12 +105,12 @@ function GuestDetailsSection({
       if (user?.address) addressParts.push(user.address);
 
       const fullAddress = addressParts.filter(Boolean).join(", ");
-      if(!formik.values.address){
+      if (!formik.values.address) {
         formik.setFieldValue("address", fullAddress);
-      }else{
+      } else {
         formik.setFieldValue("address", formik.values.address);
       }
-      
+
       setPhoneNumber(user?.countryCode + user?.mobileNumber);
       return;
     }
