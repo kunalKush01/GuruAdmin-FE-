@@ -316,6 +316,12 @@ export const subHeaderContentResponsive = [
     activeIcon: MembershipIcon,
   },
   {
+    name: "Service",
+    url: "/service",
+    icon: MembershipIcon,
+    activeIcon: MembershipIcon,
+  },
+  {
     name: "financial_reports",
     url: "/financial_reports",
     activeTab: "/financial_reports",

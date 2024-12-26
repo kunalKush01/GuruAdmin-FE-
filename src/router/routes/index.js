@@ -543,6 +543,24 @@ const Routes = [
     subPermission: EDIT,
   },
   {
+    path: "/service",
+    component: lazy(() =>
+      import("../../views/service/serviceListView.js")
+    ),
+    // exact:true
+    type: "service",
+    subPermission: READ,
+  },
+  {
+    path: "/services/addService",
+    component: lazy(() =>
+      import("../../views/service/addServiceForm.js")
+    ),
+    // exact:true
+    type: "service",
+    subPermission: WRITE,
+  },
+  {
     path: "/configuration/cattle-breed",
     component: lazy(() =>
       import("../../views/cattles-management/cattle-breed/index.js")
