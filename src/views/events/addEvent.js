@@ -43,7 +43,10 @@ const initialValues = {
   state: "",
   latitude: "",
   longitude: "",
-  DateTime: { start: new Date(), end: null },
+  DateTime: {
+    start: null,
+    end: null
+  },
   startTime: moment(new Date(), ["HH:mm"]).format("HH:mm"),
   endTime: "23:59",
 };

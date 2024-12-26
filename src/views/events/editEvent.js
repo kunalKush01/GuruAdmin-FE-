@@ -103,8 +103,12 @@ export default function EditEvent() {
       state: eventDetailQuery?.data?.result?.state,
       latitude: eventDetailQuery?.data?.result?.longitude,
       longitude: eventDetailQuery?.data?.result?.latitude,
+      SelectedEvent: {
+        id: eventDetailQuery?.data?.result?.baseId,
+        title: eventDetailQuery?.data?.result?.baseTitle
+      }
     };
-  }, [eventDetailQuery]);
+  }, [eventDetailQuery, tags]);
 
   return (
     <div className="listviewwrapper">
