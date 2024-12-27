@@ -64,7 +64,7 @@ export default function ServiceForm({
             dates: e.dates,
             amount: e.amount,
             countPerDay: e.countPerDay,
-            images: uploadedFileUrl || [],
+            images: [uploadedFileUrl] || [],
           });
         }}
         validationSchema={validationSchema}
