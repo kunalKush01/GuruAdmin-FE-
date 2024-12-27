@@ -207,7 +207,7 @@ export default function FormWithoutFormikForBooking({
       cancelButtonColor: "#3085d6",
       cancelButtonText: t("cancel"),
       confirmButtonText: t("confirm"),
-    }).then((result) => {
+    }).then(async(result) => {
       if (result.isConfirmed) {
         const updatedRoomsData = formik.values.roomsData.filter(
           (room, idx) => idx !== index
@@ -218,6 +218,38 @@ export default function FormWithoutFormikForBooking({
           formik.values.fromDate,
           formik.values.toDate
         );
+        if (formik.values.fromDate && formik.values.toDate) {
+          const roomTypeIds = updatedRoomsData.map((room) => room.roomType);
+          const updatedBuildings = {};
+  
+          try {
+            for (let i = 0; i < roomTypeIds.length; i++) {
+              const roomTypeId = roomTypeIds[i];
+              const response = await getAvailableBuildingList({
+                roomTypeId,
+                fromDate: formik.values.fromDate,
+                toDate: formik.values.toDate,
+              });
+  
+              if (response) {
+                const buildings = response.results || [];
+                updatedBuildings[i] = buildings.map((building) => ({
+                  _id: building._id,
+                  name: building.name,
+                }));
+              } else {
+                console.error(
+                  `Failed to fetch buildings for roomTypeId: ${roomTypeId}`
+                );
+              }
+            }
+  
+            // Update the global buildings state
+            setBuildings(updatedBuildings);
+          } catch (error) {
+            console.error("Error fetching buildings:", error);
+          }
+        }
         Swal.fire(
           t("booking_room_deleted"),
           t("booking_room_deleted_message"),
@@ -371,7 +403,6 @@ export default function FormWithoutFormikForBooking({
       formik.setFieldValue("toDate", null);
     }
   };
-  // console.log(formik.values)
 
   const handleToDateChange = (date, dateString) => {
     formik.setFieldValue("toDate", date);
@@ -471,6 +502,7 @@ export default function FormWithoutFormikForBooking({
       },
     ];
     formik.setFieldValue("roomsData", clearedRoomsData);
+    setBuildings({});
     updateTotalAmount(
       clearedRoomsData,
       formik.values.fromDate,
@@ -520,23 +552,13 @@ export default function FormWithoutFormikForBooking({
             const buildings = response.results || [];
 
             // Update the global buildings state and set available buildings for the room
-            setBuildings(
-              buildings.map((building) => ({
+            setBuildings((prev) => ({
+              ...prev,
+              [index]: buildings.map((building) => ({
                 _id: building._id,
                 name: building.name,
-              }))
-            );
-
-            // Update the specific room's available buildings
-            updatedRoomsData[i].availableBuildings = buildings.map(
-              (building) => ({
-                _id: building._id,
-                name: building.name,
-              })
-            );
-
-            // Update the Formik state with the updated rooms data
-            formik.setFieldValue("roomsData", updatedRoomsData);
+              })),
+            }));
           } else {
             console.error(
               `Failed to fetch buildings for roomTypeId: ${roomTypeId}`
@@ -555,7 +577,7 @@ export default function FormWithoutFormikForBooking({
         ? {
             ...room,
             building: buildingId,
-            buildingName: buildings.find((b) => b._id === buildingId)?.name,
+            buildingName: (buildings[index]||[]).find((b) => b._id === buildingId)?.name,
             floor: "",
             floorName: "",
             roomNumber: "",
