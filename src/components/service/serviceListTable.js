@@ -1,5 +1,5 @@
 import { Table, Tag } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../../assets/scss/common.scss";
 import "../../assets/scss/viewCommon.scss";
 import { useHistory } from "react-router-dom";
@@ -11,6 +11,7 @@ import defaultImage from "../../assets/images/icons/defaultServiceImg.png";
 import { deleteService } from "../../api/serviceApi";
 import Swal from "sweetalert2";
 import { useQueryClient } from "@tanstack/react-query";
+import { fetchImage } from "../partials/downloadUploadImage";
 
 function ServiceListTable({
   data,
@@ -60,6 +61,29 @@ function ServiceListTable({
   };
 
   const { t } = useTranslation();
+  const [imageUrls, setImageUrls] = useState({}); // Store image URLs by record ID
+
+  const loadImages = async (record) => {
+    if (record?.images && Array.isArray(record.images)) {
+      const urls = await Promise.all(
+        record.images.map(async (image) => {
+          const url = await fetchImage(image.name);
+          return url;
+        })
+      );
+      setImageUrls((prevUrls) => ({
+        ...prevUrls,
+        [record._id]: urls, // Store the image URLs by record ID
+      }));
+    }
+  };
+
+  useEffect(() => {
+    data.forEach((record) => {
+      loadImages(record); // Load images for each record
+    });
+  }, [data]);
+  // console.log(imageUrls)
   const columns = [
     {
       title: t("name"),
@@ -67,20 +91,25 @@ function ServiceListTable({
       key: "name",
       width: 150,
       fixed: "left",
-      render: (text, record) => (
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <img
-            src={defaultImage}
-            style={{
-              width: 30,
-              height: 30,
-              borderRadius: "50%", 
-              marginRight: 10, 
-            }}
-          />
-          <span>{text}</span>
-        </div>
-      ),
+      render: (text, record) => {
+        const imgUrls = imageUrls[record._id] || []; // Get images for this record
+        const imgUrl = imgUrls.length > 0 ? imgUrls[0] : defaultImage;
+
+        return (
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <img
+              src={imgUrl}
+              style={{
+                width: 30,
+                height: 30,
+                borderRadius: "50%",
+                marginRight: 10,
+              }}
+            />
+            <span>{text}</span>
+          </div>
+        );
+      },
     },
     {
       title: t("frequency"),
