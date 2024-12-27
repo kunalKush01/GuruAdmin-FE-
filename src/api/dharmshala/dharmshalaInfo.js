@@ -20,6 +20,13 @@ export const exportData = (payload) =>
       showToastOnSuccess: false,
       showToastOnError: false,
     });
+    
+  export const getAvailableBuildingList = (payload) =>
+    callDharmshalaApi({
+      requestFunction: (axios) => axios.post(`buildings/search`,payload),
+      showToastOnSuccess: false,
+      showToastOnError: false,
+    });
 
 export const createBuilding = (payload) =>
   callDharmshalaApi({
