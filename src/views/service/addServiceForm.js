@@ -40,6 +40,7 @@ export default function AddServiceForm() {
 
     amount: "" || record ? record["amount"] : "",
     countPerDay: "" || record ? record["countPerDay"] : "",
+    images: [],
   };
 
   const history = useHistory();
