@@ -14,6 +14,7 @@ import {
   getAllRoomsByFloorId,
   getDharmshala,
   checkRoomAvailability,
+  getAvailableBuildingList,
 } from "../../api/dharmshala/dharmshalaInfo";
 import { Prompt } from "react-router-dom";
 import * as Yup from "yup";
@@ -50,19 +51,19 @@ export default function FormWithoutFormikForBooking({
   const [rooms, setRooms] = useState({});
   const [roomTypes, setRoomTypes] = useState([]);
 
-  const fetchBuildings = async () => {
-    try {
-      const response = await getDharmshalaList();
-      setBuildings(
-        response.results.map((building) => ({
-          _id: building._id,
-          name: building.name,
-        }))
-      );
-    } catch (error) {
-      console.error("Error fetching buildings:", error);
-    }
-  };
+  // const fetchBuildings = async () => {
+  //   try {
+  //     const response = await getDharmshalaList();
+  //     setBuildings(
+  //       response.results.map((building) => ({
+  //         _id: building._id,
+  //         name: building.name,
+  //       }))
+  //     );
+  //   } catch (error) {
+  //     console.error("Error fetching buildings:", error);
+  //   }
+  // };
 
   const fetchRoomTypes = async () => {
     try {
@@ -257,7 +258,7 @@ export default function FormWithoutFormikForBooking({
   }, [formik.values.fromDate, formik.values.toDate, formik.values.roomsData]);
 
   useEffect(() => {
-    fetchBuildings();
+    // fetchBuildings();
     fetchRoomTypes();
 
     if (formik.values.roomsData && formik.values.roomsData.length > 0) {
@@ -370,6 +371,7 @@ export default function FormWithoutFormikForBooking({
       formik.setFieldValue("toDate", null);
     }
   };
+  // console.log(formik.values)
 
   const handleToDateChange = (date, dateString) => {
     formik.setFieldValue("toDate", date);
@@ -476,7 +478,7 @@ export default function FormWithoutFormikForBooking({
     );
   };
 
-  const handleRoomTypeChange = (value, index) => {
+  const handleRoomTypeChange = async (value, index) => {
     const selectedRoomType = roomTypes.find((rt) => rt._id === value);
     const updatedRoomsData = [...formik.values.roomsData];
     updatedRoomsData[index] = {
@@ -497,6 +499,27 @@ export default function FormWithoutFormikForBooking({
       formik.values.fromDate,
       formik.values.toDate
     );
+    if (formik.values.fromDate && formik.values.toDate) {
+      const response = await getAvailableBuildingList({
+        roomTypeId: value,
+        fromDate: formik.values.fromDate,
+        toDate: formik.values.toDate,
+      });
+
+      if (response) {
+        const buildings = response.results || [];
+        console.log("Buildings:", buildings);
+
+        setBuildings(
+          buildings.map((building) => ({
+            _id: building._id,
+            name: building.name,
+          }))
+        );
+      } else {
+        console.error("Failed to fetch buildings:");
+      }
+    }
   };
 
   const handleBuildingChange = (buildingId, index) => {
