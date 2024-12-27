@@ -499,25 +499,52 @@ export default function FormWithoutFormikForBooking({
       formik.values.fromDate,
       formik.values.toDate
     );
+
     if (formik.values.fromDate && formik.values.toDate) {
-      const response = await getAvailableBuildingList({
-        roomTypeId: value,
-        fromDate: formik.values.fromDate,
-        toDate: formik.values.toDate,
-      });
+      // Create a list of roomTypeIds from the updated room data
+      const roomTypeIds = updatedRoomsData.map((room) => room.roomType);
 
-      if (response) {
-        const buildings = response.results || [];
-        console.log("Buildings:", buildings);
+      try {
+        // Fetch buildings for each room type
+        for (let i = 0; i < roomTypeIds.length; i++) {
+          const roomTypeId = roomTypeIds[i];
 
-        setBuildings(
-          buildings.map((building) => ({
-            _id: building._id,
-            name: building.name,
-          }))
-        );
-      } else {
-        console.error("Failed to fetch buildings:");
+          // Fetch the available buildings for this room type
+          const response = await getAvailableBuildingList({
+            roomTypeId,
+            fromDate: formik.values.fromDate,
+            toDate: formik.values.toDate,
+          });
+
+          if (response) {
+            const buildings = response.results || [];
+
+            // Update the global buildings state and set available buildings for the room
+            setBuildings(
+              buildings.map((building) => ({
+                _id: building._id,
+                name: building.name,
+              }))
+            );
+
+            // Update the specific room's available buildings
+            updatedRoomsData[i].availableBuildings = buildings.map(
+              (building) => ({
+                _id: building._id,
+                name: building.name,
+              })
+            );
+
+            // Update the Formik state with the updated rooms data
+            formik.setFieldValue("roomsData", updatedRoomsData);
+          } else {
+            console.error(
+              `Failed to fetch buildings for roomTypeId: ${roomTypeId}`
+            );
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching buildings:", error);
       }
     }
   };
