@@ -96,8 +96,12 @@ export default function EditEvent() {
           .utcOffset("+0530")
           .toDate(),
       },
-      startTime: eventDetailQuery?.data?.result?.startTime,
-      endTime: eventDetailQuery?.data?.result?.endTime,
+      startTime: eventDetailQuery?.data?.result?.startTime
+      ? moment(eventDetailQuery?.data?.result?.startTime, 'HH:mm').format('HH:mm')
+      : null,
+      endTime: eventDetailQuery?.data?.result?.endTime
+      ? moment(eventDetailQuery?.data?.result?.endTime, 'HH:mm').format('HH:mm')
+      : null,
       location: eventDetailQuery?.data?.result?.location,
       city: eventDetailQuery?.data?.result?.city,
       state: eventDetailQuery?.data?.result?.state,
@@ -108,7 +112,7 @@ export default function EditEvent() {
         title: eventDetailQuery?.data?.result?.baseTitle
       }
     };
-  }, [eventDetailQuery, tags]);
+  }, [eventDetailQuery?.data?.result]);
 
   return (
     <div className="listviewwrapper">
