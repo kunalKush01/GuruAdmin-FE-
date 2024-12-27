@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import moment from "moment";
 import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
+import defaultImage from "../../assets/images/icons/defaultServiceImg.png";
 import { deleteService } from "../../api/serviceApi";
 import Swal from "sweetalert2";
 import { useQueryClient } from "@tanstack/react-query";
@@ -23,7 +24,7 @@ function ServiceListTable({
   const serviceQueryClient = useQueryClient();
 
   const handleEdit = (record) => {
-    console.log(record);
+    // console.log(record);
     history.push({
       pathname: "/services/addService",
       state: { record, type: "edit" },
@@ -66,6 +67,20 @@ function ServiceListTable({
       key: "name",
       width: 150,
       fixed: "left",
+      render: (text, record) => (
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <img
+            src={defaultImage}
+            style={{
+              width: 30,
+              height: 30,
+              borderRadius: "50%", 
+              marginRight: 10, 
+            }}
+          />
+          <span>{text}</span>
+        </div>
+      ),
     },
     {
       title: t("frequency"),
@@ -105,12 +120,6 @@ function ServiceListTable({
       title: t("count_per_day"),
       dataIndex: "countPerDay",
       key: "countPerDay",
-      width: 120,
-    },
-    {
-      title: t("image"),
-      dataIndex: "image",
-      key: "image",
       width: 120,
     },
     {

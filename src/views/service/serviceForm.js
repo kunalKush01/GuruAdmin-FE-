@@ -64,7 +64,7 @@ export default function ServiceForm({
             dates: e.dates,
             amount: e.amount,
             countPerDay: e.countPerDay,
-            // image: uploadedFileUrl || "",
+            images: uploadedFileUrl || [],
           });
         }}
         validationSchema={validationSchema}
@@ -180,7 +180,7 @@ export default function ServiceForm({
                         required
                         uploadFileFunction={uploadFile}
                         setUploadedFileUrl={setUploadedFileUrl}
-                        name="image"
+                        name="images"
                         listType="picture"
                         maxCount={1}
                         buttonLabel={t("upload_image")}
