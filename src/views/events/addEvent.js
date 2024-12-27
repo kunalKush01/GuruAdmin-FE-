@@ -47,8 +47,8 @@ const initialValues = {
     start: null,
     end: null
   },
-  startTime: moment(new Date(), ["HH:mm"]).format("HH:mm"),
-  endTime: "23:59",
+  startTime: "",
+  endTime: "",
 };
 
 export default function AddEvent() {
