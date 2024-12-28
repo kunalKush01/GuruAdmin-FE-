@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
-import moment from "moment";
+import dayjs from "dayjs";
 import React, { useEffect, useMemo, useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
@@ -126,7 +126,7 @@ export default function EventForm({
   const [showPrompt, setShowPrompt] = useState(true);
   const [imageSpinner, setImageSpinner] = useState(false);
   const [selectedTimeStart, setSelectedTimeStart] = useState(
-    moment(new Date(), ["HH:mm"]).format("HH:mm")
+    dayjs(new Date(), ["HH:mm"]).format("HH:mm")
   );
   const [selectedTimeEnd, setSelectedTimeEnd] = useState("");
 
@@ -140,7 +140,6 @@ export default function EventForm({
   return (
     <div className="formwrapper FormikWrapper">
       <Formik
-        enableReinitialize
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={(values) => {
@@ -153,11 +152,11 @@ export default function EventForm({
           setShowPrompt(false);
           setLoading(true);
           const startDate = values?.DateTime?.start 
-            ? moment(values.DateTime.start).format("YYYY-MM-DD") 
-            : moment().format("YYYY-MM-DD");
-          
-          const endDate = values?.DateTime?.end 
-            ? moment(values.DateTime.end).format("YYYY-MM-DD")
+            ? dayjs(values.DateTime.start).format("YYYY-MM-DD")
+            : dayjs().format("YYYY-MM-DD");
+
+          const endDate = values?.DateTime?.end
+            ? dayjs(values.DateTime.end).format("YYYY-MM-DD")
             : startDate;
 
           eventMutation.mutate({
@@ -172,8 +171,8 @@ export default function EventForm({
             state: values?.state,
             latitude: values?.longitude,
             longitude: values?.latitude,
-            startTime: values.startTime,  // Use direct value from Formik
-            endTime: values.endTime,      // Use direct value from Formik
+            startTime: values.startTime,  
+            endTime: values.endTime,      
             startDate,
             endDate,
             images: uploadedFileUrl || "",
@@ -225,8 +224,8 @@ export default function EventForm({
                         label={t("events_select_globle")}
                         placeholder={t("events_select_globle")}
                         disabled={selectEventDisabled}
-                        defaultValue={formik.values.SelectedEvent} // Add this line
-                        value={formik.values.SelectedEvent} // Add this line
+                        defaultValue={formik.values.SelectedEvent} 
+                        value={formik.values.SelectedEvent} 
                         onChange={(selectOption) => {
                           formik.setFieldValue("SelectedEvent", selectOption);
                           formik.setFieldValue(
@@ -238,12 +237,12 @@ export default function EventForm({
                             ConvertToString(selectOption?.body ?? "")
                           );
 
-                          formik.setFieldValue("DateTime", {
-                            start: moment(selectOption?.startDate).toDate(),
-                            end: moment(selectOption?.endDate)
-                              .utcOffset("+0530")
-                              .toDate(),
-                          });
+                          if (selectOption?.startDate && selectOption?.endDate) {
+                            formik.setFieldValue("DateTime", {
+                              start: dayjs(selectOption.startDate).toDate(),
+                              end: dayjs(selectOption.endDate).toDate()
+                            });
+                          }
                           if (selectOption?.images) {
                             const globalImage = selectOption?.images?.map(
                               (item) => item?.name
@@ -431,7 +430,7 @@ export default function EventForm({
                   {!AddLanguage && (
                     <>
                       <Col xs={12} lg={4} md={6}>
-                        <label>{t("select_dates")}</label>
+                        <label>{t("select_start_date")}</label>
                         <CustomDatePickerComponent
                           placeholder={t("select_start_date")}
                           style={{ width: "100%" }}
@@ -439,17 +438,15 @@ export default function EventForm({
                           format="DD MMM YYYY"
                           onChange={(date) => {
                             if (date) {
-                              const localDate = moment(date);
-                              const startOfDay = localDate.startOf('day');
-                              
+                              const localDate = dayjs(date);
                               formik.setFieldValue("DateTime", {
                                 ...formik.values.DateTime,
-                                start: startOfDay.toDate()
+                                start: localDate.startOf('day').toDate()
                               });
                               if (!formik.values.DateTime?.end) {
                                 formik.setFieldValue("DateTime", {
-                                  start: startOfDay.toDate(),
-                                  end: startOfDay.toDate()
+                                  start: localDate.startOf('day').toDate(),
+                                  end: localDate.startOf('day').toDate()
                                 });
                               }
                             } else {
@@ -459,21 +456,21 @@ export default function EventForm({
                               });
                             }
                           }}
-                          value={formik.values.DateTime?.start ? moment(formik.values.DateTime.start) : null}
-                          disabledDate={(current) => current < moment().startOf("day")}
+                          value={formik.values.DateTime?.start ? dayjs(formik.values.DateTime.start) : null}
+                          disabledDate={(current) => current < dayjs().startOf("day")}
                         />
+                        <label>{t("select_end_date")}</label>
                         <CustomDatePickerComponent
                           placeholder={t("select_end_date")}
-                          style={{ width: "100%", marginTop:"20px" }}
+                          style={{ width: "100%", marginTop:"5px" }}
                           name="endDate"
                           format="DD MMM YYYY"
                           onChange={(date) => {
                             if (date) {
-                              const localDate = moment(date);   
-                              const endOfDay = localDate.endOf('day');
+                              const localDate = dayjs(date);
                               formik.setFieldValue("DateTime", {
                                 ...formik.values.DateTime,
-                                end: endOfDay.toDate()
+                                end: localDate.endOf('day').toDate()
                               });
                             } else {
                               formik.setFieldValue("DateTime", {
@@ -482,11 +479,11 @@ export default function EventForm({
                               });
                             }
                           }}
-                          value={formik.values.DateTime?.end ? moment(formik.values.DateTime.end) : null}
+                          value={formik.values.DateTime?.end ? dayjs(formik.values.DateTime.end) : null}
                           disabledDate={(current) => {
                             const startDate = formik.values.DateTime?.start;
-                            return current < moment().startOf("day") || 
-                                  (startDate && current < moment(startDate));
+                            return current < dayjs().startOf("day") || 
+                                   (startDate && current < dayjs(startDate));
                           }}
                         />
                         <div
@@ -510,7 +507,7 @@ export default function EventForm({
                     <TimePicker
                       use12Hours={false}
                       format="HH:mm"
-                      value={formik.values.startTime ? moment(formik.values.startTime, 'HH:mm') : null}
+                      value={formik.values.startTime ? dayjs(formik.values.startTime, 'HH:mm') : null}
                       onChange={(time) => {
                         const timeString = time ? time.format('HH:mm') : null;
                         formik.setFieldValue('startTime', timeString);
@@ -532,11 +529,11 @@ export default function EventForm({
                     <TimePicker
                       use12Hours={false}
                       format="HH:mm"
-                      value={formik.values.endTime ? moment(formik.values.endTime, 'HH:mm') : null}
-                      onChange={(time) => {
-                        const timeString = time ? time.format('HH:mm') : null;
-                        formik.setFieldValue('endTime', timeString);
-                      }}
+                      value={formik.values.endTime ? dayjs(formik.values.endTime, 'HH:mm') : null}
+                          onChange={(time) => {
+                            const timeString = time ? time.format('HH:mm') : null;
+                            formik.setFieldValue('endTime', timeString);
+                          }}
                       className="w-100"
                       placeholder="HH:mm"
                     />

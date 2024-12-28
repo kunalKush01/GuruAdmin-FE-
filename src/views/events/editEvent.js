@@ -81,6 +81,11 @@ export default function EditEvent() {
   }));
 
   const initialValues = useMemo(() => {
+    const eventData = eventDetailQuery?.data?.result;
+    const selectedEvent = eventData?.baseId && eventData?.title ? {
+      id: eventData.baseId,
+      title: eventData.title,
+    } : null;
     return {
       Id: eventDetailQuery?.data?.result?.id,
       Title: eventDetailQuery?.data?.result?.title,
@@ -107,12 +112,10 @@ export default function EditEvent() {
       state: eventDetailQuery?.data?.result?.state,
       latitude: eventDetailQuery?.data?.result?.longitude,
       longitude: eventDetailQuery?.data?.result?.latitude,
-      SelectedEvent: {
-        id: eventDetailQuery?.data?.result?.baseId,
-        title: eventDetailQuery?.data?.result?.baseTitle
-      }
+      SelectedEvent: selectedEvent,
     };
   }, [eventDetailQuery?.data?.result]);
+    
 
   return (
     <div className="listviewwrapper">
