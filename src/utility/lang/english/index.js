@@ -980,5 +980,7 @@ export const englishContent = {
   count_per_day:"Count Per Day",
   image:"Image",
   addService:"Add Service",
-  editService:"Edit Service"
+  editService:"Edit Service",
+  select_service:"Select Service",
+  no_of_person:"Number of persons"
 };

@@ -7,17 +7,34 @@ import "../../assets/scss/viewCommon.scss";
 
 import { Space, Tabs } from "antd";
 import ServiceListTable from "../../components/service/serviceListTable";
-import { useHistory } from "react-router-dom";
+import { useHistory,useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getAllServices } from "../../api/serviceApi";
+import BookingService from "./bookingService";
 
 function ServiceListView() {
   const history = useHistory();
+  const location = useLocation(); // Access the current location
+
   const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState("booking_service");
+  const [activeTab, setActiveTab] = useState(location.pathname === "/service" ? "service" : "booking_service");
+  useEffect(() => {
+    // Set the active tab based on the URL path
+    if (location.pathname === "/service") {
+      setActiveTab("service");
+    } else if (location.pathname === "/service-booking") {
+      setActiveTab("booking_service");
+    }
+  }, [location.pathname]);
   const handleTabChange = (key) => {
     setActiveTab(key);
+    if (key === "service") {
+      history.push("/service"); // Change URL to /service
+    } else if (key === "booking_service") {
+      history.push("/service-booking"); // Change URL to /booking-service
+    }
   };
+
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 10,
@@ -39,7 +56,11 @@ function ServiceListView() {
     {
       key: "booking_service",
       label: t("Booking Service"),
-      children: <></>,
+      children: (
+        <>
+          <BookingService serviceData={data ? data.results : []}/>
+        </>
+      ),
     },
     {
       key: "service",

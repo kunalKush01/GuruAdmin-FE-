@@ -552,6 +552,15 @@ const Routes = [
     subPermission: READ,
   },
   {
+    path: "/service-booking",
+    component: lazy(() =>
+      import("../../views/service/serviceListView.js")
+    ),
+    // exact:true,
+    type: "service",
+    subPermission: READ,
+  },
+  {
     path: "/services/addService",
     component: lazy(() =>
       import("../../views/service/addServiceForm.js")
