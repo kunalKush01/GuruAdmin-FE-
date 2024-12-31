@@ -81,6 +81,11 @@ export default function EditEvent() {
   }));
 
   const initialValues = useMemo(() => {
+    const eventData = eventDetailQuery?.data?.result;
+    const selectedEvent = eventData?.baseId && eventData?.title ? {
+      id: eventData.baseId,
+      title: eventData.title,
+    } : null;
     return {
       Id: eventDetailQuery?.data?.result?.id,
       Title: eventDetailQuery?.data?.result?.title,
@@ -96,15 +101,21 @@ export default function EditEvent() {
           .utcOffset("+0530")
           .toDate(),
       },
-      startTime: eventDetailQuery?.data?.result?.startTime,
-      endTime: eventDetailQuery?.data?.result?.endTime,
+      startTime: eventDetailQuery?.data?.result?.startTime
+      ? moment(eventDetailQuery?.data?.result?.startTime, 'HH:mm').format('HH:mm')
+      : null,
+      endTime: eventDetailQuery?.data?.result?.endTime
+      ? moment(eventDetailQuery?.data?.result?.endTime, 'HH:mm').format('HH:mm')
+      : null,
       location: eventDetailQuery?.data?.result?.location,
       city: eventDetailQuery?.data?.result?.city,
       state: eventDetailQuery?.data?.result?.state,
       latitude: eventDetailQuery?.data?.result?.longitude,
       longitude: eventDetailQuery?.data?.result?.latitude,
+      SelectedEvent: selectedEvent,
     };
-  }, [eventDetailQuery]);
+  }, [eventDetailQuery?.data?.result]);
+    
 
   return (
     <div className="listviewwrapper">

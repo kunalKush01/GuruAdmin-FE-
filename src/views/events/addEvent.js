@@ -43,9 +43,12 @@ const initialValues = {
   state: "",
   latitude: "",
   longitude: "",
-  DateTime: { start: new Date(), end: null },
-  startTime: moment(new Date(), ["HH:mm"]).format("HH:mm"),
-  endTime: "23:59",
+  DateTime: {
+    start: null,
+    end: null
+  },
+  startTime: "",
+  endTime: "",
 };
 
 export default function AddEvent() {

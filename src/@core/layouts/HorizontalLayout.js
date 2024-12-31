@@ -53,7 +53,6 @@ const SiderLayout = (props) => {
   const hasServiceAccess = useSelector(
     (state) => state.auth.trustDetail?.isSevaEnabled
   );
-  console.log("🚀🚀🚀 ~ file: HorizontalLayout.js:56 ~ SiderLayout ~ hasServiceAccess:", hasServiceAccess);
 
   const [collapsed, setCollapsed] = useState(false);
   const [active, setActive] = useState(location.pathname);
@@ -123,7 +122,6 @@ const SiderLayout = (props) => {
 
       const isDharmshalaItem = item?.name === "dharmshala/dashboard";
       const isServiceItem = item?.name === "service-booking";
-      console.log("🚀🚀🚀 ~ file: HorizontalLayout.js:126 ~ getMenuItem ~ isServiceItem:", isServiceItem);
       if (isDharmshalaItem && !hasDharmshalaAccess) {
       return null;
       }
