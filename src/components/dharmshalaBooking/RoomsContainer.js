@@ -108,7 +108,14 @@ const RoomsContainer = ({
                 name={`roomsData[${index}].building`}
               >
                 <option value="">{t('select_building')}</option>
-                {(buildings[index] || []).map((building) => (
+                {(!isCheckModal
+                  ? Array.isArray(buildings[index]) 
+                    ? buildings[index] 
+                    : [] 
+                  : Array.isArray(buildings) 
+                    ? buildings 
+                    : []
+                ).map((building) => (
                   <option key={building._id} value={building._id}>
                     {building.name}
                   </option>
