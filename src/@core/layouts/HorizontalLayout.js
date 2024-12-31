@@ -50,6 +50,10 @@ const SiderLayout = (props) => {
     (state) => state.auth.trustDetail?.hasDharmshala
   );
 
+  const hasServiceAccess = useSelector(
+    (state) => state.auth.trustDetail?.isSevaEnabled
+  );
+
   const [collapsed, setCollapsed] = useState(false);
   const [active, setActive] = useState(location.pathname);
   const [openKeys, setOpenKeys] = useState([]);
@@ -117,8 +121,13 @@ const SiderLayout = (props) => {
       item?.isCattle?.toLowerCase() === trustType?.toLowerCase();
 
       const isDharmshalaItem = item?.name === "dharmshala/dashboard";
+      const isServiceItem = item?.name === "service-booking";
       if (isDharmshalaItem && !hasDharmshalaAccess) {
       return null;
+      }
+
+      if (isServiceItem && !hasServiceAccess) {
+        return null;
       }
 
       if (
@@ -130,10 +139,11 @@ const SiderLayout = (props) => {
       }
 
       const shouldShowItem = hasAllPermission || 
-      (hasItemPermission && isGaushala) ||
-      (hasChildPermission && isGaushala) ||
-      (hasItemPermission && item?.name !== "cattles_management") ||
-      (hasChildPermission && item?.name !== "cattles_management");
+(hasItemPermission && isGaushala) ||
+(hasChildPermission && isGaushala) ||
+(hasItemPermission && !isServiceItem && item?.name !== "cattles_management") ||
+(hasChildPermission && !isServiceItem && item?.name !== "cattles_management") ||
+(isServiceItem && hasServiceAccess && (hasItemPermission || hasChildPermission));
 
       if (shouldShowItem) {
         const isActive = active.startsWith(item.url);

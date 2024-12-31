@@ -45,7 +45,7 @@ export default function Punyarjak() {
 
   const [pagination, setPagination] = useState({
     page: 1,
-    limit: 10,
+    limit: 3,
   });
 
   const searchParams = new URLSearchParams(history.location.search);
@@ -216,9 +216,12 @@ export default function Punyarjak() {
               </Else>
             </If>
 
-            <If condition={punyarjakUsersQuery?.data?.totalPages > 1}>
+            <If condition={punyarjakUsersQuery?.data?.totalPages > 0}>
               <Then>
-                <Col xs={12} className="mb-2 d-flex justify-content-center">
+                <Col
+                  xs={12}
+                  className="d-flex justify-content-center pagination-container mt-3"
+                >
                   <ReactPaginate
                     nextLabel=""
                     breakLabel="..."

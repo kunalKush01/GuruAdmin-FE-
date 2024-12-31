@@ -9,6 +9,10 @@ const Permission = ({ subPermission, type, isGaushala = "", ...props }) => {
     (state) => state.auth.trustDetail?.hasDharmshala
   );
 
+  const isSevaEnabled = useSelector(
+    (state) => state.auth.trustDetail?.isSevaEnabled
+  );
+
   const permissionRoute = permissions?.find(
     (item) => item?.name === type || item?.name === "all"
   );
@@ -35,6 +39,17 @@ const Permission = ({ subPermission, type, isGaushala = "", ...props }) => {
         "dharmshala/roomtypes", 
         "dharmshala/feedback"].includes(type)) &&
       !hasDharmshalaAccess
+    ) {
+      history.push("/not-found");
+      return null;
+    }
+  }
+
+  if (isSevaEnabled !== undefined) {
+    if (
+      ["service-booking",
+       "service"].includes(type) &&
+      !isSevaEnabled
     ) {
       history.push("/not-found");
       return null;
