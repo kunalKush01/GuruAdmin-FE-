@@ -1,13 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
-import moment from "moment";
+import dayjs from "dayjs";
 import React, { useEffect, useMemo, useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Prompt, useHistory } from "react-router-dom";
 import { WithContext as ReactTags } from "react-tag-input";
-import TimePicker from "react-time-picker";
+import { TimePicker } from 'antd';
 import "react-time-picker/dist/TimePicker.css";
 import { toast } from "react-toastify";
 import { Button, Col, Row, Spinner } from "reactstrap";
@@ -126,21 +126,9 @@ export default function EventForm({
   const [showPrompt, setShowPrompt] = useState(true);
   const [imageSpinner, setImageSpinner] = useState(false);
   const [selectedTimeStart, setSelectedTimeStart] = useState(
-    moment(new Date(), ["HH:mm"]).format("HH:mm")
+    dayjs(new Date(), ["HH:mm"]).format("HH:mm")
   );
   const [selectedTimeEnd, setSelectedTimeEnd] = useState("");
-
-  useEffect(() => {
-    setSelectedTimeEnd(initialValues?.endTime);
-    setSelectedTimeStart(initialValues?.startTime);
-  }, [initialValues]);
-
-  const handleTimeChange = (time) => {
-    setSelectedTimeStart(moment(time, ["HH:mm"]).format("HH:mm"));
-  };
-  const handleTimeChangeEnd = (time) => {
-    setSelectedTimeEnd(moment(time, ["HH:mm"]).format("HH:mm"));
-  };
 
   const [imageOnGlobalEvent, setImageOnGlobalEvent] = useState(defaultImages);
   const [tagCharInput, setTagCharInput] = useState("");
@@ -152,9 +140,9 @@ export default function EventForm({
   return (
     <div className="formwrapper FormikWrapper">
       <Formik
-        enableReinitialize
         initialValues={initialValues}
-        onSubmit={(e) => {
+        validationSchema={validationSchema}
+        onSubmit={(values) => {
           if (tagsCharLimit) {
             return;
           } else if (langSelectionValue === "Select") {
@@ -163,30 +151,35 @@ export default function EventForm({
           }
           setShowPrompt(false);
           setLoading(true);
+          const startDate = values?.DateTime?.start 
+            ? dayjs(values.DateTime.start).format("YYYY-MM-DD")
+            : dayjs().format("YYYY-MM-DD");
+
+          const endDate = values?.DateTime?.end
+            ? dayjs(values.DateTime.end).format("YYYY-MM-DD")
+            : startDate;
+
           eventMutation.mutate({
-            eventId: e.Id,
-            baseId: e?.SelectedEvent?.id ?? null,
-            title: e.Title,
-            tags: e?.tagsInit?.map((tag) => tag.text),
+            eventId: values.Id,
+            baseId: values?.SelectedEvent?.id ?? null,
+            title: values.Title,
+            body: values.Body || "",
+            tags: values?.tagsInit?.map((tag) => tag.text),
             deletedTags,
-            location: e?.location,
-            city: e?.city,
-            state: e?.state,
-            latitude: e?.longitude,
-            longitude: e?.latitude,
-            startTime: moment(e?.startTime, ["HH:mm"]).format("HH:mm"),
-            endTime: e?.endTime,
-            body: e.Body,
-            startDate: moment(e?.DateTime?.start).format("YYYY-MM-DD"),
-            endDate: e?.DateTime?.end
-              ? moment(e?.DateTime?.end).format("YYYY-MM-DD")
-              : moment(e?.DateTime?.start).format("YYYY-MM-DD"),
+            location: values?.location,
+            city: values?.city,
+            state: values?.state,
+            latitude: values?.longitude,
+            longitude: values?.latitude,
+            startTime: values.startTime,  
+            endTime: values.endTime,      
+            startDate,
+            endDate,
             images: uploadedFileUrl || "",
             removedImages: deletedImages,
           });
           setDeletedTags([]);
         }}
-        validationSchema={validationSchema}
       >
         {(formik) => {
           useEffect(() => {
@@ -231,6 +224,8 @@ export default function EventForm({
                         label={t("events_select_globle")}
                         placeholder={t("events_select_globle")}
                         disabled={selectEventDisabled}
+                        defaultValue={formik.values.SelectedEvent} 
+                        value={formik.values.SelectedEvent} 
                         onChange={(selectOption) => {
                           formik.setFieldValue("SelectedEvent", selectOption);
                           formik.setFieldValue(
@@ -242,12 +237,12 @@ export default function EventForm({
                             ConvertToString(selectOption?.body ?? "")
                           );
 
-                          formik.setFieldValue("DateTime", {
-                            start: moment(selectOption?.startDate).toDate(),
-                            end: moment(selectOption?.endDate)
-                              .utcOffset("+0530")
-                              .toDate(),
-                          });
+                          if (selectOption?.startDate && selectOption?.endDate) {
+                            formik.setFieldValue("DateTime", {
+                              start: dayjs(selectOption.startDate).toDate(),
+                              end: dayjs(selectOption.endDate).toDate()
+                            });
+                          }
                           if (selectOption?.images) {
                             const globalImage = selectOption?.images?.map(
                               (item) => item?.name
@@ -261,20 +256,7 @@ export default function EventForm({
                             setImageOnGlobalEvent([]);
                           }
                           setImageOnGlobalEvent(selectOption?.images ?? []);
-                          setSelectedTimeEnd(selectOption?.endTime ?? "23:59");
-                          setSelectedTimeStart(
-                            selectOption?.startTime ??
-                              moment(new Date(), ["HH:mm"]).format("HH:mm")
-                          );
-                          formik.setFieldValue(
-                            "startTime",
-                            selectOption?.startTime ??
-                              moment(new Date(), ["HH:mm"]).format("HH:mm")
-                          );
-                          formik.setFieldValue(
-                            "endTime",
-                            selectOption?.endTime ?? "23:59"
-                          );
+                         
                         }}
                       />
                     </Col>
@@ -394,6 +376,11 @@ export default function EventForm({
                           setFieldValue={formik.setFieldValue}
                           error={formik}
                           values={formik?.values}
+                          defaultValue={{ 
+                            location: formik.values.location,
+                            city: formik.values.city,
+                            state: formik.values.state
+                          }}
                         />
                         {formik.errors.location && (
                           <div
@@ -443,31 +430,61 @@ export default function EventForm({
                   {!AddLanguage && (
                     <>
                       <Col xs={12} lg={4} md={6}>
-                        <label>{t("donation_select_date")}</label>
+                        <label>{t("select_start_date")}</label>
                         <CustomDatePickerComponent
-                          placeholder={t("donation_select_date")}
+                          placeholder={t("select_start_date")}
                           style={{ width: "100%" }}
                           name="DateTime"
                           format="DD MMM YYYY"
                           onChange={(date) => {
                             if (date) {
-                              const utcDate = date
-                                .startOf("day")
-                                .utc()
-                                .toISOString();
-                              formik.setFieldValue("DateTime", utcDate);
+                              const localDate = dayjs(date);
+                              formik.setFieldValue("DateTime", {
+                                ...formik.values.DateTime,
+                                start: localDate.startOf('day').toDate()
+                              });
+                              if (!formik.values.DateTime?.end) {
+                                formik.setFieldValue("DateTime", {
+                                  start: localDate.startOf('day').toDate(),
+                                  end: localDate.startOf('day').toDate()
+                                });
+                              }
                             } else {
-                              formik.setFieldValue("DateTime", "");
+                              formik.setFieldValue("DateTime", {
+                                ...formik.values.DateTime,
+                                start: null
+                              });
                             }
                           }}
-                          value={
-                            formik.values["DateTime"]
-                              ? moment.utc(formik.values["DateTime"])
-                              : null
-                          }
-                          disabledDate={(current) =>
-                            current < moment().startOf("day")
-                          }
+                          value={formik.values.DateTime?.start ? dayjs(formik.values.DateTime.start) : null}
+                          disabledDate={(current) => current < dayjs().startOf("day")}
+                        />
+                        <label>{t("select_end_date")}</label>
+                        <CustomDatePickerComponent
+                          placeholder={t("select_end_date")}
+                          style={{ width: "100%", marginTop:"5px" }}
+                          name="endDate"
+                          format="DD MMM YYYY"
+                          onChange={(date) => {
+                            if (date) {
+                              const localDate = dayjs(date);
+                              formik.setFieldValue("DateTime", {
+                                ...formik.values.DateTime,
+                                end: localDate.endOf('day').toDate()
+                              });
+                            } else {
+                              formik.setFieldValue("DateTime", {
+                                ...formik.values.DateTime,
+                                end: null
+                              });
+                            }
+                          }}
+                          value={formik.values.DateTime?.end ? dayjs(formik.values.DateTime.end) : null}
+                          disabledDate={(current) => {
+                            const startDate = formik.values.DateTime?.start;
+                            return current < dayjs().startOf("day") || 
+                                   (startDate && current < dayjs(startDate));
+                          }}
                         />
                         <div
                         // style={{
@@ -475,127 +492,70 @@ export default function EventForm({
                         //   font: "normal normal bold 11px/33px Noto Sans",
                         // }}
                         >
-                          {formik.errors.DateTime &&
-                            formik.touched.DateTime && (
-                              <div className="text-danger">
-                                <Trans i18nKey={formik.errors.DateTime?.end} />
-                              </div>
-                            )}
+                          {formik.errors.DateTime && formik.touched.DateTime && (
+                             <div className="text-danger">
+                             {formik.errors.DateTime.start && <div><Trans i18nKey={formik.errors.DateTime.start} /></div>}
+                             {formik.errors.DateTime.end && <div><Trans i18nKey={formik.errors.DateTime.end} /></div>}
+                           </div>
+                         )}
                         </div>
                       </Col>
                       <Col xs={12} lg={4} md={6}>
-                        {!AddLanguage && (
-                          <>
-                            <label>
-                              <Trans i18nKey={"start_Time"} />*
-                            </label>
-                            <TimePicker
-                              onChange={(e) => {
-                                handleTimeChange(e);
-                                formik.setFieldValue("startTime", e);
-                              }}
-                              name="startTime"
-                              value={
-                                selectedTimeStart ?? formik.values.startTime
-                              }
-                              disableClock={true}
-                              clearIcon={null}
-                              format="HH:mm"
-                              placeholder="HH:mm"
-                            />
-                            {formik.errors.startTime &&
-                              formik.touched.startTime && (
-                                <div
-                                // style={{
-                                //   height: "20px",
-                                //   font: "normal normal bold 11px/33px Noto Sans",
-                                // }}
-                                >
-                                  {formik.errors.startTime &&
-                                    formik.touched.startTime && (
-                                      <div className="text-danger">
-                                        <Trans
-                                          i18nKey={formik.errors.startTime}
-                                        />
-                                      </div>
-                                    )}
-                                </div>
-                              )}
-                          </>
-                        )}
-                      </Col>
-                      <Col xs={12} lg={4} md={6}>
-                        {!AddLanguage && (
-                          <>
-                            <label>
-                              <Trans i18nKey={"end_Time"} />*
-                            </label>
-                            <TimePicker
-                              onChange={(e) => {
-                                handleTimeChangeEnd(e);
-                                formik.setFieldValue("endTime", e);
-                              }}
-                              name="endTime"
-                              value={selectedTimeEnd}
-                              disableClock={true}
-                              clearIcon={null}
-                              format="HH:mm"
-                              placeholder="HH:mm"
-                            />
-                            {formik.errors.endTime &&
-                              formik.touched.endTime && (
-                                <div
-                                // style={{
-                                //   height: "20px",
-                                //   font: "normal normal bold 11px/33px Noto Sans",
-                                // }}
-                                >
-                                  {formik.errors.endTime &&
-                                    formik.touched.endTime && (
-                                      <div className="text-danger">
-                                        <Trans
-                                          i18nKey={formik.errors.endTime}
-                                        />
-                                      </div>
-                                    )}
-                                </div>
-                              )}
-                          </>
-                        )}
-                      </Col>
-                      {!AddLanguage ? (
-                        formik?.values?.DateTime?.end === null ||
-                        moment(formik?.values?.DateTime?.start).format(
-                          "dd-mm-yy"
-                        ) ===
-                          moment(formik?.values?.DateTime?.end).format(
-                            "dd-mm-yy"
-                          ) ? (
-                          formik?.values?.startTime ===
-                            formik?.values?.endTime &&
-                          formik?.values?.startTime !== "" &&
-                          formik?.values?.endTime !== "" ? (
-                            <div
-                              className="text-danger"
-                            >
-                              <Trans i18nKey={"same_time"} />
-                            </div>
-                          ) : selectedTimeStart > selectedTimeEnd &&
-                            formik?.values?.endTime !== "" ? (
-                            <div
-                              className="text-danger"
-                            >
-                              <Trans i18nKey={"end_time_less"} />
-                            </div>
-                          ) : (
-                            ""
-                          )
-                        ) : (
-                          ""
-                        )
-                      ) : (
-                        ""
-                      )}
+                    <label>
+                      <Trans i18nKey={"start_Time"} />*
+                    </label>
+                    <TimePicker
+                      use12Hours={false}
+                      format="HH:mm"
+                      value={formik.values.startTime ? dayjs(formik.values.startTime, 'HH:mm') : null}
+                      onChange={(time) => {
+                        const timeString = time ? time.format('HH:mm') : null;
+                        formik.setFieldValue('startTime', timeString);
+                      }}
+                      className="w-100"
+                      placeholder="HH:mm"
+                    />
+                    {formik.errors.startTime && formik.touched.startTime && (
+                      <div className="text-danger">
+                        <Trans i18nKey={formik.errors.startTime} />
+                      </div>
+                    )}
+                  </Col>
+
+                  <Col xs={12} lg={4} md={6}>
+                    <label>
+                      <Trans i18nKey={"end_Time"} />*
+                    </label>
+                    <TimePicker
+                      use12Hours={false}
+                      format="HH:mm"
+                      value={formik.values.endTime ? dayjs(formik.values.endTime, 'HH:mm') : null}
+                          onChange={(time) => {
+                            const timeString = time ? time.format('HH:mm') : null;
+                            formik.setFieldValue('endTime', timeString);
+                          }}
+                      className="w-100"
+                      placeholder="HH:mm"
+                    />
+                    {formik.errors.endTime && formik.touched.endTime && (
+                      <div className="text-danger">
+                        <Trans i18nKey={formik.errors.endTime} />
+                      </div>
+                    )}
+                  </Col>
+                  {!AddLanguage && formik.values.startTime && formik.values.endTime && (
+                    <Col xs={12}>
+                      {formik.values.startTime === formik.values.endTime ? (
+                        <div className="text-danger">
+                          <Trans i18nKey={"same_time"} />
+                        </div>
+                      ) : formik.values.startTime > formik.values.endTime ? (
+                        <div className="text-danger">
+                          <Trans i18nKey={"end_time_less"} />
+                        </div>
+                      ) : null}
+                    </Col>
+                  )}
                     </>
                   )}
                 </Row>
@@ -654,13 +614,9 @@ export default function EventForm({
                     type="submit"
                     disabled={
                       imageSpinner ||
-                      (moment(formik?.values?.DateTime?.start).format(
-                        "dd-mm-yy"
-                      ) ===
-                        moment(formik?.values?.DateTime?.end).format(
-                          "dd-mm-yy"
-                        ) &&
-                        selectedTimeStart > selectedTimeEnd)
+                      (formik.values.startTime && 
+                       formik.values.endTime && 
+                       formik.values.startTime >= formik.values.endTime)
                     }
                   >
                     {plusIconDisable && (
