@@ -43,7 +43,7 @@ export default function News() {
 
   const [pagination, setPagination] = useState({
     page: 1,
-    limit: 12,
+    limit: 3,
   });
 
   const searchParams = new URLSearchParams(history.location.search);
@@ -238,9 +238,12 @@ export default function News() {
               </Else>
             </If>
 
-            <If condition={newsQuery?.data?.totalPages > 1}>
+            <If condition={newsQuery?.data?.totalPages > 0}>
               <Then>
-                <Col xs={12} className="mb-2 d-flex justify-content-center">
+                <Col
+                  xs={12}
+                  className="d-flex justify-content-center pagination-container mt-3"
+                >
                   <ReactPaginate
                     nextLabel=""
                     forcePage={pagination.page - 1}
@@ -263,11 +266,6 @@ export default function News() {
                     previousClassName={"page-item prev"}
                     onPageChange={(page) => {
                       setPagination({ ...pagination, page: page.selected + 1 });
-                      history.push(
-                        `/events?page=${
-                          page.selected + 1
-                        }&filter=${dropDownName}`
-                      );
                     }}
                     // forcePage={pagination.page !== 0 ? pagination.page - 1 : 0}
                     containerClassName={

@@ -47,7 +47,7 @@ export default function NoticeList() {
 
   const [pagination, setPagination] = useState({
     page: 1,
-    limit: 12,
+    limit: 3,
   });
 
   const searchParams = new URLSearchParams(history.location.search);
@@ -124,7 +124,7 @@ export default function NoticeList() {
   const subPermission = subPermissions?.subpermissions?.map(
     (item) => item.name
   );
-  
+
   return (
     <div className="listviewwrapper">
       <Helmet>
@@ -244,9 +244,12 @@ export default function NoticeList() {
                 </Else>
               </If>
 
-              <If condition={noticeQuery?.data?.totalPages > 1}>
+              <If condition={noticeQuery?.data?.totalPages > 0}>
                 <Then>
-                  <Col xs={12} className="mb-2 d-flex justify-content-center">
+                  <Col
+                    xs={12}
+                    className="d-flex justify-content-center pagination-container mt-3"
+                  >
                     <ReactPaginate
                       nextLabel=""
                       forcePage={pagination.page - 1}
@@ -272,11 +275,6 @@ export default function NoticeList() {
                           ...pagination,
                           page: page.selected + 1,
                         });
-                        history.push(
-                          `/events?page=${
-                            page.selected + 1
-                          }&filter=${dropDownName}`
-                        );
                       }}
                       // forcePage={pagination.page !== 0 ? pagination.page - 1 : 0}
                       containerClassName={
