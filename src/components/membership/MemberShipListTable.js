@@ -95,6 +95,7 @@ function MemberShipListTable({
       dataIndex: ["data", "addressInfo", "homeAddress", "street"],
       key: "homeAddress",
       width: 400,
+
       render: (text, record) => {
         const homeAddress = record?.data?.addressInfo?.homeAddress || {};
         const street = homeAddress?.street || "-";
