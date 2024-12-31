@@ -982,5 +982,8 @@ export const englishContent = {
   addService:"Add Service",
   editService:"Edit Service",
   select_service:"Select Service",
-  no_of_person:"Number of persons"
+  no_of_person:"Number of persons",
+  select_start_date:"Select start date",
+  select_end_date:"Select end date",
+  select_dates:"Select Dates",
 };
