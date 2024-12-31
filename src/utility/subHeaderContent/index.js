@@ -315,6 +315,37 @@ export const subHeaderContentResponsive = [
     icon: MembershipIcon,
     activeIcon: MembershipIcon,
   },
+  // {
+  //   name: "Service",
+  //   url: "/service",
+  //   icon: MembershipIcon,
+  //   activeIcon: MembershipIcon,
+  // },
+
+  {
+    name: "service-booking",
+    customLabel: "Service",
+    activeTab: "/service-booking",
+    icon: DharmshalaIcon,
+    activeIcon: DharmshalaIcon,
+    children: [
+      {
+        name: "service-booking",
+        customLabel: "Booking Service",
+        url: "/service-booking",
+        icon: DharmshalaIcon,
+        activeIcon: DharmshalaIcon,
+      },
+      {
+        name: "service",
+        customLabel: "Services",
+        url: "/service",
+        icon: BookingIcon,
+        activeIcon: BookingIcon,
+      },
+      
+    ],
+  },
   {
     name: "financial_reports",
     url: "/financial_reports",
