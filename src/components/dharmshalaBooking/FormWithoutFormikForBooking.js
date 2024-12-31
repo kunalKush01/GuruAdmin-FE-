@@ -207,7 +207,7 @@ export default function FormWithoutFormikForBooking({
       cancelButtonColor: "#3085d6",
       cancelButtonText: t("cancel"),
       confirmButtonText: t("confirm"),
-    }).then(async(result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
         const updatedRoomsData = formik.values.roomsData.filter(
           (room, idx) => idx !== index
@@ -221,7 +221,7 @@ export default function FormWithoutFormikForBooking({
         if (formik.values.fromDate && formik.values.toDate) {
           const roomTypeIds = updatedRoomsData.map((room) => room.roomType);
           const updatedBuildings = {};
-  
+
           try {
             for (let i = 0; i < roomTypeIds.length; i++) {
               const roomTypeId = roomTypeIds[i];
@@ -230,7 +230,7 @@ export default function FormWithoutFormikForBooking({
                 fromDate: formik.values.fromDate,
                 toDate: formik.values.toDate,
               });
-  
+
               if (response) {
                 const buildings = response.results || [];
                 updatedBuildings[i] = buildings.map((building) => ({
@@ -243,7 +243,7 @@ export default function FormWithoutFormikForBooking({
                 );
               }
             }
-  
+
             // Update the global buildings state
             setBuildings(updatedBuildings);
           } catch (error) {
@@ -412,7 +412,7 @@ export default function FormWithoutFormikForBooking({
     }
   };
   const [isSearchRoom, setIsSearchRoom] = useState(false);
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
     if (!isSearchEnabled()) return;
     setIsSearchRoom(true);
@@ -462,7 +462,47 @@ export default function FormWithoutFormikForBooking({
         remainingGuests -= smallestRoom.capacity;
       }
     }
-
+    if (formik.values.fromDate && formik.values.toDate) {
+      // Create a list of roomTypeIds from the updated room data
+      const roomTypeIds = roomsCombination.map((room) => room.roomType);
+    
+      try {
+        const buildingsData = {}; // Temporary storage for building data
+    
+        // Fetch buildings for each room type
+        for (let i = 0; i < roomTypeIds.length; i++) {
+          const roomTypeId = roomTypeIds[i];
+          // console.log(`Fetching buildings for roomTypeId: ${roomTypeId} at index: ${i}`);
+    
+          // Fetch the available buildings for this room type
+          const response = await getAvailableBuildingList({
+            roomTypeId,
+            fromDate: formik.values.fromDate,
+            toDate: formik.values.toDate,
+          });
+    
+          if (response) {
+            const buildings = response.results || [];
+            // Temporarily store the data for the current index
+            buildingsData[i] = buildings.map((building) => ({
+              _id: building._id,
+              name: building.name,
+            }));
+          } else {
+            console.error(`Failed to fetch buildings for roomTypeId: ${roomTypeId}`);
+          }
+        }
+    
+        // Update the state after all requests are completed
+        setBuildings((prev) => ({
+          ...prev,
+          ...buildingsData,
+        }));
+      } catch (error) {
+        console.error("Error fetching buildings:", error);
+      }
+    }
+    
     formik.setFieldValue("roomsData", roomsCombination);
     updateTotalAmount(
       roomsCombination,
@@ -554,7 +594,7 @@ export default function FormWithoutFormikForBooking({
             // Update the global buildings state and set available buildings for the room
             setBuildings((prev) => ({
               ...prev,
-              [index]: buildings.map((building) => ({
+              [i]: buildings.map((building) => ({
                 _id: building._id,
                 name: building.name,
               })),
@@ -577,7 +617,9 @@ export default function FormWithoutFormikForBooking({
         ? {
             ...room,
             building: buildingId,
-            buildingName: (buildings[index]||[]).find((b) => b._id === buildingId)?.name,
+            buildingName: (buildings[index] || []).find(
+              (b) => b._id === buildingId
+            )?.name,
             floor: "",
             floorName: "",
             roomNumber: "",
