@@ -973,5 +973,8 @@ export const englishContent = {
   donarName:"Donar Name",
   add_record:"Add record",
   masterCategoryId:"Category",
-  categoryId:"Sub Category"
+  categoryId:"Sub Category",
+  select_start_date:"Select start date",
+  select_end_date:"Select end date",
+  select_dates:"Select Dates",
 };
