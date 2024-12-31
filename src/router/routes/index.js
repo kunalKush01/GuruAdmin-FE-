@@ -977,6 +977,24 @@ const Routes = [
     type: "dharmshala/dashboard",
     subPermission: WRITE,
   },
+  {
+    path: "/service-booking",
+    component: lazy(() =>
+      import("../../views/service/serviceListView.js")
+    ),
+    exact: true,
+    type: "service-booking",
+    subPermission: READ,
+  },
+  {
+    path: "/service",
+    component: lazy(() =>
+      import("../../views/service/bookingService.js")
+    ),
+    exact: true,
+    type: "service",
+    subPermission: READ,
+  },
 ];
 
 export { DefaultRoute, Routes, TemplateTitle };
