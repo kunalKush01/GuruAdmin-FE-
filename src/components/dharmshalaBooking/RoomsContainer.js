@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import guestIcon from "../../assets/images/icons/subadmin.svg";
 import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
-import { t } from 'i18next';
-import { Trans } from 'react-i18next';
+import { t } from "i18next";
+import { Trans } from "react-i18next";
+import { getAvailableBuildingList } from "../../api/dharmshala/dharmshalaInfo";
 
 const RoomsContainer = ({
   isSearchRoom,
@@ -20,13 +21,14 @@ const RoomsContainer = ({
   handleAddRoom,
   handleClearRooms,
   isPartialView = false,
-  isReadOnly = false,
   hideAmountField = false,
   isCheckModal = false,
+  isReadOnly,
+  isEditing,
 }) => {
-
+  
   const getSelectedRoomIds = () => {
-    return roomsData.map(room => room.roomId).filter(id => id);
+    return roomsData.map((room) => room.roomId).filter((id) => id);
   };
 
   const handleButtonClick = (action) => (event) => {
@@ -36,14 +38,14 @@ const RoomsContainer = ({
   return (
     <div className="rooms-container">
       <div className="rooms-header">
-        <div className="rooms-title">{t('rooms')}</div>
+        <div className="rooms-title">{t("rooms")}</div>
       </div>
       <div className="rooms-content">
         {roomsData.map((room, index) => (
           <div key={index} className="room-row">
             <div className="field-container">
               <label htmlFor={`room-type-${index}`} className="room-label">
-                {t('room_type')}
+                {t("room_type")}
                 <span className="text-danger">*</span>:
               </label>
               <div className="input-with-icon w-100">
@@ -86,16 +88,22 @@ const RoomsContainer = ({
                     )}
                 </div>
                 <div className="guests-content">
-                  <img src={guestIcon} className="guests-icon" alt="Guests" style={{ width: '24px', height: '24px' }}/>
+                  <img
+                    src={guestIcon}
+                    className="guests-icon"
+                    alt="Guests"
+                    style={{ width: "24px", height: "24px" }}
+                  />
                   <span className="guests-count">
-                    {roomTypes.find((rt) => rt._id === room.roomType)?.capacity ?? ""}
+                    {roomTypes.find((rt) => rt._id === room.roomType)
+                      ?.capacity ?? ""}
                   </span>
                 </div>
               </div>
             </div>
             <div className="field-container">
               <label htmlFor={`building-${index}`} className="building-label">
-                {t('building')}
+                {t("building")}
                 <span className="text-danger">*</span>:
               </label>
               <select
@@ -107,14 +115,14 @@ const RoomsContainer = ({
                 onBlur={!isCheckModal && formik.handleBlur}
                 name={`roomsData[${index}].building`}
               >
-                <option value="">{t('select_building')}</option>
+                <option value="">{t("select_building")}</option>
                 {(!isCheckModal
-                  ? Array.isArray(buildings[index]) 
-                    ? buildings[index] 
-                    : [] 
-                  : Array.isArray(buildings) 
-                    ? buildings 
+                  ? Array.isArray(buildings[index])
+                    ? buildings[index]
                     : []
+                  : Array.isArray(buildings)
+                  ? buildings
+                  : []
                 ).map((building) => (
                   <option key={building._id} value={building._id}>
                     {building.name}
@@ -131,7 +139,7 @@ const RoomsContainer = ({
             </div>
             <div className="field-container">
               <label htmlFor={`floor-${index}`} className="floor-label">
-                {t('floor')}
+                {t("floor")}
                 <span className="text-danger">*</span>:
               </label>
               <select
@@ -143,7 +151,7 @@ const RoomsContainer = ({
                 onBlur={!isCheckModal && formik.handleBlur}
                 name={`roomsData[${index}].floor`}
               >
-                <option value="">{t('select_floor')}</option>
+                <option value="">{t("select_floor")}</option>
                 {(floors[room.building] || []).map((floor) => (
                   <option key={floor._id} value={floor._id}>
                     {floor.name}
@@ -159,8 +167,11 @@ const RoomsContainer = ({
                 )}
             </div>
             <div className="field-container">
-              <label htmlFor={`room-number-${index}`} className="room-number-label">
-                {t('room_number')}
+              <label
+                htmlFor={`room-number-${index}`}
+                className="room-number-label"
+              >
+                {t("room_number")}
                 <span className="text-danger">*</span>:
               </label>
               <select
@@ -173,22 +184,27 @@ const RoomsContainer = ({
                 name={`roomsData[${index}].roomId`}
               >
                 <option value="">Select Room Number</option>
-                {isCheckModal?
-                  (rooms[room.floor] || [])
-                  .map((availableRoom) => (
-                    <option key={availableRoom._id} value={availableRoom._id}>
-                      {availableRoom.roomNumber}
-                    </option>
-                  )):
-                  (rooms[room.floor] || [])
-                  .filter((r) => r.roomTypeId === room.roomType)
-                  .filter((r) => !getSelectedRoomIds().includes(r._id) || r._id === room.roomId)
-                  .map((availableRoom) => (
-                    <option key={availableRoom._id} value={availableRoom._id}>
-                      {availableRoom.roomNumber}
-                    </option>
-                  ))
-                  }
+                {isCheckModal
+                  ? (rooms[room.floor] || []).map((availableRoom) => (
+                      <option key={availableRoom._id} value={availableRoom._id}>
+                        {availableRoom.roomNumber}
+                      </option>
+                    ))
+                  : (rooms[room.floor] || [])
+                      .filter((r) => r.roomTypeId === room.roomType)
+                      .filter(
+                        (r) =>
+                          !getSelectedRoomIds().includes(r._id) ||
+                          r._id === room.roomId
+                      )
+                      .map((availableRoom) => (
+                        <option
+                          key={availableRoom._id}
+                          value={availableRoom._id}
+                        >
+                          {availableRoom.roomNumber}
+                        </option>
+                      ))}
               </select>
               {!isCheckModal &&
                 formik.touched.roomsData?.[index]?.roomId &&
@@ -220,19 +236,26 @@ const RoomsContainer = ({
                   className="delete-icon"
                   alt="Delete"
                   onClick={() => handleDeleteRoom(index)}
+                  style={{ display: isReadOnly && "none" }}
                 />
               </div>
             )}
           </div>
         ))}
       </div>
-      {!isPartialView && (
+      {!isPartialView && !isReadOnly && (
         <div className="rooms-buttons">
-          <button className="add-rooms-button" onClick={handleButtonClick(handleAddRoom)}>
-            {t('addmore_room')}
+          <button
+            className="add-rooms-button"
+            onClick={handleButtonClick(handleAddRoom)}
+          >
+            {t("addmore_room")}
           </button>
-          <button className="clear-rooms-button" onClick={handleButtonClick(handleClearRooms)}>
-            {t('clear_all')}
+          <button
+            className="clear-rooms-button"
+            onClick={handleButtonClick(handleClearRooms)}
+          >
+            {t("clear_all")}
           </button>
         </div>
       )}

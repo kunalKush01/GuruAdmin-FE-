@@ -21,6 +21,7 @@ const AddDharmshalaBooking = () => {
   const bookingData = location.state?.bookingData;
   const property = location.state?.property;
   const bookingDate = location.state?.date;
+  const isReadOnly = location.isReadOnly;
   useEffect(() => {
     if (bookingData) {
       setInitialValues({
@@ -141,7 +142,7 @@ const AddDharmshalaBooking = () => {
           roomId: Yup.string().required("Room Number is required"),
         })
       )
-      .required("Rooms data is required")
+      .required("Rooms data is required"),
   });
 
   if (isLoading) {
@@ -162,6 +163,7 @@ const AddDharmshalaBooking = () => {
         setIsPaymentModalOpen={setIsPaymentModalOpen}
         isEditing={!!bookingData}
         editBookingData={bookingData}
+        isReadOnly={isReadOnly}
       />
     </div>
   );

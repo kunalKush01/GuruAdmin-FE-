@@ -13,6 +13,7 @@ import {
 } from "../../../api/dharmshala/dharmshalaInfo";
 import deleteIcon from "../../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../../assets/images/icons/category/editIcon.svg";
+import eyeIcon from "../../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
 import checkInIcon from "../../../assets/images/icons/dharmshala/checkin.svg";
 import checkOutIcon from "../../../assets/images/icons/dharmshala/checkout.svg";
 import confirmationIcon from "../../../assets/images/icons/news/conformationIcon.svg";
@@ -86,11 +87,12 @@ const DharmshalaBookingTable = ({
     }
   };
 
-  const handleEditClick = (item) => {
+  const handleEditClick = (item,isReadOnly) => {
     //console.log("@@@", item.originalData);
     history.push({
       pathname: `/booking/edit/${item._id}`,
       state: { bookingData: item.originalData },
+      isReadOnly:isReadOnly
     });
   };
 
@@ -228,18 +230,42 @@ const DharmshalaBookingTable = ({
       render: (_, record) => {
         const isActive = isBookingActive(record);
         return (
-          <Space size="middle">
+          <Space size="middle" className="d-flex justify-content-between">
             {isActive && (
-              <Tooltip title="Edit">
+              <Tooltip
+                title={
+                  record.originalData.status !== "checked-out" ? "View" : "Edit"
+                }
+              >
                 <img
-                  src={editIcon}
-                  width={30}
+                  src={
+                    record.originalData.status === "checked-out"
+                      ? eyeIcon
+                      : editIcon
+                  }
+                  width={record.originalData.status === "checked-out" ? 20 : 30}
                   className="cursor-pointer"
-                  onClick={() => handleEditClick(record)}
-                  alt="Edit"
+                  onClick={() =>
+                    handleEditClick(
+                      record,
+                      record.originalData.status === "checked-out"
+                    )
+                  }
+                  alt={
+                    record.originalData.status !== "checked-out"
+                      ? "View"
+                      : "Edit"
+                  }
+                  style={{
+                    marginLeft:
+                      record.originalData.status === "checked-out" ? "5px" : "",
+                    marginRight:
+                      record.originalData.status === "checked-out" ? "5px" : "",
+                  }}
                 />
               </Tooltip>
             )}
+
             <Tooltip title="Delete">
               <img
                 src={deleteIcon}

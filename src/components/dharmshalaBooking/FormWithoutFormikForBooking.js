@@ -41,6 +41,7 @@ export default function FormWithoutFormikForBooking({
   showPrompt,
   isEditing,
   editBookingData,
+  isReadOnly,
   ...props
 }) {
   const { t } = useTranslation();
@@ -54,7 +55,7 @@ export default function FormWithoutFormikForBooking({
   // const fetchBuildings = async () => {
   //   try {
   //     const response = await getDharmshalaList();
-  //     setBuildings(
+  //     setBuildings((prev) =>
   //       response.results.map((building) => ({
   //         _id: building._id,
   //         name: building.name,
@@ -465,22 +466,22 @@ export default function FormWithoutFormikForBooking({
     if (formik.values.fromDate && formik.values.toDate) {
       // Create a list of roomTypeIds from the updated room data
       const roomTypeIds = roomsCombination.map((room) => room.roomType);
-    
+
       try {
         const buildingsData = {}; // Temporary storage for building data
-    
+
         // Fetch buildings for each room type
         for (let i = 0; i < roomTypeIds.length; i++) {
           const roomTypeId = roomTypeIds[i];
           // console.log(`Fetching buildings for roomTypeId: ${roomTypeId} at index: ${i}`);
-    
+
           // Fetch the available buildings for this room type
           const response = await getAvailableBuildingList({
             roomTypeId,
             fromDate: formik.values.fromDate,
             toDate: formik.values.toDate,
           });
-    
+
           if (response) {
             const buildings = response.results || [];
             // Temporarily store the data for the current index
@@ -489,10 +490,12 @@ export default function FormWithoutFormikForBooking({
               name: building.name,
             }));
           } else {
-            console.error(`Failed to fetch buildings for roomTypeId: ${roomTypeId}`);
+            console.error(
+              `Failed to fetch buildings for roomTypeId: ${roomTypeId}`
+            );
           }
         }
-    
+
         // Update the state after all requests are completed
         setBuildings((prev) => ({
           ...prev,
@@ -502,7 +505,7 @@ export default function FormWithoutFormikForBooking({
         console.error("Error fetching buildings:", error);
       }
     }
-    
+
     formik.setFieldValue("roomsData", roomsCombination);
     updateTotalAmount(
       roomsCombination,
@@ -617,7 +620,7 @@ export default function FormWithoutFormikForBooking({
         ? {
             ...room,
             building: buildingId,
-            buildingName: (buildings[index] || []).find(
+            buildingName: ((!isEditing?buildings[index]:fetchBuildings[index]) || []).find(
               (b) => b._id === buildingId
             )?.name,
             floor: "",
@@ -684,6 +687,65 @@ export default function FormWithoutFormikForBooking({
     );
   };
 
+  const [fetchBuildings, setFetchBuildings] = useState([]);
+  const fetchAvailableBuildings = async (editBookingData) => {
+    if (formik.values.fromDate && formik.values.toDate) {
+      // Create a list of roomTypeIds from the updated room data
+      const roomTypeIds = editBookingData.rooms.map((room) => room.roomTypeId);
+
+      try {
+        const buildingsData = {}; // Temporary storage for building data
+
+        // Fetch buildings for each room type
+        await Promise.all(
+          roomTypeIds.map(async (roomTypeId, index) => {
+            try {
+              // Fetch the available buildings for this room type
+              const response = await getAvailableBuildingList({
+                roomTypeId,
+                fromDate: formik.values.fromDate,
+                toDate: formik.values.toDate,
+                bookingId:editBookingData?._id
+              });
+
+              if (response) {
+                const buildings = response.results || [];
+                // Temporarily store the data for the current index
+                buildingsData[index] = buildings.map((building) => ({
+                  _id: building._id,
+                  name: building.name,
+                }));
+              } else {
+                console.error(
+                  `Failed to fetch buildings for roomTypeId: ${roomTypeId}`
+                );
+              }
+            } catch (error) {
+              console.error(
+                `Error fetching buildings for roomTypeId: ${roomTypeId}:`,
+                error
+              );
+            }
+          })
+        );
+
+        // Update the state after all requests are completed
+        setFetchBuildings((prev) => ({
+          ...prev,
+          ...buildingsData,
+        }));
+      } catch (error) {
+        console.error("Error fetching buildings:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (isEditing && editBookingData) {
+      fetchAvailableBuildings(editBookingData);
+    }
+  }, [isEditing, editBookingData]);
+
   return (
     <Form>
       {showPrompt && (
@@ -724,6 +786,7 @@ export default function FormWithoutFormikForBooking({
                     disabledDate={disabledDate}
                     name="fromDate"
                     onBlur={formik.handleBlur}
+                    disabled={isReadOnly}
                   />
                   {formik.errors.fromDate && formik.touched.fromDate && (
                     <div className="text-danger">
@@ -750,6 +813,7 @@ export default function FormWithoutFormikForBooking({
                           current < formik.values.fromDate)
                       );
                     }}
+                    disabled={isReadOnly}
                   />
                   {formik.errors.toDate && formik.touched.toDate && (
                     <div className="text-danger">
@@ -781,6 +845,7 @@ export default function FormWithoutFormikForBooking({
                       className="member-input"
                       placeholder="Men"
                       name="numMen"
+                      readOnly={isReadOnly}
                     />
                   </div>
                   <div className="d-flex flex-column">
@@ -803,6 +868,7 @@ export default function FormWithoutFormikForBooking({
                       className="member-input"
                       placeholder="Women"
                       name="numWomen"
+                      readOnly={isReadOnly}
                     />
                   </div>
                   <div className="d-flex flex-column">
@@ -825,6 +891,7 @@ export default function FormWithoutFormikForBooking({
                       className="member-input"
                       placeholder="Kids"
                       name="numKids"
+                      readOnly={isReadOnly}
                     />
                   </div>
                   <button
@@ -833,7 +900,10 @@ export default function FormWithoutFormikForBooking({
                     }`}
                     onClick={(e) => handleSearch(e)}
                     type="button"
-                    disabled={!isSearchEnabled()}
+                    style={{
+                      display: isReadOnly && "none",
+                    }}
+                    disabled={!isSearchEnabled() || isReadOnly}
                   >
                     Search
                   </button>
@@ -845,7 +915,7 @@ export default function FormWithoutFormikForBooking({
             roomsData={formik.values.roomsData}
             formik={formik}
             roomTypes={roomTypes}
-            buildings={buildings}
+            buildings={isEditing ? fetchBuildings : buildings}
             floors={floors}
             rooms={rooms}
             handleRoomTypeChange={handleRoomTypeChange}
@@ -856,6 +926,8 @@ export default function FormWithoutFormikForBooking({
             handleAddRoom={handleAddRoom}
             handleClearRooms={handleClearRooms}
             isSearchRoom={isSearchRoom}
+            isReadOnly={isReadOnly}
+            isEditing={isEditing}
           />
         </div>
         <div className="guest-payment">
@@ -865,6 +937,7 @@ export default function FormWithoutFormikForBooking({
             payDonation={payDonation}
             countryFlag={countryFlag}
             isEditing={isEditing}
+            isReadOnly={isReadOnly}
           />
           <div className="payments-container">
             <div className="tabs">
@@ -1000,7 +1073,12 @@ export default function FormWithoutFormikForBooking({
             <Spinner size="md" />
           </Button>
         ) : (
-          <Button color="primary" className="addAction-btn " type="submit">
+          <Button
+            color="primary"
+            className="addAction-btn "
+            type="submit"
+            style={{ display: isReadOnly && "none" }}
+          >
             {!props.plusIconDisable && (
               <span>
                 <Plus className="" size={15} strokeWidth={4} />
