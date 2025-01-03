@@ -23,6 +23,7 @@ const AddDharmshalaBooking = () => {
   const bookingDate = location.state?.date;
   useEffect(() => {
     if (bookingData) {
+      console.log("🚀🚀🚀 ~ file: index.js:26 ~ useEffect ~ bookingData:", bookingData);
       setInitialValues({
         Mobile: bookingData.userDetails.mobileNumber || "",
         countryCode: bookingData.userDetails.countryCode || "in",
@@ -64,6 +65,7 @@ const AddDharmshalaBooking = () => {
         bookingId: bookingData._id || "",
         bookingCode: bookingData.bookingId || "",
         imagePath: bookingData.imagePath || "",
+        etag: bookingData.etag || "",
       });
     } else {
       setInitialValues({
