@@ -87,12 +87,17 @@ const DharmshalaBookingTable = ({
     }
   };
 
-  const handleEditClick = (item,isReadOnly) => {
-    //console.log("@@@", item.originalData);
+  const handleEditClick = (item) => {
     history.push({
       pathname: `/booking/edit/${item._id}`,
       state: { bookingData: item.originalData },
-      isReadOnly:isReadOnly
+    });
+  };
+  const handleViewClick = (item) => {
+    history.push({
+      pathname: `/booking/view/${item._id}`,
+      search: `?isReadOnly=true`,
+      state: { bookingData: item.originalData },
     });
   };
 
@@ -245,12 +250,13 @@ const DharmshalaBookingTable = ({
                   }
                   width={record.originalData.status === "checked-out" ? 20 : 30}
                   className="cursor-pointer"
-                  onClick={() =>
-                    handleEditClick(
-                      record,
-                      record.originalData.status === "checked-out"
-                    )
-                  }
+                  onClick={() => {
+                    if (record.originalData.status === "checked-out") {
+                      handleViewClick(record); // Call a function for "View" action
+                    } else {
+                      handleEditClick(record); // Call a function for "Edit" action
+                    }
+                  }}
                   alt={
                     record.originalData.status !== "checked-out"
                       ? "View"

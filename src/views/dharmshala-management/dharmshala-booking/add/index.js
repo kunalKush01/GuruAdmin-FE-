@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation,useParams } from "react-router-dom";
 import "../../dharmshala_css/addbooking.scss";
 import BookingForm from "../../../../components/dharmshalaBooking/BookingForm";
 import * as Yup from "yup";
@@ -11,17 +11,17 @@ import moment from "moment";
 dayjs.extend(customParseFormat);
 
 const AddDharmshalaBooking = () => {
+  const history = useHistory();
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [initialValues, setInitialValues] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-
   const { t } = useTranslation();
   const location = useLocation();
-  const history = useHistory();
   const bookingData = location.state?.bookingData;
   const property = location.state?.property;
   const bookingDate = location.state?.date;
-  const isReadOnly = location.isReadOnly;
+  const searchParams = new URLSearchParams(history.location.search);
+  const isReadOnly = searchParams.get("isReadOnly");
   useEffect(() => {
     if (bookingData) {
       setInitialValues({

@@ -26,7 +26,6 @@ const RoomsContainer = ({
   isReadOnly,
   isEditing,
 }) => {
-  
   const getSelectedRoomIds = () => {
     return roomsData.map((room) => room.roomId).filter((id) => id);
   };
@@ -56,18 +55,20 @@ const RoomsContainer = ({
                     value={room.roomTypeId || room.roomType}
                     onChange={(e) => {
                       handleRoomTypeChange(e.target.value, index);
-                      formik.setFieldValue(
-                        `roomsData[${index}].roomType`,
-                        e.target.value
-                      );
-                      formik.validateField(`roomsData[${index}].roomType`);
-                      formik.setFieldTouched(
-                        `roomsData[${index}].roomType`,
-                        true
-                      );
+                      if (formik) {
+                        formik.setFieldValue(
+                          `roomsData[${index}].roomType`,
+                          e.target.value
+                        );
+                        formik.validateField(`roomsData[${index}].roomType`);
+                        formik.setFieldTouched(
+                          `roomsData[${index}].roomType`,
+                          true
+                        );
+                      }
                     }}
                     disabled={isReadOnly}
-                    onBlur={!isCheckModal && formik.handleBlur}
+                    onBlur={formik && !isCheckModal &&  formik.handleBlur}
                     name={`roomsData[${index}].roomType`}
                   >
                     <option value="">{t("Select_Room_Type")}</option>
@@ -78,6 +79,7 @@ const RoomsContainer = ({
                     ))}
                   </select>
                   {!isCheckModal &&
+                    formik &&
                     formik.touched.roomsData?.[index]?.roomType &&
                     formik.errors.roomsData?.[index]?.roomType && (
                       <div className="text-danger">
@@ -112,7 +114,7 @@ const RoomsContainer = ({
                 value={room.building}
                 onChange={(e) => handleBuildingChange(e.target.value, index)}
                 disabled={isReadOnly}
-                onBlur={!isCheckModal && formik.handleBlur}
+                onBlur={formik && !isCheckModal &&  formik.handleBlur}
                 name={`roomsData[${index}].building`}
               >
                 <option value="">{t("select_building")}</option>
@@ -130,6 +132,7 @@ const RoomsContainer = ({
                 ))}
               </select>
               {!isCheckModal &&
+                formik &&
                 formik.touched.roomsData?.[index]?.building &&
                 formik.errors.roomsData?.[index]?.building && (
                   <div className="text-danger">
@@ -148,7 +151,7 @@ const RoomsContainer = ({
                 value={room.floor}
                 onChange={(e) => handleFloorChange(e.target.value, index)}
                 disabled={isReadOnly || !room.building}
-                onBlur={!isCheckModal && formik.handleBlur}
+                onBlur={formik && !isCheckModal && formik.handleBlur}
                 name={`roomsData[${index}].floor`}
               >
                 <option value="">{t("select_floor")}</option>
@@ -159,6 +162,7 @@ const RoomsContainer = ({
                 ))}
               </select>
               {!isCheckModal &&
+                formik &&
                 formik.touched.roomsData?.[index]?.floor &&
                 formik.errors.roomsData?.[index]?.floor && (
                   <div className="text-danger">
@@ -180,7 +184,7 @@ const RoomsContainer = ({
                 value={room.roomId}
                 onChange={(e) => handleRoomNumberChange(e.target.value, index)}
                 disabled={isReadOnly || !room.floor || !room.roomType}
-                onBlur={!isCheckModal && formik.handleBlur}
+                onBlur={formik && !isCheckModal && formik.handleBlur}
                 name={`roomsData[${index}].roomId`}
               >
                 <option value="">Select Room Number</option>
@@ -207,6 +211,7 @@ const RoomsContainer = ({
                       ))}
               </select>
               {!isCheckModal &&
+                formik &&
                 formik.touched.roomsData?.[index]?.roomId &&
                 formik.errors.roomsData?.[index]?.roomId && (
                   <div className="text-danger">
