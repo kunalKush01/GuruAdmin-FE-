@@ -236,38 +236,30 @@ const DharmshalaBookingTable = ({
         const isActive = isBookingActive(record);
         return (
           <Space size="middle" className="d-flex justify-content-between">
-            {isActive && (
-              <Tooltip
-                title={
-                  record.originalData.status !== "checked-out" ? "View" : "Edit"
-                }
-              >
+            {record.originalData.status === "checked-out" && (
+              <Tooltip title="View">
                 <img
-                  src={
-                    record.originalData.status === "checked-out"
-                      ? eyeIcon
-                      : editIcon
-                  }
-                  width={record.originalData.status === "checked-out" ? 20 : 30}
+                  src={eyeIcon}
+                  width={20}
                   className="cursor-pointer"
-                  onClick={() => {
-                    if (record.originalData.status === "checked-out") {
-                      handleViewClick(record); // Call a function for "View" action
-                    } else {
-                      handleEditClick(record); // Call a function for "Edit" action
-                    }
-                  }}
-                  alt={
-                    record.originalData.status !== "checked-out"
-                      ? "View"
-                      : "Edit"
-                  }
+                  onClick={() => handleViewClick(record)} 
+                  alt="View"
                   style={{
-                    marginLeft:
-                      record.originalData.status === "checked-out" ? "5px" : "",
-                    marginRight:
-                      record.originalData.status === "checked-out" ? "5px" : "",
+                    marginLeft: "5px",
+                    marginRight: "5px",
                   }}
+                />
+              </Tooltip>
+            )}
+
+            {isActive && (
+              <Tooltip title="Edit">
+                <img
+                  src={editIcon}
+                  width={30}
+                  className="cursor-pointer"
+                  onClick={() => handleEditClick(record)}
+                  alt="Edit"
                 />
               </Tooltip>
             )}
