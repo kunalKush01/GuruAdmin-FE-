@@ -261,7 +261,7 @@ const Calendar = () => {
       }
     }
     setFromDate(date);
-    setToDate(null);
+    // setToDate(null);
   };
 
   const handleToDateChange = (date) => {
