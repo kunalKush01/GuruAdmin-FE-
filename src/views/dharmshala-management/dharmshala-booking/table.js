@@ -13,6 +13,7 @@ import {
 } from "../../../api/dharmshala/dharmshalaInfo";
 import deleteIcon from "../../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../../assets/images/icons/category/editIcon.svg";
+import eyeIcon from "../../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
 import checkInIcon from "../../../assets/images/icons/dharmshala/checkin.svg";
 import checkOutIcon from "../../../assets/images/icons/dharmshala/checkout.svg";
 import confirmationIcon from "../../../assets/images/icons/news/conformationIcon.svg";
@@ -87,9 +88,15 @@ const DharmshalaBookingTable = ({
   };
 
   const handleEditClick = (item) => {
-    //console.log("@@@", item.originalData);
     history.push({
       pathname: `/booking/edit/${item._id}`,
+      state: { bookingData: item.originalData },
+    });
+  };
+  const handleViewClick = (item) => {
+    history.push({
+      pathname: `/booking/view/${item._id}`,
+      search: `?isReadOnly=true`,
       state: { bookingData: item.originalData },
     });
   };
@@ -228,7 +235,23 @@ const DharmshalaBookingTable = ({
       render: (_, record) => {
         const isActive = isBookingActive(record);
         return (
-          <Space size="middle">
+          <Space size="middle" className="d-flex justify-content-between">
+            {record.originalData.status === "checked-out" && (
+              <Tooltip title="View">
+                <img
+                  src={eyeIcon}
+                  width={20}
+                  className="cursor-pointer"
+                  onClick={() => handleViewClick(record)} 
+                  alt="View"
+                  style={{
+                    marginLeft: "5px",
+                    marginRight: "5px",
+                  }}
+                />
+              </Tooltip>
+            )}
+
             {isActive && (
               <Tooltip title="Edit">
                 <img
@@ -240,6 +263,7 @@ const DharmshalaBookingTable = ({
                 />
               </Tooltip>
             )}
+
             <Tooltip title="Delete">
               <img
                 src={deleteIcon}

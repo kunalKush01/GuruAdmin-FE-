@@ -957,6 +957,17 @@ const Routes = [
     type: "dharmshala/bookings",
     subPermission: WRITE,
   },
+  {
+    path: "/booking/view/:bookingId",
+    component: lazy(() =>
+      import(
+        "../../views/dharmshala-management/dharmshala-booking/add/index.js"
+      )
+    ),
+    exact: true,
+    type: "dharmshala/bookings",
+    subPermission: READ,
+  },
 
   // {
   //   path: "/booking/calendar",

@@ -19,6 +19,7 @@ function GuestDetailsSection({
   payDonation,
   countryFlag,
   isEditing,
+  isReadOnly,
   ...props
 }) {
   const { t } = useTranslation();
@@ -295,7 +296,7 @@ function GuestDetailsSection({
                     value={`${formik.values.SelectedUser?.countryCode || ""}${
                       formik.values.SelectedUser?.mobileNumber || ""
                     }`}
-                    disabled={payDonation}
+                    disabled={payDonation||isReadOnly}
                     defaultCountry={countryFlag}
                     label={t("dashboard_Recent_DonorNumber")}
                     placeholder={t("placeHolder_mobile_number")}
@@ -321,7 +322,7 @@ function GuestDetailsSection({
                     required
                     onBlur={formik.handleBlur}
                   />
-                  {noUserFound && (
+                  {noUserFound && !isReadOnly && (
                     <div className="addUser">
                       {" "}
                       <Trans i18nKey={"add_user_donation"} />{" "}
@@ -373,6 +374,7 @@ function GuestDetailsSection({
                 value={formik.values.guestname}
                 onChange={formik.handleChange}
                 onInput={(e) => (e.target.value = e.target.value.slice(0, 30))}
+                disabled={isReadOnly}
               />
             </Col>
             <Col xs={12} sm={6} lg={4} md={6} className="pb-1">
@@ -387,6 +389,7 @@ function GuestDetailsSection({
                     e.target.value.slice(0, 30)
                   );
                 }}
+                disabled={isReadOnly}
               />
             </Col>
           </Row>
@@ -399,6 +402,7 @@ function GuestDetailsSection({
                 value={formik.values.email}
                 onChange={formik.handleChange}
                 onInput={(e) => (e.target.value = e.target.value.slice(0, 30))}
+                disabled={isReadOnly}
               />
             </Col>
 
@@ -410,6 +414,7 @@ function GuestDetailsSection({
                 name="address"
                 value={formik.values.address}
                 onChange={formik.handleChange}
+                disabled={isReadOnly}
               />
             </Col>
           </Row>
@@ -433,6 +438,7 @@ function GuestDetailsSection({
                     selectedOption ? selectedOption.value : ""
                   )
                 }
+                disabled={isReadOnly}
               />
             </Col>
             <Col xs={12} sm={6} lg={4} className="pb-1">
@@ -444,9 +450,10 @@ function GuestDetailsSection({
                 value={formik.values.idNumber}
                 onChange={formik.handleChange}
                 onInput={(e) => (e.target.value = e.target.value.slice(0, 30))}
+                disabled={isReadOnly}
               />
             </Col>
-            <Col xs={12} sm={6} lg={4} className="pb-1 upload-id">
+            <Col xs={12} sm={6} lg={4} className="pb-1 upload-id" style={{display:isReadOnly && "none"}}>
               <Upload
                 name="file"
                 className="uploadIdCard"
