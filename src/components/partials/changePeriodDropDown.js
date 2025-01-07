@@ -10,15 +10,19 @@ export const ChangePeriodDropDown = ({
   
   const i18nKeyDropDownItemArray = [
     {
-      id: 2,
-      key: "dashboard_weekly",
-    },
-    {
       id: 1,
-      key: "dashboard_monthly",
+      key: "All",
     },
     {
       id: 3,
+      key: "dashboard_weekly",
+    },
+    {
+      id: 2,
+      key: "dashboard_monthly",
+    },
+    {
+      id: 4,
       key: "dashboard_yearly",
     },
   ];

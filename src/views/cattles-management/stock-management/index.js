@@ -30,7 +30,7 @@ const StockManagement = () => {
   const { t } = useTranslation();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
-  const [dropDownName, setdropDownName] = useState("dashboard_monthly");
+  const [dropDownName, setdropDownName] = useState("All");
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 10,
@@ -55,20 +55,37 @@ const StockManagement = () => {
         return "year";
       case "dashboard_weekly":
         return "week";
-
-      default:
-        return "month";
+        case "All":
+          return "All";
+        default:
+          return "All";
     }
   };
 
-  let filterStartDate = moment()
-    .startOf(periodDropDown())
-    .utcOffset(0, true)
-    .toISOString();
-  let filterEndDate = moment()
-    .endOf(periodDropDown())
-    .utcOffset(0, true)
-    .toISOString();
+  let filterStartDate = dropDownName !== "All" 
+  ? moment().startOf(periodDropDown()).utcOffset(0, true).toISOString()
+  : null;
+let filterEndDate = dropDownName !== "All"
+  ? moment().endOf(periodDropDown()).utcOffset(0, true).toISOString()
+  : null;
+
+  const getQueryParams = () => {
+    const baseParams = {
+      ...pagination,
+      search: searchBarValue,
+      languageId: selectedLang.id,
+    };
+  
+    if (dropDownName !== "All") {
+      return {
+        ...baseParams,
+        startDate: filterStartDate,
+        endDate: filterEndDate,
+      };
+    }
+  
+    return baseParams;
+  };
 
   const cattleStockManagementList = useQuery(
     [
@@ -81,37 +98,13 @@ const StockManagement = () => {
     ],
     () =>
       active == "/stock-management/stock"
-        ? getCattlesStockList({
-            ...pagination,
-            search: searchBarValue,
-            startDate: filterStartDate,
-            endDate: filterEndDate,
-            languageId: selectedLang.id,
-          })
+        ? getCattlesStockList(getQueryParams())
         : active == "/stock-management/item"
-        ? getCattlesItemsList({
-            ...pagination,
-            search: searchBarValue,
-            startDate: filterStartDate,
-            endDate: filterEndDate,
-            languageId: selectedLang.id,
-          })
+        ? getCattlesItemsList(getQueryParams())
         : active == "/stock-management/supplies"
-        ? getSupplyList({
-            ...pagination,
-            search: searchBarValue,
-            startDate: filterStartDate,
-            endDate: filterEndDate,
-            languageId: selectedLang.id,
-          })
+        ? getSupplyList(getQueryParams())
         : active == "/stock-management/usage" &&
-          getCattlesUsageList({
-            ...pagination,
-            search: searchBarValue,
-            startDate: filterStartDate,
-            endDate: filterEndDate,
-            languageId: selectedLang.id,
-          })
+          getCattlesUsageList(getQueryParams())
   );
 
   const cattleStockManagementListData = useMemo(
@@ -142,6 +135,21 @@ const StockManagement = () => {
     (item) => item.name
   );
   // console.log("subPermission", permissions);
+
+  const getActivePath = () => {
+    switch (active) {
+      case "/stock-management/stock":
+        return "stock-management/stock";
+      case "/stock-management/item":
+        return "stock-management/item";
+      case "/stock-management/supplies":
+        return "stock-management/supplies";
+      case "/stock-management/usage":
+        return "stock-management/usage";
+      default:
+        return "stock-management/stock";
+    }
+  };
 
   return (
     <div className="stockmanagementwrapper">
@@ -205,24 +213,15 @@ const StockManagement = () => {
               tabBar
             />
             <div className="d-flex  mt-sm-0 justify-content-between">
-              <ChangePeriodDropDown
+            <ChangePeriodDropDown
                 className={"me-1"}
                 dropDownName={dropDownName}
                 setdropDownName={(e) => {
                   setdropDownName(e.target.name);
                   setPagination({ page: 1 });
+                  // Use the helper function to get the correct path
                   history.push(
-                    `/${
-                      active == "/stock-management/stock"
-                        ? "cattle/management/stock"
-                        : active == "/stock-management/item"
-                        ? "cattle/management/item"
-                        : active == "/stock-management/supplies"
-                        ? "cattle/management/supplies"
-                        : active == "/stock-management/usage"
-                        ? "cattle/management/usage"
-                        : "/not-fount"
-                    }?page=${1}&filter=${e.target.name}`
+                    `/${getActivePath()}?page=1&filter=${e.target.name}`
                   );
                 }}
               />
