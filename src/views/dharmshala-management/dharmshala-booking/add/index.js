@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useHistory, useLocation,useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import "../../dharmshala_css/addbooking.scss";
 import BookingForm from "../../../../components/dharmshalaBooking/BookingForm";
 import * as Yup from "yup";
@@ -82,15 +82,15 @@ const AddDharmshalaBooking = () => {
         numKids: "",
         roomsData: [
           {
-            roomTypeId: property?.roomType || "",
-            building: property?.buildingId || "",
-            floor: property?.floorId || "",
+            roomType: property?.roomTypeId || "",
+            building: property?.buildingId?._id || "",
+            floor: property?.floorId?._id || "",
             roomId: property?._id || "",
             amount: 0,
             roomNumber: property?.roomNumber || "",
             roomTypeName: property?.roomTypeName || "",
-            buildingName: "",
-            floorName: "",
+            buildingName: property?.buildingName || "",
+            floorName: property?.floorName || "",
           },
         ],
         guestname: "",

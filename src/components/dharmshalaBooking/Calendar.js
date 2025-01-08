@@ -74,6 +74,21 @@ const Calendar = () => {
   const [showAvailableOnly, setShowAvailableOnly] = useState(false);
   const [currentMonth, setCurrentMonth] = useState("");
   const { t } = useTranslation();
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  useEffect(() => {
+    if (isDesktop && fromDate) {
+      setToDate(fromDate.clone().add(30, 'days'));
+    }
+  }, [isDesktop, fromDate]);
   //**filter event based on date selection */
   const filteredEvents = useMemo(() => {
     if (!events || events.length === 0) {
@@ -599,7 +614,7 @@ const Calendar = () => {
                 value={fromDate || ""}
               />
             </div>
-            <div className="toDate">
+            <div className="toDate calendarToDate">
               <label htmlFor="to-date">To Date:</label>
               <CustomDatePicker
                 id="to-date"
