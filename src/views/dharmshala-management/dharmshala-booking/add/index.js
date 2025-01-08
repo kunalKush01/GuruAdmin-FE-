@@ -24,7 +24,6 @@ const AddDharmshalaBooking = () => {
   const isReadOnly = searchParams.get("isReadOnly");
   useEffect(() => {
     if (bookingData) {
-      console.log("🚀🚀🚀 ~ file: index.js:26 ~ useEffect ~ bookingData:", bookingData);
       setInitialValues({
         Mobile: bookingData.userDetails.mobileNumber || "",
         countryCode: bookingData.userDetails.countryCode || "in",
