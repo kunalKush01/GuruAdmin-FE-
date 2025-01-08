@@ -4395,3 +4395,8 @@
     min-height: 38px !important;
     overflow: hidden !important;
 }
+.calendarFromDate{
+    .ant-picker-clear{
+        display: none;
+    }
+}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation,useParams } from "react-router-dom";
 import "../../dharmshala_css/addbooking.scss";
 import BookingForm from "../../../../components/dharmshalaBooking/BookingForm";
 import * as Yup from "yup";
@@ -11,16 +11,17 @@ import moment from "moment";
 dayjs.extend(customParseFormat);
 
 const AddDharmshalaBooking = () => {
+  const history = useHistory();
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [initialValues, setInitialValues] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-
   const { t } = useTranslation();
   const location = useLocation();
-  const history = useHistory();
   const bookingData = location.state?.bookingData;
   const property = location.state?.property;
   const bookingDate = location.state?.date;
+  const searchParams = new URLSearchParams(history.location.search);
+  const isReadOnly = searchParams.get("isReadOnly");
   useEffect(() => {
     if (bookingData) {
       console.log("🚀🚀🚀 ~ file: index.js:26 ~ useEffect ~ bookingData:", bookingData);
@@ -143,7 +144,7 @@ const AddDharmshalaBooking = () => {
           roomId: Yup.string().required("Room Number is required"),
         })
       )
-      .required("Rooms data is required")
+      .required("Rooms data is required"),
   });
 
   if (isLoading) {
@@ -164,6 +165,7 @@ const AddDharmshalaBooking = () => {
         setIsPaymentModalOpen={setIsPaymentModalOpen}
         isEditing={!!bookingData}
         editBookingData={bookingData}
+        isReadOnly={isReadOnly}
       />
     </div>
   );
