@@ -198,11 +198,27 @@ export const deleteHousekeepingTask = (taskId) =>
 
     //Bookings
 
-export const createDharmshalaBooking = (payload) =>
-  callDharmshalaApi({
-    requestFunction: (axios) => axios.post(`bookings`, payload),
-    successCode: 201,
-  });
+    export const createDharmshalaBooking = async (payload) => {
+      try {
+        const response = await callDharmshalaApi({
+          requestFunction: (axios) => axios.post(`bookings`, payload),
+          successCode: 201,
+        });
+        
+        return {
+          data: response.data,
+          etag: response.data?.etag
+        };
+      } catch (error) {
+        if (error.response?.status === 409) {
+          throw {
+            response: error.response,
+            message: "Duplicate booking detected"
+          };
+        }
+        throw error;
+      }
+    };
 
   export const createRoomHold = (payload) =>
     callDharmshalaApi({
@@ -238,10 +254,25 @@ export const deleteDharmshalaBooking = (bookingId) =>
     requestFunction: (axios) => axios.delete(`bookings/${bookingId}`),
   });
 
-  export const updateDharmshalaBooking = (payload) => {
-    return callDharmshalaApi({
-      requestFunction: (axios) => axios.put(`bookings/${payload.bookingId}`, payload),
-    });
+  export const updateDharmshalaBooking = async (payload) => {
+    try {
+      const response = await callDharmshalaApi({
+        requestFunction: (axios) => axios.put(`bookings/${payload.bookingId}`, payload),
+      });
+      
+      return {
+        data: response.data,
+        etag: response.data?.etag
+      };
+    } catch (error) {
+      if (error.response?.status === 409) {
+        throw {
+          response: error.response,
+          message: "Booking has been modified by another user"
+        };
+      }
+      throw error;
+    }
   };
 
 export const checkoutBooking = (bookingId) =>

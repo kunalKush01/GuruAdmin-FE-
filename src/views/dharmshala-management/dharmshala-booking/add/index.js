@@ -65,6 +65,7 @@ const AddDharmshalaBooking = () => {
         bookingId: bookingData._id || "",
         bookingCode: bookingData.bookingId || "",
         imagePath: bookingData.imagePath || "",
+        etag: bookingData.etag || "",
       });
     } else {
       setInitialValues({
