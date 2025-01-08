@@ -17,7 +17,7 @@ import NoContent from "../../components/partials/noContent";
 import { WRITE } from "../../utility/permissionsVariable";
 import "../../assets/scss/viewCommon.scss";
 export default function Expenses() {
-  const [dropDownName, setdropDownName] = useState("dashboard_monthly");
+  const [dropDownName, setdropDownName] = useState("All");
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const periodDropDown = () => {
     switch (dropDownName) {
@@ -27,9 +27,11 @@ export default function Expenses() {
         return "year";
       case "dashboard_weekly":
         return "week";
+        case "All":
+        return "All";
 
       default:
-        return "month";
+        return "All";
     }
   };
   const { t } = useTranslation();
@@ -57,18 +59,34 @@ export default function Expenses() {
 
   const [selectedMasterCate, setSelectedMasterCate] = useState("");
 
-  let filterStartDate = moment()
-    .startOf(periodDropDown())
-    .utcOffset(0, true)
-    .toISOString();
-  let filterEndDate = moment()
-    .endOf(periodDropDown())
-    .utcOffset(0, true)
-    .toISOString();
+  let filterStartDate = dropDownName !== "All" 
+  ? moment().startOf(periodDropDown()).utcOffset(0, true).toISOString()
+  : null;
+  let filterEndDate = dropDownName !== "All"
+  ? moment().endOf(periodDropDown()).utcOffset(0, true).toISOString()
+  : null;
 
   let startDate = moment(filterStartDate).format("DD MMM");
   let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
+
+  const getQueryParams = () => {
+    const baseParams = {
+      ...pagination,
+      languageId: selectedLang.id,
+      search: searchBarValue,
+    };
+
+    if (dropDownName !== "All") {
+      return {
+        ...baseParams,
+        startDate: filterStartDate,
+        endDate: filterEndDate,
+      };
+    }
+
+    return baseParams;
+  };
 
   const boxCollectionQuery = useQuery(
     [
@@ -79,14 +97,7 @@ export default function Expenses() {
       filterEndDate,
       searchBarValue,
     ],
-    () =>
-      getAllBoxCollection({
-        ...pagination,
-        startDate: filterStartDate,
-        endDate: filterEndDate,
-        languageId: selectedLang.id,
-        search: searchBarValue,
-      }),
+    () => getAllBoxCollection(getQueryParams()),
     {
       keepPreviousData: true,
     }

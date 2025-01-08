@@ -25,7 +25,7 @@ import { WRITE } from "../../utility/permissionsVariable";
 import "../../assets/scss/viewCommon.scss";
 
 export default function Punyarjak() {
-  const [dropDownName, setdropDownName] = useState("dashboard_monthly");
+  const [dropDownName, setdropDownName] = useState("All");
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const periodDropDown = () => {
     switch (dropDownName) {
@@ -35,9 +35,10 @@ export default function Punyarjak() {
         return "year";
       case "dashboard_weekly":
         return "week";
-
-      default:
-        return "month";
+        case "All":
+          return "All";
+        default:
+          return "All";
     }
   };
   const { t } = useTranslation();
@@ -59,16 +60,32 @@ export default function Punyarjak() {
     }
   }, []);
 
-  let filterStartDate = moment()
-    .startOf(periodDropDown())
-    .utcOffset(0, true)
-    .toISOString();
-  let filterEndDate = moment()
-    .endOf(periodDropDown())
-    .utcOffset(0, true)
-    .toISOString();
+  let filterStartDate = dropDownName !== "All" 
+    ? moment().startOf(periodDropDown()).utcOffset(0, true).toISOString()
+    : null;
+  let filterEndDate = dropDownName !== "All"
+    ? moment().endOf(periodDropDown()).utcOffset(0, true).toISOString()
+    : null;
 
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
+
+  const getQueryParams = () => {
+    const baseParams = {
+      ...pagination,
+      languageId: selectedLang.id,
+      search: searchBarValue,
+    };
+  
+    if (dropDownName !== "All") {
+      return {
+        ...baseParams,
+        startDate: filterStartDate,
+        endDate: filterEndDate,
+      };
+    }
+  
+    return baseParams;
+  };
 
   const punyarjakUsersQuery = useQuery(
     [
@@ -79,14 +96,7 @@ export default function Punyarjak() {
       filterStartDate,
       searchBarValue,
     ],
-    () =>
-      getAllPunyarjak({
-        ...pagination,
-        startDate: filterStartDate,
-        endDate: filterEndDate,
-        languageId: selectedLang.id,
-        search: searchBarValue,
-      }),
+    () => getAllPunyarjak(getQueryParams()),
     {
       keepPreviousData: true,
     }
@@ -136,7 +146,15 @@ export default function Punyarjak() {
               </div>
             </div>
           </div>
-          <div className="AddAction">
+          <div className="addAction gap-1 justify-content-between">
+            <ChangePeriodDropDown
+              dropDownName={dropDownName}
+              setdropDownName={(e) => {
+                setdropDownName(e.target.name);
+                setPagination({ page: 1 });
+                history.push(`/punyarjak?page=${1}&filter=${e.target.name}`);
+              }}
+            />
             {allPermissions?.name === "all" ||
             subPermission?.includes(WRITE) ? (
               <Button
