@@ -191,20 +191,20 @@ export default function Commitment() {
       pagination.page,
       pagination.limit,
       selectedLang.id,
-      filterEndDate,
+      // filterEndDate,
       newId,
       dropDownName,
       subCategoryId,
       commitmentStatus,
-      filterStartDate,
+      // filterStartDate,
       searchBarValue,
       filteredData,
     ],
     () =>
       getAllCommitments({
         ...pagination,
-        startDate: filterStartDate,
-        endDate: filterEndDate,
+        // startDate: filterStartDate,
+        // endDate: filterEndDate,
         masterId: newId,
         categoryId: subCategoryId,
         status: payloadStatus,
@@ -410,7 +410,7 @@ export default function Commitment() {
                 />
               </div>
               <div className="d-flex row2">
-                <ChangePeriodDropDown
+                {/* <ChangePeriodDropDown
                   className="me-1 pledgeMonthBtn"
                   dropDownName={dropDownName}
                   setdropDownName={(e) => {
@@ -422,7 +422,7 @@ export default function Commitment() {
                       }`
                     );
                   }}
-                />
+                /> */}
                 {allPermissions?.name === "all" ||
                 subPermission?.includes(WRITE) ? (
                   <Space wrap>

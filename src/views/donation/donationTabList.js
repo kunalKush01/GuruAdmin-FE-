@@ -195,8 +195,8 @@ export default function Donation() {
       selectedLang.id,
       newId,
       subCategoryId,
-      filterEndDate,
-      filterStartDate,
+      // filterEndDate,
+      // filterStartDate,
       searchBarValue,
       filteredData,
     ],
@@ -204,10 +204,10 @@ export default function Donation() {
       getAllDonation({
         ...pagination,
         search: searchBarValue,
-        startDate: filterStartDate,
+        // startDate: filterStartDate,
         masterId: newId,
         categoryId: subCategoryId,
-        endDate: filterEndDate,
+        // endDate: filterEndDate,
         languageId: selectedLang.id,
         ...((donationFilterData || articleDonationFilterData) &&
           filteredData && { advancedSearch: filteredData }),
@@ -504,7 +504,7 @@ export default function Donation() {
                     );
                   }}
                 />
-                <ChangePeriodDropDown
+                {/* <ChangePeriodDropDown
                   dropDownName={dropDownName}
                   setdropDownName={(e) => {
                     setdropDownName(e.target.name);
@@ -515,7 +515,7 @@ export default function Donation() {
                       }`
                     );
                   }}
-                />
+                /> */}
               </div>
               <Space wrap className="row2">
                 {/* <Button
