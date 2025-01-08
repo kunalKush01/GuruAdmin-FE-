@@ -62,7 +62,7 @@ const Calendar = () => {
   const [events, setEvents] = useState([]);
   const [days, setDays] = useState([]);
   const [properties, setProperties] = useState([]);
-  const [fromDate, setFromDate] = useState(null);
+  const [fromDate, setFromDate] = useState(moment().startOf('day'));
   const [toDate, setToDate] = useState(null);
   const [propertyTypes, setPropertyTypes] = useState([]);
   const [selectedRoomType, setSelectedRoomType] = useState("All");
@@ -261,7 +261,7 @@ const Calendar = () => {
       }
     }
     setFromDate(date);
-    setToDate(null);
+    // setToDate(null);
   };
 
   const handleToDateChange = (date) => {
@@ -590,7 +590,7 @@ const Calendar = () => {
           }}
         >
           <div className="date-picker-container">
-            <div className="fromDate">
+            <div className="calendarFromDate me-1">
               <label htmlFor="from-date">From Date:</label>
               <CustomDatePicker
                 id="from-date"
