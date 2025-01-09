@@ -191,7 +191,7 @@ const Calendar = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, [fromDate, toDate, properties.length, propertyTypes.length]);
- 
+
   const handleNextWeek = () => {
     const nextWeek = weekDays.map((day) => ({
       date: new Date(moment(day.date).add(7, "days").toDate()),
@@ -302,7 +302,7 @@ const Calendar = () => {
     }
   };
   const [eventColors, setEventColors] = useState({});
-  const colorPalette = ["#E9F8FD", "#5F69E6", "#F3B64B", "#79BB43", "#EC5B52"];
+  const colorPalette = ["#5EC4F4", "#5F69E6", "#F3B64B", "#79BB43", "#EC5B52"];
   const getColorForEvent = (index) => {
     return colorPalette[index % colorPalette.length];
   };
