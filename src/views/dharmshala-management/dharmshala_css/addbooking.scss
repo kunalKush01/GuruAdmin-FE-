@@ -958,5 +958,14 @@
   }
 }
 
+ .ant-modal-confirm-title{
+  color: $font-color !important;
+  font: $font-family $font-weight-bold !important;
+ }
+
+ .ant-modal-confirm-content{
+  color: $grey !important;
+  font: $font-family $font-weight-bold !important;
+ }
 
 

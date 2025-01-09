@@ -74,7 +74,6 @@ export default function FormWithoutFormikForDonation({
       const apiRes = await findAllComitmentByUser({
         userId: paidDonation ?? SelectedUser?.userId,
       });
-
       setCommitmentIdByUser(apiRes?.results);
     };
     SelectedUser && res();
@@ -137,6 +136,7 @@ export default function FormWithoutFormikForDonation({
         SelectedCommitmentId?.categoryId
       );
       formik.setFieldValue("donarName", SelectedCommitmentId?.donarName);
+      formik.setFieldValue("etag", SelectedCommitmentId?.etag);
     }
   }, [SelectedCommitmentId?._id]);
 

@@ -49,6 +49,46 @@ export default function DonationANTDListTable(
     format: [5, 7],
   };
 
+  const shareReceiptOnWhatsApp = (item, receiptLink) => {
+    const message = `Hello ${item.donarName}, thank you for your donation of ₹${item.amount.toLocaleString("en-IN")} to ${loggedTemple?.name}. Here is your receipt: ${receiptLink}`;
+    const phoneNumber = `${item.user?.countryCode?.replace("+", "") || ""}${item.user?.mobileNumber || ""}`;
+    window.open(
+      `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`,
+      "_blank"
+    );
+  };
+
+  const handleWhatsAppShare = (item) => {
+    setIsLoading(item._id);
+    getReceiptForWhatsApp.mutate({
+      donationId: item._id,
+      languageId: selectedLang.id,
+    });
+  };
+
+  const getReceiptForWhatsApp = useMutation({
+    mutationFn: (payload) => {
+      return getDonation(payload);
+    },
+    onSuccess: (data, variables) => {
+      setIsLoading(false);
+      if (data.result && data.result.receiptLink) {  
+        if (data.result._id === variables.donationId) {
+          shareReceiptOnWhatsApp(data.result, data.result.receiptLink);
+        } else {
+          toast.error("Donation not found for the provided donation ID");
+        }
+      } else {
+        toast.error("Receipt link not available at this moment");
+      }
+    },    
+    
+    onError: () => {
+      setIsLoading(false);
+      toast.error("Failed to get receipt link");
+    }
+  });
+
   const downloadReceipt = useMutation({
     mutationFn: (payload) => {
       return getDonation(payload);
@@ -468,32 +508,11 @@ export default function DonationANTDListTable(
               />
             )}
             <img
-              src={whatsappIcon}
-              width={25}
-              className="cursor-pointer"
-              onClick={() => {
-                if (!item.receiptLink) {
-                  toast.error("Receipt link not available at this moment");
-                } else {
-                  const message = `Hello ${
-                    item.donarName
-                  }, thank you for your donation of ₹${item.amount.toLocaleString(
-                    "en-IN"
-                  )} to ${loggedTemple?.name}. Here is your receipt: ${
-                    item.receiptLink
-                  }`;
-                  const phoneNumber = `${
-                    item.user?.countryCode?.replace("+", "") || ""
-                  }${item.user?.mobileNumber || ""}`;
-                  window.open(
-                    `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
-                      message
-                    )}`,
-                    "_blank"
-                  );
-                }
-              }}
-            />
+                  src={whatsappIcon}
+                  width={25}
+                  className="cursor-pointer"
+                  onClick={() => handleWhatsAppShare(item)}
+                />
           </div>
         ),
         edit:

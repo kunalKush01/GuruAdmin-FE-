@@ -26,7 +26,7 @@ import "../../assets/scss/viewCommon.scss";
 const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 export default function NoticeList() {
-  const [dropDownName, setdropDownName] = useState("dashboard_monthly");
+  const [dropDownName, setdropDownName] = useState("All");
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
   const periodDropDown = () => {
@@ -37,9 +37,10 @@ export default function NoticeList() {
         return "year";
       case "dashboard_weekly":
         return "week";
-
-      default:
-        return "month";
+        case "All":
+          return "All";
+        default:
+          return "All";
     }
   };
   const { t } = useTranslation();
@@ -65,18 +66,34 @@ export default function NoticeList() {
     }
   }, []);
 
-  let filterStartDate = moment()
-    .startOf(periodDropDown())
-    .utcOffset(0, true)
-    .toISOString();
-  let filterEndDate = moment()
-    .endOf(periodDropDown())
-    .utcOffset(0, true)
-    .toISOString();
+  let filterStartDate = dropDownName !== "All" 
+  ? moment().startOf(periodDropDown()).utcOffset(0, true).toISOString()
+  : null;
+let filterEndDate = dropDownName !== "All"
+  ? moment().endOf(periodDropDown()).utcOffset(0, true).toISOString()
+  : null;
 
   let startDate = moment(filterStartDate).format("DD MMM");
   let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
+
+  const getQueryParams = () => {
+    const baseParams = {
+      ...pagination,
+      languageId: selectedLang.id,
+      search: searchBarValue,
+    };
+  
+    if (dropDownName !== "All") {
+      return {
+        ...baseParams,
+        startDate: filterStartDate,
+        endDate: filterEndDate,
+      };
+    }
+  
+    return baseParams;
+  };
 
   const noticeQuery = useQuery(
     [
@@ -87,14 +104,7 @@ export default function NoticeList() {
       selectedLang.id,
       searchBarValue,
     ],
-    () =>
-      getAllNotices({
-        ...pagination,
-        startDate: filterStartDate,
-        endDate: filterEndDate,
-        languageId: selectedLang.id,
-        search: searchBarValue,
-      }),
+    () => getAllNotices(getQueryParams()),
     {
       keepPreviousData: true,
     }

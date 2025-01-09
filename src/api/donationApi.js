@@ -1,12 +1,29 @@
 import { API_AUTH_URL, API_BASE_URL } from "../axiosApi/authApiInstans";
 import { callApi } from "../utility/utils/callApi";
 
-export const createDonation = (payload) =>
-  callApi({
-    requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}donation/create`, payload),
-    successCode: 200,
-  });
+export const createDonation = async (payload) => {
+  try {
+    const response = await callApi({
+      requestFunction: (axios) => axios.post(`${API_BASE_URL}donation/create`, payload), 
+      successCode: 200,
+      showToastOnSuccess: false,
+      showToastOnError: false,
+    });
+
+    return {
+      data: response.data,
+      etag: response.data?.etag
+    };
+  } catch (error) {
+    if (error.response?.status === 409) {
+      throw {
+        response: error.response,
+        message: "Donation has been modified by another user"
+      };
+    }
+    throw error;
+  }
+};
 
 export const donationDownloadReceiptApi = (payload) =>
   callApi({

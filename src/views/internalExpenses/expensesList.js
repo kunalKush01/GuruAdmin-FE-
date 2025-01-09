@@ -112,17 +112,17 @@ export default function Expenses() {
       "Expenses",
       pagination.page,
       selectedLang.id,
-      filterEndDate,
+      // filterEndDate,
       expenseType,
-      filterStartDate,
+      // filterStartDate,
       searchBarValue,
       filteredData,
     ],
     () =>
       getAllExpense({
         ...pagination,
-        startDate: filterStartDate,
-        endDate: filterEndDate,
+        // startDate: filterStartDate,
+        // endDate: filterEndDate,
         expenseType:
           expenseType === t("all") ? undefined : expenseType.toUpperCase(),
         languageId: selectedLang.id,
@@ -226,7 +226,7 @@ export default function Expenses() {
               }}
             />
 
-            <ChangePeriodDropDown
+            {/* <ChangePeriodDropDown
               className={"me-1"}
               dropDownName={dropDownName}
               setdropDownName={(e) => {
@@ -238,7 +238,7 @@ export default function Expenses() {
                   }`
                 );
               }}
-            />
+            /> */}
 
             {allPermissions?.name === "all" ||
             subPermission?.includes(WRITE) ? (

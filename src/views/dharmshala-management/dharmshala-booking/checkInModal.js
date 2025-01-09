@@ -64,45 +64,65 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
     form.setFieldsValue({ currentDate: formattedDateTime });
   };
 
+  const showCheckoutConfirmation = (values) => {
+    Modal.confirm({
+      title: t("Confirm Check-out"),
+      content: t("After check-out, you will not be able to change or edit the booking. Are you sure you want to continue?"),
+      okText: t("Yes"),
+      cancelText: t("No"),
+      onOk() {
+        processCheckout(values);
+      },
+    });
+  };
+
+  const processCheckout = (values) => {
+    const isRefund = mode === 'check-out' && dueAmount < 0;
+    const bookingStartDate = dayjs(booking.startDate, "DD MMM YYYY");
+    const bookingEndDate = dayjs(booking.endDate, "DD MMM YYYY");
+    const currentDate = dayjs(values.currentDate, "ddd, DD MMM YYYY HH:mm:ss [IST]");
+
+    if (currentDate.isBefore(bookingStartDate)) {
+      toast.error("Check-in is only allowed on or after the booking start date.");
+      return;
+    }
+
+    if (mode === 'check-out' && currentDate.isBefore(bookingEndDate)) {
+      toast.error("Check-out is only allowed on or after the booking end date.");
+      return;
+    }
+
+    const bookingPayload = {
+      bookingId: booking._id,
+      startDate: dayjs(booking.startDate).format('DD-MM-YYYY'),
+      endDate: dayjs(booking.endDate).format('DD-MM-YYYY'),
+      rooms: booking.rooms,
+      guestCount: booking.guestCount,
+      status: mode === 'check-in' ? 'checked-in' : 'checked-out',
+      amountPaid: values.amount,
+      paymentDetails: {
+        type: isRefund ? "refund" : "deposit",
+        amount: values.amount,
+        transactionId: values.transactionId,
+        remark: values.remark,
+        paymentMode: values.paymentMode,
+      },
+      address: booking.userDetails.address,
+      donarName: booking.userDetails.donarName,
+      idType: booking.userDetails.idType,
+      idNumber: booking.userDetails.idNumber,
+    };
+
+    updateBookingMutation.mutate(bookingPayload);
+  };
+
   const handleOk = () => {
     form.validateFields().then((values) => {
-      const isRefund = mode === 'check-out' && dueAmount < 0;
-      const bookingStartDate = dayjs(booking.startDate, "DD MMM YYYY");
-      const bookingEndDate = dayjs(booking.endDate, "DD MMM YYYY");
-      const currentDate = dayjs(values.currentDate, "ddd, DD MMM YYYY HH:mm:ss [IST]");
-
-      if (currentDate.isBefore(bookingStartDate)) {
-        toast.error("Check-in is only allowed on or after the booking start date.");
-        return;
+      if (mode === 'check-out') {
+        showCheckoutConfirmation(values);
+      } else {
+        processCheckout(values);
       }
-
-      if (mode === 'check-out' && currentDate.isBefore(bookingEndDate)) {
-        toast.error("Check-out is only allowed on or after the booking end date.");
-        return;
-      }
-
-      const bookingPayload = {
-        bookingId: booking._id,
-        startDate: dayjs(booking.startDate).format('DD-MM-YYYY'),
-        endDate: dayjs(booking.endDate).format('DD-MM-YYYY'),
-        rooms: booking.rooms,
-        guestCount: booking.guestCount,
-        status: mode === 'check-in' ? 'checked-in' : 'checked-out',
-        amountPaid: values.amount,
-        paymentDetails: {
-          type: isRefund ? "refund" : "deposit",
-          amount: values.amount,
-          transactionId: values.transactionId,
-          remark: values.remark,
-          paymentMode: values.paymentMode,
-        },
-        address: booking.userDetails.address,
-        donarName: booking.userDetails.donarName,
-        idType: booking.userDetails.idType,
-        idNumber: booking.userDetails.idNumber,
-      };
-
-      updateBookingMutation.mutate(bookingPayload);
     }).catch((info) => {
       console.log('Validate Failed:', info);
     });

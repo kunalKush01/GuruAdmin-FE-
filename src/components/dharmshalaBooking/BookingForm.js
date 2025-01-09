@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Formik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { getAllMasterCategories } from "../../api/expenseApi";
@@ -23,10 +23,12 @@ export default function BookingForm({
   isPaymentModalOpen,
   setIsPaymentModalOpen,
   isEditing,
-  editBookingData
+  editBookingData,
+  isReadOnly
 }) {
   // const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [bookingData, setBookingData] = useState(null);
+  const [currentEtag, setCurrentEtag] = useState(editBookingData?.etag || null);
   const history = useHistory();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const [loading, setLoading] = useState(false);
@@ -39,7 +41,7 @@ export default function BookingForm({
   const [toggleState, setToggleState] = useState(false);
 
   const handleCreateBooking = async (formData) => {
-    setBookingData({ ...formData, isEditing });
+    setBookingData({ ...formData, isEditing, etag: currentEtag });
     setIsPaymentModalOpen(true);
   };
 
@@ -94,33 +96,67 @@ export default function BookingForm({
             security: bookingData.security,
             imagePath: bookingData.imagePath,
             status: paymentDetails.status,
+            etag: bookingData.etag,
         };
-
-        let bookingResponse;
-      if (bookingData.isEditing) {
-        bookingResponse = await updateDharmshalaBooking({
-          ...bookingPayload,
-          bookingId: bookingData.bookingId, 
-        });
-        if(bookingResponse.error==true){
-          setShowPrompt(false)
-        }else{
-          history.push("/booking/info");
-          setShowPrompt(true)
+        
+        let response;
+        if (bookingData.isEditing) {
+          try {
+            response = await updateDharmshalaBooking({
+              ...bookingPayload,
+              bookingId: bookingData.bookingId,
+            });
+  
+            if (response.status === 409) {
+              toast.error("This booking has been modified by another user. Please refresh and try again.");
+              setShowPrompt(false);
+              return;
+            }
+  
+            if (response.data?.etag) {
+              setCurrentEtag(response.data.etag);
+            }
+  
+            history.push("/booking/info");
+            setShowPrompt(true);
+          } catch (error) {
+            if (error.response?.status === 409) {
+              toast.error("This booking has been modified by another user. Please refresh and try again.");
+              setShowPrompt(false);
+            } else {
+              toast.error("Error updating booking. Please try again.");
+            }
+          }
+        } else {
+          try {
+            response = await createDharmshalaBooking(bookingPayload);
+            if (response.data?.etag) {
+              setCurrentEtag(response.data.etag);
+            }
+            history.push("/booking/info");
+          } catch (error) {
+            if (error.response?.status === 409) {
+              toast.error("You have already booked a room for the specified dates.");
+            } else {
+              toast.error("Error creating booking. Please try again.");
+            }
+          }
         }
-      } else {
-        bookingResponse = await createDharmshalaBooking(bookingPayload);
-        history.push("/booking/info");
-      }
       } catch (error) {
-        console.error("Error creating booking and payment:", error);
+        console.error("Error handling booking and payment:", error);
+        toast.error("An unexpected error occurred. Please try again.");
       } finally {
         setLoading(false);
         setIsPaymentModalOpen(false);
       }
-    }
-  };
-
+    };
+  }
+  
+    useEffect(() => {
+      if (editBookingData?.etag) {
+        setCurrentEtag(editBookingData.etag);
+      }
+    }, [editBookingData]);
   return (
     <div className="form-wrapper">
       {!masterloadOptionQuery.isLoading && (
@@ -144,6 +180,7 @@ export default function BookingForm({
               buttonName={buttonName}
               isEditing={isEditing}
               editBookingData={editBookingData}
+              isReadOnly={isReadOnly}
             />
             <PaymentModal
               isOpen={isPaymentModalOpen}
