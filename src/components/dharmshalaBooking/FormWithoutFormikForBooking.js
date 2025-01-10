@@ -688,14 +688,10 @@ export default function FormWithoutFormikForBooking({
   };
 
   const [fetchBuildings, setFetchBuildings] = useState([]);
-  const fetchAvailableBuildings = async (editBookingData) => {
-    if (
-      formik.values.fromDate &&
-      formik.values.toDate &&
-      formik.values.roomsData
-    ) {
+  const fetchAvailableBuildings = async (editBookingData, roomsData) => {
+    if (roomsData && formik.values.fromDate && formik.values.toDate) {
       // Create a list of roomTypeIds from the updated room data
-      const updatedBookindData = [...formik.values.roomsData]
+      const updatedBookindData = [...roomsData];
       const roomTypeIds = updatedBookindData.map((room) => room.roomType);
 
       try {
@@ -746,8 +742,8 @@ export default function FormWithoutFormikForBooking({
   };
 
   useEffect(() => {
-    if (isEditing && editBookingData) {
-      fetchAvailableBuildings(editBookingData);
+    if ((isEditing && editBookingData) || formik.values.roomsData) {
+      fetchAvailableBuildings(editBookingData, formik.values.roomsData);
     }
   }, [isEditing, editBookingData, formik.values.roomsData]);
 
@@ -920,7 +916,7 @@ export default function FormWithoutFormikForBooking({
             roomsData={formik.values.roomsData}
             formik={formik}
             roomTypes={roomTypes}
-            buildings={isEditing ? fetchBuildings : buildings}
+            buildings={(isEditing||formik.values.roomsData) ? fetchBuildings : buildings}
             floors={floors}
             rooms={rooms}
             handleRoomTypeChange={handleRoomTypeChange}
