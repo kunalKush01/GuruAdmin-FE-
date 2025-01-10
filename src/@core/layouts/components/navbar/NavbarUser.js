@@ -15,6 +15,7 @@ import menuPanelIcon from "../../../../assets/images/icons/dashBoard/icn_MenuPan
 import { authApiInstance } from "../../../../axiosApi/authApiInstans";
 import { handleTrustDetail, logOut } from "../../../../redux/authSlice";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
+import internetIcon from "../../../../assets/images/icons/internet.svg";
 import LangModel from "../langModel";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -134,8 +135,24 @@ const NavbarUser = (props) => {
           <div className="d-flex">
             <img
               className="icon"
+              onClick={() => {
+                const currentUrl = window.location.href;
+                const regex = /^https?:\/\/.*\.admin\..*$/;
+                if (regex.test(currentUrl)) {
+                  // If the URL matches the pattern, perform the redirect
+                  const newUrl = currentUrl.replace("admin.", "");
+                  window.open(newUrl, "_blank");
+                }
+              }}
+              src={internetIcon}
+              style={{ width: "18px" }}
+              title="Open Website"
+            />
+            <img
+              className="icon"
               onClick={() => setlangSelection(true)}
               src={menuPanelIcon}
+              title="Change Language"
             />
             <div className="position-relative">
               {allUnReadMessage?.unSeenCount > 0 &&
