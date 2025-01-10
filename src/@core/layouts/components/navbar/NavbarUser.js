@@ -136,13 +136,18 @@ const NavbarUser = (props) => {
             <img
               className="icon"
               onClick={() => {
-                const currentUrl = window.location.href;
-                const regex = /^https?:\/\/.*\.admin\..*$/;
-                if (regex.test(currentUrl)) {
-                  // If the URL matches the pattern, perform the redirect
-                  const newUrl = currentUrl.replace("admin.", "");
-                  window.open(newUrl, "_blank");
+                const currentUrl = window.location.hostname;
+                const protocol = window.location.protocol;
+                const port = window.location.port;
+                // Combine them into a full URL
+                let fullUrl = protocol + "//" + currentUrl;
+                let newUrl = fullUrl.replace("admin.", "");
+                if (port) {
+                  // If a port is specified, include it in the URL
+                  newUrl += ":" + port;
                 }
+
+                window.open(newUrl, "_blank");
               }}
               src={internetIcon}
               style={{ width: "18px" }}
