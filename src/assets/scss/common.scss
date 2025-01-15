@@ -4405,3 +4405,15 @@
         display: none;
     }
 }
+.ant-select-selector{
+    background-color: $secondary-color !important;
+    height: 38px !important;
+    border: none !important;
+}
+.ant-select-selection-item{
+    background-color: $secondary-color !important;
+    color: $font-color !important;
+    border: 1px solid $font-color !important;
+    border-radius: 10px !important;
+    font: $font-weight-bold $font-size-small $font-family !important; 
+}
