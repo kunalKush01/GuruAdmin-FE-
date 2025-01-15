@@ -26,7 +26,7 @@ import ImageUpload from "../partials/imageUpload";
 import RichTextField from "../partials/richTextEditorField";
 import "../../assets/scss/common.scss";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
-import { DatePicker, Image } from "antd";
+import { DatePicker, Image, Select } from "antd";
 import moment from "moment";
 import UploadImage from "../partials/uploadImage";
 import { uploadFile } from "../../api/sharedStorageApi";
@@ -143,7 +143,7 @@ export default function NewsForm({
             newsId: e.Id,
             preferenceIds: e?.preference?.map((pantId) => pantId?._id),
             title: e.Title,
-            tags: e?.tagsInit?.map((tag) => tag.text),
+            tags: e?.tagsInit,
             deletedTags,
             body: e.Body,
             publishDate: e?.DateTime,
@@ -201,42 +201,61 @@ export default function NewsForm({
                     />
                   </Col>
                   <Col xs={12} lg={4} md={6}>
-                    <label>Tags</label>
-                    <ReactTags
-                      tags={formik.values.tagsInit}
-                      placeholder={t("placeHolder_tags")}
-                      suggestions={suggestions}
-                      allowAdditionFromPaste={false}
-                      inputValue={tagCharInput}
-                      handleInputChange={(e) => {
-                        setTagCharInput(e.slice(0, 20));
-                      }}
-                      delimiters={delimiters}
-                      handleDelete={(index) => handleDelete(formik, index)}
-                      handleAddition={(tag) => {
-                        handleAddition(formik, tag);
-                        setTagCharInput("");
-                      }}
-                      inputFieldPosition="top"
-                      allowDragDrop={false}
-                      autocomplete
-                      editable={false}
-                      autofocus={false}
-                    />
-                    {formik.errors.tagsInit && (
-                      <div
-                      // style={{
-                      //   height: "20px",
-                      //   font: "normal normal bold 11px/33px Noto Sans",
-                      // }}
-                      >
-                        {formik.errors.tagsInit && (
-                          <div className="text-danger">
-                            <Trans i18nKey={formik.errors.tagsInit} />
-                          </div>
-                        )}
-                      </div>
-                    )}
+                    <div className="d-flex flex-column">
+                      <label>Tags</label>
+                      <Select
+                        mode="tags"
+                        value={formik.values.tagsInit} // Initial tags from formik
+                        placeholder={t("placeHolder_tags")} // Placeholder translation
+                        onSearch={(value) => {
+                          // Limit input character length
+                          if (value.length <= 20) {
+                            setTagCharInput(value);
+                          }
+                        }}
+                        onChange={(selectedTags) => {
+                          const currentTags = formik.values.tagsInit; // Current tags state
+                          const newTags = selectedTags.filter(
+                            (tag) => !currentTags.includes(tag)
+                          ); // New tags added
+                          const removedTags = currentTags.filter(
+                            (tag) => !selectedTags.includes(tag)
+                          ); // Tags removed
+
+                          // Handle new tags addition
+                          newTags.forEach((tag) => {
+                            handleAddition(formik, tag); // Your addition logic
+                          });
+
+                          // Handle removed tags
+                          removedTags.forEach((tag) => {
+                            const index = currentTags.indexOf(tag); // Find index of removed tag
+                            if (index > -1) {
+                              handleDelete(formik, index); // Your deletion logic
+                            }
+                          });
+
+                          // Optionally reset input after processing
+                          setTagCharInput("");
+                        }}
+                        notFoundContent={null} // Hide 'not found' content
+                        dropdownStyle={{ display: "none" }} // Hide dropdown for tag-only mode
+                      />
+                      {formik.errors.tagsInit && (
+                        <div
+                        // style={{
+                        //   height: "20px",
+                        //   font: "normal normal bold 11px/33px Noto Sans",
+                        // }}
+                        >
+                          {formik.errors.tagsInit && (
+                            <div className="text-danger">
+                              <Trans i18nKey={formik.errors.tagsInit} />
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
                   </Col>
                   {!AddLanguage && (
                     <Col
@@ -283,8 +302,8 @@ export default function NewsForm({
                       <div className="ImagesVideos">
                         <Trans i18nKey={"news_label_ImageVedio"} />{" "}
                         <span style={{ fontSize: "13px", color: "gray" }}>
-                        <Trans i18nKey={"image_size_suggestion"} />
-                      </span>
+                          <Trans i18nKey={"image_size_suggestion"} />
+                        </span>
                       </div>
                       <div>
                         <UploadImage
@@ -348,11 +367,7 @@ export default function NewsForm({
               </Row>
               <div className="btn-Published mb-0">
                 {loading ? (
-                  <Button
-                    color="primary"
-                    className="add-trust-btn"
-                    disabled
-                  >
+                  <Button color="primary" className="add-trust-btn" disabled>
                     <Spinner size="md" />
                   </Button>
                 ) : (
