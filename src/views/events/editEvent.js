@@ -74,11 +74,7 @@ export default function EditEvent() {
     });
   };
 
-  const tags = eventDetailQuery?.data?.result?.tags?.map((item) => ({
-    id: item.id,
-    text: item.tag,
-    _id: item.id,
-  }));
+  const tags = eventDetailQuery?.data?.result?.tags?.map((item) => item.tag);
 
   const initialValues = useMemo(() => {
     const eventData = eventDetailQuery?.data?.result;

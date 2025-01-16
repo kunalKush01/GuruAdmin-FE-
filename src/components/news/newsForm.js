@@ -101,11 +101,15 @@ export default function NewsForm({
     const resetValues = formik.values.tagsInit.filter(
       (_, index) => index !== i
     );
+    const tagToDelete = formik.values.tagsInit[i];
 
-    const fgg = formik.values.tagsInit.filter((_, index) => index === i);
+    // Find the tag object from the tags array to get its ID
+    const tagObj = tags.find((tag) => tag.tag === tagToDelete);
 
-    if (fgg[0]?._id) {
-      setDeletedTags((prev) => [...prev, fgg[0]?._id]);
+    // const fgg = formik.values.tagsInit.filter((_, index) => index === i);
+
+    if (tagObj) {
+      setDeletedTags((prev) => [...prev, tagObj._id]);
     }
 
     formik.setFieldValue("tagsInit", resetValues);
@@ -205,41 +209,39 @@ export default function NewsForm({
                       <label>Tags</label>
                       <Select
                         mode="tags"
-                        value={formik.values.tagsInit} // Initial tags from formik
-                        placeholder={t("placeHolder_tags")} // Placeholder translation
+                        value={formik.values.tagsInit}
+                        placeholder={t("placeHolder_tags")}
                         onSearch={(value) => {
-                          // Limit input character length
                           if (value.length <= 20) {
                             setTagCharInput(value);
                           }
                         }}
                         onChange={(selectedTags) => {
-                          const currentTags = formik.values.tagsInit; // Current tags state
+                          const currentTags = formik.values.tagsInit;
                           const newTags = selectedTags.filter(
                             (tag) => !currentTags.includes(tag)
-                          ); // New tags added
+                          );
                           const removedTags = currentTags.filter(
                             (tag) => !selectedTags.includes(tag)
-                          ); // Tags removed
+                          );
 
-                          // Handle new tags addition
                           newTags.forEach((tag) => {
-                            handleAddition(formik, tag); // Your addition logic
+                            handleAddition(formik, tag);
                           });
 
-                          // Handle removed tags
                           removedTags.forEach((tag) => {
-                            const index = currentTags.indexOf(tag); // Find index of removed tag
+                            const index = currentTags.indexOf(tag);
                             if (index > -1) {
-                              handleDelete(formik, index); // Your deletion logic
+                              handleDelete(formik, index);
                             }
                           });
 
-                          // Optionally reset input after processing
                           setTagCharInput("");
                         }}
-                        notFoundContent={null} // Hide 'not found' content
-                        dropdownStyle={{ display: "none" }} // Hide dropdown for tag-only mode
+                        options={tags.map((item) => ({
+                          value: item?.tag,
+                          label: item?.tag,
+                        }))}
                       />
                       {formik.errors.tagsInit && (
                         <div
@@ -258,13 +260,7 @@ export default function NewsForm({
                     </div>
                   </Col>
                   {!AddLanguage && (
-                    <Col
-                      xs={12}
-                      lg={4}
-                      md={6}
-                      className=""
-                      style={{ paddingTop: "8px" }}
-                    >
+                    <Col xs={12} lg={4} md={6} className="">
                       <FormikCustomReactSelect
                         labelName={t("trust_prefenses")}
                         multiple

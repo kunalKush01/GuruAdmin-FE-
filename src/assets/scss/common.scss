@@ -4407,7 +4407,8 @@
 }
 .ant-select-selector{
     background-color: $secondary-color !important;
-    height: 38px !important;
+    min-height: 38px !important;
+    height: auto !important;
     border: none !important;
 }
 .ant-select-selection-item{
@@ -4415,5 +4416,41 @@
     color: $font-color !important;
     border: 1px solid $font-color !important;
     border-radius: 10px !important;
-    font: $font-weight-bold $font-size-small $font-family !important; 
+    font: $font-weight-bold 80% $font-family !important; 
+    height: 18px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+.ant-select-selection-wrap{
+    display:flex !important;
+    align-self: center !important;
+}
+.ant-select-dropdown {
+    background-color: $secondary-color !important;
+    padding: 5px !important;
+    color: #ffffff !important;
+}
+.ant-select-item-option-active {
+    background-color: $primary !important;
+    color: #ffffff !important;
+}
+
+.ant-select-item-option-selected {
+    background-color: $primary !important;
+    color: #ffffff !important;
+}
+.ant-select-item-option-active .ant-select-item-option-content,
+.ant-select-item-option-selected .ant-select-item-option-content {
+    color: #ffffff !important;
+    font: normal normal bold 13px/20px Noto Sans
+}
+.ant-select-item-option-selected .ant-select-item-option-state {
+    svg {
+        fill: #ffffff !important; /* Ensures the tick icon is white */
+    }
+}
+.ant-select-selection-placeholder {
+    color: #978466 !important;
+    font: normal normal 700 13px Noto Sans !important
 }
