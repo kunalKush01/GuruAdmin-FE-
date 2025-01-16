@@ -84,11 +84,7 @@ export default function AddLanguageNews() {
   //     setLangSelection(availableLangOptions[0]?.name);
   //   }
   // }, [availableLangOptions]);
-  const tags = newsDetailQuery?.data?.result?.tags?.map((item) => ({
-    id: item.id,
-    text: item.tag,
-    _id: item.id,
-  }));
+  const tags = newsDetailQuery?.data?.result?.tags?.map((item) => item.tag);
 
   // Trust preference
   const loadTrustPreference = useQuery(["Preference"], () =>

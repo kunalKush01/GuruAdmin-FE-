@@ -60,7 +60,7 @@ export default function AddNews() {
   };
   return (
     <div className="listviewwrapper">
-      <div className="d-flex justify-content-between align-items-center ">
+      <div className="d-flex justify-content-between align-items-center mb-1">
         <div className="d-flex align-items-center ">
           <img
             src={arrowLeft}
