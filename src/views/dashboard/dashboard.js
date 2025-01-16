@@ -101,6 +101,7 @@ const Home = () => {
             allFilter
             dropDownName={dropDownName}
             setdropDownName={(e) => setdropDownName(e.target.name)}
+            isDashboard={true}
           />
           <div className="d-flex flex-wrap gap-1 justify-content-between mt-1 mb-lg-1 dashboard-cards-wrapper">
             <DashboardStatsCard
