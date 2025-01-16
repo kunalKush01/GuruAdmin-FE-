@@ -25,13 +25,12 @@ module.exports = {
       "@configs": path.resolve(__dirname, "src/configs"),
       "@utils": path.resolve(__dirname, "src/utility/Utils"),
       "@hooks": path.resolve(__dirname, "src/utility/hooks"),
-      'react/jsx-runtime': path.resolve(__dirname, 'node_modules/react/jsx-runtime'),
-      'react/jsx-dev-runtime': path.resolve(__dirname, 'node_modules/react/jsx-dev-runtime'),
+      // Remove this line to prevent issues with the jsx-runtime import
+      // 'react/jsx-runtime': path.resolve(__dirname, 'node_modules/react/jsx-runtime'),
     },
     configure: (webpackConfig) => {
       if (!webpackConfig.resolve) webpackConfig.resolve = {};
       if (!webpackConfig.resolve.fallback) webpackConfig.resolve.fallback = {};
-      webpackConfig.resolve.fallback['react/jsx-runtime'] = require.resolve('react/jsx-runtime');
 
       if (process.env.NODE_ENV === "production") {
         const terserPlugin = webpackConfig.optimization.minimizer.find(
