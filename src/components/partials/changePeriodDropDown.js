@@ -5,6 +5,7 @@ export const ChangePeriodDropDown = ({
   dropDownName,
   setdropDownName,
   allFilter,
+  isDashboard = false,
   ...props
 }) => {
   
@@ -28,17 +29,23 @@ export const ChangePeriodDropDown = ({
   ];
 
   const [dashboardAllLabelState, setDashboardAllLabelState] = useState(
-    i18nKeyDropDownItemArray
+    isDashboard 
+      ? i18nKeyDropDownItemArray.filter(item => item.key !== "All")
+      : i18nKeyDropDownItemArray
   );
 
   useEffect(() => {
     if (allFilter) {
+      const baseArray = isDashboard 
+        ? i18nKeyDropDownItemArray.filter(item => item.key !== "All")
+        : i18nKeyDropDownItemArray;
+        
       setDashboardAllLabelState([
         { id: 4, key: "dashboard_all" },
-        ...i18nKeyDropDownItemArray,
+        ...baseArray,
       ]);
     }
-  }, []);
+  }, [isDashboard]);
   return (
     <CustomDropDown
       defaultDropDownName={dropDownName}
