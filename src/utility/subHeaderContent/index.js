@@ -486,4 +486,11 @@ export const subHeaderContentResponsive = [
     icon: ReportDisputeIcon,
     activeIcon: ReportDisputeIconActive,
   },
+  {
+    name: "message",
+    customLabel: "Connect",
+    url: "/message",
+    icon: ReportDisputeIcon,
+    activeIcon: ReportDisputeIconActive,
+  },
 ];

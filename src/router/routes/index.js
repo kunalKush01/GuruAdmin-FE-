@@ -1006,6 +1006,15 @@ const Routes = [
     type: "service",
     subPermission: READ,
   },
+  {
+    path: "/message",
+    component: lazy(() =>
+      import("../../components/messageIntegration/messageIntegration.js")
+    ),
+    exact: true,
+    type: "message",
+    subPermission: READ,
+  },
 ];
 
 export { DefaultRoute, Routes, TemplateTitle };
