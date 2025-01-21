@@ -80,36 +80,23 @@ const MessageIntegration = () => {
       antMessage.error(t('Please connect first'));
       return;
     }
-
+  
     if (selectedRowKeys.length === 0) {
       antMessage.warning(t('Please select messages to send'));
       return;
     }
-
+  
     const selectedMessages = messagesQuery.data.filter(msg => 
       selectedRowKeys.includes(msg.key) && msg.status === 'pending'
     );
-
-    let successCount = 0;
-    let failCount = 0;
-
-    for (const message of selectedMessages) {
-      try {
-        await sendMessage(message);
-        successCount++;
-      } catch (error) {
-        console.error('Failed to send message:', error);
-        failCount++;
-      }
-    }
-
-    setSelectedRowKeys([]);
-
-    if (successCount > 0) {
-      antMessage.success(t('{count} messages sent successfully', { count: successCount }));
-    }
-    if (failCount > 0) {
-      antMessage.error(t('Failed to send {count} messages', { count: failCount }));
+  
+    try {
+      await sendMultipleMessages(selectedMessages);
+      antMessage.success(t('Messages queued for sending'));
+      setSelectedRowKeys([]);
+    } catch (error) {
+      console.error('Failed to queue messages:', error);
+      antMessage.error(t('Failed to queue messages'));
     }
   };
 

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useQueryClient } from "@tanstack/react-query";
+import { useMessageWorker } from './useMessageWorker';
 
 export const useMessageIntegration = () => {
   const [isConnected, setIsConnected] = useState(false);
@@ -9,6 +10,7 @@ export const useMessageIntegration = () => {
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [sendingMessages, setSendingMessages] = useState({});
   const [isPollingActive, setIsPollingActive] = useState(false);
+  const messageWorker = useMessageWorker();
   const queryClient = useQueryClient();
 
   const checkConnectionStatus = useCallback(async () => {
@@ -76,23 +78,35 @@ export const useMessageIntegration = () => {
     try {
       setSendingMessages(prev => ({ ...prev, [messageData.key]: true }));
       
-      await axios.post(
-        `${process.env.REACT_APP_MESSAGE_SERVICE_URL}/send-message`,
-        {
-          number: messageData.destination,
-          message: messageData.msgBody,
-          variables: messageData.variables || {}
-        },
-        {
-          headers: { 'Content-Type': 'application/json' },
-          withCredentials: true
-        }
-      );
+      const result = await messageWorker.sendMessage(messageData);
+      
+      if (!result.success) {
+        throw new Error(result.error);
+      }
 
       await queryClient.invalidateQueries('messages');
       return true;
     } finally {
       setSendingMessages(prev => ({ ...prev, [messageData.key]: false }));
+    }
+  };
+
+  const sendMultipleMessages = async (messages) => {
+    if (!isConnected) {
+      throw new Error('Not connected');
+    }
+
+    messages.forEach(message => {
+      setSendingMessages(prev => ({ ...prev, [message.key]: true }));
+    });
+
+    try {
+      messageWorker.sendMultipleMessages(messages);
+      await queryClient.invalidateQueries('messages');
+    } finally {
+      messages.forEach(message => {
+        setSendingMessages(prev => ({ ...prev, [message.key]: false }));
+      });
     }
   };
 
@@ -122,6 +136,7 @@ export const useMessageIntegration = () => {
     loggedInUser,
     handleDisconnect,
     sendMessage,
+    sendMultipleMessages,
     sendingMessages,
     startConnection,
     isPollingActive
