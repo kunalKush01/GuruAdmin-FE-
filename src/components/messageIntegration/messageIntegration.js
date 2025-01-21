@@ -7,13 +7,15 @@ import { MessageContext } from '../../utility/context/MessageContext';
 
 const MessageIntegration = () => {
   const { t } = useTranslation();
-  const {
+  const { 
     isConnected,
     status,
     qrCode,
     handleDisconnect,
     sendMessage,
-    sendingMessages
+    sendingMessages,
+    startConnection,
+    isPollingActive
   } = useContext(MessageContext);
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -219,6 +221,11 @@ const MessageIntegration = () => {
             >
               {status}
             </span>
+            {!isConnected && !isPollingActive && (
+              <Button type="primary" onClick={startConnection}>
+                {t('Connect')}
+              </Button>
+            )}
             {isConnected && (
               <Button type="primary" danger onClick={handleDisconnect}>
                 {t('Disconnect')}

@@ -8,9 +8,12 @@ export const useMessageIntegration = () => {
   const [qrCode, setQrCode] = useState(null);
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [sendingMessages, setSendingMessages] = useState({});
+  const [isPollingActive, setIsPollingActive] = useState(false);
   const queryClient = useQueryClient();
 
   const checkConnectionStatus = useCallback(async () => {
+    if (!isPollingActive) return;
+
     try {
       const axiosConfig = {
         headers: {
@@ -40,7 +43,12 @@ export const useMessageIntegration = () => {
       setStatus('Connection error');
       setIsConnected(false);
     }
-  }, []);
+  }, [isPollingActive]);
+
+  const startConnection = () => {
+    setIsPollingActive(true);
+    setStatus('Initializing connection...');
+  };
 
   const handleDisconnect = async () => {
     try {
@@ -52,7 +60,8 @@ export const useMessageIntegration = () => {
       setIsConnected(false);
       setLoggedInUser(null);
       setQrCode(null);
-      setStatus('Disconnected. Please scan QR code to connect again');
+      setStatus('Disconnected');
+      setIsPollingActive(false);
     } catch (error) {
       console.error('Disconnect failed:', error);
       setStatus('Disconnect error');
@@ -88,15 +97,23 @@ export const useMessageIntegration = () => {
   };
 
   useEffect(() => {
-    // Initial check
-    checkConnectionStatus();
+    let interval;
+    
+    if (isPollingActive) {
+      // Initial check when polling starts
+      checkConnectionStatus();
+      
+      // Set up interval for periodic checks
+      interval = setInterval(checkConnectionStatus, 10000);
+    }
 
-    // Set up interval for periodic checks
-    const interval = setInterval(checkConnectionStatus, 10000);
-
-    // Cleanup on unmount
-    return () => clearInterval(interval);
-  }, [checkConnectionStatus]);
+    // Cleanup on unmount or when polling is stopped
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [checkConnectionStatus, isPollingActive]);
 
   return {
     isConnected,
@@ -105,6 +122,8 @@ export const useMessageIntegration = () => {
     loggedInUser,
     handleDisconnect,
     sendMessage,
-    sendingMessages
+    sendingMessages,
+    startConnection,
+    isPollingActive
   };
 };
