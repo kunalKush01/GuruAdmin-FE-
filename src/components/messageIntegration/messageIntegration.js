@@ -1,19 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { Formik, Field } from 'formik';
-import { Button, Row, Col, Card, Table } from 'antd';
+import React, { useState, useContext } from 'react';
+import { Button, Card, Table, message as antMessage } from 'antd';
 import { useTranslation } from 'react-i18next';
-import CustomTextField from '../../components/partials/customTextField';
-import deleteIcon from '../../assets/images/icons/category/deleteIcon.svg';
-import axios from 'axios';
+import { useQuery } from "@tanstack/react-query";
 import { listMessages } from '../../api/messageApi';
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { MessageContext } from '../../utility/context/MessageContext';
 
 const MessageIntegration = () => {
   const { t } = useTranslation();
-  const [isConnected, setIsConnected] = useState(false);
-  const [status, setStatus] = useState('Not connected');
-  const [qrCode, setQrCode] = useState(null);
-  const [loggedInUser, setLoggedInUser] = useState(null);
+  const {
+    isConnected,
+    status,
+    qrCode,
+    handleDisconnect,
+    sendMessage,
+    sendingMessages
+  } = useContext(MessageContext);
+
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 10
@@ -21,25 +24,19 @@ const MessageIntegration = () => {
 
   const [filters, setFilters] = useState({
     status: "pending",
-    // type: null,
     sortKey: 'createdAt',
     sortOrder: 'DESC'
   });
+
   const transformMessageData = (response) => {
-    console.log('Raw API Response:', response);
-    
     if (!response?.results || !Array.isArray(response.results)) {
-      console.log('No results found in response');
       return [];
     }
     
-    const transformedData = response.results.map(message => ({
+    return response.results.map(message => ({
       key: message._id,
       ...message
     }));
-    
-    console.log('Transformed Data:', transformedData);
-    return transformedData;
   };
 
   const messagesQuery = useQuery(
@@ -48,7 +45,6 @@ const MessageIntegration = () => {
       pagination.page,
       pagination.limit,
       filters.status,
-      filters.type,
       filters.sortKey,
       filters.sortOrder
     ],
@@ -62,102 +58,87 @@ const MessageIntegration = () => {
     }
   );
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      checkConnectionStatus();
-    }, 10000);
-    return () => clearInterval(interval);
-  }, []);
-
-const checkConnectionStatus = async () => {
-    try {
-      const axiosConfig = {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        withCredentials: true  
-      };
-      
-      const response = await axios.get(
-        `${process.env.REACT_APP_MESSAGE_SERVICE_URL}/get-qr`, 
-        axiosConfig
-      );
-      
-      if (response.data.status === 'logged_in') {
-        setIsConnected(true);
-        setLoggedInUser(response.data.user);
-        setQrCode(null);
-        setStatus(t('Connected as {user}', { user: response.data.user }));
-      } else if (response.data.status === 'qr') {
-        setIsConnected(false);
-        setQrCode(response.data.qr);
-        setLoggedInUser(null);
-        setStatus(t('Scan QR code to connect'));
-      }
-    } catch (error) {
-      console.error('Connection check failed:', error);
-      setStatus(t('Connection error'));
-      setIsConnected(false);
-    }
-  };
-
-  const handleDisconnect = async () => {
-    try {
-      await axios.post(`${process.env.REACT_APP_MESSAGE_SERVICE_URL}/disconnect`);
-      setIsConnected(false);
-      setLoggedInUser(null);
-      setQrCode(null);
-      setStatus(t('Disconnected. Please scan QR code to connect again'));
-    } catch (error) {
-      console.error('Disconnect failed:', error);
-      setStatus(t('Disconnect error'));
-    }
-  };
-
-  const handleSendMessages = async (messages) => {
+  const handleSendSingleMessage = async (record) => {
     if (!isConnected) {
-      setStatus(t('Please connect first'));
+      antMessage.error(t('Please connect first'));
       return;
     }
 
-    for (const message of messages) {
-      if (message.number && message.message) {
-        try {
-          await axios.post(`${process.env.REACT_APP_MESSAGE_SERVICE_URL}/send-message`, {
-            number: message.number,
-            message: message.message
-          });
-          message.status = 'sent';
-        } catch (error) {
-          console.error('Failed to send message:', error);
-          message.status = 'failed';
-        }
+    try {
+      await sendMessage(record);
+      antMessage.success(t('Message sent successfully'));
+    } catch (error) {
+      console.error('Failed to send message:', error);
+      antMessage.error(t('Failed to send message'));
+    }
+  };
+
+  const handleSendSelectedMessages = async () => {
+    if (!isConnected) {
+      antMessage.error(t('Please connect first'));
+      return;
+    }
+
+    if (selectedRowKeys.length === 0) {
+      antMessage.warning(t('Please select messages to send'));
+      return;
+    }
+
+    const selectedMessages = messagesQuery.data.filter(msg => 
+      selectedRowKeys.includes(msg.key) && msg.status === 'pending'
+    );
+
+    let successCount = 0;
+    let failCount = 0;
+
+    for (const message of selectedMessages) {
+      try {
+        await sendMessage(message);
+        successCount++;
+      } catch (error) {
+        console.error('Failed to send message:', error);
+        failCount++;
       }
+    }
+
+    setSelectedRowKeys([]);
+
+    if (successCount > 0) {
+      antMessage.success(t('{count} messages sent successfully', { count: successCount }));
+    }
+    if (failCount > 0) {
+      antMessage.error(t('Failed to send {count} messages', { count: failCount }));
     }
   };
 
   const columns = [
     {
-      title: t('mobile_number'),
+      title: t('Mobile Number'),
       dataIndex: 'destination',
       key: 'destination'
     },
     {
-      title: t('message'),
+      title: t('Message'),
       dataIndex: 'msgBody',
-      key: 'msgBody'
+      key: 'msgBody',
+      width: '30%',
+      render: (text) => (
+        <div style={{ maxHeight: '100px', overflow: 'auto' }}>
+          {text}
+        </div>
+      )
     },
     {
-      title: t('type'),
+      title: t('Type'),
       dataIndex: 'type',
       key: 'type'
     },
     {
-      title: t('variables'),
+      title: t('Variables'),
       dataIndex: 'variables',
       key: 'variables',
       render: (variables) => (
-        <div>
+        <div style={{ maxHeight: '100px', overflow: 'auto' }}>
           {Object.entries(variables || {}).map(([key, value]) => (
             <div key={key}>{`${key}: ${value}`}</div>
           ))}
@@ -165,7 +146,7 @@ const checkConnectionStatus = async () => {
       )
     },
     {
-      title: t('status'),
+      title: t('Status'),
       dataIndex: 'status',
       key: 'status',
       render: (status) => (
@@ -175,10 +156,25 @@ const checkConnectionStatus = async () => {
       )
     },
     {
-      title: t('created_at'),
+      title: t('Created At'),
       dataIndex: 'createdAt',
       key: 'createdAt',
       render: (date) => new Date(date).toLocaleString()
+    },
+    {
+      title: t('Actions'),
+      key: 'actions',
+      render: (_, record) => (
+        <Button
+          type="primary"
+          size="small"
+          loading={sendingMessages[record.key]}
+          disabled={!isConnected || record.status !== 'pending'}
+          onClick={() => handleSendSingleMessage(record)}
+        >
+          {t('Send')}
+        </Button>
+      )
     }
   ];
 
@@ -193,6 +189,16 @@ const checkConnectionStatus = async () => {
       sortKey: sorter.field || 'createdAt',
       sortOrder: sorter.order ? sorter.order.replace('end', '') : 'desc'
     }));
+  };
+
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: (newSelectedRowKeys) => {
+      setSelectedRowKeys(newSelectedRowKeys);
+    },
+    getCheckboxProps: (record) => ({
+      disabled: record.status !== 'pending',
+    }),
   };
 
   return (
@@ -213,11 +219,11 @@ const checkConnectionStatus = async () => {
             >
               {status}
             </span>
-            {isConnected ? (
+            {isConnected && (
               <Button type="primary" danger onClick={handleDisconnect}>
                 {t('Disconnect')}
               </Button>
-            ) : null}
+            )}
           </div>
 
           {qrCode && !isConnected && (
@@ -234,63 +240,26 @@ const checkConnectionStatus = async () => {
             </div>
           )}
         </div>
-
-        <Formik
-          initialValues={{
-            rows: [
-              { id: Date.now(), number: '', message: '', status: 'pending' }
-            ]
-          }}
-          onSubmit={(values) => {
-            handleSendMessages(values.rows);
-          }}
-        >
-          {({ values, setFieldValue, handleSubmit }) => (
-            <form onSubmit={handleSubmit}>
-              {/* ... existing form code ... */}
-              {values.rows.map((row, index) => (
-                <div key={row.id} style={{ marginBottom: '20px' }}>
-                  <Row gutter={16}>
-                    {/* ... existing row code ... */}
-                  </Row>
-                </div>
-              ))}
-
-              <Button
-                className="me-1"
-                type="primary"
-                onClick={() => {
-                  const newRow = {
-                    id: Date.now(),
-                    number: '',
-                    message: '',
-                    status: 'pending'
-                  };
-                  setFieldValue('rows', [...values.rows, newRow]);
-                }}
-                style={{ marginRight: '10px' }}
-              >
-                {t('Add Row')}
-              </Button>
-
-              <Button
-                type="primary"
-                htmlType="submit"
-                disabled={!isConnected}
-              >
-                {t('Send Messages')}
-              </Button>
-            </form>
-          )}
-        </Formik>
       </Card>
 
-      {/* Message List Card */}
-      <Card title={t('Message List')}>
+      <Card 
+        title={t('Message List')}
+        extra={
+          <Button
+            type="primary"
+            onClick={handleSendSelectedMessages}
+            disabled={!isConnected || selectedRowKeys.length === 0}
+            loading={Object.values(sendingMessages).some(Boolean)}
+          >
+            {t('Send Selected Messages')}
+          </Button>
+        }
+      >
         <Table
           columns={columns}
           dataSource={messagesQuery.data}
           loading={messagesQuery.isLoading}
+          rowSelection={rowSelection}
           pagination={{
             current: pagination.page,
             pageSize: pagination.limit,
@@ -298,6 +267,7 @@ const checkConnectionStatus = async () => {
             showSizeChanger: true
           }}
           onChange={handleTableChange}
+          scroll={{ x: true }}
         />
       </Card>
     </div>

@@ -1,22 +1,3 @@
-import React, { createContext, useContext } from 'react';
-import { useMessageConnection } from '../../utility/hooks/useMessageConnection';
+import { createContext } from 'react';
 
-const MessageContext = createContext(null);
-
-export const MessageProvider = ({ children }) => {
-  const connection = useMessageConnection();
-  
-  return (
-    <MessageContext.Provider value={connection}>
-      {children}
-    </MessageContext.Provider>
-  );
-};
-
-export const useMessage = () => {
-  const context = useContext(MessageContext);
-  if (!context) {
-    throw new Error('useMessage must be used within a MessageProvider');
-  }
-  return context;
-};
+export const MessageContext = createContext(null);

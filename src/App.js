@@ -8,11 +8,15 @@ import { authApiInstance } from "./axiosApi/authApiInstans";
 import { setAvailableLang } from "./redux/authSlice";
 import Router from "./router/Router";
 import { disableInspect } from "./utility/removeContextMenu";
+import { useMessageIntegration } from './utility/hooks/useMessageIntegration';
+import { MessageContext } from './utility/context/MessageContext';
 
 const App = () => {
   if (process.env.REACT_APP_ENVIRONMENT === "production") {
     disableInspect();
   }
+
+  const messageIntegrationState = useMessageIntegration();
 
   configureAmplify();
 
@@ -57,7 +61,11 @@ const App = () => {
     languageList();
   }, []);
 
-  return <Router />;
+  return (
+    <MessageContext.Provider value={messageIntegrationState}>
+      <Router />
+    </MessageContext.Provider>
+  );
 };
 
 export default App;
