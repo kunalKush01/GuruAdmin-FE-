@@ -282,7 +282,7 @@ export default function EventForm({
 
                   {AddLanguage && (
                     <Col xs={12} lg={4} md={6}>
-                      <div className="d-flex flex-column">
+                      <div className="d-flex flex-column" id="tagComponent">
                         <label>Tags</label>
                         <Select
                           mode="tags"
@@ -349,7 +349,7 @@ export default function EventForm({
                   )}
                   {!AddLanguage && (
                     <Col xs={12} lg={4} md={6}>
-                      <div className="d-flex flex-column">
+                      <div className="d-flex flex-column" id="tagComponent">
                         <label>Tags</label>
                         <Select
                           mode="tags"
