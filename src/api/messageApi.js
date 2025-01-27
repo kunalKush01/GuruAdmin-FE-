@@ -7,3 +7,10 @@ export const listMessages = (payload) =>
       showToastOnSuccess: false,
       showToastOnError: false,
     });
+
+export const updateMessage = (messageId, payload) =>
+    callApi({
+      requestFunction: (axios) => axios.put(`${API_BASE_URL}/message/${messageId}`, payload),
+      showToastOnSuccess: false,
+      showToastOnError: false,
+    });    

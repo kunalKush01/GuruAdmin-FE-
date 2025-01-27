@@ -1,4 +1,5 @@
 import { useEffect, useRef, useCallback } from 'react';
+import { updateMessage } from '../../api/messageApi';
 
 export const useMessageWorker = () => {
   const workerRef = useRef(null);
@@ -7,7 +8,7 @@ export const useMessageWorker = () => {
   useEffect(() => {
     workerRef.current = new Worker(new URL('./messageWorker.js', import.meta.url));
 
-    workerRef.current.onmessage = (event) => {
+    workerRef.current.onmessage = async (event) => {
       const { type, payload } = event.data;
       
       if (type === 'MESSAGE_RESULT') {
@@ -15,6 +16,16 @@ export const useMessageWorker = () => {
         if (callback) {
           callback(payload);
           callbacksRef.current.delete(payload.messageId);
+        }
+      } 
+      else if (type === 'UPDATE_MESSAGE_STATUS') {
+        try {
+          await updateMessage(payload.messageId, {
+            status: payload.status,
+            ...(payload.error && { error: payload.error })
+          });
+        } catch (error) {
+          console.error('Failed to update message status:', error);
         }
       }
     };

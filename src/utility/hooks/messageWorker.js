@@ -26,12 +26,30 @@ async function sendMessage(message) {
       throw new Error('Failed to send message');
     }
 
+    self.postMessage({
+      type: 'UPDATE_MESSAGE_STATUS',
+      payload: {
+        messageId: message.key,
+        status: 'sent'
+      }
+    });
+
     return {
       success: true,
       messageId: message.key,
       status: 'sent'
     };
   } catch (error) {
+
+    self.postMessage({
+      type: 'UPDATE_MESSAGE_STATUS',
+      payload: {
+        messageId: message.key,
+        status: 'failed',
+        error: error.message
+      }
+    });
+    
     return {
       success: false,
       messageId: message.key,
