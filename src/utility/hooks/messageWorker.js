@@ -1,8 +1,14 @@
 const messageQueue = [];
 let isProcessing = false;
+let isConnected = false;
+
+const getRandomDelay = () => Math.floor(Math.random() * (15000 - 3000 + 1) + 3000);
+
 
 async function sendMessage(message) {
   try {
+    await new Promise(resolve => setTimeout(resolve, getRandomDelay()));
+
     const response = await fetch(`${message.baseUrl}/send-group-message`, {
       method: 'POST',
       headers: {
@@ -35,15 +41,14 @@ async function sendMessage(message) {
 }
 
 async function processQueue() {
-  if (isProcessing || messageQueue.length === 0) return;
+  if (isProcessing || messageQueue.length === 0 || !isConnected) return;
 
   isProcessing = true;
 
-  while (messageQueue.length > 0) {
+  while (messageQueue.length > 0 && isConnected) {
     const message = messageQueue.shift();
     const result = await sendMessage(message);
     
-    // Send result back to main thread
     self.postMessage({
       type: 'MESSAGE_RESULT',
       payload: result
@@ -53,19 +58,41 @@ async function processQueue() {
   isProcessing = false;
 }
 
-// Listen for messages from main thread
 self.addEventListener('message', async (event) => {
   const { type, payload } = event.data;
 
   switch (type) {
+    case 'SET_CONNECTION_STATUS':
+      isConnected = payload.isConnected;
+      if (isConnected) {
+        processQueue();
+      }
+      break;
+
     case 'SEND_MESSAGE':
       messageQueue.push(payload);
-      processQueue();
+      if (isConnected) {
+        processQueue();
+      }
       break;
 
     case 'SEND_MULTIPLE_MESSAGES':
       messageQueue.push(...payload);
-      processQueue();
+      if (isConnected) {
+        processQueue();
+      }
+      break;
+
+    case 'ADD_PENDING_MESSAGES':
+      const newMessages = payload.filter(msg => 
+        !messageQueue.some(qMsg => qMsg.key === msg.key)
+      );
+      if (newMessages.length > 0) {
+        messageQueue.push(...newMessages);
+        if (isConnected) {
+          processQueue();
+        }
+      }
       break;
 
     default:

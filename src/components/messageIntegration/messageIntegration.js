@@ -1,9 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Button, Card, Table, message as antMessage } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from "@tanstack/react-query";
 import { listMessages } from '../../api/messageApi';
 import { MessageContext } from '../../utility/context/MessageContext';
+import { messageWorker } from '../../utility/hooks/messageWorker';
 
 const MessageIntegration = () => {
   const { t } = useTranslation();
@@ -15,7 +16,8 @@ const MessageIntegration = () => {
     sendMessage,
     sendingMessages,
     startConnection,
-    isPollingActive
+    isPollingActive,
+    messageWorker
   } = useContext(MessageContext);
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -59,6 +61,19 @@ const MessageIntegration = () => {
       select: transformMessageData
     }
   );
+
+  useEffect(() => {
+    if (isConnected && messagesQuery.data) {
+      const pendingMessages = messagesQuery.data.filter(msg => msg.status === 'pending');
+      if (pendingMessages.length > 0) {
+        messageWorker.addPendingMessages(pendingMessages);
+      }
+    }
+  }, [isConnected, messagesQuery.data, messageWorker]);
+
+  useEffect(() => {
+    messageWorker.updateConnectionStatus(isConnected);
+  }, [isConnected]);
 
   const handleSendSingleMessage = async (record) => {
     if (!isConnected) {

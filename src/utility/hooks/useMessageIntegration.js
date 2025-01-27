@@ -13,29 +13,27 @@ export const useMessageIntegration = () => {
   const messageWorker = useMessageWorker();
   const queryClient = useQueryClient();
 
+  const updateConnection = useCallback((connected) => {
+    setIsConnected(connected);
+    messageWorker.updateConnectionStatus(connected);
+  }, [messageWorker]);
+
   const checkConnectionStatus = useCallback(async () => {
     if (!isPollingActive) return;
 
     try {
-      const axiosConfig = {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        withCredentials: true  
-      };
-      
       const response = await axios.get(
-        `${process.env.REACT_APP_MESSAGE_SERVICE_URL}/get-qr`, 
-        axiosConfig
+        `${process.env.REACT_APP_MESSAGE_SERVICE_URL}/get-qr`,
+        { withCredentials: true }
       );
       
       if (response.data.status === 'logged_in') {
-        setIsConnected(true);
+        updateConnection(true);
         setLoggedInUser(response.data.user);
         setQrCode(null);
         setStatus(`Connected as ${response.data.user}`);
       } else if (response.data.status === 'qr') {
-        setIsConnected(false);
+        updateConnection(false);
         setQrCode(response.data.qr);
         setLoggedInUser(null);
         setStatus('Scan QR code to connect');
@@ -43,9 +41,9 @@ export const useMessageIntegration = () => {
     } catch (error) {
       console.error('Connection check failed:', error);
       setStatus('Connection error');
-      setIsConnected(false);
+      updateConnection(false);
     }
-  }, [isPollingActive]);
+  }, [isPollingActive, updateConnection]);
 
   const startConnection = () => {
     setIsPollingActive(true);
@@ -114,14 +112,11 @@ export const useMessageIntegration = () => {
     let interval;
     
     if (isPollingActive) {
-      // Initial check when polling starts
       checkConnectionStatus();
       
-      // Set up interval for periodic checks
       interval = setInterval(checkConnectionStatus, 10000);
     }
 
-    // Cleanup on unmount or when polling is stopped
     return () => {
       if (interval) {
         clearInterval(interval);
@@ -139,6 +134,7 @@ export const useMessageIntegration = () => {
     sendMultipleMessages,
     sendingMessages,
     startConnection,
-    isPollingActive
+    isPollingActive,
+    messageWorker
   };
 };

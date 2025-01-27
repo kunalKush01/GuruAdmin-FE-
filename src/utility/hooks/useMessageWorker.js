@@ -5,10 +5,8 @@ export const useMessageWorker = () => {
   const callbacksRef = useRef(new Map());
 
   useEffect(() => {
-    // Create worker
     workerRef.current = new Worker(new URL('./messageWorker.js', import.meta.url));
 
-    // Set up message listener
     workerRef.current.onmessage = (event) => {
       const { type, payload } = event.data;
       
@@ -21,10 +19,26 @@ export const useMessageWorker = () => {
       }
     };
 
-    // Cleanup
     return () => {
       workerRef.current?.terminate();
     };
+  }, []);
+
+  const updateConnectionStatus = useCallback((isConnected) => {
+    workerRef.current.postMessage({
+      type: 'SET_CONNECTION_STATUS',
+      payload: { isConnected }
+    });
+  }, []);
+
+  const addPendingMessages = useCallback((messages) => {
+    workerRef.current.postMessage({
+      type: 'ADD_PENDING_MESSAGES',
+      payload: messages.map(message => ({
+        ...message,
+        baseUrl: process.env.REACT_APP_MESSAGE_SERVICE_URL
+      }))
+    });
   }, []);
 
   const sendMessage = useCallback((messageData) => {
@@ -57,6 +71,8 @@ export const useMessageWorker = () => {
 
   return {
     sendMessage,
-    sendMultipleMessages
+    sendMultipleMessages,
+    updateConnectionStatus,
+    addPendingMessages
   };
 };
