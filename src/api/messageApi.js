@@ -13,4 +13,11 @@ export const updateMessage = (messageId, payload) =>
       requestFunction: (axios) => axios.put(`${API_BASE_URL}/message/${messageId}`, payload),
       showToastOnSuccess: false,
       showToastOnError: false,
-    });    
+    });   
+    
+export const deleteMessage = (messageId) =>
+    callApi({
+      requestFunction: (axios) => axios.delete(`${API_BASE_URL}/message/${messageId}`),
+      showToastOnSuccess: false,
+      showToastOnError: false,
+     });    

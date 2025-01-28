@@ -1,20 +1,24 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Button, Card, Table, message as antMessage } from 'antd';
+import { Button, Card, Table, message as antMessage, Modal, Form, Input } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from "@tanstack/react-query";
-import { listMessages } from '../../api/messageApi';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { listMessages, updateMessage, deleteMessage } from '../../api/messageApi';
 import { MessageContext } from '../../utility/context/MessageContext';
-import { messageWorker } from '../../utility/hooks/messageWorker';
+import editIcon from "../../assets/images/icons/category/editIcon.svg";
+import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
 
 const MessageIntegration = () => {
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [editingMessage, setEditingMessage] = useState(null);
+  const [form] = Form.useForm();
+  
   const { 
     isConnected,
     status,
     qrCode,
     handleDisconnect,
-    sendMessage,
-    sendingMessages,
     startConnection,
     isPollingActive,
     messageWorker
@@ -32,16 +36,28 @@ const MessageIntegration = () => {
     sortOrder: 'DESC'
   });
 
-  const transformMessageData = (response) => {
-    if (!response?.results || !Array.isArray(response.results)) {
-      return [];
-    }
-    
-    return response.results.map(message => ({
+ const transformMessageData = (response) => {
+  console.log('Raw response:', response);
+  
+  if (!response?.results || !Array.isArray(response.results)) {
+    console.log('No results found or invalid format');
+    return {
+      data: [],
+      total: 0
+    };
+  }
+  
+  const transformed = {
+    data: response.results.map(message => ({
       key: message._id,
       ...message
-    }));
+    })),
+    total: response.totalResults
   };
+  
+  console.log('Transformed data:', transformed);
+  return transformed;
+};
 
   const messagesQuery = useQuery(
     [
@@ -62,9 +78,73 @@ const MessageIntegration = () => {
     }
   );
 
+  const updateMessageMutation = useMutation(
+    ({ messageId, payload }) => updateMessage(messageId, payload),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('messages');
+        antMessage.success(t('Message updated successfully'));
+        setEditModalVisible(false);
+      },
+      onError: (error) => {
+        antMessage.error(t('Failed to update message'));
+        console.error('Update failed:', error);
+      }
+    }
+  );
+
+  const deleteMessageMutation = useMutation(
+    (messageId) => deleteMessage(messageId),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('messages');
+        antMessage.success(t('Message deleted successfully'));
+      },
+      onError: (error) => {
+        antMessage.error(t('Failed to delete message'));
+        console.error('Delete failed:', error);
+      }
+    }
+  );
+
+  const handleEdit = (record) => {
+    setEditingMessage(record);
+    form.setFieldsValue({
+      msgBody: record.msgBody,
+      variables: JSON.stringify(record.variables || {}, null, 2)
+    });
+    setEditModalVisible(true);
+  };
+
+  const handleDelete = async (messageId) => {
+    Modal.confirm({
+      title: t('Delete Message'),
+      content: t('Are you sure you want to delete this message?'),
+      okText: t('Yes'),
+      cancelText: t('No'),
+      onOk: () => deleteMessageMutation.mutate(messageId)
+    });
+  };
+
+  const handleEditSubmit = async (values) => {
+    try {
+      const variables = JSON.parse(values.variables);
+      await updateMessageMutation.mutateAsync({
+        messageId: editingMessage.key,
+        payload: {
+          msgBody: values.msgBody,
+          variables,
+          status:'pending'
+        }
+      });
+    } catch (error) {
+      antMessage.error(t('Invalid variables format'));
+    }
+  };
+
   useEffect(() => {
-    if (isConnected && messagesQuery.data) {
-      const pendingMessages = messagesQuery.data.filter(msg => msg.status === 'pending');
+    if (isConnected && messagesQuery.data?.data) {
+      const pendingMessages = messagesQuery.data.data.filter(msg => msg.status === 'pending');
       if (pendingMessages.length > 0) {
         messageWorker.addPendingMessages(pendingMessages);
       }
@@ -73,47 +153,17 @@ const MessageIntegration = () => {
 
   useEffect(() => {
     messageWorker.updateConnectionStatus(isConnected);
-  }, [isConnected]);
+  }, [isConnected, messageWorker]);
 
-  const handleSendSingleMessage = async (record) => {
-    if (!isConnected) {
-      antMessage.error(t('Please connect first'));
-      return;
-    }
-
-    try {
-      await sendMessage(record);
-      antMessage.success(t('Message sent successfully'));
-    } catch (error) {
-      console.error('Failed to send message:', error);
-      antMessage.error(t('Failed to send message'));
-    }
-  };
-
-  const handleSendSelectedMessages = async () => {
-    if (!isConnected) {
-      antMessage.error(t('Please connect first'));
-      return;
-    }
-  
-    if (selectedRowKeys.length === 0) {
-      antMessage.warning(t('Please select messages to send'));
-      return;
-    }
-  
-    const selectedMessages = messagesQuery.data.filter(msg => 
-      selectedRowKeys.includes(msg.key) && msg.status === 'pending'
-    );
-  
-    try {
-      await sendMultipleMessages(selectedMessages);
-      antMessage.success(t('Messages queued for sending'));
-      setSelectedRowKeys([]);
-    } catch (error) {
-      console.error('Failed to queue messages:', error);
-      antMessage.error(t('Failed to queue messages'));
-    }
-  };
+  // Add this after your messagesQuery definition to debug
+useEffect(() => {
+  console.log('Query state:', {
+    data: messagesQuery.data,
+    isLoading: messagesQuery.isLoading,
+    isError: messagesQuery.isError,
+    error: messagesQuery.error
+  });
+}, [messagesQuery.data, messagesQuery.isLoading, messagesQuery.isError]);
 
   const columns = [
     {
@@ -169,15 +219,22 @@ const MessageIntegration = () => {
       title: t('Actions'),
       key: 'actions',
       render: (_, record) => (
-        <Button
-          type="primary"
-          size="small"
-          loading={sendingMessages[record.key]}
-          disabled={!isConnected || record.status !== 'pending'}
-          onClick={() => handleSendSingleMessage(record)}
-        >
-          {t('Send')}
-        </Button>
+        <div className="d-flex gap-2">
+          <img
+            src={editIcon}
+            alt="Edit"
+            className="cursor-pointer"
+            onClick={() => handleEdit(record)}
+            style={{ width: '20px', height: '20px' }}
+          />
+          <img
+            src={deleteIcon}
+            alt="Delete"
+            className="cursor-pointer"
+            onClick={() => handleDelete(record.key)}
+            style={{ width: '20px', height: '20px' }}
+          />
+        </div>
       )
     }
   ];
@@ -225,7 +282,7 @@ const MessageIntegration = () => {
             </span>
             {!isConnected && !isPollingActive && (
               <Button type="primary" onClick={startConnection}>
-                {t('Connect')}
+                {t('Connect with Connector App')}
               </Button>
             )}
             {isConnected && (
@@ -251,34 +308,80 @@ const MessageIntegration = () => {
         </div>
       </Card>
 
-      <Card 
-        title={t('Message List')}
-        extra={
-          <Button
-            type="primary"
-            onClick={handleSendSelectedMessages}
-            disabled={!isConnected || selectedRowKeys.length === 0}
-            loading={Object.values(sendingMessages).some(Boolean)}
-          >
-            {t('Send Selected Messages')}
-          </Button>
-        }
-      >
-        <Table
-          columns={columns}
-          dataSource={messagesQuery.data}
-          loading={messagesQuery.isLoading}
-          rowSelection={rowSelection}
-          pagination={{
-            current: pagination.page,
-            pageSize: pagination.limit,
-            total: messagesQuery.data?.length || 0,
-            showSizeChanger: true
-          }}
-          onChange={handleTableChange}
-          scroll={{ x: true }}
-        />
+      <Card title={t('Message List')}>
+      <Table
+        columns={columns}
+        dataSource={messagesQuery.data?.data}
+        loading={messagesQuery.isLoading}
+        rowSelection={rowSelection}
+        pagination={{
+          current: pagination.page,
+          pageSize: pagination.limit,
+          total: messagesQuery.data?.total || 0,
+          showSizeChanger: true
+        }}
+        onChange={handleTableChange}
+        scroll={{ x: true }}
+        onRow={(record) => {
+          console.log('Row record:', record);
+          return {};
+        }}
+      />
       </Card>
+
+      <Modal
+        title={t('Edit Message')}
+        open={editModalVisible}
+        onCancel={() => setEditModalVisible(false)}
+        footer={null}
+      >
+        <Form
+          form={form}
+          onFinish={handleEditSubmit}
+          layout="vertical"
+        >
+          <Form.Item
+            name="msgBody"
+            label={t('Message')}
+            rules={[{ required: true, message: t('Please input message body') }]}
+          >
+            <Input.TextArea rows={4} />
+          </Form.Item>
+          
+          <Form.Item
+            name="variables"
+            label={t('Variables (JSON format)')}
+            rules={[
+              { required: true, message: t('Please input variables') },
+              {
+                validator: (_, value) => {
+                  try {
+                    JSON.parse(value);
+                    return Promise.resolve();
+                  } catch (error) {
+                    return Promise.reject(new Error(t('Invalid JSON format')));
+                  }
+                }
+              }
+            ]}
+          >
+            <Input.TextArea rows={4} />
+          </Form.Item>
+
+          <div className="d-flex justify-content-end gap-2">
+            <Button onClick={() => setEditModalVisible(false)}>
+              {t('Cancel')}
+            </Button>
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={updateMessageMutation.isLoading}
+            >
+              {t('Save')}
+            </Button>
+          </div>
+        </Form>
+      </Modal>
     </div>
   );
 };
