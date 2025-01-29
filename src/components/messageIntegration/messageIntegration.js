@@ -8,6 +8,7 @@ import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
 import GroupMessageModal from './groupMessageModal';
 import { UsergroupAddOutlined, ImportOutlined } from '@ant-design/icons';
+import ImportForm from '../../views/donation/importForm';
 
 const MessageIntegration = () => {
   const { t } = useTranslation();
@@ -20,10 +21,22 @@ const MessageIntegration = () => {
   const [messageText, setMessageText] = useState('');
   const [sendingGroupMessage, setSendingGroupMessage] = useState(false);
   const [fileList, setFileList] = useState([]);
+  const [importModalVisible, setImportModalVisible] = useState(false);
+const [showImportHistory, setShowImportHistory] = useState(false);
 
   const handleGroupSelection = (groups) => {
     setSelectedGroups(groups);
   };
+
+  const messageMappedFields = [
+    { label: 'Mobile No', value: 'mobile' },
+    { label: 'Message', value: 'message' },
+    { label: 'Variable 1', value: 'var1' },
+    { label: 'Variable 2', value: 'var2' },
+    { label: 'Variable 3', value: 'var3' },
+    { label: 'Variable 4', value: 'var4' },
+    { label: 'Variable 5', value: 'var5' }
+  ];
   
   const { 
     isConnected,
@@ -371,7 +384,7 @@ useEffect(() => {
             
           )}
           <div className="d-flex align-items-center gap-2">
-          {isConnected && (
+          {!isConnected && (
             <>
               <Button 
                 icon={<UsergroupAddOutlined />}
@@ -381,6 +394,7 @@ useEffect(() => {
               </Button>
               <Button 
                 icon={<ImportOutlined />}
+                onClick={() => setImportModalVisible(true)}
               >
                 {t('Import')}
               </Button>
@@ -480,6 +494,13 @@ useEffect(() => {
   loading={sendingGroupMessage}
   fileList={fileList}
   setFileList={setFileList}
+/>
+<ImportForm
+  open={importModalVisible}
+  onClose={() => setImportModalVisible(false)}
+  tab="Message"
+  setShowHistory={setShowImportHistory}
+  mappedField={messageMappedFields}
 />
     </div>
   );

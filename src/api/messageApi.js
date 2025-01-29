@@ -27,4 +27,12 @@ export const createMessage = (payload) =>
       requestFunction: (axios) => axios.post(`${API_BASE_URL}/message/create`, payload),
       showToastOnSuccess: false,
       showToastOnError: false,
-    });     
+    }); 
+    
+export const importMessages = (payload) =>
+    callApi({
+      requestFunction: (axios) => axios.post(`${API_BASE_URL}/message/import-file`, payload),
+      showToastOnSuccess: false,
+      showToastOnError: false,
+    });
+  
