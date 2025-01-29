@@ -2,10 +2,12 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Button, Card, Table, message as antMessage, Modal, Form, Input } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { listMessages, updateMessage, deleteMessage } from '../../api/messageApi';
+import { listMessages, updateMessage, deleteMessage, createMessage } from '../../api/messageApi';
 import { MessageContext } from '../../utility/context/MessageContext';
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
+import GroupMessageModal from './groupMessageModal';
+import { UsergroupAddOutlined, ImportOutlined } from '@ant-design/icons';
 
 const MessageIntegration = () => {
   const { t } = useTranslation();
@@ -13,6 +15,15 @@ const MessageIntegration = () => {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editingMessage, setEditingMessage] = useState(null);
   const [form] = Form.useForm();
+  const [groupMessageVisible, setGroupMessageVisible] = useState(false);
+  const [selectedGroups, setSelectedGroups] = useState([]);
+  const [messageText, setMessageText] = useState('');
+  const [sendingGroupMessage, setSendingGroupMessage] = useState(false);
+  const [fileList, setFileList] = useState([]);
+
+  const handleGroupSelection = (groups) => {
+    setSelectedGroups(groups);
+  };
   
   const { 
     isConnected,
@@ -57,6 +68,59 @@ const MessageIntegration = () => {
   
   console.log('Transformed data:', transformed);
   return transformed;
+};
+
+const handleGroupSelect = (group) => {
+  setSelectedGroups(prev => 
+    prev.includes(group) 
+      ? prev.filter(g => g !== group)
+      : prev.length < 5 
+        ? [...prev, group] 
+        : prev
+  );
+};
+
+const handleSendGroupMessage = async () => {
+  setSendingGroupMessage(true);
+  try {
+    const file = fileList[0];
+    let fileData = null;
+
+    if (file) {
+      fileData = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+      });
+    }
+
+    const messagePromises = selectedGroups.map(groupId => {
+      const messagePayload = {
+        destination: groupId,
+        msgBody: messageText,
+        type: 'group', // Indicate this is a group message
+        variables: {},
+        status: 'pending',
+        ...(fileData && { attachment: fileData })
+      };
+      return createMessage(messagePayload);
+    });
+
+    await Promise.all(messagePromises);
+    
+    antMessage.success(t('Messages created successfully'));
+    queryClient.invalidateQueries('messages');
+    
+    setGroupMessageVisible(false);
+    setSelectedGroups([]);
+    setMessageText('');
+    setFileList([]);
+  } catch (error) {
+    antMessage.error(t('Failed to create messages'));
+    console.error('Create messages failed:', error);
+  } finally {
+    setSendingGroupMessage(false);
+  }
 };
 
   const messagesQuery = useQuery(
@@ -304,7 +368,25 @@ useEffect(() => {
                 }}
               />
             </div>
+            
           )}
+          <div className="d-flex align-items-center gap-2">
+          {isConnected && (
+            <>
+              <Button 
+                icon={<UsergroupAddOutlined />}
+                onClick={() => setGroupMessageVisible(true)}
+              >
+                {t('Group Send')}
+              </Button>
+              <Button 
+                icon={<ImportOutlined />}
+              >
+                {t('Import')}
+              </Button>
+            </>
+          )}
+        </div>
         </div>
       </Card>
 
@@ -382,6 +464,23 @@ useEffect(() => {
           </div>
         </Form>
       </Modal>
+      <GroupMessageModal
+  visible={groupMessageVisible}
+  onCancel={() => {
+    setGroupMessageVisible(false);
+    setSelectedGroups([]);
+    setMessageText('');
+    setFileList([]); 
+  }}
+  onSend={handleSendGroupMessage}
+  selectedGroups={selectedGroups}
+  onGroupSelect={handleGroupSelection}
+  messageText={messageText}
+  onMessageChange={setMessageText}
+  loading={sendingGroupMessage}
+  fileList={fileList}
+  setFileList={setFileList}
+/>
     </div>
   );
 };

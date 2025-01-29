@@ -9,7 +9,9 @@ async function sendMessage(message) {
   try {
     await new Promise(resolve => setTimeout(resolve, getRandomDelay()));
 
-    const response = await fetch(`${message.baseUrl}/send-group-message`, {
+    const endpoint = message.type === 'group' ? 'send-group-message' : 'send-message';
+
+    const response = await fetch(`${message.baseUrl}/${endpoint}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -40,7 +42,6 @@ async function sendMessage(message) {
       status: 'sent'
     };
   } catch (error) {
-
     self.postMessage({
       type: 'UPDATE_MESSAGE_STATUS',
       payload: {
