@@ -36,3 +36,9 @@ export const importMessages = (payload) =>
       showToastOnError: false,
     });
   
+export const sendBulkMessages = (payload) =>
+    callApi({
+      requestFunction: (axios) => axios.post(`${API_BASE_URL}/message/send-bulk`, payload),
+      showToastOnSuccess: false,
+      showToastOnError: false,
+    });    
