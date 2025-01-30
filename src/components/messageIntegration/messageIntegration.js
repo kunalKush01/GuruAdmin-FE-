@@ -111,7 +111,7 @@ const handleSendGroupMessage = async () => {
       const messagePayload = {
         destination: groupId,
         msgBody: messageText,
-        type: 'group', // Indicate this is a group message
+        type: 'group', 
         variables: {},
         status: 'pending',
         ...(fileData && { attachment: fileData })
