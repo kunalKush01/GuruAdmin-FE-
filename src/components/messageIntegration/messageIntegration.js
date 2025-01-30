@@ -188,7 +188,6 @@ const handleSendGroupMessage = async () => {
     setEditingMessage(record);
     form.setFieldsValue({
       msgBody: record.msgBody,
-      variables: JSON.stringify(record.variables || {}, null, 2)
     });
     setEditModalVisible(true);
   };
@@ -205,17 +204,16 @@ const handleSendGroupMessage = async () => {
 
   const handleEditSubmit = async (values) => {
     try {
-      const variables = JSON.parse(values.variables);
       await updateMessageMutation.mutateAsync({
         messageId: editingMessage.key,
         payload: {
           msgBody: values.msgBody,
-          variables,
-          status:'pending'
+          variables: editingMessage.variables || {},
+          status: 'pending'
         }
       });
     } catch (error) {
-      antMessage.error(t('Invalid variables format'));
+      antMessage.error(t('Failed to update message'));
     }
   };
 
@@ -259,11 +257,11 @@ useEffect(() => {
         </div>
       )
     },
-    {
-      title: t('Type'),
-      dataIndex: 'type',
-      key: 'type'
-    },
+    // {
+    //   title: t('Type'),
+    //   dataIndex: 'type',
+    //   key: 'type'
+    // },
     // {
     //   title: t('Variables'),
     //   dataIndex: 'variables',
@@ -423,58 +421,38 @@ useEffect(() => {
       </Card>
 
       <Modal
-        title={t('Edit Message')}
-        open={editModalVisible}
-        onCancel={() => setEditModalVisible(false)}
-        footer={null}
+    title={t('Edit Message')}
+    open={editModalVisible}
+    onCancel={() => setEditModalVisible(false)}
+    footer={null}
+  >
+    <Form
+      form={form}
+      onFinish={handleEditSubmit}
+      layout="vertical"
+    >
+      <Form.Item
+        name="msgBody"
+        label={t('Message')}
+        rules={[{ required: true, message: t('Please input message body') }]}
       >
-        <Form
-          form={form}
-          onFinish={handleEditSubmit}
-          layout="vertical"
-        >
-          <Form.Item
-            name="msgBody"
-            label={t('Message')}
-            rules={[{ required: true, message: t('Please input message body') }]}
-          >
-            <Input.TextArea rows={4} />
-          </Form.Item>
-          
-          <Form.Item
-            name="variables"
-            label={t('Variables (JSON format)')}
-            rules={[
-              { required: true, message: t('Please input variables') },
-              {
-                validator: (_, value) => {
-                  try {
-                    JSON.parse(value);
-                    return Promise.resolve();
-                  } catch (error) {
-                    return Promise.reject(new Error(t('Invalid JSON format')));
-                  }
-                }
-              }
-            ]}
-          >
-            <Input.TextArea rows={4} />
-          </Form.Item>
+        <Input.TextArea rows={4} />
+      </Form.Item>
 
-          <div className="d-flex justify-content-end gap-2">
-            <Button onClick={() => setEditModalVisible(false)}>
-              {t('Cancel')}
-            </Button>
-            <Button
-              type="primary"
-              htmlType="submit"
-              loading={updateMessageMutation.isLoading}
-            >
-              {t('Save')}
-            </Button>
-          </div>
-        </Form>
-      </Modal>
+      <div className="d-flex justify-content-end gap-2">
+        <Button onClick={() => setEditModalVisible(false)}>
+          {t('Cancel')}
+        </Button>
+        <Button
+          type="primary"
+          htmlType="submit"
+          loading={updateMessageMutation.isLoading}
+        >
+          {t('Save')}
+        </Button>
+      </div>
+    </Form>
+  </Modal>
       <GroupMessageModal
   visible={groupMessageVisible}
   onCancel={() => {
