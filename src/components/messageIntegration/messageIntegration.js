@@ -264,18 +264,18 @@ useEffect(() => {
       dataIndex: 'type',
       key: 'type'
     },
-    {
-      title: t('Variables'),
-      dataIndex: 'variables',
-      key: 'variables',
-      render: (variables) => (
-        <div style={{ maxHeight: '100px', overflow: 'auto' }}>
-          {Object.entries(variables || {}).map(([key, value]) => (
-            <div key={key}>{`${key}: ${value}`}</div>
-          ))}
-        </div>
-      )
-    },
+    // {
+    //   title: t('Variables'),
+    //   dataIndex: 'variables',
+    //   key: 'variables',
+    //   render: (variables) => (
+    //     <div style={{ maxHeight: '100px', overflow: 'auto' }}>
+    //       {Object.entries(variables || {}).map(([key, value]) => (
+    //         <div key={key}>{`${key}: ${value}`}</div>
+    //       ))}
+    //     </div>
+    //   )
+    // },
     {
       title: t('Status'),
       dataIndex: 'status',
@@ -383,24 +383,20 @@ useEffect(() => {
             </div>
             
           )}
-          <div className="d-flex align-items-center gap-2">
-          {!isConnected && (
-            <>
-              <Button 
-                icon={<UsergroupAddOutlined />}
-                onClick={() => setGroupMessageVisible(true)}
-              >
-                {t('Group Send')}
-              </Button>
-              <Button 
-                icon={<ImportOutlined />}
-                onClick={() => setImportModalVisible(true)}
-              >
-                {t('Import')}
-              </Button>
-            </>
-          )}
-        </div>
+         <div className="d-flex align-items-center gap-2">
+            <Button 
+              icon={<UsergroupAddOutlined />}
+              onClick={() => setGroupMessageVisible(true)}
+            >
+              {t('Group Send')}
+            </Button>
+            <Button 
+              icon={<ImportOutlined />}
+              onClick={() => setImportModalVisible(true)}
+            >
+              {t('Import')}
+            </Button>
+          </div>
         </div>
       </Card>
 

@@ -83,7 +83,16 @@ function ImportForm({
             complete: (result) => {
               headers = result.meta.fields;
               setSourceFields(headers);
-              setMapping({});
+              const initialMapping = {};
+              headers.forEach(header => {
+                const lowerHeader = header.toLowerCase().trim();
+                messageTargetFields.forEach(target => {
+                  if (lowerHeader === target.value.toLowerCase()) {
+                    initialMapping[target.value] = header;
+                  }
+                });
+              });
+              setMapping(initialMapping);
               message.success(`${fileName} file processed successfully`);
             },
             error: (error) => {
@@ -145,10 +154,13 @@ function ImportForm({
   };
 
   const handleMappingChange = (targetField, sourceField) => {
-    setMapping({
-      ...mapping,
-      [targetField]: sourceField,
-    });
+    const field = messageTargetFields.find(f => f.label === targetField);
+    const key = field ? field.value : targetField;
+    
+    setMapping(prevMapping => ({
+      ...prevMapping,
+      [key]: sourceField
+    }));
   };
 
   const columns = [
@@ -207,22 +219,9 @@ function ImportForm({
     try {
       if (tab === "Message") {
         const formData = new FormData();
-        console.log("🚀🚀🚀 ~ file: importForm.js:210 ~ handleSubmit ~ formData:", file);
         formData.append("file", file);
         formData.append("upload_type", "Message");
         formData.append("createdBy", loggedInUser ? loggedInUser?.id : "");
-        
-        const mappingData = {
-          mobile: mapping.mobile || '',
-          message: mapping.message || '',
-          var1: mapping.var1 || '',
-          var2: mapping.var2 || '',
-          var3: mapping.var3 || '',
-          var4: mapping.var4 || '',
-          var5: mapping.var5 || ''
-        };
-        formData.append("mapping", JSON.stringify(mappingData));
-        console.log("🚀🚀🚀 ~ file: importForm.js:224 ~ handleSubmit ~ mappingData:", mappingData);
 
         await importMessages(formData);
         message.success(t("messages_imported_successfully"));
