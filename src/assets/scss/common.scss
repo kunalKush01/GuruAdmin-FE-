@@ -4405,15 +4405,16 @@
         display: none;
     }
 }
-.ant-select-selector{
-    background-color: $secondary-color !important;
-    min-height: 38px !important;
-    height: auto !important;
-    border: none !important;
-}
-.ant-select-selection-item{
-    background-color: $secondary-color !important;
-    color: $font-color !important;
+#tagComponent{
+    .ant-select-selector{
+        background-color: $secondary-color !important;
+        min-height: 38px !important;
+        height: auto !important;
+        border: none !important;
+    }
+    .ant-select-selection-item{
+        background-color: $secondary-color !important;
+        color: $font-color !important;
     border: 1px solid $font-color !important;
     border-radius: 10px !important;
     font: $font-weight-bold 80% $font-family !important; 
@@ -4453,4 +4454,5 @@
 .ant-select-selection-placeholder {
     color: #978466 !important;
     font: normal normal 700 13px Noto Sans !important
+}
 }
