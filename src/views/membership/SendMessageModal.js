@@ -7,7 +7,6 @@ const { TextArea } = Input;
 const SendMessageModal = ({ 
   visible = false, 
   onCancel = () => {}, 
-//   onSend = () => {},
   messageText = '',
   onMessageChange = () => {},
   loading = false,
@@ -30,7 +29,7 @@ const SendMessageModal = ({
             type: 'text'
         });
 
-        if (response.success) {
+        if (response.status === true || response.code === 201) {
             message.success('Messages sent successfully');
             onCancel(); 
         } else {
@@ -63,7 +62,7 @@ const SendMessageModal = ({
         </div>
 
         <div>
-          <div className="text-sm font-semibold mb-2">Supported Variables</div>
+          <div className="text-sm font-semibold mb-2" style={{marginTop:"15px"}}>Supported Variables</div>
           <div className="flex gap-2">
             <Select
               className="w-40"
