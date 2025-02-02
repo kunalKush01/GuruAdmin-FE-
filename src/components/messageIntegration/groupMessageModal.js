@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Input, Button, List, Checkbox, message } from 'antd';
 import { Tag } from 'antd';
+import '../../assets/scss/viewCommon.scss';
 
 const { TextArea } = Input;
 
@@ -58,30 +59,23 @@ const GroupMessageModal = ({
       onCancel={onCancel}
       footer={null}
       width={400}
-      bodyStyle={{
-        padding: '16px',
-        maxHeight: '80vh',
-        overflow: 'auto',
-        borderRadius: '8px',
-      }}
+      bodyStyle={{ className: 'group-message-modal__body' }}
     >
-      <div className="flex flex-col gap-3">
+      <div className="group-message-modal__container">
         <div>
           <div className="flex justify-between items-center mb-1">
-            {/* <div className="text-sm font-semibold">Select Groups (Max 5)</div> */}
             <Button
               type="primary"
               onClick={fetchGroups}
               loading={fetchingGroups}
-              className="bg-blue-500 hover:bg-blue-600 h-6 text-xs px-3"
-              style={{ padding: "10px", marginLeft:"70px", marginTop:"-60px" }}
+              className="bg-blue-500 hover:bg-blue-600 h-6 text-xs px-3 group-message-modal__fetch-button"
             >
               Fetch Groups
             </Button>
           </div>
         </div>
 
-        <div className="p-1 border rounded-md min-h-[28px] flex flex-wrap gap-1 items-center bg-gray-50">
+        <div className="group-message-modal__selected-groups">
           {Array.isArray(selectedGroups) && selectedGroups.length > 0 ? (
             selectedGroups.map((groupId) => (
               <Tag
@@ -90,7 +84,7 @@ const GroupMessageModal = ({
                 onClose={() =>
                   onGroupSelect(selectedGroups.filter((g) => g !== groupId))
                 }
-                className="text-xs px-1 py-0 m-0 leading-none"
+                className="group-message-modal__group-tag"
               >
                 {getGroupName(groupId)}
               </Tag>
@@ -100,12 +94,12 @@ const GroupMessageModal = ({
           )}
         </div>
 
-        <div className="border rounded-md" style={{ height: '100px', overflowY: 'auto' }}>
+        <div className="group-message-modal__groups-list">
           <List
             size="small"
             dataSource={groups}
             renderItem={(group) => (
-              <List.Item className="hover:bg-gray-50 px-2 py-0.5">
+              <List.Item className="group-message-modal__list-item">
                 <Checkbox
                   checked={Array.isArray(selectedGroups) && selectedGroups.includes(group.id)}
                   onChange={() => handleGroupCheck(group)}
@@ -118,18 +112,17 @@ const GroupMessageModal = ({
           />
         </div>
         <div>
-          <div className="mb-1 text-sm font-bold" style={{ padding: "10px", marginLeft:"-10px" }}>Message</div>
+          <div className="group-message-modal__message-label">Message</div>
           <TextArea
             placeholder="Message to be sent"
             value={messageText}
             onChange={(e) => onMessageChange(e.target.value)}
             rows={3}
-            className="w-full text-xs"
-            style={{ marginTop:"-20px" }}
+            className="w-full text-xs group-message-modal__message-input"
           />
         </div>
 
-        <div className="flex justify-end mt-10" style={{ padding: "10px", marginLeft:"50px" }}>
+        <div className="group-message-modal__send-button-container">
           <Button
             type="primary"
             onClick={onSend}

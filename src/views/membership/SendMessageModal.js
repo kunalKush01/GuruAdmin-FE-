@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, Input, Button, Select, message } from 'antd';
 import { sendBulkMessages } from '../../api/messageApi';
+import '../../assets/scss/viewCommon.scss';
 
 const { TextArea } = Input;
 
@@ -38,7 +39,7 @@ const SendMessageModal = ({
     } catch (error) {
         message.error('Error sending messages: ' + error.message);
     }
-};
+  };
 
   return (
     <Modal
@@ -51,7 +52,7 @@ const SendMessageModal = ({
     >
       <div className="flex flex-col gap-4">
         <div>
-          <div className="text-sm font-semibold mb-2">Message</div>
+          <div className="text-sm font-semibold mb-2 message-label">Message</div>
           <TextArea
             placeholder="Type your message here..."
             value={messageText}
@@ -62,7 +63,7 @@ const SendMessageModal = ({
         </div>
 
         <div>
-          <div className="text-sm font-semibold mb-2" style={{marginTop:"15px"}}>Supported Variables</div>
+          <div className="text-sm font-semibold mb-2 variables-label">Supported Variables</div>
           <div className="flex gap-2">
             <Select
               className="w-40"
@@ -72,8 +73,7 @@ const SendMessageModal = ({
             />
             <Button 
               onClick={handleVariableInsert}
-              className="bg-white hover:bg-gray-50 border border-gray-300"
-              style={{marginLeft:"10px"}}
+              className="variable-insert-btn bg-white hover:bg-gray-50 border border-gray-300"
             >
               Insert Variable
             </Button>
@@ -82,8 +82,7 @@ const SendMessageModal = ({
               onClick={handleSendMessage}
               disabled={!messageText.trim() || loading}
               loading={loading}
-              className="ml-auto bg-orange-500 hover:bg-orange-600"
-              style={{marginLeft:"10px"}}
+              className="send-btn ml-auto bg-orange-500 hover:bg-orange-600"
             >
               Send
             </Button>

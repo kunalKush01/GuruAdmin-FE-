@@ -9,6 +9,7 @@ import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
 import GroupMessageModal from './groupMessageModal';
 import { UsergroupAddOutlined, ImportOutlined } from '@ant-design/icons';
 import ImportForm from '../../views/donation/importForm';
+import '../../assets/scss/viewCommon.scss';
 
 const MessageIntegration = () => {
   const { t } = useTranslation();
@@ -340,143 +341,135 @@ useEffect(() => {
   return (
     <div className="d-flex flex-column gap-4">
       <Card title={t('Message Integration')}>
-        <div className="d-flex flex-column align-items-start mb-4">
-          <div className="d-flex align-items-center mb-2">
-            <span 
-              className={`status-badge ${isConnected ? 'connected' : 'disconnected'}`}
-              style={{
-                padding: '4px 12px',
-                borderRadius: '4px',
-                marginRight: '12px',
-                backgroundColor: isConnected ? '#f6ffed' : '#fff1f0',
-                color: isConnected ? '#52c41a' : '#ff4d4f',
-                border: `1px solid ${isConnected ? '#b7eb8f' : '#ffa39e'}`
-              }}
-            >
-              {status}
-            </span>
-            {!isConnected && !isPollingActive && (
-              <Button type="primary" onClick={startConnection}>
-                {t('Connect with Connector App')}
-              </Button>
-            )}
-            {isConnected && (
-              <Button type="primary" danger onClick={handleDisconnect}>
-                {t('Disconnect')}
-              </Button>
-            )}
-          </div>
-
-          {qrCode && !isConnected && (
-            <div className="mt-3 mb-3">
-              <img 
-                src={qrCode} 
-                alt="QR Code" 
-                style={{
-                  maxWidth: '200px',
-                  border: '1px solid #d9d9d9',
-                  borderRadius: '4px'
-                }}
-              />
+        <div className="message-integration">
+          <div className="d-flex flex-column align-items-start mb-4">
+            <div className="d-flex align-items-center mb-2">
+              <span className={`status-badge ${isConnected ? 'connected' : 'disconnected'} connection-status`}>
+                {status}
+              </span>
+              {!isConnected && !isPollingActive && (
+                <Button type="primary" onClick={startConnection}>
+                  {t('Connect with Connector App')}
+                </Button>
+              )}
+              {isConnected && (
+                <Button type="primary" danger onClick={handleDisconnect}>
+                  {t('Disconnect')}
+                </Button>
+              )}
             </div>
+
+            {qrCode && !isConnected && (
+              <div>
+                <img 
+                  src={qrCode} 
+                  alt="QR Code"
+                  className="qr-code" 
+                />
+              </div>
+            )}
             
-          )}
-         <div className="d-flex align-items-center gap-2">
-            <Button 
-              type="primary"
-              icon={<UsergroupAddOutlined />}
-              onClick={() => setGroupMessageVisible(true)}
-            >
-              {t('Group Send')}
-            </Button>
-            <Button 
-              icon={<ImportOutlined />}
-              onClick={() => setImportModalVisible(true)}
-            >
-              {t('Import')}
-            </Button>
+            <div className="action-buttons">
+              <Button 
+                type="primary"
+                icon={<UsergroupAddOutlined />}
+                onClick={() => setGroupMessageVisible(true)}
+              >
+                {t('Group Send')}
+              </Button>
+              <Button 
+                icon={<ImportOutlined />}
+                onClick={() => setImportModalVisible(true)}
+              >
+                {t('Import')}
+              </Button>
+            </div>
           </div>
         </div>
       </Card>
 
       <Card title={t('Message List')}>
-      <Table
-        columns={columns}
-        dataSource={messagesQuery.data?.data}
-        loading={messagesQuery.isLoading}
-        rowSelection={rowSelection}
-        pagination={{
-          current: pagination.page,
-          pageSize: pagination.limit,
-          total: messagesQuery.data?.total || 0,
-          showSizeChanger: true
-        }}
-        onChange={handleTableChange}
-        scroll={{ x: true }}
-        onRow={(record) => {
-          console.log('Row record:', record);
-          return {};
-        }}
-      />
+        <div className="message-list">
+          <Table
+            columns={columns}
+            dataSource={messagesQuery.data?.data}
+            loading={messagesQuery.isLoading}
+            rowSelection={rowSelection}
+            pagination={{
+              current: pagination.page,
+              pageSize: pagination.limit,
+              total: messagesQuery.data?.total || 0,
+              showSizeChanger: true
+            }}
+            onChange={handleTableChange}
+            scroll={{ x: true }}
+            onRow={(record) => {
+              console.log('Row record:', record);
+              return {};
+            }}
+          />
+        </div>
       </Card>
 
       <Modal
-    title={t('Edit Message')}
-    open={editModalVisible}
-    onCancel={() => setEditModalVisible(false)}
-    footer={null}
-  >
-    <Form
-      form={form}
-      onFinish={handleEditSubmit}
-      layout="vertical"
-    >
-      <Form.Item
-        name="msgBody"
-        label={t('Message')}
-        rules={[{ required: true, message: t('Please input message body') }]}
+        title={t('Edit Message')}
+        open={editModalVisible}
+        onCancel={() => setEditModalVisible(false)}
+        footer={null}
       >
-        <Input.TextArea rows={4} />
-      </Form.Item>
-
-      <div className="d-flex justify-content-end gap-2">
-        <Button onClick={() => setEditModalVisible(false)}>
-          {t('Cancel')}
-        </Button>
-        <Button
-          type="primary"
-          htmlType="submit"
-          loading={updateMessageMutation.isLoading}
+        <Form
+          form={form}
+          onFinish={handleEditSubmit}
+          layout="vertical"
         >
-          {t('Save')}
-        </Button>
-      </div>
-    </Form>
-  </Modal>
+          <Form.Item
+            name="msgBody"
+            label={t('Message')}
+            rules={[{ required: true, message: t('Please input message body') }]}
+          >
+            <Input.TextArea rows={4} />
+          </Form.Item>
+
+          <div className="d-flex justify-content-end gap-2">
+            <Button onClick={() => setEditModalVisible(false)}>
+              {t('Cancel')}
+            </Button>
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={updateMessageMutation.isLoading}
+            >
+              {t('Save')}
+            </Button>
+          </div>
+        </Form>
+      </Modal>
+
       <GroupMessageModal
-  visible={groupMessageVisible}
-  onCancel={() => {
-    setGroupMessageVisible(false);
-    setSelectedGroups([]);
-    setMessageText('');
-    setFileList([]); 
-  }}
-  onSend={handleSendGroupMessage}
-  selectedGroups={selectedGroups}
-  onGroupSelect={handleGroupSelection}
-  messageText={messageText}
-  onMessageChange={setMessageText}
-  loading={sendingGroupMessage}
-  fileList={fileList}
-  setFileList={setFileList}
-/>
-<ImportForm
-  open={importModalVisible}
-  onClose={() => setImportModalVisible(false)}
-  tab="Message"
-  setShowHistory={setShowImportHistory}
-  mappedField={messageMappedFields}
-/>
+        visible={groupMessageVisible}
+        onCancel={() => {
+          setGroupMessageVisible(false);
+          setSelectedGroups([]);
+          setMessageText('');
+          setFileList([]); 
+        }}
+        onSend={handleSendGroupMessage}
+        selectedGroups={selectedGroups}
+        onGroupSelect={handleGroupSelection}
+        messageText={messageText}
+        onMessageChange={setMessageText}
+        loading={sendingGroupMessage}
+        fileList={fileList}
+        setFileList={setFileList}
+      />
+
+      <ImportForm
+        open={importModalVisible}
+        onClose={() => setImportModalVisible(false)}
+        tab="Message"
+        setShowHistory={setShowImportHistory}
+        mappedField={messageMappedFields}
+      />
     </div>
   );
 };
