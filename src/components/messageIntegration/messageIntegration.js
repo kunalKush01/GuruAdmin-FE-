@@ -344,25 +344,25 @@ useEffect(() => {
         <div className="message-integration">
           <div className="d-flex justify-content-between align-items-start mb-4">
           <div className="d-flex align-items-center">
-            {isConnected && (
-                  <span className={`status-badge connected connection-status`}>
-                    {status}
-                  </span>
-                )}
-              {!isConnected && !isPollingActive && (
-                <div className='d-flex flex-column'>
+            {(isConnected || isPollingActive) && (
+              <span className={`status-badge connected connection-status`}>
+                {status}
+              </span>
+            )}
+            {!isConnected && !isPollingActive && (
+              <div className='d-flex flex-column'>
                 <Button className='me-1 mb-1' type="primary" onClick={startConnection}>
                   {t('Connect with Connector App')}
                 </Button>
                 <span className='connectionNote'>Make Sure Chat Connector App is running.</span>
-                </div>
-              )}
-              {isConnected && (
-                <Button type="primary" danger onClick={handleDisconnect}>
-                  {t('Disconnect')}
-                </Button>
-              )}
               </div>
+            )}
+            {isConnected && (
+              <Button type="primary" danger onClick={handleDisconnect}>
+                {t('Disconnect')}
+              </Button>
+            )}
+          </div>
               <div>
               {/* {qrCode && !isConnected && (
               <div>
