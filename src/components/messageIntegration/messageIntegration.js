@@ -364,7 +364,7 @@ useEffect(() => {
               )}
               </div>
               <div>
-              {qrCode && !isConnected && (
+              {/* {qrCode && !isConnected && (
               <div>
                 <img 
                   src={qrCode} 
@@ -372,7 +372,7 @@ useEffect(() => {
                   className="qr-code" 
                 />
               </div>
-            )}
+            )} */}
             
             <div className="action-buttons">
             <Button 
