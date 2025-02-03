@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Layout, Menu, Button, theme, ConfigProvider } from "antd";
@@ -7,6 +7,8 @@ import moment from "moment";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import logOutIcon from "../../assets/images/icons/dashBoard/Group 5995.svg";
+import connectIcon from "../../assets/images/icons/connect.svg";
+import connectActiveIcon from "../../assets/images/icons/connectActive.svg";
 import confirmationIcon from "../../assets/images/icons/news/conformationIcon.svg";
 import menuFoldOutlined from "../../assets/images/icons/menu-collapsed.svg";
 import menuUnFoldOutlined from "../../assets/images/icons/menu-expand.svg";
@@ -28,6 +30,7 @@ import "../../assets/scss/variables/_variables.scss";
 import bigLogo from "../../assets/images/pages/main-logo.png";
 import smallLogo from "../../assets/images/pages/main-logo-small.png";
 import UserDropdown from "./components/navbar/";
+import { MessageContext } from '../../utility/context/MessageContext';
 
 const { Header, Sider, Content } = Layout;
 
@@ -38,6 +41,7 @@ const SiderLayout = (props) => {
   const { isLogged } = useSelector((state) => state.auth);
   const layoutStore = useSelector((state) => state.layout);
   const refreshToken = useSelector((state) => state.auth.tokens.refreshToken);
+  const { isConnected, loggedInUser } = useContext(MessageContext);
 
   const permissions = useSelector(
     (state) => state.auth.userDetail?.permissions
@@ -275,6 +279,28 @@ const SiderLayout = (props) => {
                 style={{ borderTop: "1px solid #f0f0f0", paddingLeft: "7px" }}
                 inlineCollapsed={collapsed}
               >
+               <Menu.Item
+                  key="Connect"
+                  icon={
+                    <img
+                      src={isConnected ? connectActiveIcon : connectIcon}
+                      alt="Connect"
+                      className="menu-icon-img"
+                    />
+                  }
+                  onClick={() => {
+                    history.push("/message");
+                  }}
+                  className={collapsed ? "menu-item--collapsed" : "menu-item--expanded"}
+                >
+                  {!collapsed && (
+                    isConnected ? (
+                      <span className="connected-user">{loggedInUser}</span>
+                    ) : (
+                      <Trans i18nKey="Connect" />
+                    )
+                  )}
+                </Menu.Item>
                 <Menu.Item
                   key="Logout"
                   icon={

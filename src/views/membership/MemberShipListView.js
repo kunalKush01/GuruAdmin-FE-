@@ -15,7 +15,7 @@ import FilterTag from "../../components/partials/filterTag";
 import AddFilterSection from "../../components/partials/addFilterSection";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import ImportForm from "../donation/importForm";
-import { Dropdown, Space } from "antd";
+import { Dropdown, Space, Tooltip } from "antd";
 import ImportHistoryTable from "../../components/donation/importHistoryTable";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import syncIcon from "../../assets/images/icons/sync.svg";
@@ -31,6 +31,7 @@ function MemberShipListView() {
   const [messageText, setMessageText] = useState('');
   const [sendingMessage, setSendingMessage] = useState(false);
   const [selectedMembers, setSelectedMembers] = useState([]);
+  const [allSelectedKeys, setAllSelectedKeys] = useState([]);
 
   const permissions = useSelector(
     (state) => state.auth.userDetail?.permissions
@@ -229,13 +230,17 @@ function MemberShipListView() {
             <div className="addAction d-flex flex-wrap gap-2 gap-md-0">
               {(allPermissions?.name === "all" ||
                 subPermission?.includes(WRITE)) && (
-                <Button
-                  className={`addAction-btn`}
-                  color="primary"
-                  onClick={() => setMessageModalVisible(true)}
-                >
-                  Send Message
-                </Button>
+                  <Tooltip title={Array.isArray(allSelectedKeys) && allSelectedKeys.length < 1 ? "Please check the checkbox to send a message." : ""}>
+                  <span>
+                    <Button
+                      className="secondaryAction-btn"
+                      onClick={() => setMessageModalVisible(true)}
+                      disabled={Array.isArray(allSelectedKeys) && allSelectedKeys.length < 1}
+                    >
+                      Send Message
+                    </Button>
+                  </span>
+                </Tooltip>
               )}
 
               <input type="file" accept="" className="d-none" />
@@ -322,6 +327,8 @@ function MemberShipListView() {
               onSelectionChange={(selectedIds) => {
                 setSelectedMembers(selectedIds);
               }}
+              setAllSelectedKeys={setAllSelectedKeys}
+              allSelectedKeys={allSelectedKeys}
             />
             ) : (
               <ImportHistoryTable tab={"Membership"} />

@@ -1649,7 +1649,11 @@
     .action-buttons {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+    }
+
+    .wspImportButton{
+        border: 1px solid $primary;
+        color: $font-color;
     }
   }
 
@@ -1736,17 +1740,16 @@
     }
   
     &__message-label {
-      padding: 10px;
       margin-left: -10px;
       margin-bottom: 0.25rem;
-      font-size: 0.875rem;
-      font-weight: 700;
+      font-size: $font-size-medium;
+      font-weight: $font-weight-bold;
       color: $font-color;
     }
   
     &__message-input {
-    //   margin-top: -20px;
       margin-top: 10px;
+      margin-left: -2px !important;
     }
   
     &__send-button-container {
@@ -1756,12 +1759,22 @@
       padding: 10px;
       margin-right: 70px;
     }
+  
+    .ant-modal-title {
+      font-size: $font-size-medium !important;
+      font-weight: $font-weight-bold;
+    }
+
+    // .ant-modal-content {
+    //     background-color: $light-grey;
+    //   }
   }
 
   .send-message-modal {
     .message-label {
       color: $font-color; 
-      font: $font-family-sans-serif, $font-weight-bold;
+      font: $font-size-medium $font-family-sans-serif, $font-weight-bold;
+      font-weight: $font-weight-bold;
       margin-top: 15px;
     }
   
@@ -1778,4 +1791,59 @@
     .send-btn {
       margin-left: 10px;
     }
+  }
+
+  .connectionNote{
+    color: $font-color;
+    font: $font-family-sans-serif $font-size-small;
+  }
+
+  .ant-card-head-title{
+    color: $font-color !important;
+  }
+
+  .sendMessage{
+    padding: 8px 20px;
+    font: $font-weight-bold $font-size-medium $font-family;
+    border-color: $primary-color !important;
+  }
+
+  .send-message-label{
+    color: $font-color;
+    font: $font-size-medium $font-family-sans-serif, $font-weight-bold;
+  }
+
+  .supportedVariables{
+    color: $font-color;
+    font: $font-size-medium $font-family-sans-serif, $font-weight-bold;
+    margin-top: 15px;
+  }
+
+  .insertVariables{
+    color: $font-color;
+    margin-left: 10px;
+    font: $font-size-medium $font-family-sans-serif, $font-weight-bold;
+  }
+
+  .sendMemberMessage{
+    margin-left: 10px;
+  }
+
+.menu-icon-img {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .menu-item {
+    &--collapsed {
+      padding: 0;
+    }
+    
+    &--expanded {
+      padding: 0 16px;
+    }
+  }
+  
+  .connected-user {
+    color: $green;
   }

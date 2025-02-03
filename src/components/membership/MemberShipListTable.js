@@ -14,18 +14,18 @@ function MemberShipListTable({
   onChangePage,
   onChangePageSize,
   onSelectionChange = () => {},
+  setAllSelectedKeys,
+  allSelectedKeys,
 }) {
   const history = useHistory();
   const { t } = useTranslation();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [selectionsByPage, setSelectionsByPage] = useState({});
-  const [allSelectedKeys, setAllSelectedKeys] = useState([]);
+  // const [allSelectedKeys, setAllSelectedKeys] = useState([]);
 
   const handleSelectChange = (newSelectedRowKeys) => {
-    // Get current page member IDs
     const currentPageIds = data.map(item => item._id);
     
-    // Remove any selections from current page
     const selectionsFromOtherPages = allSelectedKeys.filter(
       id => !currentPageIds.includes(id)
     );

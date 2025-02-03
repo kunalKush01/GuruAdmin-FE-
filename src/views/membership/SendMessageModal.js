@@ -22,6 +22,14 @@ const SendMessageModal = ({
     onMessageChange(newText);
   };
 
+  const handleTextChange = (e) => {
+    const newValue = e.target.value;
+    // Remove any manually typed curly braces
+    const sanitizedValue = newValue.replace(/{|}/g, '');
+    onMessageChange(sanitizedValue);
+  };
+  
+
   const handleSendMessage = async () => {
     try {
         const response = await sendBulkMessages({
@@ -48,23 +56,23 @@ const SendMessageModal = ({
       onCancel={onCancel}
       footer={null}
       width={500}
-      className="send-message-modal"
+      className="group-message-modal"
     >
       <div className="flex flex-col gap-4">
         <div>
-          <div className="text-sm font-semibold mb-2 message-label">Message</div>
+          <div className="text-sm font-semibold mb-2 send-message-label">Message</div>
           <TextArea
             placeholder="Type your message here..."
             value={messageText}
-            onChange={(e) => onMessageChange(e.target.value)}
+            onChange={handleTextChange}  
             rows={6}
             className="w-full"
           />
         </div>
 
         <div>
-          <div className="text-sm font-semibold mb-2 variables-label">Supported Variables</div>
-          <div className="flex gap-2">
+          <div className="text-sm font-semibold mb-2 supportedVariables">Supported Variables</div>
+          <div className="flex gap-5">
             <Select
               className="w-40"
               options={supportedVariables}
@@ -73,7 +81,7 @@ const SendMessageModal = ({
             />
             <Button 
               onClick={handleVariableInsert}
-              className="variable-insert-btn bg-white hover:bg-gray-50 border border-gray-300"
+              className="variable-insert-btn bg-white hover:bg-gray-50 border border-gray-300 insertVariables"
             >
               Insert Variable
             </Button>
@@ -82,7 +90,7 @@ const SendMessageModal = ({
               onClick={handleSendMessage}
               disabled={!messageText.trim() || loading}
               loading={loading}
-              className="send-btn ml-auto bg-orange-500 hover:bg-orange-600"
+              className="send-btn ml-auto bg-orange-500 hover:bg-orange-600 sendMemberMessage"
             >
               Send
             </Button>

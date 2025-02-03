@@ -109,6 +109,25 @@ export const useMessageIntegration = () => {
   };
 
   useEffect(() => {
+    const savedStatus = localStorage.getItem('connectorStatus');
+    if (savedStatus) {
+      const { isConnected: savedConnected, user, timestamp } = JSON.parse(savedStatus);
+      
+      const isExpired = Date.now() - timestamp > 24 * 60 * 60 * 1000;
+      
+      if (!isExpired && savedConnected) {
+        setIsPollingActive(true);
+        setStatus(`Connected as ${user}`);
+        setLoggedInUser(user);
+        updateConnection(true, user);
+        checkConnectionStatus();
+      } else {
+        localStorage.removeItem('connectorStatus');
+      }
+    }
+  }, [updateConnection, checkConnectionStatus]);
+
+  useEffect(() => {
     let interval;
     
     if (isPollingActive) {

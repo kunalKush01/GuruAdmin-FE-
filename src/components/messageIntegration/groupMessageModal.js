@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Input, Button, List, Checkbox, message } from 'antd';
-import { Tag } from 'antd';
+import { Modal, Input, Button, Select, message } from 'antd';
 import '../../assets/scss/viewCommon.scss';
 
 const { TextArea } = Input;
@@ -37,19 +36,12 @@ const GroupMessageModal = ({
     }
   };
 
-  const handleGroupCheck = (group) => {
-    if (selectedGroups.includes(group.id)) {
-      onGroupSelect(selectedGroups.filter(g => g !== group.id));
-    } else if (selectedGroups.length < 5) {
-      onGroupSelect([...selectedGroups, group.id]);
-    } else {
+  const handleGroupSelect = (selectedValues) => {
+    if (selectedValues.length > 5) {
       message.warning('Maximum 5 groups can be selected');
+      return;
     }
-  };
-
-  const getGroupName = (groupId) => {
-    const group = groups.find(g => g.id === groupId);
-    return group ? group.name : groupId;
+    onGroupSelect(selectedValues);
   };
 
   return (
@@ -59,11 +51,12 @@ const GroupMessageModal = ({
       onCancel={onCancel}
       footer={null}
       width={400}
-      bodyStyle={{ className: 'group-message-modal__body' }}
+      className="group-message-modal"
+      bodyStyle={{ padding: 0 }}
     >
-      <div className="group-message-modal__container">
-        <div>
-          <div className="flex justify-between items-center mb-1">
+      <div className="group-message-modal__body">
+        <div className="group-message-modal__container">
+          <div>
             <Button
               type="primary"
               onClick={fetchGroups}
@@ -73,67 +66,59 @@ const GroupMessageModal = ({
               Fetch Groups
             </Button>
           </div>
-        </div>
 
-        <div className="group-message-modal__selected-groups">
-          {Array.isArray(selectedGroups) && selectedGroups.length > 0 ? (
-            selectedGroups.map((groupId) => (
-              <Tag
-                key={groupId}
-                closable
-                onClose={() =>
-                  onGroupSelect(selectedGroups.filter((g) => g !== groupId))
-                }
-                className="group-message-modal__group-tag"
-              >
-                {getGroupName(groupId)}
-              </Tag>
-            ))
-          ) : (
-            <span className="text-gray-400 text-xs">Select Groups (Max 5)</span>
-          )}
-        </div>
+          {/* <div className="group-message-modal__selected-groups">
+            {selectedGroups.map((groupId) => {
+              const group = groups.find(g => g.id === groupId);
+              return (
+                <div key={groupId} className="group-message-modal__group-tag">
+                  {group ? group.name : groupId}
+                </div>
+              );
+            })}
+          </div> */}
 
-        <div className="group-message-modal__groups-list">
-          <List
-            size="small"
-            dataSource={groups}
-            renderItem={(group) => (
-              <List.Item className="group-message-modal__list-item">
-                <Checkbox
-                  checked={Array.isArray(selectedGroups) && selectedGroups.includes(group.id)}
-                  onChange={() => handleGroupCheck(group)}
-                  className="text-xs"
-                >
-                  <span className="text-xs">{group.name}</span>
-                </Checkbox>
-              </List.Item>
-            )}
-          />
-        </div>
-        <div>
-          <div className="group-message-modal__message-label">Message</div>
-          <TextArea
-            placeholder="Message to be sent"
-            value={messageText}
-            onChange={(e) => onMessageChange(e.target.value)}
-            rows={3}
-            className="w-full text-xs group-message-modal__message-input"
-          />
-        </div>
+          <div className="group-message-modal__groups-list">
+            <Select
+              mode="multiple"
+              placeholder="Select groups"
+              value={selectedGroups}
+              onChange={handleGroupSelect}
+              style={{ width: '100%' }}
+              className="text-xs"
+              options={groups.map(group => ({
+                value: group.id,
+                label: group.name
+              }))}
+              maxTagCount={5}
+              maxTagPlaceholder={(omitted) => `+${omitted} more`}
+            />
+          </div>
 
-        <div className="group-message-modal__send-button-container">
-          <Button
-            type="primary"
-            onClick={onSend}
-            disabled={
-              !Array.isArray(selectedGroups) || selectedGroups.length === 0 || !messageText.trim() || loading
-            }
-            loading={loading}
-            className="bg-blue-500 hover:bg-blue-600 h-8 text-xs px-4"
-          >
-            Send to Groups
-          </Button>
+          <div>
+            <div className="group-message-modal__message-label">Message</div>
+            <TextArea
+              placeholder="Message to be sent"
+              value={messageText}
+              onChange={(e) => onMessageChange(e.target.value)}
+              rows={3}
+              className="group-message-modal__message-input"
+            />
+          </div>
+
+          <div className="group-message-modal__send-button-container">
+            <Button
+              type="primary"
+              onClick={onSend}
+              disabled={
+                !Array.isArray(selectedGroups) || selectedGroups.length === 0 || !messageText.trim() || loading
+              }
+              loading={loading}
+              className="bg-blue-500 hover:bg-blue-600 h-8 text-xs px-4"
+            >
+              Send to Groups
+            </Button>
+          </div>
         </div>
       </div>
     </Modal>

@@ -23,7 +23,7 @@ const MessageIntegration = () => {
   const [sendingGroupMessage, setSendingGroupMessage] = useState(false);
   const [fileList, setFileList] = useState([]);
   const [importModalVisible, setImportModalVisible] = useState(false);
-const [showImportHistory, setShowImportHistory] = useState(false);
+  const [showImportHistory, setShowImportHistory] = useState(false);
 
   const handleGroupSelection = (groups) => {
     setSelectedGroups(groups);
@@ -340,26 +340,31 @@ useEffect(() => {
 
   return (
     <div className="d-flex flex-column gap-4">
-      <Card title={t('Message Integration')}>
+      <Card title={t('Messages')}>
         <div className="message-integration">
-          <div className="d-flex flex-column align-items-start mb-4">
-            <div className="d-flex align-items-center mb-2">
-              <span className={`status-badge ${isConnected ? 'connected' : 'disconnected'} connection-status`}>
-                {status}
-              </span>
+          <div className="d-flex justify-content-between align-items-start mb-4">
+          <div className="d-flex align-items-center">
+            {isConnected && (
+                  <span className={`status-badge connected connection-status`}>
+                    {status}
+                  </span>
+                )}
               {!isConnected && !isPollingActive && (
-                <Button type="primary" onClick={startConnection}>
+                <div className='d-flex flex-column'>
+                <Button className='me-1 mb-1' type="primary" onClick={startConnection}>
                   {t('Connect with Connector App')}
                 </Button>
+                <span className='connectionNote'>Make Sure Chat Connector App is running.</span>
+                </div>
               )}
               {isConnected && (
                 <Button type="primary" danger onClick={handleDisconnect}>
                   {t('Disconnect')}
                 </Button>
               )}
-            </div>
-
-            {qrCode && !isConnected && (
+              </div>
+              <div>
+              {qrCode && !isConnected && (
               <div>
                 <img 
                   src={qrCode} 
@@ -370,6 +375,14 @@ useEffect(() => {
             )}
             
             <div className="action-buttons">
+            <Button 
+                icon={<ImportOutlined />}
+                onClick={() => setImportModalVisible(true)}
+                className='wspImportButton me-1'
+              >
+                {t('Import')}
+              </Button>
+              { isConnected && (
               <Button 
                 type="primary"
                 icon={<UsergroupAddOutlined />}
@@ -377,20 +390,17 @@ useEffect(() => {
               >
                 {t('Group Send')}
               </Button>
-              <Button 
-                icon={<ImportOutlined />}
-                onClick={() => setImportModalVisible(true)}
-              >
-                {t('Import')}
-              </Button>
+              )}
+            </div>
             </div>
           </div>
-        </div>
+          </div>
       </Card>
 
       <Card title={t('Message List')}>
         <div className="message-list">
           <Table
+            className="commonListTable"
             columns={columns}
             dataSource={messagesQuery.data?.data}
             loading={messagesQuery.isLoading}
@@ -402,7 +412,14 @@ useEffect(() => {
               showSizeChanger: true
             }}
             onChange={handleTableChange}
-            scroll={{ x: true }}
+            scroll={{
+              x: 1500,
+              y: 400,
+            }}
+            sticky={{
+              offsetHeader: 64,
+            }}
+            bordered
             onRow={(record) => {
               console.log('Row record:', record);
               return {};
