@@ -82,7 +82,7 @@ function MemberShipListTable({
       title: t("phone"),
       dataIndex: ["data", "contactInfo", "phone"],
       key: "phone",
-      width: 120,
+      width: 150,
     },
     {
       title: t("email"),

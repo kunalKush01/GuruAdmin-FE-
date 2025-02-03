@@ -18,6 +18,7 @@ import { useQuery } from "@tanstack/react-query";
 import { API_BASE_URL } from "../../axiosApi/authApiInstans";
 import { getMasterByKey, getMastersByKeys } from "../../api/membershipApi";
 import { uploadFile } from "../../api/sharedStorageApi";
+import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
 
 const CustomDatePickerComponent =
   DatePicker.generatePicker(momentGenerateConfig);
@@ -268,14 +269,20 @@ function FormikMemberForm({
     if (hasNumberFormat) {
       return (
         <Col xs={12} sm={6} lg={3} key={name}>
-          <CustomTextField
-            type="number"
-            label={t(fieldSchema.title || name)}
-            name={name}
-            placeholder={t(`Enter ${fieldSchema.title}`)}
-            required={isRequired}
-            value={formik.values?.name || ""}
-          />
+          <div className="d-flex flex-column membershipMobileField">
+            <CustomCountryMobileNumberField
+              label={t(fieldSchema.title || name)}
+              name={name}
+              placeholder={t(`Enter ${fieldSchema.title}`)}
+              required={isRequired}
+              value={formik.values[name] || ""}
+              defaultCountry="in"
+              onChange={(value) => formik.setFieldValue(name, value)}
+            />
+            {formik.errors[name] && (
+              <div className="text-danger">{formik.errors[name]}</div>
+            )}
+          </div>
         </Col>
       );
     }
