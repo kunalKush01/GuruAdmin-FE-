@@ -126,6 +126,7 @@ function FormikMemberForm({
   };
   const renderFormField = (name, fieldSchema) => {
     const hasDateFormat = fieldSchema.format === "date";
+    const hasPhoneNumberFormat = fieldSchema.format === "phoneNumber";
     const hasNumberFormat = fieldSchema.format === "number";
     const hasEnum = Array.isArray(fieldSchema.enum);
     const hasUrl =
@@ -266,7 +267,7 @@ function FormikMemberForm({
         </Col>
       );
     }
-    if (hasNumberFormat) {
+    if (hasPhoneNumberFormat) {
       return (
         <Col xs={12} sm={6} lg={3} key={name}>
           <div className="d-flex flex-column membershipMobileField">
@@ -286,7 +287,20 @@ function FormikMemberForm({
         </Col>
       );
     }
-
+    if (hasNumberFormat) {
+      return (
+        <Col xs={12} sm={6} lg={3} key={name}>
+          <CustomTextField
+            type="number"
+            label={t(fieldSchema.title || name)}
+            name={name}
+            placeholder={t(`Enter ${fieldSchema.title}`)}
+            required={isRequired}
+            value={formik.values?.name || ""}
+          />
+        </Col>
+      );
+    }
     switch (fieldSchema.type) {
       case "string":
         return (
