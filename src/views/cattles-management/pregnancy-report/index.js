@@ -82,7 +82,12 @@ const PregnancyReport = () => {
         search: searchBarValue,
         startDate: filterStartDate,
         endDate: filterEndDate,
-        status: pregnancyStatus === t("inactive") ? "NO" : pregnancyStatus === t("active") ? "YES" : "ALL",
+        status:
+          pregnancyStatus === t("inactive")
+            ? "NO"
+            : pregnancyStatus === t("active")
+            ? "YES"
+            : "ALL",
         languageId: selectedLang.id,
       }),
     {
@@ -117,10 +122,11 @@ const PregnancyReport = () => {
         <title>Apna Dharm Admin | Cattles Pregnancy Records</title>
       </Helmet>
       <div>
-        <div className="d-sm-flex mb-1 justify-content-between align-items-center ">
-          <Trans i18nKey="cattle_pregnancy_report" />
-
-          <div className="d-flex mt-1 mt-sm-0 justify-content-between">
+        <Row className="mb-1 d-flex justify-content-between align-items-center">
+          <Col xs={12} sm="auto">
+            <Trans i18nKey="cattle_pregnancy_report" />
+          </Col>
+          <Col xs={12} sm="auto" className="d-flex flex-wrap mt-1 mt-sm-0">
             <ChangeCategoryType
               className={"me-1"}
               categoryTypeArray={[
@@ -173,6 +179,8 @@ const PregnancyReport = () => {
                     `/cattle/pregnancy-reports/add?page=${pagination.page}&status=${pregnancyStatus}&filter=${dropDownName}`
                   )
                 }
+                className="mt-1 mt-sm-0"
+                style={{ height: "38px" }}
               >
                 <span>
                   <Plus className="" size={15} strokeWidth={4} />
@@ -184,8 +192,8 @@ const PregnancyReport = () => {
             ) : (
               ""
             )}
-          </div>
-        </div>
+          </Col>
+        </Row>
         <div style={{ height: "10px" }}>
           <If
             condition={

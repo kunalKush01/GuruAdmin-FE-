@@ -12,6 +12,7 @@ import confirmationIcon from "../../../assets/images/icons/news/conformationIcon
 import CustomDataTable from "../../../components/partials/CustomDataTable";
 import { DELETE, EDIT } from "../../../utility/permissionsVariable";
 import "../../../assets/scss/viewCommon.scss";
+import { Table } from "antd";
 const MedicalReportTable = ({
   data = [],
   allPermissions,
@@ -38,55 +39,60 @@ const MedicalReportTable = ({
 
   const columns = [
     {
-      name: t("cattle_id"),
-      selector: (row) => row.cattleId,
-      width: "130px",
+      title: t("cattle_id"),
+      dataIndex: "cattleId",
+      key: "cattleId",
+      width: 130,
     },
     {
-      name: t("expenses_Date"),
-      selector: (row) => row.date,
-      width: "130px",
+      title: t("expenses_Date"),
+      dataIndex: "date",
+      key: "date",
+      width: 130,
     },
     {
-      name: t("cattle_treatment_medicine"),
-      selector: (row) => row.medicine,
-      width: "180px",
+      title: t("cattle_treatment_medicine"),
+      dataIndex: "medicine",
+      key: "medicine",
+      width: 180,
     },
     {
-      name: t("cattle_dosage"),
-      selector: (row) => row.dosage,
-      width: "150px",
+      title: t("cattle_dosage"),
+      dataIndex: "dosage",
+      key: "dosage",
+      width: 150,
     },
     {
-      name: t("cattle_dr_name"),
-      selector: (row) => row.drName,
-      width: "130px",
+      title: t("cattle_dr_name"),
+      dataIndex: "drName",
+      key: "drName",
+      width: 130,
     },
     {
-      name: t("dashboard_Recent_DonorNumber"),
-      selector: (row) => row.mobileNumber,
-      width: "150px",
+      title: t("dashboard_Recent_DonorNumber"),
+      dataIndex: "mobileNumber",
+      key: "mobileNumber",
+      width: 150,
     },
     {
-      name: t("cattle_symptoms"),
-      selector: (row) => row.symptoms,
-      width: "130px",
+      title: t("cattle_symptoms"),
+      dataIndex: "symptoms",
+      key: "symptoms",
+      width: 130,
     },
     {
-      name: t("cattle_fees"),
-      selector: (row) => row.medicalExpense,
-      width: "150px",
+      title: t("cattle_fees"),
+      dataIndex: "medicalExpense",
+      key: "medicalExpense",
+      width: 150,
     },
     {
-      name: t(""),
-      selector: (row) => row.edit,
-      width: "100px",
-    },
-    {
-      name: t(""),
-      selector: (row) => row.delete,
-      width: "80px",
-    },
+      title: "Action",
+      dataIndex: "action",
+      key: "action",
+      width: 100,
+      fixed:"right"
+    }
   ];
 
   const MedicalReportData = useMemo(() => {
@@ -103,68 +109,77 @@ const MedicalReportTable = ({
           item?.doctorNumber
         }`,
         symptoms: item?.symptoms,
-
-        edit:
-          allPermissions?.name === "all" || subPermission?.includes(EDIT) ? (
-            <img
-              src={editIcon}
-              width={35}
-              className="cursor-pointer "
-              onClick={() => {
-                history.push(
-                  `/cattle/medical-info/${item?.id}?page=${currentPage}&filter=${currentFilter}`
-                );
-              }}
-            />
-          ) : (
-            ""
-          ),
-        delete:
-          allPermissions?.name === "all" || subPermission?.includes(DELETE) ? (
-            <img
-              src={deleteIcon}
-              width={35}
-              className="cursor-pointer "
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                Swal.fire({
-                  title: `<img src="${confirmationIcon}"/>`,
-                  html: `
+        action: (
+          <div>
+            {allPermissions?.name === "all" || subPermission?.includes(EDIT) ? (
+              <img
+                src={editIcon}
+                width={35}
+                className="cursor-pointer "
+                onClick={() => {
+                  history.push(
+                    `/cattle/medical-info/${item?.id}?page=${currentPage}&filter=${currentFilter}`
+                  );
+                }}
+              />
+            ) : (
+              ""
+            )}
+            {allPermissions?.name === "all" ||
+            subPermission?.includes(DELETE) ? (
+              <img
+                src={deleteIcon}
+                width={35}
+                className="cursor-pointer "
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  Swal.fire({
+                    title: `<img src="${confirmationIcon}"/>`,
+                    html: `
                                       <h3 class="swal-heading mt-1">${t(
                                         "cattle_medical_delete"
                                       )}</h3>
                                       <p>${t("cattle_medical_sure")}</p>
                                       `,
-                  showCloseButton: false,
-                  showCancelButton: true,
-                  focusConfirm: true,
-                  cancelButtonText: ` ${t("cancel")}`,
-                  cancelButtonAriaLabel: ` ${t("cancel")}`,
+                    showCloseButton: false,
+                    showCancelButton: true,
+                    focusConfirm: true,
+                    cancelButtonText: ` ${t("cancel")}`,
+                    cancelButtonAriaLabel: ` ${t("cancel")}`,
 
-                  confirmButtonText: ` ${t("confirm")}`,
-                  confirmButtonAriaLabel: "Confirm",
-                }).then(async (result) => {
-                  if (result.isConfirmed) {
-                    deleteMutation.mutate(item.id);
-                  }
-                });
-              }}
-            />
-          ) : (
-            ""
-          ),
+                    confirmButtonText: ` ${t("confirm")}`,
+                    confirmButtonAriaLabel: "Confirm",
+                  }).then(async (result) => {
+                    if (result.isConfirmed) {
+                      deleteMutation.mutate(item.id);
+                    }
+                  });
+                }}
+              />
+            ) : (
+              ""
+            )}
+          </div>
+        ),
       };
     });
   }, [data]);
 
   return (
     <div className="medicaltablewrapper">
-      <CustomDataTable
-        maxHeight={maxHeight}
+      <Table
         columns={columns}
-        height={height}
-        data={MedicalReportData}
+        className="commonListTable"
+        scroll={{
+          x: 1500,
+          y: 400,
+        }}
+        sticky={{
+          offsetHeader: 64,
+        }}
+        bordered
+        dataSource={MedicalReportData}
       />
     </div>
   );

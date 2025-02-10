@@ -108,10 +108,11 @@ const CattlesMedical = () => {
         <title>Apna Dharm Admin | Cattles Medical Records</title>
       </Helmet>
       <div>
-        <div className="d-sm-flex mb-1 justify-content-between align-items-center ">
-          <Trans i18nKey="cattle_medical_record" />
-
-          <div className="d-flex mt-1 mt-sm-0 justify-content-between">
+        <Row className="mb-1 d-flex justify-content-between align-items-center">
+          <Col xs={12} sm="auto">
+            <Trans i18nKey="cattle_medical_record" />
+          </Col>
+          <Col xs={12} sm="auto" className="d-flex flex-wrap mt-1 mt-sm-0">
             <ChangePeriodDropDown
               className={"me-1"}
               dropDownName={dropDownName}
@@ -132,6 +133,7 @@ const CattlesMedical = () => {
                     `/cattle/medical-info/add?page=${pagination.page}&filter=${dropDownName}`
                   )
                 }
+                style={{ height: "38px" }}
               >
                 <span>
                   <Plus className="" size={15} strokeWidth={4} />
@@ -143,102 +145,102 @@ const CattlesMedical = () => {
             ) : (
               ""
             )}
-          </div>
-        </div>
-        <div style={{ height: "10px" }}>
+          </Col>
+        </Row>
+      </div>
+      <div style={{ height: "10px" }}>
+        <If
+          condition={
+            cattleMedicalList.isFetching && cattleMedicalList.isLoading
+          }
+        >
+          <Then>
+            <Skeleton
+              baseColor="#ff8744"
+              highlightColor="#fff"
+              height={"3px"}
+            />
+          </Then>
+        </If>
+      </div>
+      <div className="newsContent  ">
+        <Row>
           <If
             condition={
-              cattleMedicalList.isFetching && cattleMedicalList.isLoading
+              !cattleMedicalList.isLoading &&
+              cattleMedicalListData.length != 0 &&
+              !cattleMedicalList.isFetching
             }
+            disableMemo
           >
             <Then>
-              <Skeleton
-                baseColor="#ff8744"
-                highlightColor="#fff"
-                height={"3px"}
+              <MedicalReportTable
+                data={cattleMedicalListData}
+                allPermissions={allPermissions}
+                subPermission={subPermission}
+                // maxHeight="160px"
+                height="160px"
+                currentFilter={dropDownName}
+                currentPage={pagination.page}
               />
             </Then>
-          </If>
-        </div>
-        <div className="newsContent  ">
-          <Row>
-            <If
-              condition={
-                !cattleMedicalList.isLoading &&
-                cattleMedicalListData.length != 0 &&
-                !cattleMedicalList.isFetching
-              }
-              disableMemo
-            >
-              <Then>
-                <MedicalReportTable
-                  data={cattleMedicalListData}
-                  allPermissions={allPermissions}
-                  subPermission={subPermission}
-                  // maxHeight="160px"
-                  height="160px"
-                  currentFilter={dropDownName}
-                  currentPage={pagination.page}
-                />
-              </Then>
-              <Else>
-                <If
-                  condition={
-                    !cattleMedicalList.isLoading &&
-                    cattleMedicalListData.length == 0
-                  }
-                  disableMemo
-                >
-                  <Then>
-                    <NoContent
-                      headingNotfound={t("no_data_found")}
-                      para={t("no_data_found_add_data")}
-                    />
-                  </Then>
-                </If>
-              </Else>
-            </If>
-
-            <If condition={cattleMedicalList?.data?.totalPages > 1}>
-              <Then>
-                <Col xs={12} className="mb-2 d-flex justify-content-center">
-                  <ReactPaginate
-                    nextLabel=""
-                    forcePage={pagination.page - 1}
-                    breakLabel="..."
-                    previousLabel=""
-                    pageCount={cattleMedicalList?.data?.totalPages || 0}
-                    activeClassName="active"
-                    initialPage={
-                      parseInt(searchParams.get("page"))
-                        ? parseInt(searchParams.get("page")) - 1
-                        : pagination.page - 1
-                    }
-                    breakClassName="page-item"
-                    pageClassName={"page-item"}
-                    breakLinkClassName="page-link"
-                    nextLinkClassName={"page-link"}
-                    pageLinkClassName={"page-link"}
-                    nextClassName={"page-item next"}
-                    previousLinkClassName={"page-link"}
-                    previousClassName={"page-item prev"}
-                    onPageChange={(page) => {
-                      setPagination({ ...pagination, page: page.selected + 1 });
-                      history.push(
-                        `/cattle/medical-info?page=${
-                          page.selected + 1
-                        }&filter=${dropDownName}`
-                      );
-                    }}
-                    containerClassName={
-                      "pagination react-paginate justify-content-end p-1"
-                    }
+            <Else>
+              <If
+                condition={
+                  !cattleMedicalList.isLoading &&
+                  cattleMedicalListData.length == 0
+                }
+                disableMemo
+              >
+                <Then>
+                  <NoContent
+                    headingNotfound={t("no_data_found")}
+                    para={t("no_data_found_add_data")}
                   />
-                </Col>
-              </Then>
-            </If>
-          </Row>
-        </div>
+                </Then>
+              </If>
+            </Else>
+          </If>
+
+          <If condition={cattleMedicalList?.data?.totalPages > 1}>
+            <Then>
+              <Col xs={12} className="mb-2 d-flex justify-content-center">
+                <ReactPaginate
+                  nextLabel=""
+                  forcePage={pagination.page - 1}
+                  breakLabel="..."
+                  previousLabel=""
+                  pageCount={cattleMedicalList?.data?.totalPages || 0}
+                  activeClassName="active"
+                  initialPage={
+                    parseInt(searchParams.get("page"))
+                      ? parseInt(searchParams.get("page")) - 1
+                      : pagination.page - 1
+                  }
+                  breakClassName="page-item"
+                  pageClassName={"page-item"}
+                  breakLinkClassName="page-link"
+                  nextLinkClassName={"page-link"}
+                  pageLinkClassName={"page-link"}
+                  nextClassName={"page-item next"}
+                  previousLinkClassName={"page-link"}
+                  previousClassName={"page-item prev"}
+                  onPageChange={(page) => {
+                    setPagination({ ...pagination, page: page.selected + 1 });
+                    history.push(
+                      `/cattle/medical-info?page=${
+                        page.selected + 1
+                      }&filter=${dropDownName}`
+                    );
+                  }}
+                  containerClassName={
+                    "pagination react-paginate justify-content-end p-1"
+                  }
+                />
+              </Col>
+            </Then>
+          </If>
+        </Row>
       </div>
     </div>
   );

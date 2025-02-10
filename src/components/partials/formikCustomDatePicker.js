@@ -24,7 +24,9 @@ export default function FormikCustomDatePicker({
         <Trans i18nKey={"news_label_Date"} />
       </label>
        */}
-      {label && <label>{`${label}*`}</label>}
+      {label && (
+        <label>{label}<span className = "text-danger">*</span></label>
+      )}
       <DatePicker
         selected={field.value}
         onChange={(date) => {

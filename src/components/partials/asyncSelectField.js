@@ -109,7 +109,7 @@ export default function AsyncSelectField({
         }}
       >
         {label}
-        {required && "*"}
+        <span className="text-danger">{required && "*"}</span>
       </label>
       <AsyncSelect
         isDisabled={props.disabled}

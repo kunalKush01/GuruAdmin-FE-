@@ -161,19 +161,17 @@ const EditMedicalInfo = () => {
         </Then>
         <Else>
           {!medicalInfoDetailQuery.isFetching && (
-            <div className="FormikWrapper">
-              <AddMedicalInfoForm
-                getMobile={
-                  medicalInfoDetailQuery?.data?.result?.countryCode +
-                  medicalInfoDetailQuery?.data?.result?.doctorNumber
-                }
-                plusIconDisable
-                initialValues={initialValues}
-                validationSchema={schema}
-                handleSubmit={handleMedicalInfoUpdate}
-                buttonName="save_changes"
-              />
-            </div>
+            <AddMedicalInfoForm
+              getMobile={
+                medicalInfoDetailQuery?.data?.result?.countryCode +
+                medicalInfoDetailQuery?.data?.result?.doctorNumber
+              }
+              plusIconDisable
+              initialValues={initialValues}
+              validationSchema={schema}
+              handleSubmit={handleMedicalInfoUpdate}
+              buttonName="save_changes"
+            />
           )}
         </Else>
       </If>
