@@ -41,7 +41,7 @@ const CattleBreed = () => {
       addBreed: row?.addBreed,
       breedId: row?._id ?? "",
       name: row?.name ?? "",
-      cattleCategoryId: row?.cattleCategoryId,
+      cattleCategoryId: row?.category,
     });
   };
 
@@ -129,6 +129,7 @@ const CattleBreed = () => {
               className="me-1"
               color="primary"
               onClick={() => toggle({ addBreed: true })}
+              style={{height:"38px"}}
             >
               <span>
                 <Plus className="" size={15} strokeWidth={4} />

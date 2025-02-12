@@ -96,6 +96,7 @@ const BreedModal = ({ addBreed, isOpen, toggle, data }) => {
                   label={t("category")}
                   placeholder={t("categories_select_category")}
                   defaultOptions
+                  required
                 />
               </div>
 
