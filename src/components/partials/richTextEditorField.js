@@ -34,6 +34,8 @@ export default function RichTextField({
         }
         setOptions={{
           linkTargetNewWindow: true,
+          resizeEnable:true,
+          height: 20,
           buttonList: [
             [
               "font",
@@ -68,6 +70,11 @@ export default function RichTextField({
               //   "print",
               //   "save",
               //   "template",
+              "hiliteColor",
+              "table",
+              "codeView",
+              "preview"
+
             ],
           ],
         }}
