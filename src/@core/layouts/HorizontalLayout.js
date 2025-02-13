@@ -112,70 +112,86 @@ const SiderLayout = (props) => {
       permissionsKey?.includes(perm)
     );
 
-    const hasChildPermission = item?.children?.some(child => 
-      permissionsKey?.includes(child?.name) || 
-      child?.innerPermissions?.some(perm => permissionsKey?.includes(perm))
+    const hasChildPermission = item?.children?.some(
+      (child) =>
+        permissionsKey?.includes(child?.name) ||
+        child?.innerPermissions?.some((perm) => permissionsKey?.includes(perm))
     );
 
     const isGaushala =
-      item?.isCattle?.toLowerCase() === trustType?.toLowerCase();
+      (item?.isCattle?.toLowerCase() || item?.name?.toLowerCase()) ===
+      trustType?.toLowerCase();
 
-      const isDharmshalaItem = item?.name === "dharmshala/dashboard";
-      const isServiceItem = item?.name === "service-booking";
-      if (isDharmshalaItem && !hasDharmshalaAccess) {
+    const isDharmshalaItem = item?.name === "dharmshala/dashboard";
+    const isServiceItem = item?.name === "service-booking";
+    if (isDharmshalaItem && !hasDharmshalaAccess) {
       return null;
-      }
+    }
 
-      if (isServiceItem && !hasServiceAccess) {
-        return null;
-      }
+    if (isServiceItem && !hasServiceAccess) {
+      return null;
+    }
 
-      if (
-        (item?.name === "gaushala" && item?.customLabel === "Pashu Breed" || 
-         item?.name === "gaushala" && item?.customLabel === "Pashu Category") && 
-        !isGaushala
-      ) {
-        return null;
-      }
+    if (
+      ((item?.name === "gaushala" && item?.customLabel === "Pashu Breed") ||
+        (item?.name === "gaushala" &&
+          item?.customLabel === "Pashu Category")) &&
+      !isGaushala
+    ) {
+      return null;
+    }
+    if (item?.name === "cattles_management"&&!isGaushala) {
+      return null; // Exclude "cattles_management" menu item entirely
+    }
 
-      const shouldShowItem = hasAllPermission || 
-(hasItemPermission && isGaushala) ||
-(hasChildPermission && isGaushala) ||
-(hasItemPermission && !isServiceItem && item?.name !== "cattles_management") ||
-(hasChildPermission && !isServiceItem && item?.name !== "cattles_management") ||
-(isServiceItem && hasServiceAccess && (hasItemPermission || hasChildPermission));
+    const shouldShowItem =
+      hasAllPermission ||
+      (hasItemPermission && isGaushala) ||
+      (hasChildPermission && isGaushala) ||
+      (hasItemPermission &&
+        !isServiceItem &&
+        item?.name !== "cattles_management") ||
+      (hasChildPermission &&
+        !isServiceItem &&
+        item?.name !== "cattles_management") ||
+      (isServiceItem &&
+        hasServiceAccess &&
+        (hasItemPermission || hasChildPermission))
 
-      if (shouldShowItem) {
-        const isActive = active.startsWith(item.url);
-        const isHovered = hoveredItem === item.name;
-        const children = item.children
-        ? hasAllPermission 
+    if (shouldShowItem) {
+      const isActive = active.startsWith(item.url);
+      const isHovered = hoveredItem === item.name;
+      const children = item.children
+        ? hasAllPermission
           ? item.children.map(getMenuItem)
-          : item.children
-              .map(getMenuItem)
-              .filter(child => child !== null)
+          : item.children.map(getMenuItem).filter((child) => child !== null)
         : undefined;
 
-        if (hasAllPermission || children?.length > 0 || hasItemPermission || hasChildPermission) {
-      return {
-        key: item.url,
-        icon: (
-          <img
-            src={isActive || isHovered ? item.activeIcon : item.icon}
-            alt={item.name}
-            style={{ width: "16px", height: "16px" }}
-          />
-        ),
-        label: <Trans i18nKey={item.customLabel || item.name} />,
-        children: children,
-        onClick: () => {
-          if (!item.children) {
-            history.push(item.url);
-          }
-        },
-      };
+      if (
+        hasAllPermission ||
+        children?.length > 0 ||
+        hasItemPermission ||
+        hasChildPermission
+      ) {
+        return {
+          key: item.url,
+          icon: (
+            <img
+              src={isActive || isHovered ? item.activeIcon : item.icon}
+              alt={item.name}
+              style={{ width: "16px", height: "16px" }}
+            />
+          ),
+          label: <Trans i18nKey={item.customLabel || item.name} />,
+          children: children,
+          onClick: () => {
+            if (!item.children) {
+              history.push(item.url);
+            }
+          },
+        };
+      }
     }
-  }
     return null;
   };
 
