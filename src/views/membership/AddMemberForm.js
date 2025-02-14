@@ -90,20 +90,19 @@ export default function AddMemberForm() {
             }
             if (fieldInfo.isTypePhone) {
               shape[field] = Yup.string()
-                .matches(
-               /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,
-                  "Please enter a valid mobile number"
-                )
+              .matches(
+                /^\+?[1-9]\d{1,14}$/, // This regex allows for international phone numbers (with or without country code)
+                "Please enter a valid mobile number"
+              )
                 .required(`${fieldInfo.title} is required`);
             }
           } else {
             shape[field] = Yup.mixed().nullable();
             if (fieldInfo.isTypePhone) {
-              shape[field] = Yup.string()
-                .matches(
-               /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,
-                  "Please enter a valid mobile number"
-                )
+              shape[field] = Yup.string().matches(
+                /^\+?[1-9]\d{1,14}$/, // This regex allows for international phone numbers (with or without country code)
+                "Please enter a valid mobile number"
+              );
             }
           }
         });
