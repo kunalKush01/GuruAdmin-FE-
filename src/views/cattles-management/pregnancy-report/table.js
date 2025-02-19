@@ -14,6 +14,7 @@ import CustomDataTable from "../../../components/partials/CustomDataTable";
 import { DELETE, EDIT } from "../../../utility/permissionsVariable";
 
 import "../../../assets/scss/viewCommon.scss";
+import { Table } from "antd";
 const PregnancyReportTable = ({
   data = [],
   allPermissions,
@@ -42,33 +43,35 @@ const PregnancyReportTable = ({
 
   const columns = [
     {
-      name: t("cattle_id"),
-      selector: (row) => row?.cattleId,
-      width: "200px",
+      title: t("cattle_id"),
+      dataIndex: "cattleId",
+      key: "cattleId",
+      width: 200,
     },
     {
-      name: t("cattle_conceiving_date"),
-      selector: (row) => row?.conceivingDate,
-      width: "200px",
+      title: t("cattle_conceiving_date"),
+      dataIndex: "conceivingDate",
+      key: "conceivingDate",
+      width: 200,
     },
     {
-      name: t("cattle_delivery_date"),
-      selector: (row) => row?.deliveryDate,
-      width: "200px",
+      title: t("cattle_delivery_date"),
+      dataIndex: "deliveryDate",
+      key: "deliveryDate",
+      width: 200,
     },
     {
-      name: t("cattle_pregnancy_status"),
-      selector: (row) => row?.pregnancyStatus,
+      title: t("cattle_pregnancy_status"),
+      dataIndex: "pregnancyStatus",
+      key: "pregnancyStatus",
+      width: 200,
     },
     {
-      name: t(""),
-      selector: (row) => row.edit,
-      width: "100px",
-    },
-    {
-      name: t(""),
-      selector: (row) => row.delete,
-      width: "80px",
+      title: "Action",
+      dataIndex: "action",
+      key: "edit",
+      width: 100,
+      fixed:"right"
     },
   ];
 
@@ -82,67 +85,77 @@ const PregnancyReportTable = ({
           ? moment(item?.deliveryDate).format("DD MMM YYYY")
           : "N/A",
         pregnancyStatus: item?.status === "NO" ? "Inactive" : "Active",
-        edit:
-          allPermissions?.name === "all" || subPermission?.includes(EDIT) ? (
-            <img
-              src={editIcon}
-              width={35}
-              className="cursor-pointer "
-              onClick={() => {
-                history.push(
-                  `/cattle/pregnancy-reports/${item?.id}?page=${currentPage}&status=${currentPregnancyStatus}&filter=${currentFilter}`
-                );
-              }}
-            />
-          ) : (
-            ""
-          ),
-        delete:
-          allPermissions?.name === "all" || subPermission?.includes(DELETE) ? (
-            <img
-              src={deleteIcon}
-              width={35}
-              className="cursor-pointer "
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                Swal.fire({
-                  title: `<img src="${confirmationIcon}"/>`,
-                  html: `
-                                      <h3 class="swal-heading mt-1">${t(
-                                        "cattle_pregnancy_delete"
-                                      )}</h3>
-                                      <p>${t("cattle_pregnancy_sure")}</p>
-                                      `,
-                  showCloseButton: false,
-                  showCancelButton: true,
-                  focusConfirm: true,
-                  cancelButtonText: ` ${t("cancel")}`,
-                  cancelButtonAriaLabel: ` ${t("cancel")}`,
+        action: (
+          <div>
+            {allPermissions?.name === "all" || subPermission?.includes(EDIT) ? (
+              <img
+                src={editIcon}
+                width={35}
+                className="cursor-pointer "
+                onClick={() => {
+                  history.push(
+                    `/cattle/pregnancy-reports/${item?.id}?page=${currentPage}&status=${currentPregnancyStatus}&filter=${currentFilter}`
+                  );
+                }}
+              />
+            ) : (
+              ""
+            )}
+            {allPermissions?.name === "all" ||
+            subPermission?.includes(DELETE) ? (
+              <img
+                src={deleteIcon}
+                width={35}
+                className="cursor-pointer "
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  Swal.fire({
+                    title: `<img src="${confirmationIcon}"/>`,
+                    html: `
+                            <h3 class="swal-heading mt-1">${t(
+                              "cattle_pregnancy_delete"
+                            )}</h3>
+                            <p>${t("cattle_pregnancy_sure")}</p>
+                            `,
+                    showCloseButton: false,
+                    showCancelButton: true,
+                    focusConfirm: true,
+                    cancelButtonText: ` ${t("cancel")}`,
+                    cancelButtonAriaLabel: ` ${t("cancel")}`,
 
-                  confirmButtonText: ` ${t("confirm")}`,
-                  confirmButtonAriaLabel: "Confirm",
-                }).then(async (result) => {
-                  if (result.isConfirmed) {
-                    deleteMutation.mutate(item.id);
-                  }
-                });
-              }}
-            />
-          ) : (
-            ""
-          ),
+                    confirmButtonText: ` ${t("confirm")}`,
+                    confirmButtonAriaLabel: "Confirm",
+                  }).then(async (result) => {
+                    if (result.isConfirmed) {
+                      deleteMutation.mutate(item.id);
+                    }
+                  });
+                }}
+              />
+            ) : (
+              ""
+            )}
+          </div>
+        ),
       };
     });
   }, [data]);
 
   return (
     <div className="pregnancytablewrapper">
-      <CustomDataTable
-        maxHeight={maxHeight}
+      <Table
         columns={columns}
-        height={height}
-        data={pregnancyData}
+        dataSource={pregnancyData}
+        className="commonListTable"
+        scroll={{
+          x: 1500,
+          y: 400,
+        }}
+        sticky={{
+          offsetHeader: 64,
+        }}
+        bordered
       />
     </div>
   );

@@ -16,6 +16,7 @@ export const createCattleCategory = (payload) =>
 export const updateCattleCategory = (payload) =>
   callApi({
     requestFunction: (axios) => axios.put(`cattle/edit-category`, payload),
+    successCode: 201,
   });
 
 export const deleteCattleCategory = (payload) =>

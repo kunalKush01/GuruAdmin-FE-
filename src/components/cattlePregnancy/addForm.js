@@ -78,8 +78,8 @@ const AddPregnancyForm = ({
             )}
 
             <Row className="paddingForm">
-              <Col xs={12} md={4}>
-                <Row>
+            <Col xs={12} sm={6} lg={4}>
+            <Row>
                   <Col xs={12}>
                     <AsyncSelectField
                       name="cattleId"
@@ -108,7 +108,7 @@ const AddPregnancyForm = ({
                       <label>
                         <Trans i18nKey="cattle_pregnancy_status" />
                       </label>
-                      <Col md={3}>
+                      <Col xs={6} sm={3}>
                         <CustomRadioButton
                           name="pregnancyStatus"
                           id="pregnancyStatus1"
@@ -116,7 +116,7 @@ const AddPregnancyForm = ({
                           label="Active"
                         />
                       </Col>
-                      <Col md={5}>
+                      <Col xs={6} sm={5}>
                         <CustomRadioButton
                           name="pregnancyStatus"
                           id="pregnancyStatus2"

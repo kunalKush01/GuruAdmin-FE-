@@ -158,10 +158,11 @@ const CattlesInfo = () => {
         <title>Apna Dharm Admin | Cattles</title>
       </Helmet>
       <div>
-        <div className="d-sm-flex mb-1 justify-content-between align-items-center ">
-          <Trans i18nKey="cattle_registered" />
-
-          <div className="d-flex mt-1 mt-sm-0 justify-content-between">
+        <Row className="mb-1 d-flex justify-content-between align-items-center">
+          <Col xs={12} sm="auto">
+            <Trans i18nKey="cattle_registered" />
+          </Col>
+          <Col xs={12} sm="auto" className="d-flex flex-wrap mt-1 mt-sm-0">
             <ChangeCategoryType
               className={"me-1"}
               categoryTypeArray={[
@@ -204,9 +205,10 @@ const CattlesInfo = () => {
             />
 
             <Button
-              className="me-1"
+              className="me-1 mt-1 mt-sm-0"
               color="primary"
               onClick={() => importFileRef.current.click()}
+              style={{ height: "38px" }}
             >
               {t("Import_File")}
             </Button>
@@ -227,7 +229,8 @@ const CattlesInfo = () => {
 
             <Button
               color="primary"
-              className={"me-1"}
+              className={"me-1 mt-1 mt-sm-0"}
+              style={{ height: "38px" }}
               onClick={() =>
                 handleExport({
                   dataName: exportCattleJson(
@@ -244,13 +247,14 @@ const CattlesInfo = () => {
             {allPermissions?.name === "all" ||
             subPermission?.includes(WRITE) ? (
               <Button
-                className="me-1"
+                className="me-1 mt-1 mt-sm-0"
                 color="primary"
                 onClick={() =>
                   history.push(
                     `/cattle/info/add?page=${pagination.page}&status=${isDeadAlive}&filter=${dropDownName}`
                   )
                 }
+                style={{ height: "38px" }}
               >
                 <span>
                   <Plus className="" size={15} strokeWidth={4} />
@@ -269,8 +273,8 @@ const CattlesInfo = () => {
               className="d-none"
               onChange={handleImportFile}
             />
-          </div>
-        </div>
+          </Col>
+        </Row>
         <div style={{ height: "10px" }}>
           <If condition={cattleList.isFetching || cattleList.isLoading}>
             <Then>

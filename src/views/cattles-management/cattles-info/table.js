@@ -15,6 +15,7 @@ import CustomDataTable from "../../../components/partials/CustomDataTable";
 import { ConverFirstLatterToCapital } from "../../../utility/formater";
 import { DELETE, EDIT } from "../../../utility/permissionsVariable";
 import "../../../assets/scss/viewCommon.scss";
+import { Table } from "antd";
 const CattleInfoTable = ({
   data = [],
   maxHeight,
@@ -44,81 +45,92 @@ const CattleInfoTable = ({
 
   const columns = [
     {
-      name: t("cattle_id"),
-      selector: (row) => row.cattleId,
-      width: "130px",
+      title: t("cattle_id"),
+      dataIndex: "cattleId",
+      key: "cattleId",
+      width: 130,
+      fixed:"left"
     },
     {
-      name: t("cattle_photo"),
-      selector: (row) => row.cowPhoto,
-      center: true,
-      width: "130px",
+      title: t("cattle_photo"),
+      dataIndex: "cowPhoto",
+      key: "cowPhoto",
+      width: 200
     },
     // {
-    //   name: t("cattle_owner_photo"),
-    //   selector: (row) => row.ownerPhoto,
-    //   center: true,
-    //   width: "140px",
+    //   title: t("cattle_owner_photo"),
+    //   dataIndex: "ownerPhoto",
+    //   key: "ownerPhoto",
+    //   width: 140,
+    //   align: "center",
+    //   render: (ownerPhoto) => <img src={ownerPhoto} alt="Owner" width={50} height={50} />,
     // },
     // {
-    //   name: t("cattle_owner_id"),
-    //   selector: (row) => row.ownerId,
-    //   width: "130px",
+    //   title: t("cattle_owner_id"),
+    //   dataIndex: "ownerId",
+    //   key: "ownerId",
+    //   width: 130,
     // },
     {
-      name: t("dashboard_Recent_DonorType"),
-      selector: (row) => row.type,
-      width: "130px",
+      title: t("dashboard_Recent_DonorType"),
+      dataIndex: "type",
+      key: "type",
+      width: 130,
     },
     {
-      name: t("cattle_mother_id"),
-      selector: (row) => row.motherId,
-      width: "150px",
+      title: t("cattle_mother_id"),
+      dataIndex: "motherId",
+      key: "motherId",
+      width: 150,
     },
     {
-      name: t("cattle_breed"),
-      selector: (row) => row.breed,
-      width: "130px",
+      title: t("cattle_breed"),
+      dataIndex: "breed",
+      key: "breed",
+      width: 130,
     },
     {
-      name: t("cattle_date_of_birth"),
-      selector: (row) => row.dateOfBirth,
-      width: "150px",
+      title: t("cattle_date_of_birth"),
+      dataIndex: "dateOfBirth",
+      key: "dateOfBirth",
+      width: 150,
     },
     {
-      name: t("cattle_age"),
-      selector: (row) => row.age,
-      width: "100px",
+      title: t("cattle_age"),
+      dataIndex: "age",
+      key: "age",
+      width: 100,
     },
     {
-      name: t("cattle_is_pregnant"),
-      selector: (row) => row.isPregnant,
-      width: "130px",
+      title: t("cattle_is_pregnant"),
+      dataIndex: "isPregnant",
+      key: "isPregnant",
+      width: 130,
     },
     {
-      name: t("cattle_pregnancy_date"),
-      selector: (row) => row.pregnancyDate,
-      width: "150px",
+      title: t("cattle_pregnancy_date"),
+      dataIndex: "pregnancyDate",
+      key: "pregnancyDate",
+      width: 150,
     },
     {
-      name: t("cattle_is_milking"),
-      selector: (row) => row.isMilking,
-      width: "130px",
+      title: t("cattle_is_milking"),
+      dataIndex: "isMilking",
+      key: "isMilking",
+      width: 130,
     },
     {
-      name: t("cattle_milk_quantity"),
-      selector: (row) => row.milkQuantity,
-      width: "150px",
+      title: t("cattle_milk_quantity"),
+      dataIndex: "milkQuantity",
+      key: "milkQuantity",
+      width: 150,
     },
     {
-      name: t(""),
-      selector: (row) => row.edit,
-      width: "80px",
-    },
-    {
-      name: t(""),
-      selector: (row) => row.delete,
-      width: "80px",
+      title: "Action",
+      dataIndex: "action",
+      key: "action",
+      width:100,
+      fixed: "right",
     },
   ];
 
@@ -172,66 +184,75 @@ const CattleInfoTable = ({
           ? moment(item?.pregnancyDate).format(" DD MMM YYYY")
           : "N/A",
         milkQuantity: item?.milkQuantity ?? "N/A",
-
-        edit:
-          allPermissions?.name === "all" || subPermission?.includes(EDIT) ? (
-            <img
-              src={editIcon}
-              width={35}
-              className="cursor-pointer "
-              onClick={() => {
-                history.push(`/cattle/info/${item?._id}`);
-              }}
-            />
-          ) : (
-            ""
-          ),
-        delete:
-          allPermissions?.name === "all" || subPermission?.includes(DELETE) ? (
-            <img
-              src={deleteIcon}
-              width={35}
-              className="cursor-pointer "
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                Swal.fire({
-                  title: `<img src="${confirmationIcon}"/>`,
-                  html: `
+        action: ( 
+          <div className="d-flex">
+            {allPermissions?.name === "all" || subPermission?.includes(EDIT) ? (
+              <img
+                src={editIcon}
+                width={35}
+                className="cursor-pointer "
+                onClick={() => {
+                  history.push(`/cattle/info/${item?._id}`);
+                }}
+              />
+            ) : (
+              ""
+            )}
+            {allPermissions?.name === "all" ||
+            subPermission?.includes(DELETE) ? (
+              <img
+                src={deleteIcon}
+                width={35}
+                className="cursor-pointer "
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  Swal.fire({
+                    title: `<img src="${confirmationIcon}"/>`,
+                    html: `
                                       <h3 class="swal-heading mt-1">${t(
                                         "cattle_cattle_delete"
                                       )}</h3>
                                       <p>${t("cattle_cattle_sure")}</p>
                                       `,
-                  showCloseButton: false,
-                  showCancelButton: true,
-                  focusConfirm: true,
-                  cancelButtonText: ` ${t("cancel")}`,
-                  cancelButtonAriaLabel: ` ${t("cancel")}`,
+                    showCloseButton: false,
+                    showCancelButton: true,
+                    focusConfirm: true,
+                    cancelButtonText: ` ${t("cancel")}`,
+                    cancelButtonAriaLabel: ` ${t("cancel")}`,
 
-                  confirmButtonText: ` ${t("confirm")}`,
-                  confirmButtonAriaLabel: "Confirm",
-                }).then(async (result) => {
-                  if (result.isConfirmed) {
-                    deleteMutation.mutate(item._id);
-                  }
-                });
-              }}
-            />
-          ) : (
-            ""
-          ),
+                    confirmButtonText: ` ${t("confirm")}`,
+                    confirmButtonAriaLabel: "Confirm",
+                  }).then(async (result) => {
+                    if (result.isConfirmed) {
+                      deleteMutation.mutate(item._id);
+                    }
+                  });
+                }}
+              />
+            ) : (
+              ""
+            )}
+          </div>
+        ),
       };
     });
   }, [data]);
 
   return (
     <div className="cattleinfotablewrapper">
-      <CustomDataTable
-        maxHeight={maxHeight}
-        height={height}
+      <Table
         columns={columns}
-        data={CattlesInfo}
+        className="commonListTable"
+        scroll={{
+          x: 1500,
+          y: 400,
+        }}
+        sticky={{
+          offsetHeader: 64,
+        }}
+        bordered
+        dataSource={CattlesInfo}
       />
     </div>
   );

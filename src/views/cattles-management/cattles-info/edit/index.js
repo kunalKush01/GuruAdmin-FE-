@@ -194,7 +194,6 @@ const EditCattle = () => {
         </Then>
         <Else>
           {!cattleDetails.isFetching && (
-            <div className="FormikWrapper">
               <AddCattleForm
                 handleSubmit={handleCattleUpdate}
                 initialValues={initialValues}
@@ -214,7 +213,6 @@ const EditCattle = () => {
                 cattleType={cattleType}
                 cattleSource={cattleSource}
               />
-            </div>
           )}
         </Else>
       </If>

@@ -265,6 +265,7 @@ const AddCattleForm = ({
                   <Col xs={12} md={3}>
                     <FormikCustomReactSelect
                       name="source"
+                      required
                       loadOptions={cattleSource}
                       labelName={t("cattle_source")}
                       placeholder={t("placeHolder_cattle_source")}

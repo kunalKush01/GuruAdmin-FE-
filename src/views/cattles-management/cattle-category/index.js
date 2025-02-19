@@ -127,6 +127,7 @@ const CattleCategory = () => {
               className="me-1"
               color="primary"
               onClick={() => toggle({ addCattleCategory: true })}
+              style={{height:"38px"}}
             >
               <span>
                 <Plus className="" size={15} strokeWidth={4} />

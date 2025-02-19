@@ -109,7 +109,7 @@ const AddCattle = () => {
     type: "",
     breed: "",
     soldDate: new Date(),
-    dob: new Date(),
+    dob: "",
     purchaseDate: new Date(),
     deathDate: new Date(),
     deliveryDate: new Date(),

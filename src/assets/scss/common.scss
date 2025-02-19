@@ -2074,7 +2074,7 @@
     flex-direction: column;
     justify-content: flex-start;
     /* Keep the menu below */
-    align-items: center;
+    // align-items: center;
 
     .image_text {
         font: $font-weight-normal medium 22px/30px Kanit;
@@ -2228,7 +2228,7 @@
     .sun-editor {
         border: none !important;
         border-radius: 20px !important;
-
+        z-index: 0 !important;
         .se-navigation {
             display: none;
         }
@@ -4155,7 +4155,7 @@
     }
 
     .react-datepicker {
-        margin-left: 41px;
+        // margin-left: 41px;
     }
 
     .calendar {
