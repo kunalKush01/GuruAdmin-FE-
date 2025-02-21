@@ -174,6 +174,7 @@ export function ExpensesListTable({
         columns={columns}
         dataSource={categoriesList}
         rowKey="_Id"
+        pagination={false}
       />
     </div>
   );

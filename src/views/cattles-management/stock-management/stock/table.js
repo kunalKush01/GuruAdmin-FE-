@@ -6,34 +6,40 @@ import CustomDataTable from "../../../../components/partials/CustomDataTable";
 import { ConverFirstLatterToCapital } from "../../../../utility/formater";
 
 import "../../../../assets/scss/viewCommon.scss";
+import { Table } from "antd";
 const StockManagementTable = ({ data = [], maxHeight, height }) => {
   const { t } = useTranslation();
   const columns = [
     {
-      name: t("cattle_itemId"),
-      selector: (row) => row?.itemID,
-      width: "200px",
+      title: t("cattle_itemId"),
+      dataIndex: "itemID",
+      key: "itemID",
+      width: 100,
+      fixed:"left"
     },
     {
-      name: t("name"),
-      selector: (row) => row?.name,
-      width: "200px",
+      title: t("name"),
+      dataIndex: "name",
+      key: "name",
+      width: 180,
     },
     {
-      name: t("cattle_expense_current_quantity"),
-      selector: (row) => row?.currentQuantity,
-      width: "200px",
+      title: t("cattle_expense_current_quantity"),
+      dataIndex: "currentQuantity",
+      key: "currentQuantity",
+      width: 200,
     },
     {
-      name: t("cattle_unit"),
-      selector: (row) => row?.unit,
-      width: "200px",
+      title: t("cattle_unit"),
+      dataIndex: "unit",
+      key: "unit",
+      width: 80,
     },
-
     {
-      name: t("cattle_last_update"),
-      selector: (row) => row?.lastUpdate,
-      width: "200px",
+      title: t("cattle_last_update"),
+      dataIndex: "lastUpdate",
+      key: "lastUpdate",
+      width: 120,
     },
   ];
 
@@ -53,11 +59,19 @@ const StockManagementTable = ({ data = [], maxHeight, height }) => {
 
   return (
     <div className="stockmanagementtablewrapper">
-      <CustomDataTable
-        maxHeight={maxHeight}
-        height={height}
+      <Table
         columns={columns}
-        data={StockData}
+        dataSource={StockData}
+        className="commonListTable"
+        scroll={{
+          x: 1500,
+          y: 400,
+        }}
+        sticky={{
+          offsetHeader: 64,
+        }}
+        pagination={false}
+        bordered
       />
     </div>
   );

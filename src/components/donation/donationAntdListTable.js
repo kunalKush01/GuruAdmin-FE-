@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Table } from "antd";
+import { Button, Space, Table, Tooltip } from "antd";
 import moment from "moment";
 import numberToWords from "number-to-words";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -20,6 +20,8 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { EDIT } from "../../utility/permissionsVariable";
 import EditDonation from "./editDonation";
 import "../../assets/scss/common.scss";
+import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
+import eyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
 
 export default function DonationANTDListTable(
   {
@@ -34,6 +36,9 @@ export default function DonationANTDListTable(
     onChangePage,
     onChangePageSize,
     donationType,
+    setShowScreenshotPanel = false,
+    showScreenshotPanel = false,
+    setRecord = null,
   },
   args
 ) {
@@ -50,8 +55,14 @@ export default function DonationANTDListTable(
   };
 
   const shareReceiptOnWhatsApp = (item, receiptLink) => {
-    const message = `Hello ${item.donarName}, thank you for your donation of ₹${item.amount.toLocaleString("en-IN")} to ${loggedTemple?.name}. Here is your receipt: ${receiptLink}`;
-    const phoneNumber = `${item.user?.countryCode?.replace("+", "") || ""}${item.user?.mobileNumber || ""}`;
+    const message = `Hello ${
+      item.donarName
+    }, thank you for your donation of ₹${item.amount.toLocaleString(
+      "en-IN"
+    )} to ${loggedTemple?.name}. Here is your receipt: ${receiptLink}`;
+    const phoneNumber = `${item.user?.countryCode?.replace("+", "") || ""}${
+      item.user?.mobileNumber || ""
+    }`;
     window.open(
       `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`,
       "_blank"
@@ -72,7 +83,7 @@ export default function DonationANTDListTable(
     },
     onSuccess: (data, variables) => {
       setIsLoading(false);
-      if (data.result && data.result.receiptLink) {  
+      if (data.result && data.result.receiptLink) {
         if (data.result._id === variables.donationId) {
           shareReceiptOnWhatsApp(data.result, data.result.receiptLink);
         } else {
@@ -81,12 +92,12 @@ export default function DonationANTDListTable(
       } else {
         toast.error("Receipt link not available at this moment");
       }
-    },    
-    
+    },
+
     onError: () => {
       setIsLoading(false);
       toast.error("Failed to get receipt link");
-    }
+    },
   });
 
   const downloadReceipt = useMutation({
@@ -159,6 +170,22 @@ export default function DonationANTDListTable(
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+  const handleView = (record) => {
+    setRecord(record);
+    setShowScreenshotPanel(true);
+  };
+
+  const handleDelete = async (id) => {
+    console.log(id);
+    // try {
+    //   await deleteDonation(id); // API call to delete
+    //   message.success("Donation deleted successfully");
+    //   refetch(); // Refresh the list
+    // } catch (error) {
+    //   message.error("Failed to delete donation");
+    // }
+  };
+
   const columns = [
     {
       title: t("commitment_Username"),
@@ -193,7 +220,7 @@ export default function DonationANTDListTable(
       dataIndex: "receiptNo",
       key: "receiptNo",
       render: (text) => text,
-      width: 180,
+      width: 250,
     },
     {
       title: t("category"),
@@ -362,6 +389,15 @@ export default function DonationANTDListTable(
       key: "receipt",
       render: (text) => text,
       fixed: !isMobile && "right",
+      hidden: donationType === "Suspense" ? true : false,
+      width: 120,
+    },
+    {
+      title: t("action"),
+      key: "action",
+      dataIndex: "action",
+      fixed: !isMobile && "right",
+      hidden: donationType === "Suspense" ? false : true,
       width: 120,
     },
   ];
@@ -375,12 +411,7 @@ export default function DonationANTDListTable(
     }).format(date);
   };
   const Donatio_data = useMemo(() => {
-    const filteredData = data.filter((item) =>
-      donationType === "Donation"
-        ? item.isArticle === false
-        : item.isArticle === true
-    );
-    return filteredData.map((item, idx) => {
+    return data.map((item, idx) => {
       const customFields = item.customFields || {};
       const customFieldData = customFieldNames.reduce((acc, fieldName) => {
         const customField = customFields.find(
@@ -508,11 +539,32 @@ export default function DonationANTDListTable(
               />
             )}
             <img
-                  src={whatsappIcon}
-                  width={25}
-                  className="cursor-pointer"
-                  onClick={() => handleWhatsAppShare(item)}
-                />
+              src={whatsappIcon}
+              width={25}
+              className="cursor-pointer"
+              onClick={() => handleWhatsAppShare(item)}
+            />
+          </div>
+        ),
+        action: (
+          <div className="d-flex align-items-center">
+            <div>
+              <img
+                src={eyeIcon}
+                width={25}
+                onClick={() => handleView(item)}
+                className="cursor-pointer me-1"
+              />
+            </div>
+            <div>
+              <img
+                // icon={<DeleteOutlined />}
+                src={deleteIcon}
+                className="cursor-pointer"
+                width={35}
+                onClick={() => handleDelete(item?._id)}
+              />
+            </div>
           </div>
         ),
         edit:

@@ -10,6 +10,7 @@ import { Col, Row } from "reactstrap";
 import NoContent from "../../../../components/partials/noContent";
 import SuppliesTable from "./table";
 import { Helmet } from "react-helmet";
+import '../../../../assets/scss/common.scss'
 
 const Supplies = ({
   list,

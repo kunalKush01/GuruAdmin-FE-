@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import NoContent from "../../../../components/partials/noContent";
 import StockManagementTable from "./table";
+import '../../../../assets/scss/common.scss'
 
 const Stocks = ({
   list,
