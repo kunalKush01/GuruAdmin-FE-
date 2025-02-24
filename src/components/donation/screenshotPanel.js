@@ -6,6 +6,8 @@ import ScreenshotDescriptionTable from "./screenshotDescriptionTable";
 import "../../assets/scss/common.scss";
 import ImageObservation from "./imageObservation";
 import AIMatchedRecord from "./aiMatchedRecord";
+import { useQuery } from "@tanstack/react-query";
+import { extractDataFromImage } from "../../api/suspenseApi";
 const Desc = (props) => (
   <Flex
     justify="center"
@@ -30,7 +32,7 @@ const ScreenshotPanel = ({
   showScreenshotPanel,
   record,
 }) => {
-  console.log(record);
+  // console.log(record);
   const [sizes, setSizes] = useState(["70%", "30%"]);
   const [enabled, setEnabled] = useState(true);
   const [imageUrl, setImageUrl] = useState(null);
@@ -58,7 +60,30 @@ const ScreenshotPanel = ({
     }
   }, [record]);
 
-  console.log(imageUrl);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  const { data, isLoading } = useQuery(
+    ["extractData", record?.paymentScreenShot], // Use record?.image_url as a dependency
+    () =>
+      extractDataFromImage(
+        record?.paymentScreenShot ? { filePath: record.paymentScreenShot } : {}
+      ), // Ensure initial payload is {}
+    {
+      keepPreviousData: true,
+      enabled: !!record, // Only enable query when record is available
+      onError: (error) => {
+        console.error("Error fetching data:", error);
+      },
+    }
+  );
+
   return (
     <div className="d-flex flex-column ">
       {showScreenshotPanel && (
@@ -79,18 +104,22 @@ const ScreenshotPanel = ({
             height: 450,
             boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
           }}
+          layout={isMobile ? "vertical" : "horizontal"}
         >
           <Splitter.Panel size={sizes[0]} resizable={enabled}>
             <div className="mx-1 py-1">
-              <ScreenshotDescriptionTable record={record} />
+              <ScreenshotDescriptionTable
+                record={record}
+                data={data ? data.result : null}
+              />
             </div>
             <div className="mx-1 py-1">
               <ImageObservation />
             </div>
-            {/* <div className="mx-1 py-1">
+            <div className="mx-1 py-1">
               <span className="commonFont">AI Matched Suspense Record</span>
               <AIMatchedRecord />
-            </div> */}
+            </div>
           </Splitter.Panel>
           <Splitter.Panel
             size={sizes[1]}
@@ -107,7 +136,7 @@ const ScreenshotPanel = ({
                   alt="Payment Screenshot"
                   style={{
                     maxWidth: "100%",
-                    height: "400px",
+                    height: !isMobile ? "400px" : "200px",
                     objectFit: "contain",
                   }}
                 />

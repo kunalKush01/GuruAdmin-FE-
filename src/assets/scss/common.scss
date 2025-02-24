@@ -4488,7 +4488,13 @@
     color: $font-color;
     font: normal normal 700 18px Noto Sans !important
 }
-.pagination{
-    position:absolute;
+
+.pagination {
+    position: absolute;
     bottom: 0;
+}
+
+.ant-descriptions-item-label {
+    color: $font-color !important;
+    font: normal normal 500 14px Noto Sans !important
 }

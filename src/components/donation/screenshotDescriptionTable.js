@@ -2,38 +2,41 @@ import React from "react";
 import { Descriptions } from "antd";
 import moment from "moment";
 
-const ScreenshotDescriptionTable = ({ record }) => {
-  if (!record) return null; // Handle cases where record is undefined
+const ScreenshotDescriptionTable = ({ record, data }) => {
+  console.log("Extracted Data:", data);
+  if (!record) return null; // Handle cases where data or record is undefined
 
-  const formattedDate = record.createdAt
-    ? moment(record.createdAt).format("YYYY MM DD HH:mm:ss")
+  // Format the timestamp properly
+  const formattedTimestamp = data.timestamp
+    ? moment(data.timestamp, "hh:mm A, DD MMM YYYY").format("YYYY-MM-DD HH:mm:ss")
     : "N/A";
+    console.log(data)
 
   const borderedItems = [
     {
       key: "1",
       label: "Name",
-      children: record.donarName || "N/A",
+      children: data?.from?.name || record?.donarName || "N/A",
     },
     {
       key: "2",
       label: "Amount",
-      children: `₹${record.amount || "0.00"}`,
+      children: `₹${data?.amount || record?.amount || "0.00"}`,
     },
     {
       key: "3",
       label: "Transaction ID",
-      children: "",
+      children: data?.upiRefNumber || "N/A",
     },
     {
       key: "4",
       label: "Transaction Date & Time",
-      children: "",
+      children: data?.timestamp || "N/A",
     },
     {
       key: "5",
       label: "Status",
-      children: record.paidStatus || "N/A",
+      children: record?.paidStatus || "N/A",
     },
   ];
 
