@@ -87,7 +87,7 @@ const StockManagementItemTable = ({
           item?.unitType?.toLowerCase() ?? "  "
         ),
         action: (
-          <div className="d-lflex align-items-center">
+          <div className="d-flex align-items-center">
             <div>
               {allPermissions?.name === "all" ||
               subPermission?.includes(EDIT) ? (

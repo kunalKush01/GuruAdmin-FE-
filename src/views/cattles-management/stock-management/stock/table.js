@@ -14,32 +14,33 @@ const StockManagementTable = ({ data = [], maxHeight, height }) => {
       title: t("cattle_itemId"),
       dataIndex: "itemID",
       key: "itemID",
-      width: 100,
+      width: 120,
       fixed:"left"
     },
     {
       title: t("name"),
       dataIndex: "name",
       key: "name",
-      width: 180,
+      width: 120,
     },
     {
       title: t("cattle_expense_current_quantity"),
       dataIndex: "currentQuantity",
       key: "currentQuantity",
-      width: 200,
+      width: 120,
     },
     {
       title: t("cattle_unit"),
       dataIndex: "unit",
       key: "unit",
-      width: 80,
+      width: 120,
     },
     {
       title: t("cattle_last_update"),
       dataIndex: "lastUpdate",
       key: "lastUpdate",
       width: 120,
+      fixed:"right"
     },
   ];
 
