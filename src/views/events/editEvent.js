@@ -25,8 +25,8 @@ const schema = Yup.object().shape({
     .trim(),
   Body: Yup.string().required("events_desc_required").trim(),
   DateTime: Yup.object().shape({
-    start: Yup.string().required("events_startDate_required"),
-    // end: Yup.mixed().required("events_endDate_required"),
+    start: Yup.string().nullable().required("events_startDate_required"), // Ensures it's required but can be null initially
+    end: Yup.string().nullable().required("events_endDate_required"),
   }),
   startTime: Yup.mixed().required("events_startTime_required"),
   endTime: Yup.mixed().required("events_endTime_required"),
@@ -78,16 +78,19 @@ export default function EditEvent() {
 
   const initialValues = useMemo(() => {
     const eventData = eventDetailQuery?.data?.result;
-    const selectedEvent = eventData?.baseId && eventData?.title ? {
-      id: eventData.baseId,
-      title: eventData.title,
-    } : null;
+    const selectedEvent =
+      eventData?.baseId && eventData?.title
+        ? {
+            id: eventData.baseId,
+            title: eventData.title,
+          }
+        : null;
     return {
       Id: eventDetailQuery?.data?.result?.id,
       Title: eventDetailQuery?.data?.result?.title,
       tagsInit: tags,
       Body: he?.decode(eventDetailQuery?.data?.result?.body ?? ""),
-      images: eventDetailQuery?.data?.result?.images??[],
+      images: eventDetailQuery?.data?.result?.images ?? [],
       PublishedBy: eventDetailQuery?.data?.result?.publishedBy,
       DateTime: {
         start: moment(eventDetailQuery?.data?.result?.startDate)
@@ -98,11 +101,15 @@ export default function EditEvent() {
           .toDate(),
       },
       startTime: eventDetailQuery?.data?.result?.startTime
-      ? moment(eventDetailQuery?.data?.result?.startTime, 'HH:mm').format('HH:mm')
-      : null,
+        ? moment(eventDetailQuery?.data?.result?.startTime, "HH:mm").format(
+            "HH:mm"
+          )
+        : null,
       endTime: eventDetailQuery?.data?.result?.endTime
-      ? moment(eventDetailQuery?.data?.result?.endTime, 'HH:mm').format('HH:mm')
-      : null,
+        ? moment(eventDetailQuery?.data?.result?.endTime, "HH:mm").format(
+            "HH:mm"
+          )
+        : null,
       location: eventDetailQuery?.data?.result?.location,
       city: eventDetailQuery?.data?.result?.city,
       state: eventDetailQuery?.data?.result?.state,
@@ -111,7 +118,6 @@ export default function EditEvent() {
       SelectedEvent: selectedEvent,
     };
   }, [eventDetailQuery?.data?.result]);
-    
 
   return (
     <div className="listviewwrapper">

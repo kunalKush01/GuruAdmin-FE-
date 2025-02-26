@@ -218,9 +218,12 @@ export default function FormWithoutFormikForDonation({
   const handleCreateUser = async (payload) => {
     return createSubscribedUser(payload);
   };
-
+  const patt = /^(\+?\d{1,3}[-.\s]?)?(\(?\d{3}\)?[-.\s]?)?\d{3}[-.\s]?\d{4}$/;
+  const panPatt = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
   const schema = Yup.object().shape({
-    mobile: Yup.string().required("users_mobile_required"),
+    mobile: Yup.string()
+      .matches(patt, "Invalid mobile number")
+      .required("users_mobile_required"),
     email: Yup.string().email("email_invalid").trim(),
     name: Yup.string()
       .matches(
@@ -234,6 +237,7 @@ export default function FormWithoutFormikForDonation({
       then: Yup.string().max(6, "Pincode not found"),
       otherwise: Yup.string(),
     }),
+    panNum:Yup.string().matches(panPatt,"Invalid PAN number")
   });
   const location = useLocation();
   const [open, setOpen] = useState(false);

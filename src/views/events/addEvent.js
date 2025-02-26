@@ -22,8 +22,12 @@ const schema = Yup.object().shape({
   // tagsInit:Yup.array().max(15 ,"tags_limit"),
   Body: Yup.string().required("events_desc_required").trim(),
   DateTime: Yup.object().shape({
-    start: Yup.string().required("events_startDate_required"),
-    // end: Yup.mixed().required("events_endDate_required"),
+    start: Yup.string()
+      .nullable()
+      .required("events_startDate_required"), // Ensures it's required but can be null initially
+    end: Yup.string()
+      .nullable()
+      .required("events_endDate_required"),
   }),
   startTime: Yup.mixed().required("events_startTime_required"),
   endTime: Yup.mixed().required("events_endTime_required"),
@@ -44,8 +48,8 @@ const initialValues = {
   latitude: "",
   longitude: "",
   DateTime: {
-    start: null,
-    end: null
+    start: "",
+    end: "",
   },
   startTime: "",
   endTime: "",

@@ -470,65 +470,78 @@ export default function EventForm({
                   {!AddLanguage && (
                     <>
                       <Col xs={12} lg={4} md={6}>
-                        <label>{t("select_start_date")}</label>
+                        {/* Start Date */}
+                        <label>
+                          {t("select_start_date")}
+                          <span className="text-danger">*</span>
+                        </label>
                         <CustomDatePickerComponent
                           placeholder={t("select_start_date")}
                           style={{ width: "100%" }}
-                          name="DateTime"
+                          name="DateTime.start"
                           format="DD MMM YYYY"
                           onChange={(date) => {
                             if (date) {
-                              const localDate = dayjs(date);
-                              formik.setFieldValue("DateTime", {
-                                ...formik.values.DateTime,
-                                start: localDate.startOf("day").toDate(),
-                              });
+                              const localDate = dayjs(date)
+                                .startOf("day")
+                                .toDate();
+                              formik.setFieldValue("DateTime.start", localDate);
+
+                              // If `end` is empty, set it to the same as `start`
                               if (!formik.values.DateTime?.end) {
-                                formik.setFieldValue("DateTime", {
-                                  start: localDate.startOf("day").toDate(),
-                                  end: localDate.startOf("day").toDate(),
-                                });
+                                formik.setFieldValue("DateTime.end", localDate);
                               }
                             } else {
-                              formik.setFieldValue("DateTime", {
-                                ...formik.values.DateTime,
-                                start: null,
-                              });
+                              formik.setFieldValue("DateTime.start", "");
                             }
                           }}
+                          onBlur={() =>
+                            formik.setFieldTouched("DateTime.start", true)
+                          }
                           value={
                             formik.values.DateTime?.start
                               ? dayjs(formik.values.DateTime.start)
-                              : null
+                              : ""
                           }
                           disabledDate={(current) =>
                             current < dayjs().startOf("day")
                           }
                         />
-                        <label>{t("select_end_date")}</label>
+                        {/* Start Date Error Message */}
+                        {formik.touched.DateTime?.start &&
+                          formik.errors.DateTime?.start && (
+                            <div className="text-danger">
+                              <Trans i18nKey={formik.errors.DateTime.start} />
+                            </div>
+                          )}
+
+                        {/* End Date */}
+                        <label>
+                          {t("select_end_date")}
+                          <span className="text-danger">*</span>
+                        </label>
                         <CustomDatePickerComponent
                           placeholder={t("select_end_date")}
                           style={{ width: "100%", marginTop: "5px" }}
-                          name="endDate"
+                          name="DateTime.end"
                           format="DD MMM YYYY"
                           onChange={(date) => {
                             if (date) {
-                              const localDate = dayjs(date);
-                              formik.setFieldValue("DateTime", {
-                                ...formik.values.DateTime,
-                                end: localDate.endOf("day").toDate(),
-                              });
+                              const localDate = dayjs(date)
+                                .endOf("day")
+                                .toDate();
+                              formik.setFieldValue("DateTime.end", localDate);
                             } else {
-                              formik.setFieldValue("DateTime", {
-                                ...formik.values.DateTime,
-                                end: null,
-                              });
+                              formik.setFieldValue("DateTime.end", "");
                             }
                           }}
+                          onBlur={() =>
+                            formik.setFieldTouched("DateTime.end", true)
+                          }
                           value={
                             formik.values.DateTime?.end
                               ? dayjs(formik.values.DateTime.end)
-                              : null
+                              : ""
                           }
                           disabledDate={(current) => {
                             const startDate = formik.values.DateTime?.start;
@@ -538,36 +551,19 @@ export default function EventForm({
                             );
                           }}
                         />
-                        <div
-                        // style={{
-                        //   height: "20px",
-                        //   font: "normal normal bold 11px/33px Noto Sans",
-                        // }}
-                        >
-                          {formik.errors.DateTime &&
-                            formik.touched.DateTime && (
-                              <div className="text-danger">
-                                {formik.errors.DateTime.start && (
-                                  <div>
-                                    <Trans
-                                      i18nKey={formik.errors.DateTime.start}
-                                    />
-                                  </div>
-                                )}
-                                {formik.errors.DateTime.end && (
-                                  <div>
-                                    <Trans
-                                      i18nKey={formik.errors.DateTime.end}
-                                    />
-                                  </div>
-                                )}
-                              </div>
-                            )}
-                        </div>
+                        {/* End Date Error Message */}
+                        {formik.touched.DateTime?.end &&
+                          formik.errors.DateTime?.end && (
+                            <div className="text-danger">
+                              <Trans i18nKey={formik.errors.DateTime.end} />
+                            </div>
+                          )}
                       </Col>
+
                       <Col xs={12} lg={4} md={6}>
                         <label>
-                          <Trans i18nKey={"start_Time"} />*
+                          <Trans i18nKey={"start_Time"} />
+                          <span className="text-danger">*</span>
                         </label>
                         <TimePicker
                           use12Hours={false}
@@ -596,7 +592,8 @@ export default function EventForm({
 
                       <Col xs={12} lg={4} md={6}>
                         <label>
-                          <Trans i18nKey={"end_Time"} />*
+                          <Trans i18nKey={"end_Time"} />
+                          <span className="text-danger">*</span>
                         </label>
                         <TimePicker
                           use12Hours={false}
