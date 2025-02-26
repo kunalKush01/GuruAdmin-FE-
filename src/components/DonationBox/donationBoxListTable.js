@@ -10,6 +10,7 @@ import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import CustomDataTable from "../partials/CustomDataTable";
 import "../../assets/scss/common.scss";
+import { Table } from "antd";
 
 export default function DonationBoxListTable({ data, financeReport }) {
   // const handleDeleteDonationBox = async (payload) => {
@@ -29,32 +30,38 @@ export default function DonationBoxListTable({ data, financeReport }) {
 
   const columns = [
     {
-      name: t("dashboard_Recent_DonorAmount"),
-      selector: (row) => row.amount,
-      style: {
-        font: "normal normal 700 13px/20px noto sans !important ",
-      },
-      width: "350px",
+      title: t("dashboard_Recent_DonorAmount"),
+      dataIndex: "amount",
+      key: "amount",
+      width: 150,
+      fixed: "left",
+      render: (text) => <span style={{ fontWeight: 700 }}>{text}</span>, // Applying bold styling
     },
     {
-      name: t("dashboard_Recent_DonorDate"),
-      selector: (row) => row.dateTime,
-      width: "350px",
+      title: t("dashboard_Recent_DonorDate"),
+      dataIndex: "dateTime",
+      key: "dateTime",
+      width: 180,
     },
     {
-      name: t("remarks_financial_donationBox"),
-      selector: (row) => row.remarks,
-      width: "350px",
+      title: t("remarks_financial_donationBox"),
+      dataIndex: "remarks",
+      key: "remarks",
+      width: 200,
     },
     {
-      name: t("created_by"),
-      center: true,
-      selector: (row) => row.createdBy,
+      title: t("created_by"),
+      dataIndex: "createdBy",
+      key: "createdBy",
+      align: "center", // Equivalent to `center: true`
+      width: 150,
     },
     {
-      name: t(""),
-      center: true,
-      selector: (row) => row.edit,
+      title: "Action",
+      dataIndex: "edit",
+      key: "edit",
+      align: "center",
+      width: 100,
     },
   ];
 
@@ -86,7 +93,20 @@ export default function DonationBoxListTable({ data, financeReport }) {
 
   return (
     <div className="recentdonationtablewrapper">
-      <CustomDataTable maxHeight={""} columns={columns} data={donatioBoxList} />
+      <Table
+        columns={columns}
+        dataSource={donatioBoxList}
+        className="commonListTable"
+        pagination={false}
+        scroll={{
+          x: 1500,
+          y: 400,
+        }}
+        sticky={{
+          offsetHeader: 64,
+        }}
+        bordered
+      />
     </div>
   );
 }

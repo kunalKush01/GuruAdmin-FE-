@@ -1,30 +1,76 @@
 import React, { useEffect, useState } from "react";
-import { Select, Button, Table } from "antd";
+import { Select, Table, Input } from "antd";
 import { useTranslation } from "react-i18next";
 import "../../assets/scss/common.scss";
 import { fetchFields } from "../../fetchModuleFields";
 import { useSelector } from "react-redux";
+import axios from "axios";
+import { searchSupense } from "../../api/suspenseApi";
+
 const { Option } = Select;
+const { TextArea } = Input;
 
 const AIMatchedRecord = () => {
-  const [selectedValue, setSelectedValue] = useState(null);
+  const [selectedField, setSelectedField] = useState(null);
+  const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const { t } = useTranslation();
-  // Dummy data for the table
-  const data = [
-    { key: "1", name: "John Doe", transactionId: "417912144296", amount: "$100" },
-    { key: "2", name: "Jane Smith", transactionId: "TXN67890", amount: "$250" },
-  ];
+  const trustId = localStorage.getItem("trustId");
+  const selectedLang = useSelector((state) => state.auth.selectLang);
+  const [fieldOptions, setFieldOptions] = useState([]);
 
-  const handleSearch = () => {
-    // Simulating a search by filtering based on selectedValue
-    if (selectedValue) {
-      const filteredResults = data.filter((item) =>
-        item.transactionId.includes(selectedValue)
+  useEffect(() => {
+    const excludeFields = [
+      "_id", "updatedAt", "updatedBy", "__v", "trustId",
+      "receiptLink", "receiptName", "customFields", "user",
+      "createdBy", "donorMapped", "transactionId", "isArticle",
+      "isDeleted", "isGovernment", "donationType", "pgOrderId",
+      "receiptNo", "billInvoice", "billInvoiceExpiredAt",
+      "billInvoiceName", "supplyId", "itemId", "pricePerItem",
+      "orderQuantity",
+    ];
+    const donation_excludeField = [
+      "articleItem", "articleQuantity", "articleRemark",
+      "articleType", "articleUnit", "articleWeight",
+      "isArticle", "originalAmount",
+    ];
+    const finalExcludeFields = [...excludeFields, ...donation_excludeField];
+
+    const getFields = async () => {
+      const options = await fetchFields(
+        trustId,
+        "Suspense",
+        finalExcludeFields,
+        selectedLang.id
       );
-      setSearchResults(filteredResults);
+      setFieldOptions(options);
+    };
+    getFields();
+  }, [trustId, selectedLang.id]);
+
+  // API Call for fuzzy search
+  const fetchSearchResults = async () => {
+    if (!selectedField || !searchText.trim()) {
+      setSearchResults([]);
+      return;
+    }
+
+    try {
+      const response = await searchSupense({"query":searchText});
+      console.log(response)
+      setSearchResults(response.data || []);
+    } catch (error) {
+      console.error("Search API Error:", error);
     }
   };
+
+  useEffect(() => {
+    const delayDebounce = setTimeout(() => {
+      fetchSearchResults();
+    }, 500); // Debounce API call
+
+    return () => clearTimeout(delayDebounce);
+  }, [searchText, selectedField]);
 
   const columns = [
     {
@@ -39,7 +85,6 @@ const AIMatchedRecord = () => {
       title: t("bankNarration"),
       dataIndex: "bankNarration",
       key: "bankNarration",
-      render: (text) => <div className="">{text}</div>,
       width: 400,
     },
     {
@@ -52,107 +97,18 @@ const AIMatchedRecord = () => {
       title: t("suspense_mode_of_payment"),
       dataIndex: "modeOfPayment",
       key: "modeOfPayment",
-      render: (text) =>
-        text ? text : <span className="d-flex justify-content-center">-</span>,
       width: 150,
     },
-    // {
-    //   title: t("action"),
-    //   key: "action",
-    //   fixed: "right",
-    //   width: 80,
-    //   render: (text, record) => (
-    //     <Space>
-    //       <Tooltip title="Move to Donation">
-    //         <img
-    //           src={exchangeIcon}
-    //           width={20}
-    //           className="cursor-pointer"
-    //           onClick={() => handleDonorMapped(record)}
-    //         />
-    //       </Tooltip>
-    //       <img
-    //         src={editIcon}
-    //         width={35}
-    //         className="cursor-pointer"
-    //         onClick={() => handleEdit(record)}
-    //       />
-    //       <img
-    //         src={deleteIcon}
-    //         width={35}
-    //         className="cursor-pointer"
-    //         onClick={() => handleDelete(record)}
-    //       />
-    //     </Space>
-    //   ),
-    // },
   ];
-  const trustId = localStorage.getItem("trustId");
-  const selectedLang = useSelector((state) => state.auth.selectLang);
-  const [fieldOptions, setFieldOptions] = useState([]);
 
-  useEffect(() => {
-    const donation_excludeField = [
-      "articleItem",
-      "articleQuantity",
-      "articleRemark",
-      "articleType",
-      "articleUnit",
-      "articleWeight",
-      "isArticle",
-      "originalAmount",
-    ];
-    const excludeFields = [
-      "_id",
-      "updatedAt",
-      "updatedBy",
-      // "createdAt",
-      "__v",
-      "trustId",
-      "receiptLink",
-      "receiptName",
-      "customFields",
-      "user",
-      "createdBy",
-      "donorMapped",
-      "transactionId",
-      "isArticle",
-      "isDeleted",
-      "isGovernment",
-      "donationType",
-      "pgOrderId",
-      "receiptNo",
-      "billInvoice",
-      "billInvoiceExpiredAt",
-      "billInvoiceName",
-      "supplyId",
-      "itemId",
-      "pricePerItem",
-      "orderQuantity",
-    ];
-    let finalExcludeFields = excludeFields;
-
-    finalExcludeFields = [...excludeFields, ...donation_excludeField];
-
-    const getFields = async () => {
-      const options = await fetchFields(
-        trustId,
-        "Suspense",
-        finalExcludeFields,
-        selectedLang.id
-      );
-      setFieldOptions(options);
-    };
-    getFields();
-  }, [trustId]);
   return (
     <div style={{ padding: "10px" }}>
-      {/* First Row: Dropdown & Search Button */}
+      {/* First Row: Dropdown & TextArea */}
       <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
         <Select
-          placeholder="Select Transaction"
+          placeholder="Select Field"
           style={{ width: "200px" }}
-          onChange={(value) => setSelectedValue(value)}
+          onChange={(value) => setSelectedField(value)}
         >
           {fieldOptions.map((field) => (
             <Option key={field.value} value={field.value}>
@@ -161,9 +117,13 @@ const AIMatchedRecord = () => {
           ))}
         </Select>
 
-        <Button type="primary" onClick={handleSearch}>
-          Search
-        </Button>
+        <TextArea
+          placeholder="Type to search..."
+          style={{ flex: 1 }}
+          autoSize={{ minRows: 1, maxRows: 3 }}
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+        />
       </div>
 
       {/* Second Row: Table */}
@@ -173,7 +133,6 @@ const AIMatchedRecord = () => {
         dataSource={searchResults}
         pagination={false}
         scroll={{ x: 600, y: 140 }}
-        // sticky={{ offsetHeader: 64 }}
         bordered
       />
     </div>

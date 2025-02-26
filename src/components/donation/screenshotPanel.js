@@ -83,7 +83,7 @@ const ScreenshotPanel = ({
       },
     }
   );
-
+  const [matchedAmount, setMatchedAmount] = useState(null);
   return (
     <div className="d-flex flex-column ">
       {showScreenshotPanel && (
@@ -111,10 +111,11 @@ const ScreenshotPanel = ({
               <ScreenshotDescriptionTable
                 record={record}
                 data={data ? data.result : null}
+                setMatchedAmount={setMatchedAmount}
               />
             </div>
             <div className="mx-1 py-1">
-              <ImageObservation />
+              <ImageObservation matchedAmount={matchedAmount} />
             </div>
             <div className="mx-1 py-1">
               <span className="commonFont">AI Matched Suspense Record</span>

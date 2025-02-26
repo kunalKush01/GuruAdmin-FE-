@@ -479,7 +479,7 @@ export default function FinancialReport() {
             {/* <If condition={Items.totalPages > 1} > */}
             {/* <Then  > */}
             {Items.totalPages > 1 && (
-              <Col xs={12} className="mb-2 d-flex justify-content-center">
+              <Col xs={12} className="mb-2 d-flex justify-content-center mt-5">
                 <ReactPaginate
                   nextLabel=""
                   breakLabel="..."

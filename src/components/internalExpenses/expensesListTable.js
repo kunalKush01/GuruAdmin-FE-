@@ -88,6 +88,7 @@ export function ExpensesListTable({
       title: t("Actions"),
       dataIndex: "action",
       fixed: "right",
+      width:100
     },
   ];
   const categoriesList = useMemo(() => {
@@ -175,6 +176,14 @@ export function ExpensesListTable({
         dataSource={categoriesList}
         rowKey="_Id"
         pagination={false}
+        scroll={{
+          x: 1500,
+          y: 400,
+        }}
+        sticky={{
+          offsetHeader: 64,
+        }}
+        bordered
       />
     </div>
   );

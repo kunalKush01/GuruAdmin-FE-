@@ -80,3 +80,11 @@ export const extractDataFromImage = async (payload) => {
     showToastOnError: false,
   });
 };
+export const searchSupense = async (payload) => {
+  return callApi({
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}suspense/search`, payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+};

@@ -20,6 +20,7 @@ import CustomDataTable from "../partials/CustomDataTable";
 import EditDonation from "./editDonation";
 import { toast } from "react-toastify";
 import "../../assets/scss/common.scss";
+import { Table } from "antd";
 
 export default function DonationList(
   { data, topdf, allPermissions, subPermission, financeReport },
@@ -63,74 +64,78 @@ export default function DonationList(
 
   const columns = [
     {
-      name: t("commitment_Username"),
-      selector: (row) => row.username,
-      cellExport: (row) => row.username,
-      style: {
-        font: "normal normal 700 13px/20px Noto Sans !important",
-      },
-      width: "150px",
+      title: t("commitment_Username"),
+      dataIndex: "username",
+      key: "username",
+      width: 150,
+      fixed:"left"
     },
     {
-      name: t("dashboard_Recent_DonorNumber"),
-      selector: (row) => row.mobileNumber,
-      cellExport: (row) => row.mobileNumber,
-      width: "150px",
+      title: t("dashboard_Recent_DonorNumber"),
+      dataIndex: "mobileNumber",
+      key: "mobileNumber",
+      width: 150,
     },
     {
-      name: t("dashboard_Recent_DonorName"),
-      selector: (row) => row.donarName,
-      cellExport: (row) => row.donarName,
-    },
-
-    {
-      name: t("category"),
-      selector: (row) => row.category,
-      cellExport: (row) => row.category,
-      width: "120px",
+      title: t("dashboard_Recent_DonorName"),
+      dataIndex: "donarName",
+      key: "donarName",
+      width: 150,
     },
     {
-      name: t("categories_sub_category"),
-      selector: (row) => row.subCategory,
-      cellExport: (row) => row.subCategory,
+      title: t("category"),
+      dataIndex: "category",
+      key: "category",
+      width: 120,
     },
     {
-      name: t("dashboard_Recent_DonorDate"),
-      selector: (row) => row.dateTime,
-      width: "150px",
-      cellExport: (row) => row.dateTime,
+      title: t("categories_sub_category"),
+      dataIndex: "subCategory",
+      key: "subCategory",
+      width: 150,
     },
     {
-      name: t("original_amount"),
-      width: "180px",
-      selector: (row) => row.originalAmount,
-      cellExport: (row) => row.originalAmount,
+      title: t("dashboard_Recent_DonorDate"),
+      dataIndex: "dateTime",
+      key: "dateTime",
+      width: 180,
     },
     {
-      name: t("estimate_amount"),
-      width: "180px",
-      selector: (row) => row.amount,
-      cellExport: (row) => row.amount,
+      title: t("original_amount"),
+      dataIndex: "originalAmount",
+      key: "originalAmount",
+      width: 180,
     },
     {
-      name: t("dashboard_Recent_DonorCommitId"),
-      selector: (row) => row.commitmentID,
-      width: "180px",
-      cellExport: (row) => row.commitmentID,
+      title: t("estimate_amount"),
+      dataIndex: "amount",
+      key: "amount",
+      width: 180,
     },
     {
-      name: t("created_by"),
-      selector: (row) => row.createdBy,
-      cellExport: (row) => row.createdBy,
+      title: t("dashboard_Recent_DonorCommitId"),
+      dataIndex: "commitmentID",
+      key: "commitmentID",
+      width: 180,
     },
     {
-      name: t("dashboard_Recent_DonorReceipt"),
-      selector: (row) => row.receipt,
+      title: t("created_by"),
+      dataIndex: "createdBy",
+      key: "createdBy",
+      width: 150,
     },
-
     {
-      name: t("action"),
-      selector: (row) => row.edit,
+      title: t("dashboard_Recent_DonorReceipt"),
+      dataIndex: "receipt",
+      key: "receipt",
+      width: 150,
+    },
+    {
+      title: t("action"),
+      dataIndex: "edit",
+      key: "action",
+      width: 100,
+      fixed:"right"
     },
   ];
 
@@ -256,7 +261,20 @@ export default function DonationList(
 
   return (
     <div className="recentdonationtablewrapper">
-      <CustomDataTable maxHeight={""} columns={columns} data={Donatio_data} />
+      <Table
+        columns={columns}
+        dataSource={Donatio_data}
+        className="commonListTable"
+        pagination={false}
+        scroll={{
+          x: 1500,
+          y: 400,
+        }}
+        sticky={{
+          offsetHeader: 64,
+        }}
+        bordered
+      />
       <ReactToPrint
         trigger={() => (
           <span id="AllDonations" ref={pdfRef} style={{ display: "none" }}>
