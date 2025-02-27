@@ -88,3 +88,12 @@ export const searchSupense = async (payload) => {
     showToastOnError: false,
   });
 };
+
+export const syncSuspenseWithSearch = async () => {
+  return callApi({
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}suspense/sync-search`),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+};

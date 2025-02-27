@@ -4,44 +4,43 @@ import { useTranslation } from "react-i18next";
 import "../../assets/scss/common.scss";
 import { fetchFields } from "../../fetchModuleFields";
 import { useSelector } from "react-redux";
-import axios from "axios";
-import { searchSupense } from "../../api/suspenseApi";
+import { searchSupense, syncSuspenseWithSearch } from "../../api/suspenseApi";
+import moment from "moment";
 
 const { Option } = Select;
 const { TextArea } = Input;
 
 const AIMatchedRecord = () => {
-  const [selectedField, setSelectedField] = useState(null);
-  const [searchText, setSearchText] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
   const { t } = useTranslation();
   const trustId = localStorage.getItem("trustId");
   const selectedLang = useSelector((state) => state.auth.selectLang);
+
+  const [selectedField, setSelectedField] = useState(null);
+  const [searchText, setSearchText] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
   const [fieldOptions, setFieldOptions] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalItems, setTotalItems] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const excludeFields = [
-      "_id", "updatedAt", "updatedBy", "__v", "trustId",
-      "receiptLink", "receiptName", "customFields", "user",
-      "createdBy", "donorMapped", "transactionId", "isArticle",
-      "isDeleted", "isGovernment", "donationType", "pgOrderId",
-      "receiptNo", "billInvoice", "billInvoiceExpiredAt",
-      "billInvoiceName", "supplyId", "itemId", "pricePerItem",
-      "orderQuantity",
+      "_id", "updatedAt", "updatedBy", "__v", "trustId", "receiptLink",
+      "receiptName", "customFields", "user", "createdBy", "donorMapped",
+      "transactionId", "isArticle", "isDeleted", "isGovernment", "donationType",
+      "pgOrderId", "receiptNo", "billInvoice", "billInvoiceExpiredAt",
+      "billInvoiceName", "supplyId", "itemId", "pricePerItem", "orderQuantity",
     ];
     const donation_excludeField = [
-      "articleItem", "articleQuantity", "articleRemark",
-      "articleType", "articleUnit", "articleWeight",
-      "isArticle", "originalAmount",
+      "articleItem", "articleQuantity", "articleRemark", "articleType",
+      "articleUnit", "articleWeight", "isArticle", "originalAmount",
     ];
     const finalExcludeFields = [...excludeFields, ...donation_excludeField];
 
     const getFields = async () => {
       const options = await fetchFields(
-        trustId,
-        "Suspense",
-        finalExcludeFields,
-        selectedLang.id
+        trustId, "Suspense", finalExcludeFields, selectedLang.id
       );
       setFieldOptions(options);
     };
@@ -49,28 +48,47 @@ const AIMatchedRecord = () => {
   }, [trustId, selectedLang.id]);
 
   // API Call for fuzzy search
-  const fetchSearchResults = async () => {
+  const fetchSearchResults = async (resetPage = false) => {
     if (!selectedField || !searchText.trim()) {
       setSearchResults([]);
+      setTotalItems(0);
       return;
     }
 
+    setLoading(true);
     try {
-      const response = await searchSupense({"query":searchText});
-      console.log(response)
-      setSearchResults(response.data || []);
+      if (resetPage) setCurrentPage(1); // Reset to first page on new search
+
+      // Sync Suspense Data
+      await syncSuspenseWithSearch();
+
+      // Search API Call
+      const response = await searchSupense({
+        query: searchText,
+        field: selectedField,
+        page: resetPage ? 1 : currentPage,
+        limit: pageSize,
+      });
+
+      setSearchResults(response.result || []);
+      setTotalItems(response.total || 0);
     } catch (error) {
-      console.error("Search API Error:", error);
+      console.error("Error syncing and searching:", error);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
-      fetchSearchResults();
-    }, 500); // Debounce API call
+      fetchSearchResults(true); // Reset to first page when changing search
+    }, 500);
 
     return () => clearTimeout(delayDebounce);
   }, [searchText, selectedField]);
+
+  useEffect(() => {
+    fetchSearchResults();
+  }, [currentPage, pageSize]); // Fetch results on pagination change
 
   const columns = [
     {
@@ -97,7 +115,9 @@ const AIMatchedRecord = () => {
       title: t("suspense_mode_of_payment"),
       dataIndex: "modeOfPayment",
       key: "modeOfPayment",
-      width: 150,
+      render: (text) =>
+        text ? text : <span className="d-flex justify-content-center">-</span>,
+      width: 120,
     },
   ];
 
@@ -131,7 +151,18 @@ const AIMatchedRecord = () => {
         className="commonListTable"
         columns={columns}
         dataSource={searchResults}
-        pagination={false}
+        loading={loading}
+        pagination={{
+          current: currentPage,
+          pageSize: pageSize,
+          total: totalItems,
+          onChange: (page, pageSize) => {
+            setCurrentPage(page);
+            setPageSize(pageSize);
+          },
+          showSizeChanger: true,
+          pageSizeOptions: [10, 20, 50, 100],
+        }}
         scroll={{ x: 600, y: 140 }}
         bordered
       />
