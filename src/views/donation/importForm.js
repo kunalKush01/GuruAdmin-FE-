@@ -23,6 +23,7 @@ import { importCommitmentFile } from "../../api/commitmentApi";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { importMemberFile } from "../../api/membershipApi";
+import { importMessages } from "../../api/messageApi"; 
 function ImportForm({
   onClose,
   open,
@@ -45,6 +46,16 @@ function ImportForm({
     t("mode_of_payment"),
     t("masterCategoryId"),
     t("categoryId"),
+  ];
+
+  const messageTargetFields = [
+    { label: t("Mobile Number"), value: "mobile" },
+    { label: t("Message"), value: "message" },
+    { label: t("Variable 1"), value: "var1" },
+    { label: t("Variable 2"), value: "var2" },
+    { label: t("Variable 3"), value: "var3" },
+    { label: t("Variable 4"), value: "var4" },
+    { label: t("Variable 5"), value: "var5" },
   ];
   const history = useHistory();
   const [loading, setLoading] = useState(false);
@@ -72,7 +83,16 @@ function ImportForm({
             complete: (result) => {
               headers = result.meta.fields;
               setSourceFields(headers);
-              setMapping({});
+              const initialMapping = {};
+              headers.forEach(header => {
+                const lowerHeader = header.toLowerCase().trim();
+                messageTargetFields.forEach(target => {
+                  if (lowerHeader === target.value.toLowerCase()) {
+                    initialMapping[target.value] = header;
+                  }
+                });
+              });
+              setMapping(initialMapping);
               message.success(`${fileName} file processed successfully`);
             },
             error: (error) => {
@@ -134,10 +154,13 @@ function ImportForm({
   };
 
   const handleMappingChange = (targetField, sourceField) => {
-    setMapping({
-      ...mapping,
-      [targetField]: sourceField,
-    });
+    const field = messageTargetFields.find(f => f.label === targetField);
+    const key = field ? field.value : targetField;
+    
+    setMapping(prevMapping => ({
+      ...prevMapping,
+      [key]: sourceField
+    }));
   };
 
   const columns = [
@@ -172,24 +195,39 @@ function ImportForm({
     },
   ];
 
-  const data =
-    tab && tab !== "MemberShip"
-      ? targetFields.map((field) => ({
-          key: field,
-          targetField: field,
-          sourceField: mapping[field],
-        }))
-      : mappedField &&
-        mappedField.map((field, index) => ({
-          key: `${field.value}-${index}`,
-          targetField: field.label,
-          sourceField: mapping[field.value],
-        }));
+  const data = tab === "Message" 
+  ? messageTargetFields.map((field) => ({
+      key: field.value,
+      targetField: field.label,
+      sourceField: mapping[field.value],
+    }))
+  : tab !== "MemberShip"
+    ? targetFields.map((field) => ({
+        key: field,
+        targetField: field,
+        sourceField: mapping[field],
+      }))
+    : mappedField &&
+      mappedField.map((field, index) => ({
+        key: `${field.value}-${index}`,
+        targetField: field.label,
+        sourceField: mapping[field.value],
+      }));
   const queryClient = useQueryClient();
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      if (tab === "Suspense") {
+      if (tab === "Message") {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_type", "Message");
+        formData.append("createdBy", loggedInUser ? loggedInUser?.id : "");
+
+        await importMessages(formData);
+        message.success(t("messages_imported_successfully"));
+        await queryClient.invalidateQueries("messages");
+        setShowHistory(true);
+      } else if (tab === "Suspense") {
         const payload = {
           targetFields: {
             transactionDate: mapping["Transaction Date"] || "",
@@ -294,6 +332,25 @@ function ImportForm({
               {tab && tab === "Pledge" && (
                 <Col xs={6} sm={12} md={6}>
                   <a href="/sampleFile/commitments.csv" download>
+                    <Button
+                      type=""
+                      className="uploadBtn"
+                      icon={
+                        <img
+                          src={downloadIcon}
+                          alt="Upload Icon"
+                          style={{ width: 16, height: 16 }}
+                        />
+                      }
+                    >
+                      {t("download_sample_file")}
+                    </Button>
+                  </a>
+                </Col>
+              )}
+              {tab && tab === "Message" && (
+                <Col xs={6} sm={12} md={6}>
+                  <a href="/sampleFile/messages.csv" download>
                     <Button
                       type=""
                       className="uploadBtn"

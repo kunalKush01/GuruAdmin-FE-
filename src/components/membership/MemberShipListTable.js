@@ -1,5 +1,5 @@
-import { Table } from "antd";
-import React from "react";
+import { Table, Dropdown, Menu } from "antd";
+import React, { useState, useEffect } from "react";
 import "../../assets/scss/common.scss";
 import "../../assets/scss/viewCommon.scss";
 import eyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
@@ -13,9 +13,117 @@ function MemberShipListTable({
   pageSize,
   onChangePage,
   onChangePageSize,
+  onSelectionChange = () => {},
+  setAllSelectedKeys,
+  allSelectedKeys,
 }) {
   const history = useHistory();
   const { t } = useTranslation();
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [selectionsByPage, setSelectionsByPage] = useState({});
+  // const [allSelectedKeys, setAllSelectedKeys] = useState([]);
+
+  const handleSelectChange = (newSelectedRowKeys) => {
+    const currentPageIds = data.map(item => item._id);
+    
+    const selectionsFromOtherPages = allSelectedKeys.filter(
+      id => !currentPageIds.includes(id)
+    );
+    const updatedSelections = [...selectionsFromOtherPages, ...newSelectedRowKeys];
+    
+    setAllSelectedKeys(updatedSelections);
+    onSelectionChange(updatedSelections);
+  };
+
+  useEffect(() => {
+    const currentPageSelections = selectionsByPage[currentPage] || [];
+    setSelectedRowKeys(currentPageSelections);
+  }, [currentPage, selectionsByPage]);
+
+  const getAllSelectedIds = () => {
+    return Object.values(selectionsByPage).flat();
+  };
+
+  const selectionMenu = (
+    <Menu
+      items={[
+        {
+          key: "1",
+          label: "Select current page",
+          onClick: () => {
+            const currentPageIds = data.map((item) => item._id);
+            handleSelectChange(currentPageIds);
+          },
+        },
+        {
+          key: "2",
+          label: "Invert current page",
+          onClick: () => {
+            const currentPageIds = data.map((item) => item._id);
+            const currentPageSelected = currentPageIds.filter(id => 
+              allSelectedKeys.includes(id)
+            );
+            
+            // If all current page items are selected, unselect them
+            if (currentPageSelected.length === currentPageIds.length) {
+              handleSelectChange([]);
+            } 
+            // Otherwise, select unselected items
+            else {
+              const newSelections = currentPageIds.filter(
+                id => !allSelectedKeys.includes(id)
+              );
+              handleSelectChange(newSelections);
+            }
+          },
+        },
+        {
+          key: "3",
+          label: "Clear current page",
+          onClick: () => {
+            const currentPageIds = data.map((item) => item._id);
+            const selectionsFromOtherPages = allSelectedKeys.filter(
+              id => !currentPageIds.includes(id)
+            );
+            setAllSelectedKeys(selectionsFromOtherPages);
+            onSelectionChange(selectionsFromOtherPages);
+          },
+        },
+        {
+          key: "4",
+          label: "Clear all pages",
+          onClick: () => {
+            setAllSelectedKeys([]);
+            onSelectionChange([]);
+          },
+        },
+        {
+          type: "divider",
+        },
+        {
+          key: "5",
+          label: "Select Odd Rows",
+          onClick: () => {
+            const oddKeys = data
+              .filter((_, index) => index % 2 === 0)
+              .map((item) => item._id);
+            handleSelectChange(oddKeys);
+          },
+        },
+        {
+          key: "6",
+          label: "Select Even Rows",
+          onClick: () => {
+            const evenKeys = data
+              .filter((_, index) => index % 2 === 1)
+              .map((item) => item._id);
+            handleSelectChange(evenKeys);
+          },
+        },
+      ]}
+    />
+  );
+
   const columns = [
     {
       title: t("member_name"),
@@ -95,7 +203,6 @@ function MemberShipListTable({
       dataIndex: ["data", "addressInfo", "homeAddress", "street"],
       key: "homeAddress",
       width: 400,
-
       render: (text, record) => {
         const homeAddress = record?.data?.addressInfo?.homeAddress || {};
         const street = homeAddress?.street || "-";
@@ -141,10 +248,27 @@ function MemberShipListTable({
     },
   ];
 
+  const rowSelection = {
+    selectedRowKeys: allSelectedKeys,
+    onChange: handleSelectChange,
+    selections: false,
+    columnTitle: (
+      <Dropdown overlay={selectionMenu} trigger={["click"]}>
+        <div style={{ cursor: "pointer" }}>☰</div>
+      </Dropdown>
+    ),
+  };
+
   return (
     <div>
+      {allSelectedKeys.length > 0 && (
+        <div className="mb-2 text-sm text-gray-600">
+          Total selected: {allSelectedKeys.length}
+        </div>
+      )}
       <Table
         className="commitmentListTable"
+        rowSelection={rowSelection}
         columns={columns}
         dataSource={data}
         rowKey={(record) => record._id}
