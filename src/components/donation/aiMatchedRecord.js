@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Select, Table, Input } from "antd";
+import { Select, Table, Input, Button } from "antd";
 import { useTranslation } from "react-i18next";
 import "../../assets/scss/common.scss";
 import { fetchFields } from "../../fetchModuleFields";
@@ -47,7 +47,7 @@ const AIMatchedRecord = () => {
     getFields();
   }, [trustId, selectedLang.id]);
 
-  // API Call for fuzzy search
+  // API Call for fuzzy search (Triggered only by the search button)
   const fetchSearchResults = async (resetPage = false) => {
     if (!selectedField || !searchText.trim()) {
       setSearchResults([]);
@@ -77,14 +77,6 @@ const AIMatchedRecord = () => {
     }
     setLoading(false);
   };
-
-  useEffect(() => {
-    const delayDebounce = setTimeout(() => {
-      fetchSearchResults(true); // Reset to first page when changing search
-    }, 500);
-
-    return () => clearTimeout(delayDebounce);
-  }, [searchText, selectedField]);
 
   useEffect(() => {
     fetchSearchResults();
@@ -123,7 +115,7 @@ const AIMatchedRecord = () => {
 
   return (
     <div style={{ padding: "10px" }}>
-      {/* First Row: Dropdown & TextArea */}
+      {/* First Row: Dropdown, TextArea, and Search Button */}
       <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
         <Select
           placeholder="Select Field"
@@ -144,6 +136,14 @@ const AIMatchedRecord = () => {
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
         />
+
+        <Button
+          type="primary"
+          onClick={() => fetchSearchResults(true)}
+          disabled={!selectedField || !searchText.trim()}
+        >
+          Search
+        </Button>
       </div>
 
       {/* Second Row: Table */}

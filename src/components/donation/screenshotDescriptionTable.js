@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Descriptions, Input, message, Button } from "antd";
+import { Descriptions, Input, message, Button, Tag } from "antd";
 import { CloseOutlined, EditOutlined, CheckOutlined } from "@ant-design/icons";
 import Swal from "sweetalert2";
 import { updateDonation } from "../../api/donationApi";
@@ -10,19 +10,19 @@ const ScreenshotDescriptionTable = ({ record, data, setMatchedAmount }) => {
 
   const query = useQueryClient();
   const [isEditing, setIsEditing] = useState(false);
-  const [originalAmount, setOriginalAmount] = useState(record?.amount || "0.00");
+  const [originalAmount, setOriginalAmount] = useState(
+    record?.amount || "0.00"
+  );
   const [editedAmount, setEditedAmount] = useState(originalAmount);
-
   const calculateMatchPercentage = (recordAmount, dataAmount) => {
     const amount = parseFloat(dataAmount);
     const recordAmt = parseFloat(recordAmount);
+
     if (!amount || !recordAmt) return "Invalid Amount";
 
-    const percentage = Math.round(
-      (Math.min(amount, recordAmt) / Math.max(amount, recordAmt)) * 100
-    );
-    return `${percentage}% matched`;
+    return amount === recordAmt ? "100% Amount Matched" : "Amount Mismatched";
   };
+
   useEffect(() => {
     if (editedAmount && data?.amount) {
       const result = calculateMatchPercentage(editedAmount, data.amount);
@@ -35,7 +35,7 @@ const ScreenshotDescriptionTable = ({ record, data, setMatchedAmount }) => {
   };
 
   const handleEditClick = () => {
-      setOriginalAmount(editedAmount); // Store the last saved amount
+    setOriginalAmount(editedAmount); // Store the last saved amount
     setIsEditing(true);
   };
 
@@ -57,11 +57,11 @@ const ScreenshotDescriptionTable = ({ record, data, setMatchedAmount }) => {
             donationId: record._id,
             originalAmount: record.originalAmount ? record.originalAmount : 0,
           };
-  
+
           await updateDonation(updatedRecord);
           query.invalidateQueries("donations");
           message.success("Amount updated successfully!");
-  
+
           // ✅ Save the updated amount as the new original value
           setOriginalAmount(editedAmount);
           setIsEditing(false);
@@ -74,7 +74,6 @@ const ScreenshotDescriptionTable = ({ record, data, setMatchedAmount }) => {
       }
     });
   };
-  
 
   const cancelEditing = () => {
     setEditedAmount(originalAmount); // Reset to the last saved amount
@@ -120,19 +119,38 @@ const ScreenshotDescriptionTable = ({ record, data, setMatchedAmount }) => {
     },
     {
       key: "3",
-      label: "Transaction ID",
-      children: data?.upiRefNumber || "N/A",
-    },
-    {
-      key: "4",
-      label: "Transaction Date & Time",
-      children: data?.timestamp || "N/A",
-    },
-    {
-      key: "5",
       label: "Status",
-      children: record?.paidStatus || "N/A",
+      children: (
+        <Tag
+          color={
+            record?.paidStatus === "Paid"
+              ? "green"
+              : record?.paidStatus === "Pending"
+              ? "orange"
+              : record?.paidStatus === "Failed"
+              ? "red"
+              : record?.paidStatus === "Commitment Payment"
+              ? "blue"
+              : record?.paidStatus === "Pending Mapping"
+              ? "red"
+              : "default"
+          }
+        >
+          {record?.paidStatus || "N/A"}
+        </Tag>
+      ),
     },
+
+    // {
+    //   key: "4",
+    //   label: "Transaction ID",
+    //   children: data?.upiRefNumber || "N/A",
+    // },
+    // {
+    //   key: "5",
+    //   label: "Transaction Date & Time",
+    //   children: data?.timestamp || "N/A",
+    // },
   ];
 
   return (

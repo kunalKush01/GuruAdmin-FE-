@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Flex, Splitter, Switch, Typography } from "antd";
+import { Button, Card, Flex, Spin, Splitter, Switch, Typography } from "antd";
 import backIcon from "../../../src/assets/images/icons/arrow-left.svg";
 import { fetchImage } from "../partials/downloadUploadImage";
 import ScreenshotDescriptionTable from "./screenshotDescriptionTable";
@@ -115,11 +115,22 @@ const ScreenshotPanel = ({
               />
             </div>
             <div className="mx-1 py-1">
-              <ImageObservation matchedAmount={matchedAmount} />
+              {isLoading ? (
+                <div className="d-flex align-items-center justify-content-center">
+                  <Spin size="large" />
+                </div>
+              ) : (
+                <ImageObservation
+                  matchedAmount={matchedAmount}
+                  data={data ? data : null}
+                />
+              )}
             </div>
             <div className="mx-1 py-1">
-              <span className="commonFont">AI Matched Suspense Record</span>
-              <AIMatchedRecord />
+              <Card>
+                <span className="commonFont">AI Matched Suspense Record</span>
+                <AIMatchedRecord />
+              </Card>
             </div>
           </Splitter.Panel>
           <Splitter.Panel

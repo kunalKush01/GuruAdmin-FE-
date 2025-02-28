@@ -4489,6 +4489,11 @@
     font: normal normal 700 18px Noto Sans !important
 }
 
+.commonSmallFont {
+    color: $font-color;
+    font: normal normal 700 14px Noto Sans !important
+}
+
 .pagination {
     position: absolute;
     bottom: 0;
