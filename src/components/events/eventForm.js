@@ -142,7 +142,10 @@ export default function EventForm({
   const [uploadedFileUrl, setUploadedFileUrl] = useState([]);
   const [imageUrl, setImageUrl] = useState([]);
   return (
-    <div className="formwrapper FormikWrapper">
+    <div
+      className="formwrapper FormikWrapper"
+      style={{ position: "absolute", zIndex: "-10000" }}
+    >
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}

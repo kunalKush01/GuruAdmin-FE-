@@ -98,7 +98,7 @@ export function CategoryListTable({
   ];
 
   const langList = useSelector((state) => state.auth.availableLang);
-
+console.log(langList)
   const categoriesList = useMemo(() => {
     return data.map((item) => ({
       _Id: item.id,
