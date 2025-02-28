@@ -66,7 +66,7 @@ export default function RichTextField({
   }, []);
   return (
     <div className="richtextfieldwrapper mb-2" key={field.name}>
-      <label style={{ margin: "0px 0px 10px 0px " }}>{`${label}*`}</label>
+      <label style={{ margin: "0px 0px 10px 0px " }}>{label}<span className="text-danger">*</span></label>
       <SunEditor
         onChange={(value) => helpers.setValue(value)}
         setContents={field.value}

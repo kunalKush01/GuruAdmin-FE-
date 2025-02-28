@@ -126,7 +126,10 @@ export default function NoticeForm({
   const [uploadedFileUrl, setUploadedFileUrl] = useState("");
   const [imageUrl, setImageUrl] = useState(null);
   return (
-    <div className="formwrapper FormikWrapper">
+    <div
+      className="formwrapper FormikWrapper"
+      style={{ position: "absolute", zIndex: "-10000" }}
+    >
       <Formik
         // enableReinitialize
         initialValues={initialValues}
@@ -232,8 +235,8 @@ export default function NoticeForm({
                       <div className="ImagesVideos">
                         <Trans i18nKey={"add_image"} />{" "}
                         <span style={{ fontSize: "13px", color: "gray" }}>
-                        <Trans i18nKey={"image_size_suggestion"} />
-                      </span>
+                          <Trans i18nKey={"image_size_suggestion"} />
+                        </span>
                       </div>
                       <UploadImage
                         required
@@ -258,11 +261,7 @@ export default function NoticeForm({
               </Row>
               <div className="btn-Published ">
                 {loading ? (
-                  <Button
-                    color="primary"
-                    className="add-trust-btn"
-                    disabled
-                  >
+                  <Button color="primary" className="add-trust-btn" disabled>
                     <Spinner size="md" />
                   </Button>
                 ) : (

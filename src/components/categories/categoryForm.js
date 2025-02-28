@@ -26,6 +26,7 @@ export default function CategoryForm({
   showTimeInput,
   ...props
 }) {
+  console.log(AddLanguage);
   const history = useHistory();
   const { t } = useTranslation();
   const categoryQuerClient = useQueryClient();
@@ -65,8 +66,8 @@ export default function CategoryForm({
             name: e?.SubCategory,
             masterId: e?.MasterCategory?.id,
             categoryId: e?.Id,
-            isFixedAmount: e?.IsFixedAmount,
-            amount: e?.Amount,
+            isFixedAmount: e?.IsFixedAmount || false,
+            amount: e?.Amount || 0,
           });
         }}
         validationSchema={validationSchema}
@@ -123,19 +124,25 @@ export default function CategoryForm({
                       required
                     />
                   </Col>
-                  <Col xs={12} sm={3} className="mt-2">
-                    <CustomCheckBox
-                      name="IsFixedAmount"
-                      label={t("is_fixed_amount")}
-                      customOnChange={(checked) => {
-                        setIsFixedAmountChecked(checked);
-                        console.log("Checkbox state:", checked);
-                      }}
-                      disabled={false}
-                    />
-                  </Col>
+                  {!AddLanguage && (
+                    <Col xs={12} sm={3} className="mt-2">
+                      <CustomCheckBox
+                        name="IsFixedAmount"
+                        label={t("is_fixed_amount")}
+                        customOnChange={(checked) => {
+                          setIsFixedAmountChecked(checked);
+                          formik.setFieldValue("IsFixedAmount", checked); // Update Formik state
+                          if (!checked) {
+                            formik.setFieldValue("Amount", 0); // Set Amount to 0 if unchecked
+                          }
+                          console.log("Checkbox state:", checked);
+                        }}
+                        disabled={false}
+                      />
+                    </Col>
+                  )}
 
-                  {isFixedAmountChecked && (
+                  {(isFixedAmountChecked || formik.values.IsFixedAmount) && (
                     <Col xs={12} sm={3}>
                       <CustomTextField
                         type="number"

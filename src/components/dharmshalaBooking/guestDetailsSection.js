@@ -10,7 +10,11 @@ import CustomTextField from "../partials/customTextField";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import uploadIc from "../../assets/images/icons/file-upload.svg";
 import { Button as AntdButton } from "antd";
-import { deleteFile, downloadFile, uploadFile } from "../../api/sharedStorageApi";
+import {
+  deleteFile,
+  downloadFile,
+  uploadFile,
+} from "../../api/sharedStorageApi";
 import { Col, Row } from "reactstrap";
 
 function GuestDetailsSection({
@@ -58,6 +62,7 @@ function GuestDetailsSection({
       then: Yup.string().max(6, "Pincode not found"),
       otherwise: Yup.string(),
     }),
+    panNum: Yup.string().matches(panPatt, "Invalid PAN number"),
   });
 
   useEffect(() => {
@@ -84,7 +89,7 @@ function GuestDetailsSection({
       formik.setFieldValue("SelectedUser", "");
       setNoUserFound(false);
     }
-  }, [formik?.values?.Mobile,dataLoad]);
+  }, [formik?.values?.Mobile, dataLoad]);
   useEffect(() => {
     const user = formik?.values?.SelectedUser;
     if (user) {
@@ -296,7 +301,7 @@ function GuestDetailsSection({
                     value={`${formik.values.SelectedUser?.countryCode || ""}${
                       formik.values.SelectedUser?.mobileNumber || ""
                     }`}
-                    disabled={payDonation||isReadOnly}
+                    disabled={payDonation || isReadOnly}
                     defaultCountry={countryFlag}
                     label={t("dashboard_Recent_DonorNumber")}
                     placeholder={t("placeHolder_mobile_number")}
@@ -453,7 +458,13 @@ function GuestDetailsSection({
                 disabled={isReadOnly}
               />
             </Col>
-            <Col xs={12} sm={6} lg={4} className="pb-1 upload-id" style={{display:isReadOnly && "none"}}>
+            <Col
+              xs={12}
+              sm={6}
+              lg={4}
+              className="pb-1 upload-id"
+              style={{ display: isReadOnly && "none" }}
+            >
               <Upload
                 name="file"
                 className="uploadIdCard"

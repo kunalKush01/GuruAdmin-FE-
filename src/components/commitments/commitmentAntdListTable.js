@@ -373,7 +373,11 @@ export default function CommitmentAntdListTable(
                   ? "cursor-pointer"
                   : " opacity-50 cursor-not-allowed"
               }`}
-              onClick={() => history.push(`/donations/paid/${item._id}`)}
+              onClick={() => {
+                if (item?.amount !== item?.amount - item?.paidAmount) {
+                  history.push(`/donations/paid/${item._id}`);
+                }
+              }}
             />
             {(allPermissions?.name === "all" ||
               subPermission?.includes(EDIT) ||

@@ -26,6 +26,13 @@ const schema = Yup.object().shape({
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
     .required("categories_sub_category_required")
     .trim(),
+  Amount: Yup.number().when("IsFixedAmount", {
+    is: true, // If IsFixedAmount is true
+    then: Yup.number()
+      .required("Amount is required")
+      .positive("Amount must be greater than 0"), // Ensure positive value
+    otherwise: Yup.number().default(0), // Default to 0 if unchecked
+  }),
 });
 
 const getLangId = (langArray, langSelection) => {
@@ -75,7 +82,7 @@ export default function EditCategory() {
       categoryId: subCategoryId,
     });
   };
-
+  console.log(subCategoryDetailQuery?.data?.result);
   return (
     <div className="categoryeditwrapper">
       <div className="d-flex justify-content-between align-items-center ">
@@ -161,6 +168,9 @@ export default function EditCategory() {
                     MasterCategory:
                       subCategoryDetailQuery?.data?.result?.masterCategory,
                     SubCategory: subCategoryDetailQuery.data.result.name,
+                    IsFixedAmount:
+                      subCategoryDetailQuery.data.result.isFixedAmount,
+                    Amount: subCategoryDetailQuery.data.result.amount,
                   }}
                   buttonName={"save_changes"}
                   validationSchema={schema}
