@@ -43,6 +43,8 @@ import AddFilterSection from "../../components/partials/addFilterSection";
 import FilterTag from "../../components/partials/filterTag";
 import ImportForm from "./importForm";
 import ImportHistoryTable from "../../components/donation/importHistoryTable";
+import ScreenshotPanel from "../../components/donation/screenshotPanel";
+const { TabPane } = Tabs;
 
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 export default function Donation() {
@@ -186,6 +188,12 @@ export default function Donation() {
     suspenseFilterData,
     activeTab,
   ]);
+  useEffect(() => {
+    setPagination((prev) => ({
+      ...prev,
+      page: 1, // Reset page to 1 when changing tabs
+    }));
+  }, [activeTab]);
 
   const donationQuery = useQuery(
     [
@@ -199,6 +207,7 @@ export default function Donation() {
       // filterStartDate,
       searchBarValue,
       filteredData,
+      activeTab,
     ],
     () =>
       getAllDonation({
@@ -209,12 +218,16 @@ export default function Donation() {
         categoryId: subCategoryId,
         // endDate: filterEndDate,
         languageId: selectedLang.id,
+        activeTab,
         ...((donationFilterData || articleDonationFilterData) &&
           filteredData && { advancedSearch: filteredData }),
       }),
     {
       keepPreviousData: true,
-      enabled: activeTab === "Donation" || activeTab === "Article_Donation",
+      enabled:
+        activeTab === "Donation" ||
+        activeTab === "Article_Donation" ||
+        activeTab === "Suspense",
     }
   );
 
@@ -436,7 +449,8 @@ export default function Donation() {
       : activeTab === "Suspense"
       ? Object.keys(suspenseFilterData).length > 0
       : false;
-
+  const [showScreenshotPanel, setShowScreenshotPanel] = useState(false);
+  const [record, setRecord] = useState(null);
   // Donation split tab
   const items = [
     {
@@ -1056,17 +1070,60 @@ export default function Donation() {
               handleRemoveAllFilter={suspenseRemoveAllFilter}
             />
           </div>
-          <div className="donationContent mt-1">
-            {!showSuspenseHistory ? (
-              <SuspenseListTable
-                success={success}
-                filterData={filteredData}
-                type={activeTab}
-              />
-            ) : (
-              <ImportHistoryTable tab={activeTab} />
-            )}
-          </div>
+          <Tabs defaultActiveKey="unmatched">
+            {/* First Tab - Unmatched Bank Credits */}
+            <TabPane tab="Unmatched Bank Credits" key="unmatched">
+              <div className="donationContent mt-1">
+                {!showSuspenseHistory ? (
+                  <SuspenseListTable
+                    success={success}
+                    filterData={filteredData}
+                    type={activeTab}
+                  />
+                ) : (
+                  <ImportHistoryTable tab={activeTab} />
+                )}
+              </div>
+            </TabPane>
+
+            {/* Second Tab - Pending Screenshots */}
+            <TabPane tab="Pending Screenshots" key="pending">
+              <div className="donationContent mt-1">
+                {!showScreenshotPanel ? (
+                  <DonationANTDListTable
+                    donationType={activeTab}
+                    data={donationItems}
+                    allPermissions={allPermissions}
+                    subPermission={subPermission}
+                    totalItems={totalItems}
+                    currentPage={pagination.page}
+                    pageSize={pagination.limit}
+                    onChangePage={(page) =>
+                      setPagination((prev) => ({ ...prev, page }))
+                    }
+                    onChangePageSize={(pageSize) =>
+                      setPagination((prev) => ({
+                        ...prev,
+                        limit: pageSize,
+                        page: 1,
+                      }))
+                    }
+                    setShowScreenshotPanel={setShowScreenshotPanel}
+                    showScreenshotPanel={showScreenshotPanel}
+                    setRecord={setRecord}
+                  />
+                ) : (
+                  <ScreenshotPanel
+                    record={record}
+                    setRecord={setRecord}
+                    setShowScreenshotPanel={setShowScreenshotPanel}
+                    showScreenshotPanel={showScreenshotPanel}
+                  />
+                )}
+              </div>
+            </TabPane>
+          </Tabs>
+
           <AddFilterSection
             onFilterClose={onSuspenseFilterClose}
             filterOpen={suspenseFilterOpen}

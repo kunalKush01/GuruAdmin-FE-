@@ -2229,6 +2229,7 @@
         border: none !important;
         border-radius: 20px !important;
         z-index: 0 !important;
+
         .se-navigation {
             display: none;
         }
@@ -4461,6 +4462,32 @@
         color: $font-color;
         font: normal normal 700 15px Noto Sans !important
     }
+}
+.membershipMobileField {
+    label {
+        color: $font-color;
+        font: normal normal 700 15px Noto Sans !important
+    }
+}
+
+.commonFont {
+    color: $font-color;
+    font: normal normal 700 18px Noto Sans !important
+}
+
+.commonSmallFont {
+    color: $font-color;
+    font: normal normal 700 14px Noto Sans !important
+}
+
+.pagination {
+    position: absolute;
+    bottom: 0;
+}
+
+.ant-descriptions-item-label {
+    color: $font-color !important;
+    font: normal normal 500 14px Noto Sans !important
 }
 .se-dialog-content{
     z-index: 1000000;

@@ -153,7 +153,7 @@ function SuspenseListTable({ success, filterData, type }) {
       dataIndex: "transactionDate",
       key: "transactionDate",
       render: (text) => (text ? moment(text).format("DD-MMM-YYYY HH:mm") : "-"),
-      width: 100,
+      width: 120,
       fixed: "left",
     },
     {
@@ -175,7 +175,7 @@ function SuspenseListTable({ success, filterData, type }) {
       key: "modeOfPayment",
       render: (text) =>
         text ? text : <span className="d-flex justify-content-center">-</span>,
-      width: 80,
+      width: 120,
     },
     {
       title: t("action"),

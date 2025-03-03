@@ -24,6 +24,7 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { DELETE, EDIT } from "../../utility/permissionsVariable";
 import CustomDataTable from "../partials/CustomDataTable";
 import "../../assets/scss/common.scss";
+import { Table } from "antd";
 
 export default function CommitmentListTable(
   {
@@ -95,85 +96,96 @@ export default function CommitmentListTable(
 
   const columns = [
     {
-      name: t("commitment_Username"),
-      selector: (row) => row.username,
-      style: {
-        font: "normal normal 700 13px/20px Noto Sans !important",
-      },
-      width: "160px",
+      title: t("commitment_Username"),
+      dataIndex: "username",
+      key: "username",
+      width: 160,
+      render: (text) => (
+        <span style={{ fontWeight: 700, fontSize: "13px" }}>{text}</span>
+      ),
+      fixed: "left",
     },
     {
-      name: t("dashboard_Recent_DonorNumber"),
-      selector: (row) => row.mobileNumber,
-      width: "150px",
+      title: t("dashboard_Recent_DonorNumber"),
+      dataIndex: "mobileNumber",
+      key: "mobileNumber",
+      width: 150,
     },
     {
-      name: t("dashboard_Recent_DonorName"),
-      selector: (row) => row.donarName,
-      width: "150px",
-    },
-
-    {
-      name: t("category"),
-      selector: (row) => row.category,
-      width: "120px",
+      title: t("dashboard_Recent_DonorName"),
+      dataIndex: "donarName",
+      key: "donarName",
+      width: 150,
     },
     {
-      name: t("categories_sub_category"),
-      selector: (row) => row.subCategory,
-      width: "150px",
+      title: t("category"),
+      dataIndex: "category",
+      key: "category",
+      width: 120,
     },
     {
-      name: t("commitment_end_Date"),
-      selector: (row) => row.endDate,
-      width: "150px",
+      title: t("categories_sub_category"),
+      dataIndex: "subCategory",
+      key: "subCategory",
+      width: 150,
     },
     {
-      name: t("dashboard_Recent_DonorStatus"),
-      selector: (row) => row.status,
-      width: "150px",
+      title: t("commitment_end_Date"),
+      dataIndex: "endDate",
+      key: "endDate",
+      width: 150,
     },
     {
-      name: t("dashboard_Recent_DonorAmount"),
-      selector: (row) => row.amount,
-      width: "150px",
+      title: t("dashboard_Recent_DonorStatus"),
+      dataIndex: "status",
+      key: "status",
+      width: 150,
     },
     {
-      name: t("commitment_Amount_Due"),
-      selector: (row) => row.amountDue,
-      width: "150px",
+      title: t("dashboard_Recent_DonorAmount"),
+      dataIndex: "amount",
+      key: "amount",
+      width: 150,
     },
     {
-      name: t("dashboard_Recent_DonorCommitId"),
-      selector: (row) => row.commitmentId,
-      width: "180px",
+      title: t("commitment_Amount_Due"),
+      dataIndex: "amountDue",
+      key: "amountDue",
+      width: 150,
     },
     {
-      name: t("dashboard_Recent_DonorReceipt"),
-      selector: (row) => row.receipt,
-      center: true,
+      title: t("dashboard_Recent_DonorCommitId"),
+      dataIndex: "commitmentId",
+      key: "commitmentId",
+      width: 180,
     },
     {
-      name: t("created_by"),
-      selector: (row) => row.createdBy,
-      width: "150px",
+      title: t("dashboard_Recent_DonorReceipt"),
+      dataIndex: "receipt",
+      key: "receipt",
+      align: "center",
+      width: 150,
     },
     {
-      name: t("pay_donation"),
-      selector: (row) => row.payDonation,
-      width: "150px",
+      title: t("created_by"),
+      dataIndex: "createdBy",
+      key: "createdBy",
+      width: 150,
     },
     {
-      name: t(""),
-      selector: (row) => row.edit,
-      width: "100px",
+      title: t("pay_donation"),
+      dataIndex: "payDonation",
+      key: "payDonation",
+      width: 150,
     },
     {
-      name: t(""),
-      selector: (row) => row.delete,
-      width: "80px",
+      title: "Action",
+      dataIndex: "action",
+      key: "action",
+      width: 100,
     },
   ];
+
   const commitment_Data = useMemo(() => {
     return data?.map((item, idx) => {
       return {
@@ -293,64 +305,70 @@ export default function CommitmentListTable(
               <Trans i18nKey={"paymentPaid"} />
             </div>
           ),
-        edit:
-          allPermissions?.name === "all" ||
-          subPermission?.includes(EDIT) ||
-          financeReport ? (
-            <img
-              src={editIcon}
-              width={35}
-              className={financeReport ? "d-none" : "cursor-pointer "}
-              onClick={() => {
-                financeReport
-                  ? ""
-                  : history.push(
-                      `/commitment/edit/${item?._id}?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`
-                    );
-              }}
-            />
-          ) : (
-            ""
-          ),
-        delete:
-          allPermissions?.name === "all" ||
-          subPermission?.includes(DELETE) ||
-          financeReport ? (
-            <img
-              src={deleteIcon}
-              width={35}
-              className={financeReport ? "d-none" : "cursor-pointer "}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                financeReport
-                  ? ""
-                  : Swal.fire({
-                      title: `<img src="${confirmationIcon}"/>`,
-                      html: `
+        action: (
+          <div className="d-flex align-items-center">
+            <div>
+              {allPermissions?.name === "all" ||
+              subPermission?.includes(EDIT) ||
+              financeReport ? (
+                <img
+                  src={editIcon}
+                  width={35}
+                  className={financeReport ? "d-none" : "cursor-pointer "}
+                  onClick={() => {
+                    financeReport
+                      ? ""
+                      : history.push(
+                          `/commitment/edit/${item?._id}?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`
+                        );
+                  }}
+                />
+              ) : (
+                ""
+              )}
+            </div>
+            <div>
+              {allPermissions?.name === "all" ||
+              subPermission?.includes(DELETE) ||
+              financeReport ? (
+                <img
+                  src={deleteIcon}
+                  width={35}
+                  className={financeReport ? "d-none" : "cursor-pointer "}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    financeReport
+                      ? ""
+                      : Swal.fire({
+                          title: `<img src="${confirmationIcon}"/>`,
+                          html: `
                                           <h3 class="swal-heading mt-1">${t(
                                             "commitment_delete"
                                           )}</h3>
                                           <p>${t("commitment_sure")}</p>
                                           `,
-                      showCloseButton: false,
-                      showCancelButton: true,
-                      focusConfirm: true,
-                      cancelButtonText: ` ${t("cancel")}`,
-                      cancelButtonAriaLabel: ` ${t("cancel")}`,
+                          showCloseButton: false,
+                          showCancelButton: true,
+                          focusConfirm: true,
+                          cancelButtonText: ` ${t("cancel")}`,
+                          cancelButtonAriaLabel: ` ${t("cancel")}`,
 
-                      confirmButtonText: ` ${t("confirm")}`,
-                      confirmButtonAriaLabel: "Confirm",
-                    }).then(async (result) => {
-                      if (result.isConfirmed) {
-                        deleteMutation.mutate(item._id);
-                      }
-                    });
-              }}
-            />
-          ) : (
-            ""
-          ),
+                          confirmButtonText: ` ${t("confirm")}`,
+                          confirmButtonAriaLabel: "Confirm",
+                        }).then(async (result) => {
+                          if (result.isConfirmed) {
+                            deleteMutation.mutate(item._id);
+                          }
+                        });
+                  }}
+                />
+              ) : (
+                ""
+              )}
+            </div>
+          </div>
+        ),
       };
     });
   }, [data]);
@@ -365,13 +383,29 @@ export default function CommitmentListTable(
 
   return (
     <div className="commitmenttablewrapper">
-      <CustomDataTable
-        maxHeight={""}
+      <Table
         columns={columns}
-        data={commitment_Data}
-        selectableRows={!financeReport}
-        selectableRowDisabled={DisableSelectRow}
-        onSelectedRowsChange={handleChange}
+        dataSource={commitment_Data}
+        rowSelection={
+          !financeReport
+            ? {
+                onChange: handleChange,
+                getCheckboxProps: (record) => ({
+                  disabled: DisableSelectRow(record), // Function to disable rows
+                }),
+              }
+            : null
+        }
+        className="commonListTable"
+        pagination={false}
+        scroll={{
+          x: 1500,
+          y: 400,
+        }}
+        sticky={{
+          offsetHeader: 64,
+        }}
+        bordered
       />
       <ReactToPrint
         trigger={() => (

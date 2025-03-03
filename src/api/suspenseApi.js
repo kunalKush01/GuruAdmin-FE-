@@ -1,6 +1,6 @@
 import { API_BASE_URL } from "../axiosApi/authApiInstans";
 import { callApi } from "../utility/utils/callApi";
-
+const ADMIN_PUBLIC_URL = process.env.REACT_APP_BASEURL;
 export const createImport = async (payload) => {
   try {
     const formData = new FormData();
@@ -36,11 +36,11 @@ export const getAllSuspense = (payload) => {
     showToastOnError: false,
   });
 };
-export const getAllFileUploaded = (page = 1, limit = 10,uploadType) => {
+export const getAllFileUploaded = (page = 1, limit = 10, uploadType) => {
   return callApi({
     requestFunction: (axios) =>
       axios.get(`${API_BASE_URL}suspense/import-history`, {
-        params: { page, limit,uploadType },
+        params: { page, limit, uploadType },
       }),
     showToastOnSuccess: false,
     showToastOnError: false,
@@ -68,6 +68,31 @@ export const updateSuspense = async ({ id, updatedData }) => {
   return callApi({
     requestFunction: (axios) =>
       axios.put(`${API_BASE_URL}suspense/imports/${id}`, updatedData),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+};
+export const extractDataFromImage = async (payload) => {
+  return callApi({
+    requestFunction: (axios) =>
+      axios.post(`${ADMIN_PUBLIC_URL}public/extract-text`, payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+};
+export const searchSupense = async (payload) => {
+  return callApi({
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}suspense/search`, payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+};
+
+export const syncSuspenseWithSearch = async () => {
+  return callApi({
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}suspense/sync-search`),
     showToastOnSuccess: false,
     showToastOnError: false,
   });
