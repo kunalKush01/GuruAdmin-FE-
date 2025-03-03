@@ -4489,3 +4489,6 @@
     color: $font-color !important;
     font: normal normal 500 14px Noto Sans !important
 }
+.se-dialog-content{
+    z-index: 1000000;
+}

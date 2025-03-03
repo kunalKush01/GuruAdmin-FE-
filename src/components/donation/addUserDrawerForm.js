@@ -311,11 +311,14 @@ function AddUserDrawerForm({
                         />
                       </Col>
                       <Col xs={12} sm={6} md={6}>
-                        <CustomTextField
-                          label="PAN"
-                          name="panNum"
-                          placeholder={t("placeHolder_pan")}
-                        />
+                        <div className="d-flex flex-column">
+                          <CustomTextField
+                            label="PAN"
+                            name="panNum"
+                            placeholder={t("placeHolder_pan")}
+                            required
+                          />
+                        </div>
                       </Col>
                       <Col xs={12} sm={12} md={12}>
                         <label

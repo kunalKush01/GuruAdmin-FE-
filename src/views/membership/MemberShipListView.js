@@ -15,10 +15,11 @@ import FilterTag from "../../components/partials/filterTag";
 import AddFilterSection from "../../components/partials/addFilterSection";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import ImportForm from "../donation/importForm";
-import { Dropdown, Space } from "antd";
+import { Dropdown, Space, Tooltip } from "antd";
 import ImportHistoryTable from "../../components/donation/importHistoryTable";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import syncIcon from "../../assets/images/icons/sync.svg";
+import SendMessageModal from './SendMessageModal';
 
 function MemberShipListView() {
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -26,6 +27,11 @@ function MemberShipListView() {
   const queryClient = useQueryClient();
   const [filterData, setFilterData] = useState({});
   const { t } = useTranslation();
+  const [messageModalVisible, setMessageModalVisible] = useState(false);
+  const [messageText, setMessageText] = useState('');
+  const [sendingMessage, setSendingMessage] = useState(false);
+  const [selectedMembers, setSelectedMembers] = useState([]);
+  const [allSelectedKeys, setAllSelectedKeys] = useState([]);
 
   const permissions = useSelector(
     (state) => state.auth.userDetail?.permissions
@@ -117,6 +123,20 @@ function MemberShipListView() {
       keepPreviousData: true,
     }
   );
+
+  const handleSendMessage = () => {
+    setSendingMessage(true);
+    // Add your message sending logic here
+    // Once done, close modal and reset states:
+    setMessageModalVisible(false);
+    setMessageText('');
+    setSendingMessage(false);
+  };
+  
+  const handleMessageModalCancel = () => {
+    setMessageModalVisible(false);
+    setMessageText('');
+  };
 
   const memberSchemaItem = useMemo(
     () => memberShipQuery?.data?.schema ?? [],
@@ -210,6 +230,24 @@ function MemberShipListView() {
             <div className="addAction d-flex flex-wrap gap-2 gap-md-0">
               {(allPermissions?.name === "all" ||
                 subPermission?.includes(WRITE)) && (
+                  <Tooltip title={Array.isArray(allSelectedKeys) && allSelectedKeys.length < 1 ? "Please check the checkbox to send a message." : ""}>
+                  <span>
+                    <Button
+                      className="secondaryAction-btn"
+                      onClick={() => setMessageModalVisible(true)}
+                      disabled={Array.isArray(allSelectedKeys) && allSelectedKeys.length < 1}
+                    >
+                      Send Message
+                    </Button>
+                  </span>
+                </Tooltip>
+              )}
+
+              <input type="file" accept="" className="d-none" />
+            </div>
+            <div className="addAction d-flex flex-wrap gap-2 gap-md-0">
+              {(allPermissions?.name === "all" ||
+                subPermission?.includes(WRITE)) && (
                 <Button
                   className={`addAction-btn`}
                   color="primary"
@@ -273,20 +311,25 @@ function MemberShipListView() {
           <Row>
             {!showHistory ? (
               <MemberShipListTable
-                data={data ? data.results : []}
-                totalItems={data ? data.totalResults : 0}
-                pageSize={pagination.limit}
-                onChangePage={(page) => {
-                  setPagination((prev) => ({ ...prev, page }));
-                }}
-                onChangePageSize={(pageSize) => {
-                  setPagination((prev) => ({
-                    ...prev,
-                    limit: pageSize,
-                    page: 1,
-                  }));
-                }}
-              />
+              data={data ? data.results : []}
+              totalItems={data ? data.totalResults : 0}
+              pageSize={pagination.limit}
+              onChangePage={(page) => {
+                setPagination((prev) => ({ ...prev, page }));
+              }}
+              onChangePageSize={(pageSize) => {
+                setPagination((prev) => ({
+                  ...prev,
+                  limit: pageSize,
+                  page: 1,
+                }));
+              }}
+              onSelectionChange={(selectedIds) => {
+                setSelectedMembers(selectedIds);
+              }}
+              setAllSelectedKeys={setAllSelectedKeys}
+              allSelectedKeys={allSelectedKeys}
+            />
             ) : (
               <ImportHistoryTable tab={"Membership"} />
             )}
@@ -310,6 +353,15 @@ function MemberShipListView() {
         tab="MemberShip"
         mappedField={mappedField}
         setShowHistory={setShowHistory}
+      />
+      <SendMessageModal
+        visible={messageModalVisible}
+        onCancel={handleMessageModalCancel}
+        onSend={handleSendMessage}
+        messageText={messageText}
+        onMessageChange={setMessageText}
+        loading={sendingMessage}
+        selectedMembers={selectedMembers}
       />
     </div>
   );

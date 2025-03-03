@@ -79,7 +79,7 @@ function UploadImage({
         onPreview={handlePreview}
         multiple={isMultiple}
       >
-        <Button icon={icon} style={{ width: "100%" }}>
+        <Button icon={icon} style={{ width: "100%", zIndex: "-1000" }}>
           {buttonLabel}
         </Button>
       </Upload>
@@ -93,6 +93,8 @@ function UploadImage({
               style={{
                 marginTop: "10px",
                 display: uploadedFileUrl ? "block" : "none",
+                zIndex: "-1000",
+                position: "relative",
               }}
             />
           )

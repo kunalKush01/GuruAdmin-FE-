@@ -46,7 +46,7 @@ export default function PunyarjakForm({
   const currentSubCategory = searchParams.get("subCategory");
   const currentFilter = searchParams.get("filter");
   const punyarjakQueryClient = useQueryClient();
-  const [uploadedFileUrl, setUploadedFileUrl] = useState("");
+  const [uploadedFileUrl, setUploadedFileUrl] = useState(thumbnailImageName);
   const [imageUrl, setImageUrl] = useState(null);
 
   const punyarjakMutation = useMutation({
@@ -71,7 +71,10 @@ export default function PunyarjakForm({
     toastId: "langError",
   };
   return (
-    <div className="formwrapper FormikWrapper">
+    <div
+      className="formwrapper FormikWrapper"
+      style={{ position: "absolute", zIndex: "-10000" }}
+    >
       <Formik
         enableReinitialize
         initialValues={initialValues}
@@ -199,11 +202,7 @@ export default function PunyarjakForm({
               </Row>
               <div className="btn-Published  mt-lg-3">
                 {loading ? (
-                  <Button
-                    color="primary"
-                    className="add-trust-btn"
-                    disabled
-                  >
+                  <Button color="primary" className="add-trust-btn" disabled>
                     <Spinner size="md" />
                   </Button>
                 ) : (

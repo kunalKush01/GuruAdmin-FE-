@@ -60,6 +60,7 @@ import PregnancyRecordsActiveIcon from "../../assets/images/icons/pregnancyRecor
 import StockActiveIcon from "../../assets/images/icons/stock.svg";
 import SuppliesActiveIcon from "../../assets/images/icons/supplies.svg";
 import UsageActiveIcon from "../../assets/images/icons/usage.svg";
+import ConnectActiveIcon from "../../assets/images/icons/connect.svg";
 
 export const subHeaderContent = [
   {
