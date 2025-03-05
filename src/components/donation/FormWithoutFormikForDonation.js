@@ -237,7 +237,7 @@ export default function FormWithoutFormikForDonation({
       then: Yup.string().max(6, "Pincode not found"),
       otherwise: Yup.string(),
     }),
-    panNum:Yup.string().matches(panPatt,"Invalid PAN number")
+    panNum: Yup.string().matches(panPatt, "Invalid PAN number"),
   });
   const location = useLocation();
   const [open, setOpen] = useState(false);

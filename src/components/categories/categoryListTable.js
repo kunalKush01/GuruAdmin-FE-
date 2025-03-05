@@ -205,6 +205,7 @@ console.log(langList)
           offsetHeader: 64,
         }}
         bordered
+        pagination={false}
         rowKey="id"
       />
     </div>

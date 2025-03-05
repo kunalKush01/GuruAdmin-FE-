@@ -24,6 +24,7 @@ function GuestDetailsSection({
   countryFlag,
   isEditing,
   isReadOnly,
+  setUserFoundByMobile,
   ...props
 }) {
   const { t } = useTranslation();
@@ -44,8 +45,12 @@ function GuestDetailsSection({
   const handleDataLoad = (val) => {
     setDataLoad(val);
   };
+  const patt = /^(\+?\d{1,3}[-.\s]?)?(\(?\d{3}\)?[-.\s]?)?\d{3}[-.\s]?\d{4}$/;
+  const panPatt = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
   const schema = Yup.object().shape({
-    mobile: Yup.string().required("users_mobile_required"),
+    mobile: Yup.string()
+      .matches(patt, "Invalid mobile number")
+      .required("users_mobile_required"),
     email: Yup.string()
       .email("email_invalid")
       .required("users_email_required")
@@ -76,18 +81,22 @@ function GuestDetailsSection({
           if (res.result) {
             formik.setFieldValue("SelectedUser", res.result);
             setNoUserFound(false);
+            setUserFoundByMobile(false);
           } else {
             setNoUserFound(true);
+            setUserFoundByMobile(true);
           }
         } catch (error) {
           console.error("Error fetching user:", error);
           setNoUserFound(true);
+          setUserFoundByMobile(true);
         }
       };
       results();
     } else if (Mobile?.length !== 10) {
       formik.setFieldValue("SelectedUser", "");
       setNoUserFound(false);
+      setUserFoundByMobile(false);
     }
   }, [formik?.values?.Mobile, dataLoad]);
   useEffect(() => {

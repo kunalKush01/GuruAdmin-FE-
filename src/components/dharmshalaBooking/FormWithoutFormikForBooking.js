@@ -42,6 +42,7 @@ export default function FormWithoutFormikForBooking({
   isEditing,
   editBookingData,
   isReadOnly,
+  setUserFoundByMobile,
   ...props
 }) {
   const { t } = useTranslation();
@@ -927,6 +928,7 @@ export default function FormWithoutFormikForBooking({
             handleAddRoom={handleAddRoom}
             handleClearRooms={handleClearRooms}
             isSearchRoom={isSearchRoom}
+            isSearchEnabled={isSearchEnabled}
             isReadOnly={isReadOnly}
             isEditing={isEditing}
           />
@@ -939,6 +941,7 @@ export default function FormWithoutFormikForBooking({
             countryFlag={countryFlag}
             isEditing={isEditing}
             isReadOnly={isReadOnly}
+            setUserFoundByMobile={setUserFoundByMobile}
           />
           <div className="payments-container">
             <div className="tabs">

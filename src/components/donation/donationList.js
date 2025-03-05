@@ -124,19 +124,19 @@ export default function DonationList(
       key: "createdBy",
       width: 150,
     },
-    {
-      title: t("dashboard_Recent_DonorReceipt"),
-      dataIndex: "receipt",
-      key: "receipt",
-      width: 150,
-    },
-    {
-      title: t("action"),
-      dataIndex: "edit",
-      key: "action",
-      width: 100,
-      fixed:"right"
-    },
+    // {
+    //   title: t("dashboard_Recent_DonorReceipt"),
+    //   dataIndex: "receipt",
+    //   key: "receipt",
+    //   width: 150,
+    // },
+    // {
+    //   title: t("action"),
+    //   dataIndex: "edit",
+    //   key: "action",
+    //   width: 100,
+    //   fixed:"right"
+    // },
   ];
 
   const Donatio_data = useMemo(() => {

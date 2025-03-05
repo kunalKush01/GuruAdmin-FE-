@@ -34,6 +34,22 @@ const RoomsContainer = ({
     event.preventDefault();
     action();
   };
+  // const isFromDateAndToDateSet = !!(
+  //   formik?.values?.fromDate && formik?.values?.toDate
+  // );
+  useEffect(() => {
+    if (!formik?.values?.fromDate || !formik?.values?.toDate) {
+      formik.setFieldValue(
+        "roomsData",
+        roomsData.map(() => ({
+          roomType: "",
+          building: "",
+          floor: "",
+          roomId: "",
+        }))
+      );
+    }
+  }, [formik?.values?.fromDate, formik?.values?.toDate]);
   return (
     <div className="rooms-container">
       <div className="rooms-header">
@@ -67,9 +83,10 @@ const RoomsContainer = ({
                         );
                       }
                     }}
-                    disabled={isReadOnly}
-                    onBlur={formik && !isCheckModal &&  formik.handleBlur}
+                    disabled={!isSearchRoom || isReadOnly}
+                    onBlur={formik && !isCheckModal && formik.handleBlur}
                     name={`roomsData[${index}].roomType`}
+                    style={{ opacity: isSearchRoom ? 1 : 0.5 }}
                   >
                     <option value="">{t("Select_Room_Type")}</option>
                     {roomTypes.map((roomType) => (
@@ -113,9 +130,12 @@ const RoomsContainer = ({
                 className="building-dropdown"
                 value={room.building}
                 onChange={(e) => handleBuildingChange(e.target.value, index)}
-                disabled={isReadOnly}
-                onBlur={formik && !isCheckModal &&  formik.handleBlur}
+                disabled={!room.roomType || isReadOnly}
+                onBlur={formik && !isCheckModal && formik.handleBlur}
                 name={`roomsData[${index}].building`}
+                style={{
+                  opacity: !room.roomType || !isSearchRoom ? 0.5 : 1,
+                }}
               >
                 <option value="">{t("select_building")}</option>
                 {(!isCheckModal
@@ -150,9 +170,12 @@ const RoomsContainer = ({
                 className="floor-dropdown"
                 value={room.floor}
                 onChange={(e) => handleFloorChange(e.target.value, index)}
-                disabled={isReadOnly || !room.building}
+                disabled={!room.building || isReadOnly}
                 onBlur={formik && !isCheckModal && formik.handleBlur}
                 name={`roomsData[${index}].floor`}
+                style={{
+                  opacity: !room.building || !isSearchRoom ? 0.5 : 1,
+                }}
               >
                 <option value="">{t("select_floor")}</option>
                 {(floors[room.building] || []).map((floor) => (
@@ -183,9 +206,13 @@ const RoomsContainer = ({
                 className="room-number-dropdown"
                 value={room.roomId}
                 onChange={(e) => handleRoomNumberChange(e.target.value, index)}
-                disabled={isReadOnly || !room.floor || !room.roomType}
+                disabled={!room.floor || !room.roomType || isReadOnly}
                 onBlur={formik && !isCheckModal && formik.handleBlur}
                 name={`roomsData[${index}].roomId`}
+                style={{
+                  opacity:
+                    !room.floor || !room.roomType || !isSearchRoom ? 0.5 : 1,
+                }}
               >
                 <option value="">Select Room Number</option>
                 {isCheckModal
@@ -230,6 +257,9 @@ const RoomsContainer = ({
                   value={room.amount}
                   readOnly
                   className="amount-input"
+                  style={{
+                    opacity: !isSearchRoom ? 0.5 : 1,
+                  }}
                   placeholder="Price"
                 />
               </div>
@@ -253,12 +283,16 @@ const RoomsContainer = ({
           <button
             className="add-rooms-button"
             onClick={handleButtonClick(handleAddRoom)}
+            disabled={!isSearchRoom}
+            style={{ opacity: isSearchRoom ? 1 : 0.5 }}
           >
             {t("addmore_room")}
           </button>
           <button
             className="clear-rooms-button"
             onClick={handleButtonClick(handleClearRooms)}
+            disabled={!isSearchRoom}
+            style={{ opacity: isSearchRoom ? 1 : 0.5 }}
           >
             {t("clear_all")}
           </button>

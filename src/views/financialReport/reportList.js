@@ -347,7 +347,7 @@ export default function FinancialReport() {
               </div>
             </div>
           </div>
-          <div className="addAction d-flex flex-wrap gap-2 gap-md-0">
+          <div className="addAction d-flex flex-wrap gap-2 gap-md-0" style={{display:"flex !important",alignItems:"baseline"}}>
             <div className="total_collection me-2 d-flex justify-content-center align-items-center ">
               {/* <Trans i18nKey={"DonationBox_total_collection"} /> */}
               <div>{`Total ${activeReportTab.name} :`}</div>
@@ -401,6 +401,7 @@ export default function FinancialReport() {
                 color="primary"
                 className="addAction-btn"
                 onClick={handleClickExport}
+                style={{height:"35px"}}
               >
                 <span className="d-flex align-items-center">
                   <Trans i18nKey={"export_report"} />
