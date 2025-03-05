@@ -415,7 +415,12 @@ function GuestDetailsSection({
                 name="email"
                 value={formik.values.email}
                 onChange={formik.handleChange}
-                onInput={(e) => (e.target.value = e.target.value.slice(0, 30))}
+                onInput={(e) => {
+                  e.target.value = e.target.value
+                    .toLowerCase()
+                    .replace(/[^a-z0-9@._-]/g, "") // Allow only valid email characters
+                    .slice(0, 50); // Limit to 50 characters
+                }}
                 disabled={isReadOnly}
               />
             </Col>
@@ -463,7 +468,38 @@ function GuestDetailsSection({
                 name="idNumber"
                 value={formik.values.idNumber}
                 onChange={formik.handleChange}
-                onInput={(e) => (e.target.value = e.target.value.slice(0, 30))}
+                onInput={(e) => {
+                  const { value } = e.target;
+                  let formattedValue = value;
+
+                  switch (formik.values.idType) {
+                    case "aadhar":
+                      formattedValue = value.replace(/\D/g, "").slice(0, 12); // Only numbers, max 12
+                      break;
+                    case "pan":
+                      formattedValue = value
+                        .toUpperCase()
+                        .replace(/[^A-Z0-9]/g, "")
+                        .slice(0, 10); // PAN format
+                      break;
+                    case "voter":
+                      formattedValue = value
+                        .toUpperCase()
+                        .replace(/[^A-Z0-9]/g, "")
+                        .slice(0, 10); // Voter ID format
+                      break;
+                    case "driving":
+                      formattedValue = value
+                        .toUpperCase()
+                        .replace(/[^A-Z0-9]/g, "")
+                        .slice(0, 15); // Driving License format
+                      break;
+                    default:
+                      formattedValue = value.slice(0, 30); // Other IDs, max 30 characters
+                  }
+
+                  e.target.value = formattedValue;
+                }}
                 disabled={isReadOnly}
               />
             </Col>

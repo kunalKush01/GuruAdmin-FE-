@@ -4,7 +4,7 @@ import { Trans } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useSelector } from "react-redux";
-import { useHistory, useParams,useLocation } from "react-router-dom";
+import { useHistory, useParams, useLocation } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import styled from "styled-components";
 import * as Yup from "yup";
@@ -68,7 +68,12 @@ const EditRoomType = () => {
     description: Yup.mixed().required(
       "dharmshala_roomtype_description_required"
     ),
-    capacity: Yup.mixed().required("dharmshala_roomtype_capacity_required"),
+    capacity: Yup.number()
+      .typeError("Capacity must be a number")
+      .positive("Capacity must be greater than zero")
+      .integer("Capacity must be a whole number")
+      .max(999999, "Capacity is too large")
+      .required("dharmshala_roomtype_capacity_required"),
     price: Yup.mixed().required("dharmshala_roomtype_price_required"),
   });
 

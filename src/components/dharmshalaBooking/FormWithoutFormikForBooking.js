@@ -836,20 +836,24 @@ export default function FormWithoutFormikForBooking({
                       value={
                         formik.values.numMen === "" ? "" : formik.values.numMen
                       }
-                      onChange={(e) =>
+                      onChange={(e) => {
+                        const parsedValue = parseInt(e.target.value, 10);
                         formik.setFieldValue(
                           "numMen",
-                          e.target.value === ""
-                            ? ""
-                            : parseInt(e.target.value, 10)
-                        )
-                      }
+                          e.target.value === "" ? "" : Math.max(0, parsedValue)
+                        );
+                      }}
+                      onInput={(e) =>
+                        (e.target.value = e.target.value.replace(/[^0-9]/g, ""))
+                      } // Restrict negative input
                       className="member-input"
                       placeholder="Men"
                       name="numMen"
+                      min="0"
                       readOnly={isReadOnly}
                     />
                   </div>
+
                   <div className="d-flex flex-column">
                     <input
                       type="number"
@@ -859,20 +863,24 @@ export default function FormWithoutFormikForBooking({
                           ? ""
                           : formik.values.numWomen
                       }
-                      onChange={(e) =>
+                      onChange={(e) => {
+                        const parsedValue = parseInt(e.target.value, 10);
                         formik.setFieldValue(
                           "numWomen",
-                          e.target.value === ""
-                            ? ""
-                            : parseInt(e.target.value, 10)
-                        )
+                          e.target.value === "" ? "" : Math.max(0, parsedValue)
+                        );
+                      }}
+                      onInput={(e) =>
+                        (e.target.value = e.target.value.replace(/[^0-9]/g, ""))
                       }
                       className="member-input"
                       placeholder="Women"
                       name="numWomen"
+                      min="0"
                       readOnly={isReadOnly}
                     />
                   </div>
+
                   <div className="d-flex flex-column">
                     <input
                       type="number"
@@ -882,20 +890,24 @@ export default function FormWithoutFormikForBooking({
                           ? ""
                           : formik.values.numKids
                       }
-                      onChange={(e) =>
+                      onChange={(e) => {
+                        const parsedValue = parseInt(e.target.value, 10);
                         formik.setFieldValue(
                           "numKids",
-                          e.target.value === ""
-                            ? ""
-                            : parseInt(e.target.value, 10)
-                        )
+                          e.target.value === "" ? "" : Math.max(0, parsedValue)
+                        );
+                      }}
+                      onInput={(e) =>
+                        (e.target.value = e.target.value.replace(/[^0-9]/g, ""))
                       }
                       className="member-input"
                       placeholder="Kids"
                       name="numKids"
+                      min="0"
                       readOnly={isReadOnly}
                     />
                   </div>
+
                   <button
                     className={`search-button ${
                       isSearchEnabled() ? "" : "disabled"
@@ -917,7 +929,9 @@ export default function FormWithoutFormikForBooking({
             roomsData={formik.values.roomsData}
             formik={formik}
             roomTypes={roomTypes}
-            buildings={(isEditing||formik.values.roomsData) ? fetchBuildings : buildings}
+            buildings={
+              isEditing || formik.values.roomsData ? fetchBuildings : buildings
+            }
             floors={floors}
             rooms={rooms}
             handleRoomTypeChange={handleRoomTypeChange}
