@@ -26,6 +26,7 @@ const RoomsContainer = ({
   isReadOnly,
   isEditing,
 }) => {
+  console.log(isEditing);
   const getSelectedRoomIds = () => {
     return roomsData.map((room) => room.roomId).filter((id) => id);
   };
@@ -49,7 +50,7 @@ const RoomsContainer = ({
         }))
       );
     }
-  }, [formik, formik?.values?.fromDate, formik?.values?.toDate]);
+  }, [formik,formik?.values?.fromDate, formik?.values?.toDate]);
   return (
     <div className="rooms-container">
       <div className="rooms-header">
@@ -86,7 +87,7 @@ const RoomsContainer = ({
                     disabled={!isSearchRoom || isReadOnly}
                     onBlur={formik && !isCheckModal && formik.handleBlur}
                     name={`roomsData[${index}].roomType`}
-                    style={{ opacity: isSearchRoom || isEditing ? 1 : 0.5 }}
+                    style={{ opacity: isSearchRoom ? 1 : 0.5 }}
                   >
                     <option value="">{t("Select_Room_Type")}</option>
                     {roomTypes.map((roomType) => (
@@ -134,8 +135,7 @@ const RoomsContainer = ({
                 onBlur={formik && !isCheckModal && formik.handleBlur}
                 name={`roomsData[${index}].building`}
                 style={{
-                  opacity:
-                  (!isEditing)&&(!room.roomType || !isSearchRoom) ? 0.5 : 1,
+                  opacity: !room.roomType || !isSearchRoom ? 0.5 : 1,
                 }}
               >
                 <option value="">{t("select_building")}</option>
@@ -175,7 +175,7 @@ const RoomsContainer = ({
                 onBlur={formik && !isCheckModal && formik.handleBlur}
                 name={`roomsData[${index}].floor`}
                 style={{
-                  opacity: (!isEditing)&&(!room.building || !isSearchRoom) ? 0.5 : 1,
+                  opacity: !room.building || !isSearchRoom ? 0.5 : 1,
                 }}
               >
                 <option value="">{t("select_floor")}</option>
