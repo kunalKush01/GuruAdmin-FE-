@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Modal, Form, Input, Select, Button } from 'antd';
+import { Modal, Form, Input, Select, Button } from "antd";
 import { useTranslation } from "react-i18next";
 import RoomsContainer from "../../../components/dharmshalaBooking/RoomsContainer";
-import dayjs from 'dayjs';
-import 'dayjs/locale/en-gb';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
+import dayjs from "dayjs";
+import "dayjs/locale/en-gb";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 import { updateDharmshalaBooking } from "../../../api/dharmshala/dharmshalaInfo";
-import '../../../../src/views/dharmshala-management/dharmshala_css/addbooking.scss';
-import { toast } from 'react-toastify';
+import "../../../../src/views/dharmshala-management/dharmshala_css/addbooking.scss";
+import { toast } from "react-toastify";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -20,7 +20,9 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
   const { t } = useTranslation();
   const [form] = Form.useForm();
   const [dueAmount, setDueAmount] = useState(0);
-  const [currentDateTime, setCurrentDateTime] = useState(dayjs().tz('Asia/Kolkata').format('ddd, DD MMM YYYY HH:mm:ss [IST]'));
+  const [currentDateTime, setCurrentDateTime] = useState(
+    dayjs().tz("Asia/Kolkata").format("ddd, DD MMM YYYY HH:mm:ss [IST]")
+  );
   const queryClient = useQueryClient();
 
   const updateBookingMutation = useMutation({
@@ -31,7 +33,7 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
       onClose();
     },
     onError: (error) => {
-      console.error('Error updating booking:', error);
+      console.error("Error updating booking:", error);
     },
   });
 
@@ -43,7 +45,7 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
       form.setFieldsValue({
         building: room.buildingName || booking.building,
         floor: room.floorName || booking.floor,
-        roomNumbers: room.roomNumber || '',
+        roomNumbers: room.roomNumber || "",
         capacity: booking.capacity,
         fromDate: dayjs(booking.startDate, "DD MMM YYYY"),
         toDate: dayjs(booking.endDate, "DD MMM YYYY"),
@@ -58,8 +60,8 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
   }, [booking, form]);
 
   const updateDateTime = () => {
-    const now = dayjs().tz('Asia/Kolkata');
-    const formattedDateTime = now.format('ddd, DD MMM YYYY HH:mm:ss [IST]');
+    const now = dayjs().tz("Asia/Kolkata");
+    const formattedDateTime = now.format("ddd, DD MMM YYYY HH:mm:ss [IST]");
     setCurrentDateTime(formattedDateTime);
     form.setFieldsValue({ currentDate: formattedDateTime });
   };
@@ -67,7 +69,9 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
   const showCheckoutConfirmation = (values) => {
     Modal.confirm({
       title: t("Confirm Check-out"),
-      content: t("After check-out, you will not be able to change or edit the booking. Are you sure you want to continue?"),
+      content: t(
+        "After check-out, you will not be able to change or edit the booking. Are you sure you want to continue?"
+      ),
       okText: t("Yes"),
       cancelText: t("No"),
       onOk() {
@@ -77,28 +81,35 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
   };
 
   const processCheckout = (values) => {
-    const isRefund = mode === 'check-out' && dueAmount < 0;
+    const isRefund = mode === "check-out" && dueAmount < 0;
     const bookingStartDate = dayjs(booking.startDate, "DD MMM YYYY");
     const bookingEndDate = dayjs(booking.endDate, "DD MMM YYYY");
-    const currentDate = dayjs(values.currentDate, "ddd, DD MMM YYYY HH:mm:ss [IST]");
+    const currentDate = dayjs(
+      values.currentDate,
+      "ddd, DD MMM YYYY HH:mm:ss [IST]"
+    );
 
     if (currentDate.isBefore(bookingStartDate)) {
-      toast.error("Check-in is only allowed on or after the booking start date.");
+      toast.error(
+        "Check-in is only allowed on or after the booking start date."
+      );
       return;
     }
 
-    if (mode === 'check-out' && currentDate.isBefore(bookingEndDate)) {
-      toast.error("Check-out is only allowed on or after the booking end date.");
+    if (mode === "check-out" && currentDate.isBefore(bookingEndDate)) {
+      toast.error(
+        "Check-out is only allowed on or after the booking end date."
+      );
       return;
     }
 
     const bookingPayload = {
       bookingId: booking._id,
-      startDate: dayjs(booking.startDate).format('DD-MM-YYYY'),
-      endDate: dayjs(booking.endDate).format('DD-MM-YYYY'),
+      startDate: dayjs(booking.startDate).format("DD-MM-YYYY"),
+      endDate: dayjs(booking.endDate).format("DD-MM-YYYY"),
       rooms: booking.rooms,
       guestCount: booking.guestCount,
-      status: mode === 'check-in' ? 'checked-in' : 'checked-out',
+      status: mode === "check-in" ? "checked-in" : "checked-out",
       amountPaid: values.amount,
       paymentDetails: {
         type: isRefund ? "refund" : "deposit",
@@ -117,42 +128,62 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
   };
 
   const handleOk = () => {
-    form.validateFields().then((values) => {
-      if (mode === 'check-out') {
-        showCheckoutConfirmation(values);
-      } else {
-        processCheckout(values);
-      }
-    }).catch((info) => {
-      console.log('Validate Failed:', info);
-    });
+    form
+      .validateFields()
+      .then((values) => {
+        if (mode === "check-out") {
+          showCheckoutConfirmation(values);
+        } else {
+          processCheckout(values);
+        }
+      })
+      .catch((info) => {
+        console.log("Validate Failed:", info);
+      });
   };
 
-  const fromDate = booking ? dayjs(booking.startDate).format('DD MMM YYYY') : '';
-  const toDate = booking ? dayjs(booking.endDate).format('DD MMM YYYY') : '';
+  const fromDate = booking
+    ? dayjs(booking.startDate).format("DD MMM YYYY")
+    : "";
+  const toDate = booking ? dayjs(booking.endDate).format("DD MMM YYYY") : "";
 
   return (
     <Modal
-      title={(
+      title={
         <div className="modal-title-container">
           <span className="modal-title-text">
-            {t(mode === 'check-in' ? "Check In" : "Check Out")}
+            {t(mode === "check-in" ? "Check In" : "Check Out")}
           </span>
           <span className="modal-title-date">
             ({fromDate} - {toDate})
           </span>
         </div>
-      )}
+      }
       visible={visible}
       centered
       onCancel={onClose}
       width={900}
       footer={[
-        <Button key="cancel" onClick={onClose} className="modal-footer-button-cancel">
+        <Button
+          key="cancel"
+          onClick={onClose}
+          className="modal-footer-button-cancel"
+        >
           {t("Cancel")}
         </Button>,
-        <Button key="submit" type="primary" onClick={handleOk} className="modal-footer-button-submit">
-         {t(mode === 'check-in' ? "Check In" : dueAmount < 0 ? "Check Out & Refund" : "Check Out" )}
+        <Button
+          key="submit"
+          type="primary"
+          onClick={handleOk}
+          className="modal-footer-button-submit"
+        >
+          {t(
+            mode === "check-in"
+              ? "Check In"
+              : dueAmount < 0
+              ? "Check Out & Refund"
+              : "Check Out"
+          )}
         </Button>,
       ]}
     >
@@ -160,14 +191,18 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
         <RoomsContainer
           className="rooms-container"
           roomsData={booking?.rooms || []}
-          roomTypes={booking?.rooms?.map(room => ({
-            _id: room.roomTypeId, 
-            name: room.roomTypeName 
-          })) || []}
-          buildings={booking?.rooms?.map(room => ({
-            _id: room.building, 
-            name: room.buildingName 
-          })) || []}
+          roomTypes={
+            booking?.rooms?.map((room) => ({
+              _id: room.roomTypeId,
+              name: room.roomTypeName,
+            })) || []
+          }
+          buildings={
+            booking?.rooms?.map((room) => ({
+              _id: room.building,
+              name: room.buildingName,
+            })) || []
+          }
           floors={booking?.rooms.reduce((acc, room) => {
             if (acc[room.building]) {
               acc[room.building].push({
@@ -175,10 +210,12 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
                 name: room.floorName,
               });
             } else {
-              acc[room.building] = [{
-                _id: room.floor,
-                name: room.floorName,
-              }];
+              acc[room.building] = [
+                {
+                  _id: room.floor,
+                  name: room.floorName,
+                },
+              ];
             }
             return acc;
           }, {})}
@@ -190,11 +227,13 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
                 roomTypeId: room.roomTypeId,
               });
             } else {
-              acc[room.floor] = [{
-                _id: room.roomId,
-                roomNumber: room.roomNumber,
-                roomTypeId: room.roomTypeId,
-              }];
+              acc[room.floor] = [
+                {
+                  _id: room.roomId,
+                  roomNumber: room.roomNumber,
+                  roomTypeId: room.roomTypeId,
+                },
+              ];
             }
             return acc;
           }, {})}
@@ -204,34 +243,81 @@ const CheckInModal = ({ visible, onClose, booking, mode }) => {
         />
 
         <div className="form-layout">
-          <Form.Item name="currentDate" label={t("Date and Time")} className="form-item-date-time">
+          <Form.Item
+            name="currentDate"
+            label={t("Date and Time")}
+            className="form-item-date-time"
+          >
             <Input value={currentDateTime} readOnly />
           </Form.Item>
 
-          <Form.Item name="dueAmount" label={t("Due Amount")} className="form-item-due-amount">
-            <Input disabled/>  
+          <Form.Item
+            name="dueAmount"
+            label={t("Due Amount")}
+            className="form-item-due-amount"
+          >
+            <Input disabled />
           </Form.Item>
         </div>
 
-        {(mode === 'check-out' || (mode === 'check-in' && dueAmount > 0)) && (
+        {(mode === "check-out" || (mode === "check-in" && dueAmount > 0)) && (
           <div className="payment-section">
             <div className="payment-grid">
-              <Form.Item name="paymentMode" label={t("Mode")} rules={[{ required: true, message: t("Please select payment mode!") }]} className="payment-form-item">
+              <Form.Item
+                name="paymentMode"
+                label={t("Mode")}
+                rules={[
+                  { required: true, message: t("Please select payment mode!") },
+                ]}
+                className="payment-form-item"
+              >
                 <Select>
                   <Option value="cash">{t("Cash")}</Option>
                   <Option value="online">{t("Online")}</Option>
                 </Select>
               </Form.Item>
-              <Form.Item name="transactionId" label={t("Transaction ID")} className="payment-form-item">
+              <Form.Item
+                name="transactionId"
+                label={t("Transaction ID")}
+                dependencies={["paymentMode"]}
+                rules={[
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (getFieldValue("paymentMode") === "online" && !value) {
+                        return Promise.reject(
+                          new Error(
+                            t("Transaction ID is required for online payments!")
+                          )
+                        );
+                      }
+                      return Promise.resolve();
+                    },
+                  }),
+                ]}
+                className="payment-form-item"
+              >
                 <Input />
               </Form.Item>
-              <Form.Item name="amount" 
-               label={mode === 'check-out' && dueAmount < 0 ? t("Refund Amount") : t("Amount")} 
-               rules={[{ required: true, message: t("Please input the amount!") }]} className="payment-form-item">
+              <Form.Item
+                name="amount"
+                label={
+                  mode === "check-out" && dueAmount < 0
+                    ? t("Refund Amount")
+                    : t("Amount")
+                }
+                rules={[
+                  { required: true, message: t("Please input the amount!") },
+                ]}
+                className="payment-form-item"
+              >
                 <Input type="number" />
               </Form.Item>
             </div>
-            <Form.Item name="remark" label={t("Remark")} className="payment-remark">
+            <Form.Item
+              name="remark"
+              label={t("Remark")}
+              className="payment-remark"
+            >
               <Input.TextArea rows={3} />
             </Form.Item>
           </div>

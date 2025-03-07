@@ -6,7 +6,7 @@ import { Trans } from "react-i18next";
 import { getAvailableBuildingList } from "../../api/dharmshala/dharmshalaInfo";
 
 const RoomsContainer = ({
-  isSearchRoom,
+  isSearchRoom = false,
   formik,
   roomsData,
   roomTypes,
@@ -24,9 +24,8 @@ const RoomsContainer = ({
   hideAmountField = false,
   isCheckModal = false,
   isReadOnly,
-  isEditing,
+  isEditing = false,
 }) => {
-  console.log(isEditing);
   const getSelectedRoomIds = () => {
     return roomsData.map((room) => room.roomId).filter((id) => id);
   };
@@ -39,7 +38,17 @@ const RoomsContainer = ({
     formik?.values?.fromDate && formik?.values?.toDate
   );
   useEffect(() => {
-    if (formik && (!formik?.values?.fromDate || !formik?.values?.toDate)) {
+    if (!formik) return;
+
+    // Check if roomsData is already empty, to prevent unnecessary updates
+    const isRoomsDataEmpty = roomsData.every(
+      (room) => !room.roomType && !room.building && !room.floor && !room.roomId
+    );
+
+    if (
+      (!formik.values.fromDate || !formik.values.toDate) &&
+      !isRoomsDataEmpty
+    ) {
       formik.setFieldValue(
         "roomsData",
         roomsData.map(() => ({
@@ -50,7 +59,8 @@ const RoomsContainer = ({
         }))
       );
     }
-  }, [formik,formik?.values?.fromDate, formik?.values?.toDate]);
+  }, [formik?.values?.fromDate, formik?.values?.toDate]); // Removed `formik` from dependencies
+
   return (
     <div className="rooms-container">
       <div className="rooms-header">
@@ -84,10 +94,10 @@ const RoomsContainer = ({
                         );
                       }
                     }}
-                    disabled={!isSearchRoom || isReadOnly}
+                    disabled={!isEditing && (!isSearchRoom || isReadOnly)}
                     onBlur={formik && !isCheckModal && formik.handleBlur}
                     name={`roomsData[${index}].roomType`}
-                    style={{ opacity: isSearchRoom ? 1 : 0.5 }}
+                    style={{ opacity: isSearchRoom || isEditing ? 1 : 0.5 }}
                   >
                     <option value="">{t("Select_Room_Type")}</option>
                     {roomTypes.map((roomType) => (
@@ -135,7 +145,8 @@ const RoomsContainer = ({
                 onBlur={formik && !isCheckModal && formik.handleBlur}
                 name={`roomsData[${index}].building`}
                 style={{
-                  opacity: !room.roomType || !isSearchRoom ? 0.5 : 1,
+                  opacity:
+                    !isEditing && (!room.roomType || !isSearchRoom) ? 0.5 : 1,
                 }}
               >
                 <option value="">{t("select_building")}</option>
@@ -175,7 +186,8 @@ const RoomsContainer = ({
                 onBlur={formik && !isCheckModal && formik.handleBlur}
                 name={`roomsData[${index}].floor`}
                 style={{
-                  opacity: !room.building || !isSearchRoom ? 0.5 : 1,
+                  opacity:
+                    !isEditing && (!room.building || !isSearchRoom) ? 0.5 : 1,
                 }}
               >
                 <option value="">{t("select_floor")}</option>
@@ -212,7 +224,10 @@ const RoomsContainer = ({
                 name={`roomsData[${index}].roomId`}
                 style={{
                   opacity:
-                    !room.floor || !room.roomType || !isSearchRoom ? 0.5 : 1,
+                    !isEditing &&
+                    (!room.floor || !room.roomType || !isSearchRoom)
+                      ? 0.5
+                      : 1,
                 }}
               >
                 <option value="">Select Room Number</option>
@@ -259,7 +274,7 @@ const RoomsContainer = ({
                   readOnly
                   className="amount-input"
                   style={{
-                    opacity: !isSearchRoom ? 0.5 : 1,
+                    opacity: !isEditing && !isSearchRoom ? 0.5 : 1,
                   }}
                   placeholder="Price"
                 />
@@ -284,16 +299,20 @@ const RoomsContainer = ({
           <button
             className="add-rooms-button"
             onClick={handleButtonClick(handleAddRoom)}
-            disabled={!isSearchRoom}
-            style={{ opacity: isSearchRoom ? 1 : 0.5 }}
+            disabled={!isEditing && !isSearchRoom}
+            style={{
+              opacity: !isEditing && !isSearchRoom ? 0.5 : 1,
+            }}
           >
             {t("addmore_room")}
           </button>
           <button
             className="clear-rooms-button"
             onClick={handleButtonClick(handleClearRooms)}
-            disabled={!isSearchRoom}
-            style={{ opacity: isSearchRoom ? 1 : 0.5 }}
+            disabled={!isEditing && !isSearchRoom}
+            style={{
+              opacity: !isEditing && !isSearchRoom ? 0.5 : 1,
+            }}
           >
             {t("clear_all")}
           </button>

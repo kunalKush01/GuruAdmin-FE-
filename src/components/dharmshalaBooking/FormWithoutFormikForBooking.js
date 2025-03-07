@@ -363,17 +363,19 @@ export default function FormWithoutFormikForBooking({
     },
   });
   const handleDateChange = async (fromDate, toDate) => {
-    const isFormattedString = (date) =>
-      typeof date === "string" && /^\d{2}-\d{2}-\d{4}$/.test(date);
+    // Helper function to safely format date
+    const formatDate = (date) => {
+      if (!date) return null; // Return null if date is null/undefined
+      return typeof date === "string" && /^\d{2}-\d{2}-\d{4}$/.test(date)
+        ? date
+        : date.format("DD-MM-YYYY");
+    };
 
-    const formattedFromDate = isFormattedString(fromDate)
-      ? fromDate
-      : fromDate.format("DD-MM-YYYY");
+    // Format the dates safely
+    const formattedFromDate = formatDate(fromDate);
+    const formattedToDate = formatDate(toDate);
 
-    const formattedToDate = isFormattedString(toDate)
-      ? toDate
-      : toDate.format("DD-MM-YYYY");
-
+    // Check if at least one valid date exists before proceeding
     if (formattedFromDate || formattedToDate) {
       const bookingPayload = {
         startDate: formattedFromDate,

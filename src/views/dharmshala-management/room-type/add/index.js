@@ -26,10 +26,17 @@ const AddRoomType = () => {
     description: Yup.mixed().required(
       "dharmshala_roomtype_description_required"
     ),
-    capacity: Yup.string()
-      .matches(/^\d+$/, "Only numeric values are allowed")
+    capacity: Yup.number()
+      .typeError("Capacity must be a number")
+      .positive("Capacity must be greater than zero")
+      .integer("Capacity must be a whole number")
+      .max(999999, "Capacity is too large")
       .required("dharmshala_roomtype_capacity_required"),
-    price: Yup.mixed().required("dharmshala_roomtype_price_required"),
+    price: Yup.number()
+      .typeError("Price must be a number") // Ensures only numbers are allowed
+      .positive("Price must be greater than 0") // Ensures value is greater than 0
+      .integer("Price must be a whole number") // Ensures no decimals
+      .required("dharmshala_roomtype_price_required"),
   });
 
   const initialValues = {

@@ -152,6 +152,7 @@ const AddRoomTypeForm = ({
                       label={t("dharmshala_roomtype_price")}
                       placeholder={t("placeHolder_dharmshala_roomtype_price")}
                       name="price"
+                      type="number" // Keep it text to prevent auto-formatting issues
                       required
                       autoFocus
                       onInput={(e) =>

@@ -74,7 +74,11 @@ const EditRoomType = () => {
       .integer("Capacity must be a whole number")
       .max(999999, "Capacity is too large")
       .required("dharmshala_roomtype_capacity_required"),
-    price: Yup.mixed().required("dharmshala_roomtype_price_required"),
+    price: Yup.number()
+      .typeError("Price must be a number") // Ensures only numbers are allowed
+      .positive("Price must be greater than 0") // Ensures value is greater than 0
+      .integer("Price must be a whole number") // Ensures no decimals
+      .required("dharmshala_roomtype_price_required"),
   });
 
   const initialValues = useMemo(() => {

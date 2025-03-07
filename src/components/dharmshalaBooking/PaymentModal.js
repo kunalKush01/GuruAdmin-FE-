@@ -99,11 +99,22 @@ export const PaymentModal = ({
                 required: true,
                 message: "Transaction ID is required when paying online.",
               },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || value.trim() !== "") {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error("Transaction ID cannot be empty.")
+                  );
+                },
+              }),
             ]}
           >
             <Input placeholder="Enter transaction ID" />
           </Form.Item>
         )}
+
         <Form.Item
           name="amount"
           label="Amount"
