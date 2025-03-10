@@ -46,7 +46,9 @@ const StockManagement = () => {
       setPagination({ ...pagination, page: parseInt(currentPage) });
     }
   }, []);
-
+  useEffect(() => {
+    setPagination({ page: 1, limit: 10 });
+  }, [active]);
   const periodDropDown = () => {
     switch (dropDownName) {
       case "dashboard_monthly":
@@ -55,19 +57,21 @@ const StockManagement = () => {
         return "year";
       case "dashboard_weekly":
         return "week";
-        case "All":
-          return "All";
-        default:
-          return "All";
+      case "All":
+        return "All";
+      default:
+        return "All";
     }
   };
 
-  let filterStartDate = dropDownName !== "All" 
-  ? moment().startOf(periodDropDown()).utcOffset(0, true).toISOString()
-  : null;
-let filterEndDate = dropDownName !== "All"
-  ? moment().endOf(periodDropDown()).utcOffset(0, true).toISOString()
-  : null;
+  let filterStartDate =
+    dropDownName !== "All"
+      ? moment().startOf(periodDropDown()).utcOffset(0, true).toISOString()
+      : null;
+  let filterEndDate =
+    dropDownName !== "All"
+      ? moment().endOf(periodDropDown()).utcOffset(0, true).toISOString()
+      : null;
 
   const getQueryParams = () => {
     const baseParams = {
@@ -75,7 +79,7 @@ let filterEndDate = dropDownName !== "All"
       search: searchBarValue,
       languageId: selectedLang.id,
     };
-  
+
     if (dropDownName !== "All") {
       return {
         ...baseParams,
@@ -83,7 +87,7 @@ let filterEndDate = dropDownName !== "All"
         endDate: filterEndDate,
       };
     }
-  
+
     return baseParams;
   };
 
@@ -109,6 +113,10 @@ let filterEndDate = dropDownName !== "All"
 
   const cattleStockManagementListData = useMemo(
     () => cattleStockManagementList?.data?.results ?? [],
+    [cattleStockManagementList]
+  );
+  const totalItems = useMemo(
+    () => cattleStockManagementList?.data?.totalResults ?? [],
     [cattleStockManagementList]
   );
 
@@ -213,7 +221,7 @@ let filterEndDate = dropDownName !== "All"
               tabBar
             />
             <div className="d-flex  mt-sm-0 justify-content-between">
-            <ChangePeriodDropDown
+              <ChangePeriodDropDown
                 className={"me-1"}
                 dropDownName={dropDownName}
                 setdropDownName={(e) => {
@@ -283,6 +291,19 @@ let filterEndDate = dropDownName !== "All"
             list={cattleStockManagementListData}
             query={cattleStockManagementList}
             searchParams={searchParams}
+            totalItems={totalItems}
+            currentPage={pagination.page}
+            pageSize={pagination.limit}
+            onChangePage={(page) =>
+              setPagination((prev) => ({ ...prev, page }))
+            }
+            onChangePageSize={(pageSize) =>
+              setPagination((prev) => ({
+                ...prev,
+                limit: pageSize,
+                page: 1,
+              }))
+            }
           />
         ) : active == "/stock-management/item" ? (
           <Items
@@ -294,6 +315,19 @@ let filterEndDate = dropDownName !== "All"
             searchParams={searchParams}
             list={cattleStockManagementListData}
             query={cattleStockManagementList}
+            totalItems={totalItems}
+            currentPage={pagination.page}
+            pageSize={pagination.limit}
+            onChangePage={(page) =>
+              setPagination((prev) => ({ ...prev, page }))
+            }
+            onChangePageSize={(pageSize) =>
+              setPagination((prev) => ({
+                ...prev,
+                limit: pageSize,
+                page: 1,
+              }))
+            }
           />
         ) : active == "/stock-management/supplies" ? (
           <Supplies
@@ -305,6 +339,19 @@ let filterEndDate = dropDownName !== "All"
             subPermission={subPermission}
             query={cattleStockManagementList}
             searchParams={searchParams}
+            totalItems={totalItems}
+            currentPage={pagination.page}
+            pageSize={pagination.limit}
+            onChangePage={(page) =>
+              setPagination((prev) => ({ ...prev, page }))
+            }
+            onChangePageSize={(pageSize) =>
+              setPagination((prev) => ({
+                ...prev,
+                limit: pageSize,
+                page: 1,
+              }))
+            }
           />
         ) : (
           active == "/stock-management/usage" && (
@@ -317,6 +364,19 @@ let filterEndDate = dropDownName !== "All"
               subPermission={subPermission}
               query={cattleStockManagementList}
               searchParams={searchParams}
+              totalItems={totalItems}
+              currentPage={pagination.page}
+              pageSize={pagination.limit}
+              onChangePage={(page) =>
+                setPagination((prev) => ({ ...prev, page }))
+              }
+              onChangePageSize={(pageSize) =>
+                setPagination((prev) => ({
+                  ...prev,
+                  limit: pageSize,
+                  page: 1,
+                }))
+              }
             />
           )
         )}

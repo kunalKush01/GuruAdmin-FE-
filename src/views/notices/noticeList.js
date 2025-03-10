@@ -22,6 +22,7 @@ import { useSelector } from "react-redux";
 import { WRITE } from "../../utility/permissionsVariable";
 import { Helmet } from "react-helmet";
 import "../../assets/scss/viewCommon.scss";
+import { Card, Pagination } from "antd";
 
 const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
@@ -37,10 +38,10 @@ export default function NoticeList() {
         return "year";
       case "dashboard_weekly":
         return "week";
-        case "All":
-          return "All";
-        default:
-          return "All";
+      case "All":
+        return "All";
+      default:
+        return "All";
     }
   };
   const { t } = useTranslation();
@@ -50,7 +51,17 @@ export default function NoticeList() {
     page: 1,
     limit: 3,
   });
+  const [currentpage, setCurrentpage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const onChangePage = (page) => {
+    setCurrentpage(page);
+    // Fetch new data based on the page
+  };
 
+  const onChangePageSize = (size) => {
+    setPageSize(size);
+    setCurrentpage(1); // Reset to first page when page size changes
+  };
   const searchParams = new URLSearchParams(history.location.search);
 
   const currentPage = searchParams.get("page");
@@ -66,12 +77,14 @@ export default function NoticeList() {
     }
   }, []);
 
-  let filterStartDate = dropDownName !== "All" 
-  ? moment().startOf(periodDropDown()).utcOffset(0, true).toISOString()
-  : null;
-let filterEndDate = dropDownName !== "All"
-  ? moment().endOf(periodDropDown()).utcOffset(0, true).toISOString()
-  : null;
+  let filterStartDate =
+    dropDownName !== "All"
+      ? moment().startOf(periodDropDown()).utcOffset(0, true).toISOString()
+      : null;
+  let filterEndDate =
+    dropDownName !== "All"
+      ? moment().endOf(periodDropDown()).utcOffset(0, true).toISOString()
+      : null;
 
   let startDate = moment(filterStartDate).format("DD MMM");
   let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
@@ -82,8 +95,10 @@ let filterEndDate = dropDownName !== "All"
       ...pagination,
       languageId: selectedLang.id,
       search: searchBarValue,
+      page: currentpage,
+      limit: pageSize,
     };
-  
+
     if (dropDownName !== "All") {
       return {
         ...baseParams,
@@ -91,14 +106,15 @@ let filterEndDate = dropDownName !== "All"
         endDate: filterEndDate,
       };
     }
-  
+
     return baseParams;
   };
 
   const noticeQuery = useQuery(
     [
       "Notices",
-      pagination.page,
+      currentpage,
+      pageSize,
       startDate,
       endDate,
       selectedLang.id,
@@ -117,6 +133,10 @@ let filterEndDate = dropDownName !== "All"
 
   const NoticeItems = useMemo(
     () => noticeQuery?.data?.results ?? [],
+    [noticeQuery]
+  );
+  const totalItems = useMemo(
+    () => noticeQuery?.data?.totalResults ?? [],
     [noticeQuery]
   );
 
@@ -228,19 +248,21 @@ let filterEndDate = dropDownName !== "All"
                 <Else>
                   <If condition={NoticeItems.length != 0} disableMemo>
                     <Then>
-                      {NoticeItems.map((item) => {
-                        return (
-                          <Col xs={12} key={item.id} className={"p-0"}>
-                            <NoticeCard
-                              data={item}
-                              currentFilter={routFilter}
-                              currentPage={routPagination}
-                              allPermissions={allPermissions}
-                              subPermission={subPermission}
-                            />
-                          </Col>
-                        );
-                      })}
+                      <div style={{ marginBottom: "100px" }}>
+                        {NoticeItems.map((item) => {
+                          return (
+                            <Col xs={12} key={item.id} className={"p-0"}>
+                              <NoticeCard
+                                data={item}
+                                currentFilter={routFilter}
+                                currentPage={routPagination}
+                                allPermissions={allPermissions}
+                                subPermission={subPermission}
+                              />
+                            </Col>
+                          );
+                        })}
+                      </div>
                     </Then>
                     <Else>
                       <div className="noContent">
@@ -253,8 +275,19 @@ let filterEndDate = dropDownName !== "All"
                   </If>
                 </Else>
               </If>
-
-              <If condition={noticeQuery?.data?.totalPages > 0}>
+              {totalItems > 0 && (
+                <Card className="pagination-card">
+                  <Pagination
+                    current={currentpage}
+                    pageSize={pageSize}
+                    total={totalItems}
+                    onChange={onChangePage}
+                    onShowSizeChange={(current, size) => onChangePageSize(size)}
+                    showSizeChanger
+                  />
+                </Card>
+              )}
+              {/* <If condition={noticeQuery?.data?.totalPages > 0}>
                 <Then>
                   <Col
                     xs={12}
@@ -293,7 +326,7 @@ let filterEndDate = dropDownName !== "All"
                     />
                   </Col>
                 </Then>
-              </If>
+              </If> */}
             </Col>
             <Col
               xs={10}

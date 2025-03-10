@@ -17,12 +17,17 @@ import "../../../../assets/scss/viewCommon.scss";
 import { Table } from "antd";
 const StockManagementItemTable = ({
   data = [],
-  currentPage,
+  // currentPage,
   currentFilter,
   maxHeight,
   allPermissions,
   subPermission,
   height,
+  totalItems,
+  currentPage,
+  pageSize,
+  onChangePage,
+  onChangePageSize,
 }) => {
   const { t } = useTranslation();
   const history = useHistory();
@@ -46,7 +51,7 @@ const StockManagementItemTable = ({
       dataIndex: "itemId",
       key: "itemId",
       width: 100,
-      fixed:"left"
+      fixed: "left",
     },
     {
       title: t("Name"),
@@ -71,10 +76,9 @@ const StockManagementItemTable = ({
       dataIndex: "action",
       key: "action",
       width: 50,
-      fixed:"right"
+      fixed: "right",
     },
   ];
-  
 
   const ItemData = useMemo(() => {
     return data?.map((item, idx) => {
@@ -161,7 +165,14 @@ const StockManagementItemTable = ({
         sticky={{
           offsetHeader: 64,
         }}
-        pagination={false}
+        pagination={{
+          current: currentPage,
+          pageSize: pageSize,
+          total: totalItems,
+          onChange: onChangePage,
+          onShowSizeChange: (current, size) => onChangePageSize(size),
+          showSizeChanger: true,
+        }}
         bordered
       />
     </div>

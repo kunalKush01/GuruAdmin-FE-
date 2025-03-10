@@ -88,12 +88,12 @@ export function ExpensesListTable({
       dataIndex: "createdBy",
       width: 200,
     },
-    {
-      title: t("Actions"),
-      dataIndex: "action",
-      fixed: "right",
-      width: 100,
-    },
+    // {
+    //   title: t("Actions"),
+    //   dataIndex: "action",
+    //   fixed: "right",
+    //   width: 100,
+    // },
   ];
   const categoriesList = useMemo(() => {
     return data.map((item, idx) => ({

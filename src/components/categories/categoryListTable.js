@@ -23,6 +23,11 @@ export function CategoryListTable({
   currentFilter,
   subPermission,
   allPermissions,
+  totalItems,
+  // currentNewPage,
+  pageSize,
+  onChangePage,
+  onChangePageSize,
 }) {
   const handleDeleteCategory = async (payload) => {
     return deleteCategoryDetail(payload);
@@ -55,6 +60,7 @@ export function CategoryListTable({
       dataIndex: "subCategory",
       key: "subCategory",
       width: 220,
+      fixed: "left",
     },
     {
       title: t("categories_master_category"),
@@ -98,7 +104,7 @@ export function CategoryListTable({
   ];
 
   const langList = useSelector((state) => state.auth.availableLang);
-console.log(langList)
+  console.log(langList);
   const categoriesList = useMemo(() => {
     return data.map((item) => ({
       _Id: item.id,
@@ -205,7 +211,14 @@ console.log(langList)
           offsetHeader: 64,
         }}
         bordered
-        pagination={false}
+        pagination={{
+          current: currentPage,
+          pageSize: pageSize,
+          total: totalItems,
+          onChange: onChangePage,
+          onShowSizeChange: (current, size) => onChangePageSize(size),
+          showSizeChanger: true,
+        }}
         rowKey="id"
       />
     </div>

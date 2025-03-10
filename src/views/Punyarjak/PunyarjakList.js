@@ -23,6 +23,7 @@ import SubscribedUSerListTable from "../../components/subscribedUser/subscribedU
 import { WRITE } from "../../utility/permissionsVariable";
 
 import "../../assets/scss/viewCommon.scss";
+import { Card, Pagination } from "antd";
 
 export default function Punyarjak() {
   const [dropDownName, setdropDownName] = useState("All");
@@ -35,10 +36,10 @@ export default function Punyarjak() {
         return "year";
       case "dashboard_weekly":
         return "week";
-        case "All":
-          return "All";
-        default:
-          return "All";
+      case "All":
+        return "All";
+      default:
+        return "All";
     }
   };
   const { t } = useTranslation();
@@ -48,7 +49,17 @@ export default function Punyarjak() {
     page: 1,
     limit: 3,
   });
+  const [currentpage, setCurrentpage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const onChangePage = (page) => {
+    setCurrentpage(page);
+    // Fetch new data based on the page
+  };
 
+  const onChangePageSize = (size) => {
+    setPageSize(size);
+    setCurrentpage(1); // Reset to first page when page size changes
+  };
   const searchParams = new URLSearchParams(history.location.search);
 
   const currentPage = searchParams.get("page");
@@ -60,12 +71,14 @@ export default function Punyarjak() {
     }
   }, []);
 
-  let filterStartDate = dropDownName !== "All" 
-    ? moment().startOf(periodDropDown()).utcOffset(0, true).toISOString()
-    : null;
-  let filterEndDate = dropDownName !== "All"
-    ? moment().endOf(periodDropDown()).utcOffset(0, true).toISOString()
-    : null;
+  let filterStartDate =
+    dropDownName !== "All"
+      ? moment().startOf(periodDropDown()).utcOffset(0, true).toISOString()
+      : null;
+  let filterEndDate =
+    dropDownName !== "All"
+      ? moment().endOf(periodDropDown()).utcOffset(0, true).toISOString()
+      : null;
 
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
 
@@ -74,8 +87,10 @@ export default function Punyarjak() {
       ...pagination,
       languageId: selectedLang.id,
       search: searchBarValue,
+      page: currentpage,
+      limit: pageSize,
     };
-  
+
     if (dropDownName !== "All") {
       return {
         ...baseParams,
@@ -83,14 +98,15 @@ export default function Punyarjak() {
         endDate: filterEndDate,
       };
     }
-  
+
     return baseParams;
   };
 
   const punyarjakUsersQuery = useQuery(
     [
       "punyarjak",
-      pagination.page,
+      currentpage,
+      pageSize,
       selectedLang.id,
       filterEndDate,
       filterStartDate,
@@ -106,7 +122,10 @@ export default function Punyarjak() {
     () => punyarjakUsersQuery?.data?.results ?? [],
     [punyarjakUsersQuery]
   );
-
+  const totalItems = useMemo(
+    () => punyarjakUsersQuery?.data?.totalResults ?? [],
+    [punyarjakUsersQuery]
+  );
   // PERMISSSIONS
   const permissions = useSelector(
     (state) => state.auth.userDetail?.permissions
@@ -188,7 +207,7 @@ export default function Punyarjak() {
           </If>
         </div>
         <div className="punyarjakContent">
-          <Row>
+          <Row style={{ marginBottom: "100px" }}>
             <If condition={punyarjakUsersQuery.isLoading} disableMemo>
               <Then>
                 <SkeletonTheme
@@ -233,8 +252,19 @@ export default function Punyarjak() {
                 </If>
               </Else>
             </If>
-
-            <If condition={punyarjakUsersQuery?.data?.totalPages > 0}>
+            {totalItems > 0 && (
+              <Card className="pagination-card">
+                <Pagination
+                  current={currentpage}
+                  pageSize={pageSize}
+                  total={totalItems}
+                  onChange={onChangePage}
+                  onShowSizeChange={(current, size) => onChangePageSize(size)}
+                  showSizeChanger
+                />
+              </Card>
+            )}
+            {/* <If condition={punyarjakUsersQuery?.data?.totalPages > 0}>
               <Then>
                 <Col
                   xs={12}
@@ -264,7 +294,7 @@ export default function Punyarjak() {
                   />
                 </Col>
               </Then>
-            </If>
+            </If> */}
           </Row>
         </div>
       </div>

@@ -48,9 +48,29 @@ export default function ReportListTable({
           />
         );
       case t("report_commitment"):
-        return <CommitmentListTable data={data} financeReport />;
+        return (
+          <CommitmentListTable
+            data={data}
+            financeReport
+            commitmentTotalItem={commitmentTotalItem}
+            currentPage={currentPage}
+            pageSize={pageSize}
+            onChangePage={onChangePage}
+            onChangePageSize={onChangePageSize}
+          />
+        );
       case t("report_donation_box"):
-        return <DonationBoxListTable data={data} financeReport />;
+        return (
+          <DonationBoxListTable
+            data={data}
+            financeReport
+            boxCollectionTotalItem={boxCollectionTotalItem}
+            currentPage={currentPage}
+            pageSize={pageSize}
+            onChangePage={onChangePage}
+            onChangePageSize={onChangePageSize}
+          />
+        );
       default:
         return [];
     }

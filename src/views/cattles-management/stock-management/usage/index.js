@@ -10,7 +10,7 @@ import { Col, Row } from "reactstrap";
 import NoContent from "../../../../components/partials/noContent";
 import UsageTable from "./table";
 import { Helmet } from "react-helmet";
-import '../../../../assets/scss/common.scss'
+import "../../../../assets/scss/common.scss";
 
 const Usage = ({
   list,
@@ -21,6 +21,11 @@ const Usage = ({
   allPermissions,
   subPermission,
   searchParams,
+  totalItems,
+  currentPage,
+  pageSize,
+  onChangePage,
+  onChangePageSize,
 }) => {
   const history = useHistory();
   const { t } = useTranslation();
@@ -55,13 +60,18 @@ const Usage = ({
               <UsageTable
                 data={list}
                 currentFilter={dropDownName}
-                currentPage={pagination.page}
+                // currentPage={pagination.page}
                 height="160px"
                 allPermissions={allPermissions}
                 subPermission={subPermission}
                 // maxHeight="220px"
                 // allPermissions={allPermissions}
                 // subPermission={subPermission}
+                totalItems={totalItems}
+                currentPage={currentPage}
+                pageSize={pageSize}
+                onChangePage={onChangePage}
+                onChangePageSize={onChangePageSize}
               />
             </Then>
             <Else>
@@ -76,7 +86,7 @@ const Usage = ({
             </Else>
           </If>
 
-          <If condition={query?.data?.totalPages > 1}>
+          {/* <If condition={query?.data?.totalPages > 1}>
             <Then>
               <Col xs={12} className="mb-2 d-flex justify-content-center">
                 <ReactPaginate
@@ -113,7 +123,7 @@ const Usage = ({
                 />
               </Col>
             </Then>
-          </If>
+          </If> */}
         </Row>
       </div>
     </>

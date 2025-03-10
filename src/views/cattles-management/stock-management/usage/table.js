@@ -19,11 +19,16 @@ import { Table } from "antd";
 const UsageManagementTable = ({
   data = [],
   currentFilter,
-  currentPage,
+  // currentPage,
   maxHeight,
   allPermissions,
   subPermission,
   height,
+  totalItems,
+  currentPage,
+  pageSize,
+  onChangePage,
+  onChangePageSize,
 }) => {
   const { t } = useTranslation();
   const history = useHistory();
@@ -47,7 +52,7 @@ const UsageManagementTable = ({
       dataIndex: "itemId",
       key: "itemId",
       width: 100,
-      fixed:"left"
+      fixed: "left",
     },
     {
       title: t("cattle_itemName"),
@@ -84,10 +89,9 @@ const UsageManagementTable = ({
       dataIndex: "action",
       key: "action",
       width: 50,
-      fixed:"right"
-    }
+      fixed: "right",
+    },
   ];
-  
 
   const usageData = useMemo(() => {
     return data?.map((item, idx) => {
@@ -176,7 +180,14 @@ const UsageManagementTable = ({
         sticky={{
           offsetHeader: 64,
         }}
-        pagination={false}
+        pagination={{
+          current: currentPage,
+          pageSize: pageSize,
+          total: totalItems,
+          onChange: onChangePage,
+          onShowSizeChange: (current, size) => onChangePageSize(size),
+          showSizeChanger: true,
+        }}
         bordered
       />
     </div>

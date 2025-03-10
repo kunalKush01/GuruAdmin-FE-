@@ -8,7 +8,7 @@ import { useHistory } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import NoContent from "../../../../components/partials/noContent";
 import StockManagementItemTable from "./table";
-import '../../../../assets/scss/common.scss'
+import "../../../../assets/scss/common.scss";
 
 const Items = ({
   list,
@@ -19,6 +19,11 @@ const Items = ({
   subPermission,
   dropDownName,
   searchParams,
+  totalItems,
+  currentPage,
+  pageSize,
+  onChangePage,
+  onChangePageSize,
 }) => {
   const history = useHistory();
   const { t } = useTranslation();
@@ -57,7 +62,12 @@ const Items = ({
                 currentFilter={dropDownName}
                 // maxHeight="220px"
                 height="160px"
-                currentPage={pagination.page}
+                // currentPage={pagination.page}
+                totalItems={totalItems}
+                currentPage={currentPage}
+                pageSize={pageSize}
+                onChangePage={onChangePage}
+                onChangePageSize={onChangePageSize}
               />
             </Then>
             <Else>
@@ -72,7 +82,7 @@ const Items = ({
             </Else>
           </If>
 
-          <If condition={query?.data?.totalPages > 1}>
+          {/* <If condition={query?.data?.totalPages > 1}>
             <Then>
               <Col xs={12} className="mb-2 d-flex justify-content-center">
                 <ReactPaginate
@@ -109,7 +119,7 @@ const Items = ({
                 />
               </Col>
             </Then>
-          </If>
+          </If> */}
         </Row>
       </div>
     </>

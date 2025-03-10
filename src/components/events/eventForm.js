@@ -680,7 +680,7 @@ export default function EventForm({
                   )}
                 </Row>
               </Row>
-              <div className="btn-Published mb-2">
+              <div className="btn-Published">
                 {loading ? (
                   <Button color="primary" className="add-trust-btn" disabled>
                     <Spinner size="md" />
