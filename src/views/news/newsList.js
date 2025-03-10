@@ -18,6 +18,7 @@ import NoContent from "../../components/partials/noContent";
 import { WRITE } from "../../utility/permissionsVariable";
 import { Helmet } from "react-helmet";
 import "../../assets/scss/viewCommon.scss";
+import { Card, Pagination } from "antd";
 
 const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
@@ -33,10 +34,10 @@ export default function News() {
         return "year";
       case "dashboard_weekly":
         return "week";
-        case "All":
-          return "All";
-        default:
-          return "All";
+      case "All":
+        return "All";
+      default:
+        return "All";
     }
   };
   const { t } = useTranslation();
@@ -46,7 +47,17 @@ export default function News() {
     page: 1,
     limit: 3,
   });
+  const [currentpage, setCurrentpage] = useState(1);
+  const [pageSize, setPageSize] = useState(12);
+  const onChangePage = (page) => {
+    setCurrentpage(page);
+    // Fetch new data based on the page
+  };
 
+  const onChangePageSize = (size) => {
+    setPageSize(size);
+    setCurrentpage(1); // Reset to first page when page size changes
+  };
   const searchParams = new URLSearchParams(history.location.search);
 
   const currentPage = searchParams.get("page");
@@ -67,8 +78,10 @@ export default function News() {
       ...pagination,
       languageId: selectedLang.id,
       search: searchBarValue,
+      page: currentpage,
+      limit: pageSize,
     };
-  
+
     if (dropDownName !== "All") {
       return {
         ...baseParams,
@@ -76,17 +89,18 @@ export default function News() {
         endDate: filterEndDate,
       };
     }
-  
+
     return baseParams;
   };
-  
-  let filterStartDate = dropDownName !== "All" 
-    ? moment().startOf(periodDropDown()).utcOffset(0, true).toISOString()
-    : null;
-  let filterEndDate = dropDownName !== "All"
-    ? moment().endOf(periodDropDown()).utcOffset(0, true).toISOString()
-    : null;
-  
+
+  let filterStartDate =
+    dropDownName !== "All"
+      ? moment().startOf(periodDropDown()).utcOffset(0, true).toISOString()
+      : null;
+  let filterEndDate =
+    dropDownName !== "All"
+      ? moment().endOf(periodDropDown()).utcOffset(0, true).toISOString()
+      : null;
 
   let startDate = moment(filterStartDate).format("DD MMM");
   let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
@@ -95,7 +109,8 @@ export default function News() {
   const newsQuery = useQuery(
     [
       "News",
-      pagination.page,
+      currentpage,
+      pageSize,
       filterStartDate,
       filterEndDate,
       selectedLang.id,
@@ -108,6 +123,10 @@ export default function News() {
   );
 
   const newsItems = useMemo(() => newsQuery?.data?.results ?? [], [newsQuery]);
+  const totalItems = useMemo(
+    () => newsQuery?.data?.totalResults ?? [],
+    [newsQuery]
+  );
 
   // PERMISSSIONS
   const permissions = useSelector(
@@ -198,7 +217,7 @@ export default function News() {
           </If>
         </div>
         <div className="punyarjakContent">
-          <Row>
+          <Row style={{marginBottom:"100px"}}>
             <If condition={newsQuery.isLoading} disableMemo>
               <Then>
                 <SkeletonTheme
@@ -248,8 +267,19 @@ export default function News() {
                 </If>
               </Else>
             </If>
-
-            <If condition={newsQuery?.data?.totalPages > 0}>
+            {totalItems > 0 && (
+              <Card className="pagination-card">
+                <Pagination
+                  current={currentpage}
+                  pageSize={pageSize}
+                  total={totalItems}
+                  onChange={onChangePage}
+                  onShowSizeChange={(current, size) => onChangePageSize(size)}
+                  showSizeChanger
+                />
+              </Card>
+            )}
+            {/* <If condition={newsQuery?.data?.totalPages > 0}>
               <Then>
                 <Col
                   xs={12}
@@ -285,7 +315,7 @@ export default function News() {
                   />
                 </Col>
               </Then>
-            </If>
+            </If> */}
           </Row>
         </div>
       </div>

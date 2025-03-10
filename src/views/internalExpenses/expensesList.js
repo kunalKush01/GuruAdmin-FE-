@@ -50,6 +50,9 @@ export default function Expenses() {
     page: 1,
     limit: 10,
   });
+  // useEffect(() => {
+  //   setPagination({ page: 1, limit: 10 });
+  // }, []);
   const [expenseType, setExpenseType] = useState(t("all"));
 
   const searchParams = new URLSearchParams(history.location.search);
@@ -111,6 +114,7 @@ export default function Expenses() {
     [
       "Expenses",
       pagination.page,
+      pagination.limit,
       selectedLang.id,
       // filterEndDate,
       expenseType,
@@ -138,7 +142,10 @@ export default function Expenses() {
     () => expensesQuery?.data?.results ?? [],
     [expensesQuery]
   );
-
+  const totalItems = useMemo(
+    () => expensesQuery?.data?.totalResults || 0,
+    [expensesQuery]
+  );
   // PERMISSSIONS
   const permissions = useSelector(
     (state) => state.auth.userDetail?.permissions
@@ -155,11 +162,11 @@ export default function Expenses() {
   );
 
   const [filterOpen, setFilterOpen] = useState(false);
-  const [isfetchField, setIsfetchField] = useState(false)
+  const [isfetchField, setIsfetchField] = useState(false);
 
   const showFilter = () => {
     setFilterOpen(true);
-    setIsfetchField(true)
+    setIsfetchField(true);
   };
   const onFilterClose = () => {
     setFilterOpen(false);
@@ -261,19 +268,19 @@ export default function Expenses() {
             ) : (
               ""
             )}
-          <Button
-            className="secondaryAction-btn"
-            color="primary"
-            onClick={handleApplyFilter}
-          >
-            <img
-              src={filterIcon}
-              alt="Filter Icon"
-              width={20}
-              className="filterIcon"
-            />
-            {t("filter")}
-          </Button>
+            <Button
+              className="secondaryAction-btn"
+              color="primary"
+              onClick={handleApplyFilter}
+            >
+              <img
+                src={filterIcon}
+                alt="Filter Icon"
+                width={20}
+                className="filterIcon"
+              />
+              {t("filter")}
+            </Button>
           </div>
         </div>
         <div className="d-flex justify-content-between">
@@ -316,10 +323,23 @@ export default function Expenses() {
                       data={categoryItems}
                       currentFilter={routFilter}
                       currentExpenseFilter={routeExpenseType}
-                      currentPage={routPagination}
+                      // currentPage={routPagination}
                       page={pagination}
                       allPermissions={allPermissions}
                       subPermission={subPermission}
+                      expenseTotalItem={totalItems}
+                      currentPage={pagination.page}
+                      pageSize={pagination.limit}
+                      onChangePage={(page) =>
+                        setPagination((prev) => ({ ...prev, page }))
+                      }
+                      onChangePageSize={(pageSize) =>
+                        setPagination((prev) => ({
+                          ...prev,
+                          limit: pageSize,
+                          page: 1,
+                        }))
+                      }
                     />
                   </Then>
                   <Else>
@@ -332,7 +352,7 @@ export default function Expenses() {
               </Else>
             </If>
 
-            <If condition={expensesQuery?.data?.totalPages > 1}>
+            {/* <If condition={expensesQuery?.data?.totalPages > 1}>
               <Then>
                 <Col xs={12} className="d-flex justify-content-center">
                   <ReactPaginate
@@ -369,7 +389,7 @@ export default function Expenses() {
                   />
                 </Col>
               </Then>
-            </If>
+            </If> */}
           </Row>
         </div>
       </div>

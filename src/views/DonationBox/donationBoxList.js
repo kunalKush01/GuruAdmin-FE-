@@ -16,6 +16,8 @@ import BoxListCard from "../../components/DonationBox/BoxListCard.js";
 import NoContent from "../../components/partials/noContent";
 import { WRITE } from "../../utility/permissionsVariable";
 import "../../assets/scss/viewCommon.scss";
+import { Card, Pagination } from "antd";
+
 export default function Expenses() {
   const [dropDownName, setdropDownName] = useState("All");
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -27,7 +29,7 @@ export default function Expenses() {
         return "year";
       case "dashboard_weekly":
         return "week";
-        case "All":
+      case "All":
         return "All";
 
       default:
@@ -41,7 +43,17 @@ export default function Expenses() {
     page: 1,
     limit: 12,
   });
+  const [currentpage, setCurrentpage] = useState(1);
+  const [pageSize, setPageSize] = useState(12);
+  const onChangePage = (page) => {
+    setCurrentpage(page);
+    // Fetch new data based on the page
+  };
 
+  const onChangePageSize = (size) => {
+    setPageSize(size);
+    setCurrentpage(1); // Reset to first page when page size changes
+  };
   const searchParams = new URLSearchParams(history.location.search);
 
   const currentPage = searchParams.get("page");
@@ -59,12 +71,14 @@ export default function Expenses() {
 
   const [selectedMasterCate, setSelectedMasterCate] = useState("");
 
-  let filterStartDate = dropDownName !== "All" 
-  ? moment().startOf(periodDropDown()).utcOffset(0, true).toISOString()
-  : null;
-  let filterEndDate = dropDownName !== "All"
-  ? moment().endOf(periodDropDown()).utcOffset(0, true).toISOString()
-  : null;
+  let filterStartDate =
+    dropDownName !== "All"
+      ? moment().startOf(periodDropDown()).utcOffset(0, true).toISOString()
+      : null;
+  let filterEndDate =
+    dropDownName !== "All"
+      ? moment().endOf(periodDropDown()).utcOffset(0, true).toISOString()
+      : null;
 
   let startDate = moment(filterStartDate).format("DD MMM");
   let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
@@ -75,6 +89,8 @@ export default function Expenses() {
       ...pagination,
       languageId: selectedLang.id,
       search: searchBarValue,
+      page: currentpage,
+      limit: pageSize,
     };
 
     if (dropDownName !== "All") {
@@ -91,7 +107,8 @@ export default function Expenses() {
   const boxCollectionQuery = useQuery(
     [
       "Collections",
-      pagination.page,
+      currentpage,
+      pageSize,
       selectedLang.id,
       filterStartDate,
       filterEndDate,
@@ -105,6 +122,10 @@ export default function Expenses() {
 
   const collectionItems = useMemo(
     () => boxCollectionQuery?.data?.results ?? [],
+    [boxCollectionQuery]
+  );
+  const totalItems = useMemo(
+    () => boxCollectionQuery?.data?.totalResults ?? [],
     [boxCollectionQuery]
   );
   // PERMISSSIONS
@@ -211,7 +232,7 @@ export default function Expenses() {
               <Else>
                 <If condition={collectionItems.length != 0} disableMemo>
                   <Then>
-                    <Row className="pe-0">
+                    <Row className="pe-0" style={{marginBottom:"100px"}}>
                       {collectionItems.map((item, idx) => {
                         return (
                           <Col xs={12} sm={6} md={4} lg={3} key={idx}>
@@ -237,8 +258,19 @@ export default function Expenses() {
                 </If>
               </Else>
             </If>
-
-            <If condition={boxCollectionQuery?.data?.totalPages > 1}>
+            {totalItems > 0 && (
+              <Card className="pagination-card">
+                <Pagination
+                  current={currentpage}
+                  pageSize={pageSize}
+                  total={totalItems}
+                  onChange={onChangePage}
+                  onShowSizeChange={(current, size) => onChangePageSize(size)}
+                  showSizeChanger
+                />
+              </Card>
+            )}
+            {/* <If condition={boxCollectionQuery?.data?.totalPages > 1}>
               <Then>
                 <Col xs={12} className="mb-2 d-flex justify-content-center">
                   <ReactPaginate
@@ -275,7 +307,7 @@ export default function Expenses() {
                   />
                 </Col>
               </Then>
-            </If>
+            </If> */}
           </Col>
         </div>
       </div>

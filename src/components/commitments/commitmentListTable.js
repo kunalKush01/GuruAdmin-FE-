@@ -30,7 +30,7 @@ export default function CommitmentListTable(
   {
     data,
     toPdf,
-    currentPage,
+    // currentPage,
     currentFilter,
     financeReport,
     currentCategory,
@@ -42,6 +42,11 @@ export default function CommitmentListTable(
     setSelectedRows,
     allPermissions,
     notifyIds,
+    commitmentTotalItem,
+    currentPage,
+    pageSize,
+    onChangePage,
+    onChangePageSize,
   },
   args
 ) {
@@ -397,7 +402,14 @@ export default function CommitmentListTable(
             : null
         }
         className="commonListTable"
-        pagination={false}
+        pagination={{
+          current: currentPage,
+          pageSize: pageSize,
+          total: commitmentTotalItem,
+          onChange: onChangePage,
+          onShowSizeChange: (current, size) => onChangePageSize(size),
+          showSizeChanger: true,
+        }}
         scroll={{
           x: 1500,
           y: 400,

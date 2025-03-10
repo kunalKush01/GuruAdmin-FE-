@@ -7,7 +7,7 @@ import { useHistory } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import NoContent from "../../../../components/partials/noContent";
 import StockManagementTable from "./table";
-import '../../../../assets/scss/common.scss'
+import "../../../../assets/scss/common.scss";
 
 const Stocks = ({
   list,
@@ -16,6 +16,11 @@ const Stocks = ({
   setPagination,
   dropDownName,
   searchParams,
+  totalItems,
+  currentPage,
+  pageSize,
+  onChangePage,
+  onChangePageSize,
 }) => {
   const history = useHistory();
   const { t } = useTranslation();
@@ -44,7 +49,12 @@ const Stocks = ({
             <Then>
               <StockManagementTable
                 data={list}
-                height='160px'
+                height="160px"
+                totalItems={totalItems}
+                currentPage={currentPage}
+                pageSize={pageSize}
+                onChangePage={onChangePage}
+                onChangePageSize={onChangePageSize}
                 // maxHeight="220px"
 
                 // allPermissions={allPermissions}
@@ -60,7 +70,7 @@ const Stocks = ({
             </Else>
           </If>
 
-          <If condition={query?.data?.totalPages > 1}>
+          {/* <If condition={query?.data?.totalPages > 1}>
             <Then>
               <Col xs={12} className="mb-2 d-flex justify-content-center">
                 <ReactPaginate
@@ -97,7 +107,7 @@ const Stocks = ({
                 />
               </Col>
             </Then>
-          </If>
+          </If> */}
         </Row>
       </div>
     </>

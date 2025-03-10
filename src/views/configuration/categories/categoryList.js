@@ -100,7 +100,14 @@ export default function Category() {
   const [categoryId, setCategoryId] = useState();
 
   const categoryQuery = useQuery(
-    ["Categories", newId, pagination.page, selectedLang.id, searchBarValue],
+    [
+      "Categories",
+      newId,
+      pagination.page,
+      pagination.limit,
+      selectedLang.id,
+      searchBarValue,
+    ],
     () =>
       getAllCategories({
         ...pagination,
@@ -117,6 +124,10 @@ export default function Category() {
 
   const categoryItems = useMemo(
     () => categoryQuery?.data?.results ?? [],
+    [categoryQuery]
+  );
+  const totalItems = useMemo(
+    () => categoryQuery?.data?.totalResults ?? [],
     [categoryQuery]
   );
   // PERMISSSIONS
@@ -230,7 +241,20 @@ export default function Category() {
                         allPermissions={allPermissions}
                         subPermission={subPermission}
                         currentFilter={routFilter}
-                        currentPage={routPagination}
+                        // currentPage={routPagination}
+                        totalItems={totalItems}
+                        currentPage={pagination.page}
+                        pageSize={pagination.limit}
+                        onChangePage={(page) =>
+                          setPagination((prev) => ({ ...prev, page }))
+                        }
+                        onChangePageSize={(pageSize) =>
+                          setPagination((prev) => ({
+                            ...prev,
+                            limit: pageSize,
+                            page: 1,
+                          }))
+                        }
                       />
                     </div>
                   </Then>
@@ -244,7 +268,7 @@ export default function Category() {
               </Else>
             </If>
 
-            <If condition={categoryQuery?.data?.totalPages > 1}>
+            {/* <If condition={categoryQuery?.data?.totalPages > 1}>
               <Then>
                 <Col xs={12} className="d-flex justify-content-center">
                   <ReactPaginate
@@ -281,7 +305,7 @@ export default function Category() {
                   />
                 </Col>
               </Then>
-            </If>
+            </If> */}
           </Row>
         </div>
       </div>

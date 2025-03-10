@@ -22,11 +22,15 @@ export function ExpensesListTable({
   data,
   page,
   currentFilter,
-  currentPage,
   currentExpenseFilter,
   financeReport,
   subPermission,
   allPermissions,
+  expenseTotalItem,
+  currentPage,
+  pageSize,
+  onChangePage,
+  onChangePageSize,
 }) {
   const handleDeleteExpenses = async (payload) => {
     return deleteExpensesDetail(payload);
@@ -84,12 +88,12 @@ export function ExpensesListTable({
       dataIndex: "createdBy",
       width: 200,
     },
-    {
-      title: t("Actions"),
-      dataIndex: "action",
-      fixed: "right",
-      width:100
-    },
+    // {
+    //   title: t("Actions"),
+    //   dataIndex: "action",
+    //   fixed: "right",
+    //   width: 100,
+    // },
   ];
   const categoriesList = useMemo(() => {
     return data.map((item, idx) => ({
@@ -175,7 +179,14 @@ export function ExpensesListTable({
         columns={columns}
         dataSource={categoriesList}
         rowKey="_Id"
-        pagination={false}
+        pagination={{
+          current: currentPage,
+          pageSize: pageSize,
+          total: expenseTotalItem,
+          onChange: onChangePage,
+          onShowSizeChange: (current, size) => onChangePageSize(size),
+          showSizeChanger: true,
+        }}
         scroll={{
           x: 1500,
           y: 400,

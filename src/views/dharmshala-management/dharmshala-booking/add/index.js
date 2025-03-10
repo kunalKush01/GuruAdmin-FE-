@@ -127,11 +127,50 @@ const AddDharmshalaBooking = () => {
     guestname: Yup.string()
       .max(30, "Guest name cannot exceed 30 characters")
       .required("Guest name is required"),
-
+    email: Yup.string()
+      .email("Invalid email format") // Ensures valid email structure
+      .max(50, "Email cannot exceed 50 characters"), // Limit email length
     // ID validations
     idType: Yup.string().required("ID Type is required"),
     idNumber: Yup.string()
-      .max(30, "ID Number cannot exceed 30 characters")
+      .when("idType", {
+        is: "aadhar",
+        then: () =>
+          Yup.string()
+            .matches(/^\d{12}$/, "Aadhar must be exactly 12 digits")
+            .required("Aadhar number is required"),
+      })
+      .when("idType", {
+        is: "pan",
+        then: () =>
+          Yup.string()
+            .matches(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/, "Invalid PAN format")
+            .required("PAN number is required"),
+      })
+      .when("idType", {
+        is: "voter",
+        then: () =>
+          Yup.string()
+            .matches(/^[A-Z]{3}[0-9]{7}$/, "Invalid Voter ID format")
+            .required("Voter ID is required"),
+      })
+      .when("idType", {
+        is: "driving",
+        then: () =>
+          Yup.string()
+            .matches(
+              /^(([A-Z]{2}[0-9]{2})( )|([A-Z]{2}-[0-9]{2}))((19|20)[0-9][0-9])[0-9]{7}$/,
+              "Invalid Driving License format (e.g., MH12 20170012345)"
+            )
+            .required("Driving License number is required"),
+      })
+      .when("idType", {
+        is: "other",
+        then: () =>
+          Yup.string()
+            .max(30, "ID Number cannot exceed 30 characters")
+            .required("ID Number is required"),
+      })
       .required("ID Number is required"),
 
     roomsData: Yup.array()

@@ -23,7 +23,18 @@ import "../../assets/scss/common.scss";
 import { Table } from "antd";
 
 export default function DonationList(
-  { data, topdf, allPermissions, subPermission, financeReport },
+  {
+    data,
+    topdf,
+    allPermissions,
+    subPermission,
+    financeReport,
+    donationTotalItem,
+    currentPage,
+    pageSize,
+    onChangePage,
+    onChangePageSize,
+  },
   args
 ) {
   const { t } = useTranslation();
@@ -68,7 +79,7 @@ export default function DonationList(
       dataIndex: "username",
       key: "username",
       width: 150,
-      fixed:"left"
+      fixed: "left",
     },
     {
       title: t("dashboard_Recent_DonorNumber"),
@@ -124,19 +135,19 @@ export default function DonationList(
       key: "createdBy",
       width: 150,
     },
-    {
-      title: t("dashboard_Recent_DonorReceipt"),
-      dataIndex: "receipt",
-      key: "receipt",
-      width: 150,
-    },
-    {
-      title: t("action"),
-      dataIndex: "edit",
-      key: "action",
-      width: 100,
-      fixed:"right"
-    },
+    // {
+    //   title: t("dashboard_Recent_DonorReceipt"),
+    //   dataIndex: "receipt",
+    //   key: "receipt",
+    //   width: 150,
+    // },
+    // {
+    //   title: t("action"),
+    //   dataIndex: "edit",
+    //   key: "action",
+    //   width: 100,
+    //   fixed:"right"
+    // },
   ];
 
   const Donatio_data = useMemo(() => {
@@ -265,7 +276,14 @@ export default function DonationList(
         columns={columns}
         dataSource={Donatio_data}
         className="commonListTable"
-        pagination={false}
+        pagination={{
+          current: currentPage,
+          pageSize: pageSize,
+          total: donationTotalItem,
+          onChange: onChangePage,
+          onShowSizeChange: (current, size) => onChangePageSize(size),
+          showSizeChanger: true,
+        }}
         scroll={{
           x: 1500,
           y: 400,

@@ -12,7 +12,15 @@ import CustomDataTable from "../partials/CustomDataTable";
 import "../../assets/scss/common.scss";
 import { Table } from "antd";
 
-export default function DonationBoxListTable({ data, financeReport }) {
+export default function DonationBoxListTable({
+  data,
+  financeReport,
+  boxCollectionTotalItem,
+  currentPage,
+  pageSize,
+  onChangePage,
+  onChangePageSize,
+}) {
   // const handleDeleteDonationBox = async (payload) => {
   //   return deleteExpensesDetail(payload);
   // };
@@ -97,7 +105,14 @@ export default function DonationBoxListTable({ data, financeReport }) {
         columns={columns}
         dataSource={donatioBoxList}
         className="commonListTable"
-        pagination={false}
+        pagination={{
+          current: currentPage,
+          pageSize: pageSize,
+          total: boxCollectionTotalItem,
+          onChange: onChangePage,
+          onShowSizeChange: (current, size) => onChangePageSize(size),
+          showSizeChanger: true,
+        }}
         scroll={{
           x: 1500,
           y: 400,

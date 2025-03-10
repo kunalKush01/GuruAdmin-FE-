@@ -20,10 +20,15 @@ const SuppliesTable = ({
   data = [],
   allPermissions,
   subPermission,
-  currentPage,
+  // currentPage,
   currentFilter,
   maxHeight,
   height,
+  totalItems,
+  currentPage,
+  pageSize,
+  onChangePage,
+  onChangePageSize,
 }) => {
   const { t } = useTranslation();
   const history = useHistory();
@@ -47,7 +52,7 @@ const SuppliesTable = ({
       dataIndex: "itemID",
       key: "itemID",
       width: 100,
-      fixed:"left"
+      fixed: "left",
     },
     {
       title: t("name"),
@@ -78,8 +83,8 @@ const SuppliesTable = ({
       dataIndex: "action",
       key: "action",
       width: 50,
-      fixed:"right"
-    }
+      fixed: "right",
+    },
   ];
 
   const SupplyData = useMemo(() => {
@@ -166,7 +171,14 @@ const SuppliesTable = ({
         sticky={{
           offsetHeader: 64,
         }}
-        pagination={false}
+        pagination={{
+          current: currentPage,
+          pageSize: pageSize,
+          total: totalItems,
+          onChange: onChangePage,
+          onShowSizeChange: (current, size) => onChangePageSize(size),
+          showSizeChanger: true,
+        }}
         bordered
       />
     </div>

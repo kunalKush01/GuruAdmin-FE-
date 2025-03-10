@@ -78,6 +78,7 @@ export default function FinancialReport() {
     [
       "Expenses",
       pagination.page,
+      pagination.limit,
       selectedLang.id,
       reportStartDate,
       reportEndDate,
@@ -100,6 +101,7 @@ export default function FinancialReport() {
     [
       "donations",
       pagination.page,
+      pagination.limit,
       selectedLang.id,
       reportEndDate,
       reportStartDate,
@@ -122,6 +124,7 @@ export default function FinancialReport() {
     [
       "Commitments",
       pagination.page,
+      pagination.limit,
       selectedLang.id,
       reportEndDate,
       reportStartDate,
@@ -145,6 +148,7 @@ export default function FinancialReport() {
     [
       "Collections",
       pagination.page,
+      pagination.limit,
       selectedLang.id,
       reportStartDate,
       reportEndDate,
@@ -162,6 +166,26 @@ export default function FinancialReport() {
       keepPreviousData: true,
       enabled: activeReportTab.name == t("report_donation_box"),
     }
+  );
+
+  const expenseTotalItem = useMemo(
+    () => expensesQuery?.data?.totalResults || 0,
+    [expensesQuery]
+  );
+
+  const donationTotalItem = useMemo(
+    () => donationQuery?.data?.totalResults || 0,
+    [donationQuery]
+  );
+
+  const commitmentTotalItem = useMemo(
+    () => commitmentQuery?.data?.totalResults || 0,
+    [commitmentQuery]
+  );
+
+  const boxCollectionTotalItem = useMemo(
+    () => boxCollectionQuery?.data?.totalResults || 0,
+    [boxCollectionQuery]
   );
   const Items = useMemo(() => {
     switch (activeReportTab.name) {
@@ -347,7 +371,10 @@ export default function FinancialReport() {
               </div>
             </div>
           </div>
-          <div className="addAction d-flex flex-wrap gap-2 gap-md-0">
+          <div
+            className="addAction d-flex flex-wrap gap-2 gap-md-0"
+            style={{ display: "flex !important", alignItems: "baseline" }}
+          >
             <div className="total_collection me-2 d-flex justify-content-center align-items-center ">
               {/* <Trans i18nKey={"DonationBox_total_collection"} /> */}
               <div>{`Total ${activeReportTab.name} :`}</div>
@@ -401,6 +428,7 @@ export default function FinancialReport() {
                 color="primary"
                 className="addAction-btn"
                 onClick={handleClickExport}
+                style={{ height: "35px" }}
               >
                 <span className="d-flex align-items-center">
                   <Trans i18nKey={"export_report"} />
@@ -464,6 +492,22 @@ export default function FinancialReport() {
                       activeReportTab={activeReportTab}
                       data={Items?.results ?? []}
                       page={pagination}
+                      expenseTotalItem={expenseTotalItem}
+                      donationTotalItem={donationTotalItem}
+                      commitmentTotalItem={commitmentTotalItem}
+                      boxCollectionTotalItem={boxCollectionTotalItem}
+                      currentPage={pagination.page}
+                      pageSize={pagination.limit}
+                      onChangePage={(page) =>
+                        setPagination((prev) => ({ ...prev, page }))
+                      }
+                      onChangePageSize={(pageSize) =>
+                        setPagination((prev) => ({
+                          ...prev,
+                          limit: pageSize,
+                          page: 1,
+                        }))
+                      }
                     />
                   </Then>
                   <Else>
@@ -478,7 +522,7 @@ export default function FinancialReport() {
 
             {/* <If condition={Items.totalPages > 1} > */}
             {/* <Then  > */}
-            {Items.totalPages > 1 && (
+            {/* {Items.totalPages > 1 && (
               <Col xs={12} className="mb-2 d-flex justify-content-center mt-5">
                 <ReactPaginate
                   nextLabel=""
@@ -503,7 +547,7 @@ export default function FinancialReport() {
                   }
                 />
               </Col>
-            )}
+            )} */}
             {/* </Then> */}
             {/* </If> */}
           </Row>

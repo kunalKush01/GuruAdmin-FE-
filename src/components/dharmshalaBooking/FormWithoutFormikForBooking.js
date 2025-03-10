@@ -42,6 +42,7 @@ export default function FormWithoutFormikForBooking({
   isEditing,
   editBookingData,
   isReadOnly,
+  setUserFoundByMobile,
   ...props
 }) {
   const { t } = useTranslation();
@@ -362,17 +363,19 @@ export default function FormWithoutFormikForBooking({
     },
   });
   const handleDateChange = async (fromDate, toDate) => {
-    const isFormattedString = (date) =>
-      typeof date === "string" && /^\d{2}-\d{2}-\d{4}$/.test(date);
+    // Helper function to safely format date
+    const formatDate = (date) => {
+      if (!date) return null; // Return null if date is null/undefined
+      return typeof date === "string" && /^\d{2}-\d{2}-\d{4}$/.test(date)
+        ? date
+        : date.format("DD-MM-YYYY");
+    };
 
-    const formattedFromDate = isFormattedString(fromDate)
-      ? fromDate
-      : fromDate.format("DD-MM-YYYY");
+    // Format the dates safely
+    const formattedFromDate = formatDate(fromDate);
+    const formattedToDate = formatDate(toDate);
 
-    const formattedToDate = isFormattedString(toDate)
-      ? toDate
-      : toDate.format("DD-MM-YYYY");
-
+    // Check if at least one valid date exists before proceeding
     if (formattedFromDate || formattedToDate) {
       const bookingPayload = {
         startDate: formattedFromDate,
@@ -835,20 +838,24 @@ export default function FormWithoutFormikForBooking({
                       value={
                         formik.values.numMen === "" ? "" : formik.values.numMen
                       }
-                      onChange={(e) =>
+                      onChange={(e) => {
+                        const parsedValue = parseInt(e.target.value, 10);
                         formik.setFieldValue(
                           "numMen",
-                          e.target.value === ""
-                            ? ""
-                            : parseInt(e.target.value, 10)
-                        )
-                      }
+                          e.target.value === "" ? "" : Math.max(0, parsedValue)
+                        );
+                      }}
+                      onInput={(e) =>
+                        (e.target.value = e.target.value.replace(/[^0-9]/g, ""))
+                      } // Restrict negative input
                       className="member-input"
                       placeholder="Men"
                       name="numMen"
+                      min="0"
                       readOnly={isReadOnly}
                     />
                   </div>
+
                   <div className="d-flex flex-column">
                     <input
                       type="number"
@@ -858,20 +865,24 @@ export default function FormWithoutFormikForBooking({
                           ? ""
                           : formik.values.numWomen
                       }
-                      onChange={(e) =>
+                      onChange={(e) => {
+                        const parsedValue = parseInt(e.target.value, 10);
                         formik.setFieldValue(
                           "numWomen",
-                          e.target.value === ""
-                            ? ""
-                            : parseInt(e.target.value, 10)
-                        )
+                          e.target.value === "" ? "" : Math.max(0, parsedValue)
+                        );
+                      }}
+                      onInput={(e) =>
+                        (e.target.value = e.target.value.replace(/[^0-9]/g, ""))
                       }
                       className="member-input"
                       placeholder="Women"
                       name="numWomen"
+                      min="0"
                       readOnly={isReadOnly}
                     />
                   </div>
+
                   <div className="d-flex flex-column">
                     <input
                       type="number"
@@ -881,20 +892,24 @@ export default function FormWithoutFormikForBooking({
                           ? ""
                           : formik.values.numKids
                       }
-                      onChange={(e) =>
+                      onChange={(e) => {
+                        const parsedValue = parseInt(e.target.value, 10);
                         formik.setFieldValue(
                           "numKids",
-                          e.target.value === ""
-                            ? ""
-                            : parseInt(e.target.value, 10)
-                        )
+                          e.target.value === "" ? "" : Math.max(0, parsedValue)
+                        );
+                      }}
+                      onInput={(e) =>
+                        (e.target.value = e.target.value.replace(/[^0-9]/g, ""))
                       }
                       className="member-input"
                       placeholder="Kids"
                       name="numKids"
+                      min="0"
                       readOnly={isReadOnly}
                     />
                   </div>
+
                   <button
                     className={`search-button ${
                       isSearchEnabled() ? "" : "disabled"
@@ -916,7 +931,9 @@ export default function FormWithoutFormikForBooking({
             roomsData={formik.values.roomsData}
             formik={formik}
             roomTypes={roomTypes}
-            buildings={(isEditing||formik.values.roomsData) ? fetchBuildings : buildings}
+            buildings={
+              isEditing || formik.values.roomsData ? fetchBuildings : buildings
+            }
             floors={floors}
             rooms={rooms}
             handleRoomTypeChange={handleRoomTypeChange}
@@ -927,6 +944,7 @@ export default function FormWithoutFormikForBooking({
             handleAddRoom={handleAddRoom}
             handleClearRooms={handleClearRooms}
             isSearchRoom={isSearchRoom}
+            isSearchEnabled={isSearchEnabled}
             isReadOnly={isReadOnly}
             isEditing={isEditing}
           />
@@ -939,6 +957,7 @@ export default function FormWithoutFormikForBooking({
             countryFlag={countryFlag}
             isEditing={isEditing}
             isReadOnly={isReadOnly}
+            setUserFoundByMobile={setUserFoundByMobile}
           />
           <div className="payments-container">
             <div className="tabs">

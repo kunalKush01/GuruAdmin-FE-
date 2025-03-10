@@ -7,7 +7,16 @@ import { ConverFirstLatterToCapital } from "../../../../utility/formater";
 
 import "../../../../assets/scss/viewCommon.scss";
 import { Table } from "antd";
-const StockManagementTable = ({ data = [], maxHeight, height }) => {
+const StockManagementTable = ({
+  data = [],
+  maxHeight,
+  height,
+  totalItems,
+  currentPage,
+  pageSize,
+  onChangePage,
+  onChangePageSize,
+}) => {
   const { t } = useTranslation();
   const columns = [
     {
@@ -15,7 +24,7 @@ const StockManagementTable = ({ data = [], maxHeight, height }) => {
       dataIndex: "itemID",
       key: "itemID",
       width: 120,
-      fixed:"left"
+      fixed: "left",
     },
     {
       title: t("name"),
@@ -40,7 +49,7 @@ const StockManagementTable = ({ data = [], maxHeight, height }) => {
       dataIndex: "lastUpdate",
       key: "lastUpdate",
       width: 120,
-      fixed:"right"
+      fixed: "right",
     },
   ];
 
@@ -71,7 +80,14 @@ const StockManagementTable = ({ data = [], maxHeight, height }) => {
         sticky={{
           offsetHeader: 64,
         }}
-        pagination={false}
+        pagination={{
+          current: currentPage,
+          pageSize: pageSize,
+          total: totalItems,
+          onChange: onChangePage,
+          onShowSizeChange: (current, size) => onChangePageSize(size),
+          showSizeChanger: true,
+        }}
         bordered
       />
     </div>

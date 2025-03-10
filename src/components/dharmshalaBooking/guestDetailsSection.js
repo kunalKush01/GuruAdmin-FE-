@@ -24,6 +24,7 @@ function GuestDetailsSection({
   countryFlag,
   isEditing,
   isReadOnly,
+  setUserFoundByMobile,
   ...props
 }) {
   const { t } = useTranslation();
@@ -44,8 +45,12 @@ function GuestDetailsSection({
   const handleDataLoad = (val) => {
     setDataLoad(val);
   };
+  const patt = /^(\+?\d{1,3}[-.\s]?)?(\(?\d{3}\)?[-.\s]?)?\d{3}[-.\s]?\d{4}$/;
+  const panPatt = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
   const schema = Yup.object().shape({
-    mobile: Yup.string().required("users_mobile_required"),
+    mobile: Yup.string()
+      .matches(patt, "Invalid mobile number")
+      .required("users_mobile_required"),
     email: Yup.string()
       .email("email_invalid")
       .required("users_email_required")
@@ -76,18 +81,22 @@ function GuestDetailsSection({
           if (res.result) {
             formik.setFieldValue("SelectedUser", res.result);
             setNoUserFound(false);
+            setUserFoundByMobile(false);
           } else {
             setNoUserFound(true);
+            setUserFoundByMobile(true);
           }
         } catch (error) {
           console.error("Error fetching user:", error);
           setNoUserFound(true);
+          setUserFoundByMobile(true);
         }
       };
       results();
     } else if (Mobile?.length !== 10) {
       formik.setFieldValue("SelectedUser", "");
       setNoUserFound(false);
+      setUserFoundByMobile(false);
     }
   }, [formik?.values?.Mobile, dataLoad]);
   useEffect(() => {
@@ -406,7 +415,12 @@ function GuestDetailsSection({
                 name="email"
                 value={formik.values.email}
                 onChange={formik.handleChange}
-                onInput={(e) => (e.target.value = e.target.value.slice(0, 30))}
+                onInput={(e) => {
+                  e.target.value = e.target.value
+                    .toLowerCase()
+                    .replace(/[^a-z0-9@._-]/g, "") // Allow only valid email characters
+                    .slice(0, 50); // Limit to 50 characters
+                }}
                 disabled={isReadOnly}
               />
             </Col>
@@ -454,7 +468,38 @@ function GuestDetailsSection({
                 name="idNumber"
                 value={formik.values.idNumber}
                 onChange={formik.handleChange}
-                onInput={(e) => (e.target.value = e.target.value.slice(0, 30))}
+                onInput={(e) => {
+                  const { value } = e.target;
+                  let formattedValue = value;
+
+                  switch (formik.values.idType) {
+                    case "aadhar":
+                      formattedValue = value.replace(/\D/g, "").slice(0, 12); // Only numbers, max 12
+                      break;
+                    case "pan":
+                      formattedValue = value
+                        .toUpperCase()
+                        .replace(/[^A-Z0-9]/g, "")
+                        .slice(0, 10); // PAN format
+                      break;
+                    case "voter":
+                      formattedValue = value
+                        .toUpperCase()
+                        .replace(/[^A-Z0-9]/g, "")
+                        .slice(0, 10); // Voter ID format
+                      break;
+                    case "driving":
+                      formattedValue = value
+                        .toUpperCase()
+                        .replace(/[^A-Z0-9]/g, "")
+                        .slice(0, 15); // Driving License format
+                      break;
+                    default:
+                      formattedValue = value.slice(0, 30); // Other IDs, max 30 characters
+                  }
+
+                  e.target.value = formattedValue;
+                }}
                 disabled={isReadOnly}
               />
             </Col>

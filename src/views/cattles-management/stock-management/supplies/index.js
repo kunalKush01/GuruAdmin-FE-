@@ -10,7 +10,7 @@ import { Col, Row } from "reactstrap";
 import NoContent from "../../../../components/partials/noContent";
 import SuppliesTable from "./table";
 import { Helmet } from "react-helmet";
-import '../../../../assets/scss/common.scss'
+import "../../../../assets/scss/common.scss";
 
 const Supplies = ({
   list,
@@ -21,6 +21,11 @@ const Supplies = ({
   setPagination,
   dropDownName,
   searchParams,
+  totalItems,
+  currentPage,
+  pageSize,
+  onChangePage,
+  onChangePageSize,
 }) => {
   const history = useHistory();
   const { t } = useTranslation();
@@ -58,10 +63,15 @@ const Supplies = ({
                 allPermissions={allPermissions}
                 subPermission={subPermission}
                 height="160px"
-                currentPage={pagination.page}
+                // currentPage={pagination.page}
                 currentFilter={dropDownName}
                 // allPermissions={allPermissions}
                 // subPermission={subPermission}
+                totalItems={totalItems}
+                currentPage={currentPage}
+                pageSize={pageSize}
+                onChangePage={onChangePage}
+                onChangePageSize={onChangePageSize}
               />
             </Then>
             <Else>
@@ -76,7 +86,7 @@ const Supplies = ({
             </Else>
           </If>
 
-          <If condition={query?.data?.totalPages > 1}>
+          {/* <If condition={query?.data?.totalPages > 1}>
             <Then>
               <Col xs={12} className="mb-2 d-flex justify-content-center">
                 <ReactPaginate
@@ -113,7 +123,7 @@ const Supplies = ({
                 />
               </Col>
             </Then>
-          </If>
+          </If> */}
         </Row>
       </div>
     </>

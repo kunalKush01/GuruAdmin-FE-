@@ -1847,3 +1847,21 @@
   .connected-user {
     color: $green;
   }
+  .pagination-card {
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.pagination-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0px;
+    z-index: 10;
+}

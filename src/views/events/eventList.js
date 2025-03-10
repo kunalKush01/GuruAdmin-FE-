@@ -23,6 +23,7 @@ import FormikCustomDatePicker from "../../components/partials/formikCustomDatePi
 import NoContent from "../../components/partials/noContent";
 import { WRITE } from "../../utility/permissionsVariable";
 import "../../assets/scss/viewCommon.scss";
+import { Card, Pagination } from "antd";
 
 const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
@@ -38,7 +39,7 @@ export default function EventList() {
         return "year";
       case "dashboard_weekly":
         return "week";
-        case "All":
+      case "All":
         return "All";
 
       default:
@@ -50,10 +51,21 @@ export default function EventList() {
 
   const [pagination, setPagination] = useState({
     page: 1,
-    limit: 3,
+    limit: 10,
   });
 
   const searchParams = new URLSearchParams(history.location.search);
+  const [currentpage, setCurrentpage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const onChangePage = (page) => {
+    setCurrentpage(page);
+    // Fetch new data based on the page
+  };
+
+  const onChangePageSize = (size) => {
+    setPageSize(size);
+    setCurrentpage(1); // Reset to first page when page size changes
+  };
 
   const currentPage = searchParams.get("page");
   const currentFilter = searchParams.get("filter");
@@ -68,12 +80,14 @@ export default function EventList() {
     }
   }, []);
 
-  let filterStartDate = dropDownName !== "All" 
-  ? moment().startOf(periodDropDown()).utcOffset(0, true).toISOString()
-  : null;
-  let filterEndDate = dropDownName !== "All"
-  ? moment().endOf(periodDropDown()).utcOffset(0, true).toISOString()
-  : null;
+  let filterStartDate =
+    dropDownName !== "All"
+      ? moment().startOf(periodDropDown()).utcOffset(0, true).toISOString()
+      : null;
+  let filterEndDate =
+    dropDownName !== "All"
+      ? moment().endOf(periodDropDown()).utcOffset(0, true).toISOString()
+      : null;
 
   let startDate = moment(filterStartDate).format("DD MMM ");
   let endDate = moment(filterEndDate).utcOffset(0).format("DD MMM, YYYY");
@@ -81,11 +95,12 @@ export default function EventList() {
 
   const getQueryParams = () => {
     const baseParams = {
-      ...pagination,
       languageId: selectedLang.id,
       search: searchBarValue,
+      page: currentpage,
+      limit: pageSize,
     };
-  
+
     if (dropDownName !== "All") {
       return {
         ...baseParams,
@@ -93,19 +108,21 @@ export default function EventList() {
         endDate: filterEndDate,
       };
     }
-  
+
     return baseParams;
   };
 
   const eventQuery = useQuery(
     [
       "Events",
-      pagination.page,
+      currentpage,
+      pageSize,
       startDate,
       endDate,
       selectedLang.id,
       searchBarValue,
     ],
+
     () => getAllEvents(getQueryParams()),
     {
       keepPreviousData: true,
@@ -129,6 +146,10 @@ export default function EventList() {
 
   const eventItems = useMemo(
     () => eventQuery?.data?.results ?? [],
+    [eventQuery]
+  );
+  const totalItems = useMemo(
+    () => eventQuery?.data?.totalResults ?? [],
     [eventQuery]
   );
 
@@ -235,19 +256,21 @@ export default function EventList() {
                 <Else>
                   <If condition={eventItems.length != 0} disableMemo>
                     <Then>
-                      {eventItems.map((item) => {
-                        return (
-                          <Col xs={12} key={item.id} className={"p-0"}>
-                            <EventCard
-                              data={item}
-                              currentFilter={routFilter}
-                              allPermissions={allPermissions}
-                              subPermission={subPermission}
-                              currentPage={routPagination}
-                            />
-                          </Col>
-                        );
-                      })}
+                      <div style={{marginBottom:"100px"}}>
+                        {eventItems.map((item) => {
+                          return (
+                            <Col xs={12} key={item.id} className={"p-0"}>
+                              <EventCard
+                                data={item}
+                                currentFilter={routFilter}
+                                allPermissions={allPermissions}
+                                subPermission={subPermission}
+                                currentPage={routPagination}
+                              />
+                            </Col>
+                          );
+                        })}
+                      </div>
                     </Then>
                     <Else>
                       <div className="noContent">
@@ -260,8 +283,19 @@ export default function EventList() {
                   </If>
                 </Else>
               </If>
-
-              <If condition={eventQuery?.data?.totalPages > 0}>
+              {totalItems > 0 && (
+                <Card className="pagination-card">
+                  <Pagination
+                    current={currentpage}
+                    pageSize={pageSize}
+                    total={totalItems}
+                    onChange={onChangePage}
+                    onShowSizeChange={(current, size) => onChangePageSize(size)}
+                    showSizeChanger
+                  />
+                </Card>
+              )}
+              {/* <If condition={eventQuery?.data?.totalPages > 0}>
                 <Then>
                   <Col
                     xs={12}
@@ -300,7 +334,7 @@ export default function EventList() {
                     />
                   </Col>
                 </Then>
-              </If>
+              </If> */}
             </Col>
             <Col
               xs={10}
