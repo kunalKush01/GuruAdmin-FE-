@@ -48,7 +48,7 @@ export default function News() {
     limit: 3,
   });
   const [currentpage, setCurrentpage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(12);
   const onChangePage = (page) => {
     setCurrentpage(page);
     // Fetch new data based on the page
