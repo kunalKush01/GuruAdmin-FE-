@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Modal, Input, Button, Select, message } from 'antd';
 import { sendBulkMessages } from '../../api/messageApi';
 import '../../assets/scss/viewCommon.scss';
@@ -13,6 +13,9 @@ const SendMessageModal = ({
   loading = false,
   selectedMembers = []
 }) => {
+  const textAreaRef = useRef(null);
+  const lastSelectionRef = useRef({ start: 0, end: 0 });
+  
   const supportedVariables = [
     { label: 'Name', value: '{{name}}' }
   ];
@@ -22,13 +25,90 @@ const SendMessageModal = ({
     onMessageChange(newText);
   };
 
-  const handleTextChange = (e) => {
-    const newValue = e.target.value;
-    // Remove any manually typed curly braces
-    const sanitizedValue = newValue.replace(/{|}/g, '');
-    onMessageChange(sanitizedValue);
+  const findVariables = (text) => {
+    const variableRegex = /\{\{name\}\}/g;
+    return [...text.matchAll(variableRegex)].map(match => ({
+      start: match.index,
+      end: match.index + match[0].length,
+      text: match[0]
+    }));
   };
-  
+
+  const handleTextChange = (e) => {
+
+    const input = e.target;
+    const newValue = e.target.value;
+    const selectionStart = input.selectionStart;
+    const selectionEnd = input.selectionEnd;
+
+    lastSelectionRef.current = { start: selectionStart, end: selectionEnd };
+
+    if (newValue.length < messageText.length) {
+      const variables = findVariables(messageText);
+
+      for (const variable of variables) {
+        if (selectionStart === variable.end && selectionStart === selectionEnd) {
+
+          const beforeVar = messageText.substring(0, variable.start);
+          const afterVar = messageText.substring(variable.end);
+          const updatedText = beforeVar + afterVar;
+          onMessageChange(updatedText);
+          
+          setTimeout(() => {
+            input.selectionStart = variable.start;
+            input.selectionEnd = variable.start;
+          }, 0);
+          return;
+        }
+
+        if (selectionStart === variable.start && selectionStart === selectionEnd) {
+          const beforeVar = messageText.substring(0, variable.start);
+          const afterVar = messageText.substring(variable.end);
+          const updatedText = beforeVar + afterVar;
+          onMessageChange(updatedText);
+          
+          setTimeout(() => {
+            input.selectionStart = variable.start;
+            input.selectionEnd = variable.start;
+          }, 0);
+          return;
+        }
+        
+        const deletedCharPos = selectionStart;
+        if (deletedCharPos > variable.start && deletedCharPos < variable.end) {
+          const beforeVar = messageText.substring(0, variable.start);
+          const afterVar = messageText.substring(variable.end);
+          const updatedText = beforeVar + afterVar;
+          onMessageChange(updatedText);
+          
+          setTimeout(() => {
+            input.selectionStart = variable.start;
+            input.selectionEnd = variable.start;
+          }, 0);
+          return;
+        }
+      }
+    }
+    
+    const lastChar = newValue.length > messageText.length 
+      ? newValue.charAt(selectionStart - 1) 
+      : null;
+      
+    if (lastChar === '{' || lastChar === '}') {
+      const filteredValue = newValue.substring(0, selectionStart - 1) + 
+                            newValue.substring(selectionStart);
+      
+      onMessageChange(filteredValue);
+
+      setTimeout(() => {
+        input.selectionStart = selectionStart - 1;
+        input.selectionEnd = selectionEnd - 1;
+      }, 0);
+      return;
+    }
+    
+    onMessageChange(newValue);
+  };
 
   const handleSendMessage = async () => {
     try {
@@ -49,6 +129,14 @@ const SendMessageModal = ({
     }
   };
 
+  useEffect(() => {
+    if (visible && textAreaRef.current) {
+      setTimeout(() => {
+        textAreaRef.current.focus();
+      }, 100);
+    }
+  }, [visible]);
+
   return (
     <Modal
       title="Send Message"
@@ -62,6 +150,7 @@ const SendMessageModal = ({
         <div>
           <div className="text-sm font-semibold mb-2 send-message-label">Message</div>
           <TextArea
+            ref={textAreaRef}
             placeholder="Type your message here..."
             value={messageText}
             onChange={handleTextChange}  
