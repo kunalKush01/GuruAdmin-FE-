@@ -67,7 +67,7 @@ const PregnancyReportTable = ({
       width: 200,
     },
     {
-      title: "Action",
+      title: t("action"),
       dataIndex: "action",
       key: "edit",
       width: 100,

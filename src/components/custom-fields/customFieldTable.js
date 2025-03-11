@@ -1,24 +1,26 @@
 import React, { useMemo } from "react";
 import { Table } from "antd";
-import '../../assets/scss/common.scss'
+import "../../assets/scss/common.scss";
+import { useTranslation } from "react-i18next";
 const CustomFieldTable = ({ customFields }) => {
+  const { t } = useTranslation();
   const columns = useMemo(() => {
     return [
       {
-        title: "Field Name",
+        title: t("Field_Name"),
         width: 100,
         dataIndex: "fieldName",
         key: "fieldName",
         fixed: "left",
       },
       {
-        title: "Field Type",
+        title: t("Field_Type"),
         width: 100,
         dataIndex: "fieldType",
         key: "fieldType",
       },
       {
-        title: "Required",
+        title: t('Required'),
         dataIndex: "isRequired",
         key: "isRequired",
         width: 100,
@@ -35,7 +37,7 @@ const CustomFieldTable = ({ customFields }) => {
         x: 1500,
         y: 400,
       }}
-      pagination={{ pageSize: 10}}
+      pagination={{ pageSize: 10 }}
       bordered
       className="customFieldTable"
     />

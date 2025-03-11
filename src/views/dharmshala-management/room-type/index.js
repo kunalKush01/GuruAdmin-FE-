@@ -192,7 +192,7 @@ const RoomTypesInfo = () => {
       render: (price) => `₹${price}`, // Format price with currency symbol
     },
     {
-      title: t("Action"),
+      title: t("action"),
       dataIndex: "action",
       key: "action",
       fixed: "right",

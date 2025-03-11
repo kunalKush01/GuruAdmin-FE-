@@ -81,7 +81,7 @@ const ReportTable = ({ data }) => {
       width: 120,
     },
     {
-      title: t("Actions"),
+      title: t("action"),
       dataIndex: "action",
       key: "action",
       width: 50,

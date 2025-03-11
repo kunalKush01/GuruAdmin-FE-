@@ -36,7 +36,7 @@ const CattleCategoryTable = ({ data = [], maxHeight, height, toggle }) => {
       width: 300,
     },
     {
-      title: "Action",
+      title: t("action"),
       dataIndex: "action",
       key: "action",
       fixed: "right",

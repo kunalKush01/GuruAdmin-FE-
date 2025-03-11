@@ -189,8 +189,8 @@ export default function FormWithoutFormikForBooking({
   };
 
   const getFieldLabel = (totalDue) => {
-    if (totalDue < 0) return "Refund:";
-    if (totalDue > 0) return "Collect Now:";
+    if (totalDue < 0) return `${t("refund")}:`;
+    if (totalDue > 0) return `${t("collect_now")}:`;
     return "Status:";
   };
 
@@ -767,10 +767,10 @@ export default function FormWithoutFormikForBooking({
         <div className="booking-room">
           <div className="booking-container">
             <div className="booking-header">
-              <div className="booking-title">Booking</div>
+              <div className="booking-title">{t('booking')}</div>
               {isEditing && formik.values.bookingId && (
                 <div className="booking-id">
-                  Booking ID: {formik.values.bookingCode}
+                  {t('dharmshala_booking_id')}: {formik.values.bookingCode}
                 </div>
               )}
             </div>
@@ -778,7 +778,8 @@ export default function FormWithoutFormikForBooking({
               <div className="date-picker-container">
                 <div className="date-picker-item">
                   <label htmlFor="from-date" className="date-label">
-                    From Date<span className="text-danger">*</span>:
+                    {t("from_date")}
+                    <span className="text-danger">*</span>:
                   </label>
                   <CustomDatePicker
                     id="from-date"
@@ -800,7 +801,8 @@ export default function FormWithoutFormikForBooking({
                 </div>
                 <div className="date-picker-item">
                   <label htmlFor="to-date" className="date-label">
-                    To Date<span className="text-danger">*</span>:
+                    {t("to_date")}
+                    <span className="text-danger">*</span>:
                   </label>
                   <CustomDatePicker
                     id="to-date"
@@ -828,7 +830,7 @@ export default function FormWithoutFormikForBooking({
               </div>
               <div className="member-container">
                 <label htmlFor="num-men" className="member-label">
-                  Members (M/W/K):
+                  {t("members")}(M/W/K):
                 </label>
                 <div className="member-inputs">
                   <div className="d-flex flex-column">
@@ -965,7 +967,7 @@ export default function FormWithoutFormikForBooking({
                 className={`tab ${activeTab === "payment" ? "active" : ""}`}
                 onClick={() => setActiveTab("payment")}
               >
-                Payment
+                {t("paymentGuest")}
               </div>
               <div
                 className={`tab ${
@@ -973,14 +975,14 @@ export default function FormWithoutFormikForBooking({
                 }`}
                 onClick={() => setActiveTab("paymentHistory")}
               >
-                Payment History
+                {t("payment_history")}
               </div>
             </div>
             {activeTab === "payment" && (
               <div className="payment-tab">
                 <div className="payment-field">
                   <label htmlFor="room-rent" className="payment-label">
-                    Room Rent:
+                    {t("room_rent")}:
                   </label>
                   <input
                     type="text"
@@ -988,12 +990,12 @@ export default function FormWithoutFormikForBooking({
                     value={formik.values.roomRent}
                     readOnly
                     className="payment-input"
-                    placeholder="Room Rent"
+                    placeholder={t("room_rent")}
                   />
                 </div>
                 <div className="payment-field">
                   <label htmlFor="security" className="payment-label">
-                    Security:
+                    {t("security")}:
                   </label>
                   <input
                     type="text"
@@ -1002,12 +1004,12 @@ export default function FormWithoutFormikForBooking({
                     readOnly
                     // onChange={(e) => formik.setFieldValue('security', e.target.value)}
                     className="payment-input"
-                    placeholder="Security"
+                    placeholder={t("security")}
                   />
                 </div>
                 <div className="payment-field">
                   <label htmlFor="total-amount" className="payment-label">
-                    Total Amount:
+                    {t("total_amount")}:
                   </label>
                   <input
                     type="text"
@@ -1015,14 +1017,14 @@ export default function FormWithoutFormikForBooking({
                     value={formik.values.totalAmount}
                     readOnly
                     className="payment-input"
-                    placeholder="Total Amount"
+                    placeholder={t("total_amount")}
                   />
                 </div>
                 {isEditing && (
                   <>
                     <div className="payment-field">
                       <label htmlFor="total-paid" className="payment-label">
-                        Total Paid:
+                        {t("total_paid")}:
                       </label>
                       <input
                         type="text"
@@ -1030,7 +1032,7 @@ export default function FormWithoutFormikForBooking({
                         value={formik.values.totalPaid}
                         readOnly
                         className="payment-input"
-                        placeholder="Total Paid"
+                        placeholder={t("total_paid")}
                       />
                     </div>
                     <div className="payment-field">
@@ -1065,17 +1067,23 @@ export default function FormWithoutFormikForBooking({
                       >
                         <p>
                           <strong>
-                            {payment.type === "deposit" ? "Deposit" : "Refund"}
+                            {payment.type === "deposit"
+                              ? t("deposit")
+                              : t("refund")}
                           </strong>
                           :{payment.amount} {formik.values.currency}
                         </p>
-                        <p>Date: {new Date(payment.date).toLocaleString()}</p>
-                        <p>Method: {payment.method}</p>
+                        <p>
+                          {t("date")}: {new Date(payment.date).toLocaleString()}
+                        </p>
+                        <p>
+                          {t("method")}: {payment.method}
+                        </p>
                       </Timeline.Item>
                     ))}
                   </Timeline>
                 ) : (
-                  <p>No payment history available.</p>
+                  <p>{t("no_payment_history_available")}</p>
                 )}
               </div>
             )}

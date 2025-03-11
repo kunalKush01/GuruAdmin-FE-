@@ -184,7 +184,7 @@ export default function CommitmentListTable(
       width: 150,
     },
     {
-      title: "Action",
+      title: t("action"),
       dataIndex: "action",
       key: "action",
       width: 100,
