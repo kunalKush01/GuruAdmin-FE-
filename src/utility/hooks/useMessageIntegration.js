@@ -13,9 +13,17 @@ export const useMessageIntegration = () => {
   const messageWorker = useMessageWorker();
   const queryClient = useQueryClient();
 
-  const updateConnection = useCallback((connected) => {
+  const updateConnection = useCallback((connected, user = null) => {
     setIsConnected(connected);
     messageWorker.updateConnectionStatus(connected);
+    
+    if (connected && user) {
+      localStorage.setItem('connectorStatus', JSON.stringify({
+        isConnected: true,
+        user,
+        timestamp: Date.now()
+      }));
+    }
   }, [messageWorker]);
 
   const checkConnectionStatus = useCallback(async () => {
@@ -28,7 +36,7 @@ export const useMessageIntegration = () => {
       );
       
       if (response.data.status === 'logged_in') {
-        updateConnection(true);
+        updateConnection(true, response.data.user);
         setLoggedInUser(response.data.user);
         setQrCode(null);
         setStatus(`Connected as ${response.data.user}`);
@@ -37,11 +45,13 @@ export const useMessageIntegration = () => {
         setQrCode(response.data.qr);
         setLoggedInUser(null);
         setStatus('Scan QR code to connect');
+        localStorage.removeItem('connectorStatus');
       }
     } catch (error) {
       console.error('Connection check failed:', error);
       setStatus('Connection error');
       updateConnection(false);
+      localStorage.removeItem('connectorStatus');
     }
   }, [isPollingActive, updateConnection]);
 
@@ -62,6 +72,8 @@ export const useMessageIntegration = () => {
       setQrCode(null);
       setStatus('Disconnected');
       setIsPollingActive(false);
+      
+      localStorage.removeItem('connectorStatus');
     } catch (error) {
       console.error('Disconnect failed:', error);
       setStatus('Disconnect error');
@@ -111,21 +123,25 @@ export const useMessageIntegration = () => {
   useEffect(() => {
     const savedStatus = localStorage.getItem('connectorStatus');
     if (savedStatus) {
-      const { isConnected: savedConnected, user, timestamp } = JSON.parse(savedStatus);
-      
-      const isExpired = Date.now() - timestamp > 24 * 60 * 60 * 1000;
-      
-      if (!isExpired && savedConnected) {
-        setIsPollingActive(true);
-        setStatus(`Connected as ${user}`);
-        setLoggedInUser(user);
-        updateConnection(true, user);
-        checkConnectionStatus();
-      } else {
+      try {
+        const { isConnected: savedConnected, user, timestamp } = JSON.parse(savedStatus);
+        
+        const isExpired = Date.now() - timestamp > 24 * 60 * 60 * 1000;
+        
+        if (!isExpired && savedConnected) {
+          setIsPollingActive(true);
+          setStatus(`Restoring connection as ${user}...`);
+          setLoggedInUser(user);
+          
+        } else {
+          localStorage.removeItem('connectorStatus');
+        }
+      } catch (error) {
+        console.error('Failed to parse saved connector status', error);
         localStorage.removeItem('connectorStatus');
       }
     }
-  }, [updateConnection, checkConnectionStatus]);
+  }, []);
 
   useEffect(() => {
     let interval;
