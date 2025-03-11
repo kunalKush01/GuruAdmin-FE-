@@ -7,7 +7,9 @@ export const hindiContent = {
   dashboard: "डैशबोर्ड",
   dharmshala: "धर्मशाला",
   donation: "दान",
-  commitment: "प्रतिज्ञा",
+  article_donation: "वस्तु दान",
+  suspense: "अज्ञात",
+  commitment: "बोली",
   family: "परिवार",
   personal: "निजी",
   official: "आधिकारिक",
@@ -126,7 +128,6 @@ export const hindiContent = {
   news_popOver_AddLang: "भाषा जोड़ें",
   news_popOver_Edit: "संपादित करें",
   news_popOver_Delete: "हटाएं",
-  article_donation: "अनुच्छेद दान",
   news_delete: "समाचार हटाएं",
   news_sure: "क्या आप वाकई इस समाचार को स्थायी रूप से हटाना चाहते हैं?",
   news_not_found: "कोई समाचार रिकॉर्ड नहीं मिला",
@@ -589,7 +590,6 @@ export const hindiContent = {
     "नया दान बॉक्स जोड़ने के लिए, बस 'संग्रह जोड़ें' पर क्लिक करें",
 
   // सभी संदिग्ध डेटा
-  suspense: "संदिग्ध",
   map_fields: "फील्ड को मैप करें",
   sample_file_download: "नमूना फ़ाइल डाउनलोड करें",
   transactionDate: "लेन-देन की तिथि और समय",
