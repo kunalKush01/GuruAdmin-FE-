@@ -433,9 +433,13 @@ export default function FormWithoutFormikForBooking({
     const roomsCombination = [];
 
     while (remainingGuests > 0) {
-      const suitableRoom = sortedRoomTypes.find(
+      let suitableRoom = sortedRoomTypes.find(
         (room) => room.capacity <= remainingGuests
       );
+      if (!suitableRoom) {
+        // If no suitable room found, pick the smallest available room to avoid undefined
+        suitableRoom = sortedRoomTypes[sortedRoomTypes.length - 1];
+      }
       if (suitableRoom) {
         roomsCombination.push({
           roomType: suitableRoom._id,
@@ -947,6 +951,7 @@ export default function FormWithoutFormikForBooking({
             isSearchEnabled={isSearchEnabled}
             isReadOnly={isReadOnly}
             isEditing={isEditing}
+            isCheckModal={false}
           />
         </div>
         <div className="guest-payment">

@@ -94,10 +94,17 @@ const RoomsContainer = ({
                         );
                       }
                     }}
-                    disabled={!isEditing && (!isSearchRoom || isReadOnly)}
+                    disabled={
+                      !isEditing &&
+                      (!isSearchRoom || isReadOnly) &&
+                      !isCheckModal
+                    }
                     onBlur={formik && !isCheckModal && formik.handleBlur}
                     name={`roomsData[${index}].roomType`}
-                    style={{ opacity: isSearchRoom || isEditing ? 1 : 0.5 }}
+                    style={{
+                      opacity:
+                        isSearchRoom || isEditing || isCheckModal ? 1 : 0.5,
+                    }}
                   >
                     <option value="">{t("Select_Room_Type")}</option>
                     {roomTypes.map((roomType) => (
@@ -146,7 +153,11 @@ const RoomsContainer = ({
                 name={`roomsData[${index}].building`}
                 style={{
                   opacity:
-                    !isEditing && (!room.roomType || !isSearchRoom) ? 0.5 : 1,
+                    !isEditing &&
+                    (!room.roomType || !isSearchRoom) &&
+                    !isCheckModal
+                      ? 0.5
+                      : 1,
                 }}
               >
                 <option value="">{t("select_building")}</option>
@@ -187,7 +198,11 @@ const RoomsContainer = ({
                 name={`roomsData[${index}].floor`}
                 style={{
                   opacity:
-                    !isEditing && (!room.building || !isSearchRoom) ? 0.5 : 1,
+                    !isEditing &&
+                    (!room.building || !isSearchRoom) &&
+                    !isCheckModal
+                      ? 0.5
+                      : 1,
                 }}
               >
                 <option value="">{t("select_floor")}</option>
@@ -225,7 +240,8 @@ const RoomsContainer = ({
                 style={{
                   opacity:
                     !isEditing &&
-                    (!room.floor || !room.roomType || !isSearchRoom)
+                    (!room.floor || !room.roomType || !isSearchRoom) &&
+                    !isCheckModal
                       ? 0.5
                       : 1,
                 }}
@@ -299,9 +315,9 @@ const RoomsContainer = ({
           <button
             className="add-rooms-button"
             onClick={handleButtonClick(handleAddRoom)}
-            disabled={!isEditing && !isSearchRoom}
+            disabled={!isEditing && !isSearchRoom && !isCheckModal}
             style={{
-              opacity: !isEditing && !isSearchRoom ? 0.5 : 1,
+              opacity: !isEditing && !isSearchRoom && !isCheckModal ? 0.5 : 1,
             }}
           >
             {t("addmore_room")}
@@ -309,9 +325,9 @@ const RoomsContainer = ({
           <button
             className="clear-rooms-button"
             onClick={handleButtonClick(handleClearRooms)}
-            disabled={!isEditing && !isSearchRoom}
+            disabled={!isEditing && !isSearchRoom && !isCheckModal}
             style={{
-              opacity: !isEditing && !isSearchRoom ? 0.5 : 1,
+              opacity: !isEditing && !isSearchRoom && !isCheckModal ? 0.5 : 1,
             }}
           >
             {t("clear_all")}
