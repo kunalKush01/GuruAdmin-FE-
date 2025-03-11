@@ -225,6 +225,11 @@ export const deleteHousekeepingTask = (taskId) =>
       requestFunction: (axios) => axios.post(`bookings/roomhold`, payload),
       successCode: 201,
     });
+  export const roomunhold = (payload) =>
+    callDharmshalaApi({
+      requestFunction: (axios) => axios.post(`bookings/roomunhold`, payload),
+      successCode: 201,
+    });
 
   export const createPayment = (payload) =>
     callDharmshalaApi({
