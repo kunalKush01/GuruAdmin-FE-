@@ -12,6 +12,7 @@ import { Spinner } from "reactstrap";
 import styled from "styled-components";
 import { getDonationCustomFields } from "../../api/customFieldsApi";
 import { donationDownloadReceiptApi, getDonation } from "../../api/donationApi";
+import { downloadFile } from "../../api/sharedStorageApi";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import receiptIcon from "../../assets/images/icons/receiptIcon.svg";
@@ -54,6 +55,8 @@ export default function DonationANTDListTable(
     format: [5, 7],
   };
 
+  const REACT_APP_BASEURL_PUBLIC=process.env.REACT_APP_BASEURL_PUBLIC;
+
   const shareReceiptOnWhatsApp = (item, receiptLink) => {
     const message = `Hello ${
       item.donarName
@@ -69,13 +72,34 @@ export default function DonationANTDListTable(
     );
   };
 
-  const handleWhatsAppShare = (item) => {
+  const handleWhatsAppShare = async (item) => {
+    if (!item.receiptName) {
+      toast.error("Receipt file path is missing");
+      return;
+    }
+  
     setIsLoading(item._id);
-    getReceiptForWhatsApp.mutate({
-      donationId: item._id,
-      languageId: selectedLang.id,
-    });
+  
+    try {
+      const receiptDownloadLink = `${REACT_APP_BASEURL_PUBLIC}storage/download/donation/${item.receiptName}`;
+  
+      const message = `Hello ${item.donarName}, thank you for your donation of ₹${item.amount.toLocaleString(
+        "en-IN"
+      )} to ${loggedTemple?.name}. You can download your receipt here: ${receiptDownloadLink}`;
+  
+      const phoneNumber = `${item.user?.countryCode?.replace("+", "") || ""}${item.user?.mobileNumber || ""}`;
+
+      window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, "_blank");
+      
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error sharing receipt:", error);
+      toast.error("Failed to send receipt via WhatsApp");
+      setIsLoading(false);
+    }
   };
+  
+  
 
   const getReceiptForWhatsApp = useMutation({
     mutationFn: (payload) => {
@@ -101,20 +125,23 @@ export default function DonationANTDListTable(
   });
 
   const downloadReceipt = useMutation({
-    mutationFn: (payload) => {
-      return getDonation(payload);
-    },
-    onSuccess: (data) => {
-      if (!data.error) {
-        setIsLoading(false);
-        if (data.result.receiptLink) {
-          window.open(`${data.result.receiptLink}`, "_blank");
-        } else {
-          toast.error("Receipt link not available at this moment");
-        }
+    mutationFn: async (item) => {
+      if (!item.receiptName) {
+        throw new Error("Receipt file path is missing");
       }
+      return downloadFile(`donation/${item.receiptName}`);
+    },
+    onSuccess: (blob) => {
+      const url = window.URL.createObjectURL(new Blob([blob], { type: "application/pdf" })); 
+      window.open(url, "_blank"); 
+      toast.success("Receipt opened successfully");
+    },
+    onError: () => {
+      toast.error("Failed to open the receipt");
     },
   });
+  
+  
 
   const loggedTemple = useSelector((state) => state.auth.trustDetail);
   const [receipt, setReceipt] = useState();
@@ -522,28 +549,19 @@ export default function DonationANTDListTable(
               <Spinner color="success" />
             ) : (
               <img
-                src={receiptIcon}
-                width={25}
-                className="cursor-pointer me-2"
-                onClick={() => {
-                  if (!item.receiptLink) {
-                    setIsLoading(item?._id);
-                    downloadReceipt.mutate({
-                      donationId: item._id,
-                      languageId: selectedLang.id,
-                    });
-                  } else {
-                    window.open(`${item.receiptLink}`, "_blank");
-                  }
-                }}
-              />
+                  src={receiptIcon}
+                  width={25}
+                  className="cursor-pointer me-2"
+                  onClick={() => downloadReceipt.mutate(item)}
+                />
             )}
-            <img
+           <img
               src={whatsappIcon}
               width={25}
               className="cursor-pointer"
               onClick={() => handleWhatsAppShare(item)}
             />
+
           </div>
         ),
         action: (
