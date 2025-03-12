@@ -22,7 +22,7 @@ const serchablepath = [
   "/stock-management/supplies",
   "/stock-management/usage",
   "/stock-management/item",
-  "/dharmshala/dashboard",
+  // "/dharmshala/dashboard",
   "/booking/info",
   "/dharmshala/info",
   "/roomtype/info",
@@ -80,8 +80,8 @@ export const setPlaceholderSerchbar = () => {
       return "search_cattles_usage";
     case "/stock-management/item":
       return "search_cattles_items";
-    case "/dharmshala/dashboard":
-      return "search_dharmshala";
+    // case "/dharmshala/dashboard":
+    //   return "search_dharmshala";
     case "/booking/info":
       return "search_bookings";
     case "/dharmshala/info":

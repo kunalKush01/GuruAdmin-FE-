@@ -23,56 +23,19 @@ export default function BoxListCard({
   const history = useHistory();
   return (
     <div className="donationboxwrapper">
-      <Card>
+      <Card style={{height:"400px",minHeight:"400px"}}>
         <CardBody>
           <Row className=" d-flex justify-content-between w-100 m-0">
             <Col xs={2} className="p-0 d-flex justify-content-center">
               <div style={{ width: "30px" }}></div>
             </Col>
             <Col xs={8} className="p-0">
-              <div
-                className="d-flex flex-column cursor-pointer align-items-center "
-                onClick={() => {
-                  Swal.fire({
-                    padding: "15px 20px",
-                    html: `<div className="text-start">
-                                                <div>Date : ${moment(
-                                                  data.collectionDate
-                                                ).format(
-                                                  "dddd, DD MMM, YYYY"
-                                                )}</div>
-                                                <div>
-                                                  Amount : ₹${data?.amount.toLocaleString(
-                                                    "en-IN"
-                                                  )} 
-                                                </div>
-
-                                                <div>
-                                                  Description: <span className='descriptionBoxSwal'>
-                                                  ${ConvertToString(
-                                                    data?.remarks
-                                                  )}
-                                                  </span> 
-                                                </div>
-                                                  ${data.customFields
-                                                    .map(
-                                                      (field) => `
-                                                      <div>
-                                                        ${field.fieldName}: <span class='customFieldBoxSwal'>${field.value}</span>
-                                                      </div>`
-                                                    )
-                                                    .join("")}
-                                            </div>
-                                              `,
-                    showCloseButton: false,
-                    showConfirmButton: false,
-                    cancelButtonText: "cancel",
-                    cancelButtonAriaLabel: "cancel",
-                  });
-                }}
-              >
+              <div className="d-flex flex-column align-items-center ">
                 <img src={donationBoxIcon} style={{ width: "80px" }} />
-                <div className="date">
+                <div
+                  className="date"
+                  style={{ width: "180px", textAlign: "center" }}
+                >
                   <span>Date :</span>{" "}
                   {moment(data.collectionDate).format("dddd, DD MMM, YYYY")}
                 </div>
@@ -89,7 +52,7 @@ export default function BoxListCard({
                     }}
                   />
                 </div>
-                {data.customFields.map((field) => (
+                {data.customFields.slice(0, 3).map((field) => (
                   <div
                     className="donationBox_customField"
                     key={field.fieldName}
@@ -111,6 +74,27 @@ export default function BoxListCard({
                     </span>{" "}
                   </div>
                 ))}
+
+                <button
+                  className="btn btn-link mb-1"
+                  onClick={() => {
+                    Swal.fire({
+                      padding: "15px 20px",
+                      html: `<div className="text-start">
+                                <div>Date : ${moment(data.collectionDate).format("dddd, DD MMM, YYYY")}</div>
+                                <div>Amount : ₹${data?.amount.toLocaleString("en-IN")}</div>
+                                <div>Description: <span className='descriptionBoxSwal'>${ConvertToString(data?.remarks)}</span></div>
+                                ${data.customFields.map((field) =>`<div>${field.fieldName}: <span class='customFieldBoxSwal'>${field.value}</span></div>`).join("")}
+                                </div>`,
+                      showCloseButton: false,
+                      showConfirmButton: false,
+                      cancelButtonText: "cancel",
+                      cancelButtonAriaLabel: "cancel",
+                    });
+                  }}
+                >
+                 Show More...
+                </button>
                 <CardFooter className="w-100">
                   <div>₹{data?.amount.toLocaleString("en-IN")}</div>
                 </CardFooter>
