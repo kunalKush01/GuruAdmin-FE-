@@ -55,7 +55,7 @@ export default function DonationANTDListTable(
     format: [5, 7],
   };
 
-  const REACT_APP_BASEURL_PUBLIC=process.env.REACT_APP_BASEURL_PUBLIC;
+  const REACT_APP_BASEURL_PUBLIC = process.env.REACT_APP_BASEURL_PUBLIC;
 
   const shareReceiptOnWhatsApp = (item, receiptLink) => {
     const message = `Hello ${
@@ -73,24 +73,42 @@ export default function DonationANTDListTable(
   };
 
   const handleWhatsAppShare = async (item) => {
-    if (!item.receiptName) {
-      toast.error("Receipt file path is missing");
-      return;
-    }
-  
-    setIsLoading(item._id);
-  
     try {
-      const receiptDownloadLink = `${REACT_APP_BASEURL_PUBLIC}storage/download/donation/${item.receiptName}`;
-  
-      const message = `Hello ${item.donarName}, thank you for your donation of ₹${item.amount.toLocaleString(
-        "en-IN"
-      )} to ${loggedTemple?.name}. You can download your receipt here: ${receiptDownloadLink}`;
-  
-      const phoneNumber = `${item.user?.countryCode?.replace("+", "") || ""}${item.user?.mobileNumber || ""}`;
+      setIsLoading(item._id);
 
-      window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, "_blank");
-      
+      let receiptDownloadLink = item.receiptLink ? item.receiptLink : null;
+
+      // If no receiptLink is available, fetch it from the API
+      if (!receiptDownloadLink) {
+        console.log("Fetching receipt link...");
+        const response = await getDonation({ donationId: item._id });
+
+        if (response?.result?.receiptName) {
+          receiptDownloadLink = `${REACT_APP_BASEURL_PUBLIC}storage/download/donation/${response.result.receiptName}`;
+        } else {
+          toast.error("Receipt not available at this moment.");
+          setIsLoading(false);
+          return;
+        }
+      }
+
+      const message = `Hello ${
+        item.donarName
+      }, thank you for your donation of ₹${item.amount.toLocaleString(
+        "en-IN"
+      )} to ${
+        loggedTemple?.name
+      }. You can download your receipt here: ${receiptDownloadLink}`;
+
+      const phoneNumber = `${item.user?.countryCode?.replace("+", "") || ""}${
+        item.user?.mobileNumber || ""
+      }`;
+
+      window.open(
+        `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`,
+        "_blank"
+      );
+
       setIsLoading(false);
     } catch (error) {
       console.error("Error sharing receipt:", error);
@@ -98,8 +116,6 @@ export default function DonationANTDListTable(
       setIsLoading(false);
     }
   };
-  
-  
 
   const getReceiptForWhatsApp = useMutation({
     mutationFn: (payload) => {
@@ -125,23 +141,26 @@ export default function DonationANTDListTable(
   });
 
   const downloadReceipt = useMutation({
-    mutationFn: async (item) => {
-      if (!item.receiptName) {
-        throw new Error("Receipt file path is missing");
+    mutationFn: (payload) => getDonation(payload),
+    onSuccess: (data) => {
+      setIsLoading(false);
+
+      if (data?.result?.receiptName) {
+        const receiptDownloadLink = `${REACT_APP_BASEURL_PUBLIC}storage/download/donation/${data.result.receiptName}`;
+        console.log("Opening Receipt in New Tab:", receiptDownloadLink);
+
+        // Open the PDF directly
+        window.open(receiptDownloadLink, "_blank");
+      } else {
+        toast.error("Receipt link not available at this moment.");
       }
-      return downloadFile(`donation/${item.receiptName}`);
     },
-    onSuccess: (blob) => {
-      const url = window.URL.createObjectURL(new Blob([blob], { type: "application/pdf" })); 
-      window.open(url, "_blank"); 
-      toast.success("Receipt opened successfully");
-    },
-    onError: () => {
-      toast.error("Failed to open the receipt");
+    onError: (error) => {
+      setIsLoading(false);
+      console.error("Error fetching donation receipt:", error);
+      toast.error("Failed to fetch receipt. Please try again.");
     },
   });
-  
-  
 
   const loggedTemple = useSelector((state) => state.auth.trustDetail);
   const [receipt, setReceipt] = useState();
@@ -549,19 +568,28 @@ export default function DonationANTDListTable(
               <Spinner color="success" />
             ) : (
               <img
-                  src={receiptIcon}
-                  width={25}
-                  className="cursor-pointer me-2"
-                  onClick={() => downloadReceipt.mutate(item)}
-                />
+                src={receiptIcon}
+                width={25}
+                className="cursor-pointer me-2"
+                onClick={() => {
+                  if (!item.receiptLink) {
+                    setIsLoading(item?._id);
+                    downloadReceipt.mutate({
+                      donationId: item._id,
+                      languageId: selectedLang.id,
+                    });
+                  } else {
+                    window.open(`${item.receiptLink}`, "_blank");
+                  }
+                }}
+              />
             )}
-           <img
+            <img
               src={whatsappIcon}
               width={25}
               className="cursor-pointer"
               onClick={() => handleWhatsAppShare(item)}
             />
-
           </div>
         ),
         action: (
