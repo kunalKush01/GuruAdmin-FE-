@@ -54,7 +54,6 @@ const DharmshalaBookings = () => {
     if (currentPage || currentFilter || currentStatus) {
       setdropDownName(currentFilter);
       setStatusFilter(currentStatus || "All");
-      setPagination({ ...pagination, page: parseInt(currentPage) });
     }
   }, [currentPage, currentFilter, currentStatus]);
 
@@ -78,11 +77,16 @@ const DharmshalaBookings = () => {
     [
       "dharmshalaBookingList",
       pagination.page,
+      pagination.limit,
       selectedLang.id,
       searchBarValue,
       statusFilter,
     ],
-    () => getDharmshalaBookingList()
+    () =>
+      getDharmshalaBookingList({
+        page: pagination.page,
+        limit: pagination.limit,
+      })
   );
 
   const dharmshalaBookingListData = useMemo(
@@ -362,7 +366,7 @@ const DharmshalaBookings = () => {
                   </If>
                 </Else>
               </If>
-              <If
+              {/* <If
                 condition={
                   !dharmshalaBookingList.isFetching &&
                   dharmshalaBookingList?.data?.totalPages > 1
@@ -406,7 +410,7 @@ const DharmshalaBookings = () => {
                     />
                   </Col>
                 </Then>
-              </If>
+              </If> */}
             </div>
           </Row>
         </div>

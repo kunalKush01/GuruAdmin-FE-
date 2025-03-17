@@ -297,9 +297,9 @@ export const processBookingPayment = (bookingId, paymentData) =>
     requestFunction: (axios) => axios.post(`bookings/${bookingId}`, paymentData),
   });
 
-export const getDharmshalaBookingList = () =>
+export const getDharmshalaBookingList = (payload) =>
   callDharmshalaApi({
-    requestFunction: (axios) => axios.get(`bookings/` ),
+    requestFunction: (axios) => axios.post(`bookings/getBookings`,payload ),
     showToastOnSuccess: false,
     showToastOnError: false,
   });
