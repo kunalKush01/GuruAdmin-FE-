@@ -72,6 +72,13 @@ const DharmshalaBookings = () => {
 
   let filterStartDate = dayjs().startOf(periodDropDown()).utc().toISOString();
   let filterEndDate = dayjs().endOf(periodDropDown()).utc().toISOString();
+  useEffect(() => {
+    setPagination((prev) => ({
+      ...prev,
+      page: 1,
+      limit: 10,
+    }));
+  }, [showPastRequests]);
 
   const dharmshalaBookingList = useQuery(
     [
@@ -81,9 +88,11 @@ const DharmshalaBookings = () => {
       selectedLang.id,
       searchBarValue,
       statusFilter,
+      showPastRequests,
     ],
     () =>
       getDharmshalaBookingList({
+        bookingType: !showPastRequests ? "upcoming" : "past",
         page: pagination.page,
         limit: pagination.limit,
       })
@@ -93,7 +102,10 @@ const DharmshalaBookings = () => {
     () => dharmshalaBookingList.data?.results ?? [],
     [dharmshalaBookingList.data]
   );
-
+  const totalItems = useMemo(
+    () => dharmshalaBookingList.data?.totalResults ?? [],
+    [dharmshalaBookingList.data]
+  );
   const queryClient = useQueryClient();
 
   const handleImportFile = async (event) => {
@@ -123,19 +135,19 @@ const DharmshalaBookings = () => {
     const currentDate = dayjs().startOf("day");
     let filteredData = dharmshalaBookingListData;
     const dateFormat = "DD-MM-YYYY";
-    if (showPastRequests) {
-      filteredData = filteredData.filter((item) =>
-        dayjs(item.startDate, dateFormat).isBefore(currentDate)
-      );
-    } else {
-      filteredData = filteredData.filter(
-        (item) =>
-          dayjs(item.startDate, dateFormat).isAfter(currentDate) ||
-          dayjs(item.startDate, dateFormat).isSame(currentDate) ||
-          dayjs(item.endDate, dateFormat).isAfter(currentDate) ||
-          dayjs(item.endDate, dateFormat).isSame(currentDate)
-      );
-    }
+    // if (showPastRequests) {
+    //   filteredData = filteredData.filter((item) =>
+    //     dayjs(item.startDate, dateFormat).isBefore(currentDate)
+    //   );
+    // } else {
+    //   filteredData = filteredData.filter(
+    //     (item) =>
+    //       dayjs(item.startDate, dateFormat).isAfter(currentDate) ||
+    //       dayjs(item.startDate, dateFormat).isSame(currentDate) ||
+    //       dayjs(item.endDate, dateFormat).isAfter(currentDate) ||
+    //       dayjs(item.endDate, dateFormat).isSame(currentDate)
+    //   );
+    // }
 
     if (statusFilter) {
       if (statusFilter === "all") {
@@ -333,6 +345,7 @@ const DharmshalaBookings = () => {
                       currentFilter={dropDownName}
                       currentPage={pagination.page}
                       isMobileView={isMobileView}
+                      totalItems={totalItems}
                       pageSize={pagination.limit}
                       onChangePage={(page) =>
                         setPagination((prev) => ({ ...prev, page }))

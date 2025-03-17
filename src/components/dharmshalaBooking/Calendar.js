@@ -62,7 +62,7 @@ const Calendar = () => {
   const [events, setEvents] = useState([]);
   const [days, setDays] = useState([]);
   const [properties, setProperties] = useState([]);
-  const [fromDate, setFromDate] = useState(moment().startOf('day'));
+  const [fromDate, setFromDate] = useState(moment().startOf("day"));
   const [toDate, setToDate] = useState(null);
   const [propertyTypes, setPropertyTypes] = useState([]);
   const [selectedRoomType, setSelectedRoomType] = useState("All");
@@ -81,12 +81,12 @@ const Calendar = () => {
       setIsDesktop(window.innerWidth >= 768);
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
   useEffect(() => {
     if (isDesktop && fromDate) {
-      setToDate(fromDate.clone().add(30, 'days'));
+      setToDate(fromDate.clone().add(30, "days"));
     }
   }, [isDesktop, fromDate]);
   //**filter event based on date selection */
@@ -115,6 +115,13 @@ const Calendar = () => {
 
   useEffect(() => {
     const fetchEvents = async () => {
+      const formattedFromDate = fromDate
+        ? moment(fromDate).format("YYYY-MM-DD")
+        : null;
+      const formattedToDate = toDate
+        ? moment(toDate).format("YYYY-MM-DD")
+        : null;
+
       const dateFromDate = fromDate ? new Date(fromDate) : null;
       const date = dateFromDate ? dateFromDate.getDate() : null;
       const year = dateFromDate
@@ -124,7 +131,14 @@ const Calendar = () => {
         ? dateFromDate.getMonth() + 1
         : new Date().getMonth() + 1;
 
-      const data = await fetchBookings(year, month, date, days);
+      const data = await fetchBookings(
+        year,
+        month,
+        date,
+        days,
+        formattedFromDate,
+        formattedToDate
+      );
 
       if (window.matchMedia("(max-width: 768px)").matches) {
         const formattedDays = weekDays.map((day) => ({
@@ -149,7 +163,7 @@ const Calendar = () => {
     };
 
     fetchEvents();
-  }, [weekDays, window.innerWidth, fromDate, days]);
+  }, [weekDays, window.innerWidth, fromDate,toDate, days]);
   const updateMonth = (days) => {
     const firstDay = days[0]?.date;
     if (firstDay) {
