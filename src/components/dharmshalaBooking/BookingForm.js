@@ -56,8 +56,13 @@ export default function BookingForm({
       });
       return;
     }
+    
     setBookingData({ ...formData, isEditing, etag: currentEtag });
-    setIsPaymentModalOpen(true);
+    if (formData.status === "Payment Pending") {
+      await handlePaymentSave({ amount: 0, status: "pendingPayment" });
+    } else {
+      setIsPaymentModalOpen(true);
+    }
   };
 
   const handlePaymentSave = async (paymentDetails) => {
@@ -114,7 +119,7 @@ export default function BookingForm({
           paymentDetails,
           security: bookingData.security,
           imagePath: bookingData.imagePath,
-          status: paymentDetails.status,
+          status: paymentDetails.status || "Payment Pending",
           etag: bookingData.etag,
         };
 
@@ -224,6 +229,7 @@ export default function BookingForm({
                     ? formik.values.fromDate.format("YYYY-MM-DD")
                     : undefined
                 }
+                status={formik.values.status}
               />
             </>
           )}
