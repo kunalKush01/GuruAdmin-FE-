@@ -69,7 +69,6 @@ const Calendar = () => {
   const [toggleSwitch, setToggleSwitch] = useState(false);
   const [resizingEvent, setResizingEvent] = useState(null);
   const [resizeProperty, setResizeProperty] = useState(null);
-  const [filterEventDataDay, setFilterEventDataDay] = useState([]);
   const [weekDays, setWeekDays] = useState([]);
   const [showAvailableOnly, setShowAvailableOnly] = useState(false);
   const [currentMonth, setCurrentMonth] = useState("");
