@@ -1,4 +1,4 @@
-amount,commitmentEndDate,donarName,paidAmount,paidStatus,paymentMethod,user.countryCode,user.countryName,user.email,user.mobileNumber,user.name,categoryId,commitmentId
-1001,2023-06-02T09:54:14.047Z,Name 1,500,partial,UPI,91,India,name1@gmail.com,9876543210,Name 1,652557ed24d7857699773058,BM/2023-24/000001
-2002,2023-06-02T10:07:04.187Z,Name 2,2002,completed,UPI,91,India,name2@gmail.com,9876543210,Name 2,652557ed24d7857699773058,DM/2023-24/000001
-3003,2023-06-02T10:07:04.187Z,Name 3,0,pending,,91,India,name3@gmail.com,9876543210,Name 3,652557ed24d7857699773058,PM/2023-24/000001
+amount,commitmentEndDate,donarName,paymentMethod,user.countryCode,user.countryName,user.email,user.mobileNumber,user.name,categoryId,commitmentId
+1,2023-06-02T09:54:14.047Z,Name 1,UPI,91,India,name1@gmail.com,9876543210,Name 1,652557ed24d7857699773058,BM/2023-24/000001
+2,2023-06-02T10:07:04.187Z,Name 2,UPI,91,India,name2@gmail.com,9876543210,Name 2,652557ed24d7857699773058,DM/2023-24/000001
+3,2023-06-02T10:07:04.187Z,Name 3,,91,India,name3@gmail.com,9876543210,Name 3,652557ed24d7857699773058,PM/2023-24/000001
