@@ -106,7 +106,6 @@ const Calendar = () => {
 
       return isInDateRange;
     });
-
     return filteredData;
   }, [events, fromDate, toDate, days]);
   useEffect(() => {
@@ -139,6 +138,7 @@ const Calendar = () => {
         formattedFromDate,
         formattedToDate
       );
+      console.log("first",data)
 
       if (window.matchMedia("(max-width: 768px)").matches) {
         const formattedDays = weekDays.map((day) => ({

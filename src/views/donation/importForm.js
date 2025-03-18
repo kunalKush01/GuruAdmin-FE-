@@ -420,8 +420,8 @@ function ImportForm({
                 className="addAction-btn mt-2"
                 type="submit"
                 style={{ width: "100%" }}
-                disabled={loading}
-              >
+                disabled={loading || !file} // Disable if loading or no file selected
+                >
                 {loading ? <Spinner size="sm" /> : <span>{t("import")}</span>}
               </ReactstrapButton>
             </div>

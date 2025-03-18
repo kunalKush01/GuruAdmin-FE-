@@ -466,7 +466,10 @@ export default function Donation() {
               <img
                 src={arrowLeft}
                 className="me-2  cursor-pointer"
-                onClick={() => setShowDonationHistory(false)}
+                onClick={() => {
+                  setShowDonationHistory(false);
+                  queryClient.invalidateQueries("donations");
+                }}
               />
             ) : (
               <div></div>
@@ -880,7 +883,10 @@ export default function Donation() {
               <img
                 src={arrowLeft}
                 className="me-2  cursor-pointer"
-                onClick={() => setShowSuspenseHistory(false)}
+                onClick={() => {
+                  setShowSuspenseHistory(false);
+                  queryClient.invalidateQueries("suspenseData");
+                }}
               />
             ) : (
               <div></div>

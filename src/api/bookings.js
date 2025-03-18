@@ -13,7 +13,7 @@ export const fetchBookings = async (
   formattedFromDate,
   formattedToDate
 ) => {
-  const monthKey = `${year}-${month.toString().padStart(2, "0")}`;
+  // const monthKey = `${year}-${month.toString().padStart(2, "0")}`;
 
   try {
     const response = await getDharmshalaBookingList({
@@ -24,24 +24,25 @@ export const fetchBookings = async (
     if (date === null) {
       return bookings;
     }
+    return bookings
 
-    const filteredBookings = bookings.filter((booking) => {
-      const checkInDate = moment(booking.startDate, "DD-MM-YYYY");
-      const checkOutDate = moment(booking.endDate, "DD-MM-YYYY");
+    // const filteredBookings = bookings.filter((booking) => {
+    //   const checkInDate = moment(booking.startDate, "DD-MM-YYYY");
+    //   const checkOutDate = moment(booking.endDate, "DD-MM-YYYY");
 
-      return (
-        // ✅ Event starts within range
-        (checkInDate.isSameOrAfter(formattedFromDate) &&
-          checkInDate.isSameOrBefore(formattedToDate)) ||
-        // ✅ Event ends within range
-        (checkOutDate.isSameOrAfter(formattedFromDate) &&
-          checkOutDate.isSameOrBefore(formattedToDate)) ||
-        // ✅ Event ends exactly on the fromDate
-        checkOutDate.isSame(formattedFromDate, "day")
-      );
-    });
+    //   return (
+    //     // ✅ Event starts within range
+    //     (checkInDate.isSameOrAfter(formattedFromDate) &&
+    //       checkInDate.isSameOrBefore(formattedToDate)) ||
+    //     // ✅ Event ends within range
+    //     (checkOutDate.isSameOrAfter(formattedFromDate) &&
+    //       checkOutDate.isSameOrBefore(formattedToDate)) ||
+    //     // ✅ Event ends exactly on the fromDate
+    //     checkOutDate.isSame(formattedFromDate, "day")
+    //   );
+    // });
 
-    return filteredBookings;
+    // return filteredBookings;
   } catch (error) {
     console.error("Error fetching bookings:", error);
     return [];
