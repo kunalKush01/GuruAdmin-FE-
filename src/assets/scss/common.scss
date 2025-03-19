@@ -4132,12 +4132,16 @@
         gap: 10px;
     }
 
+    .date-picker-container {
+        width: 50%;
+    }
+
     .calendar-filter {
         width: 100%;
         display: flex;
         align-items: center;
         margin-left: 0px;
-        justify-content: flex-start;
+        justify-content: center !important;
     }
 
     .calendar-filter label {

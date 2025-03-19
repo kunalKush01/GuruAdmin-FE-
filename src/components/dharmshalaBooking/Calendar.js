@@ -21,33 +21,29 @@ const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 const numPlaceholderRows = 14;
 const numPlaceholderCells = window.innerWidth <= 768 ? 7 : 31;
 const TOTAL_ROWS = 14;
+const PlaceholderRows = ({ numRows, days = [] }) => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
-const PlaceholderRows = ({ numRows, numCells, fromDate, toDate }) => {
-  const rows = Array.from({ length: numRows });
-  const calculateCells = () => {
-    if (fromDate && toDate) {
-      const start = moment(fromDate);
-      const end = moment(toDate);
-      const days = end.diff(start, "days") + 1; // Include end date
-      return Array.from({ length: days });
-    }
-    return Array.from({ length: numCells });
-  };
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
 
-  const cells = calculateCells();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Ensure days is always an array and handle undefined case
+  const visibleDays = useMemo(() => (isMobile ? days.slice(0, 7) : days), [isMobile, days]);
 
   return (
     <>
-      {rows.map((_, rowIndex) => (
-        <div
-          key={rowIndex}
-          className="calendar-property-row"
-          id="mobile-row-view"
-        >
+      {Array.from({ length: numRows }).map((_, rowIndex) => (
+        <div key={rowIndex} className="calendar-property-row" id="mobile-row-view">
           <div className="property-cell"></div>
           <div className="separator" style={{ height: "40px" }} />
           <div className="day-cells-container">
-            {cells.map((_, cellIndex) => (
+            {visibleDays.map((_, cellIndex) => (
               <div key={cellIndex} className="day-cell"></div>
             ))}
           </div>
@@ -74,7 +70,7 @@ const Calendar = () => {
   const [currentMonth, setCurrentMonth] = useState("");
   const { t } = useTranslation();
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
-
+  console.log(events)
   useEffect(() => {
     const handleResize = () => {
       setIsDesktop(window.innerWidth >= 768);
@@ -944,157 +940,135 @@ const Calendar = () => {
                       {(window.matchMedia("(max-width: 768px)").matches
                         ? weekDays
                         : days
-                      )
-                        .filter((day) => {
-                          const dayStart = new Date(day.date).setHours(
-                            0,
-                            0,
-                            0,
-                            0
+                      ).map((day, index) => {
+                        const dayStart = new Date(day.date).setHours(
+                          0,
+                          0,
+                          0,
+                          0
+                        );
+                        const dayEnd = new Date(day.date).setHours(
+                          23,
+                          59,
+                          59,
+                          999
+                        );
+                        const eventsForDay = events.filter((event) => {
+                          const filteredIds = property._id;
+                          const roomIds = event.rooms.map(
+                            (room) => room.roomId
                           );
-                          const startDate = fromDate
-                            ? new Date(fromDate).setHours(0, 0, 0, 0)
-                            : null;
-                          const endDate = toDate
-                            ? new Date(toDate).setHours(23, 59, 59, 999)
-                            : null;
-                          return !fromDate || !toDate
-                            ? true
-                            : dayStart >= startDate && dayStart <= endDate;
-                        })
-                        .map((day, index) => {
-                          const dayStart = new Date(day.date).setHours(
-                            0,
-                            0,
-                            0,
-                            0
+                          const eventStartDateStr = convertDateFormat(
+                            event.startDate
                           );
-                          const dayEnd = new Date(day.date).setHours(
-                            23,
-                            59,
-                            59,
-                            999
+                          const eventEndDateStr = convertDateFormat(
+                            event.endDate
                           );
-                          const eventsForDay = events.filter((event) => {
-                            const filteredIds = property._id;
-                            const roomIds = event.rooms.map(
-                              (room) => room.roomId
-                            );
-                            const eventStartDateStr = convertDateFormat(
-                              event.startDate
-                            );
-                            const eventEndDateStr = convertDateFormat(
-                              event.endDate
-                            );
-                            const eventStartDate = new Date(
-                              eventStartDateStr
-                            ).setHours(0, 0, 0, 0);
-                            const eventEndDate = new Date(
-                              eventEndDateStr
-                            ).setHours(23, 59, 59, 999);
-                            return (
-                              roomIds.includes(filteredIds) &&
-                              eventStartDate <= dayEnd &&
-                              eventEndDate >= dayStart
-                            );
-                          });
-
-                          const hasEvents = eventsForDay.length > 0;
-                          const backgroundColor = hasEvents
-                            ? eventColors[eventsForDay[0]._id]
-                            : "";
-                          const isCheckInDate = eventsForDay.some(
-                            (event) =>
-                              new Date(event.startDate).setHours(0, 0, 0, 0) ===
-                              dayStart
-                          );
-                          const isLastPastDay = index === lastPastDayIndex;
+                          const eventStartDate = new Date(
+                            eventStartDateStr
+                          ).setHours(0, 0, 0, 0);
+                          const eventEndDate = new Date(
+                            eventEndDateStr
+                          ).setHours(23, 59, 59, 999);
                           return (
-                            <div
-                              key={day.date.toISOString()}
-                              className={`day-cell ${
-                                day.isSelectable ? "" : "day-cell-grayed"
-                              } ${
-                                isPastDate(new Date(day.date))
-                                  ? "past-date"
-                                  : ""
-                              } ${isLastPastDay ? "last-past-day-cell" : ""}`}
-                              onClick={() => {
-                                if (!isPastDate(day.date) && !hasEvents) {
-                                  handleCellClick(day.date, property);
-                                }
-                              }}
-                              style={{
-                                pointerEvents: isPastDate(day.date)
-                                  ? "none"
-                                  : "",
-                                backgroundColor: window.matchMedia(
-                                  "(max-width: 768px)"
-                                ).matches
-                                  ? backgroundColor
-                                  : "",
-                              }}
-                            >
-                              {isPastDate(day.date) && (
-                                <div className="overlay">
-                                  <span></span>
-                                </div>
-                              )}
-                              <div className="day-price">
-                                <div
-                                  className="overlayContentText"
-                                  style={{
-                                    display: backgroundColor ? "none" : "",
-                                    color:
-                                      day.date.toLocaleDateString("en-US", {
-                                        weekday: "short",
-                                      }) === "Sun" ||
-                                      day.date.toLocaleDateString("en-US", {
-                                        weekday: "short",
-                                      }) === "Sat"
-                                        ? "#cc3322"
-                                        : "",
-                                  }}
-                                >
-                                  {day.date.getDate()}
-                                </div>
-                                <div
-                                  className="overlayContentDay"
-                                  style={{
-                                    display: backgroundColor ? "none" : "",
-                                    color:
-                                      day.date.toLocaleDateString("en-US", {
-                                        weekday: "short",
-                                      }) === "Sun" ||
-                                      day.date.toLocaleDateString("en-US", {
-                                        weekday: "short",
-                                      }) === "Sat"
-                                        ? "#cc3322"
-                                        : "",
-                                  }}
-                                >
-                                  {day.date.toLocaleDateString("en-US", {
-                                    weekday: "short",
-                                  })}
-                                </div>
-                                <div
-                                  className="event-title"
-                                  style={{
-                                    display: window.matchMedia(
-                                      "(max-width: 768px)"
-                                    ).matches
-                                      ? "flex"
-                                      : "none",
-                                    color: "black",
-                                    fontWeight: "600",
-                                  }}
-                                >
-                                  {eventsForDay[0]?.userDetails?.name || ""}
-                                </div>
+                            roomIds.includes(filteredIds) &&
+                            eventStartDate <= dayEnd &&
+                            eventEndDate >= dayStart
+                          );
+                        });
+
+                        const hasEvents = eventsForDay.length > 0;
+                        const backgroundColor = hasEvents
+                          ? eventColors[eventsForDay[0]._id]
+                          : "";
+                        const isCheckInDate = eventsForDay.some(
+                          (event) =>
+                            new Date(event.startDate).setHours(0, 0, 0, 0) ===
+                            dayStart
+                        );
+                        const isLastPastDay = index === lastPastDayIndex;
+                        return (
+                          <div
+                            key={day.date.toISOString()}
+                            className={`day-cell ${
+                              day.isSelectable ? "" : "day-cell-grayed"
+                            } ${
+                              isPastDate(new Date(day.date)) ? "past-date" : ""
+                            } ${isLastPastDay ? "last-past-day-cell" : ""}`}
+                            onClick={() => {
+                              if (!isPastDate(day.date) && !hasEvents) {
+                                handleCellClick(day.date, property);
+                              }
+                            }}
+                            style={{
+                              pointerEvents: isPastDate(day.date) ? "none" : "",
+                              backgroundColor: window.matchMedia(
+                                "(max-width: 768px)"
+                              ).matches
+                                ? backgroundColor
+                                : "",
+                            }}
+                          >
+                            {isPastDate(day.date) && (
+                              <div className="overlay">
+                                <span></span>
+                              </div>
+                            )}
+                            <div className="day-price">
+                              <div
+                                className="overlayContentText"
+                                style={{
+                                  display: backgroundColor ? "none" : "",
+                                  color:
+                                    day.date.toLocaleDateString("en-US", {
+                                      weekday: "short",
+                                    }) === "Sun" ||
+                                    day.date.toLocaleDateString("en-US", {
+                                      weekday: "short",
+                                    }) === "Sat"
+                                      ? "#cc3322"
+                                      : "",
+                                }}
+                              >
+                                {day.date.getDate()}
+                              </div>
+                              <div
+                                className="overlayContentDay"
+                                style={{
+                                  display: backgroundColor ? "none" : "",
+                                  color:
+                                    day.date.toLocaleDateString("en-US", {
+                                      weekday: "short",
+                                    }) === "Sun" ||
+                                    day.date.toLocaleDateString("en-US", {
+                                      weekday: "short",
+                                    }) === "Sat"
+                                      ? "#cc3322"
+                                      : "",
+                                }}
+                              >
+                                {day.date.toLocaleDateString("en-US", {
+                                  weekday: "short",
+                                })}
+                              </div>
+                              <div
+                                className="event-title"
+                                style={{
+                                  display: window.matchMedia(
+                                    "(max-width: 768px)"
+                                  ).matches
+                                    ? "flex"
+                                    : "none",
+                                  color: "black",
+                                  fontWeight: "600",
+                                }}
+                              >
+                                {eventsForDay[0]?.userDetails?.name || ""}
                               </div>
                             </div>
-                          );
-                        })}
+                          </div>
+                        );
+                      })}
                       {/* Render events in desktop view */}
                       {(window.matchMedia("(max-width: 768px)").matches
                         ? []
@@ -1303,8 +1277,7 @@ const Calendar = () => {
           )}
           {placeholderRowsNeeded > 0 && (
             <PlaceholderRows
-              fromDate={fromDate}
-              toDate={toDate}
+              days={days ?? []}
               numRows={placeholderRowsNeeded}
               numCells={numPlaceholderCells}
             />

@@ -150,16 +150,25 @@ const DharmshalaBookings = () => {
     // }
 
     if (statusFilter) {
+
       if (statusFilter === "all") {
-        filteredData = filteredData.filter(
-          (item) => item.status !== "checked-out"
-        );
+        // If showPastRequests is true, show all bookings
+        if (showPastRequests) {
+          filteredData = filteredData; // No filtering, show everything
+        } else {
+          // If showPastRequests is false, exclude checked-out bookings
+          filteredData = filteredData.filter(
+            (item) => item.status !== "checked-out"
+          );
+        }
       } else {
+        // Apply normal status filtering
         filteredData = filteredData.filter(
           (item) => item.status === statusFilter
         );
       }
     }
+
     // if (statusFilter) {
     //   filteredData = filteredData.filter((item) =>
     //     item.status === statusFilter
