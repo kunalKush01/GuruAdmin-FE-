@@ -13,32 +13,40 @@ import { useHistory } from "react-router-dom";
 import moment from "moment";
 import { Rnd } from "react-rnd";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
-import { DatePicker } from "antd";
+import { DatePicker, Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
 import { CustomReactSelect } from "../partials/customReactSelect";
+import {
+  CalendarOutlined,
+  ClockCircleOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 const numPlaceholderRows = 14;
 const numPlaceholderCells = window.innerWidth <= 768 ? 7 : 31;
 const TOTAL_ROWS = 14;
+const PlaceholderRows = ({ numRows, days = [] }) => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
-const PlaceholderRows = ({ numRows, numCells, fromDate, toDate }) => {
-  const rows = Array.from({ length: numRows });
-  const calculateCells = () => {
-    if (fromDate && toDate) {
-      const start = moment(fromDate);
-      const end = moment(toDate);
-      const days = end.diff(start, "days") + 1; // Include end date
-      return Array.from({ length: days });
-    }
-    return Array.from({ length: numCells });
-  };
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
 
-  const cells = calculateCells();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Ensure days is always an array and handle undefined case
+  const visibleDays = useMemo(
+    () => (isMobile ? days.slice(0, 7) : days),
+    [isMobile, days]
+  );
 
   return (
     <>
-      {rows.map((_, rowIndex) => (
+      {Array.from({ length: numRows }).map((_, rowIndex) => (
         <div
           key={rowIndex}
           className="calendar-property-row"
@@ -47,7 +55,7 @@ const PlaceholderRows = ({ numRows, numCells, fromDate, toDate }) => {
           <div className="property-cell"></div>
           <div className="separator" style={{ height: "40px" }} />
           <div className="day-cells-container">
-            {cells.map((_, cellIndex) => (
+            {visibleDays.map((_, cellIndex) => (
               <div key={cellIndex} className="day-cell"></div>
             ))}
           </div>
@@ -74,7 +82,6 @@ const Calendar = () => {
   const [currentMonth, setCurrentMonth] = useState("");
   const { t } = useTranslation();
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
-
   useEffect(() => {
     const handleResize = () => {
       setIsDesktop(window.innerWidth >= 768);
@@ -214,6 +221,67 @@ const Calendar = () => {
     setWeekDays(prevWeek);
     updateMonth(prevWeek);
   };
+
+  //** working fine code */
+  // useEffect(() => {
+  //   const startDate = fromDate ? new Date(fromDate) : new Date();
+  //   if (!fromDate) {
+  //     startDate.setDate(startDate.getDate() - 7);
+  //   }
+
+  //   const endDate = toDate ? new Date(toDate) : new Date(startDate);
+  //   if (!toDate) {
+  //     endDate.setDate(startDate.getDate() + 30);
+  //   }
+  //   if (endDate - startDate < 30 * 24 * 60 * 60 * 1000) {
+  //     endDate.setDate(startDate.getDate() + 30);
+  //   }
+
+  //   const datesArray = [];
+  //   const currentDate = new Date(startDate);
+
+  //   while (currentDate <= endDate) {
+  //     const dayStart = new Date(currentDate);
+  //     dayStart.setHours(0, 0, 0, 0);
+  //     datesArray.push({ date: dayStart, isSelectable: true });
+  //     currentDate.setDate(currentDate.getDate() + 1);
+  //   }
+
+  //   events.forEach((event) => {
+  //     const eventStartDate = new Date(
+  //       event.startDate.split("-").reverse().join("-")
+  //     );
+  //     const eventEndDate = new Date(
+  //       event.endDate.split("-").reverse().join("-")
+  //     );
+
+  //     eventStartDate.setHours(0, 0, 0, 0);
+  //     eventEndDate.setHours(0, 0, 0, 0);
+
+  //     let eventCurrentDate = new Date(eventStartDate);
+
+  //     // Add all dates from eventStartDate to eventEndDate
+  //     while (eventCurrentDate <= eventEndDate) {
+  //       const isDateAlreadyAdded = datesArray.some(
+  //         (dateObj) => dateObj.date.getTime() === eventCurrentDate.getTime()
+  //       );
+  //       if (!isDateAlreadyAdded) {
+  //         datesArray.push({
+  //           date: new Date(eventCurrentDate),
+  //           isSelectable: true,
+  //         });
+  //       }
+  //       eventCurrentDate.setDate(eventCurrentDate.getDate() + 1);
+  //     }
+  //   });
+
+  //   // Sort final dates array
+  //   datesArray.sort((a, b) => a.date.getTime() - b.date.getTime());
+
+  //   setDays(datesArray);
+  // }, [fromDate, toDate, JSON.stringify(events)]);
+
+  //**working in both condition */
   useEffect(() => {
     const startDate = fromDate ? new Date(fromDate) : new Date();
     if (!fromDate) {
@@ -224,7 +292,9 @@ const Calendar = () => {
     if (!toDate) {
       endDate.setDate(startDate.getDate() + 30);
     }
-    if (endDate - startDate < 30 * 24 * 60 * 60 * 1000) {
+
+    // Ensure the date range is at least 30 days
+    if (!toDate && endDate - startDate < 30 * 24 * 60 * 60 * 1000) {
       endDate.setDate(startDate.getDate() + 30);
     }
 
@@ -232,12 +302,11 @@ const Calendar = () => {
     const currentDate = new Date(startDate);
 
     while (currentDate <= endDate) {
-      const dayStart = new Date(currentDate);
-      dayStart.setHours(0, 0, 0, 0);
-      datesArray.push({ date: dayStart, isSelectable: true });
+      datesArray.push({ date: new Date(currentDate), isSelectable: true });
       currentDate.setDate(currentDate.getDate() + 1);
     }
 
+    // Ensure events do not affect fromDate and toDate logic
     events.forEach((event) => {
       const eventStartDate = new Date(
         event.startDate.split("-").reverse().join("-")
@@ -249,18 +318,25 @@ const Calendar = () => {
       eventStartDate.setHours(0, 0, 0, 0);
       eventEndDate.setHours(0, 0, 0, 0);
 
+      // Exclude events that end exactly on the fromDate
+      if (eventEndDate.getTime() === startDate.getTime()) {
+        return;
+      }
+
       let eventCurrentDate = new Date(eventStartDate);
 
-      // Add all dates from eventStartDate to eventEndDate
-      while (eventCurrentDate <= eventEndDate) {
-        const isDateAlreadyAdded = datesArray.some(
-          (dateObj) => dateObj.date.getTime() === eventCurrentDate.getTime()
-        );
-        if (!isDateAlreadyAdded) {
-          datesArray.push({
-            date: new Date(eventCurrentDate),
-            isSelectable: true,
-          });
+      // Add event dates but ensure they stay within fromDate and toDate
+      while (eventCurrentDate <= eventEndDate && eventCurrentDate <= endDate) {
+        if (eventCurrentDate >= startDate) {
+          const isDateAlreadyAdded = datesArray.some(
+            (dateObj) => dateObj.date.getTime() === eventCurrentDate.getTime()
+          );
+          if (!isDateAlreadyAdded) {
+            datesArray.push({
+              date: new Date(eventCurrentDate),
+              isSelectable: true,
+            });
+          }
         }
         eventCurrentDate.setDate(eventCurrentDate.getDate() + 1);
       }
@@ -271,7 +347,7 @@ const Calendar = () => {
 
     setDays(datesArray);
   }, [fromDate, toDate, JSON.stringify(events)]);
-  //working
+  //**working fine also */
   // useEffect(() => {
   //   const startDate = fromDate ? new Date(fromDate) : new Date();
   //   if (!fromDate) {
@@ -285,136 +361,14 @@ const Calendar = () => {
   //   if (endDate - startDate < 30 * 24 * 60 * 60 * 1000) {
   //     endDate.setDate(startDate.getDate() + 30);
   //   }
+
   //   const datesArray = [];
   //   const currentDate = new Date(startDate);
 
   //   while (currentDate <= endDate) {
-  //     const isSelectable = true;
   //     const dayStart = new Date(currentDate);
   //     dayStart.setHours(0, 0, 0, 0);
-  //     datesArray.push({ date: dayStart, isSelectable });
-  //     currentDate.setDate(currentDate.getDate() + 1);
-  //   }
-
-  //   const fromDateObj = fromDate ? new Date(fromDate) : null;
-  //   if (fromDateObj) {
-  //     fromDateObj.setHours(0, 0, 0, 0);
-  //     const eventsEndingOnFromDate = events.filter((event) => {
-  //       const eventEndDate = new Date(
-  //         event.endDate.split("-").reverse().join("-")
-  //       );
-  //       eventEndDate.setHours(0, 0, 0, 0);
-  //       return eventEndDate.getTime() === fromDateObj.getTime();
-  //     });
-
-  //     // Sort events ending on fromDate by their start date (oldest first)
-  //     eventsEndingOnFromDate.sort((a, b) => {
-  //       const startDateA = new Date(a.startDate.split("-").reverse().join("-"));
-  //       startDateA.setHours(0, 0, 0, 0);
-  //       const startDateB = new Date(b.startDate.split("-").reverse().join("-"));
-  //       startDateB.setHours(0, 0, 0, 0);
-  //       return startDateA.getTime() - startDateB.getTime();
-  //     });
-
-  //     eventsEndingOnFromDate.forEach((event) => {
-  //       const eventStartDate = new Date(
-  //         event.startDate.split("-").reverse().join("-")
-  //       );
-  //       eventStartDate.setHours(0, 0, 0, 0);
-  //       const isStartDateAlreadyAdded = datesArray.some(
-  //         (dateObj) => dateObj.date.getTime() === eventStartDate.getTime()
-  //       );
-  //       if (!isStartDateAlreadyAdded) {
-  //         datesArray.push({ date: eventStartDate, isSelectable: true });
-  //       }
-  //     });
-  //   }
-
-  //   datesArray.sort((a, b) => a.date.getTime() - b.date.getTime());
-
-  //   setDays(datesArray);
-  //   console.log("first", events);
-  // }, [fromDate, toDate, JSON.stringify(events)]);
-
-  //working code but not for multiple
-  // useEffect(() => {
-  //   const startDate = fromDate ? new Date(fromDate) : new Date();
-  //   if (!fromDate) {
-  //     startDate.setDate(startDate.getDate() - 7);
-  //   }
-
-  //   const endDate = toDate ? new Date(toDate) : new Date(startDate);
-  //   if (!toDate) {
-  //     endDate.setDate(startDate.getDate() + 30);
-  //   }
-  //   if (endDate - startDate < 30 * 24 * 60 * 60 * 1000) {
-  //     endDate.setDate(startDate.getDate() + 30);
-  //   }
-  //   const datesArray = [];
-  //   const currentDate = new Date(startDate);
-
-  //   while (currentDate <= endDate) {
-  //     const isSelectable = true;
-  //     // Create a date object representing the beginning of the day
-  //     const dayStart = new Date(currentDate);
-  //     dayStart.setHours(0, 0, 0, 0);
-  //     datesArray.push({ date: dayStart, isSelectable });
-  //     currentDate.setDate(currentDate.getDate() + 1);
-  //   }
-
-  //   events.forEach((event) => {
-  //     const eventStartDate = new Date(
-  //       event.startDate.split("-").reverse().join("-")
-  //     );
-  //     eventStartDate.setHours(0, 0, 0, 0); // Set event start date to the beginning of the day
-  //     const eventEndDate = new Date(
-  //       event.endDate.split("-").reverse().join("-")
-  //     );
-  //     eventEndDate.setHours(0, 0, 0, 0); // Set event end date to the beginning of the day
-
-  //     // Check if the event's end date falls within the generated range (at the beginning of the day)
-  //     const initialStartDateDay = new Date(startDate);
-  //     initialStartDateDay.setHours(0, 0, 0, 0);
-  //     const initialEndDateDay = new Date(endDate);
-  //     initialEndDateDay.setHours(0, 0, 0, 0);
-
-  //     if (eventEndDate >= initialStartDateDay && eventEndDate <= initialEndDateDay) {
-  //       const isStartDateAlreadyAdded = datesArray.some(
-  //         (dateObj) => dateObj.date.getTime() === eventStartDate.getTime()
-  //       );
-  //       if (!isStartDateAlreadyAdded) {
-  //         datesArray.push({ date: eventStartDate, isSelectable: true });
-  //       }
-  //     }
-  //   });
-
-  //   // Sort datesArray to ensure chronological order
-  //   datesArray.sort((a, b) => a.date.getTime() - b.date.getTime());
-
-  //   setDays(datesArray);
-  //   console.log("first", events);
-  // }, [fromDate, toDate, JSON.stringify(events)]);
-
-  //old code
-  // useEffect(() => {
-  //   const startDate = fromDate ? new Date(fromDate) : new Date();
-  //   if (!fromDate) {
-  //     startDate.setDate(startDate.getDate() - 7);
-  //   }
-
-  //   const endDate = toDate ? new Date(toDate) : new Date(startDate);
-  //   if (!toDate) {
-  //     endDate.setDate(startDate.getDate() + 30);
-  //   }
-  //   if (endDate - startDate < 30 * 24 * 60 * 60 * 1000) {
-  //     endDate.setDate(startDate.getDate() + 30);
-  //   }
-  //   const datesArray = [];
-  //   const currentDate = new Date(startDate);
-
-  //   while (currentDate <= endDate) {
-  //     const isSelectable = true;
-  //     datesArray.push({ date: new Date(currentDate), isSelectable });
+  //     datesArray.push({ date: dayStart, isSelectable: true });
   //     currentDate.setDate(currentDate.getDate() + 1);
   //   }
 
@@ -426,22 +380,35 @@ const Calendar = () => {
   //       event.endDate.split("-").reverse().join("-")
   //     );
 
-  //     // Check if the event's end date falls within the generated range
-  //     if (eventEndDate >= startDate && eventEndDate <= endDate) {
-  //       const isStartDateAlreadyAdded = datesArray.some(
-  //         (dateObj) => dateObj.date.getTime() === eventStartDate.getTime()
+  //     eventStartDate.setHours(0, 0, 0, 0);
+  //     eventEndDate.setHours(0, 0, 0, 0);
+
+  //     // Exclude events whose END DATE matches FROM DATE
+  //     if (eventEndDate.getTime() === startDate.getTime()) {
+  //       return; // Skip this event
+  //     }
+
+  //     let eventCurrentDate = new Date(eventStartDate);
+
+  //     // Add all dates from eventStartDate to eventEndDate
+  //     while (eventCurrentDate <= eventEndDate) {
+  //       const isDateAlreadyAdded = datesArray.some(
+  //         (dateObj) => dateObj.date.getTime() === eventCurrentDate.getTime()
   //       );
-  //       if (!isStartDateAlreadyAdded) {
-  //         datesArray.push({ date: eventStartDate, isSelectable: true });
+  //       if (!isDateAlreadyAdded) {
+  //         datesArray.push({
+  //           date: new Date(eventCurrentDate),
+  //           isSelectable: true,
+  //         });
   //       }
+  //       eventCurrentDate.setDate(eventCurrentDate.getDate() + 1);
   //     }
   //   });
 
-  //   // Sort datesArray to ensure chronological order
+  //   // Sort final dates array
   //   datesArray.sort((a, b) => a.date.getTime() - b.date.getTime());
 
   //   setDays(datesArray);
-  //   console.log("first", events);
   // }, [fromDate, toDate, JSON.stringify(events)]);
   const isToday = (day) => {
     const today = new Date();
@@ -944,157 +911,135 @@ const Calendar = () => {
                       {(window.matchMedia("(max-width: 768px)").matches
                         ? weekDays
                         : days
-                      )
-                        .filter((day) => {
-                          const dayStart = new Date(day.date).setHours(
-                            0,
-                            0,
-                            0,
-                            0
+                      ).map((day, index) => {
+                        const dayStart = new Date(day.date).setHours(
+                          0,
+                          0,
+                          0,
+                          0
+                        );
+                        const dayEnd = new Date(day.date).setHours(
+                          23,
+                          59,
+                          59,
+                          999
+                        );
+                        const eventsForDay = events.filter((event) => {
+                          const filteredIds = property._id;
+                          const roomIds = event.rooms.map(
+                            (room) => room.roomId
                           );
-                          const startDate = fromDate
-                            ? new Date(fromDate).setHours(0, 0, 0, 0)
-                            : null;
-                          const endDate = toDate
-                            ? new Date(toDate).setHours(23, 59, 59, 999)
-                            : null;
-                          return !fromDate || !toDate
-                            ? true
-                            : dayStart >= startDate && dayStart <= endDate;
-                        })
-                        .map((day, index) => {
-                          const dayStart = new Date(day.date).setHours(
-                            0,
-                            0,
-                            0,
-                            0
+                          const eventStartDateStr = convertDateFormat(
+                            event.startDate
                           );
-                          const dayEnd = new Date(day.date).setHours(
-                            23,
-                            59,
-                            59,
-                            999
+                          const eventEndDateStr = convertDateFormat(
+                            event.endDate
                           );
-                          const eventsForDay = events.filter((event) => {
-                            const filteredIds = property._id;
-                            const roomIds = event.rooms.map(
-                              (room) => room.roomId
-                            );
-                            const eventStartDateStr = convertDateFormat(
-                              event.startDate
-                            );
-                            const eventEndDateStr = convertDateFormat(
-                              event.endDate
-                            );
-                            const eventStartDate = new Date(
-                              eventStartDateStr
-                            ).setHours(0, 0, 0, 0);
-                            const eventEndDate = new Date(
-                              eventEndDateStr
-                            ).setHours(23, 59, 59, 999);
-                            return (
-                              roomIds.includes(filteredIds) &&
-                              eventStartDate <= dayEnd &&
-                              eventEndDate >= dayStart
-                            );
-                          });
-
-                          const hasEvents = eventsForDay.length > 0;
-                          const backgroundColor = hasEvents
-                            ? eventColors[eventsForDay[0]._id]
-                            : "";
-                          const isCheckInDate = eventsForDay.some(
-                            (event) =>
-                              new Date(event.startDate).setHours(0, 0, 0, 0) ===
-                              dayStart
-                          );
-                          const isLastPastDay = index === lastPastDayIndex;
+                          const eventStartDate = new Date(
+                            eventStartDateStr
+                          ).setHours(0, 0, 0, 0);
+                          const eventEndDate = new Date(
+                            eventEndDateStr
+                          ).setHours(23, 59, 59, 999);
                           return (
-                            <div
-                              key={day.date.toISOString()}
-                              className={`day-cell ${
-                                day.isSelectable ? "" : "day-cell-grayed"
-                              } ${
-                                isPastDate(new Date(day.date))
-                                  ? "past-date"
-                                  : ""
-                              } ${isLastPastDay ? "last-past-day-cell" : ""}`}
-                              onClick={() => {
-                                if (!isPastDate(day.date) && !hasEvents) {
-                                  handleCellClick(day.date, property);
-                                }
-                              }}
-                              style={{
-                                pointerEvents: isPastDate(day.date)
-                                  ? "none"
-                                  : "",
-                                backgroundColor: window.matchMedia(
-                                  "(max-width: 768px)"
-                                ).matches
-                                  ? backgroundColor
-                                  : "",
-                              }}
-                            >
-                              {isPastDate(day.date) && (
-                                <div className="overlay">
-                                  <span></span>
-                                </div>
-                              )}
-                              <div className="day-price">
-                                <div
-                                  className="overlayContentText"
-                                  style={{
-                                    display: backgroundColor ? "none" : "",
-                                    color:
-                                      day.date.toLocaleDateString("en-US", {
-                                        weekday: "short",
-                                      }) === "Sun" ||
-                                      day.date.toLocaleDateString("en-US", {
-                                        weekday: "short",
-                                      }) === "Sat"
-                                        ? "#cc3322"
-                                        : "",
-                                  }}
-                                >
-                                  {day.date.getDate()}
-                                </div>
-                                <div
-                                  className="overlayContentDay"
-                                  style={{
-                                    display: backgroundColor ? "none" : "",
-                                    color:
-                                      day.date.toLocaleDateString("en-US", {
-                                        weekday: "short",
-                                      }) === "Sun" ||
-                                      day.date.toLocaleDateString("en-US", {
-                                        weekday: "short",
-                                      }) === "Sat"
-                                        ? "#cc3322"
-                                        : "",
-                                  }}
-                                >
-                                  {day.date.toLocaleDateString("en-US", {
-                                    weekday: "short",
-                                  })}
-                                </div>
-                                <div
-                                  className="event-title"
-                                  style={{
-                                    display: window.matchMedia(
-                                      "(max-width: 768px)"
-                                    ).matches
-                                      ? "flex"
-                                      : "none",
-                                    color: "black",
-                                    fontWeight: "600",
-                                  }}
-                                >
-                                  {eventsForDay[0]?.userDetails?.name || ""}
-                                </div>
+                            roomIds.includes(filteredIds) &&
+                            eventStartDate <= dayEnd &&
+                            eventEndDate >= dayStart
+                          );
+                        });
+
+                        const hasEvents = eventsForDay.length > 0;
+                        const backgroundColor = hasEvents
+                          ? eventColors[eventsForDay[0]._id]
+                          : "";
+                        const isCheckInDate = eventsForDay.some(
+                          (event) =>
+                            new Date(event.startDate).setHours(0, 0, 0, 0) ===
+                            dayStart
+                        );
+                        const isLastPastDay = index === lastPastDayIndex;
+                        return (
+                          <div
+                            key={day.date.toISOString()}
+                            className={`day-cell ${
+                              day.isSelectable ? "" : "day-cell-grayed"
+                            } ${
+                              isPastDate(new Date(day.date)) ? "past-date" : ""
+                            } ${isLastPastDay ? "last-past-day-cell" : ""}`}
+                            onClick={() => {
+                              if (!isPastDate(day.date) && !hasEvents) {
+                                handleCellClick(day.date, property);
+                              }
+                            }}
+                            style={{
+                              pointerEvents: isPastDate(day.date) ? "none" : "",
+                              backgroundColor: window.matchMedia(
+                                "(max-width: 768px)"
+                              ).matches
+                                ? backgroundColor
+                                : "",
+                            }}
+                          >
+                            {isPastDate(day.date) && (
+                              <div className="overlay">
+                                <span></span>
+                              </div>
+                            )}
+                            <div className="day-price">
+                              <div
+                                className="overlayContentText"
+                                style={{
+                                  display: backgroundColor ? "none" : "",
+                                  color:
+                                    day.date.toLocaleDateString("en-US", {
+                                      weekday: "short",
+                                    }) === "Sun" ||
+                                    day.date.toLocaleDateString("en-US", {
+                                      weekday: "short",
+                                    }) === "Sat"
+                                      ? "#cc3322"
+                                      : "",
+                                }}
+                              >
+                                {day.date.getDate()}
+                              </div>
+                              <div
+                                className="overlayContentDay"
+                                style={{
+                                  display: backgroundColor ? "none" : "",
+                                  color:
+                                    day.date.toLocaleDateString("en-US", {
+                                      weekday: "short",
+                                    }) === "Sun" ||
+                                    day.date.toLocaleDateString("en-US", {
+                                      weekday: "short",
+                                    }) === "Sat"
+                                      ? "#cc3322"
+                                      : "",
+                                }}
+                              >
+                                {day.date.toLocaleDateString("en-US", {
+                                  weekday: "short",
+                                })}
+                              </div>
+                              <div
+                                className="event-title"
+                                style={{
+                                  display: window.matchMedia(
+                                    "(max-width: 768px)"
+                                  ).matches
+                                    ? "flex"
+                                    : "none",
+                                  color: "black",
+                                  fontWeight: "600",
+                                }}
+                              >
+                                {eventsForDay[0]?.userDetails?.name || ""}
                               </div>
                             </div>
-                          );
-                        })}
+                          </div>
+                        );
+                      })}
                       {/* Render events in desktop view */}
                       {(window.matchMedia("(max-width: 768px)").matches
                         ? []
@@ -1137,43 +1082,54 @@ const Calendar = () => {
                               event.endDate.split("-").reverse().join("-")
                             )
                           );
+                          const firstDay = roundToDay(days[0].date);
+
+                          // Calculate start offset (allow negative values for partial visibility)
                           const startOffset =
-                            Math.max(
-                              0,
-                              (checkIn - roundToDay(days[0].date)) /
-                                (24 * 60 * 60 * 1000)
-                            ) + 0.5;
+                            (checkIn - firstDay) / (24 * 60 * 60 * 1000) + 0.5;
+
+                          // Ensure events that start before the first visible date are partially visible
+                          const adjustedStartOffset = Math.max(
+                            startOffset,
+                            -0.5
+                          ); // Allow some portion of the event to be visible
+
+                          // Calculate end offset (ensure it doesn't overflow)
                           const endOffset =
                             Math.min(
                               days.length,
-                              (checkOut - roundToDay(days[0].date)) /
-                                (24 * 60 * 60 * 1000)
+                              (checkOut - firstDay) / (24 * 60 * 60 * 1000)
                             ) + 0.5;
-                          const duration = endOffset - startOffset;
+
+                          // Calculate visible duration (ensure it's at least partially visible)
+                          const visibleDuration =
+                            endOffset - adjustedStartOffset;
+
                           const backgroundColor = eventColors[event._id];
+
                           return (
                             <Rnd
                               key={event._id}
                               disableDragging={true}
                               default={{
-                                x: startOffset * 120, // Initial left position
-                                y: 0, // Fixed vertical position
-                                width: `${duration * 120}px`, // Initial width based on event duration
+                                x: adjustedStartOffset * 120, // Adjusted to allow partial visibility
+                                y: 0,
+                                width: `${visibleDuration * 120}px`,
                                 height: "30px",
                               }}
                               size={{
-                                width: `${duration * 120}px`,
+                                width: `${visibleDuration * 120}px`,
                                 height: "30px",
                               }}
-                              position={{ x: startOffset * 120, y: 5 }}
-                              minWidth={120} // Minimum size for resizing
-                              maxWidth={days.length * 120} // Maximum size to prevent overflowing
+                              position={{ x: adjustedStartOffset * 120, y: 5 }}
+                              minWidth={60} // Allow minimum width for partial visibility
+                              maxWidth={days.length * 120} // Prevent overflowing
                               bounds="parent"
                               enableResizing={{
                                 top: false,
-                                right: true, // Enable resizing from the right edge
+                                right: true,
                                 bottom: false,
-                                left: false, // Enable resizing from the left edge
+                                left: false,
                                 topRight: false,
                                 bottomRight: false,
                                 bottomLeft: false,
@@ -1240,53 +1196,110 @@ const Calendar = () => {
                                 });
                               }}
                             >
-                              <span
-                                style={{
-                                  fontSize: !window.matchMedia(
-                                    "(max-width: 768px)"
-                                  ).matches
-                                    ? "13px"
-                                    : "inherit",
-                                  fontWeight: !window.matchMedia(
-                                    "(max-width: 768px)"
-                                  ).matches
-                                    ? "600"
-                                    : "inherit",
-                                  flex: "1",
-                                  overflow: "hidden",
-                                  textOverflow: "ellipsis",
-                                  color: "white",
-                                  margin: "auto",
-                                }}
+                              {" "}
+                              <Tooltip
+                                title={
+                                  <div
+                                    style={{
+                                      fontSize: "13px",
+                                      lineHeight: "1.5",
+                                    }}
+                                  >
+                                    <p style={{ margin: 0 }}>
+                                      <UserOutlined
+                                        style={{
+                                          marginRight: 8,
+                                          color: "#40a9ff",
+                                        }}
+                                      />
+                                      <b>{event?.userDetails?.name}</b>
+                                    </p>
+                                    <p style={{ margin: 0 }}>
+                                      <CalendarOutlined
+                                        style={{
+                                          marginRight: 8,
+                                          color: "#ffc53d",
+                                        }}
+                                      />
+                                      <b>Start:</b>{" "}
+                                      {moment(
+                                        event.startDate,
+                                        "DD-MM-YYYY"
+                                      ).format("DD MMM YYYY")}
+                                    </p>
+                                    <p style={{ margin: 0 }}>
+                                      <ClockCircleOutlined
+                                        style={{
+                                          marginRight: 8,
+                                          color: "#73d13d",
+                                        }}
+                                      />
+                                      <b>End:</b>{" "}
+                                      {moment(
+                                        event.endDate,
+                                        "DD-MM-YYYY"
+                                      ).format("DD MMM YYYY")}
+                                    </p>
+                                  </div>
+                                }
                               >
-                                {event?.userDetails?.name}
-                              </span>
-                              <span
-                                style={{
-                                  marginLeft: "10px",
-                                  display: "flex",
-                                  justifyContent: "center",
-                                  alignItems: "center",
-                                }}
-                              >
-                                <img
-                                  src={guestIcon}
-                                  alt="Guests"
-                                  className="guest-icon"
-                                />
-                                <span
+                                <div
                                   style={{
-                                    color: "white",
-                                    fontSize: !window.matchMedia(
-                                      "(max-width: 768px)"
-                                    ).matches
-                                      ? "16px"
-                                      : "inherit",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    width: "100%",
+                                    cursor: "pointer",
                                   }}
                                 >
-                                  {` ${event.count}`}
-                                </span>
-                              </span>
+                                  <span
+                                    style={{
+                                      fontSize: !window.matchMedia(
+                                        "(max-width: 768px)"
+                                      ).matches
+                                        ? "13px"
+                                        : "inherit",
+                                      fontWeight: !window.matchMedia(
+                                        "(max-width: 768px)"
+                                      ).matches
+                                        ? "600"
+                                        : "inherit",
+                                      flex: "1",
+                                      overflow: "hidden",
+                                      textOverflow: "ellipsis",
+                                      color: "white",
+                                      margin: "auto",
+                                    }}
+                                  >
+                                    {event?.userDetails?.name}
+                                  </span>
+                                  <span
+                                    style={{
+                                      marginLeft: "10px",
+                                      display: "flex",
+                                      justifyContent: "center",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    <img
+                                      src={guestIcon}
+                                      alt="Guests"
+                                      className="guest-icon"
+                                    />
+                                    <span
+                                      style={{
+                                        color: "white",
+                                        fontSize: !window.matchMedia(
+                                          "(max-width: 768px)"
+                                        ).matches
+                                          ? "16px"
+                                          : "inherit",
+                                      }}
+                                    >
+                                      {` ${event.count}`}
+                                    </span>
+                                  </span>
+                                </div>
+                              </Tooltip>
                             </Rnd>
                           );
                         })}
@@ -1303,8 +1316,7 @@ const Calendar = () => {
           )}
           {placeholderRowsNeeded > 0 && (
             <PlaceholderRows
-              fromDate={fromDate}
-              toDate={toDate}
+              days={days ?? []}
               numRows={placeholderRowsNeeded}
               numCells={numPlaceholderCells}
             />
