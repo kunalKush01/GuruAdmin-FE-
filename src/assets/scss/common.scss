@@ -3421,12 +3421,19 @@
 }
 
 .roomholdBtn {
-    margin-right: 10px;
+    margin-right: 8px;
 
     .ant-btn {
         height: 38px;
         box-shadow: none;
         font: bold 15px "Noto Sans", sans-serif;
+    }
+
+    .ant-btn-primary {
+        background-color: $white !important;
+        color: #FF8744 !important;
+        border: 1px solid #FF8744 !important;
+        border-radius: 5px !important;
     }
 }
 

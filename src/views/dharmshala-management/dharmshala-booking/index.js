@@ -231,7 +231,7 @@ const DharmshalaBookings = () => {
                       `/booking/add/?page=${pagination.page}&filter=${dropDownName}`
                     )
                   }
-                  style={{ marginBottom: isMobileView ? "5px" : "0" }}
+                  style={{ marginBottom: isMobileView ? "5px" : "0" ,height:"38px"}}
                 >
                   <span>
                     <Plus className="" size={15} strokeWidth={4} />
@@ -241,7 +241,7 @@ const DharmshalaBookings = () => {
                   </span>
                 </Button>
                 <Button
-                  className={`me-1 ${isMobileView ? "btn-sm" : ""}`}
+                  className={`me-1 ${isMobileView ? "secondaryAction-btn btn-sm" : "secondaryAction-btn"}`}
                   color="primary"
                   onClick={() =>
                     history.push(
@@ -258,7 +258,7 @@ const DharmshalaBookings = () => {
               <div className="row2">
                 <Space wrap className="">
                   <Button
-                    className={`${isMobileView ? "btn-sm" : ""}`}
+                    className={`${isMobileView ? "secondaryAction-btn btn-sm" : "secondaryAction-btn"}`}
                     color="primary"
                     onClick={togglePastRequests}
                     style={{ marginBottom: isMobileView ? "5px" : "0" }}
