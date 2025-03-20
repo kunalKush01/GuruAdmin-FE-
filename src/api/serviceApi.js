@@ -9,8 +9,7 @@ export const addService = (payload) =>
   });
 export const getAllServices = (payload) =>
   callApi({
-    requestFunction: (axios) =>
-      axios.post(`${API_BASE_URL}/service`, payload),
+    requestFunction: (axios) => axios.post(`${API_BASE_URL}/service`, payload),
     showToastOnSuccess: false,
     showToastOnError: false,
   });
@@ -25,6 +24,26 @@ export const deleteService = (serviceId) =>
   callApi({
     requestFunction: (axios) =>
       axios.delete(`${API_BASE_URL}/service/delete/${serviceId}`),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+export const createBooking = (payload) =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}/booking/create`, payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+export const getAllBookedServices = (payload) =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}/booking/list`, payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+export const getBookingById = (id) =>
+  callApi({
+    requestFunction: (axios) => axios.get(`${API_BASE_URL}/booking/${id}`),
     showToastOnSuccess: false,
     showToastOnError: false,
   });

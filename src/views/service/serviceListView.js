@@ -7,31 +7,46 @@ import "../../assets/scss/viewCommon.scss";
 
 import { Space, Tabs } from "antd";
 import ServiceListTable from "../../components/service/serviceListTable";
-import { useHistory,useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { getAllServices } from "../../api/serviceApi";
+import { getAllBookedServices, getAllServices } from "../../api/serviceApi";
 import BookingService from "./bookingService";
+import BookedServiceListTable from "../../components/service/bookedServiceListTable";
+import { Plus } from "react-feather";
 
 function ServiceListView() {
   const history = useHistory();
   const location = useLocation(); // Access the current location
-
+  const trustId = localStorage.getItem("trustId");
   const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState(location.pathname === "/service" ? "service" : "booking_service");
+  const [showBookingForm, setShowBookingForm] = useState(false);
+  const [activeTab, setActiveTab] = useState(() => {
+    if (location.pathname.includes("service-booked")) {
+      return "booked_services";
+    }
+    return "service";
+  });
+
   useEffect(() => {
-    // Set the active tab based on the URL path
+    // Update activeTab based on URL changes
     if (location.pathname === "/service") {
       setActiveTab("service");
-    } else if (location.pathname === "/service-booking") {
-      setActiveTab("booking_service");
+    } else if (location.pathname === "/service-booked") {
+      setActiveTab("booked_services");
     }
   }, [location.pathname]);
+
   const handleTabChange = (key) => {
     setActiveTab(key);
-    if (key === "service") {
-      history.push("/service"); // Change URL to /service
-    } else if (key === "booking_service") {
-      history.push("/service-booking"); // Change URL to /booking-service
+    switch (key) {
+      case "service":
+        history.push("/service"); // Change URL to /service
+        break;
+      case "booked_services":
+        history.push("/service-booked"); // Change URL to /service-booked
+        break;
+      default:
+        break;
     }
   };
 
@@ -52,16 +67,38 @@ function ServiceListView() {
       },
     }
   );
-  const item = [
+  const [bookedServicePagination, setBookedServicePagination] = useState({
+    page: 1,
+    limit: 10,
+  });
+  const { data: bookedService } = useQuery(
+    [
+      "bookedService",
+      bookedServicePagination.page,
+      bookedServicePagination.limit,
+    ],
+    () =>
+      getAllBookedServices({
+        ...bookedServicePagination,
+        trustId: trustId,
+      }),
     {
-      key: "booking_service",
-      label: t("Booking Service"),
-      children: (
-        <>
-          <BookingService serviceData={data ? data.results : []}/>
-        </>
-      ),
-    },
+      keepPreviousData: true,
+      onError: (error) => {
+        console.error("Error fetching member data:", error);
+      },
+    }
+  );
+  const item = [
+    // {
+    //   key: "booking_service",
+    //   label: t("Booking Service"),
+    //   children: (
+    //     <>
+    //       <BookingService serviceData={data ? data.results : []} />
+    //     </>
+    //   ),
+    // },
     {
       key: "service",
       label: t("Services"),
@@ -72,20 +109,23 @@ function ServiceListView() {
               <div className="d-flex align-items-center mb-2 mb-lg-0">
                 <div className="addAction d-flex">
                   <div className="">
-                    <div>
-                      <Trans i18nKey={"service"} />
-                    </div>
+                    <div>{/* <Trans i18nKey={"service"} /> */}</div>
                   </div>
                 </div>
               </div>
               <Space wrap className="d-flex">
                 <div className="addAction d-flex flex-wrap gap-2 gap-md-0">
                   <Button
-                    className={`addAction-btn`}
                     color="primary"
+                    className="addAction-btn"
                     onClick={() => history.push(`/services/addService`)}
                   >
-                    Add
+                    <span>
+                      <Plus className="" size={15} strokeWidth={4} />
+                    </span>
+                    <span>
+                      <Trans i18nKey={"Add Service"} />
+                    </span>
                   </Button>
                 </div>
               </Space>
@@ -112,6 +152,52 @@ function ServiceListView() {
             </div>
           </div>
         </>
+      ),
+    },
+    {
+      key: "booked_services",
+      label: t("Bookings"),
+      children: (
+        <div className="d-flex flex-column">
+          {!showBookingForm && (
+            <div className="d-flex justify-content-end mb-1">
+              <Button
+                color="primary"
+                className="addAction-btn"
+                onClick={() => setShowBookingForm(true)}
+              >
+                <span>
+                  <Plus className="" size={15} strokeWidth={4} />
+                </span>
+                <span>
+                  <Trans i18nKey={"Add Booking"} />
+                </span>
+              </Button>
+            </div>
+          )}
+          {!showBookingForm ? (
+            <BookedServiceListTable
+              data={bookedService ? bookedService.results : []}
+              totalItems={bookedService ? bookedService.totalResults : 0}
+              pageSize={bookedServicePagination.limit}
+              onChangePage={(page) => {
+                setBookedServicePagination((prev) => ({ ...prev, page }));
+              }}
+              onChangePageSize={(pageSize) => {
+                setBookedServicePagination((prev) => ({
+                  ...prev,
+                  limit: pageSize,
+                  page: 1,
+                }));
+              }}
+            />
+          ) : (
+            <BookingService
+              serviceData={data ? data.results : []}
+              setShowBookingForm={setShowBookingForm}
+            />
+          )}
+        </div>
       ),
     },
   ];
