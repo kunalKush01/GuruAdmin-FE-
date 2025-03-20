@@ -16,7 +16,11 @@ import momentGenerateConfig from "rc-picker/lib/generate/moment";
 import { DatePicker, Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
 import { CustomReactSelect } from "../partials/customReactSelect";
-import { CalendarOutlined, ClockCircleOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  CalendarOutlined,
+  ClockCircleOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 const numPlaceholderRows = 14;
@@ -1195,20 +1199,48 @@ const Calendar = () => {
                               {" "}
                               <Tooltip
                                 title={
-                                  <div style={{ fontSize: "13px", lineHeight: "1.5" }}>
-      <p style={{ margin: 0 }}>
-        <UserOutlined style={{ marginRight: 8, color: "#40a9ff" }} />
-        <b>{event?.userDetails?.name}</b>
-      </p>
-      <p style={{ margin: 0 }}>
-        <CalendarOutlined style={{ marginRight: 8, color: "#ffc53d" }} />
-        <b>Start:</b> {moment(event.startDate, "DD-MM-YYYY").format("DD MMM YYYY")}
-      </p>
-      <p style={{ margin: 0 }}>
-        <ClockCircleOutlined style={{ marginRight: 8, color: "#73d13d" }} />
-        <b>End:</b> {moment(event.endDate, "DD-MM-YYYY").format("DD MMM YYYY")}
-      </p>
-    </div>
+                                  <div
+                                    style={{
+                                      fontSize: "13px",
+                                      lineHeight: "1.5",
+                                    }}
+                                  >
+                                    <p style={{ margin: 0 }}>
+                                      <UserOutlined
+                                        style={{
+                                          marginRight: 8,
+                                          color: "#40a9ff",
+                                        }}
+                                      />
+                                      <b>{event?.userDetails?.name}</b>
+                                    </p>
+                                    <p style={{ margin: 0 }}>
+                                      <CalendarOutlined
+                                        style={{
+                                          marginRight: 8,
+                                          color: "#ffc53d",
+                                        }}
+                                      />
+                                      <b>Start:</b>{" "}
+                                      {moment(
+                                        event.startDate,
+                                        "DD-MM-YYYY"
+                                      ).format("DD MMM YYYY")}
+                                    </p>
+                                    <p style={{ margin: 0 }}>
+                                      <ClockCircleOutlined
+                                        style={{
+                                          marginRight: 8,
+                                          color: "#73d13d",
+                                        }}
+                                      />
+                                      <b>End:</b>{" "}
+                                      {moment(
+                                        event.endDate,
+                                        "DD-MM-YYYY"
+                                      ).format("DD MMM YYYY")}
+                                    </p>
+                                  </div>
                                 }
                               >
                                 <div
