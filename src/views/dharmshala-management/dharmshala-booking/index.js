@@ -135,22 +135,7 @@ const DharmshalaBookings = () => {
     const currentDate = dayjs().startOf("day");
     let filteredData = dharmshalaBookingListData;
     const dateFormat = "DD-MM-YYYY";
-    // if (showPastRequests) {
-    //   filteredData = filteredData.filter((item) =>
-    //     dayjs(item.startDate, dateFormat).isBefore(currentDate)
-    //   );
-    // } else {
-    //   filteredData = filteredData.filter(
-    //     (item) =>
-    //       dayjs(item.startDate, dateFormat).isAfter(currentDate) ||
-    //       dayjs(item.startDate, dateFormat).isSame(currentDate) ||
-    //       dayjs(item.endDate, dateFormat).isAfter(currentDate) ||
-    //       dayjs(item.endDate, dateFormat).isSame(currentDate)
-    //   );
-    // }
-
     if (statusFilter) {
-
       if (statusFilter === "all") {
         // If showPastRequests is true, show all bookings
         if (showPastRequests) {
@@ -169,11 +154,6 @@ const DharmshalaBookings = () => {
       }
     }
 
-    // if (statusFilter) {
-    //   filteredData = filteredData.filter((item) =>
-    //     item.status === statusFilter
-    //   );
-    // }
     if (searchBarValue && searchBarValue.length >= 3) {
       filteredData = filteredData.filter((item) =>
         item.bookingId
@@ -231,7 +211,10 @@ const DharmshalaBookings = () => {
                       `/booking/add/?page=${pagination.page}&filter=${dropDownName}`
                     )
                   }
-                  style={{ marginBottom: isMobileView ? "5px" : "0" ,height:"38px"}}
+                  style={{
+                    marginBottom: isMobileView ? "5px" : "0",
+                    height: "38px",
+                  }}
                 >
                   <span>
                     <Plus className="" size={15} strokeWidth={4} />
@@ -241,7 +224,11 @@ const DharmshalaBookings = () => {
                   </span>
                 </Button>
                 <Button
-                  className={`me-1 ${isMobileView ? "secondaryAction-btn btn-sm" : "secondaryAction-btn"}`}
+                  className={`me-1 ${
+                    isMobileView
+                      ? "secondaryAction-btn btn-sm"
+                      : "secondaryAction-btn"
+                  }`}
                   color="primary"
                   onClick={() =>
                     history.push(
@@ -258,7 +245,11 @@ const DharmshalaBookings = () => {
               <div className="row2">
                 <Space wrap className="">
                   <Button
-                    className={`${isMobileView ? "secondaryAction-btn btn-sm" : "secondaryAction-btn"}`}
+                    className={`${
+                      isMobileView
+                        ? "secondaryAction-btn btn-sm"
+                        : "secondaryAction-btn"
+                    }`}
                     color="primary"
                     onClick={togglePastRequests}
                     style={{ marginBottom: isMobileView ? "5px" : "0" }}

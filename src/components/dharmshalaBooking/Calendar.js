@@ -21,6 +21,7 @@ import {
   ClockCircleOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import { Button } from "reactstrap";
 
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 const numPlaceholderRows = 14;
@@ -122,27 +123,7 @@ const Calendar = () => {
         formattedFromDate,
         formattedToDate
       );
-
-      if (window.matchMedia("(max-width: 768px)").matches) {
-        const formattedDays = weekDays.map((day) => ({
-          date: moment(day.date).format("YYYY-MM-DD"), // Format using moment to 'YYYY-MM-DD'
-          isSelectable: day.isSelectable,
-        }));
-
-        const filteredData = data.filter((item) => {
-          const formattedItemDate = moment(item.startDate, "DD-MM-YYYY").format(
-            "YYYY-MM-DD"
-          ); // Convert 'DD-MM-YYYY' to 'YYYY-MM-DD'
-
-          const matchingDate = formattedDays.find(
-            (day) => day.date === formattedItemDate
-          );
-          return !!matchingDate;
-        });
-        setEvents(filteredData);
-      } else {
-        setEvents(data);
-      }
+      setEvents(data);
     };
 
     fetchEvents();
@@ -222,66 +203,7 @@ const Calendar = () => {
     updateMonth(prevWeek);
   };
 
-  //** working fine code */
-  // useEffect(() => {
-  //   const startDate = fromDate ? new Date(fromDate) : new Date();
-  //   if (!fromDate) {
-  //     startDate.setDate(startDate.getDate() - 7);
-  //   }
-
-  //   const endDate = toDate ? new Date(toDate) : new Date(startDate);
-  //   if (!toDate) {
-  //     endDate.setDate(startDate.getDate() + 30);
-  //   }
-  //   if (endDate - startDate < 30 * 24 * 60 * 60 * 1000) {
-  //     endDate.setDate(startDate.getDate() + 30);
-  //   }
-
-  //   const datesArray = [];
-  //   const currentDate = new Date(startDate);
-
-  //   while (currentDate <= endDate) {
-  //     const dayStart = new Date(currentDate);
-  //     dayStart.setHours(0, 0, 0, 0);
-  //     datesArray.push({ date: dayStart, isSelectable: true });
-  //     currentDate.setDate(currentDate.getDate() + 1);
-  //   }
-
-  //   events.forEach((event) => {
-  //     const eventStartDate = new Date(
-  //       event.startDate.split("-").reverse().join("-")
-  //     );
-  //     const eventEndDate = new Date(
-  //       event.endDate.split("-").reverse().join("-")
-  //     );
-
-  //     eventStartDate.setHours(0, 0, 0, 0);
-  //     eventEndDate.setHours(0, 0, 0, 0);
-
-  //     let eventCurrentDate = new Date(eventStartDate);
-
-  //     // Add all dates from eventStartDate to eventEndDate
-  //     while (eventCurrentDate <= eventEndDate) {
-  //       const isDateAlreadyAdded = datesArray.some(
-  //         (dateObj) => dateObj.date.getTime() === eventCurrentDate.getTime()
-  //       );
-  //       if (!isDateAlreadyAdded) {
-  //         datesArray.push({
-  //           date: new Date(eventCurrentDate),
-  //           isSelectable: true,
-  //         });
-  //       }
-  //       eventCurrentDate.setDate(eventCurrentDate.getDate() + 1);
-  //     }
-  //   });
-
-  //   // Sort final dates array
-  //   datesArray.sort((a, b) => a.date.getTime() - b.date.getTime());
-
-  //   setDays(datesArray);
-  // }, [fromDate, toDate, JSON.stringify(events)]);
-
-  //**working in both condition */
+  //**set days */
   useEffect(() => {
     const startDate = fromDate ? new Date(fromDate) : new Date();
     if (!fromDate) {
@@ -347,69 +269,7 @@ const Calendar = () => {
 
     setDays(datesArray);
   }, [fromDate, toDate, JSON.stringify(events)]);
-  //**working fine also */
-  // useEffect(() => {
-  //   const startDate = fromDate ? new Date(fromDate) : new Date();
-  //   if (!fromDate) {
-  //     startDate.setDate(startDate.getDate() - 7);
-  //   }
 
-  //   const endDate = toDate ? new Date(toDate) : new Date(startDate);
-  //   if (!toDate) {
-  //     endDate.setDate(startDate.getDate() + 30);
-  //   }
-  //   if (endDate - startDate < 30 * 24 * 60 * 60 * 1000) {
-  //     endDate.setDate(startDate.getDate() + 30);
-  //   }
-
-  //   const datesArray = [];
-  //   const currentDate = new Date(startDate);
-
-  //   while (currentDate <= endDate) {
-  //     const dayStart = new Date(currentDate);
-  //     dayStart.setHours(0, 0, 0, 0);
-  //     datesArray.push({ date: dayStart, isSelectable: true });
-  //     currentDate.setDate(currentDate.getDate() + 1);
-  //   }
-
-  //   events.forEach((event) => {
-  //     const eventStartDate = new Date(
-  //       event.startDate.split("-").reverse().join("-")
-  //     );
-  //     const eventEndDate = new Date(
-  //       event.endDate.split("-").reverse().join("-")
-  //     );
-
-  //     eventStartDate.setHours(0, 0, 0, 0);
-  //     eventEndDate.setHours(0, 0, 0, 0);
-
-  //     // Exclude events whose END DATE matches FROM DATE
-  //     if (eventEndDate.getTime() === startDate.getTime()) {
-  //       return; // Skip this event
-  //     }
-
-  //     let eventCurrentDate = new Date(eventStartDate);
-
-  //     // Add all dates from eventStartDate to eventEndDate
-  //     while (eventCurrentDate <= eventEndDate) {
-  //       const isDateAlreadyAdded = datesArray.some(
-  //         (dateObj) => dateObj.date.getTime() === eventCurrentDate.getTime()
-  //       );
-  //       if (!isDateAlreadyAdded) {
-  //         datesArray.push({
-  //           date: new Date(eventCurrentDate),
-  //           isSelectable: true,
-  //         });
-  //       }
-  //       eventCurrentDate.setDate(eventCurrentDate.getDate() + 1);
-  //     }
-  //   });
-
-  //   // Sort final dates array
-  //   datesArray.sort((a, b) => a.date.getTime() - b.date.getTime());
-
-  //   setDays(datesArray);
-  // }, [fromDate, toDate, JSON.stringify(events)]);
   const isToday = (day) => {
     const today = new Date();
     return (
@@ -760,13 +620,17 @@ const Calendar = () => {
           />
         </div>
         <div
-          className="calendar-filter"
+          className="d-flex flex-wrap align-items-center"
           style={{
-            display: window.matchMedia("(max-width: 768px)").matches && "flex",
+            display: "flex",
+            flexDirection: window.innerWidth < 768 ? "column" : "row",
+            gap: window.innerWidth < 768 ? "8px" : "0",
+            width:"100%"
           }}
         >
-          <div className="date-picker-container">
-            <div className="calendarFromDate me-1">
+          {/* First row (Desktop: From Date, To Date, Room Type, Button | Mobile: From Date only) */}
+          <div className="d-flex w-100 align-items-center">
+            <div className="calendarDateComponent">
               <label htmlFor="from-date">From Date:</label>
               <CustomDatePicker
                 id="from-date"
@@ -775,7 +639,9 @@ const Calendar = () => {
                 value={fromDate || ""}
               />
             </div>
-            <div className="toDate calendarToDate">
+
+            {/* To Date: Hidden in Mobile, Shown in Desktop */}
+            <div className="toDate calendarDateComponent mx-1 d-none d-md-block">
               <label htmlFor="to-date">To Date:</label>
               <CustomDatePicker
                 id="to-date"
@@ -784,16 +650,12 @@ const Calendar = () => {
                 value={toDate || ""}
               />
             </div>
-          </div>
 
-          <div
-            className="calendar-filter"
-            style={{
-              display:
-                window.matchMedia("(max-width: 768px)").matches && "flex",
-            }}
-          >
-            <div id="select_div" className="select-container">
+            {/* Room Type: Hidden in Mobile First Row, Shown in Desktop */}
+            <div
+              id="select_div"
+              className="roomTypeSelect flex-grow-1 mx-1 d-none d-md-block"
+            >
               <CustomReactSelect
                 labelName={t("room_type")}
                 name="roomType"
@@ -804,18 +666,57 @@ const Calendar = () => {
                     label: type,
                   })),
                 ]}
-                style={{ width: "100%" }}
                 onChange={(value) => {
                   setSelectedRoomType(value?.value);
                 }}
               />
             </div>
-            <button
-              className="availability-check"
-              onClick={handleShowAvailableOnly}
-            >
-              {showAvailableOnly ? "Show All" : "Show Available Only"}
-            </button>
+
+            {/* Availability Button: Hidden in Mobile First Row, Shown in Desktop */}
+            <div className="d-none d-md-block">
+              <Button
+                className="availability-check"
+                color="primary"
+                onClick={handleShowAvailableOnly}
+              >
+                {showAvailableOnly
+                  ? window.innerWidth < 768
+                    ? "All"
+                    : "Show All"
+                  : window.innerWidth < 768
+                  ? "Available"
+                  : "Show Available Only"}
+              </Button>
+            </div>
+          </div>
+
+          {/* Second row (Mobile: Room Type & Button) */}
+          <div className="d-flex align-items-center gap-2 w-100 d-md-none">
+            <div id="select_div" className="roomTypeSelect flex-grow-1">
+              <CustomReactSelect
+                labelName={t("room_type")}
+                name="roomType"
+                defaultValue={{ value: "All", label: "All" }}
+                loadOptions={[
+                  ...propertyTypes.map((type) => ({
+                    value: type,
+                    label: type,
+                  })),
+                ]}
+                onChange={(value) => {
+                  setSelectedRoomType(value?.value);
+                }}
+              />
+            </div>
+            <div>
+              <Button
+                className="availability-check"
+                color="primary"
+                onClick={handleShowAvailableOnly}
+              >
+                {showAvailableOnly ? "All" : "Available"}
+              </Button>
+            </div>
           </div>
         </div>
       </div>
