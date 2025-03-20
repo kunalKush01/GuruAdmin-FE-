@@ -333,7 +333,7 @@ export const subHeaderContentResponsive = [
       {
         name: "service-booking",
         customLabel: "Booking Service",
-        url: "/service-booking",
+        url: "/service-booked",
         icon: DharmshalaIcon,
         activeIcon: DharmshalaIcon,
       },
@@ -344,7 +344,6 @@ export const subHeaderContentResponsive = [
         icon: BookingIcon,
         activeIcon: BookingIcon,
       },
-      
     ],
   },
   {
