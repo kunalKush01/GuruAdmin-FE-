@@ -15,6 +15,7 @@ const { Panel } = Collapse;
 import deleteIcon from "../../../src/assets/images/icons/category/deleteIcon.svg";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
 import { getMasterByKey } from "../../api/membershipApi";
+import CustomCountryMobileNumberField from "./CustomCountryMobileNumberField";
 
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 function AddFilterSection({
@@ -164,7 +165,7 @@ function AddFilterSection({
     const fieldType = selectedField ? selectedField.type : null;
     const valueWithId = field ? field.valueWithId : null;
     const masterKey = field ? field.masterKey : null;
-
+    const format = field ? field.format : null;
     useEffect(() => {
       if (masterKey) {
         getMasterByKey(masterKey)
@@ -215,6 +216,31 @@ function AddFilterSection({
               />
             </div>
           );
+        } else if (format === "phoneNumber") {
+          if (filterType && filterType.value === "contain") {
+            return (
+              <CustomTextField
+                width="100%"
+                name={`filterValue${index}`}
+                placeholder={t("Enter Number")}
+                type="number"
+                min={0}
+              />
+            );
+          } else {
+            return (
+              <div style={{ display: "flex", width: "100%" }}>
+                <CustomCountryMobileNumberField
+                  name={`filterValue${index}`}
+                  placeholder={t("Enter Number")}
+                  defaultCountry="in"
+                  onChange={(phone) =>
+                    formik.setFieldValue(`filterValue${index}`, phone)
+                  }
+                />
+              </div>
+            );
+          }
         } else {
           return (
             <div className="w-100">
