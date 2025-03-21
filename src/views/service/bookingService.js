@@ -1,65 +1,89 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik, Field } from "formik";
-import { Button, Row, Col } from "antd";
+import { Button, Row, Col, Select } from "antd";
 import FormikCustomReactSelect from "../../components/partials/formikCustomReactSelect";
 import { useTranslation } from "react-i18next";
 import CustomTextField from "../../components/partials/customTextField";
 import moment from "moment";
-import { createBooking } from "../../api/serviceApi";
+import {
+  createBooking,
+  // updateBooking,
+  getServiceById,
+} from "../../api/serviceApi";
 import Swal from "sweetalert2";
 import { useQueryClient } from "@tanstack/react-query";
-import { useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 
-const BookingService = ({ serviceData, setShowBookingForm }) => {
+const BookingService = ({
+  serviceData,
+  setShowBookingForm,
+  isEdit,
+  editServiceRecord,
+}) => {
   const { t } = useTranslation();
-  const history = useHistory();
   const trustId = localStorage.getItem("trustId");
-  const [loading, setLoading] = useState(false); // Track API call status
+  const [loading, setLoading] = useState(false);
+  const [bookingDetails, setBookingDetails] = useState(null);
   const queryClient = useQueryClient();
+
   const serviceOptions = serviceData.map((service) => ({
     value: service._id,
     label: service.name,
   }));
 
-  const dateOptions = (serviceId) => {
-    const service = serviceData.find((s) => s._id === serviceId.value);
-    return service
-      ? service.dates.map((date) => ({
-          value: date,
-          label: moment(date).format("DD MMM YYYY"),
-        }))
-      : [];
-  };
+  const [availableDates, setAvailableDates] = useState([]);
 
-  const getAmount = (serviceId) => {
-    const service = serviceData.find((s) => s._id === serviceId);
-    return service ? service.amount : null;
-  };
+  // Populate available dates based on selected service
+  useEffect(() => {
+    if (bookingDetails && bookingDetails.dates) {
+      const today = moment().startOf("day");
 
+      const upcomingDates = bookingDetails.dates
+        .filter((date) => moment(date).isSameOrAfter(today))
+        .map((date) => moment(date).format("DD MMM YYYY"));
+
+      setAvailableDates(upcomingDates);
+    }
+  }, [bookingDetails]);
+
+  // Handle form submission
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     setLoading(true);
     setSubmitting(true);
 
     try {
-      // Prepare the data as per the backend API structure
       const bookingData = {
         serviceId: values.service?.value,
         count: values.persons,
-        date: values.date?.value,
+        date: values.date,
         trustId: trustId,
       };
 
-      // Call your backend API to create the booking
-      const response = await createBooking(bookingData);
+      let response;
+
+      if (isEdit) {
+        //**todo update is not done in backend */
+        // Editing an existing booking
+        // response = await updateBooking(
+        //   editServiceRecord.bookingId,
+        //   bookingData
+        // );
+      } else {
+        // Creating a new booking
+        response = await createBooking(bookingData);
+      }
 
       if (response?.result) {
         Swal.fire({
           title: "Success!",
-          text: "Booking created successfully.",
+          text: isEdit
+            ? "Booking updated successfully."
+            : "Booking created successfully.",
           icon: "success",
           confirmButtonText: "OK",
         });
+
         queryClient.invalidateQueries("bookedService");
         setShowBookingForm(false);
         resetForm();
@@ -71,23 +95,18 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
           confirmButtonText: "OK",
         });
       }
-
-      // console.log("Booking Created:", response.data);
     } catch (error) {
       Swal.fire({
         title: "Error!",
-        text: error || "Booking creation failed!",
+        text: error || "Booking action failed!",
         icon: "error",
         confirmButtonText: "OK",
       });
-
-      console.error("Booking creation failed:", error);
     } finally {
       setLoading(false);
       setSubmitting(false);
     }
   };
-
   return (
     <div className="d-flex flex-column">
       <img
@@ -100,33 +119,62 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
       <div className="formwrapper FormikWrapper">
         <Formik
           initialValues={{
-            service: "",
-            date: null,
-            amount: "",
-            persons: "",
+            service: isEdit
+              ? serviceOptions.find(
+                  (s) => s.label === editServiceRecord?.serviceName
+                ) || ""
+              : "",
+            date: isEdit
+              ? editServiceRecord.dates.map((date) =>
+                  moment(date).format("DD MMM YYYY")
+                )
+              : [],
+            amount: isEdit ? editServiceRecord.amount.replace("₹", "") : "",
+            persons: isEdit ? editServiceRecord.count || "" : "",
           }}
+          enableReinitialize
           onSubmit={handleSubmit}
         >
           {({ values, setFieldValue, handleSubmit, isSubmitting }) => (
             <form onSubmit={handleSubmit}>
               <Row gutter={16} style={{ marginBottom: "20px" }}>
-                {/* Select Service */}
                 <Col xs={24} sm={6}>
                   <FormikCustomReactSelect
                     labelName={t("select_service")}
                     name="service"
                     placeholder={t("select_service")}
-                    loadOptions={serviceOptions}
-                    onChange={(value) => {
+                    loadOptions={
+                      isEdit
+                        ? [
+                            {
+                              value: editServiceRecord?.serviceId,
+                              label: editServiceRecord?.serviceName,
+                            },
+                          ]
+                        : serviceOptions
+                    }
+                    onChange={async (value) => {
                       if (!value) {
                         setFieldValue("service", "");
                         setFieldValue("amount", "");
-                        setFieldValue("date", "");
+                        setFieldValue("date", []);
                       } else {
                         setFieldValue("service", value);
-                        setFieldValue("date", "");
-                        const amount = getAmount(value.value);
-                        setFieldValue("amount", amount);
+                        try {
+                          const response = await getServiceById(value.value);
+                          if (response?.result) {
+                            setBookingDetails(response?.result);
+                            setFieldValue(
+                              "amount",
+                              response.result.amount || ""
+                            );
+                          }
+                        } catch (error) {
+                          console.error(
+                            "Error fetching service details:",
+                            error
+                          );
+                        }
                       }
                     }}
                     value={values.service || null}
@@ -134,20 +182,27 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
                   />
                 </Col>
 
-                {/* Select Date */}
                 <Col xs={24} sm={6}>
-                  <FormikCustomReactSelect
-                    labelName={t("select_date")}
-                    name="date"
-                    placeholder={t("select_date")}
-                    loadOptions={dateOptions(values.service || "")}
-                    onChange={(value) => setFieldValue("date", value)}
-                    value={values.date || null}
-                    width
-                  />
+                  <div id="sevaBooking">
+                    <label className="mb-0">{t("select_date")}</label>
+                    <Select
+                      mode="multiple"
+                      placeholder="Select Dates"
+                      className="custom-date-select mt-0"
+                      style={{ width: "100%", height: "auto" }}
+                      allowClear
+                      value={values.date}
+                      onChange={(dates) => setFieldValue("date", dates)}
+                    >
+                      {availableDates.map((date, index) => (
+                        <Select.Option key={index} value={date}>
+                          {date}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  </div>
                 </Col>
 
-                {/* Amount */}
                 <Col xs={24} sm={6}>
                   <Field name="amount">
                     {({ field }) => (
@@ -164,7 +219,6 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
                   </Field>
                 </Col>
 
-                {/* Number of Persons */}
                 <Col xs={24} sm={6}>
                   <Field name="persons">
                     {({ field }) => (
@@ -188,10 +242,14 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
                   type="primary"
                   htmlType="submit"
                   style={{ marginTop: "20px" }}
-                  disabled={isSubmitting || loading} // Disable while submitting
-                  loading={isSubmitting || loading} // Show loading animation
+                  disabled={isSubmitting || loading}
+                  loading={isSubmitting || loading}
                 >
-                  {loading ? "Submitting..." : "Submit"}
+                  {loading
+                    ? "Submitting..."
+                    : isEdit
+                    ? "Update Booking"
+                    : "Submit"}
                 </Button>
               </div>
             </form>

@@ -20,6 +20,8 @@ function ServiceListView() {
   const trustId = localStorage.getItem("trustId");
   const { t } = useTranslation();
   const [showBookingForm, setShowBookingForm] = useState(false);
+  const [editServiceRecord, setEditServiceRecord] = useState(null);
+  const [isEdit, setIsEdit] = useState(false);
   const [activeTab, setActiveTab] = useState(() => {
     if (location.pathname.includes("service-booked")) {
       return "booked_services";
@@ -164,7 +166,10 @@ function ServiceListView() {
               <Button
                 color="primary"
                 className="addAction-btn"
-                onClick={() => setShowBookingForm(true)}
+                onClick={() => {
+                  setShowBookingForm(true);
+                  setIsEdit(false);
+                }}
               >
                 <span>
                   <Plus className="" size={15} strokeWidth={4} />
@@ -177,6 +182,7 @@ function ServiceListView() {
           )}
           {!showBookingForm ? (
             <BookedServiceListTable
+              setShowBookingForm={setShowBookingForm}
               data={bookedService ? bookedService.results : []}
               totalItems={bookedService ? bookedService.totalResults : 0}
               pageSize={bookedServicePagination.limit}
@@ -190,10 +196,14 @@ function ServiceListView() {
                   page: 1,
                 }));
               }}
+              setEditServiceRecord={setEditServiceRecord}
+              setIsEdit={setIsEdit}
             />
           ) : (
             <BookingService
               serviceData={data ? data.results : []}
+              editServiceRecord={editServiceRecord ?? null}
+              isEdit={isEdit}
               setShowBookingForm={setShowBookingForm}
             />
           )}
