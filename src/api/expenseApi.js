@@ -51,6 +51,42 @@ export const getAllExpense = (payload) =>
     showToastOnError: false,
   });
 
+  export const ExportExpenseReport = (payload) =>
+    callApi({
+      requestFunction: (axios) =>
+        axios.post(`${API_BASE_URL}expense/generate-report`, payload),
+      showToastOnSuccess: true,
+      successMessage: "Expense report request submitted successfully!",
+      showToastOnError: true,
+    });
+
+    export const ExportDonationReport = (payload) =>
+      callApi({
+        requestFunction: (axios) =>
+          axios.post(`${API_BASE_URL}donation/generate-report`, payload),
+        showToastOnSuccess: true,
+        successMessage: "Donation report request submitted successfully!",
+        showToastOnError: true,
+      });
+
+      export const ExportPledgeReport = (payload) =>
+        callApi({
+          requestFunction: (axios) =>
+            axios.post(`${API_BASE_URL}commitment/generate-report`, payload),
+          showToastOnSuccess: true,
+          successMessage: "Pledge report request submitted successfully!",
+          showToastOnError: true,
+        });
+        export const ExportDonationBoxReport = (payload) =>
+          callApi({
+            requestFunction: (axios) =>
+              axios.post(`${API_BASE_URL}donation-box/generate-report`, payload),
+            showToastOnSuccess: true,
+            successMessage: "Donation-Box report request submitted successfully!",
+            showToastOnError: true,
+          });  
+  
+
 export const getExpensesDetail = (payload) =>
   callApi({
     requestFunction: (axios) => axios.get(`${API_BASE_URL}expense/${payload}`),

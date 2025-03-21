@@ -18,7 +18,7 @@ import {
 } from "../../api/commitmentApi";
 import { exportAllDonation, getAllDonation } from "../../api/donationApi";
 import { getAllBoxCollection } from "../../api/donationBoxCollectionApi";
-import { ExportAllExpense, getAllExpense } from "../../api/expenseApi";
+import { ExportAllExpense, getAllExpense, ExportExpenseReport, ExportDonationReport,ExportPledgeReport, ExportDonationBoxReport } from "../../api/expenseApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import exportIcon from "../../assets/images/icons/exportIcon.svg";
@@ -36,6 +36,8 @@ import FormikCustomDatePicker from "../../components/partials/formikCustomDatePi
 import NoContent from "../../components/partials/noContent";
 import { handleExport } from "../../utility/utils/exportTabele";
 import FinancialReportTabs from "./financialReportTabs";
+import { Modal, Radio, DatePicker, message } from "antd";
+const { RangePicker, MonthPicker } = DatePicker;
 import "../../assets/scss/viewCommon.scss";
 
 export default function FinancialReport() {
@@ -43,6 +45,68 @@ export default function FinancialReport() {
     new Date(moment().startOf("month"))
   );
   const [reportEndDate, setReportEndDate] = useState(new Date());
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [exportType, setExportType] = useState("monthly");
+  const [selectedMonth, setSelectedMonth] = useState(null);
+  const [customDateRange, setCustomDateRange] = useState([]);
+
+const handleClickExport = () => {
+  setIsModalVisible(true);
+};
+
+const handleDownloadReport = async () => {
+  let payload = { format: "excel" };
+
+  if (exportType === "monthly" && selectedMonth) {
+    const monthNumber = selectedMonth.$M + 1;
+    const year = selectedMonth.$y;
+
+    payload = {
+      month: monthNumber.toString().padStart(2, "0"),
+      year: year.toString(),
+      format: "excel",
+    };
+  } else if (exportType === "custom" && customDateRange.length === 2) {
+    const startDate = customDateRange[0];
+    const endDate = customDateRange[1];
+
+    payload = {
+      startDate: `${startDate.$y}-${(startDate.$M + 1).toString().padStart(2, "0")}-${startDate.$D.toString().padStart(2, "0")}T00:00:00.000Z`,
+      endDate: `${endDate.$y}-${(endDate.$M + 1).toString().padStart(2, "0")}-${endDate.$D.toString().padStart(2, "0")}T23:59:59.999Z`,
+      format: "excel",
+    };
+  } else {
+    return message.error("Please select a valid date range or month.");
+  }
+
+  try {
+    console.log("Sending Payload:", payload);
+
+    const reportType = activeReportTab.name;
+
+    if (reportType === t("donation_Donation")) {
+      await ExportDonationReport(payload);
+    } else if (reportType === t("report_commitment")) {
+      await ExportPledgeReport(payload);
+    } else if (reportType === t("report_donation_box")) {
+      await ExportDonationBoxReport(payload);
+    } else if (reportType === t("report_expences")) {
+      await ExportExpenseReport(payload);
+    } else {
+      return message.error("Unknown report type selected.");
+    }
+
+    message.success(
+      "You will receive your report for the selected time range via email. Please wait.",
+      5
+    );
+  } catch (error) {
+    console.error("Error exporting report:", error);
+    message.error("Failed to generate report. Please try again.");
+  }
+
+  setIsModalVisible(false);
+};
 
   const { t } = useTranslation();
   const [activeReportTab, setActiveReportTab] = useState({
@@ -303,49 +367,49 @@ export default function FinancialReport() {
 
   // exoprt table code
 
-  const handleClickExport = () => {
-    let tableData = [];
-    let fileName;
-    let sheetName;
+  // const handleClickExport = () => {
+  //   let tableData = [];
+  //   let fileName;
+  //   let sheetName;
 
-    switch (activeReportTab.name) {
-      case t("report_expences"):
-        fileName = "Expenses report";
-        sheetName = "Expenses";
-        tableData = jsonDataExpences({
-          data: exportExpenseData?.data?.results ?? [],
-        });
-        break;
-      case t("donation_Donation"):
-        fileName = "Donation report";
-        sheetName = "Donation";
-        tableData = jsonDataDonation({
-          data: exportDonationData?.data?.results ?? [],
-        });
-        break;
-      case t("report_commitment"):
-        fileName = "Commitment report";
-        sheetName = "Commitment";
-        tableData = jsonDataCommitment({
-          data: exportAllCommitmentsData?.data?.results ?? [],
-        });
-        break;
-      case t("report_donation_box"):
-        fileName = "Hundi report";
-        sheetName = "Hundi";
-        tableData = jsonDataDonationBox({
-          data: exportBoxCollectionData?.data?.results ?? [],
-        });
-        break;
-      default:
-        break;
-    }
-    handleExport({
-      dataName: tableData,
-      fileName: fileName,
-      sheetName: sheetName,
-    });
-  };
+  //   switch (activeReportTab.name) {
+  //     case t("report_expences"):
+  //       fileName = "Expenses report";
+  //       sheetName = "Expenses";
+  //       tableData = jsonDataExpences({
+  //         data: exportExpenseData?.data?.results ?? [],
+  //       });
+  //       break;
+  //     case t("donation_Donation"):
+  //       fileName = "Donation report";
+  //       sheetName = "Donation";
+  //       tableData = jsonDataDonation({
+  //         data: exportDonationData?.data?.results ?? [],
+  //       });
+  //       break;
+  //     case t("report_commitment"):
+  //       fileName = "Commitment report";
+  //       sheetName = "Commitment";
+  //       tableData = jsonDataCommitment({
+  //         data: exportAllCommitmentsData?.data?.results ?? [],
+  //       });
+  //       break;
+  //     case t("report_donation_box"):
+  //       fileName = "Hundi report";
+  //       sheetName = "Hundi";
+  //       tableData = jsonDataDonationBox({
+  //         data: exportBoxCollectionData?.data?.results ?? [],
+  //       });
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  //   handleExport({
+  //     dataName: tableData,
+  //     fileName: fileName,
+  //     sheetName: sheetName,
+  //   });
+  // };
 
   return (
     <div className="listviewwrapper">
@@ -424,17 +488,13 @@ export default function FinancialReport() {
               </Formik>
             </div>
             <div>
-              <Button
-                color="primary"
-                className="addAction-btn"
-                onClick={handleClickExport}
-                style={{ height: "35px" }}
-              >
-                <span className="d-flex align-items-center">
-                  <Trans i18nKey={"export_report"} />
-                  <img src={exportIcon} width={15} className="ms-2" />
-                </span>
-              </Button>
+            <Button color="primary" className="addAction-btn" onClick={handleClickExport}>
+      <span className="d-flex align-items-center">
+        <Trans i18nKey={"export_report"} />
+        <img src={exportIcon} width={15} className="ms-2" />
+      </span>
+    </Button>
+
             </div>
           </div>
         </div>
@@ -553,6 +613,47 @@ export default function FinancialReport() {
           </Row>
         </div>
       </div>
+      <Modal
+  title={<h2>Download Report</h2>}
+  visible={isModalVisible}
+  onCancel={() => setIsModalVisible(false)}
+  footer={null}
+  centered
+  width={500}
+  className="download-report-modal"
+>
+  <p>Report will be sent to your registered email ID.</p>
+
+  <div className="modal-row">
+    <label className="modal-label">Type</label>
+    <Radio.Group value={exportType} onChange={(e) => setExportType(e.target.value)}>
+      <Radio value="monthly">Monthly</Radio>
+      <Radio value="custom">Custom</Radio>
+    </Radio.Group>
+  </div>
+
+  {exportType === "monthly" && (
+    <div className="modal-row">
+      <label className="modal-label">Month</label>
+      <MonthPicker onChange={(date) => setSelectedMonth(date)} placeholder="Select month" />
+    </div>
+  )}
+
+  {exportType === "custom" && (
+    <div className="modal-row">
+      <label className="modal-label">Range</label>
+      <RangePicker onChange={(dates) => setCustomDateRange(dates)} />
+    </div>
+  )}
+
+  <div className="modal-actions">
+    <button className="btn-cancel" onClick={() => setIsModalVisible(false)}>Cancel</button>
+    <button className="btn-download" onClick={handleDownloadReport}>Download</button>
+  </div>
+</Modal>
+
+
+
     </div>
   );
 }
