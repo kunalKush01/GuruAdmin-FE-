@@ -79,6 +79,7 @@
     "reactstrap": "^9.0.1",
     "redux": "^4.0.5",
     "redux-persist": "^6.0.0",
+    "sass": "^1.86.0",
     "styled-components": "^5.3.11",
     "suneditor": "^2.44.3",
     "suneditor-react": "^3.4.1",
@@ -109,7 +110,6 @@
   "devDependencies": {
     "eslint": "^7.11.0",
     "eslint-plugin-react": "^7.20.6",
-    "sass": "^1.86.0",
     "sass-loader": "^13.3.3"
   },
   "browserslist": {
