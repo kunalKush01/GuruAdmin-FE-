@@ -7,7 +7,7 @@ module.exports = {
   babel: {
     plugins:
       process.env.NODE_ENV !== "development"
-        ? ["transform-remove-console"]
+        ? ["babel-plugin-transform-remove-console"]
         : [],
   },
 
