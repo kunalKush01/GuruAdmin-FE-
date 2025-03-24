@@ -12,6 +12,7 @@ import { Spinner } from "reactstrap";
 import styled from "styled-components";
 import { getDonationCustomFields } from "../../api/customFieldsApi";
 import { donationDownloadReceiptApi, getDonation } from "../../api/donationApi";
+import { downloadFile } from "../../api/sharedStorageApi";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import receiptIcon from "../../assets/images/icons/receiptIcon.svg";
@@ -54,6 +55,8 @@ export default function DonationANTDListTable(
     format: [5, 7],
   };
 
+  const REACT_APP_BASEURL_PUBLIC = process.env.REACT_APP_BASEURL_PUBLIC;
+
   const shareReceiptOnWhatsApp = (item, receiptLink) => {
     const message = `Hello ${
       item.donarName
@@ -69,12 +72,49 @@ export default function DonationANTDListTable(
     );
   };
 
-  const handleWhatsAppShare = (item) => {
-    setIsLoading(item._id);
-    getReceiptForWhatsApp.mutate({
-      donationId: item._id,
-      languageId: selectedLang.id,
-    });
+  const handleWhatsAppShare = async (item) => {
+    try {
+      setIsLoading(item._id);
+
+      let receiptDownloadLink = item.receiptLink ? item.receiptLink : null;
+
+      // If no receiptLink is available, fetch it from the API
+      if (!receiptDownloadLink) {
+        console.log("Fetching receipt link...");
+        const response = await getDonation({ donationId: item._id });
+
+        if (response?.result?.receiptName) {
+          receiptDownloadLink = `${REACT_APP_BASEURL_PUBLIC}storage/download/donation/${response.result.receiptName}`;
+        } else {
+          toast.error("Receipt not available at this moment.");
+          setIsLoading(false);
+          return;
+        }
+      }
+
+      const message = `Hello ${
+        item.donarName
+      }, thank you for your donation of ₹${item.amount.toLocaleString(
+        "en-IN"
+      )} to ${
+        loggedTemple?.name
+      }. You can download your receipt here: ${receiptDownloadLink}`;
+
+      const phoneNumber = `${item.user?.countryCode?.replace("+", "") || ""}${
+        item.user?.mobileNumber || ""
+      }`;
+
+      window.open(
+        `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`,
+        "_blank"
+      );
+
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error sharing receipt:", error);
+      toast.error("Failed to send receipt via WhatsApp");
+      setIsLoading(false);
+    }
   };
 
   const getReceiptForWhatsApp = useMutation({
@@ -101,18 +141,24 @@ export default function DonationANTDListTable(
   });
 
   const downloadReceipt = useMutation({
-    mutationFn: (payload) => {
-      return getDonation(payload);
-    },
+    mutationFn: (payload) => getDonation(payload),
     onSuccess: (data) => {
-      if (!data.error) {
-        setIsLoading(false);
-        if (data.result.receiptLink) {
-          window.open(`${data.result.receiptLink}`, "_blank");
-        } else {
-          toast.error("Receipt link not available at this moment");
-        }
+      setIsLoading(false);
+
+      if (data?.result?.receiptName) {
+        const receiptDownloadLink = `${REACT_APP_BASEURL_PUBLIC}storage/download/donation/${data.result.receiptName}`;
+        console.log("Opening Receipt in New Tab:", receiptDownloadLink);
+
+        // Open the PDF directly
+        window.open(receiptDownloadLink, "_blank");
+      } else {
+        toast.error("Receipt link not available at this moment.");
       }
+    },
+    onError: (error) => {
+      setIsLoading(false);
+      console.error("Error fetching donation receipt:", error);
+      toast.error("Failed to fetch receipt. Please try again.");
     },
   });
 

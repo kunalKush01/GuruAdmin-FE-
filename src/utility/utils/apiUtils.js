@@ -14,7 +14,7 @@ export const extractDataFromResponse = ({
   const data = response?.data?.data ?? {};
 
   if (
-    response.status === successCode &&
+    (response.status === successCode || response.status === 201) &&
     response.data.status &&
     response.data.code === successCode
   ) {
@@ -48,5 +48,3 @@ export const parseApiErrorResponse = ({ error, showToast = true }) => {
   }
   return { error: true };
 };
-
-

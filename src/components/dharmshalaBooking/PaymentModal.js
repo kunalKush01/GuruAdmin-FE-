@@ -44,7 +44,7 @@ export const PaymentModal = ({
     form.validateFields().then((values) => {
       const formData = {
         ...values,
-        status: values.checkIn ? "checked-in" : "",
+        status: values.checkIn ? "checked-in" : "confirmed",
       };
       onSave(formData);
       onClose();

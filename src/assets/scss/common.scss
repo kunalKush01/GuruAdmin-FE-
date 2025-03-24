@@ -3280,10 +3280,6 @@
         cursor: pointer;
     }
 
-    .availability-check {
-        display: none;
-    }
-
     .fromDate {
         width: 180px;
     }
@@ -3339,10 +3335,6 @@
 
 /* For smartphones (less than or equal to 480px) */
 @media only screen and (max-width: 480px) {
-    .availability-check {
-        display: none;
-    }
-
     .familyDetails {
         display: flex !important;
         flex-direction: row !important;
@@ -3411,19 +3403,29 @@
         box-shadow: none;
         font: bold 15px "Noto Sans", sans-serif;
     }
+
     .ant-btn-primary {
-        background-color:$white !important;
+        background-color: $white !important;
         color: #FF8744 !important;
-        border:1px solid #FF8744  !important;
+        border: 1px solid #FF8744 !important;
         border-radius: 5px !important;
     }
 }
+
 .roomholdBtn {
-    margin-right: 10px;
+    margin-right: 8px;
+
     .ant-btn {
         height: 38px;
         box-shadow: none;
         font: bold 15px "Noto Sans", sans-serif;
+    }
+
+    .ant-btn-primary {
+        background-color: $white !important;
+        color: #FF8744 !important;
+        border: 1px solid #FF8744 !important;
+        border-radius: 5px !important;
     }
 }
 
@@ -3518,18 +3520,19 @@
     gap: 10px;
 }
 
-.calendar-filter {
-    display: flex;
-    align-items: center;
-    margin-left: 20px;
-    flex-direction: row;
-    height: 50px;
+.roomTypeSelect {
+    .reactselectwrapper label {
+        margin-right: 10px;
+        font-weight: 600;
+        color: $font-color;
+        margin-bottom: 0 !important;
+    }
 }
 
-.calendar-filter label {
+.calendarDateComponent label {
     margin-right: 10px;
-    font-weight: 600;
     color: $font-color;
+    font: normal normal 700 15px Noto Sans !important;
     margin-bottom: 0 !important;
 }
 
@@ -3794,10 +3797,12 @@
 }
 
 .date-picker-container {
-    display: flex;
+    display: flex !important;
+    align-items: center;
     flex-wrap: wrap;
 }
-.flex-container{
+
+.flex-container {
     flex-wrap: wrap;
 }
 
@@ -3817,14 +3822,6 @@
 
 .custom-select:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.29);
-}
-
-.select-container {
-    display: flex;
-    flex-direction: column;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: 10px;
 }
 
 .day-price {
@@ -3883,7 +3880,7 @@
     //padding: 10px 15px;
     font-size: 15px;
     border: none;
-    width: 100%;
+    width: 200px !important;
     position: relative;
     margin-left: 10px;
     margin-top: 30px;
@@ -4115,6 +4112,22 @@
         margin: auto;
     }
 
+    .availability-check {
+        color: #fff;
+        background-color: $primary;
+        font-weight: 700;
+        //padding: 10px 15px;
+        font-size: 15px;
+        border: none;
+        width: 100px !important;
+        position: relative;
+        margin-left: 10px;
+        margin-top: 30px;
+        margin-bottom: 10px;
+        height: 38px;
+        border-radius: 4px
+    }
+
     .calendar-filters {
         width: 100%;
         display: flex;
@@ -4126,25 +4139,6 @@
         flex-wrap: wrap;
         /* Allow items to wrap */
         gap: 10px;
-    }
-
-    .calendar-filter {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        margin-left: 0px;
-        justify-content: flex-start;
-    }
-
-    .calendar-filter label {
-        margin-right: 10px;
-        font-weight: 600;
-        color: #583703;
-    }
-
-    #select_div {
-        display: flex;
-        flex-direction: column;
     }
 
     #room-type {
@@ -4236,7 +4230,7 @@
 
     .day-cell {
         /* height: 60px; */
-        min-width: 55.5px;
+        min-width: 52.5px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -4379,91 +4373,100 @@
     padding: 5px 40px;
     opacity: 100%;
 }
-.filterIcon{
+
+.filterIcon {
     margin-top: -1px;
     margin-right: 5px;
 }
-.filterLable{
+
+.filterLable {
     font-size: 15px;
     color: $font-color;
     font-weight: 600;
 }
-.crossIcon{
+
+.crossIcon {
     margin-bottom: 3px;
     cursor: pointer;
 }
-.serviceMultipleDatepicker{
+
+.serviceMultipleDatepicker {
     height: auto !important;
     min-height: 38px !important;
     overflow: hidden !important;
 }
-.calendarFromDate{
-    .ant-picker-clear{
-        display: none;
-    }
+
+.calendarDateComponent {
+    width: 100% !important;
 }
-.calendarToDate{
-    .ant-picker-clear{
-        display: none;
-    }
-}
-#tagComponent{
-    .ant-select-selector{
+
+#tagComponent {
+    .ant-select-selector {
         background-color: $secondary-color !important;
         min-height: 38px !important;
         height: auto !important;
         border: none !important;
     }
-    .ant-select-selection-item{
+
+    .ant-select-selection-item {
         background-color: $secondary-color !important;
         color: $font-color !important;
-    border: 1px solid $font-color !important;
-    border-radius: 10px !important;
-    font: $font-weight-bold 80% $font-family !important; 
-    height: 18px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-}
-.ant-select-selection-wrap{
-    display:flex !important;
-    align-self: center !important;
-}
-.ant-select-dropdown {
-    background-color: $secondary-color !important;
-    padding: 5px !important;
-    color: #ffffff !important;
-}
-.ant-select-item-option-active {
-    background-color: $primary !important;
-    color: #ffffff !important;
-}
+        border: 1px solid $font-color !important;
+        border-radius: 10px !important;
+        font: $font-weight-bold 80% $font-family !important;
+        height: 18px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
 
-.ant-select-item-option-selected {
-    background-color: $primary !important;
-    color: #ffffff !important;
-}
-.ant-select-item-option-active .ant-select-item-option-content,
-.ant-select-item-option-selected .ant-select-item-option-content {
-    color: #ffffff !important;
-    font: normal normal bold 13px/20px Noto Sans
-}
-.ant-select-item-option-selected .ant-select-item-option-state {
-    svg {
-        fill: #ffffff !important; /* Ensures the tick icon is white */
+    .ant-select-selection-wrap {
+        display: flex !important;
+        align-self: center !important;
+    }
+
+    .ant-select-dropdown {
+        background-color: $secondary-color !important;
+        padding: 5px !important;
+        color: #ffffff !important;
+    }
+
+    .ant-select-item-option-active {
+        background-color: $primary !important;
+        color: #ffffff !important;
+    }
+
+    .ant-select-item-option-selected {
+        background-color: $primary !important;
+        color: #ffffff !important;
+    }
+
+    .ant-select-item-option-active .ant-select-item-option-content,
+    .ant-select-item-option-selected .ant-select-item-option-content {
+        color: #ffffff !important;
+        font: normal normal bold 13px/20px Noto Sans
+    }
+
+    .ant-select-item-option-selected .ant-select-item-option-state {
+        svg {
+            fill: #ffffff !important;
+            /* Ensures the tick icon is white */
+        }
+    }
+
+    .ant-select-selection-placeholder {
+        color: #978466 !important;
+        font: normal normal 700 13px Noto Sans !important
     }
 }
-.ant-select-selection-placeholder {
-    color: #978466 !important;
-    font: normal normal 700 13px Noto Sans !important
-}
-}
-.membershipMobileField{
-    label{
+
+.membershipMobileField {
+    label {
         color: $font-color;
         font: normal normal 700 15px Noto Sans !important
     }
 }
+
 .membershipMobileField {
     label {
         color: $font-color;
@@ -4490,6 +4493,7 @@
     color: $font-color !important;
     font: normal normal 500 14px Noto Sans !important
 }
-.se-dialog-content{
+
+.se-dialog-content {
     z-index: 1000000;
 }

@@ -53,6 +53,8 @@ export default function FormWithoutFormikForBooking({
   const [rooms, setRooms] = useState({});
   const [roomTypes, setRoomTypes] = useState([]);
 
+  const isUpdateDisabled = isEditing && (!formik.values.totalPaid || formik.values.totalPaid === 0);
+
   // const fetchBuildings = async () => {
   //   try {
   //     const response = await getDharmshalaList();
@@ -433,9 +435,13 @@ export default function FormWithoutFormikForBooking({
     const roomsCombination = [];
 
     while (remainingGuests > 0) {
-      const suitableRoom = sortedRoomTypes.find(
+      let suitableRoom = sortedRoomTypes.find(
         (room) => room.capacity <= remainingGuests
       );
+      if (!suitableRoom) {
+        // If no suitable room found, pick the smallest available room to avoid undefined
+        suitableRoom = sortedRoomTypes[sortedRoomTypes.length - 1];
+      }
       if (suitableRoom) {
         roomsCombination.push({
           roomType: suitableRoom._id,
@@ -949,6 +955,7 @@ export default function FormWithoutFormikForBooking({
             isSearchEnabled={isSearchEnabled}
             isReadOnly={isReadOnly}
             isEditing={isEditing}
+            isCheckModal={false}
           />
         </div>
         <div className="guest-payment">
@@ -1101,21 +1108,51 @@ export default function FormWithoutFormikForBooking({
             <Spinner size="md" />
           </Button>
         ) : (
-          <Button
-            color="primary"
-            className="addAction-btn "
-            type="submit"
-            style={{ display: isReadOnly && "none" }}
-          >
-            {!props.plusIconDisable && (
-              <span>
-                <Plus className="" size={15} strokeWidth={4} />
-              </span>
+          <>
+            {isEditing && (
+              <Button
+                color="primary"
+                className="addAction-btn me-2"
+                type="submit"
+                disabled={isUpdateDisabled}
+                style={{ display: isReadOnly && "none" }}
+              >
+                <Trans i18nKey="update_booking" />
+              </Button>
             )}
-            <span>
-              <Trans i18nKey={`${buttonName}`} />
-            </span>
-          </Button>
+
+            {isEditing && (!formik.values.totalPaid || formik.values.totalPaid === 0) && (
+                <Button
+                  color="warning"
+                  className="addAction-btn"
+                  type="button"
+                  onClick={() => {
+                    formik.setFieldValue("status", "Payment Pending");
+                    formik.handleSubmit();
+                  }}
+                  style={{ display: isReadOnly && "none" }}
+                >
+                  <Trans i18nKey="Request to Pay" />
+                </Button>
+              )}
+            {!isEditing && (
+              <Button
+                color="primary"
+                className="addAction-btn"
+                type="submit"
+                style={{ display: isReadOnly && "none" }}
+              >
+                {!props.plusIconDisable && (
+                  <span>
+                    <Plus className="" size={15} strokeWidth={4} />
+                  </span>
+                )}
+                <span>
+                  <Trans i18nKey={buttonName} />
+                </span>
+              </Button>
+            )}
+          </>
         )}
       </div>
     </Form>

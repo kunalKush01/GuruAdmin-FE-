@@ -90,6 +90,12 @@ export function CategoryListTable({
       width: 180,
     },
     {
+      title: t("Id (For bulk upload)"),
+      dataIndex: "_Id",
+      key: "a",
+      width: 220,
+    },
+    {
       title: "",
       dataIndex: "addLanguage",
       key: "addLanguage",

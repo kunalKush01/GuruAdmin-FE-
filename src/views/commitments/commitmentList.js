@@ -336,7 +336,10 @@ export default function Commitment() {
                     <img
                       src={arrowLeft}
                       className="me-2  cursor-pointer"
-                      onClick={() => setShowHistory(false)}
+                      onClick={() => {
+                        setShowHistory(false);
+                        queryClient.invalidateQueries("Commitments");
+                      }}
                     />
                   ) : (
                     <Trans i18nKey={"commitment"} />
@@ -620,7 +623,12 @@ export default function Commitment() {
           </Row>
         </div>
       </div>
-      <ImportForm onClose={onClose} open={open} tab="Pledge" setShowHistory={setShowHistory} />
+      <ImportForm
+        onClose={onClose}
+        open={open}
+        tab="Pledge"
+        setShowHistory={setShowHistory}
+      />
       <AddFilterSection
         onFilterClose={onFilterClose}
         filterOpen={filterOpen}

@@ -66,6 +66,7 @@ const AddDharmshalaBooking = () => {
         bookingCode: bookingData.bookingId || "",
         imagePath: bookingData.imagePath || "",
         etag: bookingData.etag || "",
+        status: bookingData.status || "",
       });
     } else {
       setInitialValues({
@@ -105,6 +106,7 @@ const AddDharmshalaBooking = () => {
         totalPaid: "",
         totalDue: "",
         imagePath: "",
+        status: "",
       });
     }
     setIsLoading(false);
