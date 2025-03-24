@@ -523,7 +523,9 @@ const Routes = [
   },
   {
     path: "/member/profile/:id",
-    component: lazy(() => import("../../views/membership/MembershipProfileView.js")),
+    component: lazy(() =>
+      import("../../views/membership/MembershipProfileView.js")
+    ),
     exact: true,
     type: "membership",
     subPermission: READ,
@@ -544,27 +546,28 @@ const Routes = [
   },
   {
     path: "/service",
-    component: lazy(() =>
-      import("../../views/service/serviceListView.js")
-    ),
+    component: lazy(() => import("../../views/service/serviceListView.js")),
     // exact:true
     type: "service",
     subPermission: READ,
   },
   {
     path: "/service-booking",
-    component: lazy(() =>
-      import("../../views/service/serviceListView.js")
-    ),
+    component: lazy(() => import("../../views/service/serviceListView.js")),
+    // exact:true,
+    type: "service",
+    subPermission: READ,
+  },
+  {
+    path: "/service-booked",
+    component: lazy(() => import("../../views/service/serviceListView.js")),
     // exact:true,
     type: "service",
     subPermission: READ,
   },
   {
     path: "/services/addService",
-    component: lazy(() =>
-      import("../../views/service/addServiceForm.js")
-    ),
+    component: lazy(() => import("../../views/service/addServiceForm.js")),
     // exact:true
     type: "service",
     subPermission: WRITE,
@@ -990,18 +993,14 @@ const Routes = [
   },
   {
     path: "/service-booking",
-    component: lazy(() =>
-      import("../../views/service/serviceListView.js")
-    ),
+    component: lazy(() => import("../../views/service/serviceListView.js")),
     exact: true,
     type: "service-booking",
     subPermission: READ,
   },
   {
     path: "/service",
-    component: lazy(() =>
-      import("../../views/service/bookingService.js")
-    ),
+    component: lazy(() => import("../../views/service/bookingService.js")),
     exact: true,
     type: "service",
     subPermission: READ,

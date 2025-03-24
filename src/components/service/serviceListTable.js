@@ -79,9 +79,11 @@ function ServiceListTable({
   };
 
   useEffect(() => {
-    data.forEach((record) => {
-      loadImages(record); // Load images for each record
-    });
+    if (Array.isArray(data) && data.length > 0) {
+      data.forEach((record) => {
+        loadImages(record); 
+      });
+    }
   }, [data]);
   // console.log(imageUrls)
   const columns = [

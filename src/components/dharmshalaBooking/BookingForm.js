@@ -119,7 +119,7 @@ export default function BookingForm({
           paymentDetails,
           security: bookingData.security,
           imagePath: bookingData.imagePath,
-          status: paymentDetails.status || "Payment Pending",
+          status: paymentDetails.status || "pendingPayment",
           etag: bookingData.etag,
         };
 
