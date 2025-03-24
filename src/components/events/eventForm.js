@@ -6,7 +6,6 @@ import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Prompt, useHistory } from "react-router-dom";
-import { WithContext as ReactTags } from "react-tag-input";
 import { Select, TimePicker } from "antd";
 import "react-time-picker/dist/TimePicker.css";
 import { toast } from "react-toastify";
