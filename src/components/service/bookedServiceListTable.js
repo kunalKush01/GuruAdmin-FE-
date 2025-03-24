@@ -11,6 +11,8 @@ import { toast } from "react-toastify";
 import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import Swal from "sweetalert2";
+import { useHistory } from "react-router-dom";
+
 function BookedServiceListTable({
   data,
   totalItems,
@@ -18,10 +20,8 @@ function BookedServiceListTable({
   pageSize,
   onChangePage,
   onChangePageSize,
-  setShowBookingForm,
-  setEditServiceRecord,
-  setIsEdit,
 }) {
+  const history = useHistory();
   const { t } = useTranslation();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const [isLoading, setIsLoading] = useState(false);
@@ -70,9 +70,7 @@ function BookedServiceListTable({
     },
   });
   const handleEditClick = (record) => {
-    setShowBookingForm(true);
-    setIsEdit(true);
-    setEditServiceRecord(record);
+    history.push(`/editBooking/${record._id}/${record?.serviceId}`);
   };
   const handleDeleteBooking = async (record) => {
     // Show Confirmation Dialog
@@ -123,16 +121,6 @@ function BookedServiceListTable({
       key: "serviceName",
       width: 200,
     },
-    // {
-    //   title: t("Dates"),
-    //   dataIndex: "dates",
-    //   key: "dates",
-    //   width: 200,
-    //   render: (dates) =>
-    //     Array.isArray(dates) && dates.length > 0
-    //       ? dates.map((date) => moment(date).format("DD MMM YYYY")).join(", ")
-    //       : "-",
-    // },
     {
       title: t("Amount"),
       dataIndex: "amount",
@@ -158,7 +146,7 @@ function BookedServiceListTable({
       key: "action",
       render: (_, record) => (
         <div className="d-flex">
-          {/* <div>
+          <div>
             <img
               src={editIcon}
               width={30}
@@ -166,7 +154,7 @@ function BookedServiceListTable({
               onClick={() => handleEditClick(record)}
               alt="Edit"
             />
-          </div> */}
+          </div>
           <div>
             <img
               src={deleteIcon}

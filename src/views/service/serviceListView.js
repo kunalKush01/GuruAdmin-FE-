@@ -16,12 +16,10 @@ import { Plus } from "react-feather";
 
 function ServiceListView() {
   const history = useHistory();
-  const location = useLocation(); // Access the current location
+  const location = useLocation();
   const trustId = localStorage.getItem("trustId");
   const { t } = useTranslation();
   const [showBookingForm, setShowBookingForm] = useState(false);
-  const [editServiceRecord, setEditServiceRecord] = useState(null);
-  const [isEdit, setIsEdit] = useState(false);
   const [activeTab, setActiveTab] = useState(() => {
     if (location.pathname.includes("service-booked")) {
       return "booked_services";
@@ -168,7 +166,6 @@ function ServiceListView() {
                 className="addAction-btn"
                 onClick={() => {
                   setShowBookingForm(true);
-                  setIsEdit(false);
                 }}
               >
                 <span>
@@ -182,7 +179,7 @@ function ServiceListView() {
           )}
           {!showBookingForm ? (
             <BookedServiceListTable
-              setShowBookingForm={setShowBookingForm}
+              // setShowBookingForm={setShowBookingForm}
               data={bookedService ? bookedService.results : []}
               totalItems={bookedService ? bookedService.totalResults : 0}
               pageSize={bookedServicePagination.limit}
@@ -196,14 +193,10 @@ function ServiceListView() {
                   page: 1,
                 }));
               }}
-              setEditServiceRecord={setEditServiceRecord}
-              setIsEdit={setIsEdit}
             />
           ) : (
             <BookingService
               serviceData={data ? data.results : []}
-              editServiceRecord={editServiceRecord ?? null}
-              isEdit={isEdit}
               setShowBookingForm={setShowBookingForm}
             />
           )}

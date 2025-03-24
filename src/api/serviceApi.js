@@ -59,3 +59,9 @@ export const deleteBooking = (id) =>
     showToastOnSuccess: false,
     showToastOnError: false,
   });
+export const updateBooking = (id,payload) =>
+  callApi({
+    requestFunction: (axios) => axios.put(`${API_BASE_URL}/booking/${id}`,payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });

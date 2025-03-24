@@ -129,18 +129,18 @@ function ServiceListTable({
         return <Tag color={tagColors[text] || "default"}>{text}</Tag>;
       },
     },
-    {
-      title: t("date"),
-      dataIndex: "dates",
-      key: "dates",
-      width: 120,
-      render: (dates) =>
-        Array.isArray(dates) && dates.length > 0
-          ? dates
-              .map((date) => (date ? moment(date).format("DD MMM YYYY") : "-"))
-              .join(", ")
-          : "-",
-    },
+    // {
+    //   title: t("date"),
+    //   dataIndex: "dates",
+    //   key: "dates",
+    //   width: 120,
+    //   render: (dates) =>
+    //     Array.isArray(dates) && dates.length > 0
+    //       ? dates
+    //           .map((date) => (date ? moment(date).format("DD MMM YYYY") : "-"))
+    //           .join(", ")
+    //       : "-",
+    // },
     {
       title: t("amount"),
       dataIndex: "amount",

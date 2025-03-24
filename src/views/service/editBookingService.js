@@ -5,24 +5,39 @@ import FormikCustomReactSelect from "../../components/partials/formikCustomReact
 import { useTranslation } from "react-i18next";
 import CustomTextField from "../../components/partials/customTextField";
 import moment from "moment";
-import { createBooking, getServiceById } from "../../api/serviceApi";
+import { getServiceById, updateBooking } from "../../api/serviceApi";
 import Swal from "sweetalert2";
 import { useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-toastify";
+import { useParams, useHistory } from "react-router-dom";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import { toast } from "react-toastify";
 
-const BookingService = ({ serviceData, setShowBookingForm }) => {
+const EditBookingService = () => {
+  const history = useHistory();
+  const { bookingId, serviceId } = useParams();
   const { t } = useTranslation();
-  const trustId = localStorage.getItem("trustId");
-  const [loading, setLoading] = useState(false);
-  const [bookingDetails, setBookingDetails] = useState(null);
   const queryClient = useQueryClient();
+  const trustId = localStorage.getItem("trustId");
 
-  const serviceOptions = serviceData.map((service) => ({
-    value: service._id,
-    label: service.name,
-  }));
+  const [bookingDetails, setBookingDetails] = useState(null);
+  const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    const fetchBookingDetails = async () => {
+      if (serviceId) {
+        try {
+          const response = await getServiceById(serviceId);
+          if (response?.result) {
+            setBookingDetails(response.result);
+          }
+        } catch (error) {
+          console.error("Error fetching service details:", error);
+        }
+      }
+    };
+
+    fetchBookingDetails();
+  }, [serviceId]);
   const [availableDates, setAvailableDates] = useState([]);
 
   // Populate available dates based on selected service
@@ -119,18 +134,17 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
 
       let response;
 
-      response = await createBooking(bookingData);
+      response = await updateBooking(bookingId, bookingData);
 
       if (response?.result) {
         Swal.fire({
           title: "Success!",
-          text: "Booking created successfully.",
+          text: "Booking update successfully.",
           icon: "success",
           confirmButtonText: "OK",
         });
-
         queryClient.invalidateQueries("bookedService");
-        setShowBookingForm(false);
+        history.push("/service-booked")
         resetForm();
       } else if (response.error) {
         Swal.fire({
@@ -152,6 +166,7 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
       setSubmitting(false);
     }
   };
+
   return (
     <div className="d-flex flex-column">
       <img
@@ -159,15 +174,24 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
         width={25}
         style={{ cursor: "pointer" }}
         className="mb-1"
-        onClick={() => setShowBookingForm(false)}
+        onClick={() => history.push("/service-booked")}
       />
       <div className="formwrapper FormikWrapper">
         <Formik
           initialValues={{
-            service: "",
-            date: [],
-            amount: "",
-            persons: "",
+            service: bookingDetails
+              ? {
+                  value: bookingDetails._id,
+                  label: bookingDetails.name,
+                }
+              : "",
+            date: bookingDetails
+              ? bookingDetails.dates.map((date) =>
+                  moment(date).format("DD MMM YYYY")
+                )
+              : [],
+            amount: bookingDetails?.amount || "",
+            persons: bookingDetails?.countPerDay || "",
           }}
           enableReinitialize
           onSubmit={handleSubmit}
@@ -180,12 +204,18 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
                     labelName={t("select_service")}
                     name="service"
                     placeholder={t("select_service")}
-                    loadOptions={serviceOptions}
+                    loadOptions={[
+                      {
+                        value: bookingDetails?._id,
+                        label: bookingDetails?.name,
+                      },
+                    ]}
                     onChange={async (value) => {
                       if (!value) {
                         setFieldValue("service", "");
                         setFieldValue("amount", "");
                         setFieldValue("date", []);
+                        setFieldValue("persons", "");
                       } else {
                         setFieldValue("service", value);
                         try {
@@ -195,6 +225,10 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
                             setFieldValue(
                               "amount",
                               response.result.amount || ""
+                            );
+                            setFieldValue(
+                              "persons",
+                              response.result.countPerDay || ""
                             );
                           }
                         } catch (error) {
@@ -209,6 +243,7 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
                     width
                   />
                 </Col>
+
                 <Col xs={24} sm={6}>
                   <label className="mb-0">{t("select_date")}</label>
                   <CustomDateSelectComponent
@@ -259,7 +294,7 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
                   disabled={isSubmitting || loading}
                   loading={isSubmitting || loading}
                 >
-                  {loading ? "Submitting..." : "Submit"}
+                  {loading ? "Submitting..." : "Update Booking"}
                 </Button>
               </div>
             </form>
@@ -270,4 +305,4 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
   );
 };
 
-export default BookingService;
+export default EditBookingService;
