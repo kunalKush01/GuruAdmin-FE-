@@ -38,39 +38,45 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
     }
   }, [bookingDetails]);
   const CustomDateSelectComponent = ({
-    dates,
+    dates = [],
     value = [],
     onChange,
-    availability,
+    availability = [],
     ...props
   }) => {
     const handleDateChange = (selectedDates) => {
       if (!selectedDates) return;
-
+  
       let validDates = [];
+  
       selectedDates.forEach((selectedDate) => {
-        const selectedAvailability = availability?.find(
-          (item) => item.date === selectedDate
+        const formattedDate = moment(selectedDate, "DD MMM YYYY").format(
+          "DD MMM YYYY"
         );
-
+  
+        const selectedAvailability = availability?.find(
+          (item) => item.date === formattedDate
+        );
+  
         if (selectedAvailability) {
           const { totalCapacity, booked, locked } = selectedAvailability;
-
-          if (totalCapacity > 0 && locked === 1) {
+  
+          if (locked > 0 && totalCapacity > 0) {
             toast.warning(
               `We are trying to make service available for you, please try after some time. (Please try some other service or wait for the same.)`
             );
-          } else {
-            validDates.push(selectedDate);
+          } else if (totalCapacity === booked) {
+            toast.error(`This date is fully booked. Please select another date.`);
+            return; // Skip adding this date
           }
-        } else {
-          validDates.push(selectedDate); // Allow removing previously selected dates
         }
+  
+        validDates.push(formattedDate);
       });
-
-      onChange(validDates); // Ensure user can remove dates freely
+  
+      onChange(validDates);
     };
-
+  
     return (
       <div id="sevaBooking">
         <Select
@@ -83,27 +89,111 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
           allowClear
           className="custom-date-select mt-0"
         >
-          {dates
-            .filter((date) => {
-              const dateAvailability = availability?.find(
-                (item) => item.date === moment(date).format("DD MMM YYYY")
-              );
-              return !(
-                dateAvailability?.totalCapacity === dateAvailability?.booked
-              ); // Hide fully booked dates
-            })
-            .map((date, index) => (
-              <Select.Option
-                key={index}
-                value={moment(date).format("DD MMM YYYY")}
-              >
-                {moment(date).format("DD MMM YYYY")}
+          {dates.map((date, index) => {
+            const formattedDate = moment(date).format("DD MMM YYYY");
+  
+            const dateAvailability = availability?.find(
+              (item) => item.date === formattedDate
+            );
+  
+            const isFullyBooked =
+              dateAvailability &&
+              dateAvailability.totalCapacity === dateAvailability.booked;
+  
+            if (isFullyBooked) return null; // Hide fully booked dates
+  
+            return (
+              <Select.Option key={index} value={formattedDate}>
+                {formattedDate}
               </Select.Option>
-            ))}
+            );
+          })}
         </Select>
       </div>
     );
   };
+  
+  // const CustomDateSelectComponent = ({
+  //   dates = [],
+  //   value = [],
+  //   onChange,
+  //   availability = [],
+  //   ...props
+  // }) => {
+  //   const handleDateChange = (selectedDates) => {
+  //     if (!selectedDates) return;
+
+  //     let validDates = [];
+
+  //     selectedDates.forEach((selectedDate) => {
+  //       const formattedDate = moment(selectedDate, "DD MMM YYYY").format(
+  //         "DD MMM YYYY"
+  //       );
+
+  //       const selectedAvailability = availability?.find(
+  //         (item) => item.date === formattedDate
+  //       );
+
+  //       if (selectedAvailability) {
+  //         const { totalCapacity, booked, locked, available } =
+  //           selectedAvailability;
+
+  //         if (locked > 0) {
+  //           toast.warning(
+  //             `We are trying to make service available for you, please try after some time. (Please try some other service or wait for the same.)`
+  //           );
+  //         } else if (totalCapacity === booked) {
+  //           toast.error(
+  //             `This date is fully booked. Please select another date.`
+  //           );
+  //         } else {
+  //           validDates.push(formattedDate);
+  //         }
+  //       } else {
+  //         validDates.push(formattedDate); // Allow removing previously selected dates
+  //       }
+  //     });
+
+  //     onChange(validDates);
+  //   };
+
+  //   return (
+  //     <div id="sevaBooking">
+  //       <Select
+  //         {...props}
+  //         value={value}
+  //         onChange={handleDateChange}
+  //         mode="multiple"
+  //         placeholder="Select Dates"
+  //         style={{ width: "100%", height: "auto" }}
+  //         allowClear
+  //         className="custom-date-select mt-0"
+  //       >
+  //         {dates.map((date, index) => {
+  //           const formattedDate = moment(date).format("DD MMM YYYY");
+
+  //           const dateAvailability = availability?.find(
+  //             (item) => item.date === formattedDate
+  //           );
+
+  //           const isAvailable =
+  //             !dateAvailability || // Allow dates without availability
+  //             (dateAvailability.available > 0 && dateAvailability.locked === 0);
+
+  //           return (
+  //             <Select.Option
+  //               key={index}
+  //               value={formattedDate}
+  //               disabled={!isAvailable}
+  //             >
+  //               {formattedDate}
+  //             </Select.Option>
+  //           );
+  //         })}
+  //       </Select>
+  //     </div>
+  //   );
+  // };
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     setLoading(true);
@@ -113,7 +203,7 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
       const bookingData = {
         serviceId: values.service?.value,
         count: values.persons,
-        date: values.date,
+        dates: values.dates,
         trustId: trustId,
       };
 
@@ -165,7 +255,7 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
         <Formik
           initialValues={{
             service: "",
-            date: [],
+            dates: [],
             amount: "",
             persons: "",
           }}
@@ -185,7 +275,7 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
                       if (!value) {
                         setFieldValue("service", "");
                         setFieldValue("amount", "");
-                        setFieldValue("date", []);
+                        setFieldValue("dates", []);
                       } else {
                         setFieldValue("service", value);
                         try {
@@ -213,8 +303,8 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
                   <label className="mb-0">{t("select_date")}</label>
                   <CustomDateSelectComponent
                     dates={availableDates}
-                    value={values.date}
-                    onChange={(dates) => setFieldValue("date", dates)}
+                    value={values.dates}
+                    onChange={(dates) => setFieldValue("dates", dates)}
                     availability={bookingDetails?.availability || []}
                   />
                 </Col>
