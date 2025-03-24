@@ -74,7 +74,7 @@ const Calendar = () => {
   const [fromDate, setFromDate] = useState(moment().startOf("day"));
   const [toDate, setToDate] = useState(null);
   const [propertyTypes, setPropertyTypes] = useState([]);
-  const [selectedRoomType, setSelectedRoomType] = useState("All");
+  const [selectedRoomType, setSelectedRoomType] = useState(t("All"));
   const [toggleSwitch, setToggleSwitch] = useState(false);
   const [resizingEvent, setResizingEvent] = useState(null);
   const [resizeProperty, setResizeProperty] = useState(null);

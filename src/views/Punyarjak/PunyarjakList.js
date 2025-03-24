@@ -26,7 +26,8 @@ import "../../assets/scss/viewCommon.scss";
 import { Card, Pagination } from "antd";
 
 export default function Punyarjak() {
-  const [dropDownName, setdropDownName] = useState("All");
+  const { t } = useTranslation();
+  const [dropDownName, setdropDownName] = useState(t("All"));
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const periodDropDown = () => {
     switch (dropDownName) {
@@ -42,7 +43,6 @@ export default function Punyarjak() {
         return "All";
     }
   };
-  const { t } = useTranslation();
   const history = useHistory();
 
   const [pagination, setPagination] = useState({

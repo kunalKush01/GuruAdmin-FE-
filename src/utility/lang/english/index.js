@@ -2,7 +2,6 @@ export const englishContent = {
   no_data_found: "No data found",
   no_data_found_add_data: 'Click "Add Button" to add data on screen ',
   amount: "Amount",
-  all: "All",
   dashboard: "Dashboard",
   dharmshala: "Dharmshala",
   donation: "Donation",

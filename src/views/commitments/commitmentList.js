@@ -47,9 +47,9 @@ import ImportHistoryTable from "../../components/donation/importHistoryTable";
 export default function Commitment() {
   const importFileRef = useRef();
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
-  const [categoryTypeName, setCategoryTypeName] = useState("All");
-  const [subCategoryTypeName, setSubCategoryTypeName] = useState("All");
-  const [commitmentStatus, setCommitmentStatus] = useState("All");
+  const [categoryTypeName, setCategoryTypeName] = useState(t("All"));
+  const [subCategoryTypeName, setSubCategoryTypeName] = useState(t("All"));
+  const [commitmentStatus, setCommitmentStatus] = useState(t("All"));
   const [filterData, setFilterData] = useState({});
 
   const selectedLang = useSelector((state) => state.auth.selectLang);

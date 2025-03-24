@@ -3,7 +3,7 @@ export const hindiContent = {
   no_data_found_add_data:
     'स्क्रीन पर डेटा जोड़ने के लिए "जोड़ें" बटन पर क्लिक करें',
   amount: "राशि",
-  all: "सभी",
+  All: "सभी",
   dashboard: "डैशबोर्ड",
   dharmshala: "धर्मशाला",
   donation: "दान",

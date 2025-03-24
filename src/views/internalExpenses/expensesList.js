@@ -53,7 +53,7 @@ export default function Expenses() {
   // useEffect(() => {
   //   setPagination({ page: 1, limit: 10 });
   // }, []);
-  const [expenseType, setExpenseType] = useState(t("all"));
+  const [expenseType, setExpenseType] = useState(t("All"));
 
   const searchParams = new URLSearchParams(history.location.search);
 
@@ -68,7 +68,7 @@ export default function Expenses() {
   const ExpenseType = [
     {
       id: 0,
-      name: t("all"),
+      name: t("All"),
     },
     {
       id: 1,

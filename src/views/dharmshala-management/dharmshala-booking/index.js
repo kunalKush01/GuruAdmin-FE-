@@ -33,7 +33,7 @@ const DharmshalaBookings = () => {
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const [showPastRequests, setShowPastRequests] = useState(false);
-  const [statusFilter, setStatusFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState(t("All"));
   const [isRoomHoldModalOpen, setIsRoomHoldModalOpen] = useState(false);
 
   const toggleRoomHoldModal = () => {

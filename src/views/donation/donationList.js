@@ -26,8 +26,8 @@ import "../../assets/scss/viewCommon.scss";
 
 export default function Donation() {
   const importFileRef = useRef();
-  const [categoryTypeName, setCategoryTypeName] = useState("All");
-  const [subCategoryTypeName, setSubCategoryTypeName] = useState("All");
+  const [categoryTypeName, setCategoryTypeName] = useState(t("All"));
+  const [subCategoryTypeName, setSubCategoryTypeName] = useState(t("All"));
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
 
   const selectedLang = useSelector((state) => state.auth.selectLang);
