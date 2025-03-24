@@ -632,7 +632,7 @@ const handleDownloadReport = async () => {
     </Radio.Group>
   </div>
 
-  {exportType === "monthly" && (
+  {exportType === "monthly" & (
     <div className="modal-row">
       <label className="modal-label">Month</label>
       <MonthPicker onChange={(date) => setSelectedMonth(date)} placeholder="Select month" />
