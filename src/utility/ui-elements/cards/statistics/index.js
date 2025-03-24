@@ -16,7 +16,6 @@ import Newsletter from "./Newsletter";
 import SiteTraffic from "./SiteTraffic";
 import ActiveUsers from "./ActiveUsers";
 import QuaterlySales from "./QuaterlySales";
-import StatsCard from "./StatsCard";
 import OrdersBarChart from "./OrdersBarChart";
 import ProfitLineChart from "./ProfitLineChart";
 import RevenueGenerated from "./RevenueGenerated";
