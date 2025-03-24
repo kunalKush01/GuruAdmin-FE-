@@ -1,97 +1,53 @@
-# Pipeline name with build date
-name: $(Build.DefinitionName)_$(Year:yyyy).$(Month).$(DayOfMonth)$(Rev:.r)
-
-# Trigger the pipeline on every push to the main branch
 trigger:
   branches:
     include:
-      - main
+      - dev  # Adjust if needed
 
-# Define pipeline variables
-variables:
-  node_version: '16.x'
+pool:
+  vmImage: 'ubuntu-latest'
 
-# Stages of the pipeline
-stages:
-  - stage: Install
-    displayName: 'Install Dependencies'
-    jobs:
-      - job: InstallJob
-        displayName: 'Install Node.js and Dependencies'
-        pool:
-          vmImage: 'ubuntu-latest'
-        steps:
-          - task: UseNode@2
-            displayName: 'Set up Node.js'
-            inputs:
-              versionSpec: $(node_version)
-          - script: |
-              yarn install
-            displayName: 'Install Dependencies'
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '18.x'
+  displayName: 'Install Node.js'
 
-  - stage: Test
-    displayName: 'Run Tests'
-    dependsOn: Install
-    jobs:
-      - job: TestJob
-        displayName: 'Run Unit Tests'
-        pool:
-          vmImage: 'ubuntu-latest'
-        steps:
-          - script: |
-              yarn test
-            displayName: 'Run Tests'
+- script: |
+    export NODE_OPTIONS=--openssl-legacy-provider
+    npm install --legacy-peer-deps
+    npm run build:dev
+  displayName: 'Install Dependencies & Build'
 
-  - stage: Build
-    displayName: 'Build Stage'
-    dependsOn: Test
-    jobs:
-      - job: BuildJob
-        displayName: 'Build Project'
-        pool:
-          vmImage: 'ubuntu-latest'
-        steps:
-          - script: |
-              yarn build
-            displayName: 'Build the Project'
-          - task: PublishBuildArtifacts@1
-            displayName: 'Publish Build Artifacts'
-            inputs:
-              PathtoPublish: 'build'
-              ArtifactName: 'drop'
-              publishLocation: 'Container'
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'Microsoft Azure Sponsorship(1e19fdc0-93b6-4863-b9ea-7e2549acd1a6)'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az storage account keys list \
+      --resource-group apnadharm \
+      --account-name adminportaldevapnadharm \
+      --query "[0].value" -o tsv > storage_key.txt
 
-  # Optional Deploy stage (Customize based on your deployment strategy)
-  - stage: Deploy
-    displayName: 'Deploy to Production'
-    dependsOn: Build
-    jobs:
-      - deployment: DeployJob
-        displayName: 'Deploy Job'
-        environment: 'production'
-        pool:
-          vmImage: 'ubuntu-latest'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - task: AzureCLI@2
-                  inputs:
-                    azureSubscription: 'my-azure-subscription'  # Replace with your Azure service connection name
-                    scriptType: 'bash'
-                    scriptLocation: 'inlineScript'
-                    inlineScript: |
-                      # Define variables
-                      STORAGE_ACCOUNT_NAME="adminportaldevapnadharm"
-                      CONTAINER_NAME="$web"
-                      SOURCE_PATH="$(System.DefaultWorkingDirectory)/build"
-                    
-                      # Upload all files in the source path to the storage container
-                      az storage blob upload-batch \
-                        --account-name $STORAGE_ACCOUNT_NAME \
-                        --destination $CONTAINER_NAME \
-                        --source $SOURCE_PATH \
-                        --pattern "*"
+      STORAGE_KEY=$(cat storage_key.txt)
 
-                      echo "Files successfully uploaded to Azure Storage container."
-                  displayName: 'Deploy Application'
+      az storage blob upload-batch \
+      --account-name adminportaldevapnadharm \
+      --account-key $STORAGE_KEY \
+      --destination \$web \
+      --source build/ \
+      --overwrite
+  displayName: 'Upload Build to Azure Storage'
+
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'Microsoft Azure Sponsorship(1e19fdc0-93b6-4863-b9ea-7e2549acd1a6)'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az afd endpoint purge \
+        --resource-group apnadharm \
+        --profile-name adminportal \
+        --endpoint-name adminportal-dkhvc6gwgsfbe8g2.z02.azurefd.net \
+        --content-paths '/*'
+  displayName: 'Purge Azure Front Door Cache'
