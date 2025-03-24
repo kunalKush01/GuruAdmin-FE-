@@ -1,7 +1,16 @@
 const path = require("path");
+const webpack = require("webpack");
 
 module.exports = {
   reactScriptsVersion: "react-scripts",
+
+  babel: {
+    plugins:
+      process.env.NODE_ENV !== "development"
+        ? ["transform-remove-console"]
+        : [],
+  },
+
   style: {
     sass: {
       loaderOptions: {
@@ -14,6 +23,7 @@ module.exports = {
       plugins: [],
     },
   },
+
   webpack: {
     alias: {
       "@src": path.resolve(__dirname, "src"),
@@ -26,8 +36,20 @@ module.exports = {
       "@utils": path.resolve(__dirname, "src/utility/Utils"),
       "@hooks": path.resolve(__dirname, "src/utility/hooks"),
     },
+
     configure: (webpackConfig) => {
-      // Keep existing production optimization
+      // ✅ Log Webpack version
+      console.log("⚙️  Using Webpack version:", webpack.version);
+
+      // ✅ Enable persistent filesystem caching
+      webpackConfig.cache = {
+        type: "filesystem",
+        buildDependencies: {
+          config: [__filename],
+        },
+      };
+
+      // ✅ Drop console.logs in production
       if (process.env.NODE_ENV === "production") {
         const terserPlugin = webpackConfig.optimization.minimizer.find(
           (plugin) =>
@@ -40,6 +62,7 @@ module.exports = {
           };
         }
       }
+
       return webpackConfig;
     },
   },
