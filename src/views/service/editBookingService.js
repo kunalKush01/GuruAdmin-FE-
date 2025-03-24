@@ -53,39 +53,45 @@ const EditBookingService = () => {
     }
   }, [bookingDetails]);
   const CustomDateSelectComponent = ({
-    dates,
+    dates = [],
     value = [],
     onChange,
-    availability,
+    availability = [],
     ...props
   }) => {
     const handleDateChange = (selectedDates) => {
       if (!selectedDates) return;
-
+  
       let validDates = [];
+  
       selectedDates.forEach((selectedDate) => {
-        const selectedAvailability = availability?.find(
-          (item) => item.date === selectedDate
+        const formattedDate = moment(selectedDate, "DD MMM YYYY").format(
+          "DD MMM YYYY"
         );
-
+  
+        const selectedAvailability = availability?.find(
+          (item) => item.date === formattedDate
+        );
+  
         if (selectedAvailability) {
           const { totalCapacity, booked, locked } = selectedAvailability;
-
-          if (totalCapacity > 0 && locked === 1) {
+  
+          if (locked > 0 && totalCapacity > 0) {
             toast.warning(
               `We are trying to make service available for you, please try after some time. (Please try some other service or wait for the same.)`
             );
-          } else {
-            validDates.push(selectedDate);
+          } else if (totalCapacity === booked) {
+            toast.error(`This date is fully booked. Please select another date.`);
+            return; // Skip adding this date
           }
-        } else {
-          validDates.push(selectedDate); // Allow removing previously selected dates
         }
+  
+        validDates.push(formattedDate);
       });
-
-      onChange(validDates); // Ensure user can remove dates freely
+  
+      onChange(validDates);
     };
-
+  
     return (
       <div id="sevaBooking">
         <Select
@@ -98,27 +104,30 @@ const EditBookingService = () => {
           allowClear
           className="custom-date-select mt-0"
         >
-          {dates
-            .filter((date) => {
-              const dateAvailability = availability?.find(
-                (item) => item.date === moment(date).format("DD MMM YYYY")
-              );
-              return !(
-                dateAvailability?.totalCapacity === dateAvailability?.booked
-              ); // Hide fully booked dates
-            })
-            .map((date, index) => (
-              <Select.Option
-                key={index}
-                value={moment(date).format("DD MMM YYYY")}
-              >
-                {moment(date).format("DD MMM YYYY")}
+          {dates.map((date, index) => {
+            const formattedDate = moment(date).format("DD MMM YYYY");
+  
+            const dateAvailability = availability?.find(
+              (item) => item.date === formattedDate
+            );
+  
+            const isFullyBooked =
+              dateAvailability &&
+              dateAvailability.totalCapacity === dateAvailability.booked;
+  
+            if (isFullyBooked) return null; // Hide fully booked dates
+  
+            return (
+              <Select.Option key={index} value={formattedDate}>
+                {formattedDate}
               </Select.Option>
-            ))}
+            );
+          })}
         </Select>
       </div>
     );
   };
+  
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     setLoading(true);
@@ -185,11 +194,7 @@ const EditBookingService = () => {
                   label: bookingDetails.name,
                 }
               : "",
-            date: bookingDetails
-              ? bookingDetails.dates.map((date) =>
-                  moment(date).format("DD MMM YYYY")
-                )
-              : [],
+            date:[],
             amount: bookingDetails?.amount || "",
             persons: bookingDetails?.countPerDay || "",
           }}
