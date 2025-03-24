@@ -1,37 +1,26 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
-import { add } from "lodash";
 import React, { useEffect, useMemo, useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Prompt, useHistory } from "react-router-dom";
-import { WithContext as ReactTags } from "react-tag-input";
 import { toast } from "react-toastify";
 import { Button, Col, Row, Spinner } from "reactstrap";
-import styled from "styled-components";
-import Swal from "sweetalert2";
-import * as Yup from "yup";
-import { createNews } from "../../api/newsApi";
 import { getAllTags } from "../../api/tagApi";
-import thumbnailImage from "../../assets/images/icons/Thumbnail.svg";
-import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-import { CustomDropDown } from "../partials/customDropDown";
 import CustomTextField from "../partials/customTextField";
-import FormikCustomDatePicker from "../partials/formikCustomDatePicker";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
-import ImageUpload from "../partials/imageUpload";
 //import ImageUpload from "../partials/imageUpload2";
-import RichTextField from "../partials/richTextEditorField";
-import "../../assets/scss/common.scss";
-import momentGenerateConfig from "rc-picker/lib/generate/moment";
-import { DatePicker, Image, Select } from "antd";
+import { DatePicker, Select } from "antd";
 import moment from "moment";
-import UploadImage from "../partials/uploadImage";
+import momentGenerateConfig from "rc-picker/lib/generate/moment";
 import { uploadFile } from "../../api/sharedStorageApi";
 import uploadIcon from "../../assets/images/icons/file-upload.svg";
+import "../../assets/scss/common.scss";
 import { fetchImage } from "../partials/downloadUploadImage";
+import RichTextField from "../partials/richTextEditorField";
+import UploadImage from "../partials/uploadImage";
 const CustomDatePickerComponent =
   DatePicker.generatePicker(momentGenerateConfig);
 export default function NewsForm({
@@ -330,7 +319,7 @@ export default function NewsForm({
                       <label>{t("donation_select_date")}</label>
                       <CustomDatePickerComponent
                         placeholder={t("donation_select_date")}
-                        style={{ width: "100%"}}
+                        style={{ width: "100%" }}
                         name="DateTime"
                         format="DD MMM YYYY"
                         onChange={(date) => {
