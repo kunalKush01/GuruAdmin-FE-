@@ -1,0 +1,53 @@
+trigger:
+  branches:
+    include:
+      - dev  # Adjust if needed
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '18.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    export NODE_OPTIONS=--openssl-legacy-provider
+    npm install --legacy-peer-deps
+    npm run build:dev
+  displayName: 'Install Dependencies & Build'
+
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'Microsoft Azure Sponsorship(1e19fdc0-93b6-4863-b9ea-7e2549acd1a6)'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az storage account keys list \
+      --resource-group apnadharm \
+      --account-name adminportaldevapnadharm \
+      --query "[0].value" -o tsv > storage_key.txt
+
+      STORAGE_KEY=$(cat storage_key.txt)
+
+      az storage blob upload-batch \
+      --account-name adminportaldevapnadharm \
+      --account-key $STORAGE_KEY \
+      --destination \$web \
+      --source build/ \
+      --overwrite
+  displayName: 'Upload Build to Azure Storage'
+
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'Microsoft Azure Sponsorship(1e19fdc0-93b6-4863-b9ea-7e2549acd1a6)'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az afd endpoint purge \
+        --resource-group apnadharm \
+        --profile-name adminportal \
+        --endpoint-name adminportal-dkhvc6gwgsfbe8g2.z02.azurefd.net \
+        --content-paths '/*'
+  displayName: 'Purge Azure Front Door Cache'
