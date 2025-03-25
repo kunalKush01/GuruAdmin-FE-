@@ -881,5 +881,6 @@ export const hindiContent = {
   pashu_breed:"पशु नस्ल",
   pashu_category:"पशु वर्ग",
   masters_list:"मास्टर्स सूची",
-  select_room_number:"कमरा नंबर चुनें"
+  select_room_number:"कमरा नंबर चुनें",
+  counts:"गिनती"
 };
