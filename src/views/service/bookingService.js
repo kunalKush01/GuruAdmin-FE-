@@ -223,9 +223,9 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
                     {({ field }) => (
                       <CustomTextField
                         {...field}
-                        label={t("no_of_person")}
+                        label={t("counts")}
                         type="number"
-                        placeholder={t("no_of_person")}
+                        placeholder={t("counts")}
                         onChange={(e) =>
                           setFieldValue("persons", e.target.value)
                         }
