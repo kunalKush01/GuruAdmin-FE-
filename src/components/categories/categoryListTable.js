@@ -1,20 +1,18 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Table } from "antd";
 import { useMemo } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { Button } from "reactstrap";
-import styled from "styled-components";
 import Swal from "sweetalert2";
 import { deleteCategoryDetail } from "../../api/categoryApi";
 import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import confirmationIcon from "../../assets/images/icons/news/conformationIcon.svg";
+import "../../assets/scss/common.scss";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import { DELETE, EDIT, WRITE } from "../../utility/permissionsVariable";
-import CustomDataTable from "../partials/CustomDataTable";
-import "../../assets/scss/common.scss";
-import { Table } from "antd";
 
 export function CategoryListTable({
   data,
