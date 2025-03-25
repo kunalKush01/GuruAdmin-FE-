@@ -10,9 +10,9 @@ import ServiceListTable from "../../components/service/serviceListTable";
 import { useHistory, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getAllBookedServices, getAllServices } from "../../api/serviceApi";
-import BookingService from "./bookingService";
 import BookedServiceListTable from "../../components/service/bookedServiceListTable";
 import { Plus } from "react-feather";
+import BookingService from "./bookingService";
 
 function ServiceListView() {
   const history = useHistory();

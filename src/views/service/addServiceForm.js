@@ -14,7 +14,7 @@ export default function AddServiceForm() {
   const location = useLocation();
   const record = location.state?.record;
   const type = location.state?.type;
-//   console.log(record, type);
+  //   console.log(record, type);
   const handleAddService = async (payload) => {
     if (type && type == "edit") {
       return updateService({ ...payload, serviceId: record._id });
@@ -36,11 +36,12 @@ export default function AddServiceForm() {
       "" || record
         ? { value: record["frequency"], label: record["frequency"] }
         : "",
-    dates: record ? record["dates"] : [], // If "dates" is not an array or is empty, return an empty string
-
+    dates: record?.serviceDates
+      ? record.serviceDates.map((dateObj) => moment(dateObj.date))
+      : [],
     amount: "" || record ? record["amount"] : "",
     countPerDay: "" || record ? record["countPerDay"] : "",
-    images: [],
+    images: null,
   };
 
   const history = useHistory();

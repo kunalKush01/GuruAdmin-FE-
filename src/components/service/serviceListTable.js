@@ -64,28 +64,39 @@ function ServiceListTable({
   const [imageUrls, setImageUrls] = useState({}); // Store image URLs by record ID
 
   const loadImages = async (record) => {
-    if (record?.images && Array.isArray(record.images)) {
-      const urls = await Promise.all(
-        record.images.map(async (image) => {
-          const url = await fetchImage(image.name);
-          return url;
-        })
-      );
+    if (record?.image) { // Check if "image" exists
+      let urls = [];
+  
+      if (Array.isArray(record.image)) {
+        // If "image" is an array, process each image
+        urls = await Promise.all(
+          record.image.map(async (img) => {
+            const url = await fetchImage(img.name);
+            return url;
+          })
+        );
+      } else if (typeof record.image === "object" && record.image.name) {
+        // If "image" is a single object, process it
+        const url = await fetchImage(record.image.name);
+        urls = [url]; // Store as an array for consistency
+      }
+  
       setImageUrls((prevUrls) => ({
         ...prevUrls,
         [record._id]: urls, // Store the image URLs by record ID
       }));
     }
   };
-
+  
   useEffect(() => {
     if (Array.isArray(data) && data.length > 0) {
       data.forEach((record) => {
-        loadImages(record); 
+        loadImages(record);
       });
     }
   }, [data]);
-  // console.log(imageUrls)
+  
+  console.log(imageUrls)
   const columns = [
     {
       title: t("name"),

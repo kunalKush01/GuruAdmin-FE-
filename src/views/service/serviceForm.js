@@ -46,7 +46,7 @@ export default function ServiceForm({
       }
     },
   });
-  
+
   const [uploadedFileUrl, setUploadedFileUrl] = useState("");
   const [imageUrl, setImageUrl] = useState(null);
   return (
@@ -55,7 +55,6 @@ export default function ServiceForm({
         enableReinitialize
         initialValues={initialValues}
         onSubmit={(e) => {
-          //   setShowPrompt(false);
           setLoading(true);
           serviceMutation.mutate({
             name: e.name,
@@ -64,7 +63,7 @@ export default function ServiceForm({
             dates: e.dates,
             amount: e.amount,
             countPerDay: e.countPerDay,
-            images: [uploadedFileUrl] || [],
+            image: uploadedFileUrl || null,
           });
         }}
         validationSchema={validationSchema}
@@ -131,23 +130,16 @@ export default function ServiceForm({
                       format="DD MMM YYYY"
                       onChange={(dates) => {
                         if (dates && dates.length > 0) {
-                          // Map the selected dates to a formatted array
+                          // Map the selected dates to an array of moment objects
                           const formattedDates = dates.map((date) =>
-                            date.format("DD MMM YYYY")
+                            moment(date)
                           );
                           formik.setFieldValue("dates", formattedDates);
                         } else {
                           formik.setFieldValue("dates", []);
                         }
                       }}
-                      value={
-                        Array.isArray(formik.values.dates) &&
-                        formik.values.dates.length > 0
-                          ? formik.values.dates.map((date) =>
-                              moment(date)
-                            )
-                          : []
-                      }
+                      value={formik.values.dates || []}
                     />
                   </Col>
                   <Col xs={12} lg={4} md={4}>
@@ -175,7 +167,7 @@ export default function ServiceForm({
                         <Trans i18nKey={"image_size_suggestion"} />
                       </span>
                     </div>
-                    <div>
+                    <div className="serviceImageUpload">
                       <UploadImage
                         required
                         uploadFileFunction={uploadFile}
@@ -197,7 +189,7 @@ export default function ServiceForm({
                   </Col>
                 </Row>
               </Row>
-              <div className="btn-Published">
+              <div className="btn-Published" style={{ zIndex: "10000000" }}>
                 {loading ? (
                   <Button color="primary" className="add-trust-btn" disabled>
                     <Spinner size="md" />

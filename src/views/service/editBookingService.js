@@ -42,12 +42,12 @@ const EditBookingService = () => {
 
   // Populate available dates based on selected service
   useEffect(() => {
-    if (bookingDetails && bookingDetails.dates) {
+    if (bookingDetails && bookingDetails.serviceDates) {
       const today = moment().startOf("day");
 
-      const upcomingDates = bookingDetails.dates
-        .filter((date) => moment(date).isSameOrAfter(today))
-        .map((date) => moment(date).format("DD MMM YYYY"));
+      const upcomingDates = bookingDetails.serviceDates
+        .filter((item) => moment(item.date).isSameOrAfter(today))
+        .map((item) => moment(item.date).format("DD MMM YYYY"));
 
       setAvailableDates(upcomingDates);
     }
@@ -59,64 +59,58 @@ const EditBookingService = () => {
     availability = [],
     ...props
   }) => {
-    const handleDateChange = (selectedDates) => {
-      if (!selectedDates) return;
-  
-      let validDates = [];
-  
-      selectedDates.forEach((selectedDate) => {
-        const formattedDate = moment(selectedDate, "DD MMM YYYY").format(
-          "DD MMM YYYY"
-        );
-  
-        const selectedAvailability = availability?.find(
-          (item) => item.date === formattedDate
-        );
-  
-        if (selectedAvailability) {
-          const { totalCapacity, booked, locked } = selectedAvailability;
-  
-          if (locked > 0 && totalCapacity > 0) {
-            toast.warning(
-              `We are trying to make service available for you, please try after some time. (Please try some other service or wait for the same.)`
-            );
-          } else if (totalCapacity === booked) {
-            toast.error(`This date is fully booked. Please select another date.`);
-            return; // Skip adding this date
-          }
+    const handleDateChange = (selectedDate) => {
+      if (!selectedDate) return;
+
+      const formattedDate = moment(selectedDate, "DD MMM YYYY").format(
+        "DD MMM YYYY"
+      );
+
+      const selectedAvailability = availability?.find(
+        (item) => item.date === formattedDate
+      );
+
+      if (selectedAvailability) {
+        const { totalCapacity, booked, locked } = selectedAvailability;
+
+        if (locked > 0 && totalCapacity > 0) {
+          toast.warning(
+            `We are trying to make service available for you, please try after some time. (Please try some other service or wait for the same.)`
+          );
+          return;
+        } else if (totalCapacity === booked) {
+          toast.error(`This date is fully booked. Please select another date.`);
+          return;
         }
-  
-        validDates.push(formattedDate);
-      });
-  
-      onChange(validDates);
+      }
+
+      onChange([formattedDate]); // Always send as an array with one element
     };
-  
+
     return (
       <div id="sevaBooking">
         <Select
           {...props}
-          value={value}
+          value={value[0] || null} // Ensure only one value is selected
           onChange={handleDateChange}
-          mode="multiple"
-          placeholder="Select Dates"
+          placeholder="Select a Date"
           style={{ width: "100%", height: "auto" }}
           allowClear
           className="custom-date-select mt-0"
         >
           {dates.map((date, index) => {
             const formattedDate = moment(date).format("DD MMM YYYY");
-  
+
             const dateAvailability = availability?.find(
               (item) => item.date === formattedDate
             );
-  
+
             const isFullyBooked =
               dateAvailability &&
               dateAvailability.totalCapacity === dateAvailability.booked;
-  
+
             if (isFullyBooked) return null; // Hide fully booked dates
-  
+
             return (
               <Select.Option key={index} value={formattedDate}>
                 {formattedDate}
@@ -127,7 +121,7 @@ const EditBookingService = () => {
       </div>
     );
   };
-  
+
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     setLoading(true);
@@ -137,7 +131,7 @@ const EditBookingService = () => {
       const bookingData = {
         serviceId: values.service?.value,
         count: values.persons,
-        date: values.date,
+        serviceDate: values.date,
         trustId: trustId,
       };
 
@@ -153,7 +147,7 @@ const EditBookingService = () => {
           confirmButtonText: "OK",
         });
         queryClient.invalidateQueries("bookedService");
-        history.push("/service-booked")
+        history.push("/service-booked");
         resetForm();
       } else if (response.error) {
         Swal.fire({
@@ -194,7 +188,7 @@ const EditBookingService = () => {
                   label: bookingDetails.name,
                 }
               : "",
-            date:[],
+            date: [],
             amount: bookingDetails?.amount || "",
             persons: bookingDetails?.countPerDay || "",
           }}
