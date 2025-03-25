@@ -125,7 +125,8 @@
     ]
   },
   "resolutions": {
-    "react-error-overlay": "6.0.9"
+    "react-error-overlay": "6.0.9",
+    "react-tag-input/react/jsx-runtime": "react/jsx-runtime.js"
   },
   "homepage": ""
 }
