@@ -1,4 +1,4 @@
-amount,commitmentId,donarName,donationType,paidStatus,paymentMethod,user.countryCode,user.countryName,user.email,user.mobileNumber,user.name,categoryId,receiptNo
-1000,,Name 1,donation,Paid,direct to temple,91,India,name1@gmail.com,9876543210,Name 1,642e712d57f6c43749ce0267,ABC/DAY/2024-25/000001
-2000,,Name 2,donation,Paid,Card,91,India,name2@gmail.com,9876543210,Name 2,642e712d57f6c43749ce0267,DEF/DAY/2024-25/000002
-3000,,Name 3,donation,Paid,Card,91,India,name3@gmail.com,9876543210,Name 3,642e712d57f6c43749ce0267,GHI/DAY/2024-25/000003
+amount,commitmentId,donarName,paymentMethod,user.countryCode,user.countryName,user.email,user.mobileNumber,user.name,categoryId,receiptNo
+1000,,Name 1,direct to temple,91,India,name1@gmail.com,9876543210,Name 1,642e712d57f6c43749ce0267,ABC/DAY/2024-25/000001
+2000,,Name 2,Card,91,India,name2@gmail.com,9876543210,Name 2,642e712d57f6c43749ce0267,DEF/DAY/2024-25/000002
+3000,,Name 3,Card,91,India,name3@gmail.com,9876543210,Name 3,642e712d57f6c43749ce0267,GHI/DAY/2024-25/000003
