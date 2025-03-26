@@ -23,13 +23,13 @@ import DashboardStatsCard from "../../utility/ui-elements/cards/statistics/Dashb
 import "../../assets/scss/viewCommon.scss";
 
 const Home = () => {
+  const { t } = useTranslation();
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const [dashboardData, setDashboardData] = useState();
   const [topDonorData, setTopDonorData] = useState();
   const [recentDonationData, setRecentDonationData] = useState();
   const [chartData, setChart] = useState();
 
-  const { t } = useTranslation();
   const history = useHistory();
 
   const periodDropDown = () => {

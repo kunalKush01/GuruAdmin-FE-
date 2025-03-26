@@ -15,6 +15,7 @@ import DonationBoxListTable from "../../components/DonationBox/donationBoxListTa
 import NoContent from "../../components/partials/noContent";
 import "../../../assets/scss/viewCommon.scss";
 export default function Expenses() {
+  const { t } = useTranslation();
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
@@ -32,7 +33,6 @@ export default function Expenses() {
         return "month";
     }
   };
-  const { t } = useTranslation();
   const history = useHistory();
 
   const [pagination, setPagination] = useState({

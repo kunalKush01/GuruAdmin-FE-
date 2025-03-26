@@ -21,6 +21,7 @@ import { getAllBoxCollectionLogs } from "../../api/donationBoxCollectionApi";
 
 import "../../../assets/scss/viewCommon.scss";
 export default function HundiLog() {
+  const { t } = useTranslation();
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const { collectionId } = useParams();
@@ -37,7 +38,6 @@ export default function HundiLog() {
         return "month";
     }
   };
-  const { t } = useTranslation();
   const history = useHistory();
 
   const [pagination, setPagination] = useState({

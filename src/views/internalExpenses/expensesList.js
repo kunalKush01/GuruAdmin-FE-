@@ -26,6 +26,7 @@ import FilterTag from "../../components/partials/filterTag";
 import AddFilterSection from "../../components/partials/addFilterSection";
 
 export default function Expenses() {
+  const { t } = useTranslation();
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const [filterData, setFilterData] = useState({});
 
@@ -43,7 +44,6 @@ export default function Expenses() {
         return "month";
     }
   };
-  const { t } = useTranslation();
   const history = useHistory();
 
   const [pagination, setPagination] = useState({

@@ -25,6 +25,7 @@ import DonationANTDListTable from "../../components/donation/donationAntdListTab
 import "../../assets/scss/viewCommon.scss";
 
 export default function Donation() {
+  const { t } = useTranslation();
   const importFileRef = useRef();
   const [categoryTypeName, setCategoryTypeName] = useState(t("All"));
   const [subCategoryTypeName, setSubCategoryTypeName] = useState(t("All"));
@@ -44,7 +45,6 @@ export default function Donation() {
         return "month";
     }
   };
-  const { t } = useTranslation();
   const history = useHistory();
   const [pagination, setPagination] = useState({
     page: 1,
