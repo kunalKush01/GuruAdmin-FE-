@@ -573,6 +573,13 @@ const Routes = [
     subPermission: WRITE,
   },
   {
+    path: "/editBooking/:bookingId/:serviceId",
+    component: lazy(() => import("../../views/service/editBookingService.js")),
+    // exact:true
+    type: "service",
+    subPermission: EDIT,
+  },
+  {
     path: "/configuration/cattle-breed",
     component: lazy(() =>
       import("../../views/cattles-management/cattle-breed/index.js")

@@ -5,39 +5,64 @@ import FormikCustomReactSelect from "../../components/partials/formikCustomReact
 import { useTranslation } from "react-i18next";
 import CustomTextField from "../../components/partials/customTextField";
 import moment from "moment";
-import { createBooking, getServiceById } from "../../api/serviceApi";
+import {
+  getBookingById,
+  getServiceById,
+  updateBooking,
+} from "../../api/serviceApi";
 import Swal from "sweetalert2";
 import { useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-toastify";
+import { useParams, useHistory } from "react-router-dom";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
+import { toast } from "react-toastify";
 
-const BookingService = ({ serviceData, setShowBookingForm }) => {
+const EditBookingService = () => {
+  const history = useHistory();
+  const { bookingId, serviceId } = useParams();
   const { t } = useTranslation();
-  const trustId = localStorage.getItem("trustId");
-  const [loading, setLoading] = useState(false);
-  const [bookingDetails, setBookingDetails] = useState(null);
   const queryClient = useQueryClient();
+  const trustId = localStorage.getItem("trustId");
 
-  const serviceOptions = serviceData.map((service) => ({
-    value: service._id,
-    label: service.name,
-  }));
+  const [bookingDetails, setBookingDetails] = useState(null);
+  const [serviceDetail, setServiceDetail] = useState(null);
+  const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    const fetchBookingDetails = async () => {
+      if (!serviceId || !bookingId) return; // Ensure both IDs exist
+
+      try {
+        const response = await getBookingById(bookingId);
+        const serviceResponse = await getServiceById(serviceId);
+        if (response?.result) {
+          setBookingDetails(response.result);
+        }
+        if (serviceResponse?.result) {
+          setServiceDetail(serviceResponse.result);
+        }
+      } catch (error) {
+        console.error("Error fetching service details:", error);
+      }
+    };
+
+    fetchBookingDetails();
+  }, [serviceId, bookingId]);
   const [availableDates, setAvailableDates] = useState([]);
 
   // Populate available dates based on selected service
   useEffect(() => {
-    if (bookingDetails && bookingDetails.serviceDates) {
+    if (serviceDetail && serviceDetail.serviceDates) {
       const today = moment().startOf("day");
 
-      const upcomingDates = bookingDetails.serviceDates
+      const upcomingDates = serviceDetail.serviceDates
         .filter((item) => moment(item.date).isSameOrAfter(today))
         .map((item) => moment(item.date).format("DD MMM YYYY"));
 
       setAvailableDates(upcomingDates);
     }
-  }, [bookingDetails]);
+  }, [serviceDetail]);
   const [selectedAvailability, setSelectedAvailability] = useState(null);
+  const [etag, setEtag] = useState(null);
   const CustomDateSelectComponent = ({
     dates = [],
     value = [],
@@ -45,6 +70,22 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
     availability = [],
     ...props
   }) => {
+    useEffect(() => {
+      if (value.length > 0) {
+        const formattedDate = moment(value[0], "DD MMM YYYY").format(
+          "DD MMM YYYY"
+        );
+
+        const selectedService = serviceDetail?.serviceDates.find(
+          (item) => moment(item.date).format("DD MMM YYYY") === formattedDate
+        );
+
+        if (selectedService) {
+          setEtag(selectedService.eTag);
+        }
+      }
+    }, [value, serviceDetail]);
+
     const handleDateChange = (selectedDate) => {
       if (!selectedDate) {
         // Clear the selection
@@ -55,7 +96,13 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
       const formattedDate = moment(selectedDate, "DD MMM YYYY").format(
         "DD MMM YYYY"
       );
+      const selectedEtag = serviceDetail.serviceDates.find(
+        (item) => moment(item.date).format("DD MMM YYYY") === formattedDate
+      );
 
+      if (selectedEtag) {
+        setEtag(selectedEtag.eTag);
+      }
       const selectedAvailability = availability?.find(
         (item) => item.date === formattedDate
       );
@@ -67,7 +114,7 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
           toast.warning(
             `We are trying to make service available for you, please try after some time. (Please try some other service or wait for the same.)`
           );
-          return;
+          // return;
         } else if (totalCapacity === booked) {
           toast.error(`This date is fully booked. Please select another date.`);
           return;
@@ -76,7 +123,6 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
       } else {
         setSelectedAvailability(null); // Reset if no availability data found
       }
-
       onChange([formattedDate]); // Always send as an array with one element
     };
 
@@ -114,7 +160,6 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
       </div>
     );
   };
-
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     setLoading(true);
@@ -124,24 +169,24 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
       const bookingData = {
         serviceId: values.service?.value,
         count: values.persons,
-        serviceDate: values.dates,
+        serviceDate: values.date,
         trustId: trustId,
+        eTag: etag,
       };
 
       let response;
 
-      response = await createBooking(bookingData);
+      response = await updateBooking(bookingId, bookingData);
 
       if (response?.result) {
         Swal.fire({
           title: "Success!",
-          text: "Booking created successfully.",
+          text: "Booking update successfully.",
           icon: "success",
           confirmButtonText: "OK",
         });
-
         queryClient.invalidateQueries("bookedService");
-        setShowBookingForm(false);
+        history.push("/service-booked");
         resetForm();
       } else if (response.error) {
         Swal.fire({
@@ -163,6 +208,7 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
       setSubmitting(false);
     }
   };
+
   return (
     <div className="d-flex flex-column">
       <img
@@ -170,15 +216,26 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
         width={25}
         style={{ cursor: "pointer" }}
         className="mb-1"
-        onClick={() => setShowBookingForm(false)}
+        onClick={() => history.push("/service-booked")}
       />
       <div className="formwrapper FormikWrapper">
         <Formik
           initialValues={{
-            service: "",
-            dates: [],
-            amount: "",
-            persons: "",
+            service: serviceDetail
+              ? {
+                  value: serviceDetail._id,
+                  label: serviceDetail.name,
+                }
+              : "",
+            date: bookingDetails?.bookedSlots[0]?.date
+              ? [
+                  moment(bookingDetails.bookedSlots[0].date).format(
+                    "DD MMM YYYY"
+                  ),
+                ]
+              : [],
+            amount: serviceDetail?.amount || "",
+            persons: bookingDetails?.bookedSlots[0]?.count || "",
           }}
           enableReinitialize
           onSubmit={handleSubmit}
@@ -191,15 +248,21 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
                     labelName={t("select_service")}
                     name="service"
                     placeholder={t("select_service")}
-                    loadOptions={serviceOptions}
+                    loadOptions={[
+                      {
+                        value: serviceDetail?._id,
+                        label: serviceDetail?.name,
+                      },
+                    ]}
                     onChange={async (value) => {
                       if (!value) {
                         setFieldValue("service", "");
                         setFieldValue("amount", "");
-                        setFieldValue("dates", []);
+                        setFieldValue("date", []);
+                        setFieldValue("persons", "");
                       } else {
                         setFieldValue("service", value);
-                        setFieldValue("dates", []); // ✅ Always clear previous dates when changing service
+                        setFieldValue("date", []); // ✅ Always clear previous dates when changing service
                         try {
                           const response = await getServiceById(value.value);
                           if (response?.result) {
@@ -207,6 +270,10 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
                             setFieldValue(
                               "amount",
                               response.result.amount || ""
+                            );
+                            setFieldValue(
+                              "persons",
+                              response.result.countPerDay || ""
                             );
                           }
                         } catch (error) {
@@ -221,13 +288,14 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
                     width
                   />
                 </Col>
+
                 <Col xs={24} sm={6}>
                   <label className="mb-0">{t("select_date")}</label>
                   <CustomDateSelectComponent
                     dates={availableDates}
-                    value={values.dates}
-                    onChange={(dates) => setFieldValue("dates", dates)}
-                    availability={bookingDetails?.availability || []}
+                    value={values.date}
+                    onChange={(dates) => setFieldValue("date", dates)}
+                    availability={serviceDetail?.availability || []}
                   />
                 </Col>
                 <Col xs={24} sm={6}>
@@ -246,7 +314,7 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
                       />
                     )}
                   </Field>
-                  {values.dates?.length > 0 &&
+                  {values.date?.length > 0 &&
                   selectedAvailability &&
                   selectedAvailability?.available ? (
                     <>
@@ -285,7 +353,7 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
                   disabled={isSubmitting || loading}
                   loading={isSubmitting || loading}
                 >
-                  {loading ? "Submitting..." : "Submit"}
+                  {loading ? "Submitting..." : "Update Booking"}
                 </Button>
               </div>
             </form>
@@ -296,4 +364,4 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
   );
 };
 
-export default BookingService;
+export default EditBookingService;

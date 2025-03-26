@@ -68,7 +68,6 @@ export const hindiContent = {
   invalid_amount: "अमान्य राशि",
   tagsChar_limit:
     "टैग फ़ील्ड में अधिकतम 20 अक्षर हो सकते हैं और उससे अधिक स्वीकार नहीं किया जा सकता।",
-
   // डैशबोर्ड के सभी स्थिर सामग्री
   dashboard_donationReceived: "प्राप्त दान",
   dashboard_donationPending: "लंबित दान",
@@ -82,7 +81,6 @@ export const hindiContent = {
   dashboard_weekly: "इस सप्ताह",
   dashboard_yearly: "इस वर्ष",
   dashboard_daily: "प्रतिदिन",
-
   dashboard_card_title3: "सदस्यता प्राप्त उपयोगकर्ता",
   dashboard_Recent_DonationCommitment: "हाल ही में प्राप्त दान",
   dashboard_Recent_DonorName: "दाता का नाम",
@@ -106,7 +104,6 @@ export const hindiContent = {
   label_add1: "पता लाइन 1 (मकान नंबर)",
   label_add2: "पता लाइन 2",
   paid_status: "स्थिति",
-
   // समाचार से संबंधित सभी स्थिर सामग्री
   news_AddNews: "समाचार जोड़ें",
   news_EditNews: "समाचार संपादित करें",
@@ -133,7 +130,6 @@ export const hindiContent = {
   news_not_found: "कोई समाचार रिकॉर्ड नहीं मिला",
   news_not_click_add_news:
     "नया समाचार जोड़ने के लिए 'समाचार जोड़ें' पर क्लिक करें।",
-
   // इवेंट्स से संबंधित सभी स्थिर सामग्री
   same_time: "समाप्ति समय प्रारंभ समय के समान नहीं हो सकता",
   events_AddEvent: "ईवेंट जोड़ें",
@@ -152,7 +148,6 @@ export const hindiContent = {
   events_not_found: "कोई ईवेंट रिकॉर्ड नहीं मिला",
   events_not_click_add_events:
     "नया ईवेंट जोड़ने के लिए 'ईवेंट जोड़ें' पर क्लिक करें।",
-
   // धर्मशाला से संबंधित सभी स्थिर सामग्री
   dharmshala_floors_registered: "मंज़िलें",
   dharmshala_bookings_registered: "पंजीकृत बुकिंग",
@@ -349,7 +344,6 @@ export const hindiContent = {
   cattle_supplies: "आपूर्ति",
   cattle_usage: "उपयोग",
   cattle_items: "आइटम",
-
   //धर्मशाला मान्यकरण संदेश
   dharmshala_name_required: "धर्मशाला का नाम आवश्यक है",
   dharmshala_description_required: "धर्मशाला विवरण आवश्यक है",
@@ -362,7 +356,6 @@ export const hindiContent = {
   dharmshala_floor_description_required: "धर्मशाला मंजिल विवरण आवश्यक है",
   dharmshala_floor_number: "मंजिल संख्या",
   dharmshala_floor_number_required: "धर्मशाला मंजिल संख्या आवश्यक है",
-
   // पशुधन मान्यकरण संदेश
   cattle_itemID_required: "आइटम आईडी आवश्यक है",
   cattle_id_required: "पशुधन आईडी आवश्यक है",
@@ -391,7 +384,6 @@ export const hindiContent = {
   cattle_purchaser_id_required: "खरीदार आईडी आवश्यक है",
   cattle_sold_price_required: "बिक्री मूल्य आवश्यक है",
   cattle_milk_quantity_required: "दूध की मात्रा आवश्यक है",
-
   // सभी पशुधन प्रबंधन हटाने के संदेश
   cattle_cattle_delete: "पशुधन हटाएं",
   cattle_cattle_sure: "क्या आप वाकई इस पशुधन को हटाना चाहते हैं?",
@@ -402,15 +394,12 @@ export const hindiContent = {
     "क्या आप वाकई इस गर्भावस्था रिपोर्ट को हटाना चाहते हैं?",
   cattle_supplies_delete: "आपूर्ति हटाएं",
   cattle_supplies_sure: "क्या आप वाकई इस आपूर्ति को हटाना चाहते हैं?",
-
   cattle_usage_delete: "उपयोग हटाएं",
   cattle_usage_sure: "क्या आप वाकई इस उपयोग को हटाना चाहते हैं?",
-
   cattle_item_delete: "आइटम हटाएं",
   cattle_item_sure: "क्या आप वाकई इस आइटम को हटाना चाहते हैं?",
   cattle_breed_delete: "नस्ल हटाएं",
   cattle_breed_sure: "क्या आप वाकई इस नस्ल को हटाना चाहते हैं?",
-
   // सभी पशुधन खोज से संबंधित वेरिएबल
   search_cattles: "पशुधन आईडी, प्रकार, नस्ल द्वारा खोजें",
   search_cattles_medical: "पशुधन चिकित्सा जानकारी खोजें",
@@ -419,7 +408,6 @@ export const hindiContent = {
   search_cattles_supplies: "आइटम आपूर्ति खोजें",
   search_cattles_usage: "आइटम उपयोग खोजें",
   search_cattles_items: "पशुधन आइटम खोजें",
-
   // सभी नोटिस से संबंधित स्थिर सामग्री
   notices_AddNotice: "नोटिस जोड़ें",
   notices_latest_Notice: "नोटिस",
@@ -429,13 +417,11 @@ export const hindiContent = {
   notices_desc_required: "विवरण आवश्यक है",
   notices_select_dropDown: "नोटिस चुनें",
   notices_EditNotice: "नोटिस संपादित करें",
-
   notices_delete: "नोटिस हटाएं",
   notices_sure: "क्या आप वाकई इस नोटिस को स्थायी रूप से हटाना चाहते हैं?",
   notices_not_found: "कोई नोटिस नहीं मिला",
   notices_not_click_add_notices:
     "नया नोटिस जोड़ने के लिए 'नोटिस जोड़ें' पर क्लिक करें।",
-
   // सभी श्रेणियों से संबंधित स्थिर सामग्री
   only_letters: "उप-श्रेणी में केवल अक्षर हो सकते हैं",
   categories_AddCategory: "उप-श्रेणी जोड़ें",
@@ -481,14 +467,12 @@ export const hindiContent = {
   cheque_status: "DD/चेक निकासी स्थिति",
   bank_narration: "बैंक विवरण",
   remark: "टिप्पणी",
-
   category_delete: "श्रेणी हटाएं",
   category_sure: "क्या आप वाकई इस श्रेणी को स्थायी रूप से हटाना चाहते हैं?",
   category_not_found: "कोई श्रेणी उपलब्ध नहीं",
   category_not_click_add_category:
     "नई श्रेणी जोड़ने के लिए 'श्रेणी जोड़ें' पर क्लिक करें।",
   masters_not_found: "मास्टर सूची उपलब्ध नहीं",
-
   // सभी उपयोगकर्ताओं से संबंधित स्थिर सामग्री
   users_AddUser: "सब एडमिन जोड़ें",
   users_latest_User: "सब एडमिन",
@@ -513,13 +497,11 @@ export const hindiContent = {
   added_by: "द्वारा जोड़ा गया",
   expenses_desc_required: "विवरण आवश्यक है",
   expence_amount_required: "राशि आवश्यक है",
-
   expence_delete: "खर्च हटाएं",
   expence_sure: "क्या आप वाकई इस खर्च को स्थायी रूप से हटाना चाहते हैं?",
   expence_not_found: "कोई खर्च नहीं मिला",
   expence_not_click_add_expence:
     "नए खर्च को दर्ज करने के लिए 'खर्च जोड़ें' पर क्लिक करें।",
-
   // वित्तीय रिपोर्ट की सभी स्थिर सामग्री
   report_AddReport: "वित्तीय रिपोर्ट",
   report_expences: "खर्च",
@@ -530,7 +512,6 @@ export const hindiContent = {
   finance_report_no_found:
     "चयनित समयसीमा के लिए कोई वित्तीय रिपोर्ट उपलब्ध नहीं है",
   financial_not_found: "कोई वित्तीय डेटा नहीं मिला",
-
   // दान की सभी स्थिर सामग्री
   donation_Donation: "दान",
   start_Time: "प्रारंभ समय",
@@ -556,7 +537,6 @@ export const hindiContent = {
   donation_paid_not_found: "कोई भुगतान किया गया दान नहीं मिला",
   donation_not_click_add_donation:
     "'दान जोड़ें' पर क्लिक करके स्क्रीन पर दान जोड़ें",
-
   // दान बॉक्स की सभी स्थिर सामग्री
   DonationBox_total_collection: "कुल संग्रह:",
   DonationBox_DonationBox: "दान बॉक्स",
@@ -583,17 +563,14 @@ export const hindiContent = {
   DonationBox_AddDonationBox: "दान बॉक्स जोड़ें",
   donation_box_desc_required: "विवरण आवश्यक है",
   donation_box_amount_required: "राशि आवश्यक है",
-
   logData_editedBy: "द्वारा संपादित",
   logData_createdBy: "द्वारा बनाया गया",
   logData_timeDate: "समय और तारीख",
   logData_createdAmount: "बनाई गई राशि",
   logData_editedAmount: "संपादित राशि",
-
   donation_box_not_found: "कोई दान बॉक्स संग्रह रिकॉर्ड नहीं मिला",
   donation_box_not_click_add_donation_box:
     "नया दान बॉक्स जोड़ने के लिए, बस 'संग्रह जोड़ें' पर क्लिक करें",
-
   // सभी संदिग्ध डेटा
   map_fields: "फील्ड को मैप करें",
   sample_file_download: "नमूना फ़ाइल डाउनलोड करें",
@@ -619,7 +596,6 @@ export const hindiContent = {
   req_modeofPayment: "भुगतान का तरीका आवश्यक है",
   target_Fields: "लक्षित क्षेत्र",
   source_Fields: "स्रोत क्षेत्र",
-
   // सभी प्रतिज्ञा डेटा
   notify_user: "उपयोगकर्ता को सूचित करें",
   notify_user_content:
@@ -632,7 +608,6 @@ export const hindiContent = {
   commitment_select_commitment_id: "प्रतिज्ञा आईडी चुनें",
   commitment_select_start_date: "प्रारंभ तिथि चुनें",
   commitment_select_end_date: "अंत तिथि चुनें",
-
   commitment_delete: "प्रतिज्ञा हटाएं",
   commitment_sure:
     "क्या आप वाकई इस प्रतिज्ञा को स्थायी रूप से हटाना चाहते हैं?",
@@ -641,7 +616,6 @@ export const hindiContent = {
     "नई प्रतिज्ञा बनाने के लिए 'प्रतिज्ञा जोड़ें' पर क्लिक करें।",
   commitment_complete: "पूरा हुआ",
   commitment_partial: "आंशिक",
-
   // सभी सदस्यता उपयोगकर्ता डेटा
   subscribed_user_add_user: "सदस्यता प्राप्त उपयोगकर्ता जोड़ें",
   subscribed_user_name: "उपयोगकर्ता नाम",
@@ -653,7 +627,6 @@ export const hindiContent = {
   subscribed_not_found: "कोई सदस्यता प्राप्त उपयोगकर्ता नहीं मिला",
   subscribed_not_click_add:
     "'सदस्यता प्राप्त उपयोगकर्ता जोड़ें' पर क्लिक करें और उपयोगकर्ता जोड़ें।",
-
   // सभी रिपोर्ट और विवाद डेटा
   report_report_against: "नाम",
   report_mobile: "मोबाइल नंबर",
@@ -662,12 +635,10 @@ export const hindiContent = {
   report_panding: "लंबित",
   report_re_solved: "सुलझा लिया गया",
   report_dispute_not_found: "रिपोर्ट और विवाद नहीं मिले",
-
   // सभी सूचनाएँ डेटा
   notifications: "सूचनाएँ",
   notifications_Notify_Users: "उपयोगकर्ताओं को सूचित करें",
   notifications_not_found: "कोई सूचना नहीं मिली",
-
   // सभी उपयोगकर्ता प्रोफ़ाइल डेटा
   about_trust: "हमारे बारे में",
   trust_address: "पता",
@@ -969,7 +940,6 @@ export const hindiContent = {
   select_start_date: "प्रारंभ तिथि चुनें",
   select_end_date: "समाप्ति तिथि चुनें",
   select_dates: "तिथियां चुनें",
-
   //newly added
   "Room Types": "कमरों के प्रकार",
   Dharmshala: "धर्मशाला",

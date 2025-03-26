@@ -10,13 +10,13 @@ import ServiceListTable from "../../components/service/serviceListTable";
 import { useHistory, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getAllBookedServices, getAllServices } from "../../api/serviceApi";
-import BookingService from "./bookingService";
 import BookedServiceListTable from "../../components/service/bookedServiceListTable";
 import { Plus } from "react-feather";
+import BookingService from "./bookingService";
 
 function ServiceListView() {
   const history = useHistory();
-  const location = useLocation(); // Access the current location
+  const location = useLocation();
   const trustId = localStorage.getItem("trustId");
   const { t } = useTranslation();
   const [showBookingForm, setShowBookingForm] = useState(false);
@@ -164,7 +164,9 @@ function ServiceListView() {
               <Button
                 color="primary"
                 className="addAction-btn"
-                onClick={() => setShowBookingForm(true)}
+                onClick={() => {
+                  setShowBookingForm(true);
+                }}
               >
                 <span>
                   <Plus className="" size={15} strokeWidth={4} />
@@ -177,6 +179,7 @@ function ServiceListView() {
           )}
           {!showBookingForm ? (
             <BookedServiceListTable
+              // setShowBookingForm={setShowBookingForm}
               data={bookedService ? bookedService.results : []}
               totalItems={bookedService ? bookedService.totalResults : 0}
               pageSize={bookedServicePagination.limit}

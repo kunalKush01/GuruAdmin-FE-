@@ -990,6 +990,7 @@ export const englishContent = {
   select_start_date: "Select start date",
   select_end_date: "Select end date",
   select_dates: "Select Dates",
+  counts:"Counts",
 
   //newly added
   "Room Types": "Room Types",

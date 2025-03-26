@@ -47,3 +47,21 @@ export const getBookingById = (id) =>
     showToastOnSuccess: false,
     showToastOnError: false,
   });
+export const getServiceById = (id) =>
+  callApi({
+    requestFunction: (axios) => axios.get(`${API_BASE_URL}/service/${id}`),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+export const deleteBooking = (id) =>
+  callApi({
+    requestFunction: (axios) => axios.delete(`${API_BASE_URL}/booking/${id}`),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+export const updateBooking = (id,payload) =>
+  callApi({
+    requestFunction: (axios) => axios.put(`${API_BASE_URL}/booking/${id}`,payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });

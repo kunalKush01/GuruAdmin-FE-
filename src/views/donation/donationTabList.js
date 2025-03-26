@@ -49,6 +49,7 @@ const { TabPane } = Tabs;
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 export default function Donation() {
   const history = useHistory();
+  const { t } = useTranslation();
   const importFileRef = useRef();
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
@@ -82,7 +83,6 @@ export default function Donation() {
         return "month";
     }
   };
-  const { t } = useTranslation();
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 10,
