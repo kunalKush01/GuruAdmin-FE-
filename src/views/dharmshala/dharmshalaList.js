@@ -61,6 +61,7 @@ const DharmshalaWrapper = styled.div`
 `;
 
 export default function Dharmshala() {
+  const { t } = useTranslation();
   const importFileRef = useRef();
   const [categoryTypeName, setCategoryTypeName] = useState(t("All"));
   const [subCategoryTypeName, setSubCategoryTypeName] = useState(t("All"));
@@ -80,7 +81,6 @@ export default function Dharmshala() {
         return "month";
     }
   };
-  const { t } = useTranslation();
   const history = useHistory();
 
   const [pagination, setPagination] = useState({

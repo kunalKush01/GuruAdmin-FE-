@@ -41,6 +41,7 @@ const { RangePicker, MonthPicker } = DatePicker;
 import "../../assets/scss/viewCommon.scss";
 
 export default function FinancialReport() {
+  const { t } = useTranslation();
   const [reportStartDate, setReportStartDate] = useState(
     new Date(moment().startOf("month"))
   );
@@ -108,7 +109,6 @@ const handleDownloadReport = async () => {
   setIsModalVisible(false);
 };
 
-  const { t } = useTranslation();
   const [activeReportTab, setActiveReportTab] = useState({
     id: 1,
     name: t("report_expences"),

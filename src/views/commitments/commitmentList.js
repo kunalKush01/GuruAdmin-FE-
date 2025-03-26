@@ -45,6 +45,7 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import syncIcon from "../../assets/images/icons/sync.svg";
 import ImportHistoryTable from "../../components/donation/importHistoryTable";
 export default function Commitment() {
+  const { t } = useTranslation();
   const importFileRef = useRef();
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const [categoryTypeName, setCategoryTypeName] = useState(t("All"));
@@ -66,7 +67,6 @@ export default function Commitment() {
         return "month";
     }
   };
-  const { t } = useTranslation();
   const history = useHistory();
 
   const [pagination, setPagination] = useState({

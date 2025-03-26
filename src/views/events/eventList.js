@@ -28,6 +28,7 @@ import { Card, Pagination } from "antd";
 const randomArray = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 export default function EventList() {
+  const { t } = useTranslation();
   const [dropDownName, setdropDownName] = useState(t("All"));
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
@@ -46,7 +47,6 @@ export default function EventList() {
         return "All";
     }
   };
-  const { t } = useTranslation();
   const history = useHistory();
 
   const [pagination, setPagination] = useState({

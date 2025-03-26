@@ -27,6 +27,7 @@ import momentGenerateConfig from "rc-picker/lib/generate/moment";
 import { useHistory } from "react-router-dom";
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 function SuspenseListTable({ success, filterData, type }) {
+  const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
@@ -34,7 +35,6 @@ function SuspenseListTable({ success, filterData, type }) {
   const [form] = Form.useForm();
   const queryClient = useQueryClient();
   const history = useHistory();
-  const { t } = useTranslation();
   const [categoryTypeName, setCategoryTypeName] = useState(t("All"));
   const [subCategoryTypeName, setSubCategoryTypeName] = useState(t("All"));
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");

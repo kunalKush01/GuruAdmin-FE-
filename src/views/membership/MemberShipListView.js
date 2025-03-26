@@ -22,11 +22,11 @@ import syncIcon from "../../assets/images/icons/sync.svg";
 import SendMessageModal from './SendMessageModal';
 
 function MemberShipListView() {
+  const { t } = useTranslation();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const history = useHistory();
   const queryClient = useQueryClient();
   const [filterData, setFilterData] = useState({});
-  const { t } = useTranslation();
   const [messageModalVisible, setMessageModalVisible] = useState(false);
   const [messageText, setMessageText] = useState('');
   const [sendingMessage, setSendingMessage] = useState(false);

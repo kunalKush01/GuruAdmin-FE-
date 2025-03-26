@@ -22,6 +22,7 @@ import SubscribedUSerListTable from "../../components/subscribedUser/subscribedU
 
 import "../../../assets/scss/viewCommon.scss";
 export default function ExpensesLog() {
+  const { t } = useTranslation();
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const { expensesId } = useParams();
@@ -38,7 +39,6 @@ export default function ExpensesLog() {
         return "month";
     }
   };
-  const { t } = useTranslation();
   const history = useHistory();
 
   const [pagination, setPagination] = useState({
