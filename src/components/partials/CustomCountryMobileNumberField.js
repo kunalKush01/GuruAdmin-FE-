@@ -24,6 +24,7 @@ const CustomCountryMobileNumberField = ({
         </label>
       )}
       <PhoneInput
+        countryCodeEditable={false}
         value={value}
         placeholder={placeholder}
         country={defaultCountry}
