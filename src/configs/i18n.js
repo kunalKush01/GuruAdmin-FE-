@@ -7,6 +7,7 @@ import { kannadaContent } from "../utility/lang/kannada";
 import { tamilContent } from "../utility/lang/tamil";
 import { marathiContent } from "../utility/lang/marathi";
 import { gujaratiContent } from "../utility/lang/gujarati";
+
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
@@ -30,6 +31,9 @@ i18n
       },
       kn: {
         translations: kannadaContent,
+      },
+      mar: {
+        translations: marathiContent,
       },
     },
     fallbackLng: "english",

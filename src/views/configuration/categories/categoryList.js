@@ -25,7 +25,7 @@ import { ConverFirstLatterToCapital } from "../../../utility/formater";
 import { WRITE } from "../../../utility/permissionsVariable";
 import "../../../assets/scss/viewCommon.scss";
 export default function Category() {
-  const [dropDownName, setdropDownName] = useState("All");
+  const [dropDownName, setdropDownName] = useState(t("All"));
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const periodDropDown = () => {
     switch (dropDownName) {

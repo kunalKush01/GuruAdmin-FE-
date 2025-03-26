@@ -85,7 +85,7 @@ const UsageManagementTable = ({
       width: 120,
     },
     {
-      title: "Action",
+      title: t("action"),
       dataIndex: "action",
       key: "action",
       width: 50,

@@ -33,7 +33,7 @@ const CattlesInfo = () => {
   const importFileRef = useRef();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
-  const [isDeadAlive, setIsDeadAlive] = useState("All");
+  const [isDeadAlive, setIsDeadAlive] = useState(t("All"));
   // const [cattleBreed, setCattleBreed] = useState(t("all"));
 
   const [pagination, setPagination] = useState({
@@ -168,7 +168,7 @@ const CattlesInfo = () => {
               categoryTypeArray={[
                 {
                   id: 1,
-                  name: t("all"),
+                  name: t("All"),
                 },
                 {
                   id: 2,

@@ -15,8 +15,10 @@ import {
 
 import { useSelector } from "react-redux";
 import { WRITE } from "../../../utility/permissionsVariable";
+import { useTranslation } from "react-i18next";
 
 const customFieldsView = () => {
+  const { t } = useTranslation();
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("Donation");
   const toggleForm = () => setIsFormOpen(!isFormOpen);
@@ -99,7 +101,7 @@ const customFieldsView = () => {
   const items = [
     {
       key: "Donation",
-      label: "Donation",
+      label: t("Donation"),
       children: (
         <>
           <div>
@@ -107,17 +109,21 @@ const customFieldsView = () => {
               className="d-flex justify-content-end w-100"
               style={{ marginBottom: "10px" }}
             >
-               {allPermissions?.name === "all" ||
-            subPermission?.includes(WRITE) ? (
-              <Button className="" id="addCustomFieldBtn" onClick={toggleForm}>
-                <Plus
+              {allPermissions?.name === "all" ||
+              subPermission?.includes(WRITE) ? (
+                <Button
                   className=""
-                  size={15}
-                  strokeWidth={4}
-                  style={{ marginRight: "5px" }}
-                />
-                Add
-              </Button>
+                  id="addCustomFieldBtn"
+                  onClick={toggleForm}
+                >
+                  <Plus
+                    className=""
+                    size={15}
+                    strokeWidth={4}
+                    style={{ marginRight: "5px" }}
+                  />
+                  {t('add')}
+                </Button>
               ) : (
                 ""
               )}
@@ -137,7 +143,7 @@ const customFieldsView = () => {
     },
     {
       key: "Pledge",
-      label: "Pledge",
+      label: t("Pledge"),
       children: (
         <>
           <div>
@@ -152,7 +158,7 @@ const customFieldsView = () => {
                   strokeWidth={4}
                   style={{ marginRight: "5px" }}
                 />
-                Add
+                {t('add')}
               </Button>
             </div>
             <CustomFieldTable customFields={pledge_custom_fields} />
@@ -170,7 +176,7 @@ const customFieldsView = () => {
     },
     {
       key: "Donation Box",
-      label: "Donation Box",
+      label: t("Donation_Box"),
       children: (
         <>
           <div>
@@ -185,7 +191,7 @@ const customFieldsView = () => {
                   strokeWidth={4}
                   style={{ marginRight: "5px" }}
                 />
-                Add
+                {t('add')}
               </Button>
             </div>
             <CustomFieldTable customFields={donation_box_custom_fields} />
@@ -203,7 +209,7 @@ const customFieldsView = () => {
     },
     {
       key: "Expenses",
-      label: "Expenses",
+      label: t("Expenses"),
       children: (
         <>
           <div>
@@ -218,7 +224,7 @@ const customFieldsView = () => {
                   strokeWidth={4}
                   style={{ marginRight: "5px" }}
                 />
-                Add
+                {t('add')}
               </Button>
             </div>
             <CustomFieldTable customFields={expenses_custom_fields} />

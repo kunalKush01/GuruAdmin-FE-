@@ -121,7 +121,7 @@ const AddMaster = ({
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} centered id="addMasterForm">
-      <ModalHeader  toggle={toggle}>Add New Entry<div><X className="cancleIcon" onClick={toggle} size={15} strokeWidth={4} style={{marginRight:"5px"}} /></div></ModalHeader>
+      <ModalHeader  toggle={toggle}>{t('Add_New_Entry')}<div><X className="cancleIcon" onClick={toggle} size={15} strokeWidth={4} style={{marginRight:"5px"}} /></div></ModalHeader>
       <ModalBody>
         <Form className="row">
           {schema.map((field) => (

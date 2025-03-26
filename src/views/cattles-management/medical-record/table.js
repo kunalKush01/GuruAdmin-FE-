@@ -87,7 +87,7 @@ const MedicalReportTable = ({
       width: 150,
     },
     {
-      title: "Action",
+      title: t("action"),
       dataIndex: "action",
       key: "action",
       width: 100,

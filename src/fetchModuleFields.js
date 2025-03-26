@@ -143,7 +143,6 @@ export const fetchFields = async (trustId, moduleName, excludeFields = [],langua
             }
             for (let key in properties) {
               const property = properties[key];
-              console.log(`${parentKey}_${key}`);
               const currentKey = parentKey
                 ? `${parentKey}_${key}${properties[key]?.enum ? "_name" : ""}`
                 : key;
@@ -155,6 +154,7 @@ export const fetchFields = async (trustId, moduleName, excludeFields = [],langua
                   label: property.title,
                   type: ConverFirstLatterToCapital(property.type),
                   enum: properties[key]?.enum || [],
+                  format: properties[key]?.format,
                 });
               }
             }

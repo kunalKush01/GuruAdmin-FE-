@@ -12,17 +12,23 @@ import {
 } from "reactstrap";
 import Swal from "sweetalert2";
 import { X } from "react-feather";
-import '../../../assets/scss/common.scss'
+import "../../../assets/scss/common.scss";
 import {
   createDonationBoxCustomFields,
   createDonationCustomFields,
   createExpensesCustomFields,
   createPledgeCustomFields,
 } from "../../../api/customFieldsApi";
-import { getAllMastersWithoutPagination, getMasterDataById } from "../../../api/masterApi";
+import {
+  getAllMastersWithoutPagination,
+  getMasterDataById,
+} from "../../../api/masterApi";
 import { useQuery } from "@tanstack/react-query";
+import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
+  const { t } = useTranslation();
   const initialFormData = {
     fieldName: "",
     fieldType: "String",
@@ -33,9 +39,13 @@ const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
   };
   const [formData, setFormData] = useState(initialFormData);
   const [validationMessages, setValidationMessages] = useState({});
-  const masterQuery = useQuery(["Masters"], () => getAllMastersWithoutPagination(), {
-    keepPreviousData: true,
-  });
+  const masterQuery = useQuery(
+    ["Masters"],
+    () => getAllMastersWithoutPagination(),
+    {
+      keepPreviousData: true,
+    }
+  );
 
   const masterItem = useMemo(
     () => masterQuery?.data?.masterNames ?? [],
@@ -53,7 +63,7 @@ const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
 
   const masterDataItem = useMemo(
     () => masterDataQuery?.data ?? [],
-    [masterDataQuery,activeTab]
+    [masterDataQuery, activeTab]
   );
   useEffect(() => {
     setFormData(initialFormData);
@@ -155,8 +165,7 @@ const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
             text: "Failed to add custom field.",
           });
         });
-    }
-    else if (activeTab == "Donation Box") {
+    } else if (activeTab == "Donation Box") {
       createDonationBoxCustomFields(payload)
         .then(() => {
           Swal.fire({
@@ -177,8 +186,7 @@ const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
             text: "Failed to add custom field.",
           });
         });
-    }
-    else if (activeTab == "Expenses") {
+    } else if (activeTab == "Expenses") {
       createExpensesCustomFields(payload)
         .then(() => {
           Swal.fire({
@@ -205,7 +213,7 @@ const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
   return (
     <Modal isOpen={isOpen} toggle={toggle} centered id="addCustomFieldForm">
       <ModalHeader toggle={toggle}>
-        Add New Custom Field
+        {t("Add_New_Custom_Field")}{" "}
         <div>
           <X
             className="cancleIcon"
@@ -224,12 +232,12 @@ const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
                 for="fieldName"
                 style={{ fontSize: "13px", fontWeight: "500" }}
               >
-                Field Name
+                {t("Field_Name")}
                 <span className="text-danger">*</span>
               </Label>
               <Input
                 type="text"
-                placeholder="Enter text here"
+                placeholder={t("enter_text_here")}
                 name="fieldName"
                 id="fieldName"
                 value={formData.fieldName}
@@ -251,7 +259,7 @@ const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
                 for="fieldType"
                 style={{ fontSize: "13px", fontWeight: "500" }}
               >
-                Field Type
+                {t("Field_Type")}
               </Label>
               <Input
                 type="select"
@@ -260,10 +268,10 @@ const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
                 value={formData.fieldType}
                 onChange={handleChange}
               >
-                <option value="String">String</option>
-                <option value="Number">Number</option>
-                <option value="Boolean">Boolean</option>
-                <option value="Date">Date</option>
+                <option value="String">{t("String")}</option>
+                <option value="Number">{t("Number")}</option>
+                <option value="Boolean">{t("Boolean")}</option>
+                <option value="Date">{t("date")}</option>
               </Input>
             </FormGroup>
             <FormGroup className="col-md-6 col-sm-12">
@@ -271,7 +279,7 @@ const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
                 for="value"
                 style={{ fontSize: "13px", fontWeight: "500" }}
               >
-                Value
+                {t("Value")}
               </Label>
               {formData.fieldType === "Boolean" ? (
                 <Input
@@ -281,8 +289,8 @@ const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
                   value={formData.value}
                   onChange={handleChange}
                 >
-                  <option value="true">True</option>
-                  <option value="false">False</option>
+                  <option value="true">{t("True")}</option>
+                  <option value="false">{t("False")}</option>
                 </Input>
               ) : (
                 <Input
@@ -291,7 +299,7 @@ const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
                   id="value"
                   value={formData.value}
                   onChange={handleChange}
-                  placeholder="Enter value here"
+                  placeholder={t("enter_text_here")}
                 />
               )}
             </FormGroup>
@@ -302,7 +310,7 @@ const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
                 for="master"
                 style={{ fontSize: "13px", fontWeight: "500" }}
               >
-                Master List
+                {t("Master_List")}
               </Label>
               <Input
                 type="select"
@@ -311,7 +319,7 @@ const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
                 value={formData.master}
                 onChange={handleChange}
               >
-                <option value="">Select Option</option>
+                <option value="">{t("select_option")}</option>
                 {masterItem &&
                   masterItem.map((item) => {
                     return <option value={item.id}>{item.name}</option>;
@@ -323,7 +331,7 @@ const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
                 for="masterData"
                 style={{ fontSize: "13px", fontWeight: "500" }}
               >
-                Master Data List
+                {t("Master_Data_List")}
               </Label>
               <Input
                 type="select"
@@ -332,7 +340,7 @@ const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
                 value={formData.masterData}
                 onChange={handleChange}
               >
-                <option value="">Select Option</option>
+                <option value="">{t("select_option")}</option>
                 {masterItem &&
                   masterDataItem &&
                   Object.values(masterDataItem?.schema || {}).map(
@@ -353,7 +361,7 @@ const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
                 for="isRequired"
                 style={{ fontSize: "13px", fontWeight: "500" }}
               >
-                Is Required
+                {t("Is_Required")}
               </Label>
               <Input
                 type="checkbox"
@@ -368,7 +376,7 @@ const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
       </ModalBody>
       <ModalFooter>
         <Button id="submit" onClick={handleSubmit}>
-          Submit
+          {t("Submit")}
         </Button>
         <Button
           id="cancel"
@@ -377,7 +385,7 @@ const AddCustomField = ({ activeTab, trustId, isOpen, toggle, onSuccess }) => {
             setValidationMessages({});
           }}
         >
-          Cancel
+          {t("Cancel")}
         </Button>
       </ModalFooter>
     </Modal>

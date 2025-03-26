@@ -10,7 +10,6 @@ function LangModel({ setlangSelection, langSelection }) {
   const selectedLanguage = useSelector((state) => state.auth.selectLang);
   const dispatch = useDispatch();
   const langList = useSelector((state) => state.auth.availableLang);
-
   const handleSelectLang = (lang) => {
     dispatch(setlang(lang));
     setlangSelection(false);
