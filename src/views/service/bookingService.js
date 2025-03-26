@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Field } from "formik";
-import { Button, Row, Col, Select } from "antd";
+import { Button, Row, Col, Select, Typography } from "antd";
 import FormikCustomReactSelect from "../../components/partials/formikCustomReactSelect";
 import { useTranslation } from "react-i18next";
 import CustomTextField from "../../components/partials/customTextField";
@@ -37,6 +37,7 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
       setAvailableDates(upcomingDates);
     }
   }, [bookingDetails]);
+  const [selectedAvailability, setSelectedAvailability] = useState(null);
   const CustomDateSelectComponent = ({
     dates = [],
     value = [],
@@ -45,17 +46,23 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
     ...props
   }) => {
     const handleDateChange = (selectedDate) => {
-      if (!selectedDate) return;
-  
-      const formattedDate = moment(selectedDate, "DD MMM YYYY").format("DD MMM YYYY");
-  
+      if (!selectedDate) {
+        // Clear the selection
+        setSelectedAvailability(null);
+        onChange([]); // Reset value
+        return;
+      }
+      const formattedDate = moment(selectedDate, "DD MMM YYYY").format(
+        "DD MMM YYYY"
+      );
+
       const selectedAvailability = availability?.find(
         (item) => item.date === formattedDate
       );
-  
+
       if (selectedAvailability) {
         const { totalCapacity, booked, locked } = selectedAvailability;
-  
+
         if (locked > 0 && totalCapacity > 0) {
           toast.warning(
             `We are trying to make service available for you, please try after some time. (Please try some other service or wait for the same.)`
@@ -65,11 +72,14 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
           toast.error(`This date is fully booked. Please select another date.`);
           return;
         }
+        setSelectedAvailability(selectedAvailability);
+      } else {
+        setSelectedAvailability(null); // Reset if no availability data found
       }
-  
+
       onChange([formattedDate]); // Always send as an array with one element
     };
-  
+
     return (
       <div id="sevaBooking">
         <Select
@@ -83,16 +93,17 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
         >
           {dates.map((date, index) => {
             const formattedDate = moment(date).format("DD MMM YYYY");
-  
+
             const dateAvailability = availability?.find(
               (item) => item.date === formattedDate
             );
-  
+
             const isFullyBooked =
-              dateAvailability && dateAvailability.totalCapacity === dateAvailability.booked;
-  
+              dateAvailability &&
+              dateAvailability.totalCapacity === dateAvailability.booked;
+
             if (isFullyBooked) return null; // Hide fully booked dates
-  
+
             return (
               <Select.Option key={index} value={formattedDate}>
                 {formattedDate}
@@ -103,7 +114,7 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
       </div>
     );
   };
-  
+
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     setLoading(true);
@@ -188,6 +199,7 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
                         setFieldValue("dates", []);
                       } else {
                         setFieldValue("service", value);
+                        setFieldValue("dates", []); // ✅ Always clear previous dates when changing service
                         try {
                           const response = await getServiceById(value.value);
                           if (response?.result) {
@@ -234,6 +246,20 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
                       />
                     )}
                   </Field>
+                  {values.dates?.length > 0 &&
+                  selectedAvailability &&
+                  selectedAvailability?.available ? (
+                    <>
+                      <Typography.Text type="success" strong>
+                        Slots available:
+                      </Typography.Text>{" "}
+                      <Typography.Text strong>
+                        {selectedAvailability?.available}
+                      </Typography.Text>
+                    </>
+                  ) : (
+                    ""
+                  )}
                 </Col>
                 <Col xs={24} sm={6}>
                   <Field name="amount">

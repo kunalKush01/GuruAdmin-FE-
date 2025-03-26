@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Field } from "formik";
-import { Button, Row, Col, Select } from "antd";
+import { Button, Row, Col, Select, Typography } from "antd";
 import FormikCustomReactSelect from "../../components/partials/formikCustomReactSelect";
 import { useTranslation } from "react-i18next";
 import CustomTextField from "../../components/partials/customTextField";
 import moment from "moment";
-import { getServiceById, updateBooking } from "../../api/serviceApi";
+import {
+  getBookingById,
+  getServiceById,
+  updateBooking,
+} from "../../api/serviceApi";
 import Swal from "sweetalert2";
 import { useQueryClient } from "@tanstack/react-query";
 import { useParams, useHistory } from "react-router-dom";
@@ -20,38 +24,45 @@ const EditBookingService = () => {
   const trustId = localStorage.getItem("trustId");
 
   const [bookingDetails, setBookingDetails] = useState(null);
+  const [serviceDetail, setServiceDetail] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchBookingDetails = async () => {
-      if (serviceId) {
-        try {
-          const response = await getServiceById(serviceId);
-          if (response?.result) {
-            setBookingDetails(response.result);
-          }
-        } catch (error) {
-          console.error("Error fetching service details:", error);
+      if (!serviceId || !bookingId) return; // Ensure both IDs exist
+
+      try {
+        const response = await getBookingById(bookingId);
+        const serviceResponse = await getServiceById(serviceId);
+        if (response?.result) {
+          setBookingDetails(response.result);
         }
+        if (serviceResponse?.result) {
+          setServiceDetail(serviceResponse.result);
+        }
+      } catch (error) {
+        console.error("Error fetching service details:", error);
       }
     };
 
     fetchBookingDetails();
-  }, [serviceId]);
+  }, [serviceId, bookingId]);
   const [availableDates, setAvailableDates] = useState([]);
 
   // Populate available dates based on selected service
   useEffect(() => {
-    if (bookingDetails && bookingDetails.serviceDates) {
+    if (serviceDetail && serviceDetail.serviceDates) {
       const today = moment().startOf("day");
 
-      const upcomingDates = bookingDetails.serviceDates
+      const upcomingDates = serviceDetail.serviceDates
         .filter((item) => moment(item.date).isSameOrAfter(today))
         .map((item) => moment(item.date).format("DD MMM YYYY"));
 
       setAvailableDates(upcomingDates);
     }
-  }, [bookingDetails]);
+  }, [serviceDetail]);
+  const [selectedAvailability, setSelectedAvailability] = useState(null);
+
   const CustomDateSelectComponent = ({
     dates = [],
     value = [],
@@ -60,8 +71,12 @@ const EditBookingService = () => {
     ...props
   }) => {
     const handleDateChange = (selectedDate) => {
-      if (!selectedDate) return;
-
+      if (!selectedDate) {
+        // Clear the selection
+        setSelectedAvailability(null);
+        onChange([]); // Reset value
+        return;
+      }
       const formattedDate = moment(selectedDate, "DD MMM YYYY").format(
         "DD MMM YYYY"
       );
@@ -77,13 +92,15 @@ const EditBookingService = () => {
           toast.warning(
             `We are trying to make service available for you, please try after some time. (Please try some other service or wait for the same.)`
           );
-          return;
+          // return;
         } else if (totalCapacity === booked) {
           toast.error(`This date is fully booked. Please select another date.`);
           return;
         }
+        setSelectedAvailability(selectedAvailability);
+      } else {
+        setSelectedAvailability(null); // Reset if no availability data found
       }
-
       onChange([formattedDate]); // Always send as an array with one element
     };
 
@@ -182,15 +199,17 @@ const EditBookingService = () => {
       <div className="formwrapper FormikWrapper">
         <Formik
           initialValues={{
-            service: bookingDetails
+            service: serviceDetail
               ? {
-                  value: bookingDetails._id,
-                  label: bookingDetails.name,
+                  value: serviceDetail._id,
+                  label: serviceDetail.name,
                 }
               : "",
-            date: [],
-            amount: bookingDetails?.amount || "",
-            persons: bookingDetails?.countPerDay || "",
+            date: bookingDetails?.bookedSlots[0]?.date
+              ? [moment(bookingDetails.bookedSlots[0].date).format("DD MMM YYYY")]
+              : [],
+            amount: serviceDetail?.amount || "",
+            persons: bookingDetails?.bookedSlots[0]?.count || "",
           }}
           enableReinitialize
           onSubmit={handleSubmit}
@@ -205,8 +224,8 @@ const EditBookingService = () => {
                     placeholder={t("select_service")}
                     loadOptions={[
                       {
-                        value: bookingDetails?._id,
-                        label: bookingDetails?.name,
+                        value: serviceDetail?._id,
+                        label: serviceDetail?.name,
                       },
                     ]}
                     onChange={async (value) => {
@@ -217,6 +236,7 @@ const EditBookingService = () => {
                         setFieldValue("persons", "");
                       } else {
                         setFieldValue("service", value);
+                        setFieldValue("date", []); // ✅ Always clear previous dates when changing service
                         try {
                           const response = await getServiceById(value.value);
                           if (response?.result) {
@@ -249,7 +269,7 @@ const EditBookingService = () => {
                     dates={availableDates}
                     value={values.date}
                     onChange={(dates) => setFieldValue("date", dates)}
-                    availability={bookingDetails?.availability || []}
+                    availability={serviceDetail?.availability || []}
                   />
                 </Col>
                 <Col xs={24} sm={6}>
@@ -268,6 +288,20 @@ const EditBookingService = () => {
                       />
                     )}
                   </Field>
+                  {values.date?.length > 0 &&
+                  selectedAvailability &&
+                  selectedAvailability?.available ? (
+                    <>
+                      <Typography.Text type="success" strong>
+                        Slots available:
+                      </Typography.Text>{" "}
+                      <Typography.Text strong>
+                        {selectedAvailability?.available}
+                      </Typography.Text>
+                    </>
+                  ) : (
+                    ""
+                  )}
                 </Col>
                 <Col xs={24} sm={6}>
                   <Field name="amount">

@@ -4553,12 +4553,22 @@
     font-size: 12px !important;
     font-weight: 700;
 }
+
 .custom-date-select .ant-select-selection-wrap {
-   margin: auto;
+    margin: auto;
 }
-.serviceImageUpload{
+
+.serviceImageUpload {
     .uploadIdCard {
         position: relative !important;
         z-index: 10000 !important;
+    }
+}
+
+#sevaBooking {
+    .ant-select-selection-item {
+        background-color: #fcf5e7 !important;
+        color: $font-color !important;
+        font: normal normal 700 14px Noto Sans !important
     }
 }
