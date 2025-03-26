@@ -292,7 +292,7 @@ function GuestDetailsSection({
   return (
     <div className="guest-container-add-booking">
       <div className="guest-header">
-        <div className="guest-title">Guest Details</div>
+        <div className="guest-title">{t('guest_details')}</div>
       </div>
       <Row className="paddingForm">
         <Col xs={12}>
@@ -410,7 +410,7 @@ function GuestDetailsSection({
           <Row>
             <Col xs={12} sm={6} lg={4} md={6} className="pb-1">
               <CustomTextField
-                label={t("Email")}
+                label={t("email")}
                 placeholder={t("placeHolder_email")}
                 name="email"
                 value={formik.values.email}
@@ -442,8 +442,8 @@ function GuestDetailsSection({
               <FormikCustomReactSelect
                 required
                 name="idType"
-                labelName={t("ID Type")}
-                placeholder={t("Id Type")}
+                labelName={t("id_type")}
+                placeholder={t("id_type")}
                 options={idTypeOptions}
                 width={"100"}
                 value={
@@ -463,8 +463,8 @@ function GuestDetailsSection({
             <Col xs={12} sm={6} lg={4} className="pb-1">
               <CustomTextField
                 required
-                label={t("Id Number")}
-                placeholder={t("Id Number")}
+                label={t("idNumber")}
+                placeholder={t("idNumber")}
                 name="idNumber"
                 value={formik.values.idNumber}
                 onChange={formik.handleChange}

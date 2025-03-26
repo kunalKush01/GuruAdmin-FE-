@@ -100,7 +100,7 @@ export function CategoryListTable({
       width: 230,
     },
     {
-      title: t("Actions"),
+      title: t("action"),
       dataIndex: "action",
       width: 120,
       fixed: "right",

@@ -132,17 +132,17 @@ const PregnancyReport = () => {
               categoryTypeArray={[
                 {
                   id: 1,
-                  name: t("all"),
+                  name: t("All"),
                   value: "ALL",
                 },
                 {
                   id: 2,
-                  name: t("active"),
+                  name: t("Active"),
                   value: "YES",
                 },
                 {
                   id: 2,
-                  name: t("inactive"),
+                  name: t("Inactive"),
                   value: "NO",
                 },
               ]}

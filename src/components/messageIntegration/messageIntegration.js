@@ -245,10 +245,11 @@ useEffect(() => {
     {
       title: t('Mobile Number'),
       dataIndex: 'destination',
-      key: 'destination'
+      key: 'destination',
+      fixed:"left"
     },
     {
-      title: t('Message'),
+      title: t('Messages'),
       dataIndex: 'msgBody',
       key: 'msgBody',
       width: '30%',
@@ -286,14 +287,15 @@ useEffect(() => {
       )
     },
     {
-      title: t('Created At'),
+      title: t('Created_At'),
       dataIndex: 'createdAt',
       key: 'createdAt',
       render: (date) => new Date(date).toLocaleString()
     },
     {
-      title: t('Actions'),
+      title: t('action'),
       key: 'actions',
+      fixed:"right",
       render: (_, record) => (
         <div className="d-flex gap-2">
           <img
@@ -352,9 +354,9 @@ useEffect(() => {
             {!isConnected && !isPollingActive && (
               <div className='d-flex flex-column'>
                 <Button className='me-1 mb-1' type="primary" onClick={startConnection}>
-                  {t('Connect with Connector App')}
+                  {t('Connect_with_Connector_App')}
                 </Button>
-                <span className='connectionNote'>Make Sure Chat Connector App is running.</span>
+                <span className='connectionNote'>{t('Ensure_Chat_Connector_App_Running')}</span>
               </div>
             )}
             {isConnected && (
@@ -380,7 +382,7 @@ useEffect(() => {
                 onClick={() => setImportModalVisible(true)}
                 className='wspImportButton me-1'
               >
-                {t('Import')}
+                {t('import')}
               </Button>
               { isConnected && (
               <Button 
@@ -388,7 +390,7 @@ useEffect(() => {
                 icon={<UsergroupAddOutlined />}
                 onClick={() => setGroupMessageVisible(true)}
               >
-                {t('Group Send')}
+                {t('Group_Send')}
               </Button>
               )}
             </div>
@@ -397,7 +399,7 @@ useEffect(() => {
           </div>
       </Card>
 
-      <Card title={t('Message List')}>
+      <Card title={t('Message_List')}>
         <div className="message-list">
           <Table
             className="commonListTable"
@@ -429,7 +431,7 @@ useEffect(() => {
       </Card>
 
       <Modal
-        title={t('Edit Message')}
+        title={t('Edit_Message')}
         open={editModalVisible}
         onCancel={() => setEditModalVisible(false)}
         footer={null}

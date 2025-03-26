@@ -35,8 +35,8 @@ function SuspenseListTable({ success, filterData, type }) {
   const queryClient = useQueryClient();
   const history = useHistory();
   const { t } = useTranslation();
-  const [categoryTypeName, setCategoryTypeName] = useState("All");
-  const [subCategoryTypeName, setSubCategoryTypeName] = useState("All");
+  const [categoryTypeName, setCategoryTypeName] = useState(t("All"));
+  const [subCategoryTypeName, setSubCategoryTypeName] = useState(t("All"));
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const [pagination, setPagination] = useState({
     page: 1,

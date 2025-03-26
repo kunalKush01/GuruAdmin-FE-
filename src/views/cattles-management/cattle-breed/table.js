@@ -42,7 +42,7 @@ const CattleBreedTable = ({ data = [], maxHeight, height, toggle }) => {
       width: 150,
     },
     {
-      title: "Action",
+      title: t("action"),
       dataIndex: "action",
       key: "action",
       width: 30,

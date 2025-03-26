@@ -1,36 +1,41 @@
-import React, { useState } from 'react';
-import { Modal, Input, Button, Select, message } from 'antd';
-import '../../assets/scss/viewCommon.scss';
+import React, { useState } from "react";
+import { Modal, Input, Button, Select, message } from "antd";
+import "../../assets/scss/viewCommon.scss";
+import { useTranslation } from "react-i18next";
 
 const { TextArea } = Input;
 
-const GroupMessageModal = ({ 
-  visible = false, 
-  onCancel = () => {}, 
-  onSend = () => {}, 
+const GroupMessageModal = ({
+  visible = false,
+  onCancel = () => {},
+  onSend = () => {},
   selectedGroups = [],
-  onGroupSelect = () => {}, 
-  messageText = '',
+  onGroupSelect = () => {},
+  messageText = "",
   onMessageChange = () => {},
   loading = false,
 }) => {
+  const { t } = useTranslation();
   const [groups, setGroups] = useState([]);
   const [fetchingGroups, setFetchingGroups] = useState(false);
 
   const fetchGroups = async () => {
     setFetchingGroups(true);
     try {
-      const response = await fetch(`${process.env.REACT_APP_MESSAGE_SERVICE_URL}/list-groups`, {
-        credentials: 'include'
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_MESSAGE_SERVICE_URL}/list-groups`,
+        {
+          credentials: "include",
+        }
+      );
       if (!response.ok) {
-        throw new Error('Failed to fetch groups');
+        throw new Error("Failed to fetch groups");
       }
       const data = await response.json();
       setGroups(data.groups || []);
     } catch (error) {
-      console.error('Error fetching groups:', error);
-      message.error('Failed to fetch groups');
+      console.error("Error fetching groups:", error);
+      message.error("Failed to fetch groups");
     } finally {
       setFetchingGroups(false);
     }
@@ -38,7 +43,7 @@ const GroupMessageModal = ({
 
   const handleGroupSelect = (selectedValues) => {
     if (selectedValues.length > 5) {
-      message.warning('Maximum 5 groups can be selected');
+      message.warning("Maximum 5 groups can be selected");
       return;
     }
     onGroupSelect(selectedValues);
@@ -46,7 +51,7 @@ const GroupMessageModal = ({
 
   return (
     <Modal
-      title="Send Message to Groups"
+      title={t("Send_Message_to_Groups")}
       open={visible}
       onCancel={onCancel}
       footer={null}
@@ -63,7 +68,7 @@ const GroupMessageModal = ({
               loading={fetchingGroups}
               className="bg-blue-500 hover:bg-blue-600 h-6 text-xs px-3 group-message-modal__fetch-button"
             >
-              Fetch Groups
+              {t("Fetch_Groups")}
             </Button>
           </div>
 
@@ -81,14 +86,14 @@ const GroupMessageModal = ({
           <div className="group-message-modal__groups-list">
             <Select
               mode="multiple"
-              placeholder="Select groups"
+              placeholder={t("Select_Groups")}
               value={selectedGroups}
               onChange={handleGroupSelect}
-              style={{ width: '100%' }}
+              style={{ width: "100%" }}
               className="text-xs"
-              options={groups.map(group => ({
+              options={groups.map((group) => ({
                 value: group.id,
-                label: group.name
+                label: group.name,
               }))}
               maxTagCount={5}
               maxTagPlaceholder={(omitted) => `+${omitted} more`}
@@ -96,9 +101,11 @@ const GroupMessageModal = ({
           </div>
 
           <div>
-            <div className="group-message-modal__message-label">Message</div>
+            <div className="group-message-modal__message-label">
+              {t("Message")}
+            </div>
             <TextArea
-              placeholder="Message to be sent"
+              placeholder={t("Message_to_be_Sent")}
               value={messageText}
               onChange={(e) => onMessageChange(e.target.value)}
               rows={3}
@@ -111,12 +118,15 @@ const GroupMessageModal = ({
               type="primary"
               onClick={onSend}
               disabled={
-                !Array.isArray(selectedGroups) || selectedGroups.length === 0 || !messageText.trim() || loading
+                !Array.isArray(selectedGroups) ||
+                selectedGroups.length === 0 ||
+                !messageText.trim() ||
+                loading
               }
               loading={loading}
               className="bg-blue-500 hover:bg-blue-600 h-8 text-xs px-4"
             >
-              Send to Groups
+              {t("Send_to_Groups")}{" "}
             </Button>
           </div>
         </div>

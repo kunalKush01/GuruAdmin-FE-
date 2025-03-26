@@ -30,7 +30,7 @@ const StockManagement = () => {
   const { t } = useTranslation();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
-  const [dropDownName, setdropDownName] = useState("All");
+  const [dropDownName, setdropDownName] = useState(t("All"));
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 10,

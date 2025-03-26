@@ -19,7 +19,7 @@ import "../../assets/scss/viewCommon.scss";
 import { Card, Pagination } from "antd";
 
 export default function Expenses() {
-  const [dropDownName, setdropDownName] = useState("All");
+  const [dropDownName, setdropDownName] = useState(t("All"));
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const periodDropDown = () => {
     switch (dropDownName) {
