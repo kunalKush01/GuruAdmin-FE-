@@ -29,5 +29,6 @@ yarn-error.log*
 .vscode
 package-lock.json
 
+craco.config.js
 
 
