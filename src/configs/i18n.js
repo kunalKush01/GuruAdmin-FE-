@@ -7,7 +7,6 @@ import { kannadaContent } from "../utility/lang/kannada";
 import { tamilContent } from "../utility/lang/tamil";
 import { marathiContent } from "../utility/lang/marathi";
 import { gujaratiContent } from "../utility/lang/gujarati";
-import { punjabiContent } from "../utility/lang/punjabi";
 
 i18n
   .use(LanguageDetector)
@@ -32,9 +31,6 @@ i18n
       },
       kn: {
         translations: kannadaContent,
-      },
-      pnj: {
-        translations: punjabiContent,
       },
       mar: {
         translations: marathiContent,
