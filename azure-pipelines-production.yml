@@ -1,0 +1,79 @@
+trigger:
+  branches:
+    include:
+      - production  # Adjust if needed
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '22.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    echo "Generating .env.production file..."
+    cat <<EOF > .env.production
+    SKIP_PREFLIGHT_CHECK=true
+    REACT_APP_ENVIRONMENT=production
+    PORT=6001
+    REACT_APP_BASEURL=$(REACT_APP_BASEURL)
+    REACT_APP_AUTHURL=$(REACT_APP_AUTHURL)
+    REACT_APP_DHARMSHALA_BASEURL=$(REACT_APP_DHARMSHALA_BASEURL)
+    REACT_APP_BASEURL_PUBLIC=$(REACT_APP_BASEURL_PUBLIC)
+    REACT_APP_POOL_ID=$(REACT_APP_POOL_ID)
+    REACT_APP_BUCKET_NAME=$(REACT_APP_BUCKET_NAME)
+    REACT_APP_REGION=$(REACT_APP_REGION)
+    REACT_APP_ADMIN_URL=$(REACT_APP_ADMIN_URL)
+    REACT_APP_GENERIC_SUB_DOMAIN=$(REACT_APP_GENERIC_SUB_DOMAIN)
+    REACT_APP_GOOGLE_MAPS_API_KEY=$(REACT_APP_GOOGLE_MAPS_API_KEY)
+    REACT_APP_DOMAIN=$(REACT_APP_DOMAIN)
+    REACT_APP_ADMIN_SUBDOMAIN_REPLACE_URL=$(REACT_APP_ADMIN_SUBDOMAIN_REPLACE_URL)
+    REACT_APP_GENERIC_ADMIN_SUBDOMAIN_REPLACE_URL=$(REACT_APP_GENERIC_ADMIN_SUBDOMAIN_REPLACE_URL)
+    REACT_APP_INTERNET_PROTOCOL=$(REACT_APP_INTERNET_PROTOCOL)
+    NODE_ENV=production
+    FAST_REFRESH=true
+    REACT_APP_MESSAGE_SERVICE_URL=$(REACT_APP_MESSAGE_SERVICE_URL)
+    EOF
+  displayName: 'Generate .env.production'
+
+- script: |
+    export NODE_OPTIONS=--openssl-legacy-provider
+    npm install --legacy-peer-deps
+    npm run build:production
+  displayName: 'Install Dependencies & Build'
+
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'Microsoft Azure Sponsorship(1e19fdc0-93b6-4863-b9ea-7e2549acd1a6)'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az storage account keys list \
+      --resource-group apnadharm \
+      --account-name prodadminportalapnadharm \
+      --query "[0].value" -o tsv > storage_key.txt
+
+      STORAGE_KEY=$(cat storage_key.txt)
+
+      az storage blob upload-batch \
+      --account-name prodadminportalapnadharm \
+      --account-key $STORAGE_KEY \
+      --destination \$web \
+      --source build/ \
+      --overwrite
+  displayName: 'Upload Build to Azure Storage'
+
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'Microsoft Azure Sponsorship(1e19fdc0-93b6-4863-b9ea-7e2549acd1a6)'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az afd endpoint purge \
+        --resource-group apnadharm \
+        --profile-name prodadminportal \
+        --endpoint-name prodadminportal-aff2gsaydue3cqez.z02.azurefd.net \
+        --content-paths '/*'
+  displayName: 'Purge Azure Front Door Cache'
