@@ -62,7 +62,7 @@ const EditBookingService = () => {
     }
   }, [serviceDetail]);
   const [selectedAvailability, setSelectedAvailability] = useState(null);
-
+  const [etag, setEtag] = useState(null);
   const CustomDateSelectComponent = ({
     dates = [],
     value = [],
@@ -70,6 +70,22 @@ const EditBookingService = () => {
     availability = [],
     ...props
   }) => {
+    useEffect(() => {
+      if (value.length > 0) {
+        const formattedDate = moment(value[0], "DD MMM YYYY").format(
+          "DD MMM YYYY"
+        );
+
+        const selectedService = serviceDetail?.serviceDates.find(
+          (item) => moment(item.date).format("DD MMM YYYY") === formattedDate
+        );
+
+        if (selectedService) {
+          setEtag(selectedService.eTag);
+        }
+      }
+    }, [value, serviceDetail]);
+
     const handleDateChange = (selectedDate) => {
       if (!selectedDate) {
         // Clear the selection
@@ -80,7 +96,13 @@ const EditBookingService = () => {
       const formattedDate = moment(selectedDate, "DD MMM YYYY").format(
         "DD MMM YYYY"
       );
+      const selectedEtag = serviceDetail.serviceDates.find(
+        (item) => moment(item.date).format("DD MMM YYYY") === formattedDate
+      );
 
+      if (selectedEtag) {
+        setEtag(selectedEtag.eTag);
+      }
       const selectedAvailability = availability?.find(
         (item) => item.date === formattedDate
       );
@@ -138,7 +160,6 @@ const EditBookingService = () => {
       </div>
     );
   };
-
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     setLoading(true);
@@ -150,6 +171,7 @@ const EditBookingService = () => {
         count: values.persons,
         serviceDate: values.date,
         trustId: trustId,
+        eTag: etag,
       };
 
       let response;
@@ -206,7 +228,11 @@ const EditBookingService = () => {
                 }
               : "",
             date: bookingDetails?.bookedSlots[0]?.date
-              ? [moment(bookingDetails.bookedSlots[0].date).format("DD MMM YYYY")]
+              ? [
+                  moment(bookingDetails.bookedSlots[0].date).format(
+                    "DD MMM YYYY"
+                  ),
+                ]
               : [],
             amount: serviceDetail?.amount || "",
             persons: bookingDetails?.bookedSlots[0]?.count || "",
