@@ -34,6 +34,7 @@ export default function ExpensesForm({
   initialValues,
   expenseTypeArr,
   customFieldsList,
+  paymentModeArr
 }) {
   const history = useHistory();
   const { t } = useTranslation();
@@ -134,6 +135,7 @@ export default function ExpensesForm({
                   ? "Date"
                   : "String", // Default to String for other types
               value: field.value !== undefined ? field.value : field,
+              paymentMode: e?.paymentMode?.value,
             })
           );
           expenseMutation.mutate({
@@ -150,6 +152,7 @@ export default function ExpensesForm({
             billInvoice: e?.bill_invoice,
             description: e?.Body,
             expenseDate: e?.DateTime,
+            paymentMode: e?.paymentMode?.value,
             customFields: transformedCustomFields,
           });
         }}
@@ -234,6 +237,16 @@ export default function ExpensesForm({
                       disabledDate={(current) =>
                         current < moment().startOf("day")
                       }
+                    />
+                  </Col>
+                  <Col xs={12} md={6} lg={4}>
+                    <FormikCustomReactSelect
+                      labelName={t("Payment Mode")}
+                      name="paymentMode"
+                      loadOptions={paymentModeArr}
+                      placeholder={t("Select payment mode")}
+                      required
+                      width={"100"}
                     />
                   </Col>
                   {(formik.values?.expenseType?.value === "assets" ||
