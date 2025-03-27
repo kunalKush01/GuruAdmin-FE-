@@ -124,7 +124,7 @@ function ServiceListView() {
                       <Plus className="" size={15} strokeWidth={4} />
                     </span>
                     <span>
-                      <Trans i18nKey={"Add Service"} />
+                      <Trans i18nKey={"add_service"} />
                     </span>
                   </Button>
                 </div>
@@ -172,7 +172,7 @@ function ServiceListView() {
                   <Plus className="" size={15} strokeWidth={4} />
                 </span>
                 <span>
-                  <Trans i18nKey={"Add Booking"} />
+                  <Trans i18nKey={"add_Booking"} />
                 </span>
               </Button>
             </div>

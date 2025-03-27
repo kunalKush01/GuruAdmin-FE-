@@ -353,7 +353,7 @@ const EditBookingService = () => {
                   disabled={isSubmitting || loading}
                   loading={isSubmitting || loading}
                 >
-                  {loading ? "Submitting..." : "Update Booking"}
+                  {loading ? t("update_booking") : t("update_booking")}
                 </Button>
               </div>
             </form>

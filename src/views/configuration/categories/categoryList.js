@@ -89,7 +89,7 @@ export default function Category() {
     () => categoryTypeQuery?.data?.results ?? [],
     [categoryTypeQuery]
   );
-  const newTypes = [{ id: "", name: "All" }, ...categoryTypeItem];
+  const newTypes = [{ id: "", name: t("All") }, ...categoryTypeItem];
 
   let newId;
   newTypes.forEach((masterCategoryObject) => {

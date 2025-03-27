@@ -13,9 +13,9 @@ export const marathiContent = {
   hundi: "दान पेटी",
   financial_reports: "आर्थिक अहवाल",
   internal_expenses: "खर्च",
-  total_donation: "एकूण दान :",
+  total_donation: "एकूण दान",
   events: "कार्यक्रम",
-  total: "एकूण :",
+  total: "एकूण",
   Select: "निवडा",
   news: "बातम्या",
   notices: "सूचना",
@@ -1048,4 +1048,12 @@ export const marathiContent = {
   Message_to_be_Sent: "पाठवायचा संदेश",
   Send_to_Groups: "गटांना पाठवा",
   Initializing_Connection: "कनेक्शन प्रारंभ होत आहे...",
+  Expense: "खर्च",
+  Unmatched_Bank_Credits: "न जुळणारे बँक क्रेडिट्स",
+  Pending_Screenshots: "प्रलंबित स्क्रीनशॉट",
+  Service_Name: "सेवेचे नाव",
+  add_Booking:"बुकिंग जोडा",
+  add_service:"सेवा जोडा"
+
+
 };

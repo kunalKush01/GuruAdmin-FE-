@@ -12,9 +12,9 @@ export const kannadaContent = {
   hundi: "ಹುಂಡಿ",
   financial_reports: "ಹಣಕಾಸು ವರದಿಗಳು",
   internal_expenses: "ಖರ್ಚುಗಳು",
-  total_donation: "ಒಟ್ಟು ದೇಣಿಗೆ:",
+  total_donation: "ಒಟ್ಟು ದೇಣಿಗೆ",
   events: "ಕಾರ್ಯಕ್ರಮಗಳು",
-  total: "ಒಟ್ಟು:",
+  total: "ಒಟ್ಟು",
   Select: "ಆಯ್ಕೆಮಾಡಿ",
   news: "ಸುದ್ದಿ",
   notices: "ಸೂಚನೆಗಳು",
@@ -990,4 +990,12 @@ export const kannadaContent = {
   Message_to_be_Sent: "ಕಳುಹಿಸಬೇಕಾದ ಸಂದೇಶ",
   Send_to_Groups: "ಗುಂಪುಗಳಿಗೆ ಕಳುಹಿಸಿ",
   Initializing_Connection: "ಸಂಪರ್ಕವನ್ನು ಪ್ರಾರಂಭಿಸಲಾಗುತ್ತಿದೆ...",
+  Expense: "ಖರ್ಚು",
+  Unmatched_Bank_Credits: "ಹೊಂದಾಣಿಕೆಯಾಗದ ಬ್ಯಾಂಕ್ ಕ್ರೆಡಿಟ್‌ಗಳು",
+  Pending_Screenshots: "ಬಾಕಿ ಉಳಿದಿರುವ ಸ್ಕ್ರೀನ್‌ಶಾಟ್‌ಗಳು",
+  Service_Name:"ಸೇವೆಯ ಹೆಸರು",
+  add_Booking:"ಬುಕಿಂಗ್ ಸೇರಿಸಿ",
+  add_service:"ಸೇವೆಯನ್ನು ಸೇರಿಸಿ"
+
+
 };

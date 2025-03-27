@@ -104,7 +104,7 @@ function BookedServiceListTable({
       fixed: "left",
     },
     {
-      title: t("User Email"),
+      title: t("email"),
       dataIndex: "email",
       key: "email",
       width: 200,
@@ -116,13 +116,13 @@ function BookedServiceListTable({
       width: 150,
     },
     {
-      title: t("Service Name"),
+      title: t("Service_Name"),
       dataIndex: "serviceName",
       key: "serviceName",
       width: 200,
     },
     {
-      title: t("Amount"),
+      title: t("amount"),
       dataIndex: "amount",
       key: "amount",
       width: 120,
@@ -142,7 +142,7 @@ function BookedServiceListTable({
       },
     },
     {
-      title: t("Action"),
+      title: t("action"),
       key: "action",
       render: (_, record) => (
         <div className="d-flex">

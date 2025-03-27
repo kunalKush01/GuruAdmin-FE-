@@ -12,9 +12,9 @@ export const englishContent = {
   hundi: "Donation Box",
   financial_reports: "Financial Reports",
   internal_expenses: "Expenses",
-  total_donation: "Total Donation :",
+  total_donation: "Total Donation",
   events: "Events",
-  total: "Total :",
+  total: "Total",
   Select: "Select",
   news: "News",
   notices: "Notices",
@@ -990,7 +990,7 @@ export const englishContent = {
   select_start_date: "Select start date",
   select_end_date: "Select end date",
   select_dates: "Select Dates",
-  counts:"Counts",
+  counts: "Counts",
 
   //newly added
   "Room Types": "Room Types",
@@ -1074,4 +1074,10 @@ export const englishContent = {
   Message_to_be_Sent: "Message to be sent",
   Send_to_Groups: "Send to Groups",
   Initializing_Connection: "Initializing connection...",
+  Expense: "Expense",
+  Unmatched_Bank_Credits: "Unmatched Bank Credits",
+  Pending_Screenshots: "Pending Screenshots",
+  Service_Name: "Service Name	",
+  add_Booking:"Add Booking",
+  add_service:"Add Service"
 };

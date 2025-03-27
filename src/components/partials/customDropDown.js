@@ -26,11 +26,15 @@ export const CustomDropDown = ({
   width,
   ...props
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const selectedLang = useSelector((state) => state.auth.selectLangCode);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const toggle = () => setDropdownOpen((prevState) => !prevState);
+  const [translatedName, setTranslatedName] = useState(t(defaultDropDownName));
 
+  useEffect(() => {
+    setTranslatedName(t(defaultDropDownName)); // Update translation on language change
+  }, [i18n.language, defaultDropDownName]);
   return (
     <div className="dropdownwrapper" width={width}>
       {i18nKeyDropDownItemArray && (
@@ -68,7 +72,7 @@ export const CustomDropDown = ({
           {...props}
         >
           <DropdownToggle caret>
-            <span className="buttonText">{defaultDropDownName}</span>
+            <span className="buttonText">{translatedName}</span>
           </DropdownToggle>
           <DropdownMenu>
             {ItemListArray.map((item, idx) => {

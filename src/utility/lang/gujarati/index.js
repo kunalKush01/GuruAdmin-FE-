@@ -12,9 +12,9 @@ export const gujaratiContent = {
   hundi: "હુંડી",
   financial_reports: "નાણાકીય અહેવાલો",
   internal_expenses: "આંતરિક ખર્ચ",
-  total_donation: "કુલ દાન:",
+  total_donation: "કુલ દાન",
   events: "ઘટનાઓ",
-  total: "કુલ:",
+  total: "કુલ",
   Select: "પસંદ કરો",
   news: "સમાચાર",
   notices: "સૂચનાઓ",
@@ -995,4 +995,12 @@ export const gujaratiContent = {
   Message_to_be_Sent: "મોકલવાનો સંદેશ",
   Send_to_Groups: "જૂથોમાં મોકલો",
   Initializing_Connection: "જોડાણ શરૂ કરી રહ્યા છીએ...",
+  Expense: "ખર્ચ",
+  Unmatched_Bank_Credits: "મેળ ન ખાતા બેંક ક્રેડિટ્સ",
+  Pending_Screenshots: "બાકી સ્ક્રીનશોટ",
+  Service_Name: "સેવાનું નામ",
+  add_Booking:"બુકિંગ ઉમેરો",
+  add_service:"સેવા ઉમેરો"
+
+
 };
