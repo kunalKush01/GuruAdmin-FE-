@@ -79,6 +79,17 @@ export function ExpensesListTable({
       width: 200,
     },
     {
+      title: t("Payment Mode"),
+      dataIndex: "paymentMode",
+      width: 200,
+      render: (value) => {
+        if (value === "bankAccount") return t("Bank Account");
+        if (value === "cash") return t("Cash");
+        return "-";
+      },
+    },
+    
+    {
       title: t("dashboard_Recent_DonorType"),
       dataIndex: "expenseType",
       width: 200,
@@ -115,6 +126,7 @@ export function ExpensesListTable({
       expenseType: item?.expenseType
         ? ConverFirstLatterToCapital(item?.expenseType?.toLowerCase() ?? "")
         : "-",
+        paymentMode: item?.paymentMode ?? "-",
       action: (
         <div className="d-flex justify-content-center">
           {allPermissions?.name === "all" ||

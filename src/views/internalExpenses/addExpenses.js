@@ -27,6 +27,12 @@ export const ExpenseType = [
   },
 ];
 
+const PaymentModeOptions = [
+  { label: "Bank Account", value: "bankAccount" },
+  { label: "Cash", value: "cash" },
+];
+
+
 export default function AddNews() {
   const handleCreateExpense = async (payload) => {
     return createExpense(payload);
@@ -82,6 +88,11 @@ export default function AddNews() {
     }),
 
     DateTime: Yup.string(),
+    paymentMode: Yup.mixed()
+  .required("payment_mode_required")
+  .test("is-valid", "invalid_payment_mode", (val) =>
+    val && ["bankAccount", "cash"].includes(val.value)
+  ),
     customFields: Yup.object().shape(
       customFieldsList.reduce((acc, field) => {
         if (field.isRequired) {
@@ -114,6 +125,7 @@ export default function AddNews() {
     Body: "",
     AddedBy: loggedInUser,
     DateTime: new Date(),
+    paymentMode: "",
     customFields: customFieldsList.reduce((acc, field) => {
       acc[field.fieldName] = "";
       return acc;
@@ -157,6 +169,7 @@ export default function AddNews() {
           handleSubmit={handleCreateExpense}
           initialValues={initialValues}
           expenseTypeArr={ExpenseType}
+          paymentModeArr={PaymentModeOptions}
           validationSchema={schema}
           customFieldsList={customFieldsList}
           showTimeInput
