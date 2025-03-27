@@ -1079,5 +1079,6 @@ export const englishContent = {
   Pending_Screenshots: "Pending Screenshots",
   Service_Name: "Service Name	",
   add_Booking:"Add Booking",
-  add_service:"Add Service"
+  add_service:"Add Service",
+  Payment_Mode:"Payment Mode"
 };

@@ -48,14 +48,9 @@ export function ExpensesListTable({
   const history = useHistory();
   const columns = [
     {
-      title: t("categories_serial_number"),
-      dataIndex: "id",
-      width: 180,
-      fixed: "left",
-    },
-    {
       title: t("news_label_Title"),
       dataIndex: "title",
+      fixed: "left",
       width: 200,
     },
     {
@@ -79,7 +74,7 @@ export function ExpensesListTable({
       width: 200,
     },
     {
-      title: t("Payment Mode"),
+      title: t("Payment_Mode"),
       dataIndex: "paymentMode",
       width: 200,
       render: (value) => {
@@ -99,12 +94,12 @@ export function ExpensesListTable({
       dataIndex: "createdBy",
       width: 200,
     },
-    // {
-    //   title: t("Actions"),
-    //   dataIndex: "action",
-    //   fixed: "right",
-    //   width: 100,
-    // },
+    {
+      title: t("action"),
+      dataIndex: "action",
+      fixed: "right",
+      width: 100,
+    },
   ];
   const categoriesList = useMemo(() => {
     return data.map((item, idx) => ({

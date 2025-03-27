@@ -987,6 +987,6 @@ export const tamilContent = {
   Pending_Screenshots: "நிலுவையில் உள்ள ஸ்கிரீன்ஷாட்கள்",
   Service_Name:"சேவையின் பெயர்",
   add_Booking:"முன்பதிவு சேர்க்கவும்",
-  add_service:"சேவையைச் சேர்க்கவும்"
-
+  add_service:"சேவையைச் சேர்க்கவும்",
+  Payment_Mode:"கட்டண முறை"
 };

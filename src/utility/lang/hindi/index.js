@@ -1027,7 +1027,7 @@ export const hindiContent = {
   Unmatched_Bank_Credits: "बेजोड़ बैंक क्रेडिट",
   Pending_Screenshots: "लंबित स्क्रीनशॉट",
   Service_Name: "सेवा का नाम",
-  add_Booking:"बुकिंग जोड़ें",
-  add_service:"सेवा जोड़ें"
-
+  add_Booking: "बुकिंग जोड़ें",
+  add_service: "सेवा जोड़ें",
+  Payment_Mode: "भुगतान मोड",
 };

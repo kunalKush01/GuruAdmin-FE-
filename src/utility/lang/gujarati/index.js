@@ -1000,7 +1000,6 @@ export const gujaratiContent = {
   Pending_Screenshots: "બાકી સ્ક્રીનશોટ",
   Service_Name: "સેવાનું નામ",
   add_Booking:"બુકિંગ ઉમેરો",
-  add_service:"સેવા ઉમેરો"
-
-
+  add_service:"સેવા ઉમેરો",
+  Payment_Mode:"ચુકવણી મોડ"
 };
