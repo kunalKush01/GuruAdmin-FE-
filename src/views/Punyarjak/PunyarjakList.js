@@ -27,7 +27,7 @@ import { Card, Pagination } from "antd";
 
 export default function Punyarjak() {
   const { t } = useTranslation();
-  const [dropDownName, setdropDownName] = useState(t("All"));
+  const [dropDownName, setdropDownName] = useState("All");
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const periodDropDown = () => {
     switch (dropDownName) {

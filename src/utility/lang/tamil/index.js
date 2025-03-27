@@ -13,9 +13,9 @@ export const tamilContent = {
   hundi: "நன்கொடை பெட்டி",
   financial_reports: "நிதி அறிக்கைகள்",
   internal_expenses: "உள் செலவுகள்",
-  total_donation: "மொத்த நன்கொடை :",
+  total_donation: "மொத்த நன்கொடை",
   events: "நிகழ்வுகள்",
-  total: "மொத்தம் :",
+  total: "மொத்தம்",
   Select: "தேர்ந்தெடு",
   news: "செய்திகள்",
   notices: "அறிவிப்புகள்",
@@ -982,4 +982,11 @@ export const tamilContent = {
   Message_to_be_Sent: "அனுப்ப வேண்டிய செய்தி",
   Send_to_Groups: "குழுக்களுக்கு அனுப்பு",
   Initializing_Connection: "இணைப்பைத் தொடங்குகிறது...",
+  Expense: "செலவு",
+  Unmatched_Bank_Credits: "ஒப்பிடப்படாத வங்கிக் கடன்கள்",
+  Pending_Screenshots: "நிலுவையில் உள்ள ஸ்கிரீன்ஷாட்கள்",
+  Service_Name:"சேவையின் பெயர்",
+  add_Booking:"முன்பதிவு சேர்க்கவும்",
+  add_service:"சேவையைச் சேர்க்கவும்"
+
 };

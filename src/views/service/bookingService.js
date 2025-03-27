@@ -285,7 +285,7 @@ const BookingService = ({ serviceData, setShowBookingForm }) => {
                   disabled={isSubmitting || loading}
                   loading={isSubmitting || loading}
                 >
-                  {loading ? "Submitting..." : "Submit"}
+                  {loading ? t("Submit") : t("Submit")}
                 </Button>
               </div>
             </form>

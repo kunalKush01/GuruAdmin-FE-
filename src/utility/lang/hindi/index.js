@@ -16,9 +16,9 @@ export const hindiContent = {
   hundi: "दान पेटी",
   financial_reports: "वित्तीय रिपोर्ट",
   internal_expenses: "व्यय",
-  total_donation: "कुल दान :",
+  total_donation: "कुल दान",
   events: "कार्यक्रम",
-  total: "कुल :",
+  total: "कुल",
   Select: "चयन करें",
   news: "समाचार",
   notices: "सूचनाएं",
@@ -1023,4 +1023,11 @@ export const hindiContent = {
   Message_to_be_Sent: "भेजा जाने वाला संदेश",
   Send_to_Groups: "समूहों को भेजें",
   Initializing_Connection: "कनेक्शन प्रारंभ किया जा रहा है...",
+  Expense: "व्यय",
+  Unmatched_Bank_Credits: "बेजोड़ बैंक क्रेडिट",
+  Pending_Screenshots: "लंबित स्क्रीनशॉट",
+  Service_Name: "सेवा का नाम",
+  add_Booking:"बुकिंग जोड़ें",
+  add_service:"सेवा जोड़ें"
+
 };

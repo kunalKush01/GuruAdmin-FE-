@@ -441,7 +441,7 @@ const handleDownloadReport = async () => {
           >
             <div className="total_collection me-2 d-flex justify-content-center align-items-center ">
               {/* <Trans i18nKey={"DonationBox_total_collection"} /> */}
-              <div>{`Total ${activeReportTab.name} :`}</div>
+              <div>{t("total")}{`${activeReportTab.name} :`}</div>
               &nbsp;
               <div>₹</div>
               <div>{Items?.totalAmount?.toLocaleString("en-IN") ?? 0}</div>

@@ -26,7 +26,7 @@ const ImageObservation = ({ data, matchedAmount }) => {
           <Descriptions bordered size="small" column={2}>
             {/* First Row with Transaction ID & Timestamp */}
             <Descriptions.Item label="Transaction ID">
-              {result.transactionId ?? "-"}
+              {result?.transactionId ? result.transactionId : "-"}
             </Descriptions.Item>
             <Descriptions.Item label="Transaction Date and Time">
               {result.timestamp ? result.timestamp : "-"}

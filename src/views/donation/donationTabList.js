@@ -123,7 +123,7 @@ export default function Donation() {
     () => categoryTypeQuery?.data?.results ?? [],
     [categoryTypeQuery]
   );
-  const newTypes = [{ id: "", name: "All" }, ...categoryTypeItem];
+  const newTypes = [{ id: "", name: t("All") }, ...categoryTypeItem];
 
   let newId;
   newTypes.forEach((newObject) => {
@@ -148,7 +148,7 @@ export default function Donation() {
     () => subCategoryTypeQuery?.data?.results ?? [],
     [subCategoryTypeQuery]
   );
-  const subCategoryTypes = [{ id: "", name: "All" }, ...subCategoryTypeItem];
+  const subCategoryTypes = [{ id: "", name: t("All") }, ...subCategoryTypeItem];
 
   let subCategoryId;
   subCategoryTypes.forEach((subCategoryObject) => {
@@ -1078,7 +1078,7 @@ export default function Donation() {
           </div>
           <Tabs defaultActiveKey="unmatched">
             {/* First Tab - Unmatched Bank Credits */}
-            <TabPane tab="Unmatched Bank Credits" key="unmatched">
+            <TabPane tab={t("Unmatched_Bank_Credits")} key="unmatched">
               <div className="donationContent mt-1">
                 {!showSuspenseHistory ? (
                   <SuspenseListTable
@@ -1093,7 +1093,7 @@ export default function Donation() {
             </TabPane>
 
             {/* Second Tab - Pending Screenshots */}
-            <TabPane tab="Pending Screenshots" key="pending">
+            <TabPane tab={t("Pending_Screenshots")} key="pending">
               <div className="donationContent mt-1">
                 {!showScreenshotPanel ? (
                   <DonationANTDListTable
