@@ -76,11 +76,8 @@ export default function DonationANTDListTable(
     try {
       setIsLoading(item._id);
 
-      let receiptDownloadLink = item.receiptLink ? item.receiptLink : null;
+      let receiptDownloadLink = "";
 
-      // If no receiptLink is available, fetch it from the API
-      if (!receiptDownloadLink) {
-        console.log("Fetching receipt link...");
         const response = await getDonation({ donationId: item._id });
 
         if (response?.result?.receiptName) {
@@ -90,7 +87,6 @@ export default function DonationANTDListTable(
           setIsLoading(false);
           return;
         }
-      }
 
       const message = `Hello ${
         item.donarName
@@ -147,7 +143,6 @@ export default function DonationANTDListTable(
 
       if (data?.result?.receiptName) {
         const receiptDownloadLink = `${REACT_APP_BASEURL_PUBLIC}storage/download/donation/${data.result.receiptName}`;
-        console.log("Opening Receipt in New Tab:", receiptDownloadLink);
 
         // Open the PDF directly
         window.open(receiptDownloadLink, "_blank");
@@ -572,14 +567,16 @@ export default function DonationANTDListTable(
                 width={25}
                 className="cursor-pointer me-2"
                 onClick={() => {
-                  if (!item.receiptLink) {
+                  const receiptName = item?.receiptName;
+                  if (receiptName) {
+                    const fileUrl = `${REACT_APP_BASEURL_PUBLIC}storage/download/donation/${receiptName}`;
+                    window.open(fileUrl, "_blank");
+                  } else {
                     setIsLoading(item?._id);
                     downloadReceipt.mutate({
                       donationId: item._id,
                       languageId: selectedLang.id,
                     });
-                  } else {
-                    window.open(`${item.receiptLink}`, "_blank");
                   }
                 }}
               />
@@ -591,7 +588,7 @@ export default function DonationANTDListTable(
               onClick={() => handleWhatsAppShare(item)}
             />
           </div>
-        ),
+        ),        
         action: (
           <div className="d-flex align-items-center">
             <div>
