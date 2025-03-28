@@ -157,13 +157,15 @@ export default function AddProfile() {
             <Trans i18nKey={"userProfile"} />
           </div>
         </div>
-        <div className="d-flex justify-content-between">
+        <div className="d-flex justify-content-between align-items-center">
           <div className="addProfile">
-            <div className="d-none d-sm-block">
+            <div className="d-none d-sm-block ms-1">
               <Trans i18nKey={"news_InputIn"} />
             </div>
             <CustomDropDown
-              ItemListArray={profileDetail?.data?.result?.languages}
+              ItemListArray={
+                profileDetail?.data?.result?.languages?.filter(Boolean) ?? []
+              }
               className={"ms-1"}
               defaultDropDownName={ConverFirstLatterToCapital(
                 langSelection ?? ""
@@ -173,21 +175,24 @@ export default function AddProfile() {
               }
             />
           </div>
-          {langList?.length !==
-            profileDetail?.data?.result?.languages?.length && (
-            <Button
-              color="primary"
-              className="ms-1"
-              onClick={() => {
-                history.push(
-                  `/edit-profile/add-language/${profileDetail?.data?.result?.id}`
-                );
-              }}
-            >
-              {" "}
-              Add language{" "}
-            </Button>
-          )}
+          <div className="mt-2 ms-2">
+            {langList?.length !==
+              profileDetail?.data?.result?.languages?.length && (
+              <Button
+                color="primary"
+                className="addAction-btn"
+                style={{ height: "38px" }}
+                onClick={() => {
+                  history.push(
+                    `/edit-profile/add-language/${profileDetail?.data?.result?.id}`
+                  );
+                }}
+              >
+                {" "}
+                Add language{" "}
+              </Button>
+            )}
+          </div>
         </div>
       </div>
       <div>
