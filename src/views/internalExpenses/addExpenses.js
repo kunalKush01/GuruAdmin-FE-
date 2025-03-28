@@ -145,12 +145,12 @@ export default function AddNews() {
               )
             }
           />
-          <div className="addNews">
+          <div className="addNews commonFont">
             <Trans i18nKey={"expenses_AddExpenses"} />
           </div>
         </div>
         <div className="d-flex align-items-center">
-          <p style={{ fontSize: "15px", marginBottom: "0" }}>Current User :</p>
+          <p style={{ fontSize: "15px", marginBottom: "0" }} className="commonSmallFont">Current User :</p>
           <Tag
             color="#ff8744"
             style={{

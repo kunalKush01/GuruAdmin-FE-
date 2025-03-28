@@ -241,10 +241,10 @@ export default function ExpensesForm({
                   </Col>
                   <Col xs={12} md={6} lg={4}>
                     <FormikCustomReactSelect
-                      labelName={t("Payment Mode")}
+                      labelName={t("Payment_Mode")}
                       name="paymentMode"
                       loadOptions={paymentModeArr}
-                      placeholder={t("Select payment mode")}
+                      placeholder={t("Payment_Mode")}
                       required
                       width={"100"}
                     />
@@ -485,7 +485,7 @@ export default function ExpensesForm({
                 </Row>
                 {editLogs && (
                   <Row>
-                    <div>
+                    <div className="commonSmallFont">
                       <Trans i18nKey={"Logs"} />
                     </div>
                     <Col lg={12} md={12} className="my-lg-2">

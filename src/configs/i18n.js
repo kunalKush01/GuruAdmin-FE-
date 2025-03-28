@@ -23,9 +23,6 @@ i18n
       gu: {
         translations: gujaratiContent,
       },
-      mr: {
-        translations: marathiContent,
-      },
       ta: {
         translations: tamilContent,
       },
