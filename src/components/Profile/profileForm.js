@@ -32,6 +32,7 @@ import "../../assets/scss/common.scss";
 import UploadImage from "../partials/commonImageUpload2";
 import { uploadFile } from "../../api/sharedStorageApi";
 import uploadIcon from "../../assets/images/icons/file-upload.svg";
+import { fetchImage } from "../partials/downloadUploadImage";
 
 export default function ProfileForm({
   handleSubmit,
@@ -278,6 +279,7 @@ export default function ProfileForm({
                 .filter((item) => item && item.fileName)
                 .map((item) => item.fileName)
             : [];
+          console.log(heroImagesFileNames);
           setLoading(true);
           AddLanguage
             ? mutation.mutate({
@@ -346,6 +348,7 @@ export default function ProfileForm({
         validationSchema={validationSchema}
       >
         {(formik) => {
+          console.log(defaultHeroImage);
           useEffect(() => {
             if (
               Array.isArray(defaultHeroImage) &&
@@ -747,9 +750,9 @@ export default function ProfileForm({
                     <Trans i18nKey={"hero_images"} />
                     <hr />
                   </div>
-                  <Trans i18nKey={"add_heroImage"} />{" "}
+                  <Trans i18nKey={"add_image"} />{" "}
                   <span style={{ fontSize: "13px", color: "gray" }}>
-                    <Trans i18nKey={"hero_image_size_suggestion"} />
+                    <Trans i18nKey={"image_size_suggestion"} />
                   </span>
                   <Row>
                     <UploadImage
