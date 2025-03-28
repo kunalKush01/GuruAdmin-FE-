@@ -128,7 +128,7 @@ export default function Expenses() {
         // startDate: filterStartDate,
         // endDate: filterEndDate,
         expenseType:
-          expenseType === t("all") ? undefined : expenseType.toUpperCase(),
+          expenseType === t("All") ? undefined : expenseType.toUpperCase(),
         languageId: selectedLang.id,
         search: searchBarValue,
         ...(filterData && filteredData && { advancedSearch: filteredData }),
