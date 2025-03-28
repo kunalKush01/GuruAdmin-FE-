@@ -2,11 +2,13 @@ import React from "react";
 import { Card, Descriptions, Tag, Typography } from "antd";
 import "../../../src/assets/scss/common.scss";
 import crownIcon from "../../../src/assets/images/icons/crown.svg";
+import { useSelector } from "react-redux";
 
 const ImageObservation = ({ data, matchedAmount }) => {
   const result = data?.result || {}; // Ensure result always exists
   const isMatched = matchedAmount === "100% Amount Matched";
-  const isAImatchedEnable = true;
+  const trustDetails = useSelector((state) => state.auth) || {};
+  const isAImatchedEnable = trustDetails?.isAImatchedEnable ?? false;
 
   return (
     <>
