@@ -263,6 +263,7 @@ export default function ProfileForm({
       setImageUrl([]);
     }
   }, [defaultHeroImage]);
+  console.log("@@@@@@@@@@@@@@",uploadedFileUrl)
   return (
     <div className="profileformwrapper FormikWrapper">
       <Formik
