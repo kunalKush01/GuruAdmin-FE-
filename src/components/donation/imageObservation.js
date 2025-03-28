@@ -1,14 +1,13 @@
 import React from "react";
-import { Card, Descriptions, Space, Tag, Typography } from "antd";
-import moment from "moment";
+import { Card, Descriptions, Tag, Typography } from "antd";
 import "../../../src/assets/scss/common.scss";
 import crownIcon from "../../../src/assets/images/icons/crown.svg";
-const ImageObservation = ({ data, matchedAmount }) => {
-  if (!data) return null;
 
-  const { result } = data;
+const ImageObservation = ({ data, matchedAmount }) => {
+  const result = data?.result || {}; // Ensure result always exists
   const isMatched = matchedAmount === "100% Amount Matched";
   const isAImatchedEnable = true;
+
   return (
     <>
       {isAImatchedEnable ? (
@@ -18,7 +17,7 @@ const ImageObservation = ({ data, matchedAmount }) => {
               <Typography.Text className="commonFont">
                 AI-Detected Payment Details
               </Typography.Text>
-              <img src={crownIcon} width={35} />
+              <img src={crownIcon} width={35} alt="Crown Icon" />
             </div>
           }
           bordered={true}
@@ -26,60 +25,54 @@ const ImageObservation = ({ data, matchedAmount }) => {
           <Descriptions bordered size="small" column={2}>
             {/* First Row with Transaction ID & Timestamp */}
             <Descriptions.Item label="Transaction ID">
-              {result?.transactionId ? result.transactionId : "-"}
+              {result.transactionId || "N/A"}
             </Descriptions.Item>
             <Descriptions.Item label="Transaction Date and Time">
-              {result.timestamp ? result.timestamp : "-"}
+              {result.timestamp || "N/A"}
             </Descriptions.Item>
 
             {/* Second Row: Image Observation with All Extracted Data Inside */}
             <Descriptions.Item label="Image Observation" span={2}>
               <div>
-                {matchedAmount && (
+                {matchedAmount ? (
                   <Tag bordered={false} color={isMatched ? "success" : "red"}>
                     {matchedAmount}
                   </Tag>
+                ) : (
+                  <Tag bordered={false} color="red">
+                    No matched amount available
+                  </Tag>
                 )}
-
-                {result?.status && (
-                  <div>
-                    <span className="commonSmallFont">Payment Status:</span>{" "}
-                    <Tag color="blue">
-                      {result.status.charAt(0).toUpperCase() +
-                        result.status.slice(1)}
-                    </Tag>
-                  </div>
-                )}
-
-                {result?.amount && (
-                  <div>
-                    <span className="commonSmallFont">Amount:</span>{" "}
-                    <span>₹{result.amount}</span>
-                  </div>
-                )}
-
-                {result?.from?.name && (
-                  <div>
-                    <span className="commonSmallFont">From:</span>{" "}
-                    {result.from.name}{" "}
-                    {result?.from?.bank && (
-                      <span>
-                        ({result.from.bank}{" "}
-                        {result?.from?.accountNumber &&
-                          result.from.accountNumber}
-                        )
-                      </span>
-                    )}
-                  </div>
-                )}
-
-                {result?.to?.name && (
-                  <div>
-                    <span className="commonSmallFont">To:</span>{" "}
-                    {result.to.name}{" "}
-                    {result?.to?.upiId && <span>({result.to.upiId})</span>}
-                  </div>
-                )}
+                <div>
+                  <span className="commonSmallFont">Payment Status:</span>{" "}
+                  <Tag color="blue">
+                    {result.status
+                      ? result.status.charAt(0).toUpperCase() +
+                        result.status.slice(1)
+                      : "N/A"}
+                  </Tag>
+                </div>
+                <div>
+                  <span className="commonSmallFont">Amount:</span>{" "}
+                  <span>₹{result.amount || "N/A"}</span>
+                </div>
+                <div>
+                  <span className="commonSmallFont">From:</span>{" "}
+                  {result?.from?.name || "N/A"}{" "}
+                  {result?.from?.bank ? (
+                    <span>
+                      ({result.from.bank} {result?.from?.accountNumber || "N/A"}
+                      )
+                    </span>
+                  ) : (
+                    ""
+                  )}
+                </div>
+                <div>
+                  <span className="commonSmallFont">To:</span>{" "}
+                  {result?.to?.name || "N/A"}{" "}
+                  {result?.to?.upiId ? <span>({result.to.upiId})</span> : ""}
+                </div>
               </div>
             </Descriptions.Item>
           </Descriptions>
@@ -91,7 +84,7 @@ const ImageObservation = ({ data, matchedAmount }) => {
               <Typography.Text className="commonFont">
                 AI-Detected Payment Details
               </Typography.Text>
-              <img src={crownIcon} width={35} />
+              <img src={crownIcon} width={35} alt="Crown Icon" />
             </div>
           }
           bordered={true}
