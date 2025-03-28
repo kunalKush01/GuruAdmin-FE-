@@ -29,6 +29,9 @@ import ImageUpload from "../partials/imageUpload";
 import RichTextField from "../partials/richTextEditorField";
 import useTimeStampAndImageExtension from "../../utility/hooks/useTimeStampAndImageExtension";
 import "../../assets/scss/common.scss";
+import UploadImage from "../partials/commonImageUpload2";
+import { uploadFile } from "../../api/sharedStorageApi";
+import uploadIcon from "../../assets/images/icons/file-upload.svg";
 
 export default function ProfileForm({
   handleSubmit,
@@ -52,6 +55,7 @@ export default function ProfileForm({
   langSelectionValue,
   trustMobileNumberState,
   setTrustMobileNumberState,
+  defaultHeroImage,
 }) {
   const history = useHistory();
   const { t } = useTranslation();
@@ -246,6 +250,18 @@ export default function ProfileForm({
   const langToast = {
     toastId: "langError",
   };
+  //**hero image implementation */
+  const [uploadedFileUrl, setUploadedFileUrl] = useState(
+    defaultHeroImage || []
+  );
+  const [deletedHeroImages, setDeletedHeroImages] = useState([]);
+  const [heroRefreshFlag, setHeroRefreshFlag] = useState(false);
+  const [imageUrl, setImageUrl] = useState([]);
+  useEffect(() => {
+    if (Array.isArray(defaultHeroImage) && defaultHeroImage.length === 0) {
+      setImageUrl([]);
+    }
+  }, [defaultHeroImage]);
   return (
     <div className="profileformwrapper FormikWrapper">
       <Formik
@@ -257,6 +273,11 @@ export default function ProfileForm({
             toast.error("Please select a language", { ...langToast });
             return;
           }
+          const heroImagesFileNames = Array.isArray(uploadedFileUrl)
+            ? uploadedFileUrl
+                .filter((item) => item && item.fileName)
+                .map((item) => item.fileName)
+            : [];
           setLoading(true);
           AddLanguage
             ? mutation.mutate({
@@ -314,6 +335,7 @@ export default function ProfileForm({
                 removeFacility: deletedFacility,
                 removedImages: deletedImages,
                 removedDocuments: deletedDocuments,
+                heroImages: heroImagesFileNames,
                 // documents: e?.documents?.map((item) => item?.name),
                 documents: e?.documents?.map((item) => item?.name),
                 // oldPassword: e?.oldPassword,
@@ -323,9 +345,41 @@ export default function ProfileForm({
         }}
         validationSchema={validationSchema}
       >
-        {(formik) => (
-          <Form>
-            {/* <Prompt
+        {(formik) => {
+          useEffect(() => {
+            if (
+              Array.isArray(defaultHeroImage) &&
+              defaultHeroImage.length > 0 &&
+              !heroRefreshFlag
+            ) {
+              const timer = setTimeout(() => {
+                const loadImages = async () => {
+                  try {
+                    const urls = await Promise.all(
+                      defaultHeroImage.map(async (image) => {
+                        if (!image) return null;
+                        const url = await fetchImage(image);
+                        return { url, fileName: image };
+                      })
+                    );
+
+                    setImageUrl(urls.filter(Boolean));
+                  } catch (error) {
+                    console.error("Error loading images:", error);
+                  }
+                };
+
+                loadImages();
+
+                setHeroRefreshFlag(true);
+              }, 1500);
+
+              return () => clearTimeout(timer);
+            }
+          }, [defaultHeroImage, heroRefreshFlag]);
+          return (
+            <Form>
+              {/* <Prompt
               when={!!Object.values(formik?.values).find((val) => !!val)}
               message={(location) =>
                 `Are you sure you want to leave this page & visit ${location.pathname.replace(
@@ -334,115 +388,115 @@ export default function ProfileForm({
                 )}`
               }
             /> */}
-            {/* About Trust Container */}
-            <Row className="mt-1">
-              <Col xs={12}>
-                <div className="heading_div existLabel">
-                  <Trans i18nKey={"about_trust"} />
-                  <hr />
-                </div>
-              </Col>
-              <Row className="" style={{ gap: "30px" }}>
-                {!AddLanguage && (
-                  <Col xs={12} lg={1} className="me-4">
-                    <div className="d-flex mt-1">
-                      <ImageUpload
-                        bg_plus={defaultAvtar}
-                        profileImage
-                        acceptFile="image/*"
-                        imageName="TrustProfileImage"
-                        svgNotSupported
-                        editTrue="edit"
-                        imageSpinner={imageSpinner}
-                        setImageSpinner={setImageSpinner}
-                        editedFileNameInitialValue={
-                          formik.values?.profileImage
-                            ? formik.values?.profileImage
-                            : null
-                        }
-                        randomNumber={randomNumber}
-                        fileName={(file, type) => {
-                          formik.setFieldValue("profileImage", `${file}`);
-                          formik.setFieldValue("type", type);
-                          setProfileName(`${file}`);
-                        }}
-                        removeFile={(fileName) => {
-                          formik.setFieldValue("profileImage", "");
-                          setProfileName("");
-                        }}
-                      />
-                    </div>
-                  </Col>
-                )}
-                <Col lg={10} xs={12} className="">
-                  <Row>
-                    <Col
-                      xs={12}
-                      md={6}
-                      lg={4}
-                      className={AddLanguage && "mb-1"}
-                    >
-                      <CustomTextField
-                        label={t("userProfile_name")}
-                        placeholder={t("placeHolder_name")}
-                        name="trustName"
-                        required
-                        onInput={(e) =>
-                          (e.target.value = e.target.value.slice(0, 256))
-                        }
-                        autoFocus
-                      />
-                    </Col>
-                    {!AddLanguage && (
-                      <Col xs={12} md={6} lg={4} className="">
-                        <FormikCustomReactSelect
-                          labelName={t("trust_trustType")}
-                          name="trustType"
-                          required
-                          labelKey={"name"}
-                          valueKey="id"
-                          loadOptions={allTrustTypes?.data?.results}
-                          defaultValue={formik?.values?.trustType}
-                          width={"100"}
-                        />
-                      </Col>
-                    )}
-                  </Row>
+              {/* About Trust Container */}
+              <Row className="mt-1">
+                <Col xs={12}>
+                  <div className="heading_div existLabel">
+                    <Trans i18nKey={"about_trust"} />
+                    <hr />
+                  </div>
+                </Col>
+                <Row className="" style={{ gap: "30px" }}>
                   {!AddLanguage && (
+                    <Col xs={12} lg={1} className="me-4">
+                      <div className="d-flex mt-1">
+                        <ImageUpload
+                          bg_plus={defaultAvtar}
+                          profileImage
+                          acceptFile="image/*"
+                          imageName="TrustProfileImage"
+                          svgNotSupported
+                          editTrue="edit"
+                          imageSpinner={imageSpinner}
+                          setImageSpinner={setImageSpinner}
+                          editedFileNameInitialValue={
+                            formik.values?.profileImage
+                              ? formik.values?.profileImage
+                              : null
+                          }
+                          randomNumber={randomNumber}
+                          fileName={(file, type) => {
+                            formik.setFieldValue("profileImage", `${file}`);
+                            formik.setFieldValue("type", type);
+                            setProfileName(`${file}`);
+                          }}
+                          removeFile={(fileName) => {
+                            formik.setFieldValue("profileImage", "");
+                            setProfileName("");
+                          }}
+                        />
+                      </div>
+                    </Col>
+                  )}
+                  <Col lg={10} xs={12} className="">
                     <Row>
-                      <Col xs={12} md={6} lg={4} className="">
+                      <Col
+                        xs={12}
+                        md={6}
+                        lg={4}
+                        className={AddLanguage && "mb-1"}
+                      >
                         <CustomTextField
-                          label={t("userProfile_email_id")}
-                          name="trustEmail"
-                          placeholder={t("placeHolder_email")}
+                          label={t("userProfile_name")}
+                          placeholder={t("placeHolder_name")}
+                          name="trustName"
                           required
+                          onInput={(e) =>
+                            (e.target.value = e.target.value.slice(0, 256))
+                          }
+                          autoFocus
                         />
                       </Col>
-                      {/* {JSON.stringify(formik.values.mobileNumber)} */}
-                      <Col xs={12} md={6} lg={4} className="">
-                        <CustomCountryMobileNumberField
-                          value={trustMobileNumberState}
-                          defaultCountry={initialValues?.trustCountryCode}
-                          label={t("contact_number")}
-                          placeholder={t("placeHolder_phone_number")}
-                          onChange={(phone, country) => {
-                            setTrustMobileNumberState(phone);
-                            formik.setFieldValue(
-                              "trustCountryCode",
-                              country?.countryCode
-                            );
-                            formik.setFieldValue(
-                              "trustDialCode",
-                              country?.dialCode
-                            );
-                            formik.setFieldValue(
-                              "trustNumber",
-                              phone?.replace(country?.dialCode, "")
-                            );
-                          }}
-                          required
-                        />
-                        {/* <CustomTextField
+                      {!AddLanguage && (
+                        <Col xs={12} md={6} lg={4} className="">
+                          <FormikCustomReactSelect
+                            labelName={t("trust_trustType")}
+                            name="trustType"
+                            required
+                            labelKey={"name"}
+                            valueKey="id"
+                            loadOptions={allTrustTypes?.data?.results}
+                            defaultValue={formik?.values?.trustType}
+                            width={"100"}
+                          />
+                        </Col>
+                      )}
+                    </Row>
+                    {!AddLanguage && (
+                      <Row>
+                        <Col xs={12} md={6} lg={4} className="">
+                          <CustomTextField
+                            label={t("userProfile_email_id")}
+                            name="trustEmail"
+                            placeholder={t("placeHolder_email")}
+                            required
+                          />
+                        </Col>
+                        {/* {JSON.stringify(formik.values.mobileNumber)} */}
+                        <Col xs={12} md={6} lg={4} className="">
+                          <CustomCountryMobileNumberField
+                            value={trustMobileNumberState}
+                            defaultCountry={initialValues?.trustCountryCode}
+                            label={t("contact_number")}
+                            placeholder={t("placeHolder_phone_number")}
+                            onChange={(phone, country) => {
+                              setTrustMobileNumberState(phone);
+                              formik.setFieldValue(
+                                "trustCountryCode",
+                                country?.countryCode
+                              );
+                              formik.setFieldValue(
+                                "trustDialCode",
+                                country?.dialCode
+                              );
+                              formik.setFieldValue(
+                                "trustNumber",
+                                phone?.replace(country?.dialCode, "")
+                              );
+                            }}
+                            required
+                          />
+                          {/* <CustomTextField
                           label={t("userProfile_phone_number")}
                           name="trustNumber"
                           placeholder={t("placeHolder_phone_number")}
@@ -454,26 +508,26 @@ export default function ProfileForm({
                             (e.target.value = e.target.value.slice(0, 12))
                           }
                         /> */}
-                      </Col>
-                    </Row>
-                  )}
-                  {!AddLanguage && (
-                    <Row>
-                      <Col
-                        xs={12}
-                        md={6}
-                        lg={4}
-                        // className={`ps-lg-3 ${formik.errors ? "mt-1" : "mt-2"}`}
-                      >
-                        <CustomTextField
-                          label={t("trust_facebookLink")}
-                          placeholder={t("placeHolder_trust_facebook")}
-                          name="facebookLink"
-                        />
-                      </Col>
-                    </Row>
-                  )}
-                  {/* {!AddLanguage && (
+                        </Col>
+                      </Row>
+                    )}
+                    {!AddLanguage && (
+                      <Row>
+                        <Col
+                          xs={12}
+                          md={6}
+                          lg={4}
+                          // className={`ps-lg-3 ${formik.errors ? "mt-1" : "mt-2"}`}
+                        >
+                          <CustomTextField
+                            label={t("trust_facebookLink")}
+                            placeholder={t("placeHolder_trust_facebook")}
+                            name="facebookLink"
+                          />
+                        </Col>
+                      </Row>
+                    )}
+                    {/* {!AddLanguage && (
                     <Row>
                       <Col xs={12} md={6} lg={4}>
                         <FormikCustomReactSelect
@@ -494,11 +548,11 @@ export default function ProfileForm({
                       </Col>
                     </Row>
                   )} */}
-                </Col>
-              </Row>
+                  </Col>
+                </Row>
 
-              <Row className="">
-                {/* <Col>
+                <Row className="">
+                  {/* <Col>
                   <TextArea
                     label="About Trust"
                     name="about"
@@ -507,71 +561,74 @@ export default function ProfileForm({
                     className="text-area form-control"
                   />
                 </Col> */}
-                <Col xs={12}>
-                  <RichTextField
-                    height="200px"
-                    label={t("about_trusts")}
-                    name="about"
-                  />
-                </Col>
+                  <Col xs={12}>
+                    <RichTextField
+                      height="200px"
+                      label={t("about_trusts")}
+                      name="about"
+                    />
+                  </Col>
+                </Row>
               </Row>
-            </Row>
-            {/* About Trust Container */}
-            {/* About user Container */}
-            {!AddLanguage && (
-              <Row className="mt-1">
-                <Col xs={12}>
-                  <div className="heading_div existLabel">
-                    <Trans i18nKey={"trust_user"} />
-                    <hr />
-                  </div>
-                </Col>
-                <Row className="">
-                  <Col xs={12} className="">
-                    <Row>
-                      <Col xs={12} md={6} lg={4} className="">
-                        <CustomTextField
-                          required
-                          label={t("userProfile_name")}
-                          placeholder={t("placeHolder_name")}
-                          name="name"
-                          disabled={AddLanguage}
-                          onInput={(e) =>
-                            (e.target.value = e.target.value.slice(0, 30))
-                          }
-                          autoFocus
-                        />
-                      </Col>
-                      <Col xs={12} md={6} lg={4} className="">
-                        <CustomTextField
-                          label={t("userProfile_email_id")}
-                          disabled={AddLanguage}
-                          name="email"
-                          placeholder={t("placeHolder_email")}
-                          required
-                        />
-                      </Col>
-                      <Col xs={12} md={6} lg={4} className="">
-                        <CustomCountryMobileNumberField
-                          value={userMobileNumberState}
-                          defaultCountry={initialValues?.countryCode}
-                          label={t("userProfile_phone_number")}
-                          placeholder={t("placeHolder_phone_number")}
-                          onChange={(phone, country) => {
-                            setUserMobileNumberState(phone);
-                            formik.setFieldValue(
-                              "countryCode",
-                              country?.countryCode
-                            );
-                            formik.setFieldValue("dialCode", country?.dialCode);
-                            formik.setFieldValue(
-                              "mobileNumber",
-                              phone?.replace(country?.dialCode, "")
-                            );
-                          }}
-                          required
-                        />
-                        {/* <CustomTextField
+              {/* About Trust Container */}
+              {/* About user Container */}
+              {!AddLanguage && (
+                <Row className="mt-1">
+                  <Col xs={12}>
+                    <div className="heading_div existLabel">
+                      <Trans i18nKey={"trust_user"} />
+                      <hr />
+                    </div>
+                  </Col>
+                  <Row className="">
+                    <Col xs={12} className="">
+                      <Row>
+                        <Col xs={12} md={6} lg={4} className="">
+                          <CustomTextField
+                            required
+                            label={t("userProfile_name")}
+                            placeholder={t("placeHolder_name")}
+                            name="name"
+                            disabled={AddLanguage}
+                            onInput={(e) =>
+                              (e.target.value = e.target.value.slice(0, 30))
+                            }
+                            autoFocus
+                          />
+                        </Col>
+                        <Col xs={12} md={6} lg={4} className="">
+                          <CustomTextField
+                            label={t("userProfile_email_id")}
+                            disabled={AddLanguage}
+                            name="email"
+                            placeholder={t("placeHolder_email")}
+                            required
+                          />
+                        </Col>
+                        <Col xs={12} md={6} lg={4} className="">
+                          <CustomCountryMobileNumberField
+                            value={userMobileNumberState}
+                            defaultCountry={initialValues?.countryCode}
+                            label={t("userProfile_phone_number")}
+                            placeholder={t("placeHolder_phone_number")}
+                            onChange={(phone, country) => {
+                              setUserMobileNumberState(phone);
+                              formik.setFieldValue(
+                                "countryCode",
+                                country?.countryCode
+                              );
+                              formik.setFieldValue(
+                                "dialCode",
+                                country?.dialCode
+                              );
+                              formik.setFieldValue(
+                                "mobileNumber",
+                                phone?.replace(country?.dialCode, "")
+                              );
+                            }}
+                            required
+                          />
+                          {/* <CustomTextField
                           label={t("userProfile_phone_number")}
                           disabled={AddLanguage}
                           placeholder={t("placeHolder_phone_number")}
@@ -583,83 +640,83 @@ export default function ProfileForm({
                             (e.target.value = e.target.value.slice(0, 12))
                           }
                         /> */}
-                      </Col>
-                    </Row>
-                  </Col>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
                 </Row>
-              </Row>
-            )}
-            {/* About user Container */}
-            {/* Trust Location Container  */}
-            <Row className="mt-1">
-              <Col xs={12}>
-                <div className="heading_div existLabel">
-                  <Trans i18nKey={"trust_location"} />
-                  <hr />
-                </div>
-              </Col>
-              <Row>
+              )}
+              {/* About user Container */}
+              {/* Trust Location Container  */}
+              <Row className="mt-1">
                 <Col xs={12}>
-                  {/* <Col
+                  <div className="heading_div existLabel">
+                    <Trans i18nKey={"trust_location"} />
+                    <hr />
+                  </div>
+                </Col>
+                <Row>
+                  <Col xs={12}>
+                    {/* <Col
                     xs={12}
                     className={`ps-lg-3 ${formik.errors ? "mt-1" : "mt-2"}`}
                   > */}
-                  <TextArea
-                    label={t("trust_address")}
-                    name="address"
-                    rows="4"
-                    placeholder={t("placeHolder_trust_address")}
-                    className="text-area form-control"
-                  />
-                  {/* </Col> */}
-                </Col>
-                <Col md={4}>
-                  {!AddLanguage ? (
-                    <>
-                      <label>
-                        <Trans i18nKey={"location"} />*
-                      </label>
-                      <CustomLocationField
-                        setFieldValue={formik.setFieldValue}
-                        error={formik}
-                        values={formik?.values}
-                      />
-                      {formik.errors.location && formik.touched.location ? (
-                        <div style={{ fontSize: "11px", color: "red" }}>
-                          <Trans i18nKey={formik.errors.location} />
-                        </div>
-                      ) : null}
-                    </>
-                  ) : (
-                    <CustomTextField
-                      label={t("location")}
-                      placeholder={t("placeHolder_location")}
-                      name="location"
-                      required
+                    <TextArea
+                      label={t("trust_address")}
+                      name="address"
+                      rows="4"
+                      placeholder={t("placeHolder_trust_address")}
+                      className="text-area form-control"
                     />
+                    {/* </Col> */}
+                  </Col>
+                  <Col md={4}>
+                    {!AddLanguage ? (
+                      <>
+                        <label>
+                          <Trans i18nKey={"location"} />*
+                        </label>
+                        <CustomLocationField
+                          setFieldValue={formik.setFieldValue}
+                          error={formik}
+                          values={formik?.values}
+                        />
+                        {formik.errors.location && formik.touched.location ? (
+                          <div style={{ fontSize: "11px", color: "red" }}>
+                            <Trans i18nKey={formik.errors.location} />
+                          </div>
+                        ) : null}
+                      </>
+                    ) : (
+                      <CustomTextField
+                        label={t("location")}
+                        placeholder={t("placeHolder_location")}
+                        name="location"
+                        required
+                      />
+                    )}
+                  </Col>
+                  {!AddLanguage && (
+                    <>
+                      <Col xs={12} md={4} className="opacity-75">
+                        <CustomTextField
+                          label={t("City")}
+                          placeholder={t("placeHolder_city")}
+                          name="city"
+                          disabled
+                        />
+                      </Col>
+                      <Col xs={12} md={4} className="opacity-75">
+                        <CustomTextField
+                          label={t("State")}
+                          placeholder={t("placeHolder_state")}
+                          name="state"
+                          disabled
+                        />
+                      </Col>
+                    </>
                   )}
-                </Col>
-                {!AddLanguage && (
-                  <>
-                    <Col xs={12} md={4} className="opacity-75">
-                      <CustomTextField
-                        label={t("City")}
-                        placeholder={t("placeHolder_city")}
-                        name="city"
-                        disabled
-                      />
-                    </Col>
-                    <Col xs={12} md={4} className="opacity-75">
-                      <CustomTextField
-                        label={t("State")}
-                        placeholder={t("placeHolder_state")}
-                        name="state"
-                        disabled
-                      />
-                    </Col>
-                  </>
-                )}
-                {/* {!AddLanguage && (
+                  {/* {!AddLanguage && (
                   <Col sm={4}>
                     <CustomTextField
                       label={t("longitude")}
@@ -681,262 +738,299 @@ export default function ProfileForm({
                     />
                   </Col>
                 )} */}
+                </Row>
               </Row>
-            </Row>
-            {/* Trust Location Container  */}
-            {/* Trust Facilities */}
-
-            <Row className={`mt-1 ${AddLanguage && "paddingForm"}`}>
-              <Col xs={12}>
-                <div className="heading_div existLabel">
-                  <Trans i18nKey={"trust_facility"} />
-                  <hr />
-                </div>
-              </Col>
-              <Row>
-                <Col xs={12}>
-                  {/* <div className="existLabel  ">
-                    <Trans i18nKey={"userProfile_facilities"} />
-                  </div> */}
-                </Col>
-                {/* {[...formik?.values?.trustFacilities, ...facilityFormData]?.map( */}
-                {[...(formRef?.current?.values?.trustFacilities ?? [])]?.map(
-                  (item, idx) => {
-                    return (
-                      <Col
-                        lg={3}
-                        md={4}
-                        sm={6}
-                        key={idx}
-                        className="position-relative p-1 facilityCol mb-2 "
-                      >
-                        {!AddLanguage && (
-                          <Button
-                            className="removeImageButton"
-                            onClick={(e) => {
-                              removeFacility(item, formik);
-                            }}
-                          >
-                            <X color="#ff8744" stroke-width="3" />
-                          </Button>
-                        )}
-                        <div
-                          className="cursor-pointer"
-                          onClick={() => {
-                            setFacilityEditData({
-                              type: "edit",
-                              data: item,
-                              index: idx,
-                            });
-                            toggle();
-                          }}
-                        >
-                          <div className="trust_img position-relative">
-                            <div className="editFacilityImageText">
-                              <Trans i18nKey={"edit_image"} />
-                            </div>
-                            <img
-                              src={
-                                item?.preview
-                                  ? item?.preview
-                                  : item?.image
-                                  ? item?.image
-                                  : placeHolder
-                              }
-                              alt="Facility Image"
-                            />
-                            {/* </div> */}
-                          </div>
-                          <div className="py-1 px-1">
-                            <div className="temple_name">
-                              {ConverFirstLatterToCapital(item?.name ?? "")}
-                            </div>
-                            {item?.startTime && item?.endTime && (
-                              <div className="temple_time">
-                                Timings : {item?.startTime} to {item?.endTime}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </Col>
-                    );
-                  }
-                )}
-                {!AddLanguage && (
-                  <Col lg={3} md={4} sm={6}>
-                    <div
-                      className=""
-                      onClick={toggle}
-                      // onClick={() => {
-                      //   history.push("/facilities");
-                      //   dispatch(
-                      //     handleProfileUpdate({
-                      //       ...formik.values,
-                      //       city: formik?.values?.city?.districts,
-                      //       state: formik?.values?.state?.state,
-                      //       location: formik?.values?.location?.label,
-                      //     })
-                      //   );
-                      // }}
-                    >
-                      <div className="p-1">
-                        <div className="facility_button">
-                          <Plus />
-                        </div>
-                        <div className="facility_add">
-                          + Add More Facilities
-                        </div>
-                      </div>
-                    </div>
-                  </Col>
-                )}
-              </Row>
-            </Row>
-
-            {/* Trust Facilities */}
-            {/* Trust  Images */}
-            {!AddLanguage && (
-              <Row className="mt-1 paddingForm">
+              {/* Trust Hero images*/}
+              <Row className={`mt-1 ${AddLanguage && "paddingForm"}`}>
                 <Col xs={12}>
                   <div className="heading_div existLabel">
-                    <Trans i18nKey={"trust_image_certificate"} />
+                    <Trans i18nKey={"hero_images"} />
+                    <hr />
+                  </div>
+                  <Trans i18nKey={"add_heroImage"} />{" "}
+                  <span style={{ fontSize: "13px", color: "gray" }}>
+                    <Trans i18nKey={"hero_image_size_suggestion"} />
+                  </span>
+                  <Row>
+                    <UploadImage
+                      required
+                      uploadFileFunction={uploadFile}
+                      setUploadedFileUrl={setUploadedFileUrl}
+                      name="NewsImage"
+                      listType="picture"
+                      buttonLabel={t("upload_image")}
+                      initialUploadUrl={imageUrl && imageUrl}
+                      isMultiple={true}
+                      maxCount={5}
+                      icon={
+                        <img
+                          src={uploadIcon}
+                          alt="Upload Icon"
+                          style={{ width: 16, height: 16 }}
+                        />
+                      }
+                      setDeletedImage={setDeletedHeroImages}
+                    />
+                  </Row>
+                </Col>
+              </Row>
+              {/* Trust Location Container  */}
+              {/* Trust Facilities */}
+
+              <Row className={`mt-1 ${AddLanguage && "paddingForm"}`}>
+                <Col xs={12}>
+                  <div className="heading_div existLabel">
+                    <Trans i18nKey={"trust_facility"} />
                     <hr />
                   </div>
                 </Col>
                 <Row>
-                  {/* Image Col */}
-                  <Col lg={6}>
-                    <Row>
-                      <Col>
-                        <div className="existLabel">
-                          <Trans i18nKey={"images"} />
-                        </div>
-                        <div>
-                          <ImageUpload
-                            multiple
-                            type={editImage}
-                            imageName="TrustImage"
-                            imageSpinner={imageSpinner}
-                            acceptFile="image/*"
-                            svgNotSupported
-                            setImageSpinner={setImageSpinner}
-                            bg_plus={thumbnailImage}
-                            setDeletedImages={setDeletedImages}
-                            editedFileNameInitialValue={
-                              formik?.values?.images
-                                ? formik?.values?.images
-                                : null
-                            }
-                            defaultImages={defaultImages}
-                            randomNumber={randomNumber}
-                            fileName={(file, type) => {
-                              formik.setFieldValue("images", [
-                                ...formik?.values?.images,
-                                `${file}`,
-                              ]);
-                              formik.setFieldValue("type", type);
-                            }}
-                            removeFile={(fileName) => {
-                              const profileImageArray = [
-                                ...formik.values.images,
-                              ];
-                              const updatedFiles = profileImageArray?.filter(
-                                (img) => !img.includes(fileName)
-                              );
-                              formik.setFieldValue("images", updatedFiles);
-                            }}
-                          />
-                        </div>
-                      </Col>
-                    </Row>
+                  <Col xs={12}>
+                    {/* <div className="existLabel  ">
+                    <Trans i18nKey={"userProfile_facilities"} />
+                  </div> */}
                   </Col>
-                  {/* Image Col */}
-                  {/* Doc Col */}
-                  <Col lg={6}>
-                    <Row>
-                      <Col xs={12}>
-                        <Row className="d-flex align-items-center">
-                          <Col xs={10} className="pe-0">
-                            <div>
-                              <label>
-                                <Trans
-                                  i18nKey={"userProfile_doc_certificate"}
-                                />
-                              </label>
-                            </div>
-                            <input
-                              ref={uploadDocuments}
-                              type={"file"}
-                              name="documents"
-                              accept=""
-                              onChange={(e) => {
-                                if (e.target.files?.length) {
-                                  handleUpload(
-                                    e.target.files[0],
-                                    "document",
-                                    formik
-                                  );
-                                }
-                              }}
-                            />
-                          </Col>
-                          <Col xs={2} className="align-self-end">
-                            {documentSpinner ? (
-                              <Spinner color="primary" />
-                            ) : (
-                              <Button
-                                color="primary"
-                                className="addAction-btn"
-                                onClick={() => uploadDocuments.current.click()}
-                              >
-                                <Trans i18nKey={"browse"} />
-                              </Button>
-                            )}
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                    <Row className=" row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5  gap-1 mt-2 text-break">
-                      {[...formik.values.documents]?.map((item, idx) => {
-                        return (
-                          <Col
-                            className="pdfDiv position-relative cursor-pointer"
-                            key={idx}
-                          >
+                  {/* {[...formik?.values?.trustFacilities, ...facilityFormData]?.map( */}
+                  {[...(formRef?.current?.values?.trustFacilities ?? [])]?.map(
+                    (item, idx) => {
+                      return (
+                        <Col
+                          lg={3}
+                          md={4}
+                          sm={6}
+                          key={idx}
+                          className="position-relative p-1 facilityCol mb-2 "
+                        >
+                          {!AddLanguage && (
                             <Button
-                              className="removePDFButton"
-                              onClick={() => {
-                                uploadDocuments.current.value = "";
-                                removeDocumentFile(item, formik);
+                              className="removeImageButton"
+                              onClick={(e) => {
+                                removeFacility(item, formik);
                               }}
                             >
                               <X color="#ff8744" stroke-width="3" />
                             </Button>
-                            {item?.presignedUrl !== "" && item?.presignedUrl ? (
-                              <a href={item?.presignedUrl} target="_blank">
+                          )}
+                          <div
+                            className="cursor-pointer"
+                            onClick={() => {
+                              setFacilityEditData({
+                                type: "edit",
+                                data: item,
+                                index: idx,
+                              });
+                              toggle();
+                            }}
+                          >
+                            <div className="trust_img position-relative">
+                              <div className="editFacilityImageText">
+                                <Trans i18nKey={"edit_image"} />
+                              </div>
+                              <img
+                                src={
+                                  item?.preview
+                                    ? item?.preview
+                                    : item?.image
+                                    ? item?.image
+                                    : placeHolder
+                                }
+                                alt="Facility Image"
+                              />
+                              {/* </div> */}
+                            </div>
+                            <div className="py-1 px-1">
+                              <div className="temple_name">
+                                {ConverFirstLatterToCapital(item?.name ?? "")}
+                              </div>
+                              {item?.startTime && item?.endTime && (
+                                <div className="temple_time">
+                                  Timings : {item?.startTime} to {item?.endTime}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </Col>
+                      );
+                    }
+                  )}
+                  {!AddLanguage && (
+                    <Col lg={3} md={4} sm={6}>
+                      <div
+                        className=""
+                        onClick={toggle}
+                        // onClick={() => {
+                        //   history.push("/facilities");
+                        //   dispatch(
+                        //     handleProfileUpdate({
+                        //       ...formik.values,
+                        //       city: formik?.values?.city?.districts,
+                        //       state: formik?.values?.state?.state,
+                        //       location: formik?.values?.location?.label,
+                        //     })
+                        //   );
+                        // }}
+                      >
+                        <div className="p-1">
+                          <div className="facility_button">
+                            <Plus />
+                          </div>
+                          <div className="facility_add">
+                            + Add More Facilities
+                          </div>
+                        </div>
+                      </div>
+                    </Col>
+                  )}
+                </Row>
+              </Row>
+
+              {/* Trust Facilities */}
+              {/* Trust  Images */}
+              {!AddLanguage && (
+                <Row className="mt-1 paddingForm">
+                  <Col xs={12}>
+                    <div className="heading_div existLabel">
+                      <Trans i18nKey={"trust_image_certificate"} />
+                      <hr />
+                    </div>
+                  </Col>
+                  <Row>
+                    {/* Image Col */}
+                    <Col lg={6}>
+                      <Row>
+                        <Col>
+                          <div className="existLabel">
+                            <Trans i18nKey={"images"} />
+                          </div>
+                          <div>
+                            <ImageUpload
+                              multiple
+                              type={editImage}
+                              imageName="TrustImage"
+                              imageSpinner={imageSpinner}
+                              acceptFile="image/*"
+                              svgNotSupported
+                              setImageSpinner={setImageSpinner}
+                              bg_plus={thumbnailImage}
+                              setDeletedImages={setDeletedImages}
+                              editedFileNameInitialValue={
+                                formik?.values?.images
+                                  ? formik?.values?.images
+                                  : null
+                              }
+                              defaultImages={defaultImages}
+                              randomNumber={randomNumber}
+                              fileName={(file, type) => {
+                                formik.setFieldValue("images", [
+                                  ...formik?.values?.images,
+                                  `${file}`,
+                                ]);
+                                formik.setFieldValue("type", type);
+                              }}
+                              removeFile={(fileName) => {
+                                const profileImageArray = [
+                                  ...formik.values.images,
+                                ];
+                                const updatedFiles = profileImageArray?.filter(
+                                  (img) => !img.includes(fileName)
+                                );
+                                formik.setFieldValue("images", updatedFiles);
+                              }}
+                            />
+                          </div>
+                        </Col>
+                      </Row>
+                    </Col>
+                    {/* Image Col */}
+                    {/* Doc Col */}
+                    <Col lg={6}>
+                      <Row>
+                        <Col xs={12}>
+                          <Row className="d-flex align-items-center">
+                            <Col xs={10} className="pe-0">
+                              <div>
+                                <label>
+                                  <Trans
+                                    i18nKey={"userProfile_doc_certificate"}
+                                  />
+                                </label>
+                              </div>
+                              <input
+                                ref={uploadDocuments}
+                                type={"file"}
+                                name="documents"
+                                accept=""
+                                onChange={(e) => {
+                                  if (e.target.files?.length) {
+                                    handleUpload(
+                                      e.target.files[0],
+                                      "document",
+                                      formik
+                                    );
+                                  }
+                                }}
+                              />
+                            </Col>
+                            <Col xs={2} className="align-self-end">
+                              {documentSpinner ? (
+                                <Spinner color="primary" />
+                              ) : (
+                                <Button
+                                  color="primary"
+                                  className="addAction-btn"
+                                  onClick={() =>
+                                    uploadDocuments.current.click()
+                                  }
+                                >
+                                  <Trans i18nKey={"browse"} />
+                                </Button>
+                              )}
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                      <Row className=" row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5  gap-1 mt-2 text-break">
+                        {[...formik.values.documents]?.map((item, idx) => {
+                          return (
+                            <Col
+                              className="pdfDiv position-relative cursor-pointer"
+                              key={idx}
+                            >
+                              <Button
+                                className="removePDFButton"
+                                onClick={() => {
+                                  uploadDocuments.current.value = "";
+                                  removeDocumentFile(item, formik);
+                                }}
+                              >
+                                <X color="#ff8744" stroke-width="3" />
+                              </Button>
+                              {item?.presignedUrl !== "" &&
+                              item?.presignedUrl ? (
+                                <a href={item?.presignedUrl} target="_blank">
+                                  <div className="">
+                                    <img src={pdfIcon} width={50} />
+                                  </div>
+                                </a>
+                              ) : (
                                 <div className="">
                                   <img src={pdfIcon} width={50} />
                                 </div>
-                              </a>
-                            ) : (
-                              <div className="">
-                                <img src={pdfIcon} width={50} />
-                              </div>
-                            )}
+                              )}
 
-                            <div className="docFileName">{item?.name}</div>
-                          </Col>
-                        );
-                      })}
-                    </Row>
-                  </Col>
-                  {/* Doc Col */}
+                              <div className="docFileName">{item?.name}</div>
+                            </Col>
+                          );
+                        })}
+                      </Row>
+                    </Col>
+                    {/* Doc Col */}
+                  </Row>
                 </Row>
-              </Row>
-            )}
-            {/* Trust Images */}
-            {/* Trust Password Container */}
-            {/* <Row className="mt-1">
+              )}
+              {/* Trust Images */}
+              {/* Trust Password Container */}
+              {/* <Row className="mt-1">
               <Col xs={12}>
                 <div className="heading_div existLabel">
                   CHANGE PASSWORD
@@ -1027,37 +1121,38 @@ export default function ProfileForm({
                 </Col>
               </Row>
             </Row> */}
-            {/* Trust Password Container */}
+              {/* Trust Password Container */}
 
-            <div className="btn-Published d-flex justify-content-center">
-              {loading ? (
-                <Button
-                  color="primary"
-                  className="add-trust-btn"
-                  style={{
-                    borderRadius: "10px",
-                    padding: "5px 40px",
-                    opacity: "100%",
-                  }}
-                  disabled
-                >
-                  <Spinner size="md" />
-                </Button>
-              ) : (
-                <Button
-                  disabled={imageSpinner}
-                  color="primary"
-                  className="addAction-btn"
-                  type="submit"
-                >
-                  <span>
-                    <Trans i18nKey={buttonLabel} />
-                  </span>
-                </Button>
-              )}
-            </div>
-          </Form>
-        )}
+              <div className="btn-Published d-flex justify-content-center">
+                {loading ? (
+                  <Button
+                    color="primary"
+                    className="add-trust-btn"
+                    style={{
+                      borderRadius: "10px",
+                      padding: "5px 40px",
+                      opacity: "100%",
+                    }}
+                    disabled
+                  >
+                    <Spinner size="md" />
+                  </Button>
+                ) : (
+                  <Button
+                    disabled={imageSpinner}
+                    color="primary"
+                    className="addAction-btn"
+                    type="submit"
+                  >
+                    <span>
+                      <Trans i18nKey={buttonLabel} />
+                    </span>
+                  </Button>
+                )}
+              </div>
+            </Form>
+          );
+        }}
       </Formik>
       <Modal
         isOpen={modal}

@@ -999,8 +999,7 @@ export const gujaratiContent = {
   Unmatched_Bank_Credits: "મેળ ન ખાતા બેંક ક્રેડિટ્સ",
   Pending_Screenshots: "બાકી સ્ક્રીનશોટ",
   Service_Name: "સેવાનું નામ",
-  add_Booking:"બુકિંગ ઉમેરો",
-  add_service:"સેવા ઉમેરો"
-
-
+  add_Booking: "બુકિંગ ઉમેરો",
+  add_service: "સેવા ઉમેરો",
+  hero_images: "હીરો છબીઓ",
 };

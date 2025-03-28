@@ -995,7 +995,6 @@ export const kannadaContent = {
   Pending_Screenshots: "ಬಾಕಿ ಉಳಿದಿರುವ ಸ್ಕ್ರೀನ್‌ಶಾಟ್‌ಗಳು",
   Service_Name:"ಸೇವೆಯ ಹೆಸರು",
   add_Booking:"ಬುಕಿಂಗ್ ಸೇರಿಸಿ",
-  add_service:"ಸೇವೆಯನ್ನು ಸೇರಿಸಿ"
-
-
+  add_service:"ಸೇವೆಯನ್ನು ಸೇರಿಸಿ",
+  hero_images:"ಹೀರೋ ಚಿತ್ರಗಳು"
 };

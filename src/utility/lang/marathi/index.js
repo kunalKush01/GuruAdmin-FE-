@@ -1053,7 +1053,6 @@ export const marathiContent = {
   Pending_Screenshots: "प्रलंबित स्क्रीनशॉट",
   Service_Name: "सेवेचे नाव",
   add_Booking:"बुकिंग जोडा",
-  add_service:"सेवा जोडा"
-
-
+  add_service:"सेवा जोडा",
+  hero_images:"नायक प्रतिमा"
 };

@@ -163,7 +163,7 @@ export default function AddProfile() {
               <Trans i18nKey={"news_InputIn"} />
             </div>
             <CustomDropDown
-              ItemListArray={profileDetail?.data?.result?.languages}
+              // ItemListArray={profileDetail?.data?.result?.languages}
               className={"ms-1"}
               defaultDropDownName={ConverFirstLatterToCapital(
                 langSelection ?? ""

@@ -1028,6 +1028,7 @@ export const hindiContent = {
   Pending_Screenshots: "लंबित स्क्रीनशॉट",
   Service_Name: "सेवा का नाम",
   add_Booking:"बुकिंग जोड़ें",
-  add_service:"सेवा जोड़ें"
+  add_service:"सेवा जोड़ें",
+  hero_images:"हीरो छवियाँ"
 
 };
