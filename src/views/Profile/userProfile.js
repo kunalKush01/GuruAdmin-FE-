@@ -213,6 +213,7 @@ export default function AddProfile() {
             initialValues={initialValues}
             validationSchema={schema}
             buttonLabel={"update_profile"}
+            defaultHeroImage={profileDetail?.data?.result?.heroImages}
           />
         )}
       </div>

@@ -996,5 +996,5 @@ export const kannadaContent = {
   Service_Name:"ಸೇವೆಯ ಹೆಸರು",
   add_Booking:"ಬುಕಿಂಗ್ ಸೇರಿಸಿ",
   add_service:"ಸೇವೆಯನ್ನು ಸೇರಿಸಿ",
-  Payment_Mode:"ಪಾವತಿ ಮೋಡ್"
+  hero_images:"ಹೀರೋ ಚಿತ್ರಗಳು"
 };
