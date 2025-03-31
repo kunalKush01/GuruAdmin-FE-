@@ -18,6 +18,14 @@ const AIMatchedRecord = () => {
   const { t } = useTranslation();
   const trustId = localStorage.getItem("trustId");
   const selectedLang = useSelector((state) => state.auth.selectLang);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 10,
+  });
+  const [categoryTypeName, setCategoryTypeName] = useState(t("All"));
+  const [subCategoryTypeName, setSubCategoryTypeName] = useState(t("All"));
+  const [dropDownName, setdropDownName] = useState("dashboard_monthly");
+  const [activeTab, setActiveTab] = useState("Donation");
 
   const [selectedField, setSelectedField] = useState("bankNarration");
   const [searchText, setSearchText] = useState("");
@@ -180,12 +188,12 @@ const AIMatchedRecord = () => {
       render: (text, record) => (
         <Space>
           {/* <Tooltip title=""> */}
-            <img
-              src={linkIcon}
-              width={20}
-              className="cursor-pointer"
-              onClick={() => handleDonorMapped(record)}
-            />
+          <img
+            src={linkIcon}
+            width={20}
+            className="cursor-pointer"
+            onClick={() => handleDonorMapped(record)}
+          />
           {/* </Tooltip> */}
           {/* <img
             src={editIcon}
