@@ -19,7 +19,13 @@ const ImageObservation = ({ data, matchedAmount }) => {
               <Typography.Text className="commonFont">
                 AI-Detected Payment Details
               </Typography.Text>
-              <img src={crownIcon} width={35} alt="Crown Icon" />
+              <span
+                style={{ fontSize: 28, marginLeft: 8 }}
+                role="img"
+                aria-label="crown"
+              >
+                👑
+              </span>
             </div>
           }
           bordered={true}
@@ -86,7 +92,13 @@ const ImageObservation = ({ data, matchedAmount }) => {
               <Typography.Text className="commonFont">
                 AI-Detected Payment Details
               </Typography.Text>
-              <img src={crownIcon} width={35} alt="Crown Icon" />
+              <span
+                style={{ fontSize: 28, marginLeft: 8 }}
+                role="img"
+                aria-label="crown"
+              >
+                👑
+              </span>
             </div>
           }
           bordered={true}

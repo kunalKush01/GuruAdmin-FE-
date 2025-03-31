@@ -33,9 +33,9 @@ const ScreenshotPanel = ({
   setShowScreenshotPanel,
   showScreenshotPanel,
   record,
-  setRecord
+  setRecord,
 }) => {
-  const history = useHistory()
+  const history = useHistory();
   const trustDetails = useSelector((state) => state.auth.trustDetail) || {};
   const trustId = trustDetails?.id;
   const [sizes, setSizes] = useState(["70%", "30%"]);
@@ -99,15 +99,15 @@ const ScreenshotPanel = ({
     setShowScreenshotPanel(false); // Close the view panel
     setRecord(null); // Clear selected record state
     localStorage.removeItem("viewRecord"); // Remove stored record from localStorage
-  
+
     // Update URL: Remove "view" and "recordId" while keeping other params
     const searchParams = new URLSearchParams(location.search);
     searchParams.delete("view");
     searchParams.delete("recordId");
-  
+
     history.push(`${location.pathname}?${searchParams.toString()}`);
   };
-  
+
   return (
     <div className="d-flex flex-column ">
       {showScreenshotPanel && (
@@ -125,7 +125,7 @@ const ScreenshotPanel = ({
         <Splitter
           onResize={setSizes}
           style={{
-            height: 450,
+            //height: 450,
             boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
           }}
           layout={isMobile ? "vertical" : "horizontal"}

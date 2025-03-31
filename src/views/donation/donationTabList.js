@@ -77,7 +77,7 @@ export default function Donation() {
     const subTypeParam = searchParams.get("sub");
     const viewParam = searchParams.get("view");
     const recordId = searchParams.get("recordId");
-  
+
     if (typeParam === "suspense") {
       setActiveTab("Suspense");
       setNestedActiveTab(subTypeParam || "unmatched");
@@ -86,9 +86,9 @@ export default function Donation() {
     } else {
       setActiveTab("Donation");
     }
-  
+
     setShowScreenshotPanel(viewParam === "true");
-  
+
     if (viewParam === "true" && recordId) {
       const storedRecord = localStorage.getItem("viewRecord");
       if (storedRecord) {
@@ -107,7 +107,7 @@ export default function Donation() {
       setRecord(null);
     }
   }, [location.search]);
-  
+
   // useEffect(() => {
   //   const searchParams = new URLSearchParams(location.search);
   //   const typeParam = searchParams.get("type");
@@ -124,7 +124,7 @@ export default function Donation() {
   //   }
   //   setShowScreenshotPanel(viewParam === "true");
   // }, [location.search]);
-  
+
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const [donationFilterData, setDonationFilterData] = useState({});
   const [articleDonationFilterData, setArticleDonationFilterData] = useState(
@@ -1188,7 +1188,7 @@ export default function Donation() {
           >
             {/* First Tab - Unmatched Bank Credits */}
             <TabPane tab={t("Unmatched_Bank_Credits")} key="unmatched">
-              <div className="donationContent mt-1">
+              <div className="donationContent">
                 {!showSuspenseHistory ? (
                   <SuspenseListTable
                     success={success}
@@ -1203,7 +1203,7 @@ export default function Donation() {
 
             {/* Second Tab - Pending Screenshots */}
             <TabPane tab={t("Pending_Screenshots")} key="pending">
-              <div className="donationContent mt-1">
+              <div className="donationContent">
                 {!showScreenshotPanel ? (
                   <DonationANTDListTable
                     donationType={activeTab}
