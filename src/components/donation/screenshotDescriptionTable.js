@@ -65,6 +65,7 @@ const ScreenshotDescriptionTable = ({ record, data, setMatchedAmount }) => {
           // ✅ Save the updated amount as the new original value
           setOriginalAmount(editedAmount);
           setIsEditing(false);
+          localStorage.setItem("viewRecord", JSON.stringify(updatedRecord));
         } catch (error) {
           message.error("Failed to update amount!");
         }

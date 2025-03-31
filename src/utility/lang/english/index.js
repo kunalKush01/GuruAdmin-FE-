@@ -424,6 +424,8 @@ export const englishContent = {
   notices_AddNotice: "Add Notice",
   notices_latest_Notice: "Notices",
   add_image: "Add Image",
+  hero_image_size_suggestion:
+    "(Please upload the image with the size of 2430px*1000px)",
   image_size_suggestion:
     "(Please upload the image with the size of 450px*350px)",
   notices_title_required: "Title is required",

@@ -421,6 +421,7 @@ export const marathiContent = {
   notices_latest_Notice: "सूचना",
   add_image: "प्रतिमा जोडा",
   image_size_suggestion: "(कृपया 450px*350px आकाराची प्रतिमा अपलोड करा)",
+  hero_image_size_suggestion: "(कृपया 2430px*1000px आकाराची प्रतिमा अपलोड करा)",
   notices_title_required: "शिर्षक आवश्यक आहे",
   notices_desc_required: "वर्णन आवश्यक आहे",
   notices_select_dropDown: "सूचना निवडा",

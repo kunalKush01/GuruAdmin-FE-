@@ -218,8 +218,8 @@ function SuspenseListTable({ success, filterData, type }) {
     { value: "Debit Card", label: "Debit Card" },
     { value: "Bank Transfer", label: "Bank Transfer" },
   ];
-  const tableData = data?.result.filter((item) => !item.donorMapped) || [];
-  const totalItems = data?.total || 0;
+  const tableData = data?.result?.filter((item) => !item.donorMapped) ?? [];
+  const totalItems = data?.total ?? 0;
 
   return (
     <>
