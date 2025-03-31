@@ -9,6 +9,7 @@ import AIMatchedRecord from "./aiMatchedRecord";
 import { useQuery } from "@tanstack/react-query";
 import { extractDataFromImage } from "../../api/suspenseApi";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 const Desc = (props) => (
   <Flex
     justify="center"
@@ -35,7 +36,8 @@ const ScreenshotPanel = ({
   setRecord
 }) => {
   const history = useHistory()
-  // console.log(record);
+  const trustDetails = useSelector((state) => state.auth.trustDetail) || {};
+  const trustId = trustDetails?.id;
   const [sizes, setSizes] = useState(["70%", "30%"]);
   const [enabled, setEnabled] = useState(true);
   const [imageUrl, setImageUrl] = useState(null);
@@ -76,7 +78,13 @@ const ScreenshotPanel = ({
     ["extractData", record?.paymentScreenShot], // Use record?.image_url as a dependency
     () =>
       extractDataFromImage(
-        record?.paymentScreenShot ? { filePath: record.paymentScreenShot } : {}
+        record?.paymentScreenShot
+          ? {
+              filePath: record.paymentScreenShot,
+              trustId: trustId,
+              donationId: record?._id,
+            }
+          : {}
       ), // Ensure initial payload is {}
     {
       keepPreviousData: true,

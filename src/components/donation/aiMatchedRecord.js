@@ -1,19 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { Select, Table, Input, Button, DatePicker } from "antd";
+import { Select, Table, Input, Button, DatePicker, Space, Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
 import "../../assets/scss/common.scss";
+import linkIcon from "../../assets/images/icons/link.svg";
 import { fetchFields } from "../../fetchModuleFields";
 import { useSelector } from "react-redux";
 import { searchSupense, syncSuspenseWithSearch } from "../../api/suspenseApi";
 import moment from "moment";
+import { useHistory } from "react-router-dom";
 
 const { Option } = Select;
 const { TextArea } = Input;
 
 const AIMatchedRecord = () => {
+  const history = useHistory();
+
   const { t } = useTranslation();
   const trustId = localStorage.getItem("trustId");
   const selectedLang = useSelector((state) => state.auth.selectLang);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 10,
+  });
+  const [categoryTypeName, setCategoryTypeName] = useState(t("All"));
+  const [subCategoryTypeName, setSubCategoryTypeName] = useState(t("All"));
+  const [dropDownName, setdropDownName] = useState("dashboard_monthly");
+  const [activeTab, setActiveTab] = useState("Donation");
 
   const [selectedField, setSelectedField] = useState("bankNarration");
   const [searchText, setSearchText] = useState("");
@@ -123,14 +135,29 @@ const AIMatchedRecord = () => {
   useEffect(() => {
     fetchSearchResults();
   }, [currentPage, pageSize]); // Fetch results on pagination change
-
+  const handleDonorMapped = (record) => {
+    const params = new URLSearchParams({
+      page: pagination.page,
+      category: categoryTypeName,
+      subCategory: subCategoryTypeName,
+      filter: dropDownName,
+      type: activeTab,
+      dateTime: record.transactionDate,
+      remark: record.bankNarration,
+      amount: record.amount,
+      sId: record._id,
+      donorMapped: record.donorMapped,
+      modeOfPayment: record.modeOfPayment,
+    }).toString();
+    history.push(`/donation/add?${params}`);
+  };
   const columns = [
     {
       title: t("transactionDate"),
       dataIndex: "transactionDate",
       key: "transactionDate",
       render: (text) => (text ? moment(text).format("DD-MMM-YYYY HH:mm") : "-"),
-      width: 150,
+      width: 200,
       fixed: "left",
     },
     {
@@ -143,7 +170,7 @@ const AIMatchedRecord = () => {
       title: t("suspense_amount"),
       dataIndex: "amount",
       key: "amount",
-      width: 80,
+      width: 100,
     },
     {
       title: t("suspense_mode_of_payment"),
@@ -151,7 +178,37 @@ const AIMatchedRecord = () => {
       key: "modeOfPayment",
       render: (text) =>
         text ? text : <span className="d-flex justify-content-center">-</span>,
-      width: 120,
+      width: 180,
+    },
+    {
+      title: t("action"),
+      key: "action",
+      fixed: "right",
+      width: 80,
+      render: (text, record) => (
+        <Space>
+          {/* <Tooltip title=""> */}
+          <img
+            src={linkIcon}
+            width={20}
+            className="cursor-pointer"
+            onClick={() => handleDonorMapped(record)}
+          />
+          {/* </Tooltip> */}
+          {/* <img
+            src={editIcon}
+            width={35}
+            className="cursor-pointer"
+            onClick={() => handleEdit(record)}
+          />
+          <img
+            src={deleteIcon}
+            width={35}
+            className="cursor-pointer"
+            onClick={() => handleDelete(record)}
+          /> */}
+        </Space>
+      ),
     },
   ];
 
