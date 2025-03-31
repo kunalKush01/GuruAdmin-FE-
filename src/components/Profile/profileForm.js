@@ -263,7 +263,6 @@ export default function ProfileForm({
       setImageUrl([]);
     }
   }, [defaultHeroImage]);
-  console.log("@@@@@@@@@@@@@@",uploadedFileUrl)
   return (
     <div className="profileformwrapper FormikWrapper">
       <Formik
@@ -280,7 +279,6 @@ export default function ProfileForm({
                 .filter((item) => item && item.fileName)
                 .map((item) => item.fileName)
             : [];
-          console.log(heroImagesFileNames);
           setLoading(true);
           AddLanguage
             ? mutation.mutate({
@@ -349,7 +347,6 @@ export default function ProfileForm({
         validationSchema={validationSchema}
       >
         {(formik) => {
-          console.log(defaultHeroImage);
           useEffect(() => {
             if (
               Array.isArray(defaultHeroImage) &&
@@ -746,11 +743,11 @@ export default function ProfileForm({
               </Row>
               {/* Trust Hero images*/}
               <Row className={`mt-1 ${AddLanguage && "paddingForm"}`}>
-                <Col xs={12}>
-                  <div className="heading_div existLabel">
-                    <Trans i18nKey={"hero_images"} />
-                    <hr />
-                  </div>
+                <div className="heading_div existLabel">
+                  <Trans i18nKey={"hero_images"} />
+                  <hr />
+                </div>
+                <Col xs={12} lg={6} md={6}>
                   <Trans i18nKey={"add_image"} />{" "}
                   <span style={{ fontSize: "13px", color: "gray" }}>
                     <Trans i18nKey={"image_size_suggestion"} />
