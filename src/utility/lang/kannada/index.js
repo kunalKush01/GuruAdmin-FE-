@@ -405,6 +405,8 @@ export const kannadaContent = {
   add_image: "ಚಿತ್ರ ಸೇರಿಸಿ",
   image_size_suggestion:
     "(ದಯವಿಟ್ಟು 450px*350px ಗಾತ್ರದ ಚಿತ್ರವನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ)",
+  hero_image_size_suggestion:
+    "(ದಯವಿಟ್ಟು 2430px*1000px ಗಾತ್ರದ ಚಿತ್ರವನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ)",
   notices_title_required: "ಶೀರ್ಷಿಕೆ ಕಡ್ಡಾಯ",
   notices_desc_required: "ವಿವರಣೆ ಕಡ್ಡಾಯ",
   notices_select_dropDown: "ಸೂಚನೆ ಆಯ್ಕೆಮಾಡಿ",
@@ -993,8 +995,8 @@ export const kannadaContent = {
   Expense: "ಖರ್ಚು",
   Unmatched_Bank_Credits: "ಹೊಂದಾಣಿಕೆಯಾಗದ ಬ್ಯಾಂಕ್ ಕ್ರೆಡಿಟ್‌ಗಳು",
   Pending_Screenshots: "ಬಾಕಿ ಉಳಿದಿರುವ ಸ್ಕ್ರೀನ್‌ಶಾಟ್‌ಗಳು",
-  Service_Name:"ಸೇವೆಯ ಹೆಸರು",
-  add_Booking:"ಬುಕಿಂಗ್ ಸೇರಿಸಿ",
-  add_service:"ಸೇವೆಯನ್ನು ಸೇರಿಸಿ",
-  hero_images:"ಹೀರೋ ಚಿತ್ರಗಳು"
+  Service_Name: "ಸೇವೆಯ ಹೆಸರು",
+  add_Booking: "ಬುಕಿಂಗ್ ಸೇರಿಸಿ",
+  add_service: "ಸೇವೆಯನ್ನು ಸೇರಿಸಿ",
+  hero_images: "ಹೀರೋ ಚಿತ್ರಗಳು",
 };

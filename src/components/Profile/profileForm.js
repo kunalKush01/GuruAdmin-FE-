@@ -750,7 +750,7 @@ export default function ProfileForm({
                 <Col xs={12} lg={6} md={6}>
                   <Trans i18nKey={"add_image"} />{" "}
                   <span style={{ fontSize: "13px", color: "gray" }}>
-                    <Trans i18nKey={"image_size_suggestion"} />
+                    <Trans i18nKey={"hero_image_size_suggestion"} />
                   </span>
                   <Row>
                     <UploadImage

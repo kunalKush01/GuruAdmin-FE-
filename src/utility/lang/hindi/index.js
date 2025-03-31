@@ -413,6 +413,7 @@ export const hindiContent = {
   notices_latest_Notice: "नोटिस",
   add_image: "छवि जोड़ें",
   image_size_suggestion: "(कृपया 450px*350px आकार की छवि अपलोड करें)",
+  hero_image_size_suggestion: "(कृपया 2430px*1000px आकार की छवि अपलोड करें)",
   notices_title_required: "शीर्षक आवश्यक है",
   notices_desc_required: "विवरण आवश्यक है",
   notices_select_dropDown: "नोटिस चुनें",

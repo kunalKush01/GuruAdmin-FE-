@@ -401,6 +401,7 @@ export const tamilContent = {
   notices_latest_Notice: "அறிவிப்புகள்",
   add_image: "படத்தை சேர்",
   image_size_suggestion: "(450px*350px அளவுள்ள படத்தை பதிவேற்றவும்)",
+  hero_image_size_suggestion: "(2430px*1000px அளவுள்ள படத்தை பதிவேற்றவும்)",
   notices_title_required: "தலைப்பு தேவை",
   notices_desc_required: "விளக்கம் தேவை",
   notices_select_dropDown: "அறிவிப்பை தேர்ந்தெடு",

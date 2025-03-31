@@ -402,6 +402,7 @@ export const gujaratiContent = {
   notices_latest_Notice: "સૂચનાઓ",
   add_image: "ચિત્ર ઉમેરો",
   image_size_suggestion: "(કૃપા કરીને 450px*350px ના કદનું ચિત્ર અપલોડ કરો)",
+  hero_image_size_suggestion: "(કૃપા કરીને 2430px*1000px ના કદનું ચિત્ર અપલોડ કરો)",
   notices_title_required: "શીર્ષક જરૂરી છે",
   notices_desc_required: "વર્ણન જરૂરી છે",
   notices_select_dropDown: "સૂચના પસંદ કરો",

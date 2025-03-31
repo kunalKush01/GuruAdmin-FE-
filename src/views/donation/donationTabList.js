@@ -458,7 +458,7 @@ export default function Donation() {
     switch (activeTab) {
       case "Donation":
         return (
-          <Space className="mb-1">
+          <Space>
             <div
               className="d-flex justify-content-between align-items-center"
               id="donation_view_btn"
@@ -475,7 +475,7 @@ export default function Donation() {
               ) : (
                 <div></div>
               )}
-              <div className="botton-container">
+              <div className="botton-container align-items-center">
                 <Space className="me-2">
                   {showDonationHistory ? (
                     <img
@@ -617,13 +617,13 @@ export default function Donation() {
         );
       case "Article_Donation":
         return (
-          <Space className="mb-1">
+          <Space>
             {" "}
             <div
               className="d-flex flex-wrap gap-2 gap-md-0 justify-content-end"
               id="donation_view_btn"
             >
-              <div className="botton-container">
+              <div className="botton-container align-items-center">
                 <div className="d-flex row1">
                   <ChangeCategoryType
                     className={"me-1"}
@@ -717,7 +717,6 @@ export default function Donation() {
       case "Suspense":
         return (
           <Space
-            className="mb-1"
             style={{
               display: nestedActiveTab !== "unmatched" ? "none" : "block",
             }}
@@ -1189,7 +1188,22 @@ export default function Donation() {
   ];
   const handleTabChange = (key) => {
     setActiveTab(key);
+  
+    const tabMapping = {
+      Donation: "", // No query param for Donation
+      Article_Donation: "article-donation",
+      Suspense: "suspense",
+    };
+  
+    const newType = tabMapping[key];
+  
+    if (newType) {
+      history.push(`/donation?type=${newType}`);
+    } else {
+      history.push("/donation"); // No query parameters for Donation tab
+    }
   };
+  
   return (
     <div className="listviewwrapper">
       <Helmet>
