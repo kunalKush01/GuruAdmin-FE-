@@ -76,7 +76,11 @@ const ScreenshotPanel = ({
     () =>
       extractDataFromImage(
         record?.paymentScreenShot
-          ? { filePath: record.paymentScreenShot, trustId: trustId }
+          ? {
+              filePath: record.paymentScreenShot,
+              trustId: trustId,
+              donationId: record?._id,
+            }
           : {}
       ), // Ensure initial payload is {}
     {
