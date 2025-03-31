@@ -451,77 +451,80 @@ export default function Donation() {
       : false;
   const [showScreenshotPanel, setShowScreenshotPanel] = useState(false);
   const [record, setRecord] = useState(null);
-  // Donation split tab
-  const items = [
-    {
-      key: "Donation",
-      label: t("donation"),
-      children: (
-        <>
-          <div
-            className="d-flex justify-content-between align-items-center"
-            id="donation_view_btn"
-          >
-            {showDonationHistory ? (
-              <img
-                src={arrowLeft}
-                className="me-2  cursor-pointer"
-                onClick={() => {
-                  setShowDonationHistory(false);
-                  queryClient.invalidateQueries("donations");
-                }}
-              />
-            ) : (
-              <div></div>
-            )}
-            <div className="botton-container">
-              <Space className="me-2">
-                {showDonationHistory ? (
-                  <img
-                    src={syncIcon}
-                    alt="Loading"
-                    style={{ width: 24, height: 24, cursor: "pointer" }}
-                    onClick={handleDonationRefresh}
-                  />
-                ) : (
-                  <div></div>
-                )}
-              </Space>
-              <div className="d-flex row1 me-1">
-                <ChangeCategoryType
-                  className={"me-1"}
-                  categoryTypeArray={newTypes}
-                  typeName={ConverFirstLatterToCapital(categoryTypeName ?? "")}
-                  setTypeName={(e) => {
-                    setCategoryId(e.target.id);
-                    setCategoryTypeName(e.target.name);
-                    setPagination({ page: 1 });
-                    history.push(
-                      `/donation?page=${1}&category=${
-                        e.target.name
-                      }&subCategory=${subCategoryTypeName}&filter=${dropDownName}`
-                    );
-                  }}
-                />
 
-                <ChangeCategoryType
-                  className={"me-1"}
-                  categoryTypeArray={subCategoryTypes}
-                  typeName={ConverFirstLatterToCapital(
-                    subCategoryTypeName ?? ""
-                  )}
-                  setTypeName={(e) => {
-                    setSubCategoryTypeId(e.target.id);
-                    setSubCategoryTypeName(e.target.name);
-                    setPagination({ page: 1 });
-                    history.push(
-                      `/donation?page=${1}&category=${categoryTypeName}&subCategory=${
-                        e.target.name
-                      }&filter=${dropDownName}`
-                    );
+  //splits action buttons
+  const [nestedActiveTab, setNestedActiveTab] = useState("unmatched");
+  const renderActionButton = () => {
+    switch (activeTab) {
+      case "Donation":
+        return (
+          <Space className="mb-1">
+            <div
+              className="d-flex justify-content-between align-items-center"
+              id="donation_view_btn"
+            >
+              {showDonationHistory ? (
+                <img
+                  src={arrowLeft}
+                  className="me-2  cursor-pointer"
+                  onClick={() => {
+                    setShowDonationHistory(false);
+                    queryClient.invalidateQueries("donations");
                   }}
                 />
-                {/* <ChangePeriodDropDown
+              ) : (
+                <div></div>
+              )}
+              <div className="botton-container">
+                <Space className="me-2">
+                  {showDonationHistory ? (
+                    <img
+                      src={syncIcon}
+                      alt="Loading"
+                      style={{ width: 24, height: 24, cursor: "pointer" }}
+                      onClick={handleDonationRefresh}
+                    />
+                  ) : (
+                    <div></div>
+                  )}
+                </Space>
+                <div className="d-flex row1 me-1">
+                  <ChangeCategoryType
+                    className={"me-1"}
+                    categoryTypeArray={newTypes}
+                    typeName={ConverFirstLatterToCapital(
+                      categoryTypeName ?? ""
+                    )}
+                    setTypeName={(e) => {
+                      setCategoryId(e.target.id);
+                      setCategoryTypeName(e.target.name);
+                      setPagination({ page: 1 });
+                      history.push(
+                        `/donation?page=${1}&category=${
+                          e.target.name
+                        }&subCategory=${subCategoryTypeName}&filter=${dropDownName}`
+                      );
+                    }}
+                  />
+
+                  <ChangeCategoryType
+                    // className={"me-1"}
+                    categoryTypeArray={subCategoryTypes}
+                    typeName={ConverFirstLatterToCapital(
+                      subCategoryTypeName ?? ""
+                    )}
+                    setTypeName={(e) => {
+                      setSubCategoryTypeId(e.target.id);
+                      setSubCategoryTypeName(e.target.name);
+                      setPagination({ page: 1 });
+                      history.push(
+                        `/donation?page=${1}&category=${categoryTypeName}&subCategory=${
+                          e.target.name
+                        }&filter=${dropDownName}`
+                      );
+                    }}
+                  />
+                  {/* <ChangePeriodDropDown
                   dropDownName={dropDownName}
                   setdropDownName={(e) => {
                     setdropDownName(e.target.name);
@@ -533,9 +536,9 @@ export default function Donation() {
                     );
                   }}
                 /> */}
-              </div>
-              <Space wrap className="row2">
-                {/* <Button
+                </div>
+                <Space wrap className="row2">
+                  {/* <Button
                   className={`secondaryAction-btn me-1`}
                   color="primary"
                   onClick={handleButtonClick}
@@ -543,73 +546,390 @@ export default function Donation() {
                 >
                   {t("Import_File")}
                 </Button> */}
-                {allPermissions?.name === "all" ||
-                subPermission?.includes(WRITE) ? (
-                  <Button
-                    color="primary"
-                    className={`addAction-btn`}
-                    onClick={() =>
-                      history.push(
-                        `/donation/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}&type=${activeTab}`
-                      )
-                    }
+                  {allPermissions?.name === "all" ||
+                  subPermission?.includes(WRITE) ? (
+                    <Button
+                      color="primary"
+                      className={`addAction-btn`}
+                      onClick={() =>
+                        history.push(
+                          `/donation/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}&type=${activeTab}`
+                        )
+                      }
+                    >
+                      <span>
+                        <Plus className="" size={15} strokeWidth={4} />
+                      </span>
+                      <span>
+                        <Trans i18nKey={"donation_Adddonation"} />
+                      </span>
+                    </Button>
+                  ) : (
+                    ""
+                  )}
+                  <Dropdown.Button
+                    type="primary"
+                    size="large"
+                    className="dropDownBtn"
+                    menu={{
+                      items: [
+                        {
+                          label: t("history"),
+                          key: "history",
+                        },
+                      ],
+                      onClick: handleMenuDonationClick,
+                    }}
+                    onClick={handleButtonClick}
                   >
-                    <span>
-                      <Plus className="" size={15} strokeWidth={4} />
-                    </span>
-                    <span>
-                      <Trans i18nKey={"donation_Adddonation"} />
-                    </span>
-                  </Button>
-                ) : (
-                  ""
-                )}
-                <Dropdown.Button
-                  type="primary"
-                  size="large"
-                  className="dropDownBtn"
-                  menu={{
-                    items: [
-                      {
-                        label: t("history"),
-                        key: "history",
-                      },
-                    ],
-                    onClick: handleMenuDonationClick,
-                  }}
-                  onClick={handleButtonClick}
+                    {t("import")}
+                  </Dropdown.Button>
+                  <ImportForm
+                    onClose={onClose}
+                    open={open}
+                    tab={activeTab}
+                    setShowDonationHistory={setShowDonationHistory}
+                  />
+                  <input
+                    type="file"
+                    ref={importFileRef}
+                    accept=""
+                    className="d-none"
+                    onChange={handleImportFile}
+                  />
+                </Space>
+                <Button
+                  className="secondaryAction-btn"
+                  color="primary"
+                  onClick={handleApplyDonationFilter}
                 >
-                  {t("import")}
-                </Dropdown.Button>
-                <ImportForm
-                  onClose={onClose}
-                  open={open}
-                  tab={activeTab}
-                  setShowDonationHistory={setShowDonationHistory}
-                />
-                <input
-                  type="file"
-                  ref={importFileRef}
-                  accept=""
-                  className="d-none"
-                  onChange={handleImportFile}
-                />
-              </Space>
-              <Button
-                className="secondaryAction-btn"
-                color="primary"
-                onClick={handleApplyDonationFilter}
-              >
-                <img
-                  src={filterIcon}
-                  alt="Filter Icon"
-                  width={20}
-                  className="filterIcon"
-                />
-                {t("filter")}
-              </Button>
+                  <img
+                    src={filterIcon}
+                    alt="Filter Icon"
+                    width={20}
+                    className="filterIcon"
+                  />
+                  {t("filter")}
+                </Button>
+              </div>
             </div>
-          </div>
+          </Space>
+        );
+      case "Article_Donation":
+        return (
+          <Space className="mb-1">
+            {" "}
+            <div
+              className="d-flex flex-wrap gap-2 gap-md-0 justify-content-end"
+              id="donation_view_btn"
+            >
+              <div className="botton-container">
+                <div className="d-flex row1">
+                  <ChangeCategoryType
+                    className={"me-1"}
+                    categoryTypeArray={newTypes}
+                    typeName={ConverFirstLatterToCapital(
+                      categoryTypeName ?? ""
+                    )}
+                    setTypeName={(e) => {
+                      setCategoryId(e.target.id);
+                      setCategoryTypeName(e.target.name);
+                      setPagination({ page: 1 });
+                      history.push(
+                        `/donation?page=${1}&category=${
+                          e.target.name
+                        }&subCategory=${subCategoryTypeName}&filter=${dropDownName}`
+                      );
+                    }}
+                  />
+
+                  <ChangeCategoryType
+                    className={"me-1"}
+                    categoryTypeArray={subCategoryTypes}
+                    typeName={ConverFirstLatterToCapital(
+                      subCategoryTypeName ?? ""
+                    )}
+                    setTypeName={(e) => {
+                      setSubCategoryTypeId(e.target.id);
+                      setSubCategoryTypeName(e.target.name);
+                      setPagination({ page: 1 });
+                      history.push(
+                        `/donation?page=${1}&category=${categoryTypeName}&subCategory=${
+                          e.target.name
+                        }&filter=${dropDownName}`
+                      );
+                    }}
+                  />
+                  <ChangePeriodDropDown
+                    className="me-1 donationFilterBtn"
+                    dropDownName={dropDownName}
+                    setdropDownName={(e) => {
+                      setdropDownName(e.target.name);
+                      setPagination({ page: 1 });
+                      history.push(
+                        `/donation?page=${1}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${
+                          e.target.name
+                        }`
+                      );
+                    }}
+                  />
+                </div>
+                <div className="row2">
+                  {allPermissions?.name === "all" ||
+                  subPermission?.includes(WRITE) ? (
+                    <Button
+                      color="primary"
+                      className={`addAction-btn me-1`}
+                      onClick={() =>
+                        history.push(
+                          `/donation/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}&type=${activeTab}`
+                        )
+                      }
+                    >
+                      <span>
+                        <Plus className="" size={15} strokeWidth={4} />
+                      </span>
+                      <span>
+                        <Trans i18nKey={"donation_AddArticledonation"} />
+                      </span>
+                    </Button>
+                  ) : (
+                    ""
+                  )}
+                </div>
+                <Button
+                  className="secondaryAction-btn"
+                  color="primary"
+                  onClick={handleApplyArticleDonationFilter}
+                >
+                  <img
+                    src={filterIcon}
+                    alt="Filter Icon"
+                    width={20}
+                    className="filterIcon"
+                  />
+                  {t("filter")}
+                </Button>
+              </div>
+            </div>
+          </Space>
+        );
+      case "Suspense":
+        return (
+          <Space
+            className="mb-1"
+            style={{
+              display: nestedActiveTab !== "unmatched" ? "none" : "block",
+            }}
+          >
+            {" "}
+            <div className="d-flex justify-content-between align-items-center">
+              {showSuspenseHistory ? (
+                <img
+                  src={arrowLeft}
+                  className="me-2  cursor-pointer"
+                  onClick={() => {
+                    setShowSuspenseHistory(false);
+                    queryClient.invalidateQueries("suspenseData");
+                  }}
+                />
+              ) : (
+                <div></div>
+              )}
+              <div className="d-flex flex-wrap gap-2 gap-md-0 justify-content-end">
+                <Space className="me-2">
+                  {isFetchingSuspense ? (
+                    <img
+                      src={loadingOutlined}
+                      alt="Loading"
+                      style={{ width: 24, height: 24, cursor: "pointer" }}
+                      onClick={handleRefresh}
+                    />
+                  ) : (
+                    <img
+                      src={syncIcon}
+                      alt="Loading"
+                      style={{ width: 24, height: 24, cursor: "pointer" }}
+                      onClick={handleRefresh}
+                    />
+                  )}
+                </Space>
+                <Space wrap className="">
+                  {!showSuspenseHistory &&
+                    (allPermissions?.name === "all" ||
+                      subPermission?.includes(WRITE)) && (
+                      <Button
+                        color="primary"
+                        className="addAction-btn"
+                        size="large"
+                        onClick={handleAddSuspenseClick}
+                      >
+                        <span>
+                          <Plus className="" size={15} strokeWidth={4} />
+                        </span>
+                        <span> {t("add_suspense_record")}</span>
+                      </Button>
+                    )}
+                  <Dropdown.Button
+                    type="primary"
+                    size="large"
+                    className="dropDownBtn"
+                    menu={{
+                      items: [
+                        {
+                          label: t("history"),
+                          key: "history",
+                        },
+                      ],
+                      onClick: handleMenuSuspenseClick,
+                    }}
+                    onClick={handleButtonClick}
+                  >
+                    {t("import")}
+                  </Dropdown.Button>
+                  <ImportForm
+                    onClose={onClose}
+                    open={open}
+                    tab={activeTab}
+                    setShowSuspenseHistory={setShowSuspenseHistory}
+                  />
+                  <Button
+                    className="secondaryAction-btn"
+                    color="primary"
+                    onClick={handleApplySuspenseFilter}
+                  >
+                    <img
+                      src={filterIcon}
+                      alt="Filter Icon"
+                      width={20}
+                      className="filterIcon"
+                    />
+                    {t("filter")}
+                  </Button>
+                </Space>
+                <Modal
+                  title={t("add_suspense_record")}
+                  open={isAddModalVisible}
+                  onCancel={() => setIsAddModalVisible(false)}
+                  footer={null}
+                  centered
+                >
+                  <Form
+                    form={form}
+                    onFinish={handleFormSubmit}
+                    layout="vertical"
+                  >
+                    <Row gutter={16}>
+                      <Col span={12}>
+                        <Form.Item
+                          name="transactionDate"
+                          label={t("transactionDate")}
+                          rules={[
+                            {
+                              required: true,
+                              message: t("req_transactionDate"),
+                            },
+                          ]}
+                        >
+                          <CustomDatePicker
+                            showTime
+                            format="YYYY-MM-DD HH:mm"
+                            placeholder={t("select_date")}
+                          />
+                        </Form.Item>
+                      </Col>
+                      <Col span={12}>
+                        <Form.Item
+                          name="transactionId"
+                          label={t("suspense_transId")}
+                        >
+                          <Input />
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                    <Row gutter={16}>
+                      <Col span={24}>
+                        <Form.Item
+                          name="bankNarration"
+                          label={t("bankNarration")}
+                          rules={[
+                            { required: true, message: t("req_bankNarration") },
+                          ]}
+                        >
+                          <Input.TextArea rows={4} />
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                    <Row gutter={16}>
+                      <Col span={12}>
+                        <Form.Item
+                          name="chequeNo"
+                          label={t("suspense_cheque_no")}
+                        >
+                          <Input />
+                        </Form.Item>
+                      </Col>
+                      <Col span={12}>
+                        <Form.Item
+                          name="amount"
+                          label={t("suspense_amount")}
+                          rules={[
+                            { required: true, message: t("req_ammount") },
+                          ]}
+                        >
+                          <Input type="number" min="0" step="0.01" />
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                    <Row gutter={16}>
+                      <Col span={24}>
+                        <Form.Item
+                          name="modeOfPayment"
+                          label={t("suspense_mode_of_payment")}
+                          rules={[
+                            {
+                              required: true,
+                              message: t("req_modeofPayment"),
+                            },
+                          ]}
+                        >
+                          <Select>
+                            {modeOfPaymentOptions.map((option) => (
+                              <Select.Option
+                                key={option.value}
+                                value={option.value}
+                              >
+                                {option.label}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                    <Row justify="end">
+                      <Col>
+                        <Form.Item>
+                          <Button color="primary" htmlType="submit">
+                            {t("add_record")}
+                          </Button>
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                  </Form>
+                </Modal>
+              </div>
+            </div>
+          </Space>
+        );
+    }
+  };
+  // Donation split tab
+  const items = [
+    {
+      key: "Donation",
+      label: t("donation"),
+      children: (
+        <>
           <div className="d-flex justify-content-between">
             <FilterTag
               hasFilters={hasFilters}
@@ -701,97 +1021,6 @@ export default function Donation() {
       label: t("article_donation"),
       children: (
         <>
-          <div
-            className="d-flex flex-wrap gap-2 gap-md-0 justify-content-end"
-            id="donation_view_btn"
-          >
-            <div className="botton-container">
-              <div className="d-flex row1">
-                <ChangeCategoryType
-                  className={"me-1"}
-                  categoryTypeArray={newTypes}
-                  typeName={ConverFirstLatterToCapital(categoryTypeName ?? "")}
-                  setTypeName={(e) => {
-                    setCategoryId(e.target.id);
-                    setCategoryTypeName(e.target.name);
-                    setPagination({ page: 1 });
-                    history.push(
-                      `/donation?page=${1}&category=${
-                        e.target.name
-                      }&subCategory=${subCategoryTypeName}&filter=${dropDownName}`
-                    );
-                  }}
-                />
-
-                <ChangeCategoryType
-                  className={"me-1"}
-                  categoryTypeArray={subCategoryTypes}
-                  typeName={ConverFirstLatterToCapital(
-                    subCategoryTypeName ?? ""
-                  )}
-                  setTypeName={(e) => {
-                    setSubCategoryTypeId(e.target.id);
-                    setSubCategoryTypeName(e.target.name);
-                    setPagination({ page: 1 });
-                    history.push(
-                      `/donation?page=${1}&category=${categoryTypeName}&subCategory=${
-                        e.target.name
-                      }&filter=${dropDownName}`
-                    );
-                  }}
-                />
-                <ChangePeriodDropDown
-                  className="me-1 donationFilterBtn"
-                  dropDownName={dropDownName}
-                  setdropDownName={(e) => {
-                    setdropDownName(e.target.name);
-                    setPagination({ page: 1 });
-                    history.push(
-                      `/donation?page=${1}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${
-                        e.target.name
-                      }`
-                    );
-                  }}
-                />
-              </div>
-              <div className="row2">
-                {allPermissions?.name === "all" ||
-                subPermission?.includes(WRITE) ? (
-                  <Button
-                    color="primary"
-                    className={`addAction-btn me-1`}
-                    onClick={() =>
-                      history.push(
-                        `/donation/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}&type=${activeTab}`
-                      )
-                    }
-                  >
-                    <span>
-                      <Plus className="" size={15} strokeWidth={4} />
-                    </span>
-                    <span>
-                      <Trans i18nKey={"donation_AddArticledonation"} />
-                    </span>
-                  </Button>
-                ) : (
-                  ""
-                )}
-              </div>
-              <Button
-                className="secondaryAction-btn"
-                color="primary"
-                onClick={handleApplyArticleDonationFilter}
-              >
-                <img
-                  src={filterIcon}
-                  alt="Filter Icon"
-                  width={20}
-                  className="filterIcon"
-                />
-                {t("filter")}
-              </Button>
-            </div>
-          </div>
           <div className="d-flex justify-content-between">
             <FilterTag
               hasFilters={hasFilters}
@@ -878,196 +1107,6 @@ export default function Donation() {
       label: t("suspense"),
       children: (
         <>
-          <div className="d-flex justify-content-between align-items-center">
-            {showSuspenseHistory ? (
-              <img
-                src={arrowLeft}
-                className="me-2  cursor-pointer"
-                onClick={() => {
-                  setShowSuspenseHistory(false);
-                  queryClient.invalidateQueries("suspenseData");
-                }}
-              />
-            ) : (
-              <div></div>
-            )}
-            <div className="d-flex flex-wrap gap-2 gap-md-0 justify-content-end">
-              <Space className="me-2">
-                {isFetchingSuspense ? (
-                  <img
-                    src={loadingOutlined}
-                    alt="Loading"
-                    style={{ width: 24, height: 24, cursor: "pointer" }}
-                    onClick={handleRefresh}
-                  />
-                ) : (
-                  <img
-                    src={syncIcon}
-                    alt="Loading"
-                    style={{ width: 24, height: 24, cursor: "pointer" }}
-                    onClick={handleRefresh}
-                  />
-                )}
-              </Space>
-              <Space wrap className="">
-                {!showSuspenseHistory &&
-                  (allPermissions?.name === "all" ||
-                    subPermission?.includes(WRITE)) && (
-                    <Button
-                      color="primary"
-                      className="addAction-btn"
-                      size="large"
-                      onClick={handleAddSuspenseClick}
-                    >
-                      <span>
-                        <Plus className="" size={15} strokeWidth={4} />
-                      </span>
-                      <span> {t("add_suspense_record")}</span>
-                    </Button>
-                  )}
-                <Dropdown.Button
-                  type="primary"
-                  size="large"
-                  className="dropDownBtn"
-                  menu={{
-                    items: [
-                      {
-                        label: t("history"),
-                        key: "history",
-                      },
-                    ],
-                    onClick: handleMenuSuspenseClick,
-                  }}
-                  onClick={handleButtonClick}
-                >
-                  {t("import")}
-                </Dropdown.Button>
-                <ImportForm
-                  onClose={onClose}
-                  open={open}
-                  tab={activeTab}
-                  setShowSuspenseHistory={setShowSuspenseHistory}
-                />
-                <Button
-                  className="secondaryAction-btn"
-                  color="primary"
-                  onClick={handleApplySuspenseFilter}
-                >
-                  <img
-                    src={filterIcon}
-                    alt="Filter Icon"
-                    width={20}
-                    className="filterIcon"
-                  />
-                  {t("filter")}
-                </Button>
-              </Space>
-              <Modal
-                title={t("add_suspense_record")}
-                open={isAddModalVisible}
-                onCancel={() => setIsAddModalVisible(false)}
-                footer={null}
-                centered
-              >
-                <Form form={form} onFinish={handleFormSubmit} layout="vertical">
-                  <Row gutter={16}>
-                    <Col span={12}>
-                      <Form.Item
-                        name="transactionDate"
-                        label={t("transactionDate")}
-                        rules={[
-                          {
-                            required: true,
-                            message: t("req_transactionDate"),
-                          },
-                        ]}
-                      >
-                        <CustomDatePicker
-                          showTime
-                          format="YYYY-MM-DD HH:mm"
-                          placeholder={t("select_date")}
-                        />
-                      </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                      <Form.Item
-                        name="transactionId"
-                        label={t("suspense_transId")}
-                      >
-                        <Input />
-                      </Form.Item>
-                    </Col>
-                  </Row>
-                  <Row gutter={16}>
-                    <Col span={24}>
-                      <Form.Item
-                        name="bankNarration"
-                        label={t("bankNarration")}
-                        rules={[
-                          { required: true, message: t("req_bankNarration") },
-                        ]}
-                      >
-                        <Input.TextArea rows={4} />
-                      </Form.Item>
-                    </Col>
-                  </Row>
-                  <Row gutter={16}>
-                    <Col span={12}>
-                      <Form.Item
-                        name="chequeNo"
-                        label={t("suspense_cheque_no")}
-                      >
-                        <Input />
-                      </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                      <Form.Item
-                        name="amount"
-                        label={t("suspense_amount")}
-                        rules={[{ required: true, message: t("req_ammount") }]}
-                      >
-                        <Input type="number" min="0" step="0.01" />
-                      </Form.Item>
-                    </Col>
-                  </Row>
-                  <Row gutter={16}>
-                    <Col span={24}>
-                      <Form.Item
-                        name="modeOfPayment"
-                        label={t("suspense_mode_of_payment")}
-                        rules={[
-                          {
-                            required: true,
-                            message: t("req_modeofPayment"),
-                          },
-                        ]}
-                      >
-                        <Select>
-                          {modeOfPaymentOptions.map((option) => (
-                            <Select.Option
-                              key={option.value}
-                              value={option.value}
-                            >
-                              {option.label}
-                            </Select.Option>
-                          ))}
-                        </Select>
-                      </Form.Item>
-                    </Col>
-                  </Row>
-                  <Row justify="end">
-                    <Col>
-                      <Form.Item>
-                        <Button color="primary" htmlType="submit">
-                          {t("add_record")}
-                        </Button>
-                      </Form.Item>
-                    </Col>
-                  </Row>
-                </Form>
-              </Modal>
-            </div>
-          </div>
           <div className="d-flex justify-content-between">
             <FilterTag
               hasFilters={hasFilters}
@@ -1076,7 +1115,10 @@ export default function Donation() {
               handleRemoveAllFilter={suspenseRemoveAllFilter}
             />
           </div>
-          <Tabs defaultActiveKey="unmatched">
+          <Tabs
+            defaultActiveKey="unmatched"
+            onChange={setNestedActiveTab} // Track nested tab changes
+          >
             {/* First Tab - Unmatched Bank Credits */}
             <TabPane tab={t("Unmatched_Bank_Credits")} key="unmatched">
               <div className="donationContent mt-1">
@@ -1162,6 +1204,7 @@ export default function Donation() {
           className="donationTab"
           items={items}
           onChange={handleTabChange}
+          tabBarExtraContent={renderActionButton()}
         />
       </div>
     </div>
