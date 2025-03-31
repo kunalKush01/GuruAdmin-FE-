@@ -988,5 +988,5 @@ export const tamilContent = {
   Service_Name:"சேவையின் பெயர்",
   add_Booking:"முன்பதிவு சேர்க்கவும்",
   add_service:"சேவையைச் சேர்க்கவும்",
-  Payment_Mode:"கட்டண முறை"
+  hero_images:"ஹீரோ படங்கள்"
 };

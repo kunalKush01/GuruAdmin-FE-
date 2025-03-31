@@ -1080,5 +1080,5 @@ export const englishContent = {
   Service_Name: "Service Name	",
   add_Booking:"Add Booking",
   add_service:"Add Service",
-  Payment_Mode:"Payment Mode"
+  hero_images:"HERO IMAGES"
 };

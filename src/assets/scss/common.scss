@@ -4576,3 +4576,27 @@
 .suspenseDate {
     height: 33px !important;
 }
+
+.previewImagesContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,
+            minmax(80px, 1fr));
+    /* Ensures responsiveness */
+    gap: 10px;
+    /* Adds space between images */
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+}
+
+.previewImages {
+    gap: 5px;
+    display: flex;
+    position: relative;
+    height: 66px;
+    padding: 8px;
+    border: 1px solid #d9d9d9;
+    border-radius: 8px;
+    justify-content: space-between;
+    align-items: center;
+}

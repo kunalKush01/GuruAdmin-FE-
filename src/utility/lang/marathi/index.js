@@ -1054,5 +1054,5 @@ export const marathiContent = {
   Service_Name: "सेवेचे नाव",
   add_Booking:"बुकिंग जोडा",
   add_service:"सेवा जोडा",
-  Payment_Mode:"पेमेंट मोड"
+  hero_images:"नायक प्रतिमा"
 };
