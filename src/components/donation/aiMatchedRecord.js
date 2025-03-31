@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Select, Table, Input, Button } from "antd";
+import { Select, Table, Input, Button, DatePicker } from "antd";
 import { useTranslation } from "react-i18next";
 import "../../assets/scss/common.scss";
 import { fetchFields } from "../../fetchModuleFields";
@@ -15,7 +15,7 @@ const AIMatchedRecord = () => {
   const trustId = localStorage.getItem("trustId");
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
-  const [selectedField, setSelectedField] = useState(null);
+  const [selectedField, setSelectedField] = useState("bankNarration");
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [fieldOptions, setFieldOptions] = useState([]);
@@ -23,24 +23,58 @@ const AIMatchedRecord = () => {
   const [pageSize, setPageSize] = useState(10);
   const [totalItems, setTotalItems] = useState(0);
   const [loading, setLoading] = useState(false);
-
   useEffect(() => {
     const excludeFields = [
-      "_id", "updatedAt", "updatedBy", "__v", "trustId", "receiptLink",
-      "receiptName", "customFields", "user", "createdBy", "donorMapped",
-      "transactionId", "isArticle", "isDeleted", "isGovernment", "donationType",
-      "pgOrderId", "receiptNo", "billInvoice", "billInvoiceExpiredAt",
-      "billInvoiceName", "supplyId", "itemId", "pricePerItem", "orderQuantity",
+      "_id",
+      "updatedAt",
+      "updatedBy",
+      "__v",
+      "trustId",
+      "receiptLink",
+      "receiptName",
+      "customFields",
+      "user",
+      "createdBy",
+      "donorMapped",
+      "transactionId",
+      "isArticle",
+      "isDeleted",
+      "isGovernment",
+      "donationType",
+      "pgOrderId",
+      "receiptNo",
+      "billInvoice",
+      "billInvoiceExpiredAt",
+      "billInvoiceName",
+      "supplyId",
+      "itemId",
+      "pricePerItem",
+      "orderQuantity",
+      "createdAt",
+      "donarName",
+      "mobileNum",
+      "userId",
+      "modeOfPayment",
+      "chequeNo",
     ];
     const donation_excludeField = [
-      "articleItem", "articleQuantity", "articleRemark", "articleType",
-      "articleUnit", "articleWeight", "isArticle", "originalAmount",
+      "articleItem",
+      "articleQuantity",
+      "articleRemark",
+      "articleType",
+      "articleUnit",
+      "articleWeight",
+      "isArticle",
+      "originalAmount",
     ];
     const finalExcludeFields = [...excludeFields, ...donation_excludeField];
 
     const getFields = async () => {
       const options = await fetchFields(
-        trustId, "Suspense", finalExcludeFields, selectedLang.id
+        trustId,
+        "Suspense",
+        finalExcludeFields,
+        selectedLang.id
       );
       setFieldOptions(options);
     };
@@ -60,15 +94,23 @@ const AIMatchedRecord = () => {
       if (resetPage) setCurrentPage(1); // Reset to first page on new search
 
       // Sync Suspense Data
-      await syncSuspenseWithSearch();
-
-      // Search API Call
-      const response = await searchSupense({
-        query: searchText,
-        field: selectedField,
+      // await syncSuspenseWithSearch();
+      let payload = {
+        // field: selectedField,
         page: resetPage ? 1 : currentPage,
         limit: pageSize,
-      });
+      };
+
+      if (selectedField === "bankNarration") {
+        payload.query = searchText;
+        payload.field = selectedField;
+      } else if (selectedField === "transactionDate") {
+        payload.specificDate = moment(searchText, "YYYY-MM-DD").utc().format();
+      } else if (selectedField === "amount") {
+        payload.specificAmount = searchText;
+      }
+      // Search API Call
+      const response = await searchSupense(payload);
 
       setSearchResults(response.result || []);
       setTotalItems(response.total || 0);
@@ -120,22 +162,58 @@ const AIMatchedRecord = () => {
         <Select
           placeholder="Select Field"
           style={{ width: "200px" }}
-          onChange={(value) => setSelectedField(value)}
+          value={fieldOptions.length > 0 ? selectedField : undefined}
+          onChange={(value) => {
+            setSelectedField(value);
+            setSearchText("");
+          }}
+          loading={fieldOptions.length === 0}
         >
-          {fieldOptions.map((field) => (
-            <Option key={field.value} value={field.value}>
-              {field.label}
+          {fieldOptions.length > 0 ? (
+            fieldOptions.map((field) => (
+              <Option key={field.value} value={field.value}>
+                {field.label}
+              </Option>
+            ))
+          ) : (
+            <Option value="" disabled>
+              Loading...
             </Option>
-          ))}
+          )}
         </Select>
 
-        <TextArea
-          placeholder="Type to search..."
+        {/* Dynamic Input Field */}
+        {selectedField === "bankNarration" && (
+          <TextArea
+            placeholder="Type to search..."
+            autoSize={{ minRows: 1, maxRows: 3 }}
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+          />
+        )}
+
+        {selectedField === "transactionDate" && (
+          <DatePicker
+            className="suspenseDate"
+            style={{ width: "200px" }}
+            onChange={(date, dateString) => setSearchText(dateString)}
+          />
+        )}
+
+        {selectedField === "amount" && (
+          <Input
+            style={{ flex: 1 }}
+            type="number"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+          />
+        )}
+        {/* <TextArea
           style={{ flex: 1 }}
           autoSize={{ minRows: 1, maxRows: 3 }}
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
-        />
+        /> */}
 
         <Button
           type="primary"
