@@ -44,10 +44,12 @@ import FilterTag from "../../components/partials/filterTag";
 import ImportForm from "./importForm";
 import ImportHistoryTable from "../../components/donation/importHistoryTable";
 import ScreenshotPanel from "../../components/donation/screenshotPanel";
+import { useLocation } from "react-router-dom";
 const { TabPane } = Tabs;
 
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 export default function Donation() {
+  const location = useLocation();
   const history = useHistory();
   const { t } = useTranslation();
   const importFileRef = useRef();
@@ -60,9 +62,69 @@ export default function Donation() {
   const [categoryTypeName, setCategoryTypeName] = useState(t("All"));
   const [subCategoryTypeName, setSubCategoryTypeName] = useState(t("All"));
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
+  const [showScreenshotPanel, setShowScreenshotPanel] = useState(false);
+  const tabMapping = {
+    Donation: "", // No query param for Donation
+    Article_Donation: "article-donation",
+    Suspense: "suspense",
+  };
   const [activeTab, setActiveTab] = useState(
     donation_type ? donation_type : "Donation"
   );
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const typeParam = searchParams.get("type");
+    const subTypeParam = searchParams.get("sub");
+    const viewParam = searchParams.get("view");
+    const recordId = searchParams.get("recordId");
+  
+    if (typeParam === "suspense") {
+      setActiveTab("Suspense");
+      setNestedActiveTab(subTypeParam || "unmatched");
+    } else if (typeParam === "article-donation") {
+      setActiveTab("Article_Donation");
+    } else {
+      setActiveTab("Donation");
+    }
+  
+    setShowScreenshotPanel(viewParam === "true");
+  
+    if (viewParam === "true" && recordId) {
+      const storedRecord = localStorage.getItem("viewRecord");
+      if (storedRecord) {
+        try {
+          const parsedRecord = JSON.parse(storedRecord);
+          if (parsedRecord._id === recordId) {
+            setRecord(parsedRecord);
+          }
+        } catch (error) {
+          console.error("Failed to parse stored record:", error);
+        }
+      }
+    } else {
+      // If view=false or missing, clear local storage
+      localStorage.removeItem("viewRecord");
+      setRecord(null);
+    }
+  }, [location.search]);
+  
+  // useEffect(() => {
+  //   const searchParams = new URLSearchParams(location.search);
+  //   const typeParam = searchParams.get("type");
+  //   const subTypeParam = searchParams.get("sub");
+  //   const viewParam = searchParams.get("view");
+
+  //   if (typeParam === "suspense") {
+  //     setActiveTab("Suspense");
+  //     setNestedActiveTab(subTypeParam || "unmatched"); // Default to "unmatched" if no sub-type
+  //   } else if (typeParam === "article-donation") {
+  //     setActiveTab("Article_Donation");
+  //   } else {
+  //     setActiveTab("Donation");
+  //   }
+  //   setShowScreenshotPanel(viewParam === "true");
+  // }, [location.search]);
+  
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const [donationFilterData, setDonationFilterData] = useState({});
   const [articleDonationFilterData, setArticleDonationFilterData] = useState(
@@ -449,7 +511,6 @@ export default function Donation() {
       : activeTab === "Suspense"
       ? Object.keys(suspenseFilterData).length > 0
       : false;
-  const [showScreenshotPanel, setShowScreenshotPanel] = useState(false);
   const [record, setRecord] = useState(null);
 
   //splits action buttons
@@ -923,6 +984,12 @@ export default function Donation() {
     }
   };
   // Donation split tab
+  const handleNestedTabChange = (nestedKey) => {
+    setNestedActiveTab(nestedKey);
+    if (activeTab === "Suspense") {
+      history.push(`/donation?type=suspense&sub=${nestedKey}`);
+    }
+  };
   const items = [
     {
       key: "Donation",
@@ -1115,8 +1182,9 @@ export default function Donation() {
             />
           </div>
           <Tabs
+            activeKey={nestedActiveTab}
             defaultActiveKey="unmatched"
-            onChange={setNestedActiveTab} // Track nested tab changes
+            onChange={handleNestedTabChange} // Track nested tab changes
           >
             {/* First Tab - Unmatched Bank Credits */}
             <TabPane tab={t("Unmatched_Bank_Credits")} key="unmatched">
@@ -1188,22 +1256,19 @@ export default function Donation() {
   ];
   const handleTabChange = (key) => {
     setActiveTab(key);
-  
-    const tabMapping = {
-      Donation: "", // No query param for Donation
-      Article_Donation: "article-donation",
-      Suspense: "suspense",
-    };
-  
     const newType = tabMapping[key];
-  
+
     if (newType) {
-      history.push(`/donation?type=${newType}`);
+      if (newType === "suspense") {
+        history.push(`/donation?type=${newType}&sub=${nestedActiveTab}`);
+      } else {
+        history.push(`/donation?type=${newType}`);
+      }
     } else {
       history.push("/donation"); // No query parameters for Donation tab
     }
   };
-  
+
   return (
     <div className="listviewwrapper">
       <Helmet>
@@ -1214,6 +1279,7 @@ export default function Donation() {
 
       <div>
         <Tabs
+          activeKey={activeTab}
           defaultActiveKey={activeTab}
           className="donationTab"
           items={items}

@@ -23,6 +23,7 @@ import EditDonation from "./editDonation";
 import "../../assets/scss/common.scss";
 import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
 import eyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
+import { useLocation } from "react-router-dom";
 
 export default function DonationANTDListTable(
   {
@@ -43,6 +44,7 @@ export default function DonationANTDListTable(
   },
   args
 ) {
+  const location = useLocation();
   const { t } = useTranslation();
   const history = useHistory();
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -78,15 +80,15 @@ export default function DonationANTDListTable(
 
       let receiptDownloadLink = "";
 
-        const response = await getDonation({ donationId: item._id });
+      const response = await getDonation({ donationId: item._id });
 
-        if (response?.result?.receiptName) {
-          receiptDownloadLink = `${REACT_APP_BASEURL_PUBLIC}storage/download/donation/${response.result.receiptName}`;
-        } else {
-          toast.error("Receipt not available at this moment.");
-          setIsLoading(false);
-          return;
-        }
+      if (response?.result?.receiptName) {
+        receiptDownloadLink = `${REACT_APP_BASEURL_PUBLIC}storage/download/donation/${response.result.receiptName}`;
+      } else {
+        toast.error("Receipt not available at this moment.");
+        setIsLoading(false);
+        return;
+      }
 
       const message = `Hello ${
         item.donarName
@@ -214,7 +216,17 @@ export default function DonationANTDListTable(
   const handleView = (record) => {
     setRecord(record);
     setShowScreenshotPanel(true);
+  
+    // Store only the latest record in localStorage
+    localStorage.setItem("viewRecord", JSON.stringify(record));
+  
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set("view", "true");
+    searchParams.set("recordId", record._id);
+  
+    history.push(`${location.pathname}?${searchParams.toString()}`);
   };
+  
 
   const handleDelete = async (id) => {
     console.log(id);
@@ -588,7 +600,7 @@ export default function DonationANTDListTable(
               onClick={() => handleWhatsAppShare(item)}
             />
           </div>
-        ),        
+        ),
         action: (
           <div className="d-flex align-items-center">
             <div>

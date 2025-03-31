@@ -8,6 +8,7 @@ import ImageObservation from "./imageObservation";
 import AIMatchedRecord from "./aiMatchedRecord";
 import { useQuery } from "@tanstack/react-query";
 import { extractDataFromImage } from "../../api/suspenseApi";
+import { useHistory } from "react-router-dom";
 const Desc = (props) => (
   <Flex
     justify="center"
@@ -31,7 +32,9 @@ const ScreenshotPanel = ({
   setShowScreenshotPanel,
   showScreenshotPanel,
   record,
+  setRecord
 }) => {
+  const history = useHistory()
   // console.log(record);
   const [sizes, setSizes] = useState(["70%", "30%"]);
   const [enabled, setEnabled] = useState(true);
@@ -84,6 +87,19 @@ const ScreenshotPanel = ({
     }
   );
   const [matchedAmount, setMatchedAmount] = useState(null);
+  const clearViewParams = () => {
+    setShowScreenshotPanel(false); // Close the view panel
+    setRecord(null); // Clear selected record state
+    localStorage.removeItem("viewRecord"); // Remove stored record from localStorage
+  
+    // Update URL: Remove "view" and "recordId" while keeping other params
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.delete("view");
+    searchParams.delete("recordId");
+  
+    history.push(`${location.pathname}?${searchParams.toString()}`);
+  };
+  
   return (
     <div className="d-flex flex-column ">
       {showScreenshotPanel && (
@@ -92,7 +108,7 @@ const ScreenshotPanel = ({
             src={backIcon}
             width={25}
             className="cursor-pointer"
-            onClick={() => setShowScreenshotPanel(false)}
+            onClick={clearViewParams}
           />
           <span className="commonFont">Payment Details</span>
         </div>
