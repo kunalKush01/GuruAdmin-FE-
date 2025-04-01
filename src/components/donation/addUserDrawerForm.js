@@ -316,7 +316,7 @@ function AddUserDrawerForm({
                             label="PAN"
                             name="panNum"
                             placeholder={t("placeHolder_pan")}
-                            required
+                            // required
                           />
                         </div>
                       </Col>
