@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button, Space, Table, Tooltip } from "antd";
 import moment from "moment";
 import numberToWords from "number-to-words";
@@ -11,7 +11,11 @@ import { toast } from "react-toastify";
 import { Spinner } from "reactstrap";
 import styled from "styled-components";
 import { getDonationCustomFields } from "../../api/customFieldsApi";
-import { donationDownloadReceiptApi, getDonation } from "../../api/donationApi";
+import {
+  donationDownloadReceiptApi,
+  getDonation,
+  updateDonation,
+} from "../../api/donationApi";
 import { downloadFile } from "../../api/sharedStorageApi";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
@@ -24,6 +28,7 @@ import "../../assets/scss/common.scss";
 import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
 import eyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
 import { useLocation } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function DonationANTDListTable(
   {
@@ -44,6 +49,7 @@ export default function DonationANTDListTable(
   },
   args
 ) {
+  const queryClient = useQueryClient()
   const location = useLocation();
   const { t } = useTranslation();
   const history = useHistory();
@@ -216,27 +222,50 @@ export default function DonationANTDListTable(
   const handleView = (record) => {
     setRecord(record);
     setShowScreenshotPanel(true);
-  
+
     // Store only the latest record in localStorage
     localStorage.setItem("viewRecord", JSON.stringify(record));
-  
+
     const searchParams = new URLSearchParams(location.search);
     searchParams.set("view", "true");
     searchParams.set("recordId", record._id);
-  
+
     history.push(`${location.pathname}?${searchParams.toString()}`);
   };
-  
 
-  const handleDelete = async (id) => {
-    console.log(id);
-    // try {
-    //   await deleteDonation(id); // API call to delete
-    //   message.success("Donation deleted successfully");
-    //   refetch(); // Refresh the list
-    // } catch (error) {
-    //   message.error("Failed to delete donation");
-    // }
+  const handleDelete = async (item) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "This action will mark the donation as deleted.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const updatedRecord = {
+            ...item,
+            amount: item.amount ? item.amount : 0,
+            donationId: item._id,
+            originalAmount: item.originalAmount ? item.originalAmount : 0,
+            isDeleted: true,
+          };
+
+          // Assuming updateDonation is an API function that updates the donation
+          await updateDonation(updatedRecord);
+          queryClient.invalidateQueries('donations')
+          Swal.fire(
+            "Deleted!",
+            "The donation has been marked as deleted.",
+            "success"
+          );
+        } catch (error) {
+          Swal.fire("Error!", "Failed to delete the donation.", "error");
+        }
+      }
+    });
   };
 
   const columns = [
@@ -464,183 +493,185 @@ export default function DonationANTDListTable(
     }).format(date);
   };
   const Donatio_data = useMemo(() => {
-    return data.map((item, idx) => {
-      const customFields = item.customFields || {};
-      const customFieldData = customFieldNames.reduce((acc, fieldName) => {
-        const customField = customFields.find(
-          (field) => field.fieldName === fieldName
-        );
-        if (customField) {
-          const value = customField.value;
-          if (typeof value === "boolean") {
-            acc[fieldName] = value ? "True" : "False";
-          } else if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
-            acc[fieldName] = formatDate(value);
+    return data
+      .filter((item) => !item.isDeleted)
+      .map((item, idx) => {
+        const customFields = item.customFields || {};
+        const customFieldData = customFieldNames.reduce((acc, fieldName) => {
+          const customField = customFields.find(
+            (field) => field.fieldName === fieldName
+          );
+          if (customField) {
+            const value = customField.value;
+            if (typeof value === "boolean") {
+              acc[fieldName] = value ? "True" : "False";
+            } else if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+              acc[fieldName] = formatDate(value);
+            } else {
+              acc[fieldName] = value;
+            }
           } else {
-            acc[fieldName] = value;
+            acc[fieldName] = "-";
           }
-        } else {
-          acc[fieldName] = "-";
-        }
-        return acc;
-      }, {});
-      return {
-        id: idx + 1,
-        username: (
-          <div className="d-flex align-items-center">
-            <div style={{ position: "relative", display: "inline-block" }}>
-              <img
-                src={
-                  item?.user?.profilePhoto !== "" && item?.user?.profilePhoto
-                    ? item?.user?.profilePhoto
-                    : avtarIcon
-                }
-                style={{
-                  marginRight: "5px",
-                  width: "30px",
-                  height: "30px",
-                }}
-                className="rounded-circle"
-              />
-              <span
-                style={{
-                  position: "absolute",
-                  top: "0",
-                  left: "0",
-                  width: "10px",
-                  height: "10px",
-                  borderRadius: "50%",
-                  backgroundColor:
-                    item?.paidStatus === "Paid"
-                      ? "#79BB43"
-                      : item?.paidStatus === "Pending"
-                      ? "#F3B64B"
-                      : "#EC5B52",
-                }}
-              ></span>
-            </div>
-            <div>{ConverFirstLatterToCapital(item?.user?.name ?? "")}</div>
-          </div>
-        ),
-        mobileNumber: `+${item?.user?.countryCode?.replace("+", "") ?? "91"} ${
-          item?.user?.mobileNumber
-        }`,
-        donarName: ConverFirstLatterToCapital(
-          item?.donarName ?? item.user?.name
-        ),
-        category: (
-          <div>
-            {ConverFirstLatterToCapital(item?.masterCategory?.name ?? "-")}
-            {/* {item?.subCategory && `(${item?.subCategory?.name ?? ""})`} */}
-          </div>
-        ),
-        subCategory: ConverFirstLatterToCapital(item?.category?.name ?? "-"),
-        dateTime: moment(item.createdAt ?? item?.updatedAt).format(
-          " DD MMM YYYY,hh:mm A"
-        ),
-        originalAmount: (
-          <div>
-            {item?.originalAmount
-              ? `₹${item?.originalAmount.toLocaleString("en-IN")}`
-              : "-"}
-          </div>
-        ),
-        amount: <div>₹{item?.amount.toLocaleString("en-IN")}</div>,
-        commitmentID: item.commitmentId
-          ? item.commitmentId < 10
-            ? `0${item.commitmentId}`
-            : `${item.commitmentId}`
-          : "_",
-        receiptNo: `${item.receiptNo}`,
-        createdBy: ConverFirstLatterToCapital(item?.createdBy?.name ?? "-"),
-        modeOfPayment: ConverFirstLatterToCapital(item?.paymentMethod ?? "-"),
-        bankName: ConverFirstLatterToCapital(item?.bankName ?? "-"),
-        chequeNum: ConverFirstLatterToCapital(item?.chequeNum ?? "-"),
-        chequeDate: item.chequeDate
-          ? moment(item.chequeDate).format(" DD MMM YYYY,hh:mm A")
-          : "-",
-        chequeStatus: ConverFirstLatterToCapital(item?.chequeStatus ?? "-"),
-        bankNarration: ConverFirstLatterToCapital(item?.bankNarration ?? "-"),
-        articleType: ConverFirstLatterToCapital(item?.articleType ?? "-"),
-        articleItem: ConverFirstLatterToCapital(item?.articleItem ?? "-"),
-        articleWeight: ConverFirstLatterToCapital(item?.articleWeight ?? "-"),
-        articleUnit: ConverFirstLatterToCapital(item?.articleUnit ?? "-"),
-        articleQuantity: ConverFirstLatterToCapital(
-          item?.articleQuantity ?? "-"
-        ),
-        articleRemark: ConverFirstLatterToCapital(item?.articleRemark ?? "-"),
-        receipt: (
-          <div className="d-flex align-items-center">
-            {isLoading === item?._id ? (
-              <Spinner color="success" />
-            ) : (
-              <img
-                src={receiptIcon}
-                width={25}
-                className="cursor-pointer me-2"
-                onClick={() => {
-                  const receiptName = item?.receiptName;
-                  if (receiptName) {
-                    const fileUrl = `${REACT_APP_BASEURL_PUBLIC}storage/download/donation/${receiptName}`;
-                    window.open(fileUrl, "_blank");
-                  } else {
-                    setIsLoading(item?._id);
-                    downloadReceipt.mutate({
-                      donationId: item._id,
-                      languageId: selectedLang.id,
-                    });
+          return acc;
+        }, {});
+        return {
+          id: idx + 1,
+          username: (
+            <div className="d-flex align-items-center">
+              <div style={{ position: "relative", display: "inline-block" }}>
+                <img
+                  src={
+                    item?.user?.profilePhoto !== "" && item?.user?.profilePhoto
+                      ? item?.user?.profilePhoto
+                      : avtarIcon
                   }
+                  style={{
+                    marginRight: "5px",
+                    width: "30px",
+                    height: "30px",
+                  }}
+                  className="rounded-circle"
+                />
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "0",
+                    left: "0",
+                    width: "10px",
+                    height: "10px",
+                    borderRadius: "50%",
+                    backgroundColor:
+                      item?.paidStatus === "Paid"
+                        ? "#79BB43"
+                        : item?.paidStatus === "Pending"
+                        ? "#F3B64B"
+                        : "#EC5B52",
+                  }}
+                ></span>
+              </div>
+              <div>{ConverFirstLatterToCapital(item?.user?.name ?? "")}</div>
+            </div>
+          ),
+          mobileNumber: `+${
+            item?.user?.countryCode?.replace("+", "") ?? "91"
+          } ${item?.user?.mobileNumber}`,
+          donarName: ConverFirstLatterToCapital(
+            item?.donarName ?? item.user?.name
+          ),
+          category: (
+            <div>
+              {ConverFirstLatterToCapital(item?.masterCategory?.name ?? "-")}
+              {/* {item?.subCategory && `(${item?.subCategory?.name ?? ""})`} */}
+            </div>
+          ),
+          subCategory: ConverFirstLatterToCapital(item?.category?.name ?? "-"),
+          dateTime: moment(item.createdAt ?? item?.updatedAt).format(
+            " DD MMM YYYY,hh:mm A"
+          ),
+          originalAmount: (
+            <div>
+              {item?.originalAmount
+                ? `₹${item?.originalAmount.toLocaleString("en-IN")}`
+                : "-"}
+            </div>
+          ),
+          amount: <div>₹{item?.amount.toLocaleString("en-IN")}</div>,
+          commitmentID: item.commitmentId
+            ? item.commitmentId < 10
+              ? `0${item.commitmentId}`
+              : `${item.commitmentId}`
+            : "_",
+          receiptNo: `${item.receiptNo}`,
+          createdBy: ConverFirstLatterToCapital(item?.createdBy?.name ?? "-"),
+          modeOfPayment: ConverFirstLatterToCapital(item?.paymentMethod ?? "-"),
+          bankName: ConverFirstLatterToCapital(item?.bankName ?? "-"),
+          chequeNum: ConverFirstLatterToCapital(item?.chequeNum ?? "-"),
+          chequeDate: item.chequeDate
+            ? moment(item.chequeDate).format(" DD MMM YYYY,hh:mm A")
+            : "-",
+          chequeStatus: ConverFirstLatterToCapital(item?.chequeStatus ?? "-"),
+          bankNarration: ConverFirstLatterToCapital(item?.bankNarration ?? "-"),
+          articleType: ConverFirstLatterToCapital(item?.articleType ?? "-"),
+          articleItem: ConverFirstLatterToCapital(item?.articleItem ?? "-"),
+          articleWeight: ConverFirstLatterToCapital(item?.articleWeight ?? "-"),
+          articleUnit: ConverFirstLatterToCapital(item?.articleUnit ?? "-"),
+          articleQuantity: ConverFirstLatterToCapital(
+            item?.articleQuantity ?? "-"
+          ),
+          articleRemark: ConverFirstLatterToCapital(item?.articleRemark ?? "-"),
+          receipt: (
+            <div className="d-flex align-items-center">
+              {isLoading === item?._id ? (
+                <Spinner color="success" />
+              ) : (
+                <img
+                  src={receiptIcon}
+                  width={25}
+                  className="cursor-pointer me-2"
+                  onClick={() => {
+                    const receiptName = item?.receiptName;
+                    if (receiptName) {
+                      const fileUrl = `${REACT_APP_BASEURL_PUBLIC}storage/download/donation/${receiptName}`;
+                      window.open(fileUrl, "_blank");
+                    } else {
+                      setIsLoading(item?._id);
+                      downloadReceipt.mutate({
+                        donationId: item._id,
+                        languageId: selectedLang.id,
+                      });
+                    }
+                  }}
+                />
+              )}
+              <img
+                src={whatsappIcon}
+                width={25}
+                className="cursor-pointer"
+                onClick={() => handleWhatsAppShare(item)}
+              />
+            </div>
+          ),
+          action: (
+            <div className="d-flex align-items-center">
+              <div>
+                <img
+                  src={eyeIcon}
+                  width={25}
+                  onClick={() => handleView(item)}
+                  className="cursor-pointer me-1"
+                />
+              </div>
+              <div>
+                <img
+                  // icon={<DeleteOutlined />}
+                  src={deleteIcon}
+                  className="cursor-pointer"
+                  width={35}
+                  onClick={() => handleDelete(item)}
+                />
+              </div>
+            </div>
+          ),
+          edit:
+            item?.isArticle &&
+            (allPermissions?.name === "all" ||
+              subPermission?.includes(EDIT) ||
+              financeReport) ? (
+              <img
+                src={editIcon}
+                width={35}
+                className={financeReport ? "d-none" : "cursor-pointer "}
+                onClick={() => {
+                  financeReport ? "" : toggle(item);
                 }}
               />
-            )}
-            <img
-              src={whatsappIcon}
-              width={25}
-              className="cursor-pointer"
-              onClick={() => handleWhatsAppShare(item)}
-            />
-          </div>
-        ),
-        action: (
-          <div className="d-flex align-items-center">
-            <div>
-              <img
-                src={eyeIcon}
-                width={25}
-                onClick={() => handleView(item)}
-                className="cursor-pointer me-1"
-              />
-            </div>
-            <div>
-              <img
-                // icon={<DeleteOutlined />}
-                src={deleteIcon}
-                className="cursor-pointer"
-                width={35}
-                onClick={() => handleDelete(item?._id)}
-              />
-            </div>
-          </div>
-        ),
-        edit:
-          item?.isArticle &&
-          (allPermissions?.name === "all" ||
-            subPermission?.includes(EDIT) ||
-            financeReport) ? (
-            <img
-              src={editIcon}
-              width={35}
-              className={financeReport ? "d-none" : "cursor-pointer "}
-              onClick={() => {
-                financeReport ? "" : toggle(item);
-              }}
-            />
-          ) : (
-            ""
-          ),
-        ...customFieldData,
-      };
-    });
+            ) : (
+              ""
+            ),
+          ...customFieldData,
+        };
+      });
   }, [data, isLoading, donation_custom_fields, donationType]);
 
   const inWordsNumber = numberToWords
