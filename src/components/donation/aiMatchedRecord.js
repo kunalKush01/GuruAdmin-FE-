@@ -14,7 +14,17 @@ const { TextArea } = Input;
 
 const AIMatchedRecord = () => {
   const history = useHistory();
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
+  // Update screen size on resize
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   const { t } = useTranslation();
   const trustId = localStorage.getItem("trustId");
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -215,7 +225,14 @@ const AIMatchedRecord = () => {
   return (
     <div style={{ padding: "10px" }}>
       {/* First Row: Dropdown, TextArea, and Search Button */}
-      <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: isMobile ? "wrap" : "",
+          gap: "10px",
+          marginBottom: "10px",
+        }}
+      >
         <Select
           placeholder="Select Field"
           style={{ width: "200px" }}
@@ -283,7 +300,7 @@ const AIMatchedRecord = () => {
 
       {/* Second Row: Table */}
       <Table
-        className="commonListTable"
+        id="aiMatchTable"
         columns={columns}
         dataSource={searchResults}
         loading={loading}
@@ -298,7 +315,7 @@ const AIMatchedRecord = () => {
           showSizeChanger: true,
           pageSizeOptions: [10, 20, 50, 100],
         }}
-        scroll={{ x: 600, y: 140 }}
+        // scroll={{ x: 600, y: 140 }}
         bordered
       />
     </div>

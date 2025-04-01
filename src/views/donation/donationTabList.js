@@ -760,6 +760,7 @@ export default function Donation() {
                 </div>
                 <Button
                   className="secondaryAction-btn"
+                  style={{marginBottom:"2px"}}
                   color="primary"
                   onClick={handleApplyArticleDonationFilter}
                 >

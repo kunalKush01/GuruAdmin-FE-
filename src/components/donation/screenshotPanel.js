@@ -109,9 +109,17 @@ const ScreenshotPanel = ({
   };
 
   return (
-    <div className="d-flex flex-column ">
+    <div
+      className="d-flex flex-column "
+      style={{
+        //height: 450,
+        boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+        borderRadius:"10px",
+        padding:"5px"
+      }}
+    >
       {showScreenshotPanel && (
-        <div className="mb-1 d-flex align-items-center">
+        <div className="mb-1 d-flex align-items-center mt-1">
           <img
             src={backIcon}
             width={25}
@@ -124,10 +132,6 @@ const ScreenshotPanel = ({
       <Flex vertical gap="middle">
         <Splitter
           onResize={setSizes}
-          style={{
-            //height: 450,
-            boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
-          }}
           layout={isMobile ? "vertical" : "horizontal"}
         >
           <Splitter.Panel size={sizes[0]} resizable={enabled}>
@@ -172,7 +176,7 @@ const ScreenshotPanel = ({
                   alt="Payment Screenshot"
                   style={{
                     maxWidth: "100%",
-                    height: !isMobile ? "400px" : "200px",
+                    height: !isMobile ? "100%" : "200px",
                     objectFit: "contain",
                   }}
                 />
