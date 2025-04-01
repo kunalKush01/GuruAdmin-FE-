@@ -71,11 +71,24 @@ export default function DetailPage({
   };
   const [imageUrl, setImageUrl] = useState([]);
   useEffect(() => {
-    if (images) {
+    if (image || images) {
       const loadImages = async () => {
+        const imageArray = [];
+
+        // If `images` is an array, use it
+        if (Array.isArray(images)) {
+          imageArray.push(...images);
+        }
+
+        // If `image` is a string, wrap it in an array
+        if (typeof image === "string" && image.trim() !== "") {
+          imageArray.push({ name: image });
+        }
+
+        // Fetch all images
         const urls = await Promise.all(
-          images.map(async (image) => {
-            const url = await fetchImage(image.name);
+          imageArray.map(async (img) => {
+            const url = await fetchImage(img.name);
             return url;
           })
         );
@@ -85,7 +98,24 @@ export default function DetailPage({
 
       loadImages();
     }
-  }, [images]);
+  }, [image, images]);
+  // useEffect(() => {
+  //   if (images) {
+  //     const loadImages = async () => {
+  //       const urls = await Promise.all(
+  //         images.map(async (image) => {
+  //           const url = await fetchImage(image.name);
+  //           return url;
+  //         })
+  //       );
+
+  //       setImageUrl(urls);
+  //     };
+
+  //     loadImages();
+  //   }
+  // }, [images]);
+  console.log(imageUrl);
   return (
     <div className="trustwrapper">
       <div className="window nav statusBar body "></div>
@@ -111,26 +141,27 @@ export default function DetailPage({
           <div className="addTrust justify-content-between mt-sm-0"></div>
         </div>
         <Row className="my-lg-3 mt-2">
-          <Col xs={12} lg={4} className="">
-            {imageUrl?.length > 1 ? (
+          <Col xs={12} lg={4} className="ps-3">
+            {Array.isArray(imageUrl) && imageUrl.length > 1 ? (
               <Slider {...settings}>
-                {imageUrl?.length
-                  ? imageUrl?.map((item) => {
-                      return (
-                        <div className="detailImage">
-                          <img
-                            src={item}
-                            className="detailImage h-100 w-100"
-                          />
-                        </div>
-                      );
-                    })
-                  : ""}
-                {/* </div> */}
+                {imageUrl.map((item, index) => (
+                  <div key={index} className="detailImage">
+                    <img
+                      src={item}
+                      alt={`Image ${index}`}
+                      className="detailImage h-100 w-100"
+                    />
+                  </div>
+                ))}
               </Slider>
             ) : (
-              <img src={firstImage} className="detailImage" />
+              <img
+                src={imageUrl?.[0] || firstImage}
+                alt="Detail"
+                className="detailImage"
+              />
             )}
+
             <div className="d-flex justify-content-between mt-1">
               <div className="about-temple-name">{templeName ?? ""}</div>
               <div className="d-flex justify-content-between long-let_tude">

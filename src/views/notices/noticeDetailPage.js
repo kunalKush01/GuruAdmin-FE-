@@ -32,7 +32,7 @@ const NoticeDetailPage = () => {
         longitude={noticeDetailQuery?.data?.result?.longitude}
         startDate={noticeDetailQuery?.data?.result?.startDate}
         description={noticeDetailQuery?.data?.result?.body}
-        image={noticeDetailQuery?.data?.result?.image}
+        image={noticeDetailQuery?.data?.result?.imageName}
         langButton={noticeDetailQuery?.data?.result?.languages}
       />
     </>
