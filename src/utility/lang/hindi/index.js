@@ -1028,8 +1028,9 @@ export const hindiContent = {
   Unmatched_Bank_Credits: "बेजोड़ बैंक क्रेडिट",
   Pending_Screenshots: "लंबित स्क्रीनशॉट",
   Service_Name: "सेवा का नाम",
-  add_Booking:"बुकिंग जोड़ें",
-  add_service:"सेवा जोड़ें",
-  hero_images:"हीरो छवियाँ"
-
+  add_Booking: "बुकिंग जोड़ें",
+  add_service: "सेवा जोड़ें",
+  hero_images: "हीरो छवियाँ",
+  type: "प्रकार",
+  deadStatus:"मृत स्थिति"
 };

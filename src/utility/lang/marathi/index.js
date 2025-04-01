@@ -1053,7 +1053,9 @@ export const marathiContent = {
   Unmatched_Bank_Credits: "न जुळणारे बँक क्रेडिट्स",
   Pending_Screenshots: "प्रलंबित स्क्रीनशॉट",
   Service_Name: "सेवेचे नाव",
-  add_Booking:"बुकिंग जोडा",
-  add_service:"सेवा जोडा",
-  hero_images:"नायक प्रतिमा"
+  add_Booking: "बुकिंग जोडा",
+  add_service: "सेवा जोडा",
+  hero_images: "नायक प्रतिमा",
+  type: "प्रकार",
+  deadStatus:"मृत स्थिती"
 };

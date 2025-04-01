@@ -1082,5 +1082,7 @@ export const englishContent = {
   Service_Name: "Service Name	",
   add_Booking:"Add Booking",
   add_service:"Add Service",
-  hero_images:"HERO IMAGES"
+  hero_images:"HERO IMAGES",
+  type:"Type",
+  deadStatus:"Dead Status"
 };

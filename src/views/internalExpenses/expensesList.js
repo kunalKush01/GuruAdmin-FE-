@@ -24,6 +24,7 @@ import filterIcon from "../../assets/images/icons/filter.svg";
 import "../../assets/scss/viewCommon.scss";
 import FilterTag from "../../components/partials/filterTag";
 import AddFilterSection from "../../components/partials/addFilterSection";
+import { Tooltip } from "antd";
 
 export default function Expenses() {
   const { t } = useTranslation();
@@ -218,20 +219,22 @@ export default function Expenses() {
             </div>
           </div>
           <div className="addAction">
-            <ChangeCategoryType
-              className={"me-1"}
-              categoryTypeArray={ExpenseType}
-              typeName={expenseType}
-              setTypeName={(e) => {
-                setExpenseType(e.target.name);
-                setPagination({ page: 1 });
-                history.push(
-                  `/internal_expenses?page=${1}&expenseType=${
-                    e.target.name
-                  }&filter=${dropDownName}`
-                );
-              }}
-            />
+            <Tooltip title={t("type")} color="#FF8744">
+              <ChangeCategoryType
+                className={"me-1"}
+                categoryTypeArray={ExpenseType}
+                typeName={expenseType}
+                setTypeName={(e) => {
+                  setExpenseType(e.target.name);
+                  setPagination({ page: 1 });
+                  history.push(
+                    `/internal_expenses?page=${1}&expenseType=${
+                      e.target.name
+                    }&filter=${dropDownName}`
+                  );
+                }}
+              />
+            </Tooltip>
 
             {/* <ChangePeriodDropDown
               className={"me-1"}

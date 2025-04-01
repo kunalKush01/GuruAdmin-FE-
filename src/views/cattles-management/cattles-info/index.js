@@ -27,6 +27,7 @@ import { ChangeCategoryType } from "../../../components/partials/categoryDropdow
 import { Helmet } from "react-helmet";
 import { WRITE } from "../../../utility/permissionsVariable";
 import "../../../assets/scss/viewCommon.scss";
+import { Tooltip } from "antd";
 const CattlesInfo = () => {
   const history = useHistory();
   const { t } = useTranslation();
@@ -163,33 +164,35 @@ const CattlesInfo = () => {
             <Trans i18nKey="cattle_registered" />
           </Col>
           <Col xs={12} sm="auto" className="d-flex flex-wrap mt-1 mt-sm-0">
-            <ChangeCategoryType
-              className={"me-1"}
-              categoryTypeArray={[
-                {
-                  id: 1,
-                  name: t("All"),
-                },
-                {
-                  id: 2,
-                  name: t("cattle_dead"),
-                },
-                {
-                  id: 3,
-                  name: t("cattle_alive"),
-                },
-              ]}
-              typeName={isDeadAlive}
-              setTypeName={(e) => {
-                setIsDeadAlive(e.target.name);
-                setPagination({ page: 1 });
-                history.push(
-                  `/cattle/info?page=${1}&status=${
-                    e.target.name
-                  }&filter=${dropDownName}`
-                );
-              }}
-            />
+            <Tooltip title={t("deadStatus")} color="#FF8744">
+              <ChangeCategoryType
+                className={"me-1"}
+                categoryTypeArray={[
+                  {
+                    id: 1,
+                    name: t("All"),
+                  },
+                  {
+                    id: 2,
+                    name: t("cattle_dead"),
+                  },
+                  {
+                    id: 3,
+                    name: t("cattle_alive"),
+                  },
+                ]}
+                typeName={isDeadAlive}
+                setTypeName={(e) => {
+                  setIsDeadAlive(e.target.name);
+                  setPagination({ page: 1 });
+                  history.push(
+                    `/cattle/info?page=${1}&status=${
+                      e.target.name
+                    }&filter=${dropDownName}`
+                  );
+                }}
+              />
+            </Tooltip>
             <ChangePeriodDropDown
               className={"me-1"}
               dropDownName={dropDownName}

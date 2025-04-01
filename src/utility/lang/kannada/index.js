@@ -999,4 +999,6 @@ export const kannadaContent = {
   add_Booking: "ಬುಕಿಂಗ್ ಸೇರಿಸಿ",
   add_service: "ಸೇವೆಯನ್ನು ಸೇರಿಸಿ",
   hero_images: "ಹೀರೋ ಚಿತ್ರಗಳು",
+  type: "ಟೈಪ್ ಮಾಡಿ",
+  deadStatus:"ಸತ್ತ ಸ್ಥಿತಿ"
 };

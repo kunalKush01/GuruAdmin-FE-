@@ -39,7 +39,7 @@ import AddFilterSection from "../../components/partials/addFilterSection";
 import filterIcon from "../../assets/images/icons/filter.svg";
 import FilterTag from "../../components/partials/filterTag";
 import ImportForm from "../donation/importForm";
-import { Dropdown, Space } from "antd";
+import { Dropdown, Space, Tooltip } from "antd";
 
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import syncIcon from "../../assets/images/icons/sync.svg";
@@ -366,51 +366,59 @@ export default function Commitment() {
                 )}
               </Space>
               <div className="d-flex row1">
-                <ChangeCategoryType
-                  className={"me-1"}
-                  categoryTypeArray={newTypes}
-                  typeName={ConverFirstLatterToCapital(categoryTypeName ?? "")}
-                  setTypeName={(e) => {
-                    setCategoryId(e.target.id);
-                    setCategoryTypeName(e.target.name);
-                    setPagination({ page: 1, limit: 10 });
-                    history.push(
-                      `/commitment?page=${1}&category=${
-                        e.target.name
-                      }&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${dropDownName}`
-                    );
-                  }}
-                />
-                <ChangeCategoryType
-                  className={"me-1"}
-                  categoryTypeArray={subCategoryTypes}
-                  typeName={ConverFirstLatterToCapital(
-                    subCategoryTypeName ?? ""
-                  )}
-                  setTypeName={(e) => {
-                    setSubCategoryTypeId(e.target.id);
-                    setSubCategoryTypeName(e.target.name);
-                    setPagination({ page: 1, limit: 10 });
-                    history.push(
-                      `/commitment?page=${1}&category=${categoryTypeName}&subCategory=${
-                        e.target.name
-                      }&status=${commitmentStatus}&filter=${dropDownName}`
-                    );
-                  }}
-                />
-                <ChangeStatus
-                  className="me-1 donationFilterBtn"
-                  dropDownName={commitmentStatus}
-                  setdropDownName={(e) => {
-                    setCommitmentStatus(e.target.name);
-                    setPagination({ page: 1, limit: 10 });
-                    history.push(
-                      `/commitment?page=${1}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${
-                        e.target.name
-                      }&filter=${dropDownName}`
-                    );
-                  }}
-                />
+                <Tooltip title={t("category")} color="#FF8744">
+                  <ChangeCategoryType
+                    className={"me-1"}
+                    categoryTypeArray={newTypes}
+                    typeName={ConverFirstLatterToCapital(
+                      categoryTypeName ?? ""
+                    )}
+                    setTypeName={(e) => {
+                      setCategoryId(e.target.id);
+                      setCategoryTypeName(e.target.name);
+                      setPagination({ page: 1, limit: 10 });
+                      history.push(
+                        `/commitment?page=${1}&category=${
+                          e.target.name
+                        }&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${dropDownName}`
+                      );
+                    }}
+                  />
+                </Tooltip>
+                <Tooltip title={t("categories_sub_category")} color="#FF8744">
+                  <ChangeCategoryType
+                    className={"me-1"}
+                    categoryTypeArray={subCategoryTypes}
+                    typeName={ConverFirstLatterToCapital(
+                      subCategoryTypeName ?? ""
+                    )}
+                    setTypeName={(e) => {
+                      setSubCategoryTypeId(e.target.id);
+                      setSubCategoryTypeName(e.target.name);
+                      setPagination({ page: 1, limit: 10 });
+                      history.push(
+                        `/commitment?page=${1}&category=${categoryTypeName}&subCategory=${
+                          e.target.name
+                        }&status=${commitmentStatus}&filter=${dropDownName}`
+                      );
+                    }}
+                  />
+                </Tooltip>
+                <Tooltip title={t("Status")} color="#FF8744">
+                  <ChangeStatus
+                    className="me-1 donationFilterBtn"
+                    dropDownName={commitmentStatus}
+                    setdropDownName={(e) => {
+                      setCommitmentStatus(e.target.name);
+                      setPagination({ page: 1, limit: 10 });
+                      history.push(
+                        `/commitment?page=${1}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${
+                          e.target.name
+                        }&filter=${dropDownName}`
+                      );
+                    }}
+                  />
+                </Tooltip>
               </div>
               <div className="d-flex row2">
                 {/* <ChangePeriodDropDown
