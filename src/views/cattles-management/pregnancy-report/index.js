@@ -20,13 +20,14 @@ import { WRITE } from "../../../utility/permissionsVariable";
 import { ConverFirstLatterToCapital } from "../../../utility/formater";
 
 import "../../../assets/scss/viewCommon.scss";
+import { Tooltip } from "antd";
 const PregnancyReport = () => {
   const history = useHistory();
   const { t } = useTranslation();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
-  const [pregnancyStatus, setPregnancyStatus] = useState(t("all"));
+  const [pregnancyStatus, setPregnancyStatus] = useState("all");
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 10,
@@ -34,7 +35,7 @@ const PregnancyReport = () => {
 
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page") || 1;
-  const currentPregnancyStatus = searchParams.get("status") || t("all");
+  const currentPregnancyStatus = searchParams.get("status") || "All";
   const currentFilter = searchParams.get("filter") || "dashboard_monthly";
 
   useEffect(() => {
@@ -83,9 +84,9 @@ const PregnancyReport = () => {
         startDate: filterStartDate,
         endDate: filterEndDate,
         status:
-          pregnancyStatus === t("inactive")
+          pregnancyStatus === "Inactive"
             ? "NO"
-            : pregnancyStatus === t("active")
+            : pregnancyStatus === "Active"
             ? "YES"
             : "ALL",
         languageId: selectedLang.id,
@@ -127,36 +128,38 @@ const PregnancyReport = () => {
             <Trans i18nKey="cattle_pregnancy_report" />
           </Col>
           <Col xs={12} sm="auto" className="d-flex flex-wrap mt-1 mt-sm-0">
-            <ChangeCategoryType
-              className={"me-1"}
-              categoryTypeArray={[
-                {
-                  id: 1,
-                  name: t("All"),
-                  value: "ALL",
-                },
-                {
-                  id: 2,
-                  name: t("Active"),
-                  value: "YES",
-                },
-                {
-                  id: 2,
-                  name: t("Inactive"),
-                  value: "NO",
-                },
-              ]}
-              typeName={ConverFirstLatterToCapital(pregnancyStatus)}
-              setTypeName={(e) => {
-                setPregnancyStatus(e.target.name);
-                setPagination({ page: 1 });
-                history.push(
-                  `/cattle/pregnancy-reports?page=${1}&status=${
-                    e.target.name
-                  }&filter=${dropDownName}`
-                );
-              }}
-            />
+            <Tooltip title={t("cattle_pregnancy_status")} color="#FF8744">
+              <ChangeCategoryType
+                className={"me-1"}
+                categoryTypeArray={[
+                  {
+                    id: 1,
+                    name: t("All"),
+                    value: "ALL",
+                  },
+                  {
+                    id: 2,
+                    name: t("Active"),
+                    value: "YES",
+                  },
+                  {
+                    id: 2,
+                    name: t("Inactive"),
+                    value: "NO",
+                  },
+                ]}
+                typeName={ConverFirstLatterToCapital(pregnancyStatus)}
+                setTypeName={(e) => {
+                  setPregnancyStatus(e.target.name);
+                  setPagination({ page: 1 });
+                  history.push(
+                    `/cattle/pregnancy-reports?page=${1}&status=${
+                      e.target.name
+                    }&filter=${dropDownName}`
+                  );
+                }}
+              />
+            </Tooltip>
             <ChangePeriodDropDown
               className={"me-1"}
               dropDownName={dropDownName}

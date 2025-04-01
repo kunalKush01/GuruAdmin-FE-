@@ -159,7 +159,7 @@ function UploadImage({
         </Button>
       </Upload>
       {/* show initial image while editing */}
-      <div className="previewImagesContainer">
+      <div className="previewImagesContainer py-1">
         {isMultiple
           ? Array.isArray(uploadedFileUrl) &&
             uploadedFileUrl.length > 0 &&

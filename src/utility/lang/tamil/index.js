@@ -986,8 +986,10 @@ export const tamilContent = {
   Expense: "செலவு",
   Unmatched_Bank_Credits: "ஒப்பிடப்படாத வங்கிக் கடன்கள்",
   Pending_Screenshots: "நிலுவையில் உள்ள ஸ்கிரீன்ஷாட்கள்",
-  Service_Name:"சேவையின் பெயர்",
-  add_Booking:"முன்பதிவு சேர்க்கவும்",
-  add_service:"சேவையைச் சேர்க்கவும்",
-  hero_images:"ஹீரோ படங்கள்"
+  Service_Name: "சேவையின் பெயர்",
+  add_Booking: "முன்பதிவு சேர்க்கவும்",
+  add_service: "சேவையைச் சேர்க்கவும்",
+  hero_images: "ஹீரோ படங்கள்",
+  type: "வகை",
+  deadStatus:"இறந்த நிலை"
 };

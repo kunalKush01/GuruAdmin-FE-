@@ -19,6 +19,7 @@ import {
   Modal,
   Select,
   Tag,
+  Tooltip,
 } from "antd";
 import {
   getAllCategories,
@@ -550,41 +551,44 @@ export default function Donation() {
                   )}
                 </Space>
                 <div className="d-flex row1 me-1">
-                  <ChangeCategoryType
-                    className={"me-1"}
-                    categoryTypeArray={newTypes}
-                    typeName={ConverFirstLatterToCapital(
-                      categoryTypeName ?? ""
-                    )}
-                    setTypeName={(e) => {
-                      setCategoryId(e.target.id);
-                      setCategoryTypeName(e.target.name);
-                      setPagination({ page: 1 });
-                      history.push(
-                        `/donation?page=${1}&category=${
-                          e.target.name
-                        }&subCategory=${subCategoryTypeName}&filter=${dropDownName}`
-                      );
-                    }}
-                  />
-
-                  <ChangeCategoryType
-                    // className={"me-1"}
-                    categoryTypeArray={subCategoryTypes}
-                    typeName={ConverFirstLatterToCapital(
-                      subCategoryTypeName ?? ""
-                    )}
-                    setTypeName={(e) => {
-                      setSubCategoryTypeId(e.target.id);
-                      setSubCategoryTypeName(e.target.name);
-                      setPagination({ page: 1 });
-                      history.push(
-                        `/donation?page=${1}&category=${categoryTypeName}&subCategory=${
-                          e.target.name
-                        }&filter=${dropDownName}`
-                      );
-                    }}
-                  />
+                  <Tooltip title={t("category")} color="#FF8744">
+                    <ChangeCategoryType
+                      className={"me-1"}
+                      categoryTypeArray={newTypes}
+                      typeName={ConverFirstLatterToCapital(
+                        categoryTypeName ?? ""
+                      )}
+                      setTypeName={(e) => {
+                        setCategoryId(e.target.id);
+                        setCategoryTypeName(e.target.name);
+                        setPagination({ page: 1 });
+                        history.push(
+                          `/donation?page=${1}&category=${
+                            e.target.name
+                          }&subCategory=${subCategoryTypeName}&filter=${dropDownName}`
+                        );
+                      }}
+                    />
+                  </Tooltip>
+                  <Tooltip title={t("categories_sub_category")} color="#FF8744">
+                    <ChangeCategoryType
+                      // className={"me-1"}
+                      categoryTypeArray={subCategoryTypes}
+                      typeName={ConverFirstLatterToCapital(
+                        subCategoryTypeName ?? ""
+                      )}
+                      setTypeName={(e) => {
+                        setSubCategoryTypeId(e.target.id);
+                        setSubCategoryTypeName(e.target.name);
+                        setPagination({ page: 1 });
+                        history.push(
+                          `/donation?page=${1}&category=${categoryTypeName}&subCategory=${
+                            e.target.name
+                          }&filter=${dropDownName}`
+                        );
+                      }}
+                    />
+                  </Tooltip>
                   {/* <ChangePeriodDropDown
                   dropDownName={dropDownName}
                   setdropDownName={(e) => {
@@ -686,41 +690,44 @@ export default function Donation() {
             >
               <div className="botton-container align-items-center">
                 <div className="d-flex row1">
-                  <ChangeCategoryType
-                    className={"me-1"}
-                    categoryTypeArray={newTypes}
-                    typeName={ConverFirstLatterToCapital(
-                      categoryTypeName ?? ""
-                    )}
-                    setTypeName={(e) => {
-                      setCategoryId(e.target.id);
-                      setCategoryTypeName(e.target.name);
-                      setPagination({ page: 1 });
-                      history.push(
-                        `/donation?page=${1}&category=${
-                          e.target.name
-                        }&subCategory=${subCategoryTypeName}&filter=${dropDownName}`
-                      );
-                    }}
-                  />
-
-                  <ChangeCategoryType
-                    className={"me-1"}
-                    categoryTypeArray={subCategoryTypes}
-                    typeName={ConverFirstLatterToCapital(
-                      subCategoryTypeName ?? ""
-                    )}
-                    setTypeName={(e) => {
-                      setSubCategoryTypeId(e.target.id);
-                      setSubCategoryTypeName(e.target.name);
-                      setPagination({ page: 1 });
-                      history.push(
-                        `/donation?page=${1}&category=${categoryTypeName}&subCategory=${
-                          e.target.name
-                        }&filter=${dropDownName}`
-                      );
-                    }}
-                  />
+                  <Tooltip title={t("category")} color="#FF8744">
+                    <ChangeCategoryType
+                      className={"me-1"}
+                      categoryTypeArray={newTypes}
+                      typeName={ConverFirstLatterToCapital(
+                        categoryTypeName ?? ""
+                      )}
+                      setTypeName={(e) => {
+                        setCategoryId(e.target.id);
+                        setCategoryTypeName(e.target.name);
+                        setPagination({ page: 1 });
+                        history.push(
+                          `/donation?page=${1}&category=${
+                            e.target.name
+                          }&subCategory=${subCategoryTypeName}&filter=${dropDownName}`
+                        );
+                      }}
+                    />
+                  </Tooltip>
+                  <Tooltip title={t("categories_sub_category")} color="#FF8744">
+                    <ChangeCategoryType
+                      className={"me-1"}
+                      categoryTypeArray={subCategoryTypes}
+                      typeName={ConverFirstLatterToCapital(
+                        subCategoryTypeName ?? ""
+                      )}
+                      setTypeName={(e) => {
+                        setSubCategoryTypeId(e.target.id);
+                        setSubCategoryTypeName(e.target.name);
+                        setPagination({ page: 1 });
+                        history.push(
+                          `/donation?page=${1}&category=${categoryTypeName}&subCategory=${
+                            e.target.name
+                          }&filter=${dropDownName}`
+                        );
+                      }}
+                    />
+                  </Tooltip>
                   <ChangePeriodDropDown
                     className="me-1 donationFilterBtn"
                     dropDownName={dropDownName}
@@ -760,7 +767,7 @@ export default function Donation() {
                 </div>
                 <Button
                   className="secondaryAction-btn"
-                  style={{marginBottom:"2px"}}
+                  style={{ marginBottom: "2px" }}
                   color="primary"
                   onClick={handleApplyArticleDonationFilter}
                 >
