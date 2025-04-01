@@ -4600,3 +4600,45 @@
     justify-content: space-between;
     align-items: center;
 }
+
+#aiMatchTable {
+    .ant-table {
+        // box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+        border-radius: 10px;
+    }
+
+    .ant-table-body {
+        scrollbar-width: none;
+    }
+
+    .ant-table-tbody>tr>td {
+        padding: 0 16px !important;
+    }
+
+    .ant-table-thead>tr>th {
+        padding: 10px 16px !important;
+    }
+
+    .ant-table-header {
+        top: 50px !important;
+    }
+
+    .ant-table-row .ant-table-cell {
+        color: $font-color !important;
+        height: 35px;
+        font-weight: 400;
+    }
+
+    .ant-table-thead .ant-table-cell {
+        height: 35px;
+        font-weight: 500;
+        color: $font-color !important;
+        background-color: $white;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .ant-table-row:nth-child(even) .ant-table-cell {
+        background-color: $secondary-color;
+    }
+    // margin-bottom: 50px;
+}

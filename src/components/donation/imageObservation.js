@@ -20,7 +20,7 @@ const ImageObservation = ({ data, matchedAmount }) => {
                 AI-Detected Payment Details
               </Typography.Text>
               <span
-                style={{ fontSize: 28, marginLeft: 8 }}
+                style={{ fontSize: 24, marginLeft: 8,marginBottom:9 }}
                 role="img"
                 aria-label="crown"
               >
@@ -93,7 +93,7 @@ const ImageObservation = ({ data, matchedAmount }) => {
                 AI-Detected Payment Details
               </Typography.Text>
               <span
-                style={{ fontSize: 28, marginLeft: 8 }}
+                style={{ fontSize: 24, marginLeft: 8,marginBottom:9 }}
                 role="img"
                 aria-label="crown"
               >
