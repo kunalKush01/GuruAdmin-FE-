@@ -153,7 +153,7 @@ function UploadImage({
         <Button
           icon={icon}
           style={{ width: "100%" }}
-          disabled={isMultiple&&uploadedFileUrl.length >= 5} // Disable button when file count reaches 5
+          disabled={(isMultiple && uploadedFileUrl.length >= 5) || props.isEdit} // Disable button when file count reaches 5
         >
           {buttonLabel}
         </Button>
@@ -177,6 +177,7 @@ function UploadImage({
                 <Button
                   type="text"
                   danger
+                  disabled={props.isEdit}
                   icon={<DeleteOutlined />}
                   onClick={() => handleDelete(item)}
                 />
@@ -199,6 +200,7 @@ function UploadImage({
                   type="text"
                   danger
                   icon={<DeleteOutlined />}
+                  disabled={props.isEdit}
                   onClick={() => handleDelete(uploadedFileUrl[0])}
                 />
               </div>

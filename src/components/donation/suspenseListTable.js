@@ -144,7 +144,14 @@ function SuspenseListTable({ success, filterData, type }) {
       donorMapped: record.donorMapped,
       modeOfPayment: record.modeOfPayment,
     }).toString();
-    history.push(`/donation/add?${params}`);
+    history.push({
+      pathname: "/donation/edit",
+      search: `?${params}`,
+      state: {
+        record: {},
+        isEdit: true,
+      },
+    });
   };
 
   const columns = [

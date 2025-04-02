@@ -617,9 +617,11 @@ export default function Donation() {
                       color="primary"
                       className={`addAction-btn`}
                       onClick={() =>
-                        history.push(
-                          `/donation/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}&type=${activeTab}`
-                        )
+                        history.push({
+                          pathname: "/donation/add",
+                          search: `?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}&type=${activeTab}`,
+                          state: {record:{}, isEdit: false },
+                        })
                       }
                     >
                       <span>

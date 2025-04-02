@@ -114,8 +114,8 @@ const ScreenshotPanel = ({
       style={{
         //height: 450,
         boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
-        borderRadius:"10px",
-        padding:"5px"
+        borderRadius: "10px",
+        padding: "5px",
       }}
     >
       {showScreenshotPanel && (
@@ -157,7 +157,7 @@ const ScreenshotPanel = ({
             <div className="mx-1 py-1">
               <Card>
                 <span className="commonFont">AI Matched Suspense Record</span>
-                <AIMatchedRecord />
+                <AIMatchedRecord donationRecord={record} />
               </Card>
             </div>
           </Splitter.Panel>

@@ -6,6 +6,7 @@ import { Prompt, useHistory, useLocation } from "react-router-dom";
 import { useUpdateEffect } from "react-use";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import { getAllSubCategories } from "../../api/expenseApi";
+import uploadIcon from "../../../src/assets/images/icons/file-upload.svg";
 import {
   findAllComitmentByUser,
   findAllUsersByName,
@@ -25,6 +26,10 @@ import { createSubscribedUser } from "../../api/subscribedUser";
 import * as Yup from "yup";
 import axios from "axios";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
+// import UploadImage from "../partials/uploadImage";
+import { uploadFile } from "../../api/sharedStorageApi";
+import { fetchImage } from "../partials/downloadUploadImage";
+import UploadImage from "../partials/commonImageUpload2";
 
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 export default function FormWithoutFormikForDonation({
@@ -40,6 +45,7 @@ export default function FormWithoutFormikForDonation({
   setArticle,
   showPrompt,
   customFieldsList,
+  isEdit = false,
   ...props
 }) {
   const { t } = useTranslation();
@@ -67,7 +73,7 @@ export default function FormWithoutFormikForDonation({
       setSubLoadOption(apiRes?.results);
     };
     SelectedMasterCategory && res();
-  }, [SelectedMasterCategory]);
+  }, [SelectedMasterCategory, isEdit]);
 
   useEffect(() => {
     const res = async () => {
@@ -99,16 +105,23 @@ export default function FormWithoutFormikForDonation({
     } else {
       setNoUserFound(false);
     }
-  }, [formik?.values?.Mobile, dataLoad]);
+  }, [formik?.values?.Mobile, dataLoad, isEdit]);
 
-  useUpdateEffect(() => {
+  useEffect(() => {
     const user = formik?.values?.SelectedUser;
-    if (user?.userId) {
-      formik.setFieldValue("Mobile", user?.mobileNumber);
-      formik.setFieldValue("countryCode", user?.countryName);
-      formik.setFieldValue("dialCode", user?.countryCode);
-      formik.setFieldValue("donarName", user?.name);
-      setPhoneNumber(user?.countryCode + user?.mobileNumber);
+    if (user) {
+      formik.setFieldValue("Mobile", user?.mobileNumber || "");
+      formik.setFieldValue(
+        "countryCode",
+        user?.countryCode?.replace("+", "").toLowerCase() || "in"
+      );
+      formik.setFieldValue(
+        "dialCode",
+        user?.countryCode?.replace("+", "") || "91"
+      );
+      formik.setFieldValue("donarName", user?.name || "");
+      setPhoneNumber((user?.countryCode || "") + (user?.mobileNumber || ""));
+
       return;
     }
     formik.setFieldValue("Mobile", "");
@@ -123,10 +136,12 @@ export default function FormWithoutFormikForDonation({
 
   useUpdateEffect(() => {
     if (SelectedCommitmentId) {
-      formik.setFieldValue(
-        "Amount",
-        SelectedCommitmentId?.amount - SelectedCommitmentId?.paidAmount
-      );
+      if (!isEdit) {
+        formik.setFieldValue(
+          "Amount",
+          SelectedCommitmentId?.amount - SelectedCommitmentId?.paidAmount
+        );
+      }
       formik.setFieldValue(
         "SelectedMasterCategory",
         SelectedCommitmentId?.masterCategoryId
@@ -137,6 +152,16 @@ export default function FormWithoutFormikForDonation({
       );
       formik.setFieldValue("donarName", SelectedCommitmentId?.donarName);
       formik.setFieldValue("etag", SelectedCommitmentId?.etag);
+    } else {
+      formik.setFieldValue(
+        "SelectedMasterCategory",
+        formik.initialValues.SelectedMasterCategory
+      );
+      formik.setFieldValue(
+        "SelectedSubCategory",
+        formik.initialValues.SelectedSubCategory
+      );
+      formik.setFieldValue("Amount", formik.initialValues.Amount);
     }
   }, [SelectedCommitmentId?._id]);
 
@@ -248,7 +273,51 @@ export default function FormWithoutFormikForDonation({
     setOpen(false);
   };
   const donation_type = searchParams.get("type");
+  const [uploadedFileUrl, setUploadedFileUrl] = useState(
+    [formik.values.paymentScreenShot] || []
+  );
+  const [imageUrl, setImageUrl] = useState([]);
+  const [heroRefreshFlag, setHeroRefreshFlag] = useState(false);
 
+  useEffect(() => {
+    if (
+      Array.isArray([formik.values.paymentScreenShot]) &&
+      [formik.values.paymentScreenShot].length === 0
+    ) {
+      setImageUrl([]);
+    }
+  }, [formik.values.paymentScreenShot]);
+  useEffect(() => {
+    if (
+      Array.isArray([formik.values.paymentScreenShot]) &&
+      [formik.values.paymentScreenShot].length > 0 &&
+      !heroRefreshFlag
+    ) {
+      const timer = setTimeout(() => {
+        const loadImages = async () => {
+          try {
+            const urls = await Promise.all(
+              [formik.values.paymentScreenShot].map(async (image) => {
+                if (!image) return null;
+                const url = await fetchImage(image);
+                return { url, fileName: image };
+              })
+            );
+
+            setImageUrl(urls.filter(Boolean));
+          } catch (error) {
+            console.error("Error loading images:", error);
+          }
+        };
+
+        loadImages();
+
+        setHeroRefreshFlag(true);
+      }, 1500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [[formik.values.paymentScreenShot], heroRefreshFlag]);
   return (
     <Form>
       {showPrompt && (
@@ -272,7 +341,7 @@ export default function FormWithoutFormikForDonation({
             <Col xs={12} sm={6} lg={3}>
               <CustomCountryMobileNumberField
                 value={phoneNumber}
-                disabled={payDonation}
+                disabled={isEdit || payDonation}
                 defaultCountry={countryFlag}
                 label={t("dashboard_Recent_DonorNumber")}
                 placeholder={t("placeHolder_mobile_number")}
@@ -287,18 +356,9 @@ export default function FormWithoutFormikForDonation({
                 }}
                 required
               />
-              {formik.errors.Mobile && (
-                <div
-                //   style={{
-                //     height: "20px",
-                //     font: "normal normal bold 11px Noto Sans",
-                //   }}
-                >
-                  {formik.errors.Mobile && (
-                    <div className="text-danger">
-                      <Trans i18nKey={formik.errors.Mobile} />
-                    </div>
-                  )}
+              {formik.touched.Mobile && formik.errors.Mobile && (
+                <div className="text-danger">
+                  <Trans i18nKey={formik.errors.Mobile} />
                 </div>
               )}
             </Col>
@@ -311,7 +371,8 @@ export default function FormWithoutFormikForDonation({
                 valueKey={"id"}
                 label={t("commitment_Username")}
                 placeholder={t("categories_select_user_name")}
-                defaultOptions
+                defaultOptions={false} // Prevents fetching options
+                isDisabled={true} // Disables selection
                 disabled={payDonation || loadOption.length == 0}
               />
               {noUserFound && (
@@ -356,6 +417,7 @@ export default function FormWithoutFormikForDonation({
                 placeholder={t("placeHolder_donar_name")}
                 name="donarName"
                 value={formik.values.donarName}
+                disabled={isEdit}
                 onChange={(e) => {
                   formik.setFieldValue(
                     "donarName",
@@ -395,8 +457,8 @@ export default function FormWithoutFormikForDonation({
                 required
                 width={"100"}
                 disabled={
-                  masterloadOptionQuery?.data?.results == 0 ||
-                  formik.values.SelectedCommitmentId !== ""
+                  !masterloadOptionQuery?.data?.results?.length ||
+                  !!formik.values.SelectedCommitmentId
                 }
               />
             </Col>
@@ -414,18 +476,17 @@ export default function FormWithoutFormikForDonation({
                 labelKey="name"
                 valueKey="id"
                 disabled={
-                  subLoadOption?.length == 0 ||
-                  formik?.values?.SelectedCommitmentId !== ""
+                  !subLoadOption?.length || !!formik.values.SelectedCommitmentId
                 }
                 width
                 onChange={(selectedOption) => {
                   formik.setFieldValue("SelectedSubCategory", selectedOption);
 
                   // Check if the selected subcategory has isFixedAmount === true
-                  if (selectedOption?.isFixedAmount) {
+                  if (!isEdit && selectedOption?.isFixedAmount) {
                     formik.setFieldValue("Amount", selectedOption.amount || ""); // Set the amount from subcategory
                   } else {
-                    formik.setFieldValue("Amount", ""); // Clear the amount for non-fixed subcategories
+                    if (!isEdit) formik.setFieldValue("Amount", ""); // Clear the amount for non-fixed subcategories
                   }
                 }}
               />
@@ -448,6 +509,7 @@ export default function FormWithoutFormikForDonation({
               <>
                 <Col xs={12} sm={6} lg={3}>
                   <FormikCustomReactSelect
+                    disabled={isEdit}
                     labelName={t("mode_of_payment")}
                     name="modeOfPayment"
                     placeholder={t("select_option")}
@@ -539,6 +601,7 @@ export default function FormWithoutFormikForDonation({
                       {field.fieldType === "Boolean" ? (
                         <FormikCustomReactSelect
                           labelName={field.fieldName}
+                          disabled={isEdit}
                           name={`customFields.${field.fieldName}`}
                           loadOptions={[
                             { value: true, label: "True" },
@@ -555,6 +618,7 @@ export default function FormWithoutFormikForDonation({
                             {field.isRequired && "*"}
                           </label>
                           <CustomDatePicker
+                            disabled={isEdit}
                             id="datePickerANTD"
                             format="DD MMM YYYY"
                             onChange={(date) => {
@@ -585,6 +649,7 @@ export default function FormWithoutFormikForDonation({
                         </>
                       ) : isSelectField ? (
                         <FormikCustomReactSelect
+                          disabled={isEdit}
                           labelName={field.fieldName}
                           name={`customFields.${field.fieldName}`}
                           loadOptions={
@@ -602,6 +667,7 @@ export default function FormWithoutFormikForDonation({
                         />
                       ) : (
                         <CustomTextField
+                          disabled={isEdit}
                           label={field.fieldName}
                           name={`customFields.${field.fieldName}`}
                           type={
@@ -618,6 +684,7 @@ export default function FormWithoutFormikForDonation({
                 })}
                 <Col xs={12} sm={6} lg={customFieldsList.length === 0 ? 3 : 3}>
                   <CustomTextField
+                    disabled={isEdit}
                     type="number"
                     label={t("categories_select_amount")}
                     placeholder={t("enter_price_manually")}
@@ -640,6 +707,36 @@ export default function FormWithoutFormikForDonation({
                     rows="2"
                   />
                 </Col>
+                {isEdit && (
+                  <Col xs={12} lg={3} md={3}>
+                    <div className="ImagesVideos">
+                      <Trans i18nKey={"Payment ScreenShot"} />{" "}
+                      {/* <span style={{ fontSize: "13px", color: "gray" }}>
+                        <Trans i18nKey={"image_size_suggestion"} />
+                      </span> */}
+                    </div>
+                    <UploadImage
+                      required
+                      uploadFileFunction={uploadFile}
+                      setUploadedFileUrl={setUploadedFileUrl}
+                      name="paymentScreenShot"
+                      listType="picture"
+                      buttonLabel={t("upload_image")}
+                      initialUploadUrl={imageUrl && imageUrl}
+                      isMultiple={true}
+                      maxCount={5}
+                      icon={
+                        <img
+                          src={uploadIcon}
+                          alt="Upload Icon"
+                          style={{ width: 16, height: 16 }}
+                        />
+                      }
+                      isEdit={isEdit}
+                      // setDeletedImage={setDeletedHeroImages}
+                    />
+                  </Col>
+                )}
               </>
             )}
             {/* if tab changed to article donation   */}
