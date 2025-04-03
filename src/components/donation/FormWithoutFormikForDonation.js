@@ -131,7 +131,7 @@ export default function FormWithoutFormikForDonation({
     formik.setFieldValue("SelectedMasterCategory", "");
     formik.setFieldValue("SelectedSubCategory", "");
     formik.setFieldValue("SelectedCommitmentId", "");
-    formik.setFieldValue("Amount", "");
+    // formik.setFieldValue("Amount", "");
   }, [formik?.values?.SelectedUser]);
 
   useUpdateEffect(() => {
