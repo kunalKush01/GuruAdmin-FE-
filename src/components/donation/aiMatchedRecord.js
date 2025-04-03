@@ -12,7 +12,7 @@ import { useHistory } from "react-router-dom";
 const { Option } = Select;
 const { TextArea } = Input;
 
-const AIMatchedRecord = () => {
+const AIMatchedRecord = ({ donationRecord }) => {
   const history = useHistory();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
@@ -159,8 +159,18 @@ const AIMatchedRecord = () => {
       donorMapped: record.donorMapped,
       modeOfPayment: record.modeOfPayment,
     }).toString();
-    history.push(`/donation/add?${params}`);
+
+    history.push({
+      pathname: "/donation/edit",
+      search: `?${params}`,
+      state: {
+        record: donationRecord,
+        isEdit: true,
+        isFieldDisable: true,
+      },
+    });
   };
+
   const columns = [
     {
       title: t("transactionDate"),

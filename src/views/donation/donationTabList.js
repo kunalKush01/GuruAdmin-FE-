@@ -30,7 +30,7 @@ import { ChangeCategoryType } from "../../components/partials/categoryDropdown";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
 import NoContent from "../../components/partials/noContent";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-import { WRITE } from "../../utility/permissionsVariable";
+import { IMPORT, WRITE } from "../../utility/permissionsVariable";
 import DonationANTDListTable from "../../components/donation/donationAntdListTable";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import filterIcon from "../../assets/images/icons/filter.svg";
@@ -617,9 +617,11 @@ export default function Donation() {
                       color="primary"
                       className={`addAction-btn`}
                       onClick={() =>
-                        history.push(
-                          `/donation/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}&type=${activeTab}`
-                        )
+                        history.push({
+                          pathname: "/donation/add",
+                          search: `?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}&type=${activeTab}`,
+                          state: { record: {}, isEdit: false },
+                        })
                       }
                     >
                       <span>
@@ -632,23 +634,28 @@ export default function Donation() {
                   ) : (
                     ""
                   )}
-                  <Dropdown.Button
-                    type="primary"
-                    size="large"
-                    className="dropDownBtn"
-                    menu={{
-                      items: [
-                        {
-                          label: t("history"),
-                          key: "history",
-                        },
-                      ],
-                      onClick: handleMenuDonationClick,
-                    }}
-                    onClick={handleButtonClick}
-                  >
-                    {t("import")}
-                  </Dropdown.Button>
+                  {allPermissions?.name === "all" ||
+                  subPermission?.includes(IMPORT) ? (
+                    <Dropdown.Button
+                      type="primary"
+                      size="large"
+                      className="dropDownBtn"
+                      menu={{
+                        items: [
+                          {
+                            label: t("history"),
+                            key: "history",
+                          },
+                        ],
+                        onClick: handleMenuDonationClick,
+                      }}
+                      onClick={handleButtonClick}
+                    >
+                      {t("import")}
+                    </Dropdown.Button>
+                  ) : (
+                    ""
+                  )}
                   <ImportForm
                     onClose={onClose}
                     open={open}

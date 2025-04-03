@@ -20,6 +20,9 @@ export default function DonationForm({
   customFieldsList,
   sId,
   donorMapped,
+  isEdit,
+  isFieldDisable,
+  donationId
 }) {
   const history = useHistory();
   const donationQueryClient = useQueryClient();
@@ -56,12 +59,14 @@ export default function DonationForm({
     },
     onError: (error) => {
       if (error.response?.status === 409) {
-        toast.error("This donation has been modified by another user. Please refresh and try again.");
+        toast.error(
+          "This donation has been modified by another user. Please refresh and try again."
+        );
       } else {
         toast.error("Error creating donation. Please try again.");
       }
       setLoading(false);
-    }
+    },
   });
 
   const [showPrompt, setShowPrompt] = useState(true);
@@ -70,21 +75,18 @@ export default function DonationForm({
   const handleFormSubmit = (values) => {
     setShowPrompt(false);
     setLoading(true);
-    
+
     const transformedCustomFields = Object.entries(values.customFields).map(
       ([key, field]) => ({
         fieldName: key,
         fieldType:
-          typeof field === "object" &&
-          field !== null &&
-          !Array.isArray(field)
+          typeof field === "object" && field !== null && !Array.isArray(field)
             ? "Select"
             : typeof field.value === "boolean"
             ? "Boolean"
             : typeof field.value === "number"
             ? "Number"
-            : typeof field.value === "string" &&
-              !isNaN(Date.parse(field.value))
+            : typeof field.value === "string" && !isNaN(Date.parse(field.value))
             ? "Date"
             : "String",
         value: field.value !== undefined ? field.value : field,
@@ -112,7 +114,8 @@ export default function DonationForm({
       articleQuantity: values?.articleQuantity,
       articleRemark: values?.remarks,
       isArticle: donation_type === "Donation" ? false : true,
-      isGovernment: !payDonation && values?.isGovernment === "YES" ? true : false,
+      isGovernment:
+        !payDonation && values?.isGovernment === "YES" ? true : false,
       modeOfPayment: values?.modeOfPayment?.value,
       bankName: values?.bankName?.value,
       chequeNum: values?.chequeNum,
@@ -123,6 +126,9 @@ export default function DonationForm({
       customFields: transformedCustomFields,
       sId,
       donorMapped,
+      paymentScreenShot: values?.paymentScreenShot,
+      donationId: isEdit && donationId,
+      paidStatus: isEdit && "Paid",
     };
 
     donationMutation.mutate(payload);
@@ -161,6 +167,8 @@ export default function DonationForm({
               buttonName={buttonName}
               customFieldsList={customFieldsList}
               currentEtag={currentEtag}
+              isEdit={isEdit}
+              isFieldDisable={isFieldDisable}
             />
           )}
         </Formik>

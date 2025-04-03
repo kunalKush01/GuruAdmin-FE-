@@ -649,6 +649,13 @@ const Routes = [
     subPermission: WRITE,
   },
   {
+    path: "/donation/edit",
+    component: lazy(() => import("../../views/donation/editDonation.js")),
+    exact: true,
+    type: "donation",
+    subPermission: WRITE,
+  },
+  {
     path: "/commitment",
     component: lazy(() => import("../../views/commitments/commitmentList.js")),
     exact: true,
