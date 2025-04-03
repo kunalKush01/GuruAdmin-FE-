@@ -18,7 +18,7 @@ export default function EditDonation() {
   const history = useHistory();
   const { t } = useTranslation();
   const location = useLocation();
-  const { record, isEdit } = location.state || {};
+  const { record, isEdit ,isFieldDisable} = location.state || {};
   const loggedInUser = useSelector((state) => state.auth.userDetail.name);
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
@@ -174,6 +174,7 @@ export default function EditDonation() {
           donorMapped={donorMapped}
           sId={sId}
           isEdit={isEdit}
+          isFieldDisable={isFieldDisable}
           donationId={record ? record._id : ""}
         />
       </div>

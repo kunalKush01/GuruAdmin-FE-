@@ -21,6 +21,7 @@ export default function DonationForm({
   sId,
   donorMapped,
   isEdit,
+  isFieldDisable,
   donationId
 }) {
   const history = useHistory();
@@ -167,6 +168,7 @@ export default function DonationForm({
               customFieldsList={customFieldsList}
               currentEtag={currentEtag}
               isEdit={isEdit}
+              isFieldDisable={isFieldDisable}
             />
           )}
         </Formik>

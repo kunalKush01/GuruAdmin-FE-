@@ -139,30 +139,33 @@ function UploadImage({
   };
   return (
     <>
-      <Upload
-        className="uploadIdCard"
-        name={name}
-        listType={listType}
-        customRequest={customRequest}
-        maxCount={isMultiple ? 5 : maxCount}
-        onRemove={handleDelete}
-        onPreview={handlePreview}
-        multiple={isMultiple}
-        showUploadList={isMultiple ? false : true}
-      >
-        <Button
-          icon={icon}
-          style={{ width: "100%" }}
-          disabled={(isMultiple && uploadedFileUrl.length >= 5) || props.isEdit} // Disable button when file count reaches 5
+      <div style={{ display: props.isEdit ? "none" : "block" }}>
+        <Upload
+          className="uploadIdCard"
+          name={name}
+          listType={listType}
+          customRequest={customRequest}
+          maxCount={isMultiple ? 5 : maxCount}
+          onRemove={handleDelete}
+          onPreview={handlePreview}
+          multiple={isMultiple}
+          showUploadList={isMultiple ? false : true}
         >
-          {buttonLabel}
-        </Button>
-      </Upload>
+          <Button
+            icon={icon}
+            style={{ width: "100%", display: props.isEdit ? "none" : "block" }}
+            disabled={
+              (isMultiple && uploadedFileUrl.length >= 5) || props.isEdit
+            } // Disable button when file count reaches 5
+          >
+            {buttonLabel}
+          </Button>
+        </Upload>
+      </div>
       {/* show initial image while editing */}
       <div className="previewImagesContainer py-1">
-        {isMultiple
-          ? Array.isArray(uploadedFileUrl) &&
-            uploadedFileUrl.length > 0 &&
+        {isMultiple ? (
+          Array.isArray(uploadedFileUrl) && uploadedFileUrl.length > 0 ? (
             uploadedFileUrl?.map((item, index) => (
               <div key={index} className="previewImages">
                 <Image
@@ -183,28 +186,51 @@ function UploadImage({
                 />
               </div>
             ))
-          : isImageVisible &&
-            Array.isArray(uploadedFileUrl) &&
-            uploadedFileUrl.length > 0 && (
-              <div className="previewImages">
-                <Image
-                  src={uploadedFileUrl[0]?.url}
-                  alt="Uploaded"
-                  style={{
-                    height: "55px",
-                    // width: "50px",
-                    display: uploadedFileUrl[0]?.url ? "block" : "none",
-                  }}
-                />
-                <Button
-                  type="text"
-                  danger
-                  icon={<DeleteOutlined />}
-                  disabled={props.isEdit}
-                  onClick={() => handleDelete(uploadedFileUrl[0])}
-                />
-              </div>
-            )}
+          ) : (
+            <div
+              style={{
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                width: "140px",
+              }}
+            >
+              No Image Available
+            </div>
+          )
+        ) : isImageVisible &&
+          Array.isArray(uploadedFileUrl) &&
+          uploadedFileUrl.length > 0 ? (
+          <div className="previewImages">
+            <Image
+              src={uploadedFileUrl[0]?.url}
+              alt="Uploaded"
+              style={{
+                height: "55px",
+                // width: "50px",
+                display: uploadedFileUrl[0]?.url ? "block" : "none",
+              }}
+            />
+            <Button
+              type="text"
+              danger
+              icon={<DeleteOutlined />}
+              disabled={props.isEdit}
+              onClick={() => handleDelete(uploadedFileUrl[0])}
+            />
+          </div>
+        ) : (
+          <div
+            style={{
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              width: "140px",
+            }}
+          >
+            No Image Available
+          </div>
+        )}
       </div>
 
       {/* to show image preview while selecting image */}

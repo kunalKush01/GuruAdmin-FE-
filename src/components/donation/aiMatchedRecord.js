@@ -166,6 +166,7 @@ const AIMatchedRecord = ({ donationRecord }) => {
       state: {
         record: donationRecord,
         isEdit: true,
+        isFieldDisable: true,
       },
     });
   };

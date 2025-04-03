@@ -46,6 +46,7 @@ export default function FormWithoutFormikForDonation({
   showPrompt,
   customFieldsList,
   isEdit = false,
+  isFieldDisable = true,
   ...props
 }) {
   const { t } = useTranslation();
@@ -341,7 +342,7 @@ export default function FormWithoutFormikForDonation({
             <Col xs={12} sm={6} lg={3}>
               <CustomCountryMobileNumberField
                 value={phoneNumber}
-                disabled={isEdit || payDonation}
+                disabled={(isEdit && isFieldDisable) || payDonation}
                 defaultCountry={countryFlag}
                 label={t("dashboard_Recent_DonorNumber")}
                 placeholder={t("placeHolder_mobile_number")}
@@ -417,7 +418,7 @@ export default function FormWithoutFormikForDonation({
                 placeholder={t("placeHolder_donar_name")}
                 name="donarName"
                 value={formik.values.donarName}
-                disabled={isEdit}
+                disabled={isEdit && isFieldDisable}
                 onChange={(e) => {
                   formik.setFieldValue(
                     "donarName",
@@ -509,7 +510,7 @@ export default function FormWithoutFormikForDonation({
               <>
                 <Col xs={12} sm={6} lg={3}>
                   <FormikCustomReactSelect
-                    disabled={isEdit}
+                    disabled={isEdit && isFieldDisable}
                     labelName={t("mode_of_payment")}
                     name="modeOfPayment"
                     placeholder={t("select_option")}
@@ -601,7 +602,7 @@ export default function FormWithoutFormikForDonation({
                       {field.fieldType === "Boolean" ? (
                         <FormikCustomReactSelect
                           labelName={field.fieldName}
-                          disabled={isEdit}
+                          disabled={isEdit && isFieldDisable}
                           name={`customFields.${field.fieldName}`}
                           loadOptions={[
                             { value: true, label: "True" },
@@ -618,7 +619,7 @@ export default function FormWithoutFormikForDonation({
                             {field.isRequired && "*"}
                           </label>
                           <CustomDatePicker
-                            disabled={isEdit}
+                            disabled={isEdit && isFieldDisable}
                             id="datePickerANTD"
                             format="DD MMM YYYY"
                             onChange={(date) => {
@@ -649,7 +650,7 @@ export default function FormWithoutFormikForDonation({
                         </>
                       ) : isSelectField ? (
                         <FormikCustomReactSelect
-                          disabled={isEdit}
+                          disabled={isEdit && isFieldDisable}
                           labelName={field.fieldName}
                           name={`customFields.${field.fieldName}`}
                           loadOptions={
@@ -667,7 +668,7 @@ export default function FormWithoutFormikForDonation({
                         />
                       ) : (
                         <CustomTextField
-                          disabled={isEdit}
+                          disabled={isEdit && isFieldDisable}
                           label={field.fieldName}
                           name={`customFields.${field.fieldName}`}
                           type={
@@ -684,7 +685,7 @@ export default function FormWithoutFormikForDonation({
                 })}
                 <Col xs={12} sm={6} lg={customFieldsList.length === 0 ? 3 : 3}>
                   <CustomTextField
-                    disabled={isEdit}
+                    disabled={isEdit && isFieldDisable}
                     type="number"
                     label={t("categories_select_amount")}
                     placeholder={t("enter_price_manually")}

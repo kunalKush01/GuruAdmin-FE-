@@ -22,7 +22,13 @@ import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import receiptIcon from "../../assets/images/icons/receiptIcon.svg";
 import whatsappIcon from "../../assets/images/icons/whatsappIcon.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-import { EDIT } from "../../utility/permissionsVariable";
+import {
+  EDIT,
+  DELETE,
+  READ,
+  WRITE,
+  IMPORT,
+} from "../../utility/permissionsVariable";
 import EditDonation from "./editDonation";
 import "../../assets/scss/common.scss";
 import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
@@ -49,7 +55,7 @@ export default function DonationANTDListTable(
   },
   args
 ) {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const location = useLocation();
   const { t } = useTranslation();
   const history = useHistory();
@@ -255,7 +261,7 @@ export default function DonationANTDListTable(
 
           // Assuming updateDonation is an API function that updates the donation
           await updateDonation(updatedRecord);
-          queryClient.invalidateQueries('donations')
+          queryClient.invalidateQueries("donations");
           Swal.fire(
             "Deleted!",
             "The donation has been marked as deleted.",
@@ -265,6 +271,25 @@ export default function DonationANTDListTable(
           Swal.fire("Error!", "Failed to delete the donation.", "error");
         }
       }
+    });
+  };
+  const handleEdit = (record) => {
+    const params = new URLSearchParams({
+      page: currentPage,
+      category: "All",
+      subCategory: "All",
+      filter: "dashboard_monthly",
+      type: "Donation",
+    }).toString();
+
+    history.push({
+      pathname: "/donation/edit",
+      search: `?${params}`,
+      state: {
+        record: record,
+        isEdit: true,
+        isFieldDisable: false,
+      },
     });
   };
 
@@ -465,22 +490,22 @@ export default function DonationANTDListTable(
     //   width: 180,
     // },
     ...customColumns,
-    {
-      title: t("dashboard_Recent_DonorReceipt"),
-      dataIndex: "receipt",
-      key: "receipt",
-      render: (text) => text,
-      fixed: !isMobile && "right",
-      hidden: donationType === "Suspense" ? true : false,
-      width: 120,
-    },
+    // {
+    //   title: t("dashboard_Recent_DonorReceipt"),
+    //   dataIndex: "receipt",
+    //   key: "receipt",
+    //   render: (text) => text,
+    //   fixed: !isMobile && "right",
+    //   hidden: donationType === "Suspense" ? true : false,
+    //   width: 120,
+    // },
     {
       title: t("action"),
       key: "action",
       dataIndex: "action",
       fixed: !isMobile && "right",
-      hidden: donationType === "Suspense" ? false : true,
-      width: 120,
+      // hidden: donationType === "Suspense" ? false : true,
+      width: 250,
     },
   ];
 
@@ -600,56 +625,78 @@ export default function DonationANTDListTable(
             item?.articleQuantity ?? "-"
           ),
           articleRemark: ConverFirstLatterToCapital(item?.articleRemark ?? "-"),
-          receipt: (
-            <div className="d-flex align-items-center">
-              {isLoading === item?._id ? (
-                <Spinner color="success" />
-              ) : (
-                <img
-                  src={receiptIcon}
-                  width={25}
-                  className="cursor-pointer me-2"
-                  onClick={() => {
-                    const receiptName = item?.receiptName;
-                    if (receiptName) {
-                      const fileUrl = `${REACT_APP_BASEURL_PUBLIC}storage/download/donation/${receiptName}`;
-                      window.open(fileUrl, "_blank");
-                    } else {
-                      setIsLoading(item?._id);
-                      downloadReceipt.mutate({
-                        donationId: item._id,
-                        languageId: selectedLang.id,
-                      });
-                    }
-                  }}
-                />
-              )}
-              <img
-                src={whatsappIcon}
-                width={25}
-                className="cursor-pointer"
-                onClick={() => handleWhatsAppShare(item)}
-              />
-            </div>
-          ),
           action: (
             <div className="d-flex align-items-center">
               <div>
+                {isLoading === item?._id ? (
+                  <Spinner color="success" />
+                ) : (
+                  <img
+                    src={receiptIcon}
+                    width={25}
+                    className="cursor-pointer me-2"
+                    onClick={() => {
+                      const receiptName = item?.receiptName;
+                      if (receiptName) {
+                        const fileUrl = `${REACT_APP_BASEURL_PUBLIC}storage/download/donation/${receiptName}`;
+                        window.open(fileUrl, "_blank");
+                      } else {
+                        setIsLoading(item?._id);
+                        downloadReceipt.mutate({
+                          donationId: item._id,
+                          languageId: selectedLang.id,
+                        });
+                      }
+                    }}
+                  />
+                )}
+              </div>
+              <div>
                 <img
-                  src={eyeIcon}
+                  src={whatsappIcon}
                   width={25}
-                  onClick={() => handleView(item)}
-                  className="cursor-pointer me-1"
+                  className="cursor-pointer me-2"
+                  onClick={() => handleWhatsAppShare(item)}
                 />
               </div>
               <div>
                 <img
-                  // icon={<DeleteOutlined />}
-                  src={deleteIcon}
-                  className="cursor-pointer"
-                  width={35}
-                  onClick={() => handleDelete(item)}
+                  src={eyeIcon}
+                  width={25}
+                  style={{
+                    display: donationType === "Suspense" ? "block" : "none",
+                  }}
+                  onClick={() => handleView(item)}
+                  className="cursor-pointer me-2"
                 />
+              </div>
+              <div>
+                {allPermissions?.name === "all" ||
+                subPermission?.includes(EDIT) ? (
+                  <img
+                    src={editIcon}
+                    width={35}
+                    className="cursor-pointer me-2"
+                    onClick={() => {
+                      handleEdit(item);
+                    }}
+                  />
+                ) : (
+                  ""
+                )}
+              </div>
+              <div>
+                {allPermissions?.name === "all" ||
+                subPermission?.includes(DELETE) ? (
+                  <img
+                    src={deleteIcon}
+                    className="cursor-pointer"
+                    width={35}
+                    onClick={() => handleDelete(item)}
+                  />
+                ) : (
+                  ""
+                )}
               </div>
             </div>
           ),
