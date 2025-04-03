@@ -31,15 +31,10 @@ export default function EditDonation() {
   const modeOfPayment = searchParams.get("modeOfPayment");
   const dateTime = searchParams.get("dateTime");
   const sId = searchParams.get("sId");
-  console.log(sId);
   const handleCreateDonation = async (payload) => {
     try {
-      console.log("Updating Donation with:", payload);
-
-      // First, update the donation
-      await updateDonation(payload);
-
-      if (sId) {
+      const donationResponse = await updateDonation(payload);
+      if (donationResponse?.error === false && sId) {
         const suspensePayload = {
           donorMapped: true,
           transactionDate: dateTime,
@@ -47,12 +42,10 @@ export default function EditDonation() {
           amount: amount,
           modeOfPayment: modeOfPayment,
         };
-
-        console.log("Updating Suspense with:", suspensePayload);
         await updateSuspense({ id: sId, updatedData: suspensePayload });
+      } else {
+        console.log("Donation update failed, skipping Suspense update.");
       }
-
-      console.log("Donation and Suspense updated successfully!");
     } catch (error) {
       console.error("Error updating donation or suspense:", error);
     }

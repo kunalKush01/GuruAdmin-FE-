@@ -310,14 +310,14 @@ export default function DonationANTDListTable(
       key: "category",
       render: (text) => text,
       width: "120px",
-      width: !isMobile ? 150 : 120,
+      width: !isMobile ? 200 : 120,
     },
     {
       title: t("categories_sub_category"),
       dataIndex: "subCategory",
       key: "subCategory",
       render: (text) => text,
-      width: 150,
+      width: 300,
     },
     {
       title: t("dashboard_Recent_DonorDate"),
@@ -351,7 +351,7 @@ export default function DonationANTDListTable(
       key: "commitmentID",
       render: (text) => text,
       hidden: donationType === "Article_Donation" ? true : false,
-      width: 180,
+      width: 220,
     },
     {
       title: t("created_by"),
@@ -375,7 +375,7 @@ export default function DonationANTDListTable(
       key: "bankName",
       hidden: donationType === "Article_Donation" ? true : false,
       render: (text) => text,
-      width: 180,
+      width: 200,
     },
     {
       title: t("cheque_no"),
@@ -407,7 +407,7 @@ export default function DonationANTDListTable(
       key: "bankNarration",
       hidden: donationType === "Article_Donation" ? true : false,
       render: (text) => text,
-      width: 180,
+      width: 300,
     },
     {
       title: t("articleType"),
