@@ -31,7 +31,7 @@ import { ChangeCategoryType } from "../../components/partials/categoryDropdown";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
 import NoContent from "../../components/partials/noContent";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
-import { WRITE } from "../../utility/permissionsVariable";
+import { IMPORT, WRITE } from "../../utility/permissionsVariable";
 
 import "../../assets/scss/viewCommon.scss";
 import CommitmentAntdListTable from "../../components/commitments/commitmentAntdListTable";
@@ -435,7 +435,7 @@ export default function Commitment() {
                   }}
                 /> */}
                 {allPermissions?.name === "all" ||
-                subPermission?.includes(WRITE) ? (
+                subPermission?.includes(IMPORT) ? (
                   <Space wrap>
                     <Dropdown.Button
                       type="primary"
