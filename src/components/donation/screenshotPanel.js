@@ -7,7 +7,10 @@ import "../../assets/scss/common.scss";
 import ImageObservation from "./imageObservation";
 import AIMatchedRecord from "./aiMatchedRecord";
 import { useQuery } from "@tanstack/react-query";
-import { extractDataFromImage } from "../../api/suspenseApi";
+import {
+  extractDataFromImage,
+  getImagePaymentByID,
+} from "../../api/suspenseApi";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 const Desc = (props) => (
@@ -36,8 +39,7 @@ const ScreenshotPanel = ({
   setRecord,
 }) => {
   const history = useHistory();
-  const trustDetails = useSelector((state) => state.auth.trustDetail) || {};
-  const trustId = trustDetails?.id;
+  const trustId = localStorage.getItem('trustId')
   const [sizes, setSizes] = useState(["70%", "30%"]);
   const [enabled, setEnabled] = useState(true);
   const [imageUrl, setImageUrl] = useState(null);
@@ -64,7 +66,6 @@ const ScreenshotPanel = ({
       loadImages();
     }
   }, [record]);
-
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   useEffect(() => {
     const handleResize = () => {
@@ -75,25 +76,32 @@ const ScreenshotPanel = ({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
   const { data, isLoading } = useQuery(
-    ["extractData", record?.paymentScreenShot], // Use record?.image_url as a dependency
-    () =>
-      extractDataFromImage(
-        record?.paymentScreenShot
-          ? {
-              filePath: record.paymentScreenShot,
-              trustId: trustId,
-              donationId: record?._id,
-            }
-          : {}
-      ), // Ensure initial payload is {}
+    [
+      "extractDataOrGetImage",
+      record?.paymentScreenShot,
+      record?.paymentImageId,
+    ],
+    () => {
+      if (record?.paymentImageId) {
+        return getImagePaymentByID(record.paymentImageId);
+      } else if (record?.paymentScreenShot) {
+        return extractDataFromImage({
+          filePath: record.paymentScreenShot,
+          trustId: trustId,
+          donationId: record?._id,
+        });
+      }
+      return Promise.resolve(null);
+    },
     {
       keepPreviousData: true,
-      enabled: !!record, // Only enable query when record is available
+      enabled: !!record,
       onError: (error) => {
         console.error("Error fetching data:", error);
       },
     }
   );
+
   const [matchedAmount, setMatchedAmount] = useState(null);
   const clearViewParams = () => {
     setShowScreenshotPanel(false); // Close the view panel
@@ -151,6 +159,7 @@ const ScreenshotPanel = ({
                 <ImageObservation
                   matchedAmount={matchedAmount}
                   data={data ? data : null}
+                  isID={record?.paymentImageId ? true : false}
                 />
               )}
             </div>
