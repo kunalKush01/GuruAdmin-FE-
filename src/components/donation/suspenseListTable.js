@@ -150,7 +150,7 @@ function SuspenseListTable({ success, filterData, type }) {
       state: {
         record: {},
         isEdit: true,
-        isFieldDisable: true,
+        isFieldDisable: false,
       },
     });
   };
