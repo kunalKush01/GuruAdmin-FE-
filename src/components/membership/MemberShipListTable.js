@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import "../../assets/scss/common.scss";
 import "../../assets/scss/viewCommon.scss";
 import eyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
+import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -24,13 +25,16 @@ function MemberShipListTable({
   // const [allSelectedKeys, setAllSelectedKeys] = useState([]);
 
   const handleSelectChange = (newSelectedRowKeys) => {
-    const currentPageIds = data.map(item => item._id);
-    
+    const currentPageIds = data.map((item) => item._id);
+
     const selectionsFromOtherPages = allSelectedKeys.filter(
-      id => !currentPageIds.includes(id)
+      (id) => !currentPageIds.includes(id)
     );
-    const updatedSelections = [...selectionsFromOtherPages, ...newSelectedRowKeys];
-    
+    const updatedSelections = [
+      ...selectionsFromOtherPages,
+      ...newSelectedRowKeys,
+    ];
+
     setAllSelectedKeys(updatedSelections);
     onSelectionChange(updatedSelections);
   };
@@ -60,18 +64,18 @@ function MemberShipListTable({
           label: "Invert current page",
           onClick: () => {
             const currentPageIds = data.map((item) => item._id);
-            const currentPageSelected = currentPageIds.filter(id => 
+            const currentPageSelected = currentPageIds.filter((id) =>
               allSelectedKeys.includes(id)
             );
-            
+
             // If all current page items are selected, unselect them
             if (currentPageSelected.length === currentPageIds.length) {
               handleSelectChange([]);
-            } 
+            }
             // Otherwise, select unselected items
             else {
               const newSelections = currentPageIds.filter(
-                id => !allSelectedKeys.includes(id)
+                (id) => !allSelectedKeys.includes(id)
               );
               handleSelectChange(newSelections);
             }
@@ -83,7 +87,7 @@ function MemberShipListTable({
           onClick: () => {
             const currentPageIds = data.map((item) => item._id);
             const selectionsFromOtherPages = allSelectedKeys.filter(
-              id => !currentPageIds.includes(id)
+              (id) => !currentPageIds.includes(id)
             );
             setAllSelectedKeys(selectionsFromOtherPages);
             onSelectionChange(selectionsFromOtherPages);
@@ -237,11 +241,17 @@ function MemberShipListTable({
       width: 100,
       fixed: "right",
       render: (text, record) => (
-        <div className="d-flex gap-2">
+        <div className="d-flex gap-1">
           <img
             src={eyeIcon}
             style={{ width: "20px", cursor: "pointer" }}
             onClick={() => history.push(`/member/profile/${record._id}`)}
+          />
+          <img
+            src={editIcon}
+            width={35}
+            className="cursor-pointer me-2"
+            onClick={() => history.push(`/member/editMember/${record._id}`)}
           />
         </div>
       ),
