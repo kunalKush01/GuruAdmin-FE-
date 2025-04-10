@@ -543,6 +543,7 @@ export const englishContent = {
   end_Time: "End Time",
   is_government: "Is Government Donor",
   donation_Adddonation: "Add Donation",
+  donation_Editdonation: "Edit Donation",
   donation_AddArticledonation: "Add Article Donation",
   donation_suspense: "Add Suspense Record",
   add_memberShip_member: "Add Member",

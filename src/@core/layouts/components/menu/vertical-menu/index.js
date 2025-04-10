@@ -1,7 +1,13 @@
-import React, { Fragment, useRef, useState } from "react";
+import React, {
+  Fragment,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import classnames from "classnames";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -16,6 +22,10 @@ import { subHeaderContentResponsive } from "../../../../../utility/subHeaderCont
 import VerticalNavMenuItems from "./VerticalNavMenuItems";
 import logo from "../../../../../assets/images/pages/main-logo.png";
 import "../../../../../assets/scss/viewCommon.scss";
+import { Menu, theme } from "antd";
+import { MessageContext } from "../../../../../utility/context/MessageContext";
+import "../../../../../assets/scss/viewCommon.scss";
+import "../../../../../assets/scss/variables/_variables.scss";
 
 const Sidebar = (props) => {
   const {
@@ -33,6 +43,7 @@ const Sidebar = (props) => {
   const [currentActiveGroup, setCurrentActiveGroup] = useState([]);
   const [activeItem, setActiveItem] = useState(null);
   const [menuHover, setMenuHover] = useState(false);
+  const { t, i18n } = useTranslation();
 
   const shadowRef = useRef(null);
 
@@ -56,7 +67,153 @@ const Sidebar = (props) => {
   const history = useHistory();
   const refreshToken = useSelector((state) => state.auth.tokens.refreshToken);
   const userDetails = useSelector((state) => state.auth.userDetail);
+  const { isLogged } = useSelector((state) => state.auth);
+  const layoutStore = useSelector((state) => state.layout);
 
+  const permissions = useSelector(
+    (state) => state.auth.userDetail?.permissions
+  );
+  const trustType = useSelector(
+    (state) => state.auth.trustDetail?.typeId?.name
+  );
+
+  const hasDharmshalaAccess = useSelector(
+    (state) => state.auth.trustDetail?.hasDharmshala
+  );
+
+  const hasServiceAccess = useSelector(
+    (state) => state.auth.trustDetail?.isSevaEnabled
+  );
+
+  const [collapsed, setCollapsed] = useState(false);
+  const [active, setActive] = useState(location.pathname);
+  const [openKeys, setOpenKeys] = useState([]);
+
+  const {
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken();
+
+  const [isMounted, setIsMounted] = useState(false);
+  const [hoveredItem, setHoveredItem] = useState(null);
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
+
+  const contentWidth = layoutStore.contentWidth;
+  const isHidden = layoutStore.menuHidden;
+
+  useEffect(() => {
+    if (!isLogged) {
+      history.push("/login");
+    }
+  }, [isLogged, history]);
+
+  useEffect(() => {
+    setIsMounted(true);
+    return () => {
+      setIsMounted(false);
+    };
+  }, []);
+
+  // Ensure the active state is updated based on the current location
+  useEffect(() => {
+    const pathParts = location.pathname.split("/");
+    if (pathParts.length > 1) {
+      setActive(`/${pathParts[1]}`);
+    } else {
+      setActive(location.pathname);
+    }
+  }, [location.pathname]);
+
+  const permissionsKey = permissions?.map((item) => item?.name);
+
+  const getMenuItem = (item) => {
+    const hasAllPermission = permissionsKey?.includes("all");
+    const hasItemPermission = permissionsKey?.includes(item?.name);
+    const hasCattleItemPermission = item?.innerPermissions?.some((perm) =>
+      permissionsKey?.includes(perm)
+    );
+
+    const hasChildPermission = item?.children?.some(
+      (child) =>
+        permissionsKey?.includes(child?.name) ||
+        child?.innerPermissions?.some((perm) => permissionsKey?.includes(perm))
+    );
+
+    const isGaushala =
+      (item?.isCattle?.toLowerCase() || item?.name?.toLowerCase()) ===
+      trustType?.toLowerCase();
+
+    const isDharmshalaItem = item?.name === "dharmshala/dashboard";
+    const isServiceItem = item?.name === "service-booking";
+    if (isDharmshalaItem && !hasDharmshalaAccess) {
+      return null;
+    }
+
+    if (isServiceItem && !hasServiceAccess) {
+      return null;
+    }
+
+    if (
+      ((item?.name === "gaushala" && item?.customLabel === "Pashu Breed") ||
+        (item?.name === "gaushala" &&
+          item?.customLabel === "Pashu Category")) &&
+      !isGaushala
+    ) {
+      return null;
+    }
+    if (item?.name === "cattles_management" && !isGaushala) {
+      return null; // Exclude "cattles_management" menu item entirely
+    }
+
+    const shouldShowItem =
+      hasAllPermission ||
+      (hasItemPermission && isGaushala) ||
+      (hasChildPermission && isGaushala) ||
+      (hasItemPermission &&
+        !isServiceItem &&
+        item?.name !== "cattles_management") ||
+      (hasChildPermission &&
+        !isServiceItem &&
+        item?.name !== "cattles_management") ||
+      (isServiceItem &&
+        hasServiceAccess &&
+        (hasItemPermission || hasChildPermission));
+
+    if (shouldShowItem) {
+      const isActive = active.startsWith(item.url);
+      const isHovered = hoveredItem === item.name;
+      const children = item.children
+        ? hasAllPermission
+          ? item.children.map(getMenuItem)
+          : item.children.map(getMenuItem).filter((child) => child !== null)
+        : undefined;
+
+      if (
+        hasAllPermission ||
+        children?.length > 0 ||
+        hasItemPermission ||
+        hasChildPermission
+      ) {
+        return {
+          key: item.url,
+          icon: (
+            <img
+              src={isActive || isHovered ? item.activeIcon : item.icon}
+              alt={item.name}
+              style={{ width: "16px", height: "16px" }}
+            />
+          ),
+          label: <Trans i18nKey={item.customLabel || item.name} />,
+          children: children,
+          onClick: () => {
+            if (!item.children) {
+              history.push(item.url);
+            }
+          },
+        };
+      }
+    }
+    return null;
+  };
   const handleLogOut = async () => {
     try {
       const res = await authApiInstance.post("auth/logout", { refreshToken });
@@ -65,8 +222,10 @@ const Sidebar = (props) => {
       history.push("/login");
     } catch (error) {}
   };
-
-  const { t, i18n } = useTranslation();
+  if (!isMounted) return null;
+  const handleMenuOpenChange = (keys) => {
+    setOpenKeys(keys);
+  };
 
   return (
     <Fragment>
@@ -105,22 +264,19 @@ const Sidebar = (props) => {
                     <img src={logo} alt="logo" className="logo" />
                   </a>
                 </div>
-                <VerticalNavMenuItems
-                  items={verticalBarData}
-                  menuData={verticalBarData}
-                  menuHover={menuHover}
-                  groupOpen={groupOpen}
-                  activeItem={activeItem}
-                  groupActive={groupActive}
-                  currentActiveGroup={currentActiveGroup}
-                  routerProps={routerProps}
-                  setGroupOpen={setGroupOpen}
-                  menuCollapsed={menuCollapsed}
-                  setActiveItem={setActiveItem}
-                  setGroupActive={setGroupActive}
-                  setCurrentActiveGroup={setCurrentActiveGroup}
-                  currentActiveItem={currentActiveItem}
+                <div className="menu-container">
+                <Menu
+                  mode="inline"
+                  selectedKeys={[active]}
+                  openKeys={openKeys}
+                  onOpenChange={handleMenuOpenChange}
+                  items={subHeaderContentResponsive
+                    .map(getMenuItem)
+                    .filter(Boolean)}
+                  style={{ borderRight: 0, paddingLeft: "7px" }}
+                  inlineCollapsed={collapsed}
                 />
+                </div>
                 <li className="nav-item" style={{ marginTop: "5rem" }}>
                   <div
                     className="d-flex align-items-center"

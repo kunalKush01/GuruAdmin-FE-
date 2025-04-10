@@ -427,6 +427,7 @@
 
     .btn-Published {
         text-align: center;
+        z-index: 100000;
     }
 
     .addAction-btn {
@@ -1443,11 +1444,103 @@
     .dashboard-cards-wrapper>* {
         flex: 1 1 calc(50% - 1rem);
     }
+    .ant-menu {
+
+        //background-color: $white;
+
+        .ant-menu-item,
+        .ant-menu-submenu-title {
+            font-size: 14px;
+            //padding-left: 10px !important;
+            margin: 4px 0 !important;
+
+
+            &:hover,
+            &:active {
+                //background-color: $primary-color !important;
+                color: $primary-color !important;
+            }
+        }
+
+
+        .ant-menu-submenu {
+            >.ant-menu-submenu-title {
+                //padding-left: 20px !important;
+            }
+
+            .ant-menu-sub {
+
+                .ant-menu-item,
+                .ant-menu-submenu-title {
+                    padding-left: 30px !important;
+                }
+            }
+        }
+
+        &.ant-menu-inline {
+            .ant-menu-item-selected {
+                background-color: $primary-color !important;
+                color: $white !important;
+            }
+
+            .ant-menu-submenu-selected {
+                >.ant-menu-submenu-title {
+                    color: $primary-color !important;
+                }
+            }
+        }
+    }
 }
 
 @media (max-width: 768px) {
     .dashboard-cards-wrapper>* {
         flex: 1 1 100%;
+    }
+    .ant-menu {
+
+        //background-color: $white;
+
+        .ant-menu-item,
+        .ant-menu-submenu-title {
+            font-size: 14px;
+            //padding-left: 10px !important;
+            margin: 4px 0 !important;
+
+
+            &:hover,
+            &:active {
+                //background-color: $primary-color !important;
+                color: $primary-color !important;
+            }
+        }
+
+
+        .ant-menu-submenu {
+            >.ant-menu-submenu-title {
+                //padding-left: 20px !important;
+            }
+
+            .ant-menu-sub {
+
+                .ant-menu-item,
+                .ant-menu-submenu-title {
+                    padding-left: 30px !important;
+                }
+            }
+        }
+
+        &.ant-menu-inline {
+            .ant-menu-item-selected {
+                background-color: $primary-color !important;
+                color: $white !important;
+            }
+
+            .ant-menu-submenu-selected {
+                >.ant-menu-submenu-title {
+                    color: $primary-color !important;
+                }
+            }
+        }
     }
 }
 

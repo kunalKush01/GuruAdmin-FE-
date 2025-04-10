@@ -80,6 +80,14 @@ export const extractDataFromImage = async (payload) => {
     showToastOnError: false,
   });
 };
+export const getImagePaymentByID = async (id) => {
+  return callApi({
+    requestFunction: (axios) =>
+      axios.get(`${ADMIN_PUBLIC_URL}public/image-payment/${id}`),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+};
 export const searchSupense = async (payload) => {
   return callApi({
     requestFunction: (axios) =>

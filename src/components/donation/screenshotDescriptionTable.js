@@ -38,7 +38,6 @@ const ScreenshotDescriptionTable = ({ record, data, setMatchedAmount }) => {
     setOriginalAmount(editedAmount); // Store the last saved amount
     setIsEditing(true);
   };
-
   const updateAmount = async () => {
     Swal.fire({
       title: "Are you sure?",
@@ -55,8 +54,10 @@ const ScreenshotDescriptionTable = ({ record, data, setMatchedAmount }) => {
             ...record,
             amount: Number(editedAmount),
             donationId: record._id,
-            originalAmount: record.originalAmount ? record.originalAmount : 0,
+            originalAmount: record.originalAmount || 0,
           };
+
+          delete updatedRecord.createdBy;
 
           await updateDonation(updatedRecord);
           query.invalidateQueries("donations");

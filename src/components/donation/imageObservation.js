@@ -4,12 +4,11 @@ import "../../../src/assets/scss/common.scss";
 import crownIcon from "../../../src/assets/images/icons/crown.svg";
 import { useSelector } from "react-redux";
 
-const ImageObservation = ({ data, matchedAmount }) => {
-  const result = data?.result || {}; // Ensure result always exists
+const ImageObservation = ({ data, matchedAmount, isID }) => {
+  const result = isID ? data?.imagePayment : data?.result || {}; // Ensure result always exists
   const isMatched = matchedAmount === "100% Amount Matched";
   const trustDetails = useSelector((state) => state.auth) || {};
   const isAImatchedEnable = trustDetails?.isAImatchedEnable ?? false;
-
   return (
     <>
       {isAImatchedEnable ? (
@@ -20,7 +19,7 @@ const ImageObservation = ({ data, matchedAmount }) => {
                 AI-Detected Payment Details
               </Typography.Text>
               <span
-                style={{ fontSize: 24, marginLeft: 8,marginBottom:9 }}
+                style={{ fontSize: 24, marginLeft: 8, marginBottom: 9 }}
                 role="img"
                 aria-label="crown"
               >
@@ -93,7 +92,7 @@ const ImageObservation = ({ data, matchedAmount }) => {
                 AI-Detected Payment Details
               </Typography.Text>
               <span
-                style={{ fontSize: 24, marginLeft: 8,marginBottom:9 }}
+                style={{ fontSize: 24, marginLeft: 8, marginBottom: 9 }}
                 role="img"
                 aria-label="crown"
               >
