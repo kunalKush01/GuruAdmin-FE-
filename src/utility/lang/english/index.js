@@ -1085,5 +1085,6 @@ export const englishContent = {
   add_service:"Add Service",
   hero_images:"HERO IMAGES",
   type:"Type",
-  deadStatus:"Dead Status"
+  deadStatus:"Dead Status",
+  Payment_Mode:"Payment Mode"
 };

@@ -154,6 +154,27 @@ function SuspenseListTable({ success, filterData, type }) {
       },
     });
   };
+  const handleExpenseMapped = (record) => {
+    const params = new URLSearchParams({
+      page: pagination.page,
+      expenseType: categoryTypeName,
+      filter: dropDownName,
+    }).toString();
+    history.push({
+      pathname: "/internal_expenses/add",
+      search: `?${params}`,
+      state: {
+        isEdit: true,
+        isFieldDisable: false,
+        dateTime: record?.transactionDate ?? "",
+        remark: record?.bankNarration ?? "",
+        amount: record?.amount ?? "",
+        sId: record?._id ?? "",
+        donorMapped: record?.donorMapped ?? "",
+        modeOfPayment: record?.modeOfPayment ?? "",
+      },
+    });
+  };
 
   const columns = [
     {
@@ -197,6 +218,7 @@ function SuspenseListTable({ success, filterData, type }) {
               src={exchangeIcon}
               width={20}
               className="cursor-pointer"
+              // onClick={() => handleExpenseMapped(record)}
               onClick={() => handleDonorMapped(record)}
             />
           </Tooltip>
