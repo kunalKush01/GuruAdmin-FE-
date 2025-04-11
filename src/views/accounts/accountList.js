@@ -1,12 +1,35 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import AccountsTable from "../../components/accounts/accountsTable";
 import { Trans, useTranslation } from "react-i18next";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import "../../assets/scss/common.scss";
-import {  Form, Modal, Input } from "antd";
+import { Form, Modal, Input } from "antd";
 import { Button } from "reactstrap";
+import { createAccount, getAllAccounts } from "../../api/profileApi";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import Swal from "sweetalert2";
 function AccountList() {
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
+
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 10,
+  });
+  const { data } = useQuery(
+    ["Accounts", pagination.page, pagination.limit],
+    () =>
+      getAllAccounts({
+        ...pagination,
+      }),
+    {
+      keepPreviousData: true,
+      onError: (error) => {
+        console.error("Error fetching member data:", error);
+      },
+    }
+  );
+  const accountsItem = useMemo(() => data?.result ?? [], [data]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
 
@@ -22,16 +45,33 @@ function AccountList() {
   const handleOk = () => {
     form
       .validateFields()
-      .then((values) => {
-        console.log("Payload:", values);
-        // TODO: Submit this payload [to] backend
-        setIsModalOpen(false);
-        form.resetFields();
+      .then(async (values) => {
+        try {
+          await createAccount(values);
+          queryClient.invalidateQueries("Accounts");
+          Swal.fire({
+            icon: "success",
+            title: t("Account Create successfully"),
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          setIsModalOpen(false);
+          form.resetFields();
+          // Optionally: refetch account list if needed
+        } catch (error) {
+          console.error("Failed to create account:", error);
+          Swal.fire({
+            icon: "error",
+            title: t("Failed to create account"),
+            text: err?.message || t("Something went wrong"),
+          });
+        }
       })
       .catch((info) => {
         console.log("Validation Failed:", info);
       });
   };
+
   return (
     <div>
       <div className="d-flex align-items-center justify-content-between">
@@ -108,7 +148,21 @@ function AccountList() {
         </div>
       </div>
       <div className="">
-        <AccountsTable />
+        <AccountsTable
+          data={accountsItem}
+          // totalItems={data ? data.totalResults : 0}
+          // pageSize={pagination.limit}
+          // onChangePage={(page) => {
+          //   setPagination((prev) => ({ ...prev, page }));
+          // }}
+          // onChangePageSize={(pageSize) => {
+          //   setPagination((prev) => ({
+          //     ...prev,
+          //     limit: pageSize,
+          //     page: 1,
+          //   }));
+          // }}
+        />
       </div>
     </div>
   );
