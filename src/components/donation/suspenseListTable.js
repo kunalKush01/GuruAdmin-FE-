@@ -8,6 +8,7 @@ import {
   DatePicker,
   Select,
   Tooltip,
+  Radio,
 } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
@@ -22,6 +23,7 @@ import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import exchangeIcon from "../../assets/images/icons/account-donation.svg";
 import Swal from "sweetalert2";
 import confirmationIcon from "../../assets/images/icons/news/conformationIcon.svg";
+import moveToExpense from "../../assets/images/icons/moveToExpense.svg";
 import { useTranslation } from "react-i18next";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
 import { useHistory } from "react-router-dom";
@@ -107,29 +109,41 @@ function SuspenseListTable({ success, filterData, type }) {
       }
     });
   };
+  const [transactionType, setTransactionType] = useState("credit");
 
   const handleEdit = (record) => {
     setEditingRecord(record);
     setIsEditModalVisible(true);
+    const isCredit =
+      record?.creditedAmount !== null && record?.creditedAmount !== undefined;
+
+    setTransactionType(isCredit ? "credit" : "debit");
     form.setFieldsValue({
       ...record,
+      amount: isCredit ? record.creditedAmount : record.debitedAmount,
       transactionDate: record.transactionDate
         ? moment(record.transactionDate)
         : null,
     });
   };
-
   const handleEditSubmit = (values) => {
     const utcDateTime = moment(values.transactionDate).utc().format();
 
+    const payload = {
+      transactionDate: utcDateTime,
+      bankNarration: values.bankNarration,
+      modeOfPayment: values.modeOfPayment,
+      creditedAmount:
+        transactionType === "credit" ? Number(values.amount) : null,
+      debitedAmount: transactionType === "debit" ? Number(values.amount) : null,
+    };
+
     updateMutation.mutate({
       id: editingRecord._id,
-      updatedData: {
-        ...values,
-        transactionDate: utcDateTime,
-      },
+      updatedData: payload,
     });
   };
+
   const handleDonorMapped = (record) => {
     const params = new URLSearchParams({
       page: pagination.page,
@@ -139,7 +153,7 @@ function SuspenseListTable({ success, filterData, type }) {
       type: activeTab,
       dateTime: record.transactionDate,
       remark: record.bankNarration,
-      amount: record.amount,
+      amount: record.creditedAmount,
       sId: record._id,
       donorMapped: record.donorMapped,
       modeOfPayment: record.modeOfPayment,
@@ -168,7 +182,7 @@ function SuspenseListTable({ success, filterData, type }) {
         isFieldDisable: false,
         dateTime: record?.transactionDate ?? "",
         remark: record?.bankNarration ?? "",
-        amount: record?.amount ?? "",
+        amount: record?.debitedAmount ?? "",
         sId: record?._id ?? "",
         donorMapped: record?.donorMapped ?? "",
         modeOfPayment: record?.modeOfPayment ?? "",
@@ -182,7 +196,7 @@ function SuspenseListTable({ success, filterData, type }) {
       dataIndex: "transactionDate",
       key: "transactionDate",
       render: (text) => (text ? moment(text).format("DD-MMM-YYYY HH:mm") : "-"),
-      width: 120,
+      width: 180,
       fixed: "left",
     },
     {
@@ -193,10 +207,16 @@ function SuspenseListTable({ success, filterData, type }) {
       width: 400,
     },
     {
-      title: t("suspense_amount"),
-      dataIndex: "amount",
-      key: "amount",
-      width: 80,
+      title: t("suspense_credit"),
+      dataIndex: "creditedAmount",
+      key: "creditedAmount",
+      width: 150,
+    },
+    {
+      title: t("suspense_debit"),
+      dataIndex: "debitedAmount",
+      key: "debitedAmount",
+      width: 150,
     },
     {
       title: t("suspense_mode_of_payment"),
@@ -204,38 +224,72 @@ function SuspenseListTable({ success, filterData, type }) {
       key: "modeOfPayment",
       render: (text) =>
         text ? text : <span className="d-flex justify-content-center">-</span>,
-      width: 120,
+      width: 150,
     },
     {
       title: t("action"),
       key: "action",
       fixed: "right",
-      width: 80,
-      render: (text, record) => (
-        <Space>
-          <Tooltip title="Move to Donation">
+      width: 150,
+      render: (text, record) => {
+        const hasCredited =
+          record?.creditedAmount !== null &&
+          record?.creditedAmount !== undefined;
+        const hasDebited =
+          record?.debitedAmount !== null && record?.debitedAmount !== undefined;
+
+        return (
+          <Space>
+            <Tooltip
+              title="Move to Donation"
+              color="#FF8744"
+              disabled={hasDebited} // Disable tooltip when disabled
+            >
+              <img
+                src={exchangeIcon}
+                width={20}
+                className={`cursor-pointer ${
+                  hasDebited ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                onClick={() => {
+                  if (!hasDebited) handleDonorMapped(record);
+                }}
+              />
+            </Tooltip>
+
+            <Tooltip
+              title="Move to Expense"
+              color="#FF8744"
+              disabled={hasCredited}
+            >
+              <img
+                src={moveToExpense}
+                width={20}
+                className={`cursor-pointer ${
+                  hasCredited ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                onClick={() => {
+                  if (!hasCredited) handleExpenseMapped(record);
+                }}
+              />
+            </Tooltip>
+
             <img
-              src={exchangeIcon}
-              width={20}
+              src={editIcon}
+              width={35}
               className="cursor-pointer"
-              // onClick={() => handleExpenseMapped(record)}
-              onClick={() => handleDonorMapped(record)}
+              onClick={() => handleEdit(record)}
             />
-          </Tooltip>
-          <img
-            src={editIcon}
-            width={35}
-            className="cursor-pointer"
-            onClick={() => handleEdit(record)}
-          />
-          <img
-            src={deleteIcon}
-            width={35}
-            className="cursor-pointer"
-            onClick={() => handleDelete(record)}
-          />
-        </Space>
-      ),
+
+            <img
+              src={deleteIcon}
+              width={35}
+              className="cursor-pointer"
+              onClick={() => handleDelete(record)}
+            />
+          </Space>
+        );
+      },
     },
   ];
   const modeOfPaymentOptions = [
@@ -288,6 +342,19 @@ function SuspenseListTable({ success, filterData, type }) {
           onFinish={handleEditSubmit}
           layout="vertical"
         >
+          <Form.Item label={t("transaction_type")}>
+            <Radio.Group
+              value={transactionType}
+              onChange={(e) => setTransactionType(e.target.value)}
+            >
+              <Radio value="credit" style={{ color: "#533810" }}>
+                {t("suspense_credit")}
+              </Radio>
+              <Radio value="debit" style={{ color: "#533810" }}>
+                {t("suspense_debit")}
+              </Radio>
+            </Radio.Group>
+          </Form.Item>
           <Form.Item
             label={t("transactionDate")}
             name="transactionDate"

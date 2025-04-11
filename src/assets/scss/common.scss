@@ -4642,5 +4642,19 @@
     .ant-table-row:nth-child(even) .ant-table-cell {
         background-color: $secondary-color;
     }
+
     // margin-bottom: 50px;
 }
+
+/* Selected radio button */
+.ant-radio-checked .ant-radio-inner {
+    border-color: $primary !important;
+    background-color: $primary !important;
+  }
+  
+  /* Unselected radio button */
+  .ant-radio-inner {
+    background-color: white !important;
+    border-color: $primary !important; /* optional: keep border in primary */
+  }
+  
