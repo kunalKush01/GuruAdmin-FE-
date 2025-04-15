@@ -28,7 +28,7 @@ import { useTranslation } from "react-i18next";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
 import { useHistory } from "react-router-dom";
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
-function SuspenseListTable({ success, filterData, type ,accountId }) {
+function SuspenseListTable({ success, filterData, type, accountId }) {
   const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -46,7 +46,7 @@ function SuspenseListTable({ success, filterData, type ,accountId }) {
   });
   const [activeTab, setActiveTab] = useState("Donation");
   const { data, isLoading } = useQuery(
-    ["suspenseData", currentPage, pageSize, filterData,accountId ],
+    ["suspenseData", currentPage, pageSize, filterData, accountId],
     () =>
       getAllSuspense({
         page: currentPage,
@@ -137,15 +137,12 @@ function SuspenseListTable({ success, filterData, type ,accountId }) {
       creditedAmount:
         transactionType === "credit" ? Number(values.amount) : null,
       debitedAmount: transactionType === "debit" ? Number(values.amount) : null,
+      accountId: accountId,
     };
 
     updateMutation.mutate({
       id: editingRecord._id,
-      updatedData: {
-        ...values,
-        accountId:accountId,
-        transactionDate: utcDateTime,
-      },
+      updatedData: payload,
     });
   };
 
