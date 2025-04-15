@@ -1057,5 +1057,8 @@ export const marathiContent = {
   add_service: "सेवा जोडा",
   hero_images: "नायक प्रतिमा",
   type: "प्रकार",
-  deadStatus:"मृत स्थिती"
+  deadStatus: "मृत स्थिती",
+  suspense_credit: "जमाकरण्यात आलेली रक्कम",
+  suspense_debit: "डेबिट केलेली रक्कम",
+  transaction_type: "व्यवहार प्रकार",
 };

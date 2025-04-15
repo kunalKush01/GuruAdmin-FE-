@@ -20,6 +20,7 @@ import {
   Select,
   Tag,
   Tooltip,
+  Radio,
 } from "antd";
 import {
   getAllCategories,
@@ -361,6 +362,7 @@ export default function Donation() {
   const handleButtonClick = (e) => {
     showDrawer();
   };
+  const [transactionType, setTransactionType] = useState("credit");
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
   const [success, setSuccess] = useState(false);
   const handleAddSuspenseClick = () => {
@@ -372,13 +374,16 @@ export default function Donation() {
       const formattedDate = moment(values.transactionDate).utc().format();
 
       const payload = {
-        transactionDate: formattedDate || "",
+        transactionDate: formattedDate,
         transactionId: values.transactionId || "",
         bankNarration: values.bankNarration || "",
         chequeNo: values.chequeNo || "",
-        amount: values.amount || "",
         modeOfPayment: values.modeOfPayment || "",
         accountId: selectedAccountId || "",
+        creditedAmount:
+          transactionType === "credit" ? Number(values.amount) : null,
+        debitedAmount:
+          transactionType === "debit" ? Number(values.amount) : null,
       };
 
       await addSuspense(payload);
@@ -933,6 +938,16 @@ export default function Donation() {
                     onFinish={handleFormSubmit}
                     layout="vertical"
                   >
+                    <Form.Item label={t("transaction_type")}>
+                      <Radio.Group
+                        value={transactionType}
+                        onChange={(e) => setTransactionType(e.target.value)}
+                      >
+                        <Radio value="credit">{t("suspense_credit")}</Radio>
+                        <Radio value="debit">{t("suspense_debit")}</Radio>
+                      </Radio.Group>
+                    </Form.Item>
+
                     <Row gutter={16}>
                       <Col span={12}>
                         <Form.Item

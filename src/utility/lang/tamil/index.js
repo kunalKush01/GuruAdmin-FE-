@@ -991,5 +991,8 @@ export const tamilContent = {
   add_service: "சேவையைச் சேர்க்கவும்",
   hero_images: "ஹீரோ படங்கள்",
   type: "வகை",
-  deadStatus:"இறந்த நிலை"
+  deadStatus: "இறந்த நிலை",
+  suspense_credit: "சேமிக்கப்பட்ட தொகை",
+  suspense_debit: "பணம் பிடித்த தொகை",
+  transaction_type: "பரிவர்த்தனை வகை",
 };
