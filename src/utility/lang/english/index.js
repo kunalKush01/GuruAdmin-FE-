@@ -610,6 +610,9 @@ export const englishContent = {
   suspense_transId: "Transaction ID",
   bankNarration: "Bank Narration",
   suspense_amount: "Amount",
+  suspense_credit: "Credited Amount",
+  suspense_debit: "Debited Amount",
+  transaction_type:"Transaction Type",
   suspense_mode_of_payment: "Mode of Payment",
   edit_suspense_record: "Edit Suspense Record",
   add_suspense_record: "Add Suspense Record",
@@ -1085,5 +1088,6 @@ export const englishContent = {
   add_service:"Add Service",
   hero_images:"HERO IMAGES",
   type:"Type",
-  deadStatus:"Dead Status"
+  deadStatus:"Dead Status",
+  Payment_Mode:"Payment Mode"
 };

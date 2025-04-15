@@ -1005,5 +1005,8 @@ export const gujaratiContent = {
   add_service: "સેવા ઉમેરો",
   hero_images: "હીરો છબીઓ",
   type: "પ્રકાર",
-  deadStatus:"ડેડ સ્ટેટસ"
+  deadStatus: "ડેડ સ્ટેટસ",
+  suspense_credit: "જમા રકમ",
+  suspense_debit: "ઘટાડેલી રકમ",
+  transaction_type: "ટ્રાન્ઝેક્શન પ્રકાર",
 };

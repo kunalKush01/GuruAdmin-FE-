@@ -62,11 +62,6 @@ export function ExpensesListTable({
       title: t("expenses_Date"),
       dataIndex: "date",
       width: 200,
-      render: (date) => {
-        const formattedDate = moment(date).local().format("DD MMM YYYY");
-
-        return formattedDate;
-      },
     },
     {
       title: t("dashboard_Recent_DonorAmount"),
@@ -115,7 +110,7 @@ export function ExpensesListTable({
         />
       ),
       // description:item?.description ?? "" ,
-      date: moment(item?.expenseDate).utcOffset(0).format("DD MMM YYYY"),
+      date: moment(item?.expenseDate).format("DD MMM YYYY"),
       amount: `₹${item?.amount.toLocaleString("en-IN")}`,
       createdBy: ConverFirstLatterToCapital(item?.createdBy?.name ?? ""),
       expenseType: item?.expenseType

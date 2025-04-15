@@ -1,7 +1,7 @@
 import React from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import * as Yup from "yup";
 import { createExpense } from "../../api/expenseApi";
@@ -11,6 +11,7 @@ import "../../assets/scss/viewCommon.scss";
 import { getExpensesCustomFields } from "../../api/customFieldsApi";
 import { useQuery } from "@tanstack/react-query";
 import { Tag } from "antd";
+import moment from "moment";
 
 export const ExpenseType = [
   {
@@ -32,7 +33,6 @@ const PaymentModeOptions = [
   { label: "Cash", value: "cash" },
 ];
 
-
 export default function AddNews() {
   const handleCreateExpense = async (payload) => {
     return createExpense(payload);
@@ -51,8 +51,9 @@ export default function AddNews() {
       .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
       .required("expenses_title_required")
       .trim(),
-    Amount: Yup.string()
-      .matches(/^[1-9][0-9]*$/, "invalid_amount")
+    Amount: Yup.number()
+      .typeError("invalid_amount")
+      .positive("invalid_amount") // Optional: ensures it's > 0
       .required("amount_required"),
     Body: Yup.string().required("expenses_desc_required"),
     expenseType: Yup.mixed().required("expense_type_required"),
@@ -75,8 +76,7 @@ export default function AddNews() {
     orderQuantity: Yup.string().when("expenseType", {
       is: (val) =>
         val && (val.value === "assets" || val.value === "consumable"),
-      then: Yup.string()
-        .required("Order Quantity is required"),
+      then: Yup.string().required("Order Quantity is required"),
       otherwise: Yup.string(),
     }),
 
@@ -89,10 +89,12 @@ export default function AddNews() {
 
     DateTime: Yup.string(),
     paymentMode: Yup.mixed()
-  .required("payment_mode_required")
-  .test("is-valid", "invalid_payment_mode", (val) =>
-    val && ["bankAccount", "cash"].includes(val.value)
-  ),
+      .required("payment_mode_required")
+      .test(
+        "is-valid",
+        "invalid_payment_mode",
+        (val) => val && ["bankAccount", "cash"].includes(val.value)
+      ),
     customFields: Yup.object().shape(
       customFieldsList.reduce((acc, field) => {
         if (field.isRequired) {
@@ -112,6 +114,17 @@ export default function AddNews() {
   const currentPage = searchParams.get("page");
   const currentExpenseType = searchParams.get("expenseType");
   const currentFilter = searchParams.get("filter");
+  const location = useLocation();
+  const {
+    remark = "",
+    amount = "",
+    donorMapped = "",
+    sId = "",
+    modeOfPayment = "",
+    dateTime = "",
+    isEdit = false,
+    isFieldDisable = false,
+  } = location.state || {};
   const loggedInUser = useSelector((state) => state.auth.userDetail.name);
 
   const initialValues = {
@@ -120,12 +133,14 @@ export default function AddNews() {
     name: "",
     itemId: "",
     perItemAmount: "",
-    Amount: "",
+    Amount: amount || "",
     bill_invoice: "",
-    Body: "",
+    Body: remark || "",
     AddedBy: loggedInUser,
-    DateTime: new Date(),
-    paymentMode: "",
+    DateTime: moment(dateTime).isValid()
+      ? moment(dateTime).format("DD MMM YYYY")
+      : moment().format("DD MMM YYYY"),
+    paymentMode: { label: "Bank Account", value: "bankAccount" } || "",
     customFields: customFieldsList.reduce((acc, field) => {
       acc[field.fieldName] = "";
       return acc;
@@ -150,7 +165,12 @@ export default function AddNews() {
           </div>
         </div>
         <div className="d-flex align-items-center">
-          <p style={{ fontSize: "15px", marginBottom: "0" }} className="commonSmallFont">Current User :</p>
+          <p
+            style={{ fontSize: "15px", marginBottom: "0" }}
+            className="commonSmallFont"
+          >
+            Current User :
+          </p>
           <Tag
             color="#ff8744"
             style={{
