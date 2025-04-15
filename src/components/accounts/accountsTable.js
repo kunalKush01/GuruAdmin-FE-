@@ -1,4 +1,4 @@
-import { Table, Modal, Form, Input, message } from "antd";
+import { Table, Modal, Form, Input, message, Radio } from "antd";
 import React, { useState, useEffect, useMemo } from "react";
 import "../../assets/scss/common.scss";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
@@ -173,6 +173,21 @@ function AccountsTable({ data }) {
             rules={[{ required: true, message: t("Please enter name") }]}
           >
             <Input />
+          </Form.Item>
+          <Form.Item
+            name="type"
+            // rules={[
+            //   { required: true, message: t("Please select account type") },
+            // ]}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+              <label className="typeLabel">{t("Type")}:</label>
+              <Radio.Group>
+                <Radio value="asset">{t("Asset")}</Radio>
+                <Radio value="income">{t("Income")}</Radio>
+                <Radio value="expense">{t("Expense")}</Radio>
+              </Radio.Group>
+            </div>
           </Form.Item>
           <Form.Item name="accountNumber" label={t("Account Number")}>
             <Input />

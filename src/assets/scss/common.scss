@@ -4461,7 +4461,23 @@
         font: normal normal 700 13px Noto Sans !important
     }
 }
+#accountsListDrop {
+    .ant-select-selector {
+        background-color: $white !important;
+        border: 1px solid $primary;
+        min-height: 38px !important;
+        height: auto !important;
+    }
 
+    .ant-select-selection-item {
+        color: $font-color !important;
+        font: $font-weight-bold 90% $font-family !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+}
 .membershipMobileField {
     label {
         color: $font-color;
@@ -4642,5 +4658,16 @@
     .ant-table-row:nth-child(even) .ant-table-cell {
         background-color: $secondary-color;
     }
+
     // margin-bottom: 50px;
+}
+
+.typeLabel {
+    color: $font-color;
+    font: $font-weight-bold $font-size-medium $font-family;
+}
+
+.ant-radio-wrapper {
+    color: $font-color;
+    font: $font-weight-normal $font-size-medium $font-family;
 }

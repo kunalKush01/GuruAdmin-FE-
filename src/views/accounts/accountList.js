@@ -3,7 +3,7 @@ import AccountsTable from "../../components/accounts/accountsTable";
 import { Trans, useTranslation } from "react-i18next";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import "../../assets/scss/common.scss";
-import { Form, Modal, Input } from "antd";
+import { Form, Modal, Input, Radio } from "antd";
 import { Button } from "reactstrap";
 import { createAccount, getAllAccounts } from "../../api/profileApi";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -76,11 +76,11 @@ function AccountList() {
     <div>
       <div className="d-flex align-items-center justify-content-between">
         <div className="d-flex align-items-center">
-          <img
+          {/* <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
             //   onClick={() => setShowHistory(false)}
-          />
+          /> */}
           <span className="commonFont">{t("Accounts")}</span>
         </div>
         <div>
@@ -113,6 +113,28 @@ function AccountList() {
                 >
                   <Input />
                 </Form.Item>
+                <Form.Item
+                  name="type"
+                  // rules={[
+                  //   { required: true, message: "Please select account type" },
+                  // ]}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "16px",
+                    }}
+                  >
+                    <label className="typeLabel">Type:</label>
+                    <Radio.Group>
+                      <Radio value="asset">Asset</Radio>
+                      <Radio value="income">Income</Radio>
+                      <Radio value="expense">Expense</Radio>
+                    </Radio.Group>
+                  </div>
+                </Form.Item>
+
                 <Form.Item
                   label="Account Number"
                   name="accountNumber"

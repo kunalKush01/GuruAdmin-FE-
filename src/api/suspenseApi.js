@@ -6,6 +6,7 @@ export const createImport = async (payload) => {
     const formData = new FormData();
     formData.append("file", payload.file);
     formData.append("createdBy", payload.createdBy);
+    formData.append("accountId", payload.accountId);
     Object.keys(payload.targetFields).forEach((key) => {
       formData.append(`targetFields[${key}]`, payload.targetFields[key]);
     });
