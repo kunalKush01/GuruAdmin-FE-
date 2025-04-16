@@ -21,6 +21,10 @@ import { Storage } from "aws-amplify";
 import "../../assets/scss/common.scss";
 import { DatePicker } from "antd";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
+import { uploadFile } from "../../api/sharedStorageApi";
+import { fetchImage } from "../partials/downloadUploadImage";
+import UploadImage from "../partials/commonImageUpload2";
+import uploadIcon from "../../assets/images/icons/file-upload.svg";
 import moment from "moment";
 const CustomDatePickerComponent =
   DatePicker.generatePicker(momentGenerateConfig);
@@ -43,6 +47,10 @@ export default function ExpensesForm({
   const [isUploading, setIsUploading] = useState(false);
   const expenseQueryClient = useQueryClient();
   const trustId = localStorage.getItem("trustId");
+  const [uploadedImagePaths, setUploadedFileUrl] = useState([]); 
+  const [deletedExpenseImages, setDeletedExpenseImages] = useState([]);
+
+      const [imageUrl, setImageUrl] = useState([]);
 
   const loadOption = async (itemId) => {
     const res = await findAllItemId({ itemId: itemId });
@@ -67,10 +75,15 @@ export default function ExpensesForm({
       .then((res) => {
         setIsUploading(false);
         const uploadedDocumentName = res.key.split("temp/")[1];
-        setFiles(uploadedDocumentName);
+        formik.setFieldValue("bill_invoice", uploadedDocumentName);
+        setFiles({
+          name: uploadedDocumentName,
+          type: acceptedFiles?.type
+        });
       })
       .catch((err) => console.log(err));
   };
+
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
   const currentExpenseType = searchParams.get("expenseType");
@@ -154,6 +167,7 @@ export default function ExpensesForm({
             expenseDate: e?.DateTime,
             paymentMode: e?.paymentMode?.value,
             customFields: transformedCustomFields,
+            imagePath: uploadedImagePaths.map((img) => img.fileName),
           });
         }}
         validationSchema={validationSchema}
@@ -520,6 +534,36 @@ export default function ExpensesForm({
           );
         }}
       </Formik>
+      <Row className={`mt-1 && "paddingForm"}`}>
+  <div className="heading_div existLabel">
+    <Trans i18nKey={"Expense Receipts"} />
+    <hr />
+  </div>
+  <Col xs={12} lg={6} md={6}>
+    <Trans i18nKey={"Add Expense Receipts"} />{" "}
+    <Row>
+      <UploadImage
+        required
+        uploadFileFunction={uploadFile}
+        setUploadedFileUrl={setUploadedFileUrl}
+        name="ExpenseImage"
+        listType="picture"
+        buttonLabel={t("Upload Receipt")}
+        initialUploadUrl={imageUrl && imageUrl}
+        isMultiple={true}
+        maxCount={5}
+        icon={
+          <img
+            src={uploadIcon}
+            alt="Upload Icon"
+            style={{ width: 16, height: 16 }}
+          />
+        }
+        setDeletedImage={setDeletedExpenseImages}
+      />
+    </Row>
+  </Col>
+</Row>
     </div>
   );
 }
