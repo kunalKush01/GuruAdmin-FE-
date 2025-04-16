@@ -65,15 +65,3 @@ steps:
       --overwrite
   displayName: 'Upload Build to Azure Storage'
 
-- task: AzureCLI@2
-  inputs:
-    azureSubscription: 'Microsoft Azure Sponsorship(1e19fdc0-93b6-4863-b9ea-7e2549acd1a6)'
-    scriptType: 'bash'
-    scriptLocation: 'inlineScript'
-    inlineScript: |
-      az afd endpoint purge \
-        --resource-group apnadharm \
-        --profile-name adminportal \
-        --endpoint-name adminportal-dkhvc6gwgsfbe8g2.z02.azurefd.net \
-        --content-paths '/*'
-  displayName: 'Purge Azure Front Door Cache'
