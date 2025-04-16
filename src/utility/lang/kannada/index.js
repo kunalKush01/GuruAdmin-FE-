@@ -1000,5 +1000,8 @@ export const kannadaContent = {
   add_service: "ಸೇವೆಯನ್ನು ಸೇರಿಸಿ",
   hero_images: "ಹೀರೋ ಚಿತ್ರಗಳು",
   type: "ಟೈಪ್ ಮಾಡಿ",
-  deadStatus:"ಸತ್ತ ಸ್ಥಿತಿ"
+  deadStatus: "ಸತ್ತ ಸ್ಥಿತಿ",
+  suspense_credit: "ಜಮಾ ಮೊತ್ತ",
+  suspense_debit: "ಡೆಬಿಟ್ ಮಾಡಿದ ಮೊತ್ತ",
+  transaction_type: "ವಹಿವಾಟು ಪ್ರಕಾರ",
 };

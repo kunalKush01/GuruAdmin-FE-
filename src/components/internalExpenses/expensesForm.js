@@ -34,7 +34,7 @@ export default function ExpensesForm({
   initialValues,
   expenseTypeArr,
   customFieldsList,
-  paymentModeArr
+  paymentModeArr,
 }) {
   const history = useHistory();
   const { t } = useTranslation();
@@ -170,7 +170,9 @@ export default function ExpensesForm({
               formik.values?.orderQuantity == "" ||
               formik.values?.perItemAmount == ""
             ) {
-              formik.setFieldValue("Amount", "");
+              {
+                /* formik.setFieldValue("Amount", ""); */
+              }
             }
           }, [formik.values.orderQuantity, formik.values.perItemAmount]);
           return (
@@ -220,19 +222,16 @@ export default function ExpensesForm({
                       format="DD MMM YYYY"
                       onChange={(date) => {
                         if (date) {
-                          const utcDate = date
-                            .startOf("day")
-                            .utc()
-                            .toISOString();
-                          formik.setFieldValue("DateTime", utcDate)
+                          const formattedDate = date.format("DD MMM YYYY");
+                          formik.setFieldValue("DateTime", formattedDate);
                         } else {
                           formik.setFieldValue("DateTime", "");
                         }
                       }}
                       value={
                         formik.values["DateTime"]
-                          ? moment.utc(formik.values["DateTime"])
-                          : null 
+                          ? moment(formik.values["DateTime"], "DD MMM YYYY")
+                          : null
                       }
                       disabledDate={(current) =>
                         current < moment().startOf("day")
@@ -497,11 +496,7 @@ export default function ExpensesForm({
 
               <div className="btn-Published mt-lg-2">
                 {loading ? (
-                  <Button
-                    color="primary"
-                    className="add-trust-btn"
-                    disabled
-                  >
+                  <Button color="primary" className="add-trust-btn" disabled>
                     <Spinner size="md" />
                   </Button>
                 ) : (

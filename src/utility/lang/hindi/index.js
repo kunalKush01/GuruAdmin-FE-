@@ -1032,5 +1032,8 @@ export const hindiContent = {
   add_service: "सेवा जोड़ें",
   hero_images: "हीरो छवियाँ",
   type: "प्रकार",
-  deadStatus:"मृत स्थिति"
+  deadStatus:"मृत स्थिति",
+  suspense_credit: "जमा राशि",
+  suspense_debit: "डेबिट की गई राशि",
+  "transaction_type": "लेनदेन प्रकार",
 };

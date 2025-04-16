@@ -17,60 +17,68 @@ import { getExpensesCustomFields } from "../../api/customFieldsApi";
 import { Tag } from "antd";
 
 export default function AddExpense() {
-const handleCreateExpense = async (payload) => {
-  return updateExpensesDetail(payload);
-};
-const customFieldsQuery = useQuery(
-  ["getExpensesFields"],
-  async () => await getExpensesCustomFields(),
-  {
-    keepPreviousData: true,
-  }
-);
-const customFieldsList = customFieldsQuery?.data?.customFields ?? [];
-const schema = Yup.object().shape({
-  Title: Yup.string()
-    .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
-    .required("expenses_title_required")
-    .trim(),
-  Amount: Yup.string()
-    .matches(/^[1-9][0-9]*$/, "invalid_amount")
-    .required("amount_required"),
-  Body: Yup.string().required("expenses_desc_required"),
-  expenseType: Yup.mixed().required("expense_type_required"),
-
-  itemId: Yup.mixed().when("expenseType", {
-    is: (val) => val && (val.value === "assets" || val.value === "consumable"),
-    then: Yup.mixed().required("cattle_itemID_required"),
-    otherwise: Yup.mixed(),
-  }),
-
-  perItemAmount: Yup.string().when("expenseType", {
-    is: (val) => val && (val.value === "assets" || val.value === "consumable"),
-    then: Yup.string()
-      .matches(/^[1-9][0-9]*$/, "invalid_amount")
+  const handleCreateExpense = async (payload) => {
+    return updateExpensesDetail(payload);
+  };
+  const customFieldsQuery = useQuery(
+    ["getExpensesFields"],
+    async () => await getExpensesCustomFields(),
+    {
+      keepPreviousData: true,
+    }
+  );
+  const PaymentModeOptions = [
+    { label: "Bank Account", value: "bankAccount" },
+    { label: "Cash", value: "cash" },
+  ];
+  const customFieldsList = customFieldsQuery?.data?.customFields ?? [];
+  const schema = Yup.object().shape({
+    Title: Yup.string()
+      .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
+      .required("expenses_title_required")
+      .trim(),
+    Amount: Yup.number()
+      .typeError("invalid_amount")
+      .positive("invalid_amount") // Optional: ensures it's > 0
       .required("amount_required"),
-    otherwise: Yup.string(),
-  }),
+    Body: Yup.string().required("expenses_desc_required"),
+    expenseType: Yup.mixed().required("expense_type_required"),
 
-  name: Yup.mixed().when("expenseType", {
-    is: (val) => val && (val.value === "assets" || val.value === "consumable"),
-    then: Yup.mixed().required("cattle_name_required"),
-    otherwise: Yup.mixed(),
-  }),
+    itemId: Yup.mixed().when("expenseType", {
+      is: (val) =>
+        val && (val.value === "assets" || val.value === "consumable"),
+      then: Yup.mixed().required("cattle_itemID_required"),
+      otherwise: Yup.mixed(),
+    }),
 
-  DateTime: Yup.string(),
-  customFields: Yup.object().shape(
-    customFieldsList.reduce((acc, field) => {
-      if (field.isRequired) {
-        acc[field.fieldName] = Yup.mixed().required(
-          `${field.fieldName} is required`
-        );
-      }
-      return acc;
-    }, {})
-  ),
-});
+    perItemAmount: Yup.string().when("expenseType", {
+      is: (val) =>
+        val && (val.value === "assets" || val.value === "consumable"),
+      then: Yup.string()
+        .matches(/^[1-9][0-9]*$/, "invalid_amount")
+        .required("amount_required"),
+      otherwise: Yup.string(),
+    }),
+
+    name: Yup.mixed().when("expenseType", {
+      is: (val) =>
+        val && (val.value === "assets" || val.value === "consumable"),
+      then: Yup.mixed().required("cattle_name_required"),
+      otherwise: Yup.mixed(),
+    }),
+
+    DateTime: Yup.string(),
+    customFields: Yup.object().shape(
+      customFieldsList.reduce((acc, field) => {
+        if (field.isRequired) {
+          acc[field.fieldName] = Yup.mixed().required(
+            `${field.fieldName} is required`
+          );
+        }
+        return acc;
+      }, {})
+    ),
+  });
 
   const history = useHistory();
   const langArray = useSelector((state) => state.auth.availableLang);
@@ -87,6 +95,7 @@ const schema = Yup.object().shape({
     async () => await getExpensesDetail(expensesId)
   );
   const loggedInUser = useSelector((state) => state.auth.userDetail.name);
+  const paymentModeValue = ExpensesDetailQuery?.data?.result?.paymentMode ?? "";
 
   const initialValues = {
     Id: ExpensesDetailQuery?.data?.result?.id,
@@ -104,30 +113,33 @@ const schema = Yup.object().shape({
     Amount: ExpensesDetailQuery?.data?.result?.amount ?? "",
     AddedBy: loggedInUser,
     Body: he?.decode(ExpensesDetailQuery?.data?.result?.description ?? ""),
-    DateTime: moment(ExpensesDetailQuery?.data?.result?.expenseDate)
-      .utcOffset("+0530")
-      .toDate(),
-   customFields: ExpensesDetailQuery?.data?.result?.customFields.reduce(
-        (acc, field) => {
-          acc[field.fieldName] =
-            field.fieldType === "Select"
-              ? {
-                  label:
-                    typeof field.value === "boolean"
-                      ? field.value
-                        ? "True"
-                        : "False"
-                      : field.value,
-                  value: field.value,
-                }
-              : typeof field.value === "string" &&
-                !isNaN(Date.parse(field.value))
-              ? moment(field.value).utcOffset("+0530").toDate()
-              : field.value ?? "";
-          return acc;
-        },
-        {}
-      ),
+    paymentMode:
+      PaymentModeOptions.find((option) => option.value === paymentModeValue) ??
+      "",
+    DateTime: moment(ExpensesDetailQuery?.data?.result?.expenseDate).isValid()
+      ? moment(ExpensesDetailQuery?.data?.result?.expenseDate).format("DD MMM YYYY")
+      : moment().format("DD MMM YYYY"),
+
+    customFields: ExpensesDetailQuery?.data?.result?.customFields.reduce(
+      (acc, field) => {
+        acc[field.fieldName] =
+          field.fieldType === "Select"
+            ? {
+                label:
+                  typeof field.value === "boolean"
+                    ? field.value
+                      ? "True"
+                      : "False"
+                    : field.value,
+                value: field.value,
+              }
+            : typeof field.value === "string" && !isNaN(Date.parse(field.value))
+            ? moment(field.value).utcOffset("+0530").toDate()
+            : field.value ?? "";
+        return acc;
+      },
+      {}
+    ),
   };
 
   return (
@@ -148,7 +160,12 @@ const schema = Yup.object().shape({
           </div>
         </div>
         <div className="d-flex align-items-center">
-          <p style={{ fontSize: "15px", marginBottom: "0" }} className="commonSmallFont">Current User :</p>
+          <p
+            style={{ fontSize: "15px", marginBottom: "0" }}
+            className="commonSmallFont"
+          >
+            Current User :
+          </p>
           <Tag
             color="#ff8744"
             style={{
@@ -174,6 +191,7 @@ const schema = Yup.object().shape({
             validationSchema={schema}
             showTimeInput
             customFieldsList={customFieldsList}
+            paymentModeArr={PaymentModeOptions}
             buttonName="save_changes"
           />
         </div>

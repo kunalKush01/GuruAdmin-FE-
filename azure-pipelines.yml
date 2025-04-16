@@ -64,3 +64,4 @@ steps:
       --source build/ \
       --overwrite
   displayName: 'Upload Build to Azure Storage'
+

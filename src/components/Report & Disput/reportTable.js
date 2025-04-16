@@ -127,7 +127,7 @@ const ReportTable = ({ data }) => {
         ),
         description: item?.description ?? "",
         action: (
-          <Tooltip title="Mark as resolved">
+          <Tooltip title="Mark as resolved" color="#FF8744">
             <img
               src={disputeResolve}
               width={25}

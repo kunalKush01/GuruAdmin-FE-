@@ -230,7 +230,7 @@ function MemberShipListView() {
             <div className="addAction d-flex flex-wrap gap-2 gap-md-0">
               {(allPermissions?.name === "all" ||
                 subPermission?.includes(WRITE)) && (
-                  <Tooltip title={Array.isArray(allSelectedKeys) && allSelectedKeys.length < 1 ? "Please check the checkbox to send a message." : ""}>
+                  <Tooltip color="#FF8744" title={Array.isArray(allSelectedKeys) && allSelectedKeys.length < 1 ? "Please check the checkbox to send a message." : ""}>
                   <span>
                     <Button
                       className="secondaryAction-btn"

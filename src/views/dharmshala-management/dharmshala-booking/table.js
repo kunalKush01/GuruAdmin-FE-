@@ -237,7 +237,7 @@ const DharmshalaBookingTable = ({
         return (
           <Space size="middle" className="d-flex justify-content-between">
             {record.originalData.status === "checked-out" && (
-              <Tooltip title="View">
+              <Tooltip title="View" color="#FF8744">
                 <img
                   src={eyeIcon}
                   width={20}
@@ -253,7 +253,7 @@ const DharmshalaBookingTable = ({
             )}
 
             {isActive && (
-              <Tooltip title="Edit">
+              <Tooltip title="Edit" color="#FF8744">
                 <img
                   src={editIcon}
                   width={30}
@@ -264,7 +264,7 @@ const DharmshalaBookingTable = ({
               </Tooltip>
             )}
 
-            <Tooltip title="Delete">
+            <Tooltip title="Delete" color="#FF8744">
               <img
                 src={deleteIcon}
                 width={25}
@@ -275,7 +275,7 @@ const DharmshalaBookingTable = ({
             </Tooltip>
             {isActive &&
               (record.originalData.status === "checked-in" ? (
-                <Tooltip title="Check Out">
+                <Tooltip title="Check Out" color="#FF8744">
                   <img
                     src={checkOutIcon}
                     width={17}
@@ -286,7 +286,7 @@ const DharmshalaBookingTable = ({
                 </Tooltip>
               ) : (
                 record.originalData.status !== "checked-out" && (
-                  <Tooltip title="Check In">
+                  <Tooltip title="Check In" color="#FF8744">
                     <img
                       src={checkInIcon}
                       width={17}
@@ -297,7 +297,7 @@ const DharmshalaBookingTable = ({
                   </Tooltip>
                 )
               ))}
-            <Tooltip title="Whatsapp receipt">
+            <Tooltip title="Whatsapp receipt" color="#FF8744">
               <img
                 src={whatsappIcon}
                 width={25}
@@ -306,7 +306,7 @@ const DharmshalaBookingTable = ({
                 alt="WhatsApp"
               />
             </Tooltip>
-            <Tooltip title="Download receipt">
+            <Tooltip title="Download receipt" color="#FF8744">
               <img
                 src={downloadIcon}
                 width={20}
