@@ -2967,8 +2967,8 @@
 .masterDataListAntdTable .ant-table-body,
 .customFieldTable .ant-table-body,
 .masterTable .ant-table-body {
-    max-height: 400px;
-    height: 353px;
+    max-height: 600px;  /* Increased max height */
+    height: 500px;      /* Increased height */
     overflow: auto;
 
     ::-webkit-scrollbar {
