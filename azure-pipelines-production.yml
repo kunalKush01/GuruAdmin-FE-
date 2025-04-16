@@ -2,7 +2,9 @@ trigger:
   branches:
     include:
       - production  # Adjust if needed
-
+variables:
+  - group: adminportal-prod
+  
 pool:
   vmImage: 'ubuntu-latest'
 
