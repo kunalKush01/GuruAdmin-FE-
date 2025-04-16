@@ -47,10 +47,10 @@ export default function ExpensesForm({
   const [isUploading, setIsUploading] = useState(false);
   const expenseQueryClient = useQueryClient();
   const trustId = localStorage.getItem("trustId");
-  const [uploadedImagePaths, setUploadedFileUrl] = useState([]); 
+  const [uploadedImagePaths, setUploadedFileUrl] = useState([]);
   const [deletedExpenseImages, setDeletedExpenseImages] = useState([]);
 
-      const [imageUrl, setImageUrl] = useState([]);
+  const [imageUrl, setImageUrl] = useState([]);
 
   const loadOption = async (itemId) => {
     const res = await findAllItemId({ itemId: itemId });
@@ -78,7 +78,7 @@ export default function ExpensesForm({
         formik.setFieldValue("bill_invoice", uploadedDocumentName);
         setFiles({
           name: uploadedDocumentName,
-          type: acceptedFiles?.type
+          type: acceptedFiles?.type,
         });
       })
       .catch((err) => console.log(err));
@@ -535,35 +535,35 @@ export default function ExpensesForm({
         }}
       </Formik>
       <Row className={`mt-1 && "paddingForm"}`}>
-  <div className="heading_div existLabel">
-    <Trans i18nKey={"Expense Receipts"} />
-    <hr />
-  </div>
-  <Col xs={12} lg={6} md={6}>
-    <Trans i18nKey={"Add Expense Receipts"} />{" "}
-    <Row>
-      <UploadImage
-        required
-        uploadFileFunction={uploadFile}
-        setUploadedFileUrl={setUploadedFileUrl}
-        name="ExpenseImage"
-        listType="picture"
-        buttonLabel={t("Upload Receipt")}
-        initialUploadUrl={imageUrl && imageUrl}
-        isMultiple={true}
-        maxCount={5}
-        icon={
-          <img
-            src={uploadIcon}
-            alt="Upload Icon"
-            style={{ width: 16, height: 16 }}
-          />
-        }
-        setDeletedImage={setDeletedExpenseImages}
-      />
-    </Row>
-  </Col>
-</Row>
+        <div className="heading_div existLabel">
+          <Trans i18nKey={"Expense Receipts"} />
+          <hr />
+        </div>
+        <Col xs={12} lg={6} md={6}>
+          <Trans i18nKey={"Add Expense Receipts"} />{" "}
+          <Row>
+            <UploadImage
+              required
+              uploadFileFunction={uploadFile}
+              setUploadedFileUrl={setUploadedFileUrl}
+              name="ExpenseImage"
+              listType="picture"
+              buttonLabel={t("Upload Receipt")}
+              initialUploadUrl={imageUrl && imageUrl}
+              isMultiple={true}
+              maxCount={5}
+              icon={
+                <img
+                  src={uploadIcon}
+                  alt="Upload Icon"
+                  style={{ width: 16, height: 16 }}
+                />
+              }
+              setDeletedImage={setDeletedExpenseImages}
+            />
+          </Row>
+        </Col>
+      </Row>
     </div>
   );
 }
