@@ -4580,16 +4580,24 @@
 }
 
 .previewImagesContainer {
-    display: grid;
-    grid-template-columns: repeat(auto-fill,
-            minmax(80px, 1fr));
-    /* Ensures responsiveness */
-    gap: 10px;
-    /* Adds space between images */
-    justify-content: center;
-    align-items: center;
-    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
 }
+
+.previewImagesContainer.column-layout {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.previewImagesContainer.row-layout {
+    flex-direction: row;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    gap: 12px;
+}
+
 
 .previewImages {
     gap: 5px;
@@ -4650,11 +4658,52 @@
 .ant-radio-checked .ant-radio-inner {
     border-color: $primary !important;
     background-color: $primary !important;
-  }
-  
-  /* Unselected radio button */
-  .ant-radio-inner {
+}
+
+/* Unselected radio button */
+.ant-radio-inner {
     background-color: white !important;
-    border-color: $primary !important; /* optional: keep border in primary */
-  }
-  
+    border-color: $primary !important;
+    /* optional: keep border in primary */
+}
+
+.pdf-preview-box {
+    width: 100%;
+    max-width: 300px;
+    min-width: 300px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #d9d9d9;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin: 8px 0;
+    background-color: #fafafa;
+    transition: box-shadow 0.2s;
+}
+
+.pdf-preview-box:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.pdf-info {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+
+.pdf-filename {
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pdf-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
