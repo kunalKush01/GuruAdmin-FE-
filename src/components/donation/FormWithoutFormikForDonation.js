@@ -237,12 +237,13 @@ export default function FormWithoutFormikForDonation({
     }
 
     if (selectedMode === "Bank Transfer") {
+      const excludedNames = [
+        "Donation Income - Cash",
+        "Uncategorised Petty Cash",
+        "Uncategorised Expense",
+      ];
       return flattenedAccounts.filter(
-        (acc) =>
-          acc.type !== "expense" &&
-          acc.label !== "Donation Income - Cash" &&
-          acc.label !== "Uncategorised Petty Cash" &&
-          acc.label !== "Uncategorised Expense"
+        (acc) => acc.isBankAccount === true || !excludedNames.includes(acc.name)
       );
     }
 
@@ -251,31 +252,34 @@ export default function FormWithoutFormikForDonation({
   }, [flattenedAccounts, formik.values.modeOfPayment]);
 
   useEffect(() => {
+    const isEditMode = formik.values?.accountId;
+
     let selectedMode = formik.values?.modeOfPayment?.value;
-
-    if (selectedMode === "Cash") {
-      const cashDefault = flattenedAccounts.find(
-        (acc) => acc.label === "Uncategorised Petty Cash"
-      );
-      // Set the accountId with value and label
-      if (cashDefault) {
-        formik.setFieldValue("accountId", {
-          value: cashDefault.id,
-          label: cashDefault.label,
-        });
+    if (!isEditMode) {
+      if (selectedMode === "Cash") {
+        const cashDefault = flattenedAccounts.find(
+          (acc) => acc.label === "Uncategorised Petty Cash"
+        );
+        // Set the accountId with value and label
+        if (cashDefault) {
+          formik.setFieldValue("accountId", {
+            value: cashDefault.id,
+            label: cashDefault.label,
+          });
+        }
       }
-    }
 
-    if (selectedMode === "Bank Transfer") {
-      const bankDefault = flattenedAccounts.find(
-        (acc) => acc.label === "Uncategorised Bank"
-      );
-      // Set the accountId with value and label
-      if (bankDefault) {
-        formik.setFieldValue("accountId", {
-          value: bankDefault.id,
-          label: bankDefault.label,
-        });
+      if (selectedMode === "Bank Transfer") {
+        const bankDefault = flattenedAccounts.find(
+          (acc) => acc.label === "Uncategorised Bank"
+        );
+        // Set the accountId with value and label
+        if (bankDefault) {
+          formik.setFieldValue("accountId", {
+            value: bankDefault.id,
+            label: bankDefault.label,
+          });
+        }
       }
     }
   }, [

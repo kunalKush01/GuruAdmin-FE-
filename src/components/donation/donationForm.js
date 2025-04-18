@@ -136,7 +136,7 @@ export default function DonationForm({
       isArticle: donation_type === "Donation" ? false : true,
       isGovernment:
         !payDonation && values?.isGovernment === "YES" ? true : false,
-      modeOfPayment: values?.modeOfPayment?.value,
+      paymentMethod: values?.modeOfPayment?.value,
       accountId: defaultAccountId,
       bankName: values?.bankName?.value,
       chequeNum: values?.chequeNum,

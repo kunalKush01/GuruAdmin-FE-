@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
@@ -12,6 +12,7 @@ import { getExpensesCustomFields } from "../../api/customFieldsApi";
 import { useQuery } from "@tanstack/react-query";
 import { Tag } from "antd";
 import moment from "moment";
+import { getAllAccounts } from "../../api/profileApi";
 
 export const ExpenseType = [
   {
@@ -45,7 +46,21 @@ export default function AddNews() {
     }
   );
   const customFieldsList = customFieldsQuery?.data?.customFields ?? [];
+  const { data } = useQuery(["Accounts"], () => getAllAccounts(), {
+    keepPreviousData: true,
+    onError: (error) => {
+      console.error("Error fetching member data:", error);
+    },
+  });
 
+  const accountsItem = useMemo(() => {
+    return data?.result ?? [];
+  }, [data]);
+  const flattenedAccounts = accountsItem.map((item) => ({
+    label: item.name,
+    value: item.id,
+    ...item,
+  }));
   const schema = Yup.object().shape({
     Title: Yup.string()
       .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
@@ -89,12 +104,14 @@ export default function AddNews() {
 
     DateTime: Yup.string(),
     paymentMode: Yup.mixed()
-      .required("payment_mode_required")
+      .required("Required")
       .test(
         "is-valid",
         "invalid_payment_mode",
         (val) => val && ["bankAccount", "cash"].includes(val.value)
       ),
+    paidFromAccountId: Yup.mixed().required("Required"),
+    expenseAccountId: Yup.mixed().required("Required"),
     customFields: Yup.object().shape(
       customFieldsList.reduce((acc, field) => {
         if (field.isRequired) {
@@ -137,6 +154,8 @@ export default function AddNews() {
     bill_invoice: "",
     Body: remark || "",
     AddedBy: loggedInUser,
+    paidFromAccountId: "",
+    expenseAccountId: "",
     DateTime: moment(dateTime).isValid()
       ? moment(dateTime).format("DD MMM YYYY")
       : moment().format("DD MMM YYYY"),
@@ -194,6 +213,7 @@ export default function AddNews() {
           customFieldsList={customFieldsList}
           showTimeInput
           buttonName="expenses_AddExpenses"
+          flattenedAccounts={flattenedAccounts}
         />
       </div>
     </div>

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import he from "he";
 import moment from "moment";
-import React from "react";
+import React, { useMemo } from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
@@ -15,6 +15,7 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import "../../assets/scss/viewCommon.scss";
 import { getExpensesCustomFields } from "../../api/customFieldsApi";
 import { Tag } from "antd";
+import { getAllAccounts } from "../../api/profileApi";
 
 export default function AddExpense() {
   const handleCreateExpense = async (payload) => {
@@ -32,6 +33,22 @@ export default function AddExpense() {
     { label: "Cash", value: "cash" },
   ];
   const customFieldsList = customFieldsQuery?.data?.customFields ?? [];
+  const { data } = useQuery(["Accounts"], () => getAllAccounts(), {
+    keepPreviousData: true,
+    onError: (error) => {
+      console.error("Error fetching member data:", error);
+    },
+  });
+
+  const accountsItem = useMemo(() => {
+    return data?.result ?? [];
+  }, [data]);
+  const flattenedAccounts = accountsItem.map((item) => ({
+    label: item.name,
+    value: item.id,
+    ...item,
+  }));
+
   const schema = Yup.object().shape({
     Title: Yup.string()
       .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
@@ -59,6 +76,12 @@ export default function AddExpense() {
         .required("amount_required"),
       otherwise: Yup.string(),
     }),
+    orderQuantity: Yup.string().when("expenseType", {
+      is: (val) =>
+        val && (val.value === "assets" || val.value === "consumable"),
+      then: Yup.string().required("Order Quantity is required"),
+      otherwise: Yup.string(),
+    }),
 
     name: Yup.mixed().when("expenseType", {
       is: (val) =>
@@ -68,6 +91,15 @@ export default function AddExpense() {
     }),
 
     DateTime: Yup.string(),
+    paymentMode: Yup.mixed()
+      .required("Required")
+      .test(
+        "is-valid",
+        "invalid_payment_mode",
+        (val) => val && ["bankAccount", "cash"].includes(val.value)
+      ),
+    paidFromAccountId: Yup.mixed().required("Required"),
+    expenseAccountId: Yup.mixed().required("Required"),
     customFields: Yup.object().shape(
       customFieldsList.reduce((acc, field) => {
         if (field.isRequired) {
@@ -96,7 +128,20 @@ export default function AddExpense() {
   );
   const loggedInUser = useSelector((state) => state.auth.userDetail.name);
   const paymentModeValue = ExpensesDetailQuery?.data?.result?.paymentMode ?? "";
+  const expenseData = ExpensesDetailQuery?.data?.result;
 
+  // Find matching account by id
+  const findAccountById = (id) => {
+    if (!id) return null;
+    const account = flattenedAccounts.find((acc) => acc.id === id);
+    if (account) {
+      return {
+        label: account.name,
+        value: account.id,
+      };
+    }
+    return null;
+  };
   const initialValues = {
     Id: ExpensesDetailQuery?.data?.result?.id,
     Title: ExpensesDetailQuery?.data?.result?.title ?? null,
@@ -116,8 +161,12 @@ export default function AddExpense() {
     paymentMode:
       PaymentModeOptions.find((option) => option.value === paymentModeValue) ??
       "",
+    paidFromAccountId: findAccountById(expenseData?.paidFromAccountId) ?? "",
+    expenseAccountId: findAccountById(expenseData?.expenseAccountId) ?? "",
     DateTime: moment(ExpensesDetailQuery?.data?.result?.expenseDate).isValid()
-      ? moment(ExpensesDetailQuery?.data?.result?.expenseDate).format("DD MMM YYYY")
+      ? moment(ExpensesDetailQuery?.data?.result?.expenseDate).format(
+          "DD MMM YYYY"
+        )
       : moment().format("DD MMM YYYY"),
 
     customFields: ExpensesDetailQuery?.data?.result?.customFields.reduce(
@@ -193,6 +242,7 @@ export default function AddExpense() {
             customFieldsList={customFieldsList}
             paymentModeArr={PaymentModeOptions}
             buttonName="save_changes"
+            flattenedAccounts={flattenedAccounts}
           />
         </div>
       ) : (

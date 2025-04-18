@@ -101,6 +101,9 @@ export default function EditDonation() {
   const selectedAccount = flattenedAccounts.find(
     (acc) => acc.value === record?.accountId
   );
+  const selectedAccountOption = selectedAccount
+    ? { label: selectedAccount.label, value: selectedAccount.value }
+    : null;
   const modeOfPaymentOptions = [
     { value: "", label: t("select_option") },
     { value: "Cash", label: t("cash") },
@@ -138,7 +141,7 @@ export default function EditDonation() {
     isGovernment: "NO",
     createdBy: ConverFirstLatterToCapital(loggedInUser),
     modeOfPayment: matchedMOP || { value: "Cash", label: t("cash") },
-    accountId: selectedAccount || "",
+    accountId: selectedAccountOption || "",
     bankName: "",
     chequeNum: "",
     chequeDate: "",
