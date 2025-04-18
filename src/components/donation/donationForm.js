@@ -22,7 +22,8 @@ export default function DonationForm({
   donorMapped,
   isEdit,
   isFieldDisable,
-  donationId
+  donationId,
+  flattenedAccounts
 }) {
   const history = useHistory();
   const donationQueryClient = useQueryClient();
@@ -94,6 +95,25 @@ export default function DonationForm({
     );
 
     const etag = values?.SelectedCommitmentId?.etag || currentEtag;
+    // Step 1: Get fallback account ID
+    let defaultAccountId = values?.accountId?.value;
+    let selectedMode = values?.modeOfPayment?.value;
+
+    if (!defaultAccountId) {
+      if (selectedMode === "Cash") {
+        const cashDefault = flattenedAccounts.find(
+          (acc) => acc.label === "Uncategorised Petty Cash"
+        );
+        defaultAccountId = cashDefault?.id;
+      }
+
+      if (selectedMode === "Bank Transfer") {
+        const bankDefault = flattenedAccounts.find(
+          (acc) => acc.label === "Uncategorised Bank"
+        );
+        defaultAccountId = bankDefault?.id;
+      }
+    }
 
     // Construct the payload with etag
     const payload = {
@@ -117,6 +137,7 @@ export default function DonationForm({
       isGovernment:
         !payDonation && values?.isGovernment === "YES" ? true : false,
       modeOfPayment: values?.modeOfPayment?.value,
+      accountId: defaultAccountId,
       bankName: values?.bankName?.value,
       chequeNum: values?.chequeNum,
       chequeDate: values?.chequeDate,
@@ -169,6 +190,7 @@ export default function DonationForm({
               currentEtag={currentEtag}
               isEdit={isEdit}
               isFieldDisable={isFieldDisable}
+              flattenedAccounts={flattenedAccounts}
             />
           )}
         </Formik>

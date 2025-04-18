@@ -3,7 +3,7 @@ import AccountsTable from "../../components/accounts/accountsTable";
 import { Trans, useTranslation } from "react-i18next";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import "../../assets/scss/common.scss";
-import { Form, Modal, Input, Radio } from "antd";
+import { Form, Modal, Input, Radio, Select, Switch, Row, Col } from "antd";
 import { Button } from "reactstrap";
 import { createAccount, getAllAccounts } from "../../api/profileApi";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -81,7 +81,7 @@ function AccountList() {
             className="me-2  cursor-pointer"
             //   onClick={() => setShowHistory(false)}
           /> */}
-          <span className="commonFont">{t("Accounts")}</span>
+          <span className="commonFont">{t("Chart of Accounts")}</span>
         </div>
         <div>
           <div className="ms-1 mb-1">
@@ -101,69 +101,86 @@ function AccountList() {
               okText="Save"
             >
               <Form layout="vertical" form={form}>
-                <Form.Item
-                  label="Account Name"
-                  name="accountHolderName"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please enter account holder name",
-                    },
-                  ]}
-                >
-                  <Input />
-                </Form.Item>
-                <Form.Item
-                  name="type"
-                  // rules={[
-                  //   { required: true, message: "Please select account type" },
-                  // ]}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "16px",
-                    }}
-                  >
-                    <label className="typeLabel">Type:</label>
-                    <Radio.Group>
-                      <Radio value="asset">Asset</Radio>
-                      <Radio value="income">Income</Radio>
-                      <Radio value="expense">Expense</Radio>
-                    </Radio.Group>
-                  </div>
-                </Form.Item>
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <Form.Item
+                      label="Account Name"
+                      name="name"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please enter account name",
+                        },
+                      ]}
+                    >
+                      <Input placeholder="Enter Name" />
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item
+                      name="code"
+                      label="Code"
+                      rules={[{ required: true, message: "Required" }]}
+                    >
+                      <Input type="number" placeholder="Enter code" />
+                    </Form.Item>
+                  </Col>
+                  {/* <Col span={12}>
+                    <Form.Item label="Bank Name" name="bankName">
+                      <Input />
+                    </Form.Item>
+                  </Col> */}
+                  <Col span={12}>
+                    <Form.Item
+                      name="type"
+                      label="Type"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please select account type",
+                        },
+                      ]}
+                    >
+                      <Select placeholder="Select Type">
+                        <Option value="asset">Asset</Option>
+                        <Option value="income">Income</Option>
+                        <Option value="expense">Expense</Option>
+                        <Option value="liability">Liability</Option>
+                        <Option value="equity">Equity</Option>
+                      </Select>
+                    </Form.Item>
+                  </Col>
 
-                <Form.Item
-                  label="Account Number"
-                  name="accountNumber"
-                  // rules={[
-                  //   { required: true, message: "Please enter account number" },
-                  // ]}
-                >
-                  <Input maxLength={20} />
-                </Form.Item>
+                  <Col span={12}>
+                    <Form.Item
+                      name="subType"
+                      label="Sub Type"
+                      rules={[
+                        { required: true, message: "Please select sub type" },
+                      ]}
+                    >
+                      {/* <Input placeholder="Enter Sub type" /> */}
 
-                <Form.Item
-                  label="Bank Name"
-                  name="bankName"
-                  // rules={[
-                  //   { required: true, message: "Please enter bank name" },
-                  // ]}
-                >
-                  <Input />
-                </Form.Item>
+                      <Select placeholder="Select Sub Type">
+                        <Option value="bank">Bank</Option>
+                        <Option value="petty_cash">Petty Cash</Option>
+                        <Option value="cash_handler">Cash Handler</Option>
+                        <Option value="receivable">Receivable</Option>
+                        <Option value="payable">Payable</Option>
+                      </Select>
+                    </Form.Item>
+                  </Col>
 
-                <Form.Item
-                  label="IFSC Code"
-                  name="ifsc"
-                  // rules={[
-                  //   { required: true, message: "Please enter IFSC code" },
-                  // ]}
-                >
-                  <Input />
-                </Form.Item>
+                  <Col span={12}>
+                    <Form.Item
+                      name="isBankAccount"
+                      label="Is Bank Account"
+                      valuePropName="checked"
+                    >
+                      <Switch />
+                    </Form.Item>
+                  </Col>
+                </Row>
               </Form>
             </Modal>
           </div>

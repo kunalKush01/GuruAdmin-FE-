@@ -4461,6 +4461,7 @@
         font: normal normal 700 13px Noto Sans !important
     }
 }
+
 #accountsListDrop {
     .ant-select-selector {
         background-color: $white !important;
@@ -4478,6 +4479,7 @@
     }
 
 }
+
 .membershipMobileField {
     label {
         color: $font-color;
@@ -4500,6 +4502,10 @@
 .commonSmallFont {
     color: $font-color;
     font: normal normal 700 14px Noto Sans !important
+}
+
+.commonFontFamily {
+    font-family: Noto Sans !important;
 }
 
 .pagination {
@@ -4676,11 +4682,11 @@
 .ant-radio-checked .ant-radio-inner {
     border-color: $primary !important;
     background-color: $primary !important;
-  }
-  
-  /* Unselected radio button */
-  .ant-radio-inner {
+}
+
+/* Unselected radio button */
+.ant-radio-inner {
     background-color: white !important;
-    border-color: $primary !important; /* optional: keep border in primary */
-  }
-  
+    border-color: $primary !important;
+    /* optional: keep border in primary */
+}

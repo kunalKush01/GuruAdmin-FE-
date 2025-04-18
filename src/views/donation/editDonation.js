@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import "react-phone-number-input/style.css";
 import { useSelector } from "react-redux";
@@ -14,11 +14,12 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import "../../assets/scss/viewCommon.scss";
 import { Tag } from "antd";
 import { updateSuspense } from "../../api/suspenseApi";
+import { getAllAccounts } from "../../api/profileApi";
 export default function EditDonation() {
   const history = useHistory();
   const { t } = useTranslation();
   const location = useLocation();
-  const { record, isEdit ,isFieldDisable} = location.state || {};
+  const { record, isEdit, isFieldDisable } = location.state || {};
   const loggedInUser = useSelector((state) => state.auth.userDetail.name);
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
@@ -58,6 +59,21 @@ export default function EditDonation() {
     }
   );
   const customFieldsList = customFieldsQuery?.data?.customFields ?? [];
+  const { data } = useQuery(["Accounts"], () => getAllAccounts(), {
+    keepPreviousData: true,
+    onError: (error) => {
+      console.error("Error fetching member data:", error);
+    },
+  });
+
+  const accountsItem = useMemo(() => {
+    return data?.result ?? [];
+  }, [data]);
+  const flattenedAccounts = accountsItem.map((item) => ({
+    label: item.name,
+    value: item.id,
+    ...item,
+  }));
   const schema = Yup.object().shape({
     Mobile: Yup.string().required("expenses_mobile_required"),
     SelectedUser: Yup.mixed().required("user_select_required"),
@@ -82,6 +98,18 @@ export default function EditDonation() {
       }, {})
     ),
   });
+  const selectedAccount = flattenedAccounts.find(
+    (acc) => acc.value === record?.accountId
+  );
+  const modeOfPaymentOptions = [
+    { value: "", label: t("select_option") },
+    { value: "Cash", label: t("cash") },
+    { value: "Bank Transfer", label: t("bank_transfer") },
+  ];
+
+  const matchedMOP = modeOfPaymentOptions.find(
+    (opt) => opt.value === record?.paymentMethod
+  );
   const initialValues = {
     Mobile: "",
     countryCode: "in",
@@ -106,19 +134,17 @@ export default function EditDonation() {
 
     SelectedCommitmentId: "",
 
-    Amount: amount || "",
+    Amount: record?.amount ?? amount ?? "",
     isGovernment: "NO",
     createdBy: ConverFirstLatterToCapital(loggedInUser),
-    modeOfPayment: {
-      value: "online",
-      label: t("online"),
-    },
+    modeOfPayment: matchedMOP || { value: "Cash", label: t("cash") },
+    accountId: selectedAccount || "",
     bankName: "",
     chequeNum: "",
     chequeDate: "",
     chequeStatus: "",
     bankNarration: "",
-    donationRemarks: remark || "",
+    donationRemarks: record?.donationRemarks ?? remark ?? "",
     customFields: customFieldsList.reduce((acc, field) => {
       acc[field.fieldName] = "";
       return acc;
@@ -176,6 +202,7 @@ export default function EditDonation() {
           isEdit={isEdit}
           isFieldDisable={isFieldDisable}
           donationId={record ? record._id : ""}
+          flattenedAccounts={flattenedAccounts}
         />
       </div>
     </div>

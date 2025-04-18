@@ -1035,6 +1035,13 @@ const Routes = [
     type: "accounts",
     subPermission: READ,
   },
+  {
+    path: "/accounts/:id",
+    component: lazy(() => import("../../views/accounts/accountView.js")),
+    exact: true,
+    type: "accounts",
+    subPermission: READ,
+  },
 ];
 
 export { DefaultRoute, Routes, TemplateTitle };
