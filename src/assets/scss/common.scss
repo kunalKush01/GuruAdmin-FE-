@@ -2967,8 +2967,8 @@
 .masterDataListAntdTable .ant-table-body,
 .customFieldTable .ant-table-body,
 .masterTable .ant-table-body {
-    max-height: 400px;
-    height: 353px;
+    max-height: 600px;  /* Increased max height */
+    height: 500px;      /* Increased height */
     overflow: auto;
 
     ::-webkit-scrollbar {
@@ -4602,16 +4602,24 @@
 }
 
 .previewImagesContainer {
-    display: grid;
-    grid-template-columns: repeat(auto-fill,
-            minmax(80px, 1fr));
-    /* Ensures responsiveness */
-    gap: 10px;
-    /* Adds space between images */
-    justify-content: center;
-    align-items: center;
-    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
 }
+
+.previewImagesContainer.column-layout {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.previewImagesContainer.row-layout {
+    flex-direction: row;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    gap: 12px;
+}
+
 
 .previewImages {
     gap: 5px;
