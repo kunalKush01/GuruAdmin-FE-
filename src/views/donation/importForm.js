@@ -23,7 +23,7 @@ import { importCommitmentFile } from "../../api/commitmentApi";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { importMemberFile } from "../../api/membershipApi";
-import { importMessages } from "../../api/messageApi"; 
+import { importMessages } from "../../api/messageApi";
 function ImportForm({
   onClose,
   open,
@@ -32,8 +32,9 @@ function ImportForm({
   setShowSuspenseHistory,
   setShowDonationHistory,
   mappedField,
+  selectedAccountId,
 }) {
-  const loggedInUser = useSelector((state) => state.auth.userDetail)
+  const loggedInUser = useSelector((state) => state.auth.userDetail);
   const { t } = useTranslation();
   const targetFields = [
     t("mobileNum"),
@@ -85,9 +86,9 @@ function ImportForm({
               headers = result.meta.fields;
               setSourceFields(headers);
               const initialMapping = {};
-              headers.forEach(header => {
+              headers.forEach((header) => {
                 const lowerHeader = header.toLowerCase().trim();
-                messageTargetFields.forEach(target => {
+                messageTargetFields.forEach((target) => {
                   if (lowerHeader === target.value.toLowerCase()) {
                     initialMapping[target.value] = header;
                   }
@@ -155,12 +156,12 @@ function ImportForm({
   };
 
   const handleMappingChange = (targetField, sourceField) => {
-    const field = messageTargetFields.find(f => f.label === targetField);
+    const field = messageTargetFields.find((f) => f.label === targetField);
     const key = field ? field.value : targetField;
-    
-    setMapping(prevMapping => ({
+
+    setMapping((prevMapping) => ({
       ...prevMapping,
-      [key]: sourceField
+      [key]: sourceField,
     }));
   };
 
@@ -196,24 +197,25 @@ function ImportForm({
     },
   ];
 
-  const data = tab === "Message" 
-  ? messageTargetFields.map((field) => ({
-      key: field.value,
-      targetField: field.label,
-      sourceField: mapping[field.value],
-    }))
-  : tab !== "MemberShip"
-    ? targetFields.map((field) => ({
-        key: field,
-        targetField: field,
-        sourceField: mapping[field],
-      }))
-    : mappedField &&
-      mappedField.map((field, index) => ({
-        key: `${field.value}-${index}`,
-        targetField: field.label,
-        sourceField: mapping[field.value],
-      }));
+  const data =
+    tab === "Message"
+      ? messageTargetFields.map((field) => ({
+          key: field.value,
+          targetField: field.label,
+          sourceField: mapping[field.value],
+        }))
+      : tab !== "MemberShip"
+      ? targetFields.map((field) => ({
+          key: field,
+          targetField: field,
+          sourceField: mapping[field],
+        }))
+      : mappedField &&
+        mappedField.map((field, index) => ({
+          key: `${field.value}-${index}`,
+          targetField: field.label,
+          sourceField: mapping[field.value],
+        }));
   const queryClient = useQueryClient();
   const handleSubmit = async () => {
     setLoading(true);
@@ -246,7 +248,8 @@ function ImportForm({
           sourceFields: sourceFields,
           file: file,
           upload_type: "Suspense",
-          createdBy: loggedInUser && loggedInUser?.id
+          accountId: selectedAccountId,
+          createdBy: loggedInUser && loggedInUser?.id,
         };
         await createImport(payload);
         await queryClient.invalidateQueries("suspenseData");
@@ -423,7 +426,7 @@ function ImportForm({
                 type="submit"
                 style={{ width: "100%" }}
                 disabled={loading || !file} // Disable if loading or no file selected
-                >
+              >
                 {loading ? <Spinner size="sm" /> : <span>{t("import")}</span>}
               </ReactstrapButton>
             </div>

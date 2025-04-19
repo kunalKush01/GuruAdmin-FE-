@@ -1028,6 +1028,20 @@ const Routes = [
     type: "message",
     subPermission: READ,
   },
+  {
+    path: "/accounts",
+    component: lazy(() => import("../../views/accounts/accountList.js")),
+    exact: true,
+    type: "accounts",
+    subPermission: READ,
+  },
+  {
+    path: "/accounts/:id",
+    component: lazy(() => import("../../views/accounts/accountView.js")),
+    exact: true,
+    type: "accounts",
+    subPermission: READ,
+  },
 ];
 
 export { DefaultRoute, Routes, TemplateTitle };

@@ -33,6 +33,7 @@ import ConfigurationIconActive from "../../assets/images/icons/configuration-act
 import BookingIcon from "../../assets/images/icons/dharmshala/booking.svg";
 import BuildingIcon from "../../assets/images/icons/dharmshala/building.svg";
 import DharmshalaIcon from "../../assets/images/icons/dharmshala/dharmshala.svg";
+import bankIcon from "../../assets/images/icons/bank-logo.svg";
 import FeedbackIcon from "../../assets/images/icons/dharmshala/feedback.svg";
 import RoomTypeIcon from "../../assets/images/icons/dharmshala/roomtype.svg";
 import GaushalaInfo from "../../assets/images/icons/gaushalaInfo.svg";
@@ -295,7 +296,22 @@ export const subHeaderContentResponsive = [
     icon: DonationIcon,
     activeIcon: DonationIconActive,
   },
-
+  {
+    name: "Accounting",
+    customLabel: "Accounting",
+    activeTab: "/accounts",
+    icon: DharmshalaIcon,
+    activeIcon: DharmshalaIcon,
+    children: [
+      {
+        name: "Accounts",
+        customLabel: "Accounts",
+        url: "/accounts",
+        icon: bankIcon,
+        activeIcon: bankIcon,
+      },
+    ],
+  },
   {
     name: "commitment",
     url: "/commitment",

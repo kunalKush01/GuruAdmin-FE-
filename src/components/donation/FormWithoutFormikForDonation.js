@@ -1,5 +1,5 @@
 import { Form } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { Prompt, useHistory, useLocation } from "react-router-dom";
@@ -30,6 +30,8 @@ import momentGenerateConfig from "rc-picker/lib/generate/moment";
 import { uploadFile } from "../../api/sharedStorageApi";
 import { fetchImage } from "../partials/downloadUploadImage";
 import UploadImage from "../partials/commonImageUpload2";
+import { getAllAccounts } from "../../api/profileApi";
+import { useQuery } from "@tanstack/react-query";
 
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 export default function FormWithoutFormikForDonation({
@@ -47,6 +49,7 @@ export default function FormWithoutFormikForDonation({
   customFieldsList,
   isEdit = false,
   isFieldDisable = true,
+  flattenedAccounts,
   ...props
 }) {
   const { t } = useTranslation();
@@ -218,6 +221,72 @@ export default function FormWithoutFormikForDonation({
       formik.setFieldValue("donarName", decodeURIComponent(name));
     }
   }, [name]);
+
+  //**get account options */
+
+  const filteredAccountOptions = useMemo(() => {
+    const selectedMode =
+      formik.values.modeOfPayment && formik.values.modeOfPayment["value"];
+
+    if (selectedMode === "Cash") {
+      return flattenedAccounts.filter((acc) =>
+        ["Uncategorised Petty Cash", "Donation Income - Cash"].includes(
+          acc.label
+        )
+      );
+    }
+
+    if (selectedMode === "Bank Transfer") {
+      const excludedNames = [
+        "Donation Income - Cash",
+        "Uncategorised Petty Cash",
+        "Uncategorised Expense",
+      ];
+      return flattenedAccounts.filter(
+        (acc) => acc.isBankAccount === true || !excludedNames.includes(acc.name)
+      );
+    }
+
+    // Default: show everything except type: "expense"
+    return flattenedAccounts.filter((acc) => acc.type !== "expense");
+  }, [flattenedAccounts, formik.values.modeOfPayment]);
+
+  useEffect(() => {
+    const isEditMode = formik.values?.accountId;
+
+    let selectedMode = formik.values?.modeOfPayment?.value;
+    if (!isEditMode) {
+      if (selectedMode === "Cash") {
+        const cashDefault = flattenedAccounts.find(
+          (acc) => acc.label === "Uncategorised Petty Cash"
+        );
+        // Set the accountId with value and label
+        if (cashDefault) {
+          formik.setFieldValue("accountId", {
+            value: cashDefault.id,
+            label: cashDefault.label,
+          });
+        }
+      }
+
+      if (selectedMode === "Bank Transfer") {
+        const bankDefault = flattenedAccounts.find(
+          (acc) => acc.label === "Uncategorised Bank"
+        );
+        // Set the accountId with value and label
+        if (bankDefault) {
+          formik.setFieldValue("accountId", {
+            value: bankDefault.id,
+            label: bankDefault.label,
+          });
+        }
+      }
+    }
+  }, [
+    formik?.values?.modeOfPayment?.value,
+    flattenedAccounts,
+    formik.setFieldValue,
+  ]);
 
   //**get bank option */
   const [bankOptions, setBankOptions] = useState([]);
@@ -517,13 +586,22 @@ export default function FormWithoutFormikForDonation({
                     loadOptions={[
                       { value: "", label: t("select_option") },
                       { value: "Cash", label: t("cash") },
-                      { value: "UPI", label: t("upi") },
-                      { value: "online", label: t("online") },
-                      { value: "Cheque", label: t("cheque") },
-                      { value: "Credit Card", label: t("credit_card") },
-                      { value: "Debit Card", label: t("debit_card") },
+                      // { value: "UPI", label: t("upi") },
+                      // { value: "online", label: t("online") },
+                      // { value: "Cheque", label: t("cheque") },
+                      // { value: "Credit Card", label: t("credit_card") },
+                      // { value: "Debit Card", label: t("debit_card") },
                       { value: "Bank Transfer", label: t("bank_transfer") },
                     ]}
+                    width
+                  />
+                </Col>
+
+                <Col xs={12} sm={6} lg={3}>
+                  <FormikCustomReactSelect
+                    labelName={t("Accounts")}
+                    name="accountId"
+                    loadOptions={filteredAccountOptions}
                     width
                   />
                 </Col>

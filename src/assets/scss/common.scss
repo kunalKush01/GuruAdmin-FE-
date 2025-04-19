@@ -4462,6 +4462,24 @@
     }
 }
 
+#accountsListDrop {
+    .ant-select-selector {
+        background-color: $white !important;
+        border: 1px solid $primary;
+        min-height: 38px !important;
+        height: auto !important;
+    }
+
+    .ant-select-selection-item {
+        color: $font-color !important;
+        font: $font-weight-bold 90% $font-family !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+}
+
 .membershipMobileField {
     label {
         color: $font-color;
@@ -4484,6 +4502,10 @@
 .commonSmallFont {
     color: $font-color;
     font: normal normal 700 14px Noto Sans !important
+}
+
+.commonFontFamily {
+    font-family: Noto Sans !important;
 }
 
 .pagination {
@@ -4654,6 +4676,16 @@
     // margin-bottom: 50px;
 }
 
+.typeLabel {
+    color: $font-color;
+    font: $font-weight-bold $font-size-medium $font-family;
+}
+
+.ant-radio-wrapper {
+    color: $font-color;
+    font: $font-weight-normal $font-size-medium $font-family;
+}
+
 /* Selected radio button */
 .ant-radio-checked .ant-radio-inner {
     border-color: $primary !important;
@@ -4665,46 +4697,4 @@
     background-color: white !important;
     border-color: $primary !important;
     /* optional: keep border in primary */
-}
-
-.pdf-preview-box {
-    height: 66px;
-    width: 100%;
-    max-width: 300px;
-    min-width: 300px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border: 1px solid #d9d9d9;
-    border-radius: 8px;
-    padding: 10px 12px;
-    margin: 8px 0;
-    background-color: #fafafa;
-    transition: box-shadow 0.2s;
-}
-
-.pdf-preview-box:hover {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-.pdf-info {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    overflow: hidden;
-    cursor: pointer;
-}
-
-
-.pdf-filename {
-    font-weight: 500;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.pdf-actions {
-    display: flex;
-    align-items: center;
-    gap: 6px;
 }

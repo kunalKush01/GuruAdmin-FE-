@@ -9,6 +9,7 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
+const { RangePicker } = DatePicker;
 import {
   Dropdown,
   Form,
@@ -47,6 +48,7 @@ import ImportForm from "./importForm";
 import ImportHistoryTable from "../../components/donation/importHistoryTable";
 import ScreenshotPanel from "../../components/donation/screenshotPanel";
 import { useLocation } from "react-router-dom";
+import { getAllAccounts } from "../../api/profileApi";
 const { TabPane } = Tabs;
 
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
@@ -65,6 +67,8 @@ export default function Donation() {
   const [subCategoryTypeName, setSubCategoryTypeName] = useState(t("All"));
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const [showScreenshotPanel, setShowScreenshotPanel] = useState(false);
+  const [dateRangeFilter, setDateRangeFilter] = useState(null);
+
   const tabMapping = {
     Donation: "", // No query param for Donation
     Article_Donation: "article-donation",
@@ -195,6 +199,28 @@ export default function Donation() {
       newId = newObject.id;
     }
   });
+  const [selectedAccountId, setSelectedAccountId] = useState(null);
+
+  const { data } = useQuery(["Accounts"], () => getAllAccounts(), {
+    keepPreviousData: true,
+    onError: (error) => {
+      console.error("Error fetching member data:", error);
+    },
+  });
+  const extraAccountNames = ["Donation Income - Bank", "Uncategorised Bank"];
+
+  const accountsItem = useMemo(() => {
+    return (data?.result ?? []).filter(
+      (account) =>
+        account.isBankAccount || extraAccountNames.includes(account.name)
+    );
+  }, [data]);
+  useEffect(() => {
+    if (accountsItem.length && !selectedAccountId) {
+      setSelectedAccountId(accountsItem[0].id); // Default to first item
+    }
+  }, [accountsItem]);
+
   const [categoryId, setCategoryId] = useState();
 
   const subCategoryTypeQuery = useQuery(
@@ -363,6 +389,7 @@ export default function Donation() {
         bankNarration: values.bankNarration || "",
         chequeNo: values.chequeNo || "",
         modeOfPayment: values.modeOfPayment || "",
+        accountId: selectedAccountId || "",
         creditedAmount:
           transactionType === "credit" ? Number(values.amount) : null,
         debitedAmount:
@@ -835,6 +862,47 @@ export default function Donation() {
                   )}
                 </Space>
                 <Space wrap className="">
+                  <div style={{ width: "100%" }}>
+                    <RangePicker
+                      id="dateRangePickerANTD"
+                      format="DD MMM YYYY"
+                      placeholder={[t("Start Date"), t("End Date")]}
+                      onChange={(dates) => {
+                        if (dates && dates.length === 2) {
+                          const [start, end] = dates;
+
+                          setDateRangeFilter({
+                            transactionDate: {
+                              type: "inRange",
+                              fromDate: start.startOf("day").toISOString(),
+                              toDate: end.endOf("day").toISOString(),
+                            },
+                          });
+                        } else {
+                          setDateRangeFilter(null); // Reset if cleared
+                        }
+                      }}
+                      style={{ width: "100%" }}
+                    />
+                  </div>
+                  <Tooltip title={t("Accounts")} color="#FF8744">
+                    <div className="d-flex flex-column" id="accountsListDrop">
+                      <Select
+                        style={{ width: 210, height: "38px" }}
+                        placeholder="Select Account"
+                        onChange={(value) => {
+                          setSelectedAccountId(value);
+                        }}
+                        value={selectedAccountId}
+                      >
+                        {accountsItem.map((account) => (
+                          <Option key={account.id} value={account.id}>
+                            {account.name}
+                          </Option>
+                        ))}
+                      </Select>
+                    </div>
+                  </Tooltip>
                   {!showSuspenseHistory &&
                     (allPermissions?.name === "all" ||
                       subPermission?.includes(WRITE)) && (
@@ -872,6 +940,9 @@ export default function Donation() {
                     open={open}
                     tab={activeTab}
                     setShowSuspenseHistory={setShowSuspenseHistory}
+                    selectedAccountId={
+                      activeTab === "Suspense" ? selectedAccountId : undefined
+                    }
                   />
                   <Button
                     className="secondaryAction-btn"
@@ -1222,8 +1293,13 @@ export default function Donation() {
                 {!showSuspenseHistory ? (
                   <SuspenseListTable
                     success={success}
-                    filterData={filteredData}
+                    filterData={{
+                      ...filteredData,
+                      ...(dateRangeFilter || {}),
+                    }}
+                    // filterData={filteredData}
                     type={activeTab}
+                    accountId={selectedAccountId} // ✅ Pass the selected account ID
                   />
                 ) : (
                   <ImportHistoryTable tab={activeTab} />

@@ -28,7 +28,7 @@ import { useTranslation } from "react-i18next";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
 import { useHistory } from "react-router-dom";
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
-function SuspenseListTable({ success, filterData, type }) {
+function SuspenseListTable({ success, filterData, type, accountId }) {
   const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -46,7 +46,7 @@ function SuspenseListTable({ success, filterData, type }) {
   });
   const [activeTab, setActiveTab] = useState("Donation");
   const { data, isLoading } = useQuery(
-    ["suspenseData", currentPage, pageSize, filterData],
+    ["suspenseData", currentPage, pageSize, filterData, accountId],
     () =>
       getAllSuspense({
         page: currentPage,
@@ -55,6 +55,7 @@ function SuspenseListTable({ success, filterData, type }) {
         sortKey: "createdAt",
         sortOrder: "DESC",
         ...(filterData && filterData && { advancedSearch: filterData }),
+        ...(accountId && { accountId }), // ✅ include accountId in request payload
       }),
     {
       keepPreviousData: true,
@@ -136,6 +137,7 @@ function SuspenseListTable({ success, filterData, type }) {
       creditedAmount:
         transactionType === "credit" ? Number(values.amount) : null,
       debitedAmount: transactionType === "debit" ? Number(values.amount) : null,
+      accountId: accountId,
     };
 
     updateMutation.mutate({

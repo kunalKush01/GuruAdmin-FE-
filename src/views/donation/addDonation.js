@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import "react-phone-number-input/style.css";
 import { useSelector } from "react-redux";
@@ -13,9 +13,10 @@ import DonationForm from "../../components/donation/donationForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import "../../assets/scss/viewCommon.scss";
 import { Tag } from "antd";
+import { getAllAccounts } from "../../api/profileApi";
 export default function AddDonation() {
   const history = useHistory();
-  const {t} = useTranslation()
+  const { t } = useTranslation();
   const loggedInUser = useSelector((state) => state.auth.userDetail.name);
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
@@ -39,6 +40,22 @@ export default function AddDonation() {
     }
   );
   const customFieldsList = customFieldsQuery?.data?.customFields ?? [];
+  const { data } = useQuery(["Accounts"], () => getAllAccounts(), {
+    keepPreviousData: true,
+    onError: (error) => {
+      console.error("Error fetching member data:", error);
+    },
+  });
+
+  const accountsItem = useMemo(() => {
+    return data?.result ?? [];
+  }, [data]);
+  const flattenedAccounts = accountsItem.map((item) => ({
+    label: item.name,
+    value: item.id,
+    ...item,
+  }));
+
   const schema = Yup.object().shape({
     Mobile: Yup.string().required("expenses_mobile_required"),
     SelectedUser: Yup.mixed().required("user_select_required"),
@@ -50,8 +67,8 @@ export default function AddDonation() {
       .trim(),
     SelectedMasterCategory: Yup.mixed().required("masterCategory_required"),
     Amount: Yup.string()
-    .matches(/^(0|[1-9]\d*)(\.\d+)?$/, "invalid_amount") // Allows 0, positive integers, and positive decimals
-    .required("amount_required"),
+      .matches(/^(0|[1-9]\d*)(\.\d+)?$/, "invalid_amount") // Allows 0, positive integers, and positive decimals
+      .required("amount_required"),
     customFields: Yup.object().shape(
       customFieldsList.reduce((acc, field) => {
         if (field.isRequired) {
@@ -77,8 +94,11 @@ export default function AddDonation() {
     createdBy: ConverFirstLatterToCapital(loggedInUser),
     modeOfPayment: {
       value: modeOfPayment || "Cash",
-      label: ((modeOfPayment == "online" || modeOfPayment=="") && t('online')) || t('cash'),
+      label:
+        ((modeOfPayment == "online" || modeOfPayment == "") && t("online")) ||
+        t("cash"),
     },
+    accountId:"",
     bankName: "",
     chequeNum: "",
     chequeDate: "",
@@ -137,6 +157,7 @@ export default function AddDonation() {
           buttonName="donation_Adddonation"
           customFieldsList={customFieldsList}
           donorMapped={donorMapped}
+          flattenedAccounts={flattenedAccounts}
           sId={sId}
         />
       </div>

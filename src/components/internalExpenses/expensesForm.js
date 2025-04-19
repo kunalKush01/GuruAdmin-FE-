@@ -39,6 +39,7 @@ export default function ExpensesForm({
   expenseTypeArr,
   customFieldsList,
   paymentModeArr,
+  flattenedAccounts,
 }) {
   const history = useHistory();
   const { t } = useTranslation();
@@ -122,6 +123,7 @@ export default function ExpensesForm({
     [expenseLogQuery]
   );
   const [showPrompt, setShowPrompt] = useState(true);
+  const [filteredAccountOptions, setFilteredAccountOptions] = useState([]);
 
   return (
     <div className="formwrapper FormikWrapper">
@@ -148,7 +150,7 @@ export default function ExpensesForm({
                   ? "Date"
                   : "String", // Default to String for other types
               value: field.value !== undefined ? field.value : field,
-              paymentMode: e?.paymentMode?.value,
+              // paymentMode: e?.paymentMode?.value,
             })
           );
           expenseMutation.mutate({
@@ -166,6 +168,8 @@ export default function ExpensesForm({
             description: e?.Body,
             expenseDate: e?.DateTime,
             paymentMode: e?.paymentMode?.value,
+            paidFromAccountId: e?.paidFromAccountId?.value,
+            expenseAccountId: e?.expenseAccountId?.value,
             customFields: transformedCustomFields,
             imagePath: uploadedImagePaths.map((img) => img.fileName),
           });
@@ -189,6 +193,91 @@ export default function ExpensesForm({
               }
             }
           }, [formik.values.orderQuantity, formik.values.perItemAmount]);
+          useEffect(() => {
+            if (!flattenedAccounts || !Array.isArray(flattenedAccounts)) return;
+
+            const selectedMode = formik.values?.paymentMode?.value;
+
+            if (selectedMode === "cash") {
+              const allowedCashNames = [
+                "Uncategorised Expense",
+                "Uncategorised Petty Cash",
+                "Donation Income - Cash",
+                "Donation Income - PG",
+                "Donation Income - PG Charges",
+              ];
+
+              const filtered = flattenedAccounts.filter((acc) =>
+                allowedCashNames.includes(acc.name)
+              );
+
+              setFilteredAccountOptions(filtered);
+              return;
+            }
+
+            if (selectedMode === "bankAccount") {
+              const allowedBankNames = [
+                "Uncategorised Bank",
+                "Donation Income - Bank",
+              ];
+
+              const filtered = flattenedAccounts.filter(
+                (acc) =>
+                  acc.isBankAccount === true ||
+                  allowedBankNames.includes(acc.name)
+              );
+
+              setFilteredAccountOptions(filtered);
+              return;
+            }
+
+            // Default fallback
+            setFilteredAccountOptions([]);
+          }, [formik.values?.paymentMode, flattenedAccounts]);
+          useEffect(() => {
+            const isAddMode = !initialValues?.Id;
+            const selectedMode = formik.values?.paymentMode?.value;
+
+            // Only run in add mode, and if we have payment mode + accounts
+            if (!isAddMode || !selectedMode || !flattenedAccounts?.length)
+              return;
+
+            // When paymentMode changes, update account fields
+            if (selectedMode === "cash") {
+              const cashDefault = flattenedAccounts.find(
+                (acc) => acc.label === "Uncategorised Expense"
+              );
+
+              if (cashDefault) {
+                const account = {
+                  value: cashDefault.id,
+                  label: cashDefault.label,
+                };
+                formik.setFieldValue("paidFromAccountId", account);
+                formik.setFieldValue("expenseAccountId", account);
+              }
+            }
+
+            if (selectedMode === "bankAccount") {
+              const bankDefault = flattenedAccounts.find(
+                (acc) => acc.label === "Uncategorised Bank"
+              );
+
+              if (bankDefault) {
+                const account = {
+                  value: bankDefault.id,
+                  label: bankDefault.label,
+                };
+                formik.setFieldValue("paidFromAccountId", account);
+                formik.setFieldValue("expenseAccountId", account);
+              }
+            }
+          }, [
+            formik.values?.paymentMode?.value,
+            flattenedAccounts,
+            initialValues?.Id,
+          ]);
+
           return (
             <Form>
               {showPrompt && (
@@ -260,6 +349,24 @@ export default function ExpensesForm({
                       placeholder={t("Payment_Mode")}
                       required
                       width={"100"}
+                    />
+                  </Col>
+                  <Col xs={12} sm={6} lg={4}>
+                    <FormikCustomReactSelect
+                      labelName={t("Account From:")}
+                      name="paidFromAccountId"
+                      loadOptions={filteredAccountOptions}
+                      width
+                      required
+                    />
+                  </Col>
+                  <Col xs={12} sm={6} lg={4}>
+                    <FormikCustomReactSelect
+                      labelName={t("Account To:")}
+                      name="expenseAccountId"
+                      loadOptions={filteredAccountOptions}
+                      width
+                      required
                     />
                   </Col>
                   {(formik.values?.expenseType?.value === "assets" ||
