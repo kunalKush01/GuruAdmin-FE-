@@ -27,6 +27,7 @@ export default function DonationBoxForm({
   initialValues,
   showTimeInput,
   customFieldsList,
+  flattenedAccounts,
 }) {
   const history = useHistory();
   const { t } = useTranslation();
@@ -65,6 +66,12 @@ export default function DonationBoxForm({
   );
   const [showPrompt, setShowPrompt] = useState(true);
   const trustId = localStorage.getItem("trustId");
+  //**get account options */
+  const filteredAccountOptions = useMemo(() => {
+    return flattenedAccounts.filter((acc) => {
+      return acc.type === "asset" && acc.subType === "petty_cash";
+    });
+  }, [flattenedAccounts]);
 
   return (
     <div className="formwrapper FormikWrapper">
@@ -98,6 +105,7 @@ export default function DonationBoxForm({
             amount: e?.Amount,
             remarks: e?.Body,
             collectionDate: e?.DateTime,
+            accountId: e?.accountId?.value,
             customFields: transformedCustomFields,
           });
         }}
@@ -156,7 +164,7 @@ export default function DonationBoxForm({
                       <CustomDatePicker
                         id="datePickerANTD"
                         format="DD MMM YYYY"
-                        placeholder={t('select_date')}
+                        placeholder={t("select_date")}
                         // needConfirm
                         onChange={(date) =>
                           formik.setFieldValue(
@@ -169,6 +177,15 @@ export default function DonationBoxForm({
                             ? moment(formik.values.DateTime)
                             : null
                         }
+                      />
+                    </Col>
+                    <Col xs={12} sm={4} lg={4}>
+                      <FormikCustomReactSelect
+                        labelName={t("Account")}
+                        name="accountId"
+                        loadOptions={filteredAccountOptions}
+                        width
+                        required
                       />
                     </Col>
                     {customFieldsList.map((field) => {
@@ -295,11 +312,7 @@ export default function DonationBoxForm({
             </div>
             <div className="d-flex justify-content-center mt-lg">
               {loading ? (
-                <Button
-                  color="primary"
-                  className="add-trust-btn"
-                  disabled
-                >
+                <Button color="primary" className="add-trust-btn" disabled>
                   <Spinner size="md" />
                 </Button>
               ) : (
