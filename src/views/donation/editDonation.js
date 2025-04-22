@@ -148,6 +148,8 @@ export default function EditDonation() {
     chequeStatus: "",
     bankNarration: "",
     donationRemarks: record?.donationRemarks ?? remark ?? "",
+    isCorpus: record?.isCorpus ?? "",
+    corpusPurpose: record?.corpusPurpose ?? "",
     customFields: customFieldsList.reduce((acc, field) => {
       acc[field.fieldName] = "";
       return acc;

@@ -23,7 +23,7 @@ export default function DonationForm({
   isEdit,
   isFieldDisable,
   donationId,
-  flattenedAccounts
+  flattenedAccounts,
 }) {
   const history = useHistory();
   const donationQueryClient = useQueryClient();
@@ -144,6 +144,8 @@ export default function DonationForm({
       chequeStatus: values?.chequeStatus?.value,
       bankNarration: values?.bankNarration,
       donationRemarks: values?.donationRemarks,
+      isCorpus: values?.isCorpus ?? false,
+      corpusPurpose: values?.corpusPurpose,
       customFields: transformedCustomFields,
       sId,
       donorMapped,

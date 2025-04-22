@@ -19,7 +19,7 @@ import AsyncSelectField from "../partials/asyncSelectField";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import FormikCardDropdown from "../partials/FormikCardDropdown";
-import { DatePicker } from "antd";
+import { DatePicker, Switch } from "antd";
 import "../../../src/assets/scss/common.scss";
 import AddUserDrawerForm from "./addUserDrawerForm";
 import { createSubscribedUser } from "../../api/subscribedUser";
@@ -776,7 +776,32 @@ export default function FormWithoutFormikForDonation({
                     required
                   />
                 </Col>
-                <Col lg={3}>
+                <Col xs={12} sm={6} lg={3}>
+                  <div className="d-flex flex-column ">
+                    <label className="commonSmallFont">Is Corpus?</label>
+                    <div>
+                      <Switch
+                        checked={formik.values.isCorpus}
+                        onChange={(checked) =>
+                          formik.setFieldValue("isCorpus", checked)
+                        }
+                      />
+                    </div>
+                  </div>
+                </Col>
+
+                {formik.values.isCorpus && (
+                  <Col lg={3}>
+                    <TextArea
+                      name="corpusPurpose"
+                      placeholder={t("Enter Corpus Purpose")}
+                      label={t("Corpus Purpose")}
+                      rows="1"
+                    />
+                  </Col>
+                )}
+
+                <Col lg={12}>
                   <TextArea
                     name="donationRemarks"
                     placeholder={t("Enter Remarks here")}
