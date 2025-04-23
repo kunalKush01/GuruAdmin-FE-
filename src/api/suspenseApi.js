@@ -106,3 +106,19 @@ export const syncSuspenseWithSearch = async () => {
     showToastOnError: false,
   });
 };
+export const getPossibleOrBestMatch = async (payload) => {
+  return callApi({
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}suspense/match-suspense`,payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+};
+export const matchTransaction = async (payload) => {
+  return callApi({
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}suspense/match-transactions`,payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+};

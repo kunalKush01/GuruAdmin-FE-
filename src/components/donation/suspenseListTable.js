@@ -9,6 +9,7 @@ import {
   Select,
   Tooltip,
   Radio,
+  Flex,
 } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
@@ -28,7 +29,14 @@ import { useTranslation } from "react-i18next";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
 import { useHistory } from "react-router-dom";
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
-function SuspenseListTable({ success, filterData, type, accountId }) {
+function SuspenseListTable({
+  success,
+  filterData,
+  type,
+  accountId,
+  setSelectedRowKeys = [],
+  selectedRowKeys,
+}) {
   const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -307,29 +315,46 @@ function SuspenseListTable({ success, filterData, type, accountId }) {
   const tableData = data?.result?.filter((item) => !item.donorMapped) ?? [];
   const totalItems = data?.total ?? 0;
 
+  //** Possible Match record logic */
+
+  const onSelectChange = (newSelectedRowKeys) => {
+    setSelectedRowKeys(newSelectedRowKeys);
+  };
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+  };
+  const hasSelected = selectedRowKeys.length > 0;
   return (
     <>
-      <Table
-        className="commonListTable"
-        columns={columns}
-        dataSource={tableData}
-        rowKey={(record) => record._id}
-        loading={isLoading}
-        pagination={{
-          current: currentPage,
-          pageSize: pageSize,
-          total: totalItems,
-          onChange: (page, pageSize) => {
-            setCurrentPage(page);
-            setPageSize(pageSize);
-          },
-          showSizeChanger: true,
-          pageSizeOptions: [10, 20, 50, 100],
-        }}
-        scroll={{ x: 1000, y: 400 }}
-        sticky={{ offsetHeader: 64 }}
-        bordered
-      />
+      <Flex gap="middle" vertical>
+        {/* <Flex align="center" gap="middle">
+          {hasSelected ? `Selected ${selectedRowKeys.length} items` : null}
+        </Flex> */}
+
+        <Table
+          className="commonListTable"
+          rowSelection={rowSelection}
+          columns={columns}
+          dataSource={tableData}
+          rowKey={(record) => record._id}
+          loading={isLoading}
+          pagination={{
+            current: currentPage,
+            pageSize: pageSize,
+            total: totalItems,
+            onChange: (page, pageSize) => {
+              setCurrentPage(page);
+              setPageSize(pageSize);
+            },
+            showSizeChanger: true,
+            pageSizeOptions: [10, 20, 50, 100],
+          }}
+          scroll={{ x: 1000, y: 400 }}
+          sticky={{ offsetHeader: 64 }}
+          bordered
+        />
+      </Flex>
 
       {/* Edit Modal */}
       <Modal
