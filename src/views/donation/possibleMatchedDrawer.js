@@ -166,7 +166,7 @@ function PossibleMatchedDrawer({
                         Dated {moment(item.date).format("DD MMM YYYY")}
                       </div>
                       <div className="commonFontFamily commonFontColor">
-                        {item.remark}
+                        Remark: {item.remark}
                       </div>
                     </Space>
                   }
