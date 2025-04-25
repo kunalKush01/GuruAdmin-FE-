@@ -35,7 +35,9 @@ function SuspenseListTable({
   type,
   accountId,
   setSelectedRowKeys = [],
+  setSelectedRowsData = [],
   selectedRowKeys,
+  nestedActiveTab,
 }) {
   const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
@@ -53,21 +55,33 @@ function SuspenseListTable({
     limit: 10,
   });
   const [activeTab, setActiveTab] = useState("Donation");
+  const [isMapped, setIsMapped] = useState(nestedActiveTab !== "unmatched");
+
+  useEffect(() => {
+    setIsMapped(nestedActiveTab !== "unmatched");
+  }, [nestedActiveTab]);
   const { data, isLoading } = useQuery(
-    ["suspenseData", currentPage, pageSize, filterData, accountId],
+    [
+      "suspenseData",
+      pagination.page,
+      pagination.limit,
+      filterData,
+      accountId,
+      isMapped,
+    ],
     () =>
       getAllSuspense({
-        page: currentPage,
-        limit: pageSize,
+        ...pagination,
         search: "",
         sortKey: "createdAt",
         sortOrder: "DESC",
         ...(filterData && filterData && { advancedSearch: filterData }),
         ...(accountId && { accountId }), // ✅ include accountId in request payload
+        isMapped,
       }),
     {
       keepPreviousData: true,
-      enabled: type == "Suspense",
+      enabled: type === "Suspense" && typeof isMapped === "boolean",
       onError: (error) => {
         console.error("Error fetching suspense data:", error);
       },
@@ -242,6 +256,7 @@ function SuspenseListTable({
       fixed: "right",
       width: 150,
       render: (text, record) => {
+        if (record?.isMapped) return null;
         const hasCredited =
           record?.creditedAmount !== null &&
           record?.creditedAmount !== undefined;
@@ -312,13 +327,17 @@ function SuspenseListTable({
     { value: "Debit Card", label: "Debit Card" },
     { value: "Bank Transfer", label: "Bank Transfer" },
   ];
-  const tableData = data?.result?.filter((item) => !item.donorMapped) ?? [];
+  const tableData = data?.result ?? [];
   const totalItems = data?.total ?? 0;
+  useEffect(() => {
+    setPagination((prev) => ({ ...prev, page: 1 }));
+  }, [nestedActiveTab]);
 
   //** Possible Match record logic */
 
-  const onSelectChange = (newSelectedRowKeys) => {
+  const onSelectChange = (newSelectedRowKeys, selectedRows) => {
     setSelectedRowKeys(newSelectedRowKeys);
+    setSelectedRowsData(selectedRows);
   };
   const rowSelection = {
     selectedRowKeys,
@@ -340,15 +359,17 @@ function SuspenseListTable({
           rowKey={(record) => record._id}
           loading={isLoading}
           pagination={{
-            current: currentPage,
-            pageSize: pageSize,
+            current: pagination.page,
+            pageSize: pagination.limit,
             total: totalItems,
-            onChange: (page, pageSize) => {
-              setCurrentPage(page);
-              setPageSize(pageSize);
-            },
+            onChange: (page) => setPagination((prev) => ({ ...prev, page })),
+            onShowSizeChange: (current, pageSize) =>
+              setPagination((prev) => ({
+                ...prev,
+                limit: pageSize,
+                page: 1,
+              })),
             showSizeChanger: true,
-            pageSizeOptions: [10, 20, 50, 100],
           }}
           scroll={{ x: 1000, y: 400 }}
           sticky={{ offsetHeader: 64 }}

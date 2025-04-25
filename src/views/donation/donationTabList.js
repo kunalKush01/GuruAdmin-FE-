@@ -1094,6 +1094,7 @@ export default function Donation() {
   };
   //**possible match logic */
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [selectedRowsData, setSelectedRowsData] = useState([]);
   const [isPossibleMatchedRecordDOpen, setIsPossibleMatchedRecordOpen] =
     useState(false);
   const handleDrawerOpen = () => setIsPossibleMatchedRecordOpen(true);
@@ -1328,6 +1329,7 @@ export default function Donation() {
                 {!showSuspenseHistory ? (
                   <SuspenseListTable
                     setSelectedRowKeys={setSelectedRowKeys}
+                    setSelectedRowsData={setSelectedRowsData}
                     selectedRowKeys={selectedRowKeys}
                     success={success}
                     filterData={{
@@ -1337,6 +1339,7 @@ export default function Donation() {
                     // filterData={filteredData}
                     type={activeTab}
                     accountId={selectedAccountId} // ✅ Pass the selected account ID
+                    nestedActiveTab={nestedActiveTab}
                   />
                 ) : (
                   <ImportHistoryTable tab={activeTab} />
@@ -1345,12 +1348,31 @@ export default function Donation() {
 
               <PossibleMatchedDrawer
                 handleDrawerClose={handleDrawerClose}
+                setIsPossibleMatchedRecordOpen={setIsPossibleMatchedRecordOpen}
                 isDrawerOpen={isPossibleMatchedRecordDOpen}
                 selectedRowKeys={selectedRowKeys}
+                selectedRowsData={selectedRowsData}
                 matchedData={matchedData}
               />
             </TabPane>
-
+            <TabPane tab={t("Matched Transaction")} key="matched">
+              <div className="donationContent">
+                <SuspenseListTable
+                  setSelectedRowKeys={setSelectedRowKeys}
+                  setSelectedRowsData={setSelectedRowsData}
+                  selectedRowKeys={selectedRowKeys}
+                  success={success}
+                  filterData={{
+                    ...filteredData,
+                    ...(dateRangeFilter || {}),
+                  }}
+                  // filterData={filteredData}
+                  type={activeTab}
+                  nestedActiveTab={nestedActiveTab}
+                  accountId={selectedAccountId} // ✅ Pass the selected account ID
+                />
+              </div>
+            </TabPane>
             {/* Second Tab - Pending Screenshots */}
             <TabPane tab={t("Pending_Screenshots")} key="pending">
               <div className="donationContent">
