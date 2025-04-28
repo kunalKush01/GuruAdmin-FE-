@@ -1293,138 +1293,138 @@ export default function Donation() {
         </>
       ),
     },
-    {
-      key: "Suspense",
-      label: t("suspense"),
-      children: (
-        <>
-          <div className="d-flex justify-content-between">
-            <FilterTag
-              hasFilters={hasFilters}
-              filterData={suspenseFilterData}
-              removeFilter={suspenseRemoveFilter}
-              handleRemoveAllFilter={suspenseRemoveAllFilter}
-            />
-          </div>
-          <Tabs
-            activeKey={nestedActiveTab}
-            defaultActiveKey="unmatched"
-            onChange={handleNestedTabChange} // Track nested tab changes
-            tabBarExtraContent={
-              nestedActiveTab === "unmatched" && (
-                <Button
-                  className="secondaryAction-btn"
-                  style={{ marginBottom: "5px" }}
-                  disabled={!hasSelected}
-                  onClick={handleDrawerOpen}
-                >
-                  Get Matches
-                </Button>
-              )
-            }
-          >
-            {/* First Tab - Unmatched Bank Credits */}
-            <TabPane tab={t("Unmatched_Bank_Credits")} key="unmatched">
-              <div className="donationContent">
-                {!showSuspenseHistory ? (
-                  <SuspenseListTable
-                    setSelectedRowKeys={setSelectedRowKeys}
-                    setSelectedRowsData={setSelectedRowsData}
-                    selectedRowKeys={selectedRowKeys}
-                    success={success}
-                    filterData={{
-                      ...filteredData,
-                      ...(dateRangeFilter || {}),
-                    }}
-                    // filterData={filteredData}
-                    type={activeTab}
-                    accountId={selectedAccountId} // ✅ Pass the selected account ID
-                    nestedActiveTab={nestedActiveTab}
-                  />
-                ) : (
-                  <ImportHistoryTable tab={activeTab} />
-                )}
-              </div>
+    // {
+    //   key: "Suspense",
+    //   label: t("suspense"),
+    //   children: (
+    //     <>
+    //       <div className="d-flex justify-content-between">
+    //         <FilterTag
+    //           hasFilters={hasFilters}
+    //           filterData={suspenseFilterData}
+    //           removeFilter={suspenseRemoveFilter}
+    //           handleRemoveAllFilter={suspenseRemoveAllFilter}
+    //         />
+    //       </div>
+    //       <Tabs
+    //         activeKey={nestedActiveTab}
+    //         defaultActiveKey="unmatched"
+    //         onChange={handleNestedTabChange} // Track nested tab changes
+    //         tabBarExtraContent={
+    //           nestedActiveTab === "unmatched" && (
+    //             <Button
+    //               className="secondaryAction-btn"
+    //               style={{ marginBottom: "5px" }}
+    //               disabled={!hasSelected}
+    //               onClick={handleDrawerOpen}
+    //             >
+    //               Get Matches
+    //             </Button>
+    //           )
+    //         }
+    //       >
+    //         {/* First Tab - Unmatched Bank Credits */}
+    //         <TabPane tab={t("Unmatched_Bank_Credits")} key="unmatched">
+    //           <div className="donationContent">
+    //             {!showSuspenseHistory ? (
+    //               <SuspenseListTable
+    //                 setSelectedRowKeys={setSelectedRowKeys}
+    //                 setSelectedRowsData={setSelectedRowsData}
+    //                 selectedRowKeys={selectedRowKeys}
+    //                 success={success}
+    //                 filterData={{
+    //                   ...filteredData,
+    //                   ...(dateRangeFilter || {}),
+    //                 }}
+    //                 // filterData={filteredData}
+    //                 type={activeTab}
+    //                 accountId={selectedAccountId} // ✅ Pass the selected account ID
+    //                 nestedActiveTab={nestedActiveTab}
+    //               />
+    //             ) : (
+    //               <ImportHistoryTable tab={activeTab} />
+    //             )}
+    //           </div>
 
-              <PossibleMatchedDrawer
-                handleDrawerClose={handleDrawerClose}
-                setIsPossibleMatchedRecordOpen={setIsPossibleMatchedRecordOpen}
-                isDrawerOpen={isPossibleMatchedRecordDOpen}
-                selectedRowKeys={selectedRowKeys}
-                selectedRowsData={selectedRowsData}
-                matchedData={matchedData}
-              />
-            </TabPane>
-            <TabPane tab={t("Matched Transaction")} key="matched">
-              <div className="donationContent">
-                <SuspenseListTable
-                  setSelectedRowKeys={setSelectedRowKeys}
-                  setSelectedRowsData={setSelectedRowsData}
-                  selectedRowKeys={selectedRowKeys}
-                  success={success}
-                  filterData={{
-                    ...filteredData,
-                    ...(dateRangeFilter || {}),
-                  }}
-                  // filterData={filteredData}
-                  type={activeTab}
-                  nestedActiveTab={nestedActiveTab}
-                  accountId={selectedAccountId} // ✅ Pass the selected account ID
-                />
-              </div>
-            </TabPane>
-            {/* Second Tab - Pending Screenshots */}
-            <TabPane tab={t("Pending_Screenshots")} key="pending">
-              <div className="donationContent">
-                {!showScreenshotPanel ? (
-                  <DonationANTDListTable
-                    donationType={activeTab}
-                    data={donationItems}
-                    allPermissions={allPermissions}
-                    subPermission={subPermission}
-                    totalItems={totalItems}
-                    currentPage={pagination.page}
-                    pageSize={pagination.limit}
-                    onChangePage={(page) =>
-                      setPagination((prev) => ({ ...prev, page }))
-                    }
-                    onChangePageSize={(pageSize) =>
-                      setPagination((prev) => ({
-                        ...prev,
-                        limit: pageSize,
-                        page: 1,
-                      }))
-                    }
-                    setShowScreenshotPanel={setShowScreenshotPanel}
-                    showScreenshotPanel={showScreenshotPanel}
-                    setRecord={setRecord}
-                  />
-                ) : (
-                  <ScreenshotPanel
-                    record={record}
-                    setRecord={setRecord}
-                    setShowScreenshotPanel={setShowScreenshotPanel}
-                    showScreenshotPanel={showScreenshotPanel}
-                  />
-                )}
-              </div>
-            </TabPane>
-          </Tabs>
+    //           <PossibleMatchedDrawer
+    //             handleDrawerClose={handleDrawerClose}
+    //             setIsPossibleMatchedRecordOpen={setIsPossibleMatchedRecordOpen}
+    //             isDrawerOpen={isPossibleMatchedRecordDOpen}
+    //             selectedRowKeys={selectedRowKeys}
+    //             selectedRowsData={selectedRowsData}
+    //             matchedData={matchedData}
+    //           />
+    //         </TabPane>
+    //         <TabPane tab={t("Matched Transaction")} key="matched">
+    //           <div className="donationContent">
+    //             <SuspenseListTable
+    //               setSelectedRowKeys={setSelectedRowKeys}
+    //               setSelectedRowsData={setSelectedRowsData}
+    //               selectedRowKeys={selectedRowKeys}
+    //               success={success}
+    //               filterData={{
+    //                 ...filteredData,
+    //                 ...(dateRangeFilter || {}),
+    //               }}
+    //               // filterData={filteredData}
+    //               type={activeTab}
+    //               nestedActiveTab={nestedActiveTab}
+    //               accountId={selectedAccountId} // ✅ Pass the selected account ID
+    //             />
+    //           </div>
+    //         </TabPane>
+    //         {/* Second Tab - Pending Screenshots */}
+    //         <TabPane tab={t("Pending_Screenshots")} key="pending">
+    //           <div className="donationContent">
+    //             {!showScreenshotPanel ? (
+    //               <DonationANTDListTable
+    //                 donationType={activeTab}
+    //                 data={donationItems}
+    //                 allPermissions={allPermissions}
+    //                 subPermission={subPermission}
+    //                 totalItems={totalItems}
+    //                 currentPage={pagination.page}
+    //                 pageSize={pagination.limit}
+    //                 onChangePage={(page) =>
+    //                   setPagination((prev) => ({ ...prev, page }))
+    //                 }
+    //                 onChangePageSize={(pageSize) =>
+    //                   setPagination((prev) => ({
+    //                     ...prev,
+    //                     limit: pageSize,
+    //                     page: 1,
+    //                   }))
+    //                 }
+    //                 setShowScreenshotPanel={setShowScreenshotPanel}
+    //                 showScreenshotPanel={showScreenshotPanel}
+    //                 setRecord={setRecord}
+    //               />
+    //             ) : (
+    //               <ScreenshotPanel
+    //                 record={record}
+    //                 setRecord={setRecord}
+    //                 setShowScreenshotPanel={setShowScreenshotPanel}
+    //                 showScreenshotPanel={showScreenshotPanel}
+    //               />
+    //             )}
+    //           </div>
+    //         </TabPane>
+    //       </Tabs>
 
-          <AddFilterSection
-            onFilterClose={onSuspenseFilterClose}
-            filterOpen={suspenseFilterOpen}
-            onSubmitFilter={onSuspenseFilterSubmit}
-            moduleName={activeTab}
-            activeFilterData={suspenseFilterData ?? {}}
-            rowId={suspenseFilterRowId ?? null}
-            removedData={suspenseRemovedData}
-            languageId={selectedLang.id}
-            fetchField={fetchSuspenseField}
-          />
-        </>
-      ),
-    },
+    //       <AddFilterSection
+    //         onFilterClose={onSuspenseFilterClose}
+    //         filterOpen={suspenseFilterOpen}
+    //         onSubmitFilter={onSuspenseFilterSubmit}
+    //         moduleName={activeTab}
+    //         activeFilterData={suspenseFilterData ?? {}}
+    //         rowId={suspenseFilterRowId ?? null}
+    //         removedData={suspenseRemovedData}
+    //         languageId={selectedLang.id}
+    //         fetchField={fetchSuspenseField}
+    //       />
+    //     </>
+    //   ),
+    // },
   ];
   const handleTabChange = (key) => {
     setActiveTab(key);

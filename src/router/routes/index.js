@@ -1042,6 +1042,31 @@ const Routes = [
     type: "accounts",
     subPermission: READ,
   },
+  {
+    path: "/reports",
+    component: lazy(() => import("../../views/reports/reportList.js")),
+    exact: true,
+    type: "reports",
+    subPermission: READ,
+  },
+  {
+    path: "/bankTransactions",
+    component: lazy(() =>
+      import("../../views/bankTransactions/bankTransactionsList.js")
+    ),
+    exact: true,
+    type: "bankTransactions",
+    subPermission: READ,
+  },
+  {
+    path: "/bankTransactions/:id",
+    component: lazy(() =>
+      import("../../components/reports/balanceSheetTable.js")
+    ),
+    exact: true,
+    type: "bankTransactions",
+    subPermission: READ,
+  },
 ];
 
 export { DefaultRoute, Routes, TemplateTitle };

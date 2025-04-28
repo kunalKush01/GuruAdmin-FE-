@@ -436,7 +436,7 @@ function PossibleMatchedDrawer({
       {/* Financial Transactions */}
       <Drawer
         title="Create New Transaction"
-        width={400}
+        width={600}
         onClose={() => setTransactionDrawerOpen(false)}
         open={isTransactionDrawerOpen}
         footer={
@@ -469,7 +469,7 @@ function PossibleMatchedDrawer({
           {" "}
           <Form.Item label="" style={{ marginBottom: 0 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <label className="commonFont">Type:</label>
+              <label className="commonSmallFont">Type:</label>
               <Radio.Group
                 value={transactionType}
                 onChange={(e) => setTransactionType(e.target.value)}
