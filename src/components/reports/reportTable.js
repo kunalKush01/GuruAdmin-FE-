@@ -5,7 +5,7 @@ import eyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
 import "../../assets/scss/common.scss";
 
 const ReportTable = ({ data }) => {
-  console.log(data);
+  // console.log(data);
   const history = useHistory();
   const categoryTotals = (data && data.categoryTotals) || {};
 
