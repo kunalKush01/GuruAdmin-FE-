@@ -1059,7 +1059,7 @@ const Routes = [
     subPermission: READ,
   },
   {
-    path: "/bankTransactions/:id",
+    path: "/bankTransactions/:key",
     component: lazy(() =>
       import("../../components/reports/balanceSheetTable.js")
     ),

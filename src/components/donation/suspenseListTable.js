@@ -10,6 +10,12 @@ import {
   Tooltip,
   Radio,
   Flex,
+  Drawer,
+  List,
+  Collapse,
+  Card,
+  Tag,
+  Spin,
 } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
@@ -18,9 +24,12 @@ import {
   getAllSuspense,
   deleteSuspense,
   updateSuspense,
+  getStatements,
+  unmatchedSuspense,
 } from "../../api/suspenseApi";
 import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
+import eyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
 import exchangeIcon from "../../assets/images/icons/account-donation.svg";
 import Swal from "sweetalert2";
 import confirmationIcon from "../../assets/images/icons/news/conformationIcon.svg";
@@ -29,6 +38,8 @@ import { useTranslation } from "react-i18next";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
 import { useHistory } from "react-router-dom";
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
+const { Panel } = Collapse;
+
 function SuspenseListTable({
   success,
   filterData,
@@ -213,6 +224,133 @@ function SuspenseListTable({
       },
     });
   };
+  const [visible, setVisible] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState(null); // Track selected record
+
+  const viewMatchedRecords = (record) => {
+    setSelectedRecord(record);
+    setVisible(true); // Open drawer when record is selected
+  };
+
+  const onCloseDrawer = () => {
+    setVisible(false); // Close the drawer
+    setSelectedRecord(null); // Reset selected record
+  };
+
+  // Fetch mapped statements only if selectedRecord is available
+  const {
+    data: StatementsList,
+    isLoading: statementLoading,
+    error,
+  } = useQuery(
+    ["mappedStatements", selectedRecord?._id], // Only fetch when selectedRecord exists
+    () => getStatements(selectedRecord?._id), // API call using selectedRecord._id
+    {
+      enabled: !!selectedRecord, // Ensures the query runs only when selectedRecord is available
+      keepPreviousData: true,
+      onError: (error) => {
+        console.error("Error fetching statements:", error);
+      },
+    }
+  );
+  const getTagColor = (model) => {
+    switch (model) {
+      case "Donation":
+        return "green";
+      case "Expense":
+        return "volcano";
+      case "FinancialTransaction":
+        return "blue";
+      default:
+        return "default";
+    }
+  };
+  // Drawer content (Mapping statements)
+  const drawerContent = (
+    <>
+      {statementLoading ? (
+        <Spin size="large" />
+      ) : (
+        <List
+          dataSource={StatementsList?.mappings || []}
+          renderItem={(mapping) => (
+            <>
+              {mapping.matchedWith.map((matchedItem, index) => (
+                <List.Item key={index}>
+                  <Card
+                    size="small"
+                    style={{ width: "100%" }}
+                    id="suspenseStatements"
+                  >
+                    <div className="d-flex align-items-center justify-content-between">
+                      <div className="commonSmallFont d-flex align-items-center">
+                        <span className="me-1">
+                          {moment(matchedItem.date).format("DD MMM YYYY")} |{" "}
+                        </span>
+                        <Tag color={getTagColor(matchedItem.model)}>
+                          {matchedItem.model}
+                        </Tag>
+                      </div>
+                      <div className="commonSmallFont">
+                        ₹{matchedItem.amount}
+                      </div>
+                    </div>
+                    <div className="commonFontFamily commonFontColor mt-1">
+                      <strong>Reason: </strong>
+                      {matchedItem?.reason}
+                    </div>
+                  </Card>
+                </List.Item>
+              ))}
+            </>
+          )}
+        />
+      )}
+    </>
+  );
+  const handleUnmatchClick = async (id) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Do you really want to unmatch this record?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, unmatch it!",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await unmatchedSuspense(id); // Pass the selected record ID
+        queryClient.invalidateQueries("mappedStatements");
+        queryClient.invalidateQueries("suspenseData");
+        Swal.fire("Unmatched!", "The record has been unmatched.", "success");
+        onCloseDrawer();
+      } catch (error) {
+        Swal.fire("Error", "Something went wrong while unmatching.", "error");
+      }
+    }
+  };
+
+  // Drawer Footer: Edit and Unmatch Buttons
+  const drawerFooter = (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+      }}
+    >
+      <Button onClick={onCloseDrawer} type="default" className="me-1">
+        Cancel
+      </Button>
+      <Button
+        type="primary"
+        onClick={() => handleUnmatchClick(selectedRecord?._id)}
+      >
+        Unmatch
+      </Button>
+    </div>
+  );
 
   const columns = [
     {
@@ -256,64 +394,77 @@ function SuspenseListTable({
       fixed: "right",
       width: 150,
       render: (text, record) => {
-        if (record?.isMapped) return null;
-        const hasCredited =
-          record?.creditedAmount !== null &&
-          record?.creditedAmount !== undefined;
-        const hasDebited =
-          record?.debitedAmount !== null && record?.debitedAmount !== undefined;
-
-        return (
-          <Space>
-            <Tooltip
-              title="Move to Donation"
-              color="#FF8744"
-              disabled={hasDebited} // Disable tooltip when disabled
-            >
+        if (record?.isMapped) {
+          return (
+            <>
               <img
-                src={exchangeIcon}
-                width={20}
-                className={`cursor-pointer ${
-                  hasDebited ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-                onClick={() => {
-                  if (!hasDebited) handleDonorMapped(record);
-                }}
+                src={eyeIcon}
+                width={25}
+                className="cursor-pointer"
+                onClick={() => viewMatchedRecords(record)}
               />
-            </Tooltip>
+            </>
+          );
+        } else {
+          const hasCredited =
+            record?.creditedAmount !== null &&
+            record?.creditedAmount !== undefined;
+          const hasDebited =
+            record?.debitedAmount !== null &&
+            record?.debitedAmount !== undefined;
 
-            <Tooltip
-              title="Move to Expense"
-              color="#FF8744"
-              disabled={hasCredited}
-            >
+          return (
+            <Space>
+              <Tooltip
+                title="Move to Donation"
+                color="#FF8744"
+                disabled={hasDebited} // Disable tooltip when disabled
+              >
+                <img
+                  src={exchangeIcon}
+                  width={20}
+                  className={`cursor-pointer ${
+                    hasDebited ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  onClick={() => {
+                    if (!hasDebited) handleDonorMapped(record);
+                  }}
+                />
+              </Tooltip>
+
+              <Tooltip
+                title="Move to Expense"
+                color="#FF8744"
+                disabled={hasCredited}
+              >
+                <img
+                  src={moveToExpense}
+                  width={20}
+                  className={`cursor-pointer ${
+                    hasCredited ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  onClick={() => {
+                    if (!hasCredited) handleExpenseMapped(record);
+                  }}
+                />
+              </Tooltip>
+
               <img
-                src={moveToExpense}
-                width={20}
-                className={`cursor-pointer ${
-                  hasCredited ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-                onClick={() => {
-                  if (!hasCredited) handleExpenseMapped(record);
-                }}
+                src={editIcon}
+                width={35}
+                className="cursor-pointer"
+                onClick={() => handleEdit(record)}
               />
-            </Tooltip>
 
-            <img
-              src={editIcon}
-              width={35}
-              className="cursor-pointer"
-              onClick={() => handleEdit(record)}
-            />
-
-            <img
-              src={deleteIcon}
-              width={35}
-              className="cursor-pointer"
-              onClick={() => handleDelete(record)}
-            />
-          </Space>
-        );
+              <img
+                src={deleteIcon}
+                width={35}
+                className="cursor-pointer"
+                onClick={() => handleDelete(record)}
+              />
+            </Space>
+          );
+        }
       },
     },
   ];
@@ -449,6 +600,15 @@ function SuspenseListTable({
           </Form.Item>
         </Form>
       </Modal>
+      <Drawer
+        title="Mapped Statements"
+        visible={visible}
+        onClose={onCloseDrawer}
+        width={600}
+        footer={drawerFooter}
+      >
+        {drawerContent}
+      </Drawer>
     </>
   );
 }

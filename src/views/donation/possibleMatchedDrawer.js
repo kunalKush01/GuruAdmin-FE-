@@ -24,7 +24,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fundTransfer, getAllAccounts } from "../../api/profileApi";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
 import { toast } from "react-toastify";
-
+import he from "he";
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 
 const { TabPane } = Tabs;
@@ -204,9 +204,10 @@ function PossibleMatchedDrawer({
                       <div className="commonFontFamily commonFontColor">
                         Dated {moment(item.date).format("DD MMM YYYY")}
                       </div>
-                      <div className="commonFontFamily commonFontColor">
-                        Remark: {item.remark}
-                      </div>
+                      <div
+                        className="commonFontFamily commonFontColor"
+                        dangerouslySetInnerHTML={{ __html: `Remark: ${he.decode(item.remark)}` }}
+                      />
                     </Space>
                   }
                 />

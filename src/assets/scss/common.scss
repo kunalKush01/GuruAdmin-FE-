@@ -4709,3 +4709,14 @@
 .no-padding-drawer .ant-drawer-body {
     padding: 0 !important;
 }
+
+.noBoxShadowTable .ant-table {
+    box-shadow: none !important;
+    border: none !important;
+}
+
+#suspenseStatements {
+    .ant-space {
+        width: 100%;
+    }
+}

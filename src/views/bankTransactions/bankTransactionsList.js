@@ -482,7 +482,7 @@ export default function BankTransactionsList() {
                         <span>
                           <Plus className="" size={15} strokeWidth={4} />
                         </span>
-                        <span> {t("add_suspense_record")}</span>
+                        <span> {t("Add Bank Statement")}</span>
                       </Button>
                     )}
                   <Dropdown.Button
