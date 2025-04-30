@@ -19,6 +19,13 @@ import { useParams } from "react-router-dom";
 import moment from "moment";
 const { RangePicker } = DatePicker;
 const { Text } = Typography;
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 const registerColumns = [
   {
     title: "Date",
@@ -32,12 +39,12 @@ const registerColumns = [
   {
     title: "Debit",
     dataIndex: "debit",
-    render: (value) => (value ? <Text type="danger">{value}</Text> : null),
+    render: (value) => (value ? <Text>{`₹${value}`}</Text> : null),
   },
   {
     title: "Credit",
     dataIndex: "credit",
-    render: (value) => (value ? <Text type="success">{value}</Text> : null),
+    render: (value) => (value ? <Text>{`₹${value}`}</Text> : null),
   },
 ];
 const AccountView = () => {
@@ -48,11 +55,12 @@ const AccountView = () => {
     page: 1,
     limit: 10,
   });
-  const today = new Date();
+  const today = dayjs();
   const [dateRangeFilter, setDateRangeFilter] = useState({
-    startDate: new Date(today.setHours(0, 0, 0, 0)).toISOString(),
-    endDate: new Date(today.setHours(23, 59, 59, 999)).toISOString(),
+    startDate: dayjs().startOf("month").toISOString(),
+    endDate: dayjs().endOf("month").toISOString(),
   });
+
   // const [sourceType, setSourceType] = useState("donation");
 
   const { data } = useQuery(
@@ -83,7 +91,7 @@ const AccountView = () => {
   );
 
   const accountsDetails = useMemo(() => data?.result ?? [], [data]);
-  console.log(accountsDetails);
+
   const flatDataSource = useMemo(() => {
     if (!Array.isArray(accountsDetails?.entries)) return [];
 
@@ -113,6 +121,14 @@ const AccountView = () => {
           <RangePicker
             id="dateRangePickerANTD"
             format="DD MMM YYYY"
+            value={
+              dateRangeFilter
+                ? [
+                    dayjs(dateRangeFilter.startDate),
+                    dayjs(dateRangeFilter.endDate),
+                  ]
+                : null
+            }
             placeholder={[t("Start Date"), t("End Date")]}
             onChange={(dates) => {
               if (dates && dates.length === 2) {
@@ -122,14 +138,8 @@ const AccountView = () => {
                   endDate: end.endOf("day").toISOString(),
                 });
               } else {
-                // Reset to today's date if cleared
-                const today = new Date();
-                setDateRangeFilter({
-                  startDate: new Date(today.setHours(0, 0, 0, 0)).toISOString(),
-                  endDate: new Date(
-                    today.setHours(23, 59, 59, 999)
-                  ).toISOString(),
-                });
+                // Reset to current month if cleared
+                setDateRangeFilter(null);
               }
             }}
             style={{ width: "100%" }}

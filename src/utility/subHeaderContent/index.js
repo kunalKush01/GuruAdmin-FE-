@@ -34,6 +34,7 @@ import BookingIcon from "../../assets/images/icons/dharmshala/booking.svg";
 import BuildingIcon from "../../assets/images/icons/dharmshala/building.svg";
 import DharmshalaIcon from "../../assets/images/icons/dharmshala/dharmshala.svg";
 import bankIcon from "../../assets/images/icons/bank-logo.svg";
+import AccountingIcon from "../../assets/images/icons/accounting.svg";
 import reportIcon from "../../assets/images/icons/reports.svg";
 import FeedbackIcon from "../../assets/images/icons/dharmshala/feedback.svg";
 import RoomTypeIcon from "../../assets/images/icons/dharmshala/roomtype.svg";
@@ -301,8 +302,8 @@ export const subHeaderContentResponsive = [
     name: "Accounting",
     customLabel: "Accounting",
     activeTab: "/accounts",
-    icon: DharmshalaIcon,
-    activeIcon: DharmshalaIcon,
+    icon: AccountingIcon,
+    activeIcon: AccountingIcon,
     children: [
       {
         name: "Bank Transactions",

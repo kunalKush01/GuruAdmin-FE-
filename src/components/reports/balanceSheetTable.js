@@ -14,6 +14,12 @@ import backIcon from "../../../src/assets/images/icons/arrow-left.svg";
 import * as XLSX from "xlsx";
 import { Button } from "reactstrap";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const BalanceSheetTable = () => {
   const { t } = useTranslation();
@@ -21,8 +27,8 @@ const BalanceSheetTable = () => {
   const trustId = localStorage.getItem("trustId");
 
   const [dateRangeFilter, setDateRangeFilter] = useState({
-    startDate: moment().startOf("month").format("YYYY-MM-DD"),
-    endDate: moment().endOf("month").format("YYYY-MM-DD"),
+    startDate: dayjs().startOf("month").format("YYYY-MM-DD"),
+    endDate: dayjs().endOf("month").format("YYYY-MM-DD"),
   });
 
   const [pagination, setPagination] = useState({
@@ -182,21 +188,29 @@ const BalanceSheetTable = () => {
           <RangePicker
             id="dateRangePickerANTD"
             format="DD MMM YYYY"
+            allowClear
+            value={
+              dateRangeFilter
+                ? [
+                    dayjs(dateRangeFilter.startDate),
+                    dayjs(dateRangeFilter.endDate),
+                  ]
+                : null
+            }
+            placeholder={[t("Start Date"), t("End Date")]}
             onChange={(dates) => {
-              if (dates?.length === 2) {
+              if (dates && dates.length === 2) {
                 const [start, end] = dates;
                 setDateRangeFilter({
-                  startDate: moment(start).startOf("day").format("YYYY-MM-DD"),
-                  endDate: moment(end).endOf("day").format("YYYY-MM-DD"),
+                  startDate: dayjs(start).startOf("day").format("YYYY-MM-DD"),
+                  endDate: dayjs(end).endOf("day").format("YYYY-MM-DD"),
                 });
               } else {
-                setDateRangeFilter({
-                  startDate: moment().startOf("month").format("YYYY-MM-DD"),
-                  endDate: moment().endOf("month").format("YYYY-MM-DD"),
-                });
+                // If cleared, reset to current month
+                setDateRangeFilter(null);
               }
             }}
-            // style={{ width: "100%" }}
+            style={{ width: "100%" }}
           />
           <div className="ms-1">
             <Button

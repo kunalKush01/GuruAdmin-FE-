@@ -13,14 +13,20 @@ const { RangePicker } = DatePicker;
 import backIcon from "../../../src/assets/images/icons/arrow-left.svg";
 import * as XLSX from "xlsx";
 import { Button } from "reactstrap";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const PLtable = () => {
   const { t } = useTranslation();
   const history = useHistory();
   const trustId = localStorage.getItem("trustId");
   const [dateRangeFilter, setDateRangeFilter] = useState({
-    startDate: moment().startOf("month").format("YYYY-MM-DD"),
-    endDate: moment().endOf("month").format("YYYY-MM-DD"),
+    startDate: dayjs().startOf("month").format("YYYY-MM-DD"),
+    endDate: dayjs().endOf("month").format("YYYY-MM-DD"),
   });
 
   const [pagination, setPagination] = useState({
@@ -213,25 +219,26 @@ const PLtable = () => {
             <RangePicker
               id="dateRangePickerANTD"
               format="DD MMM YYYY"
-              // value={[
-              //   moment(dateRangeFilter.startDate),
-              //   moment(dateRangeFilter.endDate),
-              // ]}
+              allowClear
+              value={
+                dateRangeFilter
+                  ? [
+                      dayjs(dateRangeFilter.startDate),
+                      dayjs(dateRangeFilter.endDate),
+                    ]
+                  : null
+              }
               placeholder={[t("Start Date"), t("End Date")]}
               onChange={(dates) => {
                 if (dates && dates.length === 2) {
                   const [start, end] = dates;
                   setDateRangeFilter({
-                    startDate: moment(start)
-                      .startOf("day")
-                      .format("YYYY-MM-DD"),
-                    endDate: moment(end).endOf("day").format("YYYY-MM-DD"),
+                    startDate: dayjs(start).startOf("day").format("YYYY-MM-DD"),
+                    endDate: dayjs(end).endOf("day").format("YYYY-MM-DD"),
                   });
                 } else {
-                  setDateRangeFilter({
-                    startDate: moment().startOf("month").format("YYYY-MM-DD"),
-                    endDate: moment().endOf("month").format("YYYY-MM-DD"),
-                  });
+                  // If cleared, reset to current month
+                  setDateRangeFilter(null);
                 }
               }}
               style={{ width: "100%" }}

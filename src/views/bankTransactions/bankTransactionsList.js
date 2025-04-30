@@ -44,6 +44,12 @@ import ImportForm from "../donation/importForm";
 import PossibleMatchedDrawer from "../donation/possibleMatchedDrawer";
 import { getAllAccounts } from "../../api/profileApi";
 const { TabPane } = Tabs;
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 export default function BankTransactionsList() {
@@ -59,7 +65,13 @@ export default function BankTransactionsList() {
   const [subCategoryTypeName, setSubCategoryTypeName] = useState(t("All"));
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const [showScreenshotPanel, setShowScreenshotPanel] = useState(false);
-  const [dateRangeFilter, setDateRangeFilter] = useState(null);
+  const [dateRangeFilter, setDateRangeFilter] = useState({
+    transactionDate: {
+      type: "inRange",
+      fromDate: dayjs().startOf("month").toISOString(),
+      toDate: dayjs().endOf("month").toISOString(),
+    },
+  });
 
   const tabMapping = {
     Suspense: "suspense",
@@ -433,11 +445,18 @@ export default function BankTransactionsList() {
                     <RangePicker
                       id="dateRangePickerANTD"
                       format="DD MMM YYYY"
+                      value={
+                        dateRangeFilter?.transactionDate
+                          ? [
+                              dayjs(dateRangeFilter.transactionDate.fromDate),
+                              dayjs(dateRangeFilter.transactionDate.toDate),
+                            ]
+                          : null
+                      }
                       placeholder={[t("Start Date"), t("End Date")]}
                       onChange={(dates) => {
                         if (dates && dates.length === 2) {
                           const [start, end] = dates;
-
                           setDateRangeFilter({
                             transactionDate: {
                               type: "inRange",
@@ -446,7 +465,8 @@ export default function BankTransactionsList() {
                             },
                           });
                         } else {
-                          setDateRangeFilter(null); // Reset if cleared
+                          // Reset to current month if cleared
+                          setDateRangeFilter(null);
                         }
                       }}
                       style={{ width: "100%" }}

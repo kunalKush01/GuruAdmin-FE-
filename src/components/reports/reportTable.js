@@ -17,7 +17,7 @@ const ReportTable = () => {
   const dataSource = [
     {
       key: "1",
-      name: "Profit and Loss",
+      name: "Profit and Loss Report",
       route: "/profitlossReport",
     },
     {
