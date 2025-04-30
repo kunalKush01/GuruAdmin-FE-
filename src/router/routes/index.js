@@ -1050,6 +1050,13 @@ const Routes = [
     subPermission: READ,
   },
   {
+    path: "/profitlossReport",
+    component: lazy(() => import("../../components/reports/P&Ltable.js")),
+    exact: true,
+    type: "reports",
+    subPermission: READ,
+  },
+  {
     path: "/bankTransactions",
     component: lazy(() =>
       import("../../views/bankTransactions/bankTransactionsList.js")
@@ -1059,7 +1066,7 @@ const Routes = [
     subPermission: READ,
   },
   {
-    path: "/bankTransactions/:key",
+    path: "/balancesheet",
     component: lazy(() =>
       import("../../components/reports/balanceSheetTable.js")
     ),

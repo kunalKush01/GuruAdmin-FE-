@@ -11,43 +11,15 @@ const { RangePicker } = DatePicker;
 function ReportList() {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  const trustId = localStorage.getItem("trustId");
-  const [dateRangeFilter, setDateRangeFilter] = useState({
-    startDate: moment().startOf("month").format("YYYY-MM-DD"),
-    endDate: moment().endOf("month").format("YYYY-MM-DD"),
-  });
-
-  const [pagination, setPagination] = useState({
-    page: 1,
-    limit: 1000,
-  });
-
-  const { data } = useQuery(
-    ["Reports", pagination.page, pagination.limit, dateRangeFilter],
-    () =>
-      getAllReports({
-        ...pagination,
-        sort: "desc",
-        trustId: trustId,
-        startDate: dateRangeFilter?.startDate,
-        endDate: dateRangeFilter?.endDate,
-      }),
-    {
-      keepPreviousData: true,
-      onError: (error) => {
-        console.error("Error fetching report data:", error);
-      },
-    }
-  );
 
   return (
     <div>
-      <div className="d-flex align-items-center justify-content-between">
+      <div className="d-flex align-items-center justify-content-between mb-1">
         <div className="d-flex align-items-center">
           <span className="commonFont">{t("Reports")}</span>
         </div>
         <div className="ms-1 mb-1">
-          <RangePicker
+          {/* <RangePicker
             id="dateRangePickerANTD"
             format="DD MMM YYYY"
             // value={[
@@ -70,12 +42,12 @@ function ReportList() {
               }
             }}
             style={{ width: "100%" }}
-          />
+          /> */}
         </div>
       </div>
 
       <div>
-        <ReportTable data={data} />
+        <ReportTable />
       </div>
     </div>
   );

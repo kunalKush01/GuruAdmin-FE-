@@ -86,10 +86,17 @@ export const getFundTransfer = (payload) =>
     showToastOnSuccess: false,
     showToastOnError: false,
   });
-export const getAllReports = (payload ) =>
+export const getAllProfitLossRecord = (payload) =>
   callApi({
     requestFunction: (axios) =>
       axios.post(`${API_BASE_URL}trust/generate-pl`, payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+export const getAllBalanceSheetRecord = (payload) =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}trust/balance-sheet`, payload),
     showToastOnSuccess: false,
     showToastOnError: false,
   });
