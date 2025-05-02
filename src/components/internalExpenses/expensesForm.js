@@ -206,10 +206,10 @@ export default function ExpensesForm({
             setExpenseCategoryOptions(expenseCategories);
 
             const filtered = flattenedAccounts.filter((acc) => {
-              const isUncategorisedPettyCash =
+              {/* const isUncategorisedPettyCash =
                 acc.type === "expense" &&
                 acc.subType === "expense" &&
-                acc.isSystem === true;
+                acc.isSystem === true; */}
 
               const isUncategorisedBank =
                 acc.type === "asset" &&
@@ -218,17 +218,16 @@ export default function ExpensesForm({
 
               if (selectedMode === "cash") {
                 return (
-                  acc.type === "expense" && acc.subType === "petty_cash"
-                  //||isUncategorisedPettyCash
+                  acc.type === "asset" && acc.subType === "petty_cash"
                 );
               }
 
               if (selectedMode === "bankAccount") {
                 return (
-                  acc.type === "expense" &&
+                  acc.type === "asset"&&
                   acc.subType === "bank" &&
                   acc.isBankAccount === true
-                  //|| isUncategorisedBank // Include only the uncategorised bank with type asset
+                  || isUncategorisedBank // Include only the uncategorised bank with type asset
                 );
               }
 
