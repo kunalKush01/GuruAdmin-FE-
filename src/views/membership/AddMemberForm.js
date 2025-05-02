@@ -176,6 +176,11 @@ export default function AddMemberForm() {
                         name: fieldValue || "",
                         id: fieldValue || "",
                       };
+                      initialValues["correspondencePincode"] = fieldValue || "";
+                      initialValues["correspondencePin"] = {
+                        name: fieldValue || "",
+                        id: fieldValue || "",
+                      };
                     } else if (fieldKey === "correspondencePincode") {
                       // Handle correspondencePincode
                       initialValues["correspondencePincode"] = fieldValue || "";

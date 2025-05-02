@@ -113,6 +113,7 @@ function FormikMemberForm({
       formik.setFieldValue("correspondenceCity", formik.values.city);
       formik.setFieldValue("correspondenceDistrict", formik.values.district);
       formik.setFieldValue("correspondencePin", formik.values.pin);
+      formik.setFieldValue("correspondencePincode", formik.values.pincode);
       formik.setFieldValue("correspondenceLocation", "");
     } else {
       formik.setFieldValue("correspondenceAddLine1", "");

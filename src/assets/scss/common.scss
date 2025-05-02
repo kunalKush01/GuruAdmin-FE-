@@ -2967,8 +2967,10 @@
 .masterDataListAntdTable .ant-table-body,
 .customFieldTable .ant-table-body,
 .masterTable .ant-table-body {
-    max-height: 600px;  /* Increased max height */
-    height: 500px;      /* Increased height */
+    max-height: 600px;
+    /* Increased max height */
+    height: 500px;
+    /* Increased height */
     overflow: auto;
 
     ::-webkit-scrollbar {
@@ -4697,4 +4699,8 @@
     background-color: white !important;
     border-color: $primary !important;
     /* optional: keep border in primary */
+}
+
+.ant-select-selection-item {
+    background-color: white !important;
 }
