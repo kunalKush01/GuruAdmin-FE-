@@ -9,6 +9,13 @@ import {
   Select,
   Tooltip,
   Radio,
+  Flex,
+  Drawer,
+  List,
+  Collapse,
+  Card,
+  Tag,
+  Spin,
 } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
@@ -17,9 +24,12 @@ import {
   getAllSuspense,
   deleteSuspense,
   updateSuspense,
+  getStatements,
+  unmatchedSuspense,
 } from "../../api/suspenseApi";
 import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
+import eyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
 import exchangeIcon from "../../assets/images/icons/account-donation.svg";
 import Swal from "sweetalert2";
 import confirmationIcon from "../../assets/images/icons/news/conformationIcon.svg";
@@ -28,7 +38,18 @@ import { useTranslation } from "react-i18next";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
 import { useHistory } from "react-router-dom";
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
-function SuspenseListTable({ success, filterData, type, accountId }) {
+const { Panel } = Collapse;
+
+function SuspenseListTable({
+  success,
+  filterData,
+  type,
+  accountId,
+  setSelectedRowKeys = [],
+  setSelectedRowsData = [],
+  selectedRowKeys,
+  nestedActiveTab,
+}) {
   const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -45,21 +66,33 @@ function SuspenseListTable({ success, filterData, type, accountId }) {
     limit: 10,
   });
   const [activeTab, setActiveTab] = useState("Donation");
+  const [isMapped, setIsMapped] = useState(nestedActiveTab !== "unmatched");
+
+  useEffect(() => {
+    setIsMapped(nestedActiveTab !== "unmatched");
+  }, [nestedActiveTab]);
   const { data, isLoading } = useQuery(
-    ["suspenseData", currentPage, pageSize, filterData, accountId],
+    [
+      "suspenseData",
+      pagination.page,
+      pagination.limit,
+      filterData,
+      accountId,
+      isMapped,
+    ],
     () =>
       getAllSuspense({
-        page: currentPage,
-        limit: pageSize,
+        ...pagination,
         search: "",
         sortKey: "createdAt",
         sortOrder: "DESC",
         ...(filterData && filterData && { advancedSearch: filterData }),
         ...(accountId && { accountId }), // ✅ include accountId in request payload
+        isMapped,
       }),
     {
       keepPreviousData: true,
-      enabled: type == "Suspense",
+      enabled: type === "Suspense" && typeof isMapped === "boolean",
       onError: (error) => {
         console.error("Error fetching suspense data:", error);
       },
@@ -191,6 +224,133 @@ function SuspenseListTable({ success, filterData, type, accountId }) {
       },
     });
   };
+  const [visible, setVisible] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState(null); // Track selected record
+
+  const viewMatchedRecords = (record) => {
+    setSelectedRecord(record);
+    setVisible(true); // Open drawer when record is selected
+  };
+
+  const onCloseDrawer = () => {
+    setVisible(false); // Close the drawer
+    setSelectedRecord(null); // Reset selected record
+  };
+
+  // Fetch mapped statements only if selectedRecord is available
+  const {
+    data: StatementsList,
+    isLoading: statementLoading,
+    error,
+  } = useQuery(
+    ["mappedStatements", selectedRecord?._id], // Only fetch when selectedRecord exists
+    () => getStatements(selectedRecord?._id), // API call using selectedRecord._id
+    {
+      enabled: !!selectedRecord, // Ensures the query runs only when selectedRecord is available
+      keepPreviousData: true,
+      onError: (error) => {
+        console.error("Error fetching statements:", error);
+      },
+    }
+  );
+  const getTagColor = (model) => {
+    switch (model) {
+      case "Donation":
+        return "green";
+      case "Expense":
+        return "volcano";
+      case "FinancialTransaction":
+        return "blue";
+      default:
+        return "default";
+    }
+  };
+  // Drawer content (Mapping statements)
+  const drawerContent = (
+    <>
+      {statementLoading ? (
+        <Spin size="large" />
+      ) : (
+        <List
+          dataSource={StatementsList?.mappings || []}
+          renderItem={(mapping) => (
+            <>
+              {mapping.matchedWith.map((matchedItem, index) => (
+                <List.Item key={index}>
+                  <Card
+                    size="small"
+                    style={{ width: "100%" }}
+                    id="suspenseStatements"
+                  >
+                    <div className="d-flex align-items-center justify-content-between">
+                      <div className="commonSmallFont d-flex align-items-center">
+                        <span className="me-1">
+                          {moment(matchedItem.date).format("DD MMM YYYY")} |{" "}
+                        </span>
+                        <Tag color={getTagColor(matchedItem.model)}>
+                          {matchedItem.model}
+                        </Tag>
+                      </div>
+                      <div className="commonSmallFont">
+                        ₹{matchedItem.amount}
+                      </div>
+                    </div>
+                    <div className="commonFontFamily commonFontColor mt-1">
+                      <strong>Reason: </strong>
+                      {matchedItem?.reason}
+                    </div>
+                  </Card>
+                </List.Item>
+              ))}
+            </>
+          )}
+        />
+      )}
+    </>
+  );
+  const handleUnmatchClick = async (id) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Do you really want to unmatch this record?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, unmatch it!",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await unmatchedSuspense(id); // Pass the selected record ID
+        queryClient.invalidateQueries("mappedStatements");
+        queryClient.invalidateQueries("suspenseData");
+        Swal.fire("Unmatched!", "The record has been unmatched.", "success");
+        onCloseDrawer();
+      } catch (error) {
+        Swal.fire("Error", "Something went wrong while unmatching.", "error");
+      }
+    }
+  };
+
+  // Drawer Footer: Edit and Unmatch Buttons
+  const drawerFooter = (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+      }}
+    >
+      <Button onClick={onCloseDrawer} type="default" className="me-1">
+        Cancel
+      </Button>
+      <Button
+        type="primary"
+        onClick={() => handleUnmatchClick(selectedRecord?._id)}
+      >
+        Unmatch
+      </Button>
+    </div>
+  );
 
   const columns = [
     {
@@ -234,63 +394,77 @@ function SuspenseListTable({ success, filterData, type, accountId }) {
       fixed: "right",
       width: 150,
       render: (text, record) => {
-        const hasCredited =
-          record?.creditedAmount !== null &&
-          record?.creditedAmount !== undefined;
-        const hasDebited =
-          record?.debitedAmount !== null && record?.debitedAmount !== undefined;
-
-        return (
-          <Space>
-            <Tooltip
-              title="Move to Donation"
-              color="#FF8744"
-              disabled={hasDebited} // Disable tooltip when disabled
-            >
+        if (record?.isMapped) {
+          return (
+            <>
               <img
-                src={exchangeIcon}
-                width={20}
-                className={`cursor-pointer ${
-                  hasDebited ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-                onClick={() => {
-                  if (!hasDebited) handleDonorMapped(record);
-                }}
+                src={eyeIcon}
+                width={25}
+                className="cursor-pointer"
+                onClick={() => viewMatchedRecords(record)}
               />
-            </Tooltip>
+            </>
+          );
+        } else {
+          const hasCredited =
+            record?.creditedAmount !== null &&
+            record?.creditedAmount !== undefined;
+          const hasDebited =
+            record?.debitedAmount !== null &&
+            record?.debitedAmount !== undefined;
 
-            <Tooltip
-              title="Move to Expense"
-              color="#FF8744"
-              disabled={hasCredited}
-            >
+          return (
+            <Space>
+              <Tooltip
+                title="Move to Donation"
+                color="#FF8744"
+                disabled={hasDebited} // Disable tooltip when disabled
+              >
+                <img
+                  src={exchangeIcon}
+                  width={20}
+                  className={`cursor-pointer ${
+                    hasDebited ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  onClick={() => {
+                    if (!hasDebited) handleDonorMapped(record);
+                  }}
+                />
+              </Tooltip>
+
+              <Tooltip
+                title="Move to Expense"
+                color="#FF8744"
+                disabled={hasCredited}
+              >
+                <img
+                  src={moveToExpense}
+                  width={20}
+                  className={`cursor-pointer ${
+                    hasCredited ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  onClick={() => {
+                    if (!hasCredited) handleExpenseMapped(record);
+                  }}
+                />
+              </Tooltip>
+
               <img
-                src={moveToExpense}
-                width={20}
-                className={`cursor-pointer ${
-                  hasCredited ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-                onClick={() => {
-                  if (!hasCredited) handleExpenseMapped(record);
-                }}
+                src={editIcon}
+                width={35}
+                className="cursor-pointer"
+                onClick={() => handleEdit(record)}
               />
-            </Tooltip>
 
-            <img
-              src={editIcon}
-              width={35}
-              className="cursor-pointer"
-              onClick={() => handleEdit(record)}
-            />
-
-            <img
-              src={deleteIcon}
-              width={35}
-              className="cursor-pointer"
-              onClick={() => handleDelete(record)}
-            />
-          </Space>
-        );
+              <img
+                src={deleteIcon}
+                width={35}
+                className="cursor-pointer"
+                onClick={() => handleDelete(record)}
+              />
+            </Space>
+          );
+        }
       },
     },
   ];
@@ -304,32 +478,55 @@ function SuspenseListTable({ success, filterData, type, accountId }) {
     { value: "Debit Card", label: "Debit Card" },
     { value: "Bank Transfer", label: "Bank Transfer" },
   ];
-  const tableData = data?.result?.filter((item) => !item.donorMapped) ?? [];
+  const tableData = data?.result ?? [];
   const totalItems = data?.total ?? 0;
+  useEffect(() => {
+    setPagination((prev) => ({ ...prev, page: 1 }));
+  }, [nestedActiveTab]);
 
+  //** Possible Match record logic */
+
+  const onSelectChange = (newSelectedRowKeys, selectedRows) => {
+    setSelectedRowKeys(newSelectedRowKeys);
+    setSelectedRowsData(selectedRows);
+  };
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+  };
+  const hasSelected = selectedRowKeys.length > 0;
   return (
     <>
-      <Table
-        className="commonListTable"
-        columns={columns}
-        dataSource={tableData}
-        rowKey={(record) => record._id}
-        loading={isLoading}
-        pagination={{
-          current: currentPage,
-          pageSize: pageSize,
-          total: totalItems,
-          onChange: (page, pageSize) => {
-            setCurrentPage(page);
-            setPageSize(pageSize);
-          },
-          showSizeChanger: true,
-          pageSizeOptions: [10, 20, 50, 100],
-        }}
-        scroll={{ x: 1000, y: 400 }}
-        sticky={{ offsetHeader: 64 }}
-        bordered
-      />
+      <Flex gap="middle" vertical>
+        {/* <Flex align="center" gap="middle">
+          {hasSelected ? `Selected ${selectedRowKeys.length} items` : null}
+        </Flex> */}
+
+        <Table
+          className="commonListTable"
+          rowSelection={rowSelection}
+          columns={columns}
+          dataSource={tableData}
+          rowKey={(record) => record._id}
+          loading={isLoading}
+          pagination={{
+            current: pagination.page,
+            pageSize: pagination.limit,
+            total: totalItems,
+            onChange: (page) => setPagination((prev) => ({ ...prev, page })),
+            onShowSizeChange: (current, pageSize) =>
+              setPagination((prev) => ({
+                ...prev,
+                limit: pageSize,
+                page: 1,
+              })),
+            showSizeChanger: true,
+          }}
+          scroll={{ x: 1000, y: 400 }}
+          sticky={{ offsetHeader: 64 }}
+          bordered
+        />
+      </Flex>
 
       {/* Edit Modal */}
       <Modal
@@ -403,6 +600,15 @@ function SuspenseListTable({ success, filterData, type, accountId }) {
           </Form.Item>
         </Form>
       </Modal>
+      <Drawer
+        title="Mapped Statements"
+        visible={visible}
+        onClose={onCloseDrawer}
+        width={600}
+        footer={drawerFooter}
+      >
+        {drawerContent}
+      </Drawer>
     </>
   );
 }

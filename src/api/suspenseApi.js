@@ -106,3 +106,36 @@ export const syncSuspenseWithSearch = async () => {
     showToastOnError: false,
   });
 };
+export const getPossibleOrBestMatch = async (payload) => {
+  return callApi({
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}suspense/match-suspense`, payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+};
+export const matchTransaction = async (payload) => {
+  return callApi({
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}suspense/match-transactions`, payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+};
+
+export const getStatements = async (id, payload) => {
+  return callApi({
+    requestFunction: (axios) =>
+      axios.get(`${API_BASE_URL}suspense/${id}/mapping`),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+};
+export const unmatchedSuspense = async (id) => {
+  return callApi({
+    requestFunction: (axios) =>
+      axios.delete(`${API_BASE_URL}suspense/unmatch/${id}`),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+};

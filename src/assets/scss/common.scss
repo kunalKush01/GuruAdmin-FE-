@@ -2967,8 +2967,10 @@
 .masterDataListAntdTable .ant-table-body,
 .customFieldTable .ant-table-body,
 .masterTable .ant-table-body {
-    max-height: 600px;  /* Increased max height */
-    height: 500px;      /* Increased height */
+    max-height: 600px;
+    /* Increased max height */
+    height: 500px;
+    /* Increased height */
     overflow: auto;
 
     ::-webkit-scrollbar {
@@ -4494,8 +4496,9 @@
     }
 }
 
-.commonFont {
-    color: $font-color;
+.commonFont,
+.ant-collapse-header {
+    color: $font-color !important;
     font: normal normal 700 18px Noto Sans !important
 }
 
@@ -4506,6 +4509,10 @@
 
 .commonFontFamily {
     font-family: Noto Sans !important;
+}
+
+.commonFontColor {
+    color: $font-color;
 }
 
 .pagination {
@@ -4697,4 +4704,19 @@
     background-color: white !important;
     border-color: $primary !important;
     /* optional: keep border in primary */
+}
+
+.no-padding-drawer .ant-drawer-body {
+    padding: 0 !important;
+}
+
+.noBoxShadowTable .ant-table {
+    box-shadow: none !important;
+    border: none !important;
+}
+
+#suspenseStatements {
+    .ant-space {
+        width: 100%;
+    }
 }

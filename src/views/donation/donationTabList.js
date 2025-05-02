@@ -39,7 +39,7 @@ import filterIcon from "../../assets/images/icons/filter.svg";
 import "../../assets/scss/viewCommon.scss";
 import SuspenseListTable from "../../components/donation/suspenseListTable";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
-import { addSuspense } from "../../api/suspenseApi";
+import { addSuspense, getPossibleOrBestMatch } from "../../api/suspenseApi";
 import loadingOutlined from "../../assets/images/icons/loadingIco.svg";
 import syncIcon from "../../assets/images/icons/sync.svg";
 import AddFilterSection from "../../components/partials/addFilterSection";
@@ -49,6 +49,7 @@ import ImportHistoryTable from "../../components/donation/importHistoryTable";
 import ScreenshotPanel from "../../components/donation/screenshotPanel";
 import { useLocation } from "react-router-dom";
 import { getAllAccounts } from "../../api/profileApi";
+import PossibleMatchedDrawer from "./possibleMatchedDrawer";
 const { TabPane } = Tabs;
 
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
@@ -1091,6 +1092,29 @@ export default function Donation() {
       history.push(`/donation?type=suspense&sub=${nestedKey}`);
     }
   };
+  //**possible match logic */
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [selectedRowsData, setSelectedRowsData] = useState([]);
+  const [isPossibleMatchedRecordDOpen, setIsPossibleMatchedRecordOpen] =
+    useState(false);
+  const handleDrawerOpen = () => setIsPossibleMatchedRecordOpen(true);
+  const handleDrawerClose = () => setIsPossibleMatchedRecordOpen(false);
+  const hasSelected = selectedRowKeys.length > 0;
+  const { data: bestMatchesRecord, isLoading: isRecordLoading } = useQuery(
+    ["matchedData", selectedRowKeys], // optional: track by selected keys
+    () => getPossibleOrBestMatch({ suspenseIds: selectedRowKeys }),
+    {
+      enabled: isPossibleMatchedRecordDOpen && selectedRowKeys.length > 0,
+      keepPreviousData: true,
+      onError: (error) => {
+        console.error("Error fetching suspense data:", error);
+      },
+    }
+  );
+  const matchedData = useMemo(
+    () => bestMatchesRecord?.combinedMatch?.matchedWith ?? [],
+    [bestMatchesRecord]
+  );
   const items = [
     {
       key: "Donation",
@@ -1269,96 +1293,138 @@ export default function Donation() {
         </>
       ),
     },
-    {
-      key: "Suspense",
-      label: t("suspense"),
-      children: (
-        <>
-          <div className="d-flex justify-content-between">
-            <FilterTag
-              hasFilters={hasFilters}
-              filterData={suspenseFilterData}
-              removeFilter={suspenseRemoveFilter}
-              handleRemoveAllFilter={suspenseRemoveAllFilter}
-            />
-          </div>
-          <Tabs
-            activeKey={nestedActiveTab}
-            defaultActiveKey="unmatched"
-            onChange={handleNestedTabChange} // Track nested tab changes
-          >
-            {/* First Tab - Unmatched Bank Credits */}
-            <TabPane tab={t("Unmatched_Bank_Credits")} key="unmatched">
-              <div className="donationContent">
-                {!showSuspenseHistory ? (
-                  <SuspenseListTable
-                    success={success}
-                    filterData={{
-                      ...filteredData,
-                      ...(dateRangeFilter || {}),
-                    }}
-                    // filterData={filteredData}
-                    type={activeTab}
-                    accountId={selectedAccountId} // ✅ Pass the selected account ID
-                  />
-                ) : (
-                  <ImportHistoryTable tab={activeTab} />
-                )}
-              </div>
-            </TabPane>
+    // {
+    //   key: "Suspense",
+    //   label: t("suspense"),
+    //   children: (
+    //     <>
+    //       <div className="d-flex justify-content-between">
+    //         <FilterTag
+    //           hasFilters={hasFilters}
+    //           filterData={suspenseFilterData}
+    //           removeFilter={suspenseRemoveFilter}
+    //           handleRemoveAllFilter={suspenseRemoveAllFilter}
+    //         />
+    //       </div>
+    //       <Tabs
+    //         activeKey={nestedActiveTab}
+    //         defaultActiveKey="unmatched"
+    //         onChange={handleNestedTabChange} // Track nested tab changes
+    //         tabBarExtraContent={
+    //           nestedActiveTab === "unmatched" && (
+    //             <Button
+    //               className="secondaryAction-btn"
+    //               style={{ marginBottom: "5px" }}
+    //               disabled={!hasSelected}
+    //               onClick={handleDrawerOpen}
+    //             >
+    //               Get Matches
+    //             </Button>
+    //           )
+    //         }
+    //       >
+    //         {/* First Tab - Unmatched Bank Credits */}
+    //         <TabPane tab={t("Unmatched_Bank_Credits")} key="unmatched">
+    //           <div className="donationContent">
+    //             {!showSuspenseHistory ? (
+    //               <SuspenseListTable
+    //                 setSelectedRowKeys={setSelectedRowKeys}
+    //                 setSelectedRowsData={setSelectedRowsData}
+    //                 selectedRowKeys={selectedRowKeys}
+    //                 success={success}
+    //                 filterData={{
+    //                   ...filteredData,
+    //                   ...(dateRangeFilter || {}),
+    //                 }}
+    //                 // filterData={filteredData}
+    //                 type={activeTab}
+    //                 accountId={selectedAccountId} // ✅ Pass the selected account ID
+    //                 nestedActiveTab={nestedActiveTab}
+    //               />
+    //             ) : (
+    //               <ImportHistoryTable tab={activeTab} />
+    //             )}
+    //           </div>
 
-            {/* Second Tab - Pending Screenshots */}
-            <TabPane tab={t("Pending_Screenshots")} key="pending">
-              <div className="donationContent">
-                {!showScreenshotPanel ? (
-                  <DonationANTDListTable
-                    donationType={activeTab}
-                    data={donationItems}
-                    allPermissions={allPermissions}
-                    subPermission={subPermission}
-                    totalItems={totalItems}
-                    currentPage={pagination.page}
-                    pageSize={pagination.limit}
-                    onChangePage={(page) =>
-                      setPagination((prev) => ({ ...prev, page }))
-                    }
-                    onChangePageSize={(pageSize) =>
-                      setPagination((prev) => ({
-                        ...prev,
-                        limit: pageSize,
-                        page: 1,
-                      }))
-                    }
-                    setShowScreenshotPanel={setShowScreenshotPanel}
-                    showScreenshotPanel={showScreenshotPanel}
-                    setRecord={setRecord}
-                  />
-                ) : (
-                  <ScreenshotPanel
-                    record={record}
-                    setRecord={setRecord}
-                    setShowScreenshotPanel={setShowScreenshotPanel}
-                    showScreenshotPanel={showScreenshotPanel}
-                  />
-                )}
-              </div>
-            </TabPane>
-          </Tabs>
+    //           <PossibleMatchedDrawer
+    //             handleDrawerClose={handleDrawerClose}
+    //             setIsPossibleMatchedRecordOpen={setIsPossibleMatchedRecordOpen}
+    //             isDrawerOpen={isPossibleMatchedRecordDOpen}
+    //             selectedRowKeys={selectedRowKeys}
+    //             selectedRowsData={selectedRowsData}
+    //             matchedData={matchedData}
+    //           />
+    //         </TabPane>
+    //         <TabPane tab={t("Matched Transaction")} key="matched">
+    //           <div className="donationContent">
+    //             <SuspenseListTable
+    //               setSelectedRowKeys={setSelectedRowKeys}
+    //               setSelectedRowsData={setSelectedRowsData}
+    //               selectedRowKeys={selectedRowKeys}
+    //               success={success}
+    //               filterData={{
+    //                 ...filteredData,
+    //                 ...(dateRangeFilter || {}),
+    //               }}
+    //               // filterData={filteredData}
+    //               type={activeTab}
+    //               nestedActiveTab={nestedActiveTab}
+    //               accountId={selectedAccountId} // ✅ Pass the selected account ID
+    //             />
+    //           </div>
+    //         </TabPane>
+    //         {/* Second Tab - Pending Screenshots */}
+    //         <TabPane tab={t("Pending_Screenshots")} key="pending">
+    //           <div className="donationContent">
+    //             {!showScreenshotPanel ? (
+    //               <DonationANTDListTable
+    //                 donationType={activeTab}
+    //                 data={donationItems}
+    //                 allPermissions={allPermissions}
+    //                 subPermission={subPermission}
+    //                 totalItems={totalItems}
+    //                 currentPage={pagination.page}
+    //                 pageSize={pagination.limit}
+    //                 onChangePage={(page) =>
+    //                   setPagination((prev) => ({ ...prev, page }))
+    //                 }
+    //                 onChangePageSize={(pageSize) =>
+    //                   setPagination((prev) => ({
+    //                     ...prev,
+    //                     limit: pageSize,
+    //                     page: 1,
+    //                   }))
+    //                 }
+    //                 setShowScreenshotPanel={setShowScreenshotPanel}
+    //                 showScreenshotPanel={showScreenshotPanel}
+    //                 setRecord={setRecord}
+    //               />
+    //             ) : (
+    //               <ScreenshotPanel
+    //                 record={record}
+    //                 setRecord={setRecord}
+    //                 setShowScreenshotPanel={setShowScreenshotPanel}
+    //                 showScreenshotPanel={showScreenshotPanel}
+    //               />
+    //             )}
+    //           </div>
+    //         </TabPane>
+    //       </Tabs>
 
-          <AddFilterSection
-            onFilterClose={onSuspenseFilterClose}
-            filterOpen={suspenseFilterOpen}
-            onSubmitFilter={onSuspenseFilterSubmit}
-            moduleName={activeTab}
-            activeFilterData={suspenseFilterData ?? {}}
-            rowId={suspenseFilterRowId ?? null}
-            removedData={suspenseRemovedData}
-            languageId={selectedLang.id}
-            fetchField={fetchSuspenseField}
-          />
-        </>
-      ),
-    },
+    //       <AddFilterSection
+    //         onFilterClose={onSuspenseFilterClose}
+    //         filterOpen={suspenseFilterOpen}
+    //         onSubmitFilter={onSuspenseFilterSubmit}
+    //         moduleName={activeTab}
+    //         activeFilterData={suspenseFilterData ?? {}}
+    //         rowId={suspenseFilterRowId ?? null}
+    //         removedData={suspenseRemovedData}
+    //         languageId={selectedLang.id}
+    //         fetchField={fetchSuspenseField}
+    //       />
+    //     </>
+    //   ),
+    // },
   ];
   const handleTabChange = (key) => {
     setActiveTab(key);

@@ -1043,6 +1043,38 @@ const Routes = [
     subPermission: READ,
   },
   {
+    path: "/reports",
+    component: lazy(() => import("../../views/reports/reportList.js")),
+    exact: true,
+    type: "reports",
+    subPermission: READ,
+  },
+  {
+    path: "/profitlossReport",
+    component: lazy(() => import("../../components/reports/P&Ltable.js")),
+    exact: true,
+    type: "reports",
+    subPermission: READ,
+  },
+  {
+    path: "/bankTransactions",
+    component: lazy(() =>
+      import("../../views/bankTransactions/bankTransactionsList.js")
+    ),
+    exact: true,
+    type: "bankTransactions",
+    subPermission: READ,
+  },
+  {
+    path: "/balancesheet",
+    component: lazy(() =>
+      import("../../components/reports/balanceSheetTable.js")
+    ),
+    exact: true,
+    type: "bankTransactions",
+    subPermission: READ,
+  },
+  {
     path: "/transfer",
     component: lazy(() => import("../../views/accounts/transfer/transferList.js")),
     exact: true,
