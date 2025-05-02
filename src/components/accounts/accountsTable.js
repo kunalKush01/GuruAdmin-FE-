@@ -267,7 +267,7 @@ function AccountsTable({ data }) {
                   <Select.Option value="asset">Asset</Select.Option>
                   <Select.Option value="income">Income</Select.Option>
                   <Select.Option value="expense">Expense</Select.Option>
-                  <Select.Option value="liability">Liability</Select.Option>
+                  {/* <Select.Option value="liability">Liability</Select.Option> */}
                   <Select.Option value="equity">Equity</Select.Option>
                 </Select>
               </Form.Item>
@@ -284,11 +284,11 @@ function AccountsTable({ data }) {
                 <Select placeholder="Select Sub Type">
                   <Select.Option value="bank">Bank</Select.Option>
                   <Select.Option value="petty_cash">Petty Cash</Select.Option>
-                  <Select.Option value="cash_handler">
+                  {/* <Select.Option value="cash_handler">
                     Cash Handler
                   </Select.Option>
                   <Select.Option value="receivable">Receivable</Select.Option>
-                  <Select.Option value="payable">Payable</Select.Option>
+                  <Select.Option value="payable">Payable</Select.Option> */}
                 </Select>
               </Form.Item>
             </Col>

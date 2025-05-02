@@ -48,11 +48,14 @@ const AccountView = () => {
     page: 1,
     limit: 10,
   });
-  const today = new Date();
-  const [dateRangeFilter, setDateRangeFilter] = useState({
-    startDate: new Date(today.setHours(0, 0, 0, 0)).toISOString(),
-    endDate: new Date(today.setHours(23, 59, 59, 999)).toISOString(),
-  });
+  const defaultStartDate = moment().startOf("month"); // 1st of this month
+  const defaultEndDate = moment().endOf("month"); // last day of this month
+
+  const [dateRangeFilter, setDateRangeFilter] = useState([
+    defaultStartDate,
+    defaultEndDate,
+  ]);
+
   // const [sourceType, setSourceType] = useState("donation");
 
   const { data } = useQuery(
@@ -68,7 +71,8 @@ const AccountView = () => {
         id,
         payload: {
           ...pagination,
-          ...(dateRangeFilter || {}),
+          startDate: dateRangeFilter[0],
+          endDate: dateRangeFilter[1],
           // sourceType,
           sort: "desc",
         },
@@ -83,7 +87,6 @@ const AccountView = () => {
   );
 
   const accountsDetails = useMemo(() => data?.result ?? [], [data]);
-  console.log(accountsDetails);
   const flatDataSource = useMemo(() => {
     if (!Array.isArray(accountsDetails?.entries)) return [];
 
@@ -115,21 +118,10 @@ const AccountView = () => {
             format="DD MMM YYYY"
             placeholder={[t("Start Date"), t("End Date")]}
             onChange={(dates) => {
-              if (dates && dates.length === 2) {
-                const [start, end] = dates;
-                setDateRangeFilter({
-                  startDate: start.startOf("day").toISOString(),
-                  endDate: end.endOf("day").toISOString(),
-                });
+              if (dates && dates.length) {
+                setDateRangeFilter(dates);
               } else {
-                // Reset to today's date if cleared
-                const today = new Date();
-                setDateRangeFilter({
-                  startDate: new Date(today.setHours(0, 0, 0, 0)).toISOString(),
-                  endDate: new Date(
-                    today.setHours(23, 59, 59, 999)
-                  ).toISOString(),
-                });
+                setDateRangeFilter([]);
               }
             }}
             style={{ width: "100%" }}

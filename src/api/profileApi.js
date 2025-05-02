@@ -65,10 +65,24 @@ export const getAccountById = (id) =>
     showToastOnSuccess: false,
     showToastOnError: false,
   });
-export const getAccountEntries = ({id, payload}) =>
+export const getAccountEntries = ({ id, payload }) =>
   callApi({
     requestFunction: (axios) =>
       axios.post(`${API_BASE_URL}trust/journal/account/${id}`, payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+export const fundTransfer = (payload) =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}trust/fund-transfer`, payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+export const getFundTransfer = (payload) =>
+  callApi({
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}trust/fund-transfer/list`,payload),
     showToastOnSuccess: false,
     showToastOnError: false,
   });

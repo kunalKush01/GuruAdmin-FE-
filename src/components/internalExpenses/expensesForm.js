@@ -123,7 +123,8 @@ export default function ExpensesForm({
     [expenseLogQuery]
   );
   const [showPrompt, setShowPrompt] = useState(true);
-  const [filteredAccountOptions, setFilteredAccountOptions] = useState([]);
+  const [paidFromAccountOption, setPaidFromAccountOption] = useState([]);
+  const [expenseCategoryOptions, setExpenseCategoryOptions] = useState([]);
 
   return (
     <div className="formwrapper FormikWrapper">
@@ -194,47 +195,51 @@ export default function ExpensesForm({
             }
           }, [formik.values.orderQuantity, formik.values.perItemAmount]);
           useEffect(() => {
-            if (!flattenedAccounts || !Array.isArray(flattenedAccounts)) return;
+            if (!Array.isArray(flattenedAccounts)) return;
 
             const selectedMode = formik.values?.paymentMode?.value;
 
-            if (selectedMode === "cash") {
-              const allowedCashNames = [
-                "Uncategorised Expense",
-                "Uncategorised Petty Cash",
-                "Donation Income - Cash",
-                "Donation Income - PG",
-                "Donation Income - PG Charges",
-              ];
+            // Set expense category options with all accounts of type "expense"
+            const expenseCategories = flattenedAccounts.filter(
+              (acc) => acc.type === "expense"
+            );
+            setExpenseCategoryOptions(expenseCategories);
 
-              const filtered = flattenedAccounts.filter((acc) =>
-                allowedCashNames.includes(acc.name)
-              );
+            const filtered = flattenedAccounts.filter((acc) => {
+              const isUncategorisedPettyCash =
+                acc.type === "expense" &&
+                acc.subType === "expense" &&
+                acc.isSystem === true;
 
-              setFilteredAccountOptions(filtered);
-              return;
-            }
+              const isUncategorisedBank =
+                acc.type === "asset" &&
+                acc.subType === "bank" &&
+                acc.isSystem === true;
 
-            if (selectedMode === "bankAccount") {
-              const allowedBankNames = [
-                "Uncategorised Bank",
-                "Donation Income - Bank",
-              ];
+              if (selectedMode === "cash") {
+                return (
+                  acc.type === "expense" && acc.subType === "petty_cash"
+                  //||isUncategorisedPettyCash
+                );
+              }
 
-              const filtered = flattenedAccounts.filter(
-                (acc) =>
-                  acc.isBankAccount === true ||
-                  allowedBankNames.includes(acc.name)
-              );
+              if (selectedMode === "bankAccount") {
+                return (
+                  acc.type === "expense" &&
+                  acc.subType === "bank" &&
+                  acc.isBankAccount === true
+                  //|| isUncategorisedBank // Include only the uncategorised bank with type asset
+                );
+              }
 
-              setFilteredAccountOptions(filtered);
-              return;
-            }
+              return false;
+            });
 
-            // Default fallback
-            setFilteredAccountOptions([]);
+            // Set paid from account options based on the filtered data
+            setPaidFromAccountOption(filtered);
           }, [formik.values?.paymentMode, flattenedAccounts]);
-          useEffect(() => {
+
+          {/* useEffect(() => {
             const isAddMode = !initialValues?.Id;
             const selectedMode = formik.values?.paymentMode?.value;
 
@@ -276,7 +281,7 @@ export default function ExpensesForm({
             formik.values?.paymentMode?.value,
             flattenedAccounts,
             initialValues?.Id,
-          ]);
+          ]); */}
 
           return (
             <Form>
@@ -353,18 +358,18 @@ export default function ExpensesForm({
                   </Col>
                   <Col xs={12} sm={6} lg={4}>
                     <FormikCustomReactSelect
-                      labelName={t("Account From:")}
+                      labelName={t("Paid from Account")}
                       name="paidFromAccountId"
-                      loadOptions={filteredAccountOptions}
+                      loadOptions={paidFromAccountOption}
                       width
                       required
                     />
                   </Col>
                   <Col xs={12} sm={6} lg={4}>
                     <FormikCustomReactSelect
-                      labelName={t("Account To:")}
+                      labelName={t("Expense Category")}
                       name="expenseAccountId"
-                      loadOptions={filteredAccountOptions}
+                      loadOptions={expenseCategoryOptions}
                       width
                       required
                     />
