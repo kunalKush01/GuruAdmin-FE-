@@ -65,18 +65,10 @@ export default function BankTransactionsList() {
   const [subCategoryTypeName, setSubCategoryTypeName] = useState(t("All"));
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const [showScreenshotPanel, setShowScreenshotPanel] = useState(false);
-  const [dateRangeFilter, setDateRangeFilter] = useState({
-    transactionDate: {
-      type: "inRange",
-      fromDate: dayjs().startOf("month").toISOString(),
-      toDate: dayjs().endOf("month").toISOString(),
-    },
-  });
+  const [dateRangeFilter, setDateRangeFilter] = useState(null);
 
-  const tabMapping = {
-    Suspense: "suspense",
-  };
-  const [activeTab, setActiveTab] = useState("Suspense");
+  const [nestedActiveTab, setNestedActiveTab] = useState("unmatched");
+
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const typeParam = searchParams.get("type");
@@ -84,8 +76,18 @@ export default function BankTransactionsList() {
     const viewParam = searchParams.get("view");
     const recordId = searchParams.get("recordId");
     if (typeParam === "suspense") {
-      setActiveTab("Suspense");
       setNestedActiveTab(subTypeParam || "unmatched");
+      if (subTypeParam === "matched") {
+        setDateRangeFilter(null);
+      } else {
+        setDateRangeFilter({
+          transactionDate: {
+            type: "inRange",
+            fromDate: dayjs().startOf("month").toISOString(),
+            toDate: dayjs().endOf("month").toISOString(),
+          },
+        });
+      }
     }
 
     setShowScreenshotPanel(viewParam === "true");
@@ -202,21 +204,20 @@ export default function BankTransactionsList() {
 
   const filteredData = useMemo(() => {
     // Select the filterData based on the active module (Donation or Suspense)
-    const currentFilterData =
-      activeTab === "Suspense" ? suspenseFilterData : {}; // If no active tab, use an empty object
+    const currentFilterData = suspenseFilterData;
 
     return Object.entries(currentFilterData).reduce((acc, [key, value]) => {
       const { index, label, ...rest } = value; // Destructure and exclude 'index'
       acc[key] = rest; // Add the remaining data without 'index'
       return acc;
     }, {});
-  }, [suspenseFilterData, activeTab]);
+  }, [suspenseFilterData]);
   useEffect(() => {
     setPagination((prev) => ({
       ...prev,
       page: 1, // Reset page to 1 when changing tabs
     }));
-  }, [activeTab]);
+  }, [nestedActiveTab]);
 
   const donationQuery = useQuery(
     [
@@ -228,7 +229,6 @@ export default function BankTransactionsList() {
       subCategoryId,
       searchBarValue,
       filteredData,
-      activeTab,
     ],
     () =>
       getAllDonation({
@@ -239,12 +239,11 @@ export default function BankTransactionsList() {
         categoryId: subCategoryId,
         // endDate: filterEndDate,
         languageId: selectedLang.id,
-        activeTab,
+        activeTab: "Suspense",
         ...(filteredData && { advancedSearch: filteredData }), // <-- only this line
       }),
     {
       keepPreviousData: true,
-      enabled: activeTab === "Suspense",
     }
   );
 
@@ -391,18 +390,50 @@ export default function BankTransactionsList() {
   };
 
   // const hasFilters = Object.keys(filterData).length > 0;
-  const hasFilters =
-    activeTab === "Suspense"
-      ? Object.keys(suspenseFilterData).length > 0
-      : false;
+  const hasFilters = Object.keys(suspenseFilterData).length > 0;
   const [record, setRecord] = useState(null);
 
-  //splits action buttons
-  const [nestedActiveTab, setNestedActiveTab] = useState("unmatched");
-  const renderActionButton = () => {
-    switch (activeTab) {
-      case "Suspense":
-        return (
+  // Donation split tab
+  const handleNestedTabChange = (nestedKey) => {
+    setNestedActiveTab(nestedKey);
+    history.push(`/bankTransactions?type=suspense&sub=${nestedKey}`);
+  };
+  //**possible match logic */
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [selectedRowsData, setSelectedRowsData] = useState([]);
+  const [isPossibleMatchedRecordDOpen, setIsPossibleMatchedRecordOpen] =
+    useState(false);
+  const handleDrawerOpen = () => setIsPossibleMatchedRecordOpen(true);
+  const handleDrawerClose = () => setIsPossibleMatchedRecordOpen(false);
+  const hasSelected = selectedRowKeys.length > 0;
+  const { data: bestMatchesRecord, isLoading: isRecordLoading } = useQuery(
+    ["matchedData", selectedRowKeys], // optional: track by selected keys
+    () => getPossibleOrBestMatch({ suspenseIds: selectedRowKeys }),
+    {
+      enabled: isPossibleMatchedRecordDOpen && selectedRowKeys.length > 0,
+      keepPreviousData: true,
+      onError: (error) => {
+        console.error("Error fetching suspense data:", error);
+      },
+    }
+  );
+  const matchedData = useMemo(
+    () => bestMatchesRecord?.combinedMatch?.matchedWith ?? [],
+    [bestMatchesRecord]
+  );
+
+  return (
+    <div className="listviewwrapper">
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Apna Dharm Admin | Donations</title>
+      </Helmet>
+      <div className="window nav statusBar body "></div>
+      <div className="d-flex align-items-center justify-content-between mb-1">
+        <div>
+          <Trans i18nKey={"Bank Transactions"} />
+        </div>
+        <div className="d-flex align-items-center">
           <Space
             style={{
               display: nestedActiveTab !== "unmatched" ? "none" : "block",
@@ -525,11 +556,9 @@ export default function BankTransactionsList() {
                   <ImportForm
                     onClose={onClose}
                     open={open}
-                    tab={activeTab}
+                    tab={"Suspense"}
                     setShowSuspenseHistory={setShowSuspenseHistory}
-                    selectedAccountId={
-                      activeTab === "Suspense" ? selectedAccountId : undefined
-                    }
+                    selectedAccountId={selectedAccountId}
                   />
                   <Button
                     className="secondaryAction-btn"
@@ -668,104 +697,38 @@ export default function BankTransactionsList() {
               </div>
             </div>
           </Space>
-        );
-    }
-  };
-  // Donation split tab
-  const handleNestedTabChange = (nestedKey) => {
-    setNestedActiveTab(nestedKey);
-    if (activeTab === "Suspense") {
-      history.push(`/bankTransactions?type=suspense&sub=${nestedKey}`);
-    }
-  };
-  //**possible match logic */
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const [selectedRowsData, setSelectedRowsData] = useState([]);
-  const [isPossibleMatchedRecordDOpen, setIsPossibleMatchedRecordOpen] =
-    useState(false);
-  const handleDrawerOpen = () => setIsPossibleMatchedRecordOpen(true);
-  const handleDrawerClose = () => setIsPossibleMatchedRecordOpen(false);
-  const hasSelected = selectedRowKeys.length > 0;
-  const { data: bestMatchesRecord, isLoading: isRecordLoading } = useQuery(
-    ["matchedData", selectedRowKeys], // optional: track by selected keys
-    () => getPossibleOrBestMatch({ suspenseIds: selectedRowKeys }),
-    {
-      enabled: isPossibleMatchedRecordDOpen && selectedRowKeys.length > 0,
-      keepPreviousData: true,
-      onError: (error) => {
-        console.error("Error fetching suspense data:", error);
-      },
-    }
-  );
-  const matchedData = useMemo(
-    () => bestMatchesRecord?.combinedMatch?.matchedWith ?? [],
-    [bestMatchesRecord]
-  );
-  const items = [
-    {
-      key: "Suspense",
-      label: t("Bank Transaction"),
-      children: (
-        <>
-          <div className="d-flex justify-content-between">
-            <FilterTag
-              hasFilters={hasFilters}
-              filterData={suspenseFilterData}
-              removeFilter={suspenseRemoveFilter}
-              handleRemoveAllFilter={suspenseRemoveAllFilter}
-            />
-          </div>
-          <Tabs
-            activeKey={nestedActiveTab}
-            defaultActiveKey="unmatched"
-            onChange={handleNestedTabChange} // Track nested tab changes
-            tabBarExtraContent={
-              nestedActiveTab === "unmatched" && (
-                <Button
-                  className="secondaryAction-btn"
-                  style={{ marginBottom: "5px" }}
-                  disabled={!hasSelected}
-                  onClick={handleDrawerOpen}
-                >
-                  Get Matches
-                </Button>
-              )
-            }
-          >
-            {/* First Tab - Unmatched Bank Credits */}
-            <TabPane tab={t("Unmatched_Bank_Credits")} key="unmatched">
-              <div className="donationContent">
-                {!showSuspenseHistory ? (
-                  <SuspenseListTable
-                    setSelectedRowKeys={setSelectedRowKeys}
-                    setSelectedRowsData={setSelectedRowsData}
-                    selectedRowKeys={selectedRowKeys}
-                    success={success}
-                    filterData={{
-                      ...filteredData,
-                      ...(dateRangeFilter || {}),
-                    }}
-                    // filterData={filteredData}
-                    type={activeTab}
-                    accountId={selectedAccountId} // ✅ Pass the selected account ID
-                    nestedActiveTab={nestedActiveTab}
-                  />
-                ) : (
-                  <ImportHistoryTable tab={activeTab} />
-                )}
-              </div>
-
-              <PossibleMatchedDrawer
-                handleDrawerClose={handleDrawerClose}
-                setIsPossibleMatchedRecordOpen={setIsPossibleMatchedRecordOpen}
-                isDrawerOpen={isPossibleMatchedRecordDOpen}
-                selectedRowKeys={selectedRowKeys}
-                selectedRowsData={selectedRowsData}
-                matchedData={matchedData}
-              />
-            </TabPane>
-            <TabPane tab={t("Matched Transaction")} key="matched">
-              <div className="donationContent">
+        </div>
+      </div>
+      <div>
+        <div className="d-flex justify-content-between">
+          <FilterTag
+            hasFilters={hasFilters}
+            filterData={suspenseFilterData}
+            removeFilter={suspenseRemoveFilter}
+            handleRemoveAllFilter={suspenseRemoveAllFilter}
+          />
+        </div>
+        <Tabs
+          activeKey={nestedActiveTab}
+          defaultActiveKey="unmatched"
+          onChange={handleNestedTabChange} // Track nested tab changes
+          tabBarExtraContent={
+            nestedActiveTab === "unmatched" && (
+              <Button
+                className="secondaryAction-btn"
+                style={{ marginBottom: "5px" }}
+                disabled={!hasSelected}
+                onClick={handleDrawerOpen}
+              >
+                Get Matches
+              </Button>
+            )
+          }
+        >
+          {/* First Tab - Unmatched Bank Credits */}
+          <TabPane tab={t("Unmatched_Bank_Credits")} key="unmatched">
+            <div className="donationContent">
+              {!showSuspenseHistory ? (
                 <SuspenseListTable
                   setSelectedRowKeys={setSelectedRowKeys}
                   setSelectedRowsData={setSelectedRowsData}
@@ -776,87 +739,93 @@ export default function BankTransactionsList() {
                     ...(dateRangeFilter || {}),
                   }}
                   // filterData={filteredData}
-                  type={activeTab}
-                  nestedActiveTab={nestedActiveTab}
+                  type={"Suspense"}
                   accountId={selectedAccountId} // ✅ Pass the selected account ID
+                  nestedActiveTab={nestedActiveTab}
                 />
-              </div>
-            </TabPane>
-            {/* Second Tab - Pending Screenshots */}
-            <TabPane tab={t("Pending_Screenshots")} key="pending">
-              <div className="donationContent">
-                {!showScreenshotPanel ? (
-                  <DonationANTDListTable
-                    donationType={activeTab}
-                    data={donationItems}
-                    allPermissions={allPermissions}
-                    subPermission={subPermission}
-                    totalItems={totalItems}
-                    currentPage={pagination.page}
-                    pageSize={pagination.limit}
-                    onChangePage={(page) =>
-                      setPagination((prev) => ({ ...prev, page }))
-                    }
-                    onChangePageSize={(pageSize) =>
-                      setPagination((prev) => ({
-                        ...prev,
-                        limit: pageSize,
-                        page: 1,
-                      }))
-                    }
-                    setShowScreenshotPanel={setShowScreenshotPanel}
-                    showScreenshotPanel={showScreenshotPanel}
-                    setRecord={setRecord}
-                  />
-                ) : (
-                  <ScreenshotPanel
-                    record={record}
-                    setRecord={setRecord}
-                    setShowScreenshotPanel={setShowScreenshotPanel}
-                    showScreenshotPanel={showScreenshotPanel}
-                  />
-                )}
-              </div>
-            </TabPane>
-          </Tabs>
+              ) : (
+                <ImportHistoryTable tab={"Suspense"} />
+              )}
+            </div>
 
-          <AddFilterSection
-            onFilterClose={onSuspenseFilterClose}
-            filterOpen={suspenseFilterOpen}
-            onSubmitFilter={onSuspenseFilterSubmit}
-            moduleName={activeTab}
-            activeFilterData={suspenseFilterData ?? {}}
-            rowId={suspenseFilterRowId ?? null}
-            removedData={suspenseRemovedData}
-            languageId={selectedLang.id}
-            fetchField={fetchSuspenseField}
-          />
-        </>
-      ),
-    },
-  ];
-  const handleTabChange = (key) => {
-    setActiveTab(key);
-    const newType = tabMapping[key];
+            <PossibleMatchedDrawer
+              handleDrawerClose={handleDrawerClose}
+              setIsPossibleMatchedRecordOpen={setIsPossibleMatchedRecordOpen}
+              isDrawerOpen={isPossibleMatchedRecordDOpen}
+              selectedRowKeys={selectedRowKeys}
+              selectedRowsData={selectedRowsData}
+              matchedData={matchedData}
+            />
+          </TabPane>
+          <TabPane tab={t("Matched Transaction")} key="matched">
+            <div className="donationContent">
+              <SuspenseListTable
+                setSelectedRowKeys={setSelectedRowKeys}
+                setSelectedRowsData={setSelectedRowsData}
+                selectedRowKeys={selectedRowKeys}
+                success={success}
+                filterData={{
+                  ...filteredData,
+                  ...(dateRangeFilter || {}),
+                }}
+                // filterData={filteredData}
+                type={"Suspense"}
+                nestedActiveTab={nestedActiveTab}
+                accountId={selectedAccountId} // ✅ Pass the selected account ID
+              />
+            </div>
+          </TabPane>
+          {/* Second Tab - Pending Screenshots */}
+          <TabPane tab={t("Pending_Screenshots")} key="pending">
+            <div className="donationContent">
+              {!showScreenshotPanel ? (
+                <DonationANTDListTable
+                  donationType={"Suspense"}
+                  data={donationItems}
+                  allPermissions={allPermissions}
+                  subPermission={subPermission}
+                  totalItems={totalItems}
+                  currentPage={pagination.page}
+                  pageSize={pagination.limit}
+                  onChangePage={(page) =>
+                    setPagination((prev) => ({ ...prev, page }))
+                  }
+                  onChangePageSize={(pageSize) =>
+                    setPagination((prev) => ({
+                      ...prev,
+                      limit: pageSize,
+                      page: 1,
+                    }))
+                  }
+                  setShowScreenshotPanel={setShowScreenshotPanel}
+                  showScreenshotPanel={showScreenshotPanel}
+                  setRecord={setRecord}
+                />
+              ) : (
+                <ScreenshotPanel
+                  record={record}
+                  setRecord={setRecord}
+                  setShowScreenshotPanel={setShowScreenshotPanel}
+                  showScreenshotPanel={showScreenshotPanel}
+                />
+              )}
+            </div>
+          </TabPane>
+        </Tabs>
 
-    if (newType) {
-      if (newType === "Suspense") {
-        history.push(
-          `/bankTransactions?type=${newType}&sub=${nestedActiveTab}`
-        );
-      }
-    }
-  };
-
-  return (
-    <div className="listviewwrapper">
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>Apna Dharm Admin | Donations</title>
-      </Helmet>
-      <div className="window nav statusBar body "></div>
-
-      <div>
+        <AddFilterSection
+          onFilterClose={onSuspenseFilterClose}
+          filterOpen={suspenseFilterOpen}
+          onSubmitFilter={onSuspenseFilterSubmit}
+          moduleName={"Suspense"}
+          activeFilterData={suspenseFilterData ?? {}}
+          rowId={suspenseFilterRowId ?? null}
+          removedData={suspenseRemovedData}
+          languageId={selectedLang.id}
+          fetchField={fetchSuspenseField}
+        />
+      </div>
+      {/* <div>
         <Tabs
           activeKey={activeTab}
           defaultActiveKey={activeTab}
@@ -865,7 +834,7 @@ export default function BankTransactionsList() {
           onChange={handleTabChange}
           tabBarExtraContent={renderActionButton()}
         />
-      </div>
+      </div> */}
     </div>
   );
 }

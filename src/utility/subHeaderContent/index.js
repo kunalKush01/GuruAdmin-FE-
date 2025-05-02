@@ -34,6 +34,7 @@ import BookingIcon from "../../assets/images/icons/dharmshala/booking.svg";
 import BuildingIcon from "../../assets/images/icons/dharmshala/building.svg";
 import DharmshalaIcon from "../../assets/images/icons/dharmshala/dharmshala.svg";
 import bankIcon from "../../assets/images/icons/bank-logo.svg";
+import atmIcon from "../../assets/images/icons/atm.svg";
 import AccountingIcon from "../../assets/images/icons/accounting.svg";
 import reportIcon from "../../assets/images/icons/reports.svg";
 import FeedbackIcon from "../../assets/images/icons/dharmshala/feedback.svg";
@@ -309,8 +310,8 @@ export const subHeaderContentResponsive = [
         name: "Bank Transactions",
         customLabel: "Bank Transactions",
         url: "/bankTransactions",
-        icon: bankIcon,
-        activeIcon: bankIcon,
+        icon: atmIcon,
+        activeIcon: atmIcon,
       },
       {
         name: "Accounts",
