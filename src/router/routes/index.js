@@ -1074,6 +1074,13 @@ const Routes = [
     type: "bankTransactions",
     subPermission: READ,
   },
+  {
+    path: "/transfer",
+    component: lazy(() => import("../../views/accounts/transfer/transferList.js")),
+    exact: true,
+    type: "accounts",
+    subPermission: READ,
+  },
 ];
 
 export { DefaultRoute, Routes, TemplateTitle };

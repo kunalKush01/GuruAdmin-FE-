@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -12,6 +12,7 @@ import DonationBoxForm from "../../components/DonationBox/donationBoxForm";
 import "../../assets/scss/viewCommon.scss";
 import { useQuery } from "@tanstack/react-query";
 import { getDonationBoxCustomFields } from "../../api/customFieldsApi";
+import { getAllAccounts } from "../../api/profileApi";
 export default function AddNews() {
   const handleCollectionBox = async (payload) => {
     return createBoxCollection(payload);
@@ -33,12 +34,29 @@ export default function AddNews() {
   );
 
   const customFieldsList = customFieldsQuery?.data?.customFields ?? [];
+  const { data } = useQuery(["Accounts"], () => getAllAccounts(), {
+    keepPreviousData: true,
+    onError: (error) => {
+      console.error("Error fetching member data:", error);
+    },
+  });
+
+  const accountsItem = useMemo(() => {
+    return data?.result ?? [];
+  }, [data]);
+  const flattenedAccounts = accountsItem.map((item) => ({
+    label: item.name,
+    value: item.id,
+    ...item,
+  }));
+
   const schema = Yup.object().shape({
     // CreatedBy: Yup.string().required("news_tags_required"),
     Amount: Yup.string()
       .matches(/^[1-9][0-9]*$/, "invalid_amount")
       .required("amount_required"),
     Body: Yup.string().required("donation_box_desc_required").trim(),
+    accountId: Yup.mixed().required("Required"),
     DateTime: Yup.string(),
     customFields: Yup.object().shape(
       customFieldsList.reduce((acc, field) => {
@@ -56,6 +74,7 @@ export default function AddNews() {
     CreatedBy: loggedInUser,
     Body: "",
     Amount: "",
+    accountId: "",
     DateTime: new Date(),
     customFields: customFieldsList.reduce((acc, field) => {
       acc[field.fieldName] = "";
@@ -96,6 +115,7 @@ export default function AddNews() {
           showTimeInput
           buttonName="DonationBox_AddCollectionBox"
           customFieldsList={customFieldsList}
+          flattenedAccounts={flattenedAccounts}
         />
       </div>
     </div>

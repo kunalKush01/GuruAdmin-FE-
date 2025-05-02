@@ -98,13 +98,15 @@ export default function AddDonation() {
         ((modeOfPayment == "online" || modeOfPayment == "") && t("online")) ||
         t("cash"),
     },
-    accountId:"",
+    accountId: "",
     bankName: "",
     chequeNum: "",
     chequeDate: "",
     chequeStatus: "",
     bankNarration: "",
     donationRemarks: remark || "",
+    isCorpus: false,
+    corpusPurpose: "",
     customFields: customFieldsList.reduce((acc, field) => {
       acc[field.fieldName] = "";
       return acc;

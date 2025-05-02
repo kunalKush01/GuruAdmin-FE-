@@ -76,7 +76,8 @@ const AccountView = () => {
         id,
         payload: {
           ...pagination,
-          ...(dateRangeFilter || {}),
+          startDate: dateRangeFilter[0],
+          endDate: dateRangeFilter[1],
           // sourceType,
           sort: "desc",
         },
@@ -131,12 +132,8 @@ const AccountView = () => {
             }
             placeholder={[t("Start Date"), t("End Date")]}
             onChange={(dates) => {
-              if (dates && dates.length === 2) {
-                const [start, end] = dates;
-                setDateRangeFilter({
-                  startDate: start.startOf("day").toISOString(),
-                  endDate: end.endOf("day").toISOString(),
-                });
+              if (dates && dates.length) {
+                setDateRangeFilter(dates);
               } else {
                 // Reset to current month if cleared
                 setDateRangeFilter(null);

@@ -145,7 +145,7 @@ function AccountList() {
                         <Option value="asset">Asset</Option>
                         <Option value="income">Income</Option>
                         <Option value="expense">Expense</Option>
-                        <Option value="liability">Liability</Option>
+                        {/* <Option value="liability">Liability</Option> */}
                         <Option value="equity">Equity</Option>
                       </Select>
                     </Form.Item>
@@ -164,9 +164,9 @@ function AccountList() {
                       <Select placeholder="Select Sub Type">
                         <Option value="bank">Bank</Option>
                         <Option value="petty_cash">Petty Cash</Option>
-                        <Option value="cash_handler">Cash Handler</Option>
+                        {/* <Option value="cash_handler">Cash Handler</Option>
                         <Option value="receivable">Receivable</Option>
-                        <Option value="payable">Payable</Option>
+                        <Option value="payable">Payable</Option> */}
                       </Select>
                     </Form.Item>
                   </Col>

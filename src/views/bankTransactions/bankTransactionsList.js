@@ -65,7 +65,13 @@ export default function BankTransactionsList() {
   const [subCategoryTypeName, setSubCategoryTypeName] = useState(t("All"));
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
   const [showScreenshotPanel, setShowScreenshotPanel] = useState(false);
-  const [dateRangeFilter, setDateRangeFilter] = useState(null);
+  const [dateRangeFilter, setDateRangeFilter] = useState({
+    transactionDate: {
+      type: "inRange",
+      fromDate: dayjs().startOf("month").toISOString(),
+      toDate: dayjs().endOf("month").toISOString(),
+    },
+  });
 
   const [nestedActiveTab, setNestedActiveTab] = useState("unmatched");
 

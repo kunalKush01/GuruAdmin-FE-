@@ -37,6 +37,7 @@ import bankIcon from "../../assets/images/icons/bank-logo.svg";
 import atmIcon from "../../assets/images/icons/atm.svg";
 import AccountingIcon from "../../assets/images/icons/accounting.svg";
 import reportIcon from "../../assets/images/icons/reports.svg";
+import tranferIcon from "../../assets/images/icons/transaction.svg";
 import FeedbackIcon from "../../assets/images/icons/dharmshala/feedback.svg";
 import RoomTypeIcon from "../../assets/images/icons/dharmshala/roomtype.svg";
 import GaushalaInfo from "../../assets/images/icons/gaushalaInfo.svg";
@@ -326,6 +327,13 @@ export const subHeaderContentResponsive = [
         url: "/reports",
         icon: reportIcon,
         activeIcon: reportIcon,
+      },
+      {
+        name: "Transactions",
+        customLabel: "Transactions",
+        url: "/transfer",
+        icon: tranferIcon,
+        activeIcon: tranferIcon,
       },
     ],
   },

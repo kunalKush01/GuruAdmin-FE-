@@ -19,7 +19,7 @@ import AsyncSelectField from "../partials/asyncSelectField";
 import CustomTextField from "../partials/customTextField";
 import FormikCustomReactSelect from "../partials/formikCustomReactSelect";
 import FormikCardDropdown from "../partials/FormikCardDropdown";
-import { DatePicker } from "antd";
+import { DatePicker, Switch } from "antd";
 import "../../../src/assets/scss/common.scss";
 import AddUserDrawerForm from "./addUserDrawerForm";
 import { createSubscribedUser } from "../../api/subscribedUser";
@@ -223,39 +223,41 @@ export default function FormWithoutFormikForDonation({
   }, [name]);
 
   //**get account options */
-
   const filteredAccountOptions = useMemo(() => {
-    const selectedMode =
-      formik.values.modeOfPayment && formik.values.modeOfPayment["value"];
+    const selectedMode = formik.values.modeOfPayment?.value;
 
-    if (selectedMode === "Cash") {
-      return flattenedAccounts.filter((acc) =>
-        ["Uncategorised Petty Cash", "Donation Income - Cash"].includes(
-          acc.label
-        )
-      );
-    }
+    return flattenedAccounts.filter((acc) => {
+      const isUncategorisedBank =
+        acc.isSystem === true && acc.subType === "bank";
+      const isUncategorisedPettyCash =
+        acc.isSystem === true && acc.subType === "petty_cash";
 
-    if (selectedMode === "Bank Transfer") {
-      const excludedNames = [
-        "Donation Income - Cash",
-        "Uncategorised Petty Cash",
-        "Uncategorised Expense",
-      ];
-      return flattenedAccounts.filter(
-        (acc) => acc.isBankAccount === true || !excludedNames.includes(acc.name)
-      );
-    }
+      if (selectedMode === "Cash") {
+        return (
+          (acc.type === "asset" && acc.subType === "petty_cash") ||
+          isUncategorisedPettyCash
+        );
+      }
 
-    // Default: show everything except type: "expense"
-    return flattenedAccounts.filter((acc) => acc.type !== "expense");
+      if (selectedMode === "Bank Transfer") {
+        return (
+          (acc.type === "asset" &&
+            acc.subType === "bank" &&
+            acc.isBankAccount === true) ||
+          isUncategorisedBank
+        );
+      }
+
+      // Default: return all non-expense accounts
+      return acc.type !== "expense";
+    });
   }, [flattenedAccounts, formik.values.modeOfPayment]);
 
   useEffect(() => {
     const isEditMode = formik.values?.accountId;
 
     let selectedMode = formik.values?.modeOfPayment?.value;
-    if (!isEditMode) {
+    if (!isEdit) {
       if (selectedMode === "Cash") {
         const cashDefault = flattenedAccounts.find(
           (acc) => acc.label === "Uncategorised Petty Cash"
@@ -282,11 +284,7 @@ export default function FormWithoutFormikForDonation({
         }
       }
     }
-  }, [
-    formik?.values?.modeOfPayment?.value,
-    flattenedAccounts,
-    formik.setFieldValue,
-  ]);
+  }, [formik?.values?.modeOfPayment, flattenedAccounts, formik.setFieldValue]);
 
   //**get bank option */
   const [bankOptions, setBankOptions] = useState([]);
@@ -599,7 +597,7 @@ export default function FormWithoutFormikForDonation({
 
                 <Col xs={12} sm={6} lg={3}>
                   <FormikCustomReactSelect
-                    labelName={t("Accounts")}
+                    labelName={t("Account")}
                     name="accountId"
                     loadOptions={filteredAccountOptions}
                     width
@@ -778,7 +776,32 @@ export default function FormWithoutFormikForDonation({
                     required
                   />
                 </Col>
-                <Col lg={3}>
+                <Col xs={12} sm={6} lg={3}>
+                  <div className="d-flex flex-column ">
+                    <label className="commonSmallFont">Is Corpus?</label>
+                    <div>
+                      <Switch
+                        checked={formik.values.isCorpus}
+                        onChange={(checked) =>
+                          formik.setFieldValue("isCorpus", checked)
+                        }
+                      />
+                    </div>
+                  </div>
+                </Col>
+
+                {formik.values.isCorpus && (
+                  <Col lg={3}>
+                    <TextArea
+                      name="corpusPurpose"
+                      placeholder={t("Enter Corpus Purpose")}
+                      label={t("Corpus Purpose")}
+                      rows="1"
+                    />
+                  </Col>
+                )}
+
+                <Col lg={12}>
                   <TextArea
                     name="donationRemarks"
                     placeholder={t("Enter Remarks here")}

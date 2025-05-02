@@ -210,7 +210,6 @@ const BalanceSheetTable = () => {
                 setDateRangeFilter(null);
               }
             }}
-            style={{ width: "100%" }}
           />
           <div className="ms-1">
             <Button
