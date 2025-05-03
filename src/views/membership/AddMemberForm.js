@@ -90,10 +90,10 @@ export default function AddMemberForm() {
             }
             if (fieldInfo.isTypePhone) {
               shape[field] = Yup.string()
-              .matches(
-                /^\+?[1-9]\d{1,14}$/, // This regex allows for international phone numbers (with or without country code)
-                "Please enter a valid mobile number"
-              )
+                .matches(
+                  /^\+?[1-9]\d{1,14}$/, // This regex allows for international phone numbers (with or without country code)
+                  "Please enter a valid mobile number"
+                )
                 .required(`${fieldInfo.title} is required`);
             }
           } else {
@@ -140,12 +140,10 @@ export default function AddMemberForm() {
           if (key === "addressInfo") {
             const processAddress = (address) => {
               const initialValues = {};
-
+              
               Object.entries(address || {}).forEach(
                 ([fieldKey, fieldValue]) => {
-                  // console.log(fieldKey);
                   if (typeof fieldValue === "object" && fieldValue !== null) {
-                    // Handling nested objects like city, state, country with name/id
                     if (fieldValue.name && fieldValue.id) {
                       initialValues[fieldKey] = {
                         name: fieldValue.name || "",
@@ -153,7 +151,6 @@ export default function AddMemberForm() {
                       };
                     }
                   } else if (typeof fieldValue === "string") {
-                    // Handling street (split into AddLine1 and AddLine2)
                     if (fieldKey === "street") {
                       const splitValue = fieldValue.split(" ");
                       initialValues["addLine1"] = splitValue[0] || "";
@@ -164,31 +161,12 @@ export default function AddMemberForm() {
                       initialValues["correspondenceAddLine1"] =
                         splitValue[0] || "";
                       initialValues["correspondenceAddLine2"] =
-                        splitValue.slice(1).join(" ") || "";
+                      splitValue.slice(1).join(" ") || "";
                     } else {
                       initialValues[fieldKey] = fieldValue || "";
                     }
                   } else if (typeof fieldValue == "number") {
-                    if (fieldKey === "pincode") {
-                      // Handle pincode
-                      initialValues["pincode"] = fieldValue || "";
-                      initialValues["pin"] = {
-                        name: fieldValue || "",
-                        id: fieldValue || "",
-                      };
-                      initialValues["correspondencePincode"] = fieldValue || "";
-                      initialValues["correspondencePin"] = {
-                        name: fieldValue || "",
-                        id: fieldValue || "",
-                      };
-                    } else if (fieldKey === "correspondencePincode") {
-                      // Handle correspondencePincode
-                      initialValues["correspondencePincode"] = fieldValue || "";
-                      initialValues["correspondencePin"] = {
-                        name: fieldValue || "",
-                        id: fieldValue || "",
-                      };
-                    }
+                    initialValues[fieldKey] = fieldValue || "";
                   }
                 }
               );
