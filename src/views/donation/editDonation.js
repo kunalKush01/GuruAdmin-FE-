@@ -32,9 +32,14 @@ export default function EditDonation() {
   const modeOfPayment = searchParams.get("modeOfPayment");
   const dateTime = searchParams.get("dateTime");
   const sId = searchParams.get("sId");
+  const trustId = localStorage.getItem("trustId");
   const handleCreateDonation = async (payload) => {
     try {
-      const donationResponse = await updateDonation(payload);
+      const donationPayload = {
+        ...payload,
+        trustId,
+      };
+      const donationResponse = await updateDonation(donationPayload);
       if (donationResponse?.error === false && sId) {
         const suspensePayload = {
           donorMapped: true,
