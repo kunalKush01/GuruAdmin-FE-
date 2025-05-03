@@ -113,6 +113,7 @@ function FormikMemberForm({
       formik.setFieldValue("correspondenceCity", formik.values.city);
       formik.setFieldValue("correspondenceDistrict", formik.values.district);
       formik.setFieldValue("correspondencePin", formik.values.pin);
+      formik.setFieldValue("correspondencePincode", formik.values.pincode);
       formik.setFieldValue("correspondenceLocation", "");
     } else {
       formik.setFieldValue("correspondenceAddLine1", "");
@@ -122,8 +123,14 @@ function FormikMemberForm({
       formik.setFieldValue("correspondenceCity", "");
       formik.setFieldValue("correspondenceDistrict", "");
       formik.setFieldValue("correspondencePin", "");
+      formik.setFieldValue("correspondencePincode", "");
     }
   };
+  useEffect(() => {
+    formik.setFieldValue("searchType", "isPincode");
+    formik.setFieldValue("correspondenceSearchType", "isCorrespondencePincode");
+  }, []);
+
   const renderFormField = (name, fieldSchema) => {
     const hasDateFormat = fieldSchema.format === "date";
     const hasPhoneNumberFormat = fieldSchema.format === "phoneNumber";
