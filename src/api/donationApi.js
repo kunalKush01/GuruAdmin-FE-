@@ -4,7 +4,8 @@ import { callApi } from "../utility/utils/callApi";
 export const createDonation = async (payload) => {
   try {
     const response = await callApi({
-      requestFunction: (axios) => axios.post(`${API_BASE_URL}donation/create`, payload), 
+      requestFunction: (axios) =>
+        axios.post(`${API_BASE_URL}donation/create`, payload),
       successCode: 200,
       showToastOnSuccess: false,
       showToastOnError: false,
@@ -12,13 +13,13 @@ export const createDonation = async (payload) => {
 
     return {
       data: response.data,
-      etag: response.data?.etag
+      etag: response.data?.etag,
     };
   } catch (error) {
     if (error.response?.status === 409) {
       throw {
         response: error.response,
-        message: "Donation has been modified by another user"
+        message: "Donation has been modified by another user",
       };
     }
     throw error;
@@ -33,12 +34,12 @@ export const donationDownloadReceiptApi = (payload) =>
     showToastOnError: false,
   });
 
-  export const getDonation = (payload) =>
-    callApi({
-      requestFunction: (axios) =>
+export const getDonation = (payload) =>
+  callApi({
+    requestFunction: (axios) =>
       axios.post(`${API_BASE_URL}donation/get-donation`, payload),
-      showToastOnSuccess: false,
-    });
+    showToastOnSuccess: false,
+  });
 
 export const getAllDonation = (payload) =>
   callApi({
@@ -73,6 +74,8 @@ export const updateDonation = (payload) =>
   callApi({
     requestFunction: (axios) =>
       axios.post(`${API_BASE_URL}donation/update`, payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
   });
 
 // export const updateDonationDetail = (payload) =>
