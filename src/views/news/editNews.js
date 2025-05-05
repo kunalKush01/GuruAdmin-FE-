@@ -24,7 +24,10 @@ const schema = Yup.object().shape({
     .matches(/^[^!@$%^*()_+\=[\]{};':"\\|.<>/?`~]*$/g, "injection_found")
     .required("news_title_required")
     .trim(),
-  // Tags: Yup.string().required("news_tags_required"),
+  tagsInit: Yup.array()
+    .of(Yup.string())
+    .min(1, "news_tags_required")
+    .required("news_tags_required"),
   Body: Yup.string().required("news_desc_required").trim(),
   PublishedBy: Yup.string().required("news_publish_required"),
   DateTime: Yup.string(),

@@ -247,7 +247,7 @@ export default function AddForm({
                 formik.setFieldValue("city", selectedCity || "");
                 formik.setFieldValue("district", details.district || "");
                 formik.setFieldValue("country", selectedCountry || "");
-                formik.setFieldValue("pin", selectedPIN || "");
+                {/* formik.setFieldValue("pin", selectedPIN || ""); */}
                 formik.setFieldValue("state", selectedState || "");
               } else {
                 formik.setFieldValue("city", "");
@@ -395,7 +395,7 @@ export default function AddForm({
                   "correspondenceCountry",
                   selectedCountry || ""
                 );
-                formik.setFieldValue("correspondencePin", selectedPIN || "");
+                {/* formik.setFieldValue("correspondencePin", selectedPIN || ""); */}
                 formik.setFieldValue(
                   "correspondenceState",
                   selectedState || ""

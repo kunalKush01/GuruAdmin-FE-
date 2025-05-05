@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Row, Col, Card, Switch, Tabs, Image, Typography } from "antd";
 import profileImg from "../../assets/images/icons/pngtree.png";
 import avatarIcon from "../../assets/images/avatars/blank.png";
@@ -11,21 +11,41 @@ import ringIcon from "../../assets/images/icons/membership/ring.svg";
 import phoneIcon from "../../assets/images/icons/membership/phone.svg";
 import whatsappIcon from "../../assets/images/icons/membership/whatsapp.svg";
 import mailIcon from "../../assets/images/icons/membership/mail.svg";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { Button } from "reactstrap";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { useHistory, useParams } from "react-router-dom";
 import FamilyModalForm from "./FamilyModalForm";
-import { getMembersById } from "../../api/membershipApi";
+import { getDonationForMember, getMembersById } from "../../api/membershipApi";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import { useSelector } from "react-redux";
 import { downloadFile } from "../../api/sharedStorageApi";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
+import DonationANTDListTable from "../../components/donation/donationAntdListTable";
 
 function MembershipProfileView() {
   const { Title, Text } = Typography;
+  // PERMISSSIONS
+  const permissions = useSelector(
+    (state) => state.auth.userDetail?.permissions
+  );
+  const allPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "all"
+  );
+  const subPermissions = permissions?.find(
+    (permissionName) => permissionName.name === "donation"
+  );
+
+  const subPermission = subPermissions?.subpermissions?.map(
+    (item) => item.name
+  );
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 5,
+  });
+  const trustId = localStorage.getItem("trustId");
   const { t } = useTranslation();
   const history = useHistory();
   const { id } = useParams();
@@ -49,38 +69,61 @@ function MembershipProfileView() {
   const membershipInfo = memberData?.membershipInfo;
   const otherInfo = memberData?.otherInfo;
   const upload = memberData?.upload;
+  const { data: memberDonations } = useQuery(
+    ["memberDonations", contactInfo?.phone, trustId],
+    () =>
+      getDonationForMember({
+        trustId,
+        phoneNumber: contactInfo?.phone,
+      }),
+    {
+      enabled: !!contactInfo?.phone && !!trustId, // 🔒 ensure both are ready
+      keepPreviousData: true,
+      onError: (error) => {
+        console.error("Error fetching member donations:", error);
+      },
+    }
+  );
+  const donationItems = useMemo(
+    () => memberDonations?.results ?? [],
+    [memberDonations]
+  );
+  const totalItems = memberDonations?.data?.totalResults ?? 0;
+
   const formatDynamicAddress = (address) => {
     const addressParts = [];
 
     // Helper function to extract name or fallback value from nested objects
     const extractNameOrDefault = (value) => {
-        if (value && typeof value === "object") {
-            // If the object has a name property, use it
-            return value.name ? value.name : null;
-        }
-        return value ? value : null;
+      if (value && typeof value === "object") {
+        // If the object has a name property, use it
+        return value.name ? value.name : null;
+      }
+      return value ? value : null;
     };
 
     // Function to extract values from address fields
-    const extractAddressValues = (address, prefix = '') => {
-        const fields = [
-            "street", 
-            "city", 
-            "district", 
-            "pincode", 
-            "state", 
-            "country"
-        ];
+    const extractAddressValues = (address, prefix = "") => {
+      const fields = [
+        "street",
+        "city",
+        "district",
+        "pincode",
+        "state",
+        "country",
+      ];
 
-        fields.forEach(field => {
-            const fieldKey = prefix ? `${prefix}${ConverFirstLatterToCapital(field)}` : field;
-            const value = address[fieldKey];
+      fields.forEach((field) => {
+        const fieldKey = prefix
+          ? `${prefix}${ConverFirstLatterToCapital(field)}`
+          : field;
+        const value = address[fieldKey];
 
-            const extractedValue = extractNameOrDefault(value);
-            if (extractedValue) {
-                addressParts.push(extractedValue);
-            }
-        });
+        const extractedValue = extractNameOrDefault(value);
+        if (extractedValue) {
+          addressParts.push(extractedValue);
+        }
+      });
     };
 
     // Extract values for main address (no prefix needed)
@@ -90,7 +133,7 @@ function MembershipProfileView() {
     extractAddressValues(address, "correspondence");
 
     return addressParts.length > 0 ? addressParts.join(", ") : "";
-};
+  };
 
   const loggedInUser = useSelector((state) => state.auth.userDetail.name);
   const [toggleSwitch, setToggleSwitch] = useState(false);
@@ -98,7 +141,7 @@ function MembershipProfileView() {
   const handleTabChange = (key) => {
     setActiveTab(key);
   };
-  
+
   const handleToggle = (checked) => {
     setToggleSwitch(checked);
   };
@@ -168,7 +211,7 @@ function MembershipProfileView() {
           src={imageUrl}
           alt={title}
           style={{ borderRadius: 8 }} // Rounded corners for the image
-          preview={imageUrl?true:false}
+          preview={imageUrl ? true : false}
         />
         <div style={{ padding: "16px" }}>
           <Title level={4} style={{ margin: 0 }}>
@@ -393,7 +436,11 @@ function MembershipProfileView() {
                 <span className="memberAdd">{t("branch")}</span>
                 <p className="memberInfo">
                   {" "}
-                  {memberData ? membershipInfo?.branch?.name=="Select Option"?"":membershipInfo?.branch?.name : ""}
+                  {memberData
+                    ? membershipInfo?.branch?.name == "Select Option"
+                      ? ""
+                      : membershipInfo?.branch?.name
+                    : ""}
                 </p>
               </div>
             </div>
@@ -443,7 +490,11 @@ function MembershipProfileView() {
             </div>
             <Card className="memberProfileCard d-flex flex-column align-items-center justify-content-center">
               <p className="card-text-1">
-                {memberData ? membershipInfo?.membership?.name=="Select Option"?"":membershipInfo?.membership?.name : ""}
+                {memberData
+                  ? membershipInfo?.membership?.name == "Select Option"
+                    ? ""
+                    : membershipInfo?.membership?.name
+                  : ""}
               </p>
               <p className="card-text-2">
                 {memberData ? membershipInfo["memberShipMemberNumber"] : ""}
@@ -463,10 +514,10 @@ function MembershipProfileView() {
                     : ""}
                 </span>
               </div>
-              <div className="info-item">
+              {/* <div className="info-item">
                 <img src={businessIcon} alt="Business Icon" />{" "}
                 <span>{memberData ? personalInfo?.business?.name : ""}</span>
-              </div>
+              </div> */}
               <div className="info-item">
                 <img src={calenderIcon} alt="Calendar Icon" />{" "}
                 <span>
@@ -544,6 +595,35 @@ function MembershipProfileView() {
                     className="memberShipTab"
                     items={items}
                     onChange={handleTabChange}
+                  />
+                </Card>
+              </div>
+            </Col>
+            <Col xs={24} md={24} sm={24}>
+              <div id="donationCard">
+                <Card>
+                  <div className="mb-1">
+                    <spna className="commonSmallFont">{t("donation")}</spna>
+                  </div>
+                  <DonationANTDListTable
+                    donationType={"Donation"}
+                    data={donationItems}
+                    allPermissions={allPermissions}
+                    subPermission={subPermission}
+                    totalItems={totalItems}
+                    currentPage={pagination.page}
+                    pageSize={pagination.limit}
+                    onChangePage={(page) =>
+                      setPagination((prev) => ({ ...prev, page }))
+                    }
+                    onChangePageSize={(pageSize) =>
+                      setPagination((prev) => ({
+                        ...prev,
+                        limit: pageSize,
+                        page: 1,
+                      }))
+                    }
+                    isForMember={true}
                   />
                 </Card>
               </div>

@@ -198,7 +198,7 @@ export default function NewsForm({
                   </Col>
                   <Col xs={12} lg={4} md={6}>
                     <div className="d-flex flex-column" id="tagComponent">
-                      <label>Tags</label>
+                      <label>Tags<span className="text-danger">*</span></label>
                       <Select
                         mode="tags"
                         value={formik.values.tagsInit}
@@ -236,12 +236,7 @@ export default function NewsForm({
                         }))}
                       />
                       {formik.errors.tagsInit && (
-                        <div
-                        // style={{
-                        //   height: "20px",
-                        //   font: "normal normal bold 11px/33px Noto Sans",
-                        // }}
-                        >
+                        <div>
                           {formik.errors.tagsInit && (
                             <div className="text-danger">
                               <Trans i18nKey={formik.errors.tagsInit} />

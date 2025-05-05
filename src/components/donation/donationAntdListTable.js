@@ -52,6 +52,7 @@ export default function DonationANTDListTable(
     setShowScreenshotPanel = false,
     showScreenshotPanel = false,
     setRecord = null,
+    isForMember = false,
   },
   args
 ) {
@@ -732,7 +733,7 @@ export default function DonationANTDListTable(
         dataSource={Donatio_data}
         scroll={{
           x: 1500,
-          y: 430,
+          y: isForMember ? 180 : 430,
         }}
         sticky={{
           offsetHeader: 64,

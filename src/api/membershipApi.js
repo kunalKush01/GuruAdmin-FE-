@@ -83,3 +83,11 @@ export const importMemberFile = async (payload) => {
     throw new Error("Error creating import");
   }
 };
+export const getDonationForMember = (payload) => {
+  return callApi({
+    requestFunction: (axios) =>
+      axios.post(`${API_BASE_URL}donation/by-member`, payload),
+    showToastOnSuccess: false,
+    showToastOnError: false,
+  });
+};

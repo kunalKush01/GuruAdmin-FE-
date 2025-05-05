@@ -137,10 +137,16 @@ function MemberShipListTable({
       fixed: "left",
     },
     {
-      title: t("alias_name"),
-      dataIndex: ["data", "personalInfo", "aliasName"],
-      key: "aliasName",
-      width: 120,
+      title: t("phone"),
+      dataIndex: ["data", "contactInfo", "phone"],
+      key: "phone",
+      width: 150,
+    },
+    {
+      title: t("email"),
+      dataIndex: ["data", "contactInfo", "email"],
+      key: "email",
+      width: 200,
     },
     {
       title: t("gender"),
@@ -155,6 +161,12 @@ function MemberShipListTable({
         }`,
     },
     {
+      title: t("pan_number"),
+      dataIndex: ["data", "otherInfo", "panNumber"],
+      key: "panNumber",
+      width: 150,
+    },
+    {
       title: t("marital_status"),
       dataIndex: ["data", "personalInfo", "maritalStatus"],
       key: "maritalStatus",
@@ -165,6 +177,12 @@ function MemberShipListTable({
             ? "-"
             : record.data.personalInfo.maritalStatus?.name || "-"
         }`,
+    },
+    {
+      title: t("alias_name"),
+      dataIndex: ["data", "personalInfo", "aliasName"],
+      key: "aliasName",
+      width: 120,
     },
     {
       title: t("membership"),
@@ -191,18 +209,6 @@ function MemberShipListTable({
         }`,
     },
     {
-      title: t("phone"),
-      dataIndex: ["data", "contactInfo", "phone"],
-      key: "phone",
-      width: 150,
-    },
-    {
-      title: t("email"),
-      dataIndex: ["data", "contactInfo", "email"],
-      key: "email",
-      width: 200,
-    },
-    {
       title: t("home_address"),
       dataIndex: ["data", "addressInfo", "homeAddress", "street"],
       key: "homeAddress",
@@ -223,12 +229,7 @@ function MemberShipListTable({
       key: "occupation",
       width: 150,
     },
-    {
-      title: t("pan_number"),
-      dataIndex: ["data", "otherInfo", "panNumber"],
-      key: "panNumber",
-      width: 150,
-    },
+
     {
       title: t("special_remark"),
       dataIndex: ["data", "otherInfo", "specialRemark"],
