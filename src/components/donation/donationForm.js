@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Formik } from "formik";
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getAllMasterCategories } from "../../api/expenseApi";
 import "../../assets/scss/common.scss";
@@ -25,7 +25,7 @@ export default function DonationForm({
   donationId,
   flattenedAccounts,
 }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const donationQueryClient = useQueryClient();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const [loading, setLoading] = useState(false);
@@ -51,7 +51,7 @@ export default function DonationForm({
         donationQueryClient.invalidateQueries(["donations"]);
         setLoading(false);
         const type = donation_type || "Donation";
-        history.push(`/donation?type=${type}`);
+        navigate(`/donation?type=${type}`);
         toast.success("Donation created successfully");
       } else if (data?.error || data === undefined) {
         setLoading(false);

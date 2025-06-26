@@ -2,7 +2,7 @@ import { Table, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import "../../assets/scss/common.scss";
 import "../../assets/scss/viewCommon.scss";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
 import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
@@ -21,12 +21,12 @@ function ServiceListTable({
   onChangePage,
   onChangePageSize,
 }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const serviceQueryClient = useQueryClient();
 
   const handleEdit = (record) => {
     // console.log(record);
-    history.push({
+    navigate({
       pathname: "/services/addService",
       state: { record, type: "edit" },
     });

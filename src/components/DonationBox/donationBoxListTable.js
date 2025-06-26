@@ -3,7 +3,7 @@ import he from "he";
 import moment from "moment";
 import { useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { deleteExpensesDetail } from "../../api/expenseApi";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
@@ -34,7 +34,7 @@ export default function DonationBoxListTable({
   //   },
   // });
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const columns = [
     {
@@ -92,7 +92,7 @@ export default function DonationBoxListTable({
           width={35}
           className={financeReport ? "d-none" : "cursor-pointer "}
           onClick={() => {
-            financeReport ? "" : history.push(`/hundi/edit/${item.id}`);
+            financeReport ? "" : navigate(`/hundi/edit/${item.id}`);
           }}
         />
       ),

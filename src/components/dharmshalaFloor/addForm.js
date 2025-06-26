@@ -3,11 +3,11 @@ import { Form, Formik } from "formik";
 import React, { useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
-import { Prompt, useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
 //import { FormikWrapper } from "../../views/dharmshala-management/dharmshalaStyles";
 import CustomTextField from "../partials/customTextField";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { useParams } from "react-router-dom";
 import "../../assets/scss/common.scss";
 
 const AddDharmshalaFloorForm = ({
@@ -17,7 +17,7 @@ const AddDharmshalaFloorForm = ({
   buttonName,
   ...props
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [showPrompt, setShowPrompt] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -47,7 +47,7 @@ const AddDharmshalaFloorForm = ({
       ...formValues,
     };
     mutation.mutate(data);
-    history.push(`/floors/${URLParams.buildingId}`);
+    navigate(`/floors/${URLParams.buildingId}`);
   };
 
   return (
@@ -60,8 +60,8 @@ const AddDharmshalaFloorForm = ({
       >
         {(formik) => (
           <Form>
-            {showPrompt && (
-              <Prompt
+            {/* {showPrompt && (
+              <
                 when={!!Object.values(formik?.values).find((val) => !!val)}
                 message={(location) =>
                   `Are you sure you want to leave this page & visit ${location.pathname.replace(
@@ -70,7 +70,7 @@ const AddDharmshalaFloorForm = ({
                   )}`
                 }
               />
-            )}
+            )} */}
 
             <Row className="paddingForm">
               <Col xs={12} md={10}>

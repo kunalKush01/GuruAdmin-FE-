@@ -1,13 +1,13 @@
 import { useLayoutEffect } from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Tabs } from "antd";
 
 const { TabPane } = Tabs;
 
 const CattleTabBar = ({ tabs = [], setActive, active }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const permissions = useSelector(
     (state) => state.auth.userDetail?.permissions
   );
@@ -23,9 +23,9 @@ const CattleTabBar = ({ tabs = [], setActive, active }) => {
       const url = selectedTab.permissionKey?.find((perm) =>
         permissionsKey?.includes(perm)
       );
-      history.push(`${selectedTab.url}/${url?.split("-")[1]}`);
+      navigate(`${selectedTab.url}/${url?.split("-")[1]}`);
     } else {
-      history.push(key);
+      navigate(key);
     }
   };
 

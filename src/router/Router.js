@@ -1,237 +1,116 @@
 // ** React Imports
-import { Suspense, lazy, Fragment } from "react";
+import { Suspense, lazy, Fragment } from 'react';
 
 // ** Utils
-import { useLayout } from "@hooks/useLayout";
-import { useRouterTransition } from "@hooks/useRouterTransition";
+import { useLayout } from '@hooks/useLayout';
+import { useRouterTransition } from '@hooks/useRouterTransition';
 
 // ** Custom Components
-import LayoutWrapper from "@layouts/components/layout-wrapper";
+import LayoutWrapper from '@layouts/components/layout-wrapper';
 
 // ** Router Components
-import {
-  BrowserRouter as AppRouter,
-  Route,
-  Switch,
-  Redirect,
-} from "react-router-dom";
+import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom';
 
 // ** Routes & Default Routes
-import { DefaultRoute, Routes } from "./routes";
+import { DefaultRoute, AllRoutes } from './routes';
 
 // ** Layouts
-import BlankLayout from "@layouts/BlankLayout";
-import VerticalLayout from "@src/layouts/VerticalLayout";
-import HorizontalLayout from "@src/layouts/HorizontalLayout";
-import Permission from "../components/Permissions/Permission";
-import Notification from "../fireBase/Notification";
+import BlankLayout from '@layouts/BlankLayout';
+import VerticalLayout from '@src/layouts/VerticalLayout';
+import HorizontalLayout from '@src/layouts/HorizontalLayout';
+import Permission from '../components/Permissions/Permission';
+import Notification from '../fireBase/Notification';
+
+const NotAuthorized = lazy(() => import('@src/views/NotAuthorized'));
+const Error = lazy(() => import('@src/views/Error'));
 
 const Router = () => {
-  // ** Hooks
   const { layout, setLayout, setLastLayout } = useLayout();
   const { transition, setTransition } = useRouterTransition();
 
-  // ** Default Layout
-  const DefaultLayout =
-    layout === "horizontal" ? "HorizontalLayout" : "VerticalLayout";
+  const DefaultLayout = layout === 'horizontal' ? 'HorizontalLayout' : 'VerticalLayout';
 
-  // ** All of the available layouts
   const Layouts = { BlankLayout, VerticalLayout, HorizontalLayout };
-
-  // ** Current Active Item
   const currentActiveItem = null;
 
-  // ** Return Filtered Array of Routes & Paths
   const LayoutRoutesAndPaths = (layout) => {
     const LayoutRoutes = [];
-    const LayoutPaths = [];
 
-    if (Routes) {
-      Routes.filter((route) => {
-        // ** Checks if Route layout or Default layout matches current layout
-        if (
-          route.layout === layout ||
-          (route.layout === undefined && DefaultLayout === layout)
-        ) {
-          LayoutRoutes.push(route);
-          LayoutPaths.push(route.path);
-        }
-      });
-    }
+    AllRoutes.forEach((route) => {
+      if (
+        route.layout === layout ||
+        (route.layout === undefined && DefaultLayout === layout)
+      ) {
+        LayoutRoutes.push(route);
+      }
+    });
 
-    return { LayoutRoutes, LayoutPaths };
+    return { LayoutRoutes };
   };
 
-  const NotAuthorized = lazy(() => import("@src/views/NotAuthorized"));
-
-  // ** Init Error Component
-  const Error = lazy(() => import("@src/views/Error"));
-
-  /**
-   ** Final Route Component Checks for Login & User Role and then redirects to the route
-   */
-  // const FinalRoute = props => {
-  //   const route = props.route
-  //   let action, resource
-
-  //   // ** Assign vars based on route meta
-  //   if (route.meta) {
-  //     action = route.meta.action ? route.meta.action : null
-  //     resource = route.meta.resource ? route.meta.resource : null
-  //   }
-
-  //   if (
-  //     (!isUserLoggedIn() && route.meta === undefined) ||
-  //     (!isUserLoggedIn() && route.meta && !route.meta.authRoute && !route.meta.publicRoute)
-  //   ) {
-  //     /**
-  //      ** If user is not Logged in & route meta is undefined
-  //      ** OR
-  //      ** If user is not Logged in & route.meta.authRoute, !route.meta.publicRoute are undefined
-  //      ** Then redirect user to login
-  //      */
-
-  //     return <Redirect to='/login' />
-  //   } else if (route.meta && route.meta.authRoute && isUserLoggedIn()) {
-  //     // ** If route has meta and authRole and user is Logged in then redirect user to home page (DefaultRoute)
-  //     return <Redirect to='/' />
-  //   } else if (isUserLoggedIn() && !ability.can(action || 'read', resource)) {
-  //     // ** If user is Logged in and doesn't have ability to visit the page redirect the user to Not Authorized
-  //     return <Redirect to='/misc/not-authorized' />
-  //   } else {
-  //     // ** If none of the above render component
-  //     return <route.component {...props} />
-  //   }
-  // }
-
-  // ** Return Route to Render
   const ResolveRoutes = () => {
-    return Object.keys(Layouts).map((layout, index) => {
-      // ** Convert Layout parameter to Layout Component
-      // ? Note: make sure to keep layout and component name equal
+    return Object.entries(Layouts).flatMap(([layoutKey, LayoutComponent]) => {
+      const { LayoutRoutes } = LayoutRoutesAndPaths(layoutKey);
 
-      const LayoutTag = Layouts[layout];
+      return LayoutRoutes.map((route) => {
+        const Component = route.component;
 
-      // ** Get Routes and Paths of the Layout
-      const { LayoutRoutes, LayoutPaths } = LayoutRoutesAndPaths(layout);
-
-      // ** We have freedom to display different layout for different route
-      // ** We have made LayoutTag dynamic based on layout, we can also replace it with the only layout component,
-      // ** that we want to implement like VerticalLayout or HorizontalLayout
-      // ** We segregated all the routes based on the layouts and Resolved all those routes inside layouts
-
-      // ** RouterProps to pass them to Layouts
-      const routerProps = {};
-
-      return (
-        <Route path={LayoutPaths} key={index}>
-          <Notification />
-          <LayoutTag
-            layout={layout}
+        const Wrapper = (
+          <LayoutComponent
+            layout={layoutKey}
             setLayout={setLayout}
             transition={transition}
-            routerProps={routerProps}
             setLastLayout={setLastLayout}
             setTransition={setTransition}
             currentActiveItem={currentActiveItem}
           >
-            <Switch>
-              {LayoutRoutes.map((route) => {
-                return (
-                  <Route
-                    key={route.path}
-                    path={route.path}
-                    exact={route.exact === true}
-                    render={(props) => {
-                      // ** Assign props to routerProps
-                      Object.assign(routerProps, {
-                        ...props,
-                        meta: route.meta,
-                      });
+            <Notification />
+            <Suspense fallback={null}>
+              {route.layout === 'BlankLayout' ? (
+                <Component />
+              ) : (
+                <Permission
+                  type={route?.type}
+                  isGaushala={route?.isGaushala}
+                  subPermission={route?.subPermission}
+                >
+                  <LayoutWrapper
+                    layout={DefaultLayout}
+                    transition={transition}
+                    setTransition={setTransition}
+                    {...(route.appLayout ? { appLayout: route.appLayout } : {})}
+                    {...(route.meta ? { routeMeta: route.meta } : {})}
+                    {...(route.className ? { wrapperClass: route.className } : {})}
+                  >
+                    <Component />
+                  </LayoutWrapper>
+                </Permission>
+              )}
+            </Suspense>
+          </LayoutComponent>
+        );
 
-                      return (
-                        <Fragment>
-                          {/* Layout Wrapper to add classes based on route's layout, appLayout and className */}
-
-                          {route.layout === "BlankLayout" ? (
-                            <Fragment>
-                              <route.component {...props} />
-                            </Fragment>
-                          ) : (
-                            <Permission
-                              type={route?.type}
-                              isGaushala={route.isGaushala}
-                              subPermission={route?.subPermission}
-                            >
-                              <LayoutWrapper
-                                layout={DefaultLayout}
-                                transition={transition}
-                                setTransition={setTransition}
-                                /* Conditional props */
-                                /*eslint-disable */
-                                {...(route.appLayout
-                                  ? {
-                                      appLayout: route.appLayout,
-                                    }
-                                  : {})}
-                                {...(route.meta
-                                  ? {
-                                      routeMeta: route.meta,
-                                    }
-                                  : {})}
-                                {...(route.className
-                                  ? {
-                                      wrapperClass: route.className,
-                                    }
-                                  : {})}
-                                /*eslint-enable */
-                              >
-                                <Suspense fallback={null}>
-                                  <route.component {...props} />
-                                </Suspense>
-                              </LayoutWrapper>
-                            </Permission>
-                          )}
-                        </Fragment>
-                      );
-                    }}
-                  />
-                );
-              })}
-            </Switch>
-          </LayoutTag>
-        </Route>
-      );
+        return <Route key={route.path} path={route.path} element={Wrapper} />;
+      });
     });
   };
 
   return (
-    <AppRouter basename={process.env.REACT_APP_BASENAME}>
-      <Switch>
-        {/* If user is logged in Redirect user to DefaultRoute else to login */}
+    <BrowserRouter basename={process.env.REACT_APP_BASENAME}>
+      <Routes>
+        <Route path="/" element={<Navigate to={DefaultRoute} replace />} />
         <Route
-          exact
-          path="/"
-          render={() => {
-            return <Redirect to={DefaultRoute} />;
-          }}
-        />
-        {/* Not Auth Route */}
-        <Route
-          exact
           path="/misc/not-authorized"
-          render={() => (
-            <Layouts.BlankLayout>
+          element={
+            <BlankLayout>
               <NotAuthorized />
-            </Layouts.BlankLayout>
-          )}
+            </BlankLayout>
+          }
         />
         {ResolveRoutes()}
-
-        {/* NotFound Error page */}
-        <Route path="*" component={Error} />
-      </Switch>
-    </AppRouter>
+        <Route path="*" element={<Error />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 

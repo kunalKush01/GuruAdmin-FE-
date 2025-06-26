@@ -5,7 +5,7 @@ import { Plus } from "react-feather";
 import { Helmet } from "react-helmet";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 const { RangePicker } = DatePicker;
 import {
@@ -54,7 +54,7 @@ dayjs.extend(timezone);
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 export default function BankTransactionsList() {
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
@@ -402,7 +402,7 @@ export default function BankTransactionsList() {
   // Donation split tab
   const handleNestedTabChange = (nestedKey) => {
     setNestedActiveTab(nestedKey);
-    history.push(`/bankTransactions?type=suspense&sub=${nestedKey}`);
+    navigate(`/bankTransactions?type=suspense&sub=${nestedKey}`);
   };
   //**possible match logic */
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);

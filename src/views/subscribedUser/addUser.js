@@ -1,7 +1,7 @@
 import React from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import * as Yup from "yup";
 import { createSubscribedUser } from "../../api/subscribedUser.js";
@@ -30,7 +30,7 @@ const schema = Yup.object().shape({
 });
 
 export default function AddSubscribedUser() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -54,7 +54,7 @@ export default function AddSubscribedUser() {
             src={arrowLeft}
             className="me-2 cursor-pointer"
             onClick={() =>
-              history.push(
+              navigate(
                 `/${redirectTo}/add?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}&dialCode=${dialCode}&mobileNumber=${mobileNumber}`
               )
             }

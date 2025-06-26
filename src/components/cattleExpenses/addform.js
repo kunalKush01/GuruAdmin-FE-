@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Storage } from "aws-amplify";
+import { uploadData } from '@aws-amplify/storage';;
 import { Form, Formik } from "formik";
 import React, { useRef, useState } from "react";
 
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
-import { Prompt, useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
 import {
@@ -25,7 +25,7 @@ const AddExpenseForm = ({
   buttonName,
   ...props
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const uploadInvoice = useRef();
   const { t } = useTranslation();
   const [showPrompt, setShowPrompt] = useState(true);
@@ -44,7 +44,7 @@ const AddExpenseForm = ({
 
   const handleUpload = (acceptedFiles, uploadType) => {
     setIsUploading(true);
-    Storage.put(
+    uploadData(
       `temp/${randomNumber}_${acceptedFiles?.name.split(" ").join("-")}`,
       acceptedFiles,
       {
@@ -66,7 +66,7 @@ const AddExpenseForm = ({
       if (!data?.error) {
         queryClient.invalidateQueries(["cattleMedicalList"]);
         setLoading(false);
-        history.push("/cattle/medical-info");
+        navigate("/cattle/medical-info");
       } else if (data?.error || data === undefined) {
         setLoading(false);
       }
@@ -97,8 +97,8 @@ const AddExpenseForm = ({
       >
         {(formik) => (
           <Form>
-            {showPrompt && (
-              <Prompt
+            {/* {showPrompt && (
+              <
                 when={!!Object.values(formik?.values).find((val) => !!val)}
                 message={(location) =>
                   `Are you sure you want to leave this page & visit ${location.pathname.replace(
@@ -107,7 +107,7 @@ const AddExpenseForm = ({
                   )}`
                 }
               />
-            )}
+            )} */}
 
             <Row className="paddingForm">
               <Col xs={12} md={10}>

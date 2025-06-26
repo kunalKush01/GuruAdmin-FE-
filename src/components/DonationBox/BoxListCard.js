@@ -1,7 +1,7 @@
 import he from "he";
 import moment from "moment";
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Card, CardBody, CardFooter, Col, Row } from "reactstrap";
 import Swal from "sweetalert2";
 import donationBoxDesIcon from "../../assets/images/icons/donationBox/donationBoxDesIcon.png";
@@ -20,7 +20,7 @@ export default function BoxListCard({
   const ConvertToString = (html) => {
     return html.replace(/(&lt;([^>]+)>)/gi, "");
   };
-  const history = useHistory();
+  const navigate = useNavigate();
   return (
     <div className="donationboxwrapper">
       <Card style={{height:"400px",minHeight:"400px"}}>
@@ -108,7 +108,7 @@ export default function BoxListCard({
                     src={editIcon}
                     className="w-100 cursor-pointer"
                     onClick={() =>
-                      history.push(
+                      navigate(
                         `/hundi/edit/${data.id}?page=${currentPage}&filter=${currentFilter}`
                       )
                     }

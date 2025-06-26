@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Button } from "reactstrap";
 import { deleteDharmshalaFloor } from "../../../api/dharmshala/dharmshalaInfo";
@@ -25,7 +25,7 @@ const DharmshalaFloorTable = ({
   isMobileView,
 }) => {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const handleDeleteDharmshalaFloor = async (payload) => {
     return deleteDharmshalaFloor(payload);
   };
@@ -91,7 +91,7 @@ const DharmshalaFloorTable = ({
               // className="px-1 py-0"
               className="floorTag"
               onClick={() =>
-                history.push(`/rooms/add/${item._id}/${buildingId}`, item._id)
+                navigate(`/rooms/add/${item._id}/${buildingId}`, item._id)
               }
             >
               {" "}
@@ -104,7 +104,7 @@ const DharmshalaFloorTable = ({
               // className="px-1 py-0"
               className="floorTag"
               onClick={() =>
-                history.push(`/room/${item._id}/${buildingId}`, item._id)
+                navigate(`/room/${item._id}/${buildingId}`, item._id)
               }
             >
               {item?.roomCount} {t("Rooms")}
@@ -116,7 +116,7 @@ const DharmshalaFloorTable = ({
               // className="px-1 py-0"
               className="floorTag"
               onClick={() =>
-                history.push(`/room/${item._id}/${buildingId}`, item._id)
+                navigate(`/room/${item._id}/${buildingId}`, item._id)
               }
             >
               {item?.roomCount} {t("Room")}
@@ -131,7 +131,7 @@ const DharmshalaFloorTable = ({
             width={35}
             className="cursor-pointer"
             onClick={() => {
-              history.push(
+              navigate(
                 `/floor/edit/${item?._id}/${
                   item?.buildingId
                 }?name=${encodeURIComponent(

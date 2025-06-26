@@ -2,7 +2,7 @@ import moment from "moment";
 import React from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import * as Yup from "yup";
 import { createEvent } from "../../api/eventApi.js";
@@ -56,7 +56,7 @@ const initialValues = {
 };
 
 export default function AddEvent() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const langArray = useSelector((state) => state.auth.availableLang);
 
   const searchParams = new URLSearchParams(history.location.search);
@@ -70,7 +70,7 @@ export default function AddEvent() {
             src={arrowLeft}
             className="me-2  cursor-pointer"
             onClick={() =>
-              history.push(
+              navigate(
                 `/events?page=${currentPage}&filter=${currentFilter}`
               )
             }

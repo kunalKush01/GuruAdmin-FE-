@@ -2,7 +2,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import { useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import "../../assets/scss/common.scss";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
@@ -22,7 +22,7 @@ export default function RecentDonationTable({ data }) {
   //   },
   // });
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const columns = [
     {
@@ -122,7 +122,7 @@ export default function RecentDonationTable({ data }) {
           <Trans i18nKey={"dashboard_Recent_DonationCommitment"} />
         </p>
         <p
-          onClick={() => history.push("/donation")}
+          onClick={() => navigate("/donation")}
           className="DonationViewAll"
         >
           <Trans i18nKey={"dashboard_viewAll"} />

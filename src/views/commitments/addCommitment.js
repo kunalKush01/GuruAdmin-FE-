@@ -2,7 +2,7 @@ import moment from "moment";
 import React from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { createCommitment } from "../../api/commitmentApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
@@ -50,7 +50,7 @@ export default function AddCommitment() {
     ),
   });
 
-  const history = useHistory();
+  const navigate = useNavigate();
   // const langArray = useSelector((state) => state.auth.availableLang);
   const loggedInUser = useSelector((state) => state.auth.userDetail.name);
 
@@ -86,7 +86,7 @@ export default function AddCommitment() {
             src={arrowLeft}
             className="me-2  cursor-pointer"
             onClick={() =>
-              history.push(
+              navigate(
                 `/commitment?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`
               )
             }

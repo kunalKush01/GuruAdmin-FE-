@@ -4,7 +4,7 @@ import { Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
-import { Prompt } from "react-router-dom";
+import {  } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import CustomCountryMobileNumberField from "../partials/CustomCountryMobileNumberField";
 import CustomTextField from "../partials/customTextField";
@@ -242,8 +242,8 @@ function AddUserDrawerForm({
             }, [formik.values.state]);
             return (
               <Form>
-                {showPrompt && (
-                  <Prompt
+                {/* {showPrompt && (
+                  <
                     when={!!Object.values(formik?.values).find((val) => !!val)}
                     message={(location) =>
                       `Are you sure you want to leave this page & visit ${location.pathname.replace(
@@ -252,7 +252,7 @@ function AddUserDrawerForm({
                       )}`
                     }
                   />
-                )}
+                )} */}
                 <Row>
                   <Col xs={12}>
                     <Row>

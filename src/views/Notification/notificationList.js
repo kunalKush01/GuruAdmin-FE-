@@ -9,7 +9,7 @@ import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
 import { getAllNotification, readNotification } from "../../api/notification";
@@ -34,7 +34,7 @@ export default function Notification() {
     }
   };
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [pagination, setPagination] = useState({
     page: 1,
@@ -139,7 +139,7 @@ export default function Notification() {
             {/* <img
               src={arrowLeft}
               className="me-2  cursor-pointer"
-              onClick={() => history.push("/")}
+              onClick={() => navigate("/")}
             /> */}
             <div className="addNotification">
               <div className="">
@@ -156,7 +156,7 @@ export default function Notification() {
             <Button
               color="primary"
               className="addNotification-btn"
-              onClick={() => history.push("/notification/add")}
+              onClick={() => navigate("/notification/add")}
             >
               <span>
                 <Plus className="me-1" size={15} strokeWidth={4} />

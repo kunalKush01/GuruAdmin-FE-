@@ -4,7 +4,7 @@ import { flatMap } from "lodash";
 import React, { useMemo, useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
-import { Prompt, useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, ButtonGroup, Col, Row, Spinner } from "reactstrap";
 import { getAllBoxCollectionLogs } from "../../api/donationBoxCollectionApi";
 import { TextArea } from "../partials/CustomTextArea";
@@ -29,7 +29,7 @@ export default function DonationBoxForm({
   customFieldsList,
   flattenedAccounts,
 }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const newsQuerClient = useQueryClient();
   const [loading, setLoading] = useState(false);
@@ -40,7 +40,7 @@ export default function DonationBoxForm({
         newsQuerClient.invalidateQueries(["Collections"]);
         newsQuerClient.invalidateQueries(["BoxCollectionDetail"]);
         setLoading(false);
-        history.push("/hundi");
+        navigate("/hundi");
       } else if (data?.error) {
         setLoading(false);
       }
@@ -113,8 +113,8 @@ export default function DonationBoxForm({
       >
         {(formik) => (
           <Form>
-            {showPrompt && (
-              <Prompt
+            {/* {showPrompt && (
+              <
                 when={!!Object.values(formik?.values).find((val) => !!val)}
                 message={(location) =>
                   `Are you sure you want to leave this page & visit ${location.pathname.replace(
@@ -123,7 +123,7 @@ export default function DonationBoxForm({
                   )}`
                 }
               />
-            )}
+            )} */}
             <div className="paddingForm">
               <Row>
                 <Col xs={12} md={12}>

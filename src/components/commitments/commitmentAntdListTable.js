@@ -4,7 +4,7 @@ import numberToWords from "number-to-words";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ReactToPrint from "react-to-print";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
@@ -61,7 +61,7 @@ export default function CommitmentAntdListTable(
     },
   });
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const ref = useRef();
   const pdfRef = useRef();
 
@@ -320,7 +320,7 @@ export default function CommitmentAntdListTable(
             onClick={() => {
               financeReport
                 ? ""
-                : history.push(
+                : navigate(
                     `/donations/paid/${item._id}?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`
                   );
             }}
@@ -339,12 +339,12 @@ export default function CommitmentAntdListTable(
               }`}
               onClick={() =>
                 financeReport && !paymentStatus
-                  ? history.push(
+                  ? navigate(
                       `/commitment/pay-donation/${item._id}`,
                       item._id
                     )
                   : !paymentStatus &&
-                    history.push(
+                    navigate(
                       `/commitment/pay-donation/${item._id}?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`,
                       item._id
                     )
@@ -375,7 +375,7 @@ export default function CommitmentAntdListTable(
               }`}
               onClick={() => {
                 if (item?.amount !== item?.amount - item?.paidAmount) {
-                  history.push(`/donations/paid/${item._id}`);
+                  navigate(`/donations/paid/${item._id}`);
                 }
               }}
             />
@@ -393,7 +393,7 @@ export default function CommitmentAntdListTable(
                 })}
                 onClick={() => {
                   if (!financeReport) {
-                    history.push(
+                    navigate(
                       `/commitment/edit/${item?._id}?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`
                     );
                   }

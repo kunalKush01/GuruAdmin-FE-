@@ -8,7 +8,7 @@ import { Else, If, Then } from "react-if-else-switch";
 import Skeleton from "react-loading-skeleton";
 import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
 
@@ -29,7 +29,7 @@ import { WRITE } from "../../../utility/permissionsVariable";
 import "../../../assets/scss/viewCommon.scss";
 import { Tooltip } from "antd";
 const CattlesInfo = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const importFileRef = useRef();
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -185,7 +185,7 @@ const CattlesInfo = () => {
                 setTypeName={(e) => {
                   setIsDeadAlive(e.target.name);
                   setPagination({ page: 1 });
-                  history.push(
+                  navigate(
                     `/cattle/info?page=${1}&status=${
                       e.target.name
                     }&filter=${dropDownName}`
@@ -199,7 +199,7 @@ const CattlesInfo = () => {
               setdropDownName={(e) => {
                 setdropDownName(e.target.name);
                 setPagination({ page: 1 });
-                history.push(
+                navigate(
                   `/cattle/info?page=${1}&status=${isDeadAlive}&filter=${
                     e.target.name
                   }`
@@ -253,7 +253,7 @@ const CattlesInfo = () => {
                 className="me-1 mt-1 mt-sm-0"
                 color="primary"
                 onClick={() =>
-                  history.push(
+                  navigate(
                     `/cattle/info/add?page=${pagination.page}&status=${isDeadAlive}&filter=${dropDownName}`
                   )
                 }
@@ -358,7 +358,7 @@ const CattlesInfo = () => {
                     previousClassName={"page-item prev"}
                     onPageChange={(page) => {
                       setPagination({ ...pagination, page: page.selected + 1 });
-                      history.push(
+                      navigate(
                         `/cattle/info?page=${
                           page.selected + 1
                         }&status=${isDeadAlive}&filter=${dropDownName}`

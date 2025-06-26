@@ -11,7 +11,7 @@ import {
   extractDataFromImage,
   getImagePaymentByID,
 } from "../../api/suspenseApi";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 const Desc = (props) => (
   <Flex
@@ -38,7 +38,7 @@ const ScreenshotPanel = ({
   record,
   setRecord,
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const trustId = localStorage.getItem('trustId')
   const [sizes, setSizes] = useState(["70%", "30%"]);
   const [enabled, setEnabled] = useState(true);
@@ -113,7 +113,7 @@ const ScreenshotPanel = ({
     searchParams.delete("view");
     searchParams.delete("recordId");
 
-    history.push(`${location.pathname}?${searchParams.toString()}`);
+    navigate(`${location.pathname}?${searchParams.toString()}`);
   };
 
   return (

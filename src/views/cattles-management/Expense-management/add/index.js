@@ -1,6 +1,6 @@
 import React from "react";
 import { Trans } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { createCattleExpenses } from "../../../../api/cattle/cattleExpense";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
@@ -9,7 +9,7 @@ import "../../../../assets/scss/viewCommon.scss";
 import "../../../../assets/scss/common.scss";
 
 const AddExpenses = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
   const currentFilter = searchParams.get("filter");
@@ -54,7 +54,7 @@ const AddExpenses = () => {
             src={arrowLeft}
             className="me-2  cursor-pointer"
             onClick={() =>
-              history.push(
+              navigate(
                 `/cattle/expenses?page=${currentPage}&filter=${currentFilter}`
               )
             }

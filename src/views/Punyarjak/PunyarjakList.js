@@ -9,7 +9,7 @@ import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
 import { getAllPunyarjak } from "../../api/punarjakApi";
@@ -43,7 +43,7 @@ export default function Punyarjak() {
         return "All";
     }
   };
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [pagination, setPagination] = useState({
     page: 1,
@@ -155,7 +155,7 @@ export default function Punyarjak() {
             {/* <img
               src={arrowLeft}
               className="me-2 cursor-pointer align-self-center"
-              onClick={() => history.push("/")}
+              onClick={() => navigate("/")}
             /> */}
             <div className="addAction">
               <div className="">
@@ -171,7 +171,7 @@ export default function Punyarjak() {
               setdropDownName={(e) => {
                 setdropDownName(e.target.name);
                 setPagination({ page: 1 });
-                history.push(`/punyarjak?page=${1}&filter=${e.target.name}`);
+                navigate(`/punyarjak?page=${1}&filter=${e.target.name}`);
               }}
             />
             {allPermissions?.name === "all" ||
@@ -180,7 +180,7 @@ export default function Punyarjak() {
                 color="primary"
                 className="addAction-btn"
                 onClick={() =>
-                  history.push(`/punyarjak/add?page=${pagination.page}`)
+                  navigate(`/punyarjak/add?page=${pagination.page}`)
                 }
               >
                 <span>

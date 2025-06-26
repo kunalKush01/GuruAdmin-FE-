@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import SpinnerComponent from "../../@core/components/spinner/Fallback-spinner";
 import {
@@ -30,7 +30,7 @@ const Home = () => {
   const [recentDonationData, setRecentDonationData] = useState();
   const [chartData, setChart] = useState();
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const periodDropDown = () => {
     switch (dropDownName) {
@@ -127,7 +127,7 @@ const Home = () => {
             />
             <div
               className="cursor-pointer"
-              onClick={() => history.push("/subscribed-user")}
+              onClick={() => navigate("/subscribed-user")}
             >
               <CustomCard
                 cardTitle={t("dashboard_card_title3")}

@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { Tag, Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Table, Space } from "antd";
 import moment from "moment";
@@ -39,7 +39,7 @@ const DharmshalaBookingTable = ({
   onChangePageSize,
 }) => {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [checkInVisible, setCheckInVisible] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
@@ -88,13 +88,13 @@ const DharmshalaBookingTable = ({
   };
 
   const handleEditClick = (item) => {
-    history.push({
+    navigate({
       pathname: `/booking/edit/${item._id}`,
       state: { bookingData: item.originalData },
     });
   };
   const handleViewClick = (item) => {
-    history.push({
+    navigate({
       pathname: `/booking/view/${item._id}`,
       search: `?isReadOnly=true`,
       state: { bookingData: item.originalData },

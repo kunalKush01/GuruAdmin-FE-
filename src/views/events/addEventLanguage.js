@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import _ from "lodash";
 import React, { useMemo, useState } from "react";
 import { Trans } from "react-i18next";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import * as Yup from "yup";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
@@ -34,7 +34,7 @@ const schema = Yup.object().shape({
   // tagsInit:Yup.array().max(15 ,"tags_limit"),
 });
 export default function AddLanguageEvent() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { eventId } = useParams();
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -118,7 +118,7 @@ export default function AddLanguageEvent() {
             src={arrowLeft}
             className="me-2  cursor-pointer"
             onClick={() =>
-              history.push(
+              navigate(
                 `/events?page=${currentPage}&filter=${currentFilter}`
               )
             }

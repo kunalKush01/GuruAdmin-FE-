@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button, Table, Tag } from "antd";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   getAllRoomHoldList,
   roomunhold,
@@ -13,7 +13,7 @@ import Swal from "sweetalert2";
 
 function RoomHoldTable() {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const dharmshalaRoomholdList = useQuery(["dharmshalaRoomholdList"], () =>

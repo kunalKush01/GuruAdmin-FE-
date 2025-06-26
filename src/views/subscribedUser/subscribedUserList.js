@@ -9,7 +9,7 @@ import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
 import { getAllSubscribedUser } from "../../api/subscribedUser";
@@ -38,7 +38,7 @@ export default function SubscribedUser() {
     }
   };
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [pagination, setPagination] = useState({
     page: 1,
@@ -112,7 +112,7 @@ export default function SubscribedUser() {
             <img
               src={arrowLeft}
               className="me-2 cursor-pointer align-self-center"
-              onClick={() => history.push("/")}
+              onClick={() => navigate("/")}
             />
             <div className="addSubscribeUser">
               <div className="">
@@ -133,7 +133,7 @@ export default function SubscribedUser() {
               <Button
                 color="primary"
                 className="addSubscribeUser-btn"
-                onClick={() => history.push("/subscribed-user/add")}
+                onClick={() => navigate("/subscribed-user/add")}
               >
                 <span>
                   <Plus className="" size={15} strokeWidth={4} />

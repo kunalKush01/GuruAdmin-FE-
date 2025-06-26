@@ -7,7 +7,7 @@ import { Else, If, Then } from "react-if-else-switch";
 import Skeleton from "react-loading-skeleton";
 import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
 import { getCattlesMedicalList } from "../../../api/cattle/cattleMedical";
@@ -18,7 +18,7 @@ import { Helmet } from "react-helmet";
 import { WRITE } from "../../../utility/permissionsVariable";
 import "../../../assets/scss/viewCommon.scss";
 const CattlesMedical = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
@@ -119,7 +119,7 @@ const CattlesMedical = () => {
               setdropDownName={(e) => {
                 setdropDownName(e.target.name);
                 setPagination({ page: 1 });
-                history.push(
+                navigate(
                   `/cattle/medical-info?page=${1}&filter=${e.target.name}`
                 );
               }}
@@ -129,7 +129,7 @@ const CattlesMedical = () => {
               <Button
                 color="primary"
                 onClick={() =>
-                  history.push(
+                  navigate(
                     `/cattle/medical-info/add?page=${pagination.page}&filter=${dropDownName}`
                   )
                 }
@@ -227,7 +227,7 @@ const CattlesMedical = () => {
                   previousClassName={"page-item prev"}
                   onPageChange={(page) => {
                     setPagination({ ...pagination, page: page.selected + 1 });
-                    history.push(
+                    navigate(
                       `/cattle/medical-info?page=${
                         page.selected + 1
                       }&filter=${dropDownName}`

@@ -4,7 +4,7 @@ import { Trans } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useSelector } from "react-redux";
-import { useHistory, useParams ,useLocation} from "react-router-dom";
+import { useNavigate, useParams ,useLocation} from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import * as Yup from "yup";
 import moment from "moment";
@@ -29,7 +29,7 @@ const getLangId = (langArray, langSelection) => {
 };
 
 const EditFloor = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { floorId } = useParams();
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -84,7 +84,7 @@ const EditFloor = () => {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push(`/floors/${URLParams.buildingId}`)}
+            onClick={() => navigate(`/floors/${URLParams.buildingId}`)}
           />
           <div className="editEvent">
             <Trans i18nKey={"dharmshala_floor_edit_dharmshala"} />

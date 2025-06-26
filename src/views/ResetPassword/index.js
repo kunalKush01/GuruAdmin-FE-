@@ -7,7 +7,7 @@ import { ErrorMessage, Form, Formik } from "formik";
 import { useEffect, useMemo, useState } from "react";
 import { Facebook, GitHub, Lock, Mail, Twitter, User } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   Button,
@@ -35,7 +35,7 @@ import { login } from "../../redux/authSlice";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import "../../assets/scss/viewCommon.scss";
 const ResetPassWord = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleResetPassword = (values) => {
     return resetPassword(values);
@@ -46,7 +46,7 @@ const ResetPassWord = () => {
     onSuccess: (data) => {
       if (!data.error) {
         setLoading(false);
-        history.push("/login");
+        navigate("/login");
       } else if (data.error) {
         setLoading(false);
       }
@@ -168,7 +168,7 @@ const ResetPassWord = () => {
             </div>
             <img
               src={backIconIcon}
-              onClick={() => history.push("/login")}
+              onClick={() => navigate("/login")}
               className="my-1 signInIcons"
             />
             {<CardTitle className="fw-bold mb-0 ">Reset Password</CardTitle>}

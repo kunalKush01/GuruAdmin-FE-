@@ -7,7 +7,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 const { RangePicker } = DatePicker;
 import {
@@ -55,7 +55,7 @@ const { TabPane } = Tabs;
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 export default function Donation() {
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const importFileRef = useRef();
   const searchParams = new URLSearchParams(history.location.search);
@@ -595,7 +595,7 @@ export default function Donation() {
                         setCategoryId(e.target.id);
                         setCategoryTypeName(e.target.name);
                         setPagination({ page: 1 });
-                        history.push(
+                        navigate(
                           `/donation?page=${1}&category=${
                             e.target.name
                           }&subCategory=${subCategoryTypeName}&filter=${dropDownName}`
@@ -614,7 +614,7 @@ export default function Donation() {
                         setSubCategoryTypeId(e.target.id);
                         setSubCategoryTypeName(e.target.name);
                         setPagination({ page: 1 });
-                        history.push(
+                        navigate(
                           `/donation?page=${1}&category=${categoryTypeName}&subCategory=${
                             e.target.name
                           }&filter=${dropDownName}`
@@ -627,7 +627,7 @@ export default function Donation() {
                   setdropDownName={(e) => {
                     setdropDownName(e.target.name);
                     setPagination({ page: 1 });
-                    history.push(
+                    navigate(
                       `/donation?page=${1}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${
                         e.target.name
                       }`
@@ -650,7 +650,7 @@ export default function Donation() {
                       color="primary"
                       className={`addAction-btn`}
                       onClick={() =>
-                        history.push({
+                        navigate({
                           pathname: "/donation/add",
                           search: `?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}&type=${activeTab}`,
                           state: { record: {}, isEdit: false },
@@ -741,7 +741,7 @@ export default function Donation() {
                         setCategoryId(e.target.id);
                         setCategoryTypeName(e.target.name);
                         setPagination({ page: 1 });
-                        history.push(
+                        navigate(
                           `/donation?page=${1}&category=${
                             e.target.name
                           }&subCategory=${subCategoryTypeName}&filter=${dropDownName}`
@@ -760,7 +760,7 @@ export default function Donation() {
                         setSubCategoryTypeId(e.target.id);
                         setSubCategoryTypeName(e.target.name);
                         setPagination({ page: 1 });
-                        history.push(
+                        navigate(
                           `/donation?page=${1}&category=${categoryTypeName}&subCategory=${
                             e.target.name
                           }&filter=${dropDownName}`
@@ -774,7 +774,7 @@ export default function Donation() {
                     setdropDownName={(e) => {
                       setdropDownName(e.target.name);
                       setPagination({ page: 1 });
-                      history.push(
+                      navigate(
                         `/donation?page=${1}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${
                           e.target.name
                         }`
@@ -789,7 +789,7 @@ export default function Donation() {
                       color="primary"
                       className={`addAction-btn me-1`}
                       onClick={() =>
-                        history.push(
+                        navigate(
                           `/donation/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}&type=${activeTab}`
                         )
                       }
@@ -1089,7 +1089,7 @@ export default function Donation() {
   const handleNestedTabChange = (nestedKey) => {
     setNestedActiveTab(nestedKey);
     if (activeTab === "Suspense") {
-      history.push(`/donation?type=suspense&sub=${nestedKey}`);
+      navigate(`/donation?type=suspense&sub=${nestedKey}`);
     }
   };
   //**possible match logic */
@@ -1432,12 +1432,12 @@ export default function Donation() {
 
     if (newType) {
       if (newType === "suspense") {
-        history.push(`/donation?type=${newType}&sub=${nestedActiveTab}`);
+        navigate(`/donation?type=${newType}&sub=${nestedActiveTab}`);
       } else {
-        history.push(`/donation?type=${newType}`);
+        navigate(`/donation?type=${newType}`);
       }
     } else {
-      history.push("/donation"); // No query parameters for Donation tab
+      navigate("/donation"); // No query parameters for Donation tab
     }
   };
 

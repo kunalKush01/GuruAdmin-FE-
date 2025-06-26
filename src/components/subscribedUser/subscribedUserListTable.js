@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
@@ -103,7 +103,7 @@ export default function SubscribedUSerListTable({ data }) {
   //                   width={25}
   //                   className="cursor-pointer"
   //                   onClick={() =>
-  //                     history.push(`/donation`)
+  //                     navigate(`/donation`)
   //                   }
   //                 />
   //               ),

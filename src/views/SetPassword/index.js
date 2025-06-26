@@ -4,7 +4,7 @@ import "@styles/react/pages/page-authentication.scss";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { ErrorMessage, Form, Formik } from "formik";
 import { useMemo, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button, CardText, CardTitle, Col, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
 import * as Yup from "yup";
@@ -19,7 +19,7 @@ import { ConverFirstLatterToCapital } from "../../utility/formater";
 import "../../assets/scss/viewCommon.scss";
 
 const SetPassword = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleResetPassword = (values) => {
     return setPassword(values);
@@ -30,7 +30,7 @@ const SetPassword = () => {
     onSuccess: (data) => {
       if (!data.error) {
         setLoading(false);
-        history.push("/login");
+        navigate("/login");
       } else if (data.error) {
         setLoading(false);
       }
@@ -148,7 +148,7 @@ const SetPassword = () => {
 
             <img
               src={backIconIcon}
-              onClick={() => history.push("/login")}
+              onClick={() => navigate("/login")}
               className="my-1 signInIcons"
             />
             {<CardTitle className="fw-bold mb-0 ">Set Password</CardTitle>}

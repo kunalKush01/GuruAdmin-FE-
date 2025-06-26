@@ -7,7 +7,7 @@ import { Else, If, Then } from "react-if-else-switch";
 import Skeleton from "react-loading-skeleton";
 import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
 import { getDharmshalaFloorList } from "../../../api/dharmshala/dharmshalaInfo";
@@ -18,11 +18,11 @@ import { handleExport } from "../../../utility/utils/exportTabele";
 import DharmshalaFloorTable from "./table";
 import { ChangeCategoryType } from "../../../components/partials/categoryDropdown";
 import { Helmet } from "react-helmet";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { useParams } from "react-router-dom";
 import "../../../assets/scss/dharmshala.scss";
 
 const DharmshalaFloors = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { buildingId } = useParams();
   const { t } = useTranslation();
   const importFileRef = useRef();
@@ -102,7 +102,7 @@ const DharmshalaFloors = () => {
             <img
               src={arrowLeft}
               className="me-2 cursor-pointer"
-              onClick={() => history.push(`/dharmshala/info`)}
+              onClick={() => navigate(`/dharmshala/info`)}
             />
             <div className="addEvent">
               <Trans i18nKey={"dharmshala_floors_registered"} />
@@ -113,7 +113,7 @@ const DharmshalaFloors = () => {
               className="me-1"
               color="primary"
               onClick={() =>
-                history.push(
+                navigate(
                   `/floor/add/${buildingId}/add?page=${pagination.page}&filter=${dropDownName}`
                 )
               }
@@ -208,7 +208,7 @@ const DharmshalaFloors = () => {
                     previousClassName={"page-item prev"}
                     onPageChange={(page) => {
                       setPagination({ ...pagination, page: page.selected + 1 });
-                      history.push(
+                      navigate(
                         `/dharmshala/info?page=${
                           page.selected + 1
                         }&status=${isDeadAlive}&filter=${dropDownName}`

@@ -21,7 +21,7 @@ import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
 import { deleteAccount, updateAccount } from "../../../api/profileApi";
 import { useQueryClient } from "@tanstack/react-query";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ConverFirstLatterToCapital } from "../../../utility/formater";
 import moment from "moment";
 
@@ -33,7 +33,7 @@ function FundTransferTable({
   onChangePage,
   onChangePageSize,
 }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
   const columns = [

@@ -3,7 +3,7 @@ import { Form, Formik } from "formik";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
-import { Prompt, useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
 import { getAllExpensesLogs } from "../../api/expenseApi";
@@ -17,7 +17,7 @@ import {
   findAllExpenseName,
   findAllItemId,
 } from "../../api/cattle/cattleExpense";
-import { Storage } from "aws-amplify";
+import { uploadData } from '@aws-amplify/storage';;
 import "../../assets/scss/common.scss";
 import { DatePicker } from "antd";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
@@ -41,7 +41,7 @@ export default function ExpensesForm({
   paymentModeArr,
   flattenedAccounts,
 }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const uploadInvoice = useRef();
   const [loading, setLoading] = useState(false);
@@ -66,7 +66,7 @@ export default function ExpensesForm({
 
   const handleUpload = (acceptedFiles, uploadType) => {
     setIsUploading(true);
-    Storage.put(
+    uploadData(
       `temp/${randomNumber}_${acceptedFiles?.name.split(" ").join("-")}`,
       acceptedFiles,
       {
@@ -97,7 +97,7 @@ export default function ExpensesForm({
         expenseQueryClient.invalidateQueries(["Expenses"]);
         expenseQueryClient.invalidateQueries(["ExpensesDetail"]);
         setLoading(false);
-        history.push(
+        navigate(
           `/internal_expenses?page=${currentPage}&expenseType=${currentExpenseType}&filter=${currentFilter}`
         );
       } else if (data?.error) {
@@ -284,8 +284,8 @@ export default function ExpensesForm({
 
           return (
             <Form>
-              {showPrompt && (
-                <Prompt
+              {/* {showPrompt && (
+                <
                   when={!!Object.values(formik?.values).find((val) => !!val)}
                   message={(location) =>
                     `Are you sure you want to leave this page & visit ${location.pathname.replace(
@@ -294,7 +294,7 @@ export default function ExpensesForm({
                     )}`
                   }
                 />
-              )}
+              )} */}
               <div className="paddingForm">
                 <Row>
                   <Col xs={12} md={6} lg={4}>

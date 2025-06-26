@@ -8,7 +8,7 @@ import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useUpdateEffect } from "react-use";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
@@ -129,7 +129,7 @@ const handleDownloadReport = async () => {
         return "month";
     }
   };
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [pagination, setPagination] = useState({
     page: 1,
@@ -425,7 +425,7 @@ const handleDownloadReport = async () => {
             {/* <img
               src={arrowLeft}
               className="me-2  cursor-pointer align-self-center"
-              onClick={() => history.push("/")}
+              onClick={() => navigate("/")}
             /> */}
             <div className="addAction d-flex">
               <div className="">

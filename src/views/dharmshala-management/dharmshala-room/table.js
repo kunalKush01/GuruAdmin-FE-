@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import { Button } from "reactstrap";
@@ -13,7 +13,7 @@ import avtarIcon from "../../../assets/images/icons/dashBoard/defaultAvatar.svg"
 import confirmationIcon from "../../../assets/images/icons/news/conformationIcon.svg";
 import CustomDharmshalaTable from "../../../components/partials/CustomDharmshalaTable";
 import { ConverFirstLatterToCapital } from "../../../utility/formater";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { useParams } from "react-router-dom";
 import "../../../assets/scss/dharmshala.scss";
 import { Table } from "antd";
 
@@ -28,7 +28,7 @@ const DharmshalaRoomTable = ({
   isMobileView,
 }) => {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { floorId, buildingId } = useParams();
   const handleDeleteRoom = async (payload) => {
     return deleteRoom(payload);
@@ -86,7 +86,7 @@ const DharmshalaRoomTable = ({
               width={35}
               className="cursor-pointer "
               onClick={() => {
-                history.push({
+                navigate({
                   pathname: `/rooms/edit/${item?._id}/${floorId}/${buildingId}`,
                   state: { roomData: item },
                 });

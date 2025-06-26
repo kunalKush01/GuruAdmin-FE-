@@ -9,7 +9,7 @@ import arrPrev from "../../assets/images/icons/arrow-prev.svg";
 import arrNext from "../../assets/images/icons/arrow-next.svg";
 import Swal from "sweetalert2";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { Rnd } from "react-rnd";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
@@ -67,7 +67,7 @@ const PlaceholderRows = ({ numRows, days = [] }) => {
 };
 
 const Calendar = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [events, setEvents] = useState([]);
   const [days, setDays] = useState([]);
   const [properties, setProperties] = useState([]);
@@ -423,7 +423,7 @@ const Calendar = () => {
   };
 
   const handleCellClick = (date, property) => {
-    history.push({
+    navigate({
       pathname: `/booking/add`,
       state: { property: property, date: date },
     });
@@ -543,7 +543,7 @@ const Calendar = () => {
             : prevEvent
         )
       );
-      history.push({
+      navigate({
         pathname: `/booking/edit/${updatedEvent._id}`,
         state: { bookingData: updatedEvent },
       });
@@ -616,7 +616,7 @@ const Calendar = () => {
           <img
             src={arrowLeft}
             className="me-2 cursor-pointer"
-            onClick={() => history.push(`/booking/info/`)}
+            onClick={() => navigate(`/booking/info/`)}
           />
         </div>
         <div
@@ -1064,7 +1064,7 @@ const Calendar = () => {
                                 );
                                 const today = new Date();
                                 if (checkOut >= today) {
-                                  history.push({
+                                  navigate({
                                     pathname: `/booking/edit/${event._id}`,
                                     state: { bookingData: event },
                                   });

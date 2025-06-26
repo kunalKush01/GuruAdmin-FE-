@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getEventDetail } from "../../api/eventApi";
 import { getNoticeDetail } from "../../api/noticeApi";
 import DetailPage from "../../components/partials/customDetailpage";

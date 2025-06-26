@@ -15,7 +15,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { Button } from "reactstrap";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import FamilyModalForm from "./FamilyModalForm";
 import { getDonationForMember, getMembersById } from "../../api/membershipApi";
 import { useQuery } from "@tanstack/react-query";
@@ -47,7 +47,7 @@ function MembershipProfileView() {
   });
   const trustId = localStorage.getItem("trustId");
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { id } = useParams();
   const { data } = useQuery(
     ["memberShipProfileData", id],
@@ -456,13 +456,13 @@ function MembershipProfileView() {
         <img
           src={arrowLeft}
           className="me-2  cursor-pointer"
-          onClick={() => history.push(`/membership`)}
+          onClick={() => navigate(`/membership`)}
         />
         <div>
           <Button
             className="mb-1"
             color="primary"
-            onClick={() => history.push(`/member/editMember/${id}`)}
+            onClick={() => navigate(`/member/editMember/${id}`)}
           >
             {t("edit")}
           </Button>

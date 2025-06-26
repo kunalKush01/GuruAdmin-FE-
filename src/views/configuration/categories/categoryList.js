@@ -9,7 +9,7 @@ import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
 import {
@@ -41,7 +41,7 @@ export default function Category() {
         return "month";
     }
   };
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [pagination, setPagination] = useState({
     page: 1,
@@ -159,7 +159,7 @@ export default function Category() {
             {/* <img
               src={arrowLeft}
               className="me-2  cursor-pointer"
-              onClick={() => history.push("/")}
+              onClick={() => navigate("/")}
             /> */}
             <div className="addAction">
               <div className="">
@@ -178,7 +178,7 @@ export default function Category() {
                 setCategoryId(e.target.id);
                 setdropDownName(e.target.name);
                 setPagination({ page: 1 });
-                history.push(
+                navigate(
                   `/configuration/categories?page=${1}&filter=${e.target.name}`
                 );
               }}
@@ -189,7 +189,7 @@ export default function Category() {
                 color="primary"
                 className="addAction-btn"
                 onClick={() =>
-                  history.push(
+                  navigate(
                     `/configuration/categories/add?page=${pagination.page}&filter=${dropDownName}`
                   )
                 }
@@ -293,7 +293,7 @@ export default function Category() {
                     previousClassName={"page-item prev"}
                     onPageChange={(page) => {
                       setPagination({ ...pagination, page: page.selected + 1 });
-                      history.push(
+                      navigate(
                         `/configuration/categories?page=${
                           page.selected + 1
                         }&filter=${dropDownName}`

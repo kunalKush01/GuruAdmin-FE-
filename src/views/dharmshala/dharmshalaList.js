@@ -8,7 +8,7 @@ import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
 import {
@@ -81,7 +81,7 @@ export default function Dharmshala() {
         return "month";
     }
   };
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [pagination, setPagination] = useState({
     page: 1,
@@ -227,7 +227,7 @@ export default function Dharmshala() {
             {/* <img
               src={arrowLeft}
               className="me-2 cursor-pointer align-self-center"
-              onClick={() => history.push("/")}
+              onClick={() => navigate("/")}
             /> */}
             <div className="addDonation d-flex">
               <div className="">
@@ -246,7 +246,7 @@ export default function Dharmshala() {
                 setCategoryId(e.target.id);
                 setCategoryTypeName(e.target.name);
                 setPagination({ page: 1 });
-                history.push(
+                navigate(
                   `/donation?page=${1}&category=${
                     e.target.name
                   }&subCategory=${subCategoryTypeName}&filter=${dropDownName}`
@@ -262,7 +262,7 @@ export default function Dharmshala() {
                 setSubCategoryTypeId(e.target.id);
                 setSubCategoryTypeName(e.target.name);
                 setPagination({ page: 1 });
-                history.push(
+                navigate(
                   `/donation?page=${1}&category=${categoryTypeName}&subCategory=${
                     e.target.name
                   }&filter=${dropDownName}`
@@ -275,7 +275,7 @@ export default function Dharmshala() {
               setdropDownName={(e) => {
                 setdropDownName(e.target.name);
                 setPagination({ page: 1 });
-                history.push(
+                navigate(
                   `/donation?page=${1}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${
                     e.target.name
                   }`
@@ -305,7 +305,7 @@ export default function Dharmshala() {
                 color="primary"
                 className={`addDonation-btn`}
                 onClick={() =>
-                  history.push(
+                  navigate(
                     `/donation/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}`
                   )
                 }
@@ -391,7 +391,7 @@ export default function Dharmshala() {
                     previousClassName={"page-item prev"}
                     onPageChange={(page) => {
                       setPagination({ ...pagination, page: page.selected + 1 });
-                      history.push(
+                      navigate(
                         `/donation?page=${
                           page.selected + 1
                         }&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}`

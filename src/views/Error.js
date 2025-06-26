@@ -1,4 +1,4 @@
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "reactstrap";
 import { useSkin } from "@hooks/useSkin";
 import { Helmet } from "react-helmet";
@@ -8,7 +8,7 @@ import "@styles/base/pages/page-misc.scss";
 
 const Error = () => {
   const { skin } = useSkin();
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation(); // To get the current URL
   const [countdown, setCountdown] = useState(3);
   const [source, setSource] = useState("");
@@ -70,7 +70,7 @@ const Error = () => {
     }, 1000);
 
     const timeout = setTimeout(() => {
-      history.push("/");
+      navigate("/");
     }, 3000);
 
     // Cleanup intervals and timeouts

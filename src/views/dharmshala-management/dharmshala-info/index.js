@@ -7,7 +7,7 @@ import { Else, If, Then } from "react-if-else-switch";
 import Skeleton from "react-loading-skeleton";
 import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import { getDharmshalaList } from "../../../api/dharmshala/dharmshalaInfo";
 import NoContent from "../../../components/partials/noContent";
@@ -17,7 +17,7 @@ import "../../../assets/scss/dharmshala.scss";
 import {DELETE, EDIT, WRITE} from "../../../utility/permissionsVariable.js";
 
 const DharmshalasInfo = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const importFileRef = useRef();
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -116,7 +116,7 @@ const DharmshalasInfo = () => {
               className="me-1"
               color="primary"
               onClick={() =>
-                history.push(
+                navigate(
                   `/building/info/add?page=${pagination.page}&filter=${dropDownName}`
                 )
               }
@@ -214,7 +214,7 @@ const DharmshalasInfo = () => {
                           ...pagination,
                           page: page.selected + 1,
                         });
-                        history.push(
+                        navigate(
                           `/dharmshala/info?page=${
                             page.selected + 1
                           }&status=${currentStatus}&filter=${dropDownName}`

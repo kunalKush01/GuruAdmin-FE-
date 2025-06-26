@@ -4,7 +4,7 @@ import numberToWords from "number-to-words";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ReactToPrint from "react-to-print";
 import { toast } from "react-toastify";
 import styled from "styled-components";
@@ -63,7 +63,7 @@ export default function CommitmentListTable(
     },
   });
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const ref = useRef();
   const pdfRef = useRef();
 
@@ -255,7 +255,7 @@ export default function CommitmentListTable(
             onClick={() => {
               financeReport
                 ? ""
-                : history.push(
+                : navigate(
                     `/donations/paid/${item._id}?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`
                   );
             }}
@@ -287,12 +287,12 @@ export default function CommitmentListTable(
               }`}
               onClick={() =>
                 financeReport && !paymentStatus
-                  ? history.push(
+                  ? navigate(
                       `/commitment/pay-donation/${item._id}`,
                       item._id
                     )
                   : !paymentStatus &&
-                    history.push(
+                    navigate(
                       `/commitment/pay-donation/${item._id}?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`,
                       item._id
                     )
@@ -323,7 +323,7 @@ export default function CommitmentListTable(
                   onClick={() => {
                     financeReport
                       ? ""
-                      : history.push(
+                      : navigate(
                           `/commitment/edit/${item?._id}?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`
                         );
                   }}

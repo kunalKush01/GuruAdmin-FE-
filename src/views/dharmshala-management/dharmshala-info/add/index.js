@@ -1,6 +1,6 @@
 import React from "react";
 import { Trans } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import * as Yup from "yup";
 
@@ -11,7 +11,7 @@ import "../../../../assets/scss/common.scss";
 import "../../../../assets/scss/dharmshala.scss";
 
 const AddDharmshala = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
   const currentStatus = searchParams.get("status");
@@ -40,7 +40,7 @@ const AddDharmshala = () => {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push(`/dharmshala/info`)}
+            onClick={() => navigate(`/dharmshala/info`)}
           />
           <div className="addEvent">
             <Trans i18nKey={"building_add"} />

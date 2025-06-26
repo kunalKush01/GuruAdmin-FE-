@@ -3,7 +3,7 @@ import moment from "moment";
 import React, { useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getCattlesBreedList } from "../../../api/cattle/cattleBreed";
 import styled from "styled-components";
 import { ChangePeriodDropDown } from "../../../components/partials/changePeriodDropDown";
@@ -17,7 +17,7 @@ import ReactPaginate from "react-paginate";
 import BreedModal from "./breedModal";
 import "../../../assets/scss/viewCommon.scss";
 const CattleBreed = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
@@ -115,7 +115,7 @@ const CattleBreed = () => {
               setdropDownName={(e) => {
                 setdropDownName(e.target.name);
                 setPagination({ page: 1 });
-                history.push(
+                navigate(
                   `/configuration/cattle-breed?page=${1}&filter=${
                     e.target.name
                   }`
@@ -219,7 +219,7 @@ const CattleBreed = () => {
                     previousClassName={"page-item prev"}
                     onPageChange={(page) => {
                       setPagination({ ...pagination, page: page.selected + 1 });
-                      history.push(
+                      navigate(
                         `/configuration/cattle-breed?page=${
                           page.selected + 1
                         }&filter=${dropDownName}`

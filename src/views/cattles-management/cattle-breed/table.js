@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { deleteCattleBreed } from "../../../api/cattle/cattleBreed";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

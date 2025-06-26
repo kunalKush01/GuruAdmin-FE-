@@ -3,7 +3,7 @@ import { Form, Formik } from "formik";
 import React, { useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
-import { Prompt, useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import { toast } from "react-toastify";
 import CustomTextField from "../partials/customTextField";
@@ -17,7 +17,7 @@ const AddRoomTypeForm = ({
   isEdit,
   ...props
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [showPrompt, setShowPrompt] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -29,7 +29,7 @@ const AddRoomTypeForm = ({
       if (!data?.error) {
         queryClient.invalidateQueries(["roomTypeList"]);
         setLoading(false);
-        history.push(`/roomtype/info`);
+        navigate(`/roomtype/info`);
         if (isEdit == "true") {
           return toast.success(t("roomtype_edit_successfully"));
         } else {
@@ -89,8 +89,8 @@ const AddRoomTypeForm = ({
       >
         {(formik) => (
           <Form>
-            {showPrompt && (
-              <Prompt
+            {/* {showPrompt && (
+              <
                 when={!!Object.values(formik?.values).find((val) => !!val)}
                 message={(location) =>
                   `Are you sure you want to leave this page & visit ${location.pathname.replace(
@@ -99,7 +99,7 @@ const AddRoomTypeForm = ({
                   )}`
                 }
               />
-            )}
+            )} */}
 
             <Row className="paddingForm">
               <Col xs={12} md={10}>

@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 
@@ -28,7 +28,7 @@ const CattleInfoTable = ({
   currentPage,
 }) => {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const handleDeleteCattle = async (payload) => {
     return deleteCattleInfo(payload);
   };
@@ -192,7 +192,7 @@ const CattleInfoTable = ({
                 width={35}
                 className="cursor-pointer "
                 onClick={() => {
-                  history.push(`/cattle/info/${item?._id}`);
+                  navigate(`/cattle/info/${item?._id}`);
                 }}
               />
             ) : (

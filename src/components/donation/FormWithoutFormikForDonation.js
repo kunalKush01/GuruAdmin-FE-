@@ -2,7 +2,7 @@ import { Form } from "formik";
 import React, { useEffect, useMemo, useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
-import { Prompt, useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useUpdateEffect } from "react-use";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import { getAllSubCategories } from "../../api/expenseApi";
@@ -53,7 +53,7 @@ export default function FormWithoutFormikForDonation({
   ...props
 }) {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { REACT_APP_BASEURL_PUBLIC } = process.env;
 
   const { SelectedMasterCategory, SelectedSubCategory, Amount } = formik.values;
@@ -388,8 +388,8 @@ export default function FormWithoutFormikForDonation({
   }, [[formik.values.paymentScreenShot], heroRefreshFlag]);
   return (
     <Form>
-      {showPrompt && (
-        <Prompt
+      {/* {showPrompt && (
+        <
           when={
             !!Object.values(formik?.values).find(
               (val, key) => !!val && key !== "Mobile"
@@ -402,7 +402,7 @@ export default function FormWithoutFormikForDonation({
             )}`
           }
         />
-      )}
+      )} */}
       <Row>
         <Col xs={12}>
           <Row>

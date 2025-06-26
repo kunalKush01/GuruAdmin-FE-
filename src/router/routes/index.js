@@ -9,7 +9,7 @@ const TemplateTitle = "%s - Vuexy React Admin Template";
 const DefaultRoute = "/dashboard";
 
 // ** Merge Routes
-const Routes = [
+const AllRoutes = [
   {
     path: "/login",
     component: lazy(() => import("../../views/login/login.js")),
@@ -1083,4 +1083,4 @@ const Routes = [
   },
 ];
 
-export { DefaultRoute, Routes, TemplateTitle };
+export { DefaultRoute, AllRoutes, TemplateTitle };

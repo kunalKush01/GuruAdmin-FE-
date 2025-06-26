@@ -12,7 +12,7 @@ import {
 import { useTranslation } from "react-i18next";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import "../../assets/scss/common.scss";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getAccountById, getAccountEntries } from "../../api/profileApi";
 import { useParams } from "react-router-dom";
@@ -50,7 +50,7 @@ const registerColumns = [
 const AccountView = () => {
   const { t } = useTranslation();
   const { id } = useParams();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 10,
@@ -114,7 +114,7 @@ const AccountView = () => {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push("/accounts")}
+            onClick={() => navigate("/accounts")}
           />
           <span className="commonFont">{t("Transactions History")}</span>
         </div>

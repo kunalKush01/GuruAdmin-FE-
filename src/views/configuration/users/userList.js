@@ -12,7 +12,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import ReactPaginate from "react-paginate";
 import { Plus } from "react-feather";
 import moment from "moment";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import NoNews from "../../../components/partials/noContent";
 import { If, Then, Else } from "react-if-else-switch";
@@ -54,7 +54,7 @@ export default function User() {
         return "month";
     }
   };
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [pagination, setPagination] = useState({
     page: 1,
@@ -159,7 +159,7 @@ export default function User() {
             {/* <img
               src={arrowLeft}
               className="me-2  cursor-pointer"
-              onClick={() => history.push("/")}
+              onClick={() => navigate("/")}
             /> */}
             <div className="addNews">
               <div className="">
@@ -177,7 +177,7 @@ export default function User() {
                 className="addAction-btn"
                 onClick={() =>
                   userRolesItems?.length > 0
-                    ? history.push(
+                    ? navigate(
                         `/configuration/users/add?page=${pagination.page}`
                       )
                     : Swal.fire({
@@ -271,7 +271,7 @@ export default function User() {
                     previousClassName={"page-item prev"}
                     onPageChange={(page) => {
                       setPagination({ ...pagination, page: page.selected + 1 });
-                      history.push(
+                      navigate(
                         `/configuration/users?page=${page.selected + 1}`
                       );
                     }}

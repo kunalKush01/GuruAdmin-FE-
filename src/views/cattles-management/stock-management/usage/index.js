@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton from "react-loading-skeleton";
 import ReactPaginate from "react-paginate";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 
 import NoContent from "../../../../components/partials/noContent";
@@ -27,7 +27,7 @@ const Usage = ({
   onChangePage,
   onChangePageSize,
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
   return (
@@ -111,7 +111,7 @@ const Usage = ({
                   previousClassName={"page-item prev"}
                   onPageChange={(page) => {
                     setPagination({ ...pagination, page: page.selected + 1 });
-                    history.push(
+                    navigate(
                       `/stock-management/usage?page=${
                         page.selected + 1
                       }&filter=${dropDownName}`

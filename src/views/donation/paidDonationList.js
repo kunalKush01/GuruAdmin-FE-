@@ -5,7 +5,7 @@ import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import { getAllPaidDonations } from "../../api/donationApi";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
@@ -18,7 +18,7 @@ export default function PaidDonationList() {
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { commitmentId } = useParams();
   const [pagination, setPagination] = useState({
     page: 1,
@@ -54,7 +54,7 @@ export default function PaidDonationList() {
               src={arrowLeft}
               className="me-2 cursor-pointer align-self-center"
               onClick={() =>
-                history.push(
+                navigate(
                   `/commitment?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`
                 )
               }
@@ -130,7 +130,7 @@ export default function PaidDonationList() {
                     previousClassName={"page-item prev"}
                     onPageChange={(page) => {
                       setPagination({ ...pagination, page: page.selected + 1 });
-                      history.push(
+                      navigate(
                         `/donation?page=${
                           page.selected + 1
                         }&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}`

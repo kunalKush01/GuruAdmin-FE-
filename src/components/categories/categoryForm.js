@@ -3,7 +3,7 @@ import { Form, Formik } from "formik";
 import React, { useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
-import { Prompt, useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import "../../assets/scss/common.scss";
@@ -27,7 +27,7 @@ export default function CategoryForm({
   ...props
 }) {
   console.log(AddLanguage);
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const categoryQuerClient = useQueryClient();
   const [loading, setLoading] = useState(false);
@@ -39,7 +39,7 @@ export default function CategoryForm({
         categoryQuerClient.invalidateQueries(["Categories"]);
         categoryQuerClient.invalidateQueries(["SubCategoryDetail"]);
         setLoading(false);
-        history.push("/configuration/categories");
+        navigate("/configuration/categories");
       } else if (data.error) {
         setLoading(false);
       }
@@ -74,8 +74,8 @@ export default function CategoryForm({
       >
         {(formik) => (
           <Form>
-            {showPrompt && (
-              <Prompt
+            {/* {showPrompt && (
+              <
                 when={!!Object.values(formik?.values).find((val) => !!val)}
                 message={(location) =>
                   `Are you sure you want to leave this page & visit ${location.pathname.replace(
@@ -84,7 +84,7 @@ export default function CategoryForm({
                   )}`
                 }
               />
-            )}
+            )} */}
 
             <Row className="paddingForm">
               <Col>

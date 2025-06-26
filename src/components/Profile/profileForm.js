@@ -1,12 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Storage } from "aws-amplify";
+import { uploadData } from '@aws-amplify/storage';;
 import { Form, Formik } from "formik";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Plus, X } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import TimePicker from "react-time-picker";
 import "react-time-picker/dist/TimePicker.css";
 import { toast } from "react-toastify";
@@ -58,7 +58,7 @@ export default function ProfileForm({
   setTrustMobileNumberState,
   defaultHeroImage,
 }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
@@ -69,7 +69,7 @@ export default function ProfileForm({
         setLoading(false);
         queryClient.invalidateQueries(["ProfileModule"]);
         if (AddLanguage) {
-          history.push("/edit-profile");
+          navigate("/edit-profile");
         }
         !AddLanguage &&
           dispatch(
@@ -140,7 +140,7 @@ export default function ProfileForm({
     setDocumentSpinner(true);
     const { extension, unixTimestampSeconds } =
       useTimeStampAndImageExtension(acceptedFiles);
-    Storage.put(
+    uploadData(
       `temp/${
         uploadType == "document" ? "Documents" : "FacilitiesImage"
       }_${randomNumber}_${unixTimestampSeconds}.${extension}`,
@@ -380,7 +380,7 @@ export default function ProfileForm({
           }, [defaultHeroImage, heroRefreshFlag]);
           return (
             <Form>
-              {/* <Prompt
+              {/* <
               when={!!Object.values(formik?.values).find((val) => !!val)}
               message={(location) =>
                 `Are you sure you want to leave this page & visit ${location.pathname.replace(
@@ -860,7 +860,7 @@ export default function ProfileForm({
                         className=""
                         onClick={toggle}
                         // onClick={() => {
-                        //   history.push("/facilities");
+                        //   navigate("/facilities");
                         //   dispatch(
                         //     handleProfileUpdate({
                         //       ...formik.values,

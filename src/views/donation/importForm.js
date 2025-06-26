@@ -20,7 +20,7 @@ import "../../assets/scss/common.scss";
 import { importDonationFile } from "../../api/donationApi";
 import { useQueryClient } from "@tanstack/react-query";
 import { importCommitmentFile } from "../../api/commitmentApi";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { importMemberFile } from "../../api/membershipApi";
 import { importMessages } from "../../api/messageApi";
@@ -59,7 +59,7 @@ function ImportForm({
     { label: t("Variable 4"), value: "var4" },
     { label: t("Variable 5"), value: "var5" },
   ];
-  const history = useHistory();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [sourceFields, setSourceFields] = useState([]);
   const [mapping, setMapping] = useState({});

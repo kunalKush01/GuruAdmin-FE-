@@ -7,13 +7,13 @@ import { fetchFields } from "../../fetchModuleFields";
 import { useSelector } from "react-redux";
 import { searchSupense, syncSuspenseWithSearch } from "../../api/suspenseApi";
 import moment from "moment";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const { Option } = Select;
 const { TextArea } = Input;
 
 const AIMatchedRecord = ({ donationRecord }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   // Update screen size on resize
@@ -160,7 +160,7 @@ const AIMatchedRecord = ({ donationRecord }) => {
       modeOfPayment: record.modeOfPayment,
     }).toString();
 
-    history.push({
+    navigate({
       pathname: "/donation/edit",
       search: `?${params}`,
       state: {

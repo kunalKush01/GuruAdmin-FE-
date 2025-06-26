@@ -7,7 +7,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 
 import {
@@ -45,7 +45,7 @@ export default function Donation() {
         return "month";
     }
   };
-  const history = useHistory();
+  const navigate = useNavigate();
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 10,
@@ -205,7 +205,7 @@ export default function Donation() {
             {/* <img
               src={arrowLeft}
               className="me-2 cursor-pointer align-self-center"
-              onClick={() => history.push("/")}
+              onClick={() => navigate("/")}
             /> */}
             <div className="addAction d-flex">
               <div className="">
@@ -224,7 +224,7 @@ export default function Donation() {
                 setCategoryId(e.target.id);
                 setCategoryTypeName(e.target.name);
                 setPagination({ page: 1 });
-                history.push(
+                navigate(
                   `/donation?page=${1}&category=${
                     e.target.name
                   }&subCategory=${subCategoryTypeName}&filter=${dropDownName}`
@@ -240,7 +240,7 @@ export default function Donation() {
                 setSubCategoryTypeId(e.target.id);
                 setSubCategoryTypeName(e.target.name);
                 setPagination({ page: 1 });
-                history.push(
+                navigate(
                   `/donation?page=${1}&category=${categoryTypeName}&subCategory=${
                     e.target.name
                   }&filter=${dropDownName}`
@@ -253,7 +253,7 @@ export default function Donation() {
               setdropDownName={(e) => {
                 setdropDownName(e.target.name);
                 setPagination({ page: 1 });
-                history.push(
+                navigate(
                   `/donation?page=${1}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${
                     e.target.name
                   }`
@@ -283,7 +283,7 @@ export default function Donation() {
                 color="primary"
                 className={`addAction-btn`}
                 onClick={() =>
-                  history.push(
+                  navigate(
                     `/donation/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&filter=${dropDownName}`
                   )
                 }

@@ -8,8 +8,8 @@ import { authApiInstance } from "./axiosApi/authApiInstans";
 import { setAvailableLang } from "./redux/authSlice";
 import Router from "./router/Router";
 import { disableInspect } from "./utility/removeContextMenu";
-import { useMessageIntegration } from './utility/hooks/useMessageIntegration';
-import { MessageContext } from './utility/context/MessageContext';
+import { useMessageIntegration } from "./utility/hooks/useMessageIntegration";
+import { MessageContext } from "./utility/context/MessageContext";
 
 const App = () => {
   if (process.env.REACT_APP_ENVIRONMENT === "production") {
@@ -18,18 +18,21 @@ const App = () => {
 
   const messageIntegrationState = useMessageIntegration();
 
-  configureAmplify();
+  // configureAmplify();
 
   const selectedLanguage = useSelector((state) => state.auth.selectLang);
   const dispatch = useDispatch();
   const languageList = async () => {
-    const languageListRes = await authApiInstance.get("/language");
-    if (!languageListRes) {
-      return;
+    try {
+      const response = await authApiInstance.get("/language");
+      if (response?.data?.data?.results) {
+        dispatch(setAvailableLang(response.data.data.results));
+      }
+    } catch (error) {
+      console.error("Language API fetch failed:", error.message || error);
     }
-
-    dispatch(setAvailableLang(languageListRes?.data?.data?.results));
   };
+
   const { i18n } = useTranslation();
   useEffect(() => {
     i18n.changeLanguage(selectedLanguage.langCode);

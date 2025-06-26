@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import { deleteMedicalRecord } from "../../../api/cattle/cattleMedical";
@@ -23,7 +23,7 @@ const MedicalReportTable = ({
   height,
 }) => {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const handleDeleteMedicalRecord = async (payload) => {
     return deleteMedicalRecord(payload);
   };
@@ -117,7 +117,7 @@ const MedicalReportTable = ({
                 width={35}
                 className="cursor-pointer "
                 onClick={() => {
-                  history.push(
+                  navigate(
                     `/cattle/medical-info/${item?.id}?page=${currentPage}&filter=${currentFilter}`
                   );
                 }}

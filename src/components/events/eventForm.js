@@ -5,7 +5,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Prompt, useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Select, TimePicker } from "antd";
 import "react-time-picker/dist/TimePicker.css";
 import { toast } from "react-toastify";
@@ -44,7 +44,7 @@ export default function EventForm({
   selectEventDisabled,
   langSelectionValue,
 }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const eventQueryClient = useQueryClient();
@@ -56,7 +56,7 @@ export default function EventForm({
         eventQueryClient.invalidateQueries(["EventDates"]);
         eventQueryClient.invalidateQueries(["EventDetail"]);
         setLoading(false);
-        history.push("/events");
+        navigate("/events");
       } else if (data.error) {
         setLoading(false);
       }
@@ -206,8 +206,8 @@ export default function EventForm({
           }, [formik.values.images]);
           return (
             <Form>
-              {showPrompt && (
-                <Prompt
+              {/* {showPrompt && (
+                <
                   when={!!Object.values(formik?.values).find((val) => !!val)}
                   message={(location) =>
                     `Are you sure you want to leave this page & visit ${location.pathname.replace(
@@ -216,7 +216,7 @@ export default function EventForm({
                     )}`
                   }
                 />
-              )}
+              )} */}
 
               <Row className="paddingForm">
                 <Row>

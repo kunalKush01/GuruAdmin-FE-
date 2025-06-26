@@ -7,7 +7,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   Col,
@@ -67,7 +67,7 @@ export default function Commitment() {
         return "month";
     }
   };
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [pagination, setPagination] = useState({
     page: 1,
@@ -377,7 +377,7 @@ export default function Commitment() {
                       setCategoryId(e.target.id);
                       setCategoryTypeName(e.target.name);
                       setPagination({ page: 1, limit: 10 });
-                      history.push(
+                      navigate(
                         `/commitment?page=${1}&category=${
                           e.target.name
                         }&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${dropDownName}`
@@ -396,7 +396,7 @@ export default function Commitment() {
                       setSubCategoryTypeId(e.target.id);
                       setSubCategoryTypeName(e.target.name);
                       setPagination({ page: 1, limit: 10 });
-                      history.push(
+                      navigate(
                         `/commitment?page=${1}&category=${categoryTypeName}&subCategory=${
                           e.target.name
                         }&status=${commitmentStatus}&filter=${dropDownName}`
@@ -411,7 +411,7 @@ export default function Commitment() {
                     setdropDownName={(e) => {
                       setCommitmentStatus(e.target.name);
                       setPagination({ page: 1, limit: 10 });
-                      history.push(
+                      navigate(
                         `/commitment?page=${1}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${
                           e.target.name
                         }&filter=${dropDownName}`
@@ -427,7 +427,7 @@ export default function Commitment() {
                   setdropDownName={(e) => {
                     setdropDownName(e.target.name);
                     setPagination({ page: 1, limit: 10 });
-                    history.push(
+                    navigate(
                       `/commitment?page=${1}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${
                         e.target.name
                       }`
@@ -491,7 +491,7 @@ export default function Commitment() {
                     color="primary"
                     className={`addAction-btn me-1`}
                     onClick={() =>
-                      history.push(
+                      navigate(
                         `/commitment/add?page=${pagination.page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${dropDownName}`
                       )
                     }
@@ -599,7 +599,7 @@ export default function Commitment() {
                         pageSize={pagination.limit}
                         onChangePage={(page) => {
                           setPagination((prev) => ({ ...prev, page }));
-                          history.push(
+                          navigate(
                             `/commitment?page=${page}&category=${categoryTypeName}&subCategory=${subCategoryTypeName}&status=${commitmentStatus}&filter=${dropDownName}`
                           );
                         }}

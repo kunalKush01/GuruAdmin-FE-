@@ -9,7 +9,7 @@ import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
 import { getAllEvents, getEventDates } from "../../api/eventApi";
@@ -47,7 +47,7 @@ export default function EventList() {
         return "All";
     }
   };
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [pagination, setPagination] = useState({
     page: 1,
@@ -181,7 +181,7 @@ export default function EventList() {
             {/* <img
               src={arrowLeft}
               className="me-1 me-sm-2  cursor-pointer align-self-center"
-              onClick={() => history.push("/")}
+              onClick={() => navigate("/")}
             /> */}
             <div className="addAction">
               <div className="">
@@ -197,7 +197,7 @@ export default function EventList() {
               setdropDownName={(e) => {
                 setdropDownName(e.target.name);
                 setPagination({ page: 1 });
-                history.push(`/events?page=${1}&filter=${e.target.name}`);
+                navigate(`/events?page=${1}&filter=${e.target.name}`);
               }}
             />
             {allPermissions?.name === "all" ||
@@ -206,7 +206,7 @@ export default function EventList() {
                 color="primary"
                 className="addAction-btn"
                 onClick={() =>
-                  history.push(
+                  navigate(
                     `/events/add?page=${pagination.page}&filter=${dropDownName}`
                   )
                 }

@@ -5,7 +5,7 @@ import { Button, Col, Row } from "reactstrap";
 import MemberShipListTable from "../../components/membership/MemberShipListTable";
 import "../../assets/scss/common.scss";
 import "../../assets/scss/viewCommon.scss";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getAllMembers, getMemberSchema } from "../../api/membershipApi";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
@@ -24,7 +24,7 @@ import SendMessageModal from './SendMessageModal';
 function MemberShipListView() {
   const { t } = useTranslation();
   const selectedLang = useSelector((state) => state.auth.selectLang);
-  const history = useHistory();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [filterData, setFilterData] = useState({});
   const [messageModalVisible, setMessageModalVisible] = useState(false);
@@ -251,7 +251,7 @@ function MemberShipListView() {
                 <Button
                   className={`addAction-btn`}
                   color="primary"
-                  onClick={() => history.push(`/member/addMember`)}
+                  onClick={() => navigate(`/member/addMember`)}
                 >
                   Add
                 </Button>

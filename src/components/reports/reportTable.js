@@ -1,10 +1,10 @@
 import React from "react";
 import { Table } from "antd";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../../assets/scss/common.scss";
 
 const ReportTable = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const columns = [
     {
@@ -28,7 +28,7 @@ const ReportTable = () => {
   ];
 
   const handleRowClick = (record) => {
-    history.push(record.route);
+    navigate(record.route);
   };
 
   return (

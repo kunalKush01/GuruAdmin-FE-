@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "reactstrap";
 import styled from "styled-components";
 import Swal from "sweetalert2";
@@ -38,7 +38,7 @@ export function SubAdminUserListTable({
     },
   });
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const columns = [
     {
@@ -113,7 +113,7 @@ export function SubAdminUserListTable({
                 className="cursor-pointer"
                 width={35}
                 onClick={() =>
-                  history.push(
+                  navigate(
                     `/configuration/users/edit/${item.id}?page=${currentPage}`
                   )
                 }

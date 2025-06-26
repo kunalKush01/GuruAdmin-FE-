@@ -5,7 +5,7 @@ import { Trans } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import * as Yup from "yup";
 import { getCommitmentDetail } from "../../api/commitmentApi";
@@ -42,7 +42,7 @@ const getLangId = (langArray, langSelection) => {
 };
 
 export default function PayDonation() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { commitmentId } = useParams();
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -112,8 +112,8 @@ export default function PayDonation() {
             className="me-2 cursor-pointer"
             onClick={() =>
               currentCategory === null
-                ? history.push("/commitment")
-                : history.push(
+                ? navigate("/commitment")
+                : navigate(
                     `/commitment?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`
                   )
             }

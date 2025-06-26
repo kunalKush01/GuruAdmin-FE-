@@ -3,7 +3,7 @@ import { Form, Formik } from "formik";
 import React, { useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
-import { Prompt, useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
 import {
@@ -24,7 +24,7 @@ const AddItemUsageForm = ({
   ...props
 }) => {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [showPrompt, setShowPrompt] = useState(true);
   const [loading, setLoading] = useState(false);
 
@@ -46,7 +46,7 @@ const AddItemUsageForm = ({
       if (!data?.error) {
         queryClient.invalidateQueries(["cattleItemUsageList"]);
         setLoading(false);
-        history.push("/stock-management/usage");
+        navigate("/stock-management/usage");
       } else if (data?.error || data === undefined) {
         setLoading(false);
       }
@@ -75,8 +75,8 @@ const AddItemUsageForm = ({
       >
         {(formik) => (
           <Form>
-            {showPrompt && (
-              <Prompt
+            {/* {showPrompt && (
+              <
                 when={!!Object.values(formik?.values).find((val) => !!val)}
                 message={(location) =>
                   `Are you sure you want to leave this page & visit ${location.pathname.replace(
@@ -85,7 +85,7 @@ const AddItemUsageForm = ({
                   )}`
                 }
               />
-            )}
+            )} */}
 
             <Row className="paddingForm">
               <Col xs={12} md={10}>

@@ -4,7 +4,7 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Card, CardBody, Col, Row } from "reactstrap";
 import styled from "styled-components";
 import Swal from "sweetalert2";
@@ -27,7 +27,7 @@ function BtnContent({
   totalAvailableLanguage,
   allPermissions,
 }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const handleDeleteEvent = async (payload) => {
     return deleteEventDetail(payload);
   };
@@ -52,7 +52,7 @@ function BtnContent({
             xs={12}
             className="col-item"
             onClick={() =>
-              history.push(
+              navigate(
                 `/events/edit/${eventId}?page=${currentPage}&filter=${currentFilter}`
               )
             }
@@ -108,7 +108,7 @@ function BtnContent({
             onClick={() =>
               langList?.length === totalAvailableLanguage
                 ? ""
-                : history.push(
+                : navigate(
                     `/events/add-language/${eventId}?page=${currentPage}&filter=${currentFilter}`
                   )
             }
@@ -130,7 +130,7 @@ export default function EventCard({
   subPermission,
   allPermissions,
 }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [imageUrl, setImageUrl] = useState([]);
   useEffect(() => {
     if (data) {
@@ -165,7 +165,7 @@ export default function EventCard({
                 xs={12}
                 lg={2}
                 onClick={() =>
-                  history.push(`/events/about/${data.id}`, data.id)
+                  navigate(`/events/about/${data.id}`, data.id)
                 }
                 className="cursor-pointer me-md-1 me-xl-0 ps-0"
               >

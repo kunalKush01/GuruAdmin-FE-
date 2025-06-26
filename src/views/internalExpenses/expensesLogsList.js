@@ -8,7 +8,7 @@ import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
 import { getAllBoxCollectionLogs } from "../../api/donationBoxCollectionApi";
@@ -39,7 +39,7 @@ export default function ExpensesLog() {
         return "month";
     }
   };
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [pagination, setPagination] = useState({
     page: 1,
@@ -86,7 +86,7 @@ export default function ExpensesLog() {
             <img
               src={arrowLeft}
               className="me-2 cursor-pointer align-self-end"
-              onClick={() => history.push("/financial_reports")}
+              onClick={() => navigate("/financial_reports")}
             />
             <div className="addExpense">
               <div className="">

@@ -1,6 +1,6 @@
 import React from "react";
 import { Trans } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import * as Yup from "yup";
 
@@ -11,7 +11,7 @@ import "../../../../assets/scss/common.scss";
 import "../../../../assets/scss/dharmshala.scss";
 
 const AddRoomType = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
   const currentStatus = searchParams.get("status");
@@ -53,7 +53,7 @@ const AddRoomType = () => {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push(`/roomtype/info`)}
+            onClick={() => navigate(`/roomtype/info`)}
           />
           <div className="addEvent">
             <Trans i18nKey={"dharmshala_roomtype_add"} />

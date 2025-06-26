@@ -8,7 +8,7 @@ import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
 import { getAllSubscribedUser } from "../../api/subscribedUser";
@@ -38,7 +38,7 @@ export default function HundiLog() {
         return "month";
     }
   };
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [pagination, setPagination] = useState({
     page: 1,
@@ -87,7 +87,7 @@ export default function HundiLog() {
             <img
               src={arrowLeft}
               className="me-2 cursor-pointer align-self-end"
-              onClick={() => history.push("/financial_reports")}
+              onClick={() => navigate("/financial_reports")}
             />
             <div className="addNews">
               <div className="">

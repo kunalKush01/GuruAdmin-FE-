@@ -1,6 +1,6 @@
 import { Formik } from "formik";
 import React, { useEffect, useMemo, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../../assets/scss/common.scss";
 import { Country, State, City } from "country-state-city";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -17,7 +17,7 @@ export default function AddForm({
   mode,
   id,
 }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const queryClient = useQueryClient();
   const trustId = localStorage.getItem("trustId");
@@ -36,8 +36,8 @@ export default function AddForm({
       if (!data.error) {
         queryClient.invalidateQueries(["memberShipListData"]);
         mode == "add"
-          ? history.push("/membership")
-          : history.push(`/member/profile/${id}`);
+          ? navigate("/membership")
+          : navigate(`/member/profile/${id}`);
         setLoading(false);
         // onClose();
       } else if (data?.error) {

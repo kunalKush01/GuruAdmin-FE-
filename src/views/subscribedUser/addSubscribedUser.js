@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import * as Yup from "yup";
 import { createSubscribedUser } from "../../api/subscribedUser.js";
@@ -30,7 +30,7 @@ const schema = Yup.object().shape({
 });
 
 export default function AddSubscribedUser() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
@@ -41,7 +41,7 @@ export default function AddSubscribedUser() {
           <img
             src={arrowLeft}
             className="me-2 cursor-pointer"
-            onClick={() => history.push("/subscribed-user")}
+            onClick={() => navigate("/subscribed-user")}
           />
           <div className="addAction">
             <Trans i18nKey={"subscribed_user_add_user"} />

@@ -1,6 +1,6 @@
 // ** React Imports
 import { Suspense, lazy } from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import "./assets/scss/variables/_variables.scss";
 
 import "./assets/scss/style.scss";
@@ -49,7 +49,10 @@ const queryClient = new QueryClient({
     },
   },
 });
-ReactDOM.render(
+const container = document.getElementById("root");
+const root = createRoot(container);
+
+root.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <Suspense fallback={<Spinner />}>
@@ -62,8 +65,7 @@ ReactDOM.render(
         </ThemeContext>
       </Suspense>
     </PersistGate>
-  </Provider>,
-  document.getElementById("root")
+  </Provider>
 );
 
 serviceWorker.unregister();

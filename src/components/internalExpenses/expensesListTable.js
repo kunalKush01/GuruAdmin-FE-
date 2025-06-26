@@ -3,7 +3,7 @@ import he from "he";
 import moment from "moment";
 import { useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "reactstrap";
 import styled from "styled-components";
 import Swal from "sweetalert2";
@@ -45,7 +45,7 @@ export function ExpensesListTable({
     },
   });
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const columns = [
     {
       title: t("news_label_Title"),
@@ -128,7 +128,7 @@ export function ExpensesListTable({
               className={financeReport ? "d-none" : "cursor-pointer mr-2"}
               onClick={() => {
                 if (!financeReport) {
-                  history.push(
+                  navigate(
                     `/internal_expenses/edit/${item.id}?page=${currentPage}&expenseType=${currentExpenseFilter}&filter=${currentFilter}`
                   );
                 }

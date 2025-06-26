@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Permission = ({ subPermission, type, isGaushala = "", ...props }) => {
   const permissions = useSelector((state) => state.auth.userDetail.permissions);
@@ -27,7 +27,7 @@ const Permission = ({ subPermission, type, isGaushala = "", ...props }) => {
   const subPermissionRoute = subPermissionArr?.map((item) =>
     item?.name ? item?.name : ""
   );
-  const history = useHistory();
+  const navigate = useNavigate();
   const trustsModal = localStorage.getItem("trustsModal");
   const trustType = localStorage.getItem("trustType");
 
@@ -40,7 +40,7 @@ const Permission = ({ subPermission, type, isGaushala = "", ...props }) => {
         "dharmshala/feedback"].includes(type)) &&
       !hasDharmshalaAccess
     ) {
-      history.push("/not-found");
+      navigate("/not-found");
       return null;
     }
   }
@@ -51,7 +51,7 @@ const Permission = ({ subPermission, type, isGaushala = "", ...props }) => {
        "service"].includes(type) &&
       !isSevaEnabled
     ) {
-      history.push("/not-found");
+      navigate("/not-found");
       return null;
     }
   }
@@ -66,7 +66,7 @@ const Permission = ({ subPermission, type, isGaushala = "", ...props }) => {
     if (!trustsModal) {
       return props.children;
     } else {
-      history.push("/not-found");
+      navigate("/not-found");
     }
   } else if (
     (permissionRoute?.name === "all" &&
@@ -78,16 +78,16 @@ const Permission = ({ subPermission, type, isGaushala = "", ...props }) => {
     if (!trustsModal) {
       return props.children;
     } else {
-      history.push("/not-found");
+      navigate("/not-found");
     }
   } else if (type === "notification" || type === "editProfile") {
     if (!trustsModal) {
       return props.children;
     } else {
-      history.push("/not-found");
+      navigate("/not-found");
     }
   } else {
-    history.push("/not-found");
+    navigate("/not-found");
   }
   return <div></div>;
 };

@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "reactstrap";
 import styled from "styled-components";
 import Swal from "sweetalert2";
@@ -26,7 +26,7 @@ import { WRITE } from "../../../utility/permissionsVariable";
 import "../../../assets/scss/viewCommon.scss";
 const StockManagement = () => {
   const [active, setActive] = useState(location.pathname);
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
@@ -228,7 +228,7 @@ const StockManagement = () => {
                   setdropDownName(e.target.name);
                   setPagination({ page: 1 });
                   // Use the helper function to get the correct path
-                  history.push(
+                  navigate(
                     `/${getActivePath()}?page=1&filter=${e.target.name}`
                   );
                 }}
@@ -244,15 +244,15 @@ const StockManagement = () => {
                     color="primary"
                     onClick={() =>
                       active == "/stock-management/supplies"
-                        ? history.push(
+                        ? navigate(
                             `/stock-management/supplies/add?page=${pagination.page}&filter=${dropDownName}`
                           )
                         : active == "/stock-management/item"
-                        ? history.push(
+                        ? navigate(
                             `/stock-management/item/add?page=${pagination.page}&filter=${dropDownName}`
                           )
                         : active == "/stock-management/usage"
-                        ? history.push(
+                        ? navigate(
                             `/stock-management/usage/add?page=${pagination.page}&filter=${dropDownName}`
                           )
                         : "/not-found"

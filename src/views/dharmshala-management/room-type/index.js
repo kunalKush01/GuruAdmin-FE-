@@ -7,7 +7,7 @@ import { Else, If, Then } from "react-if-else-switch";
 import Skeleton from "react-loading-skeleton";
 import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 
 import { deleteRoomTypeInfo, getRoomTypeList } from "../../../api/dharmshala/dharmshalaInfo";
@@ -22,7 +22,7 @@ import Swal from "sweetalert2";
 import { DELETE, EDIT, WRITE } from "../../../utility/permissionsVariable";
 
 const RoomTypesInfo = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
@@ -133,7 +133,7 @@ const RoomTypesInfo = () => {
             width={35}
             className="cursor-pointer"
             onClick={() => {
-              history.push(
+              navigate(
                 `/roomtype/info/${item?._id}?name=${item?.name}&description=${item?.description}&capacity=${item?.capacity}&price=${item?.price}&isEdit=${true}`
               );
             }}
@@ -219,7 +219,7 @@ const RoomTypesInfo = () => {
               className="me-1"
               color="primary"
               onClick={() =>
-                history.push(
+                navigate(
                   `/roomtype/info/add?page=${pagination.page}&filter=${dropDownName}`
                 )
               }
@@ -325,7 +325,7 @@ const RoomTypesInfo = () => {
                     previousClassName={"page-item prev"}
                     onPageChange={(page) => {
                       setPagination({ ...pagination, page: page.selected + 1 });
-                      history.push(
+                      navigate(
                         `/roomType/info?page=${
                           page.selected + 1
                         }&status=${isDeadAlive}&filter=${dropDownName}`

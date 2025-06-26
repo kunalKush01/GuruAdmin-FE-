@@ -4,7 +4,7 @@ import { Trans } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import styled from "styled-components";
 import * as Yup from "yup";
@@ -31,7 +31,7 @@ const getLangId = (langArray, langSelection) => {
 };
 
 const EditItem = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { itemId } = useParams();
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -91,7 +91,7 @@ const EditItem = () => {
             src={arrowLeft}
             className="me-2  cursor-pointer"
             onClick={() =>
-              history.push(
+              navigate(
                 `/stock-management/item?page=${currentPage}&filter=${currentFilter}`
               )
             }

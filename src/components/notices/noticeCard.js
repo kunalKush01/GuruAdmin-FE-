@@ -5,7 +5,7 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   ButtonGroup,
@@ -48,7 +48,7 @@ function BtnContent({
   allPermissions,
 }) {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const handleDeleteNotice = async (payload) => {
     return deleteNoticeDetail(payload);
   };
@@ -71,7 +71,7 @@ function BtnContent({
             xs={12}
             className="col-item"
             onClick={() =>
-              history.push(
+              navigate(
                 `/notices/edit/${noticeId}?page=${currentPage}&filter=${currentFilter}`
               )
             }
@@ -127,7 +127,7 @@ function BtnContent({
             onClick={() =>
               langList?.length === totalAvailableLanguage
                 ? ""
-                : history.push(
+                : navigate(
                     `/notices/add-language/${noticeId}?page=${currentPage}&filter=${currentFilter}`
                   )
             }
@@ -149,7 +149,7 @@ export default function NoticeCard({
   subPermission,
   allPermissions,
 }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
   const [modal, setModal] = useState(false);
@@ -211,7 +211,7 @@ export default function NoticeCard({
                 xs={12}
                 md={2}
                 onClick={() =>
-                  history.push(`/notices/about/${data.id}`, data.id)
+                  navigate(`/notices/about/${data.id}`, data.id)
                 }
                 className="cursor-pointer  me-md-1 me-xl-0"
               >
@@ -299,7 +299,7 @@ export default function NoticeCard({
                                 : toggle();
                             }}
                             // () =>
-                            // history.push(
+                            // navigate(
                             //   `/news/edit/${data?.id}?page=${currentPage}&filter=${currentFilter}`,
                             //   data?.id
                             // )
@@ -366,7 +366,7 @@ export default function NoticeCard({
             <Col
               xs={2}
               className="cursor-pointer"
-              onClick={() => history.push(`/notices/about/${data.id}`, data.id)}
+              onClick={() => navigate(`/notices/about/${data.id}`, data.id)}
             >
               <img
                 src={data?.image || placeHolder}

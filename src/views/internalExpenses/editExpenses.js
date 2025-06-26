@@ -4,7 +4,7 @@ import moment from "moment";
 import React, { useMemo } from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import * as Yup from "yup";
 import { getExpensesDetail, updateExpensesDetail } from "../../api/expenseApi";
@@ -112,7 +112,7 @@ export default function AddExpense() {
     ),
   });
 
-  const history = useHistory();
+  const navigate = useNavigate();
   const langArray = useSelector((state) => state.auth.availableLang);
 
   const searchParams = new URLSearchParams(history.location.search);
@@ -199,7 +199,7 @@ export default function AddExpense() {
             src={arrowLeft}
             className="me-2  cursor-pointer"
             onClick={() =>
-              history.push(
+              navigate(
                 `/internal_expenses?page=${currentPage}&expenseType=${currentExpenseType}&filter=${currentFilter}`
               )
             }

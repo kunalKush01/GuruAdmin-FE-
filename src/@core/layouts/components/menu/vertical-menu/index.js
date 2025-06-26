@@ -9,7 +9,7 @@ import classnames from "classnames";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import moment from "moment";
@@ -64,7 +64,7 @@ const Sidebar = (props) => {
   };
 
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const refreshToken = useSelector((state) => state.auth.tokens.refreshToken);
   const userDetails = useSelector((state) => state.auth.userDetail);
   const { isLogged } = useSelector((state) => state.auth);
@@ -102,7 +102,7 @@ const Sidebar = (props) => {
 
   useEffect(() => {
     if (!isLogged) {
-      history.push("/login");
+      navigate("/login");
     }
   }, [isLogged, history]);
 
@@ -206,7 +206,7 @@ const Sidebar = (props) => {
           children: children,
           onClick: () => {
             if (!item.children) {
-              history.push(item.url);
+              navigate(item.url);
             }
           },
         };
@@ -219,7 +219,7 @@ const Sidebar = (props) => {
       const res = await authApiInstance.post("auth/logout", { refreshToken });
       toast.success(res.data.message);
       dispatch(logOut());
-      history.push("/login");
+      navigate("/login");
     } catch (error) {}
   };
   if (!isMounted) return null;

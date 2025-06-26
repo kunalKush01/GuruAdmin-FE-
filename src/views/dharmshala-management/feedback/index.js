@@ -5,12 +5,12 @@ import moment from "moment";
 import { Helmet } from "react-helmet";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
 import "../../../assets/scss/dharmshala.scss";
 
 const DharmshalaFeedback = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const importFileRef = useRef();
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -72,7 +72,7 @@ const DharmshalaFeedback = () => {
       <img
         src={arrowLeft}
         className="me-2 cursor-pointer"
-        onClick={() => history.push(`/dharmshala/dashboard`)}
+        onClick={() => navigate(`/dharmshala/dashboard`)}
       />
     </div>
   );

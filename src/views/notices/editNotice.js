@@ -6,7 +6,7 @@ import { Trans } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import styled from "styled-components";
 import * as Yup from "yup";
@@ -40,7 +40,7 @@ const getLangId = (langArray, langSelection) => {
 };
 
 export default function EditNotice() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { noticeId } = useParams();
 
   const langArray = useSelector((state) => state.auth.availableLang);
@@ -93,7 +93,7 @@ export default function EditNotice() {
             src={arrowLeft}
             className="me-2  cursor-pointer"
             onClick={() =>
-              history.push(
+              navigate(
                 `/notices?page=${currentPage}&filter=${currentFilter}`
               )
             }

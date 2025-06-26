@@ -4,7 +4,7 @@ import moment from "moment";
 import { useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "reactstrap";
 import styled from "styled-components";
 import Swal from "sweetalert2";
@@ -38,7 +38,7 @@ export default function PunyarjakTable({
     },
   });
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const columns = [
     {
@@ -118,7 +118,7 @@ export default function PunyarjakTable({
                 "opacity-50 disabled"
               }
               onClick={() =>
-                history.push(
+                navigate(
                   `/punyarjak/add-language/${item.id}?page=${currentPage}`
                 )
               }
@@ -137,7 +137,7 @@ export default function PunyarjakTable({
               className="cursor-pointer"
               width={35}
               onClick={() =>
-                history.push(`/punyarjak/edit/${item.id}?page=${currentPage}`)
+                navigate(`/punyarjak/edit/${item.id}?page=${currentPage}`)
               }
             />
           ) : (

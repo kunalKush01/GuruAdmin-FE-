@@ -4,7 +4,7 @@ import numberToWords from "number-to-words";
 import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ReactToPrint from "react-to-print";
 import { Spinner } from "reactstrap";
 import styled from "styled-components";
@@ -38,7 +38,7 @@ export default function DonationList(
   args
 ) {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const ref = useRef();
   const pdfRef = useRef();

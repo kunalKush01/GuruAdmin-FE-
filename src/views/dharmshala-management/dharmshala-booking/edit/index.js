@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { Trans, useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import deleteIcon from "../../../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../../../assets/images/icons/category/editIcon.svg";
@@ -24,7 +24,7 @@ import "../../../../assets/scss/dharmshala.scss";
 
 const AddDharmshalaBooking = (props) => {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { bookingId } = useParams();
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
@@ -279,7 +279,7 @@ const AddDharmshalaBooking = (props) => {
       confirmButtonText: t("confirm_cancel"),
     }).then((result) => {
       if (result.isConfirmed) {
-        history.push("/booking/info");
+        navigate("/booking/info");
       }
     });
   };
@@ -301,7 +301,7 @@ const AddDharmshalaBooking = (props) => {
           confirmButtonText: t("confirm"),
         });
 
-        history.push("/booking/info");
+        navigate("/booking/info");
       } else {
         Swal.fire({
           icon: "error",
@@ -334,7 +334,7 @@ const AddDharmshalaBooking = (props) => {
             src={arrowLeft}
             className="me-2 cursor-pointer"
             onClick={() =>
-              history.push(
+              navigate(
                 `/booking/info/?page=${currentPage}&status=${"requested"}&filter=${currentFilter}`
               )
             }

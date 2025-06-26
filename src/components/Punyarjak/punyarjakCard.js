@@ -4,7 +4,7 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   ButtonGroup,
@@ -46,7 +46,7 @@ function BtnContent({
   totalAvailableLanguage,
 }) {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const handleDeletePunyarjak = async (payload) => {
     return deletePunyarjak(payload);
   };
@@ -70,7 +70,7 @@ function BtnContent({
             xs={12}
             className="col-item"
             onClick={() =>
-              history.push(
+              navigate(
                 `/punyarjak/edit/${punyarjakId}?page=${currentPage}`,
                 punyarjakId
               )
@@ -129,7 +129,7 @@ function BtnContent({
             onClick={() =>
               langList?.length === totalAvailableLanguage
                 ? ""
-                : history.push(
+                : navigate(
                     `/punyarjak/add-language/${punyarjakId}?page=${currentPage}`,
                     punyarjakId
                   )

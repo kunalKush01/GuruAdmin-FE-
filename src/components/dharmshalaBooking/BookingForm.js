@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getAllMasterCategories } from "../../api/expenseApi";
 import FormWithoutFormikForBooking from "../../components/dharmshalaBooking/FormWithoutFormikForBooking";
 import {
@@ -35,7 +35,7 @@ export default function BookingForm({
   // const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [bookingData, setBookingData] = useState(null);
   const [currentEtag, setCurrentEtag] = useState(editBookingData?.etag || null);
-  const history = useHistory();
+  const navigate = useNavigate();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const [loading, setLoading] = useState(false);
   const masterloadOptionQuery = useQuery(
@@ -143,7 +143,7 @@ export default function BookingForm({
               setCurrentEtag(response.data.etag);
             }
 
-            history.push("/booking/info");
+            navigate("/booking/info");
             setShowPrompt(true);
           } catch (error) {
             if (error.response?.status === 409) {
@@ -161,7 +161,7 @@ export default function BookingForm({
             if (response.data?.etag) {
               setCurrentEtag(response.data.etag);
             }
-            history.push("/booking/info");
+            navigate("/booking/info");
           } catch (error) {
             if (error.response?.status === 409) {
               toast.error(

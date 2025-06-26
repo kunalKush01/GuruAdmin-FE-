@@ -3,7 +3,7 @@ import { Form, Formik } from "formik";
 import React, { useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
-import { Prompt, useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
 import CustomTextField from "../../partials/customTextField";
@@ -17,7 +17,7 @@ const AddStockItemForm = ({
   buttonName,
   ...props
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [showPrompt, setShowPrompt] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -30,7 +30,7 @@ const AddStockItemForm = ({
       if (!data?.error) {
         queryClient.invalidateQueries(["cattleStockManagementList"]);
         setLoading(false);
-        history.push("/stock-management/item");
+        navigate("/stock-management/item");
       } else if (data?.error || data === undefined) {
         setLoading(false);
       }
@@ -55,8 +55,8 @@ const AddStockItemForm = ({
     >
       {(formik) => (
         <Form>
-          {showPrompt && (
-            <Prompt
+          {/* {showPrompt && (
+            <
               when={!!Object.values(formik?.values).find((val) => !!val)}
               message={(location) =>
                 `Are you sure you want to leave this page & visit ${location.pathname.replace(
@@ -65,7 +65,7 @@ const AddStockItemForm = ({
                 )}`
               }
             />
-          )}
+          )} */}
 
           <Row className="paddingForm">
             <Col xs={12} md={10}>

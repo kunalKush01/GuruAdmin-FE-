@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import _ from "lodash";
 import React, { useMemo, useState } from "react";
 import { Trans } from "react-i18next";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import * as Yup from "yup";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
@@ -28,7 +28,7 @@ const schema = Yup.object().shape({
 });
 
 export default function AddLanguageNotice() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { noticeId } = useParams();
 
   const langArray = useSelector((state) => state.auth.availableLang);
@@ -108,7 +108,7 @@ export default function AddLanguageNotice() {
             src={arrowLeft}
             className="me-2  cursor-pointer"
             onClick={() =>
-              history.push(
+              navigate(
                 `/notices?page=${currentPage}&filter=${currentFilter}`
               )
             }

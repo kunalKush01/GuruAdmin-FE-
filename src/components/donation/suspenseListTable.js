@@ -36,7 +36,7 @@ import confirmationIcon from "../../assets/images/icons/news/conformationIcon.sv
 import moveToExpense from "../../assets/images/icons/moveToExpense.svg";
 import { useTranslation } from "react-i18next";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const CustomDatePicker = DatePicker.generatePicker(momentGenerateConfig);
 const { Panel } = Collapse;
 
@@ -57,7 +57,7 @@ function SuspenseListTable({
   const [editingRecord, setEditingRecord] = useState(null);
   const [form] = Form.useForm();
   const queryClient = useQueryClient();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [categoryTypeName, setCategoryTypeName] = useState(t("All"));
   const [subCategoryTypeName, setSubCategoryTypeName] = useState(t("All"));
   const [dropDownName, setdropDownName] = useState("dashboard_monthly");
@@ -193,7 +193,7 @@ function SuspenseListTable({
       donorMapped: record.donorMapped,
       modeOfPayment: record.modeOfPayment,
     }).toString();
-    history.push({
+    navigate({
       pathname: "/donation/edit",
       search: `?${params}`,
       state: {
@@ -209,7 +209,7 @@ function SuspenseListTable({
       expenseType: categoryTypeName,
       filter: dropDownName,
     }).toString();
-    history.push({
+    navigate({
       pathname: "/internal_expenses/add",
       search: `?${params}`,
       state: {

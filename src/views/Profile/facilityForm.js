@@ -1,9 +1,9 @@
-import { Storage } from "aws-amplify";
+import { uploadData } from '@aws-amplify/storage';;
 import { Form, Formik } from "formik";
 import React, { useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
 import CustomTextField from "../../components/partials/customTextField";
@@ -12,21 +12,21 @@ import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 
 import "../../../assets/scss/viewCommon.scss";
 const FacilityForm = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const uploadTemplate = useRef();
   const dispatch = useDispatch();
 
   const handleSubmit = (trustFacilities) => {
     dispatch(addFacility(trustFacilities));
-    history.push("/edit-profile");
+    navigate("/edit-profile");
   };
 
   const randomNumber = Math.floor(100000000000 + Math.random() * 900000000000);
 
   const [files, setFiles] = useState([]);
   const handleUpload = (acceptedFiles) => {
-    Storage.put(`temp/${randomNumber}_${acceptedFiles?.name}`, acceptedFiles, {
+    uploadData(`temp/${randomNumber}_${acceptedFiles?.name}`, acceptedFiles, {
       contentType: acceptedFiles?.type,
     })
       .then((res) => {
@@ -64,7 +64,7 @@ const FacilityForm = () => {
                     <img
                       src={arrowLeft}
                       className="me-2  cursor-pointer"
-                      onClick={() => history.push("/edit-profile")}
+                      onClick={() => navigate("/edit-profile")}
                     />
                     <div className="addProfile">
                       <Trans i18nKey={"facilities"} />

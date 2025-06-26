@@ -3,7 +3,7 @@ import { Form, Formik } from "formik";
 import React, { useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
-import { Prompt, useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import { FormikWrapper } from "../../views/dharmshala-management/dharmshalaStyles";
 import CustomTextField from "../partials/customTextField";
@@ -17,7 +17,7 @@ const AddBookingForm = ({
   buttonName,
   ...props
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [showPrompt, setShowPrompt] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -65,7 +65,7 @@ const AddBookingForm = ({
     };
 
     mutation.mutate(data);
-    history.push(`/booking/info`);
+    navigate(`/booking/info`);
   };
 
   return (
@@ -78,8 +78,8 @@ const AddBookingForm = ({
       >
         {(formik) => (
           <Form>
-            {showPrompt && (
-              <Prompt
+            {/* {showPrompt && (
+              <
                 when={!!Object.values(formik?.values).find((val) => !!val)}
                 message={(location) =>
                   `Are you sure you want to leave this page & visit ${location.pathname.replace(
@@ -88,7 +88,7 @@ const AddBookingForm = ({
                   )}`
                 }
               />
-            )}
+            )} */}
 
             <Row className="paddingForm">
               <Col xs={12} md={10}>

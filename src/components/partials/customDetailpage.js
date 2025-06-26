@@ -2,7 +2,7 @@ import he from "he";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
@@ -27,7 +27,7 @@ export default function DetailPage({
   langButton,
   templeLocation,
 }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   let firstImage = image
     ? image ?? placeHolder

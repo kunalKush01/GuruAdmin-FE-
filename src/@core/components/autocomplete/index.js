@@ -1,6 +1,6 @@
 // ** React Imports
 import ReactDOM from 'react-dom'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 import { Fragment, useEffect, useState, useRef } from 'react'
 
 // ** Third Party Components
@@ -29,7 +29,7 @@ const Autocomplete = props => {
   const [userInput, setUserInput] = useState(props.value ? props.value : '')
 
   // ** Vars
-  const history = useHistory()
+  const navigate = useNavigate()
   let filteredData = []
 
   // ** Suggestion Item Click Event
@@ -38,7 +38,7 @@ const Autocomplete = props => {
     setShowSuggestions(false)
     setUserInput(filteredData[activeSuggestion][props.filterKey])
     if (url !== undefined && url !== null) {
-      history.push(url)
+      navigate(url)
     }
 
     if (props.onSuggestionClick) {

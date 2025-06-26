@@ -1,8 +1,8 @@
 import React from "react";
 import { Trans } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { useParams } from "react-router-dom";
 import { createDharmshalaFloor } from "../../../../api/dharmshala/dharmshalaInfo";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddDharmshalaFloorForm from "../../../../components/dharmshalaFloor/addForm";
@@ -10,7 +10,7 @@ import "../../../../assets/scss/common.scss";
 import "../../../../assets/scss/dharmshala.scss";
 
 const AddDharmshalaFloor = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { buildingId } = useParams();
   const trustId = localStorage.getItem("trustId");
   const searchParams = new URLSearchParams(history.location.search);
@@ -47,7 +47,7 @@ const AddDharmshalaFloor = () => {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push(`/floors/${URLParams.buildingId}`)}
+            onClick={() => navigate(`/floors/${URLParams.buildingId}`)}
           />
           <div className="addEvent">
             <Trans i18nKey={"dharmshala_floor_add"} />

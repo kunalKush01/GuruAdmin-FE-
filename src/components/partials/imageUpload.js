@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import styled from "styled-components";
 // import bg_plus from "../../../assets/img/ListItems/bg_plus.svg";
-import { Storage } from "@aws-amplify/storage";
+import { Storage, uploadData } from "@aws-amplify/storage";
 import { Trans } from "react-i18next";
 import { Button, Spinner } from "reactstrap";
 import { X } from "react-feather";
@@ -115,7 +115,7 @@ function ImageUpload(props) {
 
     const cloneFiles = [...files];
 
-    Storage.put(
+    uploadData(
       `temp/${props.imageName}_${props.randomNumber}_${unixTimestampSeconds}.${extension}`,
       acceptedFiles,
       {

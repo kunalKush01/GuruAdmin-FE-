@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Formik } from "formik";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getAllMasterCategories } from "../../api/expenseApi";
 import FormWithoutFormikForCommitment from "./FormWithoutFormikforCommitment";
 import "../../../src/assets/scss/common.scss";
@@ -17,7 +17,7 @@ export default function CommitmentForm({
   customFieldsList,
   paidAmount,
 }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const commitmentQueryClient = useQueryClient();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const [loading, setLoading] = useState(false);
@@ -38,7 +38,7 @@ export default function CommitmentForm({
         commitmentQueryClient.invalidateQueries(["Commitments"]);
         commitmentQueryClient.invalidateQueries(["CommitmentDetail"]);
         setLoading(false);
-        history.push("/commitment");
+        navigate("/commitment");
       } else if (data?.error) {
         setLoading(false);
       }

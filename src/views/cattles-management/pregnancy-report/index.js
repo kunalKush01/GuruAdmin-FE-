@@ -7,7 +7,7 @@ import { Else, If, Then } from "react-if-else-switch";
 import Skeleton from "react-loading-skeleton";
 import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
 import { getCattlesPregnancyList } from "../../../api/cattle/cattlePregnancy";
@@ -22,7 +22,7 @@ import { ConverFirstLatterToCapital } from "../../../utility/formater";
 import "../../../assets/scss/viewCommon.scss";
 import { Tooltip } from "antd";
 const PregnancyReport = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
@@ -152,7 +152,7 @@ const PregnancyReport = () => {
                 setTypeName={(e) => {
                   setPregnancyStatus(e.target.name);
                   setPagination({ page: 1 });
-                  history.push(
+                  navigate(
                     `/cattle/pregnancy-reports?page=${1}&status=${
                       e.target.name
                     }&filter=${dropDownName}`
@@ -166,7 +166,7 @@ const PregnancyReport = () => {
               setdropDownName={(e) => {
                 setdropDownName(e.target.name);
                 setPagination({ page: 1 });
-                history.push(
+                navigate(
                   `/cattle/pregnancy-reports?page=${1}&status=${pregnancyStatus}&filter=${
                     e.target.name
                   }`
@@ -178,7 +178,7 @@ const PregnancyReport = () => {
               <Button
                 color="primary"
                 onClick={() =>
-                  history.push(
+                  navigate(
                     `/cattle/pregnancy-reports/add?page=${pagination.page}&status=${pregnancyStatus}&filter=${dropDownName}`
                   )
                 }
@@ -277,7 +277,7 @@ const PregnancyReport = () => {
                     previousClassName={"page-item prev"}
                     onPageChange={(page) => {
                       setPagination({ ...pagination, page: page.selected + 1 });
-                      history.push(
+                      navigate(
                         `/cattle/pregnancy-reports?page=${
                           page.selected + 1
                         }&status=${pregnancyStatus}&filter=${dropDownName}`

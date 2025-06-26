@@ -3,7 +3,7 @@ import numberToWords from "number-to-words";
 import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ReactToPrint from "react-to-print";
 import avtarIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import receiptIcon from "../../assets/images/icons/receiptIcon.svg";
@@ -13,7 +13,7 @@ import CustomDataTable from "../partials/CustomDataTable";
 
 export default function DonationList({ data, topdf }, args) {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const ref = useRef();
   const pdfRef = useRef();
   const options = {

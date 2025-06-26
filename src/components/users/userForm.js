@@ -5,7 +5,7 @@ import React, { useMemo, useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Prompt, useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, FormGroup, Input, Label, Row, Spinner } from "reactstrap";
 import styled from "styled-components";
 import { getAllUserRoles } from "../../api/userApi";
@@ -34,7 +34,7 @@ export default function UserForm({
   buttonName = "",
   ...props
 }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const userQueryClient = useQueryClient();
@@ -45,7 +45,7 @@ export default function UserForm({
       if (!data.error) {
         userQueryClient.invalidateQueries(["Users"]);
         setLoading(false);
-        history.push("/configuration/users");
+        navigate("/configuration/users");
       } else if (data.error) {
         setLoading(false);
       }
@@ -97,8 +97,8 @@ export default function UserForm({
       >
         {(formik) => (
           <Form>
-            {showPrompt && (
-              <Prompt
+            {/* {showPrompt && (
+              <
                 when={!!Object.values(formik?.values).find((val) => !!val)}
                 message={(location) =>
                   `Are you sure you want to leave this page & visit ${location.pathname.replace(
@@ -107,7 +107,7 @@ export default function UserForm({
                   )}`
                 }
               />
-            )}
+            )} */}
             <Row className="paddingForm">
               <Col xs={12} className=" mt-2 ps-0 d-md-flex">
                 <div className="">

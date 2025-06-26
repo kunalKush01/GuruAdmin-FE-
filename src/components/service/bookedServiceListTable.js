@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import deleteIcon from "../../assets/images/icons/category/deleteIcon.svg";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
 import Swal from "sweetalert2";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function BookedServiceListTable({
   data,
@@ -21,7 +21,7 @@ function BookedServiceListTable({
   onChangePage,
   onChangePageSize,
 }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const [isLoading, setIsLoading] = useState(false);
@@ -70,7 +70,7 @@ function BookedServiceListTable({
     },
   });
   const handleEditClick = (record) => {
-    history.push(`/editBooking/${record._id}/${record?.serviceId}`);
+    navigate(`/editBooking/${record._id}/${record?.serviceId}`);
   };
   const handleDeleteBooking = async (record) => {
     // Show Confirmation Dialog

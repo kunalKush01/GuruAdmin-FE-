@@ -7,7 +7,7 @@ import { Else, If, Then } from "react-if-else-switch";
 import Skeleton from "react-loading-skeleton";
 import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
 import { getCattlesExpenseList } from "../../../api/cattle/cattleExpense";
@@ -17,7 +17,7 @@ import ExpenseTable from "./table";
 import "../../../assets/scss/viewCommon.scss";
 
 const ExpenseManagement = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
@@ -98,7 +98,7 @@ const ExpenseManagement = () => {
               setdropDownName={(e) => {
                 setdropDownName(e.target.name);
                 setPagination({ page: 1 });
-                history.push(
+                navigate(
                   `/cattle/expenses?page=${1}&filter=${e.target.name}`
                 );
               }}
@@ -108,7 +108,7 @@ const ExpenseManagement = () => {
             <Button
               color="primary"
               onClick={() =>
-                history.push(
+                navigate(
                   `/cattle/expenses/add?page=${pagination.page}&filter=${dropDownName}`
                 )
               }
@@ -200,7 +200,7 @@ const ExpenseManagement = () => {
                     previousClassName={"page-item prev"}
                     onPageChange={(page) => {
                       setPagination({ ...pagination, page: page.selected + 1 });
-                      history.push(
+                      navigate(
                         `/cattle/expenses?page=${
                           page.selected + 1
                         }&filter=${dropDownName}`

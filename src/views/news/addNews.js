@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useMemo } from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import * as Yup from "yup";
 import { createNews } from "../../api/newsApi";
@@ -35,7 +35,7 @@ const schema = Yup.object().shape({
 });
 
 export default function AddNews() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const loggedInUser = useSelector((state) => state.auth.userDetail?.name);
 
   const searchParams = new URLSearchParams(history.location.search);
@@ -69,7 +69,7 @@ export default function AddNews() {
             src={arrowLeft}
             className="me-2  cursor-pointer"
             onClick={() =>
-              history.push(`/news?page=${currentPage}&filter=${currentFilter}`)
+              navigate(`/news?page=${currentPage}&filter=${currentFilter}`)
             }
           />
           <div className="addAction">

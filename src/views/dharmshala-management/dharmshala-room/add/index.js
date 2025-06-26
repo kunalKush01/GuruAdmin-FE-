@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { Trans } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { useParams } from "react-router-dom";
 import { createRoom } from "../../../../api/dharmshala/dharmshalaInfo";
 import arrowLeft from "../../../../assets/images/icons/arrow-left.svg";
 import AddRoomForm from "../../../../components/dharmshalaRoom/addForm";
 import "../../../../assets/scss/common.scss";
 
 const AddDharmshalaRoom = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { floorId } = useParams();
   const { buildingId } = useParams();
   const trustId = localStorage.getItem("trustId");
@@ -51,7 +51,7 @@ const AddDharmshalaRoom = () => {
             src={arrowLeft}
             className="me-2  cursor-pointer"
             onClick={() =>
-              history.push(`/room/${URLParams.floorId}/${URLParams.buildingId}`)
+              navigate(`/room/${URLParams.floorId}/${URLParams.buildingId}`)
             }
           />
           <div className="addEvent">

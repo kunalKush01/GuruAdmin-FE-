@@ -1,6 +1,6 @@
 // ** React Imports
 import { useEffect, useState, useLayoutEffect } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 // ** Horizontal Menu Components
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -14,7 +14,7 @@ import HorizontalNavMenuItems from "./HorizontalNavMenuItems";
 import "../../../../../assets/scss/viewCommon.scss";
 
 function BtnContent({ setClosePopover, permissionsKey }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const trustType = useSelector(
     (state) => state?.auth?.trustDetail?.typeId?.name
   );
@@ -27,7 +27,7 @@ function BtnContent({ setClosePopover, permissionsKey }) {
           className="col-item"
           onClick={() => {
             setClosePopover(false);
-            history.push(`/configuration/categories`);
+            navigate(`/configuration/categories`);
           }}
         >
           <Trans i18nKey={"category"} />
@@ -37,7 +37,7 @@ function BtnContent({ setClosePopover, permissionsKey }) {
           className="col-item"
           onClick={() => {
             setClosePopover(false);
-            history.push(`/configuration/masters`);
+            navigate(`/configuration/masters`);
           }}
         >
           <Trans i18nKey={"masters"} />
@@ -47,7 +47,7 @@ function BtnContent({ setClosePopover, permissionsKey }) {
           className="col-item"
           onClick={() => {
             setClosePopover(false);
-            history.push(`/configuration/custom-fields`);
+            navigate(`/configuration/custom-fields`);
           }}
         >
           <Trans i18nKey={"custom_field"} />
@@ -59,7 +59,7 @@ function BtnContent({ setClosePopover, permissionsKey }) {
             className="col-item"
             onClick={() => {
               setClosePopover(false);
-              history.push(`/configuration/cattle-breed`);
+              navigate(`/configuration/cattle-breed`);
             }}
           >
             <Trans i18nKey={"cattles"} /> <Trans i18nKey={"cattle_breed"} />
@@ -72,7 +72,7 @@ function BtnContent({ setClosePopover, permissionsKey }) {
             className="col-item"
             onClick={() => {
               setClosePopover(false);
-              history.push(`/configuration/cattle-category`);
+              navigate(`/configuration/cattle-category`);
             }}
           >
             <Trans i18nKey={"cattles"} /> <Trans i18nKey={"category"} />
@@ -84,7 +84,7 @@ function BtnContent({ setClosePopover, permissionsKey }) {
           className="col-item"
           onClick={() => {
             setClosePopover(false);
-            history.push(`/configuration/users`);
+            navigate(`/configuration/users`);
           }}
         >
           <Trans i18nKey={"user"} />
@@ -94,7 +94,7 @@ function BtnContent({ setClosePopover, permissionsKey }) {
           className="col-item"
           onClick={() => {
             setClosePopover(false);
-            history.push(`/configuration/reportDispute`);
+            navigate(`/configuration/reportDispute`);
           }}
         >
           <Trans i18nKey={"report_Dispute"} />
@@ -117,7 +117,7 @@ const MenuItem = ({
       <div
         id={item.name}
         onClick={() => {
-          item.url != "/configuration" ? history.push(item.url) : "";
+          item.url != "/configuration" ? navigate(item.url) : "";
         }}
         className={`text-light ${
           active?.startsWith(item.activeTab) ? "active-tab" : ""
@@ -141,7 +141,7 @@ const MenuItem = ({
 };
 
 const HorizontalMenu = ({ menuData, currentActiveItem, routerProps }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [closePopover, setClosePopover] = useState(true);
   useEffect(() => {
     setClosePopover(true);

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { DatePicker, Table } from "antd";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import eyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
 import "../../assets/scss/common.scss";
 import "../../assets/scss/viewCommon.scss";
@@ -22,7 +22,7 @@ dayjs.extend(timezone);
 
 const PLtable = () => {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const trustId = localStorage.getItem("trustId");
   const [dateRangeFilter, setDateRangeFilter] = useState({
     startDate: dayjs().startOf("month").format("YYYY-MM-DD"),
@@ -97,7 +97,7 @@ const PLtable = () => {
     //             ? data.donationEntries
     //             : data.expenseEntries;
 
-    //         history.push(`/bankTransactions/${record.key}`, {
+    //         navigate(`/bankTransactions/${record.key}`, {
     //           state: {
     //             category: record.key,
     //             entries: entries || [],
@@ -209,7 +209,7 @@ const PLtable = () => {
             src={backIcon}
             width={25}
             className="cursor-pointer"
-            onClick={() => history.push("/reports")}
+            onClick={() => navigate("/reports")}
             alt="Back"
           />
           <span className="commonFont">{t("Profit & Loss")}</span>

@@ -7,7 +7,7 @@ import "../../assets/scss/viewCommon.scss";
 
 import { Space, Tabs } from "antd";
 import ServiceListTable from "../../components/service/serviceListTable";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getAllBookedServices, getAllServices } from "../../api/serviceApi";
 import BookedServiceListTable from "../../components/service/bookedServiceListTable";
@@ -15,7 +15,7 @@ import { Plus } from "react-feather";
 import BookingService from "./bookingService";
 
 function ServiceListView() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   const trustId = localStorage.getItem("trustId");
   const { t } = useTranslation();
@@ -40,10 +40,10 @@ function ServiceListView() {
     setActiveTab(key);
     switch (key) {
       case "service":
-        history.push("/service"); // Change URL to /service
+        navigate("/service"); // Change URL to /service
         break;
       case "booked_services":
-        history.push("/service-booked"); // Change URL to /service-booked
+        navigate("/service-booked"); // Change URL to /service-booked
         break;
       default:
         break;
@@ -118,7 +118,7 @@ function ServiceListView() {
                   <Button
                     color="primary"
                     className="addAction-btn"
-                    onClick={() => history.push(`/services/addService`)}
+                    onClick={() => navigate(`/services/addService`)}
                   >
                     <span>
                       <Plus className="" size={15} strokeWidth={4} />

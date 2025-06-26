@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Button } from "reactstrap";
 import {DELETE, EDIT} from "../../../utility/permissionsVariable.js";
@@ -26,7 +26,7 @@ const DharmshalaInfoTable = ({
   isMobileView,   
 }) => {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const handleDeleteDharmshala = async (payload) => {
     return deleteDharmshalaInfo(payload);
   };
@@ -130,7 +130,7 @@ const DharmshalaInfoTable = ({
       //         size="lg"
       //         color="primary"
       //         className="px-1 py-0"
-      //         onClick={() => history.push(`/floor/add/${item._id}`, item._id)}
+      //         onClick={() => navigate(`/floor/add/${item._id}`, item._id)}
       //       >
       //         {" "}
       //         +{" "}
@@ -140,7 +140,7 @@ const DharmshalaInfoTable = ({
       //         size="lg"
       //         color="primary"
       //         className="px-1 py-0"
-      //         onClick={() => history.push(`/floors/${item._id}`, item._id)}
+      //         onClick={() => navigate(`/floors/${item._id}`, item._id)}
       //       >
       //         {item?.floorCount} {t("Floors")}
       //       </Button>
@@ -149,7 +149,7 @@ const DharmshalaInfoTable = ({
       //         size="lg"
       //         color="primary"
       //         className="px-1 py-0"
-      //         onClick={() => history.push(`/floors/${item._id}`, item._id)}
+      //         onClick={() => navigate(`/floors/${item._id}`, item._id)}
       //       >
       //         {item?.floorCount} {t("Floor")}
       //       </Button>
@@ -163,7 +163,7 @@ const DharmshalaInfoTable = ({
               className="floorTag"
               // color="blue"
               style={{ cursor: "pointer" }}
-              onClick={() => history.push(`/floor/add/${item._id}`, item._id)}
+              onClick={() => navigate(`/floor/add/${item._id}`, item._id)}
             >
               +
             </Tag>
@@ -172,7 +172,7 @@ const DharmshalaInfoTable = ({
               // color="green"
               className="floorTag"
               style={{ cursor: "pointer" }}
-              onClick={() => history.push(`/floors/${item._id}`, item._id)}
+              onClick={() => navigate(`/floors/${item._id}`, item._id)}
             >
               {item?.floorCount} {t("Floors")}
             </Tag>
@@ -181,7 +181,7 @@ const DharmshalaInfoTable = ({
               // color="green"
               className="floorTag"
               style={{ cursor: "pointer" }}
-              onClick={() => history.push(`/floors/${item._id}`, item._id)}
+              onClick={() => navigate(`/floors/${item._id}`, item._id)}
             >
               {item?.floorCount} {t("Floor")}
             </Tag>
@@ -196,7 +196,7 @@ const DharmshalaInfoTable = ({
             width={35}
             className="cursor-pointer"
             onClick={() => {
-              history.push(`/building/edit/${item?._id}`);
+              navigate(`/building/edit/${item?._id}`);
             }}
           />
            )}

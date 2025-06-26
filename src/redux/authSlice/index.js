@@ -105,28 +105,28 @@ const authSlice = createSlice({
     },
   },
 
-  extraReducers: {
-    [login.pending]: (state, action) => {
-      state.isLoading = true;
-    },
-    [login.fulfilled]: (state, action) => {
-      state.userDetail = action.payload.result;
-      state.isLogged =
-        action.payload.tokens.access.token &&
-        action.payload.tokens.refresh.token &&
-        true;
-      state.tokens.accessToken = action.payload.tokens.access.token;
-      state.tokens.refreshToken = action.payload.tokens.refresh.token;
-      // state.trustDetail = action.payload.trust;
-      state.isLoading = false;
-      // toast.success(action.payload.message)
-    },
-    [login.rejected]: (state, action) => {
-      state.userDetail = "";
-      state.isLogged = false;
-      (state.tokens.accessToken = ""), (state.tokens.refreshToken = "");
-      state.isLoading = false;
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(login.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        state.userDetail = action.payload.result;
+        state.isLogged =
+          action.payload.tokens.access.token &&
+          action.payload.tokens.refresh.token &&
+          true;
+        state.tokens.accessToken = action.payload.tokens.access.token;
+        state.tokens.refreshToken = action.payload.tokens.refresh.token;
+        state.isLoading = false;
+      })
+      .addCase(login.rejected, (state) => {
+        state.userDetail = "";
+        state.isLogged = false;
+        state.tokens.accessToken = "";
+        state.tokens.refreshToken = "";
+        state.isLoading = false;
+      });
   },
 });
 const persistConfig = {

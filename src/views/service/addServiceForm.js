@@ -1,6 +1,6 @@
 import React from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import * as Yup from "yup";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 
@@ -44,7 +44,7 @@ export default function AddServiceForm() {
     images: null,
   };
 
-  const history = useHistory();
+  const navigate = useNavigate();
   return (
     <div className="listviewwrapper">
       <div className="d-flex justify-content-between align-items-center ">
@@ -52,7 +52,7 @@ export default function AddServiceForm() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push(`/service`)}
+            onClick={() => navigate(`/service`)}
           />
           <div className="addAction">
             {type == "edit" ? (

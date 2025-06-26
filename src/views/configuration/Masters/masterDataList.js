@@ -7,7 +7,7 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { Button, Col, Row } from "reactstrap";
 import NoContent from "../../../components/partials/noContent";
 import { getMasterDataById } from "../../../api/masterApi";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import AddMaster from "./addMaster";
 import { Plus } from "react-feather";
 import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
@@ -21,7 +21,7 @@ export default function Master() {
   const [loadingData, setLoadingData] = useState(false);
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  const history = useHistory();
+  const navigate = useNavigate();
   const handleRowSuccess = (load) => {
     setLoadingData(load);
     queryClient.invalidateQueries(["Masters-Data"]);
@@ -58,7 +58,7 @@ export default function Master() {
               <img
                 src={arrowLeft}
                 className="me-1 cursor-pointer"
-                onClick={() => history.push(`/configuration/masters`)}
+                onClick={() => navigate(`/configuration/masters`)}
               />
               <Trans i18nKey={"masters_list"} />
             </div>

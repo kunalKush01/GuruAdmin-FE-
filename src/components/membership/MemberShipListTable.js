@@ -4,7 +4,7 @@ import "../../assets/scss/common.scss";
 import "../../assets/scss/viewCommon.scss";
 import eyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
 import editIcon from "../../assets/images/icons/category/editIcon.svg";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 function MemberShipListTable({
@@ -18,7 +18,7 @@ function MemberShipListTable({
   setAllSelectedKeys,
   allSelectedKeys,
 }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [selectionsByPage, setSelectionsByPage] = useState({});
@@ -246,13 +246,13 @@ function MemberShipListTable({
           <img
             src={eyeIcon}
             style={{ width: "20px", cursor: "pointer" }}
-            onClick={() => history.push(`/member/profile/${record._id}`)}
+            onClick={() => navigate(`/member/profile/${record._id}`)}
           />
           <img
             src={editIcon}
             width={35}
             className="cursor-pointer me-2"
-            onClick={() => history.push(`/member/editMember/${record._id}`)}
+            onClick={() => navigate(`/member/editMember/${record._id}`)}
           />
         </div>
       ),

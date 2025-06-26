@@ -7,7 +7,7 @@ import { Else, If, Then } from "react-if-else-switch";
 import Skeleton from "react-loading-skeleton";
 import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
 import { getCattlesCategoryList } from "../../../api/cattle/cattleCategory";
@@ -17,7 +17,7 @@ import CattleCategoryModal from "./categoryModal";
 import CattleBreedTable from "./table";
 import "../../../assets/scss/viewCommon.scss";
 const CattleCategory = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const searchBarValue = useSelector((state) => state.search.LocalSearch);
@@ -113,7 +113,7 @@ const CattleCategory = () => {
               setdropDownName={(e) => {
                 setdropDownName(e.target.name);
                 setPagination({ page: 1 });
-                history.push(
+                navigate(
                   `/configuration/cattle-category?page=${1}&filter=${
                     e.target.name
                   }`
@@ -220,7 +220,7 @@ const CattleCategory = () => {
                     previousClassName={"page-item prev"}
                     onPageChange={(page) => {
                       setPagination({ ...pagination, page: page.selected + 1 });
-                      history.push(
+                      navigate(
                         `/configuration/cattle-category?page=${
                           page.selected + 1
                         }&filter=${dropDownName}`

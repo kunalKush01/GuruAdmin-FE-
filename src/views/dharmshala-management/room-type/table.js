@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Button } from "reactstrap";
 
@@ -21,7 +21,7 @@ const RoomTypeInfoTable = ({
   isMobileView,
 }) => {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const handleDeleteRoomType = async (payload) => {
     return deleteRoomTypeInfo(payload);
   };
@@ -49,7 +49,7 @@ const RoomTypeInfoTable = ({
           width={35}
           className="cursor-pointer"
           onClick={() => {
-            history.push(
+            navigate(
               `/roomtype/info/${item?._id}&name=${item?.name}&description=${item?.description}&capacity=${item?.capacity}&price=${item?.price}`
             );
           }}

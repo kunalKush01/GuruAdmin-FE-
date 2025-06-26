@@ -1,6 +1,6 @@
 import React from "react";
 import { Trans } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import * as Yup from "yup";
 
@@ -12,7 +12,7 @@ import "../../../../../assets/scss/viewCommon.scss";
 import "../../../../../assets/scss/common.scss";
 
 const AddStockItem = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
   const currentFilter = searchParams.get("filter");
@@ -41,7 +41,7 @@ const AddStockItem = () => {
             src={arrowLeft}
             className="me-2  cursor-pointer"
             onClick={() =>
-              history.push(
+              navigate(
                 `/stock-management/item?page=${currentPage}&filter=${currentFilter}`
               )
             }

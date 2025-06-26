@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Nav, NavItem, NavLink } from "reactstrap";
 import styled from "styled-components";
 import BookingIcon from "../../assets/images/icons/dharmshala/booking.svg";
@@ -9,7 +9,7 @@ import ServicesIcon from "../../assets/images/icons/dharmshala/booking.svg";
 import "../../assets/scss/tabbar.scss";
 
 const SevaTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const permissions = useSelector(
     (state) => state.auth.userDetail?.permissions
   );
@@ -80,8 +80,8 @@ const SevaTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
                     active={typeof active === 'string' && active?.includes(item?.active)}
                     onClick={() => {
                       item?.isManagment && !permissionsKey?.includes("all")
-                        ? history.push(`${item?.url}/${url[0]?.split("-")[1]}`)
-                        : history.push(item?.url);
+                        ? navigate(`${item?.url}/${url[0]?.split("-")[1]}`)
+                        : navigate(item?.url);
                     }}
                     className={isMobile ? "mobile-link" : "desktop-link"}
                   >
@@ -135,8 +135,8 @@ const SevaTabBar = ({ tabs = [], setActive, active, tabBar = false }) => {
                       if (active?.includes(item?.active)) return;
                       setActive(item);
                       item?.isManagment && !permissionsKey?.includes("all")
-                        ? history.push(`${item?.url}/${url[0]?.split("-")[1]}`)
-                        : history.push(item?.url);
+                        ? navigate(`${item?.url}/${url[0]?.split("-")[1]}`)
+                        : navigate(item?.url);
                     }}
                   >
                     <Trans i18nKey={item?.name} />

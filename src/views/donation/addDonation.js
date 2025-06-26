@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import "react-phone-number-input/style.css";
 import { useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import * as Yup from "yup";
 import { getDonationCustomFields } from "../../api/customFieldsApi";
 import { createDonation } from "../../api/donationApi";
@@ -15,7 +15,7 @@ import "../../assets/scss/viewCommon.scss";
 import { Tag } from "antd";
 import { getAllAccounts } from "../../api/profileApi";
 export default function AddDonation() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const loggedInUser = useSelector((state) => state.auth.userDetail.name);
   const searchParams = new URLSearchParams(history.location.search);
@@ -120,7 +120,7 @@ export default function AddDonation() {
             src={arrowLeft}
             className="me-2  cursor-pointer"
             onClick={() =>
-              history.push(
+              navigate(
                 `/donation?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}`
               )
             }

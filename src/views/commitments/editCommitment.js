@@ -5,7 +5,7 @@ import { Trans } from "react-i18next";
 import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useSelector } from "react-redux";
-import { useHistory, useParams, useLocation } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import * as Yup from "yup";
 import {
@@ -27,7 +27,7 @@ export default function EditCommitment() {
     ? JSON.parse(decodeURIComponent(customFieldDataString))
     : {};
 
-  const history = useHistory();
+  const navigate = useNavigate();
   const { commitmentId } = useParams();
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -153,7 +153,7 @@ export default function EditCommitment() {
             src={arrowLeft}
             className="me-2  cursor-pointer"
             onClick={() =>
-              history.push(
+              navigate(
                 `/commitment?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&status=${currentStatus}&filter=${currentFilter}`
               )
             }

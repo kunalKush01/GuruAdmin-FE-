@@ -9,7 +9,7 @@ import { Else, If, Then } from "react-if-else-switch";
 import Skeleton from "react-loading-skeleton";
 import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import { getDharmshalaBookingList } from "../../../api/dharmshala/dharmshalaInfo";
 import NoContent from "../../../components/partials/noContent";
@@ -26,7 +26,7 @@ dayjs.extend(utc);
 dayjs.extend(isBetween);
 
 const DharmshalaBookings = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const importFileRef = useRef();
   const selectedLang = useSelector((state) => state.auth.selectLang);
@@ -126,7 +126,7 @@ const DharmshalaBookings = () => {
 
   const handleStatusFilterChange = (e) => {
     setStatusFilter(e.target.name);
-    history.push(
+    navigate(
       `/booking/info?page=${pagination.page}&status=${e.target.name}&filter=${dropDownName}`
     );
   };
@@ -207,7 +207,7 @@ const DharmshalaBookings = () => {
                   className={`me-1 ${isMobileView ? "btn-sm" : ""}`}
                   color="primary"
                   onClick={() =>
-                    history.push(
+                    navigate(
                       `/booking/add/?page=${pagination.page}&filter=${dropDownName}`
                     )
                   }
@@ -231,7 +231,7 @@ const DharmshalaBookings = () => {
                   }`}
                   color="primary"
                   onClick={() =>
-                    history.push(
+                    navigate(
                       `/booking/calendar/?page=${pagination.page}&filter=${dropDownName}`
                     )
                   }
@@ -411,7 +411,7 @@ const DharmshalaBookings = () => {
                           ...pagination,
                           page: page.selected + 1,
                         });
-                        history.push(
+                        navigate(
                           `/dharmshala/info?page=${
                             page.selected + 1
                           }&status=${currentStatus}&filter=${dropDownName}`

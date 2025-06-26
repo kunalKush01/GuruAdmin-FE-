@@ -1,7 +1,7 @@
 import { Form } from "formik";
 import React, { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Prompt, useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useUpdateEffect } from "react-use";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import { getAllSubCategories } from "../../api/expenseApi";
@@ -37,7 +37,7 @@ export default function FormWithoutFormikForCommitment({
   ...props
 }) {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const { SelectedMasterCategory } = formik.values;
   const [subLoadOption, setSubLoadOption] = useState([]);
@@ -142,8 +142,8 @@ export default function FormWithoutFormikForCommitment({
   return (
     <div className="FormikWrapper">
       <Form>
-        {showPrompt && (
-          <Prompt
+        {/* {showPrompt && (
+          <
             when={!!Object.values(formik?.values).find((val) => !!val)}
             message={(location) =>
               `Are you sure you want to leave this page & visit ${location.pathname.replace(
@@ -152,7 +152,7 @@ export default function FormWithoutFormikForCommitment({
               )}`
             }
           />
-        )}
+        )} */}
 
         <Row className="paddingForm">
           <Col xs={12} sm={6} lg={4}>

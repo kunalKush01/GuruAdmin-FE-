@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
 
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import * as Yup from "yup";
 import { createNews } from "../../api/newsApi";
@@ -28,7 +28,7 @@ const getLangId = (langArray, langSelection) => {
 export default function AddProfile() {
   const trustDetail = useSelector((sate) => sate.auth.trustDetail);
   const userDetail = useSelector((state) => state.auth.userDetail);
-  const history = useHistory();
+  const navigate = useNavigate();
   const langArray = useSelector((state) => state.auth.availableLang);
   const selectedLang = useSelector((state) => state.auth.selectLang);
 
@@ -52,7 +52,7 @@ export default function AddProfile() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push("/")}
+            onClick={() => navigate("/")}
           />
           <div className="addProfile">
             <Trans i18nKey={"userProfile"} />

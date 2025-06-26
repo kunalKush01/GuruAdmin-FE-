@@ -3,7 +3,7 @@ import { Form, Formik } from "formik";
 import _ from "lodash";
 import React, { useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
 import * as Yup from "yup";
@@ -46,7 +46,7 @@ const schema = Yup.object().shape({
 });
 
 export default function AddLanguageProfile() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { profileId } = useParams();
 
   const langArray = useSelector((state) => state.auth.availableLang);
@@ -139,7 +139,7 @@ export default function AddLanguageProfile() {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push(`/edit-profile`)}
+            onClick={() => navigate(`/edit-profile`)}
           />
           <div className="addProfile">
             <Trans i18nKey={"news_AddLangNews"} />

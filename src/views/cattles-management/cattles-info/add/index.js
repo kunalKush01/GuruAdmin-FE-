@@ -1,6 +1,6 @@
 import React from "react";
 import { Trans } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import * as Yup from "yup";
 
@@ -49,7 +49,7 @@ export const cattleSource = [
 ];
 
 const AddCattle = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const searchParams = new URLSearchParams(history.location.search);
   const currentPage = searchParams.get("page");
   const currentStatus = searchParams.get("status");
@@ -145,7 +145,7 @@ const AddCattle = () => {
           <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push(`/cattle/info`)}
+            onClick={() => navigate(`/cattle/info`)}
           />
           <div className="addAction">
             <Trans i18nKey={"cattle_add"} />

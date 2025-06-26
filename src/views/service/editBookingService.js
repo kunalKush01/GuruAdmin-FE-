@@ -12,12 +12,12 @@ import {
 } from "../../api/serviceApi";
 import Swal from "sweetalert2";
 import { useQueryClient } from "@tanstack/react-query";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import { toast } from "react-toastify";
 
 const EditBookingService = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { bookingId, serviceId } = useParams();
   const { t } = useTranslation();
   const queryClient = useQueryClient();
@@ -186,7 +186,7 @@ const EditBookingService = () => {
           confirmButtonText: "OK",
         });
         queryClient.invalidateQueries("bookedService");
-        history.push("/service-booked");
+        navigate("/service-booked");
         resetForm();
       } else if (response.error) {
         Swal.fire({
@@ -216,7 +216,7 @@ const EditBookingService = () => {
         width={25}
         style={{ cursor: "pointer" }}
         className="mb-1"
-        onClick={() => history.push("/service-booked")}
+        onClick={() => navigate("/service-booked")}
       />
       <div className="formwrapper FormikWrapper">
         <Formik

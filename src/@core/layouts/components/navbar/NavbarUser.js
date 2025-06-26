@@ -7,7 +7,7 @@ import UserDropdown from "./UserDropdown";
 // ** Third Party Components
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { NavItem, NavLink } from "reactstrap";
 import bellIcon from "../../../../assets/images/icons/dashBoard/Group 5996.svg";
@@ -26,7 +26,7 @@ import CustomSearchBar from "../../../../components/partials/customSearchBar";
 import { isSerchable } from "../../../../utility/localSerachBar";
 
 const NavbarUser = (props) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const trustDetails = useSelector((state) => state.auth.trustDetail);
   const userDetails = useSelector((state) => state.auth.userDetail);
   const refreshToken = useSelector((state) => state.auth.tokens.refreshToken);
@@ -176,7 +176,7 @@ const NavbarUser = (props) => {
                     : ""
                 }`}
                 src={bellIcon}
-                onClick={() => history.push("/notification")}
+                onClick={() => navigate("/notification")}
               />
             </div>
           </div>
@@ -201,7 +201,7 @@ const NavbarUser = (props) => {
                   {ConverFirstLatterToCapital(userDetails?.name ?? "")}
                 </div>
               </div>
-              <div onClick={() => history.push("/edit-profile")}>
+              <div onClick={() => navigate("/edit-profile")}>
                 <UserDropdown />
               </div>
             </div>

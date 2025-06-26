@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import ReactPaginate from "react-paginate";
 import { Plus } from "react-feather";
 import moment from "moment";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { If, Then, Else } from "react-if-else-switch";
 import { getAllNotices, getNoticeDates } from "../../api/noticeApi.js";
@@ -45,7 +45,7 @@ export default function NoticeList() {
         return "All";
     }
   };
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [pagination, setPagination] = useState({
     page: 1,
@@ -168,7 +168,7 @@ export default function NoticeList() {
             {/* <img
               src={arrowLeft}
               className="me-2  cursor-pointer align-self-center"
-              onClick={() => history.push("/")}
+              onClick={() => navigate("/")}
             /> */}
             <div className="addAction">
               <div className="">
@@ -189,7 +189,7 @@ export default function NoticeList() {
               setdropDownName={(e) => {
                 setdropDownName(e.target.name);
                 setPagination({ page: 1 });
-                history.push(`/notices?page=${1}&filter=${e.target.name}`);
+                navigate(`/notices?page=${1}&filter=${e.target.name}`);
               }}
             />
             {allPermissions?.name === "all" ||
@@ -198,7 +198,7 @@ export default function NoticeList() {
                 color="primary"
                 className="addAction-btn"
                 onClick={() =>
-                  history.push(
+                  navigate(
                     `/notices/add?page=${pagination.page}&filter=${dropDownName}`
                   )
                 }

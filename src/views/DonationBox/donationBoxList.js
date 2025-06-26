@@ -7,7 +7,7 @@ import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import { ChangePeriodDropDown } from "../../components/partials/changePeriodDropDown";
 import { Helmet } from "react-helmet";
@@ -37,7 +37,7 @@ export default function Expenses() {
         return "All";
     }
   };
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [pagination, setPagination] = useState({
     page: 1,
@@ -178,7 +178,7 @@ export default function Expenses() {
               setdropDownName={(e) => {
                 setdropDownName(e.target.name);
                 setPagination({ page: 1 });
-                history.push(`/hundi?page=${1}&filter=${e.target.name}`);
+                navigate(`/hundi?page=${1}&filter=${e.target.name}`);
               }}
             />
             {allPermissions?.name === "all" ||
@@ -187,7 +187,7 @@ export default function Expenses() {
                 color="primary"
                 className="addAction-btn "
                 onClick={() =>
-                  history.push(
+                  navigate(
                     `/hundi/add?page=${pagination.page}&filter=${dropDownName}`
                   )
                 }
@@ -295,7 +295,7 @@ export default function Expenses() {
                     previousClassName={"page-item prev"}
                     onPageChange={(page) => {
                       setPagination({ ...pagination, page: page.selected + 1 });
-                      history.push(
+                      navigate(
                         `/hundi?page=${
                           page.selected + 1
                         }&filter=${dropDownName}`

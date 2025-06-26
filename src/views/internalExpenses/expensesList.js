@@ -9,7 +9,7 @@ import { Else, If, Then } from "react-if-else-switch";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import ReactPaginate from "react-paginate";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import styled from "styled-components";
 import { getAllExpense } from "../../api/expenseApi";
@@ -45,7 +45,7 @@ export default function Expenses() {
         return "month";
     }
   };
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [pagination, setPagination] = useState({
     page: 1,
@@ -208,7 +208,7 @@ export default function Expenses() {
             {/* <img
               src={arrowLeft}
               className="me-2  cursor-pointer align-self-center"
-              onClick={() => history.push("/")}
+              onClick={() => navigate("/")}
             /> */}
             <div className="addAction">
               <div className="">
@@ -227,7 +227,7 @@ export default function Expenses() {
                 setTypeName={(e) => {
                   setExpenseType(e.target.name);
                   setPagination({ page: 1 });
-                  history.push(
+                  navigate(
                     `/internal_expenses?page=${1}&expenseType=${
                       e.target.name
                     }&filter=${dropDownName}`
@@ -242,7 +242,7 @@ export default function Expenses() {
               setdropDownName={(e) => {
                 setdropDownName(e.target.name);
                 setPagination({ page: 1 });
-                history.push(
+                navigate(
                   `/internal_expenses?page=${1}&expenseType=${expenseType}&filter=${
                     e.target.name
                   }`
@@ -256,7 +256,7 @@ export default function Expenses() {
                 color="primary"
                 className="addAction-btn me-1"
                 onClick={() =>
-                  history.push(
+                  navigate(
                     `/internal_expenses/add?page=${pagination.page}&expenseType=${expenseType}&filter=${dropDownName}`
                   )
                 }
@@ -380,7 +380,7 @@ export default function Expenses() {
                     previousClassName={"page-item prev"}
                     onPageChange={(page) => {
                       setPagination({ ...pagination, page: page.selected + 1 });
-                      history.push(
+                      navigate(
                         `/internal_expenses?page=${
                           page.selected + 1
                         }&expenseType=${expenseType}&filter=${dropDownName}`

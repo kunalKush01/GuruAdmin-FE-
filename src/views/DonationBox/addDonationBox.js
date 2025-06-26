@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import * as Yup from "yup";
 import { createBoxCollection } from "../../api/donationBoxCollectionApi";
@@ -18,7 +18,7 @@ export default function AddNews() {
     return createBoxCollection(payload);
   };
 
-  const history = useHistory();
+  const navigate = useNavigate();
   const langArray = useSelector((state) => state.auth.availableLang);
 
   const searchParams = new URLSearchParams(history.location.search);
@@ -90,7 +90,7 @@ export default function AddNews() {
             src={arrowLeft}
             className="me-2  cursor-pointer"
             onClick={() =>
-              history.push(`/hundi?page=${currentPage}&filter=${currentFilter}`)
+              navigate(`/hundi?page=${currentPage}&filter=${currentFilter}`)
             }
           />
           <div className="addNews">

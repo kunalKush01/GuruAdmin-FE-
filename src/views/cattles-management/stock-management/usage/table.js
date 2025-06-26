@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 
@@ -31,7 +31,7 @@ const UsageManagementTable = ({
   onChangePageSize,
 }) => {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleDeleteUsage = async (payload) => {
     return deleteUsage(payload);
@@ -115,7 +115,7 @@ const UsageManagementTable = ({
                   width={35}
                   className="cursor-pointer "
                   onClick={() => {
-                    history.push(
+                    navigate(
                       `/stock-management/usage/${item?._id}?page=${currentPage}&filter=${currentFilter}`
                     );
                   }}

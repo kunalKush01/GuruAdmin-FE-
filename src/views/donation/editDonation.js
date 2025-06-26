@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import "react-phone-number-input/style.css";
 import { useSelector } from "react-redux";
-import { useHistory, useLocation, useParams } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import * as Yup from "yup";
 import { getDonationCustomFields } from "../../api/customFieldsApi";
 import { createDonation, updateDonation } from "../../api/donationApi";
@@ -16,7 +16,7 @@ import { Tag } from "antd";
 import { updateSuspense } from "../../api/suspenseApi";
 import { getAllAccounts } from "../../api/profileApi";
 export default function EditDonation() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const location = useLocation();
   const { record, isEdit, isFieldDisable } = location.state || {};
@@ -169,7 +169,7 @@ export default function EditDonation() {
             src={arrowLeft}
             className="me-2  cursor-pointer"
             onClick={() =>
-              history.push(
+              navigate(
                 `/donation?page=${currentPage}&category=${currentCategory}&subCategory=${currentSubCategory}&filter=${currentFilter}`
               )
             }

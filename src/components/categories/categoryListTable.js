@@ -3,7 +3,7 @@ import { Table } from "antd";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "reactstrap";
 import Swal from "sweetalert2";
 import { deleteCategoryDetail } from "../../api/categoryApi";
@@ -40,7 +40,7 @@ export function CategoryListTable({
     },
   });
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const columns = [
     // {
     //   title: t("categories_serial_number"),
@@ -128,7 +128,7 @@ export function CategoryListTable({
               "opacity-50 disabled"
             }
             onClick={() =>
-              history.push(
+              navigate(
                 `/configuration/categories/add-language/${item.id}?page=${currentPage}&filter=${currentFilter}`
               )
             }
@@ -149,7 +149,7 @@ export function CategoryListTable({
                 src={editIcon}
                 width={35}
                 onClick={() =>
-                  history.push(
+                  navigate(
                     `/configuration/categories/edit/${item.id}?page=${currentPage}&filter=${currentFilter}`
                   )
                 }

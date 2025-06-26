@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Plus } from "react-feather";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import CustomTextField from "../../components/partials/customTextField";
 import ImageUpload from "../../components/partials/imageUpload";
@@ -29,7 +29,7 @@ export default function ServiceForm({
   validationSchema,
   initialValues,
 }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const serviceQueryClient = useQueryClient();
@@ -40,7 +40,7 @@ export default function ServiceForm({
       if (!data.error) {
         serviceQueryClient.invalidateQueries(["services"]);
         setLoading(false);
-        history.push("/service");
+        navigate("/service");
       } else if (data.error) {
         setLoading(false);
       }

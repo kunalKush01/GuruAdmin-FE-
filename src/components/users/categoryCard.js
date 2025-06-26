@@ -3,7 +3,7 @@ import he from "he";
 import moment from "moment";
 import React, { useState } from "react";
 import { Trans } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   Card,
@@ -31,7 +31,7 @@ import { CustomDropDown } from "../partials/customDropDown";
 import "../../assets/scss/common.scss";
 
 function BtnContent({ newsId }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const handleDeleteNews = async (payload) => {
     return deleteNewsDetail(payload);
   };
@@ -51,7 +51,7 @@ function BtnContent({ newsId }) {
         <Col
           xs={12}
           className="col-item"
-          onClick={() => history.push(`/news/add-language/${newsId}`, newsId)}
+          onClick={() => navigate(`/news/add-language/${newsId}`, newsId)}
         >
           <Trans i18nKey={"news_popOver_AddLang"} />
         </Col>
@@ -59,7 +59,7 @@ function BtnContent({ newsId }) {
         <Col
           xs={12}
           className="col-item"
-          onClick={() => history.push(`/news/edit/${newsId}`, newsId)}
+          onClick={() => navigate(`/news/edit/${newsId}`, newsId)}
         >
           <Trans i18nKey={"news_popOver_Edit"} />
         </Col>

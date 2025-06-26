@@ -1,6 +1,6 @@
 // ** React Imports
 import { useState, useEffect } from "react";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 // ** Store & Actions
 import { useSelector, useDispatch } from "react-redux";
@@ -39,11 +39,11 @@ import "@styles/base/core/menu/menu-types/vertical-menu.scss";
 import "@styles/base/core/menu/menu-types/vertical-overlay-menu.scss";
 
 const VerticalLayout = (props) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { isLogged } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    !isLogged && history.push("/login");
+    !isLogged && navigate("/login");
   }, [isLogged]);
 
   // ** Props

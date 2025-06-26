@@ -5,7 +5,7 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   ButtonGroup,
@@ -57,7 +57,7 @@ function BtnContent({
   totalAvailableLanguage,
 }) {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const handleDeleteNews = async (payload) => {
     return deleteNewsDetail(payload);
   };
@@ -84,7 +84,7 @@ function BtnContent({
             xs={12}
             className=" btncontentwrapper col-item"
             onClick={() =>
-              history.push(
+              navigate(
                 `/news/edit/${newsId}?page=${currentPage}&filter=${currentFilter}`,
                 newsId
               )
@@ -143,7 +143,7 @@ function BtnContent({
             onClick={() =>
               langList?.length === totalAvailableLanguage
                 ? ""
-                : history.push(
+                : navigate(
                     `/news/add-language/${newsId}?page=${currentPage}&filter=${currentFilter}`,
                     newsId
                   )
@@ -166,7 +166,7 @@ export default function NewsCard({
   subPermission,
   allPermissions,
 }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
   const [modal, setModal] = useState(false);
@@ -228,7 +228,7 @@ export default function NewsCard({
       >
         <div className="position-relative cursor-pointer imgContainer">
           <img
-            onClick={() => history.push(`/news/about/${data?.id}`, data.id)}
+            onClick={() => navigate(`/news/about/${data?.id}`, data.id)}
             alt="News Image"
             style={{
               height: "100%",
@@ -301,7 +301,7 @@ export default function NewsCard({
         <CardBody>
           <div
             className="cursor-pointer"
-            onClick={() => history.push(`/news/about/${data.id}`, data.id)}
+            onClick={() => navigate(`/news/about/${data.id}`, data.id)}
           >
             <CardTitle>{ConverFirstLatterToCapital(data.title)}</CardTitle>
 

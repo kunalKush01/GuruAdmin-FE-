@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form } from "formik";
 import { Trans, useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Spinner } from "reactstrap";
 import { Plus } from "react-feather";
 import { DatePicker } from "antd";
@@ -16,7 +16,7 @@ import {
   checkRoomAvailability,
   getAvailableBuildingList,
 } from "../../api/dharmshala/dharmshalaInfo";
-import { Prompt } from "react-router-dom";
+import {  } from "react-router-dom";
 import * as Yup from "yup";
 import { useMutation } from "@tanstack/react-query";
 import momentGenerateConfig from "rc-picker/lib/generate/moment";
@@ -46,7 +46,7 @@ export default function FormWithoutFormikForBooking({
   ...props
 }) {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("payment");
   const [buildings, setBuildings] = useState([]);
   const [floors, setFloors] = useState({});
@@ -275,7 +275,7 @@ export default function FormWithoutFormikForBooking({
       confirmButtonText: t("confirm_cancel"),
     }).then((result) => {
       if (result.isConfirmed) {
-        history.push("/booking/info");
+        navigate("/booking/info");
       }
     });
   };
@@ -758,8 +758,8 @@ export default function FormWithoutFormikForBooking({
 
   return (
     <Form>
-      {showPrompt && (
-        <Prompt
+      {/* {showPrompt && (
+        <
           when={!!Object.values(formik?.values).find((val) => !!val)}
           message={(location) =>
             `Are you sure you want to leave this page & visit ${location.pathname.replace(
@@ -768,7 +768,7 @@ export default function FormWithoutFormikForBooking({
             )}`
           }
         />
-      )}
+      )} */}
       <div className="overall-div">
         <div className="booking-room">
           <div className="booking-container">

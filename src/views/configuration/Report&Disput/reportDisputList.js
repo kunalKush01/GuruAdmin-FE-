@@ -1,7 +1,7 @@
 import moment from "moment";
 import React, { useState, useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import arrowLeft from "../../../assets/images/icons/arrow-left.svg";
 import { ChangeStatus } from "../../../components/Report & Disput/changeStatus";
@@ -22,7 +22,7 @@ const ReportList = () => {
   const { t } = useTranslation();
   const [dropDownName, setdropDownName] = useState(t("All"));
   const selectedLang = useSelector((state) => state.auth.selectLang);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [pagination, setPagination] = useState({
     page: 1,
@@ -79,7 +79,7 @@ const ReportList = () => {
           {/* <img
             src={arrowLeft}
             className="me-2  cursor-pointer"
-            onClick={() => history.push("/")}
+            onClick={() => navigate("/")}
           /> */}
           <div className="addAction">
             <div className="">

@@ -6,7 +6,7 @@ import axios from "axios";
 import { ErrorMessage, Form, Formik } from "formik";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   Button,
@@ -49,7 +49,7 @@ const LoginCover = () => {
   const { isLogged, userDetail, trustDetail } = useSelector(
     (state) => state.auth
   );
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [forgotPassWordActive, setForgotPassWordActive] = useState(false);
   const [loadingLogin, setLoadingLogin] = useState(false);
@@ -168,9 +168,10 @@ const LoginCover = () => {
   const refreshToken = getCookie("refreshToken");
   const accessToken = getCookie("accessToken");
 
-  const loginPageQuery = useQuery([subDomainName], () =>
-    loginPage(subDomainName)
-  );
+  const loginPageQuery = useQuery({
+    queryKey: ["loginPage", subDomainName],
+    queryFn: () => loginPage(subDomainName),
+  });
 
   const loginPageData = useMemo(() => {
     dispatch(handleTrustDetail(loginPageQuery?.data?.result));
@@ -184,14 +185,14 @@ const LoginCover = () => {
     ),
     useEffect(() => {
       if (hostname !== adminUrl && loginPageQuery?.data?.error) {
-        history.push("/not-found");
+        navigate("/not-found");
       } else if (
         isLogged &&
         loginPath?.includes("all") &&
         subDomainName !== genericSubDomain
       ) {
         localStorage.setItem("trustModal", false);
-        history.push("/dashboard");
+        navigate("/dashboard");
       } else if (
         isLogged &&
         loginPath?.length &&
@@ -199,7 +200,7 @@ const LoginCover = () => {
         subDomainName !== genericSubDomain
       ) {
         localStorage.setItem("trustModal", false);
-        history.push(`/configuration/categories`);
+        navigate(`/configuration/categories`);
       } else if (
         isLogged &&
         loginPath?.length &&
@@ -210,13 +211,13 @@ const LoginCover = () => {
           item?.permissionKey?.includes(loginPath[0])
         );
         localStorage.setItem("trustModal", false);
-        history.push(redirectTo?.url);
+        navigate(redirectTo?.url);
       } else if (
         (isLogged || loginPath?.length) &&
         subDomainName !== genericSubDomain
       ) {
         localStorage.setItem("trustModal", false);
-        history.push(`/${loginPath[0]}`);
+        navigate(`/${loginPath[0]}`);
       }
     }, [isLogged, loginPath, loginPageQuery]);
 

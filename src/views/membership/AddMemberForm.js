@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { Trans } from "react-i18next";
 import "react-phone-number-input/style.css";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import * as Yup from "yup";
 import arrowLeft from "../../assets/images/icons/arrow-left.svg";
 import "../../assets/scss/viewCommon.scss";
@@ -17,7 +17,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Spinner } from "reactstrap";
 import moment from "moment";
 export default function AddMemberForm() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { id } = useParams();
   const mode = id && id ? "edit" : "add";
   const { data, isLoading, isFetching } = useQuery(
@@ -268,8 +268,8 @@ export default function AddMemberForm() {
             className="me-2  cursor-pointer"
             onClick={() =>
               mode == "add"
-                ? history.push("/membership")
-                : history.push(`/member/profile/${id}`)
+                ? navigate("/membership")
+                : navigate(`/member/profile/${id}`)
             }
           />
           <div className="addAction">

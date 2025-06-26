@@ -1,7 +1,7 @@
 import moment from "moment";
 import { useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import avtarIcon from "../../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import CustomDataTable from "../../../components/partials/CustomDataTable";
@@ -134,7 +134,7 @@ export default function RecentRegisteredCattlesTable({ data }) {
           <Trans i18nKey={"recent_registered_cattles"} />
         </p>
         <p
-          onClick={() => history.push("/cattle/info")}
+          onClick={() => navigate("/cattle/info")}
           className="DonationViewAll"
         >
           <Trans i18nKey={"dashboard_viewAll"} />

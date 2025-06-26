@@ -5,7 +5,7 @@ import numberToWords from "number-to-words";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ReactToPrint from "react-to-print";
 import { toast } from "react-toastify";
 import { Spinner } from "reactstrap";
@@ -59,7 +59,7 @@ export default function DonationANTDListTable(
   const queryClient = useQueryClient();
   const location = useLocation();
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const selectedLang = useSelector((state) => state.auth.selectLang);
   const [isLoading, setIsLoading] = useState(false);
   const ref = useRef();
@@ -237,7 +237,7 @@ export default function DonationANTDListTable(
     searchParams.set("view", "true");
     searchParams.set("recordId", record._id);
 
-    history.push(`${location.pathname}?${searchParams.toString()}`);
+    navigate(`${location.pathname}?${searchParams.toString()}`);
   };
 
   const handleDelete = async (item) => {
@@ -283,7 +283,7 @@ export default function DonationANTDListTable(
       type: "Donation",
     }).toString();
 
-    history.push({
+    navigate({
       pathname: "/donation/edit",
       search: `?${params}`,
       state: {

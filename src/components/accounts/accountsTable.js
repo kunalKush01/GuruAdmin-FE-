@@ -20,11 +20,11 @@ import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
 import { deleteAccount, updateAccount } from "../../api/profileApi";
 import { useQueryClient } from "@tanstack/react-query";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 function AccountsTable({ data }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [form] = Form.useForm();
@@ -155,7 +155,7 @@ function AccountsTable({ data }) {
             src={eyeIcon}
             className="cursor-pointer"
             width={25}
-            onClick={() => history.push(`/accounts/${record.id}`)}
+            onClick={() => navigate(`/accounts/${record.id}`)}
           />
           <img
             src={editIcon}

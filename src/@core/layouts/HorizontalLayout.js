@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Layout, Menu, Button, theme, ConfigProvider } from "antd";
 import { Trans, useTranslation } from "react-i18next";
@@ -30,12 +30,12 @@ import "../../assets/scss/variables/_variables.scss";
 import bigLogo from "../../assets/images/pages/main-logo.png";
 import smallLogo from "../../assets/images/pages/main-logo-small.png";
 import UserDropdown from "./components/navbar/";
-import { MessageContext } from '../../utility/context/MessageContext';
+import { MessageContext } from "../../utility/context/MessageContext";
 
 const { Header, Sider, Content } = Layout;
 
 const SiderLayout = (props) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
   const { isLogged } = useSelector((state) => state.auth);
@@ -86,7 +86,7 @@ const SiderLayout = (props) => {
 
   useEffect(() => {
     if (!isLogged) {
-      history.push("/login");
+      navigate("/login");
     }
   }, [isLogged, history]);
 
@@ -144,7 +144,7 @@ const SiderLayout = (props) => {
     ) {
       return null;
     }
-    if (item?.name === "cattles_management"&&!isGaushala) {
+    if (item?.name === "cattles_management" && !isGaushala) {
       return null; // Exclude "cattles_management" menu item entirely
     }
 
@@ -160,7 +160,7 @@ const SiderLayout = (props) => {
         item?.name !== "cattles_management") ||
       (isServiceItem &&
         hasServiceAccess &&
-        (hasItemPermission || hasChildPermission))
+        (hasItemPermission || hasChildPermission));
 
     if (shouldShowItem) {
       const isActive = active.startsWith(item.url);
@@ -190,7 +190,7 @@ const SiderLayout = (props) => {
           children: children,
           onClick: () => {
             if (!item.children) {
-              history.push(item.url);
+              navigate(item.url);
             }
           },
         };
@@ -205,7 +205,7 @@ const SiderLayout = (props) => {
       toast.success(res.data.message);
       dispatch(logOut());
       localStorage.setItem("trustId", "");
-      history.push("/login");
+      navigate("/login");
     } catch (error) {
       console.error("Logout error:", error);
       toast.error("Failed to logout. Please try again.");
@@ -295,7 +295,7 @@ const SiderLayout = (props) => {
                 style={{ borderTop: "1px solid #f0f0f0", paddingLeft: "7px" }}
                 inlineCollapsed={collapsed}
               >
-               <Menu.Item
+                <Menu.Item
                   key="Connect"
                   icon={
                     <img
@@ -305,17 +305,18 @@ const SiderLayout = (props) => {
                     />
                   }
                   onClick={() => {
-                    history.push("/message");
+                    navigate("/message");
                   }}
-                  className={collapsed ? "menu-item--collapsed" : "menu-item--expanded"}
+                  className={
+                    collapsed ? "menu-item--collapsed" : "menu-item--expanded"
+                  }
                 >
-                  {!collapsed && (
-                    isConnected ? (
+                  {!collapsed &&
+                    (isConnected ? (
                       <span className="connected-user">{loggedInUser}</span>
                     ) : (
                       <Trans i18nKey="Connect" />
-                    )
-                  )}
+                    ))}
                 </Menu.Item>
                 <Menu.Item
                   key="Logout"
