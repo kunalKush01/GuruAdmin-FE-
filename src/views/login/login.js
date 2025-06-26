@@ -65,64 +65,40 @@ const LoginCover = () => {
   const handleLoginSubmit = (data) => {
     dispatch(
       login({
-        data: data,
-        onCallback: () => {
-          setLoadingLogin(false);
-        },
+        data,
+        onCallback: () => setLoadingLogin(false),
       })
     )
       .unwrap()
-      .then(async (res) => {
-        if (hostname === adminUrl) {
-          const TrustsList = await checkUserTrust({ userId: res?.result?.id });
-          setUserTrustList(TrustsList?.results);
+      .then((res) => {
+        if (res?.tokens?.access?.token && res?.tokens?.refresh?.token) {
+          setCookieWithMainDomain(
+            "accessToken",
+            res.tokens.access.token,
+            mainDomain
+          );
+          setCookieWithMainDomain(
+            "refreshToken",
+            res.tokens.refresh.token,
+            mainDomain
+          );
 
-          if (res?.tokens?.access?.token && res?.tokens?.refresh?.token) {
-            setCookieWithMainDomain(
-              "refreshToken",
-              res?.tokens?.refresh?.token,
-              mainDomain
-            );
-            setCookieWithMainDomain(
-              "accessToken",
-              res?.tokens?.access?.token,
-              mainDomain
-            );
-            if (
-              TrustsList?.results?.length > 1 &&
-              res?.tokens?.access?.token &&
-              res?.tokens?.refresh?.token
-            ) {
-              setModal(true);
-              localStorage.setItem("trustModal", true);
-            } else if (
-              TrustsList?.results?.length === 1 &&
-              TrustsList?.results[0]?.isAproved !== "approved"
-            ) {
-              toast.error("Your trust not approved");
-            } else if (
-              TrustsList?.results?.length === 1 &&
-              TrustsList?.results[0]?.isAproved === "approved"
-            ) {
-              dispatch(handleTrustDetail(TrustsList?.results[0]));
-              localStorage.setItem("trustId", TrustsList?.results[0]?.id);
-              localStorage.setItem(
-                "trustType",
-                TrustsList?.results[0]?.typeId?.name
-              );
+          localStorage.setItem("trustId", res?.result?.id);
 
-              if (res?.tokens?.access?.token && res?.tokens?.refresh?.token) {
-                window.location.replace(
-                  `${process.env.REACT_APP_INTERNET_PROTOCOL}://${TrustsList?.results[0]?.subDomain}${subdomainChange}/login`
-                );
-              }
-            }
-          }
+          // ✅ Redirect to dashboard
+          navigate("/dashboard");
         }
-
-        return res;
+      })
+      .catch(() => {
+        setLoadingLogin(false);
+        toast.error("Login failed. Please try again.");
       });
   };
+  useEffect(() => {
+    if (isLogged) {
+      navigate("/dashboard");
+    }
+  }, [isLogged]);
 
   const handleForgetPassword = (values) => {
     return forgotPassword(values);
@@ -168,60 +144,63 @@ const LoginCover = () => {
   const refreshToken = getCookie("refreshToken");
   const accessToken = getCookie("accessToken");
 
-  const loginPageQuery = useQuery({
-    queryKey: ["loginPage", subDomainName],
-    queryFn: () => loginPage(subDomainName),
-  });
+  // const loginPageQuery = useQuery({
+  //   queryKey: ["loginPage", subDomainName],
+  //   queryFn: () => loginPage(subDomainName),
+  // });
 
-  const loginPageData = useMemo(() => {
-    dispatch(handleTrustDetail(loginPageQuery?.data?.result));
-    return loginPageQuery?.data?.result;
-  }, [loginPageQuery]);
+  // const loginPageData = loginPageQuery?.data?.result; // ✅ just get the data
 
-  localStorage.setItem("trustId", loginPageQuery?.data?.result?.id),
-    localStorage.setItem(
-      "trustType",
-      loginPageQuery?.data?.result?.typeId?.name
-    ),
-    useEffect(() => {
-      if (hostname !== adminUrl && loginPageQuery?.data?.error) {
-        navigate("/not-found");
-      } else if (
-        isLogged &&
-        loginPath?.includes("all") &&
-        subDomainName !== genericSubDomain
-      ) {
-        localStorage.setItem("trustModal", false);
-        navigate("/dashboard");
-      } else if (
-        isLogged &&
-        loginPath?.length &&
-        loginPath[0] === "configuration" &&
-        subDomainName !== genericSubDomain
-      ) {
-        localStorage.setItem("trustModal", false);
-        navigate(`/configuration/categories`);
-      } else if (
-        isLogged &&
-        loginPath?.length &&
-        loginPath[0]?.startsWith("cattle") &&
-        subDomainName !== genericSubDomain
-      ) {
-        const redirectTo = cattleHeader()?.find((item) =>
-          item?.permissionKey?.includes(loginPath[0])
-        );
-        localStorage.setItem("trustModal", false);
-        navigate(redirectTo?.url);
-      } else if (
-        (isLogged || loginPath?.length) &&
-        subDomainName !== genericSubDomain
-      ) {
-        localStorage.setItem("trustModal", false);
-        navigate(`/${loginPath[0]}`);
-      }
-    }, [isLogged, loginPath, loginPageQuery]);
+  // useEffect(() => {
+  //   if (loginPageData) {
+  //     dispatch(handleTrustDetail(loginPageData));
+  //   }
+  // }, [loginPageData, dispatch]);
 
-  const { skin } = useSkin();
+  // localStorage.setItem("trustId", loginPageQuery?.data?.result?.id),
+  //   localStorage.setItem(
+  //     "trustType",
+  //     loginPageQuery?.data?.result?.typeId?.name
+  //   ),
+  //   useEffect(() => {
+  //     if (hostname !== adminUrl && loginPageQuery?.data?.error) {
+  //       navigate("/not-found");
+  //     } else if (
+  //       isLogged &&
+  //       loginPath?.includes("all") &&
+  //       subDomainName !== genericSubDomain
+  //     ) {
+  //       localStorage.setItem("trustModal", false);
+  //       navigate("/dashboard");
+  //     } else if (
+  //       isLogged &&
+  //       loginPath?.length &&
+  //       loginPath[0] === "configuration" &&
+  //       subDomainName !== genericSubDomain
+  //     ) {
+  //       localStorage.setItem("trustModal", false);
+  //       navigate(`/configuration/categories`);
+  //     } else if (
+  //       isLogged &&
+  //       loginPath?.length &&
+  //       loginPath[0]?.startsWith("cattle") &&
+  //       subDomainName !== genericSubDomain
+  //     ) {
+  //       const redirectTo = cattleHeader()?.find((item) =>
+  //         item?.permissionKey?.includes(loginPath[0])
+  //       );
+  //       localStorage.setItem("trustModal", false);
+  //       navigate(redirectTo?.url);
+  //     } else if (
+  //       (isLogged || loginPath?.length) &&
+  //       subDomainName !== genericSubDomain
+  //     ) {
+  //       localStorage.setItem("trustModal", false);
+  //       navigate(`/${loginPath[0]}`);
+  //     }
+  //   }, [isLogged, loginPath, loginPageQuery]);
+
+  // const { skin } = useSkin();
 
   //   const illustration = skin === "dark" ? "login-v2-dark.svg" : "main-logo.png",
   //     source = require(`@src/assets/images/pages/placeholder.png`).default;
@@ -256,21 +235,7 @@ const LoginCover = () => {
           sm="12"
         >
           <div className="w-100 h-100 d-lg-flex align-items-center justify-content-center loginBackground">
-            <img
-              className={`img-fluid w-100 ${
-                (loginPageData && loginPageData?.profilePhoto !== "") ||
-                loginPageData?.profilePhoto
-                  ? "h-100"
-                  : ""
-              }`}
-              src={
-                (loginPageData && loginPageData?.profilePhoto !== "") ||
-                loginPageData?.profilePhoto
-                  ? loginPageData?.profilePhoto
-                  : source
-              }
-              alt="Login Cover"
-            />
+            <img className={`img-fluid w-100`} src={source} alt="Login Cover" />
           </div>
         </Col>
         <Col
@@ -314,7 +279,7 @@ const LoginCover = () => {
               </div>
 
               {/* {<CardTitle className="fw-bold mb-2 ">Sign In</CardTitle>} */}
-              {loginPageData && loginPageData?.name !== "" && (
+              {/* {loginPageData && loginPageData?.name !== "" && (
                 <p className="templeName text-center">
                   {" "}
                   <span
@@ -325,7 +290,7 @@ const LoginCover = () => {
                     {ConverFirstLatterToCapital(loginPageData?.name ?? "")}
                   </span>
                 </p>
-              )}
+              )} */}
 
               <CardText className="signInEnterUserNAme">
                 Enter Email and Password in order to sign in to your account

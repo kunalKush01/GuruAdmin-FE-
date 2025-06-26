@@ -20,7 +20,6 @@ import {
   getUpdatedTrustDetail,
 } from "../../api/profileApi";
 import ProfileForm from "../../components/Profile/profileForm";
-import NoticeForm from "../../components/notices/noticeForm";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 
 import "../../assets/scss/viewCommon.scss";

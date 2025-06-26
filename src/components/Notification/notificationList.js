@@ -5,7 +5,7 @@ import defaultIcon from "../../assets/images/icons/dashBoard/defaultAvatar.svg";
 import he from "he";
 import { ConverFirstLatterToCapital } from "../../utility/formater";
 import moment from "moment";
-import { ConvertToString } from "../financeReport/reportJsonExport";
+// import { ConvertToString } from "../financeReport/reportJsonExport";
 
 const NotificationList = ({ data }) => {
   return (
@@ -30,9 +30,9 @@ const NotificationList = ({ data }) => {
                   )}
                 </div>
               </div>
-              <div className="notificationPara">
+              {/* <div className="notificationPara">
                 {ConvertToString(item?.notifyMessage ?? "")}
-              </div>
+              </div> */}
             </Col>
             <hr className="mt-1" />
           </>
