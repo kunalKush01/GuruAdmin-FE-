@@ -1,11 +1,6 @@
-import InputPasswordToggle from "@components/input-password-toggle";
-import { useSkin } from "@hooks/useSkin";
-import "@styles/react/pages/page-authentication.scss";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { ErrorMessage, Form, Formik } from "formik";
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
@@ -19,126 +14,72 @@ import {
   Row,
   Spinner,
 } from "reactstrap";
-import styled from "styled-components";
+import { ErrorMessage, Form, Formik } from "formik";
 import * as Yup from "yup";
-import { forgotPassword } from "../../api/forgotPassword";
-import { checkUserTrust, loginPage } from "../../api/loginPageApi";
+
+import InputPasswordToggle from "@components/input-password-toggle";
+import "@styles/react/pages/page-authentication.scss";
+
 import passwordEyeIcon from "../../assets/images/icons/signInIcon/Icon awesome-eye.svg";
 import backIconIcon from "../../assets/images/icons/signInIcon/backIcon.svg";
 import emailInputIcon from "../../assets/images/icons/signInIcon/email.svg";
 import hidePassIcon from "../../assets/images/icons/signInIcon/hidePassIcon.svg";
 import placeholderImage from "../../assets/images/pages/placeholder.webp";
-import {
-  handleTokenLogin,
-  handleTrustDetail,
-  login,
-} from "../../redux/authSlice";
-import {
-  ConverFirstLatterToCapital,
-  getCookie,
-  setCookieWithMainDomain,
-} from "../../utility/formater";
-import {
-  defaultHeaders,
-  refreshTokenRequest,
-} from "../../utility/utils/callApi";
-import TrustListModal from "./TrustListModal";
-import { cattleHeader } from "../../utility/subHeaderContent/cattleHeader";
-import "../../assets/scss/viewCommon.scss";
+
+import { login } from "../../redux/authSlice";
+import { forgotPassword } from "../../api/forgotPassword";
+
 const LoginCover = () => {
-  const { isLogged, userDetail, trustDetail } = useSelector(
-    (state) => state.auth
-  );
+  const { isLogged } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const [forgotPassWordActive, setForgotPassWordActive] = useState(false);
   const [loadingLogin, setLoadingLogin] = useState(false);
-  const [modal, setModal] = useState(false);
-  const [userTrustList, setUserTrustList] = useState([]);
-  const hostname = location.hostname;
+  const [loading, setLoading] = useState(false);
 
-  const adminUrl = process.env.REACT_APP_ADMIN_URL;
-  const subdomainChange = process.env.REACT_APP_ADMIN_SUBDOMAIN_REPLACE_URL;
-  const mainDomain = process.env.REACT_APP_DOMAIN;
-  const genericSubDomain = process.env.REACT_APP_GENERIC_SUB_DOMAIN;
+  // useEffect(() => {
+  //   if (isLogged) {
+  //     navigate("/dashboard");
+  //   }
+  // }, [isLogged]);
 
   const handleLoginSubmit = (data) => {
+    setLoadingLogin(true);
+
     dispatch(
       login({
-        data: data,
-        onCallback: () => {
+        data,
+        onCallback: (success) => {
           setLoadingLogin(false);
+          if (success) {
+            toast.success("Login successful");
+            navigate("/dashboard");
+          } else {
+            toast.error("Login failed");
+          }
         },
       })
-    )
-      .unwrap()
-      .then(async (res) => {
-        if (hostname === adminUrl) {
-          const TrustsList = await checkUserTrust({ userId: res?.result?.id });
-          setUserTrustList(TrustsList?.results);
-
-          if (res?.tokens?.access?.token && res?.tokens?.refresh?.token) {
-            setCookieWithMainDomain(
-              "refreshToken",
-              res?.tokens?.refresh?.token,
-              mainDomain
-            );
-            setCookieWithMainDomain(
-              "accessToken",
-              res?.tokens?.access?.token,
-              mainDomain
-            );
-            if (
-              TrustsList?.results?.length > 1 &&
-              res?.tokens?.access?.token &&
-              res?.tokens?.refresh?.token
-            ) {
-              setModal(true);
-              localStorage.setItem("trustModal", true);
-            } else if (
-              TrustsList?.results?.length === 1 &&
-              TrustsList?.results[0]?.isAproved !== "approved"
-            ) {
-              toast.error("Your trust not approved");
-            } else if (
-              TrustsList?.results?.length === 1 &&
-              TrustsList?.results[0]?.isAproved === "approved"
-            ) {
-              dispatch(handleTrustDetail(TrustsList?.results[0]));
-              localStorage.setItem("trustId", TrustsList?.results[0]?.id);
-              localStorage.setItem(
-                "trustType",
-                TrustsList?.results[0]?.typeId?.name
-              );
-
-              if (res?.tokens?.access?.token && res?.tokens?.refresh?.token) {
-                window.location.replace(
-                  `${process.env.REACT_APP_INTERNET_PROTOCOL}://${TrustsList?.results[0]?.subDomain}${subdomainChange}/login`
-                );
-              }
-            }
-          }
-        }
-
-        return res;
-      });
+    );
   };
 
-  const handleForgetPassword = (values) => {
-    return forgotPassword(values);
+  const handleForgetPassword = async (values) => {
+    try {
+      setLoading(true);
+      await forgotPassword(values);
+      toast.success("Reset link sent to your email");
+      setForgotPassWordActive(false);
+    } catch {
+      toast.error("Failed to send reset link");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const resetPasswordMutation = useMutation({
     mutationFn: handleForgetPassword,
-    onSuccess: (data) => {
-      if (!data.error) {
-        setLoading(false);
-        setForgotPassWordActive(false);
-      } else if (data.error) {
-        setLoading(false);
-      }
-    },
   });
+
   const loginSchema = Yup.object().shape({
     email: Yup.string()
       .email("Invalid Email.")
@@ -146,106 +87,12 @@ const LoginCover = () => {
       .min(5),
     password: Yup.string().required("Password is required."),
   });
+
   const forgetPasswordSchema = Yup.object().shape({
     email: Yup.string().required("Email is required.").min(5),
   });
 
-  const permissions = useSelector(
-    (state) => state.auth?.userDetail?.permissions
-  );
-
-  const loginPath = permissions?.map((item) => item?.name);
-  let subDomainName;
-  if (hostname !== adminUrl) {
-    subDomainName = hostname.replace(subdomainChange, "");
-  } else {
-    subDomainName = hostname.replace(
-      process.env.REACT_APP_GENERIC_ADMIN_SUBDOMAIN_REPLACE_URL,
-      ""
-    );
-  }
-
-  const refreshToken = getCookie("refreshToken");
-  const accessToken = getCookie("accessToken");
-
-  const loginPageQuery = useQuery({
-    queryKey: ["loginPage", subDomainName],
-    queryFn: () => loginPage(subDomainName),
-  });
-
-  const loginPageData = useMemo(() => {
-    dispatch(handleTrustDetail(loginPageQuery?.data?.result));
-    return loginPageQuery?.data?.result;
-  }, [loginPageQuery]);
-
-  localStorage.setItem("trustId", loginPageQuery?.data?.result?.id),
-    localStorage.setItem(
-      "trustType",
-      loginPageQuery?.data?.result?.typeId?.name
-    ),
-    useEffect(() => {
-      if (hostname !== adminUrl && loginPageQuery?.data?.error) {
-        navigate("/not-found");
-      } else if (
-        isLogged &&
-        loginPath?.includes("all") &&
-        subDomainName !== genericSubDomain
-      ) {
-        localStorage.setItem("trustModal", false);
-        navigate("/dashboard");
-      } else if (
-        isLogged &&
-        loginPath?.length &&
-        loginPath[0] === "configuration" &&
-        subDomainName !== genericSubDomain
-      ) {
-        localStorage.setItem("trustModal", false);
-        navigate(`/configuration/categories`);
-      } else if (
-        isLogged &&
-        loginPath?.length &&
-        loginPath[0]?.startsWith("cattle") &&
-        subDomainName !== genericSubDomain
-      ) {
-        const redirectTo = cattleHeader()?.find((item) =>
-          item?.permissionKey?.includes(loginPath[0])
-        );
-        localStorage.setItem("trustModal", false);
-        navigate(redirectTo?.url);
-      } else if (
-        (isLogged || loginPath?.length) &&
-        subDomainName !== genericSubDomain
-      ) {
-        localStorage.setItem("trustModal", false);
-        navigate(`/${loginPath[0]}`);
-      }
-    }, [isLogged, loginPath, loginPageQuery]);
-
-  const { skin } = useSkin();
-
-  //   const illustration = skin === "dark" ? "login-v2-dark.svg" : "main-logo.png",
-  //     source = require(`@src/assets/images/pages/placeholder.png`).default;
   const source = placeholderImage;
-
-  const headers = {
-    ...defaultHeaders,
-    Authorization: `Bearer ${accessToken}`,
-  };
-  const axiosInstance = axios.create({
-    headers,
-    responseType: "json",
-  });
-
-  useEffect(async () => {
-    if (refreshToken) {
-      const res = await refreshTokenRequest({ refreshToken, axiosInstance });
-      if (!res.error) {
-        dispatch(handleTokenLogin(res));
-      }
-    }
-  }, [refreshToken]);
-
-  const [loading, setLoading] = useState(false);
 
   return (
     <div className="loginwrapper auth-wrapper auth-cover">
@@ -257,18 +104,8 @@ const LoginCover = () => {
         >
           <div className="w-100 h-100 d-lg-flex align-items-center justify-content-center loginBackground">
             <img
-              className={`img-fluid w-100 ${
-                (loginPageData && loginPageData?.profilePhoto !== "") ||
-                loginPageData?.profilePhoto
-                  ? "h-100"
-                  : ""
-              }`}
-              src={
-                (loginPageData && loginPageData?.profilePhoto !== "") ||
-                loginPageData?.profilePhoto
-                  ? loginPageData?.profilePhoto
-                  : source
-              }
+              className="img-fluid w-100 h-100"
+              src={source}
               alt="Login Cover"
             />
           </div>
@@ -304,42 +141,20 @@ const LoginCover = () => {
                   src="/static/media/main-logo.90679d22e72add629886.png"
                   alt="Logo"
                   style={{
-                    maxWidth: "200px", // Set a specific width
+                    maxWidth: "200px",
                     height: "auto",
-                    marginLeft: "0", // Ensure no left margin
-                    marginRight: "0",
-                    marginBottom: "20px", // Ensure no right margin
+                    marginBottom: "20px",
                   }}
                 />
               </div>
-
-              {/* {<CardTitle className="fw-bold mb-2 ">Sign In</CardTitle>} */}
-              {loginPageData && loginPageData?.name !== "" && (
-                <p className="templeName text-center">
-                  {" "}
-                  <span
-                    title={ConverFirstLatterToCapital(
-                      loginPageData?.name ?? ""
-                    )}
-                  >
-                    {ConverFirstLatterToCapital(loginPageData?.name ?? "")}
-                  </span>
-                </p>
-              )}
 
               <CardText className="signInEnterUserNAme">
                 Enter Email and Password in order to sign in to your account
               </CardText>
               <Formik
-                initialValues={{
-                  email: "",
-                  password: "",
-                }}
+                initialValues={{ email: "", password: "" }}
                 validationSchema={loginSchema}
-                onSubmit={(data) => {
-                  setLoadingLogin(true);
-                  handleLoginSubmit(data);
-                }}
+                onSubmit={handleLoginSubmit}
               >
                 {(formik) => (
                   <Form className="auth-login-form mt-3">
@@ -352,7 +167,6 @@ const LoginCover = () => {
                           className=" signInputField border-top-0 border-end-0 border-start-0 p-0 "
                           type="text"
                           name="email"
-                          id="nameIcons"
                           placeholder="Enter Email Address"
                           value={formik.values.email}
                           onChange={formik.handleChange}
@@ -402,10 +216,7 @@ const LoginCover = () => {
                         <Button
                           type="submit"
                           color="primary"
-                          className=""
-                          style={{
-                            padding: ".5rem 4rem",
-                          }}
+                          style={{ padding: ".5rem 4rem" }}
                         >
                           <Spinner style={{ height: "2rem", width: "2rem" }} />
                         </Button>
@@ -445,11 +256,9 @@ const LoginCover = () => {
                   src="/static/media/main-logo.90679d22e72add629886.png"
                   alt="Logo"
                   style={{
-                    maxWidth: "200px", // Set a specific width
+                    maxWidth: "200px",
                     height: "auto",
-                    marginLeft: "0", // Ensure no left margin
-                    marginRight: "0",
-                    marginBottom: "20px", // Ensure no right margin
+                    marginBottom: "20px",
                   }}
                 />
               </div>
@@ -458,20 +267,16 @@ const LoginCover = () => {
                 onClick={() => setForgotPassWordActive(false)}
                 className="my-1 signInIcons"
               />
-              {<CardTitle className="fw-bold  mb-0  ">Email Address</CardTitle>}
-              <CardText className="signInEnterUserNAme  ">
+              <CardTitle className="fw-bold  mb-0  ">Email Address</CardTitle>
+              <CardText className="signInEnterUserNAme">
                 We need to send verification link to authenticate your email
                 address.
               </CardText>
               <Formik
-                initialValues={{
-                  email: "",
-                }}
+                initialValues={{ email: "" }}
                 onSubmit={(e) => {
                   setLoading(true);
-                  return resetPasswordMutation.mutate({
-                    email: e?.email,
-                  });
+                  return resetPasswordMutation.mutate({ email: e?.email });
                 }}
                 validationSchema={forgetPasswordSchema}
               >
@@ -486,7 +291,6 @@ const LoginCover = () => {
                           className=" signInputField border-top-0 border-end-0 border-start-0 p-0 "
                           type="text"
                           name="email"
-                          id="nameIcons"
                           placeholder="Enter Address"
                           value={formik.values.email}
                           onChange={formik.handleChange}
@@ -501,10 +305,7 @@ const LoginCover = () => {
                         <Button
                           type="submit"
                           color="primary"
-                          className=""
-                          style={{
-                            padding: ".5rem 4rem",
-                          }}
+                          style={{ padding: ".5rem 4rem" }}
                         >
                           <Spinner style={{ height: "2rem", width: "2rem" }} />
                         </Button>
@@ -521,14 +322,6 @@ const LoginCover = () => {
           )}
         </Col>
       </Row>
-      <TrustListModal
-        modal={modal}
-        setModal={setModal}
-        trustArray={userTrustList}
-        rToken={refreshToken}
-        aToken={accessToken}
-      />
-      {/* )} */}
     </div>
   );
 };

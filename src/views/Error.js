@@ -37,27 +37,27 @@ const Error = () => {
   }, [skin]);
 
   // Check if the tenant exists
-  useEffect(() => {
-    if (!tenantName) {
-      setTenantExists(false); // No tenant in URL
-      return;
-    }
+  // useEffect(() => {
+  //   if (!tenantName) {
+  //     setTenantExists(false); // No tenant in URL
+  //     return;
+  //   }
 
-    const checkTenant = async () => {
-      try {
-        const response = await loginPage(tenantName);
-        console.log(response);
-        if (response && response.result) {
-          setTenantExists(true);
-        }
-      } catch (error) {
-        setTenantExists(false);
-      }
-      console.log(tenantExists);
-    };
+  //   const checkTenant = async () => {
+  //     try {
+  //       const response = await loginPage(tenantName);
+  //       console.log(response);
+  //       if (response && response.result) {
+  //         setTenantExists(true);
+  //       }
+  //     } catch (error) {
+  //       setTenantExists(false);
+  //     }
+  //     console.log(tenantExists);
+  //   };
 
-    checkTenant();
-  }, [tenantName]);
+  //   checkTenant();
+  // }, [tenantName]);
 
   // Countdown and redirect logic
   useEffect(() => {

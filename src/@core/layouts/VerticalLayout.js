@@ -42,9 +42,9 @@ const VerticalLayout = (props) => {
   const navigate = useNavigate();
   const { isLogged } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    !isLogged && navigate("/login");
-  }, [isLogged]);
+  // useEffect(() => {
+  //   !isLogged && navigate("/login");
+  // }, [isLogged]);
 
   // ** Props
   const {

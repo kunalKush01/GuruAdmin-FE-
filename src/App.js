@@ -22,16 +22,16 @@ const App = () => {
 
   const selectedLanguage = useSelector((state) => state.auth.selectLang);
   const dispatch = useDispatch();
-  const languageList = async () => {
-    try {
-      const response = await authApiInstance.get("/language");
-      if (response?.data?.data?.results) {
-        dispatch(setAvailableLang(response.data.data.results));
-      }
-    } catch (error) {
-      console.error("Language API fetch failed:", error.message || error);
-    }
-  };
+  // const languageList = async () => {
+  //   try {
+  //     const response = await authApiInstance.get("/language");
+  //     if (response?.data?.data?.results) {
+  //       dispatch(setAvailableLang(response.data.data.results));
+  //     }
+  //   } catch (error) {
+  //     console.error("Language API fetch failed:", error.message || error);
+  //   }
+  // };
 
   const { i18n } = useTranslation();
   useEffect(() => {
@@ -57,12 +57,12 @@ const App = () => {
   //   const result = setToken();
   // }, []);
 
-  useEffect(() => {
-    // const messaging = firebaseConfig.messaging();
-    // requestForToken();
-    // Notification();
-    languageList();
-  }, []);
+  // useEffect(() => {
+  //   // const messaging = firebaseConfig.messaging();
+  //   // requestForToken();
+  //   // Notification();
+  //   languageList();
+  // }, []);
 
   return (
     <MessageContext.Provider value={messageIntegrationState}>

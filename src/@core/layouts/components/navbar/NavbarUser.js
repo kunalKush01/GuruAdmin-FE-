@@ -68,24 +68,32 @@ const NavbarUser = (props) => {
       ""
     );
   }
+  // const loginPageQuery = useQuery({
+  //   queryKey: [subDomainName],
+  //   queryFn: () => loginPage(subDomainName),
+  // });
+  // const loginPageData = useMemo(
+  //   () => loginPageQuery?.data?.result ?? {},
+  //   [loginPageQuery?.data?.result]
+  // );
 
-  const loginPageQuery = useQuery([subDomainName], () =>
-    loginPage(subDomainName)
-  );
+  // // ✅ Dispatch only when loginPageData is updated
+  // useEffect(() => {
+  //   if (loginPageData && Object.keys(loginPageData).length > 0) {
+  //     dispatch(handleTrustDetail(loginPageData));
+  //   }
+  // }, [loginPageData, dispatch]);
 
-  const loginPageData = useMemo(
-    () => loginPageQuery?.data?.result ?? {},
-    dispatch(handleTrustDetail(loginPageQuery?.data?.result)),
-    [loginPageQuery]
-  );
-
-  const notificationQuery = useQuery(
-    ["notificationMessagePing", pagination.page],
-    async () =>
-      await getAllNotification({
-        ...pagination,
-      })
-  );
+  const notificationQuery = useQuery({
+    queryKey: ["notificationMessagePing", pagination.page],
+    queryFn: async () => {
+      return await getAllNotification({ ...pagination });
+    },
+    // Optional enhancements:
+    keepPreviousData: true, // useful for paginated queries
+    staleTime: 1000 * 60, // cache for 1 minute
+    enabled: !!pagination.page, // avoids query if page is undefined/null
+  });
   const allUnReadMessage = useMemo(
     () => notificationQuery?.data ?? [],
     [notificationQuery]

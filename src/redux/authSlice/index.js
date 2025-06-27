@@ -79,10 +79,7 @@ const authSlice = createSlice({
 
     handleTokenLogin(state, action) {
       state.userDetail = action.payload.result;
-      state.isLogged =
-        action.payload.tokens.access.token &&
-        action.payload.tokens.refresh.token &&
-        true;
+      state.isLogged = true;
       state.tokens.accessToken = action.payload.tokens.access.token;
       state.tokens.refreshToken = action.payload.tokens.refresh.token;
       // state.trustDetail = action.payload.trust;
@@ -112,10 +109,7 @@ const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.userDetail = action.payload.result;
-        state.isLogged =
-          action.payload.tokens.access.token &&
-          action.payload.tokens.refresh.token &&
-          true;
+        state.isLogged = true;
         state.tokens.accessToken = action.payload.tokens.access.token;
         state.tokens.refreshToken = action.payload.tokens.refresh.token;
         state.isLoading = false;
