@@ -1,38 +1,29 @@
 // ** React Imports
-import { Suspense, lazy, Fragment } from "react";
-
-// ** Utils
-import { useLayout } from "@hooks/useLayout";
-import { useRouterTransition } from "@hooks/useRouterTransition";
-
-// ** Custom Components
-import LayoutWrapper from "@layouts/components/layout-wrapper";
+import { Suspense, lazy } from 'react';
 
 // ** Router Components
-import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
-
-// ** Routes & Default Routes
-import { DefaultRoute, AllRoutes } from "./routes";
+import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom';
 
 // ** Layouts
-import BlankLayout from "@layouts/BlankLayout";
-import VerticalLayout from "@src/layouts/VerticalLayout";
-import HorizontalLayout from "@src/layouts/HorizontalLayout";
-import Permission from "../components/Permissions/Permission";
-import Notification from "../fireBase/Notification";
+import BlankLayout from '@layouts/BlankLayout';
+import VerticalLayout from '@layouts/VerticalLayout';
+import HorizontalLayout from '@layouts/HorizontalLayout';
+import LayoutWrapper from '@layouts/components/layout-wrapper';
 
-const NotAuthorized = lazy(() => import("@src/views/NotAuthorized"));
-const Error = lazy(() => import("@src/views/Error"));
+// ** Routes & Defaults
+import { DefaultRoute, AllRoutes } from './routes';
+
+const NotAuthorized = lazy(() => import('@src/views/NotAuthorized'));
+const Error = lazy(() => import('@src/views/Error'));
 
 const Router = () => {
-  const { layout, setLayout, setLastLayout } = useLayout();
-  const { transition, setTransition } = useRouterTransition();
+  const Layouts = {
+    BlankLayout,
+    VerticalLayout,
+    HorizontalLayout
+  };
 
-  const DefaultLayout =
-    layout === "horizontal" ? "HorizontalLayout" : "VerticalLayout";
-
-  const Layouts = { BlankLayout, VerticalLayout, HorizontalLayout };
-  const currentActiveItem = null;
+  const DefaultLayout = 'VerticalLayout'; // Fallback default layout
 
   const LayoutRoutesAndPaths = (layout) => {
     const LayoutRoutes = [];
@@ -57,35 +48,21 @@ const Router = () => {
         const Component = route.component;
 
         const Wrapper = (
-          <LayoutComponent
-            layout={layoutKey}
-            setLayout={setLayout}
-            transition={transition}
-            setLastLayout={setLastLayout}
-            setTransition={setTransition}
-            currentActiveItem={currentActiveItem}
-          >
-            {/* <Notification /> */}
-            {/* <Suspense fallback={null}> */}
-              {route.layout === "BlankLayout" ? (
+          <LayoutComponent layout={layoutKey}>
+            <Suspense fallback={null}>
+              {layoutKey === 'BlankLayout' ? (
                 <Component />
               ) : (
-                <>
-                  <LayoutWrapper
-                    layout={DefaultLayout}
-                    transition={transition}
-                    setTransition={setTransition}
-                    {...(route.appLayout ? { appLayout: route.appLayout } : {})}
-                    {...(route.meta ? { routeMeta: route.meta } : {})}
-                    {...(route.className
-                      ? { wrapperClass: route.className }
-                      : {})}
-                  >
-                    <Component />
-                  </LayoutWrapper>
-                </>
+                <LayoutWrapper
+                  layout={layoutKey}
+                  {...(route.appLayout ? { appLayout: route.appLayout } : {})}
+                  {...(route.meta ? { routeMeta: route.meta } : {})}
+                  {...(route.className ? { wrapperClass: route.className } : {})}
+                >
+                  <Component />
+                </LayoutWrapper>
               )}
-            {/* </Suspense> */}
+            </Suspense>
           </LayoutComponent>
         );
 

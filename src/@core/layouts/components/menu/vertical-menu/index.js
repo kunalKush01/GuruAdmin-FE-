@@ -100,11 +100,11 @@ const Sidebar = (props) => {
   const contentWidth = layoutStore.contentWidth;
   const isHidden = layoutStore.menuHidden;
 
-  useEffect(() => {
-    if (!isLogged) {
-      navigate("/login");
-    }
-  }, [isLogged, history]);
+  // useEffect(() => {
+  //   if (!isLogged) {
+  //     navigate("/login");
+  //   }
+  // }, [isLogged, history]);
 
   useEffect(() => {
     setIsMounted(true);
